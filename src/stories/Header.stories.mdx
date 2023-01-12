@@ -1,0 +1,84 @@
+import { Canvas, Meta, Story, ArgsTable } from '@storybook/addon-docs';
+import { html } from 'lit';
+import '../components/global/header';
+
+<Meta
+  title="Global/Header"
+  component="kyn-header"
+  argTypes={{
+    rootUrl: {
+      description:
+        'URL for the header logo link. Should target the application home page.',
+      control: { type: 'text' },
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '/' },
+        category: 'Properties',
+      },
+    },
+    appTitle: {
+      description: 'App title text next to logo.',
+      control: { type: 'text' },
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '' },
+        category: 'Properties',
+      },
+    },
+    appSubtitle: {
+      description: 'App subtitle text.',
+      control: { type: 'text' },
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '' },
+        category: 'Properties',
+      },
+    },
+    unnamed: {
+      description: 'The default slot, fills the empty space in the middle.',
+      table: {
+        category: 'Slots',
+      },
+    },
+    logo: {
+      description: 'Slot to provide a custom logo.',
+      table: {
+        category: 'Slots',
+      },
+    },
+  }}
+/>
+
+export const Template = (args) => {
+  return html`
+    <kyn-header
+      style="position: absolute; top: 0; right: 0; left: 0;"
+      rootUrl=${args.rootUrl}
+      appTitle=${args.appTitle}
+      appSubtitle=${args.appSubtitle}
+    >
+    </kyn-header>
+  `;
+};
+
+# Header
+
+The global header component.
+
+<Canvas>
+  <Story
+    height="200px"
+    name="Header"
+    args={{
+      rootUrl: '/',
+      appTitle: 'Delivery',
+      appSubtitle: 'Insights',
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Properties
+
+<ArgsTable story="Header" />

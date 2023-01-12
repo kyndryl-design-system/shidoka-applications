@@ -1,0 +1,77 @@
+import { Canvas, Meta, Story, ArgsTable } from '@storybook/addon-docs';
+import { html } from 'lit';
+import '../components/reusable/icon';
+import userIcon from '@carbon/icons/es/user--avatar/24';
+
+<Meta
+  title="Reusable/Icon"
+  component="kyn-icon"
+  argTypes={{
+    icon: {
+      description: 'The imported Carbon icon.',
+      table: {
+        type: { summary: 'object' },
+        category: 'Properties',
+      },
+    },
+    fill: {
+      description: 'Icon fill color.',
+      control: { type: 'color' },
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'currentColor' },
+        category: 'Properties',
+      },
+    },
+    sizeOverride: {
+      description:
+        "Specify a size in pixels to override the imported Carbon icon's original size.",
+      control: { type: 'number', min: 10, max: 100 },
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: 'null' },
+        category: 'Properties',
+      },
+    },
+    unnamed: {
+      description: 'The default slot for button content.',
+      table: {
+        category: 'Slots',
+      },
+    },
+  }}
+/>
+
+export const Template = (args) => {
+  return html`
+    <kyn-icon
+      .icon=${userIcon}
+      fill=${args.fill}
+      sizeOverride=${args.sizeOverride}
+    ></kyn-icon>
+  `;
+};
+
+# Icon
+
+Wrapper for vanilla Carbon icons to simplify usage.
+
+```js
+import userIcon from '@carbon/icons/es/user--avatar/24';
+```
+
+<Canvas>
+  <Story
+    name="Icon"
+    args={{
+      fill: 'currentColor',
+      sizeOverride: null,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Properties
+
+<ArgsTable story="Icon" />

@@ -1,0 +1,99 @@
+@import '../../common.scss';
+
+:host {
+  display: block;
+}
+
+.header {
+  display: flex;
+  height: 48px;
+  background: var(--color-background);
+  box-shadow: 0px 1px 0px var(--color-border);
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.logo {
+  flex-shrink: 0;
+  height: 24px;
+  margin-right: 8px;
+
+  path {
+    fill: var(--color-brand);
+  }
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.1px;
+}
+
+.interactive {
+  border: none;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  cursor: pointer;
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    outline-color 150ms ease-out;
+
+  &:hover {
+    background-color: var(--color-secondary);
+  }
+
+  &:focus {
+    outline-color: var(--color-primary-hover);
+  }
+}
+
+.actions {
+  display: flex;
+  margin-left: auto;
+}
+
+.action {
+  height: 100%;
+  width: 48px;
+  background: none;
+}
+
+.menu {
+  position: relative;
+
+  &__content {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    padding: 16px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: visibility 0.15s, opacity 0.15s ease-in-out,
+      transform 0.15s ease-in-out;
+    opacity: 0;
+    transform: translate3d(0px, -10%, 0px);
+    z-index: -1;
+
+    strong {
+      font-weight: 500;
+    }
+  }
+
+  &:focus-within {
+    .menu__content {
+      visibility: visible;
+      opacity: 1;
+      transform: translate3d(0px, 0px, 0px);
+      z-index: initial;
+    }
+  }
+}
