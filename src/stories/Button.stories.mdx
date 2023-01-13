@@ -62,6 +62,13 @@ import arrowRightIcon from '@carbon/icons/es/arrow--right/16';
   }}
 />
 
+export const args = {
+  kind: 'primary',
+  size: 'md',
+  href: '',
+  disabled: false,
+};
+
 export const Template = (args) => {
   return html`
     <kyn-button
@@ -96,15 +103,7 @@ Primary UI component for user interaction.
 ## Playground
 
 <Canvas>
-  <Story
-    name="Button"
-    args={{
-      kind: 'primary',
-      size: 'md',
-      href: '',
-      disabled: false,
-    }}
-  >
+  <Story name="Button" args={args}>
     {Template.bind({})}
   </Story>
 </Canvas>
@@ -122,14 +121,7 @@ import arrowRightIcon from '@carbon/icons/es/arrow--right/16';
 ```
 
 <Canvas>
-  <Story
-    name="Button with Icon"
-    args={{
-      kind: 'primary',
-      href: '',
-      disabled: false,
-    }}
-  >
+  <Story name="Button with Icon" args={args}>
     {IconTemplate.bind({})}
   </Story>
 </Canvas>
