@@ -30,7 +30,7 @@ jobs:
             ${{ runner.os }}-
       - name: Install dependencies
         if: steps.cache-node_modules.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: Lint
         run: npm run lint
   Build:
@@ -57,7 +57,7 @@ jobs:
             ${{ runner.os }}-
       - name: Install dependencies
         if: steps.cache-node_modules.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: Build component bundles
         run: npm run build
       - name: Upload build artifact
@@ -89,7 +89,7 @@ jobs:
             ${{ runner.os }}-
       - name: Install dependencies
         if: steps.cache-node_modules.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: Download build artifact
         uses: actions/download-artifact@v3
         with:
@@ -121,6 +121,6 @@ jobs:
             ${{ runner.os }}-
       - name: Install dependencies
         if: steps.cache-node_modules.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: Build and deploy Storybook to GitHub Pages
         run: npm run deploy-storybook -- --ci
