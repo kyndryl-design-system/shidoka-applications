@@ -94,10 +94,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifact
+      - name: Install Playwright
+        run: npx playwright install
       - name: Test
         run: npm run test
   Build_Deploy_Storybook:
-    needs: Lint
+    needs: Test
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
     steps:
