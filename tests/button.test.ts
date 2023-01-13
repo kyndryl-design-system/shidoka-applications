@@ -14,7 +14,7 @@ suite('kyn-button', () => {
     assert.shadowDom.equal(
       el,
       `
-      <button class="btn btn--primary">
+      <button class="btn btn--primary btn--md">
         <slot></slot>
       </button>
     `
@@ -26,7 +26,7 @@ suite('kyn-button', () => {
     assert.shadowDom.equal(
       el,
       `
-      <button class="btn btn--primary" disabled>
+      <button class="btn btn--primary btn--md" disabled>
         <slot></slot>
       </button>
     `

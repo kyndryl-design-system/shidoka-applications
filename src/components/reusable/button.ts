@@ -10,6 +10,9 @@ export class Button extends LitElement {
   kind = 'primary';
 
   @property({ type: String })
+  size = 'md';
+
+  @property({ type: String })
   href = '';
 
   @property({ type: Boolean })
@@ -21,7 +24,7 @@ export class Button extends LitElement {
         ? html`
             <a
               href=${this.href}
-              class="btn btn--${this.kind}"
+              class="btn btn--${this.kind} btn--${this.size}"
               ?disabled=${this.disabled}
               @click=${(e: Event) => this.handleClick(e)}
             >
@@ -29,7 +32,10 @@ export class Button extends LitElement {
             </a>
           `
         : html`
-            <button class="btn btn--${this.kind}" ?disabled=${this.disabled}>
+            <button
+              class="btn btn--${this.kind} btn--${this.size}"
+              ?disabled=${this.disabled}
+            >
               <slot></slot>
             </button>
           `}

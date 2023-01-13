@@ -18,6 +18,16 @@ import arrowRightIcon from '@carbon/icons/es/arrow--right/16';
         category: 'Properties',
       },
     },
+    size: {
+      description: 'The button size.',
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg'],
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'md' },
+        category: 'Properties',
+      },
+    },
     href: {
       description: 'Converts to an &lt;a&gt; tag to create a link.',
       control: { type: 'text' },
@@ -54,7 +64,12 @@ import arrowRightIcon from '@carbon/icons/es/arrow--right/16';
 
 export const Template = (args) => {
   return html`
-    <kyn-button kind=${args.kind} href=${args.href} ?disabled=${args.disabled}>
+    <kyn-button
+      kind=${args.kind}
+      href=${args.href}
+      size=${args.size}
+      ?disabled=${args.disabled}
+    >
       Default
     </kyn-button>
   `;
@@ -62,7 +77,12 @@ export const Template = (args) => {
 
 export const IconTemplate = (args) => {
   return html`
-    <kyn-button kind=${args.kind} href=${args.href} ?disabled=${args.disabled}>
+    <kyn-button
+      kind=${args.kind}
+      href=${args.href}
+      size=${args.size}
+      ?disabled=${args.disabled}
+    >
       Button
       <kyn-icon .icon=${arrowRightIcon}></kyn-icon>
     </kyn-button>
@@ -80,6 +100,7 @@ Primary UI component for user interaction.
     name="Button"
     args={{
       kind: 'primary',
+      size: 'md',
       href: '',
       disabled: false,
     }}
