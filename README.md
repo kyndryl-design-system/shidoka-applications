@@ -33,3 +33,4 @@ npm run analyze
 1. [@open-wc/testing](https://open-wc.org/docs/testing/testing-package/)
 1. [TypeScript](https://www.typescriptlang.org/docs/)
 1. [SCSS](https://sass-lang.com/guide)
+1. [Rollup](https://rollupjs.org/guide/en/)
