@@ -99,12 +99,6 @@ jobs:
         run: npx playwright install --with-deps
       - name: Test
         run: npm run test
-      - name: Store test results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-report
-          path: playwright-report
   Build_Deploy_Storybook:
     needs: Test
     runs-on: ubuntu-latest
