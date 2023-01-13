@@ -44,6 +44,10 @@ export class Header extends LitElement {
           <span class="title"> ${this.appTitle} - ${this.appSubtitle} </span>
         </a>
 
+        <div class="nav-links">
+          <slot name="nav"></slot>
+        </div>
+
         <slot></slot>
 
         <div class="actions">

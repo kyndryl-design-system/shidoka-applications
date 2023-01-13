@@ -1,6 +1,7 @@
 import { Canvas, Meta, Story, ArgsTable } from '@storybook/addon-docs';
 import { html } from 'lit';
 import '../components/global/header';
+import '../components/global/headerNavLink';
 
 <Meta
   title="Global/Header"
@@ -49,6 +50,12 @@ import '../components/global/header';
   }}
 />
 
+export const args = {
+  rootUrl: '/',
+  appTitle: 'Delivery',
+  appSubtitle: 'Insights',
+};
+
 export const Template = (args) => {
   return html`
     <kyn-header
@@ -65,16 +72,10 @@ export const Template = (args) => {
 
 The global header component.
 
+## Playground
+
 <Canvas>
-  <Story
-    height="200px"
-    name="Header"
-    args={{
-      rootUrl: '/',
-      appTitle: 'Delivery',
-      appSubtitle: 'Insights',
-    }}
-  >
+  <Story height="200px" name="Header" args={args}>
     {Template.bind({})}
   </Story>
 </Canvas>
@@ -82,3 +83,35 @@ The global header component.
 ## Properties
 
 <ArgsTable story="Header" />
+
+## Other Examples
+
+### Header with Nav
+
+export const TemplateLinks = (args) => {
+  return html`
+    <kyn-header
+      style="position: absolute; top: 0; right: 0; left: 0;"
+      rootUrl=${args.rootUrl}
+      appTitle=${args.appTitle}
+      appSubtitle=${args.appSubtitle}
+    >
+      <kyn-header-nav-link slot="nav" href="javascript:void(0)" text="Link 1">
+      </kyn-header-nav-link>
+      <kyn-header-nav-link slot="nav" href="javascript:void(0)" text="Link 2">
+      </kyn-header-nav-link>
+      <kyn-header-nav-link slot="nav" href="javascript:void(0)" text="Link 3">
+        <kyn-header-nav-link href="javascript:void(0)" text="Sub Link 1">
+        </kyn-header-nav-link>
+        <kyn-header-nav-link href="javascript:void(0)" text="Sub Link 2">
+        </kyn-header-nav-link>
+      </kyn-header-nav-link>
+    </kyn-header>
+  `;
+};
+
+<Canvas>
+  <Story height="200px" name="Header with Nav" args={args}>
+    {TemplateLinks.bind({})}
+  </Story>
+</Canvas>

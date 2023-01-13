@@ -24,16 +24,16 @@ module.exports = {
         'sass-loader',
       ],
     });
+    config.module.rules.push({
+      test: /\.stories\.[tj]sx?$/,
+      use: [
+        {
+          loader: require.resolve('@storybook/source-loader'),
+          options: { parser: 'typescript' } /* your sourceLoaderOptions here */,
+        },
+      ],
+      enforce: 'pre',
+    });
     return config;
-  },
-  // babel: async options => {
-  //   Object.assign(options.plugins.find(plugin => plugin[0].includes('plugin-proposal-decorators'))[1], {
-  //     decoratorsBeforeExport: true,
-  //     legacy: false
-  //   });
-  //   return options;
-  // },
-  docs: {
-    autodocs: true,
   },
 };
