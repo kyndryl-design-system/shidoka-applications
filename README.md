@@ -1,5 +1,7 @@
 # Kyndryl Design System POC
 
+[![kyndryl-ds-poc](https://github.com/frodesigns/kyndryl-ds-poc/actions/workflows/actions.yml/badge.svg)](https://github.com/frodesigns/kyndryl-ds-poc/actions/workflows/actions.yml)
+
 ## Scripts
 
 ```bash
