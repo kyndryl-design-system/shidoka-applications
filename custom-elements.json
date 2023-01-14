@@ -4,6 +4,45 @@
   "modules": [
     {
       "kind": "javascript-module",
+      "path": "src/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Button",
+          "declaration": {
+            "name": "Button",
+            "module": "src/index.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Icon",
+          "declaration": {
+            "name": "Icon",
+            "module": "src/index.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Header",
+          "declaration": {
+            "name": "Header",
+            "module": "src/index.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderNavLink",
+          "declaration": {
+            "name": "HeaderNavLink",
+            "module": "src/index.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/header.ts",
       "declarations": [
         {
@@ -107,6 +146,122 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/headerNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HeaderNavLink",
+          "members": [
+            {
+              "kind": "field",
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "text"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "level",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "level"
+            },
+            {
+              "kind": "field",
+              "name": "isSlotted",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "determineIfSlotted",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "text"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "href"
+            },
+            {
+              "name": "level",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "level"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderNavLink",
+          "declaration": {
+            "name": "HeaderNavLink",
+            "module": "src/components/global/headerNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-nav-link",
+          "declaration": {
+            "name": "HeaderNavLink",
+            "module": "src/components/global/headerNavLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/button.ts",
       "declarations": [
         {
@@ -122,6 +277,15 @@
               },
               "default": "'primary'",
               "attribute": "kind"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "attribute": "size"
             },
             {
               "kind": "field",
@@ -163,6 +327,14 @@
               },
               "default": "'primary'",
               "fieldName": "kind"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "fieldName": "size"
             },
             {
               "name": "href",
@@ -221,7 +393,7 @@
               "kind": "field",
               "name": "icon",
               "type": {
-                "text": "object"
+                "text": "any"
               },
               "default": "{}",
               "attribute": "icon"
@@ -249,7 +421,7 @@
             {
               "name": "icon",
               "type": {
-                "text": "object"
+                "text": "any"
               },
               "default": "{}",
               "fieldName": "icon"
@@ -280,6 +452,14 @@
         }
       ],
       "exports": [
+        {
+          "kind": "js",
+          "name": "Icon",
+          "declaration": {
+            "name": "Icon",
+            "module": "src/components/reusable/icon.ts"
+          }
+        },
         {
           "kind": "custom-element-definition",
           "name": "kyn-icon",

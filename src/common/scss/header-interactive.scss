@@ -7,7 +7,7 @@
     outline-color 150ms ease-out;
 
   &:hover {
-    background-color: var(--color-secondary);
+    background-color: var(--color-background-hover);
   }
 
   &:focus {
@@ -20,12 +20,12 @@
 
   &__content {
     position: absolute;
-    top: 48px;
+    top: 100%;
     right: 0;
     padding: 16px;
     background: var(--color-background);
-    border: 1px solid var(--color-border);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.08),
+      0px -1px 4px rgba(0, 0, 0, 0.08);
     transition: visibility 0.15s, opacity 0.15s ease-in-out,
       transform 0.15s ease-in-out;
     opacity: 0;
@@ -37,7 +37,8 @@
     }
   }
 
-  &:focus-within {
+  &:focus-within,
+  &:hover {
     .menu__content {
       visibility: visible;
       opacity: 1;

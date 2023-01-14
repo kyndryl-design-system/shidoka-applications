@@ -14,6 +14,9 @@ export class HeaderNavLink extends LitElement {
   @property({ type: String })
   href = '';
 
+  @property({ type: Number })
+  level = 1;
+
   @state()
   isSlotted = false;
 
@@ -21,7 +24,7 @@ export class HeaderNavLink extends LitElement {
     return html`
       <a
         href=${this.href}
-        class="nav-link interactive menu"
+        class="nav-link interactive menu level--${this.level}"
         @click=${(e: Event) => this.handleClick(e)}
       >
         ${this.text}

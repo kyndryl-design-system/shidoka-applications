@@ -1,7 +1,7 @@
 import { Canvas, Meta, Story, ArgsTable } from '@storybook/addon-docs';
 import { html } from 'lit';
-import '../components/global/header';
-import '../components/global/headerNavLink';
+import { Header } from '../components/global/header';
+import { HeaderNavLink } from '../components/global/headerNavLink';
 
 <Meta
   title="Global/Header"
@@ -62,39 +62,13 @@ export const args = {
   appSubtitle: 'Insights',
 };
 
-export const Template = (args) => {
-  return html`
-    <kyn-header
-      style="position: absolute; top: 0; right: 0; left: 0;"
-      rootUrl=${args.rootUrl}
-      appTitle=${args.appTitle}
-      appSubtitle=${args.appSubtitle}
-    >
-    </kyn-header>
-  `;
-};
-
 # Header
 
 The global header component.
 
 ## Playground
 
-<Canvas>
-  <Story height="200px" name="Header" args={args}>
-    {Template.bind({})}
-  </Story>
-</Canvas>
-
-## Properties
-
-<ArgsTable story="Header" />
-
-## Other Examples
-
-### Header with Nav
-
-export const TemplateLinks = (args) => {
+export const Template = (args) => {
   return html`
     <kyn-header
       style="position: absolute; top: 0; right: 0; left: 0;"
@@ -107,9 +81,17 @@ export const TemplateLinks = (args) => {
       <kyn-header-nav-link slot="nav" href="javascript:void(0)" text="Link 2">
       </kyn-header-nav-link>
       <kyn-header-nav-link slot="nav" href="javascript:void(0)" text="Link 3">
-        <kyn-header-nav-link href="javascript:void(0)" text="Sub Link 1">
+        <kyn-header-nav-link
+          href="javascript:void(0)"
+          text="Sub Link 1"
+          level="2"
+        >
         </kyn-header-nav-link>
-        <kyn-header-nav-link href="javascript:void(0)" text="Sub Link 2">
+        <kyn-header-nav-link
+          href="javascript:void(0)"
+          text="Sub Link 2"
+          level="2"
+        >
         </kyn-header-nav-link>
       </kyn-header-nav-link>
     </kyn-header>
@@ -117,7 +99,11 @@ export const TemplateLinks = (args) => {
 };
 
 <Canvas>
-  <Story height="200px" name="Header with Nav" args={args}>
-    {TemplateLinks.bind({})}
+  <Story height="250px" name="Header" args={args}>
+    {Template.bind({})}
   </Story>
 </Canvas>
+
+## Properties
+
+<ArgsTable story="Header" />

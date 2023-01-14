@@ -8,12 +8,47 @@
 .nav-link {
   display: flex;
   align-items: center;
-  height: 48px;
+  position: relative;
   padding: 0 16px;
   font-size: 0.875rem;
   text-decoration: none;
   color: var(--color-text);
   white-space: nowrap;
+}
+
+.level {
+  &--1 {
+    height: 48px;
+
+    &:hover {
+      background: none;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      transform: scaleX(0);
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--color-brand);
+      transform-origin: bottom left;
+      transition: transform 0.15s ease-out;
+    }
+
+    &:hover::after {
+      transform: scaleX(1);
+    }
+  }
+
+  &--2 {
+    height: 38px;
+
+    &:hover {
+      color: var(--color-text-hover);
+    }
+  }
 }
 
 slot {
