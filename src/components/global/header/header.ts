@@ -1,21 +1,30 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import HeaderScss from './header.scss';
-import '../reusable/icon';
-import '../reusable/button';
+import '../../reusable/icon';
+import '../../reusable/button';
 
 import userIcon from '@carbon/icons/es/user--avatar/24';
 
+/**
+ * The global Header component.
+ * @slot unnamed - The default slot, fills the empty space in the middle.
+ * @slot logo - Slot to provide a custom logo.
+ * @slot nav - Slot to provide navigation link components.
+ */
 @customElement('kyn-header')
 export class Header extends LitElement {
   static override styles = HeaderScss;
 
+  /** URL for the header logo link. Should target the application home page. */
   @property({ type: String })
   rootUrl = '/';
 
+  /** App title text next to logo. */
   @property({ type: String })
   appTitle = '';
 
+  /** App subtitle text. */
   @property({ type: String })
   appSubtitle = '';
 

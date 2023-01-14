@@ -1,22 +1,30 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import HeaderNavLinkScss from './headerNavLink.scss';
-import '../reusable/icon';
+import '../../reusable/icon';
 import downIcon from '@carbon/icons/es/chevron--down/16';
 
+/**
+ * Component for navigation links within the Header.
+ * @fires on-click - Captures the click event and emits the original event details.
+ */
 @customElement('kyn-header-nav-link')
 export class HeaderNavLink extends LitElement {
   static override styles = HeaderNavLinkScss;
 
+  /** Link text. */
   @property({ type: String })
   text = '';
 
+  /** Link url. */
   @property({ type: String })
   href = '';
 
+  /** Link level, supports two levels. */
   @property({ type: Number })
   level = 1;
 
+  /** Evaluates to true if level 2 links are slotted inside to generate a flyout menu. */
   @state()
   isSlotted = false;
 

@@ -33,6 +33,14 @@
         },
         {
           "kind": "js",
+          "name": "HeaderNav",
+          "declaration": {
+            "name": "HeaderNav",
+            "module": "src/index.ts"
+          }
+        },
+        {
+          "kind": "js",
           "name": "HeaderNavLink",
           "declaration": {
             "name": "HeaderNavLink",
@@ -43,230 +51,11 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/header.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "Header",
-          "members": [
-            {
-              "kind": "field",
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "attribute": "rootUrl"
-            },
-            {
-              "kind": "field",
-              "name": "appTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "appTitle"
-            },
-            {
-              "kind": "field",
-              "name": "appSubtitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "appSubtitle"
-            },
-            {
-              "kind": "method",
-              "name": "handleRootLinkClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "fieldName": "rootUrl"
-            },
-            {
-              "name": "appTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "appTitle"
-            },
-            {
-              "name": "appSubtitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "appSubtitle"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Header",
-          "declaration": {
-            "name": "Header",
-            "module": "src/components/global/header.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header",
-          "declaration": {
-            "name": "Header",
-            "module": "src/components/global/header.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/headerNavLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "HeaderNavLink",
-          "members": [
-            {
-              "kind": "field",
-              "name": "text",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "text"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "level",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "attribute": "level"
-            },
-            {
-              "kind": "field",
-              "name": "isSlotted",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "determineIfSlotted",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "text",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "text"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "href"
-            },
-            {
-              "name": "level",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "fieldName": "level"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header-nav-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "HeaderNavLink",
-          "declaration": {
-            "name": "HeaderNavLink",
-            "module": "src/components/global/headerNavLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header-nav-link",
-          "declaration": {
-            "name": "HeaderNavLink",
-            "module": "src/components/global/headerNavLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/button.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "",
+          "description": "Primary UI component for user interaction.",
           "name": "Button",
           "members": [
             {
@@ -276,6 +65,7 @@
                 "text": "string"
               },
               "default": "'primary'",
+              "description": "The kind of button to render.",
               "attribute": "kind"
             },
             {
@@ -285,6 +75,7 @@
                 "text": "string"
               },
               "default": "'md'",
+              "description": "The button size.",
               "attribute": "size"
             },
             {
@@ -294,6 +85,7 @@
                 "text": "string"
               },
               "default": "''",
+              "description": "Converts to an &lt;a&gt; tag to create a link.",
               "attribute": "href"
             },
             {
@@ -303,6 +95,7 @@
                 "text": "boolean"
               },
               "default": "false",
+              "description": "Disables the button.",
               "attribute": "disabled"
             },
             {
@@ -319,6 +112,12 @@
               ]
             }
           ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event details.",
+              "name": "on-click"
+            }
+          ],
           "attributes": [
             {
               "name": "kind",
@@ -326,6 +125,7 @@
                 "text": "string"
               },
               "default": "'primary'",
+              "description": "The kind of button to render.",
               "fieldName": "kind"
             },
             {
@@ -334,6 +134,7 @@
                 "text": "string"
               },
               "default": "'md'",
+              "description": "The button size.",
               "fieldName": "size"
             },
             {
@@ -342,6 +143,7 @@
                 "text": "string"
               },
               "default": "''",
+              "description": "Converts to an &lt;a&gt; tag to create a link.",
               "fieldName": "href"
             },
             {
@@ -350,6 +152,7 @@
                 "text": "boolean"
               },
               "default": "false",
+              "description": "Disables the button.",
               "fieldName": "disabled"
             }
           ],
@@ -386,8 +189,14 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "",
+          "description": "Wrapper for vanilla Carbon icons to simplify usage.",
           "name": "Icon",
+          "slots": [
+            {
+              "description": "The default slot for button content.",
+              "name": "unnamed"
+            }
+          ],
           "members": [
             {
               "kind": "field",
@@ -396,6 +205,7 @@
                 "text": "any"
               },
               "default": "{}",
+              "description": "The imported Carbon icon.",
               "attribute": "icon"
             },
             {
@@ -405,6 +215,7 @@
                 "text": "string"
               },
               "default": "'currentColor'",
+              "description": "Icon fill color.",
               "attribute": "fill"
             },
             {
@@ -414,6 +225,7 @@
                 "text": "null"
               },
               "default": "null",
+              "description": "Specify a size in pixels to override the imported Carbon icon's original size.",
               "attribute": "sizeOverride"
             }
           ],
@@ -424,6 +236,7 @@
                 "text": "any"
               },
               "default": "{}",
+              "description": "The imported Carbon icon.",
               "fieldName": "icon"
             },
             {
@@ -432,6 +245,7 @@
                 "text": "string"
               },
               "default": "'currentColor'",
+              "description": "Icon fill color.",
               "fieldName": "fill"
             },
             {
@@ -440,6 +254,7 @@
                 "text": "null"
               },
               "default": "null",
+              "description": "Specify a size in pixels to override the imported Carbon icon's original size.",
               "fieldName": "sizeOverride"
             }
           ],
@@ -466,6 +281,300 @@
           "declaration": {
             "name": "Icon",
             "module": "src/components/reusable/icon.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/header.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Header component.",
+          "name": "Header",
+          "slots": [
+            {
+              "description": "The default slot, fills the empty space in the middle.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot to provide a custom logo.",
+              "name": "logo"
+            },
+            {
+              "description": "Slot to provide navigation link components.",
+              "name": "nav"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the header logo link. Should target the application home page.",
+              "attribute": "rootUrl"
+            },
+            {
+              "kind": "field",
+              "name": "appTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "App title text next to logo.",
+              "attribute": "appTitle"
+            },
+            {
+              "kind": "field",
+              "name": "appSubtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "App subtitle text.",
+              "attribute": "appSubtitle"
+            },
+            {
+              "kind": "method",
+              "name": "handleRootLinkClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the header logo link. Should target the application home page.",
+              "fieldName": "rootUrl"
+            },
+            {
+              "name": "appTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "App title text next to logo.",
+              "fieldName": "appTitle"
+            },
+            {
+              "name": "appSubtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "App subtitle text.",
+              "fieldName": "appSubtitle"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Header",
+          "declaration": {
+            "name": "Header",
+            "module": "src/components/global/header/header.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header",
+          "declaration": {
+            "name": "Header",
+            "module": "src/components/global/header/header.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container for header navigation links.",
+          "name": "HeaderNav",
+          "slots": [
+            {
+              "description": "This element has a slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderNav",
+          "declaration": {
+            "name": "HeaderNav",
+            "module": "src/components/global/header/headerNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-nav",
+          "declaration": {
+            "name": "HeaderNav",
+            "module": "src/components/global/header/headerNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Component for navigation links within the Header.",
+          "name": "HeaderNavLink",
+          "members": [
+            {
+              "kind": "field",
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link text.",
+              "attribute": "text"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "level",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Link level, supports two levels.",
+              "attribute": "level"
+            },
+            {
+              "kind": "field",
+              "name": "isSlotted",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Evaluates to true if level 2 links are slotted inside to generate a flyout menu."
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "determineIfSlotted",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event details.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link text.",
+              "fieldName": "text"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "level",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Link level, supports two levels.",
+              "fieldName": "level"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderNavLink",
+          "declaration": {
+            "name": "HeaderNavLink",
+            "module": "src/components/global/header/headerNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-nav-link",
+          "declaration": {
+            "name": "HeaderNavLink",
+            "module": "src/components/global/header/headerNavLink.ts"
           }
         }
       ]

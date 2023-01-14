@@ -21,8 +21,11 @@ npm run lint
 # test
 npm run test
 
-#generate new custom-elements.json
+# generate new custom-elements.json, updates storybook docs/args
 npm run analyze
+
+# format all files with prettier
+npm run format
 ```
 
 ## Docs

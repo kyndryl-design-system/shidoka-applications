@@ -2,19 +2,27 @@ import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import ButtonScss from './button.scss';
 
+/**
+ * Primary UI component for user interaction.
+ * @fires on-click - Captures the click event and emits the original event details.
+ */
 @customElement('kyn-button')
 export class Button extends LitElement {
   static override styles = ButtonScss;
 
+  /** The kind of button to render. */
   @property({ type: String })
   kind = 'primary';
 
+  /** The button size. */
   @property({ type: String })
   size = 'md';
 
+  /** Converts to an &lt;a&gt; tag to create a link. */
   @property({ type: String })
   href = '';
 
+  /** Disables the button. */
   @property({ type: Boolean })
   disabled = false;
 

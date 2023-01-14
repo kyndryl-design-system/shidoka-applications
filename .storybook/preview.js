@@ -1,3 +1,6 @@
+import { setCustomElementsManifest } from '@storybook/web-components';
+import customElements from '../custom-elements.json';
+
 import '../src/root.css';
 
 export const parameters = {
@@ -9,3 +12,5 @@ export const parameters = {
     },
   },
 };
+
+setCustomElementsManifest(customElements);

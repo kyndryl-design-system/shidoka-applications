@@ -24,16 +24,9 @@ module.exports = {
         'sass-loader',
       ],
     });
-    config.module.rules.push({
-      test: /\.stories\.[tj]sx?$/,
-      use: [
-        {
-          loader: require.resolve('@storybook/source-loader'),
-          options: { parser: 'typescript' } /* your sourceLoaderOptions here */,
-        },
-      ],
-      enforce: 'pre',
-    });
     return config;
+  },
+  docs: {
+    autodocs: true,
   },
 };
