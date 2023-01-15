@@ -4,13 +4,9 @@ import HeaderScss from './header.scss';
 import '../../reusable/icon';
 import '../../reusable/button';
 
-import userIcon from '@carbon/icons/es/user--avatar/24';
-
 /**
  * The global Header component.
- * @slot unnamed - The default slot, fills the empty space in the middle.
- * @slot logo - Slot to provide a custom logo.
- * @slot nav - Slot to provide navigation link components.
+ * @slot unnamed - The default slot for all empty space right of the logo/title.
  */
 @customElement('kyn-header')
 export class Header extends LitElement {
@@ -53,27 +49,7 @@ export class Header extends LitElement {
           <span class="title"> ${this.appTitle} - ${this.appSubtitle} </span>
         </a>
 
-        <div class="nav-links">
-          <slot name="nav"></slot>
-        </div>
-
         <slot></slot>
-
-        <div class="actions">
-          <div class="menu">
-            <button class="action interactive">
-              <kyn-icon .icon=${userIcon}></kyn-icon>
-            </button>
-
-            <div class="menu__content">
-              <strong>User Name</strong>
-              <br />
-              user.name@kyndryl.com
-              <br /><br />
-              <kyn-button>Log Out</kyn-button>
-            </div>
-          </div>
-        </div>
       </header>
     `;
   }

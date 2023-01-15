@@ -295,16 +295,8 @@
           "name": "Header",
           "slots": [
             {
-              "description": "The default slot, fills the empty space in the middle.",
+              "description": "The default slot for all empty space right of the logo/title.",
               "name": "unnamed"
-            },
-            {
-              "description": "Slot to provide a custom logo.",
-              "name": "logo"
-            },
-            {
-              "description": "Slot to provide navigation link components.",
-              "name": "nav"
             }
           ],
           "members": [
@@ -404,6 +396,116 @@
           "declaration": {
             "name": "Header",
             "module": "src/components/global/header/header.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerFlyout.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Component for header flyout items.",
+          "name": "HeaderFlyout",
+          "slots": [
+            {
+              "description": "Slot for flyout menu content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for button/toggle content.",
+              "name": "button"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "anchorLeft",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Anchor flyout menu to the left edge of the button instead of the right edge.",
+              "attribute": "anchorLeft"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "anchorLeft",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Anchor flyout menu to the left edge of the button instead of the right edge.",
+              "fieldName": "anchorLeft"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-flyout",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderFlyout",
+          "declaration": {
+            "name": "HeaderFlyout",
+            "module": "src/components/global/header/headerFlyout.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-flyout",
+          "declaration": {
+            "name": "HeaderFlyout",
+            "module": "src/components/global/header/headerFlyout.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerFlyouts.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container for header flyout items, aligns to the right, place last.",
+          "name": "HeaderFlyouts",
+          "slots": [
+            {
+              "description": "This element has a slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-flyouts",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderFlyouts",
+          "declaration": {
+            "name": "HeaderFlyouts",
+            "module": "src/components/global/header/headerFlyouts.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-flyouts",
+          "declaration": {
+            "name": "HeaderFlyouts",
+            "module": "src/components/global/header/headerFlyouts.ts"
           }
         }
       ]

@@ -2,6 +2,11 @@ import { html } from 'lit';
 import '../components/global/header/header';
 import '../components/global/header/headerNav';
 import '../components/global/header/headerNavLink';
+import '../components/global/header/headerFlyouts';
+import '../components/global/header/headerFlyout';
+import '../components/reusable/icon';
+
+import userIcon from '@carbon/icons/es/user--avatar/24';
 
 export default {
   title: 'Global/Header',
@@ -9,6 +14,8 @@ export default {
   subcomponents: {
     HeaderNav: 'kyn-header-nav',
     HeaderNavLink: 'kyn-header-nav-link',
+    HeaderFlyouts: 'kyn-header-flyouts',
+    HeaderFlyout: 'kyn-header-flyout',
   },
   decorators: [
     (story) =>
@@ -34,7 +41,7 @@ export const Header = {
       appTitle=${args.appTitle}
       appSubtitle=${args.appSubtitle}
     >
-      <kyn-header-nav slot="nav">
+      <kyn-header-nav>
         <kyn-header-nav-link href="javascript:void(0)" text="Link 1">
         </kyn-header-nav-link>
         <kyn-header-nav-link href="javascript:void(0)" text="Link 2">
@@ -54,6 +61,19 @@ export const Header = {
           </kyn-header-nav-link>
         </kyn-header-nav-link>
       </kyn-header-nav>
+
+      <kyn-header-flyouts>
+        <kyn-header-flyout>
+          <kyn-icon .icon=${userIcon} slot="button"></kyn-icon>
+          <div>
+            <strong>User Name</strong>
+            <br />
+            user.name@kyndryl.com
+            <br /><br />
+            <kyn-button>Log Out</kyn-button>
+          </div>
+        </kyn-header-flyout>
+      </kyn-header-flyouts>
     </kyn-header>
   `,
 };
