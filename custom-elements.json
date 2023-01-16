@@ -57,6 +57,12 @@
           "kind": "class",
           "description": "Primary UI component for user interaction.",
           "name": "Button",
+          "cssParts": [
+            {
+              "description": "Styles to override the button",
+              "name": "button"
+            }
+          ],
           "members": [
             {
               "kind": "field",
@@ -317,7 +323,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "App title text next to logo.",
+              "description": "App title text next to logo.  Hidden on smaller screens.",
               "attribute": "appTitle"
             },
             {
@@ -331,6 +337,16 @@
               "attribute": "appSubtitle"
             },
             {
+              "kind": "field",
+              "name": "smallLogo",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Use K logo instead of full Kyndryl logo.",
+              "attribute": "smallLogo"
+            },
+            {
               "kind": "method",
               "name": "handleRootLinkClick",
               "privacy": "private",
@@ -342,6 +358,12 @@
                   }
                 }
               ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the logo link click event and emits the original event details.",
+              "name": "on-root-link-click"
             }
           ],
           "attributes": [
@@ -360,7 +382,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "App title text next to logo.",
+              "description": "App title text next to logo.  Hidden on smaller screens.",
               "fieldName": "appTitle"
             },
             {
@@ -371,6 +393,15 @@
               "default": "''",
               "description": "App subtitle text.",
               "fieldName": "appSubtitle"
+            },
+            {
+              "name": "smallLogo",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Use K logo instead of full Kyndryl logo.",
+              "fieldName": "smallLogo"
             }
           ],
           "superclass": {
@@ -590,15 +621,6 @@
               "default": "1",
               "description": "Link level, supports two levels.",
               "attribute": "level"
-            },
-            {
-              "kind": "field",
-              "name": "isSlotted",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Evaluates to true if level 2 links are slotted inside to generate a flyout menu."
             },
             {
               "kind": "method",

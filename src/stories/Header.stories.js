@@ -34,12 +34,14 @@ export const Header = {
     rootUrl: '/',
     appTitle: 'Delivery',
     appSubtitle: 'Insights',
+    smallLogo: false,
   },
   render: (args) => html`
     <kyn-header
       rootUrl=${args.rootUrl}
       appTitle=${args.appTitle}
       appSubtitle=${args.appSubtitle}
+      ?smallLogo=${args.smallLogo}
     >
       <kyn-header-nav>
         <kyn-header-nav-link href="javascript:void(0)" text="Link 1">

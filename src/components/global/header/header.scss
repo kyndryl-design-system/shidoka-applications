@@ -30,6 +30,12 @@
   }
 }
 
+.logo-small {
+  flex-shrink: 0;
+  height: 24px;
+  margin-right: 4px;
+}
+
 .title {
   font-family: var(--font-heading);
   font-weight: 400;
@@ -37,6 +43,15 @@
   line-height: 1.25rem;
   letter-spacing: 0.1px;
   margin-top: -1px;
+
+  &__main {
+    display: none;
+    font-size: var(--breakpoint-sm);
+
+    @media screen and (min-width: 42rem) {
+      display: inline;
+    }
+  }
 }
 
 ::slotted(kyn-header-flyouts) {

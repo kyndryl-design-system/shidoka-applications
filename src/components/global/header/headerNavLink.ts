@@ -24,7 +24,10 @@ export class HeaderNavLink extends LitElement {
   @property({ type: Number })
   level = 1;
 
-  /** Evaluates to true if level 2 links are slotted inside to generate a flyout menu. */
+  /**
+   * Evaluates to true if level 2 links are slotted inside to generate a flyout menu.
+   * @ignore
+   */
   @state()
   isSlotted = false;
 

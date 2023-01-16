@@ -5,6 +5,7 @@ import ButtonScss from './button.scss';
 /**
  * Primary UI component for user interaction.
  * @fires on-click - Captures the click event and emits the original event details.
+ * @csspart button - Styles to override the button
  */
 @customElement('kyn-button')
 export class Button extends LitElement {
@@ -33,6 +34,7 @@ export class Button extends LitElement {
             <a
               href=${this.href}
               class="btn btn--${this.kind} btn--${this.size}"
+              part="button"
               ?disabled=${this.disabled}
               @click=${(e: Event) => this.handleClick(e)}
             >
@@ -42,6 +44,7 @@ export class Button extends LitElement {
         : html`
             <button
               class="btn btn--${this.kind} btn--${this.size}"
+              part="button"
               ?disabled=${this.disabled}
             >
               <slot></slot>
