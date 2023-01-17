@@ -20,10 +20,10 @@ export default {
   decorators: [
     (story) =>
       html`
-        <div style="height: 150px;">
-          <div style="position: absolute; top: 0; right: 0; left: 0;">
-            ${story()}
-          </div>
+        <div
+          style="height: calc(100% + 32px); min-height: 250px; transform: translate3d(0,0,0); margin: -16px;"
+        >
+          ${story()}
         </div>
       `,
   ],
