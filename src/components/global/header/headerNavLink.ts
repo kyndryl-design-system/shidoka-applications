@@ -1,5 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { debounce } from '../../../common/helpers/helpers';
 import HeaderNavLinkScss from './headerNavLink.scss';
 import '../../reusable/icon';
 import downIcon from '@carbon/icons/es/chevron--down/16';
@@ -20,8 +22,10 @@ export class HeaderNavLink extends LitElement {
   @property({ type: String })
   href = '';
 
-  /** Link level, supports two levels. */
-  @property({ type: Number })
+  /** Link level, supports two levels.
+   * @ignore
+   */
+  @state()
   level = 1;
 
   /**
@@ -31,19 +35,40 @@ export class HeaderNavLink extends LitElement {
   @state()
   isSlotted = false;
 
+  /**
+   * Determines if menu should be a flyout or inline depending on screen size.
+   * @ignore
+   */
+  @state()
+  breakpointHit = false;
+
   override render() {
+    const linkClasses = {
+      'nav-link': true,
+      'level--1': this.level == 1,
+      'level--2': this.level == 2,
+      interactive: this.breakpointHit,
+    };
+
+    const slotClasses = {
+      menu__content: this.breakpointHit,
+      static: !this.breakpointHit,
+    };
+
     return html`
-      <a
-        href=${this.href}
-        class="nav-link interactive menu level--${this.level}"
-        @click=${(e: Event) => this.handleClick(e)}
-      >
-        ${this.text}
-        ${this.isSlotted
-          ? html` <kyn-icon .icon=${downIcon}></kyn-icon> `
-          : null}
-        <slot class="menu__content"></slot>
-      </a>
+      <div class="menu">
+        <a
+          href=${this.href}
+          class=${classMap(linkClasses)}
+          @click=${(e: Event) => this.handleClick(e)}
+        >
+          ${this.text}
+          ${this.isSlotted && this.breakpointHit
+            ? html` <kyn-icon .icon=${downIcon}></kyn-icon> `
+            : null}
+        </a>
+        <slot class=${classMap(slotClasses)}></slot>
+      </div>
     `;
   }
 
@@ -69,9 +94,36 @@ export class HeaderNavLink extends LitElement {
     this.isSlotted = hasHtmlElement;
   }
 
+  private determineLevel() {
+    const parentTagName = this.shadowRoot!.host.parentNode!.nodeName;
+    if (parentTagName == 'KYN-HEADER-NAV') {
+      this.level = 1;
+    } else {
+      this.level = 2;
+    }
+  }
+
   override firstUpdated() {
     this.determineIfSlotted();
+    this.determineLevel();
   }
+
+  override connectedCallback() {
+    super.connectedCallback();
+
+    this.testBreakpoint();
+    window.addEventListener(
+      'resize',
+      debounce(() => {
+        this.testBreakpoint();
+      })
+    );
+  }
+
+  private testBreakpoint = () => {
+    const nav = document.querySelector('kyn-header');
+    this.breakpointHit = nav!.breakpointHit;
+  };
 }
 
 declare global {

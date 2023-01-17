@@ -3,42 +3,61 @@
 
 :host {
   display: inline-block;
+  position: relative;
 }
 
 .nav-link {
   display: flex;
-  align-items: center;
   position: relative;
+  align-items: center;
   padding: 0 16px;
   font-size: 0.875rem;
   text-decoration: none;
   color: var(--color-text);
   white-space: nowrap;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    outline-color 150ms ease-out;
+
+  &:focus {
+    outline-color: var(--color-primary-hover);
+  }
 }
 
 .level {
   &--1 {
-    height: 48px;
+    height: 38px;
 
     &:hover {
-      background: none;
+      color: var(--color-text-hover);
+      background: var(--color-background-hover);
     }
 
-    &::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      transform: scaleX(0);
-      height: 2px;
-      bottom: 0;
-      left: 0;
-      background-color: var(--color-brand);
-      transform-origin: bottom left;
-      transition: transform 0.15s ease-out;
-    }
+    &.interactive {
+      height: 48px;
 
-    &:hover::after {
-      transform: scaleX(1);
+      &:hover {
+        color: var(--color-text);
+        background: none;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--color-brand);
+        transform-origin: bottom left;
+        transition: transform 0.15s ease-out;
+      }
+
+      &:hover::after {
+        transform: scaleX(1);
+      }
     }
   }
 
@@ -47,13 +66,19 @@
 
     &:hover {
       color: var(--color-text-hover);
+      background: var(--color-background-hover);
+    }
+
+    padding-left: 24px;
+
+    &.interactive {
+      padding-left: 16px;
     }
   }
 }
 
 slot {
   display: flex;
-  position: absolute;
 }
 
 .menu__content {
@@ -66,4 +91,8 @@ slot {
 
 kyn-icon {
   margin-left: 4px;
+}
+
+.static {
+  flex-direction: column;
 }

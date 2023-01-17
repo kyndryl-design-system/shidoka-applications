@@ -51,6 +51,38 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/common/helpers/helpers.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "debounce",
+          "parameters": [
+            {
+              "name": "fn",
+              "type": {
+                "text": "Function"
+              }
+            },
+            {
+              "name": "ms",
+              "default": "100"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "debounce",
+          "declaration": {
+            "name": "debounce",
+            "module": "src/common/helpers/helpers.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/button.ts",
       "declarations": [
         {
@@ -347,6 +379,21 @@
               "attribute": "smallLogo"
             },
             {
+              "kind": "field",
+              "name": "breakpoint",
+              "type": {
+                "text": "number"
+              },
+              "default": "672",
+              "description": "The breakpoint (in px) to convert to flyout menu for small screens.",
+              "attribute": "breakpoint"
+            },
+            {
+              "kind": "field",
+              "name": "testBreakpoint",
+              "privacy": "private"
+            },
+            {
               "kind": "method",
               "name": "handleRootLinkClick",
               "privacy": "private",
@@ -358,9 +405,18 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "toggleMenu",
+              "privacy": "private"
             }
           ],
           "events": [
+            {
+              "description": "Captures the menu toggle click event and emits the menu open state in the detail.",
+              "name": "on-menu-toggle"
+            },
             {
               "description": "Captures the logo link click event and emits the original event details.",
               "name": "on-root-link-click"
@@ -402,6 +458,15 @@
               "default": "false",
               "description": "Use K logo instead of full Kyndryl logo.",
               "fieldName": "smallLogo"
+            },
+            {
+              "name": "breakpoint",
+              "type": {
+                "text": "number"
+              },
+              "default": "672",
+              "description": "The breakpoint (in px) to convert to flyout menu for small screens.",
+              "fieldName": "breakpoint"
             }
           ],
           "superclass": {
@@ -555,7 +620,13 @@
               "name": "unnamed"
             }
           ],
-          "members": [],
+          "members": [
+            {
+              "kind": "field",
+              "name": "testBreakpoint",
+              "privacy": "private"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -613,16 +684,6 @@
               "attribute": "href"
             },
             {
-              "kind": "field",
-              "name": "level",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Link level, supports two levels.",
-              "attribute": "level"
-            },
-            {
               "kind": "method",
               "name": "handleClick",
               "privacy": "private",
@@ -638,6 +699,16 @@
             {
               "kind": "method",
               "name": "determineIfSlotted",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "determineLevel",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "testBreakpoint",
               "privacy": "private"
             }
           ],
@@ -665,15 +736,6 @@
               "default": "''",
               "description": "Link url.",
               "fieldName": "href"
-            },
-            {
-              "name": "level",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Link level, supports two levels.",
-              "fieldName": "level"
             }
           ],
           "superclass": {
