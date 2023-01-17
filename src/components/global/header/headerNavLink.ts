@@ -120,10 +120,10 @@ export class HeaderNavLink extends LitElement {
     );
   }
 
-  private testBreakpoint = () => {
+  private testBreakpoint() {
     const nav = document.querySelector('kyn-header');
     this.breakpointHit = nav!.breakpointHit;
-  };
+  }
 }
 
 declare global {

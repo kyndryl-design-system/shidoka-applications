@@ -32,7 +32,7 @@ export class Header extends LitElement {
   @property({ type: Boolean })
   smallLogo = false;
 
-  /** The breakpoint (in px) to convert to flyout menu for small screens. */
+  /** The breakpoint (in px) to convert the nav to a flyout menu for small screens. */
   @property({ type: Number })
   breakpoint = 672;
 
@@ -123,13 +123,13 @@ export class Header extends LitElement {
     );
   }
 
-  private testBreakpoint = () => {
+  private testBreakpoint() {
     if (window.innerWidth >= this.breakpoint) {
       this.breakpointHit = true;
     } else {
       this.breakpointHit = false;
     }
-  };
+  }
 
   private handleRootLinkClick(e: Event) {
     const event = new CustomEvent('on-root-link-click', {
@@ -138,14 +138,14 @@ export class Header extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private toggleMenu = () => {
+  private toggleMenu() {
     this.menuOpen = !this.menuOpen;
 
     const event = new CustomEvent('on-menu-toggle', {
       detail: this.menuOpen,
     });
     this.dispatchEvent(event);
-  };
+  }
 }
 
 declare global {

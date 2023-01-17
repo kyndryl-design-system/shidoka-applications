@@ -35,6 +35,7 @@ export const Header = {
     appTitle: 'Delivery',
     appSubtitle: 'Insights',
     smallLogo: false,
+    breakpoint: 672,
   },
   render: (args) => html`
     <kyn-header
@@ -42,6 +43,7 @@ export const Header = {
       appTitle=${args.appTitle}
       appSubtitle=${args.appSubtitle}
       ?smallLogo=${args.smallLogo}
+      breakpoint=${args.breakpoint}
     >
       <kyn-header-nav>
         <kyn-header-nav-link href="javascript:void(0)" text="Link 1">
