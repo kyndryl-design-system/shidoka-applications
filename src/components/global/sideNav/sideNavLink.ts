@@ -175,7 +175,7 @@ export class SideNavLink extends LitElement {
       linkHeight = 38,
       scrollTop = document
         .querySelector('kyn-side-nav')!
-        .shadowRoot?.querySelector('nav')!.scrollTop;
+        .shadowRoot?.querySelector('nav ul')!.scrollTop;
     const flyoutHeight = this.isSlotted ? linkHeight * this.numSublinks : 0;
 
     // calculate flyout menu positioning and max height for overflow
