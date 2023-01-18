@@ -122,7 +122,9 @@ export class HeaderNavLink extends LitElement {
 
   private testBreakpoint() {
     const nav = document.querySelector('kyn-header');
-    this.breakpointHit = nav!.breakpointHit;
+    if (nav) {
+      this.breakpointHit = nav!.breakpointHit;
+    }
   }
 }
 
