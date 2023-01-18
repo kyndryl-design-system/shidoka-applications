@@ -5,6 +5,8 @@ import { HeaderNav } from './components/global/header/headerNav';
 import { HeaderNavLink } from './components/global/header/headerNavLink';
 import { HeaderFlyouts } from './components/global/header/headerFlyouts';
 import { HeaderFlyout } from './components/global/header/headerFlyout';
+import { SideNav } from './components/global/sideNav/sideNav';
+import { SideNavLink } from './components/global/sideNav/sideNavLink';
 
 export {
   Button,
@@ -14,4 +16,6 @@ export {
   HeaderNavLink,
   HeaderFlyouts,
   HeaderFlyout,
+  SideNav,
+  SideNavLink,
 };
