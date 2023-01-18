@@ -75,6 +75,7 @@ export class SideNavLink extends LitElement {
           href=${this.href}
           @click=${(e: Event) => this.handleClick(e)}
           @mouseover="${(e: Event) => this.onNavLinkHover(e)}"
+          @focus="${(e: Event) => this.onNavLinkHover(e)}"
         >
           <slot name="icon"></slot>
           <span class="text"><slot></slot></span>
