@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import SideNavScss from './sideNav.scss';
-import '../../../components/reusable/icon';
+import '../../reusable/icon/icon';
 
 import chevRightIcon from '@carbon/icons/es/chevron--right/24';
 

@@ -62,6 +62,22 @@
             "name": "HeaderFlyout",
             "module": "src/index.ts"
           }
+        },
+        {
+          "kind": "js",
+          "name": "SideNav",
+          "declaration": {
+            "name": "SideNav",
+            "module": "src/index.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SideNavLink",
+          "declaration": {
+            "name": "SideNavLink",
+            "module": "src/index.ts"
+          }
         }
       ]
     },
@@ -93,248 +109,6 @@
           "declaration": {
             "name": "debounce",
             "module": "src/common/helpers/helpers.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/button.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Primary UI component for user interaction.",
-          "name": "Button",
-          "cssParts": [
-            {
-              "description": "Styles to override the button",
-              "name": "button"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "kind",
-              "type": {
-                "text": "string"
-              },
-              "default": "'primary'",
-              "description": "The kind of button to render.",
-              "attribute": "kind"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "The button size.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Converts to an &lt;a&gt; tag to create a link.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the button.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event details.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "kind",
-              "type": {
-                "text": "string"
-              },
-              "default": "'primary'",
-              "description": "The kind of button to render.",
-              "fieldName": "kind"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "The button size.",
-              "fieldName": "size"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Converts to an &lt;a&gt; tag to create a link.",
-              "fieldName": "href"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the button.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-button",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Button",
-          "declaration": {
-            "name": "Button",
-            "module": "src/components/reusable/button.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-button",
-          "declaration": {
-            "name": "Button",
-            "module": "src/components/reusable/button.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/icon.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Wrapper for vanilla Carbon icons to simplify usage.",
-          "name": "Icon",
-          "slots": [
-            {
-              "description": "The default slot for button content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "icon",
-              "type": {
-                "text": "any"
-              },
-              "default": "{}",
-              "description": "The imported Carbon icon.",
-              "attribute": "icon"
-            },
-            {
-              "kind": "field",
-              "name": "fill",
-              "type": {
-                "text": "string"
-              },
-              "default": "'currentColor'",
-              "description": "Icon fill color.",
-              "attribute": "fill"
-            },
-            {
-              "kind": "field",
-              "name": "sizeOverride",
-              "type": {
-                "text": "null"
-              },
-              "default": "null",
-              "description": "Specify a size in pixels to override the imported Carbon icon's original size.",
-              "attribute": "sizeOverride"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "icon",
-              "type": {
-                "text": "any"
-              },
-              "default": "{}",
-              "description": "The imported Carbon icon.",
-              "fieldName": "icon"
-            },
-            {
-              "name": "fill",
-              "type": {
-                "text": "string"
-              },
-              "default": "'currentColor'",
-              "description": "Icon fill color.",
-              "fieldName": "fill"
-            },
-            {
-              "name": "sizeOverride",
-              "type": {
-                "text": "null"
-              },
-              "default": "null",
-              "description": "Specify a size in pixels to override the imported Carbon icon's original size.",
-              "fieldName": "sizeOverride"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-icon",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Icon",
-          "declaration": {
-            "name": "Icon",
-            "module": "src/components/reusable/icon.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-icon",
-          "declaration": {
-            "name": "Icon",
-            "module": "src/components/reusable/icon.ts"
           }
         }
       ]
@@ -993,6 +767,248 @@
           "declaration": {
             "name": "SideNavLink",
             "module": "src/components/global/sideNav/sideNavLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/button/button.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Primary UI component for user interaction.",
+          "name": "Button",
+          "cssParts": [
+            {
+              "description": "Styles to override the button",
+              "name": "button"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "kind",
+              "type": {
+                "text": "string"
+              },
+              "default": "'primary'",
+              "description": "The kind of button to render.",
+              "attribute": "kind"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "The button size.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Converts to an &lt;a&gt; tag to create a link.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the button.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event details.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "kind",
+              "type": {
+                "text": "string"
+              },
+              "default": "'primary'",
+              "description": "The kind of button to render.",
+              "fieldName": "kind"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "The button size.",
+              "fieldName": "size"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Converts to an &lt;a&gt; tag to create a link.",
+              "fieldName": "href"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the button.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Button",
+          "declaration": {
+            "name": "Button",
+            "module": "src/components/reusable/button/button.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-button",
+          "declaration": {
+            "name": "Button",
+            "module": "src/components/reusable/button/button.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/icon/icon.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Wrapper for vanilla Carbon icons to simplify usage.",
+          "name": "Icon",
+          "slots": [
+            {
+              "description": "The default slot for button content.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "icon",
+              "type": {
+                "text": "any"
+              },
+              "default": "{}",
+              "description": "The imported Carbon icon.",
+              "attribute": "icon"
+            },
+            {
+              "kind": "field",
+              "name": "fill",
+              "type": {
+                "text": "string"
+              },
+              "default": "'currentColor'",
+              "description": "Icon fill color.",
+              "attribute": "fill"
+            },
+            {
+              "kind": "field",
+              "name": "sizeOverride",
+              "type": {
+                "text": "null"
+              },
+              "default": "null",
+              "description": "Specify a size in pixels to override the imported Carbon icon's original size.",
+              "attribute": "sizeOverride"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "icon",
+              "type": {
+                "text": "any"
+              },
+              "default": "{}",
+              "description": "The imported Carbon icon.",
+              "fieldName": "icon"
+            },
+            {
+              "name": "fill",
+              "type": {
+                "text": "string"
+              },
+              "default": "'currentColor'",
+              "description": "Icon fill color.",
+              "fieldName": "fill"
+            },
+            {
+              "name": "sizeOverride",
+              "type": {
+                "text": "null"
+              },
+              "default": "null",
+              "description": "Specify a size in pixels to override the imported Carbon icon's original size.",
+              "fieldName": "sizeOverride"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-icon",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Icon",
+          "declaration": {
+            "name": "Icon",
+            "module": "src/components/reusable/icon/icon.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-icon",
+          "declaration": {
+            "name": "Icon",
+            "module": "src/components/reusable/icon/icon.ts"
           }
         }
       ]

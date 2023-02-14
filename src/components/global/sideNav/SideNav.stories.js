@@ -1,7 +1,7 @@
 import { html } from 'lit';
-import '../components/global/sideNav/sideNav';
-import '../components/global/sideNav/sideNavLink';
-import '../components/reusable/icon';
+import './sideNav';
+import './sideNavLink';
+import '../../reusable/icon/icon';
 
 import sampleIcon from '@carbon/icons/es/user--avatar/16';
 

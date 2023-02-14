@@ -1,4 +1,4 @@
-import { Button } from '../dist/index.js';
+import { Button } from '../../../../dist/index.js';
 
 import { fixture, assert } from '@open-wc/testing';
 import { html } from 'lit/static-html.js';
