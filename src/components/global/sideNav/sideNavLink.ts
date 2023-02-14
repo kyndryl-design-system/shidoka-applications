@@ -3,7 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import SideNavLinkScss from './sideNavLink.scss';
-import '../../reusable/icon/icon';
+import '../../reusable/icon';
 
 import chevDownIcon from '@carbon/icons/es/chevron--down/16';
 import chevRightIcon from '@carbon/icons/es/chevron--right/16';

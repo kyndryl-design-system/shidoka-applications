@@ -1,5 +1,5 @@
-import { Button } from './components/reusable/button/button';
-import { Icon } from './components/reusable/icon/icon';
+import { Button } from './components/reusable/button';
+import { Icon } from './components/reusable/icon';
 import { Header } from './components/global/header/header';
 import { HeaderNav } from './components/global/header/headerNav';
 import { HeaderNavLink } from './components/global/header/headerNavLink';

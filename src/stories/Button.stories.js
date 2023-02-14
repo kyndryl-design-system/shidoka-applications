@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import '../../reusable/button/button';
-import '../../reusable/icon/icon';
+import '../components/reusable/button';
+import '../components/reusable/icon';
 import arrowRightIcon from '@carbon/icons/es/arrow--right/16';
 
 export default {

@@ -1,10 +1,10 @@
 import { html } from 'lit';
-import './header';
-import './headerNav';
-import './headerNavLink';
-import './headerFlyouts';
-import './headerFlyout';
-import '../../reusable/icon/icon';
+import '../components/global/header/header';
+import '../components/global/header/headerNav';
+import '../components/global/header/headerNavLink';
+import '../components/global/header/headerFlyouts';
+import '../components/global/header/headerFlyout';
+import '../components/reusable/icon';
 
 import userIcon from '@carbon/icons/es/user--avatar/24';
 

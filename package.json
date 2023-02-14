@@ -14,9 +14,11 @@
     "lint:lit-analyzer": "lit-analyzer",
     "format": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
     "analyze": "cem analyze --litelement --globs \"src/**/*.ts\"",
-    "test": "wtr",
+    "test": "npm run test:dev && npm run test:prod",
+    "test:dev": "wtr",
     "test:watch": "wtr --watch",
-    "test:coverage": "wtr --coverage"
+    "test:prod": "MODE=prod wtr",
+    "test:prod:watch": "MODE=prod wtr --watch"
   },
   "dependencies": {
     "@carbon/icon-helpers": "^10.37.0",
