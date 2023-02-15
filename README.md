@@ -6,11 +6,10 @@
 
 ```bash
 # install
-npm i
+npm i --legacy-peer-deps
 
 # run development env
 npm run storybook
-# access at http://localhost:6006
 
 # build
 npm run build
