@@ -18,7 +18,7 @@ npm run build
 # lint
 npm run lint
 
-# test
+# test (must run build first)
 npm run test
 
 # generate new custom-elements.json, updates storybook docs/args
