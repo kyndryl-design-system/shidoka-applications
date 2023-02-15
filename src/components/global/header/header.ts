@@ -2,8 +2,8 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderScss from './header.scss';
-import '../../reusable/icon';
-import '../../reusable/button';
+import '../../reusable/icon/icon';
+import '../../reusable/button/button';
 import menuIcon from '@carbon/icons/es/menu/24';
 
 /**

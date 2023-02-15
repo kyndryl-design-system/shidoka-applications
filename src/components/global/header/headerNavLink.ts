@@ -3,7 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderNavLinkScss from './headerNavLink.scss';
-import '../../reusable/icon';
+import '../../reusable/icon/icon';
 import downIcon from '@carbon/icons/es/chevron--down/16';
 
 /**

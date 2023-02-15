@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import '../components/reusable/icon';
+import './icon';
 import userIcon from '@carbon/icons/es/user--avatar/24';
 
 export default {

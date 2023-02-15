@@ -31,7 +31,7 @@ try {
 // https://modern-web.dev/docs/test-runner/cli-and-configuration/
 export default {
   rootDir: '.',
-  files: ['./tests/**/*.test.ts'],
+  files: ['./src/**/*.test.ts'],
   plugins: [esbuildPlugin({ ts: true })],
   nodeResolve: { exportConditions: mode === 'dev' ? ['development'] : [] },
   preserveSymlinks: true,
