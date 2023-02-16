@@ -47,6 +47,10 @@ export class HeaderNavLink extends LitElement {
   @state()
   isSlotted = false;
 
+  /**
+   * Queries any slotted HTML elements.
+   * @ignore
+   */
   @queryAssignedElements()
   slottedElements!: Array<HTMLElement>;
 

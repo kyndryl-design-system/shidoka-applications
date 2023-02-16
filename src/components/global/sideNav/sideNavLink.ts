@@ -65,6 +65,10 @@ export class SideNavLink extends LitElement {
   @state()
   isSlotted = false;
 
+  /**
+   * Queries any slotted HTML elements.
+   * @ignore
+   */
   @queryAssignedElements({ slot: 'links' })
   slottedElements!: Array<HTMLElement>;
 
