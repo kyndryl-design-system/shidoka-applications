@@ -1,5 +1,10 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  state,
+  queryAssignedElements,
+} from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import SideNavLinkScss from './sideNavLink.scss';
@@ -40,13 +45,6 @@ export class SideNavLink extends LitElement {
   collapsed = false;
 
   /**
-   * Determines if sub-links are slotted.
-   * @ignore
-   */
-  @state()
-  isSlotted = false;
-
-  /**
    * Number of slotted links.
    * @ignore
    */
@@ -59,6 +57,16 @@ export class SideNavLink extends LitElement {
    */
   @state()
   flyoutStyles = {};
+
+  /**
+   * Determines if sub-links are slotted.
+   * @ignore
+   */
+  @state()
+  isSlotted = false;
+
+  @queryAssignedElements({ slot: 'links' })
+  slottedElements!: Array<HTMLElement>;
 
   override render() {
     const classes = {
@@ -107,21 +115,8 @@ export class SideNavLink extends LitElement {
   }
 
   private determineIfSlotted() {
-    let hasHtmlElement = false;
-    let nodeCount = 0;
-
-    const slotNodes =
-      this.shadowRoot!.querySelectorAll('slot')[2].assignedNodes();
-
-    slotNodes.forEach((node) => {
-      if (node instanceof HTMLElement) {
-        hasHtmlElement = true;
-        nodeCount++;
-      }
-    });
-
-    this.isSlotted = hasHtmlElement;
-    this.numSublinks = nodeCount;
+    this.isSlotted = this.slottedElements.length ? true : false;
+    this.numSublinks = this.slottedElements.length;
   }
 
   private determineLevel() {

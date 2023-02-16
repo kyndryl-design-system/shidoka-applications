@@ -1,5 +1,10 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  state,
+  queryAssignedElements,
+} from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderNavLinkScss from './headerNavLink.scss';
@@ -29,18 +34,21 @@ export class HeaderNavLink extends LitElement {
   level = 1;
 
   /**
+   * Determines if menu should be a flyout or inline depending on screen size.
+   * @ignore
+   */
+  @state()
+  breakpointHit = false;
+
+  /**
    * Evaluates to true if level 2 links are slotted inside to generate a flyout menu.
    * @ignore
    */
   @state()
   isSlotted = false;
 
-  /**
-   * Determines if menu should be a flyout or inline depending on screen size.
-   * @ignore
-   */
-  @state()
-  breakpointHit = false;
+  @queryAssignedElements()
+  slottedElements!: Array<HTMLElement>;
 
   override render() {
     const linkClasses = {
@@ -63,7 +71,7 @@ export class HeaderNavLink extends LitElement {
           @click=${(e: Event) => this.handleClick(e)}
         >
           ${this.text}
-          ${this.isSlotted && this.breakpointHit
+          ${this.slottedElements.length && this.breakpointHit
             ? html` <kyn-icon .icon=${downIcon}></kyn-icon> `
             : null}
         </a>
@@ -80,18 +88,7 @@ export class HeaderNavLink extends LitElement {
   }
 
   private determineIfSlotted() {
-    let hasHtmlElement = false;
-
-    const slotNodes =
-      this.shadowRoot!.querySelectorAll('slot')[0].assignedNodes();
-
-    slotNodes.forEach((node) => {
-      if (node instanceof HTMLElement) {
-        hasHtmlElement = true;
-      }
-    });
-
-    this.isSlotted = hasHtmlElement;
+    this.isSlotted = this.slottedElements.length ? true : false;
   }
 
   private determineLevel() {
