@@ -4,6 +4,7 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     'storybook-addon-designs',
+    '@storybook/addon-storysource',
   ],
   framework: {
     name: '@storybook/web-components-webpack5',
