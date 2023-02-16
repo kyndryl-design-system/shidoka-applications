@@ -30,7 +30,7 @@ npm run format
 ## Docs
 
 1. [Lit](https://lit.dev/docs/)
-1. [Storybook](https://storybook.js.org/docs/web-components/)
+1. [Storybook](https://storybook.js.org/docs/7.0/web-components/get-started/introduction)
 1. [@carbon](https://github.com/carbon-design-system/carbon)
    1. [Icons](https://github.com/carbon-design-system/carbon/tree/main/packages/icons)
 1. [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/)
