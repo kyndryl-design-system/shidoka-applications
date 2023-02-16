@@ -1,3 +1,4 @@
+import { withDesign } from 'storybook-addon-designs';
 import { html } from 'lit';
 import './header';
 import './headerNav';
@@ -18,6 +19,7 @@ export default {
     HeaderFlyout: 'kyn-header-flyout',
   },
   decorators: [
+    withDesign,
     (story) =>
       html`
         <div
@@ -82,8 +84,12 @@ export const Header = {
   `,
 };
 
-// Header.parameters = {
-//   controls: {
-//     include: Object.keys(Header.args),
-//   },
-// };
+Header.parameters = {
+  design: {
+    type: 'figma',
+    url: 'https://www.figma.com/file/zGyRSDM6stIrSjC3TOyGGQ/744667---UX-Top-Nav-%26-Hamburger-Menu-Framework?node-id=330%3A1658',
+  },
+  // controls: {
+  //   include: Object.keys(Header.args),
+  // },
+};
