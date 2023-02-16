@@ -4,7 +4,7 @@ import '../../reusable/icon/icon';
 import arrowRightIcon from '@carbon/icons/es/arrow--right/16';
 
 export default {
-  title: 'Reusable/Button',
+  title: 'Components/Reusable/Button',
   component: 'kyn-button',
   argTypes: {
     kind: {
