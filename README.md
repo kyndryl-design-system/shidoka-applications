@@ -1,8 +1,14 @@
 # Kyndryl Design System Web Components
 
-[![build](https://github.kyndryl.net/kyndryl-design-system/web-components/actions/workflows/actions.yml/badge.svg)](https://github.kyndryl.net/kyndryl-design-system/web-components/actions/workflows/actions.yml)
+[![kyndryl-web-components](https://github.kyndryl.net/kyndryl-design-system/web-components/actions/workflows/actions.yml/badge.svg)](https://github.kyndryl.net/kyndryl-design-system/web-components/actions/workflows/actions.yml)
 
-## Scripts
+## Usage
+
+To do
+
+## Contributing
+
+### Scripts
 
 ```bash
 # install
@@ -27,7 +33,7 @@ npm run analyze
 npm run format
 ```
 
-## Docs
+### Docs
 
 1. [Lit](https://lit.dev/docs/)
 1. [Storybook](https://storybook.js.org/docs/7.0/web-components/get-started/introduction)

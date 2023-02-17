@@ -1,0 +1,25 @@
+name: publish
+on:
+  releases:
+    types: [created]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+      - run: |
+          echo @kyndryl-design-system:https://npm.pkg.github.kyndryl.net/ > .npmrc
+          echo '//npm.pkg.github.kyndryl.net/:_authToken=${NPM_TOKEN}' >> .npmrc
+      - run: npm publish
+        env:
+          NPM_TOKEN: ${{ secrets.GH_TOKEN_PACKAGES }}
