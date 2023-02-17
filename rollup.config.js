@@ -18,6 +18,7 @@ export default {
     resolve(),
     copy({
       targets: [
+        { src: 'package.json', dest: 'dist' },
         { src: 'src/root.css', dest: 'dist' },
         { src: 'src/assets', dest: 'dist' },
       ],
