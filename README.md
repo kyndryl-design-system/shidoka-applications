@@ -4,7 +4,7 @@
 
 ## Usage
 
-### Configuring your environments to enable installation packages from the GitHub Enterprise npm package registry.
+### Configuring your environments to enable installation of packages from the GitHub Enterprise npm package registry.
 
 1. Create a [Personal Access Token](https://github.kyndryl.net/settings/tokens) with `read:packages` permission.
    1. Save the generated token somewhere safe for the next steps.
@@ -30,7 +30,21 @@
 Note: This will not work until you have configured the enterprise package registry following the instructions above.
 
 ```
-npm install @kyndryl-design-system/web-components@0.1.0 -S
+npm install @kyndryl-design-system/web-components -S
+```
+
+### Start using components
+
+See [Storybook](https://pages.github.kyndryl.net/kyndryl-design-system/web-components/) for the full components documentation.
+
+**Example:**
+
+```js
+import { Button } from '@kyndryl-design-system/web-components';
+```
+
+```html
+<kyn-button>Button</kyn-button>
 ```
 
 ## Contributing
