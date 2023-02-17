@@ -1,10 +1,37 @@
-# Kyndryl Design System Web Components
+# Kyndryl Design System - Web Components
 
 [![kyndryl-web-components](https://github.kyndryl.net/kyndryl-design-system/web-components/actions/workflows/actions.yml/badge.svg)](https://github.kyndryl.net/kyndryl-design-system/web-components/actions/workflows/actions.yml)
 
 ## Usage
 
-To do
+### Configuring your environments to enable installation packages from the GitHub Enterprise npm package registry.
+
+1. Create a [Personal Access Token](https://github.kyndryl.net/settings/tokens) with `read:packages` permission.
+   1. Save the generated token somewhere safe for the next steps.
+   2. Do NOT commit this secret to your project repository.
+2. Create a `.npmrc` file in your project root with the following content:
+
+```
+//npm.github.kyndryl.net/:_authToken=${GH_TOKEN_PACKAGES}
+@kyndryl-design-system:registry=https://npm.github.kyndryl.net
+```
+
+3. Set up the Personal Access Token in your local environment.
+   1. Create an environment variable, named `GH_TOKEN_PACKAGES`, for whichever os/shell you are using locally.
+      1. Git Bash example: Add a `.bashrc` file to your user home directory with the content: `export GH_TOKEN_PACKAGES=<your-token-here>`
+      1. You will have to restart your shell/terminal after.
+4. Set up the Personal Access Token in your CI environment. This example is for GitHub Actions.
+   1. Create a new repository secret at: `https://github.kyndryl.net/<your-project-path>/settings/secrets/actions/new`
+   1. Name the token `GH_TOKEN_PACKAGES`.
+   1. Paste in the token you generated previously to the Secret field.
+
+### Install the package
+
+Note: This will not work until you have configured the enterprise package registry following the instructions above.
+
+```
+npm install @kyndryl-design-system/web-components@0.1.0 -S
+```
 
 ## Contributing
 
@@ -26,7 +53,7 @@ npm run lint
 # test (must run build first)
 npm run test
 
-# generate new custom-elements.json, updates storybook docs/args
+# generate new custom-elements.json (updates storybook docs/args)
 npm run analyze
 
 # format all files with prettier
