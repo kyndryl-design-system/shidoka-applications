@@ -100,6 +100,11 @@ jobs:
         run: npm ci --legacy-peer-deps
       - name: Install semantic-release extra plugins
         run: npm i --save-dev @semantic-release/changelog @semantic-release/git --legacy-peer-deps
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+          path: dist
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
