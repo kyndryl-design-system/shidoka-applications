@@ -44,7 +44,7 @@ import { Button } from '@kyndryl-design-system/web-components';
 ```
 
 ```html
-<kyn-button>Button Text</kyn-button>
+<kyn-button>Button</kyn-button>
 ```
 
 ## Contributing
@@ -74,15 +74,19 @@ npm run analyze
 npm run format
 ```
 
-### Committing
+### Guidelines
 
-1. Commits MUST use [Conventional Commit format](https://www.conventionalcommits.org).
-   1. [Certain commit types](https://semantic-release.gitbook.io/semantic-release/#commit-message-format) like `fix:` (patch), `feat:` (minor), and `perf:` (major) or `BREAKING CHANGE:` (in the commit body or footer, major), will automatically trigger semantic version increases and publish a new package.
+1. Commits
+   1. Commit messages MUST use [Conventional Commit format](https://www.conventionalcommits.org).
+   1. [Certain commit types](https://semantic-release.gitbook.io/semantic-release/#commit-message-format) like `fix:` (patch), `feat:` (minor), and `perf:` (major) or `BREAKING CHANGE:` (in the commit body or footer, major), will automatically trigger a release to publish a new package and update the semantic version.
    1. [Cheat Sheet](https://gist.github.com/Zekfad/f51cb06ac76e2457f11c80ed705c95a3)
-1. `main` branch is for current version changes.
-1. `beta` branch is for future version/prerelease changes.
+1. Branching
+   1. `main` branch is for current version changes.
+   1. `beta` branch is for future version/prerelease changes. This will be the default branch in GitHub and for storybook deploys until initial release.
+   1. Use the [GitHub Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+   1. Delete branches after merging.
 
-### Docs
+### Third-Party Docs Reference
 
 1. [Lit](https://lit.dev/docs/)
 1. [Storybook](https://storybook.js.org/docs/7.0/web-components/get-started/introduction)
