@@ -74,6 +74,13 @@ npm run analyze
 npm run format
 ```
 
+### Committing
+
+1. Commits MUST use [Conventional Commit format](https://www.conventionalcommits.org).
+1. [Certain commit types](https://semantic-release.gitbook.io/semantic-release/#commit-message-format) like `fix:` (patch), `feat:` (minor), and `perf:` or `BREAKING CHANGE:` (major), will automatically trigger semantic version increases and publish a new package.
+1. `main` branch is for current version changes.
+1. `beta` branch is for prerelease changes.
+
 ### Docs
 
 1. [Lit](https://lit.dev/docs/)
