@@ -29,8 +29,12 @@
 
 Note: This will not work until you have configured the enterprise package registry following the instructions above.
 
-```
+```bash
+# official release
 npm install @kyndryl-design-system/web-components -S
+
+# beta release
+npm install @kyndryl-design-system/web-components@beta -S
 ```
 
 ### Start using components
