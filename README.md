@@ -89,6 +89,9 @@ npm run format
    1. `beta` branch is for future version/prerelease changes. This will be the default branch in GitHub and for storybook deploys until initial release.
    1. Use the [GitHub Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
    1. Delete branches after merging.
+1. Documentation
+   1. Document everything in your components with [JSDoc](https://custom-elements-manifest.open-wc.org/analyzer/getting-started/#supported-jsdoc)
+   1. Update the `custom-elements.json` file with the `npm run analyze` script any time you add or change documentation. This is where the Storybook args tables are derived from.
 
 ### Third-Party Docs Reference
 
