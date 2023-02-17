@@ -44,7 +44,7 @@ import { Button } from '@kyndryl-design-system/web-components';
 ```
 
 ```html
-<kyn-button>Button</kyn-button>
+<kyn-button>Button Text</kyn-button>
 ```
 
 ## Contributing
