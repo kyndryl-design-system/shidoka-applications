@@ -84,6 +84,7 @@ npm run format
    1. Commit messages MUST use [Conventional Commit format](https://www.conventionalcommits.org).
    1. [Certain commit types](https://semantic-release.gitbook.io/semantic-release/#commit-message-format) like `fix:` (patch), `feat:` (minor), and `perf:` (major) or `BREAKING CHANGE:` (in the commit body or footer, major), will automatically trigger a release to publish a new package and update the semantic version.
    1. [Conventional Commits Cheat Sheet](https://gist.github.com/Zekfad/f51cb06ac76e2457f11c80ed705c95a3)
+   1. Git hooks are installed to enforce commit message formatting with commitlint, and code formatting with Prettier.
 1. Branching
    1. `main` branch is for current version changes.
    1. `beta` branch is for future version/prerelease changes. This will be the default branch in GitHub and for storybook deploys until initial release.
@@ -96,7 +97,8 @@ npm run format
    1. Releases will trigger automatically when the right commit messages are pushed to `main` or `beta`.
    1. All testing must be done on the PR level before merging, since the release will happen automatically after merge.
 1. Creating Components
-   1. Components should be contained within their own folder containing `ts`, `scss`, `test`, and `stories` files.
+   1. Components should be contained within their own folder containing `ts`, `scss`, `test`, and `stories` files. Subcomponents can share the same folder.
+   1. Add new components to the root `index.ts` file.
    1. Everything in the design system should be 100% generic. Remember that these components could be used to build any application. Application concerns must be separated.
    1. Use Lit [directives](https://lit.dev/docs/templates/directives/) and [decorators](https://lit.dev/docs/components/decorators/) whenever possible.
    1. Build responsive, build clean, focus on style and performance, enhance with quick and smooth animations.
@@ -104,7 +106,7 @@ npm run format
    1. Document everything in your components with [JSDoc](https://custom-elements-manifest.open-wc.org/analyzer/getting-started/#supported-jsdoc).
    1. Update the `custom-elements.json` file with the `npm run analyze` script any time you add or change documentation. This is where the Storybook args tables are derived from.
    1. Write your storybook stories with controls build in for every property where possible.
-   1. When building modular components with subcomponents, Write multiple stories to show different variations. Include any subcomponents in the main story so it renders a new tab with an args table.
+   1. When building modular components with subcomponents, write multiple stories to show different variations. Include any subcomponents in the main story so it renders a new tab with an args table.
 1. Testing
    1. Testing strategy TBD.
 
