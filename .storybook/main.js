@@ -5,6 +5,7 @@ module.exports = {
     '@storybook/addon-essentials',
     'storybook-addon-designs',
     '@storybook/addon-storysource',
+    'storybook-preset-inline-svg',
   ],
   framework: {
     name: '@storybook/web-components-webpack5',

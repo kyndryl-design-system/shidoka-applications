@@ -5,3 +5,5 @@ declare module '*.scss' {
 }
 
 declare module '@carbon/icons/*';
+
+declare module '*.svg';

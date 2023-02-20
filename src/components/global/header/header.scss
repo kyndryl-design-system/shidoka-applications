@@ -12,14 +12,9 @@
   top: 0;
   right: 0;
   left: 0;
-  height: 64px;
+  height: var(--header-height);
   background: var(--color-background);
   box-shadow: 0px 1px 0px var(--color-border);
-}
-
-.menu-button {
-  width: 64px;
-  background: none;
 }
 
 .logo-link {
@@ -29,37 +24,27 @@
   padding: 0 16px;
   color: var(--color-text);
   text-decoration: none;
-}
 
-.logo {
-  flex-shrink: 0;
-  width: 100px;
-  margin-right: 16px;
+  svg {
+    width: 137px;
 
-  path {
-    fill: var(--color-brand);
+    .header--small & {
+      width: 96px;
+    }
   }
-}
-
-.logo-small {
-  flex-shrink: 0;
-  height: 24px;
-  margin-right: 4px;
 }
 
 .title {
   font-weight: 400;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: 1.125rem;
+  line-height: 1.5rem;
   letter-spacing: 0.1px;
   margin-top: -1px;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid var(--color-divider);
 
-  &__main {
+  .header--small & {
     display: none;
-    font-size: var(--breakpoint-sm);
-
-    @media screen and (min-width: 42rem) {
-      display: inline;
-    }
   }
 }
