@@ -92,15 +92,6 @@ export class Header extends LitElement {
     });
     this.dispatchEvent(event);
   }
-
-  private toggleMenu() {
-    this.menuOpen = !this.menuOpen;
-
-    const event = new CustomEvent('on-menu-toggle', {
-      detail: this.menuOpen,
-    });
-    this.dispatchEvent(event);
-  }
 }
 
 declare global {

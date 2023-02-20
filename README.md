@@ -37,6 +37,14 @@ npm install @kyndryl-design-system/web-components -S
 npm install @kyndryl-design-system/web-components@beta -S
 ```
 
+### Import the root.css to your app's global styles
+
+The method used (JS Import, CSS import, or &lt;style&gt; tag) will vary based on your framework/bundler, but the stylesheet can be found in `node_modules` at:
+
+```
+@kyndryl-design-system/web-components/root.css
+```
+
 ### Start using components
 
 See [Storybook](https://pages.github.kyndryl.net/kyndryl-design-system/web-components/) for the full components documentation.
