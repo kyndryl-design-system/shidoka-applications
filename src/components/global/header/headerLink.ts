@@ -7,7 +7,7 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { debounce } from '../../../common/helpers/helpers';
-import HeaderNavLinkScss from './headerNavLink.scss';
+import HeaderLinkScss from './headerLink.scss';
 import '../../reusable/icon/icon';
 import downIcon from '@carbon/icons/es/chevron--down/16';
 
@@ -15,9 +15,9 @@ import downIcon from '@carbon/icons/es/chevron--down/16';
  * Component for navigation links within the Header.
  * @fires on-click - Captures the click event and emits the original event details.
  */
-@customElement('kyn-header-nav-link')
-export class HeaderNavLink extends LitElement {
-  static override styles = HeaderNavLinkScss;
+@customElement('kyn-header-link')
+export class HeaderLink extends LitElement {
+  static override styles = HeaderLinkScss;
 
   /** Link text. */
   @property({ type: String })
@@ -59,7 +59,7 @@ export class HeaderNavLink extends LitElement {
       'nav-link': true,
       'level--1': this.level == 1,
       'level--2': this.level == 2,
-      interactive: this.breakpointHit,
+      interactive: this.level == 1 && this.breakpointHit,
     };
 
     const slotClasses = {
@@ -131,6 +131,6 @@ export class HeaderNavLink extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-header-nav-link': HeaderNavLink;
+    'kyn-header-nav-link': HeaderLink;
   }
 }

@@ -114,7 +114,7 @@ npm run format
 1. Documentation
    1. Document everything in your components with [JSDoc](https://custom-elements-manifest.open-wc.org/analyzer/getting-started/#supported-jsdoc).
    1. Update the `custom-elements.json` file with the `npm run analyze` script any time you add or change documentation. This is where the Storybook args tables are derived from.
-   1. Write your storybook stories with controls build in for every property where possible.
+   1. Write your storybook stories with controls enabled for every property where possible.
    1. When building modular components with subcomponents, write multiple stories to show different variations. Include any subcomponents in the main story so it renders a new tab with an args table.
 1. Testing
    1. Testing strategy TBD.

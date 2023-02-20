@@ -1,0 +1,77 @@
+@import '../../../common/scss/global.scss';
+@import './header-interactive.scss';
+
+:host {
+  display: inline-block;
+  position: relative;
+  flex-grow: 1;
+}
+
+.nav-link {
+  display: flex;
+  position: relative;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 0.875rem;
+  text-decoration: none;
+  color: var(--color-text);
+  white-space: nowrap;
+
+  @media screen and (min-width: 672px) {
+    justify-content: flex-end;
+  }
+}
+
+.level {
+  &--1 {
+    height: 38px;
+
+    &.interactive {
+      height: var(--header-height);
+    }
+  }
+
+  &--2 {
+    height: 38px;
+
+    &:hover {
+      color: var(--color-text);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: calc(100% - 32px);
+      transform: scaleX(0);
+      height: 1px;
+      bottom: 0;
+      right: 16px;
+      top: auto;
+      background-color: var(--color-brand);
+      transform-origin: bottom left;
+      transition: transform 0.15s ease-out;
+    }
+
+    &:hover::after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+slot {
+  display: flex;
+}
+
+.menu__content {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+kyn-icon {
+  margin-left: 4px;
+}
+
+.static {
+  flex-direction: column;
+}

@@ -2,7 +2,7 @@ import { withDesign } from 'storybook-addon-designs';
 import { html } from 'lit';
 import './header';
 import './headerNav';
-import './headerNavLink';
+import './headerLink';
 import './headerFlyouts';
 import './headerFlyout';
 import '../../reusable/icon/icon';
@@ -14,7 +14,7 @@ export default {
   component: 'kyn-header',
   subcomponents: {
     HeaderNav: 'kyn-header-nav',
-    HeaderNavLink: 'kyn-header-nav-link',
+    HeaderLink: 'kyn-header-link',
     HeaderFlyouts: 'kyn-header-flyouts',
     HeaderFlyout: 'kyn-header-flyout',
   },
@@ -44,24 +44,24 @@ export const Header = {
       breakpoint=${args.breakpoint}
     >
       <kyn-header-nav>
-        <kyn-header-nav-link href="javascript:void(0)" text="Link 1">
-        </kyn-header-nav-link>
-        <kyn-header-nav-link href="javascript:void(0)" text="Link 2">
-        </kyn-header-nav-link>
-        <kyn-header-nav-link href="javascript:void(0)" text="Link 3">
-          <kyn-header-nav-link
+        <kyn-header-link href="javascript:void(0)" text="Link 1">
+        </kyn-header-link>
+        <kyn-header-link href="javascript:void(0)" text="Link 2">
+        </kyn-header-link>
+        <kyn-header-link href="javascript:void(0)" text="Link 3">
+          <kyn-header-link
             href="javascript:void(0)"
-            text="Sub Link 1"
+            text="Sub Link # 1"
             level="2"
           >
-          </kyn-header-nav-link>
-          <kyn-header-nav-link
+          </kyn-header-link>
+          <kyn-header-link
             href="javascript:void(0)"
             text="Sub Link 2"
             level="2"
           >
-          </kyn-header-nav-link>
-        </kyn-header-nav-link>
+          </kyn-header-link>
+        </kyn-header-link>
       </kyn-header-nav>
 
       <kyn-header-flyouts>

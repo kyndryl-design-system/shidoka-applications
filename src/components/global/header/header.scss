@@ -13,8 +13,11 @@
   right: 0;
   left: 0;
   height: var(--header-height);
-  background: var(--color-background);
-  box-shadow: 0px 1px 0px var(--color-border);
+  background: var(--color-background-layer);
+
+  &--large {
+    padding: 0 16px;
+  }
 }
 
 .logo-link {
@@ -26,15 +29,16 @@
   text-decoration: none;
 
   svg {
-    width: 137px;
+    width: 96px;
 
-    .header--small & {
-      width: 96px;
+    .header--large & {
+      width: 137px;
     }
   }
 }
 
 .title {
+  display: none;
   font-weight: 400;
   font-size: 1.125rem;
   line-height: 1.5rem;
@@ -44,7 +48,7 @@
   padding-left: 16px;
   border-left: 1px solid var(--color-divider);
 
-  .header--small & {
-    display: none;
+  .header--large & {
+    display: inline;
   }
 }

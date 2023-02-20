@@ -46,7 +46,7 @@ export class Header extends LitElement {
   override render() {
     const classes = {
       header: true,
-      'header--small': !this.breakpointHit,
+      'header--large': this.breakpointHit,
     };
 
     return html`

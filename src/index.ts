@@ -2,7 +2,7 @@ import { Button } from './components/reusable/button/button';
 import { Icon } from './components/reusable/icon/icon';
 import { Header } from './components/global/header/header';
 import { HeaderNav } from './components/global/header/headerNav';
-import { HeaderNavLink } from './components/global/header/headerNavLink';
+import { HeaderLink } from './components/global/header/headerLink';
 import { HeaderFlyouts } from './components/global/header/headerFlyouts';
 import { HeaderFlyout } from './components/global/header/headerFlyout';
 import { SideNav } from './components/global/sideNav/sideNav';
@@ -13,7 +13,7 @@ export {
   Icon,
   Header,
   HeaderNav,
-  HeaderNavLink,
+  HeaderLink,
   HeaderFlyouts,
   HeaderFlyout,
   SideNav,
