@@ -6,7 +6,7 @@ import '../../reusable/icon/icon';
 import sampleIcon from '@carbon/icons/es/user--avatar/16';
 
 export default {
-  title: 'Components/Global/Side Nav',
+  title: 'Global/Side Nav',
   component: 'kyn-side-nav',
   subcomponents: {
     SideNavLink: 'kyn-side-nav-link',

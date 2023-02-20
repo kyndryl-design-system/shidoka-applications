@@ -10,7 +10,7 @@ import '../../reusable/icon/icon';
 import userIcon from '@carbon/icons/es/user--avatar/24';
 
 export default {
-  title: 'Components/Global/Header',
+  title: 'Global/Header',
   component: 'kyn-header',
   subcomponents: {
     HeaderNav: 'kyn-header-nav',
