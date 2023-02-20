@@ -35,16 +35,12 @@ export const Header = {
   args: {
     rootUrl: '/',
     appTitle: 'Delivery',
-    appSubtitle: 'Insights',
-    smallLogo: false,
     breakpoint: 672,
   },
   render: (args) => html`
     <kyn-header
       rootUrl=${args.rootUrl}
       appTitle=${args.appTitle}
-      appSubtitle=${args.appSubtitle}
-      ?smallLogo=${args.smallLogo}
       breakpoint=${args.breakpoint}
     >
       <kyn-header-nav>
