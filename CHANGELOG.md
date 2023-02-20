@@ -1,3 +1,10 @@
+# [1.0.0-beta.2](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2023-02-20)
+
+
+### Features
+
+* **header:** bridge logo, svg inliner, some token updates ([feba4a8](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/feba4a8037057b40c0e6b5fb4afc51c2d07e7c6e))
+
 # 1.0.0-beta.1 (2023-02-17)
 
 
