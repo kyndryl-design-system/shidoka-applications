@@ -1,3 +1,10 @@
+# [1.0.0-beta.3](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2023-02-20)
+
+
+### Features
+
+* **header:** style updates, rename navlink ([83e41bd](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/83e41bdf57d61b17f2373b501765aa60102e4fdf))
+
 # [1.0.0-beta.2](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2023-02-20)
 
 
