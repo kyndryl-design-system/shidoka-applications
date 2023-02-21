@@ -6,6 +6,7 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderLinkScss from './headerLink.scss';
 import '../../reusable/icon/icon';
@@ -137,7 +138,7 @@ export class HeaderLink extends LitElement {
   }
 
   private testBreakpoint() {
-    const nav = document.querySelector('kyn-header');
+    const nav = querySelectorDeep('kyn-header');
     if (nav) {
       this.breakpointHit = nav!.breakpointHit;
     }

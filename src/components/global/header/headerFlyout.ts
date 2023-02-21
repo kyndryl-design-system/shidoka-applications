@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderFlyoutScss from './headerFlyout.scss';
 
@@ -67,7 +68,7 @@ export class HeaderFlyout extends LitElement {
   }
 
   private testBreakpoint() {
-    const nav = document.querySelector('kyn-header');
+    const nav = querySelectorDeep('kyn-header');
     if (nav) {
       this.breakpointHit = nav!.breakpointHit;
     }

@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderNavScss from './headerNav.scss';
 
@@ -47,7 +48,7 @@ export class HeaderNav extends LitElement {
       })
     );
 
-    const header = document.querySelector('kyn-header');
+    const header = querySelectorDeep('kyn-header');
     if (header) {
       header.addEventListener('on-menu-toggle', (e: any = {}) => {
         this.menuOpen = e.detail;
@@ -56,7 +57,7 @@ export class HeaderNav extends LitElement {
   }
 
   override disconnectedCallback() {
-    const header = document.querySelector('kyn-header');
+    const header = querySelectorDeep('kyn-header');
     if (header) {
       header.addEventListener('on-menu-toggle', (e: any = {}) => {
         this.menuOpen = e.detail;
@@ -74,7 +75,7 @@ export class HeaderNav extends LitElement {
   }
 
   private testBreakpoint() {
-    const nav = document.querySelector('kyn-header');
+    const nav = querySelectorDeep('kyn-header');
     if (nav) {
       this.breakpointHit = nav!.breakpointHit;
     }

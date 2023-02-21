@@ -7,6 +7,7 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { querySelectorDeep } from 'query-selector-shadow-dom';
 import SideNavLinkScss from './sideNavLink.scss';
 import '../../reusable/icon/icon';
 
@@ -137,7 +138,7 @@ export class SideNavLink extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
 
-    const sideNav = document.querySelector('kyn-side-nav');
+    const sideNav = querySelectorDeep('kyn-side-nav');
     if (sideNav) {
       sideNav.addEventListener('on-toggle', (e: any = {}) => {
         this.collapsed = e.detail.collapsed;
@@ -146,7 +147,7 @@ export class SideNavLink extends LitElement {
   }
 
   override disconnectedCallback() {
-    const sideNav = document.querySelector('kyn-side-nav');
+    const sideNav = querySelectorDeep('kyn-side-nav');
     if (sideNav) {
       sideNav.addEventListener('on-toggle', (e: any = {}) => {
         this.collapsed = e.detail.collapsed;
