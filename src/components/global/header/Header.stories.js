@@ -5,6 +5,7 @@ import './headerNav';
 import './headerLink';
 import './headerFlyouts';
 import './headerFlyout';
+import './headerAvatar';
 import '../../reusable/icon/icon';
 
 import userIcon from '@carbon/icons/es/user--avatar/24';
@@ -18,6 +19,7 @@ export default {
     HeaderLink: 'kyn-header-link',
     HeaderFlyouts: 'kyn-header-flyouts',
     HeaderFlyout: 'kyn-header-flyout',
+    HeaderAvatar: 'kyn-header-avatar',
   },
   decorators: [
     withDesign,
@@ -77,7 +79,8 @@ export const Header = {
         </kyn-header-flyout>
 
         <kyn-header-flyout>
-          <kyn-icon .icon=${userIcon} slot="button"></kyn-icon>
+          <kyn-header-avatar initials="KB" slot="button"></kyn-header-avatar>
+          <!-- <kyn-icon .icon=${userIcon} slot="button"></kyn-icon> -->
 
           <kyn-header-link href="javascript:void(0)">
             Logout

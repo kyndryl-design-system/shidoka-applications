@@ -5,6 +5,7 @@ import { HeaderNav } from './components/global/header/headerNav';
 import { HeaderLink } from './components/global/header/headerLink';
 import { HeaderFlyouts } from './components/global/header/headerFlyouts';
 import { HeaderFlyout } from './components/global/header/headerFlyout';
+import { HeaderAvatar } from './components/global/header/headerAvatar';
 import { SideNav } from './components/global/sideNav/sideNav';
 import { SideNavLink } from './components/global/sideNav/sideNavLink';
 
@@ -16,6 +17,7 @@ export {
   HeaderLink,
   HeaderFlyouts,
   HeaderFlyout,
+  HeaderAvatar,
   SideNav,
   SideNavLink,
 };
