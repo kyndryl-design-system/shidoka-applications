@@ -1,3 +1,10 @@
+# [1.0.0-beta.7](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2023-02-21)
+
+
+### Bug Fixes
+
+* **header:** fix cross communication in shadow dom using querySelectorDeep ([5c9095d](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/5c9095d9af1925f653dbba5793d64de81113a5f1))
+
 # [1.0.0-beta.6](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2023-02-21)
 
 
