@@ -1,3 +1,10 @@
+# [1.0.0-beta.5](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2023-02-21)
+
+
+### Bug Fixes
+
+* **header-link:** change text prop to slot instead ([1dff040](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/1dff0400f9d54056de0750ad5b1928bbe896d92f))
+
 # [1.0.0-beta.4](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2023-02-21)
 
 
