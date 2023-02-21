@@ -47,11 +47,30 @@ export class HeaderNav extends LitElement {
       })
     );
 
-    document
-      .querySelector('kyn-header')!
-      .addEventListener('on-menu-toggle', (e: any = {}) => {
+    const header = document.querySelector('kyn-header');
+    if (header) {
+      header.addEventListener('on-menu-toggle', (e: any = {}) => {
         this.menuOpen = e.detail;
       });
+    }
+  }
+
+  override disconnectedCallback() {
+    const header = document.querySelector('kyn-header');
+    if (header) {
+      header.addEventListener('on-menu-toggle', (e: any = {}) => {
+        this.menuOpen = e.detail;
+      });
+    }
+
+    window.removeEventListener(
+      'resize',
+      debounce(() => {
+        this.testBreakpoint();
+      })
+    );
+
+    super.disconnectedCallback();
   }
 
   private testBreakpoint() {

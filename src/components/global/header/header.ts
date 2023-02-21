@@ -95,6 +95,17 @@ export class Header extends LitElement {
     );
   }
 
+  override disconnectedCallback() {
+    window.removeEventListener(
+      'resize',
+      debounce(() => {
+        this.testBreakpoint();
+      })
+    );
+
+    super.disconnectedCallback();
+  }
+
   private testBreakpoint() {
     if (window.innerWidth >= this.breakpoint) {
       this.breakpointHit = true;

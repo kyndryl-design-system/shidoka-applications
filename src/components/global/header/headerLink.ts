@@ -125,6 +125,17 @@ export class HeaderLink extends LitElement {
     );
   }
 
+  override disconnectedCallback() {
+    window.removeEventListener(
+      'resize',
+      debounce(() => {
+        this.testBreakpoint();
+      })
+    );
+
+    super.disconnectedCallback();
+  }
+
   private testBreakpoint() {
     const nav = document.querySelector('kyn-header');
     if (nav) {

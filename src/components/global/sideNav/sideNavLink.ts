@@ -137,11 +137,23 @@ export class SideNavLink extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
 
-    document
-      .querySelector('kyn-side-nav')!
-      .addEventListener('on-toggle', (e: any = {}) => {
+    const sideNav = document.querySelector('kyn-side-nav');
+    if (sideNav) {
+      sideNav.addEventListener('on-toggle', (e: any = {}) => {
         this.collapsed = e.detail.collapsed;
       });
+    }
+  }
+
+  override disconnectedCallback() {
+    const sideNav = document.querySelector('kyn-side-nav');
+    if (sideNav) {
+      sideNav.addEventListener('on-toggle', (e: any = {}) => {
+        this.collapsed = e.detail.collapsed;
+      });
+    }
+
+    super.disconnectedCallback();
   }
 
   private handleClick(e: Event) {
