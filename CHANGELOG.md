@@ -1,3 +1,10 @@
+# [1.0.0-beta.6](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2023-02-21)
+
+
+### Bug Fixes
+
+* **header:** adding external event listeners ([032acd6](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/032acd657092e7c3fd6ba232878be024763431b1))
+
 # [1.0.0-beta.5](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2023-02-21)
 
 
