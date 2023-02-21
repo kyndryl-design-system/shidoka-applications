@@ -1,3 +1,10 @@
+# [1.0.0-beta.4](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2023-02-21)
+
+
+### Bug Fixes
+
+* **header:** initial responsive attempt ([9a66957](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/9a669571ffb85e575e27dd19a7d22d2915782f0d))
+
 # [1.0.0-beta.3](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2023-02-20)
 
 
