@@ -1,3 +1,10 @@
+# [1.0.0-beta.8](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2023-02-21)
+
+
+### Features
+
+* **header:** add header avatar ([db0beb9](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/db0beb9125a7a2e9605aa5a99c5ed9c41f76ef53))
+
 # [1.0.0-beta.7](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2023-02-21)
 
 
