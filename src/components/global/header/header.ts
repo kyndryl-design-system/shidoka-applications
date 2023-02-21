@@ -6,7 +6,9 @@ import { debounce } from '../../../common/helpers/helpers';
 import HeaderScss from './header.scss';
 import '../../reusable/icon/icon';
 import '../../reusable/button/button';
+import './headerFlyout';
 import logo from '../../../assets/svg/bridge-logo-large.svg';
+import overflowIcon from '@carbon/icons/es/overflow-menu--vertical/24';
 
 /**
  * The global Header component.
@@ -46,7 +48,7 @@ export class Header extends LitElement {
   override render() {
     const classes = {
       header: true,
-      'header--large': this.breakpointHit,
+      'breakpoint-hit': this.breakpointHit,
     };
 
     return html`
@@ -61,7 +63,22 @@ export class Header extends LitElement {
           <span class="title">${this.appTitle}</span>
         </a>
 
-        <slot></slot>
+        <div class="header__right">
+          <slot></slot>
+
+          ${!this.breakpointHit
+            ? html`
+                <div class="menu">
+                  <button
+                    class="menu-button interactive"
+                    @click=${() => this.toggleNavMenu()}
+                  >
+                    <kyn-icon .icon=${overflowIcon}></kyn-icon>
+                  </button>
+                </div>
+              `
+            : null}
+        </div>
       </header>
     `;
   }
@@ -89,6 +106,15 @@ export class Header extends LitElement {
   private handleRootLinkClick(e: Event) {
     const event = new CustomEvent('on-root-link-click', {
       detail: { origEvent: e },
+    });
+    this.dispatchEvent(event);
+  }
+
+  private toggleNavMenu() {
+    this.menuOpen = !this.menuOpen;
+
+    const event = new CustomEvent('on-menu-toggle', {
+      detail: this.menuOpen,
     });
     this.dispatchEvent(event);
   }

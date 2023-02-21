@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { debounce } from '../../../common/helpers/helpers';
 import HeaderFlyoutScss from './headerFlyout.scss';
 
 /**
@@ -16,18 +17,49 @@ export class HeaderFlyout extends LitElement {
   @property({ type: Boolean })
   anchorLeft = false;
 
+  /**
+   * Determines if menu should be a small flyout or large flyout for small screens.
+   * @ignore
+   */
+  @state()
+  breakpointHit = false;
+
   override render() {
+    const classes = {
+      menu: true,
+      'breakpoint-hit': this.breakpointHit,
+    };
+
     const contentClasses = {
       menu__content: true,
       'menu__content--left': this.anchorLeft,
     };
 
     return html`
-      <div class="menu">
+      <div class="${classMap(classes)}">
         <button class="btn interactive"><slot name="button"></slot></button>
         <div class=${classMap(contentClasses)}><slot></slot></div>
       </div>
     `;
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+
+    this.testBreakpoint();
+    window.addEventListener(
+      'resize',
+      debounce(() => {
+        this.testBreakpoint();
+      })
+    );
+  }
+
+  private testBreakpoint() {
+    const nav = document.querySelector('kyn-header');
+    if (nav) {
+      this.breakpointHit = nav!.breakpointHit;
+    }
   }
 }
 

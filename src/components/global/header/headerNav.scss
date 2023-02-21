@@ -2,12 +2,15 @@
 
 :host {
   display: block;
-  margin-left: auto;
+}
+
+::slotted(kyn-header-link) {
+  margin: 0 11px;
 }
 
 .header-nav {
   position: fixed;
-  top: 64px;
+  top: var(--header-height);
   left: 0;
   bottom: 0;
   width: 265px;
@@ -23,12 +26,20 @@
   }
 
   &--flyout {
-    transition: transform 150ms ease-out;
-    transform: translate3d(-100%, 0, 0);
+    padding: 8px 0;
+    width: 100%;
+    background: var(--color-background-focus);
+    transition: transform 150ms ease-out, opacity 150ms ease-out,
+      visibility 150ms ease-out;
+    transform: translate3d(0, -10%, 0);
+    opacity: 0;
+    visibility: hidden;
     overflow-y: auto;
   }
 
   &--open {
     transform: translate3d(0, 0, 0);
+    opacity: 1;
+    visibility: visible;
   }
 }

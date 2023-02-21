@@ -15,23 +15,30 @@
   height: var(--header-height);
   background: var(--color-background-layer);
 
-  &--large {
+  padding-right: 11px;
+
+  &.breakpoint-hit {
     padding: 0 16px;
+  }
+
+  &__right {
+    display: flex;
+    margin-left: auto;
   }
 }
 
 .logo-link {
   display: flex;
   align-items: center;
-  margin-right: 24px;
-  padding: 0 16px;
+  padding: 0 5px;
+  margin: 0 11px;
   color: var(--color-text);
   text-decoration: none;
 
   svg {
     width: 96px;
 
-    .header--large & {
+    .breakpoint-hit & {
       width: 137px;
     }
   }
@@ -48,7 +55,12 @@
   padding-left: 16px;
   border-left: 1px solid var(--color-divider);
 
-  .header--large & {
+  .breakpoint-hit & {
     display: inline;
   }
+}
+
+.menu-button {
+  height: 100%;
+  background: none;
 }

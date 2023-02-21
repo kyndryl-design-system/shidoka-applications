@@ -18,7 +18,7 @@
     cursor: pointer;
     transition: background-color 150ms ease-out, color 150ms ease-out;
 
-    &::after {
+    &::before {
       content: '';
       display: block;
       position: absolute;
@@ -31,18 +31,27 @@
   }
 
   &__content {
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: var(--header-height);
     right: 0;
-    padding: 16px;
-    background: var(--color-background);
-    box-shadow: var(--shadow-menu);
+    left: 0;
+    bottom: 0;
+    padding: 8px 0;
+    background: var(--color-background-focus);
     transition: visibility 0.15s, opacity 0.15s ease-in-out,
       transform 0.15s ease-in-out;
+    transform: translate3d(0px, -10%, 0px);
     visibility: hidden;
     opacity: 0;
-    transform: translate3d(0px, -10%, 0px);
-    z-index: -1;
+
+    .breakpoint-hit & {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      bottom: auto;
+      left: auto;
+      box-shadow: var(--shadow-menu);
+    }
 
     strong {
       font-weight: 500;
@@ -61,7 +70,7 @@
       background: var(--color-background-focus);
       border-top-color: var(--color-primary);
 
-      &::after {
+      &::before {
         background-color: var(--color-primary-focus);
       }
     }

@@ -2,8 +2,11 @@
 @import './header-interactive.scss';
 
 :host {
-  display: inline-block;
+  display: block;
   position: relative;
+}
+
+::slotted(kyn-header-link) {
   flex-grow: 1;
 }
 
@@ -17,14 +20,40 @@
   color: var(--color-text);
   white-space: nowrap;
 
-  @media screen and (min-width: 672px) {
+  .breakpoint-hit & {
     justify-content: flex-end;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: calc(100% - 32px);
+    transform: scaleX(0);
+    height: 1px;
+    bottom: 0;
+    right: 16px;
+    top: auto;
+    background-color: var(--color-brand);
+    transform-origin: bottom left;
+    transition: transform 0.15s ease-out;
+  }
+
+  &:hover::after {
+    transform: scaleX(1);
   }
 }
 
 .level {
   &--1 {
     height: 38px;
+
+    .breakpoint-hit & {
+      padding: 0 5px;
+
+      &::after {
+        content: none;
+      }
+    }
 
     &.interactive {
       height: var(--header-height);
@@ -36,24 +65,6 @@
 
     &:hover {
       color: var(--color-text);
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      width: calc(100% - 32px);
-      transform: scaleX(0);
-      height: 1px;
-      bottom: 0;
-      right: 16px;
-      top: auto;
-      background-color: var(--color-brand);
-      transform-origin: bottom left;
-      transition: transform 0.15s ease-out;
-    }
-
-    &:hover::after {
-      transform: scaleX(1);
     }
   }
 }

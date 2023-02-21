@@ -55,6 +55,11 @@ export class HeaderLink extends LitElement {
   slottedElements!: Array<HTMLElement>;
 
   override render() {
+    const classes = {
+      menu: true,
+      'breakpoint-hit': this.breakpointHit,
+    };
+
     const linkClasses = {
       'nav-link': true,
       'level--1': this.level == 1,
@@ -68,7 +73,7 @@ export class HeaderLink extends LitElement {
     };
 
     return html`
-      <div class="menu">
+      <div class="${classMap(classes)}">
         <a
           href=${this.href}
           class=${classMap(linkClasses)}

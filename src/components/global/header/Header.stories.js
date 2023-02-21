@@ -8,6 +8,7 @@ import './headerFlyout';
 import '../../reusable/icon/icon';
 
 import userIcon from '@carbon/icons/es/user--avatar/24';
+import caratDownIcon from '@carbon/icons/es/caret--down/16';
 
 export default {
   title: 'Global/Header',
@@ -66,13 +67,25 @@ export const Header = {
 
       <kyn-header-flyouts>
         <kyn-header-flyout>
+          <div slot="button">
+            Sign in
+            <kyn-icon
+              .icon="${caratDownIcon}"
+              style="vertical-align: middle; margin-top: -1px"
+            ></kyn-icon>
+          </div>
+          <div>
+            <kyn-header-link href="javascript:void(0)" text="Login">
+            </kyn-header-link>
+            <kyn-header-link href="javascript:void(0)" text="Sign up">
+            </kyn-header-link>
+          </div>
+        </kyn-header-flyout>
+        <kyn-header-flyout>
           <kyn-icon .icon=${userIcon} slot="button"></kyn-icon>
           <div>
-            <strong>User Name</strong>
-            <br />
-            user.name@kyndryl.com
-            <br /><br />
-            <kyn-button>Log Out</kyn-button>
+            <kyn-header-link href="javascript:void(0)" text="Logout">
+            </kyn-header-link>
           </div>
         </kyn-header-flyout>
       </kyn-header-flyouts>
