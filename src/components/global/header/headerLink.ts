@@ -14,14 +14,12 @@ import downIcon from '@carbon/icons/es/chevron--down/16';
 /**
  * Component for navigation links within the Header.
  * @fires on-click - Captures the click event and emits the original event details.
+ * @slot unnamed - Slot for link text/content.
+ * @slot links - Slot for sublinks (up to two levels).
  */
 @customElement('kyn-header-link')
 export class HeaderLink extends LitElement {
   static override styles = HeaderLinkScss;
-
-  /** Link text. */
-  @property({ type: String })
-  text = '';
 
   /** Link url. */
   @property({ type: String })
@@ -51,7 +49,7 @@ export class HeaderLink extends LitElement {
    * Queries any slotted HTML elements.
    * @ignore
    */
-  @queryAssignedElements()
+  @queryAssignedElements({ slot: 'links' })
   slottedElements!: Array<HTMLElement>;
 
   override render() {
@@ -79,12 +77,13 @@ export class HeaderLink extends LitElement {
           class=${classMap(linkClasses)}
           @click=${(e: Event) => this.handleClick(e)}
         >
-          ${this.text}
+          <slot></slot>
+
           ${this.slottedElements.length && this.breakpointHit
             ? html` <kyn-icon .icon=${downIcon}></kyn-icon> `
             : null}
         </a>
-        <slot class=${classMap(slotClasses)}></slot>
+        <slot name="links" class=${classMap(slotClasses)}></slot>
       </div>
     `;
   }

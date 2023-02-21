@@ -115,405 +115,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/header/header.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Header component.",
-          "name": "Header",
-          "slots": [
-            {
-              "description": "The default slot for all empty space right of the logo/title.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "description": "URL for the header logo link. Should target the application home page.",
-              "attribute": "rootUrl"
-            },
-            {
-              "kind": "field",
-              "name": "appTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "App title text next to logo.  Hidden on smaller screens.",
-              "attribute": "appTitle"
-            },
-            {
-              "kind": "field",
-              "name": "breakpoint",
-              "type": {
-                "text": "number"
-              },
-              "default": "672",
-              "description": "The breakpoint (in px) to convert the nav to a flyout menu for small screens.",
-              "attribute": "breakpoint"
-            },
-            {
-              "kind": "method",
-              "name": "testBreakpoint",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleRootLinkClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the menu toggle click event and emits the menu open state in the detail.",
-              "name": "on-menu-toggle"
-            },
-            {
-              "description": "Captures the logo link click event and emits the original event details.",
-              "name": "on-root-link-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "description": "URL for the header logo link. Should target the application home page.",
-              "fieldName": "rootUrl"
-            },
-            {
-              "name": "appTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "App title text next to logo.  Hidden on smaller screens.",
-              "fieldName": "appTitle"
-            },
-            {
-              "name": "breakpoint",
-              "type": {
-                "text": "number"
-              },
-              "default": "672",
-              "description": "The breakpoint (in px) to convert the nav to a flyout menu for small screens.",
-              "fieldName": "breakpoint"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Header",
-          "declaration": {
-            "name": "Header",
-            "module": "src/components/global/header/header.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header",
-          "declaration": {
-            "name": "Header",
-            "module": "src/components/global/header/header.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/headerFlyout.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Component for header flyout items.",
-          "name": "HeaderFlyout",
-          "slots": [
-            {
-              "description": "Slot for flyout menu content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for button/toggle content.",
-              "name": "button"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "anchorLeft",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Anchor flyout menu to the left edge of the button instead of the right edge.",
-              "attribute": "anchorLeft"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "anchorLeft",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Anchor flyout menu to the left edge of the button instead of the right edge.",
-              "fieldName": "anchorLeft"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header-flyout",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "HeaderFlyout",
-          "declaration": {
-            "name": "HeaderFlyout",
-            "module": "src/components/global/header/headerFlyout.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header-flyout",
-          "declaration": {
-            "name": "HeaderFlyout",
-            "module": "src/components/global/header/headerFlyout.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/headerFlyouts.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container for header flyout items, aligns to the right, place last.",
-          "name": "HeaderFlyouts",
-          "slots": [
-            {
-              "description": "This element has a slot.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header-flyouts",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "HeaderFlyouts",
-          "declaration": {
-            "name": "HeaderFlyouts",
-            "module": "src/components/global/header/headerFlyouts.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header-flyouts",
-          "declaration": {
-            "name": "HeaderFlyouts",
-            "module": "src/components/global/header/headerFlyouts.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/headerLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Component for navigation links within the Header.",
-          "name": "HeaderLink",
-          "members": [
-            {
-              "kind": "field",
-              "name": "text",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link text.",
-              "attribute": "text"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "determineIfSlotted",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "determineLevel",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "testBreakpoint",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event details.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "text",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link text.",
-              "fieldName": "text"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "HeaderLink",
-          "declaration": {
-            "name": "HeaderLink",
-            "module": "src/components/global/header/headerLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header-link",
-          "declaration": {
-            "name": "HeaderLink",
-            "module": "src/components/global/header/headerLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/headerNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container for header navigation links.",
-          "name": "HeaderNav",
-          "slots": [
-            {
-              "description": "This element has a slot.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "testBreakpoint",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "HeaderNav",
-          "declaration": {
-            "name": "HeaderNav",
-            "module": "src/components/global/header/headerNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header-nav",
-          "declaration": {
-            "name": "HeaderNav",
-            "module": "src/components/global/header/headerNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/sideNav/sideNav.ts",
       "declarations": [
         {
@@ -724,6 +325,406 @@
           "declaration": {
             "name": "SideNavLink",
             "module": "src/components/global/sideNav/sideNavLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/header.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Header component.",
+          "name": "Header",
+          "slots": [
+            {
+              "description": "The default slot for all empty space right of the logo/title.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the header logo link. Should target the application home page.",
+              "attribute": "rootUrl"
+            },
+            {
+              "kind": "field",
+              "name": "appTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "App title text next to logo.  Hidden on smaller screens.",
+              "attribute": "appTitle"
+            },
+            {
+              "kind": "field",
+              "name": "breakpoint",
+              "type": {
+                "text": "number"
+              },
+              "default": "672",
+              "description": "The breakpoint (in px) to convert the nav to a flyout menu for small screens.",
+              "attribute": "breakpoint"
+            },
+            {
+              "kind": "method",
+              "name": "testBreakpoint",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleRootLinkClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "toggleNavMenu",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the menu toggle click event and emits the menu open state in the detail.",
+              "name": "on-menu-toggle"
+            },
+            {
+              "description": "Captures the logo link click event and emits the original event details.",
+              "name": "on-root-link-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the header logo link. Should target the application home page.",
+              "fieldName": "rootUrl"
+            },
+            {
+              "name": "appTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "App title text next to logo.  Hidden on smaller screens.",
+              "fieldName": "appTitle"
+            },
+            {
+              "name": "breakpoint",
+              "type": {
+                "text": "number"
+              },
+              "default": "672",
+              "description": "The breakpoint (in px) to convert the nav to a flyout menu for small screens.",
+              "fieldName": "breakpoint"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Header",
+          "declaration": {
+            "name": "Header",
+            "module": "src/components/global/header/header.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header",
+          "declaration": {
+            "name": "Header",
+            "module": "src/components/global/header/header.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerFlyout.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Component for header flyout items.",
+          "name": "HeaderFlyout",
+          "slots": [
+            {
+              "description": "Slot for flyout menu content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for button/toggle content.",
+              "name": "button"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "anchorLeft",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Anchor flyout menu to the left edge of the button instead of the right edge.",
+              "attribute": "anchorLeft"
+            },
+            {
+              "kind": "method",
+              "name": "testBreakpoint",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "anchorLeft",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Anchor flyout menu to the left edge of the button instead of the right edge.",
+              "fieldName": "anchorLeft"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-flyout",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderFlyout",
+          "declaration": {
+            "name": "HeaderFlyout",
+            "module": "src/components/global/header/headerFlyout.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-flyout",
+          "declaration": {
+            "name": "HeaderFlyout",
+            "module": "src/components/global/header/headerFlyout.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerFlyouts.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container for header flyout items, aligns to the right, place last.",
+          "name": "HeaderFlyouts",
+          "slots": [
+            {
+              "description": "This element has a slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-flyouts",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderFlyouts",
+          "declaration": {
+            "name": "HeaderFlyouts",
+            "module": "src/components/global/header/headerFlyouts.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-flyouts",
+          "declaration": {
+            "name": "HeaderFlyouts",
+            "module": "src/components/global/header/headerFlyouts.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Component for navigation links within the Header.",
+          "name": "HeaderLink",
+          "slots": [
+            {
+              "description": "Slot for link text/content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for sublinks (up to two levels).",
+              "name": "links"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "determineIfSlotted",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "determineLevel",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "testBreakpoint",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event details.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderLink",
+          "declaration": {
+            "name": "HeaderLink",
+            "module": "src/components/global/header/headerLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-link",
+          "declaration": {
+            "name": "HeaderLink",
+            "module": "src/components/global/header/headerLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container for header navigation links.",
+          "name": "HeaderNav",
+          "slots": [
+            {
+              "description": "This element has a slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "testBreakpoint",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderNav",
+          "declaration": {
+            "name": "HeaderNav",
+            "module": "src/components/global/header/headerNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-nav",
+          "declaration": {
+            "name": "HeaderNav",
+            "module": "src/components/global/header/headerNav.ts"
           }
         }
       ]
