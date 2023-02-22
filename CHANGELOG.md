@@ -1,3 +1,10 @@
+# [1.0.0-beta.10](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2023-02-22)
+
+
+### Bug Fixes
+
+* **header:** some hover/focus styles ([c67656e](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/c67656ec750e2a377cb04c08179794ec009b44aa))
+
 # [1.0.0-beta.9](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2023-02-22)
 
 
