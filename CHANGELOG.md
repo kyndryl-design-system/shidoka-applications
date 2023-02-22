@@ -1,3 +1,10 @@
+# [1.0.0-beta.9](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2023-02-22)
+
+
+### Bug Fixes
+
+* **header:** hover/focus styles, add link active prop ([e63284c](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/e63284cc1f6459fb77089fa625c0d30a45d7f037))
+
 # [1.0.0-beta.8](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2023-02-21)
 
 ### Features
