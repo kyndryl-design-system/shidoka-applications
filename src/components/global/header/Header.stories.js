@@ -52,7 +52,7 @@ export const Header = {
           Link 2
         </kyn-header-link>
         <kyn-header-link href="javascript:void(0)">
-          Link 2
+          Link 3
 
           <kyn-header-link slot="links" href="javascript:void(0)">
             Sub Link # 1

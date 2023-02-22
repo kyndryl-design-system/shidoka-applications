@@ -28,9 +28,16 @@ This is necessary as long as we serve our packages from a private registry. Even
       1. Git Bash example: Add a `.bashrc` file to your user home directory with the content: `export GH_TOKEN_PACKAGES=<your-token-here>`
       1. You will have to restart your shell/terminal after.
 4. Automated Builds: Set up the Personal Access Token in your CI environment. This example is for GitHub Actions.
+
    1. Create a new repository secret at: `https://github.kyndryl.net/<your-project-path>/settings/secrets/actions/new`
    1. Name the token `GH_TOKEN_PACKAGES`.
    1. Paste in the token you generated previously to the Secret field.
+   1. Update your actions workflow file (.yml) to use the new secret/env var:
+
+   ```yml
+   env:
+     GH_TOKEN_PACKAGES: '${{ secrets.GH_TOKEN_PACKAGES }}'
+   ```
 
 ## Install the package
 
