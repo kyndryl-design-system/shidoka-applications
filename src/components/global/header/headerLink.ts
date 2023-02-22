@@ -26,6 +26,10 @@ export class HeaderLink extends LitElement {
   @property({ type: String })
   href = '';
 
+  /** Link active state, for example when URL path matches link href. */
+  @property({ type: Boolean })
+  isActive = false;
+
   /** Link level, supports two levels.
    * @ignore
    */
@@ -55,12 +59,13 @@ export class HeaderLink extends LitElement {
 
   override render() {
     const classes = {
-      menu: true,
+      menu: this.isSlotted,
       'breakpoint-hit': this.breakpointHit,
     };
 
     const linkClasses = {
       'nav-link': true,
+      active: this.isActive,
       'level--1': this.level == 1,
       'level--2': this.level == 2,
       interactive: this.level == 1 && this.breakpointHit,

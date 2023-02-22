@@ -14,7 +14,7 @@ export class HeaderAvatar extends LitElement {
   initials = '';
 
   override render() {
-    return html` <div class="header-avatar">${this.initials}</div> `;
+    return html` ${this.initials} `;
   }
 }
 

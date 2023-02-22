@@ -38,7 +38,7 @@ export const Header = {
   args: {
     rootUrl: '/',
     appTitle: 'Delivery',
-    breakpoint: 672,
+    breakpoint: 710,
   },
   render: (args) => html`
     <kyn-header
@@ -48,6 +48,9 @@ export const Header = {
     >
       <kyn-header-nav>
         <kyn-header-link href="javascript:void(0)"> Link 1 </kyn-header-link>
+        <kyn-header-link href="javascript:void(0)" isActive>
+          Link 2
+        </kyn-header-link>
         <kyn-header-link href="javascript:void(0)">
           Link 2
 

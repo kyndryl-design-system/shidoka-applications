@@ -7,6 +7,26 @@
   &:focus {
     color: var(--color-primary-hover);
   }
+
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 2px;
+    transition: background-color 150ms ease-out;
+  }
+
+  &.active {
+    color: var(--color-primary-focus);
+    background: var(--color-background-focus);
+
+    &::before {
+      background-color: var(--color-primary-focus);
+    }
+  }
 }
 
 .menu {
@@ -17,17 +37,6 @@
     border: 0;
     cursor: pointer;
     transition: background-color 150ms ease-out, color 150ms ease-out;
-
-    &::before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      height: 2px;
-      transition: background-color 150ms ease-out;
-    }
   }
 
   &__content {
@@ -68,7 +77,6 @@
     .interactive {
       color: var(--color-primary-focus);
       background: var(--color-background-focus);
-      border-top-color: var(--color-primary);
 
       &::before {
         background-color: var(--color-primary-focus);

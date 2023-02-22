@@ -12,7 +12,27 @@
   background: none;
 }
 
-::slotted([slot='button']) {
-  font-family: var(--font-heading);
-  color: var(--color-text);
+.menu {
+  .interactive {
+    ::slotted(div[slot='button']),
+    ::slotted(span[slot='button']) {
+      font-family: var(--font-heading);
+      color: var(--color-text);
+    }
+  }
+
+  &:focus-within,
+  &:hover {
+    .interactive {
+      :slotted(div[slot='button']),
+      ::slotted(span[slot='button']) {
+        color: var(--color-primary-focus);
+      }
+
+      ::slotted(kyn-header-avatar) {
+        background: none;
+        border-color: var(--color-brand-text);
+      }
+    }
+  }
 }
