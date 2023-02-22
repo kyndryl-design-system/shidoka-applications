@@ -17,10 +17,10 @@ This is necessary as long as we serve our packages from a private registry. Even
    2. Do NOT commit this secret to your project repository.
 2. Create a `.npmrc` file in your project root with the following content:
 
-```
-//npm.github.kyndryl.net/:_authToken=${GH_TOKEN_PACKAGES}
-@kyndryl-design-system:registry=https://npm.github.kyndryl.net
-```
+   ```
+   //npm.github.kyndryl.net/:_authToken=${GH_TOKEN_PACKAGES}
+   @kyndryl-design-system:registry=https://npm.github.kyndryl.net
+   ```
 
 3. Local Dev: Set up the Personal Access Token in your local environment.
    1. Add this step to your project's README.
@@ -34,10 +34,10 @@ This is necessary as long as we serve our packages from a private registry. Even
    1. Paste in the token you generated previously to the Secret field.
    1. Update your actions workflow file (.yml) to use the new secret/env var:
 
-   ```yml
-   env:
-     GH_TOKEN_PACKAGES: '${{ secrets.GH_TOKEN_PACKAGES }}'
-   ```
+      ```yml
+      env:
+      GH_TOKEN_PACKAGES: '${{ secrets.GH_TOKEN_PACKAGES }}'
+      ```
 
 ## Install the package
 
