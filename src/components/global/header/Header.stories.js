@@ -83,7 +83,6 @@ export const Header = {
 
         <kyn-header-flyout>
           <kyn-header-avatar initials="KB" slot="button"></kyn-header-avatar>
-          <!-- <kyn-icon .icon=${userIcon} slot="button"></kyn-icon> -->
 
           <kyn-header-link href="javascript:void(0)">
             Logout
