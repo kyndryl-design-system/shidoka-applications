@@ -2,9 +2,15 @@
 
 [![kyndryl-web-components](https://github.kyndryl.net/kyndryl-design-system/web-components/actions/workflows/actions.yml/badge.svg)](https://github.kyndryl.net/kyndryl-design-system/web-components/actions/workflows/actions.yml)
 
-# Using these components
+# Contributing to this project
+
+Read the [Contributing Guide](CONTRIBUTING.md) here.
+
+# Using this library in another project
 
 ## Configure your environments to enable installation of packages from the GitHub Enterprise npm package registry.
+
+This is necessary as long as we serve our packages from a private registry. Eventually we will probably move public and will be able to skip this.
 
 1. Create a [Personal Access Token](https://github.kyndryl.net/settings/tokens) with `read:packages` permission.
    1. Save the generated token somewhere safe for the next steps.
@@ -17,6 +23,7 @@
 ```
 
 3. Local Dev: Set up the Personal Access Token in your local environment.
+   1. Add this step to your project's README.
    1. Create an environment variable, named `GH_TOKEN_PACKAGES`, for whichever os/shell you are using locally.
       1. Git Bash example: Add a `.bashrc` file to your user home directory with the content: `export GH_TOKEN_PACKAGES=<your-token-here>`
       1. You will have to restart your shell/terminal after.
@@ -58,7 +65,3 @@ import { Button } from '@kyndryl-design-system/web-components';
 ```html
 <kyn-button>Button</kyn-button>
 ```
-
-# Contributing to this repository
-
-Read the [Contributing Guide](CONTRIBUTING.md) here.
