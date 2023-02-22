@@ -5,7 +5,14 @@ module.exports = {
     '@storybook/addon-essentials',
     'storybook-addon-designs',
     '@storybook/addon-storysource',
-    'storybook-preset-inline-svg',
+    {
+      name: 'storybook-preset-inline-svg',
+      options: {
+        svgInlineLoaderOptions: {
+          removeSVGTagAttrs: false,
+        },
+      },
+    },
   ],
   framework: {
     name: '@storybook/web-components-webpack5',

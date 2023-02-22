@@ -1,0 +1,63 @@
+import { Meta, IconGallery, IconItem } from '@storybook/blocks';
+import { stringToReactHtml } from '../common/helpers/helpers.ts';
+
+import logoutIcon from '../assets/svg/logout.svg';
+
+<Meta title="Guidelines/Icons" />
+
+# Icons
+
+<br />
+
+## Carbon Icons
+
+Most of our icon usage will come from IBM Carbon.
+
+### Example Usage
+
+Use the `<kyn-icon>` component to make using Carbon icons easy.
+
+```js
+import { Icon } from '@kyndryl-design-system/web-components';
+import overflowIcon from '@carbon/icons/es/overflow-menu--vertical/24';
+```
+
+```html
+<kyn-icon .icon="${overflowIcon}"></kyn-icon>
+```
+
+### Gallery
+
+[Carbon Icon Library](https://carbondesignsystem.com/guidelines/icons/library/)
+
+<br />
+
+## Custom Icons
+
+### Example Usage
+
+Custom icons are SVG files that you can import directly from this library. It is recommended to use an SVG loader to inject the SVG as inline HTML into your app.
+
+- Example Loaders:
+  - [Rollup](https://www.npmjs.com/package/rollup-plugin-svg)
+  - [Webpack](https://www.npmjs.com/package/svg-inline-loader)
+
+SVG files can then be imported like this:
+
+```js
+import iconName from '@kyndryl-design-system/web-components/assets/svg/<filename>.svg';
+```
+
+The method for placing them in your app at this point will vary based on the framework/loader.
+
+<br />
+
+### Gallery
+
+<br />
+
+<IconGallery>
+  <IconItem name="logout">
+    <span dangerouslySetInnerHTML={stringToReactHtml(logoutIcon)}></span>
+  </IconItem>
+</IconGallery>

@@ -5,3 +5,7 @@ export const debounce = (fn: Function, ms = 100) => {
     timer = setTimeout(() => fn.apply(e), ms);
   };
 };
+
+export const stringToReactHtml = (string: String) => {
+  return { __html: string };
+};
