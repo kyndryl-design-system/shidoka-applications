@@ -32,6 +32,10 @@ export class Header extends LitElement {
   @property({ type: Number })
   breakpoint = 672;
 
+  /** Adds a 1px shadow to the bottom of the header, for contrast with  white backgrounds. */
+  @property({ type: Boolean })
+  divider = false;
+
   /**
    * Determines if menu should be a flyout or inline depending on screen size.
    * @ignore
@@ -49,6 +53,7 @@ export class Header extends LitElement {
     const classes = {
       header: true,
       'breakpoint-hit': this.breakpointHit,
+      divider: this.divider,
     };
 
     return html`

@@ -37,14 +37,16 @@ export default {
 export const Header = {
   args: {
     rootUrl: '/',
-    appTitle: 'Delivery',
+    appTitle: 'Application',
     breakpoint: 710,
+    divider: true,
   },
   render: (args) => html`
     <kyn-header
       rootUrl=${args.rootUrl}
       appTitle=${args.appTitle}
       breakpoint=${args.breakpoint}
+      ?divider=${args.divider}
     >
       <kyn-header-nav>
         <kyn-header-link href="javascript:void(0)"> Link 1 </kyn-header-link>
