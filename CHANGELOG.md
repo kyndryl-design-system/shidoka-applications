@@ -1,3 +1,10 @@
+# [1.0.0-beta.13](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.12...v1.0.0-beta.13) (2023-02-22)
+
+
+### Features
+
+* **header:** divider option ([b2fa1ff](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/b2fa1ffa7fff4da9dcf5a6bbdba68e5928177714))
+
 # [1.0.0-beta.12](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2023-02-22)
 
 
