@@ -1,3 +1,10 @@
+# [1.0.0-beta.16](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.15...v1.0.0-beta.16) (2023-02-23)
+
+
+### Bug Fixes
+
+* **header:** add optional chaining to window refs ([5e5bc49](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/5e5bc49b30d5f425d6fe2883e5af8ea6e39c5b40))
+
 # [1.0.0-beta.15](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.14...v1.0.0-beta.15) (2023-02-23)
 
 
