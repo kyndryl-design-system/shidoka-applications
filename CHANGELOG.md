@@ -1,3 +1,10 @@
+# [1.0.0-beta.14](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.13...v1.0.0-beta.14) (2023-02-23)
+
+
+### Features
+
+* **header-link:** add divider prop, some style cleanup ([6a8d326](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/6a8d326cd1ff8dbf4c857a93b540f7ff56d8a56f))
+
 # [1.0.0-beta.13](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.12...v1.0.0-beta.13) (2023-02-22)
 
 
