@@ -1,3 +1,10 @@
+# [1.0.0-beta.15](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.14...v1.0.0-beta.15) (2023-02-23)
+
+
+### Bug Fixes
+
+* **header-link:** slotted padding ([0e8bc1f](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/0e8bc1f16d6867a8811fec6461e5f46236fce758))
+
 # [1.0.0-beta.14](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.13...v1.0.0-beta.14) (2023-02-23)
 
 
