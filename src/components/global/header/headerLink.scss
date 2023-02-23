@@ -8,6 +8,7 @@
 
 ::slotted(kyn-header-link) {
   flex-grow: 1;
+  padding-left: 16px;
 }
 
 .nav-link {
@@ -21,8 +22,37 @@
   white-space: nowrap;
   outline: none;
 
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    transition: background-color 150ms ease-out;
+  }
+
+  &.active {
+    color: var(--color-primary-focus);
+    background: var(--color-background-focus);
+
+    &::before {
+      background-color: var(--color-primary-focus);
+    }
+  }
+
   .breakpoint-hit & {
     justify-content: flex-end;
+
+    &::before {
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      width: auto;
+      transition: background-color 150ms ease-out;
+    }
   }
 
   &::after {

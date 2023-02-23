@@ -38,7 +38,7 @@ export const Header = {
   args: {
     rootUrl: '/',
     appTitle: 'Application',
-    breakpoint: 710,
+    breakpoint: 740,
     divider: true,
   },
   render: (args) => html`
@@ -50,7 +50,7 @@ export const Header = {
     >
       <kyn-header-nav>
         <kyn-header-link href="javascript:void(0)"> Link 1 </kyn-header-link>
-        <kyn-header-link href="javascript:void(0)" isActive>
+        <kyn-header-link href="javascript:void(0)" isActive divider>
           Link 2
         </kyn-header-link>
         <kyn-header-link href="javascript:void(0)">

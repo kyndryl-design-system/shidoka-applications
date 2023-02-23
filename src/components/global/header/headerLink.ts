@@ -36,6 +36,10 @@ export class HeaderLink extends LitElement {
   @state()
   level = 1;
 
+  /** Adds a 1px shadow to the bottom of the link for small screens/full-size menu view. */
+  @property({ type: Boolean })
+  divider = false;
+
   /**
    * Determines if menu should be a flyout or inline depending on screen size.
    * @ignore
@@ -61,6 +65,7 @@ export class HeaderLink extends LitElement {
     const classes = {
       menu: this.isSlotted,
       'breakpoint-hit': this.breakpointHit,
+      divider: this.divider,
     };
 
     const linkClasses = {

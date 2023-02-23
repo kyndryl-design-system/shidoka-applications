@@ -4,10 +4,6 @@
   display: block;
 }
 
-::slotted(kyn-header-link) {
-  margin: 0 11px;
-}
-
 .header-nav {
   position: fixed;
   top: var(--header-height);
@@ -41,5 +37,11 @@
     transform: translate3d(0, 0, 0);
     opacity: 1;
     visibility: visible;
+  }
+
+  &.breakpoint-hit {
+    ::slotted(kyn-header-link) {
+      margin: 0 11px;
+    }
   }
 }

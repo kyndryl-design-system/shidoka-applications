@@ -32,6 +32,7 @@ export class HeaderNav extends LitElement {
       'header-nav--inline': this.breakpointHit,
       'header-nav--flyout': !this.breakpointHit,
       'header-nav--open': this.menuOpen,
+      'breakpoint-hit': this.breakpointHit,
     };
 
     return html` <div class=${classMap(classes)}><slot></slot></div> `;
