@@ -82,3 +82,7 @@ Some options for React wrapper libraries:
 1. [reactify-wc](https://www.npmjs.com/package/reactify-wc)
 2. [wc-react](https://www.npmjs.com/package/wc-react)
 3. [@lit-labs/react](https://www.npmjs.com/package/@lit-labs/react)
+
+### Server-Side Rendering (SSR)
+
+When using with an SSR framework like Next.js, you may encounter errors with code that only runs client-side, like `window` references for example. Here is an article that provides some methods to work around this: [Using Non-SSR Friendly Components with Next.js](https://blog.bitsrc.io/using-non-ssr-friendly-components-with-next-js-916f38e8992c).
