@@ -92,7 +92,7 @@ export class Header extends LitElement {
     super.connectedCallback();
 
     this.testBreakpoint();
-    window.addEventListener(
+    window?.addEventListener(
       'resize',
       debounce(() => {
         this.testBreakpoint();
@@ -101,7 +101,7 @@ export class Header extends LitElement {
   }
 
   override disconnectedCallback() {
-    window.removeEventListener(
+    window?.removeEventListener(
       'resize',
       debounce(() => {
         this.testBreakpoint();
@@ -112,7 +112,7 @@ export class Header extends LitElement {
   }
 
   private testBreakpoint() {
-    if (window.innerWidth >= this.breakpoint) {
+    if (window?.innerWidth >= this.breakpoint) {
       this.breakpointHit = true;
     } else {
       this.breakpointHit = false;

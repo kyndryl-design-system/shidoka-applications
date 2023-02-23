@@ -128,7 +128,7 @@ export class HeaderLink extends LitElement {
     super.connectedCallback();
 
     this.testBreakpoint();
-    window.addEventListener(
+    window?.addEventListener(
       'resize',
       debounce(() => {
         this.testBreakpoint();
@@ -137,7 +137,7 @@ export class HeaderLink extends LitElement {
   }
 
   override disconnectedCallback() {
-    window.removeEventListener(
+    window?.removeEventListener(
       'resize',
       debounce(() => {
         this.testBreakpoint();

@@ -193,11 +193,11 @@ export class SideNavLink extends LitElement {
     // calculate flyout menu positioning and max height for overflow
     let top =
       target!.offsetTop - scrollTop! + headerHeight + flyoutHeight >
-      window.innerHeight
-        ? window.innerHeight - flyoutHeight - headerHeight
+      window?.innerHeight
+        ? window?.innerHeight - flyoutHeight - headerHeight
         : target!.offsetTop - scrollTop!;
     top = top < 0 ? 0 : top;
-    const maxHeight = window.innerHeight - headerHeight;
+    const maxHeight = window?.innerHeight - headerHeight;
 
     this.flyoutStyles = {
       top: top + 'px',

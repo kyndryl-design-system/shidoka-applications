@@ -42,7 +42,7 @@ export class HeaderNav extends LitElement {
     super.connectedCallback();
 
     this.testBreakpoint();
-    window.addEventListener(
+    window?.addEventListener(
       'resize',
       debounce(() => {
         this.testBreakpoint();
@@ -65,7 +65,7 @@ export class HeaderNav extends LitElement {
       });
     }
 
-    window.removeEventListener(
+    window?.removeEventListener(
       'resize',
       debounce(() => {
         this.testBreakpoint();
