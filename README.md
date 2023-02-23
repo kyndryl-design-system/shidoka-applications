@@ -72,3 +72,7 @@ import { Button } from '@kyndryl-design-system/web-components';
 ```html
 <kyn-button>Button</kyn-button>
 ```
+
+### React usage
+
+React does not yet support automatic interop with Web Components. This means that React treats all props passed to Web Components as string attributes. It sounds like they are [planning to release it with React 19](https://github.com/facebook/react/issues/11347#issuecomment-988970952), and is now available behind an `@experimental` flag. Until you've upgraded to a version of React that has support, you will need to use a library like [reactify-wc](https://www.npmjs.com/package/reactify-wc) to use these components in React.
