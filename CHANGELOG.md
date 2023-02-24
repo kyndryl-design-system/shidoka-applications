@@ -1,3 +1,10 @@
+# [1.0.0-beta.17](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.16...v1.0.0-beta.17) (2023-02-24)
+
+
+### Bug Fixes
+
+* **header:** fixed breakpoint for gutters and logo size, fix spacing ([b92b35f](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/b92b35f6fa085b37de0f24c06965ac7a128207ed))
+
 # [1.0.0-beta.16](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.15...v1.0.0-beta.16) (2023-02-23)
 
 
