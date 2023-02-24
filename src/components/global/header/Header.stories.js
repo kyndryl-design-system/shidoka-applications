@@ -8,7 +8,6 @@ import './headerFlyout';
 import './headerAvatar';
 import '../../reusable/icon/icon';
 
-import userIcon from '@carbon/icons/es/user--avatar/24';
 import caratDownIcon from '@carbon/icons/es/caret--down/16';
 
 export default {

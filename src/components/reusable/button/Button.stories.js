@@ -1,11 +1,13 @@
+import { withDesign } from 'storybook-addon-designs';
 import { html } from 'lit';
 import '../../reusable/button/button';
 import '../../reusable/icon/icon';
 import arrowRightIcon from '@carbon/icons/es/arrow--right/16';
 
 export default {
-  title: 'Reusable/Button',
+  title: 'Reusable/Button (WIP)',
   component: 'kyn-button',
+  decorators: [withDesign],
   argTypes: {
     kind: {
       control: { type: 'select' },
@@ -52,4 +54,11 @@ export const ButtonWithIcon = {
       <kyn-icon .icon=${arrowRightIcon}></kyn-icon>
     </kyn-button>
   `,
+};
+
+Button.parameters = {
+  design: {
+    type: 'figma',
+    url: 'https://www.figma.com/file/PDrJbUpubptqYdtRxih328/Kyndryl-Bridge-Styleguide?node-id=438%3A4403&t=iNPRmUaTDCaP8axD-0',
+  },
 };

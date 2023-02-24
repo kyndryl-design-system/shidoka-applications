@@ -196,7 +196,7 @@ export class SideNavLink extends LitElement {
       window?.innerHeight
         ? window?.innerHeight - flyoutHeight - headerHeight
         : target!.offsetTop - scrollTop!;
-    top = top < 0 ? 0 : top;
+    top = top < headerHeight ? headerHeight : top;
     const maxHeight = window?.innerHeight - headerHeight;
 
     this.flyoutStyles = {
