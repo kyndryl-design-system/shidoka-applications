@@ -59,6 +59,10 @@ The method used (JS Import, CSS import, or &lt;style&gt; tag) will vary based on
 @kyndryl-design-system/web-components/root.css
 ```
 
+### Use CSS tokens/variables
+
+You can make use of [tokens/variables included in root.css](https://github.kyndryl.net/kyndryl-design-system/web-components/blob/1761e8524349e06f97c8cc4c7606a985f8c4bc7c/src/root.css#L29) such as `--header-height` to pad the body for the fixed position header, `--spacing-gutter` for the padding on your main container, or any of the color tokens. These are very bare-bones currently, and will need to be fleshed out later.
+
 ## Start using components
 
 See [Storybook](https://pages.github.kyndryl.net/kyndryl-design-system/web-components/) for the full components documentation.
