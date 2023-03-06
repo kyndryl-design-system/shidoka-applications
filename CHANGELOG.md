@@ -1,3 +1,10 @@
+# [1.0.0-beta.18](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.17...v1.0.0-beta.18) (2023-03-06)
+
+
+### Bug Fixes
+
+* **header:** max-height/overflow for flyout menus on large screens ([a6d772d](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/a6d772db2c70cf1321886d0a1182eaf4788e263f))
+
 # [1.0.0-beta.17](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.16...v1.0.0-beta.17) (2023-02-24)
 
 
