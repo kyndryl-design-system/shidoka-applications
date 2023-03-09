@@ -41,7 +41,7 @@ This is necessary as long as we serve our packages from a private registry. Even
 
 ## Install the package
 
-Note: This will not work until you have configured the enterprise package registry following the instructions above.
+<!-- Note: This will not work until you have configured the enterprise package registry following the instructions above. -->
 
 ```bash
 # stable/main
