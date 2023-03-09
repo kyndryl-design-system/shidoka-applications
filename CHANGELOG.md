@@ -3,6 +3,14 @@
 
 ### Bug Fixes
 
+* npm publish public access ([03dd38a](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/03dd38ad53b9a1375e459f9cd3da57b4cb4525ea))
+* test public npm publish ([66541d4](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/66541d43a290bd09b1bc2fa43e51484a88e5487e))
+
+# [1.0.0-beta.19](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.18...v1.0.0-beta.19) (2023-03-09)
+
+
+### Bug Fixes
+
 * test public npm publish ([66541d4](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/66541d43a290bd09b1bc2fa43e51484a88e5487e))
 
 # [1.0.0-beta.18](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.17...v1.0.0-beta.18) (2023-03-06)
