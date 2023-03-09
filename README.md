@@ -8,7 +8,7 @@ Read the [Contributing Guide](https://github.kyndryl.net/kyndryl-design-system/w
 
 # Using this library in another project
 
-## Configure your environments to enable installation of packages from the GitHub Enterprise npm package registry.
+<!-- ## Configure your environments to enable installation of packages from the GitHub Enterprise npm package registry.
 
 This is necessary as long as we serve our packages from a private registry. Eventually we will probably move public and will be able to skip this.
 
@@ -37,7 +37,7 @@ This is necessary as long as we serve our packages from a private registry. Even
       ```yml
       env:
       GH_TOKEN_PACKAGES: '${{ secrets.GH_TOKEN_PACKAGES }}'
-      ```
+      ``` -->
 
 ## Install the package
 
