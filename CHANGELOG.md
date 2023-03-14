@@ -1,3 +1,10 @@
+# [1.0.0-beta.23](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.22...v1.0.0-beta.23) (2023-03-14)
+
+
+### Bug Fixes
+
+* postcss inject false ([a629b48](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/a629b48ee57bf8f1bf73917ea3399c1d8e2dfe7a))
+
 # [1.0.0-beta.22](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.21...v1.0.0-beta.22) (2023-03-14)
 
 
