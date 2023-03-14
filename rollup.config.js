@@ -27,7 +27,10 @@ export default {
     }),
     InlineSvg(),
     typescript(),
-    postcss(),
+    postcss({
+      minimize: false,
+      inject: false,
+    }),
     litcss(),
     terser(),
   ],
