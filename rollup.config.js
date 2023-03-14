@@ -16,7 +16,6 @@ export default {
     preserveModulesRoot: 'src',
     sourcemap: true,
   },
-  external: [/node_modules/],
   plugins: [
     del({ targets: 'dist/*' }),
     resolve(),
