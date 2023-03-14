@@ -1,3 +1,10 @@
+# [1.0.0-beta.21](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.20...v1.0.0-beta.21) (2023-03-14)
+
+
+### Bug Fixes
+
+* rollup preserveModules external node_modules ([79d2859](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/79d285913c39c24853a7b4beb8a092b0f505ec00))
+
 # [1.0.0-beta.20](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.19...v1.0.0-beta.20) (2023-03-14)
 
 
