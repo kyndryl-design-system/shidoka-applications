@@ -1,3 +1,11 @@
+# [1.0.0-beta.22](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.21...v1.0.0-beta.22) (2023-03-14)
+
+
+### Reverts
+
+* Revert "fix: rollup preserveModules" ([8eb0d67](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/8eb0d6794bff132afbe4758782afae61f3c14197))
+* Revert "fix: rollup preserveModules external node_modules" ([3a5a9f4](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/3a5a9f499d0c303dd3e5b09935447706fba373e5))
+
 # [1.0.0-beta.21](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.20...v1.0.0-beta.21) (2023-03-14)
 
 
