@@ -1,3 +1,10 @@
+# [1.0.0-beta.25](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.24...v1.0.0-beta.25) (2023-03-15)
+
+
+### Bug Fixes
+
+* **build:** remove sideEffects false ([08de0af](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/08de0af94ea8506953a5a580805cd5bfd56d4507))
+
 # [1.0.0-beta.24](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.23...v1.0.0-beta.24) (2023-03-15)
 
 
