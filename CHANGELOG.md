@@ -1,3 +1,10 @@
+# [1.0.0-beta.24](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.23...v1.0.0-beta.24) (2023-03-15)
+
+
+### Features
+
+* **build:** preserve modules, add indexes ([5cc1bbb](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/5cc1bbb5f7f697bed000948e180ffce48d83d8ea))
+
 # [1.0.0-beta.23](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.22...v1.0.0-beta.23) (2023-03-14)
 
 
