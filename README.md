@@ -67,14 +67,32 @@ You can make use of [tokens/variables included in root.css](https://github.kyndr
 
 See [Storybook](https://pages.github.kyndryl.net/kyndryl-design-system/web-components/) for the full components documentation.
 
-**Example:**
+### Example: Component with Sub-components
+
+This example imports the Header component AND all of it's subcomponents by targeting the index file.
 
 ```js
-import { Button } from '@kyndryl-design-system/web-components';
+import '@kyndryl-design-system/web-components/components/global/header';
 ```
 
 ```html
-<kyn-button>Button</kyn-button>
+<kyn-header>
+  <kyn-header-nav>
+    <kyn-header-link>Link</kyn-header-link>
+  </kyn-header-nav>
+</kyn-header>
+```
+
+### Example: Single Component
+
+This example imports the HeaderLink component by targeting the component file directly.
+
+```js
+import '@kyndryl-design-system/web-components/components/global/header/headerLink';
+```
+
+```html
+<kyn-header-link>Link</kyn-header-link>
 ```
 
 ### React usage
