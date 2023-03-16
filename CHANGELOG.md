@@ -1,3 +1,10 @@
+# [1.0.0-beta.26](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.25...v1.0.0-beta.26) (2023-03-16)
+
+
+### Bug Fixes
+
+* **header:** remove unused imports ([f0f0236](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/f0f0236a75ef5be71a6ad10b9909f97daefee757))
+
 # [1.0.0-beta.25](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.24...v1.0.0-beta.25) (2023-03-15)
 
 
