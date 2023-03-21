@@ -84,6 +84,8 @@ export class HeaderLink extends LitElement {
     return html`
       <div class="${classMap(classes)}">
         <a
+          target="_blank"
+          rel="noopener"
           href=${this.href}
           class=${classMap(linkClasses)}
           @click=${(e: Event) => this.handleClick(e)}
