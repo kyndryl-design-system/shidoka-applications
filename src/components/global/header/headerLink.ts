@@ -26,6 +26,14 @@ export class HeaderLink extends LitElement {
   @property({ type: String })
   href = '';
 
+  /** Defines a target attribute for where to load the URL. Possible options include "_self" (deafult), "_blank", "_parent", "_top" */
+  @property({ type: String })
+  target = '_self' as const;
+
+  /** Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship */
+  @property({ type: String })
+  rel = '';
+
   /** Link active state, for example when URL path matches link href. */
   @property({ type: Boolean })
   isActive = false;
@@ -84,6 +92,8 @@ export class HeaderLink extends LitElement {
     return html`
       <div class="${classMap(classes)}">
         <a
+          target=${this.target}
+          rel=${this.rel}
           href=${this.href}
           class=${classMap(linkClasses)}
           @click=${(e: Event) => this.handleClick(e)}

@@ -9,26 +9,10 @@
       "exports": [
         {
           "kind": "js",
-          "name": "Button",
-          "declaration": {
-            "name": "Button",
-            "module": "src/index.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Icon",
-          "declaration": {
-            "name": "Icon",
-            "module": "src/index.ts"
-          }
-        },
-        {
-          "kind": "js",
           "name": "Header",
           "declaration": {
             "name": "Header",
-            "module": "src/index.ts"
+            "module": "./components/global/header"
           }
         },
         {
@@ -36,7 +20,7 @@
           "name": "HeaderNav",
           "declaration": {
             "name": "HeaderNav",
-            "module": "src/index.ts"
+            "module": "./components/global/header"
           }
         },
         {
@@ -44,7 +28,7 @@
           "name": "HeaderLink",
           "declaration": {
             "name": "HeaderLink",
-            "module": "src/index.ts"
+            "module": "./components/global/header"
           }
         },
         {
@@ -52,7 +36,7 @@
           "name": "HeaderFlyouts",
           "declaration": {
             "name": "HeaderFlyouts",
-            "module": "src/index.ts"
+            "module": "./components/global/header"
           }
         },
         {
@@ -60,7 +44,7 @@
           "name": "HeaderFlyout",
           "declaration": {
             "name": "HeaderFlyout",
-            "module": "src/index.ts"
+            "module": "./components/global/header"
           }
         },
         {
@@ -68,7 +52,7 @@
           "name": "HeaderAvatar",
           "declaration": {
             "name": "HeaderAvatar",
-            "module": "src/index.ts"
+            "module": "./components/global/header"
           }
         },
         {
@@ -76,7 +60,7 @@
           "name": "SideNav",
           "declaration": {
             "name": "SideNav",
-            "module": "src/index.ts"
+            "module": "./components/global/sideNav"
           }
         },
         {
@@ -84,7 +68,23 @@
           "name": "SideNavLink",
           "declaration": {
             "name": "SideNavLink",
-            "module": "src/index.ts"
+            "module": "./components/global/sideNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Button",
+          "declaration": {
+            "name": "Button",
+            "module": "./components/reusable/button"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Icon",
+          "declaration": {
+            "name": "Icon",
+            "module": "./components/reusable/icon"
           }
         }
       ]
@@ -499,6 +499,26 @@
             },
             {
               "kind": "field",
+              "name": "target",
+              "default": "'_self'",
+              "type": {
+                "text": "'_self'"
+              },
+              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (deafult), \"_blank\", \"_parent\", \"_top\"",
+              "attribute": "target"
+            },
+            {
+              "kind": "field",
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
+              "attribute": "rel"
+            },
+            {
+              "kind": "field",
               "name": "isActive",
               "type": {
                 "text": "boolean"
@@ -561,6 +581,24 @@
               "default": "''",
               "description": "Link url.",
               "fieldName": "href"
+            },
+            {
+              "name": "target",
+              "default": "'_self'",
+              "type": {
+                "text": "'_self'"
+              },
+              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (deafult), \"_blank\", \"_parent\", \"_top\"",
+              "fieldName": "target"
+            },
+            {
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
+              "fieldName": "rel"
             },
             {
               "name": "isActive",
@@ -652,6 +690,84 @@
           "declaration": {
             "name": "HeaderNav",
             "module": "src/components/global/header/headerNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Header",
+          "declaration": {
+            "name": "Header",
+            "module": "./header"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderNav",
+          "declaration": {
+            "name": "HeaderNav",
+            "module": "./headerNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderLink",
+          "declaration": {
+            "name": "HeaderLink",
+            "module": "./headerLink"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderFlyouts",
+          "declaration": {
+            "name": "HeaderFlyouts",
+            "module": "./headerFlyouts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderFlyout",
+          "declaration": {
+            "name": "HeaderFlyout",
+            "module": "./headerFlyout"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderAvatar",
+          "declaration": {
+            "name": "HeaderAvatar",
+            "module": "./headerAvatar"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/sideNav/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SideNav",
+          "declaration": {
+            "name": "SideNav",
+            "module": "./sideNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SideNavLink",
+          "declaration": {
+            "name": "SideNavLink",
+            "module": "./sideNavLink"
           }
         }
       ]
@@ -1014,6 +1130,21 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/button/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Button",
+          "declaration": {
+            "name": "Button",
+            "module": "./button"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/icon/icon.ts",
       "declarations": [
         {
@@ -1110,6 +1241,21 @@
           "declaration": {
             "name": "Icon",
             "module": "src/components/reusable/icon/icon.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/icon/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Icon",
+          "declaration": {
+            "name": "Icon",
+            "module": "./icon"
           }
         }
       ]
