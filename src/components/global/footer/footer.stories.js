@@ -28,14 +28,10 @@ export default {
 export const Footer = {
   args: {
     rootUrl: '/',
-    breakpoint: 740,
-    cprYear: 2023,
   },
   render: (args) => html`
     <kyn-footer
       rootUrl=${args.rootUrl}
-      breakpoint=${args.breakpoint}
-      cprYear=${args.cprYear}
     >
       <kyn-footer-nav>
         <kyn-footer-link divider href="//www.kyndryl.com/us/en/privacy">Privacy</kyn-footer-link>
