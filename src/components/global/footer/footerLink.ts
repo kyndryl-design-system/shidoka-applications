@@ -3,7 +3,6 @@ import {
   customElement,
   property,
   state,
-  queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { querySelectorDeep } from 'query-selector-shadow-dom';

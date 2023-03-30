@@ -17,10 +17,6 @@ export class Footer extends LitElement {
   @property({ type: String })
   rootUrl = '/';
   
-  /** Adds a 1px shadow to the top of the footer, for contrast with  white backgrounds. */
-  @property({ type: Boolean })
-  divider = false;
-  
   @property({ type: Number})
   cprYear = '2023'
 
