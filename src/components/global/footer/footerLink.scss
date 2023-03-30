@@ -1,0 +1,43 @@
+@import '../../../common/scss/global.scss';
+
+:host {
+  display: inline;
+  position: relative;
+}
+
+.footer-link {
+  padding-right: 8px;
+  padding-left: 8px;
+  
+  &.divider {
+    border-right: 1px solid var(--color-divider);
+    padding-right: 8px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: calc(100% - 23px);
+    transform: scaleX(0);
+    height: 1px;
+    bottom: 0;
+    right: 16px;
+    top: auto;
+    background-color: var(--color-brand);
+    transform-origin: bottom left;
+    transition: transform 0.15s ease-out;
+  }
+
+  &:hover::after,
+  &:focus::after {
+    transform: scaleX(1);
+  }
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600px;
+}
