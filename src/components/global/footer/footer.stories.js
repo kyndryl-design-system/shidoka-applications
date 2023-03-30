@@ -39,9 +39,6 @@ export const Footer = {
         <kyn-footer-link divider href="//www.kyndryl.com/us/en/security">Security</kyn-footer-link>
         
         <kyn-footer-link onclick="alert('Custom link clicked')">Custom Link</kyn-footer-link>
-        <kyn-footer-link onclick="alert('Custom link clicked')">Custom Link</kyn-footer-link>
-        <kyn-footer-link onclick="alert('Custom link clicked')">Custom Link</kyn-footer-link>
-        <kyn-footer-link onclick="alert('Custom link clicked')">Custom Link</kyn-footer-link>
       </kyn-footer-nav>
     </kyn-footer>
   `,

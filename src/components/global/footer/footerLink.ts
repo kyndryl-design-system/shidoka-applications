@@ -5,8 +5,6 @@ import {
   state,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { querySelectorDeep } from 'query-selector-shadow-dom';
-import { debounce } from '../../../common/helpers/helpers';
 import FooterLinkScss from './footerLink.scss';
 import '../../reusable/icon/icon';
 
@@ -22,15 +20,9 @@ export class FooterNavLink extends LitElement {
   @property({ type: Boolean })
   divider = false;
 
+  /** Link url. */
   @property({ type: String })
   href = '';
-
-  /**
-   * Determines screen size.
-   * @ignore
-   */
-  @state()
-  breakpointHit = false;
 
   override render() {
     const classes = {
@@ -50,43 +42,13 @@ export class FooterNavLink extends LitElement {
     `;
   }
 
-  override connectedCallback() {
-    super.connectedCallback();
-
-    this.testBreakpoint();
-    window?.addEventListener(
-      'resize',
-      debounce(() => {
-        this.testBreakpoint();
-      })
-    );
-  }
-
-  override disconnectedCallback() {
-    window?.removeEventListener(
-      'resize',
-      debounce(() => {
-        this.testBreakpoint();
-      })
-    );
-
-    super.disconnectedCallback();
-  }
   private handleClick(e: Event) {
     const event = new CustomEvent('on-click', {
       detail: { origEvent: e },
     });
     this.dispatchEvent(event);
   }
-
-  private testBreakpoint() {
-    const nav = querySelectorDeep('kyn-footer-nav');
-    if (nav) {
-      this.breakpointHit = nav!.breakpointHit;
-    }
-  }
 }
-
 declare global {
   interface HTMLElementTagNameMap {
     'kyn-footer-link': FooterNavLink;

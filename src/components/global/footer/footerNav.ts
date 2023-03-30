@@ -12,13 +12,6 @@ import FooterNavScss from './footerNav.scss';
 @customElement('kyn-footer-nav')
 export class FooterNav extends LitElement {
   static override styles = FooterNavScss;
-  
-  /**
-   * Determines screen breakpoint.
-   * @ignore
-   */
-  @state()
-  breakpointHit = false;
 
   override render() {
     const footerNavClasses = {'footer-nav': true}
@@ -26,25 +19,6 @@ export class FooterNav extends LitElement {
       <div class=${classMap(footerNavClasses)}>
         <slot></slot>
       </div> `;
-  }
-
-  override connectedCallback() {
-    super.connectedCallback();
-
-    this.testBreakpoint();
-    window?.addEventListener(
-      'resize',
-      debounce(() => {
-        this.testBreakpoint();
-      })
-    );
-  }
-
-  private testBreakpoint() {
-    const nav = querySelectorDeep('kyn-footer');
-    if (nav) {
-      this.breakpointHit = nav!.breakpointHit;
-    }
   }
 }
 
