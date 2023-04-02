@@ -86,6 +86,30 @@
             "name": "Icon",
             "module": "./components/reusable/icon"
           }
+        },
+        {
+          "kind": "js",
+          "name": "Footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "./components/global/footer"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FooterNav",
+          "declaration": {
+            "name": "FooterNav",
+            "module": "./components/global/footer"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FooterNavLink",
+          "declaration": {
+            "name": "FooterNavLink",
+            "module": "./components/global/footer"
+          }
         }
       ]
     },
@@ -137,6 +161,290 @@
           "declaration": {
             "name": "stringToReactHtml",
             "module": "src/common/helpers/helpers.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/footer/footer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Footer",
+          "members": [
+            {
+              "kind": "field",
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the footer logo link. Should target the application home page.",
+              "attribute": "rootUrl"
+            },
+            {
+              "kind": "method",
+              "name": "handleRootLinkClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the footer logo link. Should target the application home page.",
+              "fieldName": "rootUrl"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-footer",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "src/components/global/footer/footer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "src/components/global/footer/footer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/footer/footerLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Component for navigation links within the Footer.",
+          "name": "FooterNavLink",
+          "slots": [
+            {
+              "description": "Slot for link text/content.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "divider",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a 1px divider between footer nav links.",
+              "attribute": "divider"
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "default": "'_self'",
+              "type": {
+                "text": "'_self'"
+              },
+              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (deafult), \"_blank\", \"_parent\", \"_top\"",
+              "attribute": "target"
+            },
+            {
+              "kind": "field",
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
+              "attribute": "rel"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event details.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "divider",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a 1px divider between footer nav links.",
+              "fieldName": "divider"
+            },
+            {
+              "name": "target",
+              "default": "'_self'",
+              "type": {
+                "text": "'_self'"
+              },
+              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (deafult), \"_blank\", \"_parent\", \"_top\"",
+              "fieldName": "target"
+            },
+            {
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
+              "fieldName": "rel"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-footer-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FooterNavLink",
+          "declaration": {
+            "name": "FooterNavLink",
+            "module": "src/components/global/footer/footerLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-footer-link",
+          "declaration": {
+            "name": "FooterNavLink",
+            "module": "src/components/global/footer/footerLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/footer/footerNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container for footer navigation links.",
+          "name": "FooterNav",
+          "slots": [
+            {
+              "description": "This element has a slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-footer-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FooterNav",
+          "declaration": {
+            "name": "FooterNav",
+            "module": "src/components/global/footer/footerNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-footer-nav",
+          "declaration": {
+            "name": "FooterNav",
+            "module": "src/components/global/footer/footerNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/footer/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "./footer"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FooterNav",
+          "declaration": {
+            "name": "FooterNav",
+            "module": "./footerNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FooterNavLink",
+          "declaration": {
+            "name": "FooterNavLink",
+            "module": "./footerLink"
           }
         }
       ]

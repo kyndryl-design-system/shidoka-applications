@@ -1,8 +1,6 @@
 import { LitElement, html } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { querySelectorDeep } from 'query-selector-shadow-dom';
-import { debounce } from '../../../common/helpers/helpers';
 import FooterNavScss from './footerNav.scss';
 
 /**
