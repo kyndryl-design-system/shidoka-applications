@@ -1,8 +1,4 @@
-import {
-  Footer,
-  FooterNav,
-  FooterNavLink,
-} from '../../../../dist/index.js';
+import { Footer, FooterNav, FooterNavLink } from '../../../../dist/index.js';
 
 import { assert } from '@open-wc/testing';
 

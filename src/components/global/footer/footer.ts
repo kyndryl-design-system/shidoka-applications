@@ -8,7 +8,7 @@ import FooterScss from './footer.scss';
 @customElement('kyn-footer')
 export class Footer extends LitElement {
   static override styles = FooterScss;
-  
+
   /** URL for the footer logo link. Should target the application home page. */
   @property({ type: String })
   rootUrl = '/';
@@ -18,10 +18,9 @@ export class Footer extends LitElement {
       footer: true,
     };
 
-    return html`
-    <footer class="${classMap(classes)}">
-    <div class="footer-links"><slot></slot></div>
-    <div class="footer-cpr">
+    return html` <footer class="${classMap(classes)}">
+      <div class="footer-links"><slot></slot></div>
+      <div class="footer-cpr">
         <a
           href="${this.rootUrl}"
           class="logo-link"
@@ -30,10 +29,11 @@ export class Footer extends LitElement {
           <slot name="logo"> ${unsafeHTML(logo)} </slot>
         </a>
         <span class="copyright">
-          Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights reserved
+          Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights
+          reserved
         </span>
       </div>
-    </footer>`
+    </footer>`;
   }
 
   private handleRootLinkClick(e: Event) {

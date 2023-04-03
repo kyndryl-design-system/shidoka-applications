@@ -10,7 +10,7 @@ export default {
   component: 'kyn-footer',
   subcomponents: {
     FooterNav: 'kyn-footer-nav',
-    FooterNavLink: 'kyn-footer-link'
+    FooterNavLink: 'kyn-footer-link',
   },
   decorators: [
     withDesign,
@@ -30,14 +30,18 @@ export const Footer = {
     rootUrl: '/',
   },
   render: (args) => html`
-    <kyn-footer
-      rootUrl=${args.rootUrl}
-    >
+    <kyn-footer rootUrl=${args.rootUrl}>
       <kyn-footer-nav>
-        <kyn-footer-link divider href="//www.kyndryl.com/us/en/privacy">Privacy</kyn-footer-link>
-        <kyn-footer-link divider href="//www.kyndryl.com/us/en/terms">Terms</kyn-footer-link>
-        <kyn-footer-link divider href="//www.kyndryl.com/us/en/security">Security</kyn-footer-link>
-        
+        <kyn-footer-link divider href="//www.kyndryl.com/us/en/privacy"
+          >Privacy</kyn-footer-link
+        >
+        <kyn-footer-link divider href="//www.kyndryl.com/us/en/terms"
+          >Terms</kyn-footer-link
+        >
+        <kyn-footer-link divider href="//www.kyndryl.com/us/en/security"
+          >Security</kyn-footer-link
+        >
+
         <kyn-footer-link href="javascript:void(0)">Custom Link</kyn-footer-link>
       </kyn-footer-nav>
     </kyn-footer>
@@ -47,6 +51,6 @@ export const Footer = {
 Footer.parameters = {
   design: {
     type: 'figma',
-    url: 'https://www.figma.com/file/zGyRSDM6stIrSjC3TOyGGQ/719820--Kyndryl-Bridge-Navigation-Patterns?node-id=2154-11029&t=tURyPlJ1YyDS3qAT-0'
+    url: 'https://www.figma.com/file/zGyRSDM6stIrSjC3TOyGGQ/719820--Kyndryl-Bridge-Navigation-Patterns?node-id=2154-11029&t=tURyPlJ1YyDS3qAT-0',
   },
 };

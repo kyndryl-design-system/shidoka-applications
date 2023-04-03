@@ -12,11 +12,12 @@ export class FooterNav extends LitElement {
   static override styles = FooterNavScss;
 
   override render() {
-    const footerNavClasses = {'footer-nav': true}
+    const footerNavClasses = { 'footer-nav': true };
     return html`
       <div class=${classMap(footerNavClasses)}>
         <slot></slot>
-      </div> `;
+      </div>
+    `;
   }
 }
 

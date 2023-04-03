@@ -1,8 +1,5 @@
 import { LitElement, html } from 'lit';
-import {
-  customElement,
-  property
-} from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import FooterLinkScss from './footerLink.scss';
 import '../../reusable/icon/icon';
@@ -27,7 +24,7 @@ export class FooterNavLink extends LitElement {
   /** Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship */
   @property({ type: String })
   rel = '';
-  
+
   /** Link url. */
   @property({ type: String })
   href = '';
@@ -37,7 +34,7 @@ export class FooterNavLink extends LitElement {
       'footer-link': true,
       divider: this.divider,
     };
-  
+
     return html`
       <span class=${classMap(classes)}>
         <a
@@ -46,7 +43,7 @@ export class FooterNavLink extends LitElement {
           href=${this.href ? this.href : 'javascript:void(0)'}
           @click=${(e: Event) => this.handleClick(e)}
         >
-        <slot></slot>
+          <slot></slot>
         </a>
       </span>
     `;
