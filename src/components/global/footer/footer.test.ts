@@ -2,7 +2,7 @@ import {
   Footer,
   FooterNav,
   FooterNavLink,
-} from '../footer/index';
+} from '../../../../dist/index.js';
 
 import { assert } from '@open-wc/testing';
 
