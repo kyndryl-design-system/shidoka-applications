@@ -1,12 +1,11 @@
 # [1.0.0-beta.27](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.26...v1.0.0-beta.27) (2023-03-22)
 
-
 ### Bug Fixes
 
-* assert local target type to 'const' per linter requirement ([e844fa1](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/e844fa13ada38dfc3cfbb888b21384179ad0867a))
-* make target and rel optional with sane defaults ([5d3b20d](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/5d3b20d2c5a88ebb446a954d777df63fcbe7297e))
-* open help links in new tab ([94418b0](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/94418b07589ddcc26b597fd1640fef2f9d0ecab3))
-* run analyze to get the new props in custom elements ([abe324f](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/abe324f012c0c2b3de2c7c874710db345d51a92a))
+- assert local target type to 'const' per linter requirement ([e844fa1](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/e844fa13ada38dfc3cfbb888b21384179ad0867a))
+- make target and rel optional with sane defaults ([5d3b20d](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/5d3b20d2c5a88ebb446a954d777df63fcbe7297e))
+- open help links in new tab ([94418b0](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/94418b07589ddcc26b597fd1640fef2f9d0ecab3))
+- run analyze to get the new props in custom elements ([abe324f](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/abe324f012c0c2b3de2c7c874710db345d51a92a))
 
 # [1.0.0-beta.26](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.25...v1.0.0-beta.26) (2023-03-16)
 

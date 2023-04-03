@@ -9,3 +9,4 @@ export {
 export { SideNav, SideNavLink } from './components/global/sideNav';
 export { Button } from './components/reusable/button';
 export { Icon } from './components/reusable/icon';
+export { Footer, FooterNav, FooterNavLink } from './components/global/footer';
