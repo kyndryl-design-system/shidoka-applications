@@ -14,7 +14,9 @@ export class Footer extends LitElement {
   rootUrl = '/';
 
   override render() {
-    const classes = { footer: true };
+    const classes = {
+      footer: true,
+    };
 
     return html` <footer class="${classMap(classes)}">
       <div class="footer-links"><slot></slot></div>
