@@ -1,3 +1,12 @@
+# [1.0.0-beta.28](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.27...v1.0.0-beta.28) (2023-04-04)
+
+
+### Bug Fixes
+
+* format changes and commit message for auto publish ([18e604d](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/18e604d2bd9aaf31e954a59b7d5f12c3d10a40f6))
+* format changes and commit message for auto publish ([a4b9a98](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/a4b9a98f350ab294274daaed5f63404e32a4b7ef))
+* formatting from running npm run format ([1ce6a7a](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/1ce6a7abf45fcdc4f17f0c8c3667f07693c91207))
+
 # [1.0.0-beta.27](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.26...v1.0.0-beta.27) (2023-03-22)
 
 ### Bug Fixes
