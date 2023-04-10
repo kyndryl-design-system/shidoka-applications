@@ -18,24 +18,26 @@ export class Footer extends LitElement {
       footer: true,
     };
 
-    return html` <footer class="${classMap(classes)}">
-      <div class="footer-links"><slot></slot></div>
-      <div class="footer-cpr">
-        <div class="logo-container">
-          <a
-            href="${this.rootUrl}"
-            class="logo-link"
-            @click="${(e: Event) => this.handleRootLinkClick(e)}"
-          >
-            <slot name="logo">${unsafeHTML(logo)}</slot>
-          </a>
+    return html`
+      <footer class="${classMap(classes)}">
+        <div class="footer-links"><slot></slot></div>
+        <div class="footer-cpr">
+          <div class="logo-container">
+            <a
+              href="${this.rootUrl}"
+              class="logo-link"
+              @click="${(e: Event) => this.handleRootLinkClick(e)}"
+            >
+              <slot name="logo">${unsafeHTML(logo)}</slot>
+            </a>
+          </div>
+          <span class="copyright">
+            Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights
+            reserved
+          </span>
         </div>
-        <span class="copyright">
-          Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights
-          reserved
-        </span>
-      </div>
-    </footer>`;
+      </footer>
+    `;
   }
 
   private handleRootLinkClick(e: Event) {

@@ -1,0 +1,23 @@
+@import '../../../common/scss/global.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding-top: var(--header-height);
+  box-sizing: border-box;
+}
+
+.static {
+  display: flex;
+  flex-direction: column;
+}
+
+::slotted(main) {
+  flex: 1 0 auto;
+  padding: var(--spacing-gutter);
+}
+
+::slotted(kyn-footer) {
+  flex-shrink: 0;
+}
