@@ -1,6 +1,5 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
 import FooterLinkScss from './footerLink.scss';
 import '../../reusable/icon/icon';
 
@@ -30,22 +29,16 @@ export class FooterNavLink extends LitElement {
   href = '';
 
   override render() {
-    const classes = {
-      'footer-link': true,
-      divider: this.divider,
-    };
-
     return html`
-      <span class=${classMap(classes)}>
-        <a
-          target=${this.target}
-          rel=${this.rel}
-          href=${this.href ? this.href : 'javascript:void(0)'}
-          @click=${(e: Event) => this.handleClick(e)}
-        >
-          <slot></slot>
-        </a>
-      </span>
+      <a
+        class="footer-link"
+        target=${this.target}
+        rel=${this.rel}
+        href=${this.href ? this.href : 'javascript:void(0)'}
+        @click=${(e: Event) => this.handleClick(e)}
+      >
+        <slot></slot>
+      </a>
     `;
   }
 

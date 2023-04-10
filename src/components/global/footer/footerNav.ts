@@ -1,6 +1,5 @@
 import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
 import FooterNavScss from './footerNav.scss';
 
 /**
@@ -12,9 +11,8 @@ export class FooterNav extends LitElement {
   static override styles = FooterNavScss;
 
   override render() {
-    const footerNavClasses = { 'footer-nav': true };
     return html`
-      <div class=${classMap(footerNavClasses)}>
+      <div class="footer-nav">
         <slot></slot>
       </div>
     `;
