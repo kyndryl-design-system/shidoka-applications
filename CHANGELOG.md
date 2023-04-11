@@ -1,3 +1,15 @@
+# [1.0.0-beta.29](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.28...v1.0.0-beta.29) (2023-04-11)
+
+
+### Bug Fixes
+
+* **footer:** css styles cleanup ([5f77ebb](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/5f77ebb7a3ba3ea630512cc925494c8149f7248d))
+
+
+### Features
+
+* **ui-shell:** add ui shell poc ([49ea6de](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/49ea6de421c44cc0bfaeb8692a91f706725d42d2))
+
 # [1.0.0-beta.28](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.27...v1.0.0-beta.28) (2023-04-04)
 
 
