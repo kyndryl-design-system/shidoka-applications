@@ -1,9 +1,6 @@
 import { withDesign } from 'storybook-addon-designs';
 import { html } from 'lit';
-import './footer';
-import '../../reusable/icon/icon';
-import './footerNav';
-import './footerLink';
+import './index';
 
 export default {
   title: 'Global/Footer',
@@ -16,9 +13,7 @@ export default {
     withDesign,
     (story) =>
       html`
-        <div
-          style="height: 100%; min-height: 250px; transform: translate3d(0,0,0); margin: -16px;"
-        >
+        <div style="position: absolute; bottom: 0; left: 0; right: 0;">
           ${story()}
         </div>
       `,
@@ -32,17 +27,10 @@ export const Footer = {
   render: (args) => html`
     <kyn-footer rootUrl=${args.rootUrl}>
       <kyn-footer-nav>
-        <kyn-footer-link divider href="//www.kyndryl.com/us/en/privacy"
-          >Privacy</kyn-footer-link
-        >
-        <kyn-footer-link divider href="//www.kyndryl.com/us/en/terms"
-          >Terms</kyn-footer-link
-        >
-        <kyn-footer-link divider href="//www.kyndryl.com/us/en/security"
-          >Security</kyn-footer-link
-        >
-
-        <kyn-footer-link href="javascript:void(0)">Custom Link</kyn-footer-link>
+        <kyn-footer-link href="javascript:void(0);">Link 1</kyn-footer-link>
+        <kyn-footer-link href="javascript:void(0);">Link 2</kyn-footer-link>
+        <kyn-footer-link href="javascript:void(0);">Link 3</kyn-footer-link>
+        <kyn-footer-link href="javascript:void(0);">Link 4</kyn-footer-link>
       </kyn-footer-nav>
     </kyn-footer>
   `,
@@ -51,6 +39,6 @@ export const Footer = {
 Footer.parameters = {
   design: {
     type: 'figma',
-    url: 'https://www.figma.com/file/zGyRSDM6stIrSjC3TOyGGQ/719820--Kyndryl-Bridge-Navigation-Patterns?node-id=2154-11029&t=tURyPlJ1YyDS3qAT-0',
+    url: 'https://www.figma.com/file/zGyRSDM6stIrSjC3TOyGGQ/719820--Kyndryl-Bridge-Navigation-Patterns?node-id=1921%3A5110&t=l4gSUzqO6Vbo3YOX-1',
   },
 };

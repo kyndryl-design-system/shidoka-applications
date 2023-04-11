@@ -1,8 +1,19 @@
 @import '../../../common/scss/global.scss';
 
 :host {
-  display: flex;
-  flex-direction: column;
-  flex: auto;
+  display: block;
 }
 
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  line-height: 1.1875rem;
+}
+
+::slotted(kyn-footer-link) {
+  border-right: 1px solid var(--color-divider);
+}
+
+::slotted(kyn-footer-link:last-child) {
+  border-right: none;
+}
