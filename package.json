@@ -8,10 +8,13 @@
     "access": "public"
   },
   "scripts": {
+    "dev": "npm run storybook && npm run sass-dev",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "deploy-storybook": "storybook-to-ghpages --source-branch main",
-    "build": "rollup -c",
+    "build": "rollup -c && npm run sass-prod",
+    "sass-dev": "sass --watch --update --style=expanded src/common/scss/utility:dist/css",
+    "sass-prod": "sass --no-source-map --style=compressed src/common/scss/utility:dist/css",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint . --ext .js,.ts",
     "lint:lit-analyzer": "lit-analyzer",

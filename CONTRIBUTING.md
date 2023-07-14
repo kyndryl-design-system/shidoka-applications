@@ -7,7 +7,7 @@
 npm i --legacy-peer-deps
 
 # run development env
-npm run storybook
+npm run dev
 
 # build
 npm run build
