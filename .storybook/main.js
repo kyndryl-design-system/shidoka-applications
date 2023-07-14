@@ -1,3 +1,5 @@
+import remarkGfm from 'remark-gfm';
+
 module.exports = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
@@ -5,6 +7,16 @@ module.exports = {
     '@storybook/addon-essentials',
     'storybook-addon-designs',
     '@storybook/addon-storysource',
+    {
+      name: '@storybook/addon-docs',
+      options: {
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        },
+      },
+    },
     {
       name: 'storybook-preset-inline-svg',
       options: {
