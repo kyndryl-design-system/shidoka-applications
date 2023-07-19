@@ -1,0 +1,42 @@
+@import '../grid.scss';
+
+.kyn-grid--container {
+  @include grid-container;
+}
+
+// generate sm classes
+@for $i from 1 through 4 {
+  .kyn-grid-sm-col--#{$i} {
+    @include grid-col($i);
+  }
+}
+
+// generate md classes
+@for $i from 1 through 8 {
+  .kyn-grid-md-col--#{$i} {
+    @media (min-width: $bp-md) {
+      @include grid-col($i);
+    }
+  }
+}
+
+// generate lg, xl, max classes
+@for $i from 1 through 12 {
+  .kyn-grid-lg-col--#{$i} {
+    @media (min-width: $bp-lg) {
+      @include grid-col($i);
+    }
+  }
+
+  .kyn-grid-xl-col--#{$i} {
+    @media (min-width: $bp-xl) {
+      @include grid-col($i);
+    }
+  }
+
+  .kyn-grid-max-col--#{$i} {
+    @media (min-width: $bp-max) {
+      @include grid-col($i);
+    }
+  }
+}

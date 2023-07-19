@@ -1,0 +1,135 @@
+import { Meta, Unstyled, Source } from '@storybook/blocks';
+
+<Meta title="Foundation/Grid" />
+
+# Grid
+
+<br />
+
+## Examples
+
+<Unstyled>
+<style>
+{`
+  .css-1bhj9ob {
+    max-width: 1600px;
+  }
+
+.kyn-grid--container {
+margin: 32px auto;
+}
+
+.kyn-grid--container > div {
+text-align: center;
+border: 1px solid var(--color-divider-light);
+padding: 16px;
+}
+
+.kyn-grid--container p {
+margin: 0;
+}
+`}
+
+</style>
+
+<div className="kyn-grid--container">
+  <div className="kyn-grid-sm-col--4 kyn-grid-md-col--8 kyn-grid-lg-col--12">
+    12 cols @ max, xl, lg, 8 cols @ md, and 4 cols @ sm
+  </div>
+</div>
+
+<div className="kyn-grid--container">
+  <div className="kyn-grid-sm-col--4 kyn-grid-md-col--4 kyn-grid-lg-col--6">
+    6 cols @ max, xl, lg, 4 cols @ md and sm
+  </div>
+  <div className="kyn-grid-sm-col--4 kyn-grid-md-col--4 kyn-grid-lg-col--6">
+    6 cols @ max, xl, lg, 4 cols @ md and sm
+  </div>
+</div>
+
+<div className="kyn-grid--container">
+  <div className="kyn-grid-sm-col--2 kyn-grid-md-col--4 kyn-grid-lg-col--4">
+    4 cols @ max, xl, lg, md and 2 cols @ sm
+  </div>
+  <div className="kyn-grid-sm-col--2 kyn-grid-md-col--4 kyn-grid-lg-col--4">
+    4 cols @ max, xl, lg, md and 2 cols @ sm
+  </div>
+  <div className="kyn-grid-sm-col--2 kyn-grid-md-col--4 kyn-grid-lg-col--4">
+    4 cols @ max, xl, lg, md and 2 cols @ sm
+  </div>
+</div>
+
+<div className="kyn-grid--container">
+  <div className="kyn-grid-sm-col--2 kyn-grid-md-col--4 kyn-grid-lg-col--3">
+    3 cols @ max, xl, lg, 4 cols @ md, and 2 cols @ sm
+  </div>
+  <div className="kyn-grid-sm-col--2 kyn-grid-md-col--4 kyn-grid-lg-col--3">
+    3 cols @ max, xl, lg, 4 cols @ md, and 2 cols @ sm
+  </div>
+  <div className="kyn-grid-sm-col--2 kyn-grid-md-col--4 kyn-grid-lg-col--3">
+    3 cols @ max, xl, lg, 4 cols @ md, and 2 cols @ sm
+  </div>
+  <div className="kyn-grid-sm-col--2 kyn-grid-md-col--4 kyn-grid-lg-col--3">
+    3 cols @ max, xl, lg, 4 cols @ md, and 2 cols @ sm
+  </div>
+</div>
+
+<div className="kyn-grid--container">
+  <div className="kyn-grid-sm-col--2 kyn-grid-md-col--4 kyn-grid-xl-col--2">2 cols @ max, xl, lg, sm, 4 cols @ md</div>
+  <div className="kyn-grid-sm-col--2 kyn-grid-md-col--4 kyn-grid-xl-col--2">2 cols @ max, xl, lg, sm, 4 cols @ md</div>
+  <div className="kyn-grid-sm-col--2 kyn-grid-md-col--4 kyn-grid-xl-col--2">2 cols @ max, xl, lg, sm, 4 cols @ md</div>
+  <div className="kyn-grid-sm-col--2 kyn-grid-md-col--4 kyn-grid-xl-col--2">2 cols @ max, xl, lg, sm, 4 cols @ md</div>
+  <div className="kyn-grid-sm-col--2 kyn-grid-md-col--4 kyn-grid-xl-col--2">2 cols @ max, xl, lg, sm, 4 cols @ md</div>
+  <div className="kyn-grid-sm-col--2 kyn-grid-md-col--4 kyn-grid-xl-col--2">2 cols @ max, xl, lg, sm, 4 cols @ md</div>
+</div>
+</Unstyled>
+
+<br />
+
+## Usage
+
+<br />
+
+### SCSS Mixins
+
+```css
+@import '@kyndryl-design-system/web-components/scss/grid.scss';
+
+.your-container-css-selector {
+  @include grid-container;
+}
+
+.your-child-css-selector {
+  @include grid-col(num_cols);
+}
+```
+
+### Utility Classes
+
+```js
+import '@kyndryl-design-system/web-components/css/grid.css';
+```
+
+```html
+<div class="kyn-grid--container">
+  <div class="kyn-grid-sm-col--4 kyn-grid-md-col--8 kyn-grid-lg-col--12">
+    12 cols @ max, xl, lg, 8 cols @ md, and 4 cols @ sm
+  </div>
+</div>
+```
+
+#### Column class name schema
+
+```
+kyn-grid-${breakpoint}-col--${num_cols}
+```
+
+## Breakpoints
+
+| Breakpoint   | Value (rem/px) | Columns | Gap  |
+| ------------ | -------------- | ------- | ---- |
+| Small (sm)   | 20 / 320       | 4       | 32px |
+| Medium (md)  | 42 / 672       | 8       | 32px |
+| Large (lg)   | 66 / 1056      | 12      | 32px |
+| X-Large (xl) | 82 / 1312      | 12      | 32px |
+| Max (max)    | 42 / 672       | 12      | 32px |

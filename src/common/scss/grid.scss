@@ -1,0 +1,25 @@
+$bp-sm: 20rem;
+$bp-md: 42rem;
+$bp-lg: 66rem;
+$bp-xl: 82rem;
+$bp-max: 99rem;
+
+@mixin grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); // 4 cols at sm
+  gap: var(--spacing-grid-gap);
+  max-width: $bp-max;
+  margin: 0 auto;
+
+  @media (min-width: $bp-md) {
+    grid-template-columns: repeat(8, 1fr); // 8 cols at md
+  }
+
+  @media (min-width: $bp-lg) {
+    grid-template-columns: repeat(12, 1fr); // 12 cols at lg+
+  }
+}
+
+@mixin grid-col($span) {
+  grid-column: auto / span $span;
+}
