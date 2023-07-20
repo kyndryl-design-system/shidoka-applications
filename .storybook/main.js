@@ -36,13 +36,15 @@ module.exports = {
   webpackFinal: (config) => {
     config.module.rules.push({
       test: /\.s(c|a)ss$/,
-      exclude: [/node_modules/, /components/],
+      // exclude: [/node_modules/, /components/],
+      include: /common/,
       use: ['style-loader', 'css-loader', 'sass-loader'],
     });
 
     config.module.rules.push({
       test: /\.s(c|a)ss$/,
-      exclude: [/node_modules/, /common/],
+      // exclude: [/node_modules/, /common/],
+      include: /components/,
       use: [
         {
           loader: 'lit-scss-loader',
