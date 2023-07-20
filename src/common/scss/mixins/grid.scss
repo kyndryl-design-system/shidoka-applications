@@ -1,21 +1,17 @@
-$bp-sm: 20rem;
-$bp-md: 42rem;
-$bp-lg: 66rem;
-$bp-xl: 82rem;
-$bp-max: 99rem;
+@use '../variables/grid.scss';
 
 @mixin grid-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr); // 4 cols at sm
-  gap: var(--spacing-grid-gap);
-  max-width: $bp-max;
+  gap: var(--kyn-spacing-grid-gap);
+  max-width: grid.$bp-max;
   margin: 0 auto;
 
-  @media (min-width: $bp-md) {
+  @media (min-width: grid.$bp-md) {
     grid-template-columns: repeat(8, 1fr); // 8 cols at md
   }
 
-  @media (min-width: $bp-lg) {
+  @media (min-width: grid.$bp-lg) {
     grid-template-columns: repeat(12, 1fr); // 12 cols at lg+
   }
 }

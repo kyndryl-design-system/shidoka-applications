@@ -11,9 +11,9 @@ import { Meta, Unstyled, Source } from '@storybook/blocks';
 <Unstyled>
 <style>
 {`
-  .css-1bhj9ob {
-    max-width: 1600px;
-  }
+.sbdocs-content {
+  max-width: 1600px;
+}
 
 .kyn-grid--container {
 margin: 32px auto;
@@ -21,7 +21,7 @@ margin: 32px auto;
 
 .kyn-grid--container > div {
 text-align: center;
-border: 1px solid var(--color-divider-light);
+border: 1px solid var(--kyn-color-divider-light);
 padding: 16px;
 }
 
@@ -93,7 +93,7 @@ margin: 0;
 ### SCSS Mixins
 
 ```css
-@import '@kyndryl-design-system/web-components/scss/grid.scss';
+@import '@kyndryl-design-system/web-components/scss/mixins/grid.scss';
 
 .your-container-css-selector {
   @include grid-container;
@@ -106,9 +106,21 @@ margin: 0;
 
 ### Utility Classes
 
+#### Import to JS
+
 ```js
+import '@kyndryl-design-system/web-components/scss/utility/grid.scss';
+// or
 import '@kyndryl-design-system/web-components/css/grid.css';
 ```
+
+#### Import to SCSS
+
+```css
+@use '@kyndryl-design-system/web-components/scss/utility/grid.scss';
+```
+
+#### Example HTML
 
 ```html
 <div class="kyn-grid--container">
