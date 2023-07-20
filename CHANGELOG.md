@@ -1,3 +1,25 @@
+# [1.0.0-beta.30](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.29...v1.0.0-beta.30) (2023-07-20)
+
+
+### Bug Fixes
+
+* **typography:** fix body line height var ([e8a7881](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/e8a78819f7270f892afe07d1038f5b76ae093c22))
+* **typography:** normalize prefixes ([4593f5f](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/4593f5fba414cdbde95a7e9b8a486e5bb422fec5))
+* **typography:** update roboto weights ([041da66](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/041da66f2206a500b7cc5c0bd0a199b327d645ee))
+
+
+* build!: refactor sass tooling, upgrade storybook ([2c4d0b5](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/2c4d0b56f47a60fd4c81f689aef9395c13109c76))
+
+
+### Features
+
+* **typography:** proof of concept for typography scss mixins and utility classes ([5763cf2](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/5763cf2f2bf54c5a5ce530aee2945b64b413d408))
+
+
+### BREAKING CHANGES
+
+* root.css file location moved. css variables all prefixed with kyn
+
 # [1.0.0-beta.29](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.28...v1.0.0-beta.29) (2023-04-11)
 
 
