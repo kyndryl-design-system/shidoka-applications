@@ -18,6 +18,16 @@ module.exports = {
       },
     },
     {
+      name: '@storybook/addon-styling',
+      options: {
+        scssBuildRule: {
+          test: /\.s(c|a)ss$/,
+          exclude: /components/,
+          use: ['style-loader', 'css-loader', 'sass-loader'],
+        },
+      },
+    },
+    {
       name: 'storybook-preset-inline-svg',
       options: {
         svgInlineLoaderOptions: {
@@ -36,7 +46,7 @@ module.exports = {
   webpackFinal: (config) => {
     config.module.rules.push({
       test: /\.s(c|a)ss$/,
-      exclude: /node_modules/,
+      exclude: [/node_modules/, /common/],
       use: [
         {
           loader: 'lit-scss-loader',
