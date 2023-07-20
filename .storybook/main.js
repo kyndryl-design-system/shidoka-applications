@@ -1,6 +1,6 @@
 import remarkGfm from 'remark-gfm';
 
-module.exports = {
+export default {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
     '@storybook/addon-links',
@@ -14,6 +14,16 @@ module.exports = {
           mdxCompileOptions: {
             remarkPlugins: [remarkGfm],
           },
+        },
+      },
+    },
+    {
+      name: '@storybook/addon-styling',
+      options: {
+        scssBuildRule: {
+          test: /\.s(c|a)ss$/,
+          exclude: [/node_modules/, /components/],
+          use: ['style-loader', 'css-loader', 'sass-loader'],
         },
       },
     },
@@ -33,18 +43,10 @@ module.exports = {
   core: {
     disableTelemetry: true,
   },
-  webpackFinal: (config) => {
+  async webpackFinal(config, { configType }) {
     config.module.rules.push({
       test: /\.s(c|a)ss$/,
-      // exclude: [/node_modules/, /components/],
-      include: /common/,
-      use: ['style-loader', 'css-loader', 'sass-loader'],
-    });
-
-    config.module.rules.push({
-      test: /\.s(c|a)ss$/,
-      // exclude: [/node_modules/, /common/],
-      include: /components/,
+      exclude: [/node_modules/, /common/],
       use: [
         {
           loader: 'lit-scss-loader',
