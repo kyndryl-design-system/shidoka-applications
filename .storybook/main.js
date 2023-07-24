@@ -22,8 +22,26 @@ module.exports = {
       options: {
         scssBuildRule: {
           test: /\.s(c|a)ss$/,
-          exclude: /components/,
-          use: ['style-loader', 'css-loader', 'sass-loader'],
+          exclude: [/node_modules/],
+          oneOf: [
+            {
+              resourceQuery: /global/,
+              use: ['style-loader', 'css-loader', 'sass-loader'],
+            },
+            {
+              use: [
+                {
+                  loader: 'lit-scss-loader',
+                  options: {
+                    minify: true,
+                  },
+                },
+                'extract-loader',
+                'css-loader',
+                'sass-loader',
+              ],
+            },
+          ],
         },
       },
     },
@@ -42,24 +60,6 @@ module.exports = {
   },
   core: {
     disableTelemetry: true,
-  },
-  webpackFinal: (config) => {
-    config.module.rules.push({
-      test: /\.s(c|a)ss$/,
-      exclude: [/node_modules/, /common/],
-      use: [
-        {
-          loader: 'lit-scss-loader',
-          options: {
-            minify: true, // defaults to false
-          },
-        },
-        'extract-loader',
-        'css-loader',
-        'sass-loader',
-      ],
-    });
-    return config;
   },
   docs: {
     autodocs: true,
