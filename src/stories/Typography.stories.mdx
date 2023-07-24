@@ -4,13 +4,69 @@ import { Meta, Unstyled, Source } from '@storybook/blocks';
 
 # Typography
 
+[Figma Design Source](https://www.figma.com/file/drsMVy2kvcMkAoQQq7THww/KDS-%26-SDS-Foundation?node-id=301%3A81&mode=dev)
+
 <br />
 
 ## Examples
 
 <Unstyled>
-  <h1 className="kyn-type--head-1">Heading 1</h1>
-  <p className="kyn-type--body-1">Body 1</p>
+<style>
+{`
+.sbdocs-content {
+  max-width: 1600px;
+}
+
+p {
+margin: 0;
+}
+
+.type-styles > div {
+margin: 8px 0;
+}
+`}
+
+</style>
+
+<div className="type-styles">
+  <div className="kyn-type--hero-01 kyn-font--weight-ultralight">Hero-01</div>
+  <div className="kyn-type--hero-02 kyn-font--weight-ultralight">Hero-02</div>
+  <div className="kyn-type--hero-03 kyn-font--weight-ultralight">Hero-03</div>
+  <div className="kyn-type--hero-04 kyn-font--weight-ultralight">Hero-04</div>
+
+<div className="kyn-type--display-01 kyn-font--weight-ultralight">
+  Display-01
+</div>
+<div className="kyn-type--display-02 kyn-font--weight-ultralight">
+  Display-02
+</div>
+<div className="kyn-type--display-03 kyn-font--weight-ultralight">
+  Display-03
+</div>
+
+<div className="kyn-type--headline-01 kyn-font--weight-ultralight">
+  Headline-01
+</div>
+<div className="kyn-type--headline-02 kyn-font--weight-ultralight">
+  Headline-02
+</div>
+<div className="kyn-type--headline-03 kyn-font--weight-ultralight">
+  Headline-03
+</div>
+<div className="kyn-type--headline-04 kyn-font--weight-light">Headline-04</div>
+<div className="kyn-type--headline-05 kyn-font--weight-light">Headline-05</div>
+<div className="kyn-type--headline-06 kyn-font--weight-light">Headline-06</div>
+<div className="kyn-type--headline-07 kyn-font--weight-light">Headline-07</div>
+<div className="kyn-type--headline-08 kyn-font--weight-light">Headline-08</div>
+
+<div className="kyn-type--body-01 kyn-font--weight-light">Body-01</div>
+<div className="kyn-type--body-02">Body-02 (Default)</div>
+
+  <div className="kyn-type--ui-01 kyn-font--weight-light">UI-01</div>
+  <div className="kyn-type--ui-02">UI-02</div>
+  <div className="kyn-type--ui-03">UI-03</div>
+  <div className="kyn-type--ui-04 kyn-font--weight-light">UI-04</div>
+</div>
 </Unstyled>
 
 <br />
@@ -24,8 +80,8 @@ import { Meta, Unstyled, Source } from '@storybook/blocks';
 ```css
 @use '@kyndryl-design-system/web-components/scss/mixins/typography.scss';
 
-.your-heading-css-selector {
-  @include type-head-1;
+.your-css-selector {
+  @include typography.type-hero--01;
 }
 ```
 
@@ -48,12 +104,49 @@ import '@kyndryl-design-system/web-components/css/typography.css';
 #### Example HTML
 
 ```html
-<h1 class="kyn-type--head-1">Heading 1</h1>
+<h1 class="kyn-type--hero-01">Hero-01</h1>
 ```
 
 ## Styles
 
-| Style     | Mixin       | Utility Class    |
-| --------- | ----------- | ---------------- |
-| Heading 1 | type-head-1 | kyn-type--head-1 |
-| Body 1    | type-body-1 | kyn-type--body-1 |
+| Style             | Mixin             | Utility Class         |
+| ----------------- | ----------------- | --------------------- |
+| Hero-01           | type-hero--01     | kyn-type--hero-01     |
+| Hero-02           | type-hero--02     | kyn-type--hero-02     |
+| Hero-03           | type-hero--03     | kyn-type--hero-03     |
+| Hero-04           | type-hero--04     | kyn-type--hero-04     |
+|                   |                   |                       |
+| Display-01        | type-display--01  | kyn-type--display-01  |
+| Display-02        | type-display--02  | kyn-type--display-02  |
+| Display-03        | type-display--03  | kyn-type--display-03  |
+|                   |                   |                       |
+| Headline-01       | type-headline--01 | kyn-type--headline-01 |
+| Headline-02       | type-headline--02 | kyn-type--headline-02 |
+| Headline-03       | type-headline--03 | kyn-type--headline-03 |
+| Headline-04       | type-headline--04 | kyn-type--headline-04 |
+| Headline-01       | type-headline--05 | kyn-type--headline-05 |
+| Headline-02       | type-headline--06 | kyn-type--headline-06 |
+| Headline-03       | type-headline--07 | kyn-type--headline-07 |
+| Headline-04       | type-headline--08 | kyn-type--headline-08 |
+|                   |                   |                       |
+| Body-01           | type-body--01     | kyn-type--body-01     |
+| Body-02 (Default) | type-body--02     | kyn-type--body-02     |
+|                   |                   |                       |
+| UI-01             | type-ui--01       | kyn-type--ui-01       |
+| UI-02             | type-ui--02       | kyn-type--ui-02       |
+| UI-03             | type-ui--03       | kyn-type--ui-03       |
+| UI-04             | type-ui--04       | kyn-type--ui-04       |
+
+<br />
+
+## Utility Helper Classes
+
+### Weight
+
+| Weight | Class                       |
+| ------ | --------------------------- |
+| 200    | kyn-font--weight-ultralight |
+| 300    | kyn-font--weight-light      |
+| 400    | kyn-font--weight-regular    |
+| 500    | kyn-font--weight-medium     |
+| 700    | kyn-font--weight-bold       |
