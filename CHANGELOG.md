@@ -1,3 +1,10 @@
+# [1.0.0-beta.31](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.30...v1.0.0-beta.31) (2023-07-26)
+
+
+### Features
+
+* **typography:** styles initial commit ([3dfb252](https://github.kyndryl.net/kyndryl-design-system/web-components/commit/3dfb252fa35a020e4a60f701c3e3de7d403d065d))
+
 # [1.0.0-beta.30](https://github.kyndryl.net/kyndryl-design-system/web-components/compare/v1.0.0-beta.29...v1.0.0-beta.30) (2023-07-20)
 
 
