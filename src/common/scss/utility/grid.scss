@@ -1,22 +1,22 @@
-@use '../variables/grid.scss' as gridVars;
-@use '../mixins/grid.scss' as gridMixins;
+@use '../variables/breakpoints.scss';
+@use '../mixins/grid.scss';
 
 .kyn-grid--container {
-  @include gridMixins.grid-container;
+  @include grid.grid-container;
 }
 
 // generate sm classes
 @for $i from 1 through 4 {
   .kyn-grid-sm-col--#{$i} {
-    @include gridMixins.grid-col($i);
+    @include grid.grid-col($i);
   }
 }
 
 // generate md classes
 @for $i from 1 through 8 {
   .kyn-grid-md-col--#{$i} {
-    @media (min-width: gridVars.$bp-md) {
-      @include gridMixins.grid-col($i);
+    @media (min-width: breakpoints.$bp-md) {
+      @include grid.grid-col($i);
     }
   }
 }
@@ -24,20 +24,20 @@
 // generate lg, xl, max classes
 @for $i from 1 through 12 {
   .kyn-grid-lg-col--#{$i} {
-    @media (min-width: gridVars.$bp-lg) {
-      @include gridMixins.grid-col($i);
+    @media (min-width: breakpoints.$bp-lg) {
+      @include grid.grid-col($i);
     }
   }
 
   .kyn-grid-xl-col--#{$i} {
-    @media (min-width: gridVars.$bp-xl) {
-      @include gridMixins.grid-col($i);
+    @media (min-width: breakpoints.$bp-xl) {
+      @include grid.grid-col($i);
     }
   }
 
   .kyn-grid-max-col--#{$i} {
-    @media (min-width: gridVars.$bp-max) {
-      @include gridMixins.grid-col($i);
+    @media (min-width: breakpoints.$bp-max) {
+      @include grid.grid-col($i);
     }
   }
 }
