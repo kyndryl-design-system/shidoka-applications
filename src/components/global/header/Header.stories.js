@@ -6,7 +6,7 @@ import './headerLink';
 import './headerFlyouts';
 import './headerFlyout';
 import './headerAvatar';
-import '../../reusable/icon/icon';
+import '@kyndryl-design-system/foundation/components/icon';
 
 import caratDownIcon from '@carbon/icons/es/caret--down/16';
 

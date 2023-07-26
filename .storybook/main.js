@@ -26,7 +26,17 @@ export default {
           oneOf: [
             {
               resourceQuery: /global/,
-              use: ['style-loader', 'css-loader', 'sass-loader'],
+              use: [
+                'style-loader',
+                'css-loader',
+                'resolve-url-loader',
+                {
+                  loader: 'sass-loader?sourceMap',
+                  options: {
+                    sourceMap: true,
+                  },
+                },
+              ],
             },
             {
               use: [

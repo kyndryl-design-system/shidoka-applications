@@ -9,7 +9,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { querySelectorDeep } from 'query-selector-shadow-dom';
 import SideNavLinkScss from './sideNavLink.scss';
-import '../../reusable/icon/icon';
+import '@kyndryl-design-system/foundation/components/icon';
 
 import chevDownIcon from '@carbon/icons/es/chevron--down/16';
 import chevRightIcon from '@carbon/icons/es/chevron--right/16';

@@ -9,7 +9,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderLinkScss from './headerLink.scss';
-import '../../reusable/icon/icon';
+import '@kyndryl-design-system/foundation/components/icon';
 import downIcon from '@carbon/icons/es/chevron--down/16';
 
 /**

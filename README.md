@@ -1,6 +1,6 @@
 # Kyndryl Design System - Web Components
 
-[![kyndryl-web-components](https://github.kyndryl.net/kyndryl-design-system/web-components/actions/workflows/actions.yml/badge.svg)](https://github.kyndryl.net/kyndryl-design-system/web-components/actions/workflows/actions.yml)
+[![kyndryl-web-components](https://github.com/kyndryl-design-system/web-components/actions/workflows/actions.yml/badge.svg)](https://github.com/kyndryl-design-system/web-components/actions/workflows/actions.yml)
 
 # Contributing to this project
 
@@ -26,9 +26,9 @@ npm install @kyndryl-design-system/web-components@beta -S
 The method used (JS Import, SCSS @use, CSS @import, or &lt;style&gt; tag) will vary based on your framework/bundler, but the stylesheet can be found in `node_modules` at:
 
 ```js
-@kyndryl-design-system/web-components/scss/root.scss
+@kyndryl-design-system/foundation/scss/root.scss
 // or
-@kyndryl-design-system/web-components/css/root.css
+@kyndryl-design-system/foundation/css/root.css
 ```
 
 ### Use CSS tokens/variables
