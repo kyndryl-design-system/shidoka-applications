@@ -1,0 +1,21 @@
+@use '../variables/breakpoints.scss';
+
+@mixin grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); // 4 cols at sm
+  gap: var(--kyn-spacing-grid-gap);
+  max-width: breakpoints.$bp-max;
+  margin: 0 auto;
+
+  @media (min-width: breakpoints.$bp-md) {
+    grid-template-columns: repeat(8, 1fr); // 8 cols at md
+  }
+
+  @media (min-width: breakpoints.$bp-lg) {
+    grid-template-columns: repeat(12, 1fr); // 12 cols at lg+
+  }
+}
+
+@mixin grid-col($span) {
+  grid-column: auto / span $span;
+}
