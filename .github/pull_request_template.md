@@ -6,6 +6,11 @@ Brief summary describing the changes here.
 
 Link here (if applicable).
 
+## Notes
+
+- Detailed change notes
+- can go here
+
 ## Checklist
 
 - [ ] Used Conventional Commit messages as outlined in the contributing guide.

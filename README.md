@@ -18,6 +18,7 @@ npm install @kyndryl-design-system/web-components -S
 
 # beta (use until first stable release)
 npm install @kyndryl-design-system/web-components@beta -S
+# when using beta, lock the version, as breaking changes can happen at any time
 ```
 
 ## Import the root styles to your app's global styles

@@ -1,14 +1,263 @@
+@use '../variables/breakpoints.scss';
+
 :root {
   --kyn-font-body: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   --kyn-font-heading: 'TWK Everett', 'Helvetica', 'Arial', sans-serif;
 
-  --kyn-type-head-1-family: var(--kyn-font-heading);
-  --kyn-type-head-1-size: 3.375rem;
-  --kyn-type-head-1-height: 4rem;
-  --kyn-type-head-1-weight: 700;
+  --kyn-font-spacing--01: -0.16px;
+  --kyn-font-spacing--02: -0.08px;
+  --kyn-font-spacing--03: 0px;
+  --kyn-font-spacing--04: 0.16px;
+  --kyn-font-spacing--05: 0.32px;
 
-  --kyn-type-body-1-family: var(--kyn-font-body);
-  --kyn-type-body-1-size: 1rem;
-  --kyn-type-body-1-height: 1.375rem;
-  --kyn-type-body-1-weight: 400;
+  --kyn-type-hero--01-family: var(--kyn-font-heading);
+  --kyn-type-hero--01-size: 6rem;
+  --kyn-type-hero--01-height: 7rem;
+  --kyn-type-hero--01-spacing: var(--kyn-font-spacing--01);
+
+  --kyn-type-hero--02-family: var(--kyn-font-heading);
+  --kyn-type-hero--02-size: 5.25rem;
+  --kyn-type-hero--02-height: 6rem;
+  --kyn-type-hero--02-spacing: var(--kyn-font-spacing--01);
+
+  --kyn-type-hero--03-family: var(--kyn-font-heading);
+  --kyn-type-hero--03-size: 4rem;
+  --kyn-type-hero--03-height: 4.625rem;
+  --kyn-type-hero--03-spacing: var(--kyn-font-spacing--01);
+
+  --kyn-type-hero--04-family: var(--kyn-font-heading);
+  --kyn-type-hero--04-size: 4rem;
+  --kyn-type-hero--04-height: 4.625rem;
+  --kyn-type-hero--04-spacing: var(--kyn-font-spacing--01);
+
+  --kyn-type-display--01-family: var(--kyn-font-heading);
+  --kyn-type-display--01-size: 3.375rem;
+  --kyn-type-display--01-height: 4rem;
+  --kyn-type-display--01-spacing: var(--kyn-font-spacing--01);
+
+  --kyn-type-display--02-family: var(--kyn-font-heading);
+  --kyn-type-display--02-size: 3rem;
+  --kyn-type-display--02-height: 3.5rem;
+  --kyn-type-display--02-spacing: var(--kyn-font-spacing--01);
+
+  --kyn-type-display--03-family: var(--kyn-font-heading);
+  --kyn-type-display--03-size: 2.625rem;
+  --kyn-type-display--03-height: 3.125rem;
+  --kyn-type-display--03-spacing: var(--kyn-font-spacing--01);
+
+  --kyn-type-headline--01-family: var(--kyn-font-heading);
+  --kyn-type-headline--01-size: 2.625rem;
+  --kyn-type-headline--01-height: 3.125rem;
+  --kyn-type-headline--01-spacing: var(--kyn-font-spacing--02);
+
+  --kyn-type-headline--02-family: var(--kyn-font-heading);
+  --kyn-type-headline--02-size: 2.25rem;
+  --kyn-type-headline--02-height: 2.75rem;
+  --kyn-type-headline--02-spacing: var(--kyn-font-spacing--02);
+
+  --kyn-type-headline--03-family: var(--kyn-font-heading);
+  --kyn-type-headline--03-size: 2rem;
+  --kyn-type-headline--03-height: 2.5rem;
+  --kyn-type-headline--03-spacing: var(--kyn-font-spacing--02);
+
+  --kyn-type-headline--04-family: var(--kyn-font-heading);
+  --kyn-type-headline--04-size: 1.75rem;
+  --kyn-type-headline--04-height: 2.25rem;
+  --kyn-type-headline--04-spacing: var(--kyn-font-spacing--03);
+
+  --kyn-type-headline--05-family: var(--kyn-font-heading);
+  --kyn-type-headline--05-size: 1.75rem;
+  --kyn-type-headline--05-height: 2.25rem;
+  --kyn-type-headline--05-spacing: var(--kyn-font-spacing--03);
+
+  --kyn-type-headline--06-family: var(--kyn-font-heading);
+  --kyn-type-headline--06-size: 1.5rem;
+  --kyn-type-headline--06-height: 2rem;
+  --kyn-type-headline--06-spacing: var(--kyn-font-spacing--03);
+
+  --kyn-type-headline--07-family: var(--kyn-font-heading);
+  --kyn-type-headline--07-size: 1.5rem;
+  --kyn-type-headline--07-height: 2rem;
+  --kyn-type-headline--07-spacing: var(--kyn-font-spacing--03);
+
+  --kyn-type-headline--08-family: var(--kyn-font-heading);
+  --kyn-type-headline--08-size: 1.5rem;
+  --kyn-type-headline--08-height: 2rem;
+  --kyn-type-headline--08-spacing: var(--kyn-font-spacing--03);
+
+  --kyn-type-body--01-family: var(--kyn-font-heading);
+  --kyn-type-body--01-size: 1.25rem;
+  --kyn-type-body--01-height: 1.75rem;
+  --kyn-type-body--01-spacing: var(--kyn-font-spacing--04);
+
+  --kyn-type-body--02-family: var(--kyn-font-body);
+  --kyn-type-body--02-size: 1rem;
+  --kyn-type-body--02-height: 1.5rem;
+  --kyn-type-body--02-spacing: var(--kyn-font-spacing--04);
+
+  --kyn-type-ui--01-family: var(--kyn-font-heading);
+  --kyn-type-ui--01-size: 1rem;
+  --kyn-type-ui--01-height: 1.5rem;
+  --kyn-type-ui--01-spacing: var(--kyn-font-spacing--05);
+
+  --kyn-type-ui--02-family: var(--kyn-font-body);
+  --kyn-type-ui--02-size: 0.875rem;
+  --kyn-type-ui--02-height: 1.25rem;
+  --kyn-type-ui--02-spacing: var(--kyn-font-spacing--05);
+
+  --kyn-type-ui--03-family: var(--kyn-font-body);
+  --kyn-type-ui--03-size: 0.75rem;
+  --kyn-type-ui--03-height: 1rem;
+  --kyn-type-ui--03-spacing: var(--kyn-font-spacing--05);
+
+  --kyn-type-ui--04-family: var(--kyn-font-heading);
+  --kyn-type-ui--04-size: 0.75rem;
+  --kyn-type-ui--04-height: 1rem;
+  --kyn-type-ui--04-spacing: var(--kyn-font-spacing--05);
+
+  @media (min-width: breakpoints.$bp-md) {
+    --kyn-type-hero--01-size: 9rem;
+    --kyn-type-hero--01-height: 10.5rem;
+
+    --kyn-type-hero--02-size: 6rem;
+    --kyn-type-hero--02-height: 7rem;
+
+    --kyn-type-hero--03-size: 5rem;
+    --kyn-type-hero--03-height: 5.5rem;
+
+    --kyn-type-hero--04-size: 4.5rem;
+    --kyn-type-hero--04-height: 5.25rem;
+
+    --kyn-type-display--01-size: 4rem;
+    --kyn-type-display--01-height: 4.625rem;
+
+    --kyn-type-display--02-size: 3.375rem;
+    --kyn-type-display--02-height: 4rem;
+
+    --kyn-type-display--03-size: 3rem;
+    --kyn-type-display--03-height: 3.5rem;
+  }
+
+  @media (min-width: breakpoints.$bp-lg) {
+    --kyn-type-hero--01-size: 13.5rem;
+    --kyn-type-hero--01-height: 16rem;
+
+    --kyn-type-hero--02-size: 9rem;
+    --kyn-type-hero--02-height: 10.5rem;
+
+    --kyn-type-hero--03-size: 6rem;
+    --kyn-type-hero--03-height: 7rem;
+
+    --kyn-type-hero--04-size: 5rem;
+    --kyn-type-hero--04-height: 5.5rem;
+
+    --kyn-type-display--01-size: 4.5rem;
+    --kyn-type-display--01-height: 5.25rem;
+
+    --kyn-type-display--02-size: 4rem;
+    --kyn-type-display--02-height: 4.625rem;
+
+    --kyn-type-display--03-size: 3.75rem;
+    --kyn-type-display--03-height: 4.375rem;
+
+    --kyn-type-headline--01-size: 3.375rem;
+    --kyn-type-headline--01-height: 4rem;
+
+    --kyn-type-headline--02-size: 3rem;
+    --kyn-type-headline--02-height: 3.5rem;
+
+    --kyn-type-headline--03-size: 2.625rem;
+    --kyn-type-headline--03-height: 3.125rem;
+
+    --kyn-type-headline--04-size: 2rem;
+    --kyn-type-headline--04-height: 2.5rem;
+
+    --kyn-type-headline--05-size: 2rem;
+    --kyn-type-headline--05-height: 2.5rem;
+
+    --kyn-type-headline--06-size: 1.75rem;
+    --kyn-type-headline--06-height: 2.25rem;
+
+    --kyn-type-headline--07-size: 1.75rem;
+    --kyn-type-headline--07-height: 2.25rem;
+  }
+
+  @media (min-width: breakpoints.$bp-xl) {
+    --kyn-type-hero--01-size: 18rem;
+    --kyn-type-hero--01-height: 21rem;
+
+    --kyn-type-hero--02-size: 12rem;
+    --kyn-type-hero--02-height: 14rem;
+
+    --kyn-type-hero--03-size: 9rem;
+    --kyn-type-hero--03-height: 10.5rem;
+
+    --kyn-type-hero--04-size: 7.5rem;
+    --kyn-type-hero--04-height: 8.25rem;
+
+    --kyn-type-display--01-size: 5rem;
+    --kyn-type-display--01-height: 5.5rem;
+
+    --kyn-type-display--02-size: 4.5rem;
+    --kyn-type-display--02-height: 5.25rem;
+
+    --kyn-type-display--03-size: 4rem;
+    --kyn-type-display--03-height: 4.625rem;
+
+    --kyn-type-headline--01-size: 4rem;
+    --kyn-type-headline--01-height: 4.625rem;
+
+    --kyn-type-headline--02-size: 3.5rem;
+    --kyn-type-headline--02-height: 4.25rem;
+
+    --kyn-type-headline--03-size: 3rem;
+    --kyn-type-headline--03-height: 3.5rem;
+
+    --kyn-type-headline--04-size: 2.625rem;
+    --kyn-type-headline--04-height: 3.125rem;
+
+    --kyn-type-headline--05-size: 2.25rem;
+    --kyn-type-headline--05-height: 2.75rem;
+
+    --kyn-type-headline--06-size: 2rem;
+    --kyn-type-headline--06-height: 2.5rem;
+  }
+
+  @media (min-width: breakpoints.$bp-max) {
+    --kyn-type-hero--02-size: 13.5rem;
+    --kyn-type-hero--02-height: 16rem;
+
+    --kyn-type-hero--03-size: 9.75rem;
+    --kyn-type-hero--03-height: 14rem;
+
+    --kyn-type-hero--04-size: 9rem;
+    --kyn-type-hero--04-height: 10.5rem;
+
+    --kyn-type-display--01-size: 6rem;
+    --kyn-type-display--01-height: 7rem;
+
+    --kyn-type-display--02-size: 5rem;
+    --kyn-type-display--02-height: 5.5rem;
+
+    --kyn-type-display--03-size: 4.5rem;
+    --kyn-type-display--03-height: 5.25rem;
+
+    --kyn-type-headline--02-size: 3.75rem;
+    --kyn-type-headline--02-height: 4.375rem;
+
+    --kyn-type-headline--04-size: 3rem;
+    --kyn-type-headline--04-height: 3.5rem;
+
+    --kyn-type-headline--05-size: 2.625rem;
+    --kyn-type-headline--05-height: 3.125rem;
+
+    --kyn-type-headline--06-size: 2.625rem;
+    --kyn-type-headline--06-height: 3.125rem;
+
+    --kyn-type-headline--07-size: 2rem;
+    --kyn-type-headline--07-height: 2.5rem;
+
+    --kyn-type-headline--08-size: 1.75rem;
+    --kyn-type-headline--08-height: 2.25rem;
+  }
 }

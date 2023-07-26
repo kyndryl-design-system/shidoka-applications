@@ -1,13 +1,24 @@
-/* import variables */
+/* import variables/mixins */
 @use './variables/index.scss';
+@use './mixins/typography.scss';
 
 /* import roboto from google fonts */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap');
 
 /* include everett fonts locally */
 @font-face {
   font-family: 'TWK Everett';
-  src: url(../../assets/fonts/TWKEverett-Light-web.woff2) format('woff2');
+  src: url(../../assets/fonts/TWKEverett-Ultralight-web.woff2) format('woff2'),
+    url(../../assets/fonts/TWKEverett-Ultralight-web.woff) format('woff');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TWK Everett';
+  src: url(../../assets/fonts/TWKEverett-Light-web.woff2) format('woff2'),
+    url(../../assets/fonts/TWKEverett-Light-web.woff) format('woff');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -15,7 +26,8 @@
 
 @font-face {
   font-family: 'TWK Everett';
-  src: url(../../assets/fonts/TWKEverett-Regular-web.woff2) format('woff2');
+  src: url(../../assets/fonts/TWKEverett-Regular-web.woff2) format('woff2'),
+    url(../../assets/fonts/TWKEverett-Regular-web.woff) format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -23,7 +35,17 @@
 
 @font-face {
   font-family: 'TWK Everett';
-  src: url(../../assets/fonts/TWKEverett-Bold-web.woff2) format('woff2');
+  src: url(../../assets/fonts/TWKEverett-Medium-web.woff2) format('woff2'),
+    url(../../assets/fonts/TWKEverett-Medium-web.woff) format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TWK Everett';
+  src: url(../../assets/fonts/TWKEverett-Bold-web.woff2) format('woff2'),
+    url(../../assets/fonts/TWKEverett-Bold-web.woff) format('woff');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -36,7 +58,6 @@ body {
 }
 
 body {
-  font-family: var(--kyn-font-body);
-  line-height: var(--kyn-type-body-1-height);
+  @include typography.type-body--02;
   background: var(--kyn-color-background);
 }
