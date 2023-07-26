@@ -1,3 +1,10 @@
+# [1.0.0-beta.2](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2023-07-26)
+
+
+### Bug Fixes
+
+* npm audit fix ([eb6c5a1](https://github.com/kyndryl-design-system/web-components/commit/eb6c5a1814933ed28a7f557f91e05a65db2addf0))
+
 # 1.0.0-beta.1 (2023-07-26)
 
 
