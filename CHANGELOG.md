@@ -1,3 +1,10 @@
+# [1.0.0-beta.35](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.34...v1.0.0-beta.35) (2023-07-27)
+
+
+### Bug Fixes
+
+* remove old foundation scss ([fc8b9e6](https://github.com/kyndryl-design-system/web-components/commit/fc8b9e6e1470b18ada696f401bee2f618be080e8))
+
 # [1.0.0-beta.34](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.33...v1.0.0-beta.34) (2023-07-27)
 
 
