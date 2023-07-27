@@ -4,7 +4,7 @@
 
 # Contributing to this project
 
-Read the [Contributing Guide](https://github.kyndryl.net/kyndryl-design-system/web-components/blob/beta/CONTRIBUTING.md) here.
+Read the [Contributing Guide](https://github.com/kyndryl-design-system/web-components/blob/beta/CONTRIBUTING.md) here.
 
 # Using this library in another project
 
@@ -37,7 +37,7 @@ You can make use of tokens/variables included in root.css such as `--kyn-header-
 
 ## Start using components
 
-See [Storybook](https://pages.github.kyndryl.net/kyndryl-design-system/web-components/) for the full components documentation.
+See [Storybook](https://kyndryl-design-system.github.io/web-components/) for the full components documentation.
 
 ### Example: Component with Sub-components
 
