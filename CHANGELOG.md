@@ -1,3 +1,11 @@
+# [1.0.0-beta.34](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.33...v1.0.0-beta.34) (2023-07-27)
+
+
+### Bug Fixes
+
+* bump lit version ([bd411f7](https://github.com/kyndryl-design-system/web-components/commit/bd411f7d3c1d945e80e68419e2dfa6c9481711a3))
+* npm audit fix ([eb6c5a1](https://github.com/kyndryl-design-system/web-components/commit/eb6c5a1814933ed28a7f557f91e05a65db2addf0))
+
 # [1.0.0-beta.2](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2023-07-26)
 
 
