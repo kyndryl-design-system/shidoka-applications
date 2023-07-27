@@ -1,4 +1,3 @@
-import { withDesign } from 'storybook-addon-designs';
 import { html } from 'lit';
 import './index';
 import '../footer';
@@ -11,7 +10,6 @@ export default {
   title: 'Global/UI Shell (POC)',
   component: 'kyn-ui-shell',
   decorators: [
-    withDesign,
     (story) =>
       html` <div style="height: 100%; margin: -16px;">${story()}</div> `,
   ],

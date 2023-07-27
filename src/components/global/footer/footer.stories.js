@@ -1,4 +1,3 @@
-import { withDesign } from 'storybook-addon-designs';
 import { html } from 'lit';
 import './index';
 
@@ -10,7 +9,6 @@ export default {
     FooterNavLink: 'kyn-footer-link',
   },
   decorators: [
-    withDesign,
     (story) =>
       html`
         <div style="position: absolute; bottom: 0; left: 0; right: 0;">
