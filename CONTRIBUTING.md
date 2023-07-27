@@ -35,6 +35,7 @@ npm run format
 1. Branching
    1. `main` branch is for stable/current version changes.
    1. `beta` branch is for future version/prerelease changes. This will be the default branch in GitHub and for storybook deploys until initial release.
+   1. Prefix your branch names based on the type of change, ex `feature/`, `bugfix/`, or `hotfix/`.
    1. Use the [GitHub Flow](https://docs.github.com/en/get-started/quickstart/github-flow).
       ![image](https://i0.wp.com/build5nines.com/wp-content/uploads/2018/01/GitHub-Flow.png)
 1. Code Review

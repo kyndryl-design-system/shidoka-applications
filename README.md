@@ -21,14 +21,26 @@ npm install @kyndryl-design-system/web-components@beta -S
 # when using beta, lock the version, as breaking changes can happen at any time
 ```
 
-## Import the root styles to your app's global styles
+## Import the root stylesheet to your app's global styles
 
-The method used (JS Import, SCSS @use, CSS @import, or &lt;style&gt; tag) will vary based on your framework/bundler, but the stylesheet can be found in `node_modules` at:
+The method used (SCSS @use, CSS @import, JS import, or &lt;style&gt; tag) will vary based on your framework/bundler. Some examples:
+
+### SCSS
+
+```css
+@use '~@kyndryl-design-system/foundation/scss/root.scss';
+```
+
+### CSS
+
+```css
+@import '@kyndryl-design-system/foundation/css/root.css';
+```
+
+### JS
 
 ```js
-@kyndryl-design-system/foundation/scss/root.scss
-// or
-@kyndryl-design-system/foundation/css/root.css
+import '@kyndryl-design-system/foundation/css/root.css';
 ```
 
 ### Use CSS tokens/variables
