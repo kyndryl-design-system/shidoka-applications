@@ -1,4 +1,3 @@
-import { withDesign } from 'storybook-addon-designs';
 import { html } from 'lit';
 import './header';
 import './headerNav';
@@ -21,7 +20,6 @@ export default {
     HeaderAvatar: 'kyn-header-avatar',
   },
   decorators: [
-    withDesign,
     (story) =>
       html`
         <div
