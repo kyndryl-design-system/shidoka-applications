@@ -1,5 +1,6 @@
 @use '../../../common/scss/global.scss';
 @use './header-interactive.scss';
+@use '~@kyndryl-design-system/foundation/scss/mixins/typography.scss';
 
 :host {
   display: inline-flex;
@@ -16,7 +17,7 @@
   .interactive {
     ::slotted(div[slot='button']),
     ::slotted(span[slot='button']) {
-      font-family: var(--kd-font-family-primary);
+      @include typography.type-ui-05;
       color: var(--kd-color-text-primary);
     }
   }

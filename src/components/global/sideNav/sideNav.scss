@@ -1,10 +1,12 @@
-@import '../../../common/scss/global.scss';
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/foundation/scss/mixins/typography.scss';
 
 :host {
   display: block;
 }
 
 nav {
+  @include typography.type-ui-05;
   position: fixed;
   top: 0;
   padding-top: var(--kd-header-height);
@@ -17,7 +19,6 @@ nav {
   justify-content: space-between;
   background: var(--kd-color-background-primary);
   box-shadow: var(--kd-shadow-menu);
-  font-size: 0.875rem;
   z-index: var(--kd-z-side-nav);
 
   &.nav--collapsed {
