@@ -1,4 +1,4 @@
-# Kyndryl Design System - Web Components
+# Kyndryl Design System - Shidoka Web Components
 
 [![kyndryl-web-components](https://github.com/kyndryl-design-system/web-components/actions/workflows/actions.yml/badge.svg)](https://github.com/kyndryl-design-system/web-components/actions/workflows/actions.yml)
 
