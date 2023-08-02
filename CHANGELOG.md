@@ -1,3 +1,12 @@
+# [1.0.0-beta.36](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.35...v1.0.0-beta.36) (2023-08-02)
+
+
+### Bug Fixes
+
+* corrected some tokens ([237b851](https://github.com/kyndryl-design-system/web-components/commit/237b851a0a3a22cd833d24ffe45d749fdfab9424))
+* update foundation and all tokens ([32af33f](https://github.com/kyndryl-design-system/web-components/commit/32af33fe92994c59d43b8a5d2fffa57a923cfb98))
+* use typography mixins ([4533c58](https://github.com/kyndryl-design-system/web-components/commit/4533c5893926bc7b2d027c0477a59c4c7dbcaa5a))
+
 # [1.0.0-beta.35](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.34...v1.0.0-beta.35) (2023-07-27)
 
 
