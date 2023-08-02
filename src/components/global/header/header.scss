@@ -1,24 +1,25 @@
-@import '../../../common/scss/global.scss';
-@import './header-interactive.scss';
+@use '../../../common/scss/global.scss';
+@use './header-interactive.scss';
+@use '~@kyndryl-design-system/foundation/scss/mixins/typography.scss';
 
 :host {
   display: block;
 }
 
 .header {
-  font-family: var(--kyn-font-heading);
+  font-family: var(--kd-font-family-primary);
   display: flex;
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
-  height: var(--kyn-header-height);
-  background: var(--kyn-color-background);
+  height: var(--kd-header-height);
+  background: var(--kd-color-background-primary);
   padding: 0 8px;
-  z-index: var(--kyn-z-header);
+  z-index: var(--kd-z-header);
 
   &.divider {
-    box-shadow: 0 1px 0 var(--kyn-color-divider-light);
+    box-shadow: 0 1px 0 var(--kd-color-border-light);
   }
 
   @media screen and (min-width: 42rem) {
@@ -36,7 +37,7 @@
   align-items: center;
   padding: 0 5px;
   margin: 0 3px;
-  color: var(--kyn-color-text);
+  color: var(--kd-color-text-primary);
   text-decoration: none;
 
   svg {
@@ -49,15 +50,12 @@
 }
 
 .title {
+  @include typography.type-ui-01;
   display: none;
-  font-weight: 400;
-  font-size: 1.125rem;
-  line-height: 1.5rem;
-  letter-spacing: 0.1px;
   margin-top: -1px;
   margin-left: 16px;
   padding-left: 16px;
-  border-left: 1px solid var(--kyn-color-divider);
+  border-left: 1px solid var(--kd-color-border-dark);
 
   .breakpoint-hit & {
     display: inline;

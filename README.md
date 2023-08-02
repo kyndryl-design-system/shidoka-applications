@@ -45,7 +45,7 @@ import '@kyndryl-design-system/foundation/css/root.css';
 
 ### Use CSS tokens/variables
 
-You can make use of tokens/variables included in root.css such as `--kyn-header-height` to pad the body for the fixed position header, `--kyn-spacing-gutter` for the padding on your main container, or any of the color tokens. These are very bare-bones currently, and will need to be fleshed out later.
+You can make use of tokens/variables included in root.css such as `--kd-header-height` to pad the body for the fixed position header, `--kd-page-gutter` for the padding on your main container, or any of the color tokens. These are very bare-bones currently, and will need to be fleshed out later.
 
 ## Start using components
 
