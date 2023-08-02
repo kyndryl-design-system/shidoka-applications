@@ -1,5 +1,6 @@
-@import '../../../common/scss/global.scss';
-@import './header-interactive.scss';
+@use '../../../common/scss/global.scss';
+@use './header-interactive.scss';
+@use '~@kyndryl-design-system/foundation/scss/mixins/typography.scss';
 
 :host {
   display: block;
@@ -18,13 +19,13 @@
 }
 
 .nav-link {
+  @include typography.type-ui-05;
   display: flex;
   position: relative;
   align-items: center;
   padding: 0 16px;
-  font-size: 0.875rem;
   text-decoration: none;
-  color: var(--kyn-color-text);
+  color: var(--kd-color-text-primary);
   white-space: nowrap;
   outline: none;
 
@@ -40,11 +41,11 @@
   }
 
   &.active {
-    color: var(--kyn-color-primary-focus);
-    background: var(--kyn-color-background-focus);
+    color: var(--kd-color-text-tertiary);
+    background: var(--kd-color-background-secondary);
 
     &::before {
-      background-color: var(--kyn-color-primary-focus);
+      background-color: var(--kd-color-text-tertiary);
     }
   }
 
@@ -70,7 +71,7 @@
     bottom: 0;
     right: 16px;
     top: auto;
-    background-color: var(--kyn-color-brand);
+    background-color: var(--kd-color-border-accent-warmred);
     transform-origin: bottom left;
     transition: transform 0.15s ease-out;
   }
@@ -94,7 +95,7 @@
     }
 
     &.interactive {
-      height: var(--kyn-header-height);
+      height: var(--kd-header-height);
     }
   }
 
@@ -102,7 +103,7 @@
     height: 38px;
 
     &:hover {
-      color: var(--kyn-color-text);
+      color: var(--kd-color-text-primary);
     }
   }
 }

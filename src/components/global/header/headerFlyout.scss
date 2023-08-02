@@ -1,5 +1,6 @@
-@import '../../../common/scss/global.scss';
-@import './header-interactive.scss';
+@use '../../../common/scss/global.scss';
+@use './header-interactive.scss';
+@use '~@kyndryl-design-system/foundation/scss/mixins/typography.scss';
 
 :host {
   display: inline-flex;
@@ -16,8 +17,8 @@
   .interactive {
     ::slotted(div[slot='button']),
     ::slotted(span[slot='button']) {
-      font-family: var(--kyn-font-heading);
-      color: var(--kyn-color-text);
+      @include typography.type-ui-05;
+      color: var(--kd-color-text-primary);
     }
   }
 
@@ -26,12 +27,12 @@
     .interactive {
       ::slotted(div[slot='button']),
       ::slotted(span[slot='button']) {
-        color: var(--kyn-color-primary-focus);
+        color: var(--kd-color-text-tertiary);
       }
 
       ::slotted(kyn-header-avatar) {
         background: none;
-        border-color: var(--kyn-color-brand-text);
+        border-color: var(--kd-color-border-accent-warmred);
       }
     }
   }

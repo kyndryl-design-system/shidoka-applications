@@ -1,12 +1,13 @@
-@import '../../../common/scss/global.scss';
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/foundation/scss/mixins/typography.scss';
 
 :host {
   display: block;
 }
 
 .footer {
-  padding: 8px var(--kyn-spacing-gutter) 12px;
-  box-shadow: 0 -1px 0 var(--kyn-color-divider-light);
+  padding: 8px var(--kd-page-gutter) 12px;
+  box-shadow: 0 -1px 0 var(--kd-color-border-light);
 }
 
 .footer-links {
@@ -32,11 +33,7 @@
 }
 
 .copyright {
-  font-family: var(--kyn-font-heading);
-  font-size: 0.75rem;
-  line-height: 1rem;
-  letter-spacing: 0.1px;
-  color: var(--kyn-color-text-light);
+  @include typography.type-ui-04;
 }
 
 @media (min-width: 42rem) {
