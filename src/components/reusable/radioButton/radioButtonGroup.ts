@@ -7,6 +7,9 @@ import {
 } from 'lit/decorators.js';
 import RadioButtonGroupScss from './radioButtonGroup.scss';
 
+import '@kyndryl-design-system/foundation/components/icon';
+import errorIcon from '@carbon/icons/es/warning--filled/16';
+
 /**
  * Radio button group container.
  * @fires on-radio-group-change - Captures the change event and emits the selected value.
@@ -26,6 +29,10 @@ export class RadioButtonGroup extends LitElement {
   @property({ type: String })
   labelText = '';
 
+  /** Hides the radio group label. */
+  @property({ type: Boolean })
+  hideLabel = false;
+
   /** Radio button input name attribute. */
   @property({ type: String })
   name = '';
@@ -33,6 +40,14 @@ export class RadioButtonGroup extends LitElement {
   /** Radio button group selected value. */
   @property({ type: String })
   value = '';
+
+  /** Radio button group disabled state. */
+  @property({ type: Boolean })
+  disabled = false;
+
+  /** Radio button group invalid text. */
+  @property({ type: String })
+  invalidText = '';
 
   /**
    * Queries for slotted radio buttons.
@@ -50,9 +65,19 @@ export class RadioButtonGroup extends LitElement {
 
   override render() {
     return html`
-      <fieldset>
-        <legend>${this.labelText}</legend>
+      <fieldset ?disabled=${this.disabled}>
+        <legend ?visually-hidden=${this.hideLabel}>${this.labelText}</legend>
+
         <slot></slot>
+
+        ${this.invalidText !== ''
+          ? html`
+              <div class="error">
+                <kyn-icon .icon="${errorIcon}"></kyn-icon>
+                ${this.invalidText}
+              </div>
+            `
+          : null}
       </fieldset>
     `;
   }
@@ -73,6 +98,20 @@ export class RadioButtonGroup extends LitElement {
 
       // set form data value
       this.internals.setFormValue(this.value);
+    }
+
+    if (changedProps.has('disabled')) {
+      // set disabled for each radio button
+      this.radioButtons.forEach((radio: any) => {
+        radio.disabled = this.disabled;
+      });
+    }
+
+    if (changedProps.has('invalidText')) {
+      // set invalid state for each radio button
+      this.radioButtons.forEach((radio: any) => {
+        radio.invalid = this.invalidText !== '';
+      });
     }
   }
 

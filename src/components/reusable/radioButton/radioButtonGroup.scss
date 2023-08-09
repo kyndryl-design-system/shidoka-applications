@@ -1,4 +1,5 @@
 @use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
 @use '~@kyndryl-design-system/foundation/scss/mixins/typography.scss';
 
 :host {
@@ -14,6 +15,35 @@ fieldset {
 legend {
   @include typography.type-ui-03;
   text-transform: uppercase;
-  font-weight: var(--kd-font-weight-medium);
+  font-weight: 500;
   padding: 0;
+  margin-bottom: 10px;
+
+  &[visually-hidden] {
+    @include mixins.visually-hidden;
+  }
+
+  fieldset[disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
+}
+
+.error {
+  @include typography.type-ui-03;
+  display: flex;
+  align-items: center;
+  color: var(--kd-color-error);
+  margin-top: 10px;
+
+  kyn-icon {
+    margin-right: 8px;
+  }
+}
+
+::slotted(kyn-radio-button) {
+  margin-top: 4px;
+}
+
+::slotted(kyn-radio-button:first-child) {
+  margin-top: 0;
 }

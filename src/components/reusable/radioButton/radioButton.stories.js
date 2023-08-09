@@ -14,6 +14,9 @@ export const RadioButtons = {
     labelText: 'Label',
     name: 'name',
     value: '',
+    disabled: false,
+    hideLabel: false,
+    invalidText: '',
   },
   render: (args) => {
     return html`
@@ -21,6 +24,9 @@ export const RadioButtons = {
         name=${args.name}
         labelText=${args.labelText}
         value=${args.value}
+        ?disabled=${args.disabled}
+        ?hideLabel=${args.hideLabel}
+        invalidText=${args.invalidText}
       >
         <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
         <kyn-radio-button value="2"> Option 2 </kyn-radio-button>
