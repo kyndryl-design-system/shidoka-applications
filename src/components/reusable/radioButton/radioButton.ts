@@ -30,6 +30,13 @@ export class RadioButton extends LitElement {
   checked = false;
 
   /**
+   * Makes the input required, inherited from the parent group.
+   * @ignore
+   */
+  @property({ type: Boolean })
+  required = false;
+
+  /**
    * Radio button disabled state, inherited from the parent group.
    * @ignore
    */
@@ -53,6 +60,7 @@ export class RadioButton extends LitElement {
           value=${this.value}
           .checked=${this.checked}
           ?checked=${this.checked}
+          ?required=${this.required}
           ?disabled=${this.disabled}
           ?invalid=${this.invalid}
           @change=${(e: any) => this.handleChange(e)}

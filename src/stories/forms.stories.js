@@ -14,7 +14,11 @@ export const Default = {
           console.log(new FormData(e.target));
         }}
       >
-        <kyn-radio-button-group labelText="Radio Buttons" name="radio">
+        <kyn-radio-button-group
+          labelText="Radio Buttons"
+          name="radio"
+          value="1"
+        >
           <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
           <kyn-radio-button value="2"> Option 2 </kyn-radio-button>
           <kyn-radio-button value="3"> Option 3 </kyn-radio-button>

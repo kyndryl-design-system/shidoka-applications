@@ -4,7 +4,6 @@ import './index';
 export default {
   title: 'Reusable/Radio Button',
   component: 'kyn-radio-button',
-  autodocs: false,
 };
 
 export const RadioButton = {

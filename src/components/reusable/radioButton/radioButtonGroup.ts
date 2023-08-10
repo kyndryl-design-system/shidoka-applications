@@ -29,10 +29,6 @@ export class RadioButtonGroup extends LitElement {
   @property({ type: String })
   labelText = '';
 
-  /** Hides the radio group label. */
-  @property({ type: Boolean })
-  hideLabel = false;
-
   /** Radio button input name attribute. */
   @property({ type: String })
   name = '';
@@ -40,6 +36,10 @@ export class RadioButtonGroup extends LitElement {
   /** Radio button group selected value. */
   @property({ type: String })
   value = '';
+
+  /** Makes the input required. */
+  @property({ type: Boolean })
+  required = false;
 
   /** Radio button group disabled state. */
   @property({ type: Boolean })
@@ -66,7 +66,10 @@ export class RadioButtonGroup extends LitElement {
   override render() {
     return html`
       <fieldset ?disabled=${this.disabled}>
-        <legend ?visually-hidden=${this.hideLabel}>${this.labelText}</legend>
+        <legend>
+          ${this.required ? html`<span class="required">*</span>` : null}
+          ${this.labelText}
+        </legend>
 
         <slot></slot>
 
@@ -98,6 +101,27 @@ export class RadioButtonGroup extends LitElement {
 
       // set form data value
       this.internals.setFormValue(this.value);
+
+      // set validity
+      if (this.required) {
+        if (!this.value || this.value === '') {
+          this.internals.setValidity(
+            { valueMissing: true },
+            'This field is required.'
+          );
+          this.invalidText = this.internals.validationMessage;
+        } else {
+          this.internals.setValidity({});
+          this.invalidText = '';
+        }
+      }
+    }
+
+    if (changedProps.has('required')) {
+      // set required for each radio button
+      this.radioButtons.forEach((radio: any) => {
+        radio.required = this.required;
+      });
     }
 
     if (changedProps.has('disabled')) {

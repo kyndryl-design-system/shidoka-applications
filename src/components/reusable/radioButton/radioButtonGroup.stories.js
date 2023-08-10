@@ -7,16 +7,15 @@ export default {
   subcomponents: {
     RadioButton: 'kyn-radio-button',
   },
-  autodocs: false,
 };
 
 export const RadioButtonGroup = {
   args: {
     labelText: 'Label',
     name: 'name',
-    value: '',
+    value: '1',
+    required: false,
     disabled: false,
-    hideLabel: false,
     invalidText: '',
   },
   render: (args) => {
@@ -25,8 +24,8 @@ export const RadioButtonGroup = {
         name=${args.name}
         labelText=${args.labelText}
         value=${args.value}
+        ?required=${args.required}
         ?disabled=${args.disabled}
-        ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
       >
         <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
