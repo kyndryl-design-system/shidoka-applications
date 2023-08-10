@@ -74,7 +74,11 @@ export class Checkbox extends LitElement {
     const event = new CustomEvent('on-checkbox-change', {
       bubbles: true,
       composed: true,
-      detail: { value: e.target.value, origEvent: e },
+      detail: {
+        checked: e.target.checked,
+        value: e.target.value,
+        origEvent: e,
+      },
     });
     this.dispatchEvent(event);
   }
