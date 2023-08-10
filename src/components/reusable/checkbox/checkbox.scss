@@ -1,0 +1,103 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: block;
+}
+
+label {
+  display: inline-flex;
+  align-items: center;
+
+  &[disabled] {
+    color: var(--kd-color-text-disabled);
+  }
+}
+
+span {
+  order: 1;
+}
+
+input {
+  order: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px 0 0;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--kd-color-ui-dark);
+  border-radius: 2px;
+  background-color: transparent;
+  outline: 2px solid transparent;
+  transition: background-color 150ms ease-out, border-color 150ms ease-out,
+    outline-color 150ms ease-out;
+
+  &::before {
+    content: '';
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEwIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTMuNSA1Ljg1NTQ3TDkgLTIuMDMwNjNlLTA2TDEwIDEuMDY0NjNMMy40ODU2NiA4TDAgNC4yODkwNkwxLjAxNDM0IDMuMjA5MTZMMy41IDUuODU1NDdaIiBmaWxsPSJ3aGl0ZSIvPg0KPC9zdmc+IA==');
+    display: block;
+    width: 10px;
+    height: 8px;
+    transition: 150ms transform ease-out;
+    transform: scale(0);
+  }
+
+  &:checked {
+    background: var(--kd-color-spruce-60);
+    border-color: var(--kd-color-spruce-60);
+
+    [disabled] & {
+      background-color: var(--kd-color-text-disabled);
+    }
+
+    &::before {
+      transform: scale(1);
+    }
+
+    &:hover {
+      background-color: var(--kd-color-spruce-40);
+      border-color: var(--kd-color-spruce-40);
+
+      [disabled] & {
+        background-color: var(--kd-color-text-disabled);
+        border-color: var(--kd-color-text-disabled);
+      }
+    }
+
+    &:active {
+      background-color: var(--kd-color-spruce-60);
+    }
+  }
+
+  &:hover {
+    background-color: var(--kd-color-skye-10);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-spruce-60);
+    outline-offset: 2px;
+  }
+
+  &:active {
+    background-color: var(--kd-color-spruce-20);
+  }
+
+  &[disabled] {
+    background-color: transparent;
+    border-color: var(--kd-color-text-disabled);
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    &[invalid] {
+      border-color: var(--kd-color-text-disabled);
+    }
+  }
+
+  &[invalid] {
+    border-color: var(--kd-color-error);
+  }
+}
