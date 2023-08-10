@@ -12,7 +12,7 @@ import errorIcon from '@carbon/icons/es/warning--filled/16';
 
 /**
  * Checkbox group container.
- * @fires on-checkbox-group-change - Captures the change event and emits the selected value.
+ * @fires on-checkbox-group-change - Captures the change event and emits the selected values.
  * @slot unnamed - Slot for individual checkboxes.
  */
 @customElement('kyn-checkbox-group')
@@ -37,7 +37,7 @@ export class CheckboxGroup extends LitElement {
   @property({ type: Array })
   value!: Array<string>;
 
-  /** Makes the input required. */
+  /** Makes a single selection required. */
   @property({ type: Boolean })
   required = false;
 
@@ -161,7 +161,7 @@ export class CheckboxGroup extends LitElement {
 
       // emit selected value
       const event = new CustomEvent('on-checkbox-group-change', {
-        detail: { value: e.detail.value },
+        detail: { value: newValues },
       });
       this.dispatchEvent(event);
     });

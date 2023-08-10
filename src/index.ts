@@ -12,3 +12,4 @@ export {
   RadioButton,
   RadioButtonGroup,
 } from './components/reusable/radioButton';
+export { Checkbox, CheckboxGroup } from './components/reusable/checkbox';
