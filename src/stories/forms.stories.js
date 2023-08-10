@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import '../components/reusable/radioButton';
+import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'Patterns/Forms',
@@ -11,6 +12,7 @@ export const Default = {
       <form
         @submit=${(e) => {
           e.preventDefault();
+          action('submit')(e);
           console.log(new FormData(e.target));
         }}
       >
@@ -18,6 +20,7 @@ export const Default = {
           labelText="Radio Buttons"
           name="radio"
           value="1"
+          @on-radio-group-change=${(e) => action(e.type)(e)}
         >
           <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
           <kyn-radio-button value="2"> Option 2 </kyn-radio-button>
