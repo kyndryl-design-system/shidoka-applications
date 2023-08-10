@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import './index';
+import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'Reusable/Radio Button',
@@ -13,7 +14,12 @@ export const RadioButton = {
   },
   render: (args) => {
     return html`
-      <kyn-radio-button value=${args.value}> ${args.unnamed} </kyn-radio-button>
+      <kyn-radio-button
+        value=${args.value}
+        @on-radio-change=${(e) => action(e.type)(e)}
+      >
+        ${args.unnamed}
+      </kyn-radio-button>
     `;
   },
 };

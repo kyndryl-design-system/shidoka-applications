@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import './index';
+import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'Reusable/Radio Button',
@@ -27,6 +28,7 @@ export const RadioButtonGroup = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
+        @on-radio-group-change=${(e) => action(e.type)(e)}
       >
         <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
         <kyn-radio-button value="2"> Option 2 </kyn-radio-button>
