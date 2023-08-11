@@ -66,10 +66,10 @@ export const Header = {
         <kyn-header-flyout>
           <div slot="button">
             Sign in
-            <kyn-icon
+            <kd-icon
               .icon="${caratDownIcon}"
               style="vertical-align: middle; margin-top: -1px"
-            ></kyn-icon>
+            ></kd-icon>
           </div>
 
           <div>

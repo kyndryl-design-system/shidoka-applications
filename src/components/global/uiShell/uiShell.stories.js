@@ -23,7 +23,7 @@ export const UIShell = {
       <!--
       <kyn-side-nav>
         <kyn-side-nav-link href="javascript:void(0)">
-          <kyn-icon slot="icon" .icon=${sampleIcon}></kyn-icon>
+          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
           Link 1
         </kyn-side-nav-link>
       </kyn-side-nav>

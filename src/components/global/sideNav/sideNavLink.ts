@@ -97,10 +97,10 @@ export class SideNavLink extends LitElement {
             ? html`
                 <span class="arrow-icon">
                   ${this.level == 1
-                    ? html`<kyn-icon .icon=${chevDownIcon}></kyn-icon>`
+                    ? html`<kd-icon .icon=${chevDownIcon}></kd-icon>`
                     : null}
                   ${this.level == 2
-                    ? html`<kyn-icon .icon=${chevRightIcon}></kyn-icon>`
+                    ? html`<kd-icon .icon=${chevRightIcon}></kd-icon>`
                     : null}
                 </span>
               `

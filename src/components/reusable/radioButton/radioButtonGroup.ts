@@ -76,7 +76,7 @@ export class RadioButtonGroup extends LitElement {
         ${this.invalidText !== ''
           ? html`
               <div class="error">
-                <kyn-icon .icon="${errorIcon}"></kyn-icon>
+                <kd-icon .icon="${errorIcon}"></kd-icon>
                 ${this.invalidText}
               </div>
             `

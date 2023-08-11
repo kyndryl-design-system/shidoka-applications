@@ -33,7 +33,7 @@ export class SideNav extends LitElement {
           })}
           @click=${(e: Event) => this.onNavToggle(e)}
         >
-          <kyn-icon .icon=${chevRightIcon}></kyn-icon>
+          <kd-icon .icon=${chevRightIcon}></kd-icon>
         </button>
       </nav>
     `;
