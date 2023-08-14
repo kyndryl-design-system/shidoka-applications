@@ -25,9 +25,9 @@ input {
   align-items: center;
   justify-content: center;
   margin: 0 10px 0 0;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--kd-color-ui-dark);
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--kd-color-border-secondary);
   border-radius: 50%;
   background-color: transparent;
   outline: 2px solid transparent;
@@ -40,13 +40,14 @@ input {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--kd-color-spruce-60);
+    background: var(--kd-color-background-primary);
     transition: 150ms transform ease-out;
     transform: scale(0);
   }
 
   &:checked {
-    border-color: var(--kd-color-spruce-60);
+    border-color: var(--kd-color-border-tertiary);
+    border-width: 3px;
 
     &::before {
       transform: scale(1);
@@ -54,16 +55,17 @@ input {
   }
 
   &:hover {
-    background-color: var(--kd-color-skye-10);
+    border-color: var(--kd-color-border-tertiary);
+    background-color: var(--kd-color-background-inverse-hover);
   }
 
   &:focus {
-    outline-color: var(--kd-color-spruce-60);
+    outline-color: var(--kd-color-border-focus);
     outline-offset: 2px;
   }
 
   &:active {
-    background-color: var(--kd-color-spruce-20);
+    background-color: var(--kd-color-background-accent-skye);
   }
 
   &[disabled] {
@@ -74,15 +76,15 @@ input {
     }
 
     &::before {
-      background: var(--kd-color-text-disabled);
+      background: var(--kd-color-background-disabled);
     }
 
     &[invalid] {
-      border-color: var(--kd-color-text-disabled);
+      border-color: var(--kd-color-border-disabled);
     }
   }
 
   &[invalid] {
-    border-color: var(--kd-color-error);
+    border-color: var(--kd-color-border-destructive);
   }
 }
