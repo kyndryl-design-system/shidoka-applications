@@ -11,7 +11,11 @@ export default {
   component: 'kyn-ui-shell',
   decorators: [
     (story) =>
-      html` <div style="height: 100%; margin: -16px;">${story()}</div> `,
+      html`
+        <div style="height: 100%; margin: var(--kd-negative-page-gutter);">
+          ${story()}
+        </div>
+      `,
   ],
 };
 

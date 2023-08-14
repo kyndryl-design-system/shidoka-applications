@@ -15,7 +15,7 @@ export default {
     (story) =>
       html`
         <div
-          style="height: 100%; min-height: 250px; transform: translate3d(0,0,0); margin: -16px;"
+          style="height: 100%; min-height: 250px; transform: translate3d(0,0,0); margin: var(--kd-negative-page-gutter);"
         >
           ${story()}
         </div>
