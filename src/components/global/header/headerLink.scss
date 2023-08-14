@@ -41,11 +41,11 @@
   }
 
   &.active {
-    color: var(--kd-color-text-tertiary);
-    background: var(--kd-color-background-secondary);
+    color: var(--kd-color-text-primary);
+    background: var(--kd-color-background-ui-medium);
 
     &::before {
-      background-color: var(--kd-color-text-tertiary);
+      background-color: var(--kd-color-border-focus);
     }
   }
 
@@ -71,14 +71,22 @@
     bottom: 0;
     right: 16px;
     top: auto;
-    background-color: var(--kd-color-border-accent-warmred);
+    background-color: var(--kd-color-border-tertiary);
     transform-origin: bottom left;
     transition: transform 0.15s ease-out;
+  }
+
+  &:focus::before {
+    background-color: var(--kd-color-border-tertiary);
   }
 
   &:hover::after,
   &:focus::after {
     transform: scaleX(1);
+  }
+
+  &:active {
+    color: var(--kd-color-text-primary-pressed);
   }
 }
 
