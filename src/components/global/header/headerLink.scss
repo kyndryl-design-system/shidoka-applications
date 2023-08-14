@@ -41,7 +41,7 @@
   }
 
   &.active {
-    color: var(--kd-color-text-primary);
+    color: var(--kd-color-text-tertiary);
     background: var(--kd-color-background-ui-medium);
 
     &::before {
@@ -76,10 +76,6 @@
     transition: transform 0.15s ease-out;
   }
 
-  &:focus::before {
-    background-color: var(--kd-color-border-tertiary);
-  }
-
   &:hover::after,
   &:focus::after {
     transform: scaleX(1);
@@ -94,11 +90,19 @@
   &--1 {
     height: 38px;
 
+    &:hover {
+      color: var(--kd-color-text-tertiary);
+    }
+
     .breakpoint-hit & {
       padding: 0 5px;
 
       &::after {
         content: none;
+      }
+
+      &:focus::before {
+        background-color: var(--kd-color-border-tertiary);
       }
     }
 
@@ -111,7 +115,7 @@
     height: 38px;
 
     &:hover {
-      color: var(--kd-color-text-primary);
+      color: var(--kd-color-text-tertiary);
     }
   }
 }
