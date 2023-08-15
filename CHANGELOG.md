@@ -1,3 +1,28 @@
+# [1.0.0-beta.37](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.36...v1.0.0-beta.37) (2023-08-15)
+
+
+### Bug Fixes
+
+* **checkbox:** add checked state in event detail ([a2c5038](https://github.com/kyndryl-design-system/web-components/commit/a2c503856d52bc4ef5d122b4440f5a7006670b7a))
+* **checkbox:** fix group change event values ([4b1f0f2](https://github.com/kyndryl-design-system/web-components/commit/4b1f0f26dc49f5486d9af8c58faa02f4482d5a57))
+* **footer:** new color tokens ([dc74641](https://github.com/kyndryl-design-system/web-components/commit/dc746411fdf230a9a87063c285e880ac11ea0372))
+* **header:** hover colors ([17df315](https://github.com/kyndryl-design-system/web-components/commit/17df315b1a230430843514bb045b36a9f035d5d5))
+* **header:** update color tokens ([64f756a](https://github.com/kyndryl-design-system/web-components/commit/64f756ada4cd2a43395826f3c9f080574f677d8c))
+* **icon:** update foundation, use kd prefix ([5c5c323](https://github.com/kyndryl-design-system/web-components/commit/5c5c32310b59f329e1b9f667c6d3ef9352a6b141))
+* **radio:** add checked state to event detail ([8e8424a](https://github.com/kyndryl-design-system/web-components/commit/8e8424a99f49d8f01199f5573f7d0be8de9d993a))
+* **radio:** invalid + disabled style fix ([28c4f3a](https://github.com/kyndryl-design-system/web-components/commit/28c4f3adb940d6bef69a28b1a36b5ac906aa90ca))
+* **side-nav:** update color tokens ([cf9265b](https://github.com/kyndryl-design-system/web-components/commit/cf9265bc70e02c1e9b7cfaca09a1d5acd88af1bb))
+* update radio & checkbox color tokens ([1b8c029](https://github.com/kyndryl-design-system/web-components/commit/1b8c029fa2f6ba4b9652936693dc47ad8329ee75))
+
+
+### Features
+
+* **checkbox:** initial commit ([dbf3758](https://github.com/kyndryl-design-system/web-components/commit/dbf37581ef98c43648d1258f7cb6ef99f04d4b04))
+* **radio:** add basic tests ([9dad440](https://github.com/kyndryl-design-system/web-components/commit/9dad4402bc47427d47c6071c7fba319643ab2f2f))
+* **radio:** add required, remove hideLabel ([4da3568](https://github.com/kyndryl-design-system/web-components/commit/4da3568e4329507ca6246c5ac2537f27005e4340))
+* **radio:** initial commit ([17218a8](https://github.com/kyndryl-design-system/web-components/commit/17218a835e3a309ea56de54091f01340ac6584cd))
+* **radio:** initial styles and props ([4bb6ca6](https://github.com/kyndryl-design-system/web-components/commit/4bb6ca68b3563650a6298b3ff5329104fa6f11a0))
+
 # [1.0.0-beta.36](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.35...v1.0.0-beta.36) (2023-08-02)
 
 
