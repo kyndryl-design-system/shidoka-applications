@@ -123,7 +123,7 @@ export class TextInput extends LitElement {
             : null}
           ${this.value !== ''
             ? html`
-                <button class="clear" @click=${(e: any) => this.handleClear(e)}>
+                <button class="clear" @click=${() => this.handleClear()}>
                   <kd-icon .icon=${clearIcon}></kd-icon>
                 </button>
               `
@@ -153,7 +153,7 @@ export class TextInput extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private handleClear(e: any) {
+  private handleClear() {
     this.value = '';
     this.inputEl.value = '';
   }
