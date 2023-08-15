@@ -11,6 +11,9 @@ import errorIcon from '@carbon/icons/es/warning--filled/24';
 /**
  * Text input.
  * @fires on-input - Captures the input event and emits the selected value and original event details.
+ * @prop {string} pattern - RegEx pattern to validate.
+ * @prop {number} minLength - Minimum number of characters.
+ * @prop {number} maxLength - Maximum number of characters.
  */
 @customElement('kyn-text-input')
 export class TextInput extends LitElement {
