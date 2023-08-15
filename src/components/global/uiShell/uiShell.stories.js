@@ -11,7 +11,11 @@ export default {
   component: 'kyn-ui-shell',
   decorators: [
     (story) =>
-      html` <div style="height: 100%; margin: -16px;">${story()}</div> `,
+      html`
+        <div style="height: 100%; margin: var(--kd-negative-page-gutter);">
+          ${story()}
+        </div>
+      `,
   ],
 };
 
@@ -23,7 +27,7 @@ export const UIShell = {
       <!--
       <kyn-side-nav>
         <kyn-side-nav-link href="javascript:void(0)">
-          <kyn-icon slot="icon" .icon=${sampleIcon}></kyn-icon>
+          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
           Link 1
         </kyn-side-nav-link>
       </kyn-side-nav>

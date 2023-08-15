@@ -1,0 +1,25 @@
+import { Meta, Story, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as FormsStories from './forms.stories.js';
+
+<Meta of={FormsStories} />
+
+# Forms
+
+Example form using our custom input components.
+
+<Canvas>
+  <Story of={FormsStories.Default} />
+</Canvas>
+
+## Form Participation
+
+Our custom input components are coded to be associated with forms so their values are included in [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData), which can be captured from the `submit` event of the `<form>` element.
+
+### Example
+
+```js
+document.querySelector('form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+});
+```

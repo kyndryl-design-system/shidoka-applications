@@ -11,7 +11,6 @@ const browsers = {
   // ===========
   chromium: playwrightLauncher({ product: 'chromium' }),
   firefox: playwrightLauncher({ product: 'firefox' }),
-  webkit: playwrightLauncher({ product: 'webkit' }),
 };
 
 // Prepend BROWSERS=x,y to `npm run test` to run a subset of browsers

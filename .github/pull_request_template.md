@@ -11,6 +11,11 @@ Link here (if applicable).
 - Detailed change notes
 - can go here
 
+## To Do
+
+- Anything else
+- left to do
+
 ## Checklist
 
 - [ ] Used Conventional Commit messages as outlined in the contributing guide.
@@ -20,6 +25,7 @@ Link here (if applicable).
 - [ ] Added/updated Stories with controls to cover all variants.
 - [ ] Added/updated a basic unit test, at least, for each component.
 - [ ] Added/updated the Figma link for the Story's Design tab.
+- [ ] Added any new component exports to the src/index.ts file
 
 ## Testing Instructions
 

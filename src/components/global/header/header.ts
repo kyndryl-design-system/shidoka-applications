@@ -76,7 +76,7 @@ export class Header extends LitElement {
                     class="menu-button interactive"
                     @click=${() => this.toggleNavMenu()}
                   >
-                    <kyn-icon .icon=${overflowIcon}></kyn-icon>
+                    <kd-icon .icon=${overflowIcon}></kd-icon>
                   </button>
                 </div>
               `

@@ -101,7 +101,7 @@ export class HeaderLink extends LitElement {
           <slot></slot>
 
           ${this.slottedElements.length && this.breakpointHit
-            ? html` <kyn-icon .icon=${downIcon}></kyn-icon> `
+            ? html` <kd-icon .icon=${downIcon}></kd-icon> `
             : null}
         </a>
         <slot name="links" class=${classMap(slotClasses)}></slot>

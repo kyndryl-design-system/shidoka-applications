@@ -15,7 +15,7 @@ export default {
     (story) =>
       html`
         <div
-          style="height: 100%; min-height: 250px; transform: translate3d(0,0,0); margin: -16px;"
+          style="height: 100%; min-height: 250px; transform: translate3d(0,0,0); margin: var(--kd-negative-page-gutter);"
         >
           ${story()}
         </div>
@@ -30,12 +30,12 @@ export const SideNav = {
   render: (args) => html`
     <kyn-side-nav ?collapsed=${args.collapsed}>
       <kyn-side-nav-link href="javascript:void(0)">
-        <kyn-icon slot="icon" .icon=${sampleIcon}></kyn-icon>
+        <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
         Link 1
       </kyn-side-nav-link>
 
       <kyn-side-nav-link href="javascript:void(0)">
-        <kyn-icon slot="icon" .icon=${sampleIcon}></kyn-icon>
+        <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
         Link 2
 
         <kyn-side-nav-link slot="links" href="javascript:void(0)">
@@ -47,7 +47,7 @@ export const SideNav = {
       </kyn-side-nav-link>
 
       <kyn-side-nav-link href="javascript:void(0)" expanded>
-        <kyn-icon slot="icon" .icon=${sampleIcon}></kyn-icon>
+        <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
         Link 3
 
         <kyn-side-nav-link slot="links" href="javascript:void(0)">

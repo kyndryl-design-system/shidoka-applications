@@ -42,10 +42,10 @@
 
   &.active {
     color: var(--kd-color-text-tertiary);
-    background: var(--kd-color-background-secondary);
+    background: var(--kd-color-background-ui-medium);
 
     &::before {
-      background-color: var(--kd-color-text-tertiary);
+      background-color: var(--kd-color-border-focus);
     }
   }
 
@@ -71,7 +71,7 @@
     bottom: 0;
     right: 16px;
     top: auto;
-    background-color: var(--kd-color-border-accent-warmred);
+    background-color: var(--kd-color-border-tertiary);
     transform-origin: bottom left;
     transition: transform 0.15s ease-out;
   }
@@ -80,17 +80,29 @@
   &:focus::after {
     transform: scaleX(1);
   }
+
+  &:active {
+    color: var(--kd-color-text-primary-pressed);
+  }
 }
 
 .level {
   &--1 {
     height: 38px;
 
+    &:hover {
+      color: var(--kd-color-text-tertiary);
+    }
+
     .breakpoint-hit & {
       padding: 0 5px;
 
       &::after {
         content: none;
+      }
+
+      &:focus::before {
+        background-color: var(--kd-color-border-tertiary);
       }
     }
 
@@ -103,7 +115,7 @@
     height: 38px;
 
     &:hover {
-      color: var(--kd-color-text-primary);
+      color: var(--kd-color-text-tertiary);
     }
   }
 }
@@ -118,7 +130,7 @@ slot {
   padding: 8px 0;
 }
 
-kyn-icon {
+kd-icon {
   margin-left: 4px;
 }
 
