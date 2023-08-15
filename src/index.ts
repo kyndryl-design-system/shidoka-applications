@@ -14,3 +14,4 @@ export {
 } from './components/reusable/radioButton';
 export { Checkbox, CheckboxGroup } from './components/reusable/checkbox';
 export { TextInput } from './components/reusable/textInput';
+export { TextArea } from './components/reusable/textArea';

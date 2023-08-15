@@ -30,28 +30,19 @@
   position: relative;
 }
 
-input {
+textarea {
   @include typography.type-body-02;
   -webkit-appearance: none;
   appearance: none;
   border: 2px solid var(--kd-color-background-ui);
   border-radius: 4px;
-  height: 48px;
-  padding: 0 48px 0 16px;
+  padding: 16px;
   color: var(--kd-color-text-primary);
   transition: background-color 150ms ease-out, border-color 150ms ease-out,
     outline-color 150ms ease-out;
   background: var(--kd-color-background-inverse);
   outline: 2px solid transparent;
   outline-offset: 2px;
-
-  &.size--sm {
-    height: 32px;
-  }
-
-  &.size--lg {
-    height: 56px;
-  }
 
   &[disabled] {
     color: var(--kd-color-text-disabled);
@@ -85,31 +76,19 @@ input {
 
 .error-icon {
   position: absolute;
-  top: 50%;
+  top: 16px;
   right: 16px;
-  transform: translateY(-50%);
   color: var(--kd-color-text-error);
-}
-
-.clear {
-  border: none;
-  background: none;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  background: var(--kd-color-background-inverse);
-  display: block;
-
-  kd-icon {
-    display: block;
-  }
 }
 
 .caption {
   @include typography.type-ui-03;
   margin-top: 8px;
+}
+
+.count {
+  @include typography.type-ui-03;
+  position: absolute;
+  right: 16px;
+  bottom: 8px;
 }
