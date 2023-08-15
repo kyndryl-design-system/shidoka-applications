@@ -1,0 +1,207 @@
+import { LitElement, html } from 'lit';
+import { customElement, property, state, query } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { classMap } from 'lit/directives/class-map.js';
+import TextInputScss from './textInput.scss';
+
+import '@kyndryl-design-system/foundation/components/icon';
+import clearIcon from '@carbon/icons/es/close/24';
+import errorIcon from '@carbon/icons/es/warning--filled/24';
+
+/**
+ * Text input.
+ * @fires on-input - Captures the input event and emits the selected value and original event details.
+ */
+@customElement('kyn-text-input')
+export class TextInput extends LitElement {
+  static override styles = TextInputScss;
+
+  /**
+   * Associate the component with forms.
+   * @ignore
+   */
+  static formAssociated = true;
+
+  /**
+   * Attached internals for form association.
+   * @ignore
+   */
+  @state()
+  internals = this.attachInternals();
+
+  /** Input type, limited to options that are "text like". */
+  @property({ type: String })
+  type = 'text';
+
+  /** Input size. "sm", "md", or "lg". */
+  @property({ type: String })
+  size = 'md';
+
+  /** Label text. */
+  @property({ type: String })
+  labelText = '';
+
+  /** Optional text beneath the input. */
+  @property({ type: String })
+  caption = '';
+
+  /** Input value. */
+  @property({ type: String })
+  value = '';
+
+  /** Input placeholder. */
+  @property({ type: String })
+  placeholder = '';
+
+  /** Input name. */
+  @property({ type: String })
+  name = '';
+
+  /** Makes the input required. */
+  @property({ type: Boolean })
+  required = false;
+
+  /** Input disabled state. */
+  @property({ type: Boolean })
+  disabled = false;
+
+  /** Radio button group invalid text. */
+  @property({ type: String })
+  invalidText = '';
+
+  /** RegEx pattern to validate. */
+  @property({ type: String })
+  pattern = null;
+
+  /** Maximum number of characters. */
+  @property({ type: Number })
+  maxLength = null;
+
+  /** Minimum number of characters. */
+  @property({ type: Number })
+  minLength = null;
+
+  /**
+   * Queries the <input> DOM element.
+   * @ignore
+   */
+  @query('input')
+  inputEl!: HTMLInputElement;
+
+  override render() {
+    return html`
+      <label ?disabled=${this.disabled}>
+        <span class="label-text">
+          ${this.required ? html`<span class="required">*</span>` : null}
+          ${this.labelText}
+        </span>
+
+        <div class="input-wrapper">
+          <input
+            class="${classMap({
+              'size--sm': this.size === 'sm',
+              'size--lg': this.size === 'lg',
+            })}"
+            type=${this.type}
+            name=${this.name}
+            value=${this.value}
+            placeholder=${this.placeholder}
+            ?required=${this.required}
+            ?disabled=${this.disabled}
+            ?invalid=${this.invalidText !== ''}
+            pattern=${ifDefined(this.pattern)}
+            minlength=${ifDefined(this.minLength)}
+            maxlength=${ifDefined(this.maxLength)}
+            @input=${(e: any) => this.handleInput(e)}
+          />
+
+          ${this.invalidText !== ''
+            ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
+            : null}
+          ${this.value !== ''
+            ? html`
+                <button class="clear" @click=${(e: any) => this.handleClear(e)}>
+                  <kd-icon .icon=${clearIcon}></kd-icon>
+                </button>
+              `
+            : null}
+        </div>
+      </label>
+
+      ${this.caption !== ''
+        ? html` <div class="caption">${this.caption}</div> `
+        : null}
+      ${this.invalidText !== ''
+        ? html` <div class="error">${this.invalidText}</div> `
+        : null}
+    `;
+  }
+
+  private handleInput(e: any) {
+    this.value = e.target.value;
+
+    // emit selected value
+    const event = new CustomEvent('on-input', {
+      detail: {
+        value: e.target.value,
+        origEvent: e,
+      },
+    });
+    this.dispatchEvent(event);
+  }
+
+  private handleClear(e: any) {
+    this.value = '';
+    this.inputEl.value = '';
+  }
+
+  override updated(changedProps: any) {
+    if (changedProps.has('value')) {
+      this.inputEl.value = this.value;
+      // set form data value
+      this.internals.setFormValue(this.value);
+
+      // set validity
+      if (this.required) {
+        if (!this.value || this.value === '') {
+          this.internals.setValidity(
+            { valueMissing: true },
+            'This field is required.'
+          );
+          this.invalidText = this.internals.validationMessage;
+        } else if (this.minLength && this.value.length < this.minLength) {
+          this.internals.setValidity({ tooShort: true }, 'Too few characters.');
+          this.invalidText = this.internals.validationMessage;
+        } else if (this.maxLength && this.value.length > this.maxLength) {
+          this.internals.setValidity({ tooLong: true }, 'Too many characters.');
+          this.invalidText = this.internals.validationMessage;
+        } else {
+          this.internals.setValidity({});
+          this.invalidText = '';
+        }
+      }
+
+      // validate pattern
+      if (this.pattern) {
+        const regex = new RegExp(this.pattern);
+
+        if (!regex.test(this.value)) {
+          this.internals.setValidity(
+            { patternMismatch: true },
+            'Value does not match pattern.'
+          );
+          this.invalidText = this.internals.validationMessage;
+        } else {
+          this.internals.setValidity({});
+          this.invalidText = '';
+        }
+      }
+    }
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'kyn-text-input': TextInput;
+  }
+}
