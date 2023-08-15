@@ -52,6 +52,6 @@ export const TextArea = {
 TextArea.parameters = {
   design: {
     type: 'figma',
-    url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=85%3A611&mode=dev',
+    url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=215%3A2099&mode=dev',
   },
 };
