@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import '../components/reusable/radioButton';
 import '../components/reusable/checkbox';
+import '../components/reusable/textInput';
 import { action } from '@storybook/addon-actions';
 
 export default {
@@ -43,6 +44,16 @@ export const Default = {
         </kyn-checkbox-group>
 
         <br />
+
+        <kyn-text-input
+          labelText="Text Input"
+          name="textInput"
+          placeholder="Placeholder text"
+          caption="Text input example"
+          @on-input=${(e) => action(e.type)(e)}
+        ></kyn-text-input>
+
+        <br /><br />
 
         <input type="submit" value="Submit" />
       </form>
