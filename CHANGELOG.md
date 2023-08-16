@@ -1,3 +1,10 @@
+# [1.0.0-beta.39](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.38...v1.0.0-beta.39) (2023-08-16)
+
+
+### Bug Fixes
+
+* update foundation to beta.14 ([ebb18ba](https://github.com/kyndryl-design-system/web-components/commit/ebb18ba764c7168dc98da9b8a49d72269f16637a))
+
 # [1.0.0-beta.38](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.37...v1.0.0-beta.38) (2023-08-16)
 
 
