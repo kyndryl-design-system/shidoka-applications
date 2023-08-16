@@ -1,5 +1,11 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state, query } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  state,
+  query,
+  queryAssignedElements,
+} from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import TextInputScss from './textInput.scss';
@@ -84,6 +90,14 @@ export class TextInput extends LitElement {
   @property({ type: Number })
   minLength = null;
 
+  /** Visual icon to place on top of the input to give more context. */
+  @property({ type: Object })
+  icon = {};
+
+  /** Place icon on the right. */
+  @property({ type: Boolean })
+  iconRight = false;
+
   /**
    * Queries the <input> DOM element.
    * @ignore
@@ -99,7 +113,14 @@ export class TextInput extends LitElement {
           ${this.labelText}
         </span>
 
-        <div class="input-wrapper">
+        <div
+          class="${classMap({
+            'input-wrapper': true,
+            'icon--left': Object.keys(this.icon).length && !this.iconRight,
+            'icon--right': Object.keys(this.icon).length && this.iconRight,
+          })}"
+        >
+          ${this.icon ? html`<kd-icon .icon=${this.icon}></kd-icon>` : null}
           <input
             class="${classMap({
               'size--sm': this.size === 'sm',
