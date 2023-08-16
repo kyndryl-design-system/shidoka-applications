@@ -1,11 +1,5 @@
 import { LitElement, html } from 'lit';
-import {
-  customElement,
-  property,
-  state,
-  query,
-  queryAssignedElements,
-} from 'lit/decorators.js';
+import { customElement, property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import TextInputScss from './textInput.scss';
