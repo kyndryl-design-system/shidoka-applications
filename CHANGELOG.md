@@ -1,3 +1,16 @@
+# [1.0.0-beta.40](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.39...v1.0.0-beta.40) (2023-08-16)
+
+
+### Bug Fixes
+
+* **text-input:** fix this.icon truthiness ([8220091](https://github.com/kyndryl-design-system/web-components/commit/82200917cc3b69aa0401d15026975fb385e000e8))
+* **toggle:** form association ([de7b3f8](https://github.com/kyndryl-design-system/web-components/commit/de7b3f8e6bcd6bed52bcb5c1e63356d676c53308))
+
+
+### Features
+
+* **toggle:** add toggle button component ([5183c99](https://github.com/kyndryl-design-system/web-components/commit/5183c9997ff781bf9ce70365b6ce8fb6e77cbcbf))
+
 # [1.0.0-beta.39](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.38...v1.0.0-beta.39) (2023-08-16)
 
 
