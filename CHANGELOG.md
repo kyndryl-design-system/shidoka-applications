@@ -1,3 +1,18 @@
+# [1.0.0-beta.38](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.37...v1.0.0-beta.38) (2023-08-16)
+
+
+### Bug Fixes
+
+* **text-input:** border thickness ([df666aa](https://github.com/kyndryl-design-system/web-components/commit/df666aa1716c17d522d55619b5a5a8799e52059b))
+* update form input border color tokens ([9107de5](https://github.com/kyndryl-design-system/web-components/commit/9107de51649a472874efba35b1c70751585019de))
+
+
+### Features
+
+* **text-area:** add text area component ([cb8584b](https://github.com/kyndryl-design-system/web-components/commit/cb8584be66946a67acae0d25c9098d567f76238b))
+* **text-input:** add icon support ([b3aafe2](https://github.com/kyndryl-design-system/web-components/commit/b3aafe20c20b13b5ea6d85136884b119cfa1f65e))
+* **text-input:** initial text input component ([933f42b](https://github.com/kyndryl-design-system/web-components/commit/933f42bc8e666cffc942cb4bf47930a79e26c3a8))
+
 # [1.0.0-beta.37](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.36...v1.0.0-beta.37) (2023-08-15)
 
 
