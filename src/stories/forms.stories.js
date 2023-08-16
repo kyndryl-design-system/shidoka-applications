@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import '../components/reusable/radioButton';
 import '../components/reusable/checkbox';
+import '../components/reusable/toggleButton';
 import '../components/reusable/textInput';
 import '../components/reusable/textArea';
 import '@kyndryl-design-system/foundation/components/button';
@@ -40,6 +41,16 @@ export const Default = {
         </kyn-checkbox-group>
 
         <br />
+
+        <kyn-toggle-button
+          name="toggle"
+          value="example"
+          @on-change=${(e) => action(e.type)(e)}
+        >
+          Toggle Button
+        </kyn-toggle-button>
+
+        <br /><br />
 
         <kyn-text-input
           labelText="Text Input"

@@ -114,7 +114,9 @@ export class TextInput extends LitElement {
             'icon--right': Object.keys(this.icon).length && this.iconRight,
           })}"
         >
-          ${this.icon ? html`<kd-icon .icon=${this.icon}></kd-icon>` : null}
+          ${Object.keys(this.icon).length
+            ? html`<kd-icon .icon=${this.icon}></kd-icon>`
+            : null}
           <input
             class="${classMap({
               'size--sm': this.size === 'sm',

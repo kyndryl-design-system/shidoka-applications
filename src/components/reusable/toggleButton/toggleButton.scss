@@ -1,0 +1,135 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/foundation/scss/mixins/typography.scss';
+
+:host {
+  display: inline-block;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.status-text {
+  margin-left: 8px;
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
+}
+
+label {
+  display: block;
+}
+
+.label-text {
+  @include typography.type-ui-03;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: block;
+  padding: 0;
+  margin-bottom: 8px;
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
+}
+
+input {
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  width: 48px;
+  height: 24px;
+  padding: 0;
+  margin: 0;
+  border-radius: 12px;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: background-color 150ms ease-out, outline-color 150ms ease-out;
+  background: var(--kd-color-background-secondary);
+
+  &:before {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin: 4px 0 0 4px;
+    transition: background-color 150ms ease-out, transform 200ms ease-out;
+    background: var(--kd-color-background-inverse);
+  }
+
+  &:hover {
+    background-color: var(--kd-color-background-ui-hover);
+
+    &:before {
+      background-color: var(--kd-color-background-inverse-hover);
+    }
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
+
+    &:before {
+      background-color: var(--kd-color-background-inverse);
+    }
+  }
+
+  &:active {
+    background-color: var(--kd-color-background-success);
+
+    &:before {
+      background-color: var(--kd-color-background-inverse);
+    }
+  }
+
+  &:checked {
+    background-color: var(--kd-color-background-success);
+
+    &:before {
+      transform: translateX(24px);
+    }
+
+    &:hover {
+      background-color: var(--kd-color-background-ui-hover);
+
+      &:before {
+        background-color: var(--kd-color-background-inverse-hover);
+      }
+    }
+
+    &:active {
+      background-color: var(--kd-color-background-secondary);
+
+      &:before {
+        background-color: var(--kd-color-background-inverse);
+      }
+    }
+  }
+
+  &[disabled] {
+    background-color: var(--kd-color-background-disabled);
+
+    &:before {
+      background-color: var(--kd-color-background-inverse);
+    }
+  }
+
+  &.size--sm {
+    width: 32px;
+    height: 16px;
+
+    &:before {
+      width: 12px;
+      height: 12px;
+      margin: 2px 0 0 2px;
+    }
+
+    &:checked {
+      &:before {
+        transform: translateX(16px);
+      }
+    }
+  }
+}

@@ -142,6 +142,14 @@
             "name": "TextArea",
             "module": "./components/reusable/textArea"
           }
+        },
+        {
+          "kind": "js",
+          "name": "ToggleButton",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "./components/reusable/toggleButton"
+          }
         }
       ]
     },
@@ -1091,54 +1099,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": []
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values. TO DO: Update to work with dynamic/collapsible Side Nav.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/sideNav/index.ts",
       "declarations": [],
       "exports": [
@@ -1378,19 +1338,96 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/checkbox/checkbox.ts",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Checkbox.",
-          "name": "Checkbox",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values. TO DO: Update to work with dynamic/collapsible Side Nav.",
+          "name": "UiShell",
           "slots": [
             {
-              "description": "Slot for label text.",
+              "description": "Slot for global elements.",
               "name": "unnamed"
             }
           ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "./textArea"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/textArea.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Text area.",
+          "name": "TextArea",
           "members": [
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
             {
               "kind": "field",
               "name": "value",
@@ -1398,12 +1435,82 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Checkbox value.",
+              "description": "Input value.",
               "attribute": "value"
             },
             {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input invalid text.",
+              "attribute": "invalidText"
+            },
+            {
+              "kind": "field",
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "default": "null",
+              "description": "Maximum number of characters.",
+              "attribute": "maxLength"
+            },
+            {
+              "kind": "field",
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "default": "null",
+              "description": "Minimum number of characters.",
+              "attribute": "minLength"
+            },
+            {
               "kind": "method",
-              "name": "handleChange",
+              "name": "handleInput",
               "privacy": "private",
               "parameters": [
                 {
@@ -1417,127 +1524,8 @@
           ],
           "events": [
             {
-              "description": "Captures the change event and emits the selected value and original event details.",
-              "name": "on-checkbox-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Checkbox value.",
-              "fieldName": "value"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-checkbox",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Checkbox",
-          "declaration": {
-            "name": "Checkbox",
-            "module": "src/components/reusable/checkbox/checkbox.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-checkbox",
-          "declaration": {
-            "name": "Checkbox",
-            "module": "src/components/reusable/checkbox/checkbox.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/checkbox/checkboxGroup.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Checkbox group container.",
-          "name": "CheckboxGroup",
-          "slots": [
-            {
-              "description": "Slot for individual checkboxes.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Checkbox group label text.",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Checkbox input name attribute.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "Array<string>"
-              },
-              "description": "Checkbox group selected values.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes a single selection required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox group disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Checkbox group invalid text.",
-              "attribute": "invalidText"
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the change event and emits the selected values.",
-              "name": "on-checkbox-group-change"
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-input"
             }
           ],
           "attributes": [
@@ -1547,25 +1535,44 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Checkbox group label text.",
+              "description": "Label text.",
               "fieldName": "labelText"
             },
             {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "fieldName": "placeholder"
+            },
+            {
               "name": "name",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Checkbox input name attribute.",
+              "description": "Input name.",
               "fieldName": "name"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "Array<string>"
-              },
-              "description": "Checkbox group selected values.",
-              "fieldName": "value"
             },
             {
               "name": "required",
@@ -1573,7 +1580,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Makes a single selection required.",
+              "description": "Makes the input required.",
               "fieldName": "required"
             },
             {
@@ -1582,7 +1589,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Checkbox group disabled state.",
+              "description": "Input disabled state.",
               "fieldName": "disabled"
             },
             {
@@ -1591,56 +1598,51 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Checkbox group invalid text.",
+              "description": "Input invalid text.",
               "fieldName": "invalidText"
+            },
+            {
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "default": "null",
+              "description": "Maximum number of characters.",
+              "fieldName": "maxLength"
+            },
+            {
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "default": "null",
+              "description": "Minimum number of characters.",
+              "fieldName": "minLength"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-checkbox-group",
+          "tagName": "kyn-text-area",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "CheckboxGroup",
+          "name": "TextArea",
           "declaration": {
-            "name": "CheckboxGroup",
-            "module": "src/components/reusable/checkbox/checkboxGroup.ts"
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-checkbox-group",
+          "name": "kyn-text-area",
           "declaration": {
-            "name": "CheckboxGroup",
-            "module": "src/components/reusable/checkbox/checkboxGroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/checkbox/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Checkbox",
-          "declaration": {
-            "name": "Checkbox",
-            "module": "./checkbox"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "CheckboxGroup",
-          "declaration": {
-            "name": "CheckboxGroup",
-            "module": "./checkboxGroup"
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
           }
         }
       ]
@@ -1918,48 +1920,19 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "./textArea"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/textArea.ts",
+      "path": "src/components/reusable/checkbox/checkbox.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Text area.",
-          "name": "TextArea",
+          "description": "Checkbox.",
+          "name": "Checkbox",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
           "members": [
-            {
-              "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
             {
               "kind": "field",
               "name": "value",
@@ -1967,82 +1940,12 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Input value.",
+              "description": "Checkbox value.",
               "attribute": "value"
             },
             {
-              "kind": "field",
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "attribute": "placeholder"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input invalid text.",
-              "attribute": "invalidText"
-            },
-            {
-              "kind": "field",
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "default": "null",
-              "description": "Maximum number of characters.",
-              "attribute": "maxLength"
-            },
-            {
-              "kind": "field",
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "default": "null",
-              "description": "Minimum number of characters.",
-              "attribute": "minLength"
-            },
-            {
               "kind": "method",
-              "name": "handleInput",
+              "name": "handleChange",
               "privacy": "private",
               "parameters": [
                 {
@@ -2056,8 +1959,127 @@
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-input"
+              "description": "Captures the change event and emits the selected value and original event details.",
+              "name": "on-checkbox-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Checkbox value.",
+              "fieldName": "value"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-checkbox",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Checkbox",
+          "declaration": {
+            "name": "Checkbox",
+            "module": "src/components/reusable/checkbox/checkbox.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-checkbox",
+          "declaration": {
+            "name": "Checkbox",
+            "module": "src/components/reusable/checkbox/checkbox.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/checkbox/checkboxGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Checkbox group container.",
+          "name": "CheckboxGroup",
+          "slots": [
+            {
+              "description": "Slot for individual checkboxes.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Checkbox group label text.",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Checkbox input name attribute.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "Array<string>"
+              },
+              "description": "Checkbox group selected values.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes a single selection required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox group disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Checkbox group invalid text.",
+              "attribute": "invalidText"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the change event and emits the selected values.",
+              "name": "on-checkbox-group-change"
             }
           ],
           "attributes": [
@@ -2067,35 +2089,8 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Label text.",
+              "description": "Checkbox group label text.",
               "fieldName": "labelText"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "fieldName": "placeholder"
             },
             {
               "name": "name",
@@ -2103,8 +2098,16 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Input name.",
+              "description": "Checkbox input name attribute.",
               "fieldName": "name"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "Array<string>"
+              },
+              "description": "Checkbox group selected values.",
+              "fieldName": "value"
             },
             {
               "name": "required",
@@ -2112,7 +2115,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Makes the input required.",
+              "description": "Makes a single selection required.",
               "fieldName": "required"
             },
             {
@@ -2121,7 +2124,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Input disabled state.",
+              "description": "Checkbox group disabled state.",
               "fieldName": "disabled"
             },
             {
@@ -2130,51 +2133,56 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Input invalid text.",
+              "description": "Checkbox group invalid text.",
               "fieldName": "invalidText"
-            },
-            {
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "default": "null",
-              "description": "Maximum number of characters.",
-              "fieldName": "maxLength"
-            },
-            {
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "default": "null",
-              "description": "Minimum number of characters.",
-              "fieldName": "minLength"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-text-area",
+          "tagName": "kyn-checkbox-group",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "TextArea",
+          "name": "CheckboxGroup",
           "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
+            "name": "CheckboxGroup",
+            "module": "src/components/reusable/checkbox/checkboxGroup.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-text-area",
+          "name": "kyn-checkbox-group",
           "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
+            "name": "CheckboxGroup",
+            "module": "src/components/reusable/checkbox/checkboxGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/checkbox/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Checkbox",
+          "declaration": {
+            "name": "Checkbox",
+            "module": "./checkbox"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "CheckboxGroup",
+          "declaration": {
+            "name": "CheckboxGroup",
+            "module": "./checkboxGroup"
           }
         }
       ]
@@ -2538,6 +2546,218 @@
           "declaration": {
             "name": "TextInput",
             "module": "src/components/reusable/textInput/textInput.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/toggleButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ToggleButton",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "./toggleButton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/toggleButton/toggleButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Toggle Button.",
+          "name": "ToggleButton",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox checked state.",
+              "attribute": "checked"
+            },
+            {
+              "kind": "field",
+              "name": "checkedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'On'",
+              "description": "Checked state text.",
+              "attribute": "checkedText"
+            },
+            {
+              "kind": "field",
+              "name": "uncheckedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Off'",
+              "description": "Unchecked state text.",
+              "attribute": "uncheckedText"
+            },
+            {
+              "kind": "field",
+              "name": "small",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to use small size.",
+              "attribute": "small"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the change event and emits the selected value and original event details.",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox checked state.",
+              "fieldName": "checked"
+            },
+            {
+              "name": "checkedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'On'",
+              "description": "Checked state text.",
+              "fieldName": "checkedText"
+            },
+            {
+              "name": "uncheckedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Off'",
+              "description": "Unchecked state text.",
+              "fieldName": "uncheckedText"
+            },
+            {
+              "name": "small",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to use small size.",
+              "fieldName": "small"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-toggle-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ToggleButton",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "src/components/reusable/toggleButton/toggleButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-toggle-button",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "src/components/reusable/toggleButton/toggleButton.ts"
           }
         }
       ]
