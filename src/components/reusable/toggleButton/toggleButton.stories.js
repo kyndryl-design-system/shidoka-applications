@@ -11,6 +11,8 @@ export const ToggleButton = {
   args: {
     unnamed: 'Label',
     checked: false,
+    name: 'toggle',
+    value: 'example',
     small: false,
     disabled: false,
     checkedText: 'On',
@@ -19,8 +21,9 @@ export const ToggleButton = {
   render: (args) => {
     return html`
       <kyn-toggle-button
-        value=${args.value}
         ?checked=${args.checked}
+        name=${args.name}
+        value=${args.value}
         ?small=${args.small}
         ?disabled=${args.disabled}
         checkedText=${args.checkedText}

@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import ToggleButtonScss from './toggleButton.scss';
 
 /**
@@ -10,6 +10,27 @@ import ToggleButtonScss from './toggleButton.scss';
 @customElement('kyn-toggle-button')
 export class ToggleButton extends LitElement {
   static override styles = ToggleButtonScss;
+
+  /**
+   * Associate the component with forms.
+   * @ignore
+   */
+  static formAssociated = true;
+
+  /**
+   * Attached internals for form association.
+   * @ignore
+   */
+  @state()
+  internals = this.attachInternals();
+
+  /** Input name. */
+  @property({ type: String })
+  name = '';
+
+  /** Input value. */
+  @property({ type: String })
+  value = '';
 
   /** Checkbox checked state. */
   @property({ type: Boolean })
@@ -33,12 +54,12 @@ export class ToggleButton extends LitElement {
 
   override render() {
     return html`
-      <div class="wrapper" ?disabled=${this.disabled}>
-        <label ?disabled=${this.disabled}>
-          <span class="label-text">
-            <slot></slot>
-          </span>
+      <label ?disabled=${this.disabled}>
+        <span class="label-text">
+          <slot></slot>
+        </span>
 
+        <div class="wrapper">
           <input
             class="${this.small ? 'size--sm' : ''}"
             type="checkbox"
@@ -47,12 +68,12 @@ export class ToggleButton extends LitElement {
             ?disabled=${this.disabled}
             @change=${(e: any) => this.handleChange(e)}
           />
-        </label>
 
-        <span class="status-text">
-          ${this.checked ? this.checkedText : this.uncheckedText}
-        </span>
-      </div>
+          <span class="status-text">
+            ${this.checked ? this.checkedText : this.uncheckedText}
+          </span>
+        </div>
+      </label>
     `;
   }
 
@@ -62,10 +83,18 @@ export class ToggleButton extends LitElement {
     const event = new CustomEvent('on-change', {
       detail: {
         checked: e.target.checked,
+        value: this.value,
         origEvent: e,
       },
     });
     this.dispatchEvent(event);
+  }
+
+  override updated(changedProps: any) {
+    if (changedProps.has('checked')) {
+      // set form data value
+      this.internals.setFormValue(this.checked ? this.value : null);
+    }
   }
 }
 
