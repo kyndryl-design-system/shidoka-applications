@@ -3,6 +3,7 @@ import '../components/reusable/radioButton';
 import '../components/reusable/checkbox';
 import '../components/reusable/textInput';
 import '../components/reusable/textArea';
+import '@kyndryl-design-system/foundation/components/button';
 import { action } from '@storybook/addon-actions';
 
 export default {
@@ -12,13 +13,7 @@ export default {
 export const Default = {
   render: (args) => {
     return html`
-      <form
-        @submit=${(e) => {
-          e.preventDefault();
-          action('submit')(e);
-          console.log(new FormData(e.target));
-        }}
-      >
+      <form>
         <kyn-radio-button-group
           labelText="Radio Buttons"
           name="radio"
@@ -67,7 +62,14 @@ export const Default = {
 
         <br /><br />
 
-        <input type="submit" value="Submit" />
+        <kd-button
+          @on-click=${(e) => {
+            action('submit')(e);
+            console.log(new FormData(document.querySelector('form')));
+          }}
+        >
+          Submit
+        </kd-button>
       </form>
     `;
   },
