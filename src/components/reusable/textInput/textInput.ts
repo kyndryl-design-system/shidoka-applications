@@ -90,7 +90,7 @@ export class TextInput extends LitElement {
   @property({ type: Number })
   minLength = null;
 
-  /** Visual icon to place on top of the input to give more context. */
+  /** Carbon icon to place on top of the input to give more context. */
   @property({ type: Object })
   icon = {};
 
