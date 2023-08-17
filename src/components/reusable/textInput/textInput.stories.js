@@ -92,7 +92,6 @@ export const WithIcon = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
-        .icon=${currencyIcon}
         ?iconRight=${args.iconRight}
         pattern=${ifDefined(args.pattern)}
         minLength=${ifDefined(args.minLength)}
@@ -100,6 +99,7 @@ export const WithIcon = {
         @on-input=${(e) => action(e.type)(e)}
       >
         ${args.unnamed}
+        <kd-icon slot="icon" .icon=${currencyIcon}></kd-icon>
       </kyn-text-input>
     `;
   },

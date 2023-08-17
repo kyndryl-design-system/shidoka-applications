@@ -1,5 +1,11 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state, query } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  state,
+  query,
+  queryAssignedElements,
+} from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import TextInputScss from './textInput.scss';
@@ -81,10 +87,6 @@ export class TextInput extends LitElement {
   @property({ type: Number })
   minLength = null;
 
-  /** Carbon icon to place on top of the input to give more context. */
-  @property({ type: Object })
-  icon = {};
-
   /** Place icon on the right. */
   @property({ type: Boolean })
   iconRight = false;
@@ -96,6 +98,20 @@ export class TextInput extends LitElement {
   @query('input')
   inputEl!: HTMLInputElement;
 
+  /**
+   * Evaluates if an icon is slotted.
+   * @ignore
+   */
+  @state()
+  iconSlotted = false;
+
+  /**
+   * Queries any slotted icons.
+   * @ignore
+   */
+  @queryAssignedElements({ slot: 'icon' })
+  iconSlot!: Array<HTMLElement>;
+
   override render() {
     return html`
       <label class="label-text" for=${this.name} ?disabled=${this.disabled}>
@@ -106,13 +122,14 @@ export class TextInput extends LitElement {
       <div
         class="${classMap({
           'input-wrapper': true,
-          'icon--left': Object.keys(this.icon).length && !this.iconRight,
-          'icon--right': Object.keys(this.icon).length && this.iconRight,
+          'icon--left': this.iconSlotted && !this.iconRight,
+          'icon--right': this.iconSlotted && this.iconRight,
         })}"
       >
-        ${Object.keys(this.icon).length
-          ? html`<kd-icon class="context-icon" .icon=${this.icon}></kd-icon>`
-          : null}
+        <span class="context-icon">
+          <slot name="icon"></slot>
+        </span>
+
         <input
           class="${classMap({
             'size--sm': this.size === 'sm',
@@ -213,6 +230,14 @@ export class TextInput extends LitElement {
         }
       }
     }
+  }
+
+  override firstUpdated() {
+    this.determineIfSlotted();
+  }
+
+  private determineIfSlotted() {
+    this.iconSlotted = this.iconSlot.length ? true : false;
   }
 }
 
