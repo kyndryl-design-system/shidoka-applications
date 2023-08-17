@@ -1,3 +1,11 @@
+# [1.0.0-beta.41](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.40...v1.0.0-beta.41) (2023-08-17)
+
+
+### Bug Fixes
+
+* consistent form label spacing ([82213ea](https://github.com/kyndryl-design-system/web-components/commit/82213ea9183f6a4d6e5f467f181f398c9cf25fe8))
+* **toggle:** label structure, name/value binding ([5d3df30](https://github.com/kyndryl-design-system/web-components/commit/5d3df30de5439154757eb5f45f12efd99a51d4e1))
+
 # [1.0.0-beta.40](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.39...v1.0.0-beta.40) (2023-08-16)
 
 
