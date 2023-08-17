@@ -21,6 +21,7 @@ import errorIcon from '@carbon/icons/es/warning--filled/24';
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
  * @slot unnamed - Slot for label text.
+ * @slot icon - Slot for contextual icon.
  */
 @customElement('kyn-text-input')
 export class TextInput extends LitElement {
