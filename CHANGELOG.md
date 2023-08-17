@@ -1,3 +1,10 @@
+# [1.0.0-beta.43](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.42...v1.0.0-beta.43) (2023-08-17)
+
+
+### Bug Fixes
+
+* **text-input:** use slot for icon ([3a324f6](https://github.com/kyndryl-design-system/web-components/commit/3a324f62a1f30284f5bb640c90bc2ce9270a66bf))
+
 # [1.0.0-beta.42](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.41...v1.0.0-beta.42) (2023-08-17)
 
 
