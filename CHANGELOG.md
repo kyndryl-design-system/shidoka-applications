@@ -1,3 +1,10 @@
+# [1.0.0-beta.42](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.41...v1.0.0-beta.42) (2023-08-17)
+
+
+### Bug Fixes
+
+* normalize form input labels to use slots ([27e0913](https://github.com/kyndryl-design-system/web-components/commit/27e091358a928e24559b2af63e1b76d25ae2c6c0))
+
 # [1.0.0-beta.41](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.40...v1.0.0-beta.41) (2023-08-17)
 
 
