@@ -3,7 +3,7 @@ import './index';
 import { action } from '@storybook/addon-actions';
 
 export default {
-  title: 'Reusable/Radio Button',
+  title: 'Components/Radio Button',
   component: 'kyn-radio-button-group',
   subcomponents: {
     RadioButton: 'kyn-radio-button',

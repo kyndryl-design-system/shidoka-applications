@@ -6,7 +6,7 @@ import '@kyndryl-design-system/foundation/components/icon';
 import sampleIcon from '@carbon/icons/es/user--avatar/16';
 
 export default {
-  title: 'Global/Side Nav (POC)',
+  title: 'Global Components/Side Nav (POC)',
   component: 'kyn-side-nav',
   subcomponents: {
     SideNavLink: 'kyn-side-nav-link',

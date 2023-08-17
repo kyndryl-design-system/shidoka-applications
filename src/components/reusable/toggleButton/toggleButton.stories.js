@@ -3,7 +3,7 @@ import './index';
 import { action } from '@storybook/addon-actions';
 
 export default {
-  title: 'Reusable/Toggle Button',
+  title: 'Components/Toggle Button',
   component: 'kyn-toggle-button',
 };
 

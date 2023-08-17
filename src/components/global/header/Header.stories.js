@@ -10,7 +10,7 @@ import '@kyndryl-design-system/foundation/components/icon';
 import caratDownIcon from '@carbon/icons/es/caret--down/16';
 
 export default {
-  title: 'Global/Header',
+  title: 'Global Components/Header',
   component: 'kyn-header',
   subcomponents: {
     HeaderNav: 'kyn-header-nav',

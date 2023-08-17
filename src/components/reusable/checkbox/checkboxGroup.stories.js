@@ -3,7 +3,7 @@ import './index';
 import { action } from '@storybook/addon-actions';
 
 export default {
-  title: 'Reusable/Checkbox',
+  title: 'Components/Checkbox',
   component: 'kyn-checkbox-group',
   subcomponents: {
     Checkbox: 'kyn-checkbox',

@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 export default {
-  title: 'Reusable/Text Area',
+  title: 'Components/Text Area',
   component: 'kyn-text-area',
   argTypes: {
     minLength: {

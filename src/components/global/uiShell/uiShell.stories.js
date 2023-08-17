@@ -7,7 +7,7 @@ import '@kyndryl-design-system/foundation/components/icon';
 import sampleIcon from '@carbon/icons/es/user--avatar/16';
 
 export default {
-  title: 'Global/UI Shell (POC)',
+  title: 'Global Components/UI Shell (POC)',
   component: 'kyn-ui-shell',
   decorators: [
     (story) =>

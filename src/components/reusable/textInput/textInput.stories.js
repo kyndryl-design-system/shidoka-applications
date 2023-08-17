@@ -6,7 +6,7 @@ import '@kyndryl-design-system/foundation/components/icon';
 import currencyIcon from '@carbon/icons/es/currency--dollar/24';
 
 export default {
-  title: 'Reusable/Text Input',
+  title: 'Components/Text Input',
   component: 'kyn-text-input',
   argTypes: {
     type: {
