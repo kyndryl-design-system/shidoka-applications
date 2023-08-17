@@ -54,26 +54,29 @@ export class ToggleButton extends LitElement {
 
   override render() {
     return html`
-      <label ?disabled=${this.disabled}>
+      <label for=${this.name} ?disabled=${this.disabled}>
         <span class="label-text">
           <slot></slot>
         </span>
-
-        <div class="wrapper">
-          <input
-            class="${this.small ? 'size--sm' : ''}"
-            type="checkbox"
-            .checked=${this.checked}
-            ?checked=${this.checked}
-            ?disabled=${this.disabled}
-            @change=${(e: any) => this.handleChange(e)}
-          />
-
-          <span class="status-text">
-            ${this.checked ? this.checkedText : this.uncheckedText}
-          </span>
-        </div>
       </label>
+
+      <div class="wrapper">
+        <input
+          class="${this.small ? 'size--sm' : ''}"
+          type="checkbox"
+          name=${this.name}
+          id=${this.name}
+          value=${this.value}
+          .checked=${this.checked}
+          ?checked=${this.checked}
+          ?disabled=${this.disabled}
+          @change=${(e: any) => this.handleChange(e)}
+        />
+
+        <span class="status-text">
+          ${this.checked ? this.checkedText : this.uncheckedText}
+        </span>
+      </div>
     `;
   }
 
