@@ -14,6 +14,7 @@ import errorIcon from '@carbon/icons/es/warning--filled/16';
  * Checkbox group container.
  * @fires on-checkbox-group-change - Captures the change event and emits the selected values.
  * @slot unnamed - Slot for individual checkboxes.
+ * @slot label - Slot for label text.
  */
 @customElement('kyn-checkbox-group')
 export class CheckboxGroup extends LitElement {
@@ -24,10 +25,6 @@ export class CheckboxGroup extends LitElement {
    * @ignore
    */
   static formAssociated = true;
-
-  /** Checkbox group label text. */
-  @property({ type: String })
-  labelText = '';
 
   /** Checkbox input name attribute. */
   @property({ type: String })
@@ -68,7 +65,7 @@ export class CheckboxGroup extends LitElement {
       <fieldset ?disabled=${this.disabled}>
         <legend>
           ${this.required ? html`<span class="required">*</span>` : null}
-          ${this.labelText}
+          <slot name="label"></slot>
         </legend>
 
         <slot></slot>

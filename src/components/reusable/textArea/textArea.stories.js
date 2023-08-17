@@ -18,7 +18,7 @@ export default {
 
 export const TextArea = {
   args: {
-    labelText: 'Label',
+    unnamed: 'Label',
     name: 'name',
     value: '',
     placeholder: 'Placeholder',
@@ -32,7 +32,6 @@ export const TextArea = {
   render: (args) => {
     return html`
       <kyn-text-area
-        labelText=${args.labelText}
         name=${args.name}
         value=${args.value}
         placeholder=${args.placeholder}
@@ -44,7 +43,9 @@ export const TextArea = {
         maxLength=${ifDefined(args.maxLength)}
         @on-input=${(e) => action(e.type)(e)}
         @keydown=${(e) => e.stopPropagation()}
-      ></kyn-text-area>
+      >
+        ${args.unnamed}
+      </kyn-text-area>
     `;
   },
 };

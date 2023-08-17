@@ -12,7 +12,7 @@ export default {
 
 export const CheckboxGroup = {
   args: {
-    labelText: 'Label',
+    label: 'Label',
     name: 'name',
     value: ['1'],
     required: false,
@@ -23,13 +23,13 @@ export const CheckboxGroup = {
     return html`
       <kyn-checkbox-group
         name=${args.name}
-        labelText=${args.labelText}
         .value=${args.value}
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         @on-checkbox-group-change=${(e) => action(e.type)(e)}
       >
+        <span slot="label">${args.label}</span>
         <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
         <kyn-checkbox value="2"> Option 2 </kyn-checkbox>
         <kyn-checkbox value="3"> Option 3 </kyn-checkbox>

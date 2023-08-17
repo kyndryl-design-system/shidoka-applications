@@ -14,6 +14,7 @@ import errorIcon from '@carbon/icons/es/warning--filled/24';
  * @prop {string} pattern - RegEx pattern to validate.
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
+ * @slot unnamed - Slot for label text.
  */
 @customElement('kyn-text-input')
 export class TextInput extends LitElement {
@@ -39,10 +40,6 @@ export class TextInput extends LitElement {
   /** Input size. "sm", "md", or "lg". */
   @property({ type: String })
   size = 'md';
-
-  /** Label text. */
-  @property({ type: String })
-  labelText = '';
 
   /** Optional text beneath the input. */
   @property({ type: String })
@@ -101,52 +98,51 @@ export class TextInput extends LitElement {
 
   override render() {
     return html`
-      <label ?disabled=${this.disabled}>
-        <span class="label-text">
-          ${this.required ? html`<span class="required">*</span>` : null}
-          ${this.labelText}
-        </span>
-
-        <div
-          class="${classMap({
-            'input-wrapper': true,
-            'icon--left': Object.keys(this.icon).length && !this.iconRight,
-            'icon--right': Object.keys(this.icon).length && this.iconRight,
-          })}"
-        >
-          ${Object.keys(this.icon).length
-            ? html`<kd-icon .icon=${this.icon}></kd-icon>`
-            : null}
-          <input
-            class="${classMap({
-              'size--sm': this.size === 'sm',
-              'size--lg': this.size === 'lg',
-            })}"
-            type=${this.type}
-            name=${this.name}
-            value=${this.value}
-            placeholder=${this.placeholder}
-            ?required=${this.required}
-            ?disabled=${this.disabled}
-            ?invalid=${this.invalidText !== ''}
-            pattern=${ifDefined(this.pattern)}
-            minlength=${ifDefined(this.minLength)}
-            maxlength=${ifDefined(this.maxLength)}
-            @input=${(e: any) => this.handleInput(e)}
-          />
-
-          ${this.invalidText !== ''
-            ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
-            : null}
-          ${this.value !== ''
-            ? html`
-                <button class="clear" @click=${() => this.handleClear()}>
-                  <kd-icon .icon=${clearIcon}></kd-icon>
-                </button>
-              `
-            : null}
-        </div>
+      <label class="label-text" for=${this.name} ?disabled=${this.disabled}>
+        ${this.required ? html`<span class="required">*</span>` : null}
+        <slot></slot>
       </label>
+
+      <div
+        class="${classMap({
+          'input-wrapper': true,
+          'icon--left': Object.keys(this.icon).length && !this.iconRight,
+          'icon--right': Object.keys(this.icon).length && this.iconRight,
+        })}"
+      >
+        ${Object.keys(this.icon).length
+          ? html`<kd-icon class="context-icon" .icon=${this.icon}></kd-icon>`
+          : null}
+        <input
+          class="${classMap({
+            'size--sm': this.size === 'sm',
+            'size--lg': this.size === 'lg',
+          })}"
+          type=${this.type}
+          id=${this.name}
+          name=${this.name}
+          value=${this.value}
+          placeholder=${this.placeholder}
+          ?required=${this.required}
+          ?disabled=${this.disabled}
+          ?invalid=${this.invalidText !== ''}
+          pattern=${ifDefined(this.pattern)}
+          minlength=${ifDefined(this.minLength)}
+          maxlength=${ifDefined(this.maxLength)}
+          @input=${(e: any) => this.handleInput(e)}
+        />
+
+        ${this.invalidText !== ''
+          ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
+          : null}
+        ${this.value !== ''
+          ? html`
+              <button class="clear" @click=${() => this.handleClear()}>
+                <kd-icon .icon=${clearIcon}></kd-icon>
+              </button>
+            `
+          : null}
+      </div>
 
       ${this.caption !== ''
         ? html` <div class="caption">${this.caption}</div> `

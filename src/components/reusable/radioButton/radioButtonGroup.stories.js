@@ -12,7 +12,7 @@ export default {
 
 export const RadioButtonGroup = {
   args: {
-    labelText: 'Label',
+    label: 'Label',
     name: 'name',
     value: '1',
     required: false,
@@ -23,13 +23,13 @@ export const RadioButtonGroup = {
     return html`
       <kyn-radio-button-group
         name=${args.name}
-        labelText=${args.labelText}
         value=${args.value}
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         @on-radio-group-change=${(e) => action(e.type)(e)}
       >
+        <span slot="label">${args.label}</span>
         <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
         <kyn-radio-button value="2"> Option 2 </kyn-radio-button>
         <kyn-radio-button value="3"> Option 3 </kyn-radio-button>

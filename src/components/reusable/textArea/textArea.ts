@@ -11,6 +11,7 @@ import errorIcon from '@carbon/icons/es/warning--filled/24';
  * @fires on-input - Captures the input event and emits the selected value and original event details.
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
+ * @slot unnamed - Slot for label text.
  */
 @customElement('kyn-text-area')
 export class TextArea extends LitElement {
@@ -28,10 +29,6 @@ export class TextArea extends LitElement {
    */
   @state()
   internals = this.attachInternals();
-
-  /** Label text. */
-  @property({ type: String })
-  labelText = '';
 
   /** Optional text beneath the input. */
   @property({ type: String })
@@ -71,36 +68,35 @@ export class TextArea extends LitElement {
 
   override render() {
     return html`
-      <label ?disabled=${this.disabled}>
-        <span class="label-text">
-          ${this.required ? html`<span class="required">*</span>` : null}
-          ${this.labelText}
-        </span>
-
-        <div class="input-wrapper">
-          <textarea
-            name=${this.name}
-            placeholder=${this.placeholder}
-            ?required=${this.required}
-            ?disabled=${this.disabled}
-            ?invalid=${this.invalidText !== ''}
-            minlength=${ifDefined(this.minLength)}
-            maxlength=${ifDefined(this.maxLength)}
-            @input=${(e: any) => this.handleInput(e)}
-          >
-${this.value}</textarea
-          >
-
-          ${this.invalidText !== ''
-            ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
-            : null}
-          ${this.maxLength
-            ? html`
-                <div class="count">${this.value.length}/${this.maxLength}</div>
-              `
-            : null}
-        </div>
+      <label class="label-text" for=${this.name} ?disabled=${this.disabled}>
+        ${this.required ? html`<span class="required">*</span>` : null}
+        <slot></slot>
       </label>
+
+      <div class="input-wrapper">
+        <textarea
+          id=${this.name}
+          name=${this.name}
+          placeholder=${this.placeholder}
+          ?required=${this.required}
+          ?disabled=${this.disabled}
+          ?invalid=${this.invalidText !== ''}
+          minlength=${ifDefined(this.minLength)}
+          maxlength=${ifDefined(this.maxLength)}
+          @input=${(e: any) => this.handleInput(e)}
+        >
+${this.value}</textarea
+        >
+
+        ${this.invalidText !== ''
+          ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
+          : null}
+        ${this.maxLength
+          ? html`
+              <div class="count">${this.value.length}/${this.maxLength}</div>
+            `
+          : null}
+      </div>
 
       ${this.caption !== ''
         ? html` <div class="caption">${this.caption}</div> `

@@ -54,10 +54,8 @@ export class ToggleButton extends LitElement {
 
   override render() {
     return html`
-      <label for=${this.name} ?disabled=${this.disabled}>
-        <span class="label-text">
-          <slot></slot>
-        </span>
+      <label class="label-text" for=${this.name} ?disabled=${this.disabled}>
+        <slot></slot>
       </label>
 
       <div class="wrapper">

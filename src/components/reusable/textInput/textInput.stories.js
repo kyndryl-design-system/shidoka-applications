@@ -30,7 +30,7 @@ export default {
 };
 
 const args = {
-  labelText: 'Label',
+  unnamed: 'Label',
   size: 'md',
   type: 'text',
   name: 'textInput',
@@ -51,7 +51,6 @@ export const TextInput = {
   render: (args) => {
     return html`
       <kyn-text-input
-        labelText=${args.labelText}
         type=${args.type}
         size=${args.size}
         name=${args.name}
@@ -65,7 +64,9 @@ export const TextInput = {
         minLength=${ifDefined(args.minLength)}
         maxLength=${ifDefined(args.maxLength)}
         @on-input=${(e) => action(e.type)(e)}
-      ></kyn-text-input>
+      >
+        ${args.unnamed}
+      </kyn-text-input>
     `;
   },
 };
@@ -82,7 +83,6 @@ export const WithIcon = {
   render: (args) => {
     return html`
       <kyn-text-input
-        labelText=${args.labelText}
         type=${args.type}
         size=${args.size}
         name=${args.name}
@@ -98,7 +98,9 @@ export const WithIcon = {
         minLength=${ifDefined(args.minLength)}
         maxLength=${ifDefined(args.maxLength)}
         @on-input=${(e) => action(e.type)(e)}
-      ></kyn-text-input>
+      >
+        ${args.unnamed}
+      </kyn-text-input>
     `;
   },
 };
