@@ -1,3 +1,10 @@
+# [1.0.0-beta.45](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.44...v1.0.0-beta.45) (2023-08-18)
+
+
+### Bug Fixes
+
+* update foundation, update color tokens ([1e03e8f](https://github.com/kyndryl-design-system/web-components/commit/1e03e8fa397746b305ceb1805f38e73dd8ffc761))
+
 # [1.0.0-beta.44](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.43...v1.0.0-beta.44) (2023-08-18)
 
 
