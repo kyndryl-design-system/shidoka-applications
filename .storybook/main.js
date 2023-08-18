@@ -7,6 +7,7 @@ export default {
     '@storybook/addon-essentials',
     '@storybook/addon-designs',
     '@storybook/addon-storysource',
+    'storybook-addon-themes',
     {
       name: '@storybook/addon-docs',
       options: {
