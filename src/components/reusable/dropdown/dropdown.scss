@@ -1,0 +1,155 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
+@use '~@kyndryl-design-system/foundation/scss/mixins/typography.scss';
+
+:host {
+  display: inline-block;
+}
+
+.label-text {
+  @include typography.type-ui-03;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: block;
+  padding: 0;
+  margin-bottom: 8px;
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
+}
+
+.required {
+  color: var(--kd-color-text-error);
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
+}
+
+.wrapper {
+  position: relative;
+}
+
+.select,
+select {
+  @include typography.type-body-02;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid var(--kd-color-border-ui);
+  border-radius: 4px;
+  height: 48px;
+  padding: 0 48px 0 16px;
+  color: var(--kd-color-text-primary);
+  transition: background-color 150ms ease-out, border-color 150ms ease-out,
+    outline-color 150ms ease-out;
+  background: var(--kd-color-background-inverse);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  cursor: default;
+
+  &.size--sm {
+    height: 32px;
+  }
+
+  &.size--lg {
+    height: 56px;
+  }
+
+  &[invalid] {
+    border-color: var(--kd-color-border-error);
+  }
+
+  &:hover {
+    border-color: var(--kd-color-border-ui-hover);
+    background-color: var(--kd-color-background-inverse-hover);
+  }
+
+  &[disabled] {
+    color: var(--kd-color-text-disabled);
+    background-color: var(--kd-color-background-inverse);
+    border-color: var(--kd-color-border-ui-disabled);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
+  }
+}
+
+select {
+  letter-spacing: 0;
+}
+
+option {
+  background: var(--kd-color-background-inverse);
+}
+
+.select {
+  display: flex;
+  align-items: center;
+}
+
+kd-icon {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+
+  .open & {
+    transform: translateY(-50%) rotate(180deg);
+  }
+}
+
+.options {
+  display: none;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--kd-color-background-inverse);
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12),
+    0px 4px 12px 0px rgba(0, 0, 0, 0.08);
+
+  &.open {
+    display: flex;
+  }
+
+  &:focus {
+    outline: 2px solid var(--kd-color-border-focus);
+  }
+}
+
+// add option to show native select for mobile instead?
+// .wrapper {
+//   display: none;
+// }
+
+select {
+  // @include mixins.visually-hidden;
+  display: none;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0xMiAxNi41TDQuNSA5LjAwMDAxTDUuNTUgNy45NTAwMUwxMiAxNC40TDE4LjQ1IDcuOTUwMDFMMTkuNSA5LjAwMDAxTDEyIDE2LjVaIiBmaWxsPSIjM0QzQzNDIi8+DQo8L3N2Zz4g);
+  background-repeat: no-repeat;
+  background-position: center right 14px;
+}
+
+.error {
+  @include typography.type-ui-03;
+  display: flex;
+  align-items: center;
+  color: var(--kd-color-text-error);
+  margin-top: 8px;
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
+}
+
+.caption {
+  @include typography.type-ui-03;
+  margin-top: 8px;
+}
