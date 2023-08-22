@@ -72,6 +72,26 @@ export const Default = {
 
         <br /><br />
 
+        <kyn-dropdown
+          name="dropdownMulti"
+          multiple
+          caption="Multi-Select Dropdown example"
+          @on-change=${(e) => action(e.type)(e)}
+        >
+          <span slot="label">Multi-Select Dropdown</span>
+          <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+          <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+          <kyn-dropdown-option value="3" disabled>
+            Disabled Option
+          </kyn-dropdown-option>
+          <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
+          <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
+          <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
+          <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
+        </kyn-dropdown>
+
+        <br /><br />
+
         <kyn-text-input
           name="textInput"
           placeholder="Placeholder text"
