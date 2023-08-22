@@ -33,12 +33,6 @@ export class DropdownOption extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
-  /** Select disabled state, derived from parent.
-   * @ignore
-   */
-  @property({ type: Boolean })
-  selectDisabled = false;
-
   /**
    * Option text, automatically derived.
    * @ignore
@@ -67,6 +61,7 @@ export class DropdownOption extends LitElement {
     if (this.disabled) {
       return false;
     }
+
     // emit selected value, bubble so it can be captured by the checkbox group
     const event = new CustomEvent('on-click', {
       bubbles: true,

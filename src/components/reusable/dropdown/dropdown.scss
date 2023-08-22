@@ -17,6 +17,10 @@
   [disabled] & {
     color: var(--kd-color-text-disabled);
   }
+
+  [inline] & {
+    @include mixins.visually-hidden;
+  }
 }
 
 .required {
@@ -58,6 +62,7 @@ select {
 
   &[invalid] {
     border-color: var(--kd-color-border-error);
+    padding-right: 80px;
   }
 
   &:hover {
@@ -74,6 +79,25 @@ select {
   .dropdown:focus-within & {
     outline-color: var(--kd-color-border-focus);
   }
+
+  &.inline {
+    border-color: transparent;
+    background: none;
+
+    &:hover {
+      background-color: var(--kd-color-background-inverse);
+      border-color: var(--kd-color-border-ui);
+
+      [disabled] & {
+        border-color: transparent;
+      }
+    }
+
+    .dropdown:focus-within & {
+      border-color: var(--kd-color-border-ui);
+      background-color: var(--kd-color-background-inverse);
+    }
+  }
 }
 
 select {
@@ -89,7 +113,7 @@ option {
   align-items: center;
 }
 
-kd-icon {
+.arrow-icon {
   position: absolute;
   top: 50%;
   right: 16px;
@@ -122,17 +146,21 @@ kd-icon {
   }
 }
 
-// add option to show native select for mobile instead?
-// .wrapper {
-//   display: none;
-// }
+.custom {
+  @media (hover: none) {
+    display: none;
+  }
+}
 
 select {
-  // @include mixins.visually-hidden;
   display: none;
   background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0xMiAxNi41TDQuNSA5LjAwMDAxTDUuNTUgNy45NTAwMUwxMiAxNC40TDE4LjQ1IDcuOTUwMDFMMTkuNSA5LjAwMDAxTDEyIDE2LjVaIiBmaWxsPSIjM0QzQzNDIi8+DQo8L3N2Zz4g);
   background-repeat: no-repeat;
   background-position: center right 14px;
+
+  @media (hover: none) {
+    display: block;
+  }
 }
 
 .error {
@@ -145,13 +173,39 @@ select {
   [disabled] & {
     color: var(--kd-color-text-disabled);
   }
+
+  [inline] & {
+    margin-left: 16px;
+  }
+}
+
+.error-icon {
+  position: absolute;
+  top: 50%;
+  right: 48px;
+  left: auto;
+  transform: translateY(-50%);
+  color: var(--kd-color-text-error);
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
 }
 
 .caption {
   @include typography.type-ui-03;
   margin-top: 8px;
+  color: var(--kd-color-text-secondary);
 
   [disabled] & {
     color: var(--kd-color-text-disabled);
   }
+
+  [inline] & {
+    margin-left: 16px;
+  }
+}
+
+.assistive-text {
+  @include mixins.visually-hidden;
 }

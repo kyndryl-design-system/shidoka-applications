@@ -8,12 +8,20 @@ export default {
   subcomponents: {
     DropdownOption: 'kyn-dropdown-option',
   },
+  argTypes: {
+    size: {
+      options: ['sm', 'md', 'lg'],
+      control: { type: 'select' },
+    },
+  },
 };
 
 export const Dropdown = {
   args: {
     label: 'Label',
     placeholder: 'Select an option',
+    size: 'md',
+    inline: false,
     open: false,
     required: false,
     disabled: false,
@@ -24,6 +32,8 @@ export const Dropdown = {
     return html`
       <kyn-dropdown
         placeholder=${args.placeholder}
+        size=${args.size}
+        ?inline=${args.inline}
         ?open=${args.open}
         ?required=${args.required}
         ?disabled=${args.disabled}
@@ -39,6 +49,8 @@ export const Dropdown = {
         </kyn-dropdown-option>
         <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
         <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
+        <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
+        <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
       </kyn-dropdown>
     `;
   },

@@ -9,9 +9,10 @@ import {
 import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from 'lit/directives/repeat.js';
 import DropdownScss from './dropdown.scss';
-
+import './dropdownOption';
 import '@kyndryl-design-system/foundation/components/icon';
 import downIcon from '@carbon/icons/es/chevron--down/24';
+import errorIcon from '@carbon/icons/es/warning--filled/24';
 
 /**
  * Dropdown, single select.
@@ -39,6 +40,10 @@ export class Dropdown extends LitElement {
   /** Dropdown size/height. "sm", "md", or "lg". */
   @property({ type: String })
   size = 'md';
+
+  /** Dropdown inline style type. */
+  @property({ type: Boolean })
+  inline = false;
 
   /** Optional text beneath the input. */
   @property({ type: String })
@@ -90,6 +95,13 @@ export class Dropdown extends LitElement {
   isSlotted = false;
 
   /**
+   * Assistive text for screen readers.
+   * @ignore
+   */
+  @state()
+  assistiveText = 'Dropdown menu options.';
+
+  /**
    * Queries any slotted options.
    * @ignore
    */
@@ -119,77 +131,98 @@ export class Dropdown extends LitElement {
 
   override render() {
     return html`
-      <div class="dropdown" ?disabled=${this.disabled}>
+      <div
+        class="dropdown"
+        ?disabled=${this.disabled}
+        ?open=${this.open}
+        ?inline=${this.inline}
+      >
         <label for=${this.name} id="label-${this.name}" class="label-text">
           ${this.required ? html`<span class="required">*</span>` : null}
           <slot name="label"></slot>
         </label>
 
-        <!-- native select -->
-        <select
-          name=${this.name}
-          id=${this.name}
-          ?required=${this.required}
-          ?disabled=${this.disabled}
-          ?invalid=${this.invalidText !== ''}
-          @change=${(e: any) => this.handleChange(e)}
-        >
-          ${this.placeholder
-            ? html`<option value="">${this.placeholder}</option>`
-            : null}
-          ${repeat(
-            this.options,
-            (option) => option.value, // use value for unique id
-            (option) => {
-              const optionText = option.shadowRoot
-                ?.querySelector('slot')
-                ?.assignedNodes()[0].textContent;
-
-              return html`
-                <option value=${option.value}>${optionText}</option>
-              `;
-            }
-          )}
-        </select>
-
-        <!-- custom dropdown -->
         <div
           class=${classMap({
             wrapper: true,
             open: this.open,
           })}
         >
-          <div
-            class="select"
-            role="button"
-            aria-labelledby="label-${this.name}"
+          <!-- native select -->
+          <select
+            class="${classMap({
+              'size--sm': this.size === 'sm',
+              'size--lg': this.size === 'lg',
+              inline: this.inline,
+            })}"
+            name=${this.name}
+            id=${this.name}
             ?required=${this.required}
             ?disabled=${this.disabled}
             ?invalid=${this.invalidText !== ''}
-            tabindex="0"
-            @click=${(e: any) => this.handleClick(e)}
-            @keydown=${(e: any) => this.handleButtonKeydown(e)}
-            @mousedown=${(e: any) => {
-              e.preventDefault();
-            }}
+            @change=${(e: any) => this.handleChange(e)}
           >
-            ${this.value === '' ? this.placeholder : this.text}
-            <kd-icon .icon=${downIcon}></kd-icon>
+            ${this.placeholder
+              ? html`<option value="">${this.placeholder}</option>`
+              : null}
+            ${repeat(
+              this.options,
+              (option) => option.value, // use value for unique id
+              (option) => {
+                const optionText = option.shadowRoot
+                  ?.querySelector('slot')
+                  ?.assignedNodes()[0].textContent;
+
+                return html`
+                  <option value=${option.value}>${optionText}</option>
+                `;
+              }
+            )}
+          </select>
+
+          <!-- custom dropdown -->
+          <div class="custom">
+            <div
+              class="${classMap({
+                select: true,
+                'size--sm': this.size === 'sm',
+                'size--lg': this.size === 'lg',
+                inline: this.inline,
+              })}"
+              role="button"
+              aria-labelledby="label-${this.name}"
+              ?required=${this.required}
+              ?disabled=${this.disabled}
+              ?invalid=${this.invalidText !== ''}
+              tabindex="0"
+              @click=${(e: any) => this.handleClick(e)}
+              @keydown=${(e: any) => this.handleButtonKeydown(e)}
+              @mousedown=${(e: any) => {
+                e.preventDefault();
+              }}
+            >
+              ${this.value === '' ? this.placeholder : this.text}
+              <kd-icon class="arrow-icon" .icon=${downIcon}></kd-icon>
+            </div>
+
+            <ul
+              class=${classMap({
+                options: true,
+                open: this.open,
+              })}
+              role="listbox"
+              tabindex="0"
+              aria-expanded="${this.open}"
+              @keydown=${(e: any) => this.handleListKeydown(e)}
+              @blur=${(e: any) => this.handleListBlur(e)}
+            >
+              <slot></slot>
+            </ul>
           </div>
 
-          <ul
-            class=${classMap({
-              options: true,
-              open: this.open,
-            })}
-            role="listbox"
-            tabindex="0"
-            aria-expanded="${this.open}"
-            @keydown=${(e: any) => this.handleListKeydown(e)}
-            @blur=${(e: any) => this.handleListBlur(e)}
-          >
-            <slot></slot>
-          </ul>
+          ${this.invalidText !== ''
+            ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
+            : null}
         </div>
 
         ${this.caption !== ''
@@ -198,6 +231,15 @@ export class Dropdown extends LitElement {
         ${this.invalidText !== ''
           ? html` <div class="error">${this.invalidText}</div> `
           : null}
+
+        <div
+          class="assistive-text"
+          role="status"
+          aria-live="assertive"
+          aria-relevant="additions text"
+        >
+          ${this.assistiveText}
+        </div>
       </div>
     `;
   }
@@ -223,6 +265,7 @@ export class Dropdown extends LitElement {
   private handleChange(e: any) {
     this.value = e.target.value;
     this.text = e.target.selectedOptions[0].text;
+    this.assistiveText = 'Selected an item.';
 
     // emit selected value
     this.emitValue();
@@ -239,12 +282,14 @@ export class Dropdown extends LitElement {
   }
 
   private handleListKeydown(e: any) {
+    e.preventDefault();
     this.handleKeyboard(e.keyCode, 'list');
   }
 
   private handleListBlur(e: any) {
     this.options.forEach((option) => (option.highlighted = false));
     this.open = false;
+    this.assistiveText = 'Dropdown menu options.';
   }
 
   private handleKeyboard(keyCode: number, target: string) {
@@ -282,31 +327,57 @@ export class Dropdown extends LitElement {
           this.value = this.options[highlightedIndex].value;
           this.open = false;
           this.buttonEl.focus();
+          this.assistiveText = 'Selected an item.';
         }
         return;
       }
       case DOWN_ARROW_KEY_CODE: {
-        const nextIndex =
+        let nextIndex =
           !highlightedEl && !selectedEl
             ? 0
             : highlightedIndex === this.options.length - 1
             ? 0
             : highlightedIndex + 1;
+
+        // skip disabled options
+        if (this.options[nextIndex].disabled) {
+          nextIndex = nextIndex === this.options.length - 1 ? 0 : nextIndex + 1;
+        }
+
         this.options[highlightedIndex].highlighted = false;
         this.options[nextIndex].highlighted = true;
+
+        this.options[nextIndex].scrollIntoView();
+
+        this.assistiveText = this.options[nextIndex].shadowRoot
+          ?.querySelector('slot')
+          ?.assignedNodes()[0].textContent;
         return;
       }
       case UP_ARROW_KEY_CODE: {
-        const nextIndex =
+        let nextIndex =
           highlightedIndex === 0
             ? this.options.length - 1
             : highlightedIndex - 1;
+
+        // skip disabled options
+        if (this.options[nextIndex].disabled) {
+          nextIndex = nextIndex === 0 ? this.options.length - 1 : nextIndex - 1;
+        }
+
         this.options[highlightedIndex].highlighted = false;
         this.options[nextIndex].highlighted = true;
+
+        this.options[nextIndex].scrollIntoView();
+
+        this.assistiveText = this.options[nextIndex].shadowRoot
+          ?.querySelector('slot')
+          ?.assignedNodes()[0].textContent;
         return;
       }
       case ESCAPE_KEY_CODE: {
         this.open = false;
+        this.assistiveText = 'Dropdown menu options.';
         return;
       }
       default: {
@@ -325,6 +396,7 @@ export class Dropdown extends LitElement {
       this.text = e.detail.text;
       this.open = false;
       this.buttonEl.focus();
+      this.assistiveText = 'Selected an item.';
 
       // emit selected value
       this.emitValue();
@@ -377,13 +449,8 @@ export class Dropdown extends LitElement {
       setTimeout(function () {
         listboxEl.focus();
       }, 0);
-    }
-
-    if (changedProps.has('disabled')) {
-      // set disabled for each checkbox
-      this.options.forEach((option: any) => {
-        option.selectDisabled = this.disabled;
-      });
+      this.assistiveText =
+        'Selecting items. Use up and down arrow keys to navigate.';
     }
   }
 }

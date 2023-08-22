@@ -65,6 +65,8 @@ export const Default = {
           </kyn-dropdown-option>
           <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
           <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
+          <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
+          <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
         </kyn-dropdown>
 
         <br /><br />
