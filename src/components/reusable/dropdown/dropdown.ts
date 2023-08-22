@@ -156,6 +156,7 @@ export class Dropdown extends LitElement {
         ?disabled=${this.disabled}
         ?open=${this.open}
         ?inline=${this.inline}
+        ?searchable=${this.searchable}
       >
         <label for=${this.name} id="label-${this.name}" class="label-text">
           ${this.required ? html`<span class="required">*</span>` : null}
