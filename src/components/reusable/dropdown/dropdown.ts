@@ -449,7 +449,7 @@ export class Dropdown extends LitElement {
         if (target === 'list') {
           this.updateValue(
             this.options[highlightedIndex].value,
-            this.options[highlightedIndex].selected
+            !this.options[highlightedIndex].selected
           );
           this.assistiveText = 'Selected an item.';
         }
