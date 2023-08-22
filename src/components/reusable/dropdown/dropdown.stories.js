@@ -34,7 +34,9 @@ export const Dropdown = {
         <span slot="label">${args.label}</span>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
-        <kyn-dropdown-option value="3" disabled>Option 3</kyn-dropdown-option>
+        <kyn-dropdown-option value="3" disabled>
+          Disabled Option
+        </kyn-dropdown-option>
         <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
         <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
       </kyn-dropdown>

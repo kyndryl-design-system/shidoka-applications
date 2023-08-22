@@ -4,6 +4,7 @@ import '../components/reusable/checkbox';
 import '../components/reusable/toggleButton';
 import '../components/reusable/textInput';
 import '../components/reusable/textArea';
+import '../components/reusable/dropdown';
 import '@kyndryl-design-system/foundation/components/button';
 import { action } from '@storybook/addon-actions';
 
@@ -49,6 +50,22 @@ export const Default = {
         >
           Toggle Button
         </kyn-toggle-button>
+
+        <br /><br />
+
+        <kyn-dropdown
+          caption="Dropdown example"
+          @on-change=${(e) => action(e.type)(e)}
+        >
+          <span slot="label">Dropdown</span>
+          <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+          <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+          <kyn-dropdown-option value="3" disabled>
+            Disabled Option
+          </kyn-dropdown-option>
+          <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
+          <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
+        </kyn-dropdown>
 
         <br /><br />
 
