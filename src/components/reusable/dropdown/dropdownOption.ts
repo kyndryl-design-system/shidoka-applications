@@ -1,6 +1,9 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import DropdownOptionScss from './dropdownOption.scss';
+
+import '@kyndryl-design-system/foundation/components/icon';
+import checkmarkIcon from '@carbon/icons/es/checkmark/20';
 
 /**
  * Dropdown option.
@@ -19,13 +22,22 @@ export class DropdownOption extends LitElement {
   @property({ type: Boolean })
   selected = false;
 
-  /** Option highlighted state for keyboard navigation. */
+  /**
+   * Option highlighted state for keyboard navigation, automatically derived.
+   * @ignore
+   */
   @property({ type: Boolean })
   highlighted = false;
 
   /** Option disabled state. */
   @property({ type: Boolean })
   disabled = false;
+
+  /** Select disabled state, derived from parent.
+   * @ignore
+   */
+  @property({ type: Boolean })
+  selectDisabled = false;
 
   /**
    * Option text, automatically derived.
@@ -44,11 +56,17 @@ export class DropdownOption extends LitElement {
         @click=${(e: any) => this.handleClick(e)}
       >
         <slot></slot>
+        ${this.selected
+          ? html`<kd-icon .icon=${checkmarkIcon}></kd-icon>`
+          : null}
       </li>
     `;
   }
 
   private handleClick(e: Event) {
+    if (this.disabled) {
+      return false;
+    }
     // emit selected value, bubble so it can be captured by the checkbox group
     const event = new CustomEvent('on-click', {
       bubbles: true,

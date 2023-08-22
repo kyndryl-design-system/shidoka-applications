@@ -74,13 +74,13 @@ input {
     height: 56px;
   }
 
+  &[invalid] {
+    border-color: var(--kd-color-border-error);
+  }
+
   &[disabled] {
     color: var(--kd-color-text-disabled);
     border-color: var(--kd-color-border-ui-disabled);
-  }
-
-  &[invalid] {
-    border-color: var(--kd-color-border-error);
   }
 
   &:hover {
@@ -115,6 +115,10 @@ input {
   left: auto;
   transform: translateY(-50%);
   color: var(--kd-color-text-error);
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
 }
 
 .clear {
@@ -138,4 +142,9 @@ input {
 .caption {
   @include typography.type-ui-03;
   margin-top: 8px;
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+    border-color: var(--kd-color-border-ui-disabled);
+  }
 }

@@ -5,11 +5,14 @@ import { action } from '@storybook/addon-actions';
 export default {
   title: 'Components/Dropdown',
   component: 'kyn-dropdown',
+  subcomponents: {
+    DropdownOption: 'kyn-dropdown-option',
+  },
 };
 
 export const Dropdown = {
   args: {
-    unnamed: 'Label',
+    label: 'Label',
     placeholder: 'Select an option',
     open: false,
     required: false,
@@ -28,10 +31,10 @@ export const Dropdown = {
         caption=${args.caption}
         @on-change=${(e) => action(e.type)(e)}
       >
-        <span slot="label">${args.unnamed}</span>
+        <span slot="label">${args.label}</span>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
-        <kyn-dropdown-option value="3">Option 3</kyn-dropdown-option>
+        <kyn-dropdown-option value="3" disabled>Option 3</kyn-dropdown-option>
         <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
         <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
       </kyn-dropdown>

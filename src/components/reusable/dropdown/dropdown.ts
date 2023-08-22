@@ -104,6 +104,13 @@ export class Dropdown extends LitElement {
   selectEl!: HTMLSelectElement;
 
   /**
+   * Queries the .select DOM element.
+   * @ignore
+   */
+  @query('.select')
+  buttonEl!: HTMLElement;
+
+  /**
    * Queries the .options DOM element.
    * @ignore
    */
@@ -162,6 +169,9 @@ export class Dropdown extends LitElement {
             tabindex="0"
             @click=${(e: any) => this.handleClick(e)}
             @keydown=${(e: any) => this.handleButtonKeydown(e)}
+            @mousedown=${(e: any) => {
+              e.preventDefault();
+            }}
           >
             ${this.value === '' ? this.placeholder : this.text}
             <kd-icon .icon=${downIcon}></kd-icon>
@@ -221,13 +231,6 @@ export class Dropdown extends LitElement {
   private handleClick(e: any) {
     if (!this.disabled) {
       this.open = !this.open;
-
-      if (this.open) {
-        const listboxEl = this.listboxEl;
-        setTimeout(function () {
-          listboxEl.focus();
-        }, 0);
-      }
     }
   }
 
@@ -270,11 +273,6 @@ export class Dropdown extends LitElement {
 
       if (openDropdown) {
         this.open = true;
-        // focus the listbox
-        const listboxEl = this.listboxEl;
-        setTimeout(function () {
-          listboxEl.focus();
-        }, 0);
       }
     }
 
@@ -283,6 +281,7 @@ export class Dropdown extends LitElement {
         if (target === 'list') {
           this.value = this.options[highlightedIndex].value;
           this.open = false;
+          this.buttonEl.focus();
         }
         return;
       }
@@ -325,6 +324,7 @@ export class Dropdown extends LitElement {
       this.value = e.detail.value;
       this.text = e.detail.text;
       this.open = false;
+      this.buttonEl.focus();
 
       // emit selected value
       this.emitValue();
@@ -371,10 +371,18 @@ export class Dropdown extends LitElement {
       }
     }
 
+    if (changedProps.has('open') && this.open) {
+      // focus the listbox
+      const listboxEl = this.listboxEl;
+      setTimeout(function () {
+        listboxEl.focus();
+      }, 0);
+    }
+
     if (changedProps.has('disabled')) {
       // set disabled for each checkbox
       this.options.forEach((option: any) => {
-        option.disabled = this.disabled;
+        option.selectDisabled = this.disabled;
       });
     }
   }

@@ -71,7 +71,7 @@ select {
     border-color: var(--kd-color-border-ui-disabled);
   }
 
-  &:focus {
+  .dropdown:focus-within & {
     outline-color: var(--kd-color-border-focus);
   }
 }
@@ -111,16 +111,13 @@ kd-icon {
   width: 100%;
   max-height: 240px;
   overflow-y: auto;
+  outline: none;
   background: var(--kd-color-background-inverse);
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12),
     0px 4px 12px 0px rgba(0, 0, 0, 0.08);
 
   &.open {
     display: flex;
-  }
-
-  &:focus {
-    outline: 2px solid var(--kd-color-border-focus);
   }
 }
 
@@ -152,4 +149,8 @@ select {
 .caption {
   @include typography.type-ui-03;
   margin-top: 8px;
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
 }
