@@ -14,6 +14,7 @@ import '../textInput';
 import '@kyndryl-design-system/foundation/components/icon';
 import downIcon from '@carbon/icons/es/chevron--down/24';
 import errorIcon from '@carbon/icons/es/warning--filled/24';
+import clearIcon from '@carbon/icons/es/close/24';
 
 /**
  * Dropdown, single select.
@@ -91,6 +92,13 @@ export class Dropdown extends LitElement {
    */
   @state()
   text = '';
+
+  /**
+   * Search input value.
+   * @ignore
+   */
+  @state()
+  searchText = '';
 
   /**
    * Evaluates if options are slotted.
@@ -250,6 +258,13 @@ export class Dropdown extends LitElement {
             </ul>
           </div>
 
+          ${this.searchable && this.searchEl && this.searchText !== ''
+            ? html`
+                <button class="clear" @click=${() => this.handleClear()}>
+                  <kd-icon .icon=${clearIcon}></kd-icon>
+                </button>
+              `
+            : null}
           ${this.invalidText !== ''
             ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
             : null}
@@ -358,7 +373,6 @@ export class Dropdown extends LitElement {
       }
     }
 
-    console.log(keyCode);
     switch (keyCode) {
       case ENTER_KEY_CODE: {
         if (target === 'list') {
@@ -424,6 +438,12 @@ export class Dropdown extends LitElement {
     }
   }
 
+  private handleClear() {
+    this.searchText = '';
+    this.value = '';
+    this.searchEl.value = '';
+  }
+
   private handleSearchClick(e: any) {
     e.stopPropagation();
   }
@@ -460,6 +480,7 @@ export class Dropdown extends LitElement {
 
   private handleSearchInput(e: any) {
     const value = e.target.value;
+    this.searchText = value;
 
     const options = this.options.filter((option: any) => {
       const text = option.shadowRoot
@@ -514,8 +535,9 @@ export class Dropdown extends LitElement {
       // update selected option text
       this.text = this.selectEl.selectedOptions[0]?.text;
       // set search input value
+      this.searchText = this.text === this.placeholder ? '' : this.text;
       if (this.searchEl) {
-        this.searchEl.value = this.text === this.placeholder ? '' : this.text;
+        this.searchEl.value = this.searchText;
       }
 
       // set selected state for each option

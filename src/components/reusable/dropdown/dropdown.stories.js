@@ -24,7 +24,7 @@ export const Dropdown = {
     inline: false,
     name: 'example',
     open: false,
-    searchable: false,
+    searchable: true,
     required: false,
     disabled: false,
     invalidText: '',
