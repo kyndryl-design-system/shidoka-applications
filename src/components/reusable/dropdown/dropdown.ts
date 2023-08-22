@@ -10,6 +10,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from 'lit/directives/repeat.js';
 import DropdownScss from './dropdown.scss';
 import './dropdownOption';
+import '../textInput';
 import '@kyndryl-design-system/foundation/components/icon';
 import downIcon from '@carbon/icons/es/chevron--down/24';
 import errorIcon from '@carbon/icons/es/warning--filled/24';
@@ -60,6 +61,10 @@ export class Dropdown extends LitElement {
   /** Listbox/drawer open state. */
   @property({ type: Boolean })
   open = false;
+
+  /** Makes the dropdown searchable. */
+  @property({ type: Boolean })
+  searchable = false;
 
   /** Makes the dropdown required. */
   @property({ type: Boolean })
@@ -114,6 +119,13 @@ export class Dropdown extends LitElement {
    */
   @query('select')
   selectEl!: HTMLSelectElement;
+
+  /**
+   * Queries the .search DOM element.
+   * @ignore
+   */
+  @query('.search')
+  searchEl!: HTMLInputElement;
 
   /**
    * Queries the .select DOM element.
@@ -194,14 +206,32 @@ export class Dropdown extends LitElement {
               ?required=${this.required}
               ?disabled=${this.disabled}
               ?invalid=${this.invalidText !== ''}
-              tabindex="0"
+              tabindex=${this.searchable ? '-1' : '0'}
               @click=${(e: any) => this.handleClick(e)}
               @keydown=${(e: any) => this.handleButtonKeydown(e)}
               @mousedown=${(e: any) => {
-                e.preventDefault();
+                if (!this.searchable) {
+                  e.preventDefault();
+                }
               }}
+              @blur=${(e: any) => this.handleSearchBlur(e)}
             >
-              ${this.value === '' ? this.placeholder : this.text}
+              ${this.searchable
+                ? html`
+                    <input
+                      class="search"
+                      type="text"
+                      placeholder="Search"
+                      value=${this.text}
+                      @keydown=${(e: any) => this.handleSearchKeydown(e)}
+                      @input=${(e: any) => this.handleSearchInput(e)}
+                      @focus=${(e: any) => this.handleSearchFocus(e)}
+                      @blur=${(e: any) => this.handleSearchBlur(e)}
+                      @click=${(e: any) => this.handleSearchClick(e)}
+                    />
+                  `
+                : html` ${this.value === '' ? this.placeholder : this.text} `}
+
               <kd-icon class="arrow-icon" .icon=${downIcon}></kd-icon>
             </div>
 
@@ -274,6 +304,10 @@ export class Dropdown extends LitElement {
   private handleClick(e: any) {
     if (!this.disabled) {
       this.open = !this.open;
+
+      if (this.searchable && this.open) {
+        this.searchEl.focus();
+      }
     }
   }
 
@@ -282,7 +316,10 @@ export class Dropdown extends LitElement {
   }
 
   private handleListKeydown(e: any) {
-    e.preventDefault();
+    const TAB_KEY_CODE = 9;
+    if (e.keyCode !== TAB_KEY_CODE) {
+      e.preventDefault();
+    }
     this.handleKeyboard(e.keyCode, 'list');
   }
 
@@ -321,6 +358,7 @@ export class Dropdown extends LitElement {
       }
     }
 
+    console.log(keyCode);
     switch (keyCode) {
       case ENTER_KEY_CODE: {
         if (target === 'list') {
@@ -347,7 +385,7 @@ export class Dropdown extends LitElement {
         this.options[highlightedIndex].highlighted = false;
         this.options[nextIndex].highlighted = true;
 
-        this.options[nextIndex].scrollIntoView();
+        this.options[nextIndex].scrollIntoView({ block: 'nearest' });
 
         this.assistiveText = this.options[nextIndex].shadowRoot
           ?.querySelector('slot')
@@ -368,7 +406,7 @@ export class Dropdown extends LitElement {
         this.options[highlightedIndex].highlighted = false;
         this.options[nextIndex].highlighted = true;
 
-        this.options[nextIndex].scrollIntoView();
+        this.options[nextIndex].scrollIntoView({ block: 'nearest' });
 
         this.assistiveText = this.options[nextIndex].shadowRoot
           ?.querySelector('slot')
@@ -383,6 +421,59 @@ export class Dropdown extends LitElement {
       default: {
         return;
       }
+    }
+  }
+
+  private handleSearchClick(e: any) {
+    e.stopPropagation();
+  }
+
+  private handleSearchFocus(e: any) {
+    this.open = true;
+  }
+
+  private handleSearchBlur(e: any) {
+    if (!e.relatedTarget?.classList.contains('options')) {
+      this.open = false;
+    }
+  }
+
+  private handleSearchKeydown(e: any) {
+    e.stopPropagation();
+
+    const ENTER_KEY_CODE = 13;
+    const ESCAPE_KEY_CODE = 27;
+    const option = this.options.find((option) => option.highlighted);
+
+    if (e.keyCode === ENTER_KEY_CODE && option) {
+      this.value = option.value;
+      this.open = false;
+      this.buttonEl.focus();
+      this.assistiveText = 'Selected an item.';
+    }
+
+    if (e.keyCode === ESCAPE_KEY_CODE) {
+      this.open = false;
+      this.buttonEl.focus();
+    }
+  }
+
+  private handleSearchInput(e: any) {
+    const value = e.target.value;
+
+    const options = this.options.filter((option: any) => {
+      const text = option.shadowRoot
+        ?.querySelector('slot')
+        ?.assignedNodes()[0]
+        .textContent.trim();
+
+      return text.toLowerCase().startsWith(value.toLowerCase());
+    });
+
+    this.options.forEach((option) => (option.highlighted = false));
+    if (value !== '' && options.length) {
+      options[0].highlighted = true;
+      options[0].scrollIntoView({ block: 'nearest' });
     }
   }
 
@@ -422,6 +513,10 @@ export class Dropdown extends LitElement {
       this.internals.setFormValue(this.value);
       // update selected option text
       this.text = this.selectEl.selectedOptions[0]?.text;
+      // set search input value
+      if (this.searchEl) {
+        this.searchEl.value = this.text === this.placeholder ? '' : this.text;
+      }
 
       // set selected state for each option
       this.options.forEach((option: any) => {
@@ -443,7 +538,7 @@ export class Dropdown extends LitElement {
       }
     }
 
-    if (changedProps.has('open') && this.open) {
+    if (changedProps.has('open') && this.open && !this.searchable) {
       // focus the listbox
       const listboxEl = this.listboxEl;
       setTimeout(function () {

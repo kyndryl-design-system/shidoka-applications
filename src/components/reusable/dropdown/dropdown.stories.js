@@ -24,6 +24,7 @@ export const Dropdown = {
     inline: false,
     name: 'example',
     open: false,
+    searchable: false,
     required: false,
     disabled: false,
     invalidText: '',
@@ -37,6 +38,7 @@ export const Dropdown = {
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
+        ?searchable=${args.searchable}
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
