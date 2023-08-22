@@ -1426,6 +1426,26 @@
               "attribute": "value"
             },
             {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox checked state, inherited from the parent group if value matches.",
+              "attribute": "checked"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state, inherited from the parent group.",
+              "attribute": "disabled"
+            },
+            {
               "kind": "method",
               "name": "handleChange",
               "privacy": "private",
@@ -1454,6 +1474,24 @@
               "default": "''",
               "description": "Checkbox value.",
               "fieldName": "value"
+            },
+            {
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox checked state, inherited from the parent group if value matches.",
+              "fieldName": "checked"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state, inherited from the parent group.",
+              "fieldName": "disabled"
             }
           ],
           "superclass": {
@@ -1709,7 +1747,7 @@
               "type": {
                 "text": "string"
               },
-              "default": "'Select an option'",
+              "default": "''",
               "description": "Dropdown placeholder.",
               "attribute": "placeholder"
             },
@@ -1742,6 +1780,16 @@
               "default": "false",
               "description": "Makes the dropdown searchable.",
               "attribute": "searchable"
+            },
+            {
+              "kind": "field",
+              "name": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enabled multi-select functionality.",
+              "attribute": "multiple"
             },
             {
               "kind": "field",
@@ -1869,8 +1917,48 @@
             },
             {
               "kind": "method",
+              "name": "handleClearMultiple",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleTagClear",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "handleClear",
-              "privacy": "private"
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
@@ -1887,7 +1975,7 @@
             },
             {
               "kind": "method",
-              "name": "handleSearchFocus",
+              "name": "handleButtonBlur",
               "privacy": "private",
               "parameters": [
                 {
@@ -1939,6 +2027,23 @@
             },
             {
               "kind": "method",
+              "name": "updateValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "selected",
+                  "default": "false"
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "emitValue",
               "privacy": "private"
             }
@@ -1982,7 +2087,7 @@
               "type": {
                 "text": "string"
               },
-              "default": "'Select an option'",
+              "default": "''",
               "description": "Dropdown placeholder.",
               "fieldName": "placeholder"
             },
@@ -2012,6 +2117,15 @@
               "default": "false",
               "description": "Makes the dropdown searchable.",
               "fieldName": "searchable"
+            },
+            {
+              "name": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enabled multi-select functionality.",
+              "fieldName": "multiple"
             },
             {
               "name": "required",
@@ -2101,7 +2215,8 @@
               },
               "default": "false",
               "description": "Option selected state.",
-              "attribute": "selected"
+              "attribute": "selected",
+              "reflects": true
             },
             {
               "kind": "field",

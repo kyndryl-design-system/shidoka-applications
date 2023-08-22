@@ -9,12 +9,11 @@ import {
 import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from 'lit/directives/repeat.js';
 import DropdownScss from './dropdown.scss';
-import './dropdownOption';
-import '../textInput';
 import '@kyndryl-design-system/foundation/components/icon';
 import downIcon from '@carbon/icons/es/chevron--down/24';
 import errorIcon from '@carbon/icons/es/warning--filled/24';
 import clearIcon from '@carbon/icons/es/close/24';
+import clearIcon16 from '@carbon/icons/es/close/16';
 
 /**
  * Dropdown, single select.
@@ -53,7 +52,7 @@ export class Dropdown extends LitElement {
 
   /** Dropdown placeholder. */
   @property({ type: String })
-  placeholder = 'Select an option';
+  placeholder = '';
 
   /** Dropdown name. */
   @property({ type: String })
@@ -66,6 +65,10 @@ export class Dropdown extends LitElement {
   /** Makes the dropdown searchable. */
   @property({ type: Boolean })
   searchable = false;
+
+  /** Enabled multi-select functionality. */
+  @property({ type: Boolean })
+  multiple = false;
 
   /** Makes the dropdown required. */
   @property({ type: Boolean })
@@ -84,7 +87,7 @@ export class Dropdown extends LitElement {
    * @ignore
    */
   @state()
-  value = '';
+  value: any = '';
 
   /**
    * Selected option text, automatically derived.
@@ -120,6 +123,13 @@ export class Dropdown extends LitElement {
    */
   @queryAssignedElements({ selector: 'kyn-dropdown-option' })
   options!: Array<any>;
+
+  /**
+   * Queries any slotted selected options.
+   * @ignore
+   */
+  @queryAssignedElements({ selector: 'kyn-dropdown-option[selected]' })
+  selectedOptions!: Array<any>;
 
   /**
    * Queries the <select> DOM element.
@@ -223,8 +233,19 @@ export class Dropdown extends LitElement {
                   e.preventDefault();
                 }
               }}
-              @blur=${(e: any) => this.handleSearchBlur(e)}
+              @blur=${(e: any) => this.handleButtonBlur(e)}
             >
+              ${this.multiple && this.value.length
+                ? html`
+                    <button
+                      class="clear-multiple"
+                      @click=${(e: Event) => this.handleClearMultiple(e)}
+                    >
+                      ${this.value.length}
+                      <kd-icon .icon=${clearIcon16}></kd-icon>
+                    </button>
+                  `
+                : null}
               ${this.searchable
                 ? html`
                     <input
@@ -234,12 +255,17 @@ export class Dropdown extends LitElement {
                       value=${this.text}
                       @keydown=${(e: any) => this.handleSearchKeydown(e)}
                       @input=${(e: any) => this.handleSearchInput(e)}
-                      @focus=${(e: any) => this.handleSearchFocus(e)}
                       @blur=${(e: any) => this.handleSearchBlur(e)}
                       @click=${(e: any) => this.handleSearchClick(e)}
                     />
                   `
-                : html` ${this.value === '' ? this.placeholder : this.text} `}
+                : html`
+                    ${this.multiple
+                      ? this.placeholder
+                      : this.value === ''
+                      ? this.placeholder
+                      : this.text}
+                  `}
 
               <kd-icon class="arrow-icon" .icon=${downIcon}></kd-icon>
             </div>
@@ -261,7 +287,7 @@ export class Dropdown extends LitElement {
 
           ${this.searchable && this.searchEl && this.searchText !== ''
             ? html`
-                <button class="clear" @click=${() => this.handleClear()}>
+                <button class="clear" @click=${(e: any) => this.handleClear(e)}>
                   <kd-icon .icon=${clearIcon}></kd-icon>
                 </button>
               `
@@ -271,6 +297,29 @@ export class Dropdown extends LitElement {
             : null}
         </div>
 
+        ${this.multiple && this.value.length
+          ? html`
+              <div class="tags">
+                ${this.value.map((value: string) => {
+                  const option = this.options.find(
+                    (option) => option.value === value
+                  );
+
+                  return html`
+                    <button
+                      class="tag"
+                      @click=${(e: any) => this.handleTagClear(e, option.value)}
+                    >
+                      ${option.shadowRoot
+                        ?.querySelector('slot')
+                        ?.assignedNodes()[0].textContent}
+                      <kd-icon .icon=${clearIcon16}></kd-icon>
+                    </button>
+                  `;
+                })}
+              </div>
+            `
+          : null}
         ${this.caption !== ''
           ? html` <div class="caption">${this.caption}</div> `
           : null}
@@ -293,6 +342,14 @@ export class Dropdown extends LitElement {
   override firstUpdated() {
     this.determineIfSlotted();
     this.initialSelection();
+
+    if (this.placeholder === '') {
+      if (this.multiple) {
+        this.placeholder = 'Select items';
+      } else {
+        this.placeholder = 'Select an option';
+      }
+    }
   }
 
   private determineIfSlotted() {
@@ -300,12 +357,25 @@ export class Dropdown extends LitElement {
   }
 
   private initialSelection() {
-    // set selected state for each option
+    // get value from selected options
+    const values: any = [];
+    let value = '';
+
     this.options.forEach((option: any) => {
       if (option.selected) {
-        this.value = option.value;
+        if (this.multiple) {
+          values.push(option.value);
+        } else {
+          value = option.value;
+        }
       }
     });
+
+    if (this.multiple) {
+      this.value = values;
+    } else {
+      this.value = value;
+    }
   }
 
   private handleChange(e: any) {
@@ -321,7 +391,7 @@ export class Dropdown extends LitElement {
     if (!this.disabled) {
       this.open = !this.open;
 
-      if (this.searchable && this.open) {
+      if (this.searchable) {
         this.searchEl.focus();
       }
     }
@@ -377,9 +447,10 @@ export class Dropdown extends LitElement {
     switch (keyCode) {
       case ENTER_KEY_CODE: {
         if (target === 'list') {
-          this.value = this.options[highlightedIndex].value;
-          this.open = false;
-          this.buttonEl.focus();
+          this.updateValue(
+            this.options[highlightedIndex].value,
+            this.options[highlightedIndex].selected
+          );
           this.assistiveText = 'Selected an item.';
         }
         return;
@@ -439,22 +510,51 @@ export class Dropdown extends LitElement {
     }
   }
 
-  private handleClear() {
+  private handleClearMultiple(e: any) {
+    e.stopPropagation();
+    if (this.multiple) {
+      this.value = [];
+    } else {
+      this.value = '';
+    }
+  }
+
+  private handleTagClear(e: any, value: string) {
+    this.updateValue(value, false);
+  }
+
+  private handleClear(e: any) {
+    e.stopPropagation();
+
     this.searchText = '';
-    this.value = '';
     this.searchEl.value = '';
+
+    if (this.multiple) {
+      this.value = [];
+    } else {
+      this.value = '';
+    }
   }
 
   private handleSearchClick(e: any) {
     e.stopPropagation();
-  }
-
-  private handleSearchFocus(e: any) {
     this.open = true;
   }
 
+  private handleButtonBlur(e: any) {
+    if (
+      !e.relatedTarget?.classList.contains('options') &&
+      !e.relatedTarget?.classList.contains('search')
+    ) {
+      this.open = false;
+    }
+  }
+
   private handleSearchBlur(e: any) {
-    if (!e.relatedTarget?.classList.contains('options')) {
+    if (
+      !e.relatedTarget?.classList.contains('options') &&
+      !e.relatedTarget?.classList.contains('select')
+    ) {
       this.open = false;
     }
   }
@@ -467,9 +567,7 @@ export class Dropdown extends LitElement {
     const option = this.options.find((option) => option.highlighted);
 
     if (e.keyCode === ENTER_KEY_CODE && option) {
-      this.value = option.value;
-      this.open = false;
-      this.buttonEl.focus();
+      this.updateValue(option.value, option.selected);
       this.assistiveText = 'Selected an item.';
     }
 
@@ -482,6 +580,7 @@ export class Dropdown extends LitElement {
   private handleSearchInput(e: any) {
     const value = e.target.value;
     this.searchText = value;
+    this.open = true;
 
     const options = this.options.filter((option: any) => {
       const text = option.shadowRoot
@@ -505,15 +604,30 @@ export class Dropdown extends LitElement {
     // capture child options click event
     this.addEventListener('on-click', (e: any) => {
       // set selected value
-      this.value = e.detail.value;
-      this.text = e.detail.text;
-      this.open = false;
-      this.buttonEl.focus();
+      this.updateValue(e.detail.value, e.detail.selected);
       this.assistiveText = 'Selected an item.';
 
       // emit selected value
       this.emitValue();
     });
+  }
+
+  private updateValue(value: string, selected = false) {
+    const values = JSON.parse(JSON.stringify(this.value));
+
+    if (this.multiple) {
+      // update array
+      if (selected) {
+        values.push(value);
+      } else {
+        const index = values.indexOf(value);
+        values.splice(index, 1);
+      }
+
+      this.value = values;
+    } else {
+      this.value = value;
+    }
   }
 
   private emitValue() {
@@ -528,13 +642,32 @@ export class Dropdown extends LitElement {
   override updated(changedProps: any) {
     if (changedProps.has('value')) {
       // close listbox
-      this.open = false;
+      if (!this.multiple) {
+        this.open = false;
+
+        // if (this.searchable) {
+        //   this.searchEl.focus();
+        // } else {
+        //   this.buttonEl.focus();
+        // }
+      }
+
       // set native select value
       this.selectEl.value = this.value;
       // set form data value
-      this.internals.setFormValue(this.value);
+      if (this.multiple) {
+        const entries = new FormData();
+        this.value.forEach((value: string) => {
+          entries.append(this.name, value);
+        });
+        this.internals.setFormValue(entries);
+      } else {
+        this.internals.setFormValue(this.value);
+      }
       // update selected option text
-      this.text = this.selectEl.selectedOptions[0]?.text;
+      if (this.selectEl.selectedOptions.length) {
+        this.text = this.selectEl.selectedOptions[0]?.text;
+      }
       // set search input value
       this.searchText = this.text === this.placeholder ? '' : this.text;
       if (this.searchEl) {
@@ -542,13 +675,22 @@ export class Dropdown extends LitElement {
       }
 
       // set selected state for each option
+
       this.options.forEach((option: any) => {
-        option.selected = this.value === option.value;
+        if (this.multiple) {
+          option.selected = this.value.includes(option.value);
+        } else {
+          option.selected = this.value === option.value;
+        }
       });
 
       // set validity
       if (this.required) {
-        if (!this.value || this.value === '') {
+        if (
+          !this.value ||
+          (this.multiple && !this.value.length) ||
+          (!this.multiple && this.value === '')
+        ) {
           this.internals.setValidity(
             { valueMissing: true },
             'This field is required.'
@@ -569,6 +711,13 @@ export class Dropdown extends LitElement {
       }, 0);
       this.assistiveText =
         'Selecting items. Use up and down arrow keys to navigate.';
+    }
+
+    if (changedProps.has('multiple')) {
+      // set multiple for each option
+      this.options.forEach((option: any) => {
+        option.multiple = this.multiple;
+      });
     }
   }
 }

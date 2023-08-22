@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import DropdownOptionScss from './dropdownOption.scss';
-
+import '../checkbox/checkbox';
 import '@kyndryl-design-system/foundation/components/icon';
 import checkmarkIcon from '@carbon/icons/es/checkmark/20';
 
@@ -19,19 +19,25 @@ export class DropdownOption extends LitElement {
   value = '';
 
   /** Option selected state. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   selected = false;
+
+  /** Option disabled state. */
+  @property({ type: Boolean })
+  disabled = false;
 
   /**
    * Option highlighted state for keyboard navigation, automatically derived.
    * @ignore
    */
-  @property({ type: Boolean })
+  @state()
   highlighted = false;
 
-  /** Option disabled state. */
-  @property({ type: Boolean })
-  disabled = false;
+  /** Multi-select state, derived from parent.
+   * @ignore
+   */
+  @state()
+  multiple = false;
 
   /**
    * Option text, automatically derived.
@@ -47,10 +53,21 @@ export class DropdownOption extends LitElement {
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
+        ?multiple=${this.multiple}
         @click=${(e: any) => this.handleClick(e)}
       >
-        <slot></slot>
-        ${this.selected
+        ${this.multiple
+          ? html`
+              <kyn-checkbox
+                ?checked=${this.selected}
+                ?disabled=${this.disabled}
+                @click=${(e: any) => e.preventDefault()}
+              >
+                <slot></slot>
+              </kyn-checkbox>
+            `
+          : html`<slot></slot>`}
+        ${this.selected && !this.multiple
           ? html`<kd-icon .icon=${checkmarkIcon}></kd-icon>`
           : null}
       </li>
@@ -59,14 +76,17 @@ export class DropdownOption extends LitElement {
 
   private handleClick(e: Event) {
     if (this.disabled) {
-      return false;
+      return;
     }
+
+    this.selected = !this.selected;
 
     // emit selected value, bubble so it can be captured by the checkbox group
     const event = new CustomEvent('on-click', {
       bubbles: true,
       composed: true,
       detail: {
+        selected: this.selected,
         value: this.value,
         text: this.shadowRoot?.querySelector('slot')?.assignedNodes()[0]
           .textContent,

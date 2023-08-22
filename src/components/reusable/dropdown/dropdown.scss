@@ -144,7 +144,8 @@ option {
 
 .custom {
   @media (hover: none) {
-    .dropdown:not([searchable]) & {
+    .dropdown:not([searchable]) &,
+    .dropdown:not([multiple]) & {
       display: none;
     }
   }
@@ -157,7 +158,8 @@ select {
   background-position: center right 14px;
 
   @media (hover: none) {
-    .dropdown:not([searchable]) & {
+    .dropdown:not([searchable]) &,
+    .dropdown:not([multiple]) & {
       display: block;
     }
   }
@@ -236,5 +238,43 @@ select {
 
   kd-icon {
     display: block;
+  }
+}
+
+.clear-multiple {
+  @include typography.type-ui-03;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+  background: var(--kd-color-background-ui-strong);
+  color: var(--kd-color-text-inversed);
+  width: 48px;
+  height: 24px;
+  padding: 8px;
+  border-radius: 16px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.tags {
+  margin-top: 8px;
+}
+
+.tag {
+  @include typography.type-ui-03;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--kd-color-background-inverse-hover);
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 16px;
+  margin-right: 4px;
+  border: none;
+  cursor: pointer;
+
+  kd-icon {
+    margin-left: 8px;
   }
 }
