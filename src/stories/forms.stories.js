@@ -54,6 +54,7 @@ export const Default = {
         <br /><br />
 
         <kyn-dropdown
+          name="dropdown"
           caption="Dropdown example"
           @on-change=${(e) => action(e.type)(e)}
         >

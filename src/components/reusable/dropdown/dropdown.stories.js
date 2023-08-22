@@ -22,6 +22,7 @@ export const Dropdown = {
     placeholder: 'Select an option',
     size: 'md',
     inline: false,
+    name: 'example',
     open: false,
     required: false,
     disabled: false,
@@ -34,6 +35,7 @@ export const Dropdown = {
         placeholder=${args.placeholder}
         size=${args.size}
         ?inline=${args.inline}
+        name=${args.name}
         ?open=${args.open}
         ?required=${args.required}
         ?disabled=${args.disabled}
