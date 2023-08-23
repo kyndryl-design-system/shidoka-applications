@@ -4,6 +4,7 @@ import {
   property,
   state,
   query,
+  queryAll,
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -125,6 +126,13 @@ export class Dropdown extends LitElement {
   options!: Array<any>;
 
   /**
+   * Queries any native options.
+   * @ignore
+   */
+  @queryAll('option')
+  nativeOptions!: Array<any>;
+
+  /**
    * Queries any slotted selected options.
    * @ignore
    */
@@ -188,6 +196,7 @@ export class Dropdown extends LitElement {
             })}"
             name=${this.name}
             id=${this.name}
+            ?multiple=${this.multiple}
             ?required=${this.required}
             ?disabled=${this.disabled}
             ?invalid=${this.invalidText !== ''}
@@ -205,7 +214,13 @@ export class Dropdown extends LitElement {
                   ?.assignedNodes()[0].textContent;
 
                 return html`
-                  <option value=${option.value}>${optionText}</option>
+                  <option
+                    value=${option.value}
+                    ?selected=${option.selected}
+                    ?disabled=${option.disabled}
+                  >
+                    ${optionText}
+                  </option>
                 `;
               }
             )}
@@ -387,8 +402,21 @@ export class Dropdown extends LitElement {
   }
 
   private handleChange(e: any) {
-    this.value = e.target.value;
-    this.text = e.target.selectedOptions[0].text;
+    if (this.multiple) {
+      const values: Array<string> = [];
+      const selectedOptions = Array.from(this.nativeOptions).filter(
+        (option) => option.selected
+      );
+      selectedOptions.forEach((option) => {
+        if (option.selected) {
+          values.push(option.value);
+        }
+      });
+      this.value = values;
+    } else {
+      this.value = e.target.value;
+    }
+
     this.assistiveText = 'Selected an item.';
 
     // emit selected value
