@@ -347,28 +347,6 @@ export class Dropdown extends LitElement {
     }
   }
 
-  private handleChange(e: any) {
-    if (this.multiple) {
-      const values: Array<string> = [];
-      const selectedOptions = Array.from(this.nativeOptions).filter(
-        (option) => option.selected
-      );
-      selectedOptions.forEach((option) => {
-        if (option.selected) {
-          values.push(option.value);
-        }
-      });
-      this.value = values;
-    } else {
-      this.value = e.target.value;
-    }
-
-    this.assistiveText = 'Selected an item.';
-
-    // emit selected value
-    this.emitValue();
-  }
-
   private handleClick(e: any) {
     if (!this.disabled) {
       this.open = !this.open;
