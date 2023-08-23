@@ -353,7 +353,7 @@ export class Dropdown extends LitElement {
   }
 
   private handleButtonKeydown(e: any) {
-    this.handleKeyboard(e.keyCode, 'button');
+    this.handleKeyboard(e, e.keyCode, 'button');
   }
 
   private handleListKeydown(e: any) {
@@ -361,7 +361,7 @@ export class Dropdown extends LitElement {
     if (e.keyCode !== TAB_KEY_CODE) {
       e.preventDefault();
     }
-    this.handleKeyboard(e.keyCode, 'list');
+    this.handleKeyboard(e, e.keyCode, 'list');
   }
 
   private handleListBlur(e: any) {
@@ -376,7 +376,7 @@ export class Dropdown extends LitElement {
     this.assistiveText = 'Dropdown menu options.';
   }
 
-  private handleKeyboard(keyCode: number, target: string) {
+  private handleKeyboard(e: any, keyCode: number, target: string) {
     const SPACEBAR_KEY_CODE = [0, 32];
     const ENTER_KEY_CODE = 13;
     const DOWN_ARROW_KEY_CODE = 40;
@@ -392,6 +392,10 @@ export class Dropdown extends LitElement {
       : this.options.find((option: any) => option.selected)
       ? this.options.indexOf(selectedEl)
       : 0;
+
+    if (SPACEBAR_KEY_CODE.includes(keyCode)) {
+      e.preventDefault();
+    }
 
     if (target === 'button') {
       const openDropdown =
