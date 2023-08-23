@@ -35,8 +35,7 @@
   position: relative;
 }
 
-.select,
-select {
+.select {
   @include typography.type-body-02;
   -webkit-appearance: none;
   appearance: none;
@@ -95,14 +94,6 @@ select {
   }
 }
 
-select {
-  letter-spacing: 0;
-}
-
-option {
-  background: var(--kd-color-background-inverse);
-}
-
 .select {
   display: flex;
   align-items: center;
@@ -143,33 +134,6 @@ option {
 
   [searchable] &:focus {
     outline: 2px solid var(--kd-color-border-focus);
-  }
-}
-
-.custom {
-  @media (hover: none) {
-    .dropdown:not([searchable]) &,
-    .dropdown:not([multiple]) & {
-      display: none;
-    }
-  }
-}
-
-select {
-  display: none;
-  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0xMiAxNi41TDQuNSA5LjAwMDAxTDUuNTUgNy45NTAwMUwxMiAxNC40TDE4LjQ1IDcuOTUwMDFMMTkuNSA5LjAwMDAxTDEyIDE2LjVaIiBmaWxsPSIjM0QzQzNDIi8+DQo8L3N2Zz4g);
-  background-repeat: no-repeat;
-  background-position: center right 14px;
-
-  &[multiple] {
-    height: auto;
-  }
-
-  @media (hover: none) {
-    .dropdown:not([searchable]) &,
-    .dropdown:not([multiple]) & {
-      display: block;
-    }
   }
 }
 

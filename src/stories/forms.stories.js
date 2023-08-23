@@ -75,7 +75,8 @@ export const Default = {
         <kyn-dropdown
           name="dropdownMulti"
           multiple
-          caption="Multi-Select Dropdown example"
+          searchable
+          caption="Searchable Multi-Select Dropdown example"
           @on-change=${(e) => action(e.type)(e)}
         >
           <span slot="label">Multi-Select Dropdown</span>

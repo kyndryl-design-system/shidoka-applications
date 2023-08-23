@@ -126,25 +126,11 @@ export class Dropdown extends LitElement {
   options!: Array<any>;
 
   /**
-   * Queries any native options.
-   * @ignore
-   */
-  @queryAll('option')
-  nativeOptions!: Array<any>;
-
-  /**
    * Queries any slotted selected options.
    * @ignore
    */
   @queryAssignedElements({ selector: 'kyn-dropdown-option[selected]' })
   selectedOptions!: Array<any>;
-
-  /**
-   * Queries the <select> DOM element.
-   * @ignore
-   */
-  @query('select')
-  selectEl!: HTMLSelectElement;
 
   /**
    * Queries the .search DOM element.
@@ -187,46 +173,6 @@ export class Dropdown extends LitElement {
             open: this.open,
           })}
         >
-          <!-- native select -->
-          <select
-            class="${classMap({
-              'size--sm': this.size === 'sm',
-              'size--lg': this.size === 'lg',
-              inline: this.inline,
-            })}"
-            name=${this.name}
-            id=${this.name}
-            ?multiple=${this.multiple}
-            ?required=${this.required}
-            ?disabled=${this.disabled}
-            ?invalid=${this.invalidText !== ''}
-            @change=${(e: any) => this.handleChange(e)}
-          >
-            ${this.placeholder
-              ? html`<option value="">${this.placeholder}</option>`
-              : null}
-            ${repeat(
-              this.options,
-              (option) => option.value, // use value for unique id
-              (option) => {
-                const optionText = option.shadowRoot
-                  ?.querySelector('slot')
-                  ?.assignedNodes()[0].textContent;
-
-                return html`
-                  <option
-                    value=${option.value}
-                    ?selected=${option.selected}
-                    ?disabled=${option.disabled}
-                  >
-                    ${optionText}
-                  </option>
-                `;
-              }
-            )}
-          </select>
-
-          <!-- custom dropdown -->
           <div class="custom">
             <div
               class="${classMap({
@@ -691,8 +637,6 @@ export class Dropdown extends LitElement {
         this.open = false;
       }
 
-      // set native select value
-      this.selectEl.value = this.value;
       // set form data value
       if (this.multiple) {
         const entries = new FormData();
@@ -705,9 +649,11 @@ export class Dropdown extends LitElement {
       }
       // update selected option text
       if (!this.multiple) {
-        if (this.selectEl.selectedOptions.length) {
-          this.text = this.selectEl.selectedOptions[0]?.text;
-        }
+        this.text = this.selectedOptions
+          .find((option) => option.value === this.value)
+          .shadowRoot?.querySelector('slot')
+          ?.assignedNodes()[0]
+          .textContent.trim();
         // set search input value
         this.searchText = this.text === this.placeholder ? '' : this.text;
         if (this.searchEl) {

@@ -61,6 +61,7 @@ export class DropdownOption extends LitElement {
                 <input
                   type="checkbox"
                   tabindex="-1"
+                  @mousedown=${(e: any) => e.preventDefault()}
                   .checked=${this.selected}
                   ?checked=${this.selected}
                 />
