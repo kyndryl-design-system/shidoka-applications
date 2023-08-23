@@ -78,37 +78,32 @@ export class DropdownOption extends LitElement {
     `;
   }
 
-  private handleSlotChange(e) {
+  private handleSlotChange(e: any) {
+    // set text prop from slotted text, for ease of access
     const nodes = e.target.assignedNodes({ flatten: true });
     this.text = nodes[0].textContent.trim();
   }
 
   private handleClick(e: Event) {
+    // prevent click if disabled
     if (this.disabled) {
       return;
     }
 
+    // update selected state
     this.selected = !this.selected;
 
-    // emit selected value, bubble so it can be captured by the checkbox group
+    // emit selected value, bubble so it can be captured by the parent dropdown
     const event = new CustomEvent('on-click', {
       bubbles: true,
       composed: true,
       detail: {
         selected: this.selected,
         value: this.value,
-        text: this.shadowRoot?.querySelector('slot')?.assignedNodes()[0]
-          .textContent,
         origEvent: e,
       },
     });
     this.dispatchEvent(event);
-  }
-
-  override firstUpdated() {
-    this.text = this.shadowRoot
-      ?.querySelector('slot')
-      ?.assignedNodes()[0].textContent;
   }
 }
 

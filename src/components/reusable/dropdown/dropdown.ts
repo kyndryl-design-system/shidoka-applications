@@ -307,6 +307,7 @@ export class Dropdown extends LitElement {
     this.determineIfSlotted();
     this.initialSelection();
 
+    // set a default placeholder if none provided
     if (this.placeholder === '') {
       if (this.multiple) {
         this.placeholder = 'Select items';
@@ -324,7 +325,6 @@ export class Dropdown extends LitElement {
     // get value from selected options
     const values: any = [];
     let value = '';
-
     this.options.forEach((option: any) => {
       if (option.selected) {
         if (this.multiple) {
@@ -335,6 +335,7 @@ export class Dropdown extends LitElement {
       }
     });
 
+    // set initial values
     if (this.multiple) {
       this.value = values;
     } else {
@@ -346,6 +347,7 @@ export class Dropdown extends LitElement {
     if (!this.disabled) {
       this.open = !this.open;
 
+      // focus search input if searchable
       if (this.searchable) {
         this.searchEl.focus();
       }
@@ -358,15 +360,18 @@ export class Dropdown extends LitElement {
 
   private handleListKeydown(e: any) {
     const TAB_KEY_CODE = 9;
+
     if (e.keyCode !== TAB_KEY_CODE) {
       e.preventDefault();
     }
+
     this.handleKeyboard(e, e.keyCode, 'list');
   }
 
   private handleListBlur(e: any) {
     this.options.forEach((option) => (option.highlighted = false));
 
+    // don't blur if clicking an option inside
     if (
       !e.relatedTarget ||
       (e.relatedTarget && e.relatedTarget.localName !== 'kyn-dropdown-option')
@@ -383,6 +388,7 @@ export class Dropdown extends LitElement {
     const UP_ARROW_KEY_CODE = 38;
     const ESCAPE_KEY_CODE = 27;
 
+    // get highlighted element + index and selected element
     const highlightedEl = this.options.find(
       (option: any) => option.highlighted
     );
@@ -393,10 +399,12 @@ export class Dropdown extends LitElement {
       ? this.options.indexOf(selectedEl)
       : 0;
 
+    // prevent page scroll on spacebar press
     if (SPACEBAR_KEY_CODE.includes(keyCode)) {
       e.preventDefault();
     }
 
+    // open the listbox
     if (target === 'button') {
       const openDropdown =
         SPACEBAR_KEY_CODE.includes(keyCode) ||
@@ -408,6 +416,7 @@ export class Dropdown extends LitElement {
         this.open = true;
         this.options[highlightedIndex].highlighted = true;
 
+        // scroll to highlighted option
         if (!this.multiple && this.value !== '') {
           this.options[highlightedIndex].scrollIntoView({ block: 'nearest' });
         }
@@ -416,6 +425,7 @@ export class Dropdown extends LitElement {
 
     switch (keyCode) {
       case ENTER_KEY_CODE: {
+        // select highlighted option
         if (target === 'list') {
           this.updateValue(
             this.options[highlightedIndex].value,
@@ -426,6 +436,7 @@ export class Dropdown extends LitElement {
         return;
       }
       case DOWN_ARROW_KEY_CODE: {
+        // go to next option
         let nextIndex =
           !highlightedEl && !selectedEl
             ? 0
@@ -441,12 +452,14 @@ export class Dropdown extends LitElement {
         this.options[highlightedIndex].highlighted = false;
         this.options[nextIndex].highlighted = true;
 
+        // scroll to option
         this.options[nextIndex].scrollIntoView({ block: 'nearest' });
 
         this.assistiveText = this.options[nextIndex].text;
         return;
       }
       case UP_ARROW_KEY_CODE: {
+        // go to previous option
         let nextIndex =
           highlightedIndex === 0
             ? this.options.length - 1
@@ -460,14 +473,17 @@ export class Dropdown extends LitElement {
         this.options[highlightedIndex].highlighted = false;
         this.options[nextIndex].highlighted = true;
 
+        // scroll to option
         this.options[nextIndex].scrollIntoView({ block: 'nearest' });
 
         this.assistiveText = this.options[nextIndex].text;
         return;
       }
       case ESCAPE_KEY_CODE: {
+        // close listbox
         this.open = false;
 
+        // restore focus
         if (this.searchable) {
           this.searchEl.focus();
         } else {
@@ -485,6 +501,8 @@ export class Dropdown extends LitElement {
 
   private handleClearMultiple(e: any) {
     e.stopPropagation();
+
+    // clear values
     if (this.multiple) {
       this.value = [];
     } else {
@@ -493,15 +511,18 @@ export class Dropdown extends LitElement {
   }
 
   private handleTagClear(e: any, value: string) {
+    // remove value
     this.updateValue(value, false);
   }
 
   private handleClear(e: any) {
     e.stopPropagation();
 
+    // reset search input text
     this.searchText = '';
     this.searchEl.value = '';
 
+    // clear selection for single select
     if (!this.multiple) {
       this.value = '';
     }
@@ -513,6 +534,7 @@ export class Dropdown extends LitElement {
   }
 
   private handleButtonBlur(e: any) {
+    // don't blur if entering listbox or search input
     if (
       !e.relatedTarget?.classList.contains('options') &&
       !e.relatedTarget?.classList.contains('search')
@@ -522,6 +544,7 @@ export class Dropdown extends LitElement {
   }
 
   private handleSearchBlur(e: any) {
+    // don't blur if entering listbox of button
     if (
       !e.relatedTarget?.classList.contains('options') &&
       !e.relatedTarget?.classList.contains('select')
@@ -537,11 +560,13 @@ export class Dropdown extends LitElement {
     const ESCAPE_KEY_CODE = 27;
     const option = this.options.find((option) => option.highlighted);
 
+    // select option
     if (e.keyCode === ENTER_KEY_CODE && option) {
       this.updateValue(option.value, option.selected);
       this.assistiveText = 'Selected an item.';
     }
 
+    // close listbox
     if (e.keyCode === ESCAPE_KEY_CODE) {
       this.open = false;
       this.buttonEl.focus();
@@ -553,13 +578,16 @@ export class Dropdown extends LitElement {
     this.searchText = value;
     this.open = true;
 
+    // find matches
     const options = this.options.filter((option: any) => {
       const text = option.text;
-
       return text.toLowerCase().startsWith(value.toLowerCase());
     });
 
+    // reset options highlighted state
     this.options.forEach((option) => (option.highlighted = false));
+
+    // option highlight and scroll
     if (value !== '' && options.length) {
       options[0].highlighted = true;
       options[0].scrollIntoView({ block: 'nearest' });
@@ -583,6 +611,7 @@ export class Dropdown extends LitElement {
   private updateValue(value: string, selected = false) {
     const values = JSON.parse(JSON.stringify(this.value));
 
+    // set value
     if (this.multiple) {
       // update array
       if (selected) {
@@ -597,6 +626,7 @@ export class Dropdown extends LitElement {
       this.value = value;
     }
 
+    // reset focus
     if (!this.multiple) {
       if (this.searchable) {
         this.searchEl.focus();
@@ -679,6 +709,7 @@ export class Dropdown extends LitElement {
 
     if (changedProps.has('open')) {
       if (this.open && !this.searchable) {
+        // focus listbox if not searchable
         this.listboxEl.focus({ preventScroll: true });
         this.assistiveText =
           'Selecting items. Use up and down arrow keys to navigate.';
