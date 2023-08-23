@@ -661,12 +661,6 @@ export class Dropdown extends LitElement {
       // close listbox
       if (!this.multiple) {
         this.open = false;
-
-        if (this.searchable) {
-          this.searchEl.focus();
-        } else {
-          this.buttonEl.focus();
-        }
       }
 
       // set native select value
