@@ -4,11 +4,9 @@ import {
   property,
   state,
   query,
-  queryAll,
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { repeat } from 'lit/directives/repeat.js';
 import DropdownScss from './dropdown.scss';
 import '@kyndryl-design-system/foundation/components/icon';
 import downIcon from '@carbon/icons/es/chevron--down/24';
@@ -270,10 +268,7 @@ export class Dropdown extends LitElement {
                   const option = this.options.find(
                     (option) => option.value === value
                   );
-                  const text = option.shadowRoot
-                    ?.querySelector('slot')
-                    ?.assignedNodes()[0]
-                    .textContent.trim();
+                  const text = option.text;
 
                   return html`
                     <button
@@ -444,9 +439,7 @@ export class Dropdown extends LitElement {
 
         this.options[nextIndex].scrollIntoView({ block: 'nearest' });
 
-        this.assistiveText = this.options[nextIndex].shadowRoot
-          ?.querySelector('slot')
-          ?.assignedNodes()[0].textContent;
+        this.assistiveText = this.options[nextIndex].text;
         return;
       }
       case UP_ARROW_KEY_CODE: {
@@ -465,13 +458,18 @@ export class Dropdown extends LitElement {
 
         this.options[nextIndex].scrollIntoView({ block: 'nearest' });
 
-        this.assistiveText = this.options[nextIndex].shadowRoot
-          ?.querySelector('slot')
-          ?.assignedNodes()[0].textContent;
+        this.assistiveText = this.options[nextIndex].text;
         return;
       }
       case ESCAPE_KEY_CODE: {
         this.open = false;
+
+        if (this.searchable) {
+          this.searchEl.focus();
+        } else {
+          this.buttonEl.focus();
+        }
+
         this.assistiveText = 'Dropdown menu options.';
         return;
       }
@@ -552,10 +550,7 @@ export class Dropdown extends LitElement {
     this.open = true;
 
     const options = this.options.filter((option: any) => {
-      const text = option.shadowRoot
-        ?.querySelector('slot')
-        ?.assignedNodes()[0]
-        .textContent.trim();
+      const text = option.text;
 
       return text.toLowerCase().startsWith(value.toLowerCase());
     });
@@ -597,6 +592,14 @@ export class Dropdown extends LitElement {
     } else {
       this.value = value;
     }
+
+    if (!this.multiple) {
+      if (this.searchable) {
+        this.searchEl.focus();
+      } else {
+        this.buttonEl.focus();
+      }
+    }
   }
 
   private emitValue() {
@@ -625,22 +628,8 @@ export class Dropdown extends LitElement {
       } else {
         this.internals.setFormValue(this.value);
       }
-      // update selected option text
-      if (!this.multiple) {
-        this.text = this.selectedOptions
-          .find((option) => option.value === this.value)
-          .shadowRoot?.querySelector('slot')
-          ?.assignedNodes()[0]
-          .textContent.trim();
-        // set search input value
-        this.searchText = this.text === this.placeholder ? '' : this.text;
-        if (this.searchEl) {
-          this.searchEl.value = this.searchText;
-        }
-      }
 
       // set selected state for each option
-
       this.options.forEach((option: any) => {
         if (this.multiple) {
           option.selected = this.value.includes(option.value);
@@ -648,6 +637,22 @@ export class Dropdown extends LitElement {
           option.selected = this.value === option.value;
         }
       });
+
+      // update selected option text
+      if (!this.multiple) {
+        if (this.options.length && this.value !== '') {
+          const option = this.options.find(
+            (option) => option.value === this.value
+          );
+          this.text = option.text;
+        }
+
+        // set search input value
+        this.searchText = this.text === this.placeholder ? '' : this.text;
+        if (this.searchEl) {
+          this.searchEl.value = this.searchText;
+        }
+      }
 
       // set validity
       if (this.required) {

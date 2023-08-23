@@ -68,7 +68,7 @@ export class DropdownOption extends LitElement {
               `
             : null}
 
-          <slot></slot>
+          <slot @slotchange=${(e: any) => this.handleSlotChange(e)}></slot>
         </span>
 
         ${this.selected && !this.multiple
@@ -78,8 +78,12 @@ export class DropdownOption extends LitElement {
     `;
   }
 
+  private handleSlotChange(e) {
+    const nodes = e.target.assignedNodes({ flatten: true });
+    this.text = nodes[0].textContent.trim();
+  }
+
   private handleClick(e: Event) {
-    console.log('ickl');
     if (this.disabled) {
       return;
     }
