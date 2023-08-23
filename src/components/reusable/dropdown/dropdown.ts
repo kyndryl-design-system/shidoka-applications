@@ -239,6 +239,7 @@ export class Dropdown extends LitElement {
                 ? html`
                     <button
                       class="clear-multiple"
+                      aria-label="Clear selections"
                       @click=${(e: Event) => this.handleClearMultiple(e)}
                     >
                       ${this.value.length}
@@ -287,7 +288,11 @@ export class Dropdown extends LitElement {
 
           ${this.searchable && this.searchEl && this.searchText !== ''
             ? html`
-                <button class="clear" @click=${(e: any) => this.handleClear(e)}>
+                <button
+                  class="clear"
+                  aria-label="Clear search text"
+                  @click=${(e: any) => this.handleClear(e)}
+                >
                   <kd-icon .icon=${clearIcon}></kd-icon>
                 </button>
               `
@@ -304,15 +309,18 @@ export class Dropdown extends LitElement {
                   const option = this.options.find(
                     (option) => option.value === value
                   );
+                  const text = option.shadowRoot
+                    ?.querySelector('slot')
+                    ?.assignedNodes()[0]
+                    .textContent.trim();
 
                   return html`
                     <button
                       class="tag"
+                      aria-label="Deselect ${text}"
                       @click=${(e: any) => this.handleTagClear(e, option.value)}
                     >
-                      ${option.shadowRoot
-                        ?.querySelector('slot')
-                        ?.assignedNodes()[0].textContent}
+                      ${text}
                       <kd-icon .icon=${clearIcon16}></kd-icon>
                     </button>
                   `;
@@ -411,7 +419,13 @@ export class Dropdown extends LitElement {
 
   private handleListBlur(e: any) {
     this.options.forEach((option) => (option.highlighted = false));
-    this.open = false;
+
+    if (
+      !e.relatedTarget ||
+      (e.relatedTarget && e.relatedTarget.localName !== 'kyn-dropdown-option')
+    ) {
+      this.open = false;
+    }
     this.assistiveText = 'Dropdown menu options.';
   }
 
@@ -441,6 +455,11 @@ export class Dropdown extends LitElement {
 
       if (openDropdown) {
         this.open = true;
+        this.options[highlightedIndex].highlighted = true;
+
+        if (!this.multiple && this.value !== '') {
+          this.options[highlightedIndex].scrollIntoView({ block: 'nearest' });
+        }
       }
     }
 
@@ -529,9 +548,7 @@ export class Dropdown extends LitElement {
     this.searchText = '';
     this.searchEl.value = '';
 
-    if (this.multiple) {
-      this.value = [];
-    } else {
+    if (!this.multiple) {
       this.value = '';
     }
   }
@@ -645,11 +662,11 @@ export class Dropdown extends LitElement {
       if (!this.multiple) {
         this.open = false;
 
-        // if (this.searchable) {
-        //   this.searchEl.focus();
-        // } else {
-        //   this.buttonEl.focus();
-        // }
+        if (this.searchable) {
+          this.searchEl.focus();
+        } else {
+          this.buttonEl.focus();
+        }
       }
 
       // set native select value
@@ -665,13 +682,15 @@ export class Dropdown extends LitElement {
         this.internals.setFormValue(this.value);
       }
       // update selected option text
-      if (this.selectEl.selectedOptions.length) {
-        this.text = this.selectEl.selectedOptions[0]?.text;
-      }
-      // set search input value
-      this.searchText = this.text === this.placeholder ? '' : this.text;
-      if (this.searchEl) {
-        this.searchEl.value = this.searchText;
+      if (!this.multiple) {
+        if (this.selectEl.selectedOptions.length) {
+          this.text = this.selectEl.selectedOptions[0]?.text;
+        }
+        // set search input value
+        this.searchText = this.text === this.placeholder ? '' : this.text;
+        if (this.searchEl) {
+          this.searchEl.value = this.searchText;
+        }
       }
 
       // set selected state for each option
@@ -703,14 +722,12 @@ export class Dropdown extends LitElement {
       }
     }
 
-    if (changedProps.has('open') && this.open && !this.searchable) {
-      // focus the listbox
-      const listboxEl = this.listboxEl;
-      setTimeout(function () {
-        listboxEl.focus();
-      }, 0);
-      this.assistiveText =
-        'Selecting items. Use up and down arrow keys to navigate.';
+    if (changedProps.has('open')) {
+      if (this.open && !this.searchable) {
+        this.listboxEl.focus({ preventScroll: true });
+        this.assistiveText =
+          'Selecting items. Use up and down arrow keys to navigate.';
+      }
     }
 
     if (changedProps.has('multiple')) {

@@ -1,7 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import DropdownOptionScss from './dropdownOption.scss';
-import '../checkbox/checkbox';
 import '@kyndryl-design-system/foundation/components/icon';
 import checkmarkIcon from '@carbon/icons/es/checkmark/20';
 
@@ -56,17 +55,21 @@ export class DropdownOption extends LitElement {
         ?multiple=${this.multiple}
         @click=${(e: any) => this.handleClick(e)}
       >
-        ${this.multiple
-          ? html`
-              <kyn-checkbox
-                ?checked=${this.selected}
-                ?disabled=${this.disabled}
-                @click=${(e: any) => e.preventDefault()}
-              >
-                <slot></slot>
-              </kyn-checkbox>
-            `
-          : html`<slot></slot>`}
+        <span>
+          ${this.multiple
+            ? html`
+                <input
+                  type="checkbox"
+                  tabindex="-1"
+                  .checked=${this.selected}
+                  ?checked=${this.selected}
+                />
+              `
+            : null}
+
+          <slot></slot>
+        </span>
+
         ${this.selected && !this.multiple
           ? html`<kd-icon .icon=${checkmarkIcon}></kd-icon>`
           : null}
@@ -75,6 +78,7 @@ export class DropdownOption extends LitElement {
   }
 
   private handleClick(e: Event) {
+    console.log('ickl');
     if (this.disabled) {
       return;
     }
