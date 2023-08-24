@@ -185,7 +185,7 @@ export class Dropdown extends LitElement {
               ?disabled=${this.disabled}
               ?invalid=${this.invalidText !== ''}
               tabindex=${this.searchable ? '-1' : '0'}
-              @click=${(e: any) => this.handleClick(e)}
+              @click=${(e: any) => this.handleClick()}
               @keydown=${(e: any) => this.handleButtonKeydown(e)}
               @mousedown=${(e: any) => {
                 if (!this.searchable) {
@@ -275,7 +275,7 @@ export class Dropdown extends LitElement {
                     <button
                       class="tag"
                       aria-label="Deselect ${text}"
-                      @click=${(e: any) => this.handleTagClear(e, option.value)}
+                      @click=${(e: any) => this.handleTagClear(option.value)}
                     >
                       ${text}
                       <kd-icon .icon=${clearIcon16}></kd-icon>
@@ -344,7 +344,7 @@ export class Dropdown extends LitElement {
     }
   }
 
-  private handleClick(e: any) {
+  private handleClick() {
     if (!this.disabled) {
       this.open = !this.open;
 
@@ -511,7 +511,7 @@ export class Dropdown extends LitElement {
     }
   }
 
-  private handleTagClear(e: any, value: string) {
+  private handleTagClear(value: string) {
     // remove value
     this.updateValue(value, false);
   }
