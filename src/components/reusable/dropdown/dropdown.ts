@@ -237,7 +237,8 @@ export class Dropdown extends LitElement {
               })}
               role="listbox"
               tabindex="0"
-              aria-expanded="${this.open}"
+              aria-expanded=${this.open}
+              aria-hidden=${!this.open}
               @keydown=${(e: any) => this.handleListKeydown(e)}
               @blur=${(e: any) => this.handleListBlur(e)}
             >
