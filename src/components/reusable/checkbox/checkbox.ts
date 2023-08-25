@@ -24,7 +24,6 @@ export class Checkbox extends LitElement {
 
   /**
    * Checkbox checked state, inherited from the parent group if value matches.
-   * @ignore
    */
   @property({ type: Boolean })
   checked = false;
@@ -38,7 +37,6 @@ export class Checkbox extends LitElement {
 
   /**
    * Checkbox disabled state, inherited from the parent group.
-   * @ignore
    */
   @property({ type: Boolean })
   disabled = false;

@@ -46,13 +46,13 @@ textarea {
   outline: 2px solid transparent;
   outline-offset: 2px;
 
+  &[invalid] {
+    border-color: var(--kd-color-border-error);
+  }
+
   &[disabled] {
     color: var(--kd-color-text-disabled);
     border-color: var(--kd-color-border-ui-disabled);
-  }
-
-  &[invalid] {
-    border-color: var(--kd-color-border-error);
   }
 
   &:hover {
@@ -81,11 +81,20 @@ textarea {
   top: 16px;
   right: 16px;
   color: var(--kd-color-text-error);
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
 }
 
 .caption {
   @include typography.type-ui-03;
   margin-top: 8px;
+  color: var(--kd-color-text-secondary);
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
 }
 
 .count {

@@ -115,59 +115,61 @@ export class TextInput extends LitElement {
 
   override render() {
     return html`
-      <label class="label-text" for=${this.name} ?disabled=${this.disabled}>
-        ${this.required ? html`<span class="required">*</span>` : null}
-        <slot></slot>
-      </label>
+      <div class="text-input" ?disabled=${this.disabled}>
+        <label class="label-text" for=${this.name}>
+          ${this.required ? html`<span class="required">*</span>` : null}
+          <slot></slot>
+        </label>
 
-      <div
-        class="${classMap({
-          'input-wrapper': true,
-          'icon--left': this.iconSlotted && !this.iconRight,
-          'icon--right': this.iconSlotted && this.iconRight,
-        })}"
-      >
-        <span class="context-icon">
-          <slot name="icon"></slot>
-        </span>
-
-        <input
+        <div
           class="${classMap({
-            'size--sm': this.size === 'sm',
-            'size--lg': this.size === 'lg',
+            'input-wrapper': true,
+            'icon--left': this.iconSlotted && !this.iconRight,
+            'icon--right': this.iconSlotted && this.iconRight,
           })}"
-          type=${this.type}
-          id=${this.name}
-          name=${this.name}
-          value=${this.value}
-          placeholder=${this.placeholder}
-          ?required=${this.required}
-          ?disabled=${this.disabled}
-          ?invalid=${this.invalidText !== ''}
-          pattern=${ifDefined(this.pattern)}
-          minlength=${ifDefined(this.minLength)}
-          maxlength=${ifDefined(this.maxLength)}
-          @input=${(e: any) => this.handleInput(e)}
-        />
+        >
+          <span class="context-icon">
+            <slot name="icon"></slot>
+          </span>
 
-        ${this.invalidText !== ''
-          ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
+          <input
+            class="${classMap({
+              'size--sm': this.size === 'sm',
+              'size--lg': this.size === 'lg',
+            })}"
+            type=${this.type}
+            id=${this.name}
+            name=${this.name}
+            value=${this.value}
+            placeholder=${this.placeholder}
+            ?required=${this.required}
+            ?disabled=${this.disabled}
+            ?invalid=${this.invalidText !== ''}
+            pattern=${ifDefined(this.pattern)}
+            minlength=${ifDefined(this.minLength)}
+            maxlength=${ifDefined(this.maxLength)}
+            @input=${(e: any) => this.handleInput(e)}
+          />
+
+          ${this.invalidText !== ''
+            ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
+            : null}
+          ${this.value !== ''
+            ? html`
+                <button class="clear" @click=${() => this.handleClear()}>
+                  <kd-icon .icon=${clearIcon}></kd-icon>
+                </button>
+              `
+            : null}
+        </div>
+
+        ${this.caption !== ''
+          ? html` <div class="caption">${this.caption}</div> `
           : null}
-        ${this.value !== ''
-          ? html`
-              <button class="clear" @click=${() => this.handleClear()}>
-                <kd-icon .icon=${clearIcon}></kd-icon>
-              </button>
-            `
+        ${this.invalidText !== ''
+          ? html` <div class="error">${this.invalidText}</div> `
           : null}
       </div>
-
-      ${this.caption !== ''
-        ? html` <div class="caption">${this.caption}</div> `
-        : null}
-      ${this.invalidText !== ''
-        ? html` <div class="error">${this.invalidText}</div> `
-        : null}
     `;
   }
 

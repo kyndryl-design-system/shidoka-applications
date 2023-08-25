@@ -68,42 +68,44 @@ export class TextArea extends LitElement {
 
   override render() {
     return html`
-      <label class="label-text" for=${this.name} ?disabled=${this.disabled}>
-        ${this.required ? html`<span class="required">*</span>` : null}
-        <slot></slot>
-      </label>
+      <div class="text-area" ?disabled=${this.disabled}>
+        <label class="label-text" for=${this.name}>
+          ${this.required ? html`<span class="required">*</span>` : null}
+          <slot></slot>
+        </label>
 
-      <div class="input-wrapper">
-        <textarea
-          id=${this.name}
-          name=${this.name}
-          placeholder=${this.placeholder}
-          ?required=${this.required}
-          ?disabled=${this.disabled}
-          ?invalid=${this.invalidText !== ''}
-          minlength=${ifDefined(this.minLength)}
-          maxlength=${ifDefined(this.maxLength)}
-          @input=${(e: any) => this.handleInput(e)}
-        >
+        <div class="input-wrapper">
+          <textarea
+            id=${this.name}
+            name=${this.name}
+            placeholder=${this.placeholder}
+            ?required=${this.required}
+            ?disabled=${this.disabled}
+            ?invalid=${this.invalidText !== ''}
+            minlength=${ifDefined(this.minLength)}
+            maxlength=${ifDefined(this.maxLength)}
+            @input=${(e: any) => this.handleInput(e)}
+          >
 ${this.value}</textarea
-        >
+          >
 
-        ${this.invalidText !== ''
-          ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
+          ${this.invalidText !== ''
+            ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
+            : null}
+          ${this.maxLength
+            ? html`
+                <div class="count">${this.value.length}/${this.maxLength}</div>
+              `
+            : null}
+        </div>
+
+        ${this.caption !== ''
+          ? html` <div class="caption">${this.caption}</div> `
           : null}
-        ${this.maxLength
-          ? html`
-              <div class="count">${this.value.length}/${this.maxLength}</div>
-            `
+        ${this.invalidText !== ''
+          ? html` <div class="error">${this.invalidText}</div> `
           : null}
       </div>
-
-      ${this.caption !== ''
-        ? html` <div class="caption">${this.caption}</div> `
-        : null}
-      ${this.invalidText !== ''
-        ? html` <div class="error">${this.invalidText}</div> `
-        : null}
     `;
   }
 
