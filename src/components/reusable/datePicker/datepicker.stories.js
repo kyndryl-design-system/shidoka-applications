@@ -8,7 +8,11 @@ export default {
   title: 'Components/DatePicker',
   component: 'kyn-date-picker',
   argTypes: {
-    type: 'date',
+    type: {
+      options: ['date', 'datetime-local'],
+      control: { type: 'select' },
+      table: { defaultValue: { summary: 'date' } },
+    },
     datePickerType: {
       options: ['single', 'range'],
       control: { type: 'select', labels: { null: 'single' } },
@@ -32,6 +36,8 @@ export default {
 const args = {
   unnamed: 'Label',
   size: 'md',
+  type: 'date',
+  placeholder: 'MM/DD/YYYY',
   name: 'datepicker',
   value: '12/12/2022',
   datePickerType: 'single',
@@ -45,18 +51,20 @@ const args = {
 
 export const DatePicker = {
   args,
-  argTypes: {
-    type: {
-      table: {
-        disable: true,
-      },
-    },
-  },
+  // argTypes: {
+  //   type: {
+  //     table: {
+  //       disable: true,
+  //     },
+  //   },
+  // },
   render: (args) => {
     return html`
       <kyn-date-picker
         size=${args.size}
         name=${args.name}
+        type=${args.type}
+        placeholder=${args.placeholder}
         datePickerType=${args.datePickerType}
         caption=${args.caption}
         ?required=${args.required}

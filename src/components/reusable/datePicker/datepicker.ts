@@ -46,6 +46,10 @@ export class DatePicker extends LitElement {
   @property({ type: String })
   size = 'md';
 
+  /** Input placeholder. */
+  @property({ type: String })
+  placeholder = 'MM/DD/YYYY';
+
   /** Optional text beneath the input. */
   @property({ type: String })
   caption = '';
@@ -87,8 +91,8 @@ export class DatePicker extends LitElement {
   dateFormat = 'dd/mm/yyyy';
 
   /** Date picker type. Default single */
-  @property({ type: String})
-  datePickerType = 'single'
+  @property({ type: String })
+  datePickerType = 'single';
 
   /**
    * Queries the <input> DOM element.
@@ -135,6 +139,7 @@ export class DatePicker extends LitElement {
           datePickerType=${this.datePickerType}
           type=${this.type}
           id=${this.name}
+          placeholder=${this.placeholder}
           name=${this.name}
           value=${this.value}
           dateFormat=${this.dateFormat}
@@ -142,8 +147,8 @@ export class DatePicker extends LitElement {
           ?disabled=${this.disabled}
           ?invalid=${this.invalidText !== ''}
           pattern=${ifDefined(this.pattern)}
-          ?min=${ifDefined(this.min)}
-          ?max=${ifDefined(this.max)}
+          min=${ifDefined(this.min)}
+          max=${ifDefined(this.max)}
           @input=${(e: any) => this.handleInput(e)}
         />
 
@@ -203,10 +208,16 @@ export class DatePicker extends LitElement {
           );
           this.invalidText = this.internals.validationMessage;
         } else if (this.min !== this.value) {
-          this.internals.setValidity({ tooShort: true }, 'Too can not select below min date.');
+          this.internals.setValidity(
+            { tooShort: true },
+            'Too can not select below min date.'
+          );
           this.invalidText = this.internals.validationMessage;
         } else if (this.max !== this.value) {
-          this.internals.setValidity({ tooLong: true }, 'You can not select beyond max date.');
+          this.internals.setValidity(
+            { tooLong: true },
+            'You can not select beyond max date.'
+          );
           this.invalidText = this.internals.validationMessage;
         } else {
           this.internals.setValidity({});
@@ -216,8 +227,6 @@ export class DatePicker extends LitElement {
     }
   }
 }
-
-
 
 declare global {
   interface HTMLElementTagNameMap {
