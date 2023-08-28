@@ -1,10 +1,5 @@
 import { LitElement, html } from 'lit';
-import {
-  customElement,
-  property,
-  state,
-  query,
-} from 'lit/decorators.js';
+import { customElement, property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 
@@ -83,8 +78,8 @@ export class TimePicker extends LitElement {
   @property({ type: String })
   minTime = '';
 
-  /** Specifies the granularity that the value must adhere to, or the special value any, 
-   * It takes value that equates to the number of seconds you want to increment by; 
+  /** Specifies the granularity that the value must adhere to, or the special value any,
+   * It takes value that equates to the number of seconds you want to increment by;
    * the default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes */
   @property({ type: String })
   step = '';
@@ -132,16 +127,13 @@ export class TimePicker extends LitElement {
             @input=${(e: any) => this.handleInput(e)}
           />
 
-          ${this.invalidText !== ''
-            ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
+          ${this.value !== ''
+            ? html`
+                <button class="clear" @click=${() => this.handleClear()}>
+                  <kd-icon .icon=${clearIcon}></kd-icon>
+                </button>
+              `
             : null}
-             ${this.value !== ''
-          ? html`
-              <button class="clear" @click=${() => this.handleClear()}>
-                <kd-icon .icon=${clearIcon}></kd-icon>
-              </button>
-            `
-          : null}
         </div>
 
         ${this.caption !== ''
@@ -156,8 +148,6 @@ export class TimePicker extends LitElement {
 
   private handleInput(e: any) {
     this.value = e.target.value;
-    console.log(`I m called first: ${this.value}`);
-    
     // emit selected value
     const event = new CustomEvent('on-input', {
       detail: {
@@ -173,12 +163,31 @@ export class TimePicker extends LitElement {
     this.inputEl.value = '';
   }
 
-   override updated(changedProps: any) {
-    //super.update(changedProps);
-    console.log("i m called update");
-    
+  override updated(changedProps: any) {
     console.log(changedProps);
 
+    if (changedProps.has('value')) {
+        
+      this.inputEl.value = this.value;
+      //set form data value
+      this.internals.setFormValue(this.value);
+      this.internals.setValidity({});
+      this.invalidText = '';
+
+      // set validity
+      if (this.required) {
+        if (!this.value || this.value === '') {
+          this.internals.setValidity(
+            { valueMissing: true },
+            'This field is required.'
+          );
+          this.invalidText = this.internals.validationMessage;
+        } 
+      } else {
+        this.internals.setValidity({});
+        this.invalidText = '';
+      }
+    }
     // if (changedProps.has('value')) {
     //   this.inputEl.value = this.value;
     //   // set form data value
