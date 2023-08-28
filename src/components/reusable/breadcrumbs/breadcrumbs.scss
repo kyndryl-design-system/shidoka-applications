@@ -1,0 +1,27 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/foundation/scss/mixins/typography.scss';
+
+.breadcrumbs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+
+  ::slotted(.breadcrumb-item) {
+    @include typography.type-body-02;
+
+    &::after {
+      content: '\2014'; // Unicode for em dash
+      margin: 0 16px; // Provide margins on both sides of the em dash
+      color: var(--kd-color-background-ui-subtle);
+    }
+  }
+
+  ::slotted(.breadcrumb-last) {
+    color: var(--kd-color-text-primary);
+
+    &::after {
+      content: none;
+    }
+  }
+}
