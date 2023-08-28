@@ -1,3 +1,38 @@
+# [1.0.0-beta.47](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.46...v1.0.0-beta.47) (2023-08-25)
+
+
+### Bug Fixes
+
+* update foundation to beta.22 ([c7fab01](https://github.com/kyndryl-design-system/web-components/commit/c7fab0111f79d007e61e9a22c5ddac16db5865f3))
+
+# [1.0.0-beta.46](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.45...v1.0.0-beta.46) (2023-08-25)
+
+
+### Bug Fixes
+
+* **dropdown:** don't focus on load ([b8b2ba9](https://github.com/kyndryl-design-system/web-components/commit/b8b2ba9800d0df3ca18121c3361e946c0a93d2e7))
+* **dropdown:** drawer animation ([a760457](https://github.com/kyndryl-design-system/web-components/commit/a76045761fb8b4c70a73fc179d8608dca606c724))
+* **dropdown:** focus improvements ([9eb9475](https://github.com/kyndryl-design-system/web-components/commit/9eb9475a28daa47bc3ace3fa875078d70485b1a5))
+* **dropdown:** inline focus style ([6151892](https://github.com/kyndryl-design-system/web-components/commit/6151892c2cbd496247576b3149b0ec8dca47a3f7))
+* **dropdown:** keyboard & disabled state cleanup ([b028f37](https://github.com/kyndryl-design-system/web-components/commit/b028f3722a540b9e210485dbca5e1bd448aab084))
+* **dropdown:** multi select enter key ([8355b92](https://github.com/kyndryl-design-system/web-components/commit/8355b92c9ec7935e2538b551931b2a7cc33afa08))
+* **dropdown:** multiple native fixes ([cee9bd7](https://github.com/kyndryl-design-system/web-components/commit/cee9bd77e5f183c586367c66395ce92951d54002))
+* **dropdown:** polish ([51f4dba](https://github.com/kyndryl-design-system/web-components/commit/51f4dba486e8d4cae7b6e6e87d5f96d223e4ded9))
+* **dropdown:** prevent spacebar page scroll ([53aaa43](https://github.com/kyndryl-design-system/web-components/commit/53aaa43029727fae3d5aeed86e3965ce440a44e5))
+* **dropdown:** remove native ([084d89a](https://github.com/kyndryl-design-system/web-components/commit/084d89ab20924148d68a91ab1b536bd8de2f7e6e))
+* **dropdown:** remove unused func ([c9f11c9](https://github.com/kyndryl-design-system/web-components/commit/c9f11c9b20f0e9a7ddfaf802de68079c7ff6cefc))
+* **dropdown:** searchable clear button ([690f0dc](https://github.com/kyndryl-design-system/web-components/commit/690f0dca1881419f4296433ceaaeca4ba091c657))
+* **dropdown:** searchable mobile always custom ([171e02f](https://github.com/kyndryl-design-system/web-components/commit/171e02fb0dd940cde9cf3651842b3c8ea010adca))
+* **dropdown:** various fixes and ada improvements ([70dbce9](https://github.com/kyndryl-design-system/web-components/commit/70dbce97768b136ce8c5bd9454591c4a9ab2eeca))
+
+
+### Features
+
+* **dropdown:** dropdown component initial commit ([ba578d2](https://github.com/kyndryl-design-system/web-components/commit/ba578d249da160f7d9a0410f760d2dbeedef1efa))
+* **dropdown:** inline variant & various fixes ([389f87b](https://github.com/kyndryl-design-system/web-components/commit/389f87bf12540191e2c8659b3e540a8647fab447))
+* **dropdown:** multiple selections ([1b7ebf8](https://github.com/kyndryl-design-system/web-components/commit/1b7ebf8559af150b53d1cb203334c6866eefb6bf))
+* **dropdown:** searchable ([5d1c729](https://github.com/kyndryl-design-system/web-components/commit/5d1c72950860e04171b326510d3a1397e4872230))
+
 # [1.0.0-beta.45](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.44...v1.0.0-beta.45) (2023-08-18)
 
 

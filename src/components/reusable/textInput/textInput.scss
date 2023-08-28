@@ -74,13 +74,13 @@ input {
     height: 56px;
   }
 
+  &[invalid] {
+    border-color: var(--kd-color-border-error);
+  }
+
   &[disabled] {
     color: var(--kd-color-text-disabled);
     border-color: var(--kd-color-border-ui-disabled);
-  }
-
-  &[invalid] {
-    border-color: var(--kd-color-border-error);
   }
 
   &:hover {
@@ -115,6 +115,10 @@ input {
   left: auto;
   transform: translateY(-50%);
   color: var(--kd-color-text-error);
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
 }
 
 .clear {
@@ -127,6 +131,7 @@ input {
   right: 16px;
   transform: translateY(-50%);
   cursor: pointer;
+  color: var(--kd-color-text-primary);
   background: var(--kd-color-background-inverse);
   display: block;
 
@@ -138,4 +143,10 @@ input {
 .caption {
   @include typography.type-ui-03;
   margin-top: 8px;
+  color: var(--kd-color-text-secondary);
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+    border-color: var(--kd-color-border-ui-disabled);
+  }
 }

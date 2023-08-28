@@ -4,6 +4,7 @@ import '../components/reusable/checkbox';
 import '../components/reusable/toggleButton';
 import '../components/reusable/textInput';
 import '../components/reusable/textArea';
+import '../components/reusable/dropdown';
 import '@kyndryl-design-system/foundation/components/button';
 import { action } from '@storybook/addon-actions';
 
@@ -49,6 +50,46 @@ export const Default = {
         >
           Toggle Button
         </kyn-toggle-button>
+
+        <br /><br />
+
+        <kyn-dropdown
+          name="dropdown"
+          caption="Dropdown example"
+          @on-change=${(e) => action(e.type)(e)}
+        >
+          <span slot="label">Dropdown</span>
+          <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+          <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+          <kyn-dropdown-option value="3" disabled>
+            Disabled Option
+          </kyn-dropdown-option>
+          <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
+          <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
+          <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
+          <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
+        </kyn-dropdown>
+
+        <br /><br />
+
+        <kyn-dropdown
+          name="dropdownMulti"
+          multiple
+          searchable
+          caption="Searchable Multi-Select Dropdown example"
+          @on-change=${(e) => action(e.type)(e)}
+        >
+          <span slot="label">Multi-Select Dropdown</span>
+          <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+          <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+          <kyn-dropdown-option value="3" disabled>
+            Disabled Option
+          </kyn-dropdown-option>
+          <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
+          <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
+          <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
+          <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
+        </kyn-dropdown>
 
         <br /><br />
 
