@@ -4,7 +4,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import '@kyndryl-design-system/foundation/components/icon';
-import errorIcon from '@carbon/icons/es/warning--filled/24';
 import clearIcon from '@carbon/icons/es/close/24';
 
 import TimePickerScss from './timepicker.scss';
