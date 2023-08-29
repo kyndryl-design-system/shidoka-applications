@@ -12,9 +12,8 @@ import TimePickerScss from './timepicker.scss';
 /**
  * Time picker.
  * @fires on-input - Captures the input event and emits the selected value and original event details.
- * @prop {string} pattern - RegEx pattern to validate.
- * @prop {number} minTime - Minimum Time.
- * @prop {number} maxTime - Maximum Time.
+ * @prop {string} minTime - Minimum Time in hh:mm format.
+ * @prop {string} maxTime - Maximum Time hh:mm format.
  * @slot unnamed - Slot for label text.
  */
 
@@ -34,10 +33,6 @@ export class TimePicker extends LitElement {
   @state()
   internals = this.attachInternals();
 
-  /** Input type, limited to "time". */
-  @property({ type: String })
-  type = 'time';
-
   /** Input size. "sm", "md", or "lg". */
   @property({ type: String })
   size = 'md';
@@ -46,13 +41,11 @@ export class TimePicker extends LitElement {
   @property({ type: String })
   caption = '';
 
-  /** Time input value. */
+  /** The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,
+   *  regardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).
+   *  If the time includes seconds (by step attribute), the format is always hh:mm:ss */
   @property({ type: String })
   value = '';
-
-  /** Time input placeholder. */
-  @property({ type: String })
-  placeholder = '-- :-- --';
 
   /** Time input name. */
   @property({ type: String })
@@ -70,11 +63,15 @@ export class TimePicker extends LitElement {
   @property({ type: String })
   invalidText = '';
 
-  /** Maximum time. */
+  /** Time input warn text. */
+  @property({ type: String })
+  warnText = '';
+
+  /** Maximum time in hh:mm format. */
   @property({ type: String })
   maxTime = '';
 
-  /** Minimum time. */
+  /** Minimum time. in hh:mm format */
   @property({ type: String })
   minTime = '';
 
@@ -93,7 +90,7 @@ export class TimePicker extends LitElement {
 
   override render() {
     return html`
-      <div class="text-input" ?disabled=${this.disabled}>
+      <div class="time-picker" ?disabled=${this.disabled}>
         <label class="label-text" for=${this.name}>
           ${this.required ? html`<span class="required">*</span>` : null}
           <slot></slot>
@@ -104,21 +101,16 @@ export class TimePicker extends LitElement {
             'input-wrapper': true,
           })}"
         >
-          <span class="context-icon">
-            <slot name="icon"></slot>
-          </span>
-
           <input
             class="${classMap({
               'size--sm': this.size === 'sm',
               'size--lg': this.size === 'lg',
             })}"
-            type=${this.type}
+            type="time"
             id=${this.name}
             name=${this.name}
             value=${this.value}
             step=${ifDefined(this.step)}
-            placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
             ?invalid=${this.invalidText !== ''}
@@ -142,6 +134,9 @@ export class TimePicker extends LitElement {
         ${this.invalidText !== ''
           ? html` <div class="error">${this.invalidText}</div> `
           : null}
+        ${this.warnText !== '' && this.invalidText === ''
+          ? html`<div class="warn">${this.warnText}</div>`
+          : null}
       </div>
     `;
   }
@@ -164,14 +159,10 @@ export class TimePicker extends LitElement {
   }
 
   override updated(changedProps: any) {
-    console.log(changedProps);
-
     if (changedProps.has('value')) {
-        
       this.inputEl.value = this.value;
       //set form data value
       this.internals.setFormValue(this.value);
-      this.internals.setValidity({});
       this.invalidText = '';
 
       // set validity
@@ -182,44 +173,12 @@ export class TimePicker extends LitElement {
             'This field is required.'
           );
           this.invalidText = this.internals.validationMessage;
-        } 
-      } else {
-        this.internals.setValidity({});
-        this.invalidText = '';
+        } else {
+          this.internals.setValidity({});
+          this.invalidText = '';
+        }
       }
     }
-    // if (changedProps.has('value')) {
-    //   this.inputEl.value = this.value;
-    //   // set form data value
-    //   this.internals.setFormValue(this.value);
-    //   this.internals.setValidity({});
-    //   this.invalidText = '';
-    //   // set validity
-    //   if (this.required) {
-    //     if (!this.value || this.value === '') {
-    //       this.internals.setValidity(
-    //         { valueMissing: true },
-    //         'This field is required.'
-    //       );
-    //       this.invalidText = this.internals.validationMessage;
-    //     } else if (this.minTime !== '' && (this.minTime !== this.value)) {
-    //       this.internals.setValidity(
-    //         { tooShort: true },
-    //         `Minimum time must be ${this.minTime} or later.`
-    //       );
-    //       this.invalidText = this.internals.validationMessage;
-    //     } else if (this.maxTime !== '' && (this.maxTime !== this.value)) {
-    //       this.internals.setValidity(
-    //         { tooLong: true },
-    //         'Entered time is not maximum.'
-    //       );
-    //       this.invalidText = this.internals.validationMessage;
-    //     } else {
-    //       this.internals.setValidity({});
-    //       this.invalidText = '';
-    //     }
-    //   }
-    // }
   }
 }
 

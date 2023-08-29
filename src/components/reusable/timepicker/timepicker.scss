@@ -5,6 +5,10 @@
   display: inline-block;
 }
 
+.time-picker {
+  width: 147px;
+}
+
 .label-text {
   @include typography.type-ui-03;
   text-transform: uppercase;
@@ -28,23 +32,6 @@
 
 .input-wrapper {
   position: relative;
-
-  .context-icon {
-    display: inline-block;
-    position: absolute;
-    top: 50%;
-    left: 16px;
-    transform: translateY(-50%);
-  }
-
-  &.icon--right .context-icon {
-    left: auto;
-    right: 16px;
-  }
-
-  &.icon--left input {
-    padding-left: 48px;
-  }
 }
 
 slot[name='icon']::slotted(*) {
@@ -114,10 +101,22 @@ input {
 .error-icon {
   position: absolute;
   top: 50%;
-  right: 16px;
+  right: -1px;
   left: auto;
   transform: translateY(-50%);
   color: var(--kd-color-text-error);
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
+}
+
+.warn {
+  @include typography.type-ui-03;
+  display: flex;
+  align-items: center;
+  color: var(--kd-color-text-secondary);
+  margin-top: 8px;
 
   [disabled] & {
     color: var(--kd-color-text-disabled);
@@ -131,7 +130,7 @@ input {
   margin: 0;
   position: absolute;
   top: 50%;
-  right: 16px;
+  right: -1px;
   transform: translateY(-50%);
   cursor: pointer;
   color: var(--kd-color-text-primary);

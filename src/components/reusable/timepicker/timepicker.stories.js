@@ -27,14 +27,13 @@ export default {
 const args = {
   unnamed: 'Time',
   size: 'md',
-  type: 'time',
   name: 'timepicker',
   value: '',
-  placeholder: '-- : -- --',
   caption: '',
   required: false,
   disabled: false,
   invalidText: '',
+  warnText: '',
   minTime: null,
   maxTime: null,
   step: null,
@@ -47,13 +46,12 @@ export const TimePicker = {
       <kyn-time-picker
         size=${args.size}
         name=${args.name}
-        type=${args.type}
         value=${args.value}
-        placeholder=${args.placeholder}
         caption=${args.caption}
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         minTime=${ifDefined(args.minTime)}
         maxTime=${ifDefined(args.maxTime)}
         step=${ifDefined(args.step)}
