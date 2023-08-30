@@ -16,4 +16,5 @@ export { Checkbox, CheckboxGroup } from './components/reusable/checkbox';
 export { TextInput } from './components/reusable/textInput';
 export { TextArea } from './components/reusable/textArea';
 export { ToggleButton } from './components/reusable/toggleButton';
+export { TimePicker } from './components/reusable/timepicker';
 export { Dropdown, DropdownOption } from './components/reusable/dropdown';

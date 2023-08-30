@@ -5,6 +5,7 @@ import '../components/reusable/toggleButton';
 import '../components/reusable/textInput';
 import '../components/reusable/textArea';
 import '../components/reusable/dropdown';
+import '../components/reusable/timepicker';
 import '@kyndryl-design-system/foundation/components/button';
 import { action } from '@storybook/addon-actions';
 
@@ -113,6 +114,17 @@ export const Default = {
         >
           Text Area
         </kyn-text-area>
+
+        <br /><br />
+
+        <kyn-time-picker
+          name="timepicker"
+          size="md"
+          caption="Time picker example"
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          Time
+        </kyn-time-picker>
 
         <br /><br />
 
