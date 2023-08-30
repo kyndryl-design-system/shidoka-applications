@@ -66,11 +66,11 @@ export class TimePicker extends LitElement {
   @property({ type: String })
   warnText = '';
 
-  /** Maximum time in hh:mm format. */
+  /** Maximum time in hh:mm or hh:mm:ss format only must always greater than min. */
   @property({ type: String })
   maxTime = '';
 
-  /** Minimum time. in hh:mm format */
+  /** Minimum time. in hh:mm or hh:mm:ss format only & must always lesser than max*/
   @property({ type: String })
   minTime = '';
 
