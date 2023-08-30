@@ -1,3 +1,10 @@
+# [1.0.0-beta.48](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.47...v1.0.0-beta.48) (2023-08-30)
+
+
+### Bug Fixes
+
+* text inputs validation nesting ([9428438](https://github.com/kyndryl-design-system/web-components/commit/942843854036a8ec8f1ec3ab620f7614cf165a09))
+
 # [1.0.0-beta.47](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.46...v1.0.0-beta.47) (2023-08-25)
 
 
