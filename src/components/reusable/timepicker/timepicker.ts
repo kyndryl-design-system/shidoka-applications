@@ -87,6 +87,9 @@ export class TimePicker extends LitElement {
   @query('input')
   inputEl!: HTMLInputElement;
 
+  regxPatternWithSec = /^\d{2}:\d{2}:\d{2}$/; // hh:mm:ss
+  regxPatternWithoutSec = /^\d{2}:\d{2}$/; // hh:mm
+
   override render() {
     return html`
       <div class="time-picker" ?disabled=${this.disabled}>
@@ -162,22 +165,82 @@ export class TimePicker extends LitElement {
       this.inputEl.value = this.value;
       //set form data value
       this.internals.setFormValue(this.value);
+      this.internals.setValidity({});
       this.invalidText = '';
 
       // set validity
-      if (this.required) {
-        if (!this.value || this.value === '') {
-          this.internals.setValidity(
-            { valueMissing: true },
-            'This field is required.'
-          );
-          this.invalidText = this.internals.validationMessage;
-        } else {
-          this.internals.setValidity({});
-          this.invalidText = '';
-        }
+      if (this.required && (!this.value || this.value === '')) {
+        // validate required
+        this.internals.setValidity(
+          { valueMissing: true },
+          'This field is required.'
+        );
+        this.invalidText = this.internals.validationMessage;
+        return;
+      }
+      // validate min
+      if (this.value !== '' && this.minTime !== '') {
+        this.validateMinTime();
+      }
+      // validate max
+      if (this.value !== '' && this.maxTime !== '') {
+        this.validateMaxTime();
       }
     }
+  }
+
+  private validateMinTime() {
+    if (
+      this.regxPatternWithoutSec.test(this.minTime) ||
+      this.regxPatternWithSec.test(this.minTime)
+    ) {
+      const enteredTimeInSeconds = this.timeToSeconds(this.value);
+      const minTimeinSeconds = this.timeToSeconds(this.minTime);
+      if (enteredTimeInSeconds < minTimeinSeconds) {
+        this.internals.setValidity(
+          { rangeUnderflow: true },
+          'Please enter valid time within the min range.'
+        );
+        this.invalidText = this.internals.validationMessage;
+      }
+    } else {
+      this.internals.setValidity(
+        { patternMismatch: true },
+        'Please enter valid min time.'
+      );
+      this.invalidText = this.internals.validationMessage;
+    }
+  }
+
+  private validateMaxTime() {
+    if (
+      this.regxPatternWithoutSec.test(this.maxTime) ||
+      this.regxPatternWithSec.test(this.maxTime)
+    ) {
+      const enteredTimeInSeconds = this.timeToSeconds(this.value);
+      const maxTimeinSeconds = this.timeToSeconds(this.maxTime);
+      if (enteredTimeInSeconds > maxTimeinSeconds) {
+        this.internals.setValidity(
+          { rangeOverflow: true },
+          'Please enter valid time within the max range.'
+        );
+        this.invalidText = this.internals.validationMessage;
+      }
+    } else {
+      this.internals.setValidity(
+        { patternMismatch: true },
+        'Please enter valid max time.'
+      );
+      this.invalidText = this.internals.validationMessage;
+    }
+  }
+
+  private timeToSeconds(timeString: String) {
+    const [hours, minutes, seconds] = timeString.split(':');
+    const setSeconds = seconds ? parseInt(seconds, 10) : 0;
+    const totalTime =
+      parseInt(hours, 10) * 3600 + parseInt(minutes, 10) * 60 + setSeconds;
+    return totalTime;
   }
 }
 
