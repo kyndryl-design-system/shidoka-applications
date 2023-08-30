@@ -4,7 +4,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import '@kyndryl-design-system/foundation/components/icon';
-import clearIcon from '@carbon/icons/es/close/24';
 
 import TimePickerScss from './timepicker.scss';
 
@@ -130,14 +129,6 @@ export class TimePicker extends LitElement {
             max=${ifDefined(this.maxTime)}
             @input=${(e: any) => this.handleInput(e)}
           />
-
-          ${this.value !== ''
-            ? html`
-                <button class="clear" @click=${() => this.handleClear()}>
-                  <kd-icon .icon=${clearIcon}></kd-icon>
-                </button>
-              `
-            : null}
         </div>
 
         ${this.caption !== ''
@@ -163,11 +154,6 @@ export class TimePicker extends LitElement {
       },
     });
     this.dispatchEvent(event);
-  }
-
-  private handleClear() {
-    this.value = '';
-    this.inputEl.value = '';
   }
 
   override updated(changedProps: any) {
