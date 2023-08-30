@@ -66,11 +66,13 @@ export class TimePicker extends LitElement {
   @property({ type: String })
   warnText = '';
 
-  /** Maximum time in hh:mm or hh:mm:ss format only must always greater than min. */
+  /** Maximum time in hh:mm or hh:mm:ss format
+   * only must always greater than minTime. */
   @property({ type: String })
   maxTime = '';
 
-  /** Minimum time. in hh:mm or hh:mm:ss format only & must always lesser than max*/
+  /** Minimum time in hh:mm or hh:mm:ss format
+   *  only & must always lesser than maxTime. */
   @property({ type: String })
   minTime = '';
 
@@ -87,8 +89,16 @@ export class TimePicker extends LitElement {
   @query('input')
   inputEl!: HTMLInputElement;
 
-  regxPatternWithSec = /^\d{2}:\d{2}:\d{2}$/; // hh:mm:ss
-  regxPatternWithoutSec = /^\d{2}:\d{2}$/; // hh:mm
+  /**
+   * Queries the <input> DOM element.
+   * @ignore
+   */
+  regexPatternWithSec = /^\d{2}:\d{2}:\d{2}$/; // hh:mm:ss
+  /**
+   * Queries the <input> DOM element.
+   * @ignore
+   */
+  regexPatternWithoutSec = /^\d{2}:\d{2}$/; // hh:mm
 
   override render() {
     return html`
@@ -191,8 +201,8 @@ export class TimePicker extends LitElement {
 
   private validateMinTime() {
     if (
-      this.regxPatternWithoutSec.test(this.minTime) ||
-      this.regxPatternWithSec.test(this.minTime)
+      this.regexPatternWithoutSec.test(this.minTime) ||
+      this.regexPatternWithSec.test(this.minTime)
     ) {
       const enteredTimeInSeconds = this.timeToSeconds(this.value);
       const minTimeinSeconds = this.timeToSeconds(this.minTime);
@@ -214,8 +224,8 @@ export class TimePicker extends LitElement {
 
   private validateMaxTime() {
     if (
-      this.regxPatternWithoutSec.test(this.maxTime) ||
-      this.regxPatternWithSec.test(this.maxTime)
+      this.regexPatternWithoutSec.test(this.maxTime) ||
+      this.regexPatternWithSec.test(this.maxTime)
     ) {
       const enteredTimeInSeconds = this.timeToSeconds(this.value);
       const maxTimeinSeconds = this.timeToSeconds(this.maxTime);
