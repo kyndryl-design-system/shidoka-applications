@@ -128,23 +128,25 @@ ${this.value}</textarea
       this.internals.setFormValue(this.value);
 
       // set validity
-      if (this.required) {
-        if (!this.value || this.value === '') {
-          this.internals.setValidity(
-            { valueMissing: true },
-            'This field is required.'
-          );
-          this.invalidText = this.internals.validationMessage;
-        } else if (this.minLength && this.value.length < this.minLength) {
-          this.internals.setValidity({ tooShort: true }, 'Too few characters.');
-          this.invalidText = this.internals.validationMessage;
-        } else if (this.maxLength && this.value.length > this.maxLength) {
-          this.internals.setValidity({ tooLong: true }, 'Too many characters.');
-          this.invalidText = this.internals.validationMessage;
-        } else {
-          this.internals.setValidity({});
-          this.invalidText = '';
-        }
+      if (this.required && (!this.value || this.value === '')) {
+        // validate required
+        this.internals.setValidity(
+          { valueMissing: true },
+          'This field is required.'
+        );
+        this.invalidText = this.internals.validationMessage;
+      } else if (this.minLength && this.value.length < this.minLength) {
+        // validate min
+        this.internals.setValidity({ tooShort: true }, 'Too few characters.');
+        this.invalidText = this.internals.validationMessage;
+      } else if (this.maxLength && this.value.length > this.maxLength) {
+        // validate max
+        this.internals.setValidity({ tooLong: true }, 'Too many characters.');
+        this.invalidText = this.internals.validationMessage;
+      } else {
+        // clear validation
+        this.internals.setValidity({});
+        this.invalidText = '';
       }
     }
   }
