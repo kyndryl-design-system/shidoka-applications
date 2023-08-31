@@ -31,21 +31,31 @@
   display: inline-flex;
 }
 
-textarea {
+input {
   @include typography.type-body-02;
   -webkit-appearance: none;
   appearance: none;
-  display: block;
   border: 1px solid var(--kd-color-border-ui);
   border-radius: 4px;
-  margin: 0;
-  padding: 16px;
+  height: 48px;
+  padding: 10px 16px 10px 16px;
+  min-width: 167px;
   color: var(--kd-color-text-primary);
   transition: background-color 150ms ease-out, border-color 150ms ease-out,
     outline-color 150ms ease-out;
   background: var(--kd-color-background-inverse);
   outline: 2px solid transparent;
   outline-offset: 2px;
+
+  &.size--sm {
+    height: 32px;
+    padding: 2px 16px;
+  }
+
+  &.size--lg {
+    height: 56px;
+    padding: 14px 16px;
+  }
 
   &[invalid] {
     border-color: var(--kd-color-border-error);
@@ -79,9 +89,23 @@ textarea {
 
 .error-icon {
   position: absolute;
-  top: 16px;
+  top: 50%;
   right: 16px;
+  left: auto;
+  transform: translateY(-50%);
   color: var(--kd-color-text-error);
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
+}
+
+.warn {
+  @include typography.type-ui-03;
+  display: flex;
+  align-items: center;
+  color: var(--kd-color-text-secondary);
+  margin-top: 8px;
 
   [disabled] & {
     color: var(--kd-color-text-disabled);
@@ -95,12 +119,6 @@ textarea {
 
   [disabled] & {
     color: var(--kd-color-text-disabled);
+    border-color: var(--kd-color-border-ui-disabled);
   }
-}
-
-.count {
-  @include typography.type-ui-03;
-  position: absolute;
-  right: 16px;
-  bottom: 8px;
 }

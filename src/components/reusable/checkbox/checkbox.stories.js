@@ -11,11 +11,15 @@ export const Checkbox = {
   args: {
     unnamed: 'Label',
     value: 'example',
+    checked: false,
+    disabled: false,
   },
   render: (args) => {
     return html`
       <kyn-checkbox
         value=${args.value}
+        ?checked=${args.checked}
+        ?disabled=${args.disabled}
         @on-checkbox-change=${(e) => action(e.type)(e)}
       >
         ${args.unnamed}

@@ -1,27 +1,39 @@
 @use '../../../common/scss/global.scss';
 
 :host {
-  display: block;
+  display: inline-block;
 }
 
-label {
-  display: inline-flex;
-  align-items: center;
-  width: 100%;
+li {
+  cursor: default;
+  padding: 12px 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color 150ms ease-out;
+
+  &[selected] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--kd-color-background-accent-subtle);
+  }
+
+  &:hover,
+  &[highlighted] {
+    background-color: var(--kd-color-background-inverse-hover);
+  }
 
   &[disabled] {
     color: var(--kd-color-text-disabled);
+
+    &:hover {
+      background-color: transparent;
+    }
   }
 }
 
-span {
-  order: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 input {
-  order: 0;
   -webkit-appearance: none;
   appearance: none;
   display: inline-flex;
@@ -37,6 +49,8 @@ input {
   outline: 2px solid transparent;
   transition: background-color 150ms ease-out, border-color 150ms ease-out,
     outline-color 150ms ease-out;
+  vertical-align: middle;
+  margin-top: -1px;
 
   &::before {
     content: '';
@@ -59,36 +73,6 @@ input {
     &::before {
       transform: scale(1);
     }
-
-    &:hover {
-      background-color: var(--kd-color-background-primary-hover);
-      border-color: var(--kd-color-background-primary-hover);
-
-      [disabled] & {
-        background-color: var(--kd-color-background-disabled);
-        border-color: var(--kd-color-background-disabled);
-      }
-    }
-
-    &:active {
-      background-color: var(--kd-color-background-primary-pressed);
-      border-color: var(--kd-color-background-primary-pressed);
-    }
-  }
-
-  &:hover {
-    background-color: var(--kd-color-background-inverse-hover);
-    border-color: var(--kd-color-border-ui-hover);
-  }
-
-  &:focus {
-    outline-color: var(--kd-color-border-focus);
-    outline-offset: 2px;
-  }
-
-  &:active {
-    background-color: var(--kd-color-background-accent-ui);
-    border-color: var(--kd-color-background-primary);
   }
 
   &[disabled] {
@@ -98,13 +82,5 @@ input {
     &:hover {
       background-color: transparent;
     }
-
-    &[invalid] {
-      border-color: var(--kd-color-text-disabled);
-    }
-  }
-
-  &[invalid] {
-    border-color: var(--kd-color-border-destructive);
   }
 }

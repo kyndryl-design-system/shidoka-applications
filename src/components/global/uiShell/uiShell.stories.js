@@ -2,12 +2,11 @@ import { html } from 'lit';
 import './index';
 import '../footer';
 import '../header';
-import '../sideNav';
 import '@kyndryl-design-system/foundation/components/icon';
 import sampleIcon from '@carbon/icons/es/user--avatar/16';
 
 export default {
-  title: 'Global Components/UI Shell (POC)',
+  title: 'Global Components/UI Shell',
   component: 'kyn-ui-shell',
   decorators: [
     (story) =>
@@ -23,15 +22,6 @@ export const UIShell = {
   render: (args) => html`
     <kyn-ui-shell>
       <kyn-header divider appTitle="UI Shell Example"></kyn-header>
-
-      <!--
-      <kyn-side-nav>
-        <kyn-side-nav-link href="javascript:void(0)">
-          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
-          Link 1
-        </kyn-side-nav-link>
-      </kyn-side-nav>
-      -->
 
       <main>Main content here.</main>
 
