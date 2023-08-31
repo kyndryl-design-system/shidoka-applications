@@ -15,9 +15,8 @@ import errorIcon from '@carbon/icons/es/warning--filled/24';
 /**
  * Datepicker.
  * @fires on-input - Captures the input event and emits the selected value and original event details.
- * @prop {string} pattern - RegEx pattern to validate.
- * @prop {number} min - Minimum date.
- * @prop {number} max - Maximum date.
+ * @prop {number} minDate - Minimum date.
+ * @prop {number} maxDate - Maximum date.
  * @slot unnamed - Slot for label text.
  */
 
@@ -46,10 +45,6 @@ export class DatePicker extends LitElement {
   @property({ type: String })
   size = 'md';
 
-  /** Input placeholder. */
-  @property({ type: String })
-  placeholder = 'MM/DD/YYYY';
-
   /** Optional text beneath the input. */
   @property({ type: String })
   caption = '';
@@ -66,29 +61,25 @@ export class DatePicker extends LitElement {
   @property({ type: Boolean })
   required = false;
 
-  /** Input disabled state. */
+  /** Date disabled state. */
   @property({ type: Boolean })
   disabled = false;
 
-  /** Input invalid text. */
+  /** Date invalid text. */
   @property({ type: String })
   invalidText = '';
 
-  /** RegEx pattern to validate. */
-  @property({ type: String })
-  pattern = '\\d{1,2}\\/\\d{1,2}\\/\\d{4}';
+  /** Date warning text */
+  @property({type: String})
+  warnText = '';
 
   /** Maximum limit of date. */
   @property({ type: String })
-  max = '';
+  maxDate = '';
 
   /** Minimum limit of date. */
   @property({ type: String })
-  min = '';
-
-  /** Date format default(dd/mm/yyyy) */
-  @property({ type: String })
-  dateFormat = 'dd/mm/yyyy';
+  minDate = '';
 
   /** Date picker type. Default single */
   @property({ type: String })
@@ -101,23 +92,13 @@ export class DatePicker extends LitElement {
   @query('input')
   inputEl!: HTMLInputElement;
 
-  /**
-   * Evaluates if an icon is slotted.
-   * @ignore
-   */
-  @state()
-  iconSlotted = false;
-
-  /**
-   * Queries any slotted icons.
-   * @ignore
-   */
-  @queryAssignedElements({ slot: 'icon' })
-  iconSlot!: Array<HTMLElement>;
-
   override render() {
     return html`
-      <label class="label-text" for=${this.name} ?disabled=${this.disabled}>
+      <label
+        class="datepicker-label-text"
+        for=${this.name}
+        ?disabled=${this.disabled}
+      >
         ${this.required ? html`<span class="required">*</span>` : null}
         <slot></slot>
       </label>
@@ -127,9 +108,6 @@ export class DatePicker extends LitElement {
           'input-wrapper': true,
         })}"
       >
-        <span class="context-icon">
-          <slot name="icon"></slot>
-        </span>
 
         <input
           class="${classMap({
@@ -139,29 +117,15 @@ export class DatePicker extends LitElement {
           datePickerType=${this.datePickerType}
           type=${this.type}
           id=${this.name}
-          placeholder=${this.placeholder}
           name=${this.name}
           value=${this.value}
-          dateFormat=${this.dateFormat}
           ?required=${this.required}
           ?disabled=${this.disabled}
           ?invalid=${this.invalidText !== ''}
-          pattern=${ifDefined(this.pattern)}
-          min=${ifDefined(this.min)}
-          max=${ifDefined(this.max)}
+          min=${ifDefined(this.minDate)}
+          max=${ifDefined(this.maxDate)}
           @input=${(e: any) => this.handleInput(e)}
         />
-
-        ${this.invalidText !== ''
-          ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
-          : null}
-        ${this.value !== ''
-          ? html`
-              <button class="clear" @click=${() => this.handleClear()}>
-                <kd-icon .icon=${clearIcon}></kd-icon>
-              </button>
-            `
-          : null}
       </div>
 
       ${this.caption !== ''
@@ -170,12 +134,14 @@ export class DatePicker extends LitElement {
       ${this.invalidText !== ''
         ? html` <div class="error">${this.invalidText}</div> `
         : null}
+      ${this.warnText !== ''  && this.invalidText === ''
+        ? html`<div class="warn">${this.warnText}</div>`
+        : null}
     `;
   }
 
   private handleInput(e: any) {
     console.log(e.target.value);
-    
     this.value = e.target.value;
 
     // emit selected value
@@ -186,11 +152,6 @@ export class DatePicker extends LitElement {
       },
     });
     this.dispatchEvent(event);
-  }
-
-  private handleClear() {
-    this.value = '';
-    this.inputEl.value = '';
   }
 
   override updated(changedProps: any) {
@@ -207,13 +168,13 @@ export class DatePicker extends LitElement {
             'This field is required.'
           );
           this.invalidText = this.internals.validationMessage;
-        } else if (this.min !== this.value) {
+        } else if (this.minDate !== this.value) {
           this.internals.setValidity(
             { tooShort: true },
             'Too can not select below min date.'
           );
           this.invalidText = this.internals.validationMessage;
-        } else if (this.max !== this.value) {
+        } else if (this.maxDate !== this.value) {
           this.internals.setValidity(
             { tooLong: true },
             'You can not select beyond max date.'

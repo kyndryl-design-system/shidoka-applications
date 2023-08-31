@@ -5,7 +5,7 @@
   display: inline-block;
 }
 
-.label-text {
+.datepicker-label-text {
   @include typography.type-ui-03;
   text-transform: uppercase;
   font-weight: 500;
@@ -28,27 +28,7 @@
 
 .input-wrapper {
   position: relative;
-
-  .context-icon {
-    display: inline-block;
-    position: absolute;
-    top: 50%;
-    left: 16px;
-    transform: translateY(-50%);
-  }
-
-  &.icon--right .context-icon {
-    left: auto;
-    right: 16px;
-  }
-
-  &.icon--left input {
-    padding-left: 48px;
-  }
-}
-
-slot[name='icon']::slotted(*) {
-  display: block;
+  display: inline-flex;
 }
 
 input {
@@ -58,7 +38,8 @@ input {
   border: 1px solid var(--kd-color-border-ui);
   border-radius: 4px;
   height: 48px;
-  padding: 0 48px 0 16px;
+  padding: 10px 16px;
+  min-width: 167px;
   color: var(--kd-color-text-primary);
   transition: background-color 150ms ease-out, border-color 150ms ease-out,
     outline-color 150ms ease-out;
@@ -68,10 +49,12 @@ input {
 
   &.size--sm {
     height: 32px;
+    padding: 2px 16px;
   }
 
   &.size--lg {
     height: 56px;
+    padding: 14px 16px;
   }
 
   &[disabled] {
@@ -89,10 +72,6 @@ input {
 
   &:focus {
     outline-color: var(--kd-color-border-focus);
-  }
-
-  &.icon--left {
-    padding-left: 48px;
   }
 }
 
@@ -115,6 +94,18 @@ input {
   left: auto;
   transform: translateY(-50%);
   color: var(--kd-color-text-error);
+}
+
+.warn {
+  @include typography.type-ui-03;
+  display: flex;
+  align-items: center;
+  color: var(--kd-color-text-secondary);
+  margin-top: 8px;
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
 }
 
 .clear {

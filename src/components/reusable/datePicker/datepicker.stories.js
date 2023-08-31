@@ -7,6 +7,12 @@ import '@kyndryl-design-system/foundation/components/icon';
 export default {
   title: 'Components/DatePicker',
   component: 'kyn-date-picker',
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=508%3A142381&mode=dev',
+    },
+  },
   argTypes: {
     type: {
       options: ['date', 'datetime-local'],
@@ -14,7 +20,7 @@ export default {
       table: { defaultValue: { summary: 'date' } },
     },
     datePickerType: {
-      options: ['single', 'range'],
+      options: ['single', 'date-range', 'date-time'],
       control: { type: 'select', labels: { null: 'single' } },
       table: {
         defaultValue: { summary: 'single' },
@@ -24,29 +30,29 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    min: {
+    minDate: {
       control: { type: 'text' },
     },
-    max: {
+    maxDate: {
       control: { type: 'text' },
     },
   },
 };
 
 const args = {
-  unnamed: 'Label',
+  unnamed: 'Date',
   size: 'md',
   type: 'date',
-  placeholder: 'MM/DD/YYYY',
   name: 'datepicker',
-  value: '12/12/2022',
+  value: '',
   datePickerType: 'single',
   caption: '',
   required: false,
   disabled: false,
   invalidText: '',
-  min: null,
-  max: null,
+  warnText: '',
+  minDate: null,
+  maxDate: null,
 };
 
 export const DatePicker = {
@@ -70,8 +76,9 @@ export const DatePicker = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
-        min=${ifDefined(args.min)}
-        max=${ifDefined(args.max)}
+        warnText=${args.warnText}
+        minDate=${ifDefined(args.minDate)}
+        maxDate=${ifDefined(args.maxDate)}
         @on-input=${(e) => action(e.type)(e)}
       >
         ${args.unnamed}
