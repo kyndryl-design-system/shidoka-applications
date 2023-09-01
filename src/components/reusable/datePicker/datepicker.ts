@@ -1,16 +1,9 @@
 import { LitElement, html } from 'lit';
-import {
-  customElement,
-  property,
-  state,
-  query,
-  queryAssignedElements,
-} from 'lit/decorators.js';
+import { customElement, property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { DATE_PICKER_TYPES } from './defs';
 import DatePickerScss from './datepicker.scss';
-import clearIcon from '@carbon/icons/es/close/24';
-import errorIcon from '@carbon/icons/es/warning--filled/24';
 
 /**
  * Datepicker.
@@ -36,10 +29,6 @@ export class DatePicker extends LitElement {
    */
   @state()
   internals = this.attachInternals();
-
-  /** Input type, limited to "date". */
-  @property({ type: String })
-  type = 'date';
 
   /** Datepicker size. "sm", "md", or "lg". */
   @property({ type: String })
@@ -70,20 +59,32 @@ export class DatePicker extends LitElement {
   invalidText = '';
 
   /** Date warning text */
-  @property({type: String})
+  @property({ type: String })
   warnText = '';
 
-  /** Maximum limit of date. */
+  /** Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format.
+   * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date#max
+   * If the value isn't a possible date string in the format, then the element has no maximum date value.
+   */
   @property({ type: String })
   maxDate = '';
 
-  /** Minimum limit of date. */
+  /** Minimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format.
+   * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date#min
+   * If the value isn't a possible date string in the format, then the element has no minimum date value.
+   */
   @property({ type: String })
   minDate = '';
 
+  /** Specifies the granularity that the value must adhere to, or the special value any,
+   * For date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.
+   * The default value of step is 1, indicating 1 day.*/
+  @property({ type: String })
+  step = '';
+
   /** Date picker type. Default single */
   @property({ type: String })
-  datePickerType = 'single';
+  datePickerType: DATE_PICKER_TYPES = DATE_PICKER_TYPES.SINGLE;
 
   /**
    * Queries the <input> DOM element.
@@ -91,6 +92,13 @@ export class DatePicker extends LitElement {
    */
   @query('input')
   inputEl!: HTMLInputElement;
+
+  /**
+   * Queries the <input> DOM element.
+   * @ignore
+   */
+  @query('input')
+  inputEl1!: HTMLInputElement;
 
   override render() {
     return html`
@@ -108,15 +116,16 @@ export class DatePicker extends LitElement {
           'input-wrapper': true,
         })}"
       >
-
         <input
           class="${classMap({
             'size--sm': this.size === 'sm',
             'size--lg': this.size === 'lg',
           })}"
           datePickerType=${this.datePickerType}
-          type=${this.type}
-          id=${this.name}
+          type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
+            ? 'datetime-local'
+            : 'date'}
+          id=${this.name ? this.name : 'datepicker-1'}
           name=${this.name}
           value=${this.value}
           ?required=${this.required}
@@ -124,6 +133,7 @@ export class DatePicker extends LitElement {
           ?invalid=${this.invalidText !== ''}
           min=${ifDefined(this.minDate)}
           max=${ifDefined(this.maxDate)}
+          step=${ifDefined(this.step)}
           @input=${(e: any) => this.handleInput(e)}
         />
       </div>
@@ -134,7 +144,7 @@ export class DatePicker extends LitElement {
       ${this.invalidText !== ''
         ? html` <div class="error">${this.invalidText}</div> `
         : null}
-      ${this.warnText !== ''  && this.invalidText === ''
+      ${this.warnText !== '' && this.invalidText === ''
         ? html`<div class="warn">${this.warnText}</div>`
         : null}
     `;
@@ -159,36 +169,21 @@ export class DatePicker extends LitElement {
       this.inputEl.value = this.value;
       // set form data value
       this.internals.setFormValue(this.value);
+      this.internals.setValidity({});
+      this.invalidText = '';
 
       // set validity
-      if (this.required) {
-        if (!this.value || this.value === '') {
-          this.internals.setValidity(
-            { valueMissing: true },
-            'This field is required.'
-          );
-          this.invalidText = this.internals.validationMessage;
-        } else if (this.minDate !== this.value) {
-          this.internals.setValidity(
-            { tooShort: true },
-            'Too can not select below min date.'
-          );
-          this.invalidText = this.internals.validationMessage;
-        } else if (this.maxDate !== this.value) {
-          this.internals.setValidity(
-            { tooLong: true },
-            'You can not select beyond max date.'
-          );
-          this.invalidText = this.internals.validationMessage;
-        } else {
-          this.internals.setValidity({});
-          this.invalidText = '';
-        }
+      if (this.required && (!this.value || this.value === '')) {
+        this.internals.setValidity(
+          { valueMissing: true },
+          'This field is required.'
+        );
+        this.invalidText = this.internals.validationMessage;
+        return;
       }
     }
   }
 }
-
 declare global {
   interface HTMLElementTagNameMap {
     'kyn-date-picker': DatePicker;

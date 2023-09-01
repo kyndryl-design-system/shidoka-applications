@@ -3,6 +3,10 @@ import './index';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import '@kyndryl-design-system/foundation/components/icon';
+import { createOptionsArray } from '../../../common/helpers/helpers';
+import { DATE_PICKER_TYPES } from './defs';
+
+const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
 
 export default {
   title: 'Components/DatePicker',
@@ -14,16 +18,11 @@ export default {
     },
   },
   argTypes: {
-    type: {
-      options: ['date', 'datetime-local'],
-      control: { type: 'select' },
-      table: { defaultValue: { summary: 'date' } },
-    },
     datePickerType: {
-      options: ['single', 'date-range', 'date-time'],
-      control: { type: 'select', labels: { null: 'single' } },
+      options: createSelectOptions(DATE_PICKER_TYPES),
+      control: { type: 'select', labels: { null: DATE_PICKER_TYPES.SINGLE } },
       table: {
-        defaultValue: { summary: 'single' },
+        defaultValue: { summary: DATE_PICKER_TYPES.SINGLE },
       },
     },
     size: {
@@ -36,13 +35,15 @@ export default {
     maxDate: {
       control: { type: 'text' },
     },
+    step: {
+      control: { type: 'text' },
+    },
   },
 };
 
 const args = {
   unnamed: 'Date',
   size: 'md',
-  type: 'date',
   name: 'datepicker',
   value: '',
   datePickerType: 'single',
@@ -53,14 +54,15 @@ const args = {
   warnText: '',
   minDate: null,
   maxDate: null,
+  step: null,
 };
 
 export const DatePicker = {
   args,
   // argTypes: {
-  //   type: {
+  //   datePickerType: {
   //     table: {
-  //       disable: true,
+  //       disabled: true,
   //     },
   //   },
   // },
@@ -69,7 +71,6 @@ export const DatePicker = {
       <kyn-date-picker
         size=${args.size}
         name=${args.name}
-        type=${args.type}
         placeholder=${args.placeholder}
         datePickerType=${args.datePickerType}
         caption=${args.caption}
@@ -79,6 +80,7 @@ export const DatePicker = {
         warnText=${args.warnText}
         minDate=${ifDefined(args.minDate)}
         maxDate=${ifDefined(args.maxDate)}
+        step=${ifDefined(args.step)}
         @on-input=${(e) => action(e.type)(e)}
       >
         ${args.unnamed}
