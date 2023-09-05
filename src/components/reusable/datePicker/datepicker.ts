@@ -1,8 +1,13 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, PropertyValues } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { DATE_PICKER_TYPES } from './defs';
+import {
+  DATE_PICKER_TYPES,
+  regexDateFormat,
+  regexDateTimeFormat,
+  regexDateTimeFormatSec,
+} from './defs';
 import DatePickerScss from './datepicker.scss';
 
 /**
@@ -138,6 +143,30 @@ export class DatePicker extends LitElement {
         />
       </div>
 
+
+      ${this.datePickerType === 'date-range'
+        ? html`
+            <span class="range-span">—</span>
+            <div class="input-wrapper">
+              <input
+                class="${classMap({
+                  'size--sm': this.size === 'sm',
+                  'size--lg': this.size === 'lg',
+                })}"
+                datePickerType=${this.datePickerType}
+                type="date"
+                id="datepicker-1"
+                ?disabled=${this.disabled}
+                ?invalid=${this.invalidText !== ''}
+                min=${ifDefined(this.value ?? '')}
+                max=${ifDefined(this.maxDate)}
+                step=${ifDefined(this.step)}
+                @input=${(e: any) => this.handleRangeInput(e)}
+              />
+            </div>
+          `
+        : null}
+
       ${this.caption !== ''
         ? html` <div class="caption">${this.caption}</div> `
         : null}
@@ -150,21 +179,43 @@ export class DatePicker extends LitElement {
     `;
   }
 
+  private handleRangeInput(e: any){
+    const startDate = this.value ?? '';
+    const endDate = e.target.value;
+    if(startDate === ''){
+      this.internals.setValidity(
+        { valueMissing: true },
+        'Please enter start date.'
+      );
+      this.invalidText = this.internals.validationMessage;
+      return;
+    } else {
+      const event = new CustomEvent('on-input', {
+        detail:{
+          value: `${this.value} - ${endDate}`,
+          origEvent: e,
+        },
+      });
+      this.dispatchEvent(event);
+    }
+  }
+
   private handleInput(e: any) {
     console.log(e.target.value);
     this.value = e.target.value;
-
-    // emit selected value
-    const event = new CustomEvent('on-input', {
-      detail: {
-        value: e.target.value,
-        origEvent: e,
-      },
-    });
-    this.dispatchEvent(event);
+    if(this.datePickerType !== 'date-range'){
+      // emit selected value
+      const event = new CustomEvent('on-input', {
+        detail: {
+          value: e.target.value,
+          origEvent: e,
+        },
+      });
+      this.dispatchEvent(event);
+    }
   }
 
-  override updated(changedProps: any) {
+  override updated(changedProps: PropertyValues) {
     if (changedProps.has('value')) {
       this.inputEl.value = this.value;
       // set form data value
@@ -181,6 +232,59 @@ export class DatePicker extends LitElement {
         this.invalidText = this.internals.validationMessage;
         return;
       }
+      // validate min
+      if (this.value !== '' && this.minDate !== '') {
+        this.validateMinDate();
+      }
+      // validate max
+      if (this.value !== '' && this.maxDate !== '') {
+        this.validateMaxDate();
+      }
+    }
+  }
+
+  private validateMinDate(): void {
+    if (
+      regexDateFormat.test(this.minDate) ||
+      regexDateTimeFormat.test(this.minDate) ||
+      regexDateTimeFormatSec.test(this.minDate)
+    ) {
+      if (this.value < this.minDate) {
+        this.internals.setValidity(
+          { rangeUnderflow: true },
+          'Please enter date as min date or later.'
+        );
+        this.invalidText = this.internals.validationMessage;
+      }
+    } else {
+      this.internals.setValidity(
+        { patternMismatch: true },
+        'Please enter valid min date.'
+      );
+      this.invalidText = this.internals.validationMessage;
+    }
+  }
+
+  private validateMaxDate(): void {
+    if (
+      regexDateFormat.test(this.maxDate) ||
+      regexDateTimeFormat.test(this.maxDate) ||
+      regexDateTimeFormatSec.test(this.maxDate)
+    ) {
+      console.log('validate maxdate ::-> ', this.maxDate);
+      if (this.value > this.maxDate) {
+        this.internals.setValidity(
+          { rangeOverflow: true },
+          'Please enter date as max date or earlier.'
+        );
+        this.invalidText = this.internals.validationMessage;
+      }
+    } else {
+      this.internals.setValidity(
+        { patternMismatch: true },
+        'Please enter valid max date.'
+      );
+      this.invalidText = this.internals.validationMessage;
     }
   }
 }

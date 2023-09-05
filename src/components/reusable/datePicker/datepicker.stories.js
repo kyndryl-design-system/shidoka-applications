@@ -59,13 +59,45 @@ const args = {
 
 export const DatePicker = {
   args,
-  // argTypes: {
-  //   datePickerType: {
-  //     table: {
-  //       disabled: true,
-  //     },
-  //   },
-  // },
+  argTypes: {
+    datePickerType: {
+      table: {
+        disabled: true,
+      },
+    },
+  },
+  render: (args) => {
+    return html`
+      <kyn-date-picker
+        size=${args.size}
+        name=${args.name}
+        placeholder=${args.placeholder}
+        datePickerType=${args.datePickerType}
+        caption=${args.caption}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        warnText=${args.warnText}
+        minDate=${ifDefined(args.minDate)}
+        maxDate=${ifDefined(args.maxDate)}
+        step=${ifDefined(args.step)}
+        @on-input=${(e) => action(e.type)(e)}
+      >
+        ${args.unnamed}
+      </kyn-date-picker>
+    `;
+  },
+};
+
+export const DateWithTime = {
+  args: { ...args, datePickerType: 'date-time', name: 'dateTimePicker' },
+  argTypes: {
+    datePickerType: {
+      table: {
+        disabled: true,
+      },
+    },
+  },
   render: (args) => {
     return html`
       <kyn-date-picker
