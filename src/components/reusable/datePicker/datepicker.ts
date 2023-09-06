@@ -104,6 +104,12 @@ export class DatePicker extends LitElement {
    */
   @query('input')
   inputEl1!: HTMLInputElement;
+  /**
+   * End date in case of daterange picker
+   * @ignore
+   */
+  @state()
+  endDate = '';
 
   override render() {
     return html`
@@ -143,7 +149,6 @@ export class DatePicker extends LitElement {
         />
       </div>
 
-
       ${this.datePickerType === 'date-range'
         ? html`
             <span class="range-span">—</span>
@@ -156,6 +161,7 @@ export class DatePicker extends LitElement {
                 datePickerType=${this.datePickerType}
                 type="date"
                 id="datepicker-1"
+                value=${this.endDate}
                 ?disabled=${this.disabled}
                 ?invalid=${this.invalidText !== ''}
                 min=${ifDefined(this.value ?? '')}
@@ -166,7 +172,6 @@ export class DatePicker extends LitElement {
             </div>
           `
         : null}
-
       ${this.caption !== ''
         ? html` <div class="caption">${this.caption}</div> `
         : null}
@@ -179,32 +184,12 @@ export class DatePicker extends LitElement {
     `;
   }
 
-  private handleRangeInput(e: any){
-    const startDate = this.value ?? '';
-    const endDate = e.target.value;
-    if(startDate === ''){
-      this.internals.setValidity(
-        { valueMissing: true },
-        'Please enter start date.'
-      );
-      this.invalidText = this.internals.validationMessage;
-      return;
-    } else {
-      const event = new CustomEvent('on-input', {
-        detail:{
-          value: `${this.value} - ${endDate}`,
-          origEvent: e,
-        },
-      });
-      this.dispatchEvent(event);
-    }
-  }
-
+  // calls when start date or value change
   private handleInput(e: any) {
-    console.log(e.target.value);
     this.value = e.target.value;
-    if(this.datePickerType !== 'date-range'){
+    if (this.datePickerType !== 'date-range') {
       // emit selected value
+      console.log(e.target.value);
       const event = new CustomEvent('on-input', {
         detail: {
           value: e.target.value,
@@ -213,6 +198,11 @@ export class DatePicker extends LitElement {
       });
       this.dispatchEvent(event);
     }
+  }
+  // calls when end date change
+  private handleRangeInput(e: any) {
+    this.endDate = e.target.value;
+    console.log(this.endDate);
   }
 
   override updated(changedProps: PropertyValues) {
