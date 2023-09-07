@@ -56,6 +56,7 @@ export const TimePicker = {
         maxTime=${ifDefined(args.maxTime)}
         step=${ifDefined(args.step)}
         @on-input=${(e) => action(e.type)(e)}
+        @keydown=${(e) => e.stopPropagation()}
       >
         ${args.unnamed}
       </kyn-time-picker>

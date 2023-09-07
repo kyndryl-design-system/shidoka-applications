@@ -131,6 +131,7 @@ export class DatePicker extends LitElement {
           max=${ifDefined(this.maxDate)}
           step=${ifDefined(this.step)}
           @input=${(e: any) => this.handleInput(e)}
+          @keydown=${(e: any) => e.stopPropagation()}
         />
       </div>
       ${this.caption !== ''

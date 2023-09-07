@@ -59,13 +59,6 @@ const args = {
 
 export const DatePicker = {
   args,
-  argTypes: {
-    datePickerType: {
-      table: {
-        disabled: true,
-      },
-    },
-  },
   render: (args) => {
     return html`
       <kyn-date-picker
@@ -83,6 +76,7 @@ export const DatePicker = {
         maxDate=${ifDefined(args.maxDate)}
         step=${ifDefined(args.step)}
         @on-input=${(e) => action(e.type)(e)}
+        @keydown=${(e) => e.stopPropagation()}
       >
         ${args.unnamed}
       </kyn-date-picker>
@@ -92,13 +86,6 @@ export const DatePicker = {
 
 export const DateWithTime = {
   args: { ...args, datePickerType: 'date-time', name: 'dateTimePicker' },
-  argTypes: {
-    datePickerType: {
-      table: {
-        disabled: true,
-      },
-    },
-  },
   render: (args) => {
     return html`
       <kyn-date-picker
@@ -115,6 +102,7 @@ export const DateWithTime = {
         maxDate=${ifDefined(args.maxDate)}
         step=${ifDefined(args.step)}
         @on-input=${(e) => action(e.type)(e)}
+        @keydown=${(e) => e.stopPropagation()}
       >
         ${args.unnamed}
       </kyn-date-picker>
