@@ -13,8 +13,8 @@ import DatePickerScss from './datepicker.scss';
 /**
  * Datepicker.
  * @fires on-input - Captures the input event and emits the selected value and original event details.
- * @prop {number} minDate - Minimum date.
- * @prop {number} maxDate - Maximum date.
+ * @prop {string} minDate - Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.
+ * @prop {string} maxDate - Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value
  * @slot unnamed - Slot for label text.
  */
 
@@ -68,14 +68,12 @@ export class DatePicker extends LitElement {
   warnText = '';
 
   /** Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format.
-   * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date#max
-   * If the value isn't a possible date string in the format, then the element has no maximum date value.
-   */
+   * If the value isn't a possible date string in the format, then the element has no maximum date value
+  */
   @property({ type: String })
   maxDate = '';
 
-  /** Minimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format.
-   * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date#min
+  /** Minimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format,
    * If the value isn't a possible date string in the format, then the element has no minimum date value.
    */
   @property({ type: String })
@@ -87,7 +85,7 @@ export class DatePicker extends LitElement {
   @property({ type: String })
   step = '';
 
-  /** Date picker types. Default single */
+  /** Date picker types. Default 'single' */
   @property({ type: String })
   datePickerType: DATE_PICKER_TYPES = DATE_PICKER_TYPES.SINGLE;
 
