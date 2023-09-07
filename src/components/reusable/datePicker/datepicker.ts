@@ -43,7 +43,7 @@ export class DatePicker extends LitElement {
   @property({ type: String })
   caption = '';
 
-  /** Datepicker value. */
+  /** Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format. */
   @property({ type: String })
   value = '';
 
@@ -87,7 +87,7 @@ export class DatePicker extends LitElement {
   @property({ type: String })
   step = '';
 
-  /** Date picker type. Default single */
+  /** Date picker types. Default single */
   @property({ type: String })
   datePickerType: DATE_PICKER_TYPES = DATE_PICKER_TYPES.SINGLE;
 
@@ -97,19 +97,6 @@ export class DatePicker extends LitElement {
    */
   @query('input')
   inputEl!: HTMLInputElement;
-
-  /**
-   * Queries the <input> DOM element.
-   * @ignore
-   */
-  @query('input')
-  inputEl1!: HTMLInputElement;
-  /**
-   * End date in case of daterange picker
-   * @ignore
-   */
-  @state()
-  endDate = '';
 
   override render() {
     return html`
@@ -148,30 +135,6 @@ export class DatePicker extends LitElement {
           @input=${(e: any) => this.handleInput(e)}
         />
       </div>
-
-      ${this.datePickerType === 'date-range'
-        ? html`
-            <span class="range-span">—</span>
-            <div class="input-wrapper">
-              <input
-                class="${classMap({
-                  'size--sm': this.size === 'sm',
-                  'size--lg': this.size === 'lg',
-                })}"
-                datePickerType=${this.datePickerType}
-                type="date"
-                id="datepicker-1"
-                value=${this.endDate}
-                ?disabled=${this.disabled}
-                ?invalid=${this.invalidText !== ''}
-                min=${ifDefined(this.value ?? '')}
-                max=${ifDefined(this.maxDate)}
-                step=${ifDefined(this.step)}
-                @input=${(e: any) => this.handleRangeInput(e)}
-              />
-            </div>
-          `
-        : null}
       ${this.caption !== ''
         ? html` <div class="caption">${this.caption}</div> `
         : null}
@@ -187,22 +150,14 @@ export class DatePicker extends LitElement {
   // calls when start date or value change
   private handleInput(e: any) {
     this.value = e.target.value;
-    if (this.datePickerType !== 'date-range') {
-      // emit selected value
-      console.log(e.target.value);
-      const event = new CustomEvent('on-input', {
-        detail: {
-          value: e.target.value,
-          origEvent: e,
-        },
-      });
-      this.dispatchEvent(event);
-    }
-  }
-  // calls when end date change
-  private handleRangeInput(e: any) {
-    this.endDate = e.target.value;
-    console.log(this.endDate);
+    // emit selected value
+    const event = new CustomEvent('on-input', {
+      detail: {
+        value: e.target.value,
+        origEvent: e,
+      },
+    });
+    this.dispatchEvent(event);
   }
 
   override updated(changedProps: PropertyValues) {

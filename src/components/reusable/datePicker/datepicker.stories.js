@@ -78,6 +78,7 @@ export const DatePicker = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
+        value=${args.value}
         minDate=${ifDefined(args.minDate)}
         maxDate=${ifDefined(args.maxDate)}
         step=${ifDefined(args.step)}
