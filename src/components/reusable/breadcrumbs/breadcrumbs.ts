@@ -20,7 +20,7 @@ export class Breadcrumbs extends LitElement {
 
   override render() {
     return html`
-      <nav role="navigation" aria-label="Breadcrumb Navigation">
+      <nav aria-label="Breadcrumbs Navigation">
         <ul class="breadcrumbs">
           <slot></slot>
         </ul>

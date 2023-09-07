@@ -17,6 +17,7 @@ import './breadcrumbItem';
 const meta: Meta = {
   title: 'Components/Breadcrumbs',
   component: 'kyn-breadcrumbs',
+  subcomponents: { 'kyn-breadcrumb-item': 'kyn-breadcrumb-item' },
   parameters: {
     design: {
       type: 'figma',
@@ -34,9 +35,10 @@ type Story = StoryObj;
 export const Breadcrumbs: Story = {
   render: () => {
     return html`<kyn-breadcrumbs>
-      <kyn-breadcrumb-item href="/">Breadcrumb</kyn-breadcrumb-item>
-      <kyn-breadcrumb-item href="/beadcrumb">Breadcrumb</kyn-breadcrumb-item>
-      <kyn-breadcrumb-item>Breadcrumb</kyn-breadcrumb-item>
+      <kyn-breadcrumb-item href="/">Home</kyn-breadcrumb-item>
+      <kyn-breadcrumb-item href="/level1">Level 1</kyn-breadcrumb-item>
+      <kyn-breadcrumb-item href="/level2">Level 2</kyn-breadcrumb-item>
+      <kyn-breadcrumb-item>Destination</kyn-breadcrumb-item>
     </kyn-breadcrumbs> `;
   },
 };

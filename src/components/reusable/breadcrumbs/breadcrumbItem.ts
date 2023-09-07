@@ -24,14 +24,12 @@ export class BreadcrumbItem extends LitElement {
   static override styles = [styles];
 
   override render() {
-    const innerText = this.textContent ? this.textContent.trim() : ''; // Get inner text and remove leading/trailing spaces
-
     return html`
-      <li class="breadcrumb-item" role="listitem" aria-label="${innerText}">
+      <li class="breadcrumb-item">
         <!-- Render as link if href is provided, otherwise render as plain text -->
         ${this.href
           ? html`<a href="${this.href}"><slot></slot></a>`
-          : html`<slot></slot>`}
+          : html`<span><slot></slot></span>`}
       </li>
     `;
   }
