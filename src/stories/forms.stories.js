@@ -6,6 +6,7 @@ import '../components/reusable/textInput';
 import '../components/reusable/textArea';
 import '../components/reusable/dropdown';
 import '../components/reusable/timepicker';
+import '../components/reusable/datePicker';
 import '@kyndryl-design-system/foundation/components/button';
 import { action } from '@storybook/addon-actions';
 
@@ -125,6 +126,42 @@ export const Default = {
         >
           Time
         </kyn-time-picker>
+
+        <br /><br />
+
+        <kyn-date-picker
+          size="md"
+          name=""
+          datePickerType="single"
+          caption="Date picker example"
+          invalidText=""
+          warnText=""
+          value=""
+          minDate=""
+          maxDate=""
+          step=""
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          Date
+        </kyn-date-picker>
+
+        <br /><br />
+
+        <kyn-date-picker
+          size="md"
+          name=""
+          datePickerType="date-time"
+          caption="Date time picker example"
+          invalidText=""
+          warnText=""
+          value=""
+          minDate=""
+          maxDate=""
+          step=""
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          Date
+        </kyn-date-picker>
 
         <br /><br />
 
