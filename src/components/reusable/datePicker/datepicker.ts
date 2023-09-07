@@ -216,7 +216,6 @@ export class DatePicker extends LitElement {
       regexDateTimeFormat.test(this.maxDate) ||
       regexDateTimeFormatSec.test(this.maxDate)
     ) {
-      console.log('validate maxdate ::-> ', this.maxDate);
       if (this.value > this.maxDate) {
         this.internals.setValidity(
           { rangeOverflow: true },
