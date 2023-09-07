@@ -135,16 +135,48 @@ export class DateRangePicker extends LitElement {
           @input=${(e: any) => this.handleEndDate(e)}
         />
       </div>
+
+      ${this.caption !== ''
+        ? html` <div class="caption">${this.caption}</div> `
+        : null}
+      ${this.invalidText !== ''
+        ? html` <div class="error">${this.invalidText}</div> `
+        : null}
+      ${this.warnText !== '' && this.invalidText === ''
+        ? html`<div class="warn">${this.warnText}</div>`
+        : null}
     `;
   }
 
   override updated(changedProps: PropertyValues) {
     if (changedProps.has('startDate')) {
-        this.internals.setFormValue(this.startDate);
+      // set form data value
+      this.internals.setFormValue(this.startDate);
+      this.internals.setValidity({});
+      this.invalidText = '';
+      // set validity
+      if (this.required && (!this.startDate || this.startDate === '')) {
+        this.internals.setValidity(
+          { valueMissing: true },
+          'Start date is required.'
+        );
+      }
+      this.invalidText = this.internals.validationMessage;
+      return;
     }
-    if(changedProps.has('endDate')){
-        this.internals.setFormValue(this.endDate);
-
+    if (changedProps.has('endDate')) {
+      this.internals.setFormValue(this.endDate);
+      this.startDate !== '' &&  this.endDate !== '' ? this.internals.setValidity({}) : null;
+      this.startDate !== '' &&  this.endDate !== '' ? this.invalidText = '' : this.invalidText;
+      // set validity
+      if (this.required && (!this.endDate || this.endDate === '')) {
+        this.internals.setValidity(
+          { valueMissing: true },
+          'End date is required.'
+        );
+      }
+      this.invalidText = this.internals.validationMessage;
+      return;
     }
   }
 
@@ -156,7 +188,7 @@ export class DateRangePicker extends LitElement {
   }
 }
 declare global {
-    interface HTMLElementTagNameMap {
-      'kyn-date-range-picker': DateRangePicker;
-    }
+  interface HTMLElementTagNameMap {
+    'kyn-date-range-picker': DateRangePicker;
   }
+}
