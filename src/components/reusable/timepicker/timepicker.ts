@@ -128,6 +128,7 @@ export class TimePicker extends LitElement {
             min=${ifDefined(this.minTime)}
             max=${ifDefined(this.maxTime)}
             @input=${(e: any) => this.handleInput(e)}
+            @keydown=${(e: any) => e.stopPropagation()}
           />
         </div>
 
