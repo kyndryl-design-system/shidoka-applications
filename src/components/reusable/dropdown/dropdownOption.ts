@@ -54,6 +54,7 @@ export class DropdownOption extends LitElement {
         ?disabled=${this.disabled}
         ?multiple=${this.multiple}
         @click=${(e: any) => this.handleClick(e)}
+        tabindex="-1"
       >
         <span>
           ${this.multiple
