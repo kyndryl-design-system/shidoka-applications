@@ -1,3 +1,31 @@
+# [1.0.0-beta.51](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.50...v1.0.0-beta.51) (2023-09-07)
+
+
+### Bug Fixes
+
+* Added [@keydown](https://github.com/keydown) for preventing focus ([66cef81](https://github.com/kyndryl-design-system/web-components/commit/66cef81f0c47ee717fc007ffa75275b4b13bd9a9))
+* **style:** remove unwanted css ([488e462](https://github.com/kyndryl-design-system/web-components/commit/488e462fda504a9882e997e551676f19e3a1635d))
+* **styles:** removed unecessary styles ([107e137](https://github.com/kyndryl-design-system/web-components/commit/107e137d792c415a4ee5fb92342b4f99f7ae6d04))
+
+
+### Features
+
+* added date & time picker variants ([e010258](https://github.com/kyndryl-design-system/web-components/commit/e010258ee9271130b3c0b75eff3fd22675a28adf))
+* added date type datetime-local ([87e8f14](https://github.com/kyndryl-design-system/web-components/commit/87e8f14f69d507920650881ad7bcef5252baf211))
+* Added Datepicker component ([0543c75](https://github.com/kyndryl-design-system/web-components/commit/0543c75a82bfac12ba778f4adb95a6e379c83946))
+* added form docs for date pickers ([4e12db7](https://github.com/kyndryl-design-system/web-components/commit/4e12db7dd52128e4e8d301a73c8679319a27b1fd))
+* added validations for datepicker and date time picker ([4eef06a](https://github.com/kyndryl-design-system/web-components/commit/4eef06aedd204b2e5c94feb8d41b5876a00175de))
+* date picker & date-time picker ([ffe3d43](https://github.com/kyndryl-design-system/web-components/commit/ffe3d432ee3ea40a0ee41b81928717d1fef62a4e))
+* Ported datepicker from textinput ([16dfbfb](https://github.com/kyndryl-design-system/web-components/commit/16dfbfba8d679d1fcca53601a8fa702176ad5d59))
+* try to add datepicker functionality inside ([d81274a](https://github.com/kyndryl-design-system/web-components/commit/d81274a1fab5cd828bc7940f78623416b6543808))
+
+# [1.0.0-beta.50](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.49...v1.0.0-beta.50) (2023-09-07)
+
+
+### Bug Fixes
+
+* **dropdown:** chrome selection blur bug ([a02cd33](https://github.com/kyndryl-design-system/web-components/commit/a02cd33197a14c8593b52be4a71148c7c57cf690))
+
 # [1.0.0-beta.49](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.48...v1.0.0-beta.49) (2023-08-30)
 
 
