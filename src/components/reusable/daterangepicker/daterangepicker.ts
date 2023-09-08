@@ -21,6 +21,12 @@ export class DateRangePicker extends LitElement {
    */
   static formAssociated = true;
 
+  /** Regex format for minDate / maxDate
+   * @ignore
+   */
+  @state()
+  regexDateFormat = /^\d{4}-\d{2}-\d{2}$/;
+
   /**
    * Attached internals for form association.
    * @ignore
@@ -93,18 +99,14 @@ export class DateRangePicker extends LitElement {
         <slot></slot>
       </label>
 
-      <div
-        class="${classMap({
-          'input-wrapper': true,
-        })}"
-      >
+      <div class="input-wrapper">
         <input
           class="${classMap({
             'size--sm': this.size === 'sm',
             'size--lg': this.size === 'lg',
           })}"
           type="date"
-          id=${this.name ? this.name : 'date-range-1'}
+          id=${this.name ? `${this.name}-1` : 'date-range-1'}
           name=${this.name}
           value=${this.startDate}
           ?required=${this.required}
@@ -151,42 +153,134 @@ export class DateRangePicker extends LitElement {
   override updated(changedProps: PropertyValues) {
     if (changedProps.has('startDate')) {
       // set form data value
-      this.internals.setFormValue(this.startDate);
+      this.internals.setFormValue('start-date', this.startDate);
       this.internals.setValidity({});
       this.invalidText = '';
       // set validity
       if (this.required && (!this.startDate || this.startDate === '')) {
         this.internals.setValidity(
           { valueMissing: true },
-          'Start date is required.'
+          'Both dates are required.'
         );
+        this.invalidText = this.internals.validationMessage;
+        return;
       }
-      this.invalidText = this.internals.validationMessage;
-      return;
+      // validate min
+      if (this.startDate !== '' && this.minDate !== '') {
+        this.validateMinDate(this.startDate);
+      }
+      //validate max
+      if (this.startDate !== '' && this.maxDate !== '') {
+        this.validateMaxDate(this.startDate);
+      }
+      // validate start & end date
+      if (this.startDate !== '' && this.endDate !== '') {
+        this.validateStartEndDate();
+      }
     }
     if (changedProps.has('endDate')) {
-      this.internals.setFormValue(this.endDate);
-      this.startDate !== '' &&  this.endDate !== '' ? this.internals.setValidity({}) : null;
-      this.startDate !== '' &&  this.endDate !== '' ? this.invalidText = '' : this.invalidText;
+      this.internals.setFormValue('end-date', this.endDate);
+      this.internals.setValidity({});
+      this.invalidText = '';
       // set validity
       if (this.required && (!this.endDate || this.endDate === '')) {
         this.internals.setValidity(
           { valueMissing: true },
-          'End date is required.'
+          'Both dates are required.'
         );
+        this.invalidText = this.internals.validationMessage;
+        return;
       }
+      // validate min
+      if (this.endDate !== '' && this.minDate !== '') {
+        this.validateMinDate(this.endDate);
+      }
+      //validate max
+      if (this.endDate !== '' && this.maxDate !== '') {
+        this.validateMaxDate(this.endDate);
+      }
+      // validate start & end date
+      if (this.startDate !== '' && this.endDate !== '') {
+        this.validateStartEndDate();
+      }
+    }
+  }
+  // on-change start date
+  private handleStartDate(e: any) {
+    this.startDate = e.target.value;
+    if (this.startDate !== '') {
+      this.validateAndDispatchEvent();
+    }
+  }
+  // on-change end date
+  private handleEndDate(e: any) {
+    this.endDate = e.target.value;
+    if (this.endDate !== '') {
+      this.validateAndDispatchEvent();
+    }
+  }
+  // Note: dispatch (on-input) event only if both dates are valid (i.e. startDate <= endDate)
+  private validateAndDispatchEvent() {
+    if (this.startDate <= this.endDate) {
+      // emit selected start & end date value
+      const event = new CustomEvent('on-input', {
+        detail: {
+          startDate: this.startDate,
+          endDate: this.endDate,
+        },
+      });
+      console.log(`${event.detail.startDate} - ${event.detail.endDate}`);
+      this.dispatchEvent(event);
+    }
+  }
+  // validate minDate with start & end date
+  private validateMinDate(date: String): void {
+    if (this.regexDateFormat.test(this.minDate)) {
+      if (date < this.minDate) {
+        this.internals.setValidity(
+          { rangeUnderflow: true },
+          'Please enter date as min date or later.'
+        );
+        this.invalidText = this.internals.validationMessage;
+      }
+    } else {
+      this.internals.setValidity(
+        { patternMismatch: true },
+        'Please enter valid min date.'
+      );
       this.invalidText = this.internals.validationMessage;
-      return;
+    }
+  }
+  // validate maxDate with start & end date
+  private validateMaxDate(date: String): void {
+    if (this.regexDateFormat.test(this.maxDate)) {
+      if (date > this.maxDate) {
+        this.internals.setValidity(
+          { rangeOverflow: true },
+          'Please enter date as max date or earlier.'
+        );
+        this.invalidText = this.internals.validationMessage;
+      }
+    } else {
+      this.internals.setValidity(
+        { patternMismatch: true },
+        'Please enter valid max date.'
+      );
+      this.invalidText = this.internals.validationMessage;
     }
   }
 
-  private handleStartDate(e: any) {
-    this.startDate = e.target.value;
-  }
-  private handleEndDate(e: any) {
-    this.endDate = e.target.value;
+  private validateStartEndDate(): void {
+    if (this.startDate > this.endDate) {
+      this.internals.setValidity(
+        { patternMismatch: true },
+        'Please enter valid start date & end date.'
+      );
+      this.invalidText = this.internals.validationMessage;
+    }
   }
 }
+
 declare global {
   interface HTMLElementTagNameMap {
     'kyn-date-range-picker': DateRangePicker;

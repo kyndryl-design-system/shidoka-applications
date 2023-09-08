@@ -69,6 +69,7 @@ export const DateRangePicker = {
         maxDate=${ifDefined(args.maxDate)}
         step=${ifDefined(args.step)}
         @on-input=${(e) => action(e.type)(e)}
+        @keydown=${(e) => e.stopPropagation()}
       >
         ${args.unnamed}
       </kyn-date-range-picker>
