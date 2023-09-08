@@ -7,7 +7,7 @@ import DateRangePickerScss from './daterangepicker.scss';
 
 /**
  * Date-Range picker
- * @fires on-input - Captures the input event and emits the selected value and original event details.
+ * @fires on-input - Captures the input event and emits the selected values and original event details.
  * @prop {string} minDate - Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.
  * @prop {string} maxDate - Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value
  * @slot unnamed - Slot for label text.
