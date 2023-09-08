@@ -7,6 +7,7 @@ import '../components/reusable/textArea';
 import '../components/reusable/dropdown';
 import '../components/reusable/timepicker';
 import '../components/reusable/datePicker';
+import '../components/reusable/daterangepicker';
 import '@kyndryl-design-system/foundation/components/button';
 import { action } from '@storybook/addon-actions';
 
@@ -160,8 +161,26 @@ export const Default = {
           step=""
           @on-input=${(e) => action(e.type)(e)}
         >
-          Date
+          Date Time
         </kyn-date-picker>
+
+        <br /><br />
+
+        <kyn-date-range-picker
+          size="md"
+          name="date-range"
+          caption="Date range picker example"
+          invalidText=""
+          warnText=""
+          minDate=""
+          maxDate=""
+          step=""
+          startDate=""
+          endDate=""
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          Date Range
+        </kyn-date-range-picker>
 
         <br /><br />
 
