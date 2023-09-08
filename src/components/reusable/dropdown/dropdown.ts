@@ -509,11 +509,15 @@ export class Dropdown extends LitElement {
     } else {
       this.value = '';
     }
+
+    this.emitValue();
   }
 
   private handleTagClear(value: string) {
     // remove value
     this.updateValue(value, false);
+
+    this.emitValue();
   }
 
   private handleClear(e: any) {

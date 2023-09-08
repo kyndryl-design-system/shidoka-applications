@@ -1,3 +1,22 @@
+# [1.0.0-beta.53](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.52...v1.0.0-beta.53) (2023-09-08)
+
+
+### Bug Fixes
+
+* **dropdown:** emit event/value on tag clears ([e2cbeee](https://github.com/kyndryl-design-system/web-components/commit/e2cbeeefc2cc4c07c354f198fdf4e81d258542f4))
+
+# [1.0.0-beta.52](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.51...v1.0.0-beta.52) (2023-09-08)
+
+
+### Bug Fixes
+
+* **breadcrumbs:** border and layout ([b2eadc6](https://github.com/kyndryl-design-system/web-components/commit/b2eadc631093c01dc759396a400d7b95e76e271e))
+
+
+### Features
+
+* **breadcrumbs:** new design isolating from kd-links ([73f786a](https://github.com/kyndryl-design-system/web-components/commit/73f786ab450647fe55a1eee946afba50fcdf39be))
+
 # [1.0.0-beta.51](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.50...v1.0.0-beta.51) (2023-09-07)
 
 
