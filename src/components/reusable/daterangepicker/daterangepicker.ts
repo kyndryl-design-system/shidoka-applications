@@ -229,7 +229,6 @@ export class DateRangePicker extends LitElement {
           endDate: this.endDate,
         },
       });
-      console.log(`${event.detail.startDate} - ${event.detail.endDate}`);
       this.dispatchEvent(event);
     }
   }
