@@ -50,7 +50,7 @@ export class DateRangePicker extends LitElement {
   @property({ type: String })
   endDate = '';
 
-  /** Datepicker name. */
+  /** Datepicker name. Required prop. as there could many fields into single form*/
   @property({ type: String })
   name = '';
 
@@ -106,14 +106,14 @@ export class DateRangePicker extends LitElement {
             'size--lg': this.size === 'lg',
           })}"
           type="date"
-          id=${this.name ? `${this.name}-1` : 'date-range-1'}
+          id=${this.name ? `${this.name}-start` : 'date-range-start'}
           name=${this.name}
           value=${this.startDate}
           ?required=${this.required}
           ?disabled=${this.disabled}
           ?invalid=${this.invalidText !== ''}
           min=${ifDefined(this.minDate)}
-          max=${ifDefined(this.maxDate)}
+          max=${ifDefined(this.endDate ?? this.maxDate)}
           step=${ifDefined(this.step)}
           @input=${(e: any) => this.handleStartDate(e)}
         />
@@ -127,11 +127,11 @@ export class DateRangePicker extends LitElement {
             'size--lg': this.size === 'lg',
           })}"
           type="date"
-          id=${this.name ? `${this.name}-2` : 'date-range-2'}
+          id=${this.name ? `${this.name}-end` : 'date-range-end'}
           value=${this.endDate}
           ?disabled=${this.disabled}
           ?invalid=${this.invalidText !== ''}
-          min=${ifDefined(this.startDate ?? '')}
+          min=${ifDefined(this.startDate ?? this.minDate ?? '')}
           max=${ifDefined(this.maxDate)}
           step=${ifDefined(this.step)}
           @input=${(e: any) => this.handleEndDate(e)}
@@ -153,7 +153,8 @@ export class DateRangePicker extends LitElement {
   override updated(changedProps: PropertyValues) {
     if (changedProps.has('startDate')) {
       // set form data value
-      this.internals.setFormValue('start-date', this.startDate);
+      const start_date = this.name !== '' ? this.name + '-start' : 'start-date';
+      this.internals.setFormValue(start_date, this.startDate);
       this.internals.setValidity({});
       this.invalidText = '';
       // set validity
@@ -179,7 +180,8 @@ export class DateRangePicker extends LitElement {
       }
     }
     if (changedProps.has('endDate')) {
-      this.internals.setFormValue('end-date', this.endDate);
+      const end_date = this.name !== '' ? this.name + '-end' : 'end-date';
+      this.internals.setFormValue(end_date, this.endDate);
       this.internals.setValidity({});
       this.invalidText = '';
       // set validity
@@ -273,7 +275,7 @@ export class DateRangePicker extends LitElement {
     if (this.startDate > this.endDate) {
       this.internals.setValidity(
         { patternMismatch: true },
-        'Please enter valid start date & end date.'
+        'State date must be before end date.'
       );
       this.invalidText = this.internals.validationMessage;
     }
