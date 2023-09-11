@@ -112,7 +112,7 @@ export class DateRangePicker extends LitElement {
           ?required=${this.required}
           ?disabled=${this.disabled}
           ?invalid=${this.invalidText !== ''}
-          min=${ifDefined(this.minDate)}
+          min=${ifDefined(this.minDate) ?? ''}
           max=${ifDefined(this.endDate ?? this.maxDate)}
           step=${ifDefined(this.step)}
           @input=${(e: any) => this.handleStartDate(e)}
