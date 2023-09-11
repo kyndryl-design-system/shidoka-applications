@@ -13,6 +13,7 @@ import overflowIcon from '@carbon/icons/es/overflow-menu--vertical/24';
  * @fires on-menu-toggle - Captures the menu toggle click event and emits the menu open state in the detail.
  * @fires on-root-link-click - Captures the logo link click event and emits the original event details.
  * @slot unnamed - The default slot for all empty space right of the logo/title.
+ * @slot logo - Slot for the logo, will overwrite the default logo.
  */
 @customElement('kyn-header')
 export class Header extends LitElement {
