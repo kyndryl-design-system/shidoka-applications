@@ -54,6 +54,7 @@ export class DropdownOption extends LitElement {
         ?disabled=${this.disabled}
         ?multiple=${this.multiple}
         @click=${(e: any) => this.handleClick(e)}
+        @blur=${(e: any) => this.handleBlur(e)}
         tabindex="-1"
       >
         <span>
@@ -65,6 +66,7 @@ export class DropdownOption extends LitElement {
                   @mousedown=${(e: any) => e.preventDefault()}
                   .checked=${this.selected}
                   ?checked=${this.selected}
+                  ?disabled=${this.disabled}
                 />
               `
             : null}
@@ -101,6 +103,18 @@ export class DropdownOption extends LitElement {
       detail: {
         selected: this.selected,
         value: this.value,
+        origEvent: e,
+      },
+    });
+    this.dispatchEvent(event);
+  }
+
+  private handleBlur(e: any) {
+    // emit blur event, bubble so it can be captured by the parent dropdown
+    const event = new CustomEvent('on-blur', {
+      bubbles: true,
+      composed: true,
+      detail: {
         origEvent: e,
       },
     });

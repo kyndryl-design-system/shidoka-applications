@@ -551,8 +551,10 @@ export class Dropdown extends LitElement {
   private handleSearchBlur(e: any) {
     // don't blur if entering listbox of button
     if (
-      !e.relatedTarget?.classList.contains('options') &&
-      !e.relatedTarget?.classList.contains('select')
+      !e.relatedTarget ||
+      (e.relatedTarget.localName !== 'kyn-dropdown-option' &&
+        !e.relatedTarget?.classList.contains('options') &&
+        !e.relatedTarget?.classList.contains('select'))
     ) {
       this.open = false;
     }
@@ -610,6 +612,19 @@ export class Dropdown extends LitElement {
 
       // emit selected value
       this.emitValue();
+    });
+
+    // capture child options blur event
+    this.addEventListener('on-blur', (e: any) => {
+      const relatedTarget = e.detail.origEvent.relatedTarget;
+
+      if (
+        !relatedTarget ||
+        (relatedTarget.localName !== 'kyn-dropdown-option' &&
+          relatedTarget.localName !== 'kyn-dropdown')
+      ) {
+        this.open = false;
+      }
     });
   }
 

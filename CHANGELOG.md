@@ -1,3 +1,10 @@
+# [1.0.0-beta.54](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.53...v1.0.0-beta.54) (2023-09-08)
+
+
+### Bug Fixes
+
+* **dropdown:** fix blur behavior ([6476b0f](https://github.com/kyndryl-design-system/web-components/commit/6476b0f2dc28a81d8ca255c6f027d7f108b88e34))
+
 # [1.0.0-beta.53](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.52...v1.0.0-beta.53) (2023-09-08)
 
 
