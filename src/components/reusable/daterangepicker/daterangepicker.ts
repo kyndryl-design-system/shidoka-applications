@@ -106,8 +106,8 @@ export class DateRangePicker extends LitElement {
             'size--lg': this.size === 'lg',
           })}"
           type="date"
-          id=${this.name ? `${this.name}-start` : 'date-range-start'}
-          name=${this.name}
+          id="${this.name}-start"
+          name="${this.name}-start"
           value=${this.startDate}
           ?required=${this.required}
           ?disabled=${this.disabled}
@@ -127,7 +127,8 @@ export class DateRangePicker extends LitElement {
             'size--lg': this.size === 'lg',
           })}"
           type="date"
-          id=${this.name ? `${this.name}-end` : 'date-range-end'}
+          id="${this.name}-end"
+          name="${this.name}-end"
           value=${this.endDate}
           ?disabled=${this.disabled}
           ?invalid=${this.invalidText !== ''}
@@ -153,8 +154,7 @@ export class DateRangePicker extends LitElement {
   override updated(changedProps: PropertyValues) {
     if (changedProps.has('startDate')) {
       // set form data value
-      const start_date = this.name !== '' ? this.name + '-start' : 'start-date';
-      this.internals.setFormValue(start_date, this.startDate);
+      this.internals.setFormValue(`${this.name}-start`, this.startDate);
       this.internals.setValidity({});
       this.invalidText = '';
       // set validity
@@ -180,8 +180,7 @@ export class DateRangePicker extends LitElement {
       }
     }
     if (changedProps.has('endDate')) {
-      const end_date = this.name !== '' ? this.name + '-end' : 'end-date';
-      this.internals.setFormValue(end_date, this.endDate);
+      this.internals.setFormValue(`${this.name}-end`, this.endDate);
       this.internals.setValidity({});
       this.invalidText = '';
       // set validity
