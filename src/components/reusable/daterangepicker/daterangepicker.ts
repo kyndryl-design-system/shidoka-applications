@@ -9,7 +9,7 @@ import DateRangePickerScss from './daterangepicker.scss';
  * Date-Range picker
  * @fires on-input - Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)
  * @prop {string} minDate - Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.
- * @prop {string} maxDate - Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value
+ * @prop {string} maxDate - Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.
  * @slot unnamed - Slot for label text.
  */
 @customElement('kyn-date-range-picker')
@@ -112,8 +112,8 @@ export class DateRangePicker extends LitElement {
           ?required=${this.required}
           ?disabled=${this.disabled}
           ?invalid=${this.invalidText !== ''}
-          min=${ifDefined(this.minDate) ?? ''}
-          max=${ifDefined(this.endDate ?? this.maxDate)}
+          min=${ifDefined(this.minDate)}
+          max=${ifDefined(this.endDate ?? this.maxDate ?? '')}
           step=${ifDefined(this.step)}
           @input=${(e: any) => this.handleStartDate(e)}
         />
