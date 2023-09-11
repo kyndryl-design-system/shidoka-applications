@@ -1,3 +1,25 @@
+# [1.0.0-beta.55](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.54...v1.0.0-beta.55) (2023-09-11)
+
+
+### Bug Fixes
+
+* date time picker keydown events ([e277a3d](https://github.com/kyndryl-design-system/web-components/commit/e277a3d52cc1041225ae66087e99359b54ef5478))
+* did suggested changes ([fb9c7b8](https://github.com/kyndryl-design-system/web-components/commit/fb9c7b83a579ec749637d5fc91d2e5e8bda34e8e))
+* event notes ([2cb80b3](https://github.com/kyndryl-design-system/web-components/commit/2cb80b379e4f1ce82a078bf54d6955ac90250850))
+* fallback '' for min ([9af4986](https://github.com/kyndryl-design-system/web-components/commit/9af49868be68e886c2bf7cf7c620ac81be288af5))
+* fallback for startDate max ([2d77c92](https://github.com/kyndryl-design-system/web-components/commit/2d77c924d8e5b5a8750c05730b150fa2db5049ea))
+* name and ids for start and end date ([8400da3](https://github.com/kyndryl-design-system/web-components/commit/8400da305932e09ca50bcde81c0b5e550bf37566))
+* remove console log ([bebe6a9](https://github.com/kyndryl-design-system/web-components/commit/bebe6a919059794c49e08a874b5f3847c3cff7ae))
+
+
+### Features
+
+* add date range picker story ([c5366d4](https://github.com/kyndryl-design-system/web-components/commit/c5366d4fac815ad13981b0ca3353c780c1305c6c))
+* added date range picker files ([4e082eb](https://github.com/kyndryl-design-system/web-components/commit/4e082eb45dec135794c14c53b89549bae82d8d1c))
+* Added date range picker into form stories ([94aab05](https://github.com/kyndryl-design-system/web-components/commit/94aab05a96e67c18470dacac1b7fae42ecd3bb5f))
+* added daterange picker index.ts ([272569e](https://github.com/kyndryl-design-system/web-components/commit/272569e2a0d7340754d06bbe5ada5a7489fb5b71))
+* added validations for daterange picker ([932a25b](https://github.com/kyndryl-design-system/web-components/commit/932a25bf0d3a01997bec9407bb83236b904be736))
+
 # [1.0.0-beta.54](https://github.com/kyndryl-design-system/web-components/compare/v1.0.0-beta.53...v1.0.0-beta.54) (2023-09-08)
 
 
