@@ -64,7 +64,6 @@ export const DatePicker = {
       <kyn-date-picker
         size=${args.size}
         name=${args.name}
-        placeholder=${args.placeholder}
         datePickerType=${args.datePickerType}
         caption=${args.caption}
         ?required=${args.required}
@@ -91,7 +90,6 @@ export const DateWithTime = {
       <kyn-date-picker
         size=${args.size}
         name=${args.name}
-        placeholder=${args.placeholder}
         datePickerType=${args.datePickerType}
         caption=${args.caption}
         ?required=${args.required}
