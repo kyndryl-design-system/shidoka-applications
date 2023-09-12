@@ -21,3 +21,4 @@ export { Dropdown, DropdownOption } from './components/reusable/dropdown';
 export { DatePicker} from './components/reusable/datePicker';
 export { DateRangePicker } from './components/reusable/daterangepicker';
 export { Breadcrumbs, BreadcrumbItem } from './components/reusable/breadcrumbs';
+export { MyElement} from './components/global/charts/bar';
