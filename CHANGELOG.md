@@ -1,3 +1,10 @@
+# [1.0.0-beta.56](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.55...v1.0.0-beta.56) (2023-09-18)
+
+
+### Bug Fixes
+
+* rename to shidoka-applications ([7a314ce](https://github.com/kyndryl-design-system/shidoka-applications/commit/7a314ce72dd2fe5cece8b0bdc866ffb895772485))
+
 # [1.0.0-beta.55](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.54...v1.0.0-beta.55) (2023-09-11)
 
 ### Bug Fixes
