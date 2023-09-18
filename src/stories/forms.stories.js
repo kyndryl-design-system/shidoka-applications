@@ -8,7 +8,7 @@ import '../components/reusable/dropdown';
 import '../components/reusable/timepicker';
 import '../components/reusable/datePicker';
 import '../components/reusable/daterangepicker';
-import '@kyndryl-design-system/foundation/components/button';
+import '@kyndryl-design-system/shidoka-foundation/components/button';
 import { action } from '@storybook/addon-actions';
 
 export default {

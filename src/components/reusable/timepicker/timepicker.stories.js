@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import '@kyndryl-design-system/foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 export default {
   title: 'Components/Timepicker',

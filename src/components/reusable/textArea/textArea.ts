@@ -3,7 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import TextAreaScss from './textArea.scss';
 
-import '@kyndryl-design-system/foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@carbon/icons/es/warning--filled/24';
 
 /**

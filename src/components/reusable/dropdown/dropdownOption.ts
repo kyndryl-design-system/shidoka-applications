@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import DropdownOptionScss from './dropdownOption.scss';
-import '@kyndryl-design-system/foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import checkmarkIcon from '@carbon/icons/es/checkmark/20';
 
 /**

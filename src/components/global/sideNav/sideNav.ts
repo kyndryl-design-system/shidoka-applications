@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import SideNavScss from './sideNav.scss';
-import '@kyndryl-design-system/foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import chevRightIcon from '@carbon/icons/es/chevron--right/24';
 

@@ -1,10 +1,10 @@
 # Shidoka Web Components for Applications
 
-[![kyndryl-web-components](https://github.com/kyndryl-design-system/web-components/actions/workflows/actions.yml/badge.svg)](https://github.com/kyndryl-design-system/web-components/actions/workflows/actions.yml)
+[![shidoka-applications](https://github.com/kyndryl-design-system/shidoka-applications/actions/workflows/actions.yml/badge.svg)](https://github.com/kyndryl-design-system/shidoka-applications/actions/workflows/actions.yml)
 
 # Contributing to this project
 
-Read the [Contributing Guide](https://github.com/kyndryl-design-system/web-components/blob/beta/CONTRIBUTING.md) here.
+Read the [Contributing Guide](https://github.com/kyndryl-design-system/shidoka-applications/blob/beta/CONTRIBUTING.md) here.
 
 # Using this library in another project
 
@@ -14,10 +14,10 @@ Read the [Contributing Guide](https://github.com/kyndryl-design-system/web-compo
 
 ```bash
 # stable/main
-npm install @kyndryl-design-system/web-components -S
+npm install @kyndryl-design-system/shidoka-applications -S
 
 # beta (use until first stable release)
-npm install @kyndryl-design-system/web-components@beta -S
+npm install @kyndryl-design-system/shidoka-applications@beta -S
 # when using beta, lock the version, as breaking changes can happen at any time
 ```
 
@@ -28,19 +28,19 @@ The method used (SCSS @use, CSS @import, JS import, or &lt;style&gt; tag) will v
 ### SCSS
 
 ```css
-@use '~@kyndryl-design-system/foundation/scss/root.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/root.scss';
 ```
 
 ### CSS
 
 ```css
-@import '@kyndryl-design-system/foundation/css/root.css';
+@import '@kyndryl-design-system/shidoka-foundation/css/root.css';
 ```
 
 ### JS
 
 ```js
-import '@kyndryl-design-system/foundation/css/root.css';
+import '@kyndryl-design-system/shidoka-foundation/css/root.css';
 ```
 
 ### Use CSS tokens/variables
@@ -49,14 +49,14 @@ You can make use of tokens/variables included in root.css such as `--kd-header-h
 
 ## Start using components
 
-See [Storybook](https://kyndryl-design-system.github.io/web-components/) for the full components documentation.
+See [Storybook](https://kyndryl-design-system.github.io/shidoka-applications/) for the full components documentation.
 
 ### Example: Component with Sub-components
 
 This example imports the Header component AND all of it's subcomponents by targeting the index file.
 
 ```js
-import '@kyndryl-design-system/web-components/components/global/header';
+import '@kyndryl-design-system/shidoka-applications/components/global/header';
 ```
 
 ```html
@@ -72,7 +72,7 @@ import '@kyndryl-design-system/web-components/components/global/header';
 This example imports the HeaderLink component by targeting the component file directly.
 
 ```js
-import '@kyndryl-design-system/web-components/components/global/header/headerLink';
+import '@kyndryl-design-system/shidoka-applications/components/global/header/headerLink';
 ```
 
 ```html

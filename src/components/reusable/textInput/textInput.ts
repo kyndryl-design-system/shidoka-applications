@@ -10,7 +10,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import TextInputScss from './textInput.scss';
 
-import '@kyndryl-design-system/foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import clearIcon from '@carbon/icons/es/close/24';
 import errorIcon from '@carbon/icons/es/warning--filled/24';
 

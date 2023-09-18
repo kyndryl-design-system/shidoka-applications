@@ -8,7 +8,7 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import DropdownScss from './dropdown.scss';
-import '@kyndryl-design-system/foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import downIcon from '@carbon/icons/es/chevron--down/24';
 import errorIcon from '@carbon/icons/es/warning--filled/24';
 import clearIcon from '@carbon/icons/es/close/24';

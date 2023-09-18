@@ -7,7 +7,7 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
 
 // Import Kyndryl Design System components
-import '@kyndryl-design-system/foundation/components/link';
+import '@kyndryl-design-system/shidoka-foundation/components/link';
 
 // Import component from this directory
 import './breadcrumbs';

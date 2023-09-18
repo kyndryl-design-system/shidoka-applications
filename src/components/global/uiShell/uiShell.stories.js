@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './index';
 import '../footer';
 import '../header';
-import '@kyndryl-design-system/foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import sampleIcon from '@carbon/icons/es/user--avatar/16';
 
 export default {

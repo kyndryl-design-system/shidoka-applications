@@ -4,7 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderScss from './header.scss';
-import '@kyndryl-design-system/foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import logo from '../../../assets/svg/bridge-logo-large.svg';
 import overflowIcon from '@carbon/icons/es/overflow-menu--vertical/24';
 

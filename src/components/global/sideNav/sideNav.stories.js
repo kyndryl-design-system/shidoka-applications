@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import './sideNav';
 import './sideNavLink';
-import '@kyndryl-design-system/foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import sampleIcon from '@carbon/icons/es/user--avatar/16';
 

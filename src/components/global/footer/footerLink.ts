@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import FooterLinkScss from './footerLink.scss';
-import '@kyndryl-design-system/foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 /**
  * Component for navigation links within the Footer.

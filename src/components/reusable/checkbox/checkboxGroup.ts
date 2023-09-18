@@ -7,7 +7,7 @@ import {
 } from 'lit/decorators.js';
 import CheckboxGroupScss from './checkboxGroup.scss';
 
-import '@kyndryl-design-system/foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@carbon/icons/es/warning--filled/16';
 
 /**
