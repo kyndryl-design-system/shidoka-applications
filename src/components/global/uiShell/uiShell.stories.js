@@ -11,7 +11,9 @@ export default {
   decorators: [
     (story) =>
       html`
-        <div style="height: 100%; margin: var(--kd-negative-page-gutter);">
+        <div
+          style="transform: translate3d(0,0,0); margin: var(--kd-negative-page-gutter);"
+        >
           ${story()}
         </div>
       `,

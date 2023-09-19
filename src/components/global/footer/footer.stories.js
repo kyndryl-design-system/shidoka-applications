@@ -11,8 +11,12 @@ export default {
   decorators: [
     (story) =>
       html`
-        <div style="position: absolute; bottom: 0; left: 0; right: 0;">
-          ${story()}
+        <div style="min-height: 100px;">
+          <div
+            style="position: absolute; right: var(--kd-page-gutter); bottom: var(--kd-page-gutter); left: var(--kd-page-gutter); margin: var(--kd-negative-page-gutter);"
+          >
+            ${story()}
+          </div>
         </div>
       `,
   ],
