@@ -1,3 +1,10 @@
+# [1.0.0-beta.57](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.56...v1.0.0-beta.57) (2023-09-19)
+
+
+### Bug Fixes
+
+* ui shell max height, story frames ([292f01d](https://github.com/kyndryl-design-system/shidoka-applications/commit/292f01d28996206768ea42af7ca754ce4b36a3b4))
+
 # [1.0.0-beta.56](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.55...v1.0.0-beta.56) (2023-09-18)
 
 
