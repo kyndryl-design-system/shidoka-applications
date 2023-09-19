@@ -12,14 +12,7 @@ export default {
     SideNavLink: 'kyn-side-nav-link',
   },
   decorators: [
-    (story) =>
-      html`
-        <div
-          style="height: 100%; min-height: 250px; transform: translate3d(0,0,0); margin: var(--kd-negative-page-gutter);"
-        >
-          ${story()}
-        </div>
-      `,
+    (story) => html` <div style="min-height: 300px;">${story()}</div> `,
   ],
 };
 
