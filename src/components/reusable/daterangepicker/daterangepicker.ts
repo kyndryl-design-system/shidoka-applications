@@ -170,10 +170,15 @@ export class DateRangePicker extends LitElement {
   }
 
   override updated(changedProps: PropertyValues) {
-    this.isInvalid =
-      this.invalidText !== '' || this.internalValidationMsg !== ''
-        ? true
-        : false;
+    if (
+      changedProps.has('invalidText') ||
+      changedProps.has('internalValidationMsg')
+    ) {
+      this.isInvalid =
+        this.invalidText !== '' || this.internalValidationMsg !== ''
+          ? true
+          : false;
+    }
     if (changedProps.has('startDate')) {
       // set form data value
       this.internals.setFormValue(`${this.name}-start`, this.startDate);

@@ -181,7 +181,11 @@ export class TextInput extends LitElement {
           ? html` <div class="caption">${this.caption}</div> `
           : null}
         ${this.isInvalid
-          ? html` <div class="error">${this.invalidText || this.internalValidationMsg}</div> `
+          ? html`
+              <div class="error">
+                ${this.invalidText || this.internalValidationMsg}
+              </div>
+            `
           : null}
       </div>
     `;
@@ -206,8 +210,16 @@ export class TextInput extends LitElement {
   }
 
   override updated(changedProps: any) {
-    //check if any (internal / external )error msg. present then isInvalid is true
-    this.isInvalid = this.invalidText !== '' || this.internalValidationMsg !== '' ? true : false;
+    if (
+      changedProps.has('invalidText') ||
+      changedProps.has('internalValidationMsg')
+    ) {
+      //check if any (internal / external )error msg. present then isInvalid is true
+      this.isInvalid =
+        this.invalidText !== '' || this.internalValidationMsg !== ''
+          ? true
+          : false;
+    }
     if (changedProps.has('value')) {
       this.inputEl.value = this.value;
       // set form data value
@@ -220,7 +232,7 @@ export class TextInput extends LitElement {
           { valueMissing: true },
           'This field is required.'
         );
-       this.internalValidationMsg = this.internals.validationMessage;
+        this.internalValidationMsg = this.internals.validationMessage;
       } else if (this.minLength && this.value.length < this.minLength) {
         // validate min
         this.internals.setValidity({ tooShort: true }, 'Too few characters.');

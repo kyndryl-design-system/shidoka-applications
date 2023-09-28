@@ -141,11 +141,16 @@ ${this.value}</textarea
   }
 
   override updated(changedProps: any) {
-    //check if any (internal / external )error msg. present then isInvalid is true
-    this.isInvalid =
-      this.invalidText !== '' || this.internalValidationMsg !== ''
-        ? true
-        : false;
+    if (
+      changedProps.has('invalidText') ||
+      changedProps.has('internalValidationMsg')
+    ) {
+      //check if any (internal / external )error msg. present then isInvalid is true
+      this.isInvalid =
+        this.invalidText !== '' || this.internalValidationMsg !== ''
+          ? true
+          : false;
+    }
     if (changedProps.has('value')) {
       // set form data value
       this.internals.setFormValue(this.value);

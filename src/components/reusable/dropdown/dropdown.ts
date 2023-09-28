@@ -684,11 +684,16 @@ export class Dropdown extends LitElement {
   }
 
   override updated(changedProps: any) {
-    //check if any (internal / external )error msg. present then isInvalid is true
-    this.isInvalid =
-      this.invalidText !== '' || this.internalValidationMsg !== ''
-        ? true
-        : false;
+    if (
+      changedProps.has('invalidText') ||
+      changedProps.has('internalValidationMsg')
+    ) {
+      //check if any (internal / external )error msg. present then isInvalid is true
+      this.isInvalid =
+        this.invalidText !== '' || this.internalValidationMsg !== ''
+          ? true
+          : false;
+    }
     if (changedProps.has('value')) {
       // close listbox
       if (!this.multiple) {

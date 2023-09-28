@@ -97,11 +97,6 @@ export class CheckboxGroup extends LitElement {
   }
 
   override updated(changedProps: any) {
-    //check if any (internal / external )error msg. present then isInvalid is true
-    this.isInvalid =
-      this.invalidText !== '' || this.internalValidationMsg !== ''
-        ? true
-        : false;
     if (changedProps.has('name')) {
       // set name for each checkbox
       this.checkboxes.forEach((checkbox: any) => {
@@ -155,6 +150,10 @@ export class CheckboxGroup extends LitElement {
       changedProps.has('invalidText') ||
       changedProps.has('internalValidationMsg')
     ) {
+      this.isInvalid =
+        this.invalidText !== '' || this.internalValidationMsg !== ''
+          ? true
+          : false;
       // set invalid state for each checkbox
       this.checkboxes.forEach((checkbox: any) => {
         checkbox.invalid = this.isInvalid;

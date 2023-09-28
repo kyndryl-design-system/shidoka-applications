@@ -149,7 +149,11 @@ export class TimePicker extends LitElement {
           ? html` <div class="caption">${this.caption}</div> `
           : null}
         ${this.isInvalid
-          ? html` <div class="error">${this.invalidText || this.internalValidationMsg}</div> `
+          ? html`
+              <div class="error">
+                ${this.invalidText || this.internalValidationMsg}
+              </div>
+            `
           : null}
         ${this.warnText !== '' && !this.isInvalid
           ? html`<div class="warn">${this.warnText}</div>`
@@ -171,8 +175,16 @@ export class TimePicker extends LitElement {
   }
 
   override updated(changedProps: any) {
-    //check if any (internal / external )error msg. present then isInvalid is true
-    this.isInvalid = this.invalidText !== '' || this.internalValidationMsg !== '' ? true : false;
+    if (
+      changedProps.has('invalidText') ||
+      changedProps.has('internalValidationMsg')
+    ) {
+      //check if any (internal / external )error msg. present then isInvalid is true
+      this.isInvalid =
+        this.invalidText !== '' || this.internalValidationMsg !== ''
+          ? true
+          : false;
+    }
     if (changedProps.has('value')) {
       this.inputEl.value = this.value;
       //set form data value
