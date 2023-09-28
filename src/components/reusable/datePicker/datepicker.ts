@@ -69,7 +69,7 @@ export class DatePicker extends LitElement {
 
   /** Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format.
    * If the value isn't a possible date string in the format, then the element has no maximum date value
-  */
+   */
   @property({ type: String })
   maxDate = '';
 
@@ -95,6 +95,20 @@ export class DatePicker extends LitElement {
    */
   @query('input')
   inputEl!: HTMLInputElement;
+
+  /**
+   * Internal validation message.
+   * @ignore
+   */
+  @state()
+  internalValidationMsg = '';
+
+  /**
+   * isInvalid when internalValidationMsg or invalidText is non-empty.
+   * @ignore
+   */
+  @state()
+  isInvalid = false;
 
   override render() {
     return html`
@@ -126,7 +140,7 @@ export class DatePicker extends LitElement {
           value=${this.value}
           ?required=${this.required}
           ?disabled=${this.disabled}
-          ?invalid=${this.invalidText !== ''}
+          ?invalid=${this.isInvalid}
           min=${ifDefined(this.minDate)}
           max=${ifDefined(this.maxDate)}
           step=${ifDefined(this.step)}
@@ -136,10 +150,14 @@ export class DatePicker extends LitElement {
       ${this.caption !== ''
         ? html` <div class="caption">${this.caption}</div> `
         : null}
-      ${this.invalidText !== ''
-        ? html` <div class="error">${this.invalidText}</div> `
+      ${this.isInvalid
+        ? html`
+            <div class="error">
+              ${this.invalidText || this.internalValidationMsg}
+            </div>
+          `
         : null}
-      ${this.warnText !== '' && this.invalidText === ''
+      ${this.warnText !== '' && !this.isInvalid
         ? html`<div class="warn">${this.warnText}</div>`
         : null}
     `;
@@ -159,11 +177,22 @@ export class DatePicker extends LitElement {
   }
 
   override updated(changedProps: PropertyValues) {
+    if (
+      changedProps.has('invalidText') ||
+      changedProps.has('internalValidationMsg')
+    ) {
+      //check if any (internal / external )error msg. present then isInvalid is true
+      this.isInvalid =
+        this.invalidText !== '' || this.internalValidationMsg !== ''
+          ? true
+          : false;
+    }
     if (changedProps.has('value')) {
       this.inputEl.value = this.value;
       // set form data value
       this.internals.setFormValue(this.value);
       this.internals.setValidity({});
+      this.internalValidationMsg = '';
       this.invalidText = '';
 
       // set validity
@@ -172,7 +201,7 @@ export class DatePicker extends LitElement {
           { valueMissing: true },
           'This field is required.'
         );
-        this.invalidText = this.internals.validationMessage;
+        this.internalValidationMsg = this.internals.validationMessage;
         return;
       }
       // validate min
@@ -197,14 +226,14 @@ export class DatePicker extends LitElement {
           { rangeUnderflow: true },
           'Please enter date as min date or later.'
         );
-        this.invalidText = this.internals.validationMessage;
+        this.internalValidationMsg = this.internals.validationMessage;
       }
     } else {
       this.internals.setValidity(
         { patternMismatch: true },
         'Please enter valid min date.'
       );
-      this.invalidText = this.internals.validationMessage;
+      this.internalValidationMsg = this.internals.validationMessage;
     }
   }
 
@@ -219,14 +248,14 @@ export class DatePicker extends LitElement {
           { rangeOverflow: true },
           'Please enter date as max date or earlier.'
         );
-        this.invalidText = this.internals.validationMessage;
+        this.internalValidationMsg = this.internals.validationMessage;
       }
     } else {
       this.internals.setValidity(
         { patternMismatch: true },
         'Please enter valid max date.'
       );
-      this.invalidText = this.internals.validationMessage;
+      this.internalValidationMsg = this.internals.validationMessage;
     }
   }
 }

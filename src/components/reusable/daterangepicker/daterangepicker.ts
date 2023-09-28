@@ -88,6 +88,20 @@ export class DateRangePicker extends LitElement {
   @property({ type: String })
   step = '';
 
+  /**
+   * Internal validation message.
+   * @ignore
+   */
+  @state()
+  internalValidationMsg = '';
+
+  /**
+   * isInvalid when internalValidationMsg or invalidText is non-empty.
+   * @ignore
+   */
+  @state()
+  isInvalid = false;
+
   override render() {
     return html`
       <label
@@ -111,7 +125,7 @@ export class DateRangePicker extends LitElement {
           value=${this.startDate}
           ?required=${this.required}
           ?disabled=${this.disabled}
-          ?invalid=${this.invalidText !== ''}
+          ?invalid=${this.isInvalid}
           min=${ifDefined(this.minDate)}
           max=${ifDefined(this.endDate ?? this.maxDate ?? '')}
           step=${ifDefined(this.step)}
@@ -131,7 +145,7 @@ export class DateRangePicker extends LitElement {
           name="${this.name}-end"
           value=${this.endDate}
           ?disabled=${this.disabled}
-          ?invalid=${this.invalidText !== ''}
+          ?invalid=${this.isInvalid}
           min=${ifDefined(this.startDate ?? this.minDate ?? '')}
           max=${ifDefined(this.maxDate)}
           step=${ifDefined(this.step)}
@@ -142,28 +156,42 @@ export class DateRangePicker extends LitElement {
       ${this.caption !== ''
         ? html` <div class="caption">${this.caption}</div> `
         : null}
-      ${this.invalidText !== ''
-        ? html` <div class="error">${this.invalidText}</div> `
+      ${this.isInvalid
+        ? html`
+            <div class="error">
+              ${this.invalidText || this.internalValidationMsg}
+            </div>
+          `
         : null}
-      ${this.warnText !== '' && this.invalidText === ''
+      ${this.warnText !== '' && !this.isInvalid
         ? html`<div class="warn">${this.warnText}</div>`
         : null}
     `;
   }
 
   override updated(changedProps: PropertyValues) {
+    if (
+      changedProps.has('invalidText') ||
+      changedProps.has('internalValidationMsg')
+    ) {
+      this.isInvalid =
+        this.invalidText !== '' || this.internalValidationMsg !== ''
+          ? true
+          : false;
+    }
     if (changedProps.has('startDate')) {
       // set form data value
       this.internals.setFormValue(`${this.name}-start`, this.startDate);
       this.internals.setValidity({});
       this.invalidText = '';
+      this.internalValidationMsg = '';
       // set validity
       if (this.required && (!this.startDate || this.startDate === '')) {
         this.internals.setValidity(
           { valueMissing: true },
           'Both dates are required.'
         );
-        this.invalidText = this.internals.validationMessage;
+        this.internalValidationMsg = this.internals.validationMessage;
         return;
       }
       // validate min
@@ -183,13 +211,14 @@ export class DateRangePicker extends LitElement {
       this.internals.setFormValue(`${this.name}-end`, this.endDate);
       this.internals.setValidity({});
       this.invalidText = '';
+      this.internalValidationMsg = '';
       // set validity
       if (this.required && (!this.endDate || this.endDate === '')) {
         this.internals.setValidity(
           { valueMissing: true },
           'Both dates are required.'
         );
-        this.invalidText = this.internals.validationMessage;
+        this.internalValidationMsg = this.internals.validationMessage;
         return;
       }
       // validate min
@@ -241,14 +270,14 @@ export class DateRangePicker extends LitElement {
           { rangeUnderflow: true },
           'Please enter date as min date or later.'
         );
-        this.invalidText = this.internals.validationMessage;
+        this.internalValidationMsg = this.internals.validationMessage;
       }
     } else {
       this.internals.setValidity(
         { patternMismatch: true },
         'Please enter valid min date.'
       );
-      this.invalidText = this.internals.validationMessage;
+      this.internalValidationMsg = this.internals.validationMessage;
     }
   }
   // validate maxDate with start & end date
@@ -259,14 +288,14 @@ export class DateRangePicker extends LitElement {
           { rangeOverflow: true },
           'Please enter date as max date or earlier.'
         );
-        this.invalidText = this.internals.validationMessage;
+        this.internalValidationMsg = this.internals.validationMessage;
       }
     } else {
       this.internals.setValidity(
         { patternMismatch: true },
         'Please enter valid max date.'
       );
-      this.invalidText = this.internals.validationMessage;
+      this.internalValidationMsg = this.internals.validationMessage;
     }
   }
 
@@ -276,7 +305,7 @@ export class DateRangePicker extends LitElement {
         { patternMismatch: true },
         'State date must be before end date.'
       );
-      this.invalidText = this.internals.validationMessage;
+      this.internalValidationMsg = this.internals.validationMessage;
     }
   }
 }

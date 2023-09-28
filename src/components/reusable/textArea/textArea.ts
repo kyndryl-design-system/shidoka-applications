@@ -66,6 +66,20 @@ export class TextArea extends LitElement {
   @property({ type: Number })
   minLength = null;
 
+  /**
+   * Internal validation message.
+   * @ignore
+   */
+  @state()
+  internalValidationMsg = '';
+
+  /**
+   * isInvalid when internalValidationMsg or invalidText is non-empty.
+   * @ignore
+   */
+  @state()
+  isInvalid = false;
+
   override render() {
     return html`
       <div class="text-area" ?disabled=${this.disabled}>
@@ -81,7 +95,7 @@ export class TextArea extends LitElement {
             placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
-            ?invalid=${this.invalidText !== ''}
+            ?invalid=${this.isInvalid}
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             @input=${(e: any) => this.handleInput(e)}
@@ -89,7 +103,7 @@ export class TextArea extends LitElement {
 ${this.value}</textarea
           >
 
-          ${this.invalidText !== ''
+          ${this.isInvalid
             ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
             : null}
           ${this.maxLength
@@ -102,8 +116,12 @@ ${this.value}</textarea
         ${this.caption !== ''
           ? html` <div class="caption">${this.caption}</div> `
           : null}
-        ${this.invalidText !== ''
-          ? html` <div class="error">${this.invalidText}</div> `
+        ${this.isInvalid
+          ? html`
+              <div class="error">
+                ${this.invalidText || this.internalValidationMsg}
+              </div>
+            `
           : null}
       </div>
     `;
@@ -123,6 +141,16 @@ ${this.value}</textarea
   }
 
   override updated(changedProps: any) {
+    if (
+      changedProps.has('invalidText') ||
+      changedProps.has('internalValidationMsg')
+    ) {
+      //check if any (internal / external )error msg. present then isInvalid is true
+      this.isInvalid =
+        this.invalidText !== '' || this.internalValidationMsg !== ''
+          ? true
+          : false;
+    }
     if (changedProps.has('value')) {
       // set form data value
       this.internals.setFormValue(this.value);
@@ -134,18 +162,19 @@ ${this.value}</textarea
           { valueMissing: true },
           'This field is required.'
         );
-        this.invalidText = this.internals.validationMessage;
+        this.internalValidationMsg = this.internals.validationMessage;
       } else if (this.minLength && this.value.length < this.minLength) {
         // validate min
         this.internals.setValidity({ tooShort: true }, 'Too few characters.');
-        this.invalidText = this.internals.validationMessage;
+        this.internalValidationMsg = this.internals.validationMessage;
       } else if (this.maxLength && this.value.length > this.maxLength) {
         // validate max
         this.internals.setValidity({ tooLong: true }, 'Too many characters.');
-        this.invalidText = this.internals.validationMessage;
+        this.internalValidationMsg = this.internals.validationMessage;
       } else {
         // clear validation
         this.internals.setValidity({});
+        this.internalValidationMsg = '';
         this.invalidText = '';
       }
     }

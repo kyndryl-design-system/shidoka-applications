@@ -99,6 +99,20 @@ export class TimePicker extends LitElement {
    */
   regexPatternWithoutSec = /^\d{2}:\d{2}$/; // hh:mm
 
+  /**
+   * Internal validation message.
+   * @ignore
+   */
+  @state()
+  internalValidationMsg = '';
+
+  /**
+   * isInvalid when internalValidationMsg or invalidText is non-empty.
+   * @ignore
+   */
+  @state()
+  isInvalid = false;
+
   override render() {
     return html`
       <div class="time-picker" ?disabled=${this.disabled}>
@@ -124,7 +138,7 @@ export class TimePicker extends LitElement {
             step=${ifDefined(this.step)}
             ?required=${this.required}
             ?disabled=${this.disabled}
-            ?invalid=${this.invalidText !== ''}
+            ?invalid=${this.isInvalid}
             min=${ifDefined(this.minTime)}
             max=${ifDefined(this.maxTime)}
             @input=${(e: any) => this.handleInput(e)}
@@ -134,10 +148,14 @@ export class TimePicker extends LitElement {
         ${this.caption !== ''
           ? html` <div class="caption">${this.caption}</div> `
           : null}
-        ${this.invalidText !== ''
-          ? html` <div class="error">${this.invalidText}</div> `
+        ${this.isInvalid
+          ? html`
+              <div class="error">
+                ${this.invalidText || this.internalValidationMsg}
+              </div>
+            `
           : null}
-        ${this.warnText !== '' && this.invalidText === ''
+        ${this.warnText !== '' && !this.isInvalid
           ? html`<div class="warn">${this.warnText}</div>`
           : null}
       </div>
@@ -157,12 +175,23 @@ export class TimePicker extends LitElement {
   }
 
   override updated(changedProps: any) {
+    if (
+      changedProps.has('invalidText') ||
+      changedProps.has('internalValidationMsg')
+    ) {
+      //check if any (internal / external )error msg. present then isInvalid is true
+      this.isInvalid =
+        this.invalidText !== '' || this.internalValidationMsg !== ''
+          ? true
+          : false;
+    }
     if (changedProps.has('value')) {
       this.inputEl.value = this.value;
       //set form data value
       this.internals.setFormValue(this.value);
       this.internals.setValidity({});
       this.invalidText = '';
+      this.internalValidationMsg = '';
 
       // set validity
       if (this.required && (!this.value || this.value === '')) {
@@ -171,7 +200,7 @@ export class TimePicker extends LitElement {
           { valueMissing: true },
           'This field is required.'
         );
-        this.invalidText = this.internals.validationMessage;
+        this.internalValidationMsg = this.internals.validationMessage;
         return;
       }
       // validate min
@@ -197,14 +226,14 @@ export class TimePicker extends LitElement {
           { rangeUnderflow: true },
           'Please enter valid time within the min range.'
         );
-        this.invalidText = this.internals.validationMessage;
+        this.internalValidationMsg = this.internals.validationMessage;
       }
     } else {
       this.internals.setValidity(
         { patternMismatch: true },
         'Please enter valid min time.'
       );
-      this.invalidText = this.internals.validationMessage;
+      this.internalValidationMsg = this.internals.validationMessage;
     }
   }
 
@@ -220,14 +249,14 @@ export class TimePicker extends LitElement {
           { rangeOverflow: true },
           'Please enter valid time within the max range.'
         );
-        this.invalidText = this.internals.validationMessage;
+        this.internalValidationMsg = this.internals.validationMessage;
       }
     } else {
       this.internals.setValidity(
         { patternMismatch: true },
         'Please enter valid max time.'
       );
-      this.invalidText = this.internals.validationMessage;
+      this.internalValidationMsg = this.internals.validationMessage;
     }
   }
 

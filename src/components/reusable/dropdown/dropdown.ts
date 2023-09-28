@@ -151,6 +151,20 @@ export class Dropdown extends LitElement {
   @query('.options')
   listboxEl!: HTMLElement;
 
+  /**
+   * Internal validation message.
+   * @ignore
+   */
+  @state()
+  internalValidationMsg = '';
+
+  /**
+   * isInvalid when internalValidationMsg or invalidText is non-empty.
+   * @ignore
+   */
+  @state()
+  isInvalid = false;
+
   override render() {
     return html`
       <div
@@ -183,7 +197,7 @@ export class Dropdown extends LitElement {
               aria-labelledby="label-${this.name}"
               ?required=${this.required}
               ?disabled=${this.disabled}
-              ?invalid=${this.invalidText !== ''}
+              ?invalid=${this.isInvalid}
               tabindex=${this.searchable ? '-1' : '0'}
               @click=${() => this.handleClick()}
               @keydown=${(e: any) => this.handleButtonKeydown(e)}
@@ -257,7 +271,7 @@ export class Dropdown extends LitElement {
                 </button>
               `
             : null}
-          ${this.invalidText !== ''
+          ${this.isInvalid
             ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
             : null}
         </div>
@@ -288,8 +302,12 @@ export class Dropdown extends LitElement {
         ${this.caption !== ''
           ? html` <div class="caption">${this.caption}</div> `
           : null}
-        ${this.invalidText !== ''
-          ? html` <div class="error">${this.invalidText}</div> `
+        ${this.isInvalid
+          ? html`
+              <div class="error">
+                ${this.invalidText || this.internalValidationMsg}
+              </div>
+            `
           : null}
 
         <div
@@ -666,6 +684,16 @@ export class Dropdown extends LitElement {
   }
 
   override updated(changedProps: any) {
+    if (
+      changedProps.has('invalidText') ||
+      changedProps.has('internalValidationMsg')
+    ) {
+      //check if any (internal / external )error msg. present then isInvalid is true
+      this.isInvalid =
+        this.invalidText !== '' || this.internalValidationMsg !== ''
+          ? true
+          : false;
+    }
     if (changedProps.has('value')) {
       // close listbox
       if (!this.multiple) {
@@ -719,9 +747,10 @@ export class Dropdown extends LitElement {
             { valueMissing: true },
             'This field is required.'
           );
-          this.invalidText = this.internals.validationMessage;
+          this.internalValidationMsg = this.internals.validationMessage;
         } else {
           this.internals.setValidity({});
+          this.internalValidationMsg = '';
           this.invalidText = '';
         }
       }
