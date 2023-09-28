@@ -60,6 +60,20 @@ export class CheckboxGroup extends LitElement {
   @state()
   internals = this.attachInternals();
 
+  /**
+   * Internal validation message.
+   * @ignore
+   */
+  @state()
+  internalValidationMsg = '';
+
+  /**
+   * isInvalid when internalValidationMsg or invalidText is non-empty.
+   * @ignore
+   */
+  @state()
+  isInvalid = false;
+
   override render() {
     return html`
       <fieldset ?disabled=${this.disabled}>
@@ -70,11 +84,11 @@ export class CheckboxGroup extends LitElement {
 
         <slot></slot>
 
-        ${this.invalidText !== ''
+        ${this.isInvalid
           ? html`
               <div class="error">
                 <kd-icon .icon="${errorIcon}"></kd-icon>
-                ${this.invalidText}
+                ${this.invalidText || this.internalValidationMsg}
               </div>
             `
           : null}
@@ -83,6 +97,11 @@ export class CheckboxGroup extends LitElement {
   }
 
   override updated(changedProps: any) {
+    //check if any (internal / external )error msg. present then isInvalid is true
+    this.isInvalid =
+      this.invalidText !== '' || this.internalValidationMsg !== ''
+        ? true
+        : false;
     if (changedProps.has('name')) {
       // set name for each checkbox
       this.checkboxes.forEach((checkbox: any) => {
@@ -110,9 +129,10 @@ export class CheckboxGroup extends LitElement {
             { valueMissing: true },
             'A selection is required.'
           );
-          this.invalidText = this.internals.validationMessage;
+          this.internalValidationMsg = this.internals.validationMessage;
         } else {
           this.internals.setValidity({});
+          this.internalValidationMsg = '';
           this.invalidText = '';
         }
       }
@@ -131,11 +151,13 @@ export class CheckboxGroup extends LitElement {
         checkbox.disabled = this.disabled;
       });
     }
-
-    if (changedProps.has('invalidText')) {
+    if (
+      changedProps.has('invalidText') ||
+      changedProps.has('internalValidationMsg')
+    ) {
       // set invalid state for each checkbox
       this.checkboxes.forEach((checkbox: any) => {
-        checkbox.invalid = this.invalidText !== '';
+        checkbox.invalid = this.isInvalid;
       });
     }
   }
