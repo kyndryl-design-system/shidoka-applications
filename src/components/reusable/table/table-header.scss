@@ -1,0 +1,81 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: table-cell;
+  vertical-align: middle;
+  @include typography.type-body-02;
+  color: var(--kd-color-text-primary);
+  font-weight: var(--kd-font-weight-bold);
+  padding: var(--kd-spacing-12) var(--kd-spacing-16);
+  background: var(--kd-color-background-ui-soft);
+  border-bottom: 1px solid var(--kd-color-border-secondary);
+  border-right: 1px solid var(--kd-color-border-inverse);
+  border-left: 1px solid var(--kd-color-border-inverse);
+  text-transform: uppercase;
+
+  .container {
+    display: flex;
+    align-items: center;
+
+    .slot-wrapper {
+      padding: var(--kd-spacing-4);
+      margin-right: var(--kd-spacing-8);
+    }
+
+    &:hover {
+      .sort-icon {
+        transition: background-color 0.3s;
+        color: var(--kd-color-text-tertiary);
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.sort-icon {
+  color: transparent;
+  transition: transform 0.3s ease;
+
+  &--sorting {
+    color: var(--kd-color-text-primary);
+  }
+
+  &--sorting-asc {
+    transform: rotate(0deg);
+  }
+
+  &--sorting-desc {
+    transform: rotate(180deg);
+  }
+}
+
+:host([sortable]:hover) {
+  transition: background-color 0.3s;
+  color: var(--kd-color-text-tertiary);
+  cursor: pointer;
+  .sort-icon {
+    color: var(--kd-color-text-tertiary);
+  }
+}
+
+:host([align='left']) {
+  text-align: left;
+  .container {
+    justify-content: flex-start;
+  }
+}
+
+:host([align='center']) {
+  text-align: center;
+  .container {
+    justify-content: center;
+  }
+}
+
+:host([align='right']) {
+  text-align: right;
+  .container {
+    justify-content: flex-end;
+  }
+}
