@@ -60,19 +60,19 @@ export class RadioButtonGroup extends LitElement {
   @state()
   internals = this.attachInternals();
 
-    /**
+  /**
    * Internal validation message.
    * @ignore
    */
-    @state()
-    internalValidationMsg = '';
-  
-    /**
-     * isInvalid when internalValidationMsg or invalidText is non-empty.
-     * @ignore
-     */
-    @state()
-    isInvalid = false;
+  @state()
+  internalValidationMsg = '';
+
+  /**
+   * isInvalid when internalValidationMsg or invalidText is non-empty.
+   * @ignore
+   */
+  @state()
+  isInvalid = false;
 
   override render() {
     return html`
@@ -97,11 +97,11 @@ export class RadioButtonGroup extends LitElement {
   }
 
   override updated(changedProps: any) {
-     //check if any (internal / external )error msg. present then isInvalid is true
-     this.isInvalid =
-     this.invalidText !== '' || this.internalValidationMsg !== ''
-       ? true
-       : false;
+    //check if any (internal / external )error msg. present then isInvalid is true
+    this.isInvalid =
+      this.invalidText !== '' || this.internalValidationMsg !== ''
+        ? true
+        : false;
     if (changedProps.has('name')) {
       // set name for each radio button
       this.radioButtons.forEach((radio: any) => {
@@ -148,7 +148,10 @@ export class RadioButtonGroup extends LitElement {
       });
     }
 
-    if (changedProps.has('invalidText') || changedProps.has('internalValidationMsg')) {
+    if (
+      changedProps.has('invalidText') ||
+      changedProps.has('internalValidationMsg')
+    ) {
       // set invalid state for each radio button
       this.radioButtons.forEach((radio: any) => {
         radio.invalid = this.isInvalid;
