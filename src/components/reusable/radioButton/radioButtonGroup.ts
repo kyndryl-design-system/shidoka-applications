@@ -60,6 +60,20 @@ export class RadioButtonGroup extends LitElement {
   @state()
   internals = this.attachInternals();
 
+    /**
+   * Internal validation message.
+   * @ignore
+   */
+    @state()
+    internalValidationMsg = '';
+  
+    /**
+     * isInvalid when internalValidationMsg or invalidText is non-empty.
+     * @ignore
+     */
+    @state()
+    isInvalid = false;
+
   override render() {
     return html`
       <fieldset ?disabled=${this.disabled}>
@@ -70,11 +84,11 @@ export class RadioButtonGroup extends LitElement {
 
         <slot></slot>
 
-        ${this.invalidText !== ''
+        ${this.isInvalid
           ? html`
               <div class="error">
                 <kd-icon .icon="${errorIcon}"></kd-icon>
-                ${this.invalidText}
+                ${this.invalidText || this.internalValidationMsg}
               </div>
             `
           : null}
@@ -83,6 +97,11 @@ export class RadioButtonGroup extends LitElement {
   }
 
   override updated(changedProps: any) {
+     //check if any (internal / external )error msg. present then isInvalid is true
+     this.isInvalid =
+     this.invalidText !== '' || this.internalValidationMsg !== ''
+       ? true
+       : false;
     if (changedProps.has('name')) {
       // set name for each radio button
       this.radioButtons.forEach((radio: any) => {
@@ -106,9 +125,10 @@ export class RadioButtonGroup extends LitElement {
             { valueMissing: true },
             'This field is required.'
           );
-          this.invalidText = this.internals.validationMessage;
+          this.internalValidationMsg = this.internals.validationMessage;
         } else {
           this.internals.setValidity({});
+          this.internalValidationMsg = '';
           this.invalidText = '';
         }
       }
@@ -128,10 +148,10 @@ export class RadioButtonGroup extends LitElement {
       });
     }
 
-    if (changedProps.has('invalidText')) {
+    if (changedProps.has('invalidText') || changedProps.has('internalValidationMsg')) {
       // set invalid state for each radio button
       this.radioButtons.forEach((radio: any) => {
-        radio.invalid = this.invalidText !== '';
+        radio.invalid = this.isInvalid;
       });
     }
   }
