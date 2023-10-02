@@ -16,6 +16,7 @@ const meta: Meta = {
   title: 'Components/Table',
   component: 'kyn-table',
   argTypes: {
+    striped: { control: 'boolean' },
     count: { control: 'number' },
     pageSize: { control: 'select', options: [5, 10, 20, 30, 40, 50, 100] },
     pageNumber: { control: 'number' },
@@ -72,12 +73,7 @@ const extractData = (pageNumber: number, pageSize: number) => {
  * @param {boolean} [striped=false] - Determines if the table has striped rows
  * @returns {import("lit").TemplateResult} Rendered table
  */
-const tableRenderer = (
-  args: any,
-  updateArgs: any,
-  title: string,
-  striped = false
-) => {
+const tableRenderer = (args: any, updateArgs: any, title: string) => {
   const pageSizeChangeHandler = (e: CustomEvent) => {
     updateArgs({ pageSize: +e.detail.value });
     updateArgs({ pageNumber: 1 });
@@ -122,7 +118,7 @@ const tableRenderer = (
             <kyn-th .align=${'center'}>ACTION</kyn-th>
           </kyn-tr>
         </kyn-thead>
-        <kyn-tbody .striped=${striped}>
+        <kyn-tbody .striped=${args.striped}>
           ${currentData.map(
             (data) => html`<kyn-tr>
               <kyn-td>${data}</kyn-td>
@@ -168,19 +164,6 @@ export const BasicTable: Story = {
   },
   render: (args) => {
     const [, updateArgs] = useArgs();
-    return tableRenderer(args, updateArgs, 'Table title');
-  },
-};
-
-export const StripedTable: Story = {
-  args: {
-    count: allData.length,
-    pageSize: 10,
-    pageNumber: 1,
-    pageSizeOptions: [5, 10, 20, 30, 40, 50, 100],
-  },
-  render: (args) => {
-    const [, updateArgs] = useArgs();
-    return tableRenderer(args, updateArgs, 'Striped Table title', true);
+    return tableRenderer(args, updateArgs, 'Table title', args.striped);
   },
 };

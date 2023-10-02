@@ -1198,54 +1198,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": []
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/sideNav/index.ts",
       "declarations": [],
       "exports": [
@@ -1479,6 +1431,54 @@
           "declaration": {
             "name": "SideNavLink",
             "module": "src/components/global/sideNav/sideNavLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -4209,7 +4209,7 @@
           "type": {
             "text": "Meta"
           },
-          "default": "{\n  title: 'Components/Table',\n  component: 'kyn-table',\n  argTypes: {\n    count: { control: 'number' },\n    pageSize: { control: 'select', options: [5, 10, 20, 30, 40, 50, 100] },\n    pageNumber: { control: 'number' },\n    pageSizeOptions: { control: 'array' },\n  },\n  subcomponents: {\n    'kyn-th': 'kyn-th',\n    'kyn-tr': 'kyn-tr',\n    'kyn-td': 'kyn-td',\n    'kyn-thead': 'kyn-thead',\n    'kyn-tbody': 'kyn-tbody',\n    'kyn-pagination': 'kyn-pagination',\n    'kyn-table-container': 'kyn-table-container',\n  },\n  parameters: {\n    design: {\n      type: 'figma',\n      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Applications-with-Specs?node-id=828%3A4607&mode=dev',\n    },\n  },\n}"
+          "default": "{\n  title: 'Components/Table',\n  component: 'kyn-table',\n  argTypes: {\n    striped: { control: 'boolean' },\n    count: { control: 'number' },\n    pageSize: { control: 'select', options: [5, 10, 20, 30, 40, 50, 100] },\n    pageNumber: { control: 'number' },\n    pageSizeOptions: { control: 'array' },\n  },\n  subcomponents: {\n    'kyn-th': 'kyn-th',\n    'kyn-tr': 'kyn-tr',\n    'kyn-td': 'kyn-td',\n    'kyn-thead': 'kyn-thead',\n    'kyn-tbody': 'kyn-tbody',\n    'kyn-pagination': 'kyn-pagination',\n    'kyn-table-container': 'kyn-table-container',\n  },\n  parameters: {\n    design: {\n      type: 'figma',\n      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Applications-with-Specs?node-id=828%3A4607&mode=dev',\n    },\n  },\n}"
         },
         {
           "kind": "variable",
@@ -4217,15 +4217,7 @@
           "type": {
             "text": "Story"
           },
-          "default": "{\n  args: {\n    count: allData.length,\n    pageSize: 10,\n    pageNumber: 1,\n    pageSizeOptions: [5, 10, 20, 30, 40, 50, 100],\n  },\n  render: (args) => {\n    const [, updateArgs] = useArgs();\n    return tableRenderer(args, updateArgs, 'Table title');\n  },\n}"
-        },
-        {
-          "kind": "variable",
-          "name": "StripedTable",
-          "type": {
-            "text": "Story"
-          },
-          "default": "{\n  args: {\n    count: allData.length,\n    pageSize: 10,\n    pageNumber: 1,\n    pageSizeOptions: [5, 10, 20, 30, 40, 50, 100],\n  },\n  render: (args) => {\n    const [, updateArgs] = useArgs();\n    return tableRenderer(args, updateArgs, 'Striped Table title', true);\n  },\n}"
+          "default": "{\n  args: {\n    count: allData.length,\n    pageSize: 10,\n    pageNumber: 1,\n    pageSizeOptions: [5, 10, 20, 30, 40, 50, 100],\n  },\n  render: (args) => {\n    const [, updateArgs] = useArgs();\n    return tableRenderer(args, updateArgs, 'Table title', args.striped);\n  },\n}"
         }
       ],
       "exports": [
@@ -4242,14 +4234,6 @@
           "name": "BasicTable",
           "declaration": {
             "name": "BasicTable",
-            "module": "src/components/reusable/table/Table.stories.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "StripedTable",
-          "declaration": {
-            "name": "StripedTable",
             "module": "src/components/reusable/table/Table.stories.ts"
           }
         }
