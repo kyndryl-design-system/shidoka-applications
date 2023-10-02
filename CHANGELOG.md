@@ -1,3 +1,10 @@
+# [1.0.0-beta.60](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.59...v1.0.0-beta.60) (2023-10-02)
+
+
+### Features
+
+* **table:** create new table web component with pagination ([#15](https://github.com/kyndryl-design-system/shidoka-applications/issues/15)) ([59ffa1f](https://github.com/kyndryl-design-system/shidoka-applications/commit/59ffa1f6cdb98c82045ce632678ea9dc2cfd4d50))
+
 # [1.0.0-beta.59](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.58...v1.0.0-beta.59) (2023-10-02)
 
 
