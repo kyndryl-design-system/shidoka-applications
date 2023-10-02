@@ -1,0 +1,26 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: table-cell;
+  vertical-align: middle;
+  @include typography.type-body-02;
+  padding: var(--kd-spacing-16);
+  color: var(--kd-color-text-primary);
+  border-bottom: 1px solid var(--kd-color-border-light);
+}
+
+:host([align='left']) .slot-wrapper {
+  display: flex;
+  justify-content: flex-start;
+}
+
+:host([align='center']) .slot-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+:host([align='right']) .slot-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}

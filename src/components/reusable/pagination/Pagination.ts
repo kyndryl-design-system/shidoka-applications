@@ -1,0 +1,94 @@
+import { html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+
+import { PAGE_SIZE_LABEL } from './constants';
+import styles from './pagination.scss';
+
+import './pagination-items-range';
+import './pagination-page-size-dropdown';
+import './pagination-navigation-buttons';
+
+/**
+ * `kyn-pagination` Web Component.
+ *
+ * A component that provides pagination functionality, enabling the user to
+ * navigate through large datasets by splitting them into discrete chunks.
+ * Integrates with other utility components like items range display, page size dropdown,
+ * and navigation buttons.
+ *
+ */
+@customElement('kyn-pagination')
+export class Pagination extends LitElement {
+  static override styles = [styles];
+
+  /** Total number of items that need pagination. */
+  @property({ type: Number })
+  count = 0;
+
+  /** Current active page number.*/
+  @property({ type: Number, reflect: true })
+  pageNumber = 1;
+
+  /** Number of items displayed per page.*/
+  @property({ type: Number })
+  pageSize = 5;
+
+  /** Available options for the page size.*/
+  @property({ type: Array<Number> })
+  pageSizeOptions: number[] = [5, 10, 20, 30, 40, 50, 100];
+
+  /** Label for the page size dropdown.*/
+  @property({ type: String })
+  pageSizeLabel = PAGE_SIZE_LABEL;
+
+  /**
+   * Handler for the event when the page size is changed by the user.
+   * Updates the `pageSize` and resets the `pageNumber` to 1.
+   *
+   * @param e - The emitted custom event with the selected page size.
+   */
+  private handlePageSizeChange(e: CustomEvent) {
+    this.pageSize = e.detail.value;
+    this.pageNumber = 1;
+  }
+
+  /**
+   * Handler for the event when the page number is changed by the user.
+   * Updates the `pageNumber`.
+   *
+   * @param e - The emitted custom event with the selected page number.
+   */
+  private handlePageNumberChange(e: CustomEvent) {
+    this.pageNumber = e.detail.value;
+  }
+
+  override render() {
+    const numberOfPages = Math.ceil(this.count / this.pageSize);
+
+    return html`
+      <kyn-pagination-items-range
+        .pageNumber=${this.pageNumber}
+        .pageSize=${this.pageSize}
+        .count=${this.count}
+      ></kyn-pagination-items-range>
+      <kyn-pagination-page-size-dropdown
+        .pageSize=${this.pageSize}
+        .pageSizeOptions=${this.pageSizeOptions}
+        .pageSizeLabel=${this.pageSizeLabel}
+        @on-page-size-change=${this.handlePageSizeChange}
+      ></kyn-pagination-page-size-dropdown>
+      <kyn-pagination-navigation-buttons
+        .pageNumber=${this.pageNumber}
+        .numberOfPages=${numberOfPages}
+        @on-page-number-change=${this.handlePageNumberChange}
+      ></kyn-pagination-navigation-buttons>
+    `;
+  }
+}
+
+// Define the custom element in the global namespace
+declare global {
+  interface HTMLElementTagNameMap {
+    'kyn-pagination': Pagination;
+  }
+}
