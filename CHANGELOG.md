@@ -1,3 +1,10 @@
+# [1.0.0-beta.59](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.58...v1.0.0-beta.59) (2023-10-02)
+
+
+### Bug Fixes
+
+* **dropdown:** remove height when closed ([7e75092](https://github.com/kyndryl-design-system/shidoka-applications/commit/7e750928e9793baeecb1453c0ce5aede2bca8cff))
+
 # [1.0.0-beta.58](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.57...v1.0.0-beta.58) (2023-09-28)
 
 
