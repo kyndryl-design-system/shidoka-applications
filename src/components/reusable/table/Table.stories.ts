@@ -164,6 +164,6 @@ export const BasicTable: Story = {
   },
   render: (args) => {
     const [, updateArgs] = useArgs();
-    return tableRenderer(args, updateArgs, 'Table title', args.striped);
+    return tableRenderer(args, updateArgs, 'Table title');
   },
 };
