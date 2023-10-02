@@ -114,7 +114,7 @@ const tableRenderer = (args: any, updateArgs: any, title: string) => {
             <kyn-th>Col 4</kyn-th>
             <kyn-th>Col 6</kyn-th>
             <kyn-th>Col 7</kyn-th>
-            <kyn-th .align=${'center'}></kyn-th>
+            <kyn-th .align=${'center'} visiblyHidden>Info Icon</kyn-th>
             <kyn-th .align=${'center'}>ACTION</kyn-th>
           </kyn-tr>
         </kyn-thead>

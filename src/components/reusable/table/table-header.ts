@@ -40,9 +40,15 @@ export class TableHeader extends LitElement {
   @property({ type: String })
   sortDirection: SORT_DIRECTION = SORT_DIRECTION.DEFAULT;
 
-  /** Specifies if the header slot is empty. */
+  /**
+   * Determines whether the content should be hidden from visual view but remain accessible
+   * to screen readers for accessibility purposes. When set to `true`, the content
+   * will not be visibly shown, but its content can still be read by screen readers.
+   * This is especially useful for providing additional context or information to
+   * assistive technologies without cluttering the visual UI.
+   */
   @property({ type: Boolean })
-  noHeader = false;
+  visiblyHidden = false;
 
   /**
    * Toggles the sort direction between ascending, descending, and default states.
@@ -67,36 +73,6 @@ export class TableHeader extends LitElement {
     );
   }
 
-  /**
-   * Invoked after the component is updated. This lifecycle method is
-   * from LitElement's API. In this override, we check if the header's
-   * slot is empty after each update.
-   */
-  override updated() {
-    this.checkIfHeaderSlotIsEmpty();
-  }
-
-  /**
-   * Checks if the content slot for the table header is empty. If it is,
-   * the `noHeader` property is set to `true`. This check is essential to
-   * ensure proper rendering and accessibility.
-   */
-  checkIfHeaderSlotIsEmpty() {
-    // Retrieve the slot from the shadow DOM.
-    const slot = this.shadowRoot!.querySelector('slot');
-
-    // Get all nodes assigned to the slot.
-    const nodes = slot!.assignedNodes({ flatten: true });
-
-    // Filter out nodes that are just whitespace.
-    const nonWhitespaceNodes = nodes.filter((node) => {
-      return node?.nodeType !== Node.TEXT_NODE || node?.textContent?.trim() !== '';
-    });
-
-    // If there are no meaningful nodes in the slot, set `noHeader` to true.
-    this.noHeader = nonWhitespaceNodes.length === 0;
-  }
-
   override render() {
     const iconClasses = {
       'sort-icon': true,
@@ -105,16 +81,18 @@ export class TableHeader extends LitElement {
       'sort-icon--sorting-desc': this.sortDirection === SORT_DIRECTION.DESC,
     };
 
+    const slotClasses = {
+      'slot-wrapper': true,
+      'sr-only': this.visiblyHidden,
+    };
+
     return html`
       <div
         class="container"
         @click=${this.sortable ? () => this.toggleSortDirection() : undefined}
       >
-        <div class="slot-wrapper">
+        <div class=${classMap(slotClasses)}>
           <slot></slot>
-          ${this.noHeader
-            ? html`<span class="sr-only">Empty Header</span>`
-            : null}
         </div>
         ${this.sortable
           ? html`<kd-icon
