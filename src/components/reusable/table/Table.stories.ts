@@ -22,14 +22,13 @@ const meta: Meta = {
     pageSizeOptions: { control: 'array' },
   },
   subcomponents: {
+    'kyn-th': 'kyn-th',
+    'kyn-tr': 'kyn-tr',
+    'kyn-td': 'kyn-td',
+    'kyn-thead': 'kyn-thead',
+    'kyn-tbody': 'kyn-tbody',
+    'kyn-pagination': 'kyn-pagination',
     'kyn-table-container': 'kyn-table-container',
-    'kyn-table-head': 'kyn-table-head',
-    'kyn-table-body': 'kyn-table-body',
-    'kyn-table-footer': 'kyn-table-footer',
-    'kyn-table-row': 'kyn-table-row',
-    'kyn-table-cell': 'kyn-table-cell',
-    'kyn-table-head-cell': 'kyn-table-head-cell',
-    'kyn-table-pagination': 'kyn-table-pagination',
   },
   parameters: {
     design: {
@@ -148,15 +147,15 @@ const tableRenderer = (
           )}
         </kyn-tbody>
       </kyn-table>
-      <kyn-pagination
-        .count=${args.count}
-        .pageSize=${args.pageSize}
-        .pageNumber=${args.pageNumber}
-        .pageSizeOptions=${args.pageSizeOptions}
-        @on-page-size-change=${pageSizeChangeHandler}
-        @on-page-number-change=${pageNumberChangeHandler}
-      ></kyn-pagination>
     </kyn-table-container>
+    <kyn-pagination
+      .count=${args.count}
+      .pageSize=${args.pageSize}
+      .pageNumber=${args.pageNumber}
+      .pageSizeOptions=${args.pageSizeOptions}
+      @on-page-size-change=${pageSizeChangeHandler}
+      @on-page-number-change=${pageNumberChangeHandler}
+    ></kyn-pagination>
   `;
 };
 

@@ -7,7 +7,7 @@ export enum TABLE_CELL_ALIGN {
 }
 
 export enum SORT_DIRECTION {
-  DEFFULT = '',
+  DEFAULT = '',
   ASC = 'asc',
   DESC = 'desc',
 }

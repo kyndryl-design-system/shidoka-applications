@@ -38,7 +38,11 @@ export class TableHeader extends LitElement {
 
   /** Specifies the direction of sorting applied to the column. */
   @property({ type: String })
-  sortDirection: SORT_DIRECTION = SORT_DIRECTION.DEFFULT;
+  sortDirection: SORT_DIRECTION = SORT_DIRECTION.DEFAULT;
+
+  /** Specifies if the header slot is empty. */
+  @property({ type: Boolean })
+  noHeader = false;
 
   /**
    * Toggles the sort direction between ascending, descending, and default states.
@@ -46,7 +50,7 @@ export class TableHeader extends LitElement {
    */
   private toggleSortDirection() {
     switch (this.sortDirection) {
-      case SORT_DIRECTION.DEFFULT:
+      case SORT_DIRECTION.DEFAULT:
       case SORT_DIRECTION.DESC:
         this.sortDirection = SORT_DIRECTION.ASC;
         break;
@@ -63,10 +67,40 @@ export class TableHeader extends LitElement {
     );
   }
 
+  /**
+   * Invoked after the component is updated. This lifecycle method is
+   * from LitElement's API. In this override, we check if the header's
+   * slot is empty after each update.
+   */
+  override updated() {
+    this.checkIfHeaderSlotIsEmpty();
+  }
+
+  /**
+   * Checks if the content slot for the table header is empty. If it is,
+   * the `noHeader` property is set to `true`. This check is essential to
+   * ensure proper rendering and accessibility.
+   */
+  checkIfHeaderSlotIsEmpty() {
+    // Retrieve the slot from the shadow DOM.
+    const slot = this.shadowRoot!.querySelector('slot');
+
+    // Get all nodes assigned to the slot.
+    const nodes = slot!.assignedNodes({ flatten: true });
+
+    // Filter out nodes that are just whitespace.
+    const nonWhitespaceNodes = nodes.filter((node) => {
+      return node?.nodeType !== Node.TEXT_NODE || node?.textContent?.trim() !== '';
+    });
+
+    // If there are no meaningful nodes in the slot, set `noHeader` to true.
+    this.noHeader = nonWhitespaceNodes.length === 0;
+  }
+
   override render() {
     const iconClasses = {
       'sort-icon': true,
-      'sort-icon--sorting': this.sortDirection !== SORT_DIRECTION.DEFFULT,
+      'sort-icon--sorting': this.sortDirection !== SORT_DIRECTION.DEFAULT,
       'sort-icon--sorting-asc': this.sortDirection === SORT_DIRECTION.ASC,
       'sort-icon--sorting-desc': this.sortDirection === SORT_DIRECTION.DESC,
     };
@@ -74,10 +108,13 @@ export class TableHeader extends LitElement {
     return html`
       <div
         class="container"
-        @click=${this.sortable ? this.toggleSortDirection : null}
+        @click=${this.sortable ? () => this.toggleSortDirection() : undefined}
       >
         <div class="slot-wrapper">
           <slot></slot>
+          ${this.noHeader
+            ? html`<span class="sr-only">Empty Header</span>`
+            : null}
         </div>
         ${this.sortable
           ? html`<kd-icon
