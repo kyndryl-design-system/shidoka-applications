@@ -1,3 +1,10 @@
+# [1.0.0-beta.61](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.60...v1.0.0-beta.61) (2023-10-02)
+
+
+### Bug Fixes
+
+* **table:** hidden header ([#17](https://github.com/kyndryl-design-system/shidoka-applications/issues/17)) ([8957ea9](https://github.com/kyndryl-design-system/shidoka-applications/commit/8957ea9682c6fcf518c80ea3a2148a7e270c613a))
+
 # [1.0.0-beta.60](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.59...v1.0.0-beta.60) (2023-10-02)
 
 
