@@ -1,3 +1,10 @@
+# [1.0.0-beta.62](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.61...v1.0.0-beta.62) (2023-10-06)
+
+
+### Bug Fixes
+
+* update foundation ([fbbc55a](https://github.com/kyndryl-design-system/shidoka-applications/commit/fbbc55a0cb0089f9fce522a63caa16dd0c7ee5fc))
+
 # [1.0.0-beta.61](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.60...v1.0.0-beta.61) (2023-10-02)
 
 
