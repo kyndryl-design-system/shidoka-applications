@@ -15,6 +15,23 @@ import styles from './table-head.scss';
 export class TableHead extends LitElement {
   static override styles = [styles];
 
+  override firstUpdated() {
+    this.addEventListener('on-sort-changed', this.handleChildSort as EventListener);
+  }
+
+  private handleChildSort(e: CustomEvent) {
+    const sortedColumnKey = e.detail.sortKey;
+
+    // Get all kyn-th elements
+    const allHeaders = Array.from(this.querySelectorAll('kyn-th'));
+
+    for (const header of allHeaders) {
+      if (header.sortKey !== sortedColumnKey) {
+        header.resetSort(); // Reset sort state of non-sorted columns
+      }
+    }
+  }
+
   override render() {
     return html` <slot></slot> `;
   }

@@ -37,8 +37,23 @@ export class TableHeader extends LitElement {
   sortable = false;
 
   /** Specifies the direction of sorting applied to the column. */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   sortDirection: SORT_DIRECTION = SORT_DIRECTION.DEFAULT;
+
+  /**
+   * The textual content associated with this component.
+   * Represents the primary content or label that will be displayed.
+   */
+  @property({ type: String })
+  headerLabel = '';
+
+  /**
+   * The unique identifier representing this column header.
+   * Used to distinguish between different sortable columns and
+   * to ensure that only one column is sorted at a time.
+   */
+  @property({ type: String })
+  sortKey = '';
 
   /**
    * Determines whether the content should be hidden from visual view but remain accessible
@@ -51,10 +66,23 @@ export class TableHeader extends LitElement {
   visiblyHidden = false;
 
   /**
+   * Resets the sorting direction of the component to its default state.
+   * Useful for initializing or clearing any applied sorting on the element.
+   */
+  resetSort() {
+    this.sortDirection = SORT_DIRECTION.DEFAULT;
+  }
+
+  /**
    * Toggles the sort direction between ascending, descending, and default states.
    * It also dispatches an event to notify parent components of the sorting change.
    */
   private toggleSortDirection() {
+    if (!this.sortKey) {
+      console.error('sortKey is missing for a sortable column.');
+      return;
+    }
+
     switch (this.sortDirection) {
       case SORT_DIRECTION.DEFAULT:
       case SORT_DIRECTION.DESC:
@@ -68,9 +96,32 @@ export class TableHeader extends LitElement {
     // Dispatch event to notify parent components of the sorting change
     this.dispatchEvent(
       new CustomEvent('on-sort-changed', {
-        detail: { sortDirection: this.sortDirection },
+        bubbles: true,
+        composed: true,
+        detail: { sortDirection: this.sortDirection, sortKey: this.sortKey },
       })
     );
+  }
+
+  override updated() {
+    this.checkIfHeaderSlotIsEmpty();
+  }
+
+  checkIfHeaderSlotIsEmpty() {
+    // Retrieve the slot from the shadow DOM.
+    const slot = this.shadowRoot!.querySelector('slot');
+
+    // Get all nodes assigned to the slot.
+    const nodes = slot!.assignedNodes({ flatten: true });
+
+    // Filter out nodes that are just whitespace.
+    const nonWhitespaceNodes = nodes.filter((node) => {
+      return (
+        node?.nodeType !== Node.TEXT_NODE || node?.textContent?.trim() !== ''
+      );
+    });
+
+    this.headerLabel = nonWhitespaceNodes[0]?.textContent || '';
   }
 
   override render() {
@@ -86,10 +137,28 @@ export class TableHeader extends LitElement {
       'sr-only': this.visiblyHidden,
     };
 
+    const role = this.sortable ? 'button' : undefined;
+    const arialSort = this.sortable ? this.sortDirection : undefined;
+    const ariaLabel =
+      this.sortable && this.headerLabel
+        ? `Sort by ${this.headerLabel}`
+        : undefined;
+
     return html`
       <div
         class="container"
         @click=${this.sortable ? () => this.toggleSortDirection() : undefined}
+        role=${role}
+        arial-label=${ariaLabel}
+        arial-sort=${arialSort}
+        tabindex=${this.sortable ? '0' : undefined}
+        @keydown=${this.sortable
+          ? (e: KeyboardEvent) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                this.toggleSortDirection();
+              }
+            }
+          : undefined}
       >
         <div class=${classMap(slotClasses)}>
           <slot></slot>
