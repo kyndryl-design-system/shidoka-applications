@@ -11,6 +11,7 @@ import { useArgs } from '@storybook/client-api';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import infoIcon from '@carbon/icons/es/information/16';
 import './index';
+import { SORT_DIRECTION } from './defs';
 
 const meta: Meta = {
   title: 'Components/Table',
@@ -51,13 +52,79 @@ type Story = StoryObj & {
   };
 };
 
+const getRandomName = () => {
+  const names = [
+    'Alice',
+    'Bob',
+    'Charlie',
+    'Diana',
+    'Eva',
+    'Frank',
+    'Grace',
+    'Hank',
+    'Ivy',
+    'Jack',
+  ];
+  const randomIndex = Math.floor(Math.random() * names.length);
+  return names[randomIndex];
+};
+
+const getRandomNumberBetween1And10000 = () => {
+  return Math.floor(Math.random() * 10000) + 1;
+};
+
+const incrementDate = () => {
+  const newDate = new Date('01/01/2000');
+  newDate.setDate(newDate.getDate() + getRandomNumberBetween1And10000());
+  return newDate;
+};
+
 /**
  * Generates an array of mock data
- * @type {string[]}
+ * @type {Array<object>}
  */
 const allData = Array(100)
   .fill(0)
-  .map((_, index) => `Row ${index + 1}`);
+  .map((_, index) => ({
+    id: index + 1,
+    name: getRandomName(),
+    birthday: incrementDate().toLocaleDateString(),
+  }));
+
+interface Person {
+  id: number;
+  name: string;
+  birthday: string;
+}
+
+const sortByName = (sortDirection: SORT_DIRECTION) => {
+  return (a: Person, b: Person) => {
+    return sortDirection === 'asc'
+      ? a.name.localeCompare(b.name)
+      : b.name.localeCompare(a.name);
+  };
+};
+
+const sortById = (sortDirection: SORT_DIRECTION) => {
+  return (a: Person, b: Person) => {
+    return sortDirection === 'asc' ? a.id - b.id : b.id - a.id;
+  };
+};
+
+const sortByDate = (sortDirection: SORT_DIRECTION) => {
+  return (a: Person, b: Person) => {
+    const dateA = new Date(a.birthday);
+    const dateB = new Date(b.birthday);
+
+    if (sortDirection === 'asc') {
+      return dateA.getTime() - dateB.getTime();
+    } else if (sortDirection === 'desc') {
+      return dateB.getTime() - dateA.getTime();
+    } else {
+      throw new Error('Invalid sort direction. Use "asc" or "desc".');
+    }
+  };
+};
 
 const extractData = (pageNumber: number, pageSize: number) => {
   const start = (pageNumber - 1) * pageSize;
@@ -83,18 +150,21 @@ const tableRenderer = (args: any, updateArgs: any, title: string) => {
     updateArgs({ pageNumber: +e.detail.value });
   };
 
-  const handleSortChange = (e: CustomEvent) => {
+  const handleSortByIdNumber = (e: CustomEvent) => {
     const { sortDirection } = e.detail;
-    allData.sort((a, b) => {
-      const numA = parseInt(a.split(' ')[1]);
-      const numB = parseInt(b.split(' ')[1]);
+    allData.sort(sortById(sortDirection));
+    updateArgs({ sorting: true });
+  };
 
-      if (sortDirection === 'asc') {
-        return numA - numB;
-      } else {
-        return numB - numA;
-      }
-    });
+  const handleSortByName = (e: CustomEvent) => {
+    const { sortDirection } = e.detail;
+    allData.sort(sortByName(sortDirection));
+    updateArgs({ sorting: true });
+  };
+
+  const handleSortByDate = (e: CustomEvent) => {
+    const { sortDirection } = e.detail;
+    allData.sort(sortByDate(sortDirection));
     updateArgs({ sorting: true });
   };
 
@@ -106,12 +176,25 @@ const tableRenderer = (args: any, updateArgs: any, title: string) => {
       <kyn-table>
         <kyn-thead>
           <kyn-tr>
-            <kyn-th .sortable=${true} @on-sort-changed=${handleSortChange}
-              >Col 1</kyn-th
+            <kyn-th
+              .sortable=${true}
+              @on-sort-changed=${handleSortByIdNumber}
+              sortKey=${'order'}
+              >ID</kyn-th
             >
-            <kyn-th>Col 2</kyn-th>
-            <kyn-th .align=${'right'}>Col 3</kyn-th>
-            <kyn-th>Col 4</kyn-th>
+            <kyn-th
+              .sortable=${true}
+              @on-sort-changed=${handleSortByName}
+              sortKey=${'name'}
+              >Name</kyn-th
+            >
+            <kyn-th
+              .sortable=${true}
+              @on-sort-changed=${handleSortByDate}
+              sortKey=${'birthday'}
+              >Birthday</kyn-th
+            >
+            <kyn-th .align=${'right'}>Col 4</kyn-th>
             <kyn-th>Col 6</kyn-th>
             <kyn-th>Col 7</kyn-th>
             <kyn-th .align=${'center'} visiblyHidden>Info Icon</kyn-th>
@@ -120,9 +203,10 @@ const tableRenderer = (args: any, updateArgs: any, title: string) => {
         </kyn-thead>
         <kyn-tbody .striped=${args.striped}>
           ${currentData.map(
-            (data) => html`<kyn-tr>
-              <kyn-td>${data}</kyn-td>
-              <kyn-td>${data}</kyn-td>
+            ({ id, name, birthday }) => html`<kyn-tr>
+              <kyn-td>${id}</kyn-td>
+              <kyn-td>${name}</kyn-td>
+              <kyn-td>${birthday}</kyn-td>
               <kyn-td .align=${'right'}>Content</kyn-td>
               <kyn-td>
                 <div style="display: flex; align-items: center">
@@ -134,7 +218,6 @@ const tableRenderer = (args: any, updateArgs: any, title: string) => {
                 </div>
               </kyn-td>
               <kyn-td>Tag</kyn-td>
-              <kyn-td>${data}</kyn-td>
               <kyn-td .align=${'center'}
                 ><kd-icon .icon=${infoIcon}></kd-icon
               ></kyn-td>
