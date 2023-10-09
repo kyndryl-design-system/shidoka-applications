@@ -1,3 +1,10 @@
+# [1.0.0-beta.63](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.62...v1.0.0-beta.63) (2023-10-09)
+
+
+### Bug Fixes
+
+* **table:** fix sorting ([#19](https://github.com/kyndryl-design-system/shidoka-applications/issues/19)) ([34deb22](https://github.com/kyndryl-design-system/shidoka-applications/commit/34deb221a9241fa317176733c2b1f472a1b42242))
+
 # [1.0.0-beta.62](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.61...v1.0.0-beta.62) (2023-10-06)
 
 
