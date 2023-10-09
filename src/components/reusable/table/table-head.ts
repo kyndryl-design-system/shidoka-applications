@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, queryAssignedElements } from 'lit/decorators.js';
 
 import styles from './table-head.scss';
 
@@ -15,15 +15,36 @@ import styles from './table-head.scss';
 export class TableHead extends LitElement {
   static override styles = [styles];
 
-  override firstUpdated() {
-    this.addEventListener('on-sort-changed', this.handleChildSort as EventListener);
+  /**
+   * @ignore
+   */
+  @queryAssignedElements()
+  unnamedSlotEls!: Array<HTMLElement>;
+
+  override connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener(
+      'on-sort-changed',
+      this.handleChildSort as EventListener
+    );
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener(
+      'on-sort-changed',
+      this.handleChildSort as EventListener
+    );
   }
 
   private handleChildSort(e: CustomEvent) {
     const sortedColumnKey = e.detail.sortKey;
 
-    // Get all kyn-th elements
-    const allHeaders = Array.from(this.querySelectorAll('kyn-th'));
+    // unnamedSlotEls[0] is the kyn-tr element
+    const parentRow = this.unnamedSlotEls[0];
+
+    // Get all kyn-th children of that kyn-tr element
+    const allHeaders = Array.from(parentRow.querySelectorAll('kyn-th'));
 
     for (const header of allHeaders) {
       if (header.sortKey !== sortedColumnKey) {
