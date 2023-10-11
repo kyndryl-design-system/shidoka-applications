@@ -1,4 +1,4 @@
-@import '../../../common/scss/global.scss';
+@use '../../../common/scss/global.scss';
 
 :host {
   display: flex;
@@ -18,6 +18,30 @@
   padding: var(--kd-page-gutter);
 }
 
+::slotted(main.has-local-nav) {
+  @media (min-width: 42rem) {
+    margin-left: var(--kd-local-nav-width);
+  }
+}
+
+::slotted(main.pinned) {
+  @media (min-width: 42rem) {
+    margin-left: var(--kd-local-nav-width-expanded);
+  }
+}
+
 ::slotted(kyn-footer) {
   flex-shrink: 0;
+}
+
+::slotted(kyn-footer.has-local-nav) {
+  @media (min-width: 42rem) {
+    margin-left: var(--kd-local-nav-width);
+  }
+}
+
+::slotted(kyn-footer.pinned) {
+  @media (min-width: 42rem) {
+    margin-left: var(--kd-local-nav-width-expanded);
+  }
 }

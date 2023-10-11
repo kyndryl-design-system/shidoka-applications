@@ -1,11 +1,16 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  state,
+  queryAssignedElements,
+} from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderScss from './header.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import logo from '../../../assets/svg/bridge-logo-large.svg';
+import logo from '../../../assets/svg/kyndryl-logo.svg';
 import overflowIcon from '@carbon/icons/es/overflow-menu--vertical/24';
 
 /**
@@ -48,6 +53,18 @@ export class Header extends LitElement {
   @state()
   menuOpen = false;
 
+  /** Queries for slotted header-nav.
+   * @internal
+   */
+  @queryAssignedElements({ selector: 'kyn-header-nav' })
+  navEls!: any;
+
+  /** Queries for all slotted elements.
+   * @internal
+   */
+  @queryAssignedElements()
+  assignedElements!: any;
+
   override render() {
     const classes = {
       header: true,
@@ -68,9 +85,9 @@ export class Header extends LitElement {
         </a>
 
         <div class="header__right">
-          <slot></slot>
+          <slot @slotchanged=${this.handleSlotChange}></slot>
 
-          ${!this.breakpointHit
+          ${!this.breakpointHit && this.navEls.length
             ? html`
                 <div class="menu">
                   <button
@@ -108,6 +125,10 @@ export class Header extends LitElement {
     );
 
     super.disconnectedCallback();
+  }
+
+  private handleSlotChange() {
+    this.requestUpdate();
   }
 
   private testBreakpoint() {

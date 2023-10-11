@@ -1,66 +1,58 @@
 # [1.0.0-beta.63](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.62...v1.0.0-beta.63) (2023-10-09)
 
-
 ### Bug Fixes
 
-* **table:** fix sorting ([#19](https://github.com/kyndryl-design-system/shidoka-applications/issues/19)) ([34deb22](https://github.com/kyndryl-design-system/shidoka-applications/commit/34deb221a9241fa317176733c2b1f472a1b42242))
+- **table:** fix sorting ([#19](https://github.com/kyndryl-design-system/shidoka-applications/issues/19)) ([34deb22](https://github.com/kyndryl-design-system/shidoka-applications/commit/34deb221a9241fa317176733c2b1f472a1b42242))
 
 # [1.0.0-beta.62](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.61...v1.0.0-beta.62) (2023-10-06)
 
-
 ### Bug Fixes
 
-* update foundation ([fbbc55a](https://github.com/kyndryl-design-system/shidoka-applications/commit/fbbc55a0cb0089f9fce522a63caa16dd0c7ee5fc))
+- update foundation ([fbbc55a](https://github.com/kyndryl-design-system/shidoka-applications/commit/fbbc55a0cb0089f9fce522a63caa16dd0c7ee5fc))
 
 # [1.0.0-beta.61](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.60...v1.0.0-beta.61) (2023-10-02)
 
-
 ### Bug Fixes
 
-* **table:** hidden header ([#17](https://github.com/kyndryl-design-system/shidoka-applications/issues/17)) ([8957ea9](https://github.com/kyndryl-design-system/shidoka-applications/commit/8957ea9682c6fcf518c80ea3a2148a7e270c613a))
+- **table:** hidden header ([#17](https://github.com/kyndryl-design-system/shidoka-applications/issues/17)) ([8957ea9](https://github.com/kyndryl-design-system/shidoka-applications/commit/8957ea9682c6fcf518c80ea3a2148a7e270c613a))
 
 # [1.0.0-beta.60](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.59...v1.0.0-beta.60) (2023-10-02)
 
-
 ### Features
 
-* **table:** create new table web component with pagination ([#15](https://github.com/kyndryl-design-system/shidoka-applications/issues/15)) ([59ffa1f](https://github.com/kyndryl-design-system/shidoka-applications/commit/59ffa1f6cdb98c82045ce632678ea9dc2cfd4d50))
+- **table:** create new table web component with pagination ([#15](https://github.com/kyndryl-design-system/shidoka-applications/issues/15)) ([59ffa1f](https://github.com/kyndryl-design-system/shidoka-applications/commit/59ffa1f6cdb98c82045ce632678ea9dc2cfd4d50))
 
 # [1.0.0-beta.59](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.58...v1.0.0-beta.59) (2023-10-02)
 
-
 ### Bug Fixes
 
-* **dropdown:** remove height when closed ([7e75092](https://github.com/kyndryl-design-system/shidoka-applications/commit/7e750928e9793baeecb1453c0ce5aede2bca8cff))
+- **dropdown:** remove height when closed ([7e75092](https://github.com/kyndryl-design-system/shidoka-applications/commit/7e750928e9793baeecb1453c0ce5aede2bca8cff))
 
 # [1.0.0-beta.58](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.57...v1.0.0-beta.58) (2023-09-28)
 
-
 ### Bug Fixes
 
-*  internal validation message prop. for daterangepicker ([a8f67c9](https://github.com/kyndryl-design-system/shidoka-applications/commit/a8f67c9a4d30e8a4e52dd13ce7adc1d0518fd94b))
-* internal validation message prop. for checkbox group ([0dfa6d1](https://github.com/kyndryl-design-system/shidoka-applications/commit/0dfa6d1e95092bbdda4333596eee9c207e144a09))
-* internal validation message prop. for datepicker ([08eba15](https://github.com/kyndryl-design-system/shidoka-applications/commit/08eba15f46ad4d42a9ab80518db6ceb78e37ed53))
-* internal validation message prop. for dropdown variants ([d4fc9be](https://github.com/kyndryl-design-system/shidoka-applications/commit/d4fc9beda350c1a17e87ef7f6a3412a420cc0991))
-* internal validation message prop. for Radiobutton group ([1b56e80](https://github.com/kyndryl-design-system/shidoka-applications/commit/1b56e8083e6a90f31c8745877d894c8772982982))
-* internal validation message prop. for textArea ([0597981](https://github.com/kyndryl-design-system/shidoka-applications/commit/05979817db49a2a3256324271ec91d23b4dc9d28))
-* internal validation message prop. for timepicker ([2ba73ee](https://github.com/kyndryl-design-system/shidoka-applications/commit/2ba73ee99816566f9719e4a919df91afda700ab2))
-* Set internalValidation for textinput ([b4af2f2](https://github.com/kyndryl-design-system/shidoka-applications/commit/b4af2f2567264c3df8afe6beaedddb24b3dd974c))
-* wrap isInvalid var inside updated function ([2f5e097](https://github.com/kyndryl-design-system/shidoka-applications/commit/2f5e097a2b012c818e8ea1abe9108764f1cf1ced))
+- internal validation message prop. for daterangepicker ([a8f67c9](https://github.com/kyndryl-design-system/shidoka-applications/commit/a8f67c9a4d30e8a4e52dd13ce7adc1d0518fd94b))
+- internal validation message prop. for checkbox group ([0dfa6d1](https://github.com/kyndryl-design-system/shidoka-applications/commit/0dfa6d1e95092bbdda4333596eee9c207e144a09))
+- internal validation message prop. for datepicker ([08eba15](https://github.com/kyndryl-design-system/shidoka-applications/commit/08eba15f46ad4d42a9ab80518db6ceb78e37ed53))
+- internal validation message prop. for dropdown variants ([d4fc9be](https://github.com/kyndryl-design-system/shidoka-applications/commit/d4fc9beda350c1a17e87ef7f6a3412a420cc0991))
+- internal validation message prop. for Radiobutton group ([1b56e80](https://github.com/kyndryl-design-system/shidoka-applications/commit/1b56e8083e6a90f31c8745877d894c8772982982))
+- internal validation message prop. for textArea ([0597981](https://github.com/kyndryl-design-system/shidoka-applications/commit/05979817db49a2a3256324271ec91d23b4dc9d28))
+- internal validation message prop. for timepicker ([2ba73ee](https://github.com/kyndryl-design-system/shidoka-applications/commit/2ba73ee99816566f9719e4a919df91afda700ab2))
+- Set internalValidation for textinput ([b4af2f2](https://github.com/kyndryl-design-system/shidoka-applications/commit/b4af2f2567264c3df8afe6beaedddb24b3dd974c))
+- wrap isInvalid var inside updated function ([2f5e097](https://github.com/kyndryl-design-system/shidoka-applications/commit/2f5e097a2b012c818e8ea1abe9108764f1cf1ced))
 
 # [1.0.0-beta.57](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.56...v1.0.0-beta.57) (2023-09-19)
 
-
 ### Bug Fixes
 
-* ui shell max height, story frames ([292f01d](https://github.com/kyndryl-design-system/shidoka-applications/commit/292f01d28996206768ea42af7ca754ce4b36a3b4))
+- ui shell max height, story frames ([292f01d](https://github.com/kyndryl-design-system/shidoka-applications/commit/292f01d28996206768ea42af7ca754ce4b36a3b4))
 
 # [1.0.0-beta.56](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.55...v1.0.0-beta.56) (2023-09-18)
 
-
 ### Bug Fixes
 
-* rename to shidoka-applications ([7a314ce](https://github.com/kyndryl-design-system/shidoka-applications/commit/7a314ce72dd2fe5cece8b0bdc866ffb895772485))
+- rename to shidoka-applications ([7a314ce](https://github.com/kyndryl-design-system/shidoka-applications/commit/7a314ce72dd2fe5cece8b0bdc866ffb895772485))
 
 # [1.0.0-beta.55](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.54...v1.0.0-beta.55) (2023-09-11)
 
@@ -246,7 +238,7 @@
 - **icon:** update foundation, use kd prefix ([5c5c323](https://github.com/kyndryl-design-system/shidoka-applications/commit/5c5c32310b59f329e1b9f667c6d3ef9352a6b141))
 - **radio:** add checked state to event detail ([8e8424a](https://github.com/kyndryl-design-system/shidoka-applications/commit/8e8424a99f49d8f01199f5573f7d0be8de9d993a))
 - **radio:** invalid + disabled style fix ([28c4f3a](https://github.com/kyndryl-design-system/shidoka-applications/commit/28c4f3adb940d6bef69a28b1a36b5ac906aa90ca))
-- **side-nav:** update color tokens ([cf9265b](https://github.com/kyndryl-design-system/shidoka-applications/commit/cf9265bc70e02c1e9b7cfaca09a1d5acd88af1bb))
+- **local-nav:** update color tokens ([cf9265b](https://github.com/kyndryl-design-system/shidoka-applications/commit/cf9265bc70e02c1e9b7cfaca09a1d5acd88af1bb))
 - update radio & checkbox color tokens ([1b8c029](https://github.com/kyndryl-design-system/shidoka-applications/commit/1b8c029fa2f6ba4b9652936693dc47ad8329ee75))
 
 ### Features

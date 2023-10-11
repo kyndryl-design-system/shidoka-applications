@@ -8,6 +8,7 @@ import './headerAvatar';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import caratDownIcon from '@carbon/icons/es/caret--down/16';
+import helpIcon from '@carbon/icons/es/help/24';
 
 export default {
   title: 'Global Components/Header',
@@ -64,13 +65,8 @@ export const Header = {
 
       <kyn-header-flyouts>
         <kyn-header-flyout>
-          <div slot="button">
-            Sign in
-            <kd-icon
-              .icon="${caratDownIcon}"
-              style="vertical-align: middle; margin-top: -1px"
-            ></kd-icon>
-          </div>
+          <span slot="button">Sign in</span>
+          <kd-icon slot="button" .icon="${caratDownIcon}"></kd-icon>
 
           <div>
             <kyn-header-link href="javascript:void(0)"> Login </kyn-header-link>

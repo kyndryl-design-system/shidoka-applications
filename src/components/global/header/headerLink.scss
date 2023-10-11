@@ -41,8 +41,8 @@
   }
 
   &.active {
-    color: var(--kd-color-text-tertiary);
-    background: var(--kd-color-background-ui-subtle);
+    color: var(--kd-color-text-link);
+    background: var(--kd-color-background-ui-soft);
 
     &::before {
       background-color: var(--kd-color-border-focus);
@@ -91,7 +91,7 @@
     height: 38px;
 
     &:hover {
-      color: var(--kd-color-text-tertiary);
+      color: var(--kd-color-text-link);
     }
 
     .breakpoint-hit & {
@@ -102,7 +102,7 @@
       }
 
       &:focus::before {
-        background-color: var(--kd-color-border-tertiary);
+        background-color: var(--kd-color-border-focus);
       }
     }
 
@@ -115,13 +115,18 @@
     height: 38px;
 
     &:hover {
-      color: var(--kd-color-text-tertiary);
+      color: var(--kd-color-text-link);
     }
   }
 }
 
 slot {
   display: flex;
+  align-items: center;
+
+  &[name='links'] {
+    align-items: initial;
+  }
 }
 
 .menu__content {

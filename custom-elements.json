@@ -57,18 +57,18 @@
         },
         {
           "kind": "js",
-          "name": "SideNav",
+          "name": "LocalNav",
           "declaration": {
-            "name": "SideNav",
-            "module": "./components/global/sideNav"
+            "name": "LocalNav",
+            "module": "./components/global/localNav"
           }
         },
         {
           "kind": "js",
-          "name": "SideNavLink",
+          "name": "LocalNavLink",
           "declaration": {
-            "name": "SideNavLink",
-            "module": "./components/global/sideNav"
+            "name": "LocalNavLink",
+            "module": "./components/global/localNav"
           }
         },
         {
@@ -270,7 +270,7 @@
               "description": " imported enums object"
             }
           ],
-          "description": "Convert an object to an array of only its values.\nUsed when importing enums in component stories for populating argType dropdowns."
+          "description": "Convert an object to an array of only its values.\r\nUsed when importing enums in component stories for populating argType dropdowns."
         }
       ],
       "exports": [
@@ -642,6 +642,11 @@
               "default": "false",
               "description": "Adds a 1px shadow to the bottom of the header, for contrast with  white backgrounds.",
               "attribute": "divider"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
             },
             {
               "kind": "method",
@@ -1198,51 +1203,71 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/sideNav/index.ts",
+      "path": "src/components/global/localNav/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "SideNav",
+          "name": "LocalNav",
           "declaration": {
-            "name": "SideNav",
-            "module": "./sideNav"
+            "name": "LocalNav",
+            "module": "./localNav"
           }
         },
         {
           "kind": "js",
-          "name": "SideNavLink",
+          "name": "LocalNavLink",
           "declaration": {
-            "name": "SideNavLink",
-            "module": "./sideNavLink"
+            "name": "LocalNavLink",
+            "module": "./localNavLink"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/sideNav/sideNav.ts",
+      "path": "src/components/global/localNav/localNav.ts",
       "declarations": [
         {
           "kind": "class",
           "description": "The global Side Navigation component.",
-          "name": "SideNav",
+          "name": "LocalNav",
           "slots": [
             {
-              "description": "The default slot, for side nav links.",
+              "description": "The default slot, for local nav links.",
               "name": "unnamed"
             }
           ],
           "members": [
             {
               "kind": "field",
-              "name": "collapsed",
+              "name": "pinned",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Side nav collapsed state.",
-              "attribute": "collapsed"
+              "description": "Local nav pinned state.",
+              "attribute": "pinned"
+            },
+            {
+              "kind": "field",
+              "name": "pinText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Pin open'",
+              "description": "Pin open button assistive text.",
+              "attribute": "pinText"
+            },
+            {
+              "kind": "field",
+              "name": "unpinText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Unpin'",
+              "description": "Unpin button assistive text.",
+              "attribute": "unpinText"
             },
             {
               "kind": "method",
@@ -1256,60 +1281,98 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "handleMouseenter",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleMouseleave",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
             }
           ],
           "events": [
             {
-              "description": "Captures the click event and emits the collapsed state and original event details.",
+              "description": "Captures the click event and emits the pinned state and original event details.",
               "name": "on-toggle"
             }
           ],
           "attributes": [
             {
-              "name": "collapsed",
+              "name": "pinned",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Side nav collapsed state.",
-              "fieldName": "collapsed"
+              "description": "Local nav pinned state.",
+              "fieldName": "pinned"
+            },
+            {
+              "name": "pinText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Pin open'",
+              "description": "Pin open button assistive text.",
+              "fieldName": "pinText"
+            },
+            {
+              "name": "unpinText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Unpin'",
+              "description": "Unpin button assistive text.",
+              "fieldName": "unpinText"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-side-nav",
+          "tagName": "kyn-local-nav",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "SideNav",
+          "name": "LocalNav",
           "declaration": {
-            "name": "SideNav",
-            "module": "src/components/global/sideNav/sideNav.ts"
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-side-nav",
+          "name": "kyn-local-nav",
           "declaration": {
-            "name": "SideNav",
-            "module": "src/components/global/sideNav/sideNav.ts"
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/sideNav/sideNavLink.ts",
+      "path": "src/components/global/localNav/localNavLink.ts",
       "declarations": [
         {
           "kind": "class",
           "description": "Link component for use in the global Side Navigation component.",
-          "name": "SideNavLink",
+          "name": "LocalNavLink",
           "slots": [
             {
               "description": "The default slot, for the link text.",
@@ -1342,12 +1405,27 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Level 1 link expanded state.",
+              "description": "Expanded state.",
               "attribute": "expanded"
             },
             {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "attribute": "active"
+            },
+            {
               "kind": "method",
-              "name": "determineIfSlotted",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
               "privacy": "private"
             },
             {
@@ -1358,19 +1436,6 @@
             {
               "kind": "method",
               "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onNavLinkHover",
               "privacy": "private",
               "parameters": [
                 {
@@ -1404,33 +1469,42 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Level 1 link expanded state.",
+              "description": "Expanded state.",
               "fieldName": "expanded"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "fieldName": "active"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-side-nav-link",
+          "tagName": "kyn-local-nav-link",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "SideNavLink",
+          "name": "LocalNavLink",
           "declaration": {
-            "name": "SideNavLink",
-            "module": "src/components/global/sideNav/sideNavLink.ts"
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-side-nav-link",
+          "name": "kyn-local-nav-link",
           "declaration": {
-            "name": "SideNavLink",
-            "module": "src/components/global/sideNav/sideNavLink.ts"
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
           }
         }
       ]
@@ -1455,7 +1529,13 @@
               "name": "unnamed"
             }
           ],
-          "members": [],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -1555,7 +1635,7 @@
           "type": {
             "text": "Meta"
           },
-          "default": "{\n  title: 'Components/Breadcrumbs',\n  component: 'kyn-breadcrumbs',\n  subcomponents: { 'kyn-breadcrumb-item': 'kyn-breadcrumb-item' },\n  parameters: {\n    design: {\n      type: 'figma',\n      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=459%3A39033&mode=dev',\n    },\n  },\n}"
+          "default": "{\r\n  title: 'Components/Breadcrumbs',\r\n  component: 'kyn-breadcrumbs',\r\n  subcomponents: { 'kyn-breadcrumb-item': 'kyn-breadcrumb-item' },\r\n  parameters: {\r\n    design: {\r\n      type: 'figma',\r\n      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=459%3A39033&mode=dev',\r\n    },\r\n  },\r\n}"
         },
         {
           "kind": "variable",
@@ -1563,7 +1643,7 @@
           "type": {
             "text": "Story"
           },
-          "default": "{\n  render: () => {\n    return html`<kyn-breadcrumbs>\n      <kyn-breadcrumb-item href=\"/\">Home</kyn-breadcrumb-item>\n      <kyn-breadcrumb-item href=\"/level1\">Level 1</kyn-breadcrumb-item>\n      <kyn-breadcrumb-item href=\"/level2\">Level 2</kyn-breadcrumb-item>\n      <kyn-breadcrumb-item>Destination</kyn-breadcrumb-item>\n    </kyn-breadcrumbs> `;\n  },\n}"
+          "default": "{\r\n  render: () => {\r\n    return html`<kyn-breadcrumbs>\r\n      <kyn-breadcrumb-item href=\"/\">Home</kyn-breadcrumb-item>\r\n      <kyn-breadcrumb-item href=\"/level1\">Level 1</kyn-breadcrumb-item>\r\n      <kyn-breadcrumb-item href=\"/level2\">Level 2</kyn-breadcrumb-item>\r\n      <kyn-breadcrumb-item>Destination</kyn-breadcrumb-item>\r\n    </kyn-breadcrumbs> `;\r\n  },\r\n}"
         }
       ],
       "exports": [
@@ -2064,7 +2144,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\r\nThe default value of step is 1, indicating 1 day.",
               "attribute": "step"
             },
             {
@@ -2213,7 +2293,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\r\nThe default value of step is 1, indicating 1 day.",
               "fieldName": "step"
             },
             {
@@ -2310,377 +2390,6 @@
           "declaration": {
             "name": "DatePicker",
             "module": "./datepicker"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Date-Range picker",
-          "name": "DateRangePicker",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "startDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "attribute": "startDate"
-            },
-            {
-              "kind": "field",
-              "name": "endDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "attribute": "endDate"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker name. Required prop. as there could many fields into single form",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the date required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Date disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Date invalid text.",
-              "attribute": "invalidText"
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Date warning text",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "maxDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
-              "attribute": "maxDate"
-            },
-            {
-              "kind": "field",
-              "name": "minDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
-              "attribute": "minDate"
-            },
-            {
-              "kind": "field",
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
-              "attribute": "step"
-            },
-            {
-              "kind": "method",
-              "name": "handleStartDate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleEndDate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "validateAndDispatchEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "validateMinDate",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "date",
-                  "type": {
-                    "text": "String"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "validateMaxDate",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "date",
-                  "type": {
-                    "text": "String"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "validateStartEndDate",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "startDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "fieldName": "startDate"
-            },
-            {
-              "name": "endDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "fieldName": "endDate"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker name. Required prop. as there could many fields into single form",
-              "fieldName": "name"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the date required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Date disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Date invalid text.",
-              "fieldName": "invalidText"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Date warning text",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "maxDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
-              "fieldName": "maxDate"
-            },
-            {
-              "name": "minDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
-              "fieldName": "minDate"
-            },
-            {
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
-              "fieldName": "step"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-date-range-picker",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-date-range-picker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "\"./daterangepicker\""
           }
         }
       ]
@@ -3327,162 +3036,371 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/pagination/Pagination.ts",
+      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-pagination` Web Component.\n\nA component that provides pagination functionality, enabling the user to\nnavigate through large datasets by splitting them into discrete chunks.\nIntegrates with other utility components like items range display, page size dropdown,\nand navigation buttons.",
-          "name": "Pagination",
+          "description": "Date-Range picker",
+          "name": "DateRangePicker",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
           "members": [
             {
               "kind": "field",
-              "name": "count",
+              "name": "caption",
               "type": {
-                "text": "number"
+                "text": "string"
               },
-              "default": "0",
-              "description": "Total number of items that need pagination.",
-              "attribute": "count"
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
             },
             {
               "kind": "field",
-              "name": "pageNumber",
+              "name": "size",
               "type": {
-                "text": "number"
+                "text": "string"
               },
-              "default": "1",
-              "description": "Current active page number.",
-              "attribute": "pageNumber",
-              "reflects": true
+              "default": "'md'",
+              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
             },
             {
               "kind": "field",
-              "name": "pageSize",
+              "name": "startDate",
               "type": {
-                "text": "number"
+                "text": "string"
               },
-              "default": "5",
-              "description": "Number of items displayed per page.",
-              "attribute": "pageSize"
+              "default": "''",
+              "description": "Datepicker Start date in YYYY-MM-DD format.",
+              "attribute": "startDate"
             },
             {
               "kind": "field",
-              "name": "pageSizeOptions",
+              "name": "endDate",
               "type": {
-                "text": "number[]"
+                "text": "string"
               },
-              "default": "[5, 10, 20, 30, 40, 50, 100]",
-              "description": "Available options for the page size.",
-              "attribute": "pageSizeOptions"
+              "default": "''",
+              "description": "Datepicker End date in YYYY-MM-DD format.",
+              "attribute": "endDate"
             },
             {
               "kind": "field",
-              "name": "pageSizeLabel",
-              "default": "PAGE_SIZE_LABEL",
-              "description": "Label for the page size dropdown.",
-              "attribute": "pageSizeLabel"
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker name. Required prop. as there could many fields into single form",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the date required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Date disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Date invalid text.",
+              "attribute": "invalidText"
+            },
+            {
+              "kind": "field",
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Date warning text",
+              "attribute": "warnText"
+            },
+            {
+              "kind": "field",
+              "name": "maxDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
+              "attribute": "maxDate"
+            },
+            {
+              "kind": "field",
+              "name": "minDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "attribute": "minDate"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\r\nThe default value of step is 1, indicating 1 day.",
+              "attribute": "step"
             },
             {
               "kind": "method",
-              "name": "handlePageSizeChange",
+              "name": "handleStartDate",
               "privacy": "private",
               "parameters": [
                 {
                   "name": "e",
                   "type": {
-                    "text": "CustomEvent"
-                  },
-                  "description": "The emitted custom event with the selected page size."
+                    "text": "any"
+                  }
                 }
-              ],
-              "description": "Handler for the event when the page size is changed by the user.\nUpdates the `pageSize` and resets the `pageNumber` to 1."
+              ]
             },
             {
               "kind": "method",
-              "name": "handlePageNumberChange",
+              "name": "handleEndDate",
               "privacy": "private",
               "parameters": [
                 {
                   "name": "e",
                   "type": {
-                    "text": "CustomEvent"
-                  },
-                  "description": "The emitted custom event with the selected page number."
+                    "text": "any"
+                  }
                 }
-              ],
-              "description": "Handler for the event when the page number is changed by the user.\nUpdates the `pageNumber`."
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "validateAndDispatchEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "validateMinDate",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "date",
+                  "type": {
+                    "text": "String"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "validateMaxDate",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "date",
+                  "type": {
+                    "text": "String"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "validateStartEndDate",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
+              "name": "on-input"
             }
           ],
           "attributes": [
             {
-              "name": "count",
+              "name": "caption",
               "type": {
-                "text": "number"
+                "text": "string"
               },
-              "default": "0",
-              "description": "Total number of items that need pagination.",
-              "fieldName": "count"
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
             },
             {
-              "name": "pageNumber",
+              "name": "size",
               "type": {
-                "text": "number"
+                "text": "string"
               },
-              "default": "1",
-              "description": "Current active page number.",
-              "fieldName": "pageNumber"
+              "default": "'md'",
+              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
             },
             {
-              "name": "pageSize",
+              "name": "startDate",
               "type": {
-                "text": "number"
+                "text": "string"
               },
-              "default": "5",
-              "description": "Number of items displayed per page.",
-              "fieldName": "pageSize"
+              "default": "''",
+              "description": "Datepicker Start date in YYYY-MM-DD format.",
+              "fieldName": "startDate"
             },
             {
-              "name": "pageSizeOptions",
+              "name": "endDate",
               "type": {
-                "text": "number[]"
+                "text": "string"
               },
-              "default": "[5, 10, 20, 30, 40, 50, 100]",
-              "description": "Available options for the page size.",
-              "fieldName": "pageSizeOptions"
+              "default": "''",
+              "description": "Datepicker End date in YYYY-MM-DD format.",
+              "fieldName": "endDate"
             },
             {
-              "name": "pageSizeLabel",
-              "default": "PAGE_SIZE_LABEL",
-              "description": "Label for the page size dropdown.",
-              "resolveInitializer": {
-                "module": "/src/components/reusable/pagination/constants"
+              "name": "name",
+              "type": {
+                "text": "string"
               },
-              "fieldName": "pageSizeLabel"
+              "default": "''",
+              "description": "Datepicker name. Required prop. as there could many fields into single form",
+              "fieldName": "name"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the date required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Date disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Date invalid text.",
+              "fieldName": "invalidText"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Date warning text",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "maxDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
+              "fieldName": "maxDate"
+            },
+            {
+              "name": "minDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "fieldName": "minDate"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\r\nThe default value of step is 1, indicating 1 day.",
+              "fieldName": "step"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-pagination",
+          "tagName": "kyn-date-range-picker",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "Pagination",
+          "name": "DateRangePicker",
           "declaration": {
-            "name": "Pagination",
-            "module": "src/components/reusable/pagination/Pagination.ts"
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-pagination",
+          "name": "kyn-date-range-picker",
           "declaration": {
-            "name": "Pagination",
-            "module": "src/components/reusable/pagination/Pagination.ts"
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "\"./daterangepicker\""
           }
         }
       ]
@@ -3620,7 +3538,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-pagination-items-range` Web Component.\n\nThis component is responsible for displaying the range of items being displayed\nin the context of pagination. It shows which items (by number) are currently visible\nand the total number of items.",
+          "description": "`kyn-pagination-items-range` Web Component.\r\n\r\nThis component is responsible for displaying the range of items being displayed\r\nin the context of pagination. It shows which items (by number) are currently visible\r\nand the total number of items.",
           "name": "PaginationItemsRange",
           "members": [
             {
@@ -3724,7 +3642,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-pagination-navigation-buttons` Web Component.\n\nThis component provides navigational controls for pagination.\nIt includes back and next buttons, along with displaying the current page and total pages.",
+          "description": "`kyn-pagination-navigation-buttons` Web Component.\r\n\r\nThis component provides navigational controls for pagination.\r\nIt includes back and next buttons, along with displaying the current page and total pages.",
           "name": "PaginationNavigationButtons",
           "members": [
             {
@@ -3832,7 +3750,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-pagination-page-size-dropdown` Web Component.\n\nThis component provides a dropdown to select the page size for pagination.\nIt emits events when the selected page size changes.",
+          "description": "`kyn-pagination-page-size-dropdown` Web Component.\r\n\r\nThis component provides a dropdown to select the page size for pagination.\r\nIt emits events when the selected page size changes.",
           "name": "PaginationPageSizeDropdown",
           "members": [
             {
@@ -3939,6 +3857,168 @@
           "declaration": {
             "name": "PaginationPageSizeDropdown",
             "module": "src/components/reusable/pagination/pagination-page-size-dropdown.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagination/Pagination.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-pagination` Web Component.\r\n\r\nA component that provides pagination functionality, enabling the user to\r\nnavigate through large datasets by splitting them into discrete chunks.\r\nIntegrates with other utility components like items range display, page size dropdown,\r\nand navigation buttons.",
+          "name": "Pagination",
+          "members": [
+            {
+              "kind": "field",
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total number of items that need pagination.",
+              "attribute": "count"
+            },
+            {
+              "kind": "field",
+              "name": "pageNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Current active page number.",
+              "attribute": "pageNumber",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Number of items displayed per page.",
+              "attribute": "pageSize"
+            },
+            {
+              "kind": "field",
+              "name": "pageSizeOptions",
+              "type": {
+                "text": "number[]"
+              },
+              "default": "[5, 10, 20, 30, 40, 50, 100]",
+              "description": "Available options for the page size.",
+              "attribute": "pageSizeOptions"
+            },
+            {
+              "kind": "field",
+              "name": "pageSizeLabel",
+              "default": "PAGE_SIZE_LABEL",
+              "description": "Label for the page size dropdown.",
+              "attribute": "pageSizeLabel"
+            },
+            {
+              "kind": "method",
+              "name": "handlePageSizeChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  },
+                  "description": "The emitted custom event with the selected page size."
+                }
+              ],
+              "description": "Handler for the event when the page size is changed by the user.\r\nUpdates the `pageSize` and resets the `pageNumber` to 1."
+            },
+            {
+              "kind": "method",
+              "name": "handlePageNumberChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  },
+                  "description": "The emitted custom event with the selected page number."
+                }
+              ],
+              "description": "Handler for the event when the page number is changed by the user.\r\nUpdates the `pageNumber`."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total number of items that need pagination.",
+              "fieldName": "count"
+            },
+            {
+              "name": "pageNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Current active page number.",
+              "fieldName": "pageNumber"
+            },
+            {
+              "name": "pageSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Number of items displayed per page.",
+              "fieldName": "pageSize"
+            },
+            {
+              "name": "pageSizeOptions",
+              "type": {
+                "text": "number[]"
+              },
+              "default": "[5, 10, 20, 30, 40, 50, 100]",
+              "description": "Available options for the page size.",
+              "fieldName": "pageSizeOptions"
+            },
+            {
+              "name": "pageSizeLabel",
+              "default": "PAGE_SIZE_LABEL",
+              "description": "Label for the page size dropdown.",
+              "resolveInitializer": {
+                "module": "/src/components/reusable/pagination/constants"
+              },
+              "fieldName": "pageSizeLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-pagination",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Pagination",
+          "declaration": {
+            "name": "Pagination",
+            "module": "src/components/reusable/pagination/Pagination.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-pagination",
+          "declaration": {
+            "name": "Pagination",
+            "module": "src/components/reusable/pagination/Pagination.ts"
           }
         }
       ]
@@ -4201,88 +4281,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/table/Table.stories.ts",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "meta",
-          "type": {
-            "text": "Meta"
-          },
-          "default": "{\n  title: 'Components/Table',\n  component: 'kyn-table',\n  argTypes: {\n    striped: { control: 'boolean' },\n    count: { control: 'number' },\n    pageSize: { control: 'select', options: [5, 10, 20, 30, 40, 50, 100] },\n    pageNumber: { control: 'number' },\n    pageSizeOptions: { control: 'array' },\n  },\n  subcomponents: {\n    'kyn-th': 'kyn-th',\n    'kyn-tr': 'kyn-tr',\n    'kyn-td': 'kyn-td',\n    'kyn-thead': 'kyn-thead',\n    'kyn-tbody': 'kyn-tbody',\n    'kyn-pagination': 'kyn-pagination',\n    'kyn-table-container': 'kyn-table-container',\n  },\n  parameters: {\n    design: {\n      type: 'figma',\n      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Applications-with-Specs?node-id=828%3A4607&mode=dev',\n    },\n  },\n}"
-        },
-        {
-          "kind": "variable",
-          "name": "BasicTable",
-          "type": {
-            "text": "Story"
-          },
-          "default": "{\n  args: {\n    count: allData.length,\n    pageSize: 10,\n    pageNumber: 1,\n    pageSizeOptions: [5, 10, 20, 30, 40, 50, 100],\n  },\n  render: (args) => {\n    const [, updateArgs] = useArgs();\n    return tableRenderer(args, updateArgs, 'Table title');\n  },\n}"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "name": "meta",
-            "module": "src/components/reusable/table/Table.stories.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "BasicTable",
-          "declaration": {
-            "name": "BasicTable",
-            "module": "src/components/reusable/table/Table.stories.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/table/Table.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-table` Web Component.\n\nThis component provides a generic table structure with a slot to allow customization.\nYou can use this component to wrap around table rows and cells for a consistent style.",
-          "name": "Table",
-          "slots": [
-            {
-              "description": "The primary content slot for rows, headers, and cells.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-table",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Table",
-          "declaration": {
-            "name": "Table",
-            "module": "src/components/reusable/table/Table.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-table",
-          "declaration": {
-            "name": "Table",
-            "module": "src/components/reusable/table/Table.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/table/defs.ts",
       "declarations": [],
       "exports": []
@@ -4380,7 +4378,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-tbody` Web Component.\n\nRepresents the body section of Shidoka's design system tables. Designed to provide\na consistent look and feel, and can offer striped rows for enhanced readability.",
+          "description": "`kyn-tbody` Web Component.\r\n\r\nRepresents the body section of Shidoka's design system tables. Designed to provide\r\na consistent look and feel, and can offer striped rows for enhanced readability.",
           "name": "TableBody",
           "slots": [
             {
@@ -4445,7 +4443,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-td` Web Component.\n\nRepresents a table cell (data cell) within Shidoka's design system tables.\nAllows customization of alignment and can reflect the sort direction when\nused within sortable columns.",
+          "description": "`kyn-td` Web Component.\r\n\r\nRepresents a table cell (data cell) within Shidoka's design system tables.\r\nAllows customization of alignment and can reflect the sort direction when\r\nused within sortable columns.",
           "name": "TableCell",
           "slots": [
             {
@@ -4525,7 +4523,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-table-container` Web Component.\n\nProvides a container for Shidoka's design system tables. It's designed to encapsulate\nand apply styles uniformly across the table elements.",
+          "description": "`kyn-table-container` Web Component.\r\n\r\nProvides a container for Shidoka's design system tables. It's designed to encapsulate\r\nand apply styles uniformly across the table elements.",
           "name": "TableContainer",
           "slots": [
             {
@@ -4567,7 +4565,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-tfoot` Web Component.\n\nRepresents a custom table footer (`<tfoot>`) for Shidoka's design system tables.\nDesigned to contain and style table footer rows (`<tr>`) and footer cells (`<td>`).",
+          "description": "`kyn-tfoot` Web Component.\r\n\r\nRepresents a custom table footer (`<tfoot>`) for Shidoka's design system tables.\r\nDesigned to contain and style table footer rows (`<tr>`) and footer cells (`<td>`).",
           "name": "TableFooter",
           "slots": [
             {
@@ -4609,7 +4607,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-thead` Web Component.\n\nRepresents a custom table head (`<thead>`) for Shidoka's design system tables.\nDesigned to contain and style table header rows (`<tr>`) and header cells (`<th>`).",
+          "description": "`kyn-thead` Web Component.\r\n\r\nRepresents a custom table head (`<thead>`) for Shidoka's design system tables.\r\nDesigned to contain and style table header rows (`<tr>`) and header cells (`<th>`).",
           "name": "TableHead",
           "slots": [
             {
@@ -4665,7 +4663,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-th` Web Component.\n\nRepresents a custom table header cell (`<th>`) for Shidoka's design system tables.\nProvides sorting functionality when enabled and allows alignment customization.",
+          "description": "`kyn-th` Web Component.\r\n\r\nRepresents a custom table header cell (`<th>`) for Shidoka's design system tables.\r\nProvides sorting functionality when enabled and allows alignment customization.",
           "name": "TableHeader",
           "slots": [
             {
@@ -4680,7 +4678,7 @@
               "type": {
                 "text": "TABLE_CELL_ALIGN"
               },
-              "description": "Specifies the alignment of the content within the table header.\nOptions: 'left', 'center', 'right'",
+              "description": "Specifies the alignment of the content within the table header.\r\nOptions: 'left', 'center', 'right'",
               "attribute": "align",
               "reflects": true
             },
@@ -4691,7 +4689,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Specifies if the column is sortable.\nIf set to true, an arrow icon will be displayed unpon hover,\nallowing the user to toggle sort directions.",
+              "description": "Specifies if the column is sortable.\r\nIf set to true, an arrow icon will be displayed unpon hover,\r\nallowing the user to toggle sort directions.",
               "attribute": "sortable",
               "reflects": true
             },
@@ -4712,7 +4710,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "The textual content associated with this component.\nRepresents the primary content or label that will be displayed.",
+              "description": "The textual content associated with this component.\r\nRepresents the primary content or label that will be displayed.",
               "attribute": "headerLabel"
             },
             {
@@ -4722,7 +4720,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "The unique identifier representing this column header.\nUsed to distinguish between different sortable columns and\nto ensure that only one column is sorted at a time.",
+              "description": "The unique identifier representing this column header.\r\nUsed to distinguish between different sortable columns and\r\nto ensure that only one column is sorted at a time.",
               "attribute": "sortKey"
             },
             {
@@ -4732,19 +4730,19 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determines whether the content should be hidden from visual view but remain accessible\nto screen readers for accessibility purposes. When set to `true`, the content\nwill not be visibly shown, but its content can still be read by screen readers.\nThis is especially useful for providing additional context or information to\nassistive technologies without cluttering the visual UI.",
+              "description": "Determines whether the content should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes. When set to `true`, the content\r\nwill not be visibly shown, but its content can still be read by screen readers.\r\nThis is especially useful for providing additional context or information to\r\nassistive technologies without cluttering the visual UI.",
               "attribute": "visiblyHidden"
             },
             {
               "kind": "method",
               "name": "resetSort",
-              "description": "Resets the sorting direction of the component to its default state.\nUseful for initializing or clearing any applied sorting on the element."
+              "description": "Resets the sorting direction of the component to its default state.\r\nUseful for initializing or clearing any applied sorting on the element."
             },
             {
               "kind": "method",
               "name": "toggleSortDirection",
               "privacy": "private",
-              "description": "Toggles the sort direction between ascending, descending, and default states.\nIt also dispatches an event to notify parent components of the sorting change."
+              "description": "Toggles the sort direction between ascending, descending, and default states.\r\nIt also dispatches an event to notify parent components of the sorting change."
             },
             {
               "kind": "method",
@@ -4766,7 +4764,7 @@
               "type": {
                 "text": "TABLE_CELL_ALIGN"
               },
-              "description": "Specifies the alignment of the content within the table header.\nOptions: 'left', 'center', 'right'",
+              "description": "Specifies the alignment of the content within the table header.\r\nOptions: 'left', 'center', 'right'",
               "fieldName": "align"
             },
             {
@@ -4775,7 +4773,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Specifies if the column is sortable.\nIf set to true, an arrow icon will be displayed unpon hover,\nallowing the user to toggle sort directions.",
+              "description": "Specifies if the column is sortable.\r\nIf set to true, an arrow icon will be displayed unpon hover,\r\nallowing the user to toggle sort directions.",
               "fieldName": "sortable"
             },
             {
@@ -4792,7 +4790,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "The textual content associated with this component.\nRepresents the primary content or label that will be displayed.",
+              "description": "The textual content associated with this component.\r\nRepresents the primary content or label that will be displayed.",
               "fieldName": "headerLabel"
             },
             {
@@ -4801,7 +4799,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "The unique identifier representing this column header.\nUsed to distinguish between different sortable columns and\nto ensure that only one column is sorted at a time.",
+              "description": "The unique identifier representing this column header.\r\nUsed to distinguish between different sortable columns and\r\nto ensure that only one column is sorted at a time.",
               "fieldName": "sortKey"
             },
             {
@@ -4810,7 +4808,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determines whether the content should be hidden from visual view but remain accessible\nto screen readers for accessibility purposes. When set to `true`, the content\nwill not be visibly shown, but its content can still be read by screen readers.\nThis is especially useful for providing additional context or information to\nassistive technologies without cluttering the visual UI.",
+              "description": "Determines whether the content should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes. When set to `true`, the content\r\nwill not be visibly shown, but its content can still be read by screen readers.\r\nThis is especially useful for providing additional context or information to\r\nassistive technologies without cluttering the visual UI.",
               "fieldName": "visiblyHidden"
             }
           ],
@@ -4847,7 +4845,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-tr` Web Component.\n\nRepresents a table row (`<tr>`) equivalent for custom tables created with Shidoka's design system.\nIt primarily acts as a container for individual table cells and behaves similarly to a native `<tr>` element.",
+          "description": "`kyn-tr` Web Component.\r\n\r\nRepresents a table row (`<tr>`) equivalent for custom tables created with Shidoka's design system.\r\nIt primarily acts as a container for individual table cells and behaves similarly to a native `<tr>` element.",
           "name": "TableRow",
           "slots": [
             {
@@ -4889,7 +4887,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-table-toolbar` Web Component.\n\nThis component provides a toolbar for tables, primarily featuring a title and additional content.\nThe title is rendered prominently, while the slot can be used for controls, buttons, or other interactive elements.",
+          "description": "`kyn-table-toolbar` Web Component.\r\n\r\nThis component provides a toolbar for tables, primarily featuring a title and additional content.\r\nThe title is rendered prominently, while the slot can be used for controls, buttons, or other interactive elements.",
           "name": "TableToolbar",
           "slots": [
             {
@@ -4943,6 +4941,88 @@
           "declaration": {
             "name": "TableToolbar",
             "module": "src/components/reusable/table/table-toolbar.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/table/Table.stories.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "meta",
+          "type": {
+            "text": "Meta"
+          },
+          "default": "{\r\n  title: 'Components/Table',\r\n  component: 'kyn-table',\r\n  argTypes: {\r\n    striped: { control: 'boolean' },\r\n    count: { control: 'number' },\r\n    pageSize: { control: 'select', options: [5, 10, 20, 30, 40, 50, 100] },\r\n    pageNumber: { control: 'number' },\r\n    pageSizeOptions: { control: 'array' },\r\n  },\r\n  subcomponents: {\r\n    'kyn-th': 'kyn-th',\r\n    'kyn-tr': 'kyn-tr',\r\n    'kyn-td': 'kyn-td',\r\n    'kyn-thead': 'kyn-thead',\r\n    'kyn-tbody': 'kyn-tbody',\r\n    'kyn-pagination': 'kyn-pagination',\r\n    'kyn-table-container': 'kyn-table-container',\r\n  },\r\n  parameters: {\r\n    design: {\r\n      type: 'figma',\r\n      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Applications-with-Specs?node-id=828%3A4607&mode=dev',\r\n    },\r\n  },\r\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "BasicTable",
+          "type": {
+            "text": "Story"
+          },
+          "default": "{\r\n  args: {\r\n    count: allData.length,\r\n    pageSize: 10,\r\n    pageNumber: 1,\r\n    pageSizeOptions: [5, 10, 20, 30, 40, 50, 100],\r\n  },\r\n  render: (args) => {\r\n    const [, updateArgs] = useArgs();\r\n    return tableRenderer(args, updateArgs, 'Table title');\r\n  },\r\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "meta",
+            "module": "src/components/reusable/table/Table.stories.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "BasicTable",
+          "declaration": {
+            "name": "BasicTable",
+            "module": "src/components/reusable/table/Table.stories.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/table/Table.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-table` Web Component.\r\n\r\nThis component provides a generic table structure with a slot to allow customization.\r\nYou can use this component to wrap around table rows and cells for a consistent style.",
+          "name": "Table",
+          "slots": [
+            {
+              "description": "The primary content slot for rows, headers, and cells.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-table",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Table",
+          "declaration": {
+            "name": "Table",
+            "module": "src/components/reusable/table/Table.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-table",
+          "declaration": {
+            "name": "Table",
+            "module": "src/components/reusable/table/Table.ts"
           }
         }
       ]
@@ -5594,7 +5674,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
+              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\r\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\r\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
               "attribute": "value"
             },
             {
@@ -5674,7 +5754,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nIt takes value that equates to the number of seconds you want to increment by;\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nIt takes value that equates to the number of seconds you want to increment by;\r\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
               "attribute": "step"
             },
             {
@@ -5745,7 +5825,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
+              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\r\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\r\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
               "fieldName": "value"
             },
             {
@@ -5817,7 +5897,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nIt takes value that equates to the number of seconds you want to increment by;\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nIt takes value that equates to the number of seconds you want to increment by;\r\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
               "fieldName": "step"
             }
           ],

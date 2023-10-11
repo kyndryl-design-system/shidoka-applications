@@ -1,0 +1,117 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: block;
+}
+
+a {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  color: var(--kd-color-text-primary);
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    outline-color 150ms ease-out;
+
+  .link-active & {
+    background: var(--kd-color-background-primary);
+    color: var(--kd-color-text-inversed);
+    font-weight: 500;
+  }
+
+  .nav-expanded.link-active & {
+    background: none;
+    color: var(--kd-color-text-link);
+    font-weight: 500;
+
+    &:hover {
+      background: var(--kd-color-background-primary);
+      color: var(--kd-color-text-inversed);
+    }
+  }
+
+  .link-expanded & {
+    color: var(--kd-color-text-link);
+    font-weight: 500;
+  }
+
+  &:hover {
+    background: var(--kd-color-background-primary);
+    color: var(--kd-color-text-inversed);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
+  }
+
+  &:active {
+    background-color: var(--kd-color-background-primary-pressed);
+  }
+}
+
+.level {
+  &--1 {
+    & ul {
+      border-top: 1px solid var(--kd-color-border-light);
+      border-bottom: 1px solid var(--kd-color-border-light);
+    }
+  }
+
+  &--2 {
+    & a {
+      padding-left: 32px;
+    }
+  }
+
+  &--3 {
+    & a {
+      padding-left: 50px;
+    }
+  }
+}
+
+ul {
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--kd-color-background-ui-default);
+
+  .link-expanded.nav-expanded & {
+    display: block;
+  }
+}
+
+.text {
+  display: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-left: 8px;
+
+  .nav-expanded & {
+    display: block;
+  }
+}
+
+.arrow-icon {
+  display: none;
+  margin-left: auto;
+
+  .nav-expanded & {
+    display: block;
+  }
+
+  .link-expanded & {
+    transform: rotate(180deg);
+  }
+
+  kd-icon {
+    display: block;
+  }
+}
