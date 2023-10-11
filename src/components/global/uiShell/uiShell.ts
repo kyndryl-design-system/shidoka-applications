@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, state, queryAssignedElements } from 'lit/decorators.js';
+import { customElement, queryAssignedElements } from 'lit/decorators.js';
 import UiShellScss from './uiShell.scss';
 
 /**
