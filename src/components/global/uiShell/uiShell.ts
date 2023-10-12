@@ -3,7 +3,7 @@ import { customElement, queryAssignedElements } from 'lit/decorators.js';
 import UiShellScss from './uiShell.scss';
 
 /**
- * Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.
+ * Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.
  * @slot unnamed - Slot for global elements.
  */
 @customElement('kyn-ui-shell')
