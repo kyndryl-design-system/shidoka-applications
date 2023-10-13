@@ -85,7 +85,7 @@ export class Header extends LitElement {
         </a>
 
         <div class="header__right">
-          <slot @slotchanged=${this.handleSlotChange}></slot>
+          <slot @slotchange=${this.handleSlotChange}></slot>
 
           ${!this.breakpointHit && this.navEls.length
             ? html`
