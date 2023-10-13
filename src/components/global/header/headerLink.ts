@@ -95,14 +95,17 @@ export class HeaderLink extends LitElement {
     };
 
     return html`
-      <div class="${classMap(classes)}" @mouseleave=${this.handleMouseleave}>
+      <div
+        class="${classMap(classes)}"
+        @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
+      >
         <a
           target=${this.target}
           rel=${this.rel}
           href=${this.href}
           class=${classMap(linkClasses)}
           @click=${(e: Event) => this.handleClick(e)}
-          @mouseenter=${this.handleMouseenter}
+          @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
         >
           <slot></slot>
 
@@ -115,12 +118,16 @@ export class HeaderLink extends LitElement {
     `;
   }
 
-  private handleMouseenter() {
-    this.open = true;
+  private handlePointerEnter(e: PointerEvent) {
+    if (e.pointerType === 'mouse') {
+      this.open = true;
+    }
   }
 
-  private handleMouseleave() {
-    this.open = false;
+  private handlePointerLeave(e: PointerEvent) {
+    if (e.pointerType === 'mouse') {
+      this.open = false;
+    }
   }
 
   private handleClick(e: Event) {
@@ -138,7 +145,7 @@ export class HeaderLink extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private handleClickOut(e: any) {
+  private handleClickOut(e: Event) {
     if (!e.composedPath().includes(this)) {
       this.open = false;
     }

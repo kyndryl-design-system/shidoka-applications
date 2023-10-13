@@ -46,13 +46,16 @@ export class HeaderFlyout extends LitElement {
     };
 
     return html`
-      <div class="${classMap(classes)}" @mouseleave=${this.handleMouseleave}>
+      <div
+        class="${classMap(classes)}"
+        @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
+      >
         <button
           class="btn interactive"
           title=${this.assistiveText}
           aria-label=${this.assistiveText}
           @click=${this.handleClick}
-          @mouseenter=${this.handleMouseenter}
+          @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
         >
           <slot name="button"></slot>
         </button>
@@ -61,19 +64,23 @@ export class HeaderFlyout extends LitElement {
     `;
   }
 
-  private handleMouseenter() {
-    this.open = true;
+  private handlePointerEnter(e: PointerEvent) {
+    if (e.pointerType === 'mouse') {
+      this.open = true;
+    }
   }
 
-  private handleMouseleave() {
-    this.open = false;
+  private handlePointerLeave(e: PointerEvent) {
+    if (e.pointerType === 'mouse') {
+      this.open = false;
+    }
   }
 
   private handleClick() {
     this.open = !this.open;
   }
 
-  private handleClickOut(e: any) {
+  private handleClickOut(e: Event) {
     if (!e.composedPath().includes(this)) {
       this.open = false;
     }
