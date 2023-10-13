@@ -22,6 +22,10 @@ import downIcon from '@carbon/icons/es/chevron--down/16';
 export class HeaderLink extends LitElement {
   static override styles = HeaderLinkScss;
 
+  /** Link open state. */
+  @property({ type: Boolean })
+  open = false;
+
   /** Link url. */
   @property({ type: String })
   href = '';
@@ -74,6 +78,7 @@ export class HeaderLink extends LitElement {
       menu: this.isSlotted,
       'breakpoint-hit': this.breakpointHit,
       divider: this.divider,
+      open: this.open,
     };
 
     const linkClasses = {
@@ -110,10 +115,23 @@ export class HeaderLink extends LitElement {
   }
 
   private handleClick(e: Event) {
+    let preventDefault = false;
+    if (this.slottedElements.length) {
+      preventDefault = true;
+      e.preventDefault();
+      this.open = !this.open;
+    }
+
     const event = new CustomEvent('on-click', {
-      detail: { origEvent: e },
+      detail: { origEvent: e, defaultPrevented: preventDefault },
     });
     this.dispatchEvent(event);
+  }
+
+  private handleClickOut(e: any) {
+    if (!e.composedPath().includes(this)) {
+      this.open = false;
+    }
   }
 
   private determineIfSlotted() {
@@ -137,6 +155,8 @@ export class HeaderLink extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
 
+    document.addEventListener('click', (e) => this.handleClickOut(e));
+
     this.testBreakpoint();
     window?.addEventListener(
       'resize',
@@ -147,6 +167,8 @@ export class HeaderLink extends LitElement {
   }
 
   override disconnectedCallback() {
+    document.removeEventListener('click', (e) => this.handleClickOut(e));
+
     window?.removeEventListener(
       'resize',
       debounce(() => {

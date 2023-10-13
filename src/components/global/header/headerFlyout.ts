@@ -14,9 +14,17 @@ import HeaderFlyoutScss from './headerFlyout.scss';
 export class HeaderFlyout extends LitElement {
   static override styles = HeaderFlyoutScss;
 
+  /** Flyout open state. */
+  @property({ type: Boolean })
+  open = false;
+
   /** Anchor flyout menu to the left edge of the button instead of the right edge. */
   @property({ type: Boolean })
   anchorLeft = false;
+
+  /** Button assistive text, title + aria-label. */
+  @property({ type: String })
+  assistiveText = '';
 
   /**
    * Determines if menu should be a small flyout or large flyout for small screens.
@@ -29,6 +37,7 @@ export class HeaderFlyout extends LitElement {
     const classes = {
       menu: true,
       'breakpoint-hit': this.breakpointHit,
+      open: this.open,
     };
 
     const contentClasses = {
@@ -38,14 +47,33 @@ export class HeaderFlyout extends LitElement {
 
     return html`
       <div class="${classMap(classes)}">
-        <button class="btn interactive"><slot name="button"></slot></button>
+        <button
+          class="btn interactive"
+          title=${this.assistiveText}
+          aria-label=${this.assistiveText}
+          @click=${this.handleClick}
+        >
+          <slot name="button"></slot>
+        </button>
         <div class=${classMap(contentClasses)}><slot></slot></div>
       </div>
     `;
   }
 
+  private handleClick() {
+    this.open = !this.open;
+  }
+
+  private handleClickOut(e: any) {
+    if (!e.composedPath().includes(this)) {
+      this.open = false;
+    }
+  }
+
   override connectedCallback() {
     super.connectedCallback();
+
+    document.addEventListener('click', (e) => this.handleClickOut(e));
 
     this.testBreakpoint();
     window?.addEventListener(
@@ -57,6 +85,8 @@ export class HeaderFlyout extends LitElement {
   }
 
   override disconnectedCallback() {
+    document.removeEventListener('click', (e) => this.handleClickOut(e));
+
     window?.removeEventListener(
       'resize',
       debounce(() => {

@@ -32,13 +32,28 @@ export default {
   ],
 };
 
+const args = {
+  rootUrl: '/',
+  appTitle: 'Application',
+  breakpoint: 740,
+  divider: true,
+};
+
 export const Header = {
-  args: {
-    rootUrl: '/',
-    appTitle: 'Application',
-    breakpoint: 740,
-    divider: true,
-  },
+  args,
+  render: (args) => html`
+    <kyn-header
+      rootUrl=${args.rootUrl}
+      appTitle=${args.appTitle}
+      breakpoint=${args.breakpoint}
+      ?divider=${args.divider}
+    >
+    </kyn-header>
+  `,
+};
+
+export const WithNavLinks = {
+  args,
   render: (args) => html`
     <kyn-header
       rootUrl=${args.rootUrl}
@@ -62,7 +77,19 @@ export const Header = {
           </kyn-header-link>
         </kyn-header-link>
       </kyn-header-nav>
+    </kyn-header>
+  `,
+};
 
+export const WithFlyouts = {
+  args,
+  render: (args) => html`
+    <kyn-header
+      rootUrl=${args.rootUrl}
+      appTitle=${args.appTitle}
+      breakpoint=${args.breakpoint}
+      ?divider=${args.divider}
+    >
       <kyn-header-flyouts>
         <kyn-header-flyout>
           <span slot="button">Sign in</span>
@@ -76,7 +103,7 @@ export const Header = {
           </div>
         </kyn-header-flyout>
 
-        <kyn-header-flyout>
+        <kyn-header-flyout assistiveText="My Account">
           <kyn-header-avatar initials="KB" slot="button"></kyn-header-avatar>
 
           <kyn-header-link href="javascript:void(0)">
