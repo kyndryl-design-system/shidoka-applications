@@ -95,13 +95,14 @@ export class HeaderLink extends LitElement {
     };
 
     return html`
-      <div class="${classMap(classes)}">
+      <div class="${classMap(classes)}" @mouseleave=${this.handleMouseleave}>
         <a
           target=${this.target}
           rel=${this.rel}
           href=${this.href}
           class=${classMap(linkClasses)}
           @click=${(e: Event) => this.handleClick(e)}
+          @mouseenter=${this.handleMouseenter}
         >
           <slot></slot>
 
@@ -114,8 +115,17 @@ export class HeaderLink extends LitElement {
     `;
   }
 
+  private handleMouseenter() {
+    this.open = true;
+  }
+
+  private handleMouseleave() {
+    this.open = false;
+  }
+
   private handleClick(e: Event) {
     let preventDefault = false;
+
     if (this.slottedElements.length) {
       preventDefault = true;
       e.preventDefault();
