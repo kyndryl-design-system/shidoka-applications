@@ -12,11 +12,7 @@ import '@kyndryl-design-system/shidoka-foundation/components/icon';
 export class FooterNavLink extends LitElement {
   static override styles = FooterLinkScss;
 
-  /** Adds a 1px divider between footer nav links. */
-  @property({ type: Boolean })
-  divider = false;
-
-  /** Defines a target attribute for where to load the URL. Possible options include "_self" (deafult), "_blank", "_parent", "_top" */
+  /** Defines a target attribute for where to load the URL. Possible options include "_self" (default), "_blank", "_parent", "_top" */
   @property({ type: String })
   target = '_self' as const;
 
