@@ -34,6 +34,11 @@ export const Footer = {
         <kyn-footer-link href="javascript:void(0);">Link 3</kyn-footer-link>
         <kyn-footer-link href="javascript:void(0);">Link 4</kyn-footer-link>
       </kyn-footer-nav>
+
+      <span slot="copyright">
+        Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights
+        reserved.
+      </span>
     </kyn-footer>
   `,
 };

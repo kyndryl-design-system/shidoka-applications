@@ -28,7 +28,12 @@ export const UIShell = {
 
       <main>Main content here.</main>
 
-      <kyn-footer rootUrl=${args.rootUrl}></kyn-footer>
+      <kyn-footer rootUrl=${args.rootUrl}>
+        <span slot="copyright">
+          Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights
+          reserved.
+        </span>
+      </kyn-footer>
     </kyn-ui-shell>
   `,
 };
@@ -75,7 +80,12 @@ export const WithLocalNav = {
 
       <main>Main content here.</main>
 
-      <kyn-footer rootUrl=${args.rootUrl}></kyn-footer>
+      <kyn-footer rootUrl=${args.rootUrl}>
+        <span slot="copyright">
+          Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights
+          reserved.
+        </span>
+      </kyn-footer>
     </kyn-ui-shell>
   `,
 };
