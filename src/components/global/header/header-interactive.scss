@@ -1,28 +1,37 @@
 .interactive {
   border: none;
   cursor: pointer;
-  transition: background-color 150ms ease-out, color 150ms ease-out;
-  outline: none;
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    outline-color 150ms ease-out;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
 
-  &:hover,
-  &:focus,
+  &:hover {
+    background: var(--kd-color-background-ui-soft);
+  }
+
+  // &:hover,
   &:active {
     color: var(--kd-color-text-link);
   }
 
-  &::before {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    height: 2px;
-    transition: background-color 150ms ease-out;
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
   }
 
+  // &::before {
+  //   content: '';
+  //   display: block;
+  //   position: absolute;
+  //   top: 0;
+  //   right: 0;
+  //   left: 0;
+  //   height: 2px;
+  //   transition: background-color 150ms ease-out;
+  // }
+
   &.active {
-    color: var(--kd-color-text-link);
+    // color: var(--kd-color-text-link);
     background: var(--kd-color-background-ui-soft);
 
     &::before {
@@ -85,12 +94,12 @@
   &.open,
   &:hover {
     .interactive {
-      color: var(--kd-color-text-link);
+      // color: var(--kd-color-text-link);
       background: var(--kd-color-background-ui-soft);
 
-      &::before {
-        background-color: var(--kd-color-border-focus);
-      }
+      // &::before {
+      //   background-color: var(--kd-color-border-focus);
+      // }
     }
   }
 

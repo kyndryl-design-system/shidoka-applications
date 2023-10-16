@@ -1,0 +1,35 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+a {
+  @include typography.type-ui-02;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  margin: 0 4px;
+  border-radius: 4px;
+  text-decoration: none;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  color: var(--kd-color-text-primary);
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    outline-color 150ms ease-out;
+
+  &:hover {
+    background: var(--kd-color-background-primary);
+    color: var(--kd-color-text-inversed);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
+  }
+
+  &:active {
+    background-color: var(--kd-color-background-primary-pressed);
+  }
+}

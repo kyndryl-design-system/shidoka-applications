@@ -4,7 +4,9 @@ import '../footer';
 import '../header';
 import '../localNav';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
+
 import sampleIcon from '@carbon/icons/es/user--avatar/20';
+import appsIcon from '@carbon/icons/es/apps/24';
 
 export default {
   title: 'Global Components/UI Shell',
@@ -41,7 +43,24 @@ export const UIShell = {
 export const WithLocalNav = {
   render: (args) => html`
     <kyn-ui-shell>
-      <kyn-header divider appTitle="UI Shell Example"></kyn-header>
+      <kyn-header divider appTitle="UI Shell Example">
+        <kyn-header-panel slot="left" heading="Panel Heading">
+          <kd-icon slot="button" .icon=${appsIcon}></kd-icon>
+
+          <kyn-header-panel-link href="javascript:void(0)">
+            <kd-icon .icon=${sampleIcon}></kd-icon>
+            Link 1
+          </kyn-header-panel-link>
+          <kyn-header-panel-link href="javascript:void(0)">
+            <kd-icon .icon=${sampleIcon}></kd-icon>
+            Link 2
+          </kyn-header-panel-link>
+          <kyn-header-panel-link href="javascript:void(0)">
+            <kd-icon .icon=${sampleIcon}></kd-icon>
+            Link 3
+          </kyn-header-panel-link>
+        </kyn-header-panel>
+      </kyn-header>
 
       <kyn-local-nav>
         <kyn-local-nav-link href="javascript:void(0)" active>

@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js';
 import HeaderAvatarScss from './headerAvatar.scss';
 
 /**
- * Container for header flyout items, aligns to the right, place last.
+ * User avatar.
  */
 @customElement('kyn-header-avatar')
 export class HeaderAvatar extends LitElement {

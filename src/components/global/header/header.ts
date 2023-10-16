@@ -19,6 +19,7 @@ import overflowIcon from '@carbon/icons/es/overflow-menu--vertical/24';
  * @fires on-root-link-click - Captures the logo link click event and emits the original event details.
  * @slot unnamed - The default slot for all empty space right of the logo/title.
  * @slot logo - Slot for the logo, will overwrite the default logo.
+ * @slot left - Slot left of the logo, intended for a header panel.
  */
 @customElement('kyn-header')
 export class Header extends LitElement {
@@ -65,15 +66,23 @@ export class Header extends LitElement {
   @queryAssignedElements()
   assignedElements!: any;
 
+  /** Queries for elements in left slot.
+   * @internal
+   */
+  @queryAssignedElements({ slot: 'left' })
+  leftEls!: any;
+
   override render() {
     const classes = {
       header: true,
       'breakpoint-hit': this.breakpointHit,
       divider: this.divider,
+      'left-slotted': this.leftEls.length,
     };
 
     return html`
       <header class="${classMap(classes)}">
+        <slot name="left"></slot>
         <a
           href="${this.rootUrl}"
           class="logo-link interactive"

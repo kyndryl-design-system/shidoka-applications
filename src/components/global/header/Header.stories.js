@@ -1,30 +1,28 @@
 import { html } from 'lit';
-import './header';
-import './headerNav';
-import './headerLink';
-import './headerFlyouts';
-import './headerFlyout';
-import './headerAvatar';
+import './';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import caratDownIcon from '@carbon/icons/es/caret--down/16';
-import helpIcon from '@carbon/icons/es/help/24';
+import appsIcon from '@carbon/icons/es/apps/24';
+import userAvatarIcon from '@carbon/icons/es/user--avatar/20';
 
 export default {
   title: 'Global Components/Header',
   component: 'kyn-header',
   subcomponents: {
-    HeaderNav: 'kyn-header-nav',
-    HeaderLink: 'kyn-header-link',
-    HeaderFlyouts: 'kyn-header-flyouts',
-    HeaderFlyout: 'kyn-header-flyout',
-    HeaderAvatar: 'kyn-header-avatar',
+    'kyn-header-nav': 'kyn-header-nav',
+    'kyn-header-link': 'kyn-header-link',
+    'kyn-header-flyouts': 'kyn-header-flyouts',
+    'kyn-header-flyout': 'kyn-header-flyout',
+    'kyn-header-avatar': 'kyn-header-avatar',
+    'kyn-header-panel': 'kyn-header-panel',
+    'kyn-header-panel-link': 'kyn-header-panel-link',
   },
   decorators: [
     (story) =>
       html`
         <div
-          style="height: 100%; min-height: 250px; transform: translate3d(0,0,0); margin: var(--kd-negative-page-gutter);"
+          style="height: 100vh; min-height: 250px; transform: translate3d(0,0,0); margin: var(--kd-negative-page-gutter);"
         >
           ${story()}
         </div>
@@ -35,7 +33,7 @@ export default {
 const args = {
   rootUrl: '/',
   appTitle: 'Application',
-  breakpoint: 740,
+  breakpoint: 672,
   divider: true,
 };
 
@@ -130,6 +128,35 @@ export const WithFlyouts = {
           </kyn-header-link>
         </kyn-header-flyout>
       </kyn-header-flyouts>
+    </kyn-header>
+  `,
+};
+
+export const WithPanel = {
+  args,
+  render: (args) => html`
+    <kyn-header
+      rootUrl=${args.rootUrl}
+      appTitle=${args.appTitle}
+      breakpoint=${args.breakpoint}
+      ?divider=${args.divider}
+    >
+      <kyn-header-panel slot="left" heading="Panel Heading">
+        <kd-icon slot="button" .icon=${appsIcon}></kd-icon>
+
+        <kyn-header-panel-link href="javascript:void(0)">
+          <kd-icon .icon=${userAvatarIcon}></kd-icon>
+          Link 1
+        </kyn-header-panel-link>
+        <kyn-header-panel-link href="javascript:void(0)">
+          <kd-icon .icon=${userAvatarIcon}></kd-icon>
+          Link 2
+        </kyn-header-panel-link>
+        <kyn-header-panel-link href="javascript:void(0)">
+          <kd-icon .icon=${userAvatarIcon}></kd-icon>
+          Link 3
+        </kyn-header-panel-link>
+      </kyn-header-panel>
     </kyn-header>
   `,
 };

@@ -5,6 +5,8 @@ export {
   HeaderFlyouts,
   HeaderFlyout,
   HeaderAvatar,
+  HeaderPanel,
+  HeaderPanelLink,
 } from './components/global/header';
 export { LocalNav, LocalNavLink } from './components/global/localNav';
 export { Footer, FooterNav, FooterNavLink } from './components/global/footer';
