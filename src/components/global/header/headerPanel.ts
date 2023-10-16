@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import HeaderPanelScss from './headerPanel.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
@@ -35,6 +35,12 @@ export class HeaderPanel extends LitElement {
   @property({ type: String })
   closeText = 'Close Panel';
 
+  /**
+   * A generated unique id
+   * @ignore
+   */
+  @state() private _id = crypto.randomUUID();
+
   override render() {
     const buttonClasses = {
       interactive: true,
@@ -53,11 +59,13 @@ export class HeaderPanel extends LitElement {
         title=${this.openText}
         aria-label=${this.openText}
         @click=${this.togglePanel}
+        aria-controls=${this._id}
+        aria-expanded=${this.open}
       >
         <slot name="button"></slot>
       </button>
 
-      <div class="${classMap(panelClasses)}" tabindex="-1">
+      <div id=${this._id} class="${classMap(panelClasses)}" tabindex="-1">
         <div class="heading">
           <button
             class="${classMap(buttonClasses)}"
