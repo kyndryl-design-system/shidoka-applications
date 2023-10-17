@@ -17,6 +17,8 @@ button {
 }
 
 .panel {
+  display: flex;
+  flex-direction: column;
   position: fixed;
   // top: calc(var(--kd-header-height) + 1px);
   top: 0;
@@ -56,7 +58,15 @@ button {
 
   &__text {
     @include typography.type-ui-01;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+}
+
+.content {
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
 kd-icon {

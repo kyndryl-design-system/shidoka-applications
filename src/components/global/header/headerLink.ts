@@ -10,7 +10,7 @@ import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderLinkScss from './headerLink.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import downIcon from '@carbon/icons/es/chevron--down/16';
+import downIcon from '@carbon/icons/es/caret--down/16';
 
 /**
  * Component for navigation links within the Header.

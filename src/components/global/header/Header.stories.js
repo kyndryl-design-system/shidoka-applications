@@ -3,8 +3,9 @@ import './';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import caratDownIcon from '@carbon/icons/es/caret--down/16';
-import appsIcon from '@carbon/icons/es/apps/24';
+import appsIcon from '@carbon/icons/es/switcher/24';
 import userAvatarIcon from '@carbon/icons/es/user--avatar/20';
+import helpIcon from '@carbon/icons/es/help/16';
 
 export default {
   title: 'Global Components/Header',
@@ -65,6 +66,7 @@ export const WithNavLinks = {
           Link 2
         </kyn-header-link>
         <kyn-header-link href="javascript:void(0)">
+          <kd-icon .icon=${helpIcon}></kd-icon>
           Link 3
 
           <kyn-header-link slot="links" href="javascript:void(0)">

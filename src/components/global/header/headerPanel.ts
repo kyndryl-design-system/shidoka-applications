@@ -72,6 +72,8 @@ export class HeaderPanel extends LitElement {
             title=${this.closeText}
             aria-label=${this.closeText}
             @click=${this.togglePanel}
+            aria-controls=${this._id}
+            aria-expanded=${this.open}
           >
             <kd-icon .icon=${closeIcon}></kd-icon>
           </button>
@@ -79,7 +81,9 @@ export class HeaderPanel extends LitElement {
           <div class="heading__text">${this.heading}</div>
         </div>
 
-        <slot></slot>
+        <div class="content">
+          <slot></slot>
+        </div>
       </div>
     `;
   }

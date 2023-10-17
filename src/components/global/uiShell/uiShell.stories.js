@@ -6,7 +6,7 @@ import '../localNav';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import sampleIcon from '@carbon/icons/es/user--avatar/20';
-import appsIcon from '@carbon/icons/es/apps/24';
+import appsIcon from '@carbon/icons/es/switcher/24';
 
 export default {
   title: 'Global Components/UI Shell',
