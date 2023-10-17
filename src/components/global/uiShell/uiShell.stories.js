@@ -1,11 +1,14 @@
 import { html } from 'lit';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import './index';
 import '../footer';
 import '../header';
 import '../localNav';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
+import switcherIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/switcher.svg';
 import sampleIcon from '@carbon/icons/es/user--avatar/20';
+import sampleIcon24 from '@carbon/icons/es/user--avatar/24';
 import appsIcon from '@carbon/icons/es/switcher/24';
 
 export default {
@@ -45,18 +48,18 @@ export const WithLocalNav = {
     <kyn-ui-shell>
       <kyn-header divider appTitle="UI Shell Example">
         <kyn-header-panel slot="left" heading="Panel Heading">
-          <kd-icon slot="button" .icon=${appsIcon}></kd-icon>
+          <span slot="button">${unsafeHTML(switcherIcon)}</span>
 
           <kyn-header-panel-link href="javascript:void(0)">
-            <kd-icon .icon=${sampleIcon}></kd-icon>
+            <kd-icon .icon=${sampleIcon24}></kd-icon>
             Link 1
           </kyn-header-panel-link>
           <kyn-header-panel-link href="javascript:void(0)">
-            <kd-icon .icon=${sampleIcon}></kd-icon>
+            <kd-icon .icon=${sampleIcon24}></kd-icon>
             Link 2
           </kyn-header-panel-link>
           <kyn-header-panel-link href="javascript:void(0)">
-            <kd-icon .icon=${sampleIcon}></kd-icon>
+            <kd-icon .icon=${sampleIcon24}></kd-icon>
             Link 3
           </kyn-header-panel-link>
         </kyn-header-panel>
@@ -108,10 +111,3 @@ export const WithLocalNav = {
     </kyn-ui-shell>
   `,
 };
-
-// UIShell.parameters = {
-//   design: {
-//     type: 'figma',
-//     url: '',
-//   },
-// };

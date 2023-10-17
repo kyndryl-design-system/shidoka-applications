@@ -1,10 +1,12 @@
 import { html } from 'lit';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import './';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
+import switcherIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/switcher.svg';
 import caratDownIcon from '@carbon/icons/es/caret--down/16';
 import appsIcon from '@carbon/icons/es/switcher/24';
-import userAvatarIcon from '@carbon/icons/es/user--avatar/20';
+import userAvatarIcon from '@carbon/icons/es/user--avatar/24';
 import helpIcon from '@carbon/icons/es/help/16';
 
 export default {
@@ -29,6 +31,15 @@ export default {
         </div>
       `,
   ],
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/A13iBXmOmvxaJaBRWwqezd/Top-Nav-1.2?node-id=518%3A17470&mode=dev',
+    },
+    // controls: {
+    //   include: Object.keys(Header.args),
+    // },
+  },
 };
 
 const args = {
@@ -144,7 +155,7 @@ export const WithPanel = {
       ?divider=${args.divider}
     >
       <kyn-header-panel slot="left" heading="Panel Heading">
-        <kd-icon slot="button" .icon=${appsIcon}></kd-icon>
+        <span slot="button">${unsafeHTML(switcherIcon)}</span>
 
         <kyn-header-panel-link href="javascript:void(0)">
           <kd-icon .icon=${userAvatarIcon}></kd-icon>
@@ -161,14 +172,4 @@ export const WithPanel = {
       </kyn-header-panel>
     </kyn-header>
   `,
-};
-
-Header.parameters = {
-  design: {
-    type: 'figma',
-    url: 'https://www.figma.com/file/zGyRSDM6stIrSjC3TOyGGQ/744667---UX-Top-Nav-%26-Hamburger-Menu-Framework?node-id=330%3A1658',
-  },
-  // controls: {
-  //   include: Object.keys(Header.args),
-  // },
 };
