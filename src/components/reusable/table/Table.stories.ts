@@ -5,7 +5,7 @@
 // Import external libraries
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import { useArgs } from '@storybook/client-api';
+import { useArgs } from '@storybook/preview-api';
 
 // Kyndryl Design System Components and Icons
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
