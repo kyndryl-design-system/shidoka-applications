@@ -1,41 +1,31 @@
 .interactive {
   border: none;
   cursor: pointer;
+  border-radius: 4px;
   transition: background-color 150ms ease-out, color 150ms ease-out,
     outline-color 150ms ease-out;
+  background: var(--kd-color-background-ui-default);
   outline: 2px solid transparent;
   outline-offset: -2px;
 
   &:hover {
-    background: var(--kd-color-background-ui-soft);
+    background: var(--kd-color-background-primary);
+    color: var(--kd-color-text-inversed);
   }
 
-  // &:hover,
   &:active {
-    color: var(--kd-color-text-link);
+    background: var(--kd-color-background-primary-pressed);
   }
 
   &:focus {
     outline-color: var(--kd-color-border-focus);
   }
 
-  // &::before {
-  //   content: '';
-  //   display: block;
-  //   position: absolute;
-  //   top: 0;
-  //   right: 0;
-  //   left: 0;
-  //   height: 2px;
-  //   transition: background-color 150ms ease-out;
-  // }
-
   &.active {
-    // color: var(--kd-color-text-link);
-    background: var(--kd-color-background-ui-soft);
+    color: var(--kd-color-text-link);
 
-    &::before {
-      background-color: var(--kd-color-background-primary);
+    &:hover {
+      color: var(--kd-color-text-inversed);
     }
   }
 }
@@ -50,10 +40,10 @@
 
   .interactive {
     position: relative;
-    border: 0;
+    // border: 0;
     cursor: pointer;
-    transition: background-color 150ms ease-out, color 150ms ease-out,
-      outline-color 150ms ease-out;
+    // transition: background-color 150ms ease-out, color 150ms ease-out,
+    //   outline-color 150ms ease-out;
   }
 
   &__content {
@@ -62,8 +52,8 @@
     right: 0;
     left: 0;
     bottom: 0;
-    padding: 8px 0;
     overflow-y: auto;
+    border-radius: 4px;
     background: var(--kd-color-background-ui-soft);
     transition: visibility 0.15s, opacity 0.15s ease-in-out,
       transform 0.15s ease-in-out;
@@ -71,6 +61,10 @@
     visibility: hidden;
     opacity: 0;
     z-index: -1;
+
+    &.slotted {
+      padding: 4px;
+    }
 
     .breakpoint-hit & {
       position: absolute;
@@ -92,11 +86,26 @@
     }
   }
 
-  &.open,
+  &.open {
+    .interactive {
+      color: var(--kd-color-text-link);
+      background: var(--kd-color-background-ui-soft);
+
+      &:hover {
+        background: var(--kd-color-background-primary);
+        color: var(--kd-color-text-inversed);
+      }
+
+      // &::before {
+      //   background-color: var(--kd-color-border-focus);
+      // }
+    }
+  }
+
   &:hover {
     .interactive {
       // color: var(--kd-color-text-link);
-      background: var(--kd-color-background-ui-soft);
+      // background: var(--kd-color-background-ui-soft);
 
       // &::before {
       //   background-color: var(--kd-color-border-focus);

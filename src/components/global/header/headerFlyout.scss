@@ -8,31 +8,56 @@
 }
 
 .btn {
+  @include typography.type-ui-05;
+  color: var(--kd-color-text-primary);
   height: 100%;
-  padding: 0 5px;
-  background: none;
+  padding: 0 8px;
+  // background: none;
 }
 
 .menu {
   .interactive {
     ::slotted(div[slot='button']),
     ::slotted(span[slot='button']) {
-      @include typography.type-ui-05;
-      color: var(--kd-color-text-primary);
+      // @include typography.type-ui-05;
+      // color: var(--kd-color-text-primary);
     }
   }
 
-  &.open,
   &:hover {
     .interactive {
       ::slotted(div[slot='button']),
       ::slotted(span[slot='button']) {
-        color: var(--kd-color-text-link);
+        // color: var(--kd-color-text-link);
       }
 
       ::slotted(kyn-header-avatar) {
         background: none;
-        border-color: var(--kd-color-border-brand);
+        border-color: var(--kd-color-border-inverse);
+        color: var(--kd-color-text-inversed);
+      }
+    }
+  }
+
+  &.open {
+    .interactive {
+      ::slotted(div[slot='button']),
+      ::slotted(span[slot='button']) {
+        // color: var(--kd-color-text-link);
+      }
+
+      ::slotted(kyn-header-avatar) {
+        color: var(--kd-color-text-brand);
+        background: var(--kd-color-background-ui-default);
+        border: 1px solid var(--kd-color-border-brand);
+      }
+
+      &:hover {
+        ::slotted(kyn-header-avatar) {
+          background: none;
+          border-color: var(--kd-color-border-inverse);
+          color: var(--kd-color-text-inversed);
+        }
       }
     }
   }
@@ -40,18 +65,18 @@
   .interactive:focus {
     ::slotted(kyn-header-avatar) {
       background: var(--kd-color-background-primary);
-      border-color: var(--kd-color-border-focus);
+      border-color: var(--kd-color-border-inverse);
       color: var(--kd-color-text-inversed);
     }
   }
 
-  .interactive:active {
-    ::slotted(kyn-header-avatar) {
-      background: var(--kd-color-border-brand);
-      border-color: var(--kd-color-border-brand);
-      color: var(--kd-color-text-inversed);
-    }
-  }
+  // .interactive:active {
+  //   ::slotted(kyn-header-avatar) {
+  //     background: var(--kd-color-border-brand);
+  //     border-color: var(--kd-color-border-brand);
+  //     color: var(--kd-color-text-inversed);
+  //   }
+  // }
 }
 
 slot[name='button'] {

@@ -73,14 +73,14 @@ export const WithNavLinks = {
     >
       <kyn-header-nav>
         <kyn-header-link href="javascript:void(0)"> Link 1 </kyn-header-link>
-        <kyn-header-link href="javascript:void(0)" isActive divider>
+        <kyn-header-link href="javascript:void(0)" isActive>
           Link 2
         </kyn-header-link>
         <kyn-header-link href="javascript:void(0)">
           <kd-icon .icon=${helpIcon}></kd-icon>
           Link 3
 
-          <kyn-header-link slot="links" href="javascript:void(0)">
+          <kyn-header-link slot="links" href="javascript:void(0)" divider>
             Sub Link # 1
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
@@ -117,28 +117,7 @@ export const WithFlyouts = {
         <kyn-header-flyout assistiveText="My Account">
           <kyn-header-avatar initials="KB" slot="button"></kyn-header-avatar>
 
-          <kyn-header-link href="javascript:void(0)">
-            Logout
-            <svg
-              style="margin-left: 8px;"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M6.1703 3H10.5635V3.94118H6.62286L5.94118 4.79393V17.2061L6.62286 18.0588H10.5635V19H6.1703L5 17.536V4.46398L6.1703 3Z"
-                fill="#3D3C3C"
-              />
-              <path
-                d="M19.4238 10.6914L14.6639 15.3827L13.9829 14.7115L17.5909 11.1605H8V10.2222H17.5909L13.9829 6.65241L14.6639 6L19.4238 10.6914Z"
-                fill="#FF290E"
-              />
-            </svg>
-          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)"> Logout </kyn-header-link>
         </kyn-header-flyout>
       </kyn-header-flyouts>
     </kyn-header>

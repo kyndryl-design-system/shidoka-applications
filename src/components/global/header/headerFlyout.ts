@@ -1,5 +1,10 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  state,
+  queryAssignedElements,
+} from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
@@ -33,6 +38,13 @@ export class HeaderFlyout extends LitElement {
   @state()
   breakpointHit = false;
 
+  /**
+   * Queries any slotted HTML elements.
+   * @ignore
+   */
+  @queryAssignedElements()
+  slottedElements!: Array<HTMLElement>;
+
   override render() {
     const classes = {
       menu: true,
@@ -43,6 +55,7 @@ export class HeaderFlyout extends LitElement {
     const contentClasses = {
       menu__content: true,
       'menu__content--left': this.anchorLeft,
+      slotted: this.slottedElements.length,
     };
 
     return html`

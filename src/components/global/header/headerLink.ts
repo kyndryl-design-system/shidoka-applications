@@ -48,7 +48,7 @@ export class HeaderLink extends LitElement {
   @state()
   level = 1;
 
-  /** Adds a 1px shadow to the bottom of the link for small screens/full-size menu view. */
+  /** Adds a 1px shadow to the bottom of the link. */
   @property({ type: Boolean })
   divider = false;
 
@@ -92,6 +92,7 @@ export class HeaderLink extends LitElement {
     const slotClasses = {
       menu__content: this.breakpointHit,
       static: !this.breakpointHit,
+      slotted: this.slottedElements.length,
     };
 
     return html`
