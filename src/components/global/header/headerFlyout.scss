@@ -9,28 +9,22 @@
 
 .btn {
   @include typography.type-ui-05;
+  display: flex;
+  align-items: center;
   color: var(--kd-color-text-primary);
   height: 100%;
   padding: 0 8px;
-  // background: none;
 }
 
 .menu {
   .interactive {
     ::slotted(div[slot='button']),
     ::slotted(span[slot='button']) {
-      // @include typography.type-ui-05;
-      // color: var(--kd-color-text-primary);
     }
   }
 
   &:hover {
     .interactive {
-      ::slotted(div[slot='button']),
-      ::slotted(span[slot='button']) {
-        // color: var(--kd-color-text-link);
-      }
-
       ::slotted(kyn-header-avatar) {
         background: none;
         border-color: var(--kd-color-border-inverse);
@@ -41,11 +35,6 @@
 
   &.open {
     .interactive {
-      ::slotted(div[slot='button']),
-      ::slotted(span[slot='button']) {
-        // color: var(--kd-color-text-link);
-      }
-
       ::slotted(kyn-header-avatar) {
         color: var(--kd-color-text-brand);
         background: var(--kd-color-background-ui-default);
@@ -69,18 +58,19 @@
       color: var(--kd-color-text-inversed);
     }
   }
-
-  // .interactive:active {
-  //   ::slotted(kyn-header-avatar) {
-  //     background: var(--kd-color-border-brand);
-  //     border-color: var(--kd-color-border-brand);
-  //     color: var(--kd-color-text-inversed);
-  //   }
-  // }
 }
 
 slot[name='button'] {
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+kd-icon {
+  margin-left: 6px;
+  transition: transform 150ms ease-out;
+
+  .open & {
+    transform: rotate(-180deg);
+  }
 }

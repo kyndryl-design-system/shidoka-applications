@@ -4,8 +4,6 @@ import './';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import switcherIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/switcher.svg';
-import caratDownIcon from '@carbon/icons/es/caret--down/16';
-import appsIcon from '@carbon/icons/es/switcher/24';
 import userAvatarIcon from '@carbon/icons/es/user--avatar/24';
 import helpIcon from '@carbon/icons/es/help/16';
 
@@ -104,7 +102,6 @@ export const WithFlyouts = {
       <kyn-header-flyouts>
         <kyn-header-flyout>
           <span slot="button">Sign in</span>
-          <kd-icon slot="button" .icon="${caratDownIcon}"></kd-icon>
 
           <div>
             <kyn-header-link href="javascript:void(0)"> Login </kyn-header-link>
@@ -114,7 +111,7 @@ export const WithFlyouts = {
           </div>
         </kyn-header-flyout>
 
-        <kyn-header-flyout assistiveText="My Account">
+        <kyn-header-flyout assistiveText="My Account" hideArrow>
           <kyn-header-avatar initials="KB" slot="button"></kyn-header-avatar>
 
           <kyn-header-link href="javascript:void(0)"> Logout </kyn-header-link>

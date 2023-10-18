@@ -9,6 +9,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderFlyoutScss from './headerFlyout.scss';
+import caratDownIcon from '@carbon/icons/es/caret--down/16';
 
 /**
  * Component for header flyout items.
@@ -26,6 +27,10 @@ export class HeaderFlyout extends LitElement {
   /** Anchor flyout menu to the left edge of the button instead of the right edge. */
   @property({ type: Boolean })
   anchorLeft = false;
+
+  /** Hides the arrow. */
+  @property({ type: Boolean })
+  hideArrow = false;
 
   /** Button assistive text, title + aria-label. */
   @property({ type: String })
@@ -71,6 +76,10 @@ export class HeaderFlyout extends LitElement {
           @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
         >
           <slot name="button"></slot>
+
+          ${!this.hideArrow
+            ? html` <kd-icon slot="button" .icon="${caratDownIcon}"></kd-icon> `
+            : null}
         </button>
         <div class=${classMap(contentClasses)}><slot></slot></div>
       </div>

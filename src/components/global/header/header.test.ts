@@ -5,6 +5,8 @@ import {
   HeaderFlyouts,
   HeaderFlyout,
   HeaderAvatar,
+  HeaderPanel,
+  HeaderPanelLink,
 } from '../../../../dist/index.js';
 
 import { assert } from '@open-wc/testing';
@@ -48,5 +50,19 @@ suite('kyn-header-avatar', () => {
   test('is defined', () => {
     const el = document.createElement('kyn-header-avatar');
     assert.instanceOf(el, HeaderAvatar);
+  });
+});
+
+suite('kyn-header-panel', () => {
+  test('is defined', () => {
+    const el = document.createElement('kyn-header-panel');
+    assert.instanceOf(el, HeaderPanel);
+  });
+});
+
+suite('kyn-header-panel-link', () => {
+  test('is defined', () => {
+    const el = document.createElement('kyn-header-panel-link');
+    assert.instanceOf(el, HeaderPanelLink);
   });
 });

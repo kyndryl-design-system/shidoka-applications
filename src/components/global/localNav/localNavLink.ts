@@ -157,30 +157,6 @@ export class LocalNavLink extends LitElement {
     });
     this.dispatchEvent(event);
   }
-
-  // private onNavLinkHover(e: Event) {
-  //   const target: any = e.currentTarget;
-  //   const headerHeight = 56,
-  //     linkHeight = 38,
-  //     scrollTop = document
-  //       .querySelector('kyn-local-nav')!
-  //       .shadowRoot?.querySelector('nav ul')!.scrollTop;
-  //   const flyoutHeight = this.isSlotted ? linkHeight * this.numSublinks : 0;
-
-  //   // calculate flyout menu positioning and max height for overflow
-  //   let top =
-  //     target!.offsetTop - scrollTop! + headerHeight + flyoutHeight >
-  //     window?.innerHeight
-  //       ? window?.innerHeight - flyoutHeight - headerHeight
-  //       : target!.offsetTop - scrollTop!;
-  //   top = top < headerHeight ? headerHeight : top;
-  //   const maxHeight = window?.innerHeight - headerHeight;
-
-  //   this.flyoutStyles = {
-  //     top: top + 'px',
-  //     'max-height': maxHeight + 'px',
-  //   };
-  // }
 }
 
 declare global {

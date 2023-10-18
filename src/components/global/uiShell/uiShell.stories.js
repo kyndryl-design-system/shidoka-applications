@@ -9,7 +9,6 @@ import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import switcherIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/switcher.svg';
 import sampleIcon from '@carbon/icons/es/user--avatar/20';
 import sampleIcon24 from '@carbon/icons/es/user--avatar/24';
-import appsIcon from '@carbon/icons/es/switcher/24';
 
 export default {
   title: 'Global Components/UI Shell',

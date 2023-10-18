@@ -63,16 +63,8 @@
   &--1 {
     height: 38px;
 
-    &:hover {
-      // color: var(--kd-color-text-link);
-    }
-
     .breakpoint-hit & {
       padding: 0 8px;
-
-      // &::after {
-      //   content: none;
-      // }
 
       &:focus::before {
         background-color: var(--kd-color-border-focus);
@@ -87,10 +79,6 @@
   &--2 {
     background: var(--kd-color-background-ui-soft);
     height: 38px;
-
-    &:hover {
-      // color: var(--kd-color-text-link);
-    }
   }
 
   &--3 {
@@ -116,6 +104,11 @@ slot {
 
 kd-icon {
   margin-left: 6px;
+  transition: transform 150ms ease-out;
+
+  .open & {
+    transform: rotate(-180deg);
+  }
 }
 
 .static {
