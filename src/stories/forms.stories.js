@@ -132,7 +132,7 @@ export const Default = {
 
         <kyn-date-picker
           size="md"
-          name=""
+          name="date-picker"
           datePickerType="single"
           caption="Date picker example"
           invalidText=""
@@ -150,7 +150,7 @@ export const Default = {
 
         <kyn-date-picker
           size="md"
-          name=""
+          name="date-time-picker"
           datePickerType="date-time"
           caption="Date time picker example"
           invalidText=""
@@ -187,7 +187,9 @@ export const Default = {
         <kd-button
           @on-click=${(e) => {
             action('submit')(e);
-            console.log(new FormData(document.querySelector('form')));
+            const formData = new FormData(document.querySelector('form'));
+            console.log(formData);
+            console.log(`date-range: ${formData.get('date-range')}`);
           }}
         >
           Submit
