@@ -1,3 +1,12 @@
+# [1.0.0-beta.64](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.63...v1.0.0-beta.64) (2023-10-19)
+
+
+### Bug Fixes
+
+* Date range value not append properly to formdata ([809fa4e](https://github.com/kyndryl-design-system/shidoka-applications/commit/809fa4e4132a883a1881bb4805eef4464ed3384a))
+* remove unwanted code from forms.strories.js ([a06bb6d](https://github.com/kyndryl-design-system/shidoka-applications/commit/a06bb6d5317a0ef8a5171926c603c45f3f36408f))
+* update combination value string - to : ([7c210d5](https://github.com/kyndryl-design-system/shidoka-applications/commit/7c210d5eede92ef2553184bf81fa8c672ff13c5d))
+
 # [1.0.0-beta.63](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.62...v1.0.0-beta.63) (2023-10-09)
 
 
