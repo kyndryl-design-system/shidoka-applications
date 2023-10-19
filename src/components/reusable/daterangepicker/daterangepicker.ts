@@ -180,8 +180,6 @@ export class DateRangePicker extends LitElement {
           : false;
     }
     if (changedProps.has('startDate')) {
-      // set form data value
-      this.internals.setFormValue(`${this.name}-start`, this.startDate);
       this.internals.setValidity({});
       this.invalidText = '';
       this.internalValidationMsg = '';
@@ -208,7 +206,6 @@ export class DateRangePicker extends LitElement {
       }
     }
     if (changedProps.has('endDate')) {
-      this.internals.setFormValue(`${this.name}-end`, this.endDate);
       this.internals.setValidity({});
       this.invalidText = '';
       this.internalValidationMsg = '';
@@ -300,6 +297,10 @@ export class DateRangePicker extends LitElement {
   }
 
   private validateStartEndDate(): void {
+    // Save combine values to form data
+    const combineVals = `${this.startDate}:${this.endDate}`;
+    this.internals.setFormValue(combineVals);
+
     if (this.startDate > this.endDate) {
       this.internals.setValidity(
         { patternMismatch: true },
