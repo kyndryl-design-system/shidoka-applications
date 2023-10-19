@@ -300,11 +300,8 @@ export class DateRangePicker extends LitElement {
 
   private validateStartEndDate(): void {
     // Save combine values to form data
-    const formData = new FormData();
-    const dateName = this.name ?? 'date-range';
-    const combineVal = `${this.startDate} - ${this.endDate}`;
-    formData.append(dateName, combineVal);
-    this.internals.setFormValue(formData);
+    const combineVals = `${this.startDate}:${this.endDate}`;
+    this.internals.setFormValue(combineVals);
 
     if (this.startDate > this.endDate) {
       this.internals.setValidity(
