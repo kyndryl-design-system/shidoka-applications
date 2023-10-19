@@ -187,9 +187,7 @@ export const Default = {
         <kd-button
           @on-click=${(e) => {
             action('submit')(e);
-            const formData = new FormData(document.querySelector('form'));
-            console.log(formData);
-            console.log(`date-range: ${formData.get('date-range')}`);
+            console.log(new FormData(document.querySelector('form')));
           }}
         >
           Submit
