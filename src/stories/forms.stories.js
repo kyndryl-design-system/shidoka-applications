@@ -132,7 +132,7 @@ export const Default = {
 
         <kyn-date-picker
           size="md"
-          name=""
+          name="date-picker"
           datePickerType="single"
           caption="Date picker example"
           invalidText=""
@@ -150,7 +150,7 @@ export const Default = {
 
         <kyn-date-picker
           size="md"
-          name=""
+          name="date-time-picker"
           datePickerType="date-time"
           caption="Date time picker example"
           invalidText=""
