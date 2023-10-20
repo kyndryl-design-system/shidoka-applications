@@ -4,7 +4,7 @@ import FooterNavScss from './footerNav.scss';
 
 /**
  * Container for footer navigation links.
- * @slot unnamed - This element has a slot.
+ * @slot unnamed - Slot for footer links.
  */
 @customElement('kyn-footer-nav')
 export class FooterNav extends LitElement {

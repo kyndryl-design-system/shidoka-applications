@@ -1,11 +1,16 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  state,
+  queryAssignedElements,
+} from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderScss from './header.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import logo from '../../../assets/svg/bridge-logo-large.svg';
+import logo from '@kyndryl-design-system/shidoka-foundation/assets/svg/kyndryl-logo.svg';
 import overflowIcon from '@carbon/icons/es/overflow-menu--vertical/24';
 
 /**
@@ -14,6 +19,7 @@ import overflowIcon from '@carbon/icons/es/overflow-menu--vertical/24';
  * @fires on-root-link-click - Captures the logo link click event and emits the original event details.
  * @slot unnamed - The default slot for all empty space right of the logo/title.
  * @slot logo - Slot for the logo, will overwrite the default logo.
+ * @slot left - Slot left of the logo, intended for a header panel.
  */
 @customElement('kyn-header')
 export class Header extends LitElement {
@@ -48,15 +54,35 @@ export class Header extends LitElement {
   @state()
   menuOpen = false;
 
+  /** Queries for slotted header-nav.
+   * @internal
+   */
+  @queryAssignedElements({ selector: 'kyn-header-nav' })
+  navEls!: any;
+
+  /** Queries for all slotted elements.
+   * @internal
+   */
+  @queryAssignedElements()
+  assignedElements!: any;
+
+  /** Queries for elements in left slot.
+   * @internal
+   */
+  @queryAssignedElements({ slot: 'left' })
+  leftEls!: any;
+
   override render() {
     const classes = {
       header: true,
       'breakpoint-hit': this.breakpointHit,
       divider: this.divider,
+      'left-slotted': this.leftEls.length,
     };
 
     return html`
       <header class="${classMap(classes)}">
+        <slot name="left"></slot>
         <a
           href="${this.rootUrl}"
           class="logo-link interactive"
@@ -68,9 +94,9 @@ export class Header extends LitElement {
         </a>
 
         <div class="header__right">
-          <slot></slot>
+          <slot @slotchange=${this.handleSlotChange}></slot>
 
-          ${!this.breakpointHit
+          ${!this.breakpointHit && this.navEls.length
             ? html`
                 <div class="menu">
                   <button
@@ -108,6 +134,10 @@ export class Header extends LitElement {
     );
 
     super.disconnectedCallback();
+  }
+
+  private handleSlotChange() {
+    this.requestUpdate();
   }
 
   private testBreakpoint() {

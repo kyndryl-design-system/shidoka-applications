@@ -10,7 +10,7 @@ import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderLinkScss from './headerLink.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import downIcon from '@carbon/icons/es/chevron--down/16';
+import downIcon from '@carbon/icons/es/caret--down/16';
 
 /**
  * Component for navigation links within the Header.
@@ -22,11 +22,15 @@ import downIcon from '@carbon/icons/es/chevron--down/16';
 export class HeaderLink extends LitElement {
   static override styles = HeaderLinkScss;
 
+  /** Link open state. */
+  @property({ type: Boolean })
+  open = false;
+
   /** Link url. */
   @property({ type: String })
   href = '';
 
-  /** Defines a target attribute for where to load the URL. Possible options include "_self" (deafult), "_blank", "_parent", "_top" */
+  /** Defines a target attribute for where to load the URL. Possible options include "_self" (default), "_blank", "_parent", "_top" */
   @property({ type: String })
   target = '_self' as const;
 
@@ -44,7 +48,7 @@ export class HeaderLink extends LitElement {
   @state()
   level = 1;
 
-  /** Adds a 1px shadow to the bottom of the link for small screens/full-size menu view. */
+  /** Adds a 1px shadow to the bottom of the link. */
   @property({ type: Boolean })
   divider = false;
 
@@ -74,6 +78,7 @@ export class HeaderLink extends LitElement {
       menu: this.isSlotted,
       'breakpoint-hit': this.breakpointHit,
       divider: this.divider,
+      open: this.open,
     };
 
     const linkClasses = {
@@ -87,16 +92,21 @@ export class HeaderLink extends LitElement {
     const slotClasses = {
       menu__content: this.breakpointHit,
       static: !this.breakpointHit,
+      slotted: this.slottedElements.length,
     };
 
     return html`
-      <div class="${classMap(classes)}">
+      <div
+        class="${classMap(classes)}"
+        @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
+      >
         <a
           target=${this.target}
           rel=${this.rel}
           href=${this.href}
           class=${classMap(linkClasses)}
           @click=${(e: Event) => this.handleClick(e)}
+          @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
         >
           <slot></slot>
 
@@ -109,11 +119,37 @@ export class HeaderLink extends LitElement {
     `;
   }
 
+  private handlePointerEnter(e: PointerEvent) {
+    if (e.pointerType === 'mouse') {
+      this.open = true;
+    }
+  }
+
+  private handlePointerLeave(e: PointerEvent) {
+    if (e.pointerType === 'mouse') {
+      this.open = false;
+    }
+  }
+
   private handleClick(e: Event) {
+    let preventDefault = false;
+
+    if (this.slottedElements.length) {
+      preventDefault = true;
+      e.preventDefault();
+      this.open = !this.open;
+    }
+
     const event = new CustomEvent('on-click', {
-      detail: { origEvent: e },
+      detail: { origEvent: e, defaultPrevented: preventDefault },
     });
     this.dispatchEvent(event);
+  }
+
+  private handleClickOut(e: Event) {
+    if (!e.composedPath().includes(this)) {
+      this.open = false;
+    }
   }
 
   private determineIfSlotted() {
@@ -137,6 +173,8 @@ export class HeaderLink extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
 
+    document.addEventListener('click', (e) => this.handleClickOut(e));
+
     this.testBreakpoint();
     window?.addEventListener(
       'resize',
@@ -147,6 +185,8 @@ export class HeaderLink extends LitElement {
   }
 
   override disconnectedCallback() {
+    document.removeEventListener('click', (e) => this.handleClickOut(e));
+
     window?.removeEventListener(
       'resize',
       debounce(() => {
