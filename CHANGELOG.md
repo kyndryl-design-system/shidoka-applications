@@ -1,3 +1,33 @@
+# [1.0.0-beta.65](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.64...v1.0.0-beta.65) (2023-10-20)
+
+
+### Bug Fixes
+
+* header and local nav styles ([364d4be](https://github.com/kyndryl-design-system/shidoka-applications/commit/364d4beb496da768040fed13ad969f6527bd37c5))
+* header style tweaks and cleanup ([c736800](https://github.com/kyndryl-design-system/shidoka-applications/commit/c7368002a1c0517699fe3c74d60871c3208e655d))
+* **header-panel:** add aria-expanded ([344f878](https://github.com/kyndryl-design-system/shidoka-applications/commit/344f8783406e6e4ad92ffc7a6b2d87cd26b20ebd))
+* **header-panel:** correct type styles ([f621d19](https://github.com/kyndryl-design-system/shidoka-applications/commit/f621d19ecd1125678280ed02f6b57b8cce511768))
+* **header-panel:** full height when wrapped ([85dc624](https://github.com/kyndryl-design-system/shidoka-applications/commit/85dc624b26060f8ee4721a57b43633637e123341))
+* **header-panel:** heading bg color ([b5b8274](https://github.com/kyndryl-design-system/shidoka-applications/commit/b5b8274dd4389d5833180b033df93d077ec7f203))
+* **header:** change flyout open/close to clicks ([c093dff](https://github.com/kyndryl-design-system/shidoka-applications/commit/c093dff32615d1a3036f2157963cc5e67b158509))
+* **header:** make hover events mouse only ([8b42f2c](https://github.com/kyndryl-design-system/shidoka-applications/commit/8b42f2c10fb07589ee705ca32072b029aaf742a8))
+* **header:** menu shadows ([d717dd8](https://github.com/kyndryl-design-system/shidoka-applications/commit/d717dd8e5cae453c8a95a23e7601e43ecab1a5fc))
+* **header:** new interactive states ([3d97cc5](https://github.com/kyndryl-design-system/shidoka-applications/commit/3d97cc5c791934eb98562da4072f28cdb611c29c))
+* **header:** normalize focus state ([af722f0](https://github.com/kyndryl-design-system/shidoka-applications/commit/af722f0b7b7bbb229ca8f3ba7408c5bbcf7008ab))
+* **header:** overflow, icons, alignment ([0ce80ce](https://github.com/kyndryl-design-system/shidoka-applications/commit/0ce80ce1e9ea3c84177a7b8ac970696ecb5441af))
+* **header:** slotchange typo ([6a69369](https://github.com/kyndryl-design-system/shidoka-applications/commit/6a693692772b6d841b7350a7445d486c90eabef2))
+* **header:** toggle menus on hover also ([15ddb8d](https://github.com/kyndryl-design-system/shidoka-applications/commit/15ddb8d34021d97a5377c011908a9490bea0434c))
+* local nav expand transition ([169f933](https://github.com/kyndryl-design-system/shidoka-applications/commit/169f933aaa00084ef27ac054e018e7d494ef8011))
+* **local-nav-link:** add border-radius to ul ([013ebed](https://github.com/kyndryl-design-system/shidoka-applications/commit/013ebed74768c5a75bc6823ca67add1126fc3368))
+* **local-nav:** left align pin button ([61ebe6a](https://github.com/kyndryl-design-system/shidoka-applications/commit/61ebe6a140236c21d4c7564f6e67fa444c56286e))
+
+
+### Features
+
+* **footer:** add copyright slot ([32fdde8](https://github.com/kyndryl-design-system/shidoka-applications/commit/32fdde8dc401352a537369c258593641879afbc6))
+* **header:** initial header panel subcomponents ([4f1df49](https://github.com/kyndryl-design-system/shidoka-applications/commit/4f1df4988a5a6f1c8ac3d0a9a02baf59f614928b))
+* **local-nav:** initial commit ([7b6f814](https://github.com/kyndryl-design-system/shidoka-applications/commit/7b6f814d87a729a1239a47f04dc7ddc07736d59e))
+
 # [1.0.0-beta.64](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.63...v1.0.0-beta.64) (2023-10-19)
 
 
