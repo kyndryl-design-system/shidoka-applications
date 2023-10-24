@@ -82,13 +82,15 @@ export class Header extends LitElement {
 
     return html`
       <header class="${classMap(classes)}">
-        <slot name="left"></slot>
+        <slot name="left" @slotchange=${this.handleSlotChange}></slot>
         <a
           href="${this.rootUrl}"
           class="logo-link interactive"
           @click="${(e: Event) => this.handleRootLinkClick(e)}"
         >
-          <slot name="logo"> ${unsafeHTML(logo)} </slot>
+          <slot name="logo" @slotchange=${this.handleSlotChange}>
+            ${unsafeHTML(logo)}
+          </slot>
 
           <span class="title">${this.appTitle}</span>
         </a>
