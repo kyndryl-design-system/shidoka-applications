@@ -1,3 +1,10 @@
+# [1.0.0-beta.67](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.66...v1.0.0-beta.67) (2023-10-24)
+
+
+### Bug Fixes
+
+* local nav zindex ([978313b](https://github.com/kyndryl-design-system/shidoka-applications/commit/978313b75b77abf4ff542e4cae54b770ee8b488f))
+
 # [1.0.0-beta.66](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.65...v1.0.0-beta.66) (2023-10-20)
 
 
