@@ -1,3 +1,10 @@
+# [1.0.0-beta.68](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.67...v1.0.0-beta.68) (2023-10-25)
+
+
+### Bug Fixes
+
+* test foundation as peerdep ([66ae825](https://github.com/kyndryl-design-system/shidoka-applications/commit/66ae82538533bc264c9748d5dbfac3fa3a7413d2))
+
 # [1.0.0-beta.67](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.66...v1.0.0-beta.67) (2023-10-24)
 
 
