@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import CheckboxScss from './checkbox.scss';
 
 /**
@@ -48,10 +49,23 @@ export class Checkbox extends LitElement {
   @property({ type: Boolean })
   invalid = false;
 
+  /**
+   * Determines whether the label should be hidden from visual view but remain accessible
+   * to screen readers for accessibility purposes.
+   */
+  @property({ type: Boolean })
+  visiblyHidden = false;
+
+  /** Determines whether the checkbox is in an indeterminate state. */
+  @property({ type: Boolean })
+  indeterminate = false;
+
   override render() {
     return html`
       <label ?disabled=${this.disabled} ?invalid=${this.invalid}>
-        <span><slot></slot></span>
+        <span class=${classMap({ 'sr-only': this.visiblyHidden })}
+          ><slot></slot
+        ></span>
         <input
           type="checkbox"
           name=${this.name}
@@ -62,6 +76,7 @@ export class Checkbox extends LitElement {
           ?disabled=${this.disabled}
           ?invalid=${this.invalid}
           @change=${(e: any) => this.handleChange(e)}
+          .indeterminate=${this.indeterminate}
         />
       </label>
     `;

@@ -18,6 +18,9 @@ import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
 export class TableCell extends LitElement {
   static override styles = [styles];
 
+  @property({ type: Boolean })
+  dense = false;
+
   /** Determines the text alignment of the table cell's content. */
   @property({ type: String, reflect: true })
   align: TABLE_CELL_ALIGN = TABLE_CELL_ALIGN.LEFT;
@@ -25,6 +28,24 @@ export class TableCell extends LitElement {
   /** Reflects the sort direction when used within sortable columns. */
   @property({ type: String })
   sortDirection: SORT_DIRECTION = SORT_DIRECTION.ASC;
+
+  @property({ type: Number, reflect: true, attribute: 'colspan'})
+  colSpan = 1;
+
+  // updated(changedProperties) {
+  //   super.updated(changedProperties);
+  //   if (changedProperties.has('colSpan')) {
+  //     this.applyColSpan();
+  //   }
+  // }
+
+  // private applyColSpan() {
+  //   if (this.colSpan && this.colSpan > 1) {
+  //     this.setAttribute('colspan', this.colSpan.toString());
+  //   } else {
+  //     this.removeAttribute('colspan');
+  //   }
+  // }
 
   override render() {
     return html`

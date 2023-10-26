@@ -1,3 +1,10 @@
+# [1.0.0-beta.69](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.68...v1.0.0-beta.69) (2023-10-26)
+
+
+### Bug Fixes
+
+* **local-nav-link:** prevent icon shrink ([5c38e9e](https://github.com/kyndryl-design-system/shidoka-applications/commit/5c38e9e06825f4d1d95d1b17acbc2d4b18011dbb))
+
 # [1.0.0-beta.68](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.67...v1.0.0-beta.68) (2023-10-25)
 
 

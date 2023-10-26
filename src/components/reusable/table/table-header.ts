@@ -22,6 +22,9 @@ import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
 export class TableHeader extends LitElement {
   static override styles = [styles];
 
+  @property({ type: Boolean })
+  dense = false;
+
   /**
    * Specifies the alignment of the content within the table header.
    * Options: 'left', 'center', 'right'
