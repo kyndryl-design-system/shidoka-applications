@@ -43,7 +43,7 @@ export class ActionMenu extends LitElement {
       <kd-button
         kind="tertiary"
         type="button"
-        size="medium"
+        size="small"
         iconposition="center"
         @on-click=${(e: Event) => this.toggleMenu(e)}
       >

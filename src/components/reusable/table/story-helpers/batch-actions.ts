@@ -27,7 +27,7 @@ export class BatchActions extends LitElement {
         kind="primary-app"
         type="button"
         destructive
-        size="medium"
+        size="small"
         @on-click=${this.handleDelete}
       >
         Delete
@@ -37,7 +37,7 @@ export class BatchActions extends LitElement {
         <kd-button
           kind="secondary"
           type="button"
-          size="medium"
+          size="small"
           iconposition="left"
         >
           <kd-icon slot="icon" .icon=${exportIcon}></kd-icon>
@@ -47,7 +47,7 @@ export class BatchActions extends LitElement {
         <kd-button
           kind="secondary"
           type="button"
-          size="medium"
+          size="small"
           iconposition="right"
           description=""
           href=""
@@ -59,7 +59,7 @@ export class BatchActions extends LitElement {
         <kd-button
           kind="tertiary"
           type="button"
-          size="medium"
+          size="small"
           iconposition="center"
         >
           <kd-icon slot="icon" .icon=${overflowIcon}></kd-icon>

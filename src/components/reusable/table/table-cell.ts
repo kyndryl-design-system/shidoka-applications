@@ -29,23 +29,8 @@ export class TableCell extends LitElement {
   @property({ type: String })
   sortDirection: SORT_DIRECTION = SORT_DIRECTION.ASC;
 
-  @property({ type: Number, reflect: true, attribute: 'colspan'})
+  @property({ type: Number, reflect: true, attribute: 'colspan' })
   colSpan = 1;
-
-  // updated(changedProperties) {
-  //   super.updated(changedProperties);
-  //   if (changedProperties.has('colSpan')) {
-  //     this.applyColSpan();
-  //   }
-  // }
-
-  // private applyColSpan() {
-  //   if (this.colSpan && this.colSpan > 1) {
-  //     this.setAttribute('colspan', this.colSpan.toString());
-  //   } else {
-  //     this.removeAttribute('colspan');
-  //   }
-  // }
 
   override render() {
     return html`

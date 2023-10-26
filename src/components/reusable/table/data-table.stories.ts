@@ -5,7 +5,7 @@
 // Import external libraries
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import { useArgs } from '@storybook/client-api';
+import { useArgs } from '@storybook/preview-api';
 
 // Kyndryl Design System Components and Icons
 import '@kyndryl-design-system/shidoka-foundation/components/button';
@@ -532,6 +532,7 @@ export const DataTable: Story = {
     pageNumber: 1,
     pageSizeOptions: [5, 10, 20, 30, 40, 50, 100],
     selectedRows: [],
+    checkboxSelection: true,
   },
   render: (args) => {
     const [, updateArgs] = useArgs();

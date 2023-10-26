@@ -27,10 +27,6 @@ export class TableRow extends LitElement {
   @property({ type: Boolean, reflect: true })
   expanded = false;
 
-
-  // @property({ type: String })
-  // rowId = '';
-
   override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('click', this.handleClick as EventListener);
@@ -45,7 +41,6 @@ export class TableRow extends LitElement {
     const event = new CustomEvent('on-row-clicked', {
       bubbles: true,
       composed: true,
-      // detail: { rowId: this.rowId },
     });
     this.dispatchEvent(event);
   }
