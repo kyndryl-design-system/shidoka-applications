@@ -1,3 +1,10 @@
+# [1.0.0-beta.70](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.69...v1.0.0-beta.70) (2023-10-27)
+
+
+### Bug Fixes
+
+* **header-panel:** z-index ([4beb274](https://github.com/kyndryl-design-system/shidoka-applications/commit/4beb274f2d4b45a24d2479fdfd8ccd6dbd6200ce))
+
 # [1.0.0-beta.69](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.68...v1.0.0-beta.69) (2023-10-26)
 
 
