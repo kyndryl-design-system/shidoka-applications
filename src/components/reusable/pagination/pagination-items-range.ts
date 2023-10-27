@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit';
-import { property, customElement } from 'lit/decorators.js';
+import { property, customElement, state } from 'lit/decorators.js';
 
-import { SHOWING_TEXT, OF_TEXT, ITEMS_TEXT } from './constants';
+import { SHOWING_TEXT, OF_TEXT, ITEMS_TEXT, BREAKPOINT } from './constants';
 import styles from './pagination-items-range.scss';
 
 /**
@@ -27,13 +27,22 @@ export class PaginationItemsRange extends LitElement {
   @property({ type: Number })
   pageSize = 10;
 
+  /**
+   * Determines the device type the component is being rendered on.
+   * @ignore
+   */
+  @state()
+  isMobile = window.innerWidth < BREAKPOINT;
+
   private get itemsRangeText(): string {
     const baseTotalItemsByPage = this.pageSize * this.pageNumber;
     const lowerRangeItemsCount = baseTotalItemsByPage - this.pageSize + 1;
     const higherRangeItemsCount =
       baseTotalItemsByPage < this.count ? baseTotalItemsByPage : this.count;
 
-    return `${SHOWING_TEXT} ${lowerRangeItemsCount} - ${higherRangeItemsCount} ${OF_TEXT} ${this.count} ${ITEMS_TEXT}`;
+    return this.isMobile
+      ? `${lowerRangeItemsCount}\u2014${higherRangeItemsCount} ${OF_TEXT} ${this.count}`
+      : `${SHOWING_TEXT} ${lowerRangeItemsCount} \u2014 ${higherRangeItemsCount} ${OF_TEXT} ${this.count} ${ITEMS_TEXT}`;
   }
 
   override render() {

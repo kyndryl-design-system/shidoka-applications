@@ -1,5 +1,9 @@
 import { html, LitElement } from 'lit';
-import { customElement, queryAssignedElements } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  queryAssignedElements,
+} from 'lit/decorators.js';
 
 import styles from './table-head.scss';
 
@@ -14,6 +18,9 @@ import styles from './table-head.scss';
 @customElement('kyn-thead')
 export class TableHead extends LitElement {
   static override styles = [styles];
+
+  @property({ type: Boolean })
+  stickyHeader = false;
 
   /**
    * @ignore

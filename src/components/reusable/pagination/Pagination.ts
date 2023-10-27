@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 
-import { PAGE_SIZE_LABEL } from './constants';
+import { PAGE_SIZE_LABEL, BREAKPOINT } from './constants';
 import styles from './pagination.scss';
 
 import './pagination-items-range';
@@ -41,6 +41,25 @@ export class Pagination extends LitElement {
   @property({ type: String })
   pageSizeLabel = PAGE_SIZE_LABEL;
 
+  /** Option to hide the items range display. */
+  @property({ type: Boolean })
+  hideItemsRange = false;
+
+  /** Option to hide the page size dropdown. */
+  @property({ type: Boolean })
+  hidePageSizeDropdown = false;
+
+  /** Option to hide the navigation buttons. */
+  @property({ type: Boolean })
+  hideNavigationButtons = false;
+
+  /**
+   * Determines the device type the component is being rendered on.
+   * @ignore
+   */
+  @state()
+  isMobile = window.innerWidth < BREAKPOINT;
+
   /**
    * Handler for the event when the page size is changed by the user.
    * Updates the `pageSize` and resets the `pageNumber` to 1.
@@ -66,22 +85,36 @@ export class Pagination extends LitElement {
     const numberOfPages = Math.ceil(this.count / this.pageSize);
 
     return html`
-      <kyn-pagination-items-range
-        .pageNumber=${this.pageNumber}
-        .pageSize=${this.pageSize}
-        .count=${this.count}
-      ></kyn-pagination-items-range>
-      <kyn-pagination-page-size-dropdown
-        .pageSize=${this.pageSize}
-        .pageSizeOptions=${this.pageSizeOptions}
-        .pageSizeLabel=${this.pageSizeLabel}
-        @on-page-size-change=${this.handlePageSizeChange}
-      ></kyn-pagination-page-size-dropdown>
-      <kyn-pagination-navigation-buttons
-        .pageNumber=${this.pageNumber}
-        .numberOfPages=${numberOfPages}
-        @on-page-number-change=${this.handlePageNumberChange}
-      ></kyn-pagination-navigation-buttons>
+      ${!this.hideItemsRange
+        ? html`
+            <kyn-pagination-items-range
+              .pageNumber=${this.pageNumber}
+              .pageSize=${this.pageSize}
+              .count=${this.count}
+            ></kyn-pagination-items-range>
+          `
+        : null}
+      ${this.isMobile
+        ? null
+        : !this.hidePageSizeDropdown
+        ? html`
+            <kyn-pagination-page-size-dropdown
+              .pageSize=${this.pageSize}
+              .pageSizeOptions=${this.pageSizeOptions}
+              .pageSizeLabel=${this.pageSizeLabel}
+              @on-page-size-change=${this.handlePageSizeChange}
+            ></kyn-pagination-page-size-dropdown>
+          `
+        : null}
+      ${!this.hideNavigationButtons
+        ? html`
+            <kyn-pagination-navigation-buttons
+              .pageNumber=${this.pageNumber}
+              .numberOfPages=${numberOfPages}
+              @on-page-number-change=${this.handlePageNumberChange}
+            ></kyn-pagination-navigation-buttons>
+          `
+        : null}
     `;
   }
 }

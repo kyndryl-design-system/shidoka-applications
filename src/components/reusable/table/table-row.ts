@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 import styles from './table-row.scss';
 
@@ -14,6 +14,36 @@ import styles from './table-row.scss';
 @customElement('kyn-tr')
 export class TableRow extends LitElement {
   static override styles = [styles];
+
+  @property({ type: Boolean, reflect: true })
+  selected = false;
+
+  @property({ type: Boolean, reflect: true })
+  disabled = false;
+
+  @property({ type: Boolean, reflect: true })
+  clickable = false;
+
+  @property({ type: Boolean, reflect: true })
+  expanded = false;
+
+  override connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('click', this.handleClick as EventListener);
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('click', this.handleClick as EventListener);
+  }
+
+  handleClick() {
+    const event = new CustomEvent('on-row-clicked', {
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(event);
+  }
 
   override render() {
     return html` <slot></slot> `;

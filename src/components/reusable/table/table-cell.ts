@@ -18,6 +18,9 @@ import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
 export class TableCell extends LitElement {
   static override styles = [styles];
 
+  @property({ type: Boolean })
+  dense = false;
+
   /** Determines the text alignment of the table cell's content. */
   @property({ type: String, reflect: true })
   align: TABLE_CELL_ALIGN = TABLE_CELL_ALIGN.LEFT;

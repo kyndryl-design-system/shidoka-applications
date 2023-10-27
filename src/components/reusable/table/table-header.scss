@@ -1,4 +1,5 @@
 @use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
@@ -8,7 +9,6 @@
   color: var(--kd-color-text-primary);
   font-weight: var(--kd-font-weight-bold);
   background: var(--kd-color-background-ui-soft);
-  border-bottom: 1px solid var(--kd-color-border-secondary);
   border-right: 1px solid var(--kd-color-border-inverse);
   border-left: 1px solid var(--kd-color-border-inverse);
   text-transform: uppercase;
@@ -16,37 +16,34 @@
   .container {
     display: flex;
     align-items: center;
-    padding: var(--kd-spacing-12) var(--kd-spacing-16);
+    padding: var(--kd-spacing-16);
+    outline: 2px solid transparent;
+    outline-offset: -2px;
+    border-radius: 4px;
+    transition: outline-color 0.2s ease-in-out;
 
-    .slot-wrapper {
-      padding: var(--kd-spacing-4);
-      margin-right: var(--kd-spacing-8);
-    }
-
-    &:hover {
+    &:hover,
+    &:focus {
       .sort-icon {
         transition: background-color 0.3s;
         color: var(--kd-color-text-tertiary);
         cursor: pointer;
       }
     }
+    &:focus {
+      outline-color: var(--k-color-border-accent-spruce);
+    }
   }
 }
 
 .sr-only {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
+  @include mixins.visually-hidden;
 }
 
 .sort-icon {
   color: transparent;
   transition: transform 0.3s ease;
+  margin-left: var(--kd-spacing-8);
 
   &--sorting {
     color: var(--kd-color-text-primary);
@@ -89,4 +86,8 @@
   .container {
     justify-content: flex-end;
   }
+}
+
+:host([dense]) .container {
+  padding: var(--kd-spacing-4);
 }
