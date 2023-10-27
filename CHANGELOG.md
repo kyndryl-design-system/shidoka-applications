@@ -1,3 +1,10 @@
+# [1.0.0-beta.71](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.70...v1.0.0-beta.71) (2023-10-27)
+
+
+### Features
+
+* **table:** implement phase 2 enhancements ([#24](https://github.com/kyndryl-design-system/shidoka-applications/issues/24)) ([097d4d7](https://github.com/kyndryl-design-system/shidoka-applications/commit/097d4d7542c4a6a543a0e931f00b6c2f9a110c52))
+
 # [1.0.0-beta.70](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.69...v1.0.0-beta.70) (2023-10-27)
 
 
