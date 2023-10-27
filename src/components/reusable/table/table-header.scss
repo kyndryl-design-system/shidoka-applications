@@ -17,13 +17,21 @@
     display: flex;
     align-items: center;
     padding: var(--kd-spacing-16);
+    outline: 2px solid transparent;
+    outline-offset: -2px;
+    border-radius: 4px;
+    transition: outline-color 0.2s ease-in-out;
 
-    &:hover {
+    &:hover,
+    &:focus {
       .sort-icon {
         transition: background-color 0.3s;
         color: var(--kd-color-text-tertiary);
         cursor: pointer;
       }
+    }
+    &:focus {
+      outline-color: var(--k-color-border-accent-spruce);
     }
   }
 }
@@ -80,6 +88,6 @@
   }
 }
 
-:host([dense]) .container{
+:host([dense]) .container {
   padding: var(--kd-spacing-4);
 }

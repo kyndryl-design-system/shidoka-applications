@@ -1,16 +1,13 @@
 :host {
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .actions-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-}
-
-kyn-button {
-  margin: 4px;
 }
 
 .vertical-overflow-menu {
@@ -24,6 +21,72 @@ kyn-button {
 
   .vertical-overflow-menu {
     display: flex;
-    margin-left: 15px;
+  }
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  margin: 4px;
+}
+
+.menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.menu-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.menu-item:hover {
+  background-color: #f5f5f5;
+}
+
+.icon {
+  cursor: pointer;
+}
+
+:host([opened]) .menu {
+  display: block;
+}
+
+:host(:hover) {
+  cursor: pointer;
+}
+
+.menu-item__label {
+  padding: 4px 16px 4px 0px;
+}
+.menu-item__icon {
+  padding: 0px 8px;
+}
+
+.delete-button__mobile {
+  display: none;
+}
+
+.action-delete {
+  margin: 8px;
+}
+
+@media screen and (max-width: 767px) {
+  .delete-button {
+    display: none;
+  }
+  .delete-button__mobile {
+    display: flex;
+  }
+  .action-delete {
+    margin: 0px;
   }
 }

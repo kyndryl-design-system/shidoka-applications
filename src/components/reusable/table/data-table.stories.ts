@@ -415,7 +415,7 @@ const tableRenderer = (
       : title;
 
   return html`
-    <kyn-table-container style=${args.stickyHeader ? 'height: 400px' : ''}>
+    <div style=${args.stickyHeader ? 'height: 400px' : ''}>
       <kyn-table-toolbar tableTitle=${tableTitle}>
         ${showTableActions
           ? html` <batch-actions
@@ -438,15 +438,15 @@ const tableRenderer = (
         @on-page-changed=${handlePageChange}
         @on-selected-rows-changed=${handleSelectedRowsChange}
       ></kyn-data-table>
-    </kyn-table-container>
+    </div>
   `;
 };
 
 export const BasicTable = (args: any) => {
   const data = allData.slice(0, 5);
   return html`
+    <kyn-table-toolbar tableTitle="Basic Table"></kyn-table-toolbar>
     <kyn-table-container>
-      <kyn-table-toolbar tableTitle="Basic Table"></kyn-table-toolbar>
       <kyn-table>
         <kyn-thead>
           <kyn-tr>
@@ -457,7 +457,6 @@ export const BasicTable = (args: any) => {
             <kyn-th .align=${'right'}>Age</kyn-th>
             <kyn-th>Full Name</kyn-th>
             <kyn-th .align=${'center'}>Gender</kyn-th>
-            <kyn-th .align=${'center'}>ACTION</kyn-th>
           </kyn-tr>
         </kyn-thead>
         <kyn-tbody .striped=${args.striped}>
@@ -481,9 +480,6 @@ export const BasicTable = (args: any) => {
                   ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
                   : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
               </kyn-td>
-              <kyn-td .align=${'center'}
-                ><kyn-action-menu .id=${id}></kyn-action-menu
-              ></kyn-td>
             </kyn-tr>`
           )}
         </kyn-tbody>
@@ -502,14 +498,14 @@ export const Sorting: Story = {
   },
 };
 
-export const MultiSelecting: Story = {
+export const Selecting: Story = {
   args: {
     rows: allData.slice(0, 5),
     checkboxSelection: true,
   },
   render: (args) => {
     const [, updateArgs] = useArgs();
-    return tableRenderer(args, updateArgs, 'Multi Selecting', false);
+    return tableRenderer(args, updateArgs, 'Selecting', true);
   },
 };
 

@@ -29,9 +29,6 @@ export class TableCell extends LitElement {
   @property({ type: String })
   sortDirection: SORT_DIRECTION = SORT_DIRECTION.ASC;
 
-  @property({ type: Number, reflect: true, attribute: 'colspan' })
-  colSpan = 1;
-
   override render() {
     return html`
       <div class="slot-wrapper">

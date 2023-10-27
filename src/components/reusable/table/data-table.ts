@@ -21,6 +21,15 @@ type ColumnDefinition = {
   cellRenderer?: (data: { row: any; column: ColumnDefinition }) => any;
 };
 
+/**
+ * `kyn-data-table` Web Component.
+ * This component provides a table with sorting, pagination, and selection capabilities.
+ * It is designed to be used with the `kyn-table-toolbar` and `kyn-table-container` components.
+ * @fires on-selected-rows-changed - Dispatched when the selected rows change.
+ * @fires on-sort-changed - Dispatched when the sort order changes.
+ * @fires on-page-changed - Dispatched when the page number or page size changes.
+ */
+
 @customElement('kyn-data-table')
 export class KynDataTable extends LitElement {
   static override styles = [styles];
