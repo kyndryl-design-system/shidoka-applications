@@ -15,18 +15,9 @@ import styles from './table.scss';
 export class Table extends LitElement {
   static override styles = [styles];
 
+  /** Determines if the table layout is fixed (true) or auto (false). */
   @property({ type: Boolean })
-  selectAll = false;
-
-  // toggleSelectAll(event: Event) {
-  //   const checked = (event.target as HTMLInputElement).checked;
-  //   this.rows.forEach((row) => (row.selected = checked)); // Assuming rows is your data array
-  //   this.requestUpdate();
-  //   // Maybe propagate an event upwards for other components or application to know
-  //   this.dispatchEvent(
-  //     new CustomEvent('selection-changed', { detail: this.rows })
-  //   );
-  // }
+  fixedLayout = false;
 
   override render() {
     return html` <slot></slot> `;

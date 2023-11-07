@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement, PropertyValues} from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import styles from './table-cell.scss';
@@ -28,6 +28,35 @@ export class TableCell extends LitElement {
   /** Reflects the sort direction when used within sortable columns. */
   @property({ type: String })
   sortDirection: SORT_DIRECTION = SORT_DIRECTION.ASC;
+
+  /**
+   * Sets a fixed width for the cell.
+   * Accepts standard CSS width values (e.g., '150px', '50%').
+   */
+  @property({ type: String })
+  width = '';
+
+  /**
+   * Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.
+   * Accepts standard CSS width values (e.g., '150px', '50%').
+   */
+  @property({ type: String })
+  maxWidth = '';
+
+  /** Truncates the cell's contents with ellipsis. */
+  @property({ type: Boolean })
+  ellipsis = false;
+
+  override updated(changedProperties: PropertyValues) {
+    super.updated(changedProperties);
+    if (this.maxWidth && changedProperties.has('maxWidth')) {
+      this.style.setProperty('--kyn-td-max-width', this.maxWidth);
+    }
+
+    if (this.width && changedProperties.has('width')) {
+      this.style.setProperty('--kyn-td-width', this.width);
+    }
+  }
 
   override render() {
     return html`
