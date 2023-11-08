@@ -335,6 +335,8 @@ const tableRenderer = (
       sortable: true,
       align: 'center',
       sortFn: handleSortByIdNumber,
+      maxWidth: '100px',
+      elipsis: true,
     },
     {
       field: 'firstName',
@@ -342,7 +344,7 @@ const tableRenderer = (
       align: 'left',
       sortable: true,
       sortFn: handleSortByFName,
-      width: '200px',
+      maxWidth: '200px',
       ellipsis: true,
     },
     {
@@ -350,6 +352,8 @@ const tableRenderer = (
       headerName: 'Last name',
       sortable: true,
       sortFn: handleSortByLName,
+      maxWidth: '200px',
+      ellipsis: true,
     },
     {
       field: 'birthday',
@@ -358,6 +362,8 @@ const tableRenderer = (
       align: 'right',
       sortable: true,
       sortFn: handleSortByDate,
+      maxWidth: '200px',
+      ellipsis: true,
     },
     {
       field: 'age',
@@ -366,12 +372,16 @@ const tableRenderer = (
       align: 'right',
       sortable: true,
       sortFn: handleSortByAge,
+      maxWidth: '100px',
+      ellipsis: true,
     },
     {
       field: 'fullName',
       headerName: 'Full name',
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
+      maxWidth: '300px',
+      ellipsis: true,
       valueGetter: (params: any) =>
         `${params.row.firstName || ''} ${params.row.lastName || ''}`,
     },
@@ -379,6 +389,7 @@ const tableRenderer = (
       field: 'gender',
       headerName: 'Gender',
       align: 'center',
+      maxWidth: '100px',
       valueGetter: (params: any) => {
         if (params.row.gender === 'male') {
           return html`<kd-icon .icon=${maleIcon}></kd-icon>`;
@@ -393,6 +404,7 @@ const tableRenderer = (
       headerName: 'Action',
       align: 'center',
       openMenu: false,
+      maxWidth: '100px',
       cellRenderer: ({ row }: { row: any }) =>
         html`
           <action-menu
