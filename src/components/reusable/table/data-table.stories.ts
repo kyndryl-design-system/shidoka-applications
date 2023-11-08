@@ -23,6 +23,7 @@ const meta: Meta = {
   component: 'kyn-data-table',
   argTypes: {
     checkboxSelection: { control: 'boolean', table: { position: 1 } },
+    fixedLayout: { control: 'boolean' },
     dense: { control: 'boolean', table: { position: 2 } },
     stickyHeader: { control: 'boolean', table: { position: 3 } },
     striped: { control: 'boolean', table: { position: 4 } },
@@ -297,8 +298,9 @@ const tableRenderer = (
   const deleteAction = (id: number) => {
     const filteredRows = rows.filter((data: any) => data.id !== id);
     const filterSelectredRows = selectedRows.filter((data: any) => data !== id);
+    const newCount = count ? filteredRows.length : 0;
     updateArgs({
-      count: filteredRows.length,
+      count: newCount,
       rows: filteredRows,
       selectedRows: filterSelectredRows,
     });
@@ -312,8 +314,9 @@ const tableRenderer = (
     const filteredRows = rows.filter(
       (row: any) => !selectedRows.includes(row.id)
     );
+    const newCount = count ? filteredRows.length : 0;
     updateArgs({
-      count: filteredRows.length,
+      count: newCount,
       rows: filteredRows,
       selectedRows: [],
     });
@@ -329,7 +332,6 @@ const tableRenderer = (
     {
       field: 'id',
       headerName: 'ID',
-      width: 70,
       sortable: true,
       align: 'center',
       sortFn: handleSortByIdNumber,
@@ -337,15 +339,15 @@ const tableRenderer = (
     {
       field: 'firstName',
       headerName: 'First name',
-      width: 130,
-      align: 'right',
+      align: 'left',
       sortable: true,
       sortFn: handleSortByFName,
+      width: '200px',
+      ellipsis: true,
     },
     {
       field: 'lastName',
       headerName: 'Last name',
-      width: 130,
       sortable: true,
       sortFn: handleSortByLName,
     },
@@ -353,8 +355,7 @@ const tableRenderer = (
       field: 'birthday',
       headerName: 'Birthday',
       type: 'date',
-      width: 90,
-      align: 'center',
+      align: 'right',
       sortable: true,
       sortFn: handleSortByDate,
     },
@@ -362,8 +363,7 @@ const tableRenderer = (
       field: 'age',
       headerName: 'Age',
       type: 'number',
-      width: 90,
-      align: 'center',
+      align: 'right',
       sortable: true,
       sortFn: handleSortByAge,
     },
@@ -372,14 +372,12 @@ const tableRenderer = (
       headerName: 'Full name',
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
-      width: 160,
       valueGetter: (params: any) =>
         `${params.row.firstName || ''} ${params.row.lastName || ''}`,
     },
     {
       field: 'gender',
       headerName: 'Gender',
-      width: 100,
       align: 'center',
       valueGetter: (params: any) => {
         if (params.row.gender === 'male') {
@@ -393,7 +391,6 @@ const tableRenderer = (
     {
       field: 'action',
       headerName: 'Action',
-      width: 100,
       align: 'center',
       openMenu: false,
       cellRenderer: ({ row }: { row: any }) =>
@@ -424,6 +421,7 @@ const tableRenderer = (
           : null}
       </kyn-table-toolbar>
       <kyn-data-table
+        .fixedLayout=${args.fixedLayout}
         .columns=${columns}
         .rows=${currentRows}
         .selectedRows=${args.selectedRows}

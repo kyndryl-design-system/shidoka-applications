@@ -18,6 +18,9 @@ type ColumnDefinition = {
   align?: string;
   headerName: string;
   valueGetter?: Function;
+  width?: string;
+  maxWidth?: string;
+  ellipsis?: boolean;
   cellRenderer?: (data: { row: any; column: ColumnDefinition }) => any;
 };
 
@@ -113,6 +116,10 @@ export class KynDataTable extends LitElement {
   @property({ type: Boolean })
   hideNavigationButtons = false;
 
+  /** Determines if the table layout is fixed (true) or auto (false). */
+  @property({ type: Boolean })
+  fixedLayout = false;
+
   /**
    * headerCheckboxIndeterminate: Boolean indicating whether the header
    * checkbox is in an indeterminate state.
@@ -134,13 +141,13 @@ export class KynDataTable extends LitElement {
    * selected rows.
    */
   updateHeaderCheckbox() {
-    if (this.selectedRows.size === this.rows.length) {
+    if (this.selectedRows.size === 0) {
+      this.headerCheckboxIndeterminate = false;
+      this.headerCheckboxChecked = false;
+    } else if (this.selectedRows.size === this.rows.length) {
       this.headerCheckboxIndeterminate = false;
       this.headerCheckboxChecked = true;
       this.selectAll = true;
-    } else if (this.selectedRows.size === 0) {
-      this.headerCheckboxIndeterminate = false;
-      this.headerCheckboxChecked = false;
     } else {
       this.headerCheckboxIndeterminate = true;
       this.headerCheckboxChecked = false;
@@ -234,7 +241,7 @@ export class KynDataTable extends LitElement {
 
     return html`
       <kyn-table-container>
-        <kyn-table>
+        <kyn-table ?fixedLayout=${this.fixedLayout}>
           <kyn-thead ?stickyHeader=${this.stickyHeader}>
             <kyn-tr>
               ${this.checkboxSelection
@@ -296,7 +303,13 @@ export class KynDataTable extends LitElement {
                     : null}
                   ${this.columns.map(
                     (column) => html`
-                      <kyn-td .align=${column.align} ?dense=${this.dense}>
+                      <kyn-td
+                        .align=${column.align}
+                        ?dense=${this.dense}
+                        .maxWidth=${column.maxWidth}
+                        .width=${column.width}
+                        ?ellipsis=${column.ellipsis}
+                      >
                         ${column.cellRenderer
                           ? column.cellRenderer({ row, column })
                           : column.valueGetter
