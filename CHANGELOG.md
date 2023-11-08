@@ -1,3 +1,10 @@
+# [1.0.0-beta.72](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.71...v1.0.0-beta.72) (2023-11-08)
+
+
+### Features
+
+* **table:** enable ellipsis and fix for delete action demo story ([#25](https://github.com/kyndryl-design-system/shidoka-applications/issues/25)) ([14c2bac](https://github.com/kyndryl-design-system/shidoka-applications/commit/14c2bac1ce20696e66db305aed1d384327720659))
+
 # [1.0.0-beta.71](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0-beta.70...v1.0.0-beta.71) (2023-10-27)
 
 
