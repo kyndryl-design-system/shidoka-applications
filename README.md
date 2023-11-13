@@ -4,7 +4,7 @@
 
 # Contributing to this project
 
-Read the [Contributing Guide](https://github.com/kyndryl-design-system/shidoka-applications/blob/beta/CONTRIBUTING.md) here.
+Read the [Contributing Guide](CONTRIBUTING.md) here.
 
 # Using this library in another project
 
@@ -13,12 +13,7 @@ Read the [Contributing Guide](https://github.com/kyndryl-design-system/shidoka-a
 <!-- Note: This will not work until you have configured the enterprise package registry following the instructions above. -->
 
 ```bash
-# stable/main
 npm install @kyndryl-design-system/shidoka-applications @kyndryl-design-system/shidoka-foundation -S
-
-# beta (use until first stable release)
-npm install @kyndryl-design-system/shidoka-applications@beta @kyndryl-design-system/shidoka-foundation@beta -S
-# when using beta, lock the version, as breaking changes can happen at any time
 ```
 
 ## Import the root stylesheet to your app's global styles
