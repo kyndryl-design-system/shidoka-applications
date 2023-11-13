@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderNavScss from './headerNav.scss';
 
@@ -31,6 +32,7 @@ export class HeaderNav extends LitElement {
       'header-nav--inline': this.breakpointHit,
       'header-nav--flyout': !this.breakpointHit,
       'header-nav--open': this.menuOpen,
+      'breakpoint-hit': this.breakpointHit,
     };
 
     return html` <div class=${classMap(classes)}><slot></slot></div> `;
@@ -40,22 +42,41 @@ export class HeaderNav extends LitElement {
     super.connectedCallback();
 
     this.testBreakpoint();
-    window.addEventListener(
+    window?.addEventListener(
       'resize',
       debounce(() => {
         this.testBreakpoint();
       })
     );
 
-    document
-      .querySelector('kyn-header')!
-      .addEventListener('on-menu-toggle', (e: any = {}) => {
+    const header = querySelectorDeep('kyn-header');
+    if (header) {
+      header.addEventListener('on-menu-toggle', (e: any = {}) => {
         this.menuOpen = e.detail;
       });
+    }
+  }
+
+  override disconnectedCallback() {
+    const header = querySelectorDeep('kyn-header');
+    if (header) {
+      header.addEventListener('on-menu-toggle', (e: any = {}) => {
+        this.menuOpen = e.detail;
+      });
+    }
+
+    window?.removeEventListener(
+      'resize',
+      debounce(() => {
+        this.testBreakpoint();
+      })
+    );
+
+    super.disconnectedCallback();
   }
 
   private testBreakpoint() {
-    const nav = document.querySelector('kyn-header');
+    const nav = querySelectorDeep('kyn-header');
     if (nav) {
       this.breakpointHit = nav!.breakpointHit;
     }

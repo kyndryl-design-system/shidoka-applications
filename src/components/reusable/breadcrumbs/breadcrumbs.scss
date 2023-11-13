@@ -1,0 +1,33 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+.breadcrumbs {
+  @include typography.type-ui-01;
+
+  list-style: none;
+  padding: 0;
+  display: flex;
+  color: var(--kd-color-text-primary);
+  font-weight: var(--kd-font-weight-medium);
+  margin-left: -8px;
+
+  ::slotted(*) {
+    display: inline-flex;
+    color: var(--kd-color-text-tertiary);
+
+    &::after {
+      content: '\2014\2014'; // Unicode for double em dash
+      margin: 0px 8px; // Provide margins on both sides of the double em dash
+      color: var(--kd-color-background-ui-subtle);
+      font-weight: var(--kd-font-weight-regular);
+      letter-spacing: -2px;
+      font-size: var(--kd-font-size-utility-3-max);
+    }
+  }
+
+  ::slotted(*:last-child) {
+    &::after {
+      content: none; // Hide the ::after pseudo-element for the last item
+    }
+  }
+}

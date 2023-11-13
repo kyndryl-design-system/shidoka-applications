@@ -1,0 +1,131 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: block;
+}
+
+a {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  color: var(--kd-color-text-primary);
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    outline-color 150ms ease-out;
+
+  .link-active & {
+    background: var(--kd-color-background-primary);
+    color: var(--kd-color-text-inversed);
+    font-weight: 500;
+  }
+
+  .nav-expanded.link-active & {
+    background: none;
+    color: var(--kd-color-text-link);
+    font-weight: 500;
+
+    &:hover {
+      background: var(--kd-color-background-primary);
+      color: var(--kd-color-text-inversed);
+    }
+  }
+
+  .link-expanded & {
+    color: var(--kd-color-text-link);
+    font-weight: 500;
+  }
+
+  &:hover {
+    background: var(--kd-color-background-primary);
+    color: var(--kd-color-text-inversed);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
+  }
+
+  &:active {
+    background-color: var(--kd-color-background-primary-pressed);
+  }
+}
+
+ul {
+  visibility: hidden;
+  height: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: transform 150ms ease-out, opacity 150ms ease-out,
+    visibility 150ms ease-out;
+  opacity: 0;
+  transform: translateY(-10px);
+
+  .link-expanded.nav-expanded & {
+    // display: block;
+    visibility: visible;
+    height: auto;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+li {
+  margin-top: 4px;
+}
+
+.level {
+  &--2 {
+    background: var(--kd-color-background-ui-default);
+    border-radius: 4px;
+
+    & a {
+      padding-left: 32px;
+    }
+  }
+
+  &--3 {
+    padding: 0 4px;
+
+    & a {
+      padding-left: 50px;
+    }
+  }
+}
+
+.text {
+  display: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-left: 8px;
+
+  .nav-expanded & {
+    display: block;
+  }
+}
+
+.arrow-icon {
+  display: none;
+  margin-left: auto;
+
+  .nav-expanded & {
+    display: block;
+  }
+
+  .link-expanded & {
+    transform: rotate(180deg);
+  }
+
+  kd-icon {
+    display: block;
+  }
+}
+
+slot[name='icon']::slotted(*) {
+  flex-shrink: 0;
+}

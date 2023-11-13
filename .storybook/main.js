@@ -1,10 +1,78 @@
-module.exports = {
-  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+import remarkGfm from 'remark-gfm';
+
+export default {
+  stories: [
+    '../src/stories/welcome.mdx', //force default page
+    '../src/**/*.mdx',
+    '../src/**/*.stories.@(js|jsx|ts|tsx)',
+  ],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-    'storybook-addon-designs',
+    '@storybook/addon-designs',
     '@storybook/addon-storysource',
+    'storybook-addon-themes',
+    {
+      name: '@storybook/addon-docs',
+      options: {
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        },
+      },
+    },
+    {
+      name: '@storybook/addon-styling',
+      options: {
+        scssBuildRule: {
+          test: /\.s(c|a)ss$/,
+          exclude: [/node_modules/],
+          oneOf: [
+            {
+              resourceQuery: /global/,
+              use: [
+                'style-loader',
+                'css-loader',
+                'resolve-url-loader',
+                {
+                  loader: 'sass-loader?sourceMap',
+                  options: {
+                    sourceMap: true,
+                  },
+                },
+              ],
+            },
+            {
+              use: [
+                {
+                  loader: 'lit-scss-loader',
+                  options: {
+                    minify: true,
+                  },
+                },
+                'extract-loader',
+                {
+                  loader: 'css-loader',
+                  options: {
+                    url: false,
+                  },
+                },
+                'sass-loader',
+              ],
+            },
+          ],
+        },
+      },
+    },
+    {
+      name: 'storybook-preset-inline-svg',
+      options: {
+        svgInlineLoaderOptions: {
+          removeSVGTagAttrs: false,
+        },
+      },
+    },
   ],
   framework: {
     name: '@storybook/web-components-webpack5',
@@ -12,24 +80,6 @@ module.exports = {
   },
   core: {
     disableTelemetry: true,
-  },
-  webpackFinal: (config) => {
-    config.module.rules.push({
-      test: /\.s(c|a)ss$/,
-      exclude: /node_modules/,
-      use: [
-        {
-          loader: 'lit-scss-loader',
-          options: {
-            minify: true, // defaults to false
-          },
-        },
-        'extract-loader',
-        'css-loader',
-        'sass-loader',
-      ],
-    });
-    return config;
   },
   docs: {
     autodocs: true,

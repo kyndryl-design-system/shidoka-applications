@@ -1,0 +1,90 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: block;
+}
+
+label {
+  display: inline-flex;
+  align-items: center;
+
+  &[disabled] {
+    color: var(--kd-color-text-disabled);
+  }
+}
+
+span {
+  order: 1;
+}
+
+input {
+  order: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px 0 0;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--kd-color-border-ui);
+  border-radius: 50%;
+  background-color: transparent;
+  outline: 2px solid transparent;
+  transition: background-color 150ms ease-out, border-color 150ms ease-out,
+    outline-color 150ms ease-out;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--kd-color-background-primary);
+    transition: 150ms transform ease-out;
+    transform: scale(0);
+  }
+
+  &:checked {
+    border-color: var(--kd-color-border-ui-hover);
+    border-width: 3px;
+
+    &::before {
+      transform: scale(1);
+    }
+  }
+
+  &:hover {
+    border-color: var(--kd-color-border-ui-hover);
+    background-color: var(--kd-color-background-inverse-hover);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
+    outline-offset: 2px;
+  }
+
+  &:active {
+    background-color: var(--kd-color-background-accent-ui);
+  }
+
+  &[disabled] {
+    border-color: var(--kd-color-text-disabled);
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    &::before {
+      background: var(--kd-color-background-disabled);
+    }
+
+    &[invalid] {
+      border-color: var(--kd-color-border-ui-disabled);
+    }
+  }
+
+  &[invalid] {
+    border-color: var(--kd-color-border-destructive);
+  }
+}

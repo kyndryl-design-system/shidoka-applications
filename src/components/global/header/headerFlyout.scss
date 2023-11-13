@@ -1,5 +1,6 @@
-@import '../../../common/scss/global.scss';
-@import './header-interactive.scss';
+@use '../../../common/scss/global.scss';
+@use './header-interactive.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
   display: inline-flex;
@@ -7,7 +8,69 @@
 }
 
 .btn {
+  @include typography.type-ui-05;
+  display: flex;
+  align-items: center;
+  color: var(--kd-color-text-primary);
   height: 100%;
-  width: 64px;
-  background: none;
+  padding: 0 8px;
+}
+
+.menu {
+  .interactive {
+    ::slotted(div[slot='button']),
+    ::slotted(span[slot='button']) {
+    }
+  }
+
+  &:hover {
+    .interactive {
+      ::slotted(kyn-header-avatar) {
+        background: none;
+        border-color: var(--kd-color-border-inverse);
+        color: var(--kd-color-text-inversed);
+      }
+    }
+  }
+
+  &.open {
+    .interactive {
+      ::slotted(kyn-header-avatar) {
+        color: var(--kd-color-text-brand);
+        background: var(--kd-color-background-ui-default);
+        border: 1px solid var(--kd-color-border-brand);
+      }
+
+      &:hover {
+        ::slotted(kyn-header-avatar) {
+          background: none;
+          border-color: var(--kd-color-border-inverse);
+          color: var(--kd-color-text-inversed);
+        }
+      }
+    }
+  }
+
+  .interactive:focus {
+    ::slotted(kyn-header-avatar) {
+      background: var(--kd-color-background-primary);
+      border-color: var(--kd-color-border-inverse);
+      color: var(--kd-color-text-inversed);
+    }
+  }
+}
+
+slot[name='button'] {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+kd-icon {
+  margin-left: 6px;
+  transition: transform 150ms ease-out;
+
+  .open & {
+    transform: rotate(-180deg);
+  }
 }

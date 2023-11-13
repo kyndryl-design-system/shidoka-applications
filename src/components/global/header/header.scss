@@ -1,65 +1,80 @@
-@import '../../../common/scss/global.scss';
-@import './header-interactive.scss';
+@use '../../../common/scss/global.scss';
+@use './header-interactive.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
   display: block;
 }
 
 .header {
-  font-family: var(--font-heading);
   display: flex;
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
-  height: 64px;
-  background: var(--color-background);
-  box-shadow: 0px 1px 0px var(--color-border);
-}
+  height: var(--kd-header-height);
+  background: var(--kd-color-background-ui-default);
+  padding: 4px 8px;
+  z-index: var(--kd-z-header);
 
-.menu-button {
-  width: 64px;
-  background: none;
+  &.divider {
+    box-shadow: 0 1px 0 var(--kd-color-border-light);
+  }
+
+  @media screen and (min-width: 42rem) {
+    padding: 4px 24px;
+  }
+
+  &.left-slotted {
+    padding-left: 4px;
+  }
+
+  &__right {
+    display: flex;
+    margin-left: auto;
+  }
 }
 
 .logo-link {
   display: flex;
   align-items: center;
-  margin-right: 24px;
-  padding: 0 16px;
-  color: var(--color-text);
+  padding: 0 8px;
+  // margin: 0 3px;
+  color: var(--kd-color-text-link);
   text-decoration: none;
-}
 
-.logo {
-  flex-shrink: 0;
-  width: 100px;
-  margin-right: 16px;
-
-  path {
-    fill: var(--color-brand);
+  &:hover {
+    color: var(--kd-color-text-link-hover);
+    background: none;
   }
-}
 
-.logo-small {
-  flex-shrink: 0;
-  height: 24px;
-  margin-right: 4px;
+  &:active {
+    color: var(--kd-color-text-pressed);
+    background: none;
+  }
+
+  svg {
+    width: auto;
+    height: 20px;
+  }
 }
 
 .title {
-  font-weight: 400;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  letter-spacing: 0.1px;
-  margin-top: -1px;
+  @include typography.type-ui-01;
+  display: none;
+  margin-top: -3px;
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 1px solid var(--kd-color-border-primary);
 
-  &__main {
-    display: none;
-    font-size: var(--breakpoint-sm);
-
-    @media screen and (min-width: 42rem) {
-      display: inline;
-    }
+  .breakpoint-hit & {
+    display: inline;
   }
+}
+
+.menu-button {
+  height: 100%;
+  background: none;
+  padding: 0 8px;
+  margin: 0 2px;
 }

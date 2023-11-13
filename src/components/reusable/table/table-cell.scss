@@ -1,0 +1,46 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: table-cell;
+  vertical-align: middle;
+  @include typography.type-body-02;
+  padding: var(--kd-spacing-16);
+  color: var(--kd-color-text-primary);
+  border-bottom: 1px solid var(--kd-color-border-light);
+  max-width: var(--kyn-td-max-width, none);
+  width: var(--kyn-td-width, auto);
+}
+
+.slot-wrapper {
+  display: inline-block;
+  max-width: 100%;
+}
+
+:host([ellipsis]) .slot-wrapper {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.slot-wrapper::slotted(*) {
+  display: flex;
+  min-width: 0;
+  flex-shrink: 1;
+}
+
+:host([align='left']) .slot-wrapper::slotted(*) {
+  justify-content: flex-start;
+}
+
+:host([align='center']) .slot-wrapper::slotted(*) {
+  justify-content: center;
+}
+
+:host([align='right']) .slot-wrapper::slotted(*) {
+  justify-content: flex-end;
+}
+
+:host([dense]) {
+  padding: var(--kd-spacing-4);
+}

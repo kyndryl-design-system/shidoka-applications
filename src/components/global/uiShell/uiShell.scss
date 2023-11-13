@@ -1,0 +1,47 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: var(--kd-header-height);
+  box-sizing: border-box;
+}
+
+.static {
+  display: flex;
+  flex-direction: column;
+}
+
+::slotted(main) {
+  flex: 1 0 auto;
+  padding: var(--kd-page-gutter);
+}
+
+::slotted(main.has-local-nav) {
+  @media (min-width: 42rem) {
+    margin-left: var(--kd-local-nav-width);
+  }
+}
+
+::slotted(main.pinned) {
+  @media (min-width: 42rem) {
+    margin-left: var(--kd-local-nav-width-expanded);
+  }
+}
+
+::slotted(kyn-footer) {
+  flex-shrink: 0;
+}
+
+::slotted(kyn-footer.has-local-nav) {
+  @media (min-width: 42rem) {
+    margin-left: var(--kd-local-nav-width);
+  }
+}
+
+::slotted(kyn-footer.pinned) {
+  @media (min-width: 42rem) {
+    margin-left: var(--kd-local-nav-width-expanded);
+  }
+}

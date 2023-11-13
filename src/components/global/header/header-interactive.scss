@@ -1,35 +1,77 @@
 .interactive {
   border: none;
-  outline: 2px solid transparent;
-  outline-offset: -2px;
   cursor: pointer;
+  border-radius: 4px;
   transition: background-color 150ms ease-out, color 150ms ease-out,
     outline-color 150ms ease-out;
+  background: var(--kd-color-background-ui-default);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
 
   &:hover {
-    background-color: var(--color-background-hover);
+    background: var(--kd-color-background-primary);
+    color: var(--kd-color-text-inversed);
+  }
+
+  &:active {
+    background: var(--kd-color-background-primary-pressed);
   }
 
   &:focus {
-    outline-color: var(--color-primary-hover);
+    outline-color: var(--kd-color-border-focus);
   }
+
+  &.active {
+    color: var(--kd-color-text-link);
+
+    &:hover {
+      color: var(--kd-color-text-inversed);
+    }
+  }
+}
+
+.divider {
+  box-shadow: 0 1px 0 var(--kd-color-border-light);
+  margin-bottom: 1px;
 }
 
 .menu {
   position: relative;
 
+  .interactive {
+    position: relative;
+    cursor: pointer;
+  }
+
   &__content {
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: var(--kd-header-height);
     right: 0;
-    padding: 16px;
-    background: var(--color-background);
-    box-shadow: var(--shadow-menu);
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    border-radius: 4px;
+    background: var(--kd-color-background-ui-soft);
     transition: visibility 0.15s, opacity 0.15s ease-in-out,
       transform 0.15s ease-in-out;
-    opacity: 0;
     transform: translate3d(0px, -10%, 0px);
+    visibility: hidden;
+    opacity: 0;
     z-index: -1;
+
+    &.slotted {
+      padding: 4px;
+    }
+
+    .breakpoint-hit & {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      bottom: auto;
+      left: auto;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      max-height: calc(100vh - var(--kd-header-height));
+    }
 
     strong {
       font-weight: 500;
@@ -41,8 +83,19 @@
     }
   }
 
-  &:focus-within,
-  &:hover {
+  &.open {
+    .interactive {
+      color: var(--kd-color-text-link);
+      background: var(--kd-color-background-ui-soft);
+
+      &:hover {
+        background: var(--kd-color-background-primary);
+        color: var(--kd-color-text-inversed);
+      }
+    }
+  }
+
+  &.open {
     .menu__content {
       visibility: visible;
       opacity: 1;
