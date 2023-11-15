@@ -25,3 +25,4 @@ export { DateRangePicker } from './components/reusable/daterangepicker';
 export { Breadcrumbs, BreadcrumbItem } from './components/reusable/breadcrumbs';
 export { Table } from './components/reusable/table';
 export { Pagination } from './components/reusable/pagination';
+export { PageHeading } from './components/reusable/pageHeading';
