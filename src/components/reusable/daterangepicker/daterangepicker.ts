@@ -113,44 +113,46 @@ export class DateRangePicker extends LitElement {
         <slot></slot>
       </label>
 
-      <div class="input-wrapper">
-        <input
-          class="${classMap({
-            'size--sm': this.size === 'sm',
-            'size--lg': this.size === 'lg',
-          })}"
-          type="date"
-          id="${this.name}-start"
-          name="${this.name}-start"
-          value=${this.startDate}
-          ?required=${this.required}
-          ?disabled=${this.disabled}
-          ?invalid=${this.isInvalid}
-          min=${ifDefined(this.minDate)}
-          max=${ifDefined(this.endDate ?? this.maxDate ?? '')}
-          step=${ifDefined(this.step)}
-          @input=${(e: any) => this.handleStartDate(e)}
-        />
-      </div>
+      <div class="wrapper">
+        <div class="input-wrapper">
+          <input
+            class="${classMap({
+              'size--sm': this.size === 'sm',
+              'size--lg': this.size === 'lg',
+            })}"
+            type="date"
+            id="${this.name}-start"
+            name="${this.name}-start"
+            value=${this.startDate}
+            ?required=${this.required}
+            ?disabled=${this.disabled}
+            ?invalid=${this.isInvalid}
+            min=${ifDefined(this.minDate)}
+            max=${ifDefined(this.endDate ?? this.maxDate ?? '')}
+            step=${ifDefined(this.step)}
+            @input=${(e: any) => this.handleStartDate(e)}
+          />
+        </div>
 
-      <span class="range-span">—</span>
-      <div class="input-wrapper">
-        <input
-          class="${classMap({
-            'size--sm': this.size === 'sm',
-            'size--lg': this.size === 'lg',
-          })}"
-          type="date"
-          id="${this.name}-end"
-          name="${this.name}-end"
-          value=${this.endDate}
-          ?disabled=${this.disabled}
-          ?invalid=${this.isInvalid}
-          min=${ifDefined(this.startDate ?? this.minDate ?? '')}
-          max=${ifDefined(this.maxDate)}
-          step=${ifDefined(this.step)}
-          @input=${(e: any) => this.handleEndDate(e)}
-        />
+        <span class="range-span">—</span>
+        <div class="input-wrapper">
+          <input
+            class="${classMap({
+              'size--sm': this.size === 'sm',
+              'size--lg': this.size === 'lg',
+            })}"
+            type="date"
+            id="${this.name}-end"
+            name="${this.name}-end"
+            value=${this.endDate}
+            ?disabled=${this.disabled}
+            ?invalid=${this.isInvalid}
+            min=${ifDefined(this.startDate ?? this.minDate ?? '')}
+            max=${ifDefined(this.maxDate)}
+            step=${ifDefined(this.step)}
+            @input=${(e: any) => this.handleEndDate(e)}
+          />
+        </div>
       </div>
 
       ${this.caption !== ''

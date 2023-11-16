@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0...v1.0.1) (2023-11-16)
+
+
+### Bug Fixes
+
+* **dropdown:** add nowrap ([921b6c6](https://github.com/kyndryl-design-system/shidoka-applications/commit/921b6c662584945c739295663f60419d6bcc4d8f))
+* form inputs scale to host width. resolves [#29](https://github.com/kyndryl-design-system/shidoka-applications/issues/29) ([04ca796](https://github.com/kyndryl-design-system/shidoka-applications/commit/04ca796811ef8d8ce290aba835303e287b5fe35e))
+* **header-flyout:** fix mouseleave when using native selects in firefox ([711b5ee](https://github.com/kyndryl-design-system/shidoka-applications/commit/711b5eef33a42a998d56d5ede401752f69324283))
+
 # 1.0.0 (2023-11-13)
 
 
