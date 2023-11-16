@@ -93,7 +93,7 @@ export class HeaderFlyout extends LitElement {
   }
 
   private handlePointerLeave(e: PointerEvent) {
-    if (e.pointerType === 'mouse') {
+    if (e.pointerType === 'mouse' && e.relatedTarget !== null) {
       this.open = false;
     }
   }
