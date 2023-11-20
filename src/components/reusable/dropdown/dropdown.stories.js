@@ -13,13 +13,6 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    resetSelection: {
-      table: {
-        category: 'methods',
-      },
-      description:
-        'Retrieves the `selected` child options and sets the `value` property.',
-    },
   },
 };
 
@@ -53,15 +46,34 @@ export const Single = {
       >
         <span slot="label">${args.label}</span>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
-        <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+        <kyn-dropdown-option id="blahOption2" value="2"
+          >Option 2</kyn-dropdown-option
+        >
         <kyn-dropdown-option value="3" disabled>
           Disabled Option
         </kyn-dropdown-option>
-        <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
+        <kyn-dropdown-option id="blahOption4" selected value="4"
+          >Option 4</kyn-dropdown-option
+        >
         <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
         <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
         <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
       </kyn-dropdown>
+
+      <button
+        @click=${(e) => {
+          const select = document.querySelector('#blahSelect');
+          const opt2 = document.querySelector('#blahOption2');
+          const opt4 = document.querySelector('#blahOption4');
+
+          opt2.setAttribute('selected', true);
+          opt4.removeAttribute('selected');
+          opt4.remove();
+          // select.resetSelection();
+        }}
+      >
+        Test
+      </button>
     `;
   },
 };
