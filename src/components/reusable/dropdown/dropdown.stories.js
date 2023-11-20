@@ -13,6 +13,13 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    resetSelection: {
+      table: {
+        category: 'methods',
+      },
+      description:
+        'Retrieves the `selected` child options and sets the `value` property.',
+    },
   },
 };
 
@@ -32,6 +39,7 @@ export const Single = {
   render: (args) => {
     return html`
       <kyn-dropdown
+        id="blahSelect"
         placeholder=${args.placeholder}
         size=${args.size}
         ?inline=${args.inline}

@@ -324,7 +324,7 @@ export class Dropdown extends LitElement {
 
   override firstUpdated() {
     this.determineIfSlotted();
-    this.initialSelection();
+    this.resetSelection();
 
     // set a default placeholder if none provided
     if (this.placeholder === '') {
@@ -340,7 +340,11 @@ export class Dropdown extends LitElement {
     this.isSlotted = this.options.length ? true : false;
   }
 
-  private initialSelection() {
+  /**
+   * Retrieves the selected values from the list of child options and sets value property.
+   * @function
+   */
+  public resetSelection() {
     // get value from selected options
     const values: any = [];
     let value = '';
