@@ -118,6 +118,8 @@ export class Header extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
 
+    document.addEventListener('click', (e) => this.handleMenuClickOut(e));
+
     this.testBreakpoint();
     window?.addEventListener(
       'resize',
@@ -128,6 +130,8 @@ export class Header extends LitElement {
   }
 
   override disconnectedCallback() {
+    document.removeEventListener('click', (e) => this.handleMenuClickOut(e));
+
     window?.removeEventListener(
       'resize',
       debounce(() => {
@@ -140,6 +144,17 @@ export class Header extends LitElement {
 
   private handleSlotChange() {
     this.requestUpdate();
+  }
+
+  private handleMenuClickOut(e: any) {
+    const button = this.shadowRoot?.querySelector('.menu-button');
+
+    if (
+      !e.composedPath().includes(this.navEls[0]) &&
+      !e.composedPath().includes(button)
+    ) {
+      this.toggleNavMenu();
+    }
   }
 
   private testBreakpoint() {
