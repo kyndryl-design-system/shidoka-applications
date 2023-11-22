@@ -35,6 +35,10 @@ export class LocalNavLink extends LitElement {
   @property({ type: Boolean })
   active = false;
 
+  /** Disabled state. */
+  @property({ type: Boolean })
+  disabled = false;
+
   /** Link level, supports three levels.
    * @ignore
    */
@@ -76,6 +80,7 @@ export class LocalNavLink extends LitElement {
       'nav-expanded': this._navExpanded,
       'link-expanded': this.expanded,
       'link-active': this.active,
+      'link-disabled': this.disabled,
     };
 
     return html`
@@ -136,6 +141,10 @@ export class LocalNavLink extends LitElement {
 
   private handleClick(e: Event) {
     let preventDefault = false;
+
+    if (this.disabled) {
+      preventDefault = true;
+    }
 
     if (this.navLinks.length) {
       preventDefault = true;
