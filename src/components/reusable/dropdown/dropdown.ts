@@ -103,13 +103,6 @@ export class Dropdown extends LitElement {
   searchText = '';
 
   /**
-   * Evaluates if options are slotted.
-   * @ignore
-   */
-  @state()
-  isSlotted = false;
-
-  /**
    * Assistive text for screen readers.
    * @ignore
    */
@@ -256,7 +249,7 @@ export class Dropdown extends LitElement {
               @keydown=${(e: any) => this.handleListKeydown(e)}
               @blur=${(e: any) => this.handleListBlur(e)}
             >
-              <slot></slot>
+              <slot @slotchange=${() => this.handleSlotChange()}></slot>
             </ul>
           </div>
 
@@ -323,8 +316,7 @@ export class Dropdown extends LitElement {
   }
 
   override firstUpdated() {
-    this.determineIfSlotted();
-    this.initialSelection();
+    this.resetSelection();
 
     // set a default placeholder if none provided
     if (this.placeholder === '') {
@@ -336,11 +328,15 @@ export class Dropdown extends LitElement {
     }
   }
 
-  private determineIfSlotted() {
-    this.isSlotted = this.options.length ? true : false;
+  private handleSlotChange() {
+    this.resetSelection();
   }
 
-  private initialSelection() {
+  /**
+   * Retrieves the selected values from the list of child options and sets value property.
+   * @function
+   */
+  private resetSelection() {
     // get value from selected options
     const values: any = [];
     let value = '';
