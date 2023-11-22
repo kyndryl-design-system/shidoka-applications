@@ -1,3 +1,13 @@
+## [1.0.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.1...v1.0.2) (2023-11-22)
+
+
+### Bug Fixes
+
+* **dropdown:** add method to reset selection ([846df12](https://github.com/kyndryl-design-system/shidoka-applications/commit/846df12333d048186fcb036143bc4b542b2000a4))
+* **dropdown:** reset value on slot change ([1588bd0](https://github.com/kyndryl-design-system/shidoka-applications/commit/1588bd0f08cacec1f3debb3e01470e81a0a5cd44))
+* **header:** close mobile nav on click out, resolves [#31](https://github.com/kyndryl-design-system/shidoka-applications/issues/31) ([831d447](https://github.com/kyndryl-design-system/shidoka-applications/commit/831d447e7de6892925e095d99292b276023de0f4))
+* **local-nav-link:** add disabled prop, closes [#28](https://github.com/kyndryl-design-system/shidoka-applications/issues/28) ([be6b15c](https://github.com/kyndryl-design-system/shidoka-applications/commit/be6b15c36567b79cb62ca71cc16a51d92f5b88ac))
+
 ## [1.0.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.0...v1.0.1) (2023-11-16)
 
 
