@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.2...v1.0.3) (2023-11-28)
+
+
+### Bug Fixes
+
+* **data-table:** export data-table from the root ([#36](https://github.com/kyndryl-design-system/shidoka-applications/issues/36)) ([77cecde](https://github.com/kyndryl-design-system/shidoka-applications/commit/77cecde9e8442a0628042962f146dae142223a69))
+
 ## [1.0.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.1...v1.0.2) (2023-11-22)
 
 
