@@ -34,7 +34,7 @@ type ColumnDefinition = {
  */
 
 @customElement('kyn-data-table')
-export class KynDataTable extends LitElement {
+export class DataTable extends LitElement {
   static override styles = [styles];
 
   /**
@@ -344,6 +344,6 @@ export class KynDataTable extends LitElement {
 // Define the custom element in the global namespace
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-data-table': KynDataTable;
+    'kyn-data-table': DataTable;
   }
 }
