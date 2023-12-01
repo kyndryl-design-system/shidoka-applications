@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.3...v1.0.4) (2023-12-01)
+
+
+### Bug Fixes
+
+* **dropdown:** fix issue with getting option text when white space is present, resolves [#37](https://github.com/kyndryl-design-system/shidoka-applications/issues/37) ([8402dc7](https://github.com/kyndryl-design-system/shidoka-applications/commit/8402dc7652f2880b6de4c486778196465f78bfa7))
+
 ## [1.0.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.2...v1.0.3) (2023-11-28)
 
 
