@@ -36,6 +36,10 @@ export class HeaderFlyout extends LitElement {
   @property({ type: String })
   assistiveText = '';
 
+  /** Turns the button into a link. */
+  @property({ type: String })
+  href = '';
+
   /**
    * Determines if menu should be a small flyout or large flyout for small screens.
    * @ignore
@@ -68,19 +72,43 @@ export class HeaderFlyout extends LitElement {
         class="${classMap(classes)}"
         @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
       >
-        <button
-          class="btn interactive"
-          title=${this.assistiveText}
-          aria-label=${this.assistiveText}
-          @click=${this.handleClick}
-          @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
-        >
-          <slot name="button"></slot>
+        ${this.href !== ''
+          ? html`
+              <a
+                class="btn interactive"
+                href=${this.href}
+                title=${this.assistiveText}
+                aria-label=${this.assistiveText}
+                @click=${this.handleClick}
+                @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
+              >
+                <slot name="button"></slot>
 
-          ${!this.hideArrow
-            ? html` <kd-icon slot="button" .icon="${caratDownIcon}"></kd-icon> `
-            : null}
-        </button>
+                ${!this.hideArrow
+                  ? html`
+                      <kd-icon slot="button" .icon="${caratDownIcon}"></kd-icon>
+                    `
+                  : null}
+              </a>
+            `
+          : html`
+              <button
+                class="btn interactive"
+                title=${this.assistiveText}
+                aria-label=${this.assistiveText}
+                @click=${this.handleClick}
+                @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
+              >
+                <slot name="button"></slot>
+
+                ${!this.hideArrow
+                  ? html`
+                      <kd-icon slot="button" .icon="${caratDownIcon}"></kd-icon>
+                    `
+                  : null}
+              </button>
+            `}
+
         <div class=${classMap(contentClasses)}><slot></slot></div>
       </div>
     `;
