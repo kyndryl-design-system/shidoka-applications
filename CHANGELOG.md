@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.4...v1.0.5) (2023-12-01)
+
+
+### Bug Fixes
+
+* **header-flyout:** add href prop ([a9cc268](https://github.com/kyndryl-design-system/shidoka-applications/commit/a9cc2681285c672f2b7c42a6bc3a8dd9a66433ad))
+
 ## [1.0.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.3...v1.0.4) (2023-12-01)
 
 
