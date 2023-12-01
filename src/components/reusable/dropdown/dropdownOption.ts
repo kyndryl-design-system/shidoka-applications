@@ -84,7 +84,13 @@ export class DropdownOption extends LitElement {
   private handleSlotChange(e: any) {
     // set text prop from slotted text, for ease of access
     const nodes = e.target.assignedNodes({ flatten: true });
-    this.text = nodes[0].textContent.trim();
+    let text = '';
+
+    for (let i = 0; i < nodes.length; i++) {
+      text += nodes[i].textContent.trim();
+    }
+
+    this.text = text;
   }
 
   private handleClick(e: Event) {
@@ -94,7 +100,11 @@ export class DropdownOption extends LitElement {
     }
 
     // update selected state
-    this.selected = !this.selected;
+    if (this.multiple) {
+      this.selected = !this.selected;
+    } else {
+      this.selected = true;
+    }
 
     // emit selected value, bubble so it can be captured by the parent dropdown
     const event = new CustomEvent('on-click', {
