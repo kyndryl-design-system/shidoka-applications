@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.5...v1.0.6) (2023-12-04)
+
+
+### Bug Fixes
+
+* prevent form elements validation on load ([0d2735b](https://github.com/kyndryl-design-system/shidoka-applications/commit/0d2735be90da5cb598ba072ea8a291c32771e693))
+
 ## [1.0.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.4...v1.0.5) (2023-12-01)
 
 
