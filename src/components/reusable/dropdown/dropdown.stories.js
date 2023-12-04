@@ -162,3 +162,58 @@ export const MultiSelectSearchable = {
     `;
   },
 };
+
+export const DataDrivenOptions = {
+  args: args,
+  render: (args) => {
+    const items = [
+      {
+        value: 'option1',
+        text: 'Option 1',
+      },
+      {
+        value: 'option2',
+        text: 'Option 2',
+        selected: true,
+      },
+      {
+        value: 'option3',
+        text: 'Option 3',
+        disabled: true,
+      },
+      {
+        value: 'option4',
+        text: 'Option 4',
+      },
+    ];
+
+    return html`
+      <kyn-dropdown
+        placeholder=${args.placeholder}
+        size=${args.size}
+        ?inline=${args.inline}
+        name=${args.name}
+        ?open=${args.open}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        caption=${args.caption}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+        <span slot="label">${args.label}</span>
+
+        ${items.map((item) => {
+          return html`
+            <kyn-dropdown-option
+              value=${item.value}
+              ?selected=${item.selected}
+              ?disabled=${item.disabled}
+            >
+              ${item.text}
+            </kyn-dropdown-option>
+          `;
+        })}
+      </kyn-dropdown>
+    `;
+  },
+};
