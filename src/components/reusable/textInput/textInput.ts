@@ -220,7 +220,8 @@ export class TextInput extends LitElement {
           ? true
           : false;
     }
-    if (changedProps.has('value')) {
+
+    if (changedProps.get('value') !== undefined && changedProps.has('value')) {
       this.inputEl.value = this.value;
       // set form data value
       this.internals.setFormValue(this.value);

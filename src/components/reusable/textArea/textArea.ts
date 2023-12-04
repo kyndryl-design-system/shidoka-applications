@@ -151,7 +151,8 @@ ${this.value}</textarea
           ? true
           : false;
     }
-    if (changedProps.has('value')) {
+
+    if (changedProps.get('value') !== undefined && changedProps.has('value')) {
       // set form data value
       this.internals.setFormValue(this.value);
 

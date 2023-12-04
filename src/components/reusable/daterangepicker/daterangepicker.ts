@@ -181,7 +181,11 @@ export class DateRangePicker extends LitElement {
           ? true
           : false;
     }
-    if (changedProps.has('startDate')) {
+
+    if (
+      changedProps.get('startDate') !== undefined &&
+      changedProps.has('startDate')
+    ) {
       this.internals.setValidity({});
       this.invalidText = '';
       this.internalValidationMsg = '';
@@ -207,7 +211,11 @@ export class DateRangePicker extends LitElement {
         this.validateStartEndDate();
       }
     }
-    if (changedProps.has('endDate')) {
+
+    if (
+      changedProps.get('endDate') !== undefined &&
+      changedProps.has('endDate')
+    ) {
       this.internals.setValidity({});
       this.invalidText = '';
       this.internalValidationMsg = '';
