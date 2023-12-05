@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.6...v1.0.7) (2023-12-05)
+
+
+### Bug Fixes
+
+* **local-nav-link:** active + expanded color fix ([ba4271e](https://github.com/kyndryl-design-system/shidoka-applications/commit/ba4271eef9232e1ceb7eeda8c25e403cfc5e717f))
+
 ## [1.0.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.5...v1.0.6) (2023-12-04)
 
 
