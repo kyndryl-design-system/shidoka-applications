@@ -1,3 +1,10 @@
+## [1.0.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.7...v1.0.8) (2023-12-05)
+
+
+### Bug Fixes
+
+* header & local nav active color ([c46974c](https://github.com/kyndryl-design-system/shidoka-applications/commit/c46974cbb889a2fce42416a54229a400f49b34c7))
+
 ## [1.0.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.6...v1.0.7) (2023-12-05)
 
 
