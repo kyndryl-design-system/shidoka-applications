@@ -1,3 +1,10 @@
+## [1.0.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.8...v1.0.9) (2023-12-05)
+
+
+### Bug Fixes
+
+* **header:** prevent mobile nav menu opening when not intended ([d32c282](https://github.com/kyndryl-design-system/shidoka-applications/commit/d32c282b17532c95767acdbbb9a79ffb5fe4f8ff))
+
 ## [1.0.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.7...v1.0.8) (2023-12-05)
 
 
