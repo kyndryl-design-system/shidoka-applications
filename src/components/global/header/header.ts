@@ -153,7 +153,8 @@ export class Header extends LitElement {
       !e.composedPath().includes(this.navEls[0]) &&
       !e.composedPath().includes(button)
     ) {
-      this.toggleNavMenu();
+      this.menuOpen = false;
+      this.emitMenuToggle();
     }
   }
 
@@ -175,6 +176,10 @@ export class Header extends LitElement {
   private toggleNavMenu() {
     this.menuOpen = !this.menuOpen;
 
+    this.emitMenuToggle();
+  }
+
+  private emitMenuToggle() {
     const event = new CustomEvent('on-menu-toggle', {
       detail: this.menuOpen,
     });
