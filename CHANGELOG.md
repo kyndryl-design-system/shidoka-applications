@@ -1,3 +1,10 @@
+## [1.0.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.9...v1.0.10) (2023-12-06)
+
+
+### Bug Fixes
+
+* **local-nav-link:** update children on slotchange ([15445ec](https://github.com/kyndryl-design-system/shidoka-applications/commit/15445ec11d7bdeefd9c705bcaeb023f7d292fa6d))
+
 ## [1.0.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.8...v1.0.9) (2023-12-05)
 
 
