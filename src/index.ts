@@ -26,3 +26,4 @@ export { Breadcrumbs, BreadcrumbItem } from './components/reusable/breadcrumbs';
 export { Table } from './components/reusable/table';
 export { DataTable } from './components/reusable/table/data-table';
 export { Pagination } from './components/reusable/pagination';
+export { PageHeading } from './components/reusable/pageHeading';
