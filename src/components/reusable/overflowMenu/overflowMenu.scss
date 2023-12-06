@@ -1,0 +1,51 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: inline-block;
+}
+
+.overflow-menu {
+  position: relative;
+}
+
+button {
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &.open {
+    background: var(--background-ui-default);
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12),
+      0px 4px 12px 0px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 208px;
+  margin-top: 8px;
+  border-radius: 4px;
+  background: var(--background-ui-default);
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12),
+    0px 4px 12px 0px rgba(0, 0, 0, 0.08);
+  transition: transform 150ms ease-out, opacity 150ms ease-out,
+    visibility 150ms ease-out;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  &.right {
+    right: 0;
+  }
+}
