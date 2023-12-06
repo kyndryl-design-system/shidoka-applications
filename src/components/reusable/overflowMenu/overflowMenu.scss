@@ -15,11 +15,18 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: outline-color 0.15s ease-out;
 
   &.open {
     background: var(--background-ui-default);
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12),
       0px 4px 12px 0px rgba(0, 0, 0, 0.08);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
   }
 }
 

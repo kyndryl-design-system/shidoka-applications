@@ -19,10 +19,16 @@
   text-decoration: none;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: background-color 0.15s ease-out;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: background-color 0.15s ease-out, outline-color 0.15s ease-out;
 
   &:hover {
     background: var(--kd-color-background-inverse-hover);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
   }
 
   &.destructive {

@@ -2291,12 +2291,12 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
+      "path": "src/components/reusable/datePicker/datepicker.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Date-Range picker",
-          "name": "DateRangePicker",
+          "description": "Datepicker.",
+          "name": "DatePicker",
           "slots": [
             {
               "description": "Slot for label text.",
@@ -2304,16 +2304,6 @@
             }
           ],
           "members": [
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
             {
               "kind": "field",
               "name": "size",
@@ -2326,23 +2316,23 @@
             },
             {
               "kind": "field",
-              "name": "startDate",
+              "name": "caption",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "attribute": "startDate"
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
             },
             {
               "kind": "field",
-              "name": "endDate",
+              "name": "value",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "attribute": "endDate"
+              "description": "Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format.",
+              "attribute": "value"
             },
             {
               "kind": "field",
@@ -2351,7 +2341,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker name. Required prop. as there could many fields into single form",
+              "description": "Datepicker name.",
               "attribute": "name"
             },
             {
@@ -2401,7 +2391,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
+              "description": "Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value",
               "attribute": "maxDate"
             },
             {
@@ -2411,7 +2401,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "description": "Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
               "attribute": "minDate"
             },
             {
@@ -2425,8 +2415,17 @@
               "attribute": "step"
             },
             {
+              "kind": "field",
+              "name": "datePickerType",
+              "type": {
+                "text": "DATE_PICKER_TYPES"
+              },
+              "description": "Date picker types. Default 'single'",
+              "attribute": "datePickerType"
+            },
+            {
               "kind": "method",
-              "name": "handleStartDate",
+              "name": "handleInput",
               "privacy": "private",
               "parameters": [
                 {
@@ -2436,24 +2435,6 @@
                   }
                 }
               ]
-            },
-            {
-              "kind": "method",
-              "name": "handleEndDate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "validateAndDispatchEvent",
-              "privacy": "private"
             },
             {
               "kind": "method",
@@ -2463,37 +2444,11 @@
                 "type": {
                   "text": "void"
                 }
-              },
-              "parameters": [
-                {
-                  "name": "date",
-                  "type": {
-                    "text": "String"
-                  }
-                }
-              ]
+              }
             },
             {
               "kind": "method",
               "name": "validateMaxDate",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "date",
-                  "type": {
-                    "text": "String"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "validateStartEndDate",
               "privacy": "private",
               "return": {
                 "type": {
@@ -2504,20 +2459,11 @@
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
+              "description": "Captures the input event and emits the selected value and original event details.",
               "name": "on-input"
             }
           ],
           "attributes": [
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
             {
               "name": "size",
               "type": {
@@ -2528,22 +2474,22 @@
               "fieldName": "size"
             },
             {
-              "name": "startDate",
+              "name": "caption",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "fieldName": "startDate"
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
             },
             {
-              "name": "endDate",
+              "name": "value",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "fieldName": "endDate"
+              "description": "Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format.",
+              "fieldName": "value"
             },
             {
               "name": "name",
@@ -2551,7 +2497,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker name. Required prop. as there could many fields into single form",
+              "description": "Datepicker name.",
               "fieldName": "name"
             },
             {
@@ -2596,7 +2542,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
+              "description": "Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value",
               "fieldName": "maxDate"
             },
             {
@@ -2605,7 +2551,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "description": "Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
               "fieldName": "minDate"
             },
             {
@@ -2616,46 +2562,101 @@
               "default": "''",
               "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\r\nThe default value of step is 1, indicating 1 day.",
               "fieldName": "step"
+            },
+            {
+              "name": "datePickerType",
+              "type": {
+                "text": "DATE_PICKER_TYPES"
+              },
+              "description": "Date picker types. Default 'single'",
+              "fieldName": "datePickerType"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-date-range-picker",
+          "tagName": "kyn-date-picker",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "DateRangePicker",
+          "name": "DatePicker",
           "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+            "name": "DatePicker",
+            "module": "src/components/reusable/datePicker/datepicker.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-date-range-picker",
+          "name": "kyn-date-picker",
           "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+            "name": "DatePicker",
+            "module": "src/components/reusable/datePicker/datepicker.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/index.ts",
+      "path": "src/components/reusable/datePicker/defs.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "regexDateFormat",
+          "default": "/^\\d{4}-\\d{2}-\\d{2}$/"
+        },
+        {
+          "kind": "variable",
+          "name": "regexDateTimeFormat",
+          "default": "/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$/"
+        },
+        {
+          "kind": "variable",
+          "name": "regexDateTimeFormatSec",
+          "default": "/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$/"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "regexDateFormat",
+          "declaration": {
+            "name": "regexDateFormat",
+            "module": "src/components/reusable/datePicker/defs.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "regexDateTimeFormat",
+          "declaration": {
+            "name": "regexDateTimeFormat",
+            "module": "src/components/reusable/datePicker/defs.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "regexDateTimeFormatSec",
+          "declaration": {
+            "name": "regexDateTimeFormatSec",
+            "module": "src/components/reusable/datePicker/defs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/datePicker/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "DateRangePicker",
+          "name": "DatePicker",
           "declaration": {
-            "name": "DateRangePicker",
-            "module": "\"./daterangepicker\""
+            "name": "DatePicker",
+            "module": "./datepicker"
           }
         }
       ]
@@ -3633,12 +3634,12 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/datePicker/datepicker.ts",
+      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Datepicker.",
-          "name": "DatePicker",
+          "description": "Date-Range picker",
+          "name": "DateRangePicker",
           "slots": [
             {
               "description": "Slot for label text.",
@@ -3646,16 +3647,6 @@
             }
           ],
           "members": [
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
             {
               "kind": "field",
               "name": "caption",
@@ -3668,13 +3659,33 @@
             },
             {
               "kind": "field",
-              "name": "value",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "startDate",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format.",
-              "attribute": "value"
+              "description": "Datepicker Start date in YYYY-MM-DD format.",
+              "attribute": "startDate"
+            },
+            {
+              "kind": "field",
+              "name": "endDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker End date in YYYY-MM-DD format.",
+              "attribute": "endDate"
             },
             {
               "kind": "field",
@@ -3683,7 +3694,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker name.",
+              "description": "Datepicker name. Required prop. as there could many fields into single form",
               "attribute": "name"
             },
             {
@@ -3733,7 +3744,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value",
+              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
               "attribute": "maxDate"
             },
             {
@@ -3743,7 +3754,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
               "attribute": "minDate"
             },
             {
@@ -3757,17 +3768,8 @@
               "attribute": "step"
             },
             {
-              "kind": "field",
-              "name": "datePickerType",
-              "type": {
-                "text": "DATE_PICKER_TYPES"
-              },
-              "description": "Date picker types. Default 'single'",
-              "attribute": "datePickerType"
-            },
-            {
               "kind": "method",
-              "name": "handleInput",
+              "name": "handleStartDate",
               "privacy": "private",
               "parameters": [
                 {
@@ -3780,17 +3782,61 @@
             },
             {
               "kind": "method",
+              "name": "handleEndDate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "validateAndDispatchEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
               "name": "validateMinDate",
               "privacy": "private",
               "return": {
                 "type": {
                   "text": "void"
                 }
-              }
+              },
+              "parameters": [
+                {
+                  "name": "date",
+                  "type": {
+                    "text": "String"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
               "name": "validateMaxDate",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "date",
+                  "type": {
+                    "text": "String"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "validateStartEndDate",
               "privacy": "private",
               "return": {
                 "type": {
@@ -3801,20 +3847,11 @@
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the selected value and original event details.",
+              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
               "name": "on-input"
             }
           ],
           "attributes": [
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
             {
               "name": "caption",
               "type": {
@@ -3825,13 +3862,31 @@
               "fieldName": "caption"
             },
             {
-              "name": "value",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "startDate",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format.",
-              "fieldName": "value"
+              "description": "Datepicker Start date in YYYY-MM-DD format.",
+              "fieldName": "startDate"
+            },
+            {
+              "name": "endDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker End date in YYYY-MM-DD format.",
+              "fieldName": "endDate"
             },
             {
               "name": "name",
@@ -3839,7 +3894,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker name.",
+              "description": "Datepicker name. Required prop. as there could many fields into single form",
               "fieldName": "name"
             },
             {
@@ -3884,7 +3939,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value",
+              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
               "fieldName": "maxDate"
             },
             {
@@ -3893,7 +3948,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
               "fieldName": "minDate"
             },
             {
@@ -3904,101 +3959,46 @@
               "default": "''",
               "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\r\nThe default value of step is 1, indicating 1 day.",
               "fieldName": "step"
-            },
-            {
-              "name": "datePickerType",
-              "type": {
-                "text": "DATE_PICKER_TYPES"
-              },
-              "description": "Date picker types. Default 'single'",
-              "fieldName": "datePickerType"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-date-picker",
+          "tagName": "kyn-date-range-picker",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "DatePicker",
+          "name": "DateRangePicker",
           "declaration": {
-            "name": "DatePicker",
-            "module": "src/components/reusable/datePicker/datepicker.ts"
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-date-picker",
+          "name": "kyn-date-range-picker",
           "declaration": {
-            "name": "DatePicker",
-            "module": "src/components/reusable/datePicker/datepicker.ts"
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/datePicker/defs.ts",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "regexDateFormat",
-          "default": "/^\\d{4}-\\d{2}-\\d{2}$/"
-        },
-        {
-          "kind": "variable",
-          "name": "regexDateTimeFormat",
-          "default": "/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$/"
-        },
-        {
-          "kind": "variable",
-          "name": "regexDateTimeFormatSec",
-          "default": "/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$/"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "regexDateFormat",
-          "declaration": {
-            "name": "regexDateFormat",
-            "module": "src/components/reusable/datePicker/defs.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "regexDateTimeFormat",
-          "declaration": {
-            "name": "regexDateTimeFormat",
-            "module": "src/components/reusable/datePicker/defs.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "regexDateTimeFormatSec",
-          "declaration": {
-            "name": "regexDateTimeFormatSec",
-            "module": "src/components/reusable/datePicker/defs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/datePicker/index.ts",
+      "path": "src/components/reusable/daterangepicker/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "DatePicker",
+          "name": "DateRangePicker",
           "declaration": {
-            "name": "DatePicker",
-            "module": "./datepicker"
+            "name": "DateRangePicker",
+            "module": "\"./daterangepicker\""
           }
         }
       ]
@@ -4062,6 +4062,16 @@
               "attribute": "anchorRight"
             },
             {
+              "kind": "field",
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Toggle Menu'",
+              "description": "Button assistive text..",
+              "attribute": "assistiveText"
+            },
+            {
               "kind": "method",
               "name": "toggleMenu",
               "privacy": "private"
@@ -4103,6 +4113,15 @@
               "default": "false",
               "description": "Anchors the menu to the right of the button.",
               "fieldName": "anchorRight"
+            },
+            {
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Toggle Menu'",
+              "description": "Button assistive text..",
+              "fieldName": "assistiveText"
             }
           ],
           "superclass": {
@@ -6565,256 +6584,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "./textArea"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/textArea.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Text area.",
-          "name": "TextArea",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "attribute": "placeholder"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input invalid text.",
-              "attribute": "invalidText"
-            },
-            {
-              "kind": "field",
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "default": "null",
-              "description": "Maximum number of characters.",
-              "attribute": "maxLength"
-            },
-            {
-              "kind": "field",
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "default": "null",
-              "description": "Minimum number of characters.",
-              "attribute": "minLength"
-            },
-            {
-              "kind": "method",
-              "name": "handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "fieldName": "placeholder"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "fieldName": "name"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input invalid text.",
-              "fieldName": "invalidText"
-            },
-            {
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "default": "null",
-              "description": "Maximum number of characters.",
-              "fieldName": "maxLength"
-            },
-            {
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "default": "null",
-              "description": "Minimum number of characters.",
-              "fieldName": "minLength"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-text-area",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-text-area",
-          "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/textInput/index.ts",
       "declarations": [],
       "exports": [
@@ -7149,6 +6918,256 @@
           "declaration": {
             "name": "TextInput",
             "module": "src/components/reusable/textInput/textInput.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "./textArea"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/textArea.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Text area.",
+          "name": "TextArea",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input invalid text.",
+              "attribute": "invalidText"
+            },
+            {
+              "kind": "field",
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "default": "null",
+              "description": "Maximum number of characters.",
+              "attribute": "maxLength"
+            },
+            {
+              "kind": "field",
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "default": "null",
+              "description": "Minimum number of characters.",
+              "attribute": "minLength"
+            },
+            {
+              "kind": "method",
+              "name": "handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input invalid text.",
+              "fieldName": "invalidText"
+            },
+            {
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "default": "null",
+              "description": "Maximum number of characters.",
+              "fieldName": "maxLength"
+            },
+            {
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "default": "null",
+              "description": "Minimum number of characters.",
+              "fieldName": "minLength"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-text-area",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-text-area",
+          "declaration": {
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
           }
         }
       ]

@@ -26,6 +26,10 @@ export class OverflowMenu extends LitElement {
   @property({ type: Boolean })
   anchorRight = false;
 
+  /** Button assistive text.. */
+  @property({ type: String })
+  assistiveText = 'Toggle Menu';
+
   /** Queries for slotted menu items.
    * @internal
    */
@@ -57,6 +61,8 @@ export class OverflowMenu extends LitElement {
           @click=${this.toggleMenu}
           aria-controls=${this._id}
           aria-expanded=${this.open}
+          title=${this.assistiveText}
+          aria-label=${this.assistiveText}
         >
           <kd-icon .icon=${overflowIcon}></kd-icon>
         </button>
