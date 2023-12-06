@@ -25,13 +25,18 @@ export default {
 const args = {
   open: false,
   anchorRight: false,
+  assistiveText: 'Toggle Menu',
 };
 
 export const OverflowMenu = {
   args: args,
   render: (args) => {
     return html`
-      <kyn-overflow-menu ?open=${args.open} ?anchorRight=${args.anchorRight}>
+      <kyn-overflow-menu
+        ?open=${args.open}
+        ?anchorRight=${args.anchorRight}
+        assistiveText=${args.assistiveText}
+      >
         <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
         <kyn-overflow-menu-item href="javascript:void(0);">
           Option 2
