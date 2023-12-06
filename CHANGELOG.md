@@ -1,3 +1,11 @@
+## [1.0.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.10...v1.0.11) (2023-12-06)
+
+
+### Bug Fixes
+
+* **header-flyout:** soften translateY effect ([4d4310a](https://github.com/kyndryl-design-system/shidoka-applications/commit/4d4310a9ed9658214d204fbaf85d51854696bb1d))
+* **header:** improve flyout ux on medium size screens ([0588d97](https://github.com/kyndryl-design-system/shidoka-applications/commit/0588d97f662e6301b1f0ddab1ab63d242e7e9946))
+
 ## [1.0.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.9...v1.0.10) (2023-12-06)
 
 
