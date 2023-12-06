@@ -88,7 +88,7 @@ export class LocalNavLink extends LitElement {
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
           <slot name="icon"></slot>
           <span class="text">
-            <slot @slotchange=${this.handleSlotChange}></slot>
+            <slot></slot>
           </span>
 
           ${this.navLinks.length
@@ -101,7 +101,7 @@ export class LocalNavLink extends LitElement {
         </a>
 
         <ul style=${styleMap(this.flyoutStyles)}>
-          <slot name="links"></slot>
+          <slot name="links" @slotchange=${this.handleSlotChange}></slot>
         </ul>
       </li>
     `;
