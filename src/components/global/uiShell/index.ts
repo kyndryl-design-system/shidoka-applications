@@ -1,1 +1,1 @@
-import './uiShell';
+export { UiShell } from './uiShell';
