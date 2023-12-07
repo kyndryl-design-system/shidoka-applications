@@ -1,0 +1,58 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: inline-block;
+}
+
+.overflow-menu {
+  position: relative;
+}
+
+button {
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: inherit;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: outline-color 0.15s ease-out;
+
+  &.open {
+    background: var(--kd-color-background-ui-default);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
+  }
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 208px;
+  margin-top: 8px;
+  border-radius: 4px;
+  background: var(--kd-color-background-ui-default);
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
+  z-index: 1;
+  transition: transform 150ms ease-out, opacity 150ms ease-out,
+    visibility 150ms ease-out;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  &.right {
+    right: 0;
+  }
+}
