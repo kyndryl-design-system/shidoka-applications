@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.0...v1.1.1) (2023-12-07)
+
+
+### Bug Fixes
+
+* **ui-shell:** export to root index ([eeb11c8](https://github.com/kyndryl-design-system/shidoka-applications/commit/eeb11c83109c33f491b2b5edf00f1560fd7be4cc))
+
 # [1.1.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.11...v1.1.0) (2023-12-07)
 
 
