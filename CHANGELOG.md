@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.11...v1.1.0) (2023-12-07)
+
+
+### Features
+
+* overflow menu ([#39](https://github.com/kyndryl-design-system/shidoka-applications/issues/39)) ([4fa0492](https://github.com/kyndryl-design-system/shidoka-applications/commit/4fa0492ce041c9119446577e6ca2cd41b723a8a9))
+
 ## [1.0.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.0.10...v1.0.11) (2023-12-06)
 
 
