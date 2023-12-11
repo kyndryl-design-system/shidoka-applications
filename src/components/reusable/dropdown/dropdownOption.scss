@@ -1,15 +1,12 @@
 @use '../../../common/scss/global.scss';
 
 :host {
-  display: inline-block;
+  display: block;
 }
 
 li {
   cursor: default;
   padding: 12px 16px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   transition: background-color 150ms ease-out;
 
   &[selected] {
@@ -30,6 +27,13 @@ li {
     &:hover {
       background-color: transparent;
     }
+  }
+
+  span {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
