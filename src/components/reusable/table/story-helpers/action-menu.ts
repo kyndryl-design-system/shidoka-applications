@@ -1,7 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import '../../overflowMenu';
-import overflowMenu from '@carbon/icons/es/overflow-menu--horizontal/16';
 
 import styles from './action-menu.scss';
 
@@ -20,21 +19,20 @@ export class ActionMenu extends LitElement {
   @property({ type: Number })
   itemId = 0;
 
-  toggleMenu(e: Event) {
+  toggleMenu() {
     this.opened = !this.opened;
-    console.log(this.opened);
   }
 
   deleteHandler = (itemId: number, e: any) => {
     e.detail.origEvent.stopPropagation();
     this.handleDelete(itemId);
-    this.toggleMenu(e);
+    this.toggleMenu();
   };
 
   actionHandler = (itemId: number, e: any) => {
     e.detail.origEvent.stopPropagation();
     console.log('Action triggered', itemId);
-    this.toggleMenu(e);
+    this.toggleMenu();
   };
 
   _handleToggle = (e: any) => {
