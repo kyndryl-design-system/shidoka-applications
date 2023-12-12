@@ -13,6 +13,7 @@ import overflowIcon from '@carbon/icons/es/overflow-menu--horizontal/16';
 /**
  * Overflow Menu.
  * @slot unnamed - Slot for overflow menu items.
+ * @fires on-toggle - Capture the open/close event and emits the new state.
  */
 @customElement('kyn-overflow-menu')
 export class OverflowMenu extends LitElement {
@@ -74,8 +75,18 @@ export class OverflowMenu extends LitElement {
     `;
   }
 
+  private _emitToggleEvent() {
+    const event = new CustomEvent('on-toggle', {
+      detail: {
+        open: this.open,
+      },
+    });
+    this.dispatchEvent(event);
+  }
+
   private toggleMenu() {
     this.open = !this.open;
+    this._emitToggleEvent();
   }
 
   private handleSlotChange() {
@@ -95,6 +106,7 @@ export class OverflowMenu extends LitElement {
   private handleClickOut(e: Event) {
     if (!e.composedPath().includes(this)) {
       this.open = false;
+      this._emitToggleEvent();
     }
   }
 
