@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.2...v1.1.3) (2023-12-12)
+
+
+### Bug Fixes
+
+* **overflow-menu:** add on-toggle event ([08cec82](https://github.com/kyndryl-design-system/shidoka-applications/commit/08cec824fd04f82b9a46b6ec0dd7583790ea0440))
+
 ## [1.1.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.1...v1.1.2) (2023-12-12)
 
 
