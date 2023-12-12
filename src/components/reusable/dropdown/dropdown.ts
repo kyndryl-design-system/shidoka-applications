@@ -615,31 +615,63 @@ export class Dropdown extends LitElement {
     }
   }
 
+  private _handleClick(e: any) {
+    this.updateValue(e.detail.value, e.detail.selected);
+    this.assistiveText = 'Selected an item.';
+
+    // emit selected value
+    this.emitValue();
+  }
+
+  private _handleBlur(e: any) {
+    const relatedTarget = e.detail.origEvent.relatedTarget;
+
+    if (
+      !relatedTarget ||
+      (relatedTarget.localName !== 'kyn-dropdown-option' &&
+        relatedTarget.localName !== 'kyn-dropdown')
+    ) {
+      this.open = false;
+    }
+  }
+
+  private _handleFormdata(e: any) {
+    if (this.multiple) {
+      this.value.forEach((value: string) => {
+        e.formData.append(this.name, value);
+      });
+    } else {
+      e.formData.append(this.name, this.value);
+    }
+  }
+
   override connectedCallback() {
     super.connectedCallback();
 
     // capture child options click event
-    this.addEventListener('on-click', (e: any) => {
-      // set selected value
-      this.updateValue(e.detail.value, e.detail.selected);
-      this.assistiveText = 'Selected an item.';
-
-      // emit selected value
-      this.emitValue();
-    });
+    this.addEventListener('on-click', (e: any) => this._handleClick(e));
 
     // capture child options blur event
-    this.addEventListener('on-blur', (e: any) => {
-      const relatedTarget = e.detail.origEvent.relatedTarget;
+    this.addEventListener('on-blur', (e: any) => this._handleBlur(e));
 
-      if (
-        !relatedTarget ||
-        (relatedTarget.localName !== 'kyn-dropdown-option' &&
-          relatedTarget.localName !== 'kyn-dropdown')
-      ) {
-        this.open = false;
-      }
-    });
+    if (this.internals.form) {
+      this.internals.form.addEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+  }
+
+  override disconnectedCallback() {
+    this.addEventListener('on-click', (e: any) => this._handleClick(e));
+    this.addEventListener('on-blur', (e: any) => this._handleBlur(e));
+
+    if (this.internals.form) {
+      this.internals.form.removeEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+
+    super.disconnectedCallback();
   }
 
   private updateValue(value: string, selected = false) {
@@ -703,15 +735,15 @@ export class Dropdown extends LitElement {
       }
 
       // set form data value
-      if (this.multiple) {
-        const entries = new FormData();
-        this.value.forEach((value: string) => {
-          entries.append(this.name, value);
-        });
-        this.internals.setFormValue(entries);
-      } else {
-        this.internals.setFormValue(this.value);
-      }
+      // if (this.multiple) {
+      //   const entries = new FormData();
+      //   this.value.forEach((value: string) => {
+      //     entries.append(this.name, value);
+      //   });
+      //   this.internals.setFormValue(entries);
+      // } else {
+      //   this.internals.setFormValue(this.value);
+      // }
 
       // set selected state for each option
       this.options.forEach((option: any) => {

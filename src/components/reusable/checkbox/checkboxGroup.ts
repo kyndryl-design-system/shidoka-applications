@@ -111,11 +111,11 @@ export class CheckboxGroup extends LitElement {
       });
 
       // set form data value
-      const entries = new FormData();
-      this.value.forEach((value) => {
-        entries.append(this.name, value);
-      });
-      this.internals.setFormValue(entries);
+      // const entries = new FormData();
+      // this.value.forEach((value) => {
+      //   entries.append(this.name, value);
+      // });
+      // this.internals.setFormValue(entries);
 
       // set validity
       if (this.required) {
@@ -161,28 +161,57 @@ export class CheckboxGroup extends LitElement {
     }
   }
 
+  private _handleCheckboxChange(e: any) {
+    const value = e.detail.value;
+    const newValues = [...this.value];
+    if (newValues.includes(value)) {
+      const index = newValues.indexOf(value);
+      newValues.splice(index, 1);
+    } else {
+      newValues.push(value);
+    }
+    this.value = newValues;
+
+    // emit selected value
+    const event = new CustomEvent('on-checkbox-group-change', {
+      detail: { value: newValues },
+    });
+    this.dispatchEvent(event);
+  }
+
+  private _handleFormdata(e: any) {
+    this.value.forEach((value) => {
+      e.formData.append(this.name, value);
+    });
+  }
+
   override connectedCallback() {
     super.connectedCallback();
 
     // capture child checkboxes change event
-    this.addEventListener('on-checkbox-change', (e: any) => {
-      // set selected value
-      const value = e.detail.value;
-      const newValues = [...this.value];
-      if (newValues.includes(value)) {
-        const index = newValues.indexOf(value);
-        newValues.splice(index, 1);
-      } else {
-        newValues.push(value);
-      }
-      this.value = newValues;
+    this.addEventListener('on-checkbox-change', (e: any) =>
+      this._handleCheckboxChange(e)
+    );
 
-      // emit selected value
-      const event = new CustomEvent('on-checkbox-group-change', {
-        detail: { value: newValues },
-      });
-      this.dispatchEvent(event);
-    });
+    if (this.internals.form) {
+      this.internals.form.addEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+  }
+
+  override disconnectedCallback() {
+    this.removeEventListener('on-checkbox-change', (e: any) =>
+      this._handleCheckboxChange(e)
+    );
+
+    if (this.internals.form) {
+      this.internals.form.removeEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+
+    super.disconnectedCallback();
   }
 }
 

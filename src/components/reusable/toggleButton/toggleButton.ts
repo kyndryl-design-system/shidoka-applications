@@ -96,8 +96,34 @@ export class ToggleButton extends LitElement {
   override updated(changedProps: any) {
     if (changedProps.has('checked')) {
       // set form data value
-      this.internals.setFormValue(this.checked ? this.value : null);
+      // this.internals.setFormValue(this.checked ? this.value : null);
     }
+  }
+
+  private _handleFormdata(e: any) {
+    if (this.checked) {
+      e.formData.append(this.name, this.value);
+    }
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+
+    if (this.internals.form) {
+      this.internals.form.addEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+  }
+
+  override disconnectedCallback(): void {
+    if (this.internals.form) {
+      this.internals.form.removeEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+
+    super.disconnectedCallback();
   }
 }
 

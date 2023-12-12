@@ -111,7 +111,7 @@ export class RadioButtonGroup extends LitElement {
       });
 
       // set form data value
-      this.internals.setFormValue(this.value);
+      // this.internals.setFormValue(this.value);
 
       // set validity
       if (this.required) {
@@ -159,20 +159,48 @@ export class RadioButtonGroup extends LitElement {
     }
   }
 
+  private _handleRadioChange(e: any) {
+    // set selected value
+    this.value = e.detail.value;
+
+    // emit selected value
+    const event = new CustomEvent('on-radio-group-change', {
+      detail: { value: e.detail.value },
+    });
+    this.dispatchEvent(event);
+  }
+
+  private _handleFormdata(e: any) {
+    e.formData.append(this.name, this.value);
+  }
+
   override connectedCallback() {
     super.connectedCallback();
 
     // capture child radio buttons change event
-    this.addEventListener('on-radio-change', (e: any) => {
-      // set selected value
-      this.value = e.detail.value;
+    this.addEventListener('on-radio-change', (e: any) =>
+      this._handleRadioChange(e)
+    );
 
-      // emit selected value
-      const event = new CustomEvent('on-radio-group-change', {
-        detail: { value: e.detail.value },
-      });
-      this.dispatchEvent(event);
-    });
+    if (this.internals.form) {
+      this.internals.form.addEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+  }
+
+  override disconnectedCallback(): void {
+    this.removeEventListener('on-radio-change', (e: any) =>
+      this._handleRadioChange(e)
+    );
+
+    if (this.internals.form) {
+      this.internals.form.removeEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+
+    super.disconnectedCallback();
   }
 }
 

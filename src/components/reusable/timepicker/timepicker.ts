@@ -189,7 +189,7 @@ export class TimePicker extends LitElement {
     if (changedProps.get('value') !== undefined && changedProps.has('value')) {
       this.inputEl.value = this.value;
       //set form data value
-      this.internals.setFormValue(this.value);
+      // this.internals.setFormValue(this.value);
       this.internals.setValidity({});
       this.invalidText = '';
       this.internalValidationMsg = '';
@@ -267,6 +267,30 @@ export class TimePicker extends LitElement {
     const totalTime =
       parseInt(hours, 10) * 3600 + parseInt(minutes, 10) * 60 + setSeconds;
     return totalTime;
+  }
+
+  private _handleFormdata(e: any) {
+    e.formData.append(this.name, this.value);
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+
+    if (this.internals.form) {
+      this.internals.form.addEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+  }
+
+  override disconnectedCallback(): void {
+    if (this.internals.form) {
+      this.internals.form.removeEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+
+    super.disconnectedCallback();
   }
 }
 
