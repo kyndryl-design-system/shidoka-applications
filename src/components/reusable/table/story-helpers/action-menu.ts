@@ -1,14 +1,15 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import '../../overflowMenu';
 import overflowMenu from '@carbon/icons/es/overflow-menu--horizontal/16';
 
-import styles from './action.menu.scss';
+import styles from './action-menu.scss';
 
 @customElement('action-menu')
 export class ActionMenu extends LitElement {
   static override styles = [styles];
 
-  @property({ type: Boolean, reflect: true })
+  @property({ type: Boolean })
   opened = false;
 
   @property({ type: Function })
@@ -20,56 +21,59 @@ export class ActionMenu extends LitElement {
   itemId = 0;
 
   toggleMenu(e: Event) {
-    e.stopPropagation();
-    e.preventDefault();
-
     this.opened = !this.opened;
+    console.log(this.opened);
   }
 
-  deleteHandler = (itemId: number, e: Event) => {
-    e.stopPropagation();
+  deleteHandler = (itemId: number, e: any) => {
+    e.detail.origEvent.stopPropagation();
     this.handleDelete(itemId);
     this.toggleMenu(e);
   };
 
-  actionHandler = (itemId: number, e: Event) => {
-    e.stopPropagation();
-    console.log('View Details action triggered', itemId);
+  actionHandler = (itemId: number, e: any) => {
+    e.detail.origEvent.stopPropagation();
+    console.log('Action triggered', itemId);
     this.toggleMenu(e);
+  };
+
+  _handleToggle = (e: any) => {
+    this.opened = e.detail.open;
   };
 
   override render() {
     return html`
-      <kd-button
-        kind="tertiary"
-        type="button"
-        size="small"
-        iconposition="center"
-        @on-click=${(e: Event) => this.toggleMenu(e)}
+      <kyn-overflow-menu
+        ?open=${this.opened}
+        anchorRight
+        assistiveText="Actions"
+        @on-toggle=${(e: Event) => this._handleToggle(e)}
+        @click=${(e: Event) => e.stopPropagation()}
       >
-        <kd-icon slot="icon" .icon=${overflowMenu}></kd-icon>
-      </kd-button>
-
-      <div class="menu">
-        <div
-          class="menu-item"
-          @click=${(e: Event) => this.deleteHandler(this.itemId, e)}
+        <kyn-overflow-menu-item
+          @on-click=${(e: Event) => this.actionHandler(this.itemId, e)}
+        >
+          Action 1
+        </kyn-overflow-menu-item>
+        <kyn-overflow-menu-item
+          href="javascript:void(0);"
+          @on-click=${(e: Event) => this.actionHandler(this.itemId, e)}
+        >
+          Action 2
+        </kyn-overflow-menu-item>
+        <kyn-overflow-menu-item
+          disabled
+          @on-click=${(e: Event) => this.actionHandler(this.itemId, e)}
+        >
+          Action 3
+        </kyn-overflow-menu-item>
+        <kyn-overflow-menu-item
+          destructive
+          @on-click=${(e: Event) => this.deleteHandler(this.itemId, e)}
         >
           Delete
-        </div>
-        <div
-          class="menu-item"
-          @click=${(e: Event) => this.actionHandler(this.itemId, e)}
-        >
-          Action
-        </div>
-        <div
-          class="menu-item"
-          @click=${(e: Event) => this.actionHandler(this.itemId, e)}
-        >
-          Action
-        </div>
-      </div>
+        </kyn-overflow-menu-item>
+      </kyn-overflow-menu>
     `;
   }
 }
