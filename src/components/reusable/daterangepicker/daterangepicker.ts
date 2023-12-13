@@ -308,8 +308,8 @@ export class DateRangePicker extends LitElement {
 
   private validateStartEndDate(): void {
     // Save combine values to form data
-    const combineVals = `${this.startDate}:${this.endDate}`;
-    this.internals.setFormValue(combineVals);
+    // const combineVals = `${this.startDate}:${this.endDate}`;
+    // this.internals.setFormValue(combineVals);
 
     if (this.startDate > this.endDate) {
       this.internals.setValidity(
@@ -318,6 +318,34 @@ export class DateRangePicker extends LitElement {
       );
       this.internalValidationMsg = this.internals.validationMessage;
     }
+  }
+
+  private _handleFormdata(e: any) {
+    const combineVals =
+      this.startDate !== '' && this.endDate !== ''
+        ? `${this.startDate}:${this.endDate}`
+        : '';
+    e.formData.append(this.name, combineVals);
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+
+    if (this.internals.form) {
+      this.internals.form.addEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+  }
+
+  override disconnectedCallback(): void {
+    if (this.internals.form) {
+      this.internals.form.removeEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+
+    super.disconnectedCallback();
   }
 }
 

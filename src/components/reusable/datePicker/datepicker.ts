@@ -191,7 +191,7 @@ export class DatePicker extends LitElement {
     if (changedProps.get('value') !== undefined && changedProps.has('value')) {
       this.inputEl.value = this.value;
       // set form data value
-      this.internals.setFormValue(this.value);
+      // this.internals.setFormValue(this.value);
       this.internals.setValidity({});
       this.internalValidationMsg = '';
       this.invalidText = '';
@@ -258,6 +258,30 @@ export class DatePicker extends LitElement {
       );
       this.internalValidationMsg = this.internals.validationMessage;
     }
+  }
+
+  private _handleFormdata(e: any) {
+    e.formData.append(this.name, this.value);
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+
+    if (this.internals.form) {
+      this.internals.form.addEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+  }
+
+  override disconnectedCallback(): void {
+    if (this.internals.form) {
+      this.internals.form.removeEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+
+    super.disconnectedCallback();
   }
 }
 declare global {

@@ -154,7 +154,7 @@ ${this.value}</textarea
 
     if (changedProps.get('value') !== undefined && changedProps.has('value')) {
       // set form data value
-      this.internals.setFormValue(this.value);
+      // this.internals.setFormValue(this.value);
 
       // set validity
       if (this.required && (!this.value || this.value === '')) {
@@ -179,6 +179,30 @@ ${this.value}</textarea
         this.invalidText = '';
       }
     }
+  }
+
+  private _handleFormdata(e: any) {
+    e.formData.append(this.name, this.value);
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+
+    if (this.internals.form) {
+      this.internals.form.addEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+  }
+
+  override disconnectedCallback(): void {
+    if (this.internals.form) {
+      this.internals.form.removeEventListener('formdata', (e) =>
+        this._handleFormdata(e)
+      );
+    }
+
+    super.disconnectedCallback();
   }
 }
 
