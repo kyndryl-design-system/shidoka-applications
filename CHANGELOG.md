@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.3...v1.1.4) (2023-12-13)
+
+
+### Bug Fixes
+
+* attempt fix formdata by capturing event and appending instead of using internals.setFormValue ([#43](https://github.com/kyndryl-design-system/shidoka-applications/issues/43)) ([2f1f55d](https://github.com/kyndryl-design-system/shidoka-applications/commit/2f1f55dc45434da859313b89df7d9be138ed1e8c))
+
 ## [1.1.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.2...v1.1.3) (2023-12-12)
 
 
