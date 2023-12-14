@@ -6,7 +6,7 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { styleMap } from 'lit/directives/style-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import LocalNavLinkScss from './localNavLink.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
@@ -55,19 +55,11 @@ export class LocalNavLink extends LitElement {
   @state()
   _navExpanded = false;
 
-  /**
-   * Positioning for the level 3 flyout.
-   * @ignore
+  /** The slotted text.
+   * @internal
    */
   @state()
-  flyoutStyles = {};
-
-  /**
-   * Determines if sub-links are slotted.
-   * @ignore
-   */
-  @state()
-  isSlotted = false;
+  _text = '';
 
   /**
    * Queries slotted links.
@@ -92,8 +84,8 @@ export class LocalNavLink extends LitElement {
       <li class=${classMap(classes)}>
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
           <slot name="icon"></slot>
-          <span class="text">
-            <slot></slot>
+          <span class="text" title=${ifDefined(this._text)}>
+            <slot @slotchange=${this._handleTextSlotChange}></slot>
           </span>
 
           ${this.navLinks.length
@@ -105,8 +97,8 @@ export class LocalNavLink extends LitElement {
             : null}
         </a>
 
-        <ul style=${styleMap(this.flyoutStyles)}>
-          <slot name="links" @slotchange=${this.handleSlotChange}></slot>
+        <ul>
+          <slot name="links" @slotchange=${this._handleSlotChange}></slot>
         </ul>
       </li>
     `;
@@ -122,7 +114,21 @@ export class LocalNavLink extends LitElement {
     }
   }
 
-  private handleSlotChange() {
+  private _handleTextSlotChange(e: any) {
+    // set text prop from slotted text, for ease of access
+    if (!this.wrapping) {
+      const nodes = e.target.assignedNodes({ flatten: true });
+      let text = '';
+
+      for (let i = 0; i < nodes.length; i++) {
+        text += nodes[i].textContent.trim();
+      }
+
+      this._text = text;
+    }
+  }
+
+  private _handleSlotChange() {
     this.updateChildren();
     this.requestUpdate();
   }
