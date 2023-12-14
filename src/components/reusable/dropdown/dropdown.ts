@@ -276,7 +276,15 @@ export class Dropdown extends LitElement {
                   const option = this.options.find(
                     (option) => option.value === value
                   );
-                  const text = option.text;
+                  const nodes = option.shadowRoot
+                    .querySelector('slot')
+                    .assignedNodes({
+                      flatten: true,
+                    });
+                  let text = '';
+                  for (let i = 0; i < nodes.length; i++) {
+                    text += nodes[i].textContent.trim();
+                  }
 
                   return html`
                     <button
@@ -724,6 +732,8 @@ export class Dropdown extends LitElement {
     }
 
     const oldValue = changedProps.get('value');
+    console.log(oldValue);
+    console.log(this.value);
     const valueChanged = this.multiple
       ? changedProps.has('value') && oldValue !== undefined && oldValue !== ''
       : changedProps.has('value') && oldValue !== undefined;
@@ -760,7 +770,14 @@ export class Dropdown extends LitElement {
           const option = this.options.find(
             (option) => option.value === this.value
           );
-          this.text = option.text;
+          const nodes = option.shadowRoot.querySelector('slot').assignedNodes({
+            flatten: true,
+          });
+          let text = '';
+          for (let i = 0; i < nodes.length; i++) {
+            text += nodes[i].textContent.trim();
+          }
+          this.text = text;
         }
 
         // set search input value
