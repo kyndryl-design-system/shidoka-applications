@@ -47,16 +47,16 @@ export const LocalNav = {
 
       <kyn-local-nav-link href="javascript:void(0)" expanded>
         <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
-        Link 3 Link 3 Link 3 Link 3 Link 3
+        Link 3
 
         <kyn-local-nav-link slot="links" href="javascript:void(0)" expanded>
-          L2 Link 1 L2 Link 1 L2 Link 1
+          L2 Link 1
 
           <kyn-local-nav-link slot="links" href="javascript:void(0)" wrapping>
-            L3 Link 1 L3 Link 1 L3 Link 1
+            This is a long link with wrapping
           </kyn-local-nav-link>
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
-            L3 Link 2 L3 Link 2 L3 Link 2
+            This is a long link without wrapping
           </kyn-local-nav-link>
         </kyn-local-nav-link>
       </kyn-local-nav-link>
