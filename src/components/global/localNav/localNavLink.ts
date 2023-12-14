@@ -39,6 +39,10 @@ export class LocalNavLink extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Let text wrap instead of ellipsis overflow. */
+  @property({ type: Boolean })
+  wrapping = false;
+
   /** Link level, supports three levels.
    * @ignore
    */
@@ -81,6 +85,7 @@ export class LocalNavLink extends LitElement {
       'link-expanded': this.expanded,
       'link-active': this.active,
       'link-disabled': this.disabled,
+      wrapping: this.wrapping,
     };
 
     return html`

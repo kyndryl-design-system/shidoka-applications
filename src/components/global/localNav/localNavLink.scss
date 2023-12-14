@@ -7,7 +7,8 @@
 a {
   display: flex;
   align-items: center;
-  height: 40px;
+  gap: 8px;
+  min-height: 40px;
   padding: 10px;
   border-radius: 4px;
   text-decoration: none;
@@ -122,7 +123,10 @@ li {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin-left: 8px;
+
+  .wrapping & {
+    white-space: initial;
+  }
 
   .nav-expanded & {
     display: block;
