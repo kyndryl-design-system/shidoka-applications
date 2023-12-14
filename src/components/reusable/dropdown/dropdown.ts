@@ -732,11 +732,14 @@ export class Dropdown extends LitElement {
     }
 
     const oldValue = changedProps.get('value');
-    console.log(oldValue);
-    console.log(this.value);
     const valueChanged = this.multiple
-      ? changedProps.has('value') && oldValue !== undefined && oldValue !== ''
-      : changedProps.has('value') && oldValue !== undefined;
+      ? changedProps.has('value') &&
+        oldValue !== undefined &&
+        oldValue !== '' &&
+        oldValue !== this.value
+      : changedProps.has('value') &&
+        oldValue !== undefined &&
+        oldValue !== this.value;
 
     if (valueChanged) {
       // close listbox
