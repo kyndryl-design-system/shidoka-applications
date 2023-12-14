@@ -1,3 +1,10 @@
+## [1.1.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.6...v1.1.7) (2023-12-14)
+
+
+### Bug Fixes
+
+* **dropdown:** only validate on user action, resolves [#45](https://github.com/kyndryl-design-system/shidoka-applications/issues/45) ([1f40107](https://github.com/kyndryl-design-system/shidoka-applications/commit/1f401074702ed9581197ad5fad64354779ec84fa))
+
 ## [1.1.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.5...v1.1.6) (2023-12-14)
 
 
