@@ -700,6 +700,25 @@ export class Dropdown extends LitElement {
       this.value = value;
     }
 
+    // set validity
+    if (this.required) {
+      if (
+        !this.value ||
+        (this.multiple && !this.value.length) ||
+        (!this.multiple && this.value === '')
+      ) {
+        this.internals.setValidity(
+          { valueMissing: true },
+          'This field is required.'
+        );
+        this.internalValidationMsg = this.internals.validationMessage;
+      } else {
+        this.internals.setValidity({});
+        this.internalValidationMsg = '';
+        this.invalidText = '';
+      }
+    }
+
     // reset focus
     if (!this.multiple) {
       if (this.searchable) {
@@ -787,25 +806,6 @@ export class Dropdown extends LitElement {
         this.searchText = this.text === this.placeholder ? '' : this.text;
         if (this.searchEl) {
           this.searchEl.value = this.searchText;
-        }
-      }
-
-      // set validity
-      if (this.required) {
-        if (
-          !this.value ||
-          (this.multiple && !this.value.length) ||
-          (!this.multiple && this.value === '')
-        ) {
-          this.internals.setValidity(
-            { valueMissing: true },
-            'This field is required.'
-          );
-          this.internalValidationMsg = this.internals.validationMessage;
-        } else {
-          this.internals.setValidity({});
-          this.internalValidationMsg = '';
-          this.invalidText = '';
         }
       }
     }
