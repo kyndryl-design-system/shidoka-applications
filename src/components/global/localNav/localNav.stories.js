@@ -53,10 +53,10 @@ export const LocalNav = {
           L2 Link 1
 
           <kyn-local-nav-link slot="links" href="javascript:void(0)" wrapping>
-            This is a long link with wrapping
+            This is a long link that wraps lines
           </kyn-local-nav-link>
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
-            This is a long link without wrapping
+            This is a long link that wraps lines
           </kyn-local-nav-link>
         </kyn-local-nav-link>
       </kyn-local-nav-link>

@@ -6,7 +6,6 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import LocalNavLinkScss from './localNavLink.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
@@ -38,10 +37,6 @@ export class LocalNavLink extends LitElement {
   /** Disabled state. */
   @property({ type: Boolean })
   disabled = false;
-
-  /** Let text wrap instead of ellipsis overflow. */
-  @property({ type: Boolean })
-  wrapping = false;
 
   /** Link level, supports three levels.
    * @ignore
@@ -77,15 +72,14 @@ export class LocalNavLink extends LitElement {
       'link-expanded': this.expanded,
       'link-active': this.active,
       'link-disabled': this.disabled,
-      wrapping: this.wrapping,
     };
 
     return html`
       <li class=${classMap(classes)}>
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
           <slot name="icon"></slot>
-          <span class="text" title=${ifDefined(this._text)}>
-            <slot @slotchange=${this._handleTextSlotChange}></slot>
+          <span class="text">
+            <slot></slot>
           </span>
 
           ${this.navLinks.length
@@ -111,20 +105,6 @@ export class LocalNavLink extends LitElement {
   override willUpdate(changedProps: any) {
     if (changedProps.has('_navExpanded')) {
       this.updateChildren();
-    }
-  }
-
-  private _handleTextSlotChange(e: any) {
-    // set text prop from slotted text, for ease of access
-    if (!this.wrapping) {
-      const nodes = e.target.assignedNodes({ flatten: true });
-      let text = '';
-
-      for (let i = 0; i < nodes.length; i++) {
-        text += nodes[i].textContent.trim();
-      }
-
-      this._text = text;
     }
   }
 
