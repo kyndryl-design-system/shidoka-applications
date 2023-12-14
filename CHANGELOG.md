@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.4...v1.1.5) (2023-12-14)
+
+
+### Bug Fixes
+
+* **dropdown:** testing value change ([02c9a24](https://github.com/kyndryl-design-system/shidoka-applications/commit/02c9a2418db875c47b23123081586865b817c5cf))
+
 ## [1.1.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.3...v1.1.4) (2023-12-13)
 
 
