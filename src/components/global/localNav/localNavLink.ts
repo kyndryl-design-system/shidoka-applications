@@ -6,7 +6,6 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { styleMap } from 'lit/directives/style-map.js';
 import LocalNavLinkScss from './localNavLink.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
@@ -51,19 +50,11 @@ export class LocalNavLink extends LitElement {
   @state()
   _navExpanded = false;
 
-  /**
-   * Positioning for the level 3 flyout.
-   * @ignore
+  /** The slotted text.
+   * @internal
    */
   @state()
-  flyoutStyles = {};
-
-  /**
-   * Determines if sub-links are slotted.
-   * @ignore
-   */
-  @state()
-  isSlotted = false;
+  _text = '';
 
   /**
    * Queries slotted links.
@@ -100,8 +91,8 @@ export class LocalNavLink extends LitElement {
             : null}
         </a>
 
-        <ul style=${styleMap(this.flyoutStyles)}>
-          <slot name="links" @slotchange=${this.handleSlotChange}></slot>
+        <ul>
+          <slot name="links" @slotchange=${this._handleSlotChange}></slot>
         </ul>
       </li>
     `;
@@ -117,7 +108,7 @@ export class LocalNavLink extends LitElement {
     }
   }
 
-  private handleSlotChange() {
+  private _handleSlotChange() {
     this.updateChildren();
     this.requestUpdate();
   }

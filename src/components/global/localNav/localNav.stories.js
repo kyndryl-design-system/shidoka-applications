@@ -49,14 +49,14 @@ export const LocalNav = {
         <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
         Link 3
 
-        <kyn-local-nav-link slot="links" href="javascript:void(0)">
+        <kyn-local-nav-link slot="links" href="javascript:void(0)" expanded>
           L2 Link 1
 
-          <kyn-local-nav-link slot="links" href="javascript:void(0)">
-            L3 Link 1
+          <kyn-local-nav-link slot="links" href="javascript:void(0)" wrapping>
+            This is a long link that wraps lines
           </kyn-local-nav-link>
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
-            L3 Link 2
+            This is a long link that wraps lines
           </kyn-local-nav-link>
         </kyn-local-nav-link>
       </kyn-local-nav-link>
