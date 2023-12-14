@@ -1,3 +1,10 @@
+## [1.1.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.7...v1.1.8) (2023-12-14)
+
+
+### Bug Fixes
+
+* **local-nav-link:** wrap text by default ([#47](https://github.com/kyndryl-design-system/shidoka-applications/issues/47)) ([f0ccdbc](https://github.com/kyndryl-design-system/shidoka-applications/commit/f0ccdbc2c4f2f643d70932fa6c9e6c73ed47e8dd))
+
 ## [1.1.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.6...v1.1.7) (2023-12-14)
 
 
