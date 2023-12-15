@@ -249,7 +249,7 @@ const extractData = (dataTable: any, pageNumber: number, pageSize: number) => {
  * @param {object} args - Arguments for the table
  * @param {Function} updateArgs - Function to update the story's arguments
  * @param {string} title - Title of the table
- * @param {boolean} [striped=false] - Determines if the table has striped rows
+ * @param {boolean} [showTableActions=false] - Shows the example batch actions
  * @returns {import("lit").TemplateResult} Rendered table
  */
 const tableRenderer = (
