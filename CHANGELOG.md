@@ -1,3 +1,10 @@
+## [1.1.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.8...v1.1.9) (2023-12-16)
+
+
+### Bug Fixes
+
+* **dropdown:** disabled search input, resolves [#50](https://github.com/kyndryl-design-system/shidoka-applications/issues/50) ([d77612b](https://github.com/kyndryl-design-system/shidoka-applications/commit/d77612b7e00dae53bc46a01750f9db2b835c21a9))
+
 ## [1.1.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.7...v1.1.8) (2023-12-14)
 
 
