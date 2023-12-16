@@ -191,7 +191,6 @@ export class TimePicker extends LitElement {
       //set form data value
       // this.internals.setFormValue(this.value);
       this.internals.setValidity({});
-      this.invalidText = '';
       this.internalValidationMsg = '';
 
       // set validity

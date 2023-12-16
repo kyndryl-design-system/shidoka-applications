@@ -194,7 +194,6 @@ export class DatePicker extends LitElement {
       // this.internals.setFormValue(this.value);
       this.internals.setValidity({});
       this.internalValidationMsg = '';
-      this.invalidText = '';
 
       // set validity
       if (this.required && (!this.value || this.value === '')) {

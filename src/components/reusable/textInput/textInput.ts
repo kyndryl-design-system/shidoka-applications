@@ -257,7 +257,6 @@ export class TextInput extends LitElement {
         // clear validation
         this.internals.setValidity({});
         this.internalValidationMsg = '';
-        this.invalidText = '';
       }
     }
   }

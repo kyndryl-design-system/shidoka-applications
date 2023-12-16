@@ -124,7 +124,6 @@ export class RadioButtonGroup extends LitElement {
         } else {
           this.internals.setValidity({});
           this.internalValidationMsg = '';
-          this.invalidText = '';
         }
       }
     }

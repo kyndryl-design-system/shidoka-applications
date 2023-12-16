@@ -176,7 +176,6 @@ ${this.value}</textarea
         // clear validation
         this.internals.setValidity({});
         this.internalValidationMsg = '';
-        this.invalidText = '';
       }
     }
   }

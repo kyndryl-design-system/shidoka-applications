@@ -128,7 +128,6 @@ export class CheckboxGroup extends LitElement {
         } else {
           this.internals.setValidity({});
           this.internalValidationMsg = '';
-          this.invalidText = '';
         }
       }
     }

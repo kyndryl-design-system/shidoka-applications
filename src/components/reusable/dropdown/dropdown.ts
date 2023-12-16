@@ -716,7 +716,6 @@ export class Dropdown extends LitElement {
       } else {
         this.internals.setValidity({});
         this.internalValidationMsg = '';
-        this.invalidText = '';
       }
     }
 
