@@ -220,6 +220,7 @@ export class Dropdown extends LitElement {
                       type="text"
                       placeholder="Search"
                       value=${this.text}
+                      ?disabled=${this.disabled}
                       @keydown=${(e: any) => this.handleSearchKeydown(e)}
                       @input=${(e: any) => this.handleSearchInput(e)}
                       @blur=${(e: any) => this.handleSearchBlur(e)}
