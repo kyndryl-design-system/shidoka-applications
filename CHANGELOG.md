@@ -1,3 +1,12 @@
+## [1.1.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.10...v1.1.11) (2023-12-20)
+
+
+### Bug Fixes
+
+* **checkbox:** group default value, resolves [#53](https://github.com/kyndryl-design-system/shidoka-applications/issues/53) ([0ccebc1](https://github.com/kyndryl-design-system/shidoka-applications/commit/0ccebc1fdfe3532bffcb20724afac455c5d50993))
+* **dropdown:** emit value on single searchable clear, resolves [#52](https://github.com/kyndryl-design-system/shidoka-applications/issues/52) ([47f29c8](https://github.com/kyndryl-design-system/shidoka-applications/commit/47f29c84742fe401bd274dae5839645f5c4c0f61))
+* **text-input:** emit value on clear ([f41cc31](https://github.com/kyndryl-design-system/shidoka-applications/commit/f41cc31e096e0cb794487394916633fd52b7b651))
+
 ## [1.1.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.9...v1.1.10) (2023-12-16)
 
 
