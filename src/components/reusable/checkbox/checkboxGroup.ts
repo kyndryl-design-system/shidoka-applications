@@ -116,20 +116,6 @@ export class CheckboxGroup extends LitElement {
       //   entries.append(this.name, value);
       // });
       // this.internals.setFormValue(entries);
-
-      // set validity
-      if (this.required) {
-        if (!this.value.length) {
-          this.internals.setValidity(
-            { valueMissing: true },
-            'A selection is required.'
-          );
-          this.internalValidationMsg = this.internals.validationMessage;
-        } else {
-          this.internals.setValidity({});
-          this.internalValidationMsg = '';
-        }
-      }
     }
 
     if (changedProps.has('required')) {
@@ -145,6 +131,7 @@ export class CheckboxGroup extends LitElement {
         checkbox.disabled = this.disabled;
       });
     }
+
     if (
       changedProps.has('invalidText') ||
       changedProps.has('internalValidationMsg')
@@ -160,6 +147,21 @@ export class CheckboxGroup extends LitElement {
     }
   }
 
+  private _validate() {
+    if (this.required) {
+      if (!this.value.length) {
+        this.internals.setValidity(
+          { valueMissing: true },
+          'A selection is required.'
+        );
+        this.internalValidationMsg = this.internals.validationMessage;
+      } else {
+        this.internals.setValidity({});
+        this.internalValidationMsg = '';
+      }
+    }
+  }
+
   private _handleCheckboxChange(e: any) {
     const value = e.detail.value;
     const newValues = [...this.value];
@@ -170,6 +172,8 @@ export class CheckboxGroup extends LitElement {
       newValues.push(value);
     }
     this.value = newValues;
+
+    this._validate();
 
     // emit selected value
     const event = new CustomEvent('on-checkbox-group-change', {
