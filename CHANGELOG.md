@@ -1,3 +1,10 @@
+## [1.1.12](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.11...v1.1.12) (2023-12-20)
+
+
+### Bug Fixes
+
+* **checkbox-group:** validate only on use interaction, resolves [#54](https://github.com/kyndryl-design-system/shidoka-applications/issues/54) ([3146175](https://github.com/kyndryl-design-system/shidoka-applications/commit/3146175205df2d0919907d9b1f9389553ba02ba1))
+
 ## [1.1.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.10...v1.1.11) (2023-12-20)
 
 
