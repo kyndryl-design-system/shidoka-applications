@@ -32,7 +32,7 @@ export class CheckboxGroup extends LitElement {
 
   /** Checkbox group selected values. */
   @property({ type: Array })
-  value!: Array<string>;
+  value = [];
 
   /** Makes a single selection required. */
   @property({ type: Boolean })
