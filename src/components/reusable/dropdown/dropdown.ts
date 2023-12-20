@@ -219,7 +219,7 @@ export class Dropdown extends LitElement {
                       class="search"
                       type="text"
                       placeholder="Search"
-                      value=${this.text}
+                      value=${this.searchText}
                       ?disabled=${this.disabled}
                       @keydown=${(e: any) => this.handleSearchKeydown(e)}
                       @input=${(e: any) => this.handleSearchInput(e)}
@@ -547,12 +547,14 @@ export class Dropdown extends LitElement {
     e.stopPropagation();
 
     // reset search input text
+    this.text = '';
     this.searchText = '';
     this.searchEl.value = '';
 
     // clear selection for single select
     if (!this.multiple) {
       this.value = '';
+      this.emitValue();
     }
   }
 
