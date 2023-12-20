@@ -162,7 +162,7 @@ export class TextInput extends LitElement {
             pattern=${ifDefined(this.pattern)}
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
-            @input=${(e: any) => this.handleInput(e)}
+            @input=${(e: any) => this._handleInput(e)}
           />
 
           ${this.isInvalid
@@ -170,7 +170,7 @@ export class TextInput extends LitElement {
             : null}
           ${this.value !== ''
             ? html`
-                <button class="clear" @click=${() => this.handleClear()}>
+                <button class="clear" @click=${() => this._handleClear()}>
                   <kd-icon .icon=${clearIcon}></kd-icon>
                 </button>
               `
@@ -191,22 +191,31 @@ export class TextInput extends LitElement {
     `;
   }
 
-  private handleInput(e: any) {
+  private _handleInput(e: any) {
     this.value = e.target.value;
 
-    // emit selected value
-    const event = new CustomEvent('on-input', {
-      detail: {
-        value: e.target.value,
-        origEvent: e,
-      },
-    });
-    this.dispatchEvent(event);
+    this._emitValue(e);
   }
 
-  private handleClear() {
+  private _handleClear() {
     this.value = '';
     this.inputEl.value = '';
+
+    this._emitValue();
+  }
+
+  private _emitValue(e?: any) {
+    const Detail: any = {
+      value: this.value,
+    };
+    if (e) {
+      Detail.origEvent = e;
+    }
+
+    const event = new CustomEvent('on-input', {
+      detail: Detail,
+    });
+    this.dispatchEvent(event);
   }
 
   override updated(changedProps: any) {
