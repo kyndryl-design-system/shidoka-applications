@@ -1,3 +1,10 @@
+## [1.1.13](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.12...v1.1.13) (2023-12-21)
+
+
+### Bug Fixes
+
+* **text-input:** hide webkit search input X ([9caa76e](https://github.com/kyndryl-design-system/shidoka-applications/commit/9caa76eca7b36aece4e51c23b077faab796df5e7))
+
 ## [1.1.12](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.11...v1.1.12) (2023-12-20)
 
 
