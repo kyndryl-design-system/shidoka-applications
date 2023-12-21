@@ -1,3 +1,10 @@
+## [1.1.14](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.13...v1.1.14) (2023-12-21)
+
+
+### Bug Fixes
+
+* **overflow-menu:** address parent overflow edge cases, resolves [#55](https://github.com/kyndryl-design-system/shidoka-applications/issues/55) ([69c7ddd](https://github.com/kyndryl-design-system/shidoka-applications/commit/69c7ddd21b4c1d1a7e8fdb37152cc8fcac0a6eed))
+
 ## [1.1.13](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.12...v1.1.13) (2023-12-21)
 
 
