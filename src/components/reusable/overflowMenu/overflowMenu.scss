@@ -44,15 +44,26 @@ button {
     visibility 150ms ease-out;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-20px);
+  transform: scale(0);
+  transform-origin: top left;
 
   &.open {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: scale(1);
+  }
+
+  &.fixed {
+    position: fixed;
   }
 
   &.right {
     right: 0;
+    transform-origin: top right;
+
+    &.fixed {
+      right: initial;
+      margin-left: calc(-208px + 40px);
+    }
   }
 }

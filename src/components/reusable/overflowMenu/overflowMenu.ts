@@ -4,6 +4,7 @@ import {
   property,
   state,
   queryAssignedElements,
+  query,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import SCSS from './overflowMenu.scss';
@@ -27,6 +28,10 @@ export class OverflowMenu extends LitElement {
   @property({ type: Boolean })
   anchorRight = false;
 
+  /** Use fixed instead of absolute position. Useful when placed within elements with overflow scroll. */
+  @property({ type: Boolean })
+  fixed = false;
+
   /** Button assistive text.. */
   @property({ type: String })
   assistiveText = 'Toggle Menu';
@@ -36,6 +41,12 @@ export class OverflowMenu extends LitElement {
    */
   @queryAssignedElements({ selector: 'kyn-overflow-menu-item' })
   menuItems!: any;
+
+  @query('.btn')
+  _btnEl!: any;
+
+  @query('.menu')
+  _menuEl!: any;
 
   /**
    * A generated unique id
@@ -53,6 +64,7 @@ export class OverflowMenu extends LitElement {
       menu: true,
       open: this.open,
       right: this.anchorRight,
+      fixed: this.fixed,
     };
 
     return html`
@@ -87,6 +99,26 @@ export class OverflowMenu extends LitElement {
   private toggleMenu() {
     this.open = !this.open;
     this._emitToggleEvent();
+
+    // set menu position on open
+    if (this.open) {
+      if (this.fixed) {
+        const Top =
+          this._btnEl.getBoundingClientRect().top +
+          this._btnEl.getBoundingClientRect().height;
+        const MenuHeight = this.menuItems.length * 48;
+
+        if (Top + MenuHeight > window.innerHeight) {
+          this._menuEl.style.top = 'initial';
+          this._menuEl.style.bottom = '0px';
+        } else {
+          this._menuEl.style.top = Top + 'px';
+          this._menuEl.style.bottom = 'initial';
+        }
+      } else {
+        this._menuEl.style.top = 'initial';
+      }
+    }
   }
 
   private handleSlotChange() {
