@@ -1,3 +1,10 @@
+## [1.1.15](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.14...v1.1.15) (2024-01-02)
+
+
+### Bug Fixes
+
+* **dropdown:** expose resetSelection method, resolves [#56](https://github.com/kyndryl-design-system/shidoka-applications/issues/56) ([4e1c527](https://github.com/kyndryl-design-system/shidoka-applications/commit/4e1c527273f97f579d1096e297efe33ab238cbbf))
+
 ## [1.1.14](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.13...v1.1.14) (2023-12-21)
 
 
