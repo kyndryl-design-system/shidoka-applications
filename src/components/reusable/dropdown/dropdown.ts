@@ -345,7 +345,9 @@ export class Dropdown extends LitElement {
    * Retrieves the selected values from the list of child options and sets value property.
    * @function
    */
-  private resetSelection() {
+  public resetSelection() {
+    this._updateChildren();
+
     // get value from selected options
     const values: any = [];
     let value = '';
@@ -827,6 +829,18 @@ export class Dropdown extends LitElement {
         option.multiple = this.multiple;
       });
     }
+  }
+
+  private _updateChildren() {
+    this.options.forEach((option: any) => {
+      option.multiple = this.multiple;
+
+      // if (this.multiple) {
+      //   option.selected = this.value.includes(option.value);
+      // } else {
+      //   option.selected = this.value === option.value;
+      // }
+    });
   }
 }
 
