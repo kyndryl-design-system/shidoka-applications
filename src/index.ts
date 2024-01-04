@@ -31,3 +31,4 @@ export {
   OverflowMenu,
   OverflowMenuItem,
 } from './components/reusable/overflowMenu';
+export { Tabs, Tab, TabPanel } from './components/reusable/tabs';
