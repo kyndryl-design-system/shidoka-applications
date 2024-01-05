@@ -39,6 +39,7 @@ const args = {
   open: false,
   required: false,
   disabled: false,
+  hideTags: false,
   invalidText: '',
   caption: '',
 };
@@ -119,6 +120,7 @@ export const MultiSelect = {
         multiple
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?hideTags=${args.hideTags}
         invalidText=${args.invalidText}
         caption=${args.caption}
         @on-change=${(e) => action(e.type)(e)}
@@ -152,6 +154,7 @@ export const MultiSelectSearchable = {
         multiple
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?hideTags=${args.hideTags}
         invalidText=${args.invalidText}
         caption=${args.caption}
         @on-change=${(e) => action(e.type)(e)}

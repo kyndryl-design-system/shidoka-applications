@@ -81,6 +81,10 @@ export class Dropdown extends LitElement {
   @property({ type: String })
   invalidText = '';
 
+  /** Hide the tags below multi-select. */
+  @property({ type: Boolean })
+  hideTags = false;
+
   /**
    * Selected option value.
    * @ignore
@@ -270,7 +274,7 @@ export class Dropdown extends LitElement {
             : null}
         </div>
 
-        ${this.multiple && this.value.length
+        ${this.multiple && !this.hideTags && this.value.length
           ? html`
               <div class="tags">
                 ${this.value.map((value: string) => {
