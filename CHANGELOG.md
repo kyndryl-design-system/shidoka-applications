@@ -1,3 +1,10 @@
+## [1.1.16](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.15...v1.1.16) (2024-01-05)
+
+
+### Bug Fixes
+
+* **dropdown:** add hideTags prop, resolves [#57](https://github.com/kyndryl-design-system/shidoka-applications/issues/57) ([67a6ecb](https://github.com/kyndryl-design-system/shidoka-applications/commit/67a6ecbf94234131a3fd23c9b597cfd67d76cc19))
+
 ## [1.1.15](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.14...v1.1.15) (2024-01-02)
 
 
