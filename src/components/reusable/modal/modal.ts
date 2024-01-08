@@ -52,41 +52,40 @@ export class Modal extends LitElement {
       <dialog
         class="modal"
         autofocus
+        aria-labelledby="dialogLabel"
         @cancel=${(e: Event) => this._closeModal(e, 'cancel')}
       >
-        <div class="container">
-          <header>
-            <button
-              class="close"
+        <header>
+          <button
+            class="close"
+            @click=${(e: Event) => this._closeModal(e, 'cancel')}
+          >
+            <kd-icon .icon=${closeIcon}></kd-icon>
+          </button>
+
+          <h1 id="dialogLabel">${this.titleText}</h1>
+        </header>
+
+        <form method="dialog" class="body">
+          <slot></slot>
+
+          <div class="actions">
+            <kd-button
+              value="ok"
+              @click=${(e: Event) => this._closeModal(e, 'ok')}
+            >
+              ${this.okText}
+            </kd-button>
+
+            <kd-button
+              value="cancel"
+              kind="secondary"
               @click=${(e: Event) => this._closeModal(e, 'cancel')}
             >
-              <kd-icon .icon=${closeIcon}></kd-icon>
-            </button>
-
-            <h1>${this.titleText}</h1>
-          </header>
-
-          <form method="dialog" class="body">
-            <slot></slot>
-
-            <div class="actions">
-              <kd-button
-                value="ok"
-                @click=${(e: Event) => this._closeModal(e, 'ok')}
-              >
-                ${this.okText}
-              </kd-button>
-
-              <kd-button
-                value="cancel"
-                kind="secondary"
-                @click=${(e: Event) => this._closeModal(e, 'cancel')}
-              >
-                ${this.cancelText}
-              </kd-button>
-            </div>
-          </form>
-        </div>
+              ${this.cancelText}
+            </kd-button>
+          </div>
+        </form>
       </dialog>
     `;
   }
