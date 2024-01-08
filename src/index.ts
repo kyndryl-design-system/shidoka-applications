@@ -31,3 +31,4 @@ export {
   OverflowMenu,
   OverflowMenuItem,
 } from './components/reusable/overflowMenu';
+export { Modal } from './components/reusable/modal';

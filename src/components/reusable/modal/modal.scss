@@ -1,0 +1,60 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+dialog {
+  padding: 32px;
+  color: inherit;
+  border-radius: 8px;
+  // border: 1px solid var(--kd-color-border-light);
+  border: none;
+  background: var(--kd-color-background-ui-default);
+  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.12);
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
+button {
+  appearance: none;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  border-radius: 4px;
+  outline: 2px solid transparent;
+  transition: outline-color 150ms ease-out;
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
+  }
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.close {
+  order: 2;
+
+  kd-icon {
+    display: block;
+  }
+}
+
+h1 {
+  @include typography.type-body-01;
+  margin: 0;
+  order: 1;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+}
