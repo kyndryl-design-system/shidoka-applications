@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state, query } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 import ModalScss from './modal.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
