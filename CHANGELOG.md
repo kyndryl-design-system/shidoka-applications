@@ -1,3 +1,10 @@
+## [1.1.17](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.16...v1.1.17) (2024-01-09)
+
+
+### Bug Fixes
+
+* **dropdown:** change open animation to scaleY ([f64d5dc](https://github.com/kyndryl-design-system/shidoka-applications/commit/f64d5dc0a9516d05ea8696cf9c7b19b0a40ba6ca))
+
 ## [1.1.16](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.15...v1.1.16) (2024-01-05)
 
 
