@@ -8,6 +8,7 @@ dialog {
   border-radius: 8px;
   border: 1px solid var(--kd-color-border-light);
   box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.12);
+  min-width: 288px;
 
   &[open] {
     animation: dialog-in 250ms ease-out forwards;
@@ -64,8 +65,29 @@ h1 {
 
 .actions {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 16px;
   margin-top: 32px;
+
+  @media (max-width: 42rem) {
+    kd-button {
+      width: 100%;
+      flex-grow: 1;
+    }
+  }
+}
+
+.custom-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+::slotted(kd-button) {
+  flex-shrink: 1;
+  flex-grow: 0;
 }
 
 @keyframes dialog-in {

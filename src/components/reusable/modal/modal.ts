@@ -11,6 +11,7 @@ import closeIcon from '@carbon/icons/es/close/32';
  * Modal.
  * @slot unnamed - Slot for modal body content.
  * @slot anchor - Slot for the anchor button content.
+ * @slot actions - Slot for custom action buttons. Custom action buttons will not trigger the `on-close` event.
  * @fires on-close - Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).
  */
 @customElement('kyn-modal')
@@ -93,6 +94,10 @@ export class Modal extends LitElement {
             >
               ${this.cancelText}
             </kd-button>
+
+            <div class="custom-actions">
+              <slot name="actions"></slot>
+            </div>
           </div>
         </form>
       </dialog>
