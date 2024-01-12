@@ -6,7 +6,6 @@ import checkmarkIcon from '@carbon/icons/es/checkmark/20';
 
 /**
  * Dropdown option.
- * @fires on-click - Emits the option details to the parent dropdown.
  * @slot unnamed - Slot for option text.
  */
 @customElement('kyn-dropdown-option')
