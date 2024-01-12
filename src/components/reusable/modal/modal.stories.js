@@ -8,7 +8,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: '',
+      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Applications-Specs-for-Devs?node-id=1287%3A171858&mode=dev',
     },
   },
 };
@@ -16,6 +16,7 @@ export default {
 const args = {
   open: false,
   titleText: 'Modal Title',
+  labelText: '',
   okText: 'OK',
   cancelText: 'Cancel',
 };
@@ -27,6 +28,7 @@ export const Modal = {
       <kyn-modal
         ?open=${args.open}
         titleText=${args.titleText}
+        labelText=${args.labelText}
         okText=${args.okText}
         cancelText=${args.cancelText}
         @on-close=${(e) => action(e.type)(e)}

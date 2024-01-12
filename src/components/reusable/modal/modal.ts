@@ -21,9 +21,13 @@ export class Modal extends LitElement {
   @property({ type: Boolean })
   open = false;
 
-  /** Title/heading text. */
+  /** Title/heading text, required. */
   @property({ type: String })
   titleText = '';
+
+  /** Label text, optional. */
+  @property({ type: String })
+  labelText = '';
 
   /** OK button text. */
   @property({ type: String })
@@ -63,7 +67,12 @@ export class Modal extends LitElement {
             <kd-icon .icon=${closeIcon}></kd-icon>
           </button>
 
-          <h1 id="dialogLabel">${this.titleText}</h1>
+          <div>
+            ${this.labelText !== ''
+              ? html`<span class="label">${this.labelText}</span>`
+              : null}
+            <h1 id="dialogLabel">${this.titleText}</h1>
+          </div>
         </header>
 
         <form method="dialog" class="body">
