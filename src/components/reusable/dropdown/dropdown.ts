@@ -232,11 +232,13 @@ export class Dropdown extends LitElement {
                     />
                   `
                 : html`
-                    ${this.multiple
-                      ? this.placeholder
-                      : this.value === ''
-                      ? this.placeholder
-                      : this.text}
+                    <span>
+                      ${this.multiple
+                        ? this.placeholder
+                        : this.value === ''
+                        ? this.placeholder
+                        : this.text}
+                    </span>
                   `}
 
               <kd-icon class="arrow-icon" .icon=${downIcon}></kd-icon>
