@@ -1,3 +1,10 @@
+## [1.1.19](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.18...v1.1.19) (2024-01-15)
+
+
+### Bug Fixes
+
+* **dropdown:** emitValue on reset ([1607e64](https://github.com/kyndryl-design-system/shidoka-applications/commit/1607e64f58b6354204afcc3e94efa92c9e2a56a4))
+
 ## [1.1.18](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.17...v1.1.18) (2024-01-15)
 
 
