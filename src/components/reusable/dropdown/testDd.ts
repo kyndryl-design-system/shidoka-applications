@@ -42,7 +42,7 @@ export class TestDd extends LitElement {
       >
         <span slot="label">All Option Example</span>
 
-        ${this.items.map((item) => {
+        ${this.items.map((item: any) => {
           // console.log(item);
           return html`
             <kyn-dropdown-option
@@ -67,7 +67,7 @@ export class TestDd extends LitElement {
     // check for 'all' option change
     if (e.detail.value === 'all') {
       // update all options to match 'all' option
-      this.items.forEach((item) => {
+      this.items.forEach((item: any) => {
         item.selected = e.detail.selected;
       });
 
