@@ -354,6 +354,7 @@ export class Dropdown extends LitElement {
    */
   public resetSelection() {
     this._updateChildren();
+    this.emitValue();
   }
 
   private handleClick() {
@@ -823,25 +824,27 @@ export class Dropdown extends LitElement {
     const Options = Slot?.assignedElements();
 
     // get value from selected options
-    const values: any = [];
-    let value = '';
-    Options.forEach((option: any) => {
-      option.multiple = this.multiple;
+    if (Options) {
+      const values: any = [];
+      let value = '';
+      Options.forEach((option: any) => {
+        option.multiple = this.multiple;
 
-      if (option.selected) {
-        if (this.multiple) {
-          values.push(option.value);
-        } else {
-          value = option.value;
+        if (option.selected) {
+          if (this.multiple) {
+            values.push(option.value);
+          } else {
+            value = option.value;
+          }
         }
-      }
-    });
+      });
 
-    // set initial values
-    if (this.multiple) {
-      this.value = values;
-    } else {
-      this.value = value;
+      // set initial values
+      if (this.multiple) {
+        this.value = values;
+      } else {
+        this.value = value;
+      }
     }
   }
 }
