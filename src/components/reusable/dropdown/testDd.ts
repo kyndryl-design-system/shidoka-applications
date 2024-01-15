@@ -8,7 +8,7 @@ import './index';
 @customElement('kyn-test-dd')
 export class TestDd extends LitElement {
   @property({ type: Array })
-  items = [
+  items: Array<any> = [
     {
       value: 'all',
       text: 'All',
@@ -43,15 +43,11 @@ export class TestDd extends LitElement {
         <span slot="label">All Option Example</span>
 
         ${this.items.map((item: any) => {
-          // console.log(item);
           return html`
             <kyn-dropdown-option
               value=${item.value}
               ?selected=${item.selected}
               ?disabled=${item.disabled}
-              @on-click=${(e: any) => {
-                this.handleClick(e);
-              }}
             >
               ${item.text}
             </kyn-dropdown-option>
@@ -59,21 +55,6 @@ export class TestDd extends LitElement {
         })}
       </kyn-dropdown>
     `;
-  }
-
-  handleClick(e: any) {
-    console.log('on-click', e.detail);
-
-    // check for 'all' option change
-    if (e.detail.value === 'all') {
-      // update all options to match 'all' option
-      this.items.forEach((item: any) => {
-        item.selected = e.detail.selected;
-      });
-
-      // force items prop to detect a change by cloning
-      this.items = JSON.parse(JSON.stringify(this.items));
-    }
   }
 
   override updated(changedProps: any) {
@@ -85,6 +66,24 @@ export class TestDd extends LitElement {
 
   handleChange(e: any) {
     console.log('on-change', e.detail);
+
+    // check if all option is in the previous selections
+    const HadAll = this.items.find(
+      (item: any) => item.value === 'all'
+    ).selected;
+
+    // check if all option is in the current selections
+    const HasAll = e.detail.value.includes('all');
+
+    if (HadAll !== HasAll) {
+      // update each option to match 'all' option
+      this.items.forEach((item: any) => {
+        item.selected = HasAll;
+      });
+
+      // force items prop to detect a change by cloning
+      this.items = JSON.parse(JSON.stringify(this.items));
+    }
   }
 }
 
