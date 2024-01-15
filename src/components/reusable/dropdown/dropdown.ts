@@ -254,7 +254,10 @@ export class Dropdown extends LitElement {
               @keydown=${(e: any) => this.handleListKeydown(e)}
               @blur=${(e: any) => this.handleListBlur(e)}
             >
-              <slot @slotchange=${() => this.handleSlotChange()}></slot>
+              <slot
+                id="children"
+                @slotchange=${() => this.handleSlotChange()}
+              ></slot>
             </ul>
           </div>
 
@@ -329,8 +332,6 @@ export class Dropdown extends LitElement {
   }
 
   override firstUpdated() {
-    this.resetSelection();
-
     // set a default placeholder if none provided
     if (this.placeholder === '') {
       if (this.multiple) {
@@ -351,26 +352,6 @@ export class Dropdown extends LitElement {
    */
   public resetSelection() {
     this._updateChildren();
-
-    // get value from selected options
-    const values: any = [];
-    let value = '';
-    this.options.forEach((option: any) => {
-      if (option.selected) {
-        if (this.multiple) {
-          values.push(option.value);
-        } else {
-          value = option.value;
-        }
-      }
-    });
-
-    // set initial values
-    if (this.multiple) {
-      this.value = values;
-    } else {
-      this.value = value;
-    }
   }
 
   private handleClick() {
@@ -836,15 +817,30 @@ export class Dropdown extends LitElement {
   }
 
   private _updateChildren() {
-    this.options.forEach((option: any) => {
+    const Slot: any = this.shadowRoot?.querySelector('slot#children');
+    const Options = Slot?.assignedElements();
+
+    // get value from selected options
+    const values: any = [];
+    let value = '';
+    Options.forEach((option: any) => {
       option.multiple = this.multiple;
 
-      // if (this.multiple) {
-      //   option.selected = this.value.includes(option.value);
-      // } else {
-      //   option.selected = this.value === option.value;
-      // }
+      if (option.selected) {
+        if (this.multiple) {
+          values.push(option.value);
+        } else {
+          value = option.value;
+        }
+      }
     });
+
+    // set initial values
+    if (this.multiple) {
+      this.value = values;
+    } else {
+      this.value = value;
+    }
   }
 }
 
