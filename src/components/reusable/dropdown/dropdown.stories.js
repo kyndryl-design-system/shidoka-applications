@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import './index';
+import './testDd';
 import { action } from '@storybook/addon-actions';
 
 export default {
@@ -174,32 +175,33 @@ export const MultiSelectSearchable = {
   },
 };
 
+const items = [
+  {
+    value: 'option1',
+    text: 'Option 1',
+  },
+  {
+    value: 'option2',
+    text: 'Option 2',
+    selected: true,
+  },
+  {
+    value: 'option3',
+    text: 'Option 3',
+    disabled: true,
+  },
+  {
+    value: 'option4',
+    text: 'Option 4',
+  },
+];
+
 export const DataDrivenOptions = {
   args: args,
   render: (args) => {
-    const items = [
-      {
-        value: 'option1',
-        text: 'Option 1',
-      },
-      {
-        value: 'option2',
-        text: 'Option 2',
-        selected: true,
-      },
-      {
-        value: 'option3',
-        text: 'Option 3',
-        disabled: true,
-      },
-      {
-        value: 'option4',
-        text: 'Option 4',
-      },
-    ];
-
     return html`
       <kyn-dropdown
+        multiple
         placeholder=${args.placeholder}
         size=${args.size}
         ?inline=${args.inline}
@@ -209,7 +211,10 @@ export const DataDrivenOptions = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         caption=${args.caption}
-        @on-change=${(e) => action(e.type)(e)}
+        @on-change=${(e) => {
+          // console.log(e.detail);
+          action(e.type)(e);
+        }}
       >
         <span slot="label">${args.label}</span>
 
@@ -226,5 +231,11 @@ export const DataDrivenOptions = {
         })}
       </kyn-dropdown>
     `;
+  },
+};
+
+export const AllOption = {
+  render: () => {
+    return html`<kyn-test-dd></kyn-test-dd>`;
   },
 };
