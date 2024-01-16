@@ -71,12 +71,17 @@
 
   .contained.vertical & {
     border-top: none;
+    border-color: transparent;
   }
 }
 
 ::slotted(kyn-tab:hover) {
   color: var(--kd-color-text-link-hover);
   border-color: var(--kd-color-border-tertiary);
+
+  .contained & {
+    border-color: transparent;
+  }
 }
 
 ::slotted(kyn-tab:focus) {
@@ -86,6 +91,10 @@
 ::slotted(kyn-tab:active) {
   color: var(--kd-color-text-pressed);
   border-color: var(--kd-color-border-tertiary);
+
+  .contained & {
+    border-color: transparent;
+  }
 }
 
 ::slotted(kyn-tab[selected]) {
@@ -103,6 +112,7 @@
   }
 
   .contained & {
+    background: var(--kd-color-background-ui-default);
     box-shadow: 0 1px 0 0 var(--kd-color-border-tertiary) inset;
   }
 
