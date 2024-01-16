@@ -38,7 +38,7 @@ export class TabPanel extends LitElement {
 
   override render() {
     return html`
-      <div class="tab">
+      <div class="tab-panel">
         <slot></slot>
       </div>
     `;

@@ -1,6 +1,14 @@
 @use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
+  display: block;
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  transition: outline-color 150ms ease-out;
+}
+
+.tab {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -8,8 +16,81 @@
   padding: 12px 8px;
   white-space: nowrap;
   text-align: center;
-  outline: 1px solid transparent;
-  outline-offset: -1px;
-  transition: outline-color 150ms ease-out, border-color 150ms ease-out,
+  border-bottom: 1px solid var(--kd-color-border-light);
+  background: var(--kd-color-background-ui-default);
+  transition: border-color 150ms ease-out, background-color 150ms ease-out,
     color 150ms ease-out;
+
+  &.size--sm {
+    @include typography.type-ui-03;
+    height: 40px;
+  }
+
+  &.size--md {
+    height: 48px;
+  }
+
+  &.size--lg {
+    @include typography.type-headline-08;
+    font-weight: 300;
+    height: 56px;
+  }
+
+  &.vertical {
+    border-bottom: none;
+    border-left: 1px solid var(--kd-color-border-light);
+  }
+
+  &.contained {
+    border-bottom: none;
+    border-top: 1px solid transparent;
+    background: var(--kd-color-background-ui-soft);
+  }
+
+  &.contained.vertical {
+    border-top: none;
+    border-color: transparent;
+  }
+
+  &:hover {
+    color: var(--kd-color-text-link-hover);
+    border-color: var(--kd-color-border-tertiary);
+
+    &.contained {
+      border-color: transparent;
+    }
+  }
+
+  &:active {
+    color: var(--kd-color-text-pressed);
+    border-color: var(--kd-color-border-tertiary);
+
+    &.contained {
+      border-color: transparent;
+    }
+  }
+
+  &.selected {
+    color: var(--kd-color-text-link);
+    font-weight: 500;
+    border-color: var(--kd-color-border-tertiary);
+    box-shadow: 0 -1px 0 0 var(--kd-color-border-tertiary) inset;
+
+    &.size--lg {
+      font-weight: 400;
+    }
+
+    &.vertical {
+      box-shadow: 1px 0 0 0 var(--kd-color-border-tertiary) inset;
+    }
+
+    &.contained {
+      background: var(--kd-color-background-ui-default);
+      box-shadow: 0 1px 0 0 var(--kd-color-border-tertiary) inset;
+    }
+
+    &.vertical.contained {
+      box-shadow: 1px 0 0 0 var(--kd-color-border-tertiary) inset;
+    }
+  }
 }

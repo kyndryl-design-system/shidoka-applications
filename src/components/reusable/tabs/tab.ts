@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import TabScss from './tab.scss';
 
 /**
@@ -17,6 +18,24 @@ export class Tab extends LitElement {
   /** Tab selected state. Must match Tab Panel visible state. */
   @property({ type: Boolean, reflect: true })
   selected = false;
+
+  /** Size of the tab buttons. Inherited.
+   * @internal
+   */
+  @state()
+  private _size = 'md';
+
+  /** Vertical orientation. Inherited.
+   * @internal
+   */
+  @state()
+  private _vertical = false;
+
+  /** Contained style. Inherited.
+   * @internal
+   */
+  @state()
+  private _contained = false;
 
   /** aria role.
    * @internal
@@ -43,7 +62,17 @@ export class Tab extends LitElement {
   'aria-controls' = '';
 
   override render() {
-    return html` <slot></slot> `;
+    const classes = {
+      tab: true,
+      contained: this._contained,
+      'size--sm': this._size === 'sm',
+      'size--md': this._size === 'md',
+      'size--lg': this._size === 'lg',
+      vertical: this._vertical,
+      selected: this.selected,
+    };
+
+    return html` <div class=${classMap(classes)}><slot></slot></div> `;
   }
 
   override connectedCallback() {

@@ -1,5 +1,4 @@
 @use '../../../common/scss/global.scss';
-@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/variables/breakpoints.scss';
 
 :host {
@@ -39,84 +38,6 @@
   }
 }
 
-::slotted(kyn-tab) {
-  border-bottom: 1px solid var(--kd-color-border-light);
-  background: var(--kd-color-background-ui-default);
-
-  .size--sm & {
-    @include typography.type-ui-03;
-    height: 40px;
-  }
-
-  .size--md & {
-    height: 48px;
-  }
-
-  .size--lg & {
-    @include typography.type-headline-08;
-    font-weight: 300;
-    height: 56px;
-  }
-
-  .vertical & {
-    border-bottom: none;
-    border-left: 1px solid var(--kd-color-border-light);
-  }
-
-  .contained & {
-    border-bottom: none;
-    border-top: 1px solid transparent;
-    background: var(--kd-color-background-ui-soft);
-  }
-
-  .contained.vertical & {
-    border-top: none;
-    border-color: transparent;
-  }
-}
-
-::slotted(kyn-tab:hover) {
-  color: var(--kd-color-text-link-hover);
-  border-color: var(--kd-color-border-tertiary);
-
-  .contained & {
-    border-color: transparent;
-  }
-}
-
 ::slotted(kyn-tab:focus) {
   outline-color: var(--kd-color-border-focus);
-}
-
-::slotted(kyn-tab:active) {
-  color: var(--kd-color-text-pressed);
-  border-color: var(--kd-color-border-tertiary);
-
-  .contained & {
-    border-color: transparent;
-  }
-}
-
-::slotted(kyn-tab[selected]) {
-  color: var(--kd-color-text-link);
-  font-weight: 500;
-  border-color: var(--kd-color-border-tertiary);
-  box-shadow: 0 -1px 0 0 var(--kd-color-border-tertiary) inset;
-
-  .size--lg & {
-    font-weight: 400;
-  }
-
-  .vertical & {
-    box-shadow: 1px 0 0 0 var(--kd-color-border-tertiary) inset;
-  }
-
-  .contained & {
-    background: var(--kd-color-background-ui-default);
-    box-shadow: 0 1px 0 0 var(--kd-color-border-tertiary) inset;
-  }
-
-  .vertical.contained & {
-    box-shadow: 1px 0 0 0 var(--kd-color-border-tertiary) inset;
-  }
 }

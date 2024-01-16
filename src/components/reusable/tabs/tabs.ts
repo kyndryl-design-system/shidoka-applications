@@ -44,10 +44,6 @@ export class Tabs extends LitElement {
   override render() {
     const classes = {
       wrapper: true,
-      contained: this.contained,
-      'size--sm': this.tabSize === 'sm',
-      'size--md': this.tabSize === 'md',
-      'size--lg': this.tabSize === 'lg',
       vertical: this.vertical,
     };
 
@@ -58,7 +54,7 @@ export class Tabs extends LitElement {
           role="tablist"
           @keydown=${(e: any) => this._handleKeyboard(e)}
         >
-          <slot name="tabs"></slot>
+          <slot name="tabs" @slotchange=${this._handleSlotChangeTabs}></slot>
         </div>
 
         <div class="panels">
@@ -78,21 +74,27 @@ export class Tabs extends LitElement {
     super.disconnectedCallback();
   }
 
-  // override willUpdate(changedProps: any) {
-  //   if (changedProps.has('tabSize')) {
-  //     this._updateChildren();
-  //   }
-  // }
+  override willUpdate(changedProps: any) {
+    if (
+      changedProps.has('tabSize') ||
+      changedProps.has('vertical') ||
+      changedProps.has('contained')
+    ) {
+      this._updateChildren();
+    }
+  }
 
-  // private _handleSlotChangeTabs() {
-  //   this._updateChildren();
-  // }
+  private _handleSlotChangeTabs() {
+    this._updateChildren();
+  }
 
-  // private _updateChildren() {
-  //   this._tabs.forEach((tab: any) => {
-  //     tab._size = this.tabSize;
-  //   });
-  // }
+  private _updateChildren() {
+    this._tabs.forEach((tab: any) => {
+      tab._size = this.tabSize;
+      tab._vertical = this.vertical;
+      tab._contained = this.contained;
+    });
+  }
 
   /**
    * Updates children and emits a change event based on the provided
