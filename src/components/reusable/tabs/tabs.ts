@@ -1,5 +1,10 @@
 import { LitElement, html } from 'lit';
-import { customElement, queryAssignedElements } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  queryAssignedElements,
+} from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import TabsScss from './tabs.scss';
 
 /**
@@ -11,6 +16,18 @@ import TabsScss from './tabs.scss';
 @customElement('kyn-tabs')
 export class Tabs extends LitElement {
   static override styles = TabsScss;
+
+  /** Tab contained style type. */
+  @property({ type: Boolean })
+  contained = false;
+
+  /** Size of the tab buttons. Icon sizes: 16px sm, 24px md, 32px lg. */
+  @property({ type: String })
+  tabSize = 'md';
+
+  /** Vertical orientation. */
+  @property({ type: Boolean })
+  vertical = false;
 
   /** Queries for slotted tabs.
    * @internal
@@ -25,14 +42,23 @@ export class Tabs extends LitElement {
   _tabPanels!: any;
 
   override render() {
+    const classes = {
+      wrapper: true,
+      contained: this.contained,
+      'size--sm': this.tabSize === 'sm',
+      'size--md': this.tabSize === 'md',
+      'size--lg': this.tabSize === 'lg',
+      vertical: this.vertical,
+    };
+
     return html`
-      <div>
+      <div class=${classMap(classes)}>
         <div
           class="tabs"
           role="tablist"
           @keydown=${(e: any) => this._handleKeyboard(e)}
         >
-          <slot name="tabs"></slot>
+          <slot name="tabs" @slotchange=${this._handleSlotChangeTabs}></slot>
         </div>
 
         <div class="panels">
@@ -52,6 +78,22 @@ export class Tabs extends LitElement {
     super.disconnectedCallback();
   }
 
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('tabSize')) {
+      this._updateChildren();
+    }
+  }
+
+  private _handleSlotChangeTabs() {
+    this._updateChildren();
+  }
+
+  private _updateChildren() {
+    this._tabs.forEach((tab: any) => {
+      tab._size = this.tabSize;
+    });
+  }
+
   /**
    * Updates children and emits a change event based on the provided
    * event details when a child kyn-tab is clicked.
@@ -59,7 +101,7 @@ export class Tabs extends LitElement {
    * that triggered the handleChange function.
    */
   private _handleChange(e: any) {
-    this._updateChildren(e.detail.tabId);
+    this._updateChildrenSelection(e.detail.tabId);
     this._emitChangeEvent(e.detail.origEvent, e.detail.tabId);
   }
 
@@ -69,7 +111,7 @@ export class Tabs extends LitElement {
    * @param {string} selectedTabId - The selectedTabId parameter is a string that represents the ID of
    * the tab that is currently selected.
    */
-  private _updateChildren(selectedTabId: string) {
+  private _updateChildrenSelection(selectedTabId: string) {
     // update tabs selected prop
     this._tabs.forEach((tab: any) => {
       tab.selected = tab.id === selectedTabId;
@@ -117,7 +159,7 @@ export class Tabs extends LitElement {
         const PrevTab = this._tabs[PrevIndex];
         PrevTab.focus();
 
-        this._updateChildren(PrevTab.id);
+        this._updateChildrenSelection(PrevTab.id);
         this._emitChangeEvent(e, PrevTab.id);
 
         return;
@@ -130,7 +172,7 @@ export class Tabs extends LitElement {
 
         NextTab.focus();
 
-        this._updateChildren(NextTab.id);
+        this._updateChildrenSelection(NextTab.id);
         this._emitChangeEvent(e, NextTab.id);
 
         return;

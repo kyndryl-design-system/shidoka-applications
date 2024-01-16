@@ -1,19 +1,15 @@
 @use '../../../common/scss/global.scss';
 
 :host {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
-  padding: 4px 8px;
-  border: 1px solid gray;
-
-  outline: 2px solid transparent;
-  transition: outline-color 150ms ease-out;
-}
-
-:host(:focus) {
-  outline-color: var(--kd-color-border-focus);
-}
-
-:host([selected]) {
-  background: #ccc;
+  padding: 12px 8px;
+  white-space: nowrap;
+  text-align: center;
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  transition: outline-color 150ms ease-out, border-color 150ms ease-out,
+    color 150ms ease-out;
 }
