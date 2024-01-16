@@ -1,5 +1,6 @@
 @use '../../../common/scss/global.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/variables/breakpoints.scss';
 
 :host {
   display: block;
@@ -13,7 +14,7 @@
 }
 
 .tab {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
@@ -40,9 +41,11 @@
     height: 56px;
   }
 
-  &.vertical {
-    border-bottom: none;
-    border-left: 1px solid var(--kd-color-border-light);
+  @media (min-width: breakpoints.$bp-md) {
+    &.vertical {
+      border-bottom: none;
+      border-left: 1px solid var(--kd-color-border-light);
+    }
   }
 
   &.contained {
@@ -51,9 +54,11 @@
     background: var(--kd-color-background-ui-soft);
   }
 
-  &.contained.vertical {
-    border-top: none;
-    border-color: transparent;
+  @media (min-width: breakpoints.$bp-md) {
+    &.contained.vertical {
+      border-top: none;
+      border-color: transparent;
+    }
   }
 
   &:hover {
@@ -84,8 +89,10 @@
       font-weight: 400;
     }
 
-    &.vertical {
-      box-shadow: 1px 0 0 0 var(--kd-color-border-tertiary) inset;
+    @media (min-width: breakpoints.$bp-md) {
+      &.vertical {
+        box-shadow: 1px 0 0 0 var(--kd-color-border-tertiary) inset;
+      }
     }
 
     &.contained {
@@ -93,8 +100,10 @@
       box-shadow: 0 1px 0 0 var(--kd-color-border-tertiary) inset;
     }
 
-    &.vertical.contained {
-      box-shadow: 1px 0 0 0 var(--kd-color-border-tertiary) inset;
+    @media (min-width: breakpoints.$bp-md) {
+      &.vertical.contained {
+        box-shadow: 1px 0 0 0 var(--kd-color-border-tertiary) inset;
+      }
     }
   }
 }
