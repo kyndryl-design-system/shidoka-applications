@@ -147,12 +147,15 @@ export class Tabs extends LitElement {
    */
   private _handleKeyboard(e: any) {
     const LEFT_ARROW_KEY_CODE = 37;
+    const UP_ARROW_KEY_CODE = 38;
     const RIGHT_ARROW_KEY_CODE = 39;
+    const DOWN_ARROW_KEY_CODE = 40;
     const TabCount = this._tabs.length;
     const SelectedTabIndex = this._tabs.findIndex((tab: any) => tab.selected);
 
     switch (e.keyCode) {
-      case LEFT_ARROW_KEY_CODE: {
+      case LEFT_ARROW_KEY_CODE:
+      case UP_ARROW_KEY_CODE: {
         // activate previous tab
         const PrevIndex =
           SelectedTabIndex === 0 ? TabCount - 1 : SelectedTabIndex - 1;
@@ -164,7 +167,8 @@ export class Tabs extends LitElement {
 
         return;
       }
-      case RIGHT_ARROW_KEY_CODE: {
+      case RIGHT_ARROW_KEY_CODE:
+      case DOWN_ARROW_KEY_CODE: {
         // activate next tab
         const NextIndex =
           SelectedTabIndex === TabCount - 1 ? 0 : SelectedTabIndex + 1;
