@@ -1,3 +1,18 @@
+## [1.1.19](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.18...v1.1.19) (2024-01-15)
+
+
+### Bug Fixes
+
+* **dropdown:** emitValue on reset ([1607e64](https://github.com/kyndryl-design-system/shidoka-applications/commit/1607e64f58b6354204afcc3e94efa92c9e2a56a4))
+
+## [1.1.18](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.17...v1.1.18) (2024-01-15)
+
+
+### Bug Fixes
+
+* **dropdown:** make resetSelection target latest options ([292ffa7](https://github.com/kyndryl-design-system/shidoka-applications/commit/292ffa7c3cff98bc00008658b83f1ec92912d483))
+* **dropdown:** selected text overflow, resolves [#71](https://github.com/kyndryl-design-system/shidoka-applications/issues/71) ([52b5784](https://github.com/kyndryl-design-system/shidoka-applications/commit/52b5784be16a9a04d7af96dfaeda1efff19ca325))
+
 ## [1.1.17](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.16...v1.1.17) (2024-01-09)
 
 
