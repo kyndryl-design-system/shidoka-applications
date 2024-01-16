@@ -11,6 +11,12 @@ import downloadIcon from '@carbon/icons/es/download/20';
 export default {
   title: 'Components/Modal',
   component: 'kyn-modal',
+  argTypes: {
+    size: {
+      options: ['auto', 'md', 'lg'],
+      control: { type: 'select' },
+    },
+  },
   parameters: {
     design: {
       type: 'figma',
@@ -21,6 +27,7 @@ export default {
 
 const args = {
   open: false,
+  size: 'auto',
   titleText: 'Modal Title',
   labelText: '',
   okText: 'OK',
@@ -33,6 +40,7 @@ export const Modal = {
     return html`
       <kyn-modal
         ?open=${args.open}
+        size=${args.size}
         titleText=${args.titleText}
         labelText=${args.labelText}
         okText=${args.okText}
@@ -53,6 +61,7 @@ export const CustomActions = {
     return html`
       <kyn-modal
         ?open=${args.open}
+        size=${args.size}
         titleText=${args.titleText}
         labelText=${args.labelText}
         okText=${args.okText}
@@ -90,6 +99,7 @@ export const BeforeClose = {
     return html`
       <kyn-modal
         ?open=${args.open}
+        size=${args.size}
         titleText=${args.titleText}
         labelText=${args.labelText}
         okText=${args.okText}

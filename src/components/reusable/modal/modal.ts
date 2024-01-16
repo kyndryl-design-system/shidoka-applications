@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import ModalScss from './modal.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
@@ -21,6 +22,10 @@ export class Modal extends LitElement {
   /** Modal open state. */
   @property({ type: Boolean })
   open = false;
+
+  /** Modal size. `'auto'`, `'md'`, or `'lg'`. */
+  @property({ type: String })
+  size = 'auto';
 
   /** Title/heading text, required. */
   @property({ type: String })
@@ -49,13 +54,19 @@ export class Modal extends LitElement {
   _dialog!: any;
 
   override render() {
+    const classes = {
+      modal: true,
+      'size--md': this.size === 'md',
+      'size--lg': this.size === 'lg',
+    };
+
     return html`
       <button class="anchor" @click=${this._openModal}>
         <slot name="anchor"></slot>
       </button>
 
       <dialog
-        class="modal"
+        class="${classMap(classes)}"
         autofocus
         aria-labelledby="dialogLabel"
         @cancel=${(e: Event) => this._closeModal(e, 'cancel')}

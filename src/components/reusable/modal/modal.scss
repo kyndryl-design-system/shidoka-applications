@@ -9,6 +9,8 @@ dialog {
   border: 1px solid var(--kd-color-border-light);
   box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.12);
   min-width: 288px;
+  max-width: calc(100% - 32px);
+  max-height: calc(100% - 32px);
 
   &[open] {
     animation: dialog-in 250ms ease-out forwards;
@@ -16,6 +18,14 @@ dialog {
 
   &::backdrop {
     background: none;
+  }
+
+  &.size--md {
+    width: 384px;
+  }
+
+  &.size--lg {
+    width: 711px;
   }
 }
 
@@ -94,12 +104,12 @@ h1 {
 
   75% {
     transform: scale(1.1);
-    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.4);
   }
 
   100% {
     opacity: 1;
     transform: scale(1);
-    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.4);
   }
 }
