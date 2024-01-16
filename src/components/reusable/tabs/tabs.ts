@@ -58,7 +58,7 @@ export class Tabs extends LitElement {
           role="tablist"
           @keydown=${(e: any) => this._handleKeyboard(e)}
         >
-          <slot name="tabs" @slotchange=${this._handleSlotChangeTabs}></slot>
+          <slot name="tabs"></slot>
         </div>
 
         <div class="panels">
@@ -78,21 +78,21 @@ export class Tabs extends LitElement {
     super.disconnectedCallback();
   }
 
-  override willUpdate(changedProps: any) {
-    if (changedProps.has('tabSize')) {
-      this._updateChildren();
-    }
-  }
+  // override willUpdate(changedProps: any) {
+  //   if (changedProps.has('tabSize')) {
+  //     this._updateChildren();
+  //   }
+  // }
 
-  private _handleSlotChangeTabs() {
-    this._updateChildren();
-  }
+  // private _handleSlotChangeTabs() {
+  //   this._updateChildren();
+  // }
 
-  private _updateChildren() {
-    this._tabs.forEach((tab: any) => {
-      tab._size = this.tabSize;
-    });
-  }
+  // private _updateChildren() {
+  //   this._tabs.forEach((tab: any) => {
+  //     tab._size = this.tabSize;
+  //   });
+  // }
 
   /**
    * Updates children and emits a change event based on the provided

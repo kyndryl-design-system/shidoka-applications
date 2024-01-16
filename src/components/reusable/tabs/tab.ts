@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import TabScss from './tab.scss';
 
 /**
@@ -17,18 +17,6 @@ export class Tab extends LitElement {
   /** Tab selected state. Must match Tab Panel visible state. */
   @property({ type: Boolean, reflect: true })
   selected = false;
-
-  /** Size of the tab buttons. Inherited.
-   * @internal
-   */
-  @state()
-  private _size = 'md';
-
-  /** Vertical orientation. Inherited.
-   * @internal
-   */
-  @state()
-  private _vertical = false;
 
   /** aria role.
    * @internal
