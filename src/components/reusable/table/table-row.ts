@@ -18,8 +18,8 @@ export class TableRow extends LitElement {
   @property({ type: Boolean, reflect: true })
   selected = false;
 
-  @property({ type: Boolean, reflect: true })
-  disabled = false;
+  // @property({ type: Boolean, reflect: true })
+  // disabled = false;
 
   @property({ type: Boolean, reflect: true })
   clickable = false;
