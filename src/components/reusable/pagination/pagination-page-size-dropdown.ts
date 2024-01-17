@@ -56,7 +56,12 @@ export class PaginationPageSizeDropdown extends LitElement {
       >
         ${this.pageSizeOptions.map((option) => {
           return html`
-            <kyn-dropdown-option value=${option}>${option}</kyn-dropdown-option>
+            <kyn-dropdown-option
+              ?selected=${this.pageSize === option}
+              value=${option}
+            >
+              ${option}
+            </kyn-dropdown-option>
           `;
         })}
       </kyn-dropdown>
