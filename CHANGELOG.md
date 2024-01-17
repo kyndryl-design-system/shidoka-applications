@@ -1,3 +1,10 @@
+## [1.1.21](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.20...v1.1.21) (2024-01-17)
+
+
+### Bug Fixes
+
+* **pagination:** page size option selected binding, resolves [#72](https://github.com/kyndryl-design-system/shidoka-applications/issues/72) ([fb432eb](https://github.com/kyndryl-design-system/shidoka-applications/commit/fb432eb11feb4841d82ff6bb85a3a0f784d760c3))
+
 ## [1.1.20](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.19...v1.1.20) (2024-01-17)
 
 
