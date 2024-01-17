@@ -1,3 +1,10 @@
+## [1.1.20](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.19...v1.1.20) (2024-01-17)
+
+
+### Bug Fixes
+
+* **dropdown:** increase z-index above sticky table header ([cecd70e](https://github.com/kyndryl-design-system/shidoka-applications/commit/cecd70e541003ef389123867209194ded2b7a9ff))
+
 ## [1.1.19](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.18...v1.1.19) (2024-01-15)
 
 
