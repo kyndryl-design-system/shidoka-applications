@@ -39,23 +39,30 @@ button {
   padding: 0;
   border-radius: 4px;
   outline: 2px solid transparent;
-  transition: outline-color 150ms ease-out;
+  transition: outline-color 150ms ease-out, color 150ms ease-out;
 
   &:focus {
     outline-color: var(--kd-color-border-focus);
   }
+
+  &:hover {
+    color: var(--kd-color-text-link-hover);
+  }
+
+  &:active {
+    color: var(--kd-color-text-pressed);
+  }
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
   margin-bottom: 32px;
+  margin-right: 16px;
 }
 
 .close {
-  order: 2;
+  position: absolute;
+  top: 16px;
+  right: 16px;
 
   kd-icon {
     display: block;
