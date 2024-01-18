@@ -42,13 +42,18 @@ export class Tabs extends LitElement {
   _tabPanels!: any;
 
   override render() {
-    const classes = {
+    const tabsClasses = {
       wrapper: true,
       vertical: this.vertical,
     };
 
+    const panelsClasses = {
+      panels: true,
+      contained: this.contained,
+    };
+
     return html`
-      <div class=${classMap(classes)}>
+      <div class=${classMap(tabsClasses)}>
         <div
           class="tabs"
           role="tablist"
@@ -57,7 +62,7 @@ export class Tabs extends LitElement {
           <slot name="tabs" @slotchange=${this._handleSlotChangeTabs}></slot>
         </div>
 
-        <div class="panels">
+        <div class=${classMap(panelsClasses)}>
           <slot></slot>
         </div>
       </div>
@@ -93,6 +98,11 @@ export class Tabs extends LitElement {
       tab._size = this.tabSize;
       tab._vertical = this.vertical;
       tab._contained = this.contained;
+    });
+
+    this._tabPanels.forEach((tabPanel: any) => {
+      tabPanel._vertical = this.vertical;
+      tabPanel._contained = this.contained;
     });
   }
 

@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import TabPanelScss from './tabPanel.scss';
 
 /**
@@ -17,6 +18,22 @@ export class TabPanel extends LitElement {
   /** Tab Panel visible state.  Must match Tab selected state. */
   @property({ type: Boolean, reflect: true })
   visible = false;
+
+  /** Remove padding on tab panel. */
+  @property({ type: Boolean })
+  removePadding = false;
+
+  /** Vertical orientation. Inherited.
+   * @internal
+   */
+  @state()
+  private _vertical = false;
+
+  /** Contained style. Inherited.
+   * @internal
+   */
+  @state()
+  private _contained = false;
 
   /** Tab Panel ID.
    * @internal
@@ -37,11 +54,14 @@ export class TabPanel extends LitElement {
   'aria-labelledby' = '';
 
   override render() {
-    return html`
-      <div class="tab-panel">
-        <slot></slot>
-      </div>
-    `;
+    const classes = {
+      'tab-panel': true,
+      contained: this._contained,
+      vertical: this._vertical,
+      'no-padding': this.removePadding,
+    };
+
+    return html` <div class=${classMap(classes)}><slot></slot></div> `;
   }
 
   /**
