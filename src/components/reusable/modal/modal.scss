@@ -1,0 +1,122 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+dialog {
+  padding: 32px;
+  color: inherit;
+  background: var(--kd-color-background-ui-default);
+  border-radius: 8px;
+  border: 1px solid var(--kd-color-border-light);
+  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.12);
+  min-width: 288px;
+  max-width: calc(100% - 32px);
+  max-height: calc(100% - 32px);
+
+  &[open] {
+    animation: dialog-in 250ms ease-out forwards;
+  }
+
+  &::backdrop {
+    background: none;
+  }
+
+  &.size--md {
+    width: 384px;
+  }
+
+  &.size--lg {
+    width: 711px;
+  }
+}
+
+button {
+  appearance: none;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  border-radius: 4px;
+  outline: 2px solid transparent;
+  transition: outline-color 150ms ease-out, color 150ms ease-out;
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
+  }
+
+  &:hover {
+    color: var(--kd-color-text-link-hover);
+  }
+
+  &:active {
+    color: var(--kd-color-text-pressed);
+  }
+}
+
+header {
+  margin-bottom: 32px;
+  margin-right: 16px;
+}
+
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+
+  kd-icon {
+    display: block;
+  }
+}
+
+.label {
+  @include typography.type-ui-03;
+  color: var(--kd-color-text-placeholder);
+}
+
+h1 {
+  @include typography.type-body-01;
+  margin: 0;
+  order: 1;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 32px;
+
+  @media (max-width: 42rem) {
+    kd-button {
+      width: 100%;
+      flex-grow: 1;
+    }
+  }
+}
+
+.custom-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+@keyframes dialog-in {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0);
+  }
+
+  75% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.4);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.4);
+  }
+}
