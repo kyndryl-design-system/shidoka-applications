@@ -32,3 +32,4 @@ export {
   OverflowMenuItem,
 } from './components/reusable/overflowMenu';
 export { Modal } from './components/reusable/modal';
+export { Tooltip } from './components/reusable/tooltip';
