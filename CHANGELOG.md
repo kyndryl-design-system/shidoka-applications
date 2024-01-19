@@ -1,3 +1,11 @@
+# [1.2.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.22...v1.2.0) (2024-01-19)
+
+
+### Features
+
+* modal ([#66](https://github.com/kyndryl-design-system/shidoka-applications/issues/66)) ([daeeece](https://github.com/kyndryl-design-system/shidoka-applications/commit/daeeece379e83901dbda414b34d3b65e896ca777))
+* tooltip ([#68](https://github.com/kyndryl-design-system/shidoka-applications/issues/68)) ([e5075d1](https://github.com/kyndryl-design-system/shidoka-applications/commit/e5075d17c25a3d36b8d2a0eb1ef8294f0a3289fc))
+
 ## [1.1.22](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.21...v1.1.22) (2024-01-19)
 
 
