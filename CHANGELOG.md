@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.2.0...v1.2.1) (2024-01-19)
+
+
+### Bug Fixes
+
+* **tooltip:** support tooltips in input label slots ([66f6c1b](https://github.com/kyndryl-design-system/shidoka-applications/commit/66f6c1bad4ac1de4cf3e37aa5cc0f65658666b6b))
+
 # [1.2.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.22...v1.2.0) (2024-01-19)
 
 
