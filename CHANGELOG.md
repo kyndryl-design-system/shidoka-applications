@@ -1,3 +1,10 @@
+## [1.1.22](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.21...v1.1.22) (2024-01-19)
+
+
+### Bug Fixes
+
+* **header-nav:** remove display flex from mobile, resolves [#74](https://github.com/kyndryl-design-system/shidoka-applications/issues/74) ([4576498](https://github.com/kyndryl-design-system/shidoka-applications/commit/45764987eb04e98f05feb3a07ca3985637aa3f48))
+
 ## [1.1.21](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.20...v1.1.21) (2024-01-17)
 
 
