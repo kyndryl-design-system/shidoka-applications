@@ -84,3 +84,44 @@ export const WithIcons = {
     `;
   },
 };
+
+export const Nested = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-tabs
+        tabSize=${args.tabSize}
+        ?vertical=${args.vertical}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+        <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
+        <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
+        <kyn-tab slot="tabs" id="tab3">Tab 3</kyn-tab>
+
+        <kyn-tab-panel tabId="tab1" visible>
+          Tab 1 Content
+          <br /><br />
+
+          <kyn-tabs
+            contained
+            tabSize=${args.tabSize}
+            ?vertical=${args.vertical}
+            @on-change=${(e) => action(e.type)(e)}
+          >
+            <kyn-tab slot="tabs" id="tab1-subtab1" selected>Subtab 1</kyn-tab>
+            <kyn-tab slot="tabs" id="tab1-subtab2">Subtab 2</kyn-tab>
+            <kyn-tab slot="tabs" id="tab1-subtab3">Subtab 3</kyn-tab>
+
+            <kyn-tab-panel tabId="tab1-subtab1" visible>
+              Subtab 1 Content
+            </kyn-tab-panel>
+            <kyn-tab-panel tabId="tab1-subtab2">Subtab 2 Content</kyn-tab-panel>
+            <kyn-tab-panel tabId="tab1-subtab3">Subtab 3 Content</kyn-tab-panel>
+          </kyn-tabs>
+        </kyn-tab-panel>
+        <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
+        <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
+      </kyn-tabs>
+    `;
+  },
+};

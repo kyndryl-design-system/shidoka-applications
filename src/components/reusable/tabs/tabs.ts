@@ -113,6 +113,7 @@ export class Tabs extends LitElement {
    * that triggered the handleChange function.
    */
   private _handleChange(e: any) {
+    e.stopPropagation();
     this._updateChildrenSelection(e.detail.tabId);
     this._emitChangeEvent(e.detail.origEvent, e.detail.tabId);
   }

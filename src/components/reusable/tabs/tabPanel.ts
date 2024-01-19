@@ -21,7 +21,7 @@ export class TabPanel extends LitElement {
 
   /** Remove padding on tab panel. */
   @property({ type: Boolean })
-  removePadding = false;
+  noPadding = false;
 
   /** Vertical orientation. Inherited.
    * @internal
@@ -58,7 +58,7 @@ export class TabPanel extends LitElement {
       'tab-panel': true,
       contained: this._contained,
       vertical: this._vertical,
-      'no-padding': this.removePadding,
+      'no-padding': this.noPadding,
     };
 
     return html` <div class=${classMap(classes)}><slot></slot></div> `;
