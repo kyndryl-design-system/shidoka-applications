@@ -8,7 +8,10 @@ import '../components/reusable/dropdown';
 import '../components/reusable/timepicker';
 import '../components/reusable/datePicker';
 import '../components/reusable/daterangepicker';
+import '../components/reusable/tooltip';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import infoIcon from '@carbon/icons/es/information/16';
 import { action } from '@storybook/addon-actions';
 
 export default {
@@ -61,7 +64,12 @@ export const Default = {
           caption="Dropdown example"
           @on-change=${(e) => action(e.type)(e)}
         >
-          <span slot="label">Dropdown</span>
+          <span slot="label"> Dropdown </span>
+          <kyn-tooltip slot="label" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
+
           <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
           <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
           <kyn-dropdown-option value="3" disabled>
