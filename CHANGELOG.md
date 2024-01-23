@@ -1,3 +1,24 @@
+## [1.2.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.2.2...v1.2.3) (2024-01-23)
+
+
+### Bug Fixes
+
+* **toggle-button:** add reverse prop ([e28aafc](https://github.com/kyndryl-design-system/shidoka-applications/commit/e28aafc063776a60273bbd959df16aa0c9f24f45))
+
+## [1.2.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.2.1...v1.2.2) (2024-01-23)
+
+
+### Bug Fixes
+
+* **toggle-button:** small:checked & disabled styles, resolves [#75](https://github.com/kyndryl-design-system/shidoka-applications/issues/75) ([fa9407c](https://github.com/kyndryl-design-system/shidoka-applications/commit/fa9407c2685159804e33f9325ca32a317ed4edc9))
+
+## [1.2.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.2.0...v1.2.1) (2024-01-19)
+
+
+### Bug Fixes
+
+* **tooltip:** support tooltips in input label slots ([66f6c1b](https://github.com/kyndryl-design-system/shidoka-applications/commit/66f6c1bad4ac1de4cf3e37aa5cc0f65658666b6b))
+
 # [1.2.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.1.22...v1.2.0) (2024-01-19)
 
 
