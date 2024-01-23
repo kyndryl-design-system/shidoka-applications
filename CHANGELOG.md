@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.2.1...v1.2.2) (2024-01-23)
+
+
+### Bug Fixes
+
+* **toggle-button:** small:checked & disabled styles, resolves [#75](https://github.com/kyndryl-design-system/shidoka-applications/issues/75) ([fa9407c](https://github.com/kyndryl-design-system/shidoka-applications/commit/fa9407c2685159804e33f9325ca32a317ed4edc9))
+
 ## [1.2.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.2.0...v1.2.1) (2024-01-19)
 
 
