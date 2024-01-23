@@ -52,6 +52,10 @@ export class ToggleButton extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Reverse UI element order, label on the left. */
+  @property({ type: Boolean })
+  reverse = false;
+
   override render() {
     return html`
       <div class="toggle-button" ?disabled=${this.disabled}>
@@ -59,7 +63,7 @@ export class ToggleButton extends LitElement {
           <slot></slot>
         </label>
 
-        <div class="wrapper">
+        <div class="wrapper ${this.reverse ? 'reverse' : ''}">
           <input
             class="${this.small ? 'size--sm' : ''}"
             type="checkbox"
