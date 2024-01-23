@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.2.2...v1.2.3) (2024-01-23)
+
+
+### Bug Fixes
+
+* **toggle-button:** add reverse prop ([e28aafc](https://github.com/kyndryl-design-system/shidoka-applications/commit/e28aafc063776a60273bbd959df16aa0c9f24f45))
+
 ## [1.2.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.2.1...v1.2.2) (2024-01-23)
 
 
