@@ -32,6 +32,7 @@ const args = {
   labelText: '',
   okText: 'OK',
   cancelText: 'Cancel',
+  destructive: false,
 };
 
 export const Modal = {
@@ -45,6 +46,7 @@ export const Modal = {
         labelText=${args.labelText}
         okText=${args.okText}
         cancelText=${args.cancelText}
+        ?destructive=${args.destructive}
         @on-close=${(e) => action(e.type)(e)}
       >
         <span slot="anchor">Open Modal</span>
@@ -66,6 +68,7 @@ export const CustomActions = {
         labelText=${args.labelText}
         okText=${args.okText}
         cancelText=${args.cancelText}
+        ?destructive=${args.destructive}
         @on-close=${(e) => action(e.type)(e)}
       >
         <span slot="anchor">Open Modal</span>
@@ -104,6 +107,7 @@ export const BeforeClose = {
         labelText=${args.labelText}
         okText=${args.okText}
         cancelText=${args.cancelText}
+        ?destructive=${args.destructive}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
       >
@@ -117,7 +121,7 @@ export const BeforeClose = {
 
 const handleBeforeClose = (returnValue) => {
   if (returnValue === 'ok') {
-    return confirm(`Are you sure?`);
+    return confirm(`beforeClose handler triggered.`);
   } else {
     return true;
   }
