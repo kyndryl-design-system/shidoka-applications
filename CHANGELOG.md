@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.2.3...v1.2.4) (2024-01-24)
+
+
+### Bug Fixes
+
+* **modal:** add destructive prop, resolves [#76](https://github.com/kyndryl-design-system/shidoka-applications/issues/76) ([15949cd](https://github.com/kyndryl-design-system/shidoka-applications/commit/15949cd189fb1f1173ae485cb0b85a3c8c92a8d5))
+
 ## [1.2.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.2.2...v1.2.3) (2024-01-23)
 
 
