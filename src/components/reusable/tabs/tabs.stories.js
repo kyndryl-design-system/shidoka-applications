@@ -3,9 +3,9 @@ import './index';
 import { action } from '@storybook/addon-actions';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import userAvatarIcon from '@carbon/icons/es/user--avatar/24';
-import helpIcon from '@carbon/icons/es/help/24';
-import settingsIcon from '@carbon/icons/es/settings/24';
+import userAvatarIcon from '@carbon/icons/es/user--avatar/16';
+import helpIcon from '@carbon/icons/es/help/16';
+import settingsIcon from '@carbon/icons/es/settings/16';
 
 export default {
   title: 'Components/Tabs',
@@ -103,7 +103,7 @@ export const Nested = {
         <kyn-tab slot="tabs" id="tab3">Tab 3</kyn-tab>
 
         <kyn-tab-panel tabId="tab1" visible noPadding>
-          <p style="padding: 0 16px 24px;">Tab 1 Content</p>
+          <p style="padding: 0 12px 24px;">Tab 1 Content</p>
 
           <kyn-tabs
             tabStyle="line"
