@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.2.4...v1.3.0) (2024-01-25)
+
+
+### Features
+
+* tabs ([#67](https://github.com/kyndryl-design-system/shidoka-applications/issues/67)) ([9594e63](https://github.com/kyndryl-design-system/shidoka-applications/commit/9594e631468ba4d99183ef320e3360723e0d1f66))
+
 ## [1.2.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.2.3...v1.2.4) (2024-01-24)
 
 
