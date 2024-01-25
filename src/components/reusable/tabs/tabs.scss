@@ -1,0 +1,51 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/variables/breakpoints.scss';
+
+:host {
+  display: block;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: breakpoints.$bp-md) {
+    &.vertical {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+  }
+}
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+
+  &.contained::after {
+    content: '';
+    background: var(--kd-color-background-ui-soft);
+    flex-grow: 1;
+  }
+
+  &.line::after {
+    content: '';
+    border-bottom: 2px solid var(--kd-color-border-default);
+    flex-grow: 1;
+  }
+
+  @media (min-width: breakpoints.$bp-md) {
+    .vertical & {
+      flex-direction: column;
+      overflow-x: initial;
+    }
+
+    .vertical &.line::after {
+      content: none;
+    }
+  }
+}
+
+.panels {
+  flex-grow: 1;
+}

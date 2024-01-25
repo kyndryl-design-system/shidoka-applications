@@ -1,0 +1,125 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/variables/breakpoints.scss';
+
+:host {
+  display: block;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: outline-color 150ms ease-out;
+}
+
+:host(:focus) {
+  outline-color: var(--kd-color-border-focus);
+}
+
+:host([disabled]:focus) {
+  outline-color: transparent;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center;
+  border-bottom: 2px solid var(--kd-color-border-default);
+  background: var(--kd-color-background-ui-default);
+  transition: border-color 150ms ease-out, background-color 150ms ease-out,
+    color 150ms ease-out;
+
+  &.size--sm {
+    @include typography.type-ui-02;
+    height: 32px;
+    padding: 7px 16px;
+  }
+
+  &.size--md {
+    height: 48px;
+    padding: 12px;
+  }
+
+  &.size--lg {
+    @include typography.type-headline-08;
+    font-weight: 300;
+    height: 56px;
+    padding: 14px 12px;
+  }
+
+  @media (min-width: breakpoints.$bp-md) {
+    &.vertical {
+      border-bottom: none;
+      border-left: 2px solid var(--kd-color-border-default);
+      white-space: initial;
+      text-align: left;
+    }
+  }
+
+  &.contained {
+    border-bottom: none;
+    border-top: 2px solid transparent;
+    background: var(--kd-color-background-ui-soft);
+  }
+
+  @media (min-width: breakpoints.$bp-md) {
+    &.contained.vertical {
+      border-top: none;
+      border-color: transparent;
+    }
+  }
+
+  &:hover {
+    color: var(--kd-color-text-link-hover);
+    border-color: var(--kd-color-border-ui-hover);
+    background-color: var(--kd-color-background-inverse-hover);
+
+    &.contained {
+      border-color: transparent;
+    }
+  }
+
+  &:active {
+    color: var(--kd-color-text-pressed);
+    border-color: var(--kd-color-border-ui-hover);
+    background-color: var(--kd-color-background-inverse-hover);
+
+    &.contained {
+      border-color: transparent;
+    }
+  }
+
+  &.selected {
+    font-weight: 500;
+    color: var(--kd-color-text-link);
+    border-color: var(--kd-color-border-tertiary);
+
+    &.size--lg {
+      font-weight: 400;
+    }
+
+    &.contained {
+      background: var(--kd-color-background-ui-default);
+      border-color: var(--kd-color-border-tertiary);
+
+      &:hover {
+        background: var(--kd-color-background-inverse-hover);
+      }
+    }
+  }
+
+  &.disabled {
+    color: var(--kd-color-text-disabled);
+    cursor: not-allowed;
+    border-color: var(--kd-color-border-ui-disabled);
+
+    &:hover {
+      background: var(--kd-color-background-ui-default);
+    }
+
+    &.contained {
+      background: var(--kd-color-background-disabled);
+      border-color: transparent;
+    }
+  }
+}
