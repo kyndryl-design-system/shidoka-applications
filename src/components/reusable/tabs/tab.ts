@@ -19,6 +19,10 @@ export class Tab extends LitElement {
   @property({ type: Boolean, reflect: true })
   selected = false;
 
+  /** Tab disabled state. */
+  @property({ type: Boolean })
+  disabled = false;
+
   /** Size of the tab buttons. Inherited.
    * @internal
    */
@@ -31,11 +35,11 @@ export class Tab extends LitElement {
   @state()
   private _vertical = false;
 
-  /** Contained style. Inherited.
+  /** Tab style. Inherited.
    * @internal
    */
   @state()
-  private _contained = false;
+  private _tabStyle = 'contained';
 
   /** aria role.
    * @internal
@@ -64,12 +68,14 @@ export class Tab extends LitElement {
   override render() {
     const classes = {
       tab: true,
-      contained: this._contained,
+      contained: this._tabStyle === 'contained',
+      line: this._tabStyle === 'line',
       'size--sm': this._size === 'sm',
       'size--md': this._size === 'md',
       'size--lg': this._size === 'lg',
       vertical: this._vertical,
       selected: this.selected,
+      disabled: this.disabled,
     };
 
     return html` <div class=${classMap(classes)}><slot></slot></div> `;
@@ -110,7 +116,7 @@ export class Tab extends LitElement {
    * click event handler.
    */
   private _handleClick(e: any) {
-    if (!this.selected) {
+    if (!this.selected && !this.disabled) {
       const event = new CustomEvent('tab-activated', {
         bubbles: true,
         composed: true,

@@ -17,9 +17,9 @@ import TabsScss from './tabs.scss';
 export class Tabs extends LitElement {
   static override styles = TabsScss;
 
-  /** Tab contained style type. */
-  @property({ type: Boolean })
-  contained = false;
+  /** Tab style. `'contained'` or `'line'`. */
+  @property({ type: String })
+  tabStyle = 'contained';
 
   /** Size of the tab buttons. Icon sizes: 16px sm, 24px md, 32px lg. */
   @property({ type: String })
@@ -42,27 +42,28 @@ export class Tabs extends LitElement {
   _tabPanels!: any;
 
   override render() {
-    const tabsClasses = {
+    const wrapperClasses = {
       wrapper: true,
       vertical: this.vertical,
     };
 
-    const panelsClasses = {
-      panels: true,
-      contained: this.contained,
+    const tabsClasses = {
+      tabs: true,
+      contained: this.tabStyle === 'contained',
+      line: this.tabStyle === 'line',
     };
 
     return html`
-      <div class=${classMap(tabsClasses)}>
+      <div class=${classMap(wrapperClasses)}>
         <div
-          class="tabs"
+          class=${classMap(tabsClasses)}
           role="tablist"
           @keydown=${(e: any) => this._handleKeyboard(e)}
         >
           <slot name="tabs" @slotchange=${this._handleSlotChangeTabs}></slot>
         </div>
 
-        <div class=${classMap(panelsClasses)}>
+        <div class="panels">
           <slot></slot>
         </div>
       </div>
@@ -83,7 +84,7 @@ export class Tabs extends LitElement {
     if (
       changedProps.has('tabSize') ||
       changedProps.has('vertical') ||
-      changedProps.has('contained')
+      changedProps.has('tabStyle')
     ) {
       this._updateChildren();
     }
@@ -97,12 +98,11 @@ export class Tabs extends LitElement {
     this._tabs.forEach((tab: any) => {
       tab._size = this.tabSize;
       tab._vertical = this.vertical;
-      tab._contained = this.contained;
+      tab._tabStyle = this.tabStyle;
     });
 
     this._tabPanels.forEach((tabPanel: any) => {
       tabPanel._vertical = this.vertical;
-      tabPanel._contained = this.contained;
     });
   }
 
@@ -170,27 +170,38 @@ export class Tabs extends LitElement {
       case LEFT_ARROW_KEY_CODE:
       case UP_ARROW_KEY_CODE: {
         // activate previous tab
-        const PrevIndex =
+        let prevIndex =
           SelectedTabIndex === 0 ? TabCount - 1 : SelectedTabIndex - 1;
-        const PrevTab = this._tabs[PrevIndex];
-        PrevTab.focus();
+        let prevTab = this._tabs[prevIndex];
 
-        this._updateChildrenSelection(PrevTab.id);
-        this._emitChangeEvent(e, PrevTab.id);
+        if (prevTab.disabled) {
+          prevIndex = prevIndex === 0 ? TabCount - 1 : prevIndex - 1;
+          prevTab = this._tabs[prevIndex];
+        }
+
+        prevTab.focus();
+
+        this._updateChildrenSelection(prevTab.id);
+        this._emitChangeEvent(e, prevTab.id);
 
         return;
       }
       case RIGHT_ARROW_KEY_CODE:
       case DOWN_ARROW_KEY_CODE: {
         // activate next tab
-        const NextIndex =
+        let nextIndex =
           SelectedTabIndex === TabCount - 1 ? 0 : SelectedTabIndex + 1;
-        const NextTab = this._tabs[NextIndex];
+        let nextTab = this._tabs[nextIndex];
 
-        NextTab.focus();
+        if (nextTab.disabled) {
+          nextIndex = nextIndex === TabCount - 1 ? 0 : nextIndex + 1;
+          nextTab = this._tabs[nextIndex];
+        }
 
-        this._updateChildrenSelection(NextTab.id);
-        this._emitChangeEvent(e, NextTab.id);
+        nextTab.focus();
+
+        this._updateChildrenSelection(nextTab.id);
+        this._emitChangeEvent(e, nextTab.id);
 
         return;
       }

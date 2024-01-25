@@ -13,6 +13,10 @@
   outline-color: var(--kd-color-border-focus);
 }
 
+:host([disabled]:focus) {
+  outline-color: transparent;
+}
+
 .tab {
   display: flex;
   align-items: center;
@@ -54,7 +58,7 @@
   &.contained {
     border-bottom: none;
     border-top: 2px solid transparent;
-    background: var(--kd-color-background-ui-subtle);
+    background: var(--kd-color-background-ui-soft);
   }
 
   @media (min-width: breakpoints.$bp-md) {
@@ -94,12 +98,27 @@
     }
 
     &.contained {
-      background: var(--kd-color-background-ui-soft);
+      background: var(--kd-color-background-ui-default);
       border-color: var(--kd-color-border-tertiary);
 
       &:hover {
         background: var(--kd-color-background-inverse-hover);
       }
+    }
+  }
+
+  &.disabled {
+    color: var(--kd-color-text-disabled);
+    cursor: not-allowed;
+    border-color: var(--kd-color-border-ui-disabled);
+
+    &:hover {
+      background: var(--kd-color-background-ui-default);
+    }
+
+    &.contained {
+      background: var(--kd-color-background-ui-subtle);
+      border-color: transparent;
     }
   }
 }

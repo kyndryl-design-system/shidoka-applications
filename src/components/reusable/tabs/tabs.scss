@@ -12,19 +12,31 @@
   @media (min-width: breakpoints.$bp-md) {
     &.vertical {
       flex-direction: row;
+      align-items: flex-start;
     }
   }
 }
 
 .tabs {
   display: flex;
-  gap: 1px;
+  gap: 2px;
   overflow-x: auto;
+
+  &.contained::after {
+    content: '';
+    background: var(--kd-color-background-ui-soft);
+    flex-grow: 1;
+  }
+
+  &.line::after {
+    content: '';
+    border-bottom: 2px solid var(--kd-color-border-default);
+    flex-grow: 1;
+  }
 
   @media (min-width: breakpoints.$bp-md) {
     .vertical & {
       flex-direction: column;
-      max-width: 150px;
       overflow-x: initial;
     }
   }
@@ -32,8 +44,4 @@
 
 .panels {
   flex-grow: 1;
-
-  &.contained {
-    background: var(--kd-color-background-ui-soft);
-  }
 }

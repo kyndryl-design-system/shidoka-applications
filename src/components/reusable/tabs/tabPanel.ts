@@ -19,7 +19,7 @@ export class TabPanel extends LitElement {
   @property({ type: Boolean, reflect: true })
   visible = false;
 
-  /** Remove padding on tab panel. */
+  /** Remove side padding (left/right) on tab panel. */
   @property({ type: Boolean })
   noPadding = false;
 
@@ -28,12 +28,6 @@ export class TabPanel extends LitElement {
    */
   @state()
   private _vertical = false;
-
-  /** Contained style. Inherited.
-   * @internal
-   */
-  @state()
-  private _contained = false;
 
   /** Tab Panel ID.
    * @internal
@@ -56,7 +50,6 @@ export class TabPanel extends LitElement {
   override render() {
     const classes = {
       'tab-panel': true,
-      contained: this._contained,
       vertical: this._vertical,
       'no-padding': this.noPadding,
     };

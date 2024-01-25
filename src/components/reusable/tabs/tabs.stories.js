@@ -15,6 +15,10 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    tabStyle: {
+      options: ['contained', 'line'],
+      control: { type: 'select' },
+    },
   },
   subcomponents: {
     'kyn-tab': 'kyn-tab',
@@ -28,8 +32,8 @@ export default {
 
 const args = {
   tabSize: 'md',
+  tabStyle: 'contained',
   vertical: false,
-  contained: false,
 };
 
 export const Tabs = {
@@ -38,8 +42,8 @@ export const Tabs = {
     return html`
       <kyn-tabs
         tabSize=${args.tabSize}
+        tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
-        ?contained=${args.contained}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
@@ -60,8 +64,8 @@ export const WithIcons = {
     return html`
       <kyn-tabs
         tabSize=${args.tabSize}
+        tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
-        ?contained=${args.contained}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>
@@ -98,14 +102,12 @@ export const Nested = {
         <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
         <kyn-tab slot="tabs" id="tab3">Tab 3</kyn-tab>
 
-        <kyn-tab-panel tabId="tab1" visible>
-          Tab 1 Content
-          <br /><br />
+        <kyn-tab-panel tabId="tab1" visible noPadding>
+          <p style="padding: 0 16px 24px;">Tab 1 Content</p>
 
           <kyn-tabs
-            contained
+            tabStyle="line"
             tabSize=${args.tabSize}
-            ?vertical=${args.vertical}
             @on-change=${(e) => action(e.type)(e)}
           >
             <kyn-tab slot="tabs" id="tab1-subtab1" selected>Subtab 1</kyn-tab>
@@ -119,6 +121,28 @@ export const Nested = {
             <kyn-tab-panel tabId="tab1-subtab3">Subtab 3 Content</kyn-tab-panel>
           </kyn-tabs>
         </kyn-tab-panel>
+        <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
+        <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
+      </kyn-tabs>
+    `;
+  },
+};
+
+export const DisabledTab = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-tabs
+        tabSize=${args.tabSize}
+        tabStyle=${args.tabStyle}
+        ?vertical=${args.vertical}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+        <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
+        <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
+        <kyn-tab slot="tabs" id="tab3" disabled>Tab 3</kyn-tab>
+
+        <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
         <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
