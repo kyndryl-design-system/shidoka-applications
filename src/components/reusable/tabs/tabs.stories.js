@@ -12,7 +12,7 @@ export default {
   component: 'kyn-tabs',
   argTypes: {
     tabSize: {
-      options: ['sm', 'md', 'lg'],
+      options: ['sm', 'md'],
       control: { type: 'select' },
     },
     tabStyle: {

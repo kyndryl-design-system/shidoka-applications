@@ -72,7 +72,7 @@ export class Tab extends LitElement {
       line: this._tabStyle === 'line',
       'size--sm': this._size === 'sm',
       'size--md': this._size === 'md',
-      'size--lg': this._size === 'lg',
+      // 'size--lg': this._size === 'lg',
       vertical: this._vertical,
       selected: this.selected,
       disabled: this.disabled,

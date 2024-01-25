@@ -21,7 +21,7 @@ export class Tabs extends LitElement {
   @property({ type: String })
   tabStyle = 'contained';
 
-  /** Size of the tab buttons. Icon sizes: 16px sm and md, 20px lg. */
+  /** Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px. */
   @property({ type: String })
   tabSize = 'md';
 
