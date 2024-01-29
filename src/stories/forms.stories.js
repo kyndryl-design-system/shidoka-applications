@@ -19,9 +19,15 @@ export default {
 };
 
 export const Default = {
-  render: (args) => {
+  render: () => {
     return html`
-      <form>
+      <form
+        @submit=${(e) => {
+          e.preventDefault();
+          action('submit')(e);
+          console.log(new FormData(e.target));
+        }}
+      >
         <kyn-radio-button-group
           name="radio"
           value="1"
@@ -192,14 +198,7 @@ export const Default = {
 
         <br /><br />
 
-        <kd-button
-          @on-click=${(e) => {
-            action('submit')(e);
-            console.log(new FormData(document.querySelector('form')));
-          }}
-        >
-          Submit
-        </kd-button>
+        <kd-button type="submit">Submit</kd-button>
       </form>
     `;
   },
