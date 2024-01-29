@@ -26,7 +26,7 @@ export default {
   },
   design: {
     type: 'figma',
-    url: 'https://www.figma.com/file/C047ePkji8MDD88nKId9e9/Applications---Component-Library-Unreleased?node-id=4078%3A176545&mode=dev',
+    url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Applications-Specs-for-Devs?node-id=2912%3A2268&mode=dev',
   },
 };
 
