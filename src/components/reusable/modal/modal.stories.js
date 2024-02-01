@@ -57,44 +57,44 @@ export const Modal = {
   },
 };
 
-export const CustomActions = {
-  args,
-  render: (args) => {
-    return html`
-      <kyn-modal
-        ?open=${args.open}
-        size=${args.size}
-        titleText=${args.titleText}
-        labelText=${args.labelText}
-        okText=${args.okText}
-        cancelText=${args.cancelText}
-        ?destructive=${args.destructive}
-        @on-close=${(e) => action(e.type)(e)}
-      >
-        <span slot="anchor">Open Modal</span>
+// export const CustomActions = {
+//   args,
+//   render: (args) => {
+//     return html`
+//       <kyn-modal
+//         ?open=${args.open}
+//         size=${args.size}
+//         titleText=${args.titleText}
+//         labelText=${args.labelText}
+//         okText=${args.okText}
+//         cancelText=${args.cancelText}
+//         ?destructive=${args.destructive}
+//         @on-close=${(e) => action(e.type)(e)}
+//       >
+//         <span slot="anchor">Open Modal</span>
 
-        Modal with custom actions.
+//         Modal with custom actions.
 
-        <kd-button
-          slot="actions"
-          size="small"
-          kind="tertiary"
-          description="Print"
-        >
-          <kd-icon slot="icon" .icon=${printIcon}></kd-icon>
-        </kd-button>
-        <kd-button
-          slot="actions"
-          size="small"
-          kind="tertiary"
-          description="Download"
-        >
-          <kd-icon slot="icon" .icon=${downloadIcon}></kd-icon>
-        </kd-button>
-      </kyn-modal>
-    `;
-  },
-};
+//         <kd-button
+//           slot="actions"
+//           size="small"
+//           kind="tertiary"
+//           description="Print"
+//         >
+//           <kd-icon slot="icon" .icon=${printIcon}></kd-icon>
+//         </kd-button>
+//         <kd-button
+//           slot="actions"
+//           size="small"
+//           kind="tertiary"
+//           description="Download"
+//         >
+//           <kd-icon slot="icon" .icon=${downloadIcon}></kd-icon>
+//         </kd-button>
+//       </kyn-modal>
+//     `;
+//   },
+// };
 
 export const BeforeClose = {
   args,
