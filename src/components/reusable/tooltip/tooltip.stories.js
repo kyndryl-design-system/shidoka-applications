@@ -28,7 +28,7 @@ export default {
 };
 
 const args = {
-  open: true,
+  open: false,
   anchorPosition: 'center',
   direction: 'top',
   assistiveText: 'Toggle Tooltip',

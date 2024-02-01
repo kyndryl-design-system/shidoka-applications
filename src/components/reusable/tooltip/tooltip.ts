@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import TooltipScss from './tooltip.scss';
 
@@ -30,6 +30,12 @@ export class Tooltip extends LitElement {
   @property({ type: String })
   assistiveText = 'Toggle Tooltip';
 
+  /** Timeout function to delay modal close.
+   * @internal
+   */
+  @state()
+  timer: any;
+
   override render() {
     const classes = {
       content: true,
@@ -49,7 +55,10 @@ export class Tooltip extends LitElement {
           aria-label=${this.assistiveText}
           title=${this.assistiveText}
           aria-describedby="tooltip"
-          @click=${this._handleClick}
+          @mouseenter=${this._handleOpen}
+          @mouseleave=${this._handleMouseLeave}
+          @focus=${this._handleOpen}
+          @blur=${this._handleClose}
         >
           <slot name="anchor"><kd-icon .icon=${infoIcon}></kd-icon></slot>
         </button>
@@ -59,6 +68,8 @@ export class Tooltip extends LitElement {
           aria-hidden=${!this.open}
           role="tooltip"
           class=${classMap(classes)}
+          @mouseenter=${this._handleOpen}
+          @mouseleave=${this._handleMouseLeave}
         >
           <slot></slot>
         </div>
@@ -66,14 +77,20 @@ export class Tooltip extends LitElement {
     `;
   }
 
-  private _handleClick() {
-    this.open = !this.open;
+  private _handleOpen() {
+    clearTimeout(this.timer);
+    this.open = true;
   }
 
-  private _handleClickOut(e: Event) {
-    if (this.open && !e.composedPath().includes(this)) {
+  private _handleClose() {
+    this.open = false;
+  }
+
+  private _handleMouseLeave() {
+    this.timer = setTimeout(() => {
       this.open = false;
-    }
+      clearTimeout(this.timer);
+    }, 500);
   }
 
   private _handleEsc(e: KeyboardEvent) {
@@ -84,12 +101,10 @@ export class Tooltip extends LitElement {
 
   override connectedCallback() {
     super.connectedCallback();
-    document.addEventListener('click', (e) => this._handleClickOut(e));
     document.addEventListener('keydown', (e) => this._handleEsc(e));
   }
 
   override disconnectedCallback() {
-    document.removeEventListener('click', (e) => this._handleClickOut(e));
     document.removeEventListener('keydown', (e) => this._handleEsc(e));
     super.disconnectedCallback();
   }
