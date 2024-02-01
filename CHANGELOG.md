@@ -1,3 +1,11 @@
+## [1.3.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.0...v1.3.1) (2024-02-01)
+
+
+### Bug Fixes
+
+* **modal:** remove custom actions ([af92f93](https://github.com/kyndryl-design-system/shidoka-applications/commit/af92f933db0f6826f321022dbe9e4d143ec07482))
+* **tooltip:** change open/close from click to hover/focus ([d04e17a](https://github.com/kyndryl-design-system/shidoka-applications/commit/d04e17a2a7eba8124f8de11ad6be810cd26c6db2))
+
 # [1.3.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.2.4...v1.3.0) (2024-01-25)
 
 
