@@ -92,10 +92,19 @@ Here is some additional information about why SSR does not work for web componen
 
 ### Handling `Failed to execute 'define' on 'CustomElementRegistry'`
 
-This is a common bundling issue that can appear when you incorporate a component that has already bundled Shidoka components. Typically this would be caused by having a middle layer, for example a Common UI layer that has a cross-platform Header component built using Shidoka components. You can get around this by not declaring Shidoka components as dependencies, and instead declaring them as external or peer dependencies.
+#### The Problem
 
-For example, from the shidoka-applications rollup.js config using [the external option](https://rollupjs.org/configuration-options/#external): `external: [/shidoka-foundation\/components/]`.
-Since shidoka-foundation components are used within shidoka-applications components, this prevents the foundation components from being bundled, meaning it leaves the import statements unaltered (ex: `import '@kyndryl-design-system/...'`). This way, the application bundler can handle it instead. This works with bundling from node_modules, but not with CDN hosted files since the deployed application wouldn't know how to resolve aliased node_modules imports like: `import '@kyndryl-design-system/...'`.
+This is a common bundling issue that can appear when you incorporate a component that has already bundled Shidoka components. Typically this would be caused by having a middle layer, for example a Common UI layer that has a cross-platform Header component built using Shidoka components.
+
+#### Avoiding This
+
+You can get around this in by not declaring Shidoka components as dependencies, and instead declaring them as external or peer dependencies in the middle/common layer.
+
+For example, from the shidoka-applications rollup.js config using [the external option](https://rollupjs.org/configuration-options/#external): `external: [/shidoka-foundation\/components/]`. Since shidoka-foundation components are used within shidoka-applications components, this prevents the foundation components from being bundled, meaning it leaves the import statements unaltered (ex: `import '@kyndryl-design-system/...'`). This way, the application bundler can handle it instead.
+
+This works with bundling from node_modules, but not with CDN hosted files since the deployed application wouldn't know how to resolve aliased node_modules imports like: `import '@kyndryl-design-system/...'`. In this case you probably need a workaround.
+
+#### Workaround
 
 If for some reason the above suggestion does not help, there is a library containing a script/polyfill that can be used which allows custom elements to be redefined:
 https://github.com/caridy/redefine-custom-elements.
