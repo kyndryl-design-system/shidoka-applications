@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.1...v1.3.2) (2024-02-06)
+
+
+### Bug Fixes
+
+* **header-link:** update on links slot change ([769c3e6](https://github.com/kyndryl-design-system/shidoka-applications/commit/769c3e67a2a4b66bd29e5e325c813928c147a271))
+
 ## [1.3.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.0...v1.3.1) (2024-02-01)
 
 
