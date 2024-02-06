@@ -60,13 +60,6 @@ export class HeaderLink extends LitElement {
   breakpointHit = false;
 
   /**
-   * Evaluates to true if level 2 links are slotted inside to generate a flyout menu.
-   * @ignore
-   */
-  @state()
-  isSlotted = false;
-
-  /**
    * Queries any slotted HTML elements.
    * @ignore
    */
@@ -75,7 +68,7 @@ export class HeaderLink extends LitElement {
 
   override render() {
     const classes = {
-      menu: this.isSlotted,
+      menu: this.slottedElements.length,
       'breakpoint-hit': this.breakpointHit,
       divider: this.divider,
       open: this.open,
@@ -114,9 +107,18 @@ export class HeaderLink extends LitElement {
             ? html` <kd-icon .icon=${downIcon}></kd-icon> `
             : null}
         </a>
-        <slot name="links" class=${classMap(slotClasses)}></slot>
+        <slot
+          name="links"
+          class=${classMap(slotClasses)}
+          @slotchange=${this._handleLinksSlotChange}
+        ></slot>
       </div>
     `;
+  }
+
+  private _handleLinksSlotChange() {
+    this.determineLevel();
+    this.requestUpdate();
   }
 
   private handlePointerEnter(e: PointerEvent) {
@@ -152,10 +154,6 @@ export class HeaderLink extends LitElement {
     }
   }
 
-  private determineIfSlotted() {
-    this.isSlotted = this.slottedElements.length ? true : false;
-  }
-
   private determineLevel() {
     const parentTagName = this.shadowRoot!.host.parentNode!.nodeName;
     if (parentTagName == 'KYN-HEADER-NAV') {
@@ -166,7 +164,6 @@ export class HeaderLink extends LitElement {
   }
 
   override firstUpdated() {
-    this.determineIfSlotted();
     this.determineLevel();
   }
 
