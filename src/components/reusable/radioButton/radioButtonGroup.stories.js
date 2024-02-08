@@ -17,6 +17,7 @@ export const RadioButtonGroup = {
     value: '1',
     required: false,
     disabled: false,
+    horizontal: false,
     invalidText: '',
   },
   render: (args) => {
@@ -26,6 +27,7 @@ export const RadioButtonGroup = {
         value=${args.value}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?horizontal=${args.horizontal}
         invalidText=${args.invalidText}
         @on-radio-group-change=${(e) => action(e.type)(e)}
       >
