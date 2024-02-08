@@ -7,6 +7,7 @@ import {
 } from 'lit/decorators.js';
 import CheckboxGroupScss from './checkboxGroup.scss';
 
+import '../textInput';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@carbon/icons/es/warning--filled/16';
 
@@ -58,6 +59,10 @@ export class CheckboxGroup extends LitElement {
   @property({ type: Boolean })
   hideLegend = false;
 
+  /** Adds a search input to enable filtering of checkboxes. */
+  @property({ type: Boolean })
+  filterable = false;
+
   /** Checkbox group invalid text. */
   @property({ type: String })
   invalidText = '';
@@ -93,6 +98,14 @@ export class CheckboxGroup extends LitElement {
   override render() {
     return html`
       <fieldset ?disabled=${this.disabled}>
+        <kyn-text-input
+          class="search"
+          type="search"
+          size="sm"
+          placeholder="Search"
+          @on-input=${(e: Event) => this._handleFilter(e)}
+        ></kyn-text-input>
+
         <div class="${this.horizontal ? 'horizontal' : ''}">
           <legend class="${this.hideLegend ? 'sr-only' : ''}">
             ${this.required ? html`<span class="required">*</span>` : null}
@@ -225,6 +238,26 @@ export class CheckboxGroup extends LitElement {
   private _handleFormdata(e: any) {
     this.value.forEach((value) => {
       e.formData.append(this.name, value);
+    });
+  }
+
+  private _handleFilter(e: any) {
+    this.checkboxes.forEach((checkboxEl) => {
+      // get checkbox label text
+      const nodes = checkboxEl.shadowRoot.querySelector('slot').assignedNodes({
+        flatten: true,
+      });
+      let checkboxText = '';
+      for (let i = 0; i < nodes.length; i++) {
+        checkboxText += nodes[i].textContent.trim();
+      }
+
+      // hide checkbox if no match to search term
+      if (checkboxText.toLowerCase().includes(e.detail.value.toLowerCase())) {
+        checkboxEl.style.display = 'block';
+      } else {
+        checkboxEl.style.display = 'none';
+      }
     });
   }
 

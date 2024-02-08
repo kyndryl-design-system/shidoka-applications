@@ -21,6 +21,7 @@ export const CheckboxGroup = {
     selectAll: false,
     selectAllText: 'Select All',
     hideLegend: false,
+    filterable: false,
     invalidText: '',
   },
   render: (args) => {
@@ -34,6 +35,7 @@ export const CheckboxGroup = {
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
         ?hideLegend=${args.hideLegend}
+        ?filterable=${args.filterable}
         invalidText=${args.invalidText}
         @on-checkbox-group-change=${(e) => action(e.type)(e)}
       >
