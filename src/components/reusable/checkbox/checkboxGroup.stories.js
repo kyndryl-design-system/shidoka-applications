@@ -18,6 +18,8 @@ export const CheckboxGroup = {
     required: false,
     disabled: false,
     horizontal: false,
+    selectAll: false,
+    selectAllText: 'Select All',
     hideLegend: false,
     invalidText: '',
   },
@@ -29,6 +31,8 @@ export const CheckboxGroup = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         ?horizontal=${args.horizontal}
+        ?selectAll=${args.selectAll}
+        selectAllText=${args.selectAllText}
         ?hideLegend=${args.hideLegend}
         invalidText=${args.invalidText}
         @on-checkbox-group-change=${(e) => action(e.type)(e)}

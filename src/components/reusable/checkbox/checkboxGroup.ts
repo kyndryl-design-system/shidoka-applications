@@ -46,6 +46,14 @@ export class CheckboxGroup extends LitElement {
   @property({ type: Boolean })
   horizontal = false;
 
+  /** Adds a "Select All" checkbox to the top of the group. */
+  @property({ type: Boolean })
+  selectAll = false;
+
+  /** "Select All" text customization. */
+  @property({ type: String })
+  selectAllText = 'Select All';
+
   /** Hide the group legend/label visually. */
   @property({ type: Boolean })
   hideLegend = false;
@@ -90,6 +98,14 @@ export class CheckboxGroup extends LitElement {
             ${this.required ? html`<span class="required">*</span>` : null}
             <slot name="label"></slot>
           </legend>
+
+          ${this.selectAll
+            ? html`
+                <kyn-checkbox class="select-all" value="selectAll">
+                  ${this.selectAllText}
+                </kyn-checkbox>
+              `
+            : null}
 
           <slot></slot>
         </div>
@@ -174,20 +190,34 @@ export class CheckboxGroup extends LitElement {
 
   private _handleCheckboxChange(e: any) {
     const value = e.detail.value;
-    const newValues = [...this.value];
-    if (newValues.includes(value)) {
-      const index = newValues.indexOf(value);
-      newValues.splice(index, 1);
+
+    if (value === 'selectAll') {
+      if (e.detail.checked) {
+        this.value = this.checkboxes.map((checkbox) => {
+          return checkbox.value;
+        });
+      } else {
+        this.value = [];
+      }
     } else {
-      newValues.push(value);
+      const newValues = [...this.value];
+      if (newValues.includes(value)) {
+        const index = newValues.indexOf(value);
+        newValues.splice(index, 1);
+      } else {
+        newValues.push(value);
+      }
+      this.value = newValues;
     }
-    this.value = newValues;
 
     this._validate();
 
-    // emit selected value
+    this._emitChangeEvent();
+  }
+
+  private _emitChangeEvent() {
     const event = new CustomEvent('on-checkbox-group-change', {
-      detail: { value: newValues },
+      detail: { value: this.value },
     });
     this.dispatchEvent(event);
   }
