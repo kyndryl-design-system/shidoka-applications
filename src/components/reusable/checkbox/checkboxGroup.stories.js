@@ -17,6 +17,7 @@ export const CheckboxGroup = {
     value: ['1'],
     required: false,
     disabled: false,
+    horizontal: false,
     invalidText: '',
   },
   render: (args) => {
@@ -26,6 +27,7 @@ export const CheckboxGroup = {
         .value=${args.value}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?horizontal=${args.horizontal}
         invalidText=${args.invalidText}
         @on-checkbox-group-change=${(e) => action(e.type)(e)}
       >

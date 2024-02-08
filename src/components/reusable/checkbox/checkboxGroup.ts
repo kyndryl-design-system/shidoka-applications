@@ -42,6 +42,10 @@ export class CheckboxGroup extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Checkbox group horizontal style. */
+  @property({ type: Boolean })
+  horizontal = false;
+
   /** Checkbox group invalid text. */
   @property({ type: String })
   invalidText = '';
@@ -77,12 +81,14 @@ export class CheckboxGroup extends LitElement {
   override render() {
     return html`
       <fieldset ?disabled=${this.disabled}>
-        <legend>
-          ${this.required ? html`<span class="required">*</span>` : null}
-          <slot name="label"></slot>
-        </legend>
+        <div class="${this.horizontal ? 'horizontal' : ''}">
+          <legend>
+            ${this.required ? html`<span class="required">*</span>` : null}
+            <slot name="label"></slot>
+          </legend>
 
-        <slot></slot>
+          <slot></slot>
+        </div>
 
         ${this.isInvalid
           ? html`
