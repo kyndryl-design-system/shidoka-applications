@@ -46,6 +46,10 @@ export class CheckboxGroup extends LitElement {
   @property({ type: Boolean })
   horizontal = false;
 
+  /** Hide the group legend/label visually. */
+  @property({ type: Boolean })
+  hideLegend = false;
+
   /** Checkbox group invalid text. */
   @property({ type: String })
   invalidText = '';
@@ -82,7 +86,7 @@ export class CheckboxGroup extends LitElement {
     return html`
       <fieldset ?disabled=${this.disabled}>
         <div class="${this.horizontal ? 'horizontal' : ''}">
-          <legend>
+          <legend class="${this.hideLegend ? 'sr-only' : ''}">
             ${this.required ? html`<span class="required">*</span>` : null}
             <slot name="label"></slot>
           </legend>
