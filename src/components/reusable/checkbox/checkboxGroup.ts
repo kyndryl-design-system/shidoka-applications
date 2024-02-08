@@ -8,6 +8,7 @@ import {
 import CheckboxGroupScss from './checkboxGroup.scss';
 
 import '../textInput';
+import './checkbox';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@carbon/icons/es/warning--filled/16';
 
@@ -98,13 +99,18 @@ export class CheckboxGroup extends LitElement {
   override render() {
     return html`
       <fieldset ?disabled=${this.disabled}>
-        <kyn-text-input
-          class="search"
-          type="search"
-          size="sm"
-          placeholder="Search"
-          @on-input=${(e: Event) => this._handleFilter(e)}
-        ></kyn-text-input>
+        ${this.filterable
+          ? html`
+              <kyn-text-input
+                class="search"
+                type="search"
+                size="sm"
+                placeholder="Search"
+                hideLabel
+                @on-input=${(e: Event) => this._handleFilter(e)}
+              ></kyn-text-input>
+            `
+          : null}
 
         <div class="${this.horizontal ? 'horizontal' : ''}">
           <legend class="${this.hideLegend ? 'sr-only' : ''}">
@@ -114,7 +120,14 @@ export class CheckboxGroup extends LitElement {
 
           ${this.selectAll
             ? html`
-                <kyn-checkbox class="select-all" value="selectAll">
+                <kyn-checkbox
+                  class="select-all"
+                  value="selectAll"
+                  ?required=${this.required}
+                  ?disabled=${this.disabled}
+                  ?invalid=${this.invalidText !== '' ||
+                  this.internalValidationMsg !== ''}
+                >
                   ${this.selectAllText}
                 </kyn-checkbox>
               `
