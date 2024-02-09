@@ -8,6 +8,7 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import DropdownScss from './dropdown.scss';
+import './dropdownOption';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import downIcon from '@carbon/icons/es/chevron--down/24';
 import errorIcon from '@carbon/icons/es/warning--filled/24';
@@ -84,6 +85,14 @@ export class Dropdown extends LitElement {
   /** Hide the tags below multi-select. */
   @property({ type: Boolean })
   hideTags = false;
+
+  /** Adds a "Select all" option to the top of a multi-select dropdown. */
+  @property({ type: Boolean })
+  selectAll = false;
+
+  /** "Select all" text customization. */
+  @property({ type: String })
+  selectAllText = 'Select all';
 
   /**
    * Selected option value.
@@ -256,6 +265,19 @@ export class Dropdown extends LitElement {
               @keydown=${(e: any) => this.handleListKeydown(e)}
               @blur=${(e: any) => this.handleListBlur(e)}
             >
+              ${this.multiple && this.selectAll
+                ? html`
+                    <kyn-dropdown-option
+                      class="select-all"
+                      value="selectAll"
+                      multiple
+                      ?disabled=${this.disabled}
+                    >
+                      ${this.selectAllText}
+                    </kyn-dropdown-option>
+                  `
+                : null}
+
               <slot
                 id="children"
                 @slotchange=${() => this.handleSlotChange()}
@@ -617,8 +639,24 @@ export class Dropdown extends LitElement {
   }
 
   private _handleClick(e: any) {
-    this.updateValue(e.detail.value, e.detail.selected);
-    this.assistiveText = 'Selected an item.';
+    if (e.detail.value === 'selectAll') {
+      if (e.detail.selected) {
+        this.value = this.options
+          .filter((option) => !option.disabled)
+          .map((option) => {
+            return option.value;
+          });
+        this.assistiveText = 'Selected all items.';
+      } else {
+        this.value = [];
+        this.assistiveText = 'Deselected all items.';
+      }
+
+      this._setValidity();
+    } else {
+      this.updateValue(e.detail.value, e.detail.selected);
+      this.assistiveText = 'Selected an item.';
+    }
 
     // emit selected value
     this.emitValue();
@@ -693,7 +731,19 @@ export class Dropdown extends LitElement {
       this.value = value;
     }
 
-    // set validity
+    this._setValidity();
+
+    // reset focus
+    if (!this.multiple) {
+      if (this.searchable) {
+        this.searchEl.focus();
+      } else {
+        this.buttonEl.focus();
+      }
+    }
+  }
+
+  private _setValidity() {
     if (this.required) {
       if (
         !this.value ||
@@ -708,15 +758,6 @@ export class Dropdown extends LitElement {
       } else {
         this.internals.setValidity({});
         this.internalValidationMsg = '';
-      }
-    }
-
-    // reset focus
-    if (!this.multiple) {
-      if (this.searchable) {
-        this.searchEl.focus();
-      } else {
-        this.buttonEl.focus();
       }
     }
   }

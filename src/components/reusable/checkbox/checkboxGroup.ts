@@ -259,9 +259,11 @@ export class CheckboxGroup extends LitElement {
 
     if (value === 'selectAll') {
       if (e.detail.checked) {
-        this.value = this.checkboxes.map((checkbox) => {
-          return checkbox.value;
-        });
+        this.value = this.checkboxes
+          .filter((checkbox) => !checkbox.disabled)
+          .map((checkbox) => {
+            return checkbox.value;
+          });
       } else {
         this.value = [];
       }
