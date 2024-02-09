@@ -2546,16 +2546,6 @@
             },
             {
               "kind": "field",
-              "name": "selectAllText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Select All'",
-              "description": "\"Select All\" text customization.",
-              "attribute": "selectAllText"
-            },
-            {
-              "kind": "field",
               "name": "hideLegend",
               "type": {
                 "text": "boolean"
@@ -2573,6 +2563,26 @@
               "default": "false",
               "description": "Adds a search input to enable filtering of checkboxes.",
               "attribute": "filterable"
+            },
+            {
+              "kind": "field",
+              "name": "limitCheckboxes",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible checkboxes (4) behind a \"Show all\" button.",
+              "attribute": "limitCheckboxes"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\r\n    selectAll: 'Select all',\r\n    showMore: 'Show more',\r\n    showLess: 'Show less',\r\n  }",
+              "description": "Text string customization.",
+              "attribute": "textStrings"
             },
             {
               "kind": "field",
@@ -2629,6 +2639,19 @@
                   "name": "e",
                   "type": {
                     "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_toggleRevealed",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "revealed",
+                  "type": {
+                    "text": "boolean"
                   }
                 }
               ]
@@ -2696,15 +2719,6 @@
               "fieldName": "selectAll"
             },
             {
-              "name": "selectAllText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Select All'",
-              "description": "\"Select All\" text customization.",
-              "fieldName": "selectAllText"
-            },
-            {
               "name": "hideLegend",
               "type": {
                 "text": "boolean"
@@ -2721,6 +2735,24 @@
               "default": "false",
               "description": "Adds a search input to enable filtering of checkboxes.",
               "fieldName": "filterable"
+            },
+            {
+              "name": "limitCheckboxes",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible checkboxes (4) behind a \"Show all\" button.",
+              "fieldName": "limitCheckboxes"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\r\n    selectAll: 'Select all',\r\n    showMore: 'Show more',\r\n    showLess: 'Show less',\r\n  }",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
             },
             {
               "name": "invalidText",
