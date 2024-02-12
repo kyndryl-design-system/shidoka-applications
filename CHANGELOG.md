@@ -1,3 +1,19 @@
+## [1.3.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.2...v1.3.3) (2024-02-12)
+
+
+### Bug Fixes
+
+* **checkbox-group:** add filterable variant ([bde83ce](https://github.com/kyndryl-design-system/shidoka-applications/commit/bde83ce7c309f05da9aa3571f2c20c2d04065809))
+* **checkbox-group:** add hideLegend prop ([257cdae](https://github.com/kyndryl-design-system/shidoka-applications/commit/257cdaefc712d942a34e0dcd85f8b5b9834a7b3f))
+* **checkbox-group:** add horizontal option ([d56073c](https://github.com/kyndryl-design-system/shidoka-applications/commit/d56073c95d90dbe264f2bf65e0e9cad8609a1926))
+* **checkbox-group:** add select all option ([9b96457](https://github.com/kyndryl-design-system/shidoka-applications/commit/9b9645785275bd4cd5d8ed230502c229f23f9fc4))
+* **checkbox-group:** add show more/less variant ([91c7d0e](https://github.com/kyndryl-design-system/shidoka-applications/commit/91c7d0ebca628cd40f80b4a1b4cdba63afda8cdb))
+* **checkbox-group:** select all & filterable cleanup ([68650b7](https://github.com/kyndryl-design-system/shidoka-applications/commit/68650b7f09f2e43b05128d369a08d3a53b415915))
+* **dropdown:** add select all option for multiple variant ([8008e54](https://github.com/kyndryl-design-system/shidoka-applications/commit/8008e54460ac1356e4d89adc25c610cf52eb3f52))
+* **overflow-menu:** add vertical dots variant ([a4f3195](https://github.com/kyndryl-design-system/shidoka-applications/commit/a4f3195014ee2f4c4c6a1b0d210d87d0b8574b82))
+* **radio-button-group:** add horizontal variant ([5d09abd](https://github.com/kyndryl-design-system/shidoka-applications/commit/5d09abd48a04cdba51c3e0ab11844a38efab1171))
+* **text-input:** add hideLabel option ([71342a2](https://github.com/kyndryl-design-system/shidoka-applications/commit/71342a23846c7f756a7b4526aec32d33bdd52096))
+
 ## [1.3.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.1...v1.3.2) (2024-02-06)
 
 
