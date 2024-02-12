@@ -25,6 +25,7 @@ export default {
 const args = {
   open: false,
   anchorRight: false,
+  verticalDots: false,
   fixed: false,
   assistiveText: 'Toggle Menu',
 };
@@ -36,6 +37,7 @@ export const OverflowMenu = {
       <kyn-overflow-menu
         ?open=${args.open}
         ?anchorRight=${args.anchorRight}
+        ?verticalDots=${args.verticalDots}
         ?fixed=${args.fixed}
         assistiveText=${args.assistiveText}
       >

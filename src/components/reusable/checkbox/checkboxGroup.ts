@@ -7,6 +7,8 @@ import {
 } from 'lit/decorators.js';
 import CheckboxGroupScss from './checkboxGroup.scss';
 
+import '../textInput';
+import './checkbox';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@carbon/icons/es/warning--filled/16';
 
@@ -41,6 +43,46 @@ export class CheckboxGroup extends LitElement {
   /** Checkbox group disabled state. */
   @property({ type: Boolean })
   disabled = false;
+
+  /** Checkbox group horizontal style. */
+  @property({ type: Boolean })
+  horizontal = false;
+
+  /** Adds a "Select All" checkbox to the top of the group. */
+  @property({ type: Boolean })
+  selectAll = false;
+
+  /** Hide the group legend/label visually. */
+  @property({ type: Boolean })
+  hideLegend = false;
+
+  /** Adds a search input to enable filtering of checkboxes. */
+  @property({ type: Boolean })
+  filterable = false;
+
+  /** Filter text input value.
+   * @internal
+   */
+  @state()
+  searchTerm = '';
+
+  /** Limits visible checkboxes (4) behind a "Show all" button. */
+  @property({ type: Boolean })
+  limitCheckboxes = false;
+
+  /** Checkbox limit visibility.
+   * @internal
+   */
+  @state()
+  limitRevealed = false;
+
+  /** Text string customization. */
+  @property({ type: Object })
+  textStrings = {
+    selectAll: 'Select all',
+    showMore: 'Show more',
+    showLess: 'Show less',
+  };
 
   /** Checkbox group invalid text. */
   @property({ type: String })
@@ -77,12 +119,58 @@ export class CheckboxGroup extends LitElement {
   override render() {
     return html`
       <fieldset ?disabled=${this.disabled}>
-        <legend>
-          ${this.required ? html`<span class="required">*</span>` : null}
-          <slot name="label"></slot>
-        </legend>
+        ${this.filterable
+          ? html`
+              <kyn-text-input
+                class="search"
+                type="search"
+                size="sm"
+                placeholder="Search"
+                hideLabel
+                value=${this.searchTerm}
+                @on-input=${(e: Event) => this._handleFilter(e)}
+              ></kyn-text-input>
+            `
+          : null}
 
-        <slot></slot>
+        <div class="${this.horizontal ? 'horizontal' : ''}">
+          <legend class="${this.hideLegend ? 'sr-only' : ''}">
+            ${this.required ? html`<span class="required">*</span>` : null}
+            <slot name="label"></slot>
+          </legend>
+
+          ${this.selectAll
+            ? html`
+                <kyn-checkbox
+                  class="select-all"
+                  value="selectAll"
+                  ?required=${this.required}
+                  ?disabled=${this.disabled}
+                  ?invalid=${this.invalidText !== '' ||
+                  this.internalValidationMsg !== ''}
+                >
+                  ${this.textStrings.selectAll}
+                </kyn-checkbox>
+              `
+            : null}
+
+          <slot></slot>
+
+          ${this.limitCheckboxes
+            ? html`
+                <button
+                  class="reveal-toggle"
+                  @click=${() => this._toggleRevealed(!this.limitRevealed)}
+                >
+                  ${this.limitRevealed
+                    ? this.textStrings.showLess
+                    : html`
+                        ${this.textStrings.showMore} (${this.checkboxes.length})
+                      `}
+                </button>
+              `
+            : null}
+        </div>
 
         ${this.isInvalid
           ? html`
@@ -145,6 +233,10 @@ export class CheckboxGroup extends LitElement {
         checkbox.invalid = this.isInvalid;
       });
     }
+
+    if (changedProps.has('limitCheckboxes')) {
+      this._toggleRevealed(false);
+    }
   }
 
   private _validate() {
@@ -164,20 +256,36 @@ export class CheckboxGroup extends LitElement {
 
   private _handleCheckboxChange(e: any) {
     const value = e.detail.value;
-    const newValues = [...this.value];
-    if (newValues.includes(value)) {
-      const index = newValues.indexOf(value);
-      newValues.splice(index, 1);
+
+    if (value === 'selectAll') {
+      if (e.detail.checked) {
+        this.value = this.checkboxes
+          .filter((checkbox) => !checkbox.disabled)
+          .map((checkbox) => {
+            return checkbox.value;
+          });
+      } else {
+        this.value = [];
+      }
     } else {
-      newValues.push(value);
+      const newValues = [...this.value];
+      if (newValues.includes(value)) {
+        const index = newValues.indexOf(value);
+        newValues.splice(index, 1);
+      } else {
+        newValues.push(value);
+      }
+      this.value = newValues;
     }
-    this.value = newValues;
 
     this._validate();
 
-    // emit selected value
+    this._emitChangeEvent();
+  }
+
+  private _emitChangeEvent() {
     const event = new CustomEvent('on-checkbox-group-change', {
-      detail: { value: newValues },
+      detail: { value: this.value },
     });
     this.dispatchEvent(event);
   }
@@ -185,6 +293,62 @@ export class CheckboxGroup extends LitElement {
   private _handleFormdata(e: any) {
     this.value.forEach((value) => {
       e.formData.append(this.name, value);
+    });
+  }
+
+  private _handleFilter(e: any) {
+    let visibleCount = 0;
+
+    this.searchTerm = e.detail.value.toLowerCase();
+
+    this.checkboxes.forEach((checkboxEl) => {
+      // get checkbox label text
+      const nodes = checkboxEl.shadowRoot.querySelector('slot').assignedNodes({
+        flatten: true,
+      });
+      let checkboxText = '';
+      for (let i = 0; i < nodes.length; i++) {
+        checkboxText += nodes[i].textContent.trim();
+      }
+
+      // hide checkbox if no match to search term
+      if (this.limitCheckboxes && !this.limitRevealed) {
+        if (
+          checkboxText.toLowerCase().includes(this.searchTerm) &&
+          visibleCount < 4
+        ) {
+          checkboxEl.style.display = 'block';
+          visibleCount++;
+        } else {
+          checkboxEl.style.display = 'none';
+        }
+      } else {
+        if (checkboxText.toLowerCase().includes(this.searchTerm)) {
+          checkboxEl.style.display = 'block';
+        } else {
+          checkboxEl.style.display = 'none';
+        }
+      }
+    });
+  }
+
+  private _toggleRevealed(revealed: boolean) {
+    const Limit = 4;
+
+    this.limitRevealed = revealed;
+
+    this.searchTerm = '';
+
+    this.checkboxes.forEach((checkboxEl, index) => {
+      if (!this.limitCheckboxes || this.limitRevealed) {
+        checkboxEl.style.display = 'block';
+      } else {
+        if (index < Limit) {
+          checkboxEl.style.display = 'block';
+        } else {
+          checkboxEl.style.display = 'none';
+        }
+      }
     });
   }
 

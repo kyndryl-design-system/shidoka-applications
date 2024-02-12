@@ -35,7 +35,7 @@ export class DropdownOption extends LitElement {
   /** Multi-select state, derived from parent.
    * @ignore
    */
-  @state()
+  @property({ type: Boolean })
   multiple = false;
 
   /**

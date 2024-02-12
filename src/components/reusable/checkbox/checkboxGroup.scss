@@ -12,6 +12,12 @@ fieldset {
   padding: 0;
 }
 
+.horizontal {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
 legend {
   @include typography.type-ui-03;
   text-transform: uppercase;
@@ -21,6 +27,14 @@ legend {
   gap: 8px;
   padding: 0;
   margin-bottom: 8px;
+
+  .horizontal & {
+    margin-bottom: 0;
+  }
+
+  &.sr-only {
+    @include mixins.visually-hidden;
+  }
 
   fieldset[disabled] & {
     color: var(--kd-color-text-disabled);
@@ -32,6 +46,39 @@ legend {
 
   [disabled] & {
     color: var(--kd-color-text-disabled);
+  }
+}
+
+.select-all {
+  font-weight: 500;
+}
+
+.search {
+  margin-bottom: 12px;
+}
+
+.reveal-toggle {
+  margin-top: 10px;
+  padding: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  color: var(--kd-color-text-link);
+  border-radius: 2px;
+  cursor: pointer;
+  outline: 2px solid transparent;
+
+  &:hover {
+    text-decoration: underline;
+    color: var(--kd-color-text-link-hover);
+  }
+
+  &:active {
+    color: var(--kd-color-text-pressed);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
   }
 }
 

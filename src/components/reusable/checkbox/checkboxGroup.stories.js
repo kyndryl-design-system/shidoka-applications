@@ -17,7 +17,17 @@ export const CheckboxGroup = {
     value: ['1'],
     required: false,
     disabled: false,
+    horizontal: false,
+    selectAll: false,
+    hideLegend: false,
+    filterable: false,
+    limitCheckboxes: false,
     invalidText: '',
+    textStrings: {
+      selectAll: 'Select all',
+      showMore: 'Show more',
+      showLess: 'Show less',
+    },
   },
   render: (args) => {
     return html`
@@ -26,13 +36,22 @@ export const CheckboxGroup = {
         .value=${args.value}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?horizontal=${args.horizontal}
+        ?selectAll=${args.selectAll}
+        ?hideLegend=${args.hideLegend}
+        ?filterable=${args.filterable}
+        ?limitCheckboxes=${args.limitCheckboxes}
         invalidText=${args.invalidText}
+        .textStrings=${args.textStrings}
         @on-checkbox-group-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
         <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
         <kyn-checkbox value="2"> Option 2 </kyn-checkbox>
         <kyn-checkbox value="3"> Option 3 </kyn-checkbox>
+        <kyn-checkbox value="4"> Option 4 </kyn-checkbox>
+        <kyn-checkbox value="5"> Option 5 </kyn-checkbox>
+        <kyn-checkbox value="6"> Option 6 </kyn-checkbox>
       </kyn-checkbox-group>
     `;
   },

@@ -63,9 +63,10 @@ export class Checkbox extends LitElement {
   override render() {
     return html`
       <label ?disabled=${this.disabled} ?invalid=${this.invalid}>
-        <span class=${classMap({ 'sr-only': this.visiblyHidden })}
-          ><slot></slot
-        ></span>
+        <span class=${classMap({ 'sr-only': this.visiblyHidden })}>
+          <slot></slot>
+        </span>
+
         <input
           type="checkbox"
           name=${this.name}

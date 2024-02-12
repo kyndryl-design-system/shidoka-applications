@@ -92,6 +92,10 @@ export class TextInput extends LitElement {
   @property({ type: Boolean })
   iconRight = false;
 
+  /** Visually hide the label. */
+  @property({ type: Boolean })
+  hideLabel = false;
+
   /**
    * Queries the <input> DOM element.
    * @ignore
@@ -130,7 +134,10 @@ export class TextInput extends LitElement {
   override render() {
     return html`
       <div class="text-input" ?disabled=${this.disabled}>
-        <label class="label-text" for=${this.name}>
+        <label
+          class="label-text ${this.hideLabel ? 'sr-only' : ''}"
+          for=${this.name}
+        >
           ${this.required ? html`<span class="required">*</span>` : null}
           <slot></slot>
         </label>

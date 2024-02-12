@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import './index';
-import './testDd';
 import { action } from '@storybook/addon-actions';
 
 export default {
@@ -41,6 +40,8 @@ const args = {
   required: false,
   disabled: false,
   hideTags: false,
+  selectAll: false,
+  selectAllText: 'Select all',
   invalidText: '',
   caption: '',
 };
@@ -122,6 +123,8 @@ export const MultiSelect = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         ?hideTags=${args.hideTags}
+        ?selectAll=${args.selectAll}
+        selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         caption=${args.caption}
         @on-change=${(e) => action(e.type)(e)}
@@ -156,6 +159,8 @@ export const MultiSelectSearchable = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         ?hideTags=${args.hideTags}
+        ?selectAll=${args.selectAll}
+        selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         caption=${args.caption}
         @on-change=${(e) => action(e.type)(e)}
@@ -231,11 +236,5 @@ export const DataDrivenOptions = {
         })}
       </kyn-dropdown>
     `;
-  },
-};
-
-export const AllOption = {
-  render: () => {
-    return html`<kyn-test-dd></kyn-test-dd>`;
   },
 };

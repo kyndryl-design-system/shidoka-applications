@@ -28,6 +28,10 @@ export class OverflowMenu extends LitElement {
   @property({ type: Boolean })
   anchorRight = false;
 
+  /** 3 dots vertical orientation. */
+  @property({ type: Boolean })
+  verticalDots = false;
+
   /** Use fixed instead of absolute position. Useful when placed within elements with overflow scroll. */
   @property({ type: Boolean })
   fixed = false;
@@ -58,6 +62,7 @@ export class OverflowMenu extends LitElement {
     const buttonClasses = {
       btn: true,
       open: this.open,
+      vertical: this.verticalDots,
     };
 
     const menuClasses = {

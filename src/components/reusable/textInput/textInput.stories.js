@@ -41,6 +41,7 @@ const args = {
   disabled: false,
   invalidText: '',
   iconRight: false,
+  hideLabel: false,
   pattern: null,
   minLength: null,
   maxLength: null,
@@ -60,6 +61,7 @@ export const TextInput = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
+        ?hideLabel=${args.hideLabel}
         pattern=${ifDefined(args.pattern)}
         minLength=${ifDefined(args.minLength)}
         maxLength=${ifDefined(args.maxLength)}
@@ -92,6 +94,7 @@ export const WithIcon = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
+        ?hideLabel=${args.hideLabel}
         ?iconRight=${args.iconRight}
         pattern=${ifDefined(args.pattern)}
         minLength=${ifDefined(args.minLength)}
