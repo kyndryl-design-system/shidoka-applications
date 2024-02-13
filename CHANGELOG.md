@@ -1,3 +1,10 @@
+## [1.3.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.3...v1.3.4) (2024-02-13)
+
+
+### Bug Fixes
+
+* **text-input:** disabled state clear button, resolves [#87](https://github.com/kyndryl-design-system/shidoka-applications/issues/87) ([d5f107a](https://github.com/kyndryl-design-system/shidoka-applications/commit/d5f107a76852bd7a8772dad7c342920a573903c3))
+
 ## [1.3.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.2...v1.3.3) (2024-02-12)
 
 
