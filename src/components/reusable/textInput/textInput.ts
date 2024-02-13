@@ -177,7 +177,11 @@ export class TextInput extends LitElement {
             : null}
           ${this.value !== ''
             ? html`
-                <button class="clear" @click=${() => this._handleClear()}>
+                <button
+                  ?disabled=${this.disabled}
+                  class="clear"
+                  @click=${() => this._handleClear()}
+                >
                   <kd-icon .icon=${clearIcon}></kd-icon>
                 </button>
               `
