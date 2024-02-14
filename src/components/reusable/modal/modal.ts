@@ -46,6 +46,10 @@ export class Modal extends LitElement {
   @property({ type: Boolean })
   destructive = false;
 
+  /** Disables the primary button. */
+  @property({ type: Boolean })
+  okDisabled = false;
+
   /** Function to execute before the modal can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`. */
   @property({ attribute: false })
   beforeClose!: Function;
@@ -97,6 +101,7 @@ export class Modal extends LitElement {
             <kd-button
               value="ok"
               ?destructive=${this.destructive}
+              ?disabled=${this.okDisabled}
               @click=${(e: Event) => this._closeModal(e, 'ok')}
             >
               ${this.okText}

@@ -33,6 +33,7 @@ const args = {
   okText: 'OK',
   cancelText: 'Cancel',
   destructive: false,
+  okDisabled: false,
 };
 
 export const Modal = {
@@ -47,6 +48,7 @@ export const Modal = {
         okText=${args.okText}
         cancelText=${args.cancelText}
         ?destructive=${args.destructive}
+        ?okDisabled=${args.okDisabled}
         @on-close=${(e) => action(e.type)(e)}
       >
         <span slot="anchor">Open Modal</span>
@@ -108,6 +110,7 @@ export const BeforeClose = {
         okText=${args.okText}
         cancelText=${args.cancelText}
         ?destructive=${args.destructive}
+        ?okDisabled=${args.okDisabled}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
       >
