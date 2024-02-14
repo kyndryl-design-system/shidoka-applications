@@ -21,6 +21,11 @@ export class DateRangePicker extends LitElement {
    */
   static formAssociated = true;
 
+  static override shadowRootOptions = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   /** Regex format for minDate / maxDate
    * @ignore
    */

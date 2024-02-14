@@ -18,6 +18,12 @@ import TimePickerScss from './timepicker.scss';
 @customElement('kyn-time-picker')
 export class TimePicker extends LitElement {
   static override styles = [TimePickerScss];
+
+  static override shadowRootOptions = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   /**
    * Associate the component with forms.
    * @ignore

@@ -27,6 +27,11 @@ import errorIcon from '@carbon/icons/es/warning--filled/24';
 export class TextInput extends LitElement {
   static override styles = TextInputScss;
 
+  static override shadowRootOptions = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   /**
    * Associate the component with forms.
    * @ignore
