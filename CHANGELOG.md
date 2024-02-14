@@ -1,3 +1,10 @@
+## [1.3.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.5...v1.3.6) (2024-02-14)
+
+
+### Bug Fixes
+
+* **modal:** add okDisabled prop, resolves [#89](https://github.com/kyndryl-design-system/shidoka-applications/issues/89) ([0beebae](https://github.com/kyndryl-design-system/shidoka-applications/commit/0beebaed5446f3c028d6051bd8b75584c8293fb9))
+
 ## [1.3.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.4...v1.3.5) (2024-02-14)
 
 
