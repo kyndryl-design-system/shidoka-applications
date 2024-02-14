@@ -1,3 +1,10 @@
+## [1.3.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.4...v1.3.5) (2024-02-14)
+
+
+### Bug Fixes
+
+* add delegatesFocus to from elements ([c6f88d2](https://github.com/kyndryl-design-system/shidoka-applications/commit/c6f88d26cc59e4db44654941013de4ffd108b47d))
+
 ## [1.3.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.3...v1.3.4) (2024-02-13)
 
 
