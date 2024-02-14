@@ -42,7 +42,6 @@ const meta: Meta = {
     'kyn-td': 'kyn-td',
     'kyn-thead': 'kyn-thead',
     'kyn-tbody': 'kyn-tbody',
-    'kyn-pagination': 'kyn-pagination',
     'kyn-table-container': 'kyn-table-container',
   },
   parameters: {
