@@ -20,7 +20,9 @@ export class GlobalFilter extends LitElement {
           </div>
         </div>
 
-        <slot name="tags"></slot>
+        <div class="tags">
+          <slot name="tags"></slot>
+        </div>
       </div>
     `;
   }

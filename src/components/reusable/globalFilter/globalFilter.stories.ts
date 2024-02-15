@@ -14,6 +14,7 @@ import '@kyndryl-design-system/shidoka-foundation/components/accordion';
 import searchIcon from '@carbon/icons/es/search/24';
 import filterIcon from '@carbon/icons/es/filter/20';
 import refreshIcon from '@carbon/icons/es/renew/20';
+import closeFilledIcon from '@carbon/icons/es/close--filled/16';
 
 export default {
   title: 'Patterns/Global Filter',
@@ -52,6 +53,7 @@ export class SampleFilterComponent extends LitElement {
     {
       value: 'f1o1',
       text: 'Filter 1 Option 1',
+      checked: true,
     },
     {
       value: 'f1o2',
@@ -179,6 +181,21 @@ export class SampleFilterComponent extends LitElement {
               `
           )}
         </div>
+
+        ${SelectedOptions.length
+          ? html`
+              <kd-button
+                slot="tags"
+                kind="tertiary"
+                size="small"
+                iconPosition="right"
+                @on-click=${(e: any) => this._handleClearTags(e)}
+              >
+                <kd-icon slot="icon" .icon=${closeFilledIcon}></kd-icon>
+                Clear All
+              </kd-button>
+            `
+          : null}
       </kyn-global-filter>
     `;
   }
@@ -226,6 +243,16 @@ export class SampleFilterComponent extends LitElement {
 
     // force update/render, since objects are updated by reference
     this.requestUpdate();
+  }
+
+  private _handleClearTags(e: any) {
+    action(e.type)(e);
+    // console.log(e.detail);
+
+    // update checked state for each option
+    this.checkboxOptions = this.checkboxOptions.map((option) => {
+      return { ...option, checked: false };
+    });
   }
 
   private _handleCustomAction(e: any) {
