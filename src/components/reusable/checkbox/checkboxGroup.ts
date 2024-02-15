@@ -154,7 +154,7 @@ export class CheckboxGroup extends LitElement {
               `
             : null}
 
-          <slot></slot>
+          <slot @slotchange=${this._handleSlotChange}></slot>
 
           ${this.limitCheckboxes
             ? html`
@@ -350,6 +350,10 @@ export class CheckboxGroup extends LitElement {
         }
       }
     });
+  }
+
+  private _handleSlotChange() {
+    this.requestUpdate();
   }
 
   override connectedCallback() {
