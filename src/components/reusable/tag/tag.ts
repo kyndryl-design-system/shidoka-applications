@@ -47,7 +47,7 @@ export class Tag extends LitElement {
    * Color variants. Default grey
    */
   @property({ type: String })
-  tagColor: 'grey';
+  tagColor = 'grey';
 
   override render() {
     const baseColorClass = `tag-${this.tagColor}`;
