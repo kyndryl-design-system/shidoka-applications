@@ -103,6 +103,7 @@ export class SampleFilterComponent extends LitElement {
             kind="tertiary"
             size="small"
             iconPosition="left"
+            tabindex="-1"
           >
             <kd-icon slot="icon" .icon=${filterIcon}></kd-icon>
             Filter
