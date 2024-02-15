@@ -46,10 +46,6 @@ export const GlobalFilter = {
 /**  Sample Lit component to show global filter pattern. */
 @customElement('sample-filter-component')
 export class SampleFilterComponent extends LitElement {
-  /** Array of selected filters to output as Tags. */
-  @property({ type: Array })
-  selectedCheckboxFilters: Array<any> = [];
-
   /** Array of sample checkbox filter options. */
   @property({ type: Array })
   checkboxOptions: Array<any> = [
@@ -80,6 +76,10 @@ export class SampleFilterComponent extends LitElement {
   ];
 
   override render() {
+    const SelectedOptions = this.checkboxOptions.filter(
+      (option) => option.checked
+    );
+
     return html`
       <kyn-global-filter>
         <kyn-text-input
@@ -119,6 +119,9 @@ export class SampleFilterComponent extends LitElement {
                   selectAll
                   filterable
                   limitCheckboxes
+                  .value=${SelectedOptions.map((option) => {
+                    return option.value;
+                  })}
                   @on-checkbox-group-change=${(e: any) =>
                     this._handleCheckboxes(e)}
                 >
@@ -167,8 +170,13 @@ export class SampleFilterComponent extends LitElement {
         </kyn-overflow-menu>
 
         <div slot="tags">
-          ${this.selectedCheckboxFilters.map(
-            (filter) => html`<span>${filter.text}</span>`
+          ${SelectedOptions.map(
+            (filter) =>
+              html`
+                <span @click=${(e: any) => this._handleTagClick(e, filter)}>
+                  ${filter.text}
+                </span>
+              `
           )}
         </div>
       </kyn-global-filter>
@@ -186,23 +194,12 @@ export class SampleFilterComponent extends LitElement {
     action(e.type)(e);
     // console.log(e.detail);
 
-    // handle checkbox filters here
-
     const Value = e.detail.value;
-    const NewFilters: Array<any> = [];
 
-    // add items from checkbox value output
-    Value.forEach((value: string) => {
-      // get full option details from value
-      const Option = this.checkboxOptions.find(
-        (option: any) => option.value === value
-      );
-
-      NewFilters.push(Option);
+    // update checked state for each option
+    this.checkboxOptions = this.checkboxOptions.map((option) => {
+      return { ...option, checked: Value.includes(option.value) };
     });
-
-    // update tags
-    this.selectedCheckboxFilters = NewFilters;
 
     // perform filtering here (client-side scenario)
   }
@@ -216,8 +213,19 @@ export class SampleFilterComponent extends LitElement {
     if (e.detail.returnValue === 'ok') {
       // modal was closed with OK/primary action, logic to apply filters here (server-side scenario)
     } else {
-      // modal was closed with cancel/secondary action, logic to revert filters here
+      // modal was closed with cancel/secondary action/x, logic to revert filters here
     }
+  }
+
+  private _handleTagClick(e: any, option: any) {
+    action(e.type)(e);
+    // console.log(e.detail);
+
+    // remove tag by setting checkbox option checked value to false
+    option.checked = false;
+
+    // force update/render, since objects are updated by reference
+    this.requestUpdate();
   }
 
   private _handleCustomAction(e: any) {
