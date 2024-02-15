@@ -35,10 +35,10 @@ export const GlobalFilter = {
 
       This example shows a standalone Global Filter pattern. It will update the
       selected Tags automatically when changing checkbox selections. For
-      client-side filtering, you may want to perform the filtering immediately.
-      For server-side filtering, you may want to perform this on the modal close
-      event instead. There are example event handler functions for each of the
-      controls contained within.
+      client-side filtering, you may want to perform the filtering immediately
+      on checkbox change. For server-side filtering, you may want to perform
+      filtering on the modal close event instead. There are example event
+      handler functions for each of the controls contained within.
     `;
   },
 };
@@ -101,7 +101,7 @@ export class SampleFilterComponent extends LitElement {
           <kd-button
             slot="anchor"
             kind="tertiary"
-            size="sm"
+            size="small"
             iconPosition="left"
           >
             <kd-icon slot="icon" .icon=${filterIcon}></kd-icon>
@@ -144,7 +144,7 @@ export class SampleFilterComponent extends LitElement {
         <kd-button
           slot="actions"
           kind="tertiary"
-          size="sm"
+          size="small"
           iconPosition="left"
           @on-click=${(e: any) => this._handleCustomAction(e)}
         >
