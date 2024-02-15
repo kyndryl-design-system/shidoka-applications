@@ -47,10 +47,10 @@ export class Tag extends LitElement {
    * Color variants. Default grey
    */
   @property({ type: String })
-  color: 'grey';
+  tagColor: 'grey';
 
   override render() {
-    const baseColorClass = `tag-${this.color}`;
+    const baseColorClass = `tag-${this.tagColor}`;
     const shadeClass = this.shade === 'dark' ? '-dark' : '';
 
     const tagClasses = {
@@ -73,7 +73,7 @@ export class Tag extends LitElement {
         tagSize="${this.tagSize}"
         ?disabled="${this.disabled}"
         ?filter=${this.filter}
-        color=${this.color}
+        tagColor=${this.tagColor}
         shade=${this.shade}
         title="${this.label}"
       >

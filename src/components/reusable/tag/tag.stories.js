@@ -15,7 +15,7 @@ export default {
       options: ['light', 'dark'],
       control: { type: 'select' },
     },
-    color: {
+    tagColor: {
       options: [
         'grey',
         'spruce',
@@ -51,7 +51,7 @@ const args = {
   label: 'Tag Example',
   tagSize: 'md',
   shade: 'light',
-  color: 'grey',
+  tagColor: 'grey',
   disabled: false,
   filter: false,
 };
@@ -64,7 +64,7 @@ export const Tag = {
         label=${args.label}
         tagSize=${args.tagSize}
         shade=${args.shade}
-        color=${args.color}
+        tagColor=${args.tagColor}
         ?disabled=${args.disabled}
         ?filter=${args.filter}
         @on-close=${(e) => action(e.type)(e)}
