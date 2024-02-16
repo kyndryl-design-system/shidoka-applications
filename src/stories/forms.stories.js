@@ -122,6 +122,7 @@ export const Default = {
         <br /><br />
 
         <kyn-text-area
+          required
           name="textArea"
           placeholder="Placeholder text"
           caption="Text area example"
@@ -201,19 +202,8 @@ export const Default = {
         <kd-button
           type="submit"
           @on-click=${() => {
-            const FormEl = document.querySelector('form');
-            const checkboxEl = document.querySelector('kyn-checkbox-group');
-
-            // check validity of a single element
-            console.log(
-              'kyn-checkbox-group - ' +
-                checkboxEl.internals.reportValidity() +
-                ' - ' +
-                checkboxEl.internals.validationMessage
-            );
-
             // check validity of the overall form
-            console.log('form - ' + FormEl.reportValidity());
+            console.log(document.querySelector('form').reportValidity());
           }}
         >
           Submit

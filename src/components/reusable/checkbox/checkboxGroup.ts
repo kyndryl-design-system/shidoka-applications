@@ -193,6 +193,8 @@ export class CheckboxGroup extends LitElement {
     }
 
     if (changedProps.has('value')) {
+      this._validate(false);
+
       // set checked state for each checkbox
       this.checkboxes.forEach((checkbox: any) => {
         checkbox.checked = this.value.includes(checkbox.value);
@@ -239,18 +241,21 @@ export class CheckboxGroup extends LitElement {
     }
   }
 
-  private _validate() {
+  private _validate(interacted: Boolean) {
     if (this.required) {
       if (!this.value.length) {
         this.internals.setValidity(
           { valueMissing: true },
-          'A selection is required.'
+          'A selection is required.',
+          this.checkboxes[0]
         );
-        this.internalValidationMsg = this.internals.validationMessage;
       } else {
         this.internals.setValidity({});
-        this.internalValidationMsg = '';
       }
+    }
+
+    if (interacted) {
+      this.internalValidationMsg = this.internals.validationMessage;
     }
   }
 
@@ -278,7 +283,7 @@ export class CheckboxGroup extends LitElement {
       this.value = newValues;
     }
 
-    this._validate();
+    this._validate(true);
 
     this._emitChangeEvent();
   }
@@ -352,6 +357,10 @@ export class CheckboxGroup extends LitElement {
     });
   }
 
+  private _handleInvalid(e: any) {
+    this.internalValidationMsg = this.internals.validationMessage;
+  }
+
   override connectedCallback() {
     super.connectedCallback();
 
@@ -364,6 +373,10 @@ export class CheckboxGroup extends LitElement {
       this.internals.form.addEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.addEventListener('invalid', (e) => {
+        this._handleInvalid(e);
+      });
     }
   }
 
@@ -376,6 +389,10 @@ export class CheckboxGroup extends LitElement {
       this.internals.form.removeEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.removeEventListener('invalid', (e) => {
+        this._handleInvalid(e);
+      });
     }
 
     super.disconnectedCallback();
