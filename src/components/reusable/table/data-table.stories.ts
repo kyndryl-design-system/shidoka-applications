@@ -423,6 +423,17 @@ const tableRenderer = (
       : title;
 
   return html`
+    <strong>Note:</strong> The Data Table component is now
+    <a
+      href="https://github.com/kyndryl-design-system/shidoka-applications/issues/90"
+      target="_blank"
+    >
+      deprecated due to a critical issue
+    </a>
+    . Please do not use it going forward. Instead, use the individual table
+    components found in the
+    <a href="/?path=/story/components-data-table--basic-table">Basic Table</a>
+    example.
     <div style=${args.stickyHeader ? 'height: 400px' : ''}>
       <kyn-table-toolbar tableTitle=${tableTitle}>
         ${showTableActions
