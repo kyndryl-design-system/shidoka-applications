@@ -281,7 +281,7 @@ export class TextInput extends LitElement {
     e.formData.append(this.name, this.value);
   }
 
-  private _handleInvalid(e: any) {
+  private _handleInvalid() {
     this.internalValidationMsg = this.internals.validationMessage;
   }
 
@@ -293,8 +293,8 @@ export class TextInput extends LitElement {
         this._handleFormdata(e)
       );
 
-      this.addEventListener('invalid', (e) => {
-        this._handleInvalid(e);
+      this.addEventListener('invalid', () => {
+        this._handleInvalid();
       });
     }
   }
@@ -305,8 +305,8 @@ export class TextInput extends LitElement {
         this._handleFormdata(e)
       );
 
-      this.removeEventListener('invalid', (e) => {
-        this._handleInvalid(e);
+      this.removeEventListener('invalid', () => {
+        this._handleInvalid();
       });
     }
 

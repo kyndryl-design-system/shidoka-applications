@@ -43,7 +43,6 @@ export const Default = {
 
         <kyn-checkbox-group
           name="checkbox"
-          .value=${['1']}
           required
           @on-checkbox-group-change=${(e) => action(e.type)(e)}
         >
@@ -203,7 +202,11 @@ export const Default = {
           type="submit"
           @on-click=${() => {
             // check validity of the overall form
-            console.log(document.querySelector('form').reportValidity());
+            console.log(
+              document.querySelector('form').reportValidity()
+                ? 'valid'
+                : 'invalid'
+            );
           }}
         >
           Submit

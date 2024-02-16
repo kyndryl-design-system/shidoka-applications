@@ -190,7 +190,7 @@ ${this.value}</textarea
     e.formData.append(this.name, this.value);
   }
 
-  private _handleInvalid(e: any) {
+  private _handleInvalid() {
     this.internalValidationMsg = this.internals.validationMessage;
   }
 
@@ -203,8 +203,8 @@ ${this.value}</textarea
       );
     }
 
-    this.addEventListener('invalid', (e) => {
-      this._handleInvalid(e);
+    this.addEventListener('invalid', () => {
+      this._handleInvalid();
     });
   }
 
@@ -214,8 +214,8 @@ ${this.value}</textarea
         this._handleFormdata(e)
       );
 
-      this.removeEventListener('invalid', (e) => {
-        this._handleInvalid(e);
+      this.removeEventListener('invalid', () => {
+        this._handleInvalid();
       });
     }
 
