@@ -554,6 +554,8 @@ export class Dropdown extends LitElement {
       this.value = '';
     }
 
+    this._validate(true);
+
     this.emitValue();
   }
 
@@ -661,7 +663,7 @@ export class Dropdown extends LitElement {
         this.assistiveText = 'Deselected all items.';
       }
 
-      this._setValidity();
+      this._validate(true);
     } else {
       this.updateValue(e.detail.value, e.detail.selected);
       this.assistiveText = 'Selected an item.';
@@ -693,6 +695,10 @@ export class Dropdown extends LitElement {
     }
   }
 
+  private _handleInvalid() {
+    this.internalValidationMsg = this.internals.validationMessage;
+  }
+
   override connectedCallback() {
     super.connectedCallback();
 
@@ -706,6 +712,10 @@ export class Dropdown extends LitElement {
       this.internals.form.addEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.addEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
   }
 
@@ -717,6 +727,10 @@ export class Dropdown extends LitElement {
       this.internals.form.removeEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.removeEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
 
     super.disconnectedCallback();
@@ -740,7 +754,7 @@ export class Dropdown extends LitElement {
       this.value = value;
     }
 
-    this._setValidity();
+    this._validate(true);
 
     // reset focus
     if (!this.multiple) {
@@ -752,7 +766,7 @@ export class Dropdown extends LitElement {
     }
   }
 
-  private _setValidity() {
+  private _validate(interacted: Boolean) {
     if (this.required) {
       if (
         !this.value ||
@@ -761,13 +775,16 @@ export class Dropdown extends LitElement {
       ) {
         this.internals.setValidity(
           { valueMissing: true },
-          'This field is required.'
+          'This field is required.',
+          this.buttonEl
         );
-        this.internalValidationMsg = this.internals.validationMessage;
       } else {
         this.internals.setValidity({});
-        this.internalValidationMsg = '';
       }
+    }
+
+    if (interacted) {
+      this.internalValidationMsg = this.internals.validationMessage;
     }
   }
 
@@ -792,17 +809,9 @@ export class Dropdown extends LitElement {
           : false;
     }
 
-    const oldValue = changedProps.get('value');
-    const valueChanged = this.multiple
-      ? changedProps.has('value') &&
-        oldValue !== undefined &&
-        oldValue !== '' &&
-        oldValue !== this.value
-      : changedProps.has('value') &&
-        oldValue !== undefined &&
-        oldValue !== this.value;
+    if (changedProps.has('value')) {
+      this._validate(false);
 
-    if (valueChanged) {
       // close listbox
       if (!this.multiple) {
         this.open = false;

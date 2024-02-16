@@ -43,7 +43,6 @@ export const Default = {
 
         <kyn-checkbox-group
           name="checkbox"
-          required
           @on-checkbox-group-change=${(e) => action(e.type)(e)}
         >
           <span slot="label">Checkboxes</span>
@@ -121,7 +120,6 @@ export const Default = {
         <br /><br />
 
         <kyn-text-area
-          required
           name="textArea"
           placeholder="Placeholder text"
           caption="Text area example"
