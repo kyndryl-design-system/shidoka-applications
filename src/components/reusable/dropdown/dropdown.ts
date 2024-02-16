@@ -236,7 +236,7 @@ export class Dropdown extends LitElement {
                     <input
                       class="search"
                       type="text"
-                      placeholder="Search"
+                      placeholder=${this.placeholder}
                       value=${this.searchText}
                       ?disabled=${this.disabled}
                       @keydown=${(e: any) => this.handleSearchKeydown(e)}
@@ -363,10 +363,14 @@ export class Dropdown extends LitElement {
   override firstUpdated() {
     // set a default placeholder if none provided
     if (this.placeholder === '') {
-      if (this.multiple) {
-        this.placeholder = 'Select items';
+      if (this.searchable) {
+        this.placeholder = 'Search';
       } else {
-        this.placeholder = 'Select an option';
+        if (this.multiple) {
+          this.placeholder = 'Select items';
+        } else {
+          this.placeholder = 'Select an option';
+        }
       }
     }
   }
