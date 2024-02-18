@@ -554,7 +554,7 @@ export class Dropdown extends LitElement {
       this.value = '';
     }
 
-    this._validate(true);
+    this._validate(true, true);
 
     this.emitValue();
   }
@@ -663,7 +663,7 @@ export class Dropdown extends LitElement {
         this.assistiveText = 'Deselected all items.';
       }
 
-      this._validate(true);
+      this._validate(true, true);
     } else {
       this.updateValue(e.detail.value, e.detail.selected);
       this.assistiveText = 'Selected an item.';
@@ -754,7 +754,7 @@ export class Dropdown extends LitElement {
       this.value = value;
     }
 
-    this._validate(true);
+    this._validate(true, true);
 
     // reset focus
     if (!this.multiple) {
@@ -766,25 +766,36 @@ export class Dropdown extends LitElement {
     }
   }
 
-  private _validate(interacted: Boolean) {
-    if (this.required) {
-      if (
-        !this.value ||
-        (this.multiple && !this.value.length) ||
-        (!this.multiple && this.value === '')
-      ) {
-        this.internals.setValidity(
-          { valueMissing: true },
-          'This field is required.',
-          this.buttonEl
-        );
-      } else {
-        this.internals.setValidity({});
-      }
-    }
+  private _validate(interacted: Boolean, report: Boolean) {
+    // set validity flags
+    const Validity = {
+      customError: this.invalidText !== '',
+      valueMissing:
+        this.required &&
+        (!this.value ||
+          (this.multiple && !this.value.length) ||
+          (!this.multiple && this.value === '')),
+    };
 
+    // set validationMessage
+    const ValidationMessage =
+      this.invalidText !== ''
+        ? this.invalidText
+        : this.required && !this.value.length
+        ? 'Please fill out this field.'
+        : '';
+
+    // set validity on custom element, anchor to buttonEl
+    this.internals.setValidity(Validity, ValidationMessage, this.buttonEl);
+
+    // set internal validation message if value was changed by user input
     if (interacted) {
       this.internalValidationMsg = this.internals.validationMessage;
+    }
+
+    // focus the first checkbox to show validity
+    if (report) {
+      this.internals.reportValidity();
     }
   }
 
@@ -809,8 +820,15 @@ export class Dropdown extends LitElement {
           : false;
     }
 
+    if (
+      changedProps.has('invalidText') &&
+      changedProps.get('invalidText') !== undefined
+    ) {
+      this._validate(false, true);
+    }
+
     if (changedProps.has('value')) {
-      this._validate(false);
+      this._validate(false, false);
 
       // close listbox
       if (!this.multiple) {

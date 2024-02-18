@@ -193,7 +193,7 @@ export class CheckboxGroup extends LitElement {
     }
 
     if (changedProps.has('value')) {
-      this._validate(false);
+      this._validate(false, false);
 
       // set checked state for each checkbox
       this.checkboxes.forEach((checkbox: any) => {
@@ -223,6 +223,13 @@ export class CheckboxGroup extends LitElement {
     }
 
     if (
+      changedProps.has('invalidText') &&
+      changedProps.get('invalidText') !== undefined
+    ) {
+      this._validate(false, true);
+    }
+
+    if (
       changedProps.has('invalidText') ||
       changedProps.has('internalValidationMsg')
     ) {
@@ -241,21 +248,32 @@ export class CheckboxGroup extends LitElement {
     }
   }
 
-  private _validate(interacted: Boolean) {
-    if (this.required) {
-      if (!this.value.length) {
-        this.internals.setValidity(
-          { valueMissing: true },
-          'A selection is required.',
-          this.checkboxes[0]
-        );
-      } else {
-        this.internals.setValidity({});
-      }
-    }
+  private _validate(interacted: Boolean, report: Boolean) {
+    // set validity flags
+    const Validity = {
+      customError: this.invalidText !== '',
+      valueMissing: this.required && !this.value.length,
+    };
 
+    // set validationMessage
+    const ValidationMessage =
+      this.invalidText !== ''
+        ? this.invalidText
+        : this.required && !this.value.length
+        ? 'A selection is required.'
+        : '';
+
+    // set validity on custom element, anchor to first checkbox
+    this.internals.setValidity(Validity, ValidationMessage, this.checkboxes[0]);
+
+    // set internal validation message if value was changed by user input
     if (interacted) {
       this.internalValidationMsg = this.internals.validationMessage;
+    }
+
+    // focus the first checkbox to show validity
+    if (report) {
+      this.internals.reportValidity();
     }
   }
 
@@ -283,7 +301,7 @@ export class CheckboxGroup extends LitElement {
       this.value = newValues;
     }
 
-    this._validate(true);
+    this._validate(true, true);
 
     this._emitChangeEvent();
   }

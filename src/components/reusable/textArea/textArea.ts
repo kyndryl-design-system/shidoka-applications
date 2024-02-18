@@ -142,7 +142,7 @@ ${this.value}</textarea
   private handleInput(e: any) {
     this.value = e.target.value;
 
-    this._validate(true);
+    this._validate(true, true);
 
     // emit selected value
     const event = new CustomEvent('on-input', {
@@ -170,19 +170,38 @@ ${this.value}</textarea
       // set form data value
       // this.internals.setFormValue(this.value);
 
-      this._validate(false);
+      this._validate(false, false);
+    }
+
+    if (
+      changedProps.has('invalidText') &&
+      changedProps.get('invalidText') !== undefined
+    ) {
+      this._validate(false, true);
     }
   }
 
-  private _validate(interacted: Boolean) {
-    this.internals.setValidity(
-      this.textareaEl.validity,
-      this.textareaEl.validationMessage,
-      this.textareaEl
-    );
+  private _validate(interacted: Boolean, report: Boolean) {
+    // get validity state from textareaEl, combine customError flag if invalidText is provided
+    const Validity = this.invalidText
+      ? { ...this.textareaEl.validity, customError: true }
+      : this.textareaEl.validity;
+    // set validationMessage to invalidText if present, otherwise use textareaEl validationMessage
+    const ValidationMessage = this.invalidText
+      ? this.invalidText
+      : this.textareaEl.validationMessage;
 
+    // set validity on custom element, anchor to textareaEl
+    this.internals.setValidity(Validity, ValidationMessage, this.textareaEl);
+
+    // set internal validation message if value was changed by user input
     if (interacted) {
       this.internalValidationMsg = this.internals.validationMessage;
+    }
+
+    // focus the form field to show validity
+    if (report) {
+      this.internals.reportValidity();
     }
   }
 

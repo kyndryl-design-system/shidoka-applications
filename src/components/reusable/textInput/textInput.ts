@@ -210,7 +210,7 @@ export class TextInput extends LitElement {
   private _handleInput(e: any) {
     this.value = e.target.value;
 
-    this._validate(true);
+    this._validate(true, true);
     this._emitValue(e);
   }
 
@@ -218,7 +218,7 @@ export class TextInput extends LitElement {
     this.value = '';
     this.inputEl.value = '';
 
-    this._validate(true);
+    this._validate(true, true);
     this._emitValue();
   }
 
@@ -236,15 +236,27 @@ export class TextInput extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private _validate(interacted: Boolean) {
-    this.internals.setValidity(
-      this.inputEl.validity,
-      this.inputEl.validationMessage,
-      this.inputEl
-    );
+  private _validate(interacted: Boolean, report: Boolean) {
+    // get validity state from inputEl, combine customError flag if invalidText is provided
+    const Validity = this.invalidText
+      ? { ...this.inputEl.validity, customError: true }
+      : this.inputEl.validity;
+    // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
+    const ValidationMessage = this.invalidText
+      ? this.invalidText
+      : this.inputEl.validationMessage;
 
+    // set validity on custom element, anchor to inputEl
+    this.internals.setValidity(Validity, ValidationMessage, this.inputEl);
+
+    // set internal validation message if value was changed by user input
     if (interacted) {
       this.internalValidationMsg = this.internals.validationMessage;
+    }
+
+    // focus the form field to show validity
+    if (report) {
+      this.internals.reportValidity();
     }
   }
 
@@ -265,7 +277,14 @@ export class TextInput extends LitElement {
       // set form data value
       // this.internals.setFormValue(this.value);
 
-      this._validate(false);
+      this._validate(false, false);
+    }
+
+    if (
+      changedProps.has('invalidText') &&
+      changedProps.get('invalidText') !== undefined
+    ) {
+      this._validate(false, true);
     }
   }
 
