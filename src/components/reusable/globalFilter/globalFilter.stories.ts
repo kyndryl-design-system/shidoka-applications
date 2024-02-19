@@ -375,6 +375,10 @@ export class SampleFilterChartComponent extends LitElement {
       label: 'Dataset 1',
       data: [12, 19, 3, 5, 2, 3],
     },
+    {
+      label: 'Dataset 2',
+      data: [8, 15, 7, 9, 6, 13],
+    },
   ];
 
   @property({ type: Object })
