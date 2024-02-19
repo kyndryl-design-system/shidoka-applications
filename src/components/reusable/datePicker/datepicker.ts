@@ -76,19 +76,19 @@ export class DatePicker extends LitElement {
    * If the value isn't a possible date string in the format, then the element has no maximum date value
    */
   @property({ type: String })
-  maxDate = '';
+  maxDate!: string;
 
   /** Minimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format,
    * If the value isn't a possible date string in the format, then the element has no minimum date value.
    */
   @property({ type: String })
-  minDate = '';
+  minDate!: string;
 
   /** Specifies the granularity that the value must adhere to, or the special value any,
    * For date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.
    * The default value of step is 1, indicating 1 day.*/
   @property({ type: String })
-  step = '';
+  step!: string;
 
   /** Date picker types. Default 'single' */
   @property({ type: String })
