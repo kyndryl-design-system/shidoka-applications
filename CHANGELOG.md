@@ -1,3 +1,10 @@
+## [1.3.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.7...v1.3.8) (2024-02-16)
+
+
+### Bug Fixes
+
+* **dropdown:** use placeholder for search, resolves [#95](https://github.com/kyndryl-design-system/shidoka-applications/issues/95) ([ef81664](https://github.com/kyndryl-design-system/shidoka-applications/commit/ef8166421cd4c5455ac89814182c7a69ac6f795f))
+
 ## [1.3.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.6...v1.3.7) (2024-02-15)
 
 
