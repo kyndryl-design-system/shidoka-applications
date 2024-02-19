@@ -41,10 +41,6 @@ export default {
       },
     },
   },
-  design: {
-    type: 'figma',
-    url: 'https://www.figma.com/file/pQKkip0UrZqEbaGN2dQ3dY/Istanbul-Release?type=design&node-id=8-9731&mode=design&t=nd4DTcgjxZCAgnB6-0',
-  },
 };
 
 const args = {
@@ -70,5 +66,12 @@ export const Tag = {
         @on-close=${(e) => action(e.type)(e)}
       /></kyn-tag>
     `;
+  },
+};
+
+Tag.parameters = {
+  design: {
+    type: 'figma',
+    url: 'https://www.figma.com/file/pQKkip0UrZqEbaGN2dQ3dY/Istanbul-Release?type=design&node-id=8-9731&mode=design&t=nd4DTcgjxZCAgnB6-0',
   },
 };
