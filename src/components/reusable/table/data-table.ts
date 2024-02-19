@@ -25,7 +25,7 @@ type ColumnDefinition = {
 };
 
 /**
- * `kyn-data-table` Web Component.
+ * DEPRECATED. `kyn-data-table` Web Component.
  * This component provides a table with sorting, pagination, and selection capabilities.
  * It is designed to be used with the `kyn-table-toolbar` and `kyn-table-container` components.
  * @fires on-selected-rows-changed - Dispatched when the selected rows change.
