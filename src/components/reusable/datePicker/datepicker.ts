@@ -2,12 +2,7 @@ import { LitElement, html, PropertyValues } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
-import {
-  DATE_PICKER_TYPES,
-  regexDateFormat,
-  regexDateTimeFormat,
-  regexDateTimeFormatSec,
-} from './defs';
+import { DATE_PICKER_TYPES } from './defs';
 import DatePickerScss from './datepicker.scss';
 
 /**
