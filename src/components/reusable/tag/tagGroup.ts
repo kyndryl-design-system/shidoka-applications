@@ -9,7 +9,7 @@ import './tag';
 import TagGroupScss from './tagGroup.scss';
 
 /**
- * Tag group container.
+ * Tag & Tag Group
  * @slot unnamed - Slot for individual tags.
  */
 
@@ -24,7 +24,7 @@ export class TagGroup extends LitElement {
     showLess: 'Show less',
   };
 
-  /** Limits visible tags (5) behind a "Show all" button. */
+  /** Limits visible tags (5) behind a "Show all" button. Use only if having more than 5 tags.*/
   @property({ type: Boolean })
   limitTags = false;
 
@@ -71,7 +71,7 @@ export class TagGroup extends LitElement {
     return html`
       <div>
         <slot></slot>
-        ${this.limitTags
+        ${this.limitTags && this.tags.length > 5
           ? html`
               <button
                 class="tag-reveal-toggle"
@@ -79,7 +79,7 @@ export class TagGroup extends LitElement {
               >
                 ${this.limitRevealed
                   ? this.textStrings.showLess
-                  : html` ${this.textStrings.showAll} (${this.tags.length}) `}
+                  : html` ${this.textStrings.showAll}`}
               </button>
             `
           : null}

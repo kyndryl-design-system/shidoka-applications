@@ -7,7 +7,7 @@ import TagScss from './tag.scss';
 
 /**
  * Tag.
- * @fires on-close - Captures the close event and emits the Tag value.
+ * @fires on-close - Captures the close event and emits the Tag value. Works with filterable tags.
  */
 
 @customElement('kyn-tag')
@@ -33,7 +33,7 @@ export class Tag extends LitElement {
   disabled = false;
 
   /**
-   * Determine if Tag state is filter/chip.
+   * Determine if Tag state is filter.
    */
   @property({ type: Boolean })
   filter = false;
@@ -64,9 +64,9 @@ export class Tag extends LitElement {
 
     const iconOutlineClasses = `${baseColorClass}${shadeClass}-close-btn`;
     const iconClasses = {
-        'tag-close-btn': true,
-        [`${iconOutlineClasses}`]: true
-    }
+      'tag-close-btn': true,
+      [`${iconOutlineClasses}`]: true,
+    };
 
     return html`
       <div
@@ -97,15 +97,14 @@ export class Tag extends LitElement {
 
   private handleTagClear(value: string) {
     if (!this.disabled) {
-        const event = new CustomEvent('on-close', {
-          detail: {
-            value,
-          },
-        });
-        this.dispatchEvent(event);
-      }
+      const event = new CustomEvent('on-close', {
+        detail: {
+          value,
+        },
+      });
+      this.dispatchEvent(event);
+    }
   }
-
 }
 
 declare global {

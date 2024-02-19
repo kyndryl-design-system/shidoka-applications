@@ -33,6 +33,10 @@ export default {
       control: { type: 'select' },
     },
   },
+  design: {
+    type: 'figma',
+    url: 'https://www.figma.com/file/pQKkip0UrZqEbaGN2dQ3dY/Istanbul-Release?type=design&node-id=8-9731&mode=design&t=nd4DTcgjxZCAgnB6-0',
+  },
 };
 
 export const TagGroup = {
@@ -43,6 +47,10 @@ export const TagGroup = {
     tagSize: 'md',
     shade: 'light',
     tagColor: 'grey',
+    textStrings: {
+      showAll: 'Show all',
+      showLess: 'Show less',
+    },
   },
   render: (args) => {
     return html`
@@ -53,6 +61,7 @@ export const TagGroup = {
         tagSize=${args.tagSize}
         shade=${args.shade}
         tagColor=${args.tagColor}
+        .textStrings=${args.textStrings}
       >
         <kyn-tag label="Tag 1" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
         <kyn-tag label="Tag 2" @on-close=${(e) => action(e.type)(e)}></kyn-tag>

@@ -43,7 +43,7 @@ export default {
   },
   design: {
     type: 'figma',
-    url: 'https://www.figma.com/file/pQKkip0UrZqEbaGN2dQ3dY/Santorini-Release?type=design&node-id=88-186&mode=design&t=kG1AhIxHIBWeM1EB-0',
+    url: 'https://www.figma.com/file/pQKkip0UrZqEbaGN2dQ3dY/Istanbul-Release?type=design&node-id=8-9731&mode=design&t=nd4DTcgjxZCAgnB6-0',
   },
 };
 
