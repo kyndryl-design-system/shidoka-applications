@@ -301,7 +301,7 @@ export class CheckboxGroup extends LitElement {
       this.value = newValues;
     }
 
-    this._validate(true, true);
+    this._validate(true, false);
 
     this._emitChangeEvent();
   }

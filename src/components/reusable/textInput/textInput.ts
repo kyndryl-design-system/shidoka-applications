@@ -210,7 +210,7 @@ export class TextInput extends LitElement {
   private _handleInput(e: any) {
     this.value = e.target.value;
 
-    this._validate(true, true);
+    this._validate(true, false);
     this._emitValue(e);
   }
 
@@ -218,7 +218,7 @@ export class TextInput extends LitElement {
     this.value = '';
     this.inputEl.value = '';
 
-    this._validate(true, true);
+    this._validate(true, false);
     this._emitValue();
   }
 

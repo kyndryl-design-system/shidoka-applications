@@ -554,7 +554,7 @@ export class Dropdown extends LitElement {
       this.value = '';
     }
 
-    this._validate(true, true);
+    this._validate(true, false);
 
     this.emitValue();
   }
@@ -663,7 +663,7 @@ export class Dropdown extends LitElement {
         this.assistiveText = 'Deselected all items.';
       }
 
-      this._validate(true, true);
+      this._validate(true, false);
     } else {
       this.updateValue(e.detail.value, e.detail.selected);
       this.assistiveText = 'Selected an item.';
@@ -754,7 +754,7 @@ export class Dropdown extends LitElement {
       this.value = value;
     }
 
-    this._validate(true, true);
+    this._validate(true, false);
 
     // reset focus
     if (!this.multiple) {
@@ -793,7 +793,7 @@ export class Dropdown extends LitElement {
       this.internalValidationMsg = this.internals.validationMessage;
     }
 
-    // focus the first checkbox to show validity
+    // focus the buttonEl to show validity
     if (report) {
       this.internals.reportValidity();
     }

@@ -142,7 +142,7 @@ ${this.value}</textarea
   private handleInput(e: any) {
     this.value = e.target.value;
 
-    this._validate(true, true);
+    this._validate(true, false);
 
     // emit selected value
     const event = new CustomEvent('on-input', {

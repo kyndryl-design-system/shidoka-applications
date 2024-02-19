@@ -109,6 +109,7 @@ export const Default = {
         <br /><br />
 
         <kyn-text-input
+          minLength="3"
           name="textInput"
           placeholder="Placeholder text"
           caption="Text input example"
