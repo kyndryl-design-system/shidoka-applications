@@ -166,6 +166,7 @@ export const Default = {
         <br /><br />
 
         <kyn-date-range-picker
+          required
           size="md"
           name="date-range"
           caption="Date range picker example"
