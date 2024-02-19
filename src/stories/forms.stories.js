@@ -158,12 +158,6 @@ export const Default = {
           name="date-time-picker"
           datePickerType="date-time"
           caption="Date time picker example"
-          invalidText=""
-          warnText=""
-          value=""
-          minDate=""
-          maxDate=""
-          step=""
           @on-input=${(e) => action(e.type)(e)}
         >
           Date Time
@@ -175,13 +169,6 @@ export const Default = {
           size="md"
           name="date-range"
           caption="Date range picker example"
-          invalidText=""
-          warnText=""
-          minDate=""
-          maxDate=""
-          step=""
-          startDate=""
-          endDate=""
           @on-input=${(e) => action(e.type)(e)}
         >
           Date Range

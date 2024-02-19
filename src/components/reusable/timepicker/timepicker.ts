@@ -74,18 +74,18 @@ export class TimePicker extends LitElement {
   /** Maximum time in hh:mm or hh:mm:ss format
    * only must always greater than minTime. */
   @property({ type: String })
-  maxTime = '';
+  maxTime!: string;
 
   /** Minimum time in hh:mm or hh:mm:ss format
    *  only & must always lesser than maxTime. */
   @property({ type: String })
-  minTime = '';
+  minTime!: string;
 
   /** Specifies the granularity that the value must adhere to, or the special value any,
    * It takes value that equates to the number of seconds you want to increment by;
    * the default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes */
   @property({ type: String })
-  step = '';
+  step!: string;
 
   /**
    * Queries the <input> DOM element.
@@ -93,17 +93,6 @@ export class TimePicker extends LitElement {
    */
   @query('input')
   inputEl!: HTMLInputElement;
-
-  /**
-   * Queries the <input> DOM element.
-   * @ignore
-   */
-  regexPatternWithSec = /^\d{2}:\d{2}:\d{2}$/; // hh:mm:ss
-  /**
-   * Queries the <input> DOM element.
-   * @ignore
-   */
-  regexPatternWithoutSec = /^\d{2}:\d{2}$/; // hh:mm
 
   /**
    * Internal validation message.
@@ -170,6 +159,9 @@ export class TimePicker extends LitElement {
 
   private handleInput(e: any) {
     this.value = e.target.value;
+
+    this._validate(true, false);
+
     // emit selected value
     const event = new CustomEvent('on-input', {
       detail: {
@@ -192,90 +184,54 @@ export class TimePicker extends LitElement {
           : false;
     }
 
-    if (changedProps.get('value') !== undefined && changedProps.has('value')) {
-      this.inputEl.value = this.value;
+    if (
+      changedProps.has('invalidText') &&
+      changedProps.get('invalidText') !== undefined
+    ) {
+      this._validate(false, true);
+    }
+
+    if (changedProps.has('value')) {
+      // this.inputEl.value = this.value;
       //set form data value
       // this.internals.setFormValue(this.value);
-      this.internals.setValidity({});
-      this.internalValidationMsg = '';
 
-      // set validity
-      if (this.required && (!this.value || this.value === '')) {
-        // validate required
-        this.internals.setValidity(
-          { valueMissing: true },
-          'This field is required.'
-        );
-        this.internalValidationMsg = this.internals.validationMessage;
-        return;
-      }
-      // validate min
-      if (this.value !== '' && this.minTime !== '') {
-        this.validateMinTime();
-      }
-      // validate max
-      if (this.value !== '' && this.maxTime !== '') {
-        this.validateMaxTime();
-      }
+      this._validate(false, false);
     }
   }
 
-  private validateMinTime() {
-    if (
-      this.regexPatternWithoutSec.test(this.minTime) ||
-      this.regexPatternWithSec.test(this.minTime)
-    ) {
-      const enteredTimeInSeconds = this.timeToSeconds(this.value);
-      const minTimeinSeconds = this.timeToSeconds(this.minTime);
-      if (enteredTimeInSeconds < minTimeinSeconds) {
-        this.internals.setValidity(
-          { rangeUnderflow: true },
-          'Please enter valid time within the min range.'
-        );
-        this.internalValidationMsg = this.internals.validationMessage;
-      }
-    } else {
-      this.internals.setValidity(
-        { patternMismatch: true },
-        'Please enter valid min time.'
-      );
+  private _validate(interacted: Boolean, report: Boolean) {
+    // get validity state from inputEl, combine customError flag if invalidText is provided
+    const Validity =
+      this.invalidText !== ''
+        ? { ...this.inputEl.validity, customError: true }
+        : this.inputEl.validity;
+    // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
+    const ValidationMessage =
+      this.invalidText !== ''
+        ? this.invalidText
+        : this.inputEl.validationMessage;
+
+    // set validity on custom element, anchor to inputEl
+    this.internals.setValidity(Validity, ValidationMessage, this.inputEl);
+
+    // set internal validation message if value was changed by user input
+    if (interacted) {
       this.internalValidationMsg = this.internals.validationMessage;
     }
-  }
 
-  private validateMaxTime() {
-    if (
-      this.regexPatternWithoutSec.test(this.maxTime) ||
-      this.regexPatternWithSec.test(this.maxTime)
-    ) {
-      const enteredTimeInSeconds = this.timeToSeconds(this.value);
-      const maxTimeinSeconds = this.timeToSeconds(this.maxTime);
-      if (enteredTimeInSeconds > maxTimeinSeconds) {
-        this.internals.setValidity(
-          { rangeOverflow: true },
-          'Please enter valid time within the max range.'
-        );
-        this.internalValidationMsg = this.internals.validationMessage;
-      }
-    } else {
-      this.internals.setValidity(
-        { patternMismatch: true },
-        'Please enter valid max time.'
-      );
-      this.internalValidationMsg = this.internals.validationMessage;
+    // focus the form field to show validity
+    if (report) {
+      this.internals.reportValidity();
     }
-  }
-
-  private timeToSeconds(timeString: String) {
-    const [hours, minutes, seconds] = timeString.split(':');
-    const setSeconds = seconds ? parseInt(seconds, 10) : 0;
-    const totalTime =
-      parseInt(hours, 10) * 3600 + parseInt(minutes, 10) * 60 + setSeconds;
-    return totalTime;
   }
 
   private _handleFormdata(e: any) {
     e.formData.append(this.name, this.value);
+  }
+
+  private _handleInvalid() {
+    this.internalValidationMsg = this.internals.validationMessage;
   }
 
   override connectedCallback(): void {
@@ -285,6 +241,10 @@ export class TimePicker extends LitElement {
       this.internals.form.addEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.addEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
   }
 
@@ -293,6 +253,10 @@ export class TimePicker extends LitElement {
       this.internals.form.removeEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.removeEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
 
     super.disconnectedCallback();
