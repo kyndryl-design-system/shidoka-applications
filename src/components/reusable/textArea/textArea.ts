@@ -183,13 +183,15 @@ ${this.value}</textarea
 
   private _validate(interacted: Boolean, report: Boolean) {
     // get validity state from textareaEl, combine customError flag if invalidText is provided
-    const Validity = this.invalidText
-      ? { ...this.textareaEl.validity, customError: true }
-      : this.textareaEl.validity;
+    const Validity =
+      this.invalidText !== ''
+        ? { ...this.textareaEl.validity, customError: true }
+        : this.textareaEl.validity;
     // set validationMessage to invalidText if present, otherwise use textareaEl validationMessage
-    const ValidationMessage = this.invalidText
-      ? this.invalidText
-      : this.textareaEl.validationMessage;
+    const ValidationMessage =
+      this.invalidText !== ''
+        ? this.invalidText
+        : this.textareaEl.validationMessage;
 
     // set validity on custom element, anchor to textareaEl
     this.internals.setValidity(Validity, ValidationMessage, this.textareaEl);

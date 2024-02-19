@@ -238,13 +238,15 @@ export class TextInput extends LitElement {
 
   private _validate(interacted: Boolean, report: Boolean) {
     // get validity state from inputEl, combine customError flag if invalidText is provided
-    const Validity = this.invalidText
-      ? { ...this.inputEl.validity, customError: true }
-      : this.inputEl.validity;
+    const Validity =
+      this.invalidText !== ''
+        ? { ...this.inputEl.validity, customError: true }
+        : this.inputEl.validity;
     // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
-    const ValidationMessage = this.invalidText
-      ? this.invalidText
-      : this.inputEl.validationMessage;
+    const ValidationMessage =
+      this.invalidText !== ''
+        ? this.invalidText
+        : this.inputEl.validationMessage;
 
     // set validity on custom element, anchor to inputEl
     this.internals.setValidity(Validity, ValidationMessage, this.inputEl);

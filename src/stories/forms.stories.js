@@ -30,7 +30,6 @@ export const Default = {
       >
         <kyn-radio-button-group
           name="radio"
-          value="1"
           @on-radio-group-change=${(e) => action(e.type)(e)}
         >
           <span slot="label">Radio Buttons</span>
@@ -109,7 +108,6 @@ export const Default = {
         <br /><br />
 
         <kyn-text-input
-          minLength="3"
           name="textInput"
           placeholder="Placeholder text"
           caption="Text input example"
