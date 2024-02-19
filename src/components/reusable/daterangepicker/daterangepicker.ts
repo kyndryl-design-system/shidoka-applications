@@ -202,15 +202,11 @@ export class DateRangePicker extends LitElement {
       changedProps.has('invalidText') &&
       changedProps.get('invalidText') !== undefined
     ) {
-      this._validate(false, true, this.inputElStart);
+      this._validate(false, true);
     }
 
-    if (changedProps.has('startDate')) {
-      this._validate(false, false, this.inputElStart);
-    }
-
-    if (changedProps.has('endDate')) {
-      this._validate(false, false, this.inputElEnd);
+    if (changedProps.has('startDate') || changedProps.has('endDate')) {
+      this._validate(false, false);
     }
   }
 
@@ -218,7 +214,7 @@ export class DateRangePicker extends LitElement {
   private handleStartDate(e: any) {
     this.startDate = e.target.value;
 
-    this._validate(true, false, this.inputElStart);
+    this._validate(true, false);
     this._emitValue(e);
   }
 
@@ -226,24 +222,55 @@ export class DateRangePicker extends LitElement {
   private handleEndDate(e: any) {
     this.endDate = e.target.value;
 
-    this._validate(true, false, this.inputElEnd);
+    this._validate(true, false);
     this._emitValue(e);
   }
 
-  private _validate(interacted: Boolean, report: Boolean, inputEl: any) {
-    // get validity state from inputEl, combine customError flag if invalidText is provided
-    const Validity =
-      this.invalidText !== ''
-        ? { ...inputEl.validity, customError: true }
-        : inputEl.validity;
-    // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
-    const ValidationMessage =
-      this.invalidText !== '' ? this.invalidText : inputEl.validationMessage;
+  private _validate(interacted: Boolean, report: Boolean) {
+    const StartValid = this.inputElStart.checkValidity();
+    const EndValid = this.inputElEnd.checkValidity();
 
-    // set validity on custom element, anchor to inputEl
-    this.internals.setValidity(Validity, ValidationMessage, inputEl);
+    if (StartValid && EndValid) {
+      // clear validation errors
+      this.internals.setValidity({});
+    } else if (!StartValid) {
+      // validate start date
 
-    // set internal validation message if value was changed by user input
+      // get validity state from inputEl, combine customError flag if invalidText is provided
+      const Validity =
+        this.invalidText !== ''
+          ? { ...this.inputElStart.validity, customError: true }
+          : this.inputElStart.validity;
+
+      // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
+      const ValidationMessage =
+        this.invalidText !== ''
+          ? this.invalidText
+          : this.inputElStart.validationMessage;
+
+      this.internals.setValidity(
+        Validity,
+        ValidationMessage,
+        this.inputElStart
+      );
+    } else if (!EndValid) {
+      // validate end date
+
+      // get validity state from inputEl, combine customError flag if invalidText is provided
+      const Validity =
+        this.invalidText !== ''
+          ? { ...this.inputElEnd.validity, customError: true }
+          : this.inputElEnd.validity;
+
+      // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
+      const ValidationMessage =
+        this.invalidText !== ''
+          ? this.invalidText
+          : this.inputElEnd.validationMessage;
+
+      this.internals.setValidity(Validity, ValidationMessage, this.inputElEnd);
+    }
+    // // set internal validation message if value was changed by user input
     if (interacted) {
       this.internalValidationMsg = this.internals.validationMessage;
     }
