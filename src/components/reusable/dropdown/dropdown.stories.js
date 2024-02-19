@@ -132,13 +132,6 @@ export const MultiSelect = {
         <span slot="label">${args.label}</span>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
-        <kyn-dropdown-option value="3" disabled>
-          Disabled Option
-        </kyn-dropdown-option>
-        <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
-        <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
-        <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
-        <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
       </kyn-dropdown>
     `;
   },
