@@ -270,7 +270,7 @@ export class DateRangePicker extends LitElement {
 
       this.internals.setValidity(Validity, ValidationMessage, this.inputElEnd);
     }
-    // // set internal validation message if value was changed by user input
+    // set internal validation message if value was changed by user input
     if (interacted) {
       this.internalValidationMsg = this.internals.validationMessage;
     }
