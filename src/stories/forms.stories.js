@@ -146,12 +146,6 @@ export const Default = {
           name="date-picker"
           datePickerType="single"
           caption="Date picker example"
-          invalidText=""
-          warnText=""
-          value=""
-          minDate=""
-          maxDate=""
-          step=""
           @on-input=${(e) => action(e.type)(e)}
         >
           Date

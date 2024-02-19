@@ -171,6 +171,9 @@ export class DatePicker extends LitElement {
   // calls when start date or value change
   private handleInput(e: any) {
     this.value = e.target.value;
+
+    this._validate(true, false);
+
     // emit selected value
     const event = new CustomEvent('on-input', {
       detail: {
@@ -193,79 +196,54 @@ export class DatePicker extends LitElement {
           : false;
     }
 
-    if (changedProps.get('value') !== undefined && changedProps.has('value')) {
-      this.inputEl.value = this.value;
+    if (
+      changedProps.has('invalidText') &&
+      changedProps.get('invalidText') !== undefined
+    ) {
+      this._validate(false, true);
+    }
+
+    if (changedProps.has('value')) {
+      // this.inputEl.value = this.value;
       // set form data value
       // this.internals.setFormValue(this.value);
-      this.internals.setValidity({});
-      this.internalValidationMsg = '';
 
-      // set validity
-      if (this.required && (!this.value || this.value === '')) {
-        this.internals.setValidity(
-          { valueMissing: true },
-          'This field is required.'
-        );
-        this.internalValidationMsg = this.internals.validationMessage;
-        return;
-      }
-      // validate min
-      if (this.value !== '' && this.minDate !== '') {
-        this.validateMinDate();
-      }
-      // validate max
-      if (this.value !== '' && this.maxDate !== '') {
-        this.validateMaxDate();
-      }
+      this._validate(false, false);
     }
   }
 
-  private validateMinDate(): void {
-    if (
-      regexDateFormat.test(this.minDate) ||
-      regexDateTimeFormat.test(this.minDate) ||
-      regexDateTimeFormatSec.test(this.minDate)
-    ) {
-      if (this.value < this.minDate) {
-        this.internals.setValidity(
-          { rangeUnderflow: true },
-          'Please enter date as min date or later.'
-        );
-        this.internalValidationMsg = this.internals.validationMessage;
-      }
-    } else {
-      this.internals.setValidity(
-        { patternMismatch: true },
-        'Please enter valid min date.'
-      );
+  private _validate(interacted: Boolean, report: Boolean) {
+    // get validity state from inputEl, combine customError flag if invalidText is provided
+    const Validity =
+      this.invalidText !== ''
+        ? { ...this.inputEl.validity, customError: true }
+        : this.inputEl.validity;
+    // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
+    const ValidationMessage =
+      this.invalidText !== ''
+        ? this.invalidText
+        : this.inputEl.validationMessage;
+
+    // set validity on custom element, anchor to inputEl
+    this.internals.setValidity(Validity, ValidationMessage, this.inputEl);
+
+    // set internal validation message if value was changed by user input
+    if (interacted) {
       this.internalValidationMsg = this.internals.validationMessage;
     }
-  }
 
-  private validateMaxDate(): void {
-    if (
-      regexDateFormat.test(this.maxDate) ||
-      regexDateTimeFormat.test(this.maxDate) ||
-      regexDateTimeFormatSec.test(this.maxDate)
-    ) {
-      if (this.value > this.maxDate) {
-        this.internals.setValidity(
-          { rangeOverflow: true },
-          'Please enter date as max date or earlier.'
-        );
-        this.internalValidationMsg = this.internals.validationMessage;
-      }
-    } else {
-      this.internals.setValidity(
-        { patternMismatch: true },
-        'Please enter valid max date.'
-      );
-      this.internalValidationMsg = this.internals.validationMessage;
+    // focus the form field to show validity
+    if (report) {
+      this.internals.reportValidity();
     }
   }
 
   private _handleFormdata(e: any) {
     e.formData.append(this.name, this.value);
+  }
+
+  private _handleInvalid() {
+    this.internalValidationMsg = this.internals.validationMessage;
   }
 
   override connectedCallback(): void {
@@ -275,6 +253,10 @@ export class DatePicker extends LitElement {
       this.internals.form.addEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.addEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
   }
 
@@ -283,6 +265,10 @@ export class DatePicker extends LitElement {
       this.internals.form.removeEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.removeEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
 
     super.disconnectedCallback();
