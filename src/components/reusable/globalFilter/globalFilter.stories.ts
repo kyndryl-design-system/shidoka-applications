@@ -16,7 +16,7 @@ import searchIcon from '@carbon/icons/es/search/24';
 import filterIcon from '@carbon/icons/es/filter/20';
 import filterEditIcon from '@carbon/icons/es/filter--edit/20';
 import refreshIcon from '@carbon/icons/es/renew/20';
-import closeFilledIcon from '@carbon/icons/es/close--filled/16';
+import filterRemoveIcon from '@carbon/icons/es/filter--remove/16';
 
 export default {
   title: 'Patterns/Global Filter',
@@ -129,12 +129,12 @@ export class SampleFilterComponent extends LitElement {
 
           <kd-accordion filledHeaders compact>
             <kd-accordion-item>
-              <span slot="title"
-                >Filter 1:
+              <span slot="title">
+                Filter 1:
                 ${SelectedOptions.length
                   ? SelectedOptions.length + ' items'
-                  : 'Any'}</span
-              >
+                  : 'Any'}
+              </span>
               <div slot="body">
                 <kyn-checkbox-group
                   name="filter1"
@@ -212,7 +212,7 @@ export class SampleFilterComponent extends LitElement {
                 iconPosition="right"
                 @on-click=${(e: any) => this._handleClearTags(e)}
               >
-                <kd-icon slot="icon" .icon=${closeFilledIcon}></kd-icon>
+                <kd-icon slot="icon" .icon=${filterRemoveIcon}></kd-icon>
                 Clear All
               </kd-button>
             `
@@ -495,7 +495,7 @@ export class SampleFilterChartComponent extends LitElement {
                 iconPosition="right"
                 @on-click=${(e: any) => this._handleClearTags(e)}
               >
-                <kd-icon slot="icon" .icon=${closeFilledIcon}></kd-icon>
+                <kd-icon slot="icon" .icon=${filterRemoveIcon}></kd-icon>
                 Clear All
               </kd-button>
             `
