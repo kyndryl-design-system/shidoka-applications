@@ -34,4 +34,4 @@ export {
 export { Tabs, Tab, TabPanel } from './components/reusable/tabs';
 export { Modal } from './components/reusable/modal';
 export { Tooltip } from './components/reusable/tooltip';
-export { Tag } from './components/reusable/tag';
+export { Tag, TagGroup } from './components/reusable/tag';

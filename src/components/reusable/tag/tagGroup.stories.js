@@ -1,0 +1,70 @@
+import { html } from 'lit';
+import './index';
+import { action } from '@storybook/addon-actions';
+
+export default {
+  title: 'Components/Tag',
+  component: 'kyn-tag-group',
+  subcomponents: {
+    Tag: 'kyn-tag',
+  },
+  argTypes: {
+    tagSize: {
+      options: ['sm', 'md'],
+      control: { type: 'select' },
+    },
+    shade: {
+      options: ['light', 'dark'],
+      control: { type: 'select' },
+    },
+    tagColor: {
+      options: [
+        'grey',
+        'spruce',
+        'failed',
+        'warning',
+        'passed',
+        'cat01',
+        'cat02',
+        'cat03',
+        'cat04',
+        'cat05',
+      ],
+      control: { type: 'select' },
+    },
+  },
+};
+
+export const TagGroup = {
+  args: {
+    filter: false,
+    disabled: false,
+    limitTags: false,
+    tagSize: 'md',
+    shade: 'light',
+    tagColor: 'grey',
+  },
+  render: (args) => {
+    return html`
+      <kyn-tag-group
+        ?disabled=${args.disabled}
+        ?filter=${args.filter}
+        ?limitTags=${args.limitTags}
+        tagSize=${args.tagSize}
+        shade=${args.shade}
+        tagColor=${args.tagColor}
+      >
+        <kyn-tag label="Tag 1" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
+        <kyn-tag label="Tag 2" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
+        <kyn-tag label="Tag 3" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
+        <kyn-tag label="Tag 4" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
+        <kyn-tag label="Tag 5" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
+        <kyn-tag label="Tag 6" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
+        <kyn-tag label="Tag 7" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
+        <kyn-tag label="Tag 8" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
+        <kyn-tag label="Tag 9" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
+        <kyn-tag label="Tag 10" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
+      </kyn-tag-group>
+    `;
+  },
+};

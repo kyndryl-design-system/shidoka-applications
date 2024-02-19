@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import clearIcon16 from '@carbon/icons/es/close/16';
 import TagScss from './tag.scss';
 
