@@ -26,8 +26,8 @@ export const TextArea = {
     required: false,
     disabled: false,
     invalidText: '',
-    minLength: null,
-    maxLength: null,
+    minLength: undefined,
+    maxLength: undefined,
   },
   render: (args) => {
     return html`

@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import TextAreaScss from './textArea.scss';
 
@@ -65,11 +65,11 @@ export class TextArea extends LitElement {
 
   /** Maximum number of characters. */
   @property({ type: Number })
-  maxLength = null;
+  maxLength!: number;
 
   /** Minimum number of characters. */
   @property({ type: Number })
-  minLength = null;
+  minLength!: number;
 
   /**
    * Internal validation message.
@@ -84,6 +84,13 @@ export class TextArea extends LitElement {
    */
   @state()
   isInvalid = false;
+
+  /**
+   * Queries the <textarea> DOM element.
+   * @ignore
+   */
+  @query('textarea')
+  textareaEl!: HTMLTextAreaElement;
 
   override render() {
     return html`
@@ -135,6 +142,8 @@ ${this.value}</textarea
   private handleInput(e: any) {
     this.value = e.target.value;
 
+    this._validate(true, false);
+
     // emit selected value
     const event = new CustomEvent('on-input', {
       detail: {
@@ -157,36 +166,53 @@ ${this.value}</textarea
           : false;
     }
 
-    if (changedProps.get('value') !== undefined && changedProps.has('value')) {
+    if (changedProps.has('value')) {
       // set form data value
       // this.internals.setFormValue(this.value);
 
-      // set validity
-      if (this.required && (!this.value || this.value === '')) {
-        // validate required
-        this.internals.setValidity(
-          { valueMissing: true },
-          'This field is required.'
-        );
-        this.internalValidationMsg = this.internals.validationMessage;
-      } else if (this.minLength && this.value.length < this.minLength) {
-        // validate min
-        this.internals.setValidity({ tooShort: true }, 'Too few characters.');
-        this.internalValidationMsg = this.internals.validationMessage;
-      } else if (this.maxLength && this.value.length > this.maxLength) {
-        // validate max
-        this.internals.setValidity({ tooLong: true }, 'Too many characters.');
-        this.internalValidationMsg = this.internals.validationMessage;
-      } else {
-        // clear validation
-        this.internals.setValidity({});
-        this.internalValidationMsg = '';
-      }
+      this._validate(false, false);
+    }
+
+    if (
+      changedProps.has('invalidText') &&
+      changedProps.get('invalidText') !== undefined
+    ) {
+      this._validate(false, true);
+    }
+  }
+
+  private _validate(interacted: Boolean, report: Boolean) {
+    // get validity state from textareaEl, combine customError flag if invalidText is provided
+    const Validity =
+      this.invalidText !== ''
+        ? { ...this.textareaEl.validity, customError: true }
+        : this.textareaEl.validity;
+    // set validationMessage to invalidText if present, otherwise use textareaEl validationMessage
+    const ValidationMessage =
+      this.invalidText !== ''
+        ? this.invalidText
+        : this.textareaEl.validationMessage;
+
+    // set validity on custom element, anchor to textareaEl
+    this.internals.setValidity(Validity, ValidationMessage, this.textareaEl);
+
+    // set internal validation message if value was changed by user input
+    if (interacted) {
+      this.internalValidationMsg = this.internals.validationMessage;
+    }
+
+    // focus the form field to show validity
+    if (report) {
+      this.internals.reportValidity();
     }
   }
 
   private _handleFormdata(e: any) {
     e.formData.append(this.name, this.value);
+  }
+
+  private _handleInvalid() {
+    this.internalValidationMsg = this.internals.validationMessage;
   }
 
   override connectedCallback(): void {
@@ -197,6 +223,10 @@ ${this.value}</textarea
         this._handleFormdata(e)
       );
     }
+
+    this.addEventListener('invalid', () => {
+      this._handleInvalid();
+    });
   }
 
   override disconnectedCallback(): void {
@@ -204,6 +234,10 @@ ${this.value}</textarea
       this.internals.form.removeEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.removeEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
 
     super.disconnectedCallback();

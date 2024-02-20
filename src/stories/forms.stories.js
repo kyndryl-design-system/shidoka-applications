@@ -30,7 +30,6 @@ export const Default = {
       >
         <kyn-radio-button-group
           name="radio"
-          value="1"
           @on-radio-group-change=${(e) => action(e.type)(e)}
         >
           <span slot="label">Radio Buttons</span>
@@ -43,8 +42,6 @@ export const Default = {
 
         <kyn-checkbox-group
           name="checkbox"
-          .value=${['1']}
-          required
           @on-checkbox-group-change=${(e) => action(e.type)(e)}
         >
           <span slot="label">Checkboxes</span>
@@ -149,12 +146,6 @@ export const Default = {
           name="date-picker"
           datePickerType="single"
           caption="Date picker example"
-          invalidText=""
-          warnText=""
-          value=""
-          minDate=""
-          maxDate=""
-          step=""
           @on-input=${(e) => action(e.type)(e)}
         >
           Date
@@ -167,12 +158,6 @@ export const Default = {
           name="date-time-picker"
           datePickerType="date-time"
           caption="Date time picker example"
-          invalidText=""
-          warnText=""
-          value=""
-          minDate=""
-          maxDate=""
-          step=""
           @on-input=${(e) => action(e.type)(e)}
         >
           Date Time
@@ -184,13 +169,6 @@ export const Default = {
           size="md"
           name="date-range"
           caption="Date range picker example"
-          invalidText=""
-          warnText=""
-          minDate=""
-          maxDate=""
-          step=""
-          startDate=""
-          endDate=""
           @on-input=${(e) => action(e.type)(e)}
         >
           Date Range
@@ -201,19 +179,12 @@ export const Default = {
         <kd-button
           type="submit"
           @on-click=${() => {
-            const FormEl = document.querySelector('form');
-            const checkboxEl = document.querySelector('kyn-checkbox-group');
-
-            // check validity of a single element
-            console.log(
-              'kyn-checkbox-group - ' +
-                checkboxEl.internals.reportValidity() +
-                ' - ' +
-                checkboxEl.internals.validationMessage
-            );
-
             // check validity of the overall form
-            console.log('form - ' + FormEl.reportValidity());
+            console.log(
+              document.querySelector('form').reportValidity()
+                ? 'valid'
+                : 'invalid'
+            );
           }}
         >
           Submit

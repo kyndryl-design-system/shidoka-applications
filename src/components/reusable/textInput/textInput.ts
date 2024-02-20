@@ -83,15 +83,15 @@ export class TextInput extends LitElement {
 
   /** RegEx pattern to validate. */
   @property({ type: String })
-  pattern = null;
+  pattern!: string;
 
   /** Maximum number of characters. */
   @property({ type: Number })
-  maxLength = null;
+  maxLength!: number;
 
   /** Minimum number of characters. */
   @property({ type: Number })
-  minLength = null;
+  minLength!: number;
 
   /** Place icon on the right. */
   @property({ type: Boolean })
@@ -210,6 +210,7 @@ export class TextInput extends LitElement {
   private _handleInput(e: any) {
     this.value = e.target.value;
 
+    this._validate(true, false);
     this._emitValue(e);
   }
 
@@ -217,6 +218,7 @@ export class TextInput extends LitElement {
     this.value = '';
     this.inputEl.value = '';
 
+    this._validate(true, false);
     this._emitValue();
   }
 
@@ -234,6 +236,32 @@ export class TextInput extends LitElement {
     this.dispatchEvent(event);
   }
 
+  private _validate(interacted: Boolean, report: Boolean) {
+    // get validity state from inputEl, combine customError flag if invalidText is provided
+    const Validity =
+      this.invalidText !== ''
+        ? { ...this.inputEl.validity, customError: true }
+        : this.inputEl.validity;
+    // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
+    const ValidationMessage =
+      this.invalidText !== ''
+        ? this.invalidText
+        : this.inputEl.validationMessage;
+
+    // set validity on custom element, anchor to inputEl
+    this.internals.setValidity(Validity, ValidationMessage, this.inputEl);
+
+    // set internal validation message if value was changed by user input
+    if (interacted) {
+      this.internalValidationMsg = this.internals.validationMessage;
+    }
+
+    // focus the form field to show validity
+    if (report) {
+      this.internals.reportValidity();
+    }
+  }
+
   override updated(changedProps: any) {
     if (
       changedProps.has('invalidText') ||
@@ -246,43 +274,19 @@ export class TextInput extends LitElement {
           : false;
     }
 
-    if (changedProps.get('value') !== undefined && changedProps.has('value')) {
-      this.inputEl.value = this.value;
+    if (changedProps.has('value')) {
+      // this.inputEl.value = this.value;
       // set form data value
       // this.internals.setFormValue(this.value);
 
-      // set validity
-      if (this.required && (!this.value || this.value === '')) {
-        // validate required
-        this.internals.setValidity(
-          { valueMissing: true },
-          'This field is required.'
-        );
-        this.internalValidationMsg = this.internals.validationMessage;
-      } else if (this.minLength && this.value.length < this.minLength) {
-        // validate min
-        this.internals.setValidity({ tooShort: true }, 'Too few characters.');
-        this.internalValidationMsg = this.internals.validationMessage;
-      } else if (this.maxLength && this.value.length > this.maxLength) {
-        // validate max
-        this.internals.setValidity({ tooLong: true }, 'Too many characters.');
-        this.internalValidationMsg = this.internals.validationMessage;
-      } else if (
-        this.pattern &&
-        this.pattern != '' &&
-        !new RegExp(this.pattern).test(this.value)
-      ) {
-        // validate pattern
-        this.internals.setValidity(
-          { patternMismatch: true },
-          'Does not match expected format.'
-        );
-        this.internalValidationMsg = this.internals.validationMessage;
-      } else {
-        // clear validation
-        this.internals.setValidity({});
-        this.internalValidationMsg = '';
-      }
+      this._validate(false, false);
+    }
+
+    if (
+      changedProps.has('invalidText') &&
+      changedProps.get('invalidText') !== undefined
+    ) {
+      this._validate(false, true);
     }
   }
 
@@ -298,6 +302,10 @@ export class TextInput extends LitElement {
     e.formData.append(this.name, this.value);
   }
 
+  private _handleInvalid() {
+    this.internalValidationMsg = this.internals.validationMessage;
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
 
@@ -305,6 +313,10 @@ export class TextInput extends LitElement {
       this.internals.form.addEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.addEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
   }
 
@@ -313,6 +325,10 @@ export class TextInput extends LitElement {
       this.internals.form.removeEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.removeEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
 
     super.disconnectedCallback();
