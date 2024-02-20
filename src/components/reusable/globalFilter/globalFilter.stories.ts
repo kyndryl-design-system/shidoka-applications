@@ -7,6 +7,7 @@ import '../checkbox';
 import '../modal';
 import '../textInput';
 import '../overflowMenu';
+import '../tag';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/accordion';
@@ -65,28 +66,28 @@ export class SampleFilterComponent extends LitElement {
   @property({ type: Array })
   checkboxOptions: Array<any> = [
     {
-      value: 'f1o1',
-      text: 'Filter 1 Option 1',
+      value: '1',
+      text: 'Option 1',
     },
     {
-      value: 'f1o2',
-      text: 'Filter 1 Option 2',
+      value: '2',
+      text: 'Option 2',
     },
     {
-      value: 'f1o3',
-      text: 'Filter 1 Option 3',
+      value: '3',
+      text: 'Option 3',
     },
     {
-      value: 'f1o4',
-      text: 'Filter 1 Option 4',
+      value: '4',
+      text: 'Option 4',
     },
     {
-      value: 'f1o5',
-      text: 'Filter 1 Option 5',
+      value: '5',
+      text: 'Option 5',
     },
     {
-      value: 'f1o6',
-      text: 'Filter 1 Option 6',
+      value: '6',
+      text: 'Option 6',
     },
   ];
 
@@ -192,16 +193,18 @@ export class SampleFilterComponent extends LitElement {
           </kyn-overflow-menu-item>
         </kyn-overflow-menu>
 
-        <div slot="tags">
+        <kyn-tag-group slot="tags" filter limitTags>
           ${SelectedOptions.map(
             (filter) =>
               html`
-                <span @click=${(e: any) => this._handleTagClick(e, filter)}>
-                  ${filter.text}
-                </span>
+                <kyn-tag
+                  label=${filter.text}
+                  tagColor="grey"
+                  @on-close=${(e: any) => this._handleTagClick(e, filter)}
+                ></kyn-tag>
               `
           )}
-        </div>
+        </kyn-tag-group>
 
         ${SelectedOptions.length
           ? html`
@@ -475,16 +478,18 @@ export class SampleFilterChartComponent extends LitElement {
           </kd-accordion>
         </kyn-modal>
 
-        <div slot="tags">
+        <kyn-tag-group slot="tags" filter limitTags>
           ${SelectedOptions.map(
             (filter) =>
               html`
-                <span @click=${(e: any) => this._handleTagClick(e, filter)}>
-                  ${filter.text}
-                </span>
+                <kyn-tag
+                  label=${filter.text}
+                  tagColor="grey"
+                  @on-close=${(e: any) => this._handleTagClick(e, filter)}
+                ></kyn-tag>
               `
           )}
-        </div>
+        </kyn-tag-group>
 
         ${SelectedOptions.length
           ? html`
