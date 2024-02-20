@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.9...v1.4.0) (2024-02-20)
+
+
+### Features
+
+* Tag & Tag group components with filter and read-only variants ([#91](https://github.com/kyndryl-design-system/shidoka-applications/issues/91)) ([6d9f72c](https://github.com/kyndryl-design-system/shidoka-applications/commit/6d9f72c8bf71f5fe6b6de1c477992d478bdfc64c))
+
 ## [1.3.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.8...v1.3.9) (2024-02-20)
 
 
