@@ -60,7 +60,8 @@ export class TagGroup extends LitElement {
 
     return html`
       <div class="tags-container">
-        <slot></slot>
+        <slot @slotchange=${this._handleSlotChange}></slot>
+
         ${this.limitTags && this.tags.length > 5
           ? html`
               <button
@@ -77,21 +78,29 @@ export class TagGroup extends LitElement {
     `;
   }
   override updated(changedProps: any) {
-    // set filter for each tag
-    if (changedProps.has('filter')) {
-      this.tags.forEach((tag: any) => {
-        tag.filter = this.filter;
-      });
+    if (changedProps.has('filter') || changedProps.has('tagSize')) {
+      this._updateChildren();
     }
-    // set tag size for each tag
-    if (changedProps.has('tagSize')) {
-      this.tags.forEach((tag: any) => {
-        tag.tagSize = this.tagSize;
-      });
-    }
+
     if (changedProps.has('limitTags')) {
       this._toggleRevealed(false);
     }
+  }
+
+  private _handleSlotChange() {
+    this._updateChildren();
+  }
+
+  private _updateChildren() {
+    // set filter for each tag
+    this.tags.forEach((tag: any) => {
+      tag.filter = this.filter;
+    });
+
+    // set tag size for each tag
+    this.tags.forEach((tag: any) => {
+      tag.tagSize = this.tagSize;
+    });
   }
 
   private _toggleRevealed(revealed: boolean) {
