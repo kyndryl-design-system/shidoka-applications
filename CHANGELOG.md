@@ -1,3 +1,10 @@
+## [1.3.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.8...v1.3.9) (2024-02-20)
+
+
+### Bug Fixes
+
+* form validation ([#97](https://github.com/kyndryl-design-system/shidoka-applications/issues/97)) ([c0b286d](https://github.com/kyndryl-design-system/shidoka-applications/commit/c0b286d69988921178413206d9357adf4f16176f))
+
 ## [1.3.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.7...v1.3.8) (2024-02-16)
 
 
