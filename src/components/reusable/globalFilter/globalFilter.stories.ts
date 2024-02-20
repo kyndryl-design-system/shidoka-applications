@@ -16,7 +16,7 @@ import searchIcon from '@carbon/icons/es/search/24';
 import filterIcon from '@carbon/icons/es/filter/20';
 import filterEditIcon from '@carbon/icons/es/filter--edit/20';
 import refreshIcon from '@carbon/icons/es/renew/20';
-import filterRemoveIcon from '@carbon/icons/es/filter--remove/16';
+import filterRemoveIcon from '@carbon/icons/es/close--filled/16';
 
 export default {
   title: 'Patterns/Global Filter',
