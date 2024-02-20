@@ -61,6 +61,7 @@ export class Tag extends LitElement {
       'tag-disable': this.disabled,
       [`${baseColorClass}${shadeClass}`]: true,
       [`${sizeClass}`]: true,
+      [`${sizeClass}-filter`]: this.filter,
     };
 
     const iconOutlineClasses = `${baseColorClass}${shadeClass}-close-btn`;
