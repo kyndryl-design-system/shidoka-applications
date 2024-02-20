@@ -75,6 +75,7 @@ export class Tag extends LitElement {
     const labelClasses = {
       'tag-label': true,
       [`${sizeClass}-label`]: true,
+      [`${sizeClass}-label-filter`]: this.filter,
     };
 
     return html`
