@@ -2,7 +2,8 @@ import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import clearIcon16 from '@carbon/icons/es/close/16';
+import clearIcon24 from '@carbon/icons/es/close/24';
+import clearIcon20 from '@carbon/icons/es/close/20';
 import TagScss from './tag.scss';
 
 /**
@@ -94,7 +95,9 @@ export class Tag extends LitElement {
                 ?disabled="${this.disabled}"
                 @click=${(e: any) => this.handleTagClear(e, this.label)}
               >
-                <kd-icon .icon=${clearIcon16}></kd-icon>
+                <kd-icon
+                  .icon=${this.tagSize === 'md' ? clearIcon24 : clearIcon20}
+                ></kd-icon>
               </button>
             `
           : ''}
