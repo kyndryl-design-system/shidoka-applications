@@ -13,36 +13,14 @@ export default {
       options: ['sm', 'md'],
       control: { type: 'select' },
     },
-    shade: {
-      options: ['light', 'dark'],
-      control: { type: 'select' },
-    },
-    tagColor: {
-      options: [
-        'grey',
-        'spruce',
-        'failed',
-        'warning',
-        'passed',
-        'cat01',
-        'cat02',
-        'cat03',
-        'cat04',
-        'cat05',
-      ],
-      control: { type: 'select' },
-    },
   },
 };
 
 export const TagGroup = {
   args: {
     filter: false,
-    disabled: false,
     limitTags: false,
     tagSize: 'md',
-    shade: 'light',
-    tagColor: 'grey',
     textStrings: {
       showAll: 'Show all',
       showLess: 'Show less',
@@ -51,12 +29,9 @@ export const TagGroup = {
   render: (args) => {
     return html`
       <kyn-tag-group
-        ?disabled=${args.disabled}
         ?filter=${args.filter}
         ?limitTags=${args.limitTags}
         tagSize=${args.tagSize}
-        shade=${args.shade}
-        tagColor=${args.tagColor}
         .textStrings=${args.textStrings}
       >
         <kyn-tag label="Tag 1" @on-close=${(e) => action(e.type)(e)}></kyn-tag>

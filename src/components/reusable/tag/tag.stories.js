@@ -47,7 +47,7 @@ const args = {
   label: 'Tag Example',
   tagSize: 'md',
   shade: 'light',
-  tagColor: 'grey',
+  tagColor: 'spruce',
   disabled: false,
   filter: false,
 };

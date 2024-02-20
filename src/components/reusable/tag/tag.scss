@@ -13,9 +13,15 @@
   justify-content: space-around;
   border-radius: 4px;
   gap: 4px;
-  padding: 0px 4px 0px 4px;
   color: var(--kd-color-text-primary);
   min-width: 24px;
+}
+
+.tag-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 104px;
 }
 
 .tag-close-btn {
@@ -27,18 +33,36 @@
   padding: 0;
   display: flex;
   cursor: pointer;
+  outline-width: 0px;
+  transition: outline-width 0.1s ease-in-out;
+  &-md {
+    &:hover {
+      outline-offset: 3px;
+    }
+    &:focus,
+    &:active {
+      outline-offset: 2px;
+    }
+  }
+  &-sm {
+    &:hover {
+      outline-offset: 1px;
+    }
+    &:focus,
+    &:active {
+      outline-offset: 0px;
+    }
+  }
 
   &:hover {
     outline-width: 1px;
     outline-style: solid;
-    outline-offset: inherit;
   }
 
   &:focus,
   &:active {
     outline-width: 2px;
     outline-style: solid;
-    outline-offset: inherit;
   }
 
   &[disabled] {
@@ -51,18 +75,21 @@
 }
 
 .tag {
-  &-label {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 104px;
-  }
   &-medium {
     height: 24px;
+    padding: 0 4px 0 4px;
+    &-label {
+      padding: 4px 8px 4px 8px;
+    }
   }
   &-small {
     height: 20px;
+    padding: 0 2px 0 2px;
+    &-label {
+      padding: 2px 4px 2px 4px;
+    }
   }
+
   &-disable {
     cursor: not-allowed;
     background-color: var(--kd-color-background-disabled) !important;
@@ -103,13 +130,13 @@
   /* failed color */
   &-failed {
     background-color: var(--kd-color-background-error-light);
-    &-close-btn{
-        outline-color: var(--kd-color-border-error);
+    &-close-btn {
+      outline-color: var(--kd-color-border-error);
     }
     &-dark {
       background-color: var(--kd-color-background-destructive);
       color: var(--kd-color-text-inversed);
-      &-close-btn{
+      &-close-btn {
         outline-color: var(--kd-color-error-light);
       }
     }
@@ -117,12 +144,12 @@
   /* warning color */
   &-warning {
     background-color: var(--kd-color-background-warning-light);
-    &-close-btn{
-        outline-color: var(--kd-color-background-warning);
+    &-close-btn {
+      outline-color: var(--kd-color-background-warning);
     }
     &-dark {
       background-color: var(--kd-color-background-warning);
-      &-close-btn{
+      &-close-btn {
         outline-color: var(--kd-color-background-warning-light);
       }
     }
@@ -130,13 +157,13 @@
   /* passed color */
   &-passed {
     background-color: var(--kd-color-background-success-light);
-    &-close-btn{
-        outline-color: #00AF41;
+    &-close-btn {
+      outline-color: #00af41;
     }
     &-dark {
-      background-color: #00AF41;
+      background-color: #00af41;
       color: var(--kd-color-text-inversed);
-      &-close-btn{
+      &-close-btn {
         outline-color: var(--kd-color-background-success-light);
       }
     }
@@ -145,13 +172,13 @@
   /* cat01 color */
   &-cat01 {
     background-color: #ace1f8;
-    &-close-btn{
-        outline-color: #64b5e1;
+    &-close-btn {
+      outline-color: #64b5e1;
     }
     &-dark {
       background-color: #64b5e1;
       color: var(--kd-color-text-inversed);
-      &-close-btn{
+      &-close-btn {
         outline-color: #ace1f8;
       }
     }
@@ -160,13 +187,13 @@
   /* cat02 color */
   &-cat02 {
     background-color: #9beeca;
-    &-close-btn{
-        outline-color: #008d72;
+    &-close-btn {
+      outline-color: #008d72;
     }
     &-dark {
       background-color: #008d72;
       color: var(--kd-color-text-inversed);
-      &-close-btn{
+      &-close-btn {
         outline-color: #9beeca;
       }
     }
@@ -175,13 +202,13 @@
   /* cat03 color */
   &-cat03 {
     background-color: #ffd46a;
-    &-close-btn{
-        outline-color: #f26e01;
+    &-close-btn {
+      outline-color: #f26e01;
     }
     &-dark {
       background-color: #f26e01;
       color: var(--kd-color-text-inversed);
-      &-close-btn{
+      &-close-btn {
         outline-color: #ffd46a;
       }
     }
@@ -190,13 +217,13 @@
   /* cat04 color */
   &-cat04 {
     background-color: #f2c4e2;
-    &-close-btn{
-        outline-color: #c4407e;
+    &-close-btn {
+      outline-color: #c4407e;
     }
     &-dark {
       background-color: #c4407e;
       color: var(--kd-color-text-inversed);
-      &-close-btn{
+      &-close-btn {
         outline-color: #f2c4e2;
       }
     }
@@ -205,13 +232,13 @@
   /* cat05 color */
   &-cat05 {
     background-color: #e2c6ff;
-    &-close-btn{
-        outline-color: #945cc2;
-      }
+    &-close-btn {
+      outline-color: #945cc2;
+    }
     &-dark {
       background-color: #945cc2;
       color: var(--kd-color-text-inversed);
-      &-close-btn{
+      &-close-btn {
         outline-color: #e2c6ff;
       }
     }

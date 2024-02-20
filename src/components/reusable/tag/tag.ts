@@ -45,27 +45,34 @@ export class Tag extends LitElement {
   shade = 'light';
 
   /**
-   * Color variants. Default grey
+   * Color variants. Default spruce
    */
   @property({ type: String })
-  tagColor = 'grey';
+  tagColor = 'spruce';
 
   override render() {
     const baseColorClass = `tag-${this.tagColor}`;
     const shadeClass = this.shade === 'dark' ? '-dark' : '';
+    const sizeClass = this.tagSize === 'md' ? 'tag-medium' : 'tag-small';
 
     const tagClasses = {
       tags: true,
       'tag-disable': this.disabled,
-      'tag-medium': this.tagSize === 'md',
-      'tag-small': this.tagSize === 'sm',
       [`${baseColorClass}${shadeClass}`]: true,
+      [`${sizeClass}`]: true,
     };
 
     const iconOutlineClasses = `${baseColorClass}${shadeClass}-close-btn`;
+    const iconOutlineOffsetClass = `tag-close-btn-${this.tagSize}`;
     const iconClasses = {
       'tag-close-btn': true,
       [`${iconOutlineClasses}`]: true,
+      [`${iconOutlineOffsetClass}`]: true,
+    };
+
+    const labelClasses = {
+      'tag-label': true,
+      [`${sizeClass}-label`]: true,
     };
 
     return html`
@@ -78,14 +85,14 @@ export class Tag extends LitElement {
         shade=${this.shade}
         title="${this.label}"
       >
-        <span class="tag-label">${this.label}</span>
+        <span class="${classMap(labelClasses)}">${this.label}</span>
         ${this.filter
           ? html`
               <button
                 class="${classMap(iconClasses)}"
                 shade=${this.shade}
                 ?disabled="${this.disabled}"
-                @click=${() => this.handleTagClear(this.label)}
+                @click=${(e: any) => this.handleTagClear(e, this.label)}
               >
                 <kd-icon .icon=${clearIcon16}></kd-icon>
               </button>
@@ -95,11 +102,12 @@ export class Tag extends LitElement {
     `;
   }
 
-  private handleTagClear(value: string) {
+  private handleTagClear(e: any, value: string) {
     if (!this.disabled) {
       const event = new CustomEvent('on-close', {
         detail: {
           value,
+          origEvent: e,
         },
       });
       this.dispatchEvent(event);

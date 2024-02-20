@@ -5,6 +5,7 @@ import {
   state,
   queryAssignedElements,
 } from 'lit/decorators.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import './tag';
 import TagGroupScss from './tagGroup.scss';
 
@@ -34,10 +35,6 @@ export class TagGroup extends LitElement {
   @state()
   limitRevealed = false;
 
-  /** Tag group disabled state. */
-  @property({ type: Boolean })
-  disabled = false;
-
   /** Tag group filter */
   @property({ type: Boolean })
   filter = false;
@@ -49,18 +46,6 @@ export class TagGroup extends LitElement {
   tagSize = 'md';
 
   /**
-   * Shade `'light'` (default) and `'dark'` for tag
-   */
-  @property({ type: String })
-  shade = 'light';
-
-  /**
-   * Color variants. Default grey
-   */
-  @property({ type: String })
-  tagColor = 'grey';
-
-  /**
    * Queries for slotted tags.
    * @ignore
    */
@@ -68,13 +53,18 @@ export class TagGroup extends LitElement {
   tags!: Array<any>;
 
   override render() {
+    const toggleBtnClasses = {
+      'tag-reveal-toggle': true,
+      [`tag-reveal-toggle-${this.tagSize}`]: true,
+    };
+
     return html`
-      <div>
+      <div class="tags-container">
         <slot></slot>
         ${this.limitTags && this.tags.length > 5
           ? html`
               <button
-                class="tag-reveal-toggle"
+                class="${classMap(toggleBtnClasses)}"
                 @click=${() => this._toggleRevealed(!this.limitRevealed)}
               >
                 ${this.limitRevealed
@@ -87,12 +77,6 @@ export class TagGroup extends LitElement {
     `;
   }
   override updated(changedProps: any) {
-    // set disabled for each tag
-    if (changedProps.has('disabled')) {
-      this.tags.forEach((tag: any) => {
-        tag.disabled = this.disabled;
-      });
-    }
     // set filter for each tag
     if (changedProps.has('filter')) {
       this.tags.forEach((tag: any) => {
@@ -103,18 +87,6 @@ export class TagGroup extends LitElement {
     if (changedProps.has('tagSize')) {
       this.tags.forEach((tag: any) => {
         tag.tagSize = this.tagSize;
-      });
-    }
-    // set tag shade for each tag
-    if (changedProps.has('shade')) {
-      this.tags.forEach((tag: any) => {
-        tag.shade = this.shade;
-      });
-    }
-    // set tag color for each tag
-    if (changedProps.has('tagColor')) {
-      this.tags.forEach((tag: any) => {
-        tag.tagColor = this.tagColor;
       });
     }
     if (changedProps.has('limitTags')) {
