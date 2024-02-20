@@ -78,17 +78,18 @@ export class TagGroup extends LitElement {
     `;
   }
   override updated(changedProps: any) {
-    if (changedProps.has('filter') || changedProps.has('tagSize')) {
+    if (
+      changedProps.has('filter') ||
+      changedProps.has('tagSize') ||
+      changedProps.has('limitTags')
+    ) {
       this._updateChildren();
-    }
-
-    if (changedProps.has('limitTags')) {
-      this._toggleRevealed(false);
     }
   }
 
   private _handleSlotChange() {
     this._updateChildren();
+    this.requestUpdate();
   }
 
   private _updateChildren() {
@@ -101,6 +102,8 @@ export class TagGroup extends LitElement {
     this.tags.forEach((tag: any) => {
       tag.tagSize = this.tagSize;
     });
+
+    this._toggleRevealed(false);
   }
 
   private _toggleRevealed(revealed: boolean) {
