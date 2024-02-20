@@ -1,0 +1,44 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.tag-reveal-toggle {
+  @include typography.type-ui-03;
+  padding: 0 4px 0 4px;
+  background: 0 0;
+  border: none;
+  color: var(--kd-color-text-link);
+  border-radius: 2px;
+  cursor: pointer;
+  outline: 2px solid transparent;
+  min-width: 72px;
+  margin-left: 2px;
+
+  &:hover {
+    color: var(--kd-color-text-link-hover);
+    background-color: var(--kd-color-background-accent-subtle);
+  }
+
+  &:active {
+    color: var(--kd-color-text-pressed);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
+  }
+
+  &-md {
+    height: 24px;
+  }
+  &-sm {
+    height: 20px;
+  }
+}
