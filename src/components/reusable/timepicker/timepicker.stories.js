@@ -34,9 +34,9 @@ const args = {
   disabled: false,
   invalidText: '',
   warnText: '',
-  minTime: null,
-  maxTime: null,
-  step: null,
+  minTime: undefined,
+  maxTime: undefined,
+  step: undefined,
 };
 
 export const TimePicker = {

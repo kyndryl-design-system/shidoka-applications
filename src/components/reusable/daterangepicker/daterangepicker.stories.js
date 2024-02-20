@@ -46,9 +46,9 @@ const args = {
   disabled: false,
   invalidText: '',
   warnText: '',
-  minDate: null,
-  maxDate: null,
-  step: null,
+  minDate: undefined,
+  maxDate: undefined,
+  step: undefined,
 };
 
 export const DateRangePicker = {
