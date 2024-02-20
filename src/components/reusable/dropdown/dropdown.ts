@@ -568,6 +568,8 @@ export class Dropdown extends LitElement {
       this.value = '';
     }
 
+    this._validate(true, false);
+
     this.emitValue();
   }
 
@@ -675,7 +677,7 @@ export class Dropdown extends LitElement {
         this.assistiveText = 'Deselected all items.';
       }
 
-      this._setValidity();
+      this._validate(true, false);
     } else {
       this.updateValue(e.detail.value, e.detail.selected);
       this.assistiveText = 'Selected an item.';
@@ -707,6 +709,10 @@ export class Dropdown extends LitElement {
     }
   }
 
+  private _handleInvalid() {
+    this.internalValidationMsg = this.internals.validationMessage;
+  }
+
   override connectedCallback() {
     super.connectedCallback();
 
@@ -720,6 +726,10 @@ export class Dropdown extends LitElement {
       this.internals.form.addEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.addEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
   }
 
@@ -731,6 +741,10 @@ export class Dropdown extends LitElement {
       this.internals.form.removeEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.removeEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
 
     super.disconnectedCallback();
@@ -754,7 +768,7 @@ export class Dropdown extends LitElement {
       this.value = value;
     }
 
-    this._setValidity();
+    this._validate(true, false);
 
     // reset focus
     if (!this.multiple) {
@@ -766,22 +780,36 @@ export class Dropdown extends LitElement {
     }
   }
 
-  private _setValidity() {
-    if (this.required) {
-      if (
-        !this.value ||
-        (this.multiple && !this.value.length) ||
-        (!this.multiple && this.value === '')
-      ) {
-        this.internals.setValidity(
-          { valueMissing: true },
-          'This field is required.'
-        );
-        this.internalValidationMsg = this.internals.validationMessage;
-      } else {
-        this.internals.setValidity({});
-        this.internalValidationMsg = '';
-      }
+  private _validate(interacted: Boolean, report: Boolean) {
+    // set validity flags
+    const Validity = {
+      customError: this.invalidText !== '',
+      valueMissing:
+        this.required &&
+        (!this.value ||
+          (this.multiple && !this.value.length) ||
+          (!this.multiple && this.value === '')),
+    };
+
+    // set validationMessage
+    const ValidationMessage =
+      this.invalidText !== ''
+        ? this.invalidText
+        : this.required && !this.value.length
+        ? 'Please fill out this field.'
+        : '';
+
+    // set validity on custom element, anchor to buttonEl
+    this.internals.setValidity(Validity, ValidationMessage, this.buttonEl);
+
+    // set internal validation message if value was changed by user input
+    if (interacted) {
+      this.internalValidationMsg = this.internals.validationMessage;
+    }
+
+    // focus the buttonEl to show validity
+    if (report) {
+      this.internals.reportValidity();
     }
   }
 
@@ -806,17 +834,16 @@ export class Dropdown extends LitElement {
           : false;
     }
 
-    const oldValue = changedProps.get('value');
-    const valueChanged = this.multiple
-      ? changedProps.has('value') &&
-        oldValue !== undefined &&
-        oldValue !== '' &&
-        oldValue !== this.value
-      : changedProps.has('value') &&
-        oldValue !== undefined &&
-        oldValue !== this.value;
+    if (
+      changedProps.has('invalidText') &&
+      changedProps.get('invalidText') !== undefined
+    ) {
+      this._validate(false, true);
+    }
 
-    if (valueChanged) {
+    if (changedProps.has('value')) {
+      this._validate(false, false);
+
       // sync "Select All" checkbox state
       this.selectAllChecked =
         this.selectedOptions.length === this.options.length;

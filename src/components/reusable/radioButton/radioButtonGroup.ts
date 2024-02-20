@@ -111,6 +111,8 @@ export class RadioButtonGroup extends LitElement {
     }
 
     if (changedProps.has('value')) {
+      this._validate(false, false);
+
       // set checked state for each radio button
       this.radioButtons.forEach((radio: any) => {
         radio.checked = radio.value === this.value;
@@ -118,20 +120,6 @@ export class RadioButtonGroup extends LitElement {
 
       // set form data value
       // this.internals.setFormValue(this.value);
-
-      // set validity
-      if (this.required) {
-        if (!this.value || this.value === '') {
-          this.internals.setValidity(
-            { valueMissing: true },
-            'This field is required.'
-          );
-          this.internalValidationMsg = this.internals.validationMessage;
-        } else {
-          this.internals.setValidity({});
-          this.internalValidationMsg = '';
-        }
-      }
     }
 
     if (changedProps.has('required')) {
@@ -149,6 +137,13 @@ export class RadioButtonGroup extends LitElement {
     }
 
     if (
+      changedProps.has('invalidText') &&
+      changedProps.get('invalidText') !== undefined
+    ) {
+      this._validate(false, true);
+    }
+
+    if (
       changedProps.has('invalidText') ||
       changedProps.has('internalValidationMsg')
     ) {
@@ -157,6 +152,7 @@ export class RadioButtonGroup extends LitElement {
         this.invalidText !== '' || this.internalValidationMsg !== ''
           ? true
           : false;
+
       // set invalid state for each radio button
       this.radioButtons.forEach((radio: any) => {
         radio.invalid = this.isInvalid;
@@ -164,9 +160,44 @@ export class RadioButtonGroup extends LitElement {
     }
   }
 
+  private _validate(interacted: Boolean, report: Boolean) {
+    // set validity flags
+    const Validity = {
+      customError: this.invalidText !== '',
+      valueMissing: this.required && this.value === '',
+    };
+
+    // set validationMessage
+    const ValidationMessage =
+      this.invalidText !== ''
+        ? this.invalidText
+        : this.required && this.value === ''
+        ? 'A selection is required.'
+        : '';
+
+    // set validity on custom element, anchor to first radio
+    this.internals.setValidity(
+      Validity,
+      ValidationMessage,
+      this.radioButtons[0]
+    );
+
+    // set internal validation message if value was changed by user input
+    if (interacted) {
+      this.internalValidationMsg = this.internals.validationMessage;
+    }
+
+    // focus the first checkbox to show validity
+    if (report) {
+      this.internals.reportValidity();
+    }
+  }
+
   private _handleRadioChange(e: any) {
     // set selected value
     this.value = e.detail.value;
+
+    this._validate(false, false);
 
     // emit selected value
     const event = new CustomEvent('on-radio-group-change', {
@@ -177,6 +208,10 @@ export class RadioButtonGroup extends LitElement {
 
   private _handleFormdata(e: any) {
     e.formData.append(this.name, this.value);
+  }
+
+  private _handleInvalid() {
+    this.internalValidationMsg = this.internals.validationMessage;
   }
 
   override connectedCallback() {
@@ -191,6 +226,10 @@ export class RadioButtonGroup extends LitElement {
       this.internals.form.addEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.addEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
   }
 
@@ -203,6 +242,10 @@ export class RadioButtonGroup extends LitElement {
       this.internals.form.removeEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.removeEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
 
     super.disconnectedCallback();

@@ -42,9 +42,9 @@ const args = {
   invalidText: '',
   iconRight: false,
   hideLabel: false,
-  pattern: null,
-  minLength: null,
-  maxLength: null,
+  pattern: undefined,
+  minLength: undefined,
+  maxLength: undefined,
 };
 
 export const TextInput = {

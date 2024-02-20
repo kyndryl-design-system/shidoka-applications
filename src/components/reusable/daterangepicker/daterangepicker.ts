@@ -1,5 +1,5 @@
 import { LitElement, html, PropertyValues } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 
@@ -25,12 +25,6 @@ export class DateRangePicker extends LitElement {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
   };
-
-  /** Regex format for minDate / maxDate
-   * @ignore
-   */
-  @state()
-  regexDateFormat = /^\d{4}-\d{2}-\d{2}$/;
 
   /**
    * Attached internals for form association.
@@ -79,19 +73,19 @@ export class DateRangePicker extends LitElement {
    * If the value isn't a possible date string in the format, then the element has no maximum date value
    */
   @property({ type: String })
-  maxDate = '';
+  maxDate!: string;
 
   /** Minimum date in YYYY-MM-DD format,
    * If the value isn't a possible date string in the format, then the element has no minimum date value.
    */
   @property({ type: String })
-  minDate = '';
+  minDate!: string;
 
   /** Specifies the granularity that the value must adhere to, or the special value any,
    * For date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.
    * The default value of step is 1, indicating 1 day.*/
   @property({ type: String })
-  step = '';
+  step!: string;
 
   /**
    * Internal validation message.
@@ -106,6 +100,20 @@ export class DateRangePicker extends LitElement {
    */
   @state()
   isInvalid = false;
+
+  /**
+   * Queries the Start Date <input> DOM element.
+   * @ignore
+   */
+  @query('input.date-start')
+  inputElStart!: HTMLInputElement;
+
+  /**
+   * Queries the End Date <input> DOM element.
+   * @ignore
+   */
+  @query('input.date-end')
+  inputElEnd!: HTMLInputElement;
 
   override render() {
     return html`
@@ -122,6 +130,7 @@ export class DateRangePicker extends LitElement {
         <div class="input-wrapper">
           <input
             class="${classMap({
+              'date-start': true,
               'size--sm': this.size === 'sm',
               'size--lg': this.size === 'lg',
             })}"
@@ -143,6 +152,7 @@ export class DateRangePicker extends LitElement {
         <div class="input-wrapper">
           <input
             class="${classMap({
+              'date-end': true,
               'size--sm': this.size === 'sm',
               'size--lg': this.size === 'lg',
             })}"
@@ -150,6 +160,7 @@ export class DateRangePicker extends LitElement {
             id="${this.name}-end"
             name="${this.name}-end"
             value=${this.endDate}
+            ?required=${this.required}
             ?disabled=${this.disabled}
             ?invalid=${this.isInvalid}
             min=${ifDefined(this.startDate ?? this.minDate ?? '')}
@@ -188,139 +199,97 @@ export class DateRangePicker extends LitElement {
     }
 
     if (
-      changedProps.get('startDate') !== undefined &&
-      changedProps.has('startDate')
+      changedProps.has('invalidText') &&
+      changedProps.get('invalidText') !== undefined
     ) {
-      this.internals.setValidity({});
-      this.internalValidationMsg = '';
-      // set validity
-      if (this.required && (!this.startDate || this.startDate === '')) {
-        this.internals.setValidity(
-          { valueMissing: true },
-          'Both dates are required.'
-        );
-        this.internalValidationMsg = this.internals.validationMessage;
-        return;
-      }
-      // validate min
-      if (this.startDate !== '' && this.minDate !== '') {
-        this.validateMinDate(this.startDate);
-      }
-      //validate max
-      if (this.startDate !== '' && this.maxDate !== '') {
-        this.validateMaxDate(this.startDate);
-      }
-      // validate start & end date
-      if (this.startDate !== '' && this.endDate !== '') {
-        this.validateStartEndDate();
-      }
+      this._validate(false, true);
     }
 
-    if (
-      changedProps.get('endDate') !== undefined &&
-      changedProps.has('endDate')
-    ) {
-      this.internals.setValidity({});
-      this.internalValidationMsg = '';
-      // set validity
-      if (this.required && (!this.endDate || this.endDate === '')) {
-        this.internals.setValidity(
-          { valueMissing: true },
-          'Both dates are required.'
-        );
-        this.internalValidationMsg = this.internals.validationMessage;
-        return;
-      }
-      // validate min
-      if (this.endDate !== '' && this.minDate !== '') {
-        this.validateMinDate(this.endDate);
-      }
-      //validate max
-      if (this.endDate !== '' && this.maxDate !== '') {
-        this.validateMaxDate(this.endDate);
-      }
-      // validate start & end date
-      if (this.startDate !== '' && this.endDate !== '') {
-        this.validateStartEndDate();
-      }
+    if (changedProps.has('startDate') || changedProps.has('endDate')) {
+      this._validate(false, false);
     }
   }
+
   // on-change start date
   private handleStartDate(e: any) {
     this.startDate = e.target.value;
-    if (this.startDate !== '') {
-      this.validateAndDispatchEvent();
-    }
+
+    this._validate(true, false);
+    this._emitValue(e);
   }
+
   // on-change end date
   private handleEndDate(e: any) {
     this.endDate = e.target.value;
-    if (this.endDate !== '') {
-      this.validateAndDispatchEvent();
-    }
+
+    this._validate(true, false);
+    this._emitValue(e);
   }
-  // Note: dispatch (on-input) event only if both dates are valid (i.e. startDate <= endDate)
-  private validateAndDispatchEvent() {
-    if (this.startDate <= this.endDate) {
-      // emit selected start & end date value
-      const event = new CustomEvent('on-input', {
-        detail: {
-          startDate: this.startDate,
-          endDate: this.endDate,
-        },
-      });
-      this.dispatchEvent(event);
-    }
-  }
-  // validate minDate with start & end date
-  private validateMinDate(date: String): void {
-    if (this.regexDateFormat.test(this.minDate)) {
-      if (date < this.minDate) {
-        this.internals.setValidity(
-          { rangeUnderflow: true },
-          'Please enter date as min date or later.'
-        );
-        this.internalValidationMsg = this.internals.validationMessage;
-      }
-    } else {
+
+  private _validate(interacted: Boolean, report: Boolean) {
+    const StartValid = this.inputElStart.checkValidity();
+    const EndValid = this.inputElEnd.checkValidity();
+
+    if (StartValid && EndValid) {
+      // clear validation errors
+      this.internals.setValidity({});
+    } else if (!StartValid) {
+      // validate start date
+
+      // get validity state from inputEl, combine customError flag if invalidText is provided
+      const Validity =
+        this.invalidText !== ''
+          ? { ...this.inputElStart.validity, customError: true }
+          : this.inputElStart.validity;
+
+      // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
+      const ValidationMessage =
+        this.invalidText !== ''
+          ? this.invalidText
+          : this.inputElStart.validationMessage;
+
       this.internals.setValidity(
-        { patternMismatch: true },
-        'Please enter valid min date.'
+        Validity,
+        ValidationMessage,
+        this.inputElStart
       );
+    } else if (!EndValid) {
+      // validate end date
+
+      // get validity state from inputEl, combine customError flag if invalidText is provided
+      const Validity =
+        this.invalidText !== ''
+          ? { ...this.inputElEnd.validity, customError: true }
+          : this.inputElEnd.validity;
+
+      // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
+      const ValidationMessage =
+        this.invalidText !== ''
+          ? this.invalidText
+          : this.inputElEnd.validationMessage;
+
+      this.internals.setValidity(Validity, ValidationMessage, this.inputElEnd);
+    }
+    // set internal validation message if value was changed by user input
+    if (interacted) {
       this.internalValidationMsg = this.internals.validationMessage;
     }
-  }
-  // validate maxDate with start & end date
-  private validateMaxDate(date: String): void {
-    if (this.regexDateFormat.test(this.maxDate)) {
-      if (date > this.maxDate) {
-        this.internals.setValidity(
-          { rangeOverflow: true },
-          'Please enter date as max date or earlier.'
-        );
-        this.internalValidationMsg = this.internals.validationMessage;
-      }
-    } else {
-      this.internals.setValidity(
-        { patternMismatch: true },
-        'Please enter valid max date.'
-      );
-      this.internalValidationMsg = this.internals.validationMessage;
+
+    // focus the form field to show validity
+    if (report) {
+      this.internals.reportValidity();
     }
   }
 
-  private validateStartEndDate(): void {
-    // Save combine values to form data
-    // const combineVals = `${this.startDate}:${this.endDate}`;
-    // this.internals.setFormValue(combineVals);
-
-    if (this.startDate > this.endDate) {
-      this.internals.setValidity(
-        { patternMismatch: true },
-        'State date must be before end date.'
-      );
-      this.internalValidationMsg = this.internals.validationMessage;
-    }
+  private _emitValue(e: any) {
+    const event = new CustomEvent('on-input', {
+      detail: {
+        startDate: this.startDate,
+        endDate: this.endDate,
+        origEvent: e,
+      },
+    });
+    this.dispatchEvent(event);
   }
 
   private _handleFormdata(e: any) {
@@ -331,6 +300,10 @@ export class DateRangePicker extends LitElement {
     e.formData.append(this.name, combineVals);
   }
 
+  private _handleInvalid() {
+    this.internalValidationMsg = this.internals.validationMessage;
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
 
@@ -338,6 +311,10 @@ export class DateRangePicker extends LitElement {
       this.internals.form.addEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.addEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
   }
 
@@ -346,6 +323,10 @@ export class DateRangePicker extends LitElement {
       this.internals.form.removeEventListener('formdata', (e) =>
         this._handleFormdata(e)
       );
+
+      this.removeEventListener('invalid', () => {
+        this._handleInvalid();
+      });
     }
 
     super.disconnectedCallback();
