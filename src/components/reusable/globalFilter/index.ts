@@ -1,0 +1,1 @@
+export { GlobalFilter } from './globalFilter';

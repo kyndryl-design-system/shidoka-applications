@@ -52,6 +52,18 @@ export class CheckboxGroup extends LitElement {
   @property({ type: Boolean })
   selectAll = false;
 
+  /** Is "Select All" box checked.
+   * @internal
+   */
+  @property({ type: Boolean })
+  selectAllChecked = false;
+
+  /** Is "Select All" indeterminate.
+   * @internal
+   */
+  @property({ type: Boolean })
+  selectAllIndeterminate = false;
+
   /** Hide the group legend/label visually. */
   @property({ type: Boolean })
   hideLegend = false;
@@ -144,6 +156,8 @@ export class CheckboxGroup extends LitElement {
                 <kyn-checkbox
                   class="select-all"
                   value="selectAll"
+                  ?checked=${this.selectAllChecked}
+                  ?indeterminate=${this.selectAllIndeterminate}
                   ?required=${this.required}
                   ?disabled=${this.disabled}
                   ?invalid=${this.invalidText !== '' ||
@@ -154,7 +168,7 @@ export class CheckboxGroup extends LitElement {
               `
             : null}
 
-          <slot></slot>
+          <slot @slotchange=${this._handleSlotChange}></slot>
 
           ${this.limitCheckboxes
             ? html`
@@ -199,6 +213,17 @@ export class CheckboxGroup extends LitElement {
       this.checkboxes.forEach((checkbox: any) => {
         checkbox.checked = this.value.includes(checkbox.value);
       });
+
+      const CheckedBoxesCount = this.checkboxes.filter(
+        (checkbox) => checkbox.checked
+      ).length;
+
+      // sync "Select All" checkbox state
+      this.selectAllChecked = CheckedBoxesCount === this.checkboxes.length;
+
+      // sync "Select All" indeterminate state
+      this.selectAllIndeterminate =
+        CheckedBoxesCount < this.checkboxes.length && CheckedBoxesCount > 0;
 
       // set form data value
       // const entries = new FormData();
@@ -373,6 +398,10 @@ export class CheckboxGroup extends LitElement {
         }
       }
     });
+  }
+
+  private _handleSlotChange() {
+    this.requestUpdate();
   }
 
   private _handleInvalid() {

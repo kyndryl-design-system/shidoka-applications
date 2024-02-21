@@ -99,6 +99,18 @@ export class Dropdown extends LitElement {
   @property({ type: String })
   selectAllText = 'Select all';
 
+  /** Is "Select All" box checked.
+   * @internal
+   */
+  @property({ type: Boolean })
+  selectAllChecked = false;
+
+  /** Is "Select All" indeterminate.
+   * @internal
+   */
+  @property({ type: Boolean })
+  selectAllIndeterminate = false;
+
   /**
    * Selected option value.
    * @ignore
@@ -276,6 +288,8 @@ export class Dropdown extends LitElement {
                       class="select-all"
                       value="selectAll"
                       multiple
+                      ?selected=${this.selectAllChecked}
+                      ?indeterminate=${this.selectAllIndeterminate}
                       ?disabled=${this.disabled}
                     >
                       ${this.selectAllText}
@@ -829,6 +843,15 @@ export class Dropdown extends LitElement {
 
     if (changedProps.has('value')) {
       this._validate(false, false);
+
+      // sync "Select All" checkbox state
+      this.selectAllChecked =
+        this.selectedOptions.length === this.options.length;
+
+      // sync "Select All" indeterminate state
+      this.selectAllIndeterminate =
+        this.selectedOptions.length < this.options.length &&
+        this.selectedOptions.length > 0;
 
       // close listbox
       if (!this.multiple) {
