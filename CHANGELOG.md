@@ -1,3 +1,11 @@
+## [1.5.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.5.0...v1.5.1) (2024-02-21)
+
+
+### Bug Fixes
+
+* **dropdown:** reset selected options on clear, tag, clear all ([88b72b0](https://github.com/kyndryl-design-system/shidoka-applications/commit/88b72b009deebc569e4761599d9d8df5383bcfba))
+* **dropdown:** single select not clearing old selections ([fd31652](https://github.com/kyndryl-design-system/shidoka-applications/commit/fd31652cdfcb8dba65407ebcf6d1b7b26f589593))
+
 # [1.5.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.4.1...v1.5.0) (2024-02-21)
 
 
