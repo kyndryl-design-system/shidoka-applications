@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.4.0...v1.4.1) (2024-02-21)
+
+
+### Bug Fixes
+
+* **dropdown:** prevent overriding option selected state, resolves [#102](https://github.com/kyndryl-design-system/shidoka-applications/issues/102) ([5301c26](https://github.com/kyndryl-design-system/shidoka-applications/commit/5301c26b8737dd3e3ba7ec6c1de02f5682a3a249))
+
 # [1.4.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.9...v1.4.0) (2024-02-20)
 
 

@@ -36,6 +36,8 @@ export class PaginationPageSizeDropdown extends LitElement {
    * @param {CustomEvent} event - The dropdown change event.
    */
   private handleChange(event: CustomEvent) {
+    this.pageSize = event.detail.value;
+
     this.dispatchEvent(
       new CustomEvent('on-page-size-change', {
         detail: { value: event.detail.value },
