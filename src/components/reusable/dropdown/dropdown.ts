@@ -847,13 +847,13 @@ export class Dropdown extends LitElement {
       // }
 
       // set selected state for each option
-      this.options.forEach((option: any) => {
-        if (this.multiple) {
-          option.selected = this.value.includes(option.value);
-        } else {
-          option.selected = this.value === option.value;
-        }
-      });
+      // this.options.forEach((option: any) => {
+      //   if (this.multiple) {
+      //     option.selected = this.value.includes(option.value);
+      //   } else {
+      //     option.selected = this.value === option.value;
+      //   }
+      // });
 
       // update selected option text
       if (!this.multiple) {

@@ -36,7 +36,7 @@ export class Pagination extends LitElement {
   pageSize = 5;
 
   /** Available options for the page size.*/
-  @property({ type: Array<Number> })
+  @property({ type: Array })
   pageSizeOptions: number[] = [5, 10, 20, 30, 40, 50, 100];
 
   /** Label for the page size dropdown.*/
