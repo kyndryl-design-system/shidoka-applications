@@ -569,14 +569,14 @@ export class Dropdown extends LitElement {
     }
 
     this._validate(true, false);
-
+    this._updateSelectedOptions();
     this.emitValue();
   }
 
   private handleTagClear(value: string) {
     // remove value
     this.updateValue(value, false);
-
+    this._updateSelectedOptions();
     this.emitValue();
   }
 
@@ -591,6 +591,7 @@ export class Dropdown extends LitElement {
     // clear selection for single select
     if (!this.multiple) {
       this.value = '';
+      this._updateSelectedOptions();
       this.emitValue();
     }
   }
@@ -663,6 +664,17 @@ export class Dropdown extends LitElement {
     }
   }
 
+  private _updateSelectedOptions() {
+    // set selected state for each option
+    this.options.forEach((option: any) => {
+      if (this.multiple) {
+        option.selected = this.value.includes(option.value);
+      } else {
+        option.selected = this.value === option.value;
+      }
+    });
+  }
+
   private _handleClick(e: any) {
     if (e.detail.value === 'selectAll') {
       if (e.detail.selected) {
@@ -683,14 +695,7 @@ export class Dropdown extends LitElement {
       this.assistiveText = 'Selected an item.';
     }
 
-    // set selected state for each option
-    this.options.forEach((option: any) => {
-      if (this.multiple) {
-        option.selected = this.value.includes(option.value);
-      } else {
-        option.selected = this.value === option.value;
-      }
-    });
+    this._updateSelectedOptions();
 
     // emit selected value
     this.emitValue();
