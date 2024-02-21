@@ -683,6 +683,15 @@ export class Dropdown extends LitElement {
       this.assistiveText = 'Selected an item.';
     }
 
+    // set selected state for each option
+    this.options.forEach((option: any) => {
+      if (this.multiple) {
+        option.selected = this.value.includes(option.value);
+      } else {
+        option.selected = this.value === option.value;
+      }
+    });
+
     // emit selected value
     this.emitValue();
   }
@@ -868,15 +877,6 @@ export class Dropdown extends LitElement {
       // } else {
       //   this.internals.setFormValue(this.value);
       // }
-
-      // set selected state for each option
-      // this.options.forEach((option: any) => {
-      //   if (this.multiple) {
-      //     option.selected = this.value.includes(option.value);
-      //   } else {
-      //     option.selected = this.value === option.value;
-      //   }
-      // });
 
       // update selected option text
       if (!this.multiple) {
