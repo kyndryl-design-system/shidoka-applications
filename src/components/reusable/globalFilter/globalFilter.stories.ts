@@ -177,7 +177,7 @@ export class SampleFilterComponent extends LitElement {
           @on-click=${(e: any) => this._handleCustomAction(e)}
         >
           <kd-icon slot="icon" .icon=${refreshIcon}></kd-icon>
-          Custom Action
+          <span class="filter-text">Custom Action</span>
         </kd-button>
 
         <kyn-overflow-menu slot="actions" anchorRight verticalDots>
