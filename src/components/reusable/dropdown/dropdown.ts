@@ -99,6 +99,18 @@ export class Dropdown extends LitElement {
   @property({ type: String })
   selectAllText = 'Select all';
 
+  /** Is "Select All" box checked.
+   * @internal
+   */
+  @property({ type: Boolean })
+  selectAllChecked = false;
+
+  /** Is "Select All" indeterminate.
+   * @internal
+   */
+  @property({ type: Boolean })
+  selectAllIndeterminate = false;
+
   /**
    * Selected option value.
    * @ignore
@@ -276,6 +288,8 @@ export class Dropdown extends LitElement {
                       class="select-all"
                       value="selectAll"
                       multiple
+                      ?selected=${this.selectAllChecked}
+                      ?indeterminate=${this.selectAllIndeterminate}
                       ?disabled=${this.disabled}
                     >
                       ${this.selectAllText}
@@ -555,14 +569,14 @@ export class Dropdown extends LitElement {
     }
 
     this._validate(true, false);
-
+    this._updateSelectedOptions();
     this.emitValue();
   }
 
   private handleTagClear(value: string) {
     // remove value
     this.updateValue(value, false);
-
+    this._updateSelectedOptions();
     this.emitValue();
   }
 
@@ -577,6 +591,7 @@ export class Dropdown extends LitElement {
     // clear selection for single select
     if (!this.multiple) {
       this.value = '';
+      this._updateSelectedOptions();
       this.emitValue();
     }
   }
@@ -649,6 +664,17 @@ export class Dropdown extends LitElement {
     }
   }
 
+  private _updateSelectedOptions() {
+    // set selected state for each option
+    this.options.forEach((option: any) => {
+      if (this.multiple) {
+        option.selected = this.value.includes(option.value);
+      } else {
+        option.selected = this.value === option.value;
+      }
+    });
+  }
+
   private _handleClick(e: any) {
     if (e.detail.value === 'selectAll') {
       if (e.detail.selected) {
@@ -668,6 +694,8 @@ export class Dropdown extends LitElement {
       this.updateValue(e.detail.value, e.detail.selected);
       this.assistiveText = 'Selected an item.';
     }
+
+    this._updateSelectedOptions();
 
     // emit selected value
     this.emitValue();
@@ -830,6 +858,15 @@ export class Dropdown extends LitElement {
     if (changedProps.has('value')) {
       this._validate(false, false);
 
+      // sync "Select All" checkbox state
+      this.selectAllChecked =
+        this.selectedOptions.length === this.options.length;
+
+      // sync "Select All" indeterminate state
+      this.selectAllIndeterminate =
+        this.selectedOptions.length < this.options.length &&
+        this.selectedOptions.length > 0;
+
       // close listbox
       if (!this.multiple) {
         this.open = false;
@@ -845,15 +882,6 @@ export class Dropdown extends LitElement {
       // } else {
       //   this.internals.setFormValue(this.value);
       // }
-
-      // set selected state for each option
-      this.options.forEach((option: any) => {
-        if (this.multiple) {
-          option.selected = this.value.includes(option.value);
-        } else {
-          option.selected = this.value === option.value;
-        }
-      });
 
       // update selected option text
       if (!this.multiple) {

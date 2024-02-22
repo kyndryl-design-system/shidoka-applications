@@ -1,3 +1,30 @@
+## [1.5.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.5.0...v1.5.1) (2024-02-21)
+
+
+### Bug Fixes
+
+* **dropdown:** reset selected options on clear, tag, clear all ([88b72b0](https://github.com/kyndryl-design-system/shidoka-applications/commit/88b72b009deebc569e4761599d9d8df5383bcfba))
+* **dropdown:** single select not clearing old selections ([fd31652](https://github.com/kyndryl-design-system/shidoka-applications/commit/fd31652cdfcb8dba65407ebcf6d1b7b26f589593))
+
+# [1.5.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.4.1...v1.5.0) (2024-02-21)
+
+
+### Bug Fixes
+
+* update foundation ([4e59625](https://github.com/kyndryl-design-system/shidoka-applications/commit/4e59625cc2c038c632a9489ab6d988752fac8429))
+
+
+### Features
+
+* **global-filter:** add global filter component and pattern ([#94](https://github.com/kyndryl-design-system/shidoka-applications/issues/94)) ([e9b72bb](https://github.com/kyndryl-design-system/shidoka-applications/commit/e9b72bb1c25ced7c0313ec5b1a7f037ff58dff7b))
+
+## [1.4.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.4.0...v1.4.1) (2024-02-21)
+
+
+### Bug Fixes
+
+* **dropdown:** prevent overriding option selected state, resolves [#102](https://github.com/kyndryl-design-system/shidoka-applications/issues/102) ([5301c26](https://github.com/kyndryl-design-system/shidoka-applications/commit/5301c26b8737dd3e3ba7ec6c1de02f5682a3a249))
+
 # [1.4.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.3.9...v1.4.0) (2024-02-20)
 
 

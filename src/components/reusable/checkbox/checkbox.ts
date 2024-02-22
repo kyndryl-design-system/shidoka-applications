@@ -31,7 +31,7 @@ export class Checkbox extends LitElement {
   /**
    * Checkbox checked state, inherited from the parent group if value matches.
    */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   checked = false;
 
   /**
