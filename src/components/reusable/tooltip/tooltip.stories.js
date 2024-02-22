@@ -32,6 +32,7 @@ const args = {
   anchorPosition: 'center',
   direction: 'top',
   assistiveText: 'Toggle Tooltip',
+  unnamed: 'Tooltip content here.',
 };
 
 export const Tooltip = {
@@ -43,14 +44,17 @@ export const Tooltip = {
         anchorPosition=${args.anchorPosition}
         direction=${args.direction}
       >
-        Tooltip content here.
+        ${args.unnamed}
       </kyn-tooltip>
     `;
   },
 };
 
 export const CustomAnchor = {
-  args,
+  args: {
+    ...args,
+    unnamed: 'Small info icon anchor.',
+  },
   render: (args) => {
     return html`
       <kyn-tooltip
@@ -60,7 +64,7 @@ export const CustomAnchor = {
       >
         <kd-icon slot="anchor" .icon=${infoIcon16}></kd-icon>
 
-        Small info icon anchor.
+        ${args.unnamed}
       </kyn-tooltip>
     `;
   },
