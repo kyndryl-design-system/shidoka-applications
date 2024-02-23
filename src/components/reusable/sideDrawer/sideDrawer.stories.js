@@ -4,8 +4,6 @@ import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import '../dropdown';
-import '../textArea';
 
 export default {
   title: 'Components/SideDrawer',
