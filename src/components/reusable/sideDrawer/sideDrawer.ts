@@ -176,10 +176,6 @@ export class SideDrawer extends LitElement {
       }
     }
   }
-
-  private _toggleDrawer() {
-    this.open = !this.open;
-  }
 }
 
 declare global {
