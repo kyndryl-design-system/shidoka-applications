@@ -11,23 +11,18 @@ dialog {
   background: var(--kd-color-background-ui-default);
   border: 1px solid var(--kd-color-border-light);
   box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.12);
-  right: -100%;
+  right: 0;
   min-height: 100%;
   left: auto;
   margin: 0;
   //animation: slideOutRight 3s linear forwards;
 
   &[open] {
-    animation: slideInRight 0.3s forwards;
-    //animation: dialog-in 250ms ease-out forwards;
-    // animation: dialog-in 2.5s forwards;
-    // -webkit-animation: dialog-in 2.5s forwards;
-    //transition: left 3.5s;
+    animation: dialog-in 400ms forwards;
   }
 
   &::backdrop {
-    background: rgb(60 61 60 / 40%);
-    transition: opacity cubic-bezier(0.35, 0, 0.2, 1) 0.3s;
+    background: rgba(60, 61, 60, 0.4);
   }
 
   &.size--sm {
@@ -143,31 +138,41 @@ h1 {
   gap: 16px;
 }
 
-@keyframes slideInRight {
-  0% {
-    right: -100%; /* Start position */
+@supports (transition-behavior: allow-discrete) {
+  dialog {
+    transition: right 400ms ease, transform 400ms ease,
+      overlay 400ms ease allow-discrete, display 400ms ease allow-discrete;
+    right: -100%;
+    transform: translateX(100%);
+
+    &::backdrop {
+      background-color: rgba(0, 0, 0, 0);
+      transition: display 400ms allow-discrete, overlay 400ms allow-discrete,
+        background-color 400ms;
+    }
+
+    &[open] {
+      animation: none;
+      right: 0;
+      transform: translateX(0);
+
+      &::backdrop {
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+    }
   }
-  25% {
-    right: -75%;
+}
+@keyframes dialog-in {
+  0% {
+    right: -100%;
+    transform: translateX(100%);
   }
   50% {
     right: -50%;
-  }
-  100% {
-    right: 0; /* End position */
-  }
-}
-@keyframes slideOutRight {
-  0% {
-    transform: translateX(0%);
-  }
-  0% {
-    transform: translateX(25%);
-  }
-  0% {
     transform: translateX(50%);
   }
-  0% {
-    transform: translateX(100%);
+  100% {
+    right: 0;
+    transform: translateX(0);
   }
 }

@@ -81,53 +81,16 @@ export const SideDrawer = {
       >
         <span slot="anchor">Open Drawer</span>
 
-        <kyn-dropdown
-          style="width:100%;"
-          placeholder=${dropDownArgs.placeholder}
-          size=${dropDownArgs.size}
-          ?inline=${dropDownArgs.inline}
-          name=${dropDownArgs.name}
-          ?open=${dropDownArgs.open}
-          multiple
-          ?required=${dropDownArgs.required}
-          ?disabled=${dropDownArgs.disabled}
-          ?hideTags=${dropDownArgs.hideTags}
-          ?selectAll=${dropDownArgs.selectAll}
-          selectAllText=${dropDownArgs.selectAllText}
-          invalidText=${dropDownArgs.invalidText}
-          caption=${dropDownArgs.caption}
-          @on-change=${(e) => action(e.type)(e)}
-        >
-          <span slot="label">${dropDownArgs.label}</span>
-          <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
-          <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
-        </kyn-dropdown>
+        <div>
+          This is a simple paragraph for the drawer content. You can customize
+          and add more content / components here as needed.
+        </div>
         <br />
-        <br />
-        <div style="width: 100%;">
-          <kyn-text-area
-            style="width:100%;"
-            name=${textAreaArgs.name}
-            value=${textAreaArgs.value}
-            placeholder=${textAreaArgs.placeholder}
-            caption=${textAreaArgs.caption}
-            ?required=${textAreaArgs.required}
-            ?disabled=${args.disabled}
-            invalidText=${textAreaArgs.invalidText}
-            minLength=${ifDefined(textAreaArgs.minLength)}
-            maxLength=${ifDefined(textAreaArgs.maxLength)}
-            @on-input=${(e) => action(e.type)(e)}
-            @keydown=${(e) => e.stopPropagation()}
-          >
-            ${textAreaArgs.unnamed}
-          </kyn-text-area>
-          <br /><br />
-          <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
-            cursus, purus vitae egestas mollis, augue augue interdum quam, sit
-            amet volutpat justo magna quis justo. Aliquam dapibus mi a arcu
-            consequat, sed placerat metus bibendum. Suspendisse pretium nibh
-          </div>
+        <div>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin cursus,
+          purus vitae egestas mollis, augue augue interdum quam, sit amet
+          volutpat justo magna quis justo. Aliquam dapibus mi a arcu consequat,
+          sed placerat metus bibendum. Suspendisse pretium nibh
         </div>
       </kyn-side-drawer>
     `;
@@ -152,53 +115,16 @@ export const BeforeClose = {
       >
         <span slot="anchor">Open Drawer</span>
 
-        <kyn-dropdown
-          style="width:100%;"
-          placeholder=${dropDownArgs.placeholder}
-          size=${dropDownArgs.size}
-          ?inline=${dropDownArgs.inline}
-          name=${dropDownArgs.name}
-          ?open=${dropDownArgs.open}
-          multiple
-          ?required=${dropDownArgs.required}
-          ?disabled=${dropDownArgs.disabled}
-          ?hideTags=${dropDownArgs.hideTags}
-          ?selectAll=${dropDownArgs.selectAll}
-          selectAllText=${dropDownArgs.selectAllText}
-          invalidText=${dropDownArgs.invalidText}
-          caption=${dropDownArgs.caption}
-          @on-change=${(e) => action(e.type)(e)}
-        >
-          <span slot="label">${dropDownArgs.label}</span>
-          <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
-          <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
-        </kyn-dropdown>
+        <div>
+          This is a simple paragraph for the drawer content. You can customize
+          and add more content / components here as needed.
+        </div>
         <br />
-        <br />
-        <div style="width: 100%;">
-          <kyn-text-area
-            style="width:100%;"
-            name=${textAreaArgs.name}
-            value=${textAreaArgs.value}
-            placeholder=${textAreaArgs.placeholder}
-            caption=${textAreaArgs.caption}
-            ?required=${textAreaArgs.required}
-            ?disabled=${args.disabled}
-            invalidText=${textAreaArgs.invalidText}
-            minLength=${ifDefined(textAreaArgs.minLength)}
-            maxLength=${ifDefined(textAreaArgs.maxLength)}
-            @on-input=${(e) => action(e.type)(e)}
-            @keydown=${(e) => e.stopPropagation()}
-          >
-            ${textAreaArgs.unnamed}
-          </kyn-text-area>
-          <br /><br />
-          <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
-            cursus, purus vitae egestas mollis, augue augue interdum quam, sit
-            amet volutpat justo magna quis justo. Aliquam dapibus mi a arcu
-            consequat, sed placerat metus bibendum. Suspendisse pretium nibh
-          </div>
+        <div>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin cursus,
+          purus vitae egestas mollis, augue augue interdum quam, sit amet
+          volutpat justo magna quis justo. Aliquam dapibus mi a arcu consequat,
+          sed placerat metus bibendum. Suspendisse pretium nibh
         </div>
       </kyn-side-drawer>
     `;

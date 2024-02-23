@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, css } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import SideDrawerScss from './sideDrawer.scss';
@@ -16,7 +16,25 @@ import closeIcon from '@carbon/icons/es/close/32';
 
 @customElement('kyn-side-drawer')
 export class SideDrawer extends LitElement {
-  static override styles = SideDrawerScss;
+  static override styles = [
+    SideDrawerScss,
+    css`
+      @supports (transition-behavior: allow-discrete) {
+        @starting-style {
+          dialog[open] {
+            right: -100%;
+            transform: translateX(100%);
+          }
+        }
+
+        @starting-style {
+          dialog[open]::backdrop {
+            background-color: rgb(0, 0, 0, 0);
+          }
+        }
+      }
+    `,
+  ];
 
   /**
    * Drawer open state.
