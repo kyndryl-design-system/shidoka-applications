@@ -1,3 +1,10 @@
+## [1.5.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.5.3...v1.5.4) (2024-02-23)
+
+
+### Bug Fixes
+
+* **modal:** add discrete transitions for supported browsers ([#105](https://github.com/kyndryl-design-system/shidoka-applications/issues/105)) ([a8c6feb](https://github.com/kyndryl-design-system/shidoka-applications/commit/a8c6febe0df1c2bae8137848c9a2f9d2497f31e7))
+
 ## [1.5.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.5.2...v1.5.3) (2024-02-23)
 
 
