@@ -9,9 +9,9 @@ import closeIcon from '@carbon/icons/es/close/32';
 
 /**
  * Side Drawer.
- * @slot unnamed - Slot for modal body content.
+ * @slot unnamed - Slot for drawer body content.
  * @slot anchor - Slot for the anchor button content.
- * @fires on-close - Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).
+ * @fires on-close - Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).
  */
 
 @customElement('kyn-side-drawer')
@@ -46,21 +46,21 @@ export class SideDrawer extends LitElement {
    * Submit button text.
    */
   @property({ type: String })
-  submitBtnText = 'OK';
+  submitBtnText = 'Ok';
 
   /**
    * Cancel button text.
    */
   @property({ type: String })
-  canceBtnText = 'Cancel';
-
-  /** Changes the primary button styles to indicate the action is destructive. */
-  @property({ type: Boolean })
-  destructive = false;
+  cancelBtnText = 'Cancel';
 
   /** Disables the primary button. */
   @property({ type: Boolean })
   submitBtnDisabled = false;
+
+  /** Determine whether needs footer */
+  @property({ type: Boolean })
+  hideFooter = false;
 
   /** Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`. */
   @property({ attribute: false })
@@ -73,12 +73,108 @@ export class SideDrawer extends LitElement {
   _dialog!: any;
 
   override render() {
+    const classes = {
+      modal: true,
+      dialog: true,
+      'size--md': this.size === 'md',
+      'size--sm': this.size === 'sm',
+    };
+
     return html`
-      <button @click="${this._toggleDrawer}">Toggle Drawer</button>
-      <dialog ?open="${this.open}">
-        <slot></slot>
+      <button class="anchor" @click=${this._openDrawer}>
+        <slot name="anchor"></slot>
+      </button>
+
+      <dialog
+        class="${classMap(classes)}"
+        autofocus
+        aria-labelledby="dialogLabel"
+        @cancel=${(e: Event) => this._closeDrawer(e, 'cancel')}
+      >
+        <div class="drawer-content-wrapper">
+          <!--  Header -->
+          <header>
+            <div class="header-label-title">
+              ${this.labelText !== ''
+                ? html`<span class="label">${this.labelText}</span>`
+                : null}
+              <h1 id="dialogLabel">${this.titleText}</h1>
+            </div>
+            <div class="close-wrapper">
+              <button
+                class="close"
+                @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
+              >
+                <kd-icon .icon=${closeIcon}></kd-icon>
+              </button>
+            </div>
+          </header>
+          <!-- Body -->
+          <div>
+            <slot></slot>
+          </div>
+        </div>
+        <!-- footer -->
+        ${!this.hideFooter
+          ? html`
+              <div class="dialog-footer">
+                <div class="actions">
+                  <kd-button
+                    value="Ok"
+                    ?disabled=${this.submitBtnDisabled}
+                    @click=${(e: Event) => this._closeDrawer(e, 'ok')}
+                  >
+                    ${this.submitBtnText}
+                  </kd-button>
+
+                  <kd-button
+                    value="Cancel"
+                    kind="secondary"
+                    @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
+                  >
+                    ${this.cancelBtnText}
+                  </kd-button>
+                </div>
+              </div>
+            `
+          : null}
       </dialog>
     `;
+  }
+
+  private _openDrawer() {
+    this.open = true;
+  }
+
+  private _closeDrawer(e: Event, returnValue: string) {
+    if (
+      !this.beforeClose ||
+      (this.beforeClose && this.beforeClose(returnValue))
+    ) {
+      this.open = false;
+      this._dialog.returnValue = returnValue;
+      this._emitCloseEvent(e);
+    }
+  }
+
+  private _emitCloseEvent(e: Event) {
+    const event = new CustomEvent('on-close', {
+      detail: {
+        returnValue: this._dialog.returnValue,
+        origEvent: e,
+      },
+    });
+    this.dispatchEvent(event);
+  }
+
+  override updated(changedProps: any) {
+    if (changedProps.has('open')) {
+      if (this.open) {
+        this._dialog.showModal();
+      } else {
+        this._dialog.close();
+      }
+    }
   }
 
   private _toggleDrawer() {
