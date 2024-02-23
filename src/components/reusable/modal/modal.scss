@@ -17,11 +17,11 @@ dialog {
   max-height: calc(100% - 32px);
 
   &[open] {
-    animation: dialog-in 250ms ease-out forwards;
+    animation: dialog-in 400ms ease-out;
   }
 
   &::backdrop {
-    background: none;
+    background-color: rgba(0, 0, 0, 0.4);
   }
 
   &.size--md {
@@ -30,6 +30,44 @@ dialog {
 
   &.size--lg {
     width: 711px;
+  }
+}
+
+@supports (transition-behavior: allow-discrete) {
+  dialog {
+    transition: opacity 400ms ease-out, transform 400ms ease-out,
+      overlay 400ms ease-out allow-discrete,
+      display 400ms ease-out allow-discrete;
+    opacity: 0;
+    transform: scale(0);
+
+    &::backdrop {
+      background-color: rgba(0, 0, 0, 0);
+      transition: display 400ms allow-discrete, overlay 400ms allow-discrete,
+        background-color 400ms;
+    }
+
+    &[open] {
+      animation: none;
+      opacity: 1;
+      transform: scale(1);
+
+      &::backdrop {
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+    }
+  }
+}
+
+@keyframes dialog-in {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
@@ -109,23 +147,4 @@ h1 {
   display: flex;
   align-items: center;
   gap: 16px;
-}
-
-@keyframes dialog-in {
-  0% {
-    opacity: 0;
-    transform: scale(0);
-    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0);
-  }
-
-  75% {
-    transform: scale(1.1);
-    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.4);
-  }
-
-  100% {
-    opacity: 1;
-    transform: scale(1);
-    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.4);
-  }
 }

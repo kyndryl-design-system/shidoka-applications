@@ -1,3 +1,17 @@
+## [1.5.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.5.3...v1.5.4) (2024-02-23)
+
+
+### Bug Fixes
+
+* **modal:** add discrete transitions for supported browsers ([#105](https://github.com/kyndryl-design-system/shidoka-applications/issues/105)) ([a8c6feb](https://github.com/kyndryl-design-system/shidoka-applications/commit/a8c6febe0df1c2bae8137848c9a2f9d2497f31e7))
+
+## [1.5.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.5.2...v1.5.3) (2024-02-23)
+
+
+### Bug Fixes
+
+* **dropdown:** open drawer upwards if closer to bottom of viewport, resolves [#103](https://github.com/kyndryl-design-system/shidoka-applications/issues/103) ([df683a7](https://github.com/kyndryl-design-system/shidoka-applications/commit/df683a7f1d74faccfc5e7b4f090cbc3a51f201ac))
+
 ## [1.5.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.5.1...v1.5.2) (2024-02-22)
 
 
