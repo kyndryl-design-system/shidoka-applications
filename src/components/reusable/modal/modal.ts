@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, css } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import ModalScss from './modal.scss';
@@ -16,7 +16,25 @@ import closeIcon from '@carbon/icons/es/close/32';
  */
 @customElement('kyn-modal')
 export class Modal extends LitElement {
-  static override styles = ModalScss;
+  static override styles = [
+    ModalScss,
+    css`
+      @supports (transition-behavior: allow-discrete) {
+        @starting-style {
+          dialog[open] {
+            opacity: 0;
+            transform: scale(0);
+          }
+        }
+
+        @starting-style {
+          dialog[open]::backdrop {
+            background-color: rgb(0, 0, 0, 0);
+          }
+        }
+      }
+    `,
+  ];
 
   /** Modal open state. */
   @property({ type: Boolean })
