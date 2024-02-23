@@ -80,6 +80,10 @@ export class SideDrawer extends LitElement {
   @property({ type: Boolean })
   hideFooter = false;
 
+  /** Changes the primary button styles to indicate the action is destructive. */
+  @property({ type: Boolean })
+  destructive = false;
+
   /** Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`. */
   @property({ attribute: false })
   beforeClose!: Function;
@@ -140,6 +144,7 @@ export class SideDrawer extends LitElement {
                   <kd-button
                     value="Ok"
                     ?disabled=${this.submitBtnDisabled}
+                    ?destructive=${this.destructive}
                     @click=${(e: Event) => this._closeDrawer(e, 'ok')}
                   >
                     ${this.submitBtnText}

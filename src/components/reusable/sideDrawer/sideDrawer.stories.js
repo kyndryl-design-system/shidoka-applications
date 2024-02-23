@@ -31,35 +31,7 @@ const args = {
   cancelBtnText: 'Cancel',
   submitBtnDisabled: false,
   hideFooter: false,
-};
-
-const dropDownArgs = {
-  label: 'Label',
-  placeholder: '',
-  size: 'md',
-  inline: false,
-  name: 'example',
-  open: false,
-  required: false,
-  disabled: false,
-  hideTags: false,
-  selectAll: false,
-  selectAllText: 'Select all',
-  invalidText: '',
-  caption: '',
-};
-
-const textAreaArgs = {
-  unnamed: 'Label',
-  name: 'name',
-  value: '',
-  placeholder: 'Placeholder',
-  caption: '',
-  required: false,
-  disabled: false,
-  invalidText: '',
-  minLength: undefined,
-  maxLength: undefined,
+  destructive: false,
 };
 
 export const SideDrawer = {
@@ -75,6 +47,7 @@ export const SideDrawer = {
         cancelBtnText=${args.cancelBtnText}
         ?submitBtnDisabled=${args.submitBtnDisabled}
         ?hideFooter=${args.hideFooter}
+        ?destructive=${args.destructive}
         @on-close=${(e) => action(e.type)(e)}
       >
         <span slot="anchor">Open Drawer</span>
@@ -108,6 +81,7 @@ export const BeforeClose = {
         cancelBtnText=${args.cancelBtnText}
         ?submitBtnDisabled=${args.submitBtnDisabled}
         ?hideFooter=${args.hideFooter}
+        ?destructive=${args.destructive}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
       >
