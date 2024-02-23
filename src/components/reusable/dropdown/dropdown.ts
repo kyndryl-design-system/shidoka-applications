@@ -188,6 +188,13 @@ export class Dropdown extends LitElement {
   @state()
   isInvalid = false;
 
+  /**
+   * Open drawer upwards.
+   * @ignore
+   */
+  @state()
+  _openUpwards = false;
+
   override render() {
     return html`
       <div
@@ -274,6 +281,7 @@ export class Dropdown extends LitElement {
               class=${classMap({
                 options: true,
                 open: this.open,
+                upwards: this._openUpwards,
               })}
               role="listbox"
               tabindex="0"
@@ -834,6 +842,22 @@ export class Dropdown extends LitElement {
       },
     });
     this.dispatchEvent(event);
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('open')) {
+      if (this.open) {
+        // open dropdown upwards if closer to bottom fo viewport
+        if (
+          this.buttonEl.getBoundingClientRect().top >
+          window.innerHeight * 0.6
+        ) {
+          this._openUpwards = true;
+        } else {
+          this._openUpwards = false;
+        }
+      }
+    }
   }
 
   override updated(changedProps: any) {
