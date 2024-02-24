@@ -1,3 +1,18 @@
+# [1.6.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.5.4...v1.6.0) (2024-02-24)
+
+
+### Bug Fixes
+
+* delete unwanted code ([68d2bcf](https://github.com/kyndryl-design-system/shidoka-applications/commit/68d2bcf7a105ab8b8734005d7cb0bdd120127183))
+* **style:** animation slide in slide out using allow-discrete prop ([f3349b0](https://github.com/kyndryl-design-system/shidoka-applications/commit/f3349b0d2f7670ed8dbddf8e5805e6a2ad6c2bfb))
+
+
+### Features
+
+* added distructive state of primary button of drawer ([4885718](https://github.com/kyndryl-design-system/shidoka-applications/commit/48857188884117a0228c25873566f5d2f7a45105))
+* added Side drawer component ([b183b3d](https://github.com/kyndryl-design-system/shidoka-applications/commit/b183b3daa1375fcbffff0d40045b9a53c1cc79f5))
+* created side drawer structure ([318590e](https://github.com/kyndryl-design-system/shidoka-applications/commit/318590ec352379cad79e0b10127b350392ac70f1))
+
 ## [1.5.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.5.3...v1.5.4) (2024-02-23)
 
 
