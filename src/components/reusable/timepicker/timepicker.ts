@@ -192,7 +192,7 @@ export class TimePicker extends LitElement {
     }
 
     if (changedProps.has('value')) {
-      // this.inputEl.value = this.value;
+      this.inputEl.value = this.value;
       //set form data value
       // this.internals.setFormValue(this.value);
 
