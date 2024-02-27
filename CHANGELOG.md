@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.1...v1.6.2) (2024-02-27)
+
+
+### Bug Fixes
+
+* **side-drawer:** remove extraneous positioning css ([5d83f94](https://github.com/kyndryl-design-system/shidoka-applications/commit/5d83f94aabf012ded4e2b8e88d77e199e216ef44))
+
 ## [1.6.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.0...v1.6.1) (2024-02-26)
 
 
