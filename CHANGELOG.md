@@ -1,3 +1,11 @@
+## [1.6.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.0...v1.6.1) (2024-02-26)
+
+
+### Bug Fixes
+
+* **forms:** native input value binding ([81b78be](https://github.com/kyndryl-design-system/shidoka-applications/commit/81b78be0376423f85d76310b3d30bffda68814ca))
+* **forms:** native input value binding, resolves [#107](https://github.com/kyndryl-design-system/shidoka-applications/issues/107) ([7967b32](https://github.com/kyndryl-design-system/shidoka-applications/commit/7967b320ec1ef5ef0b08e8c5de844f9f548aeee2))
+
 # [1.6.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.5.4...v1.6.0) (2024-02-24)
 
 
