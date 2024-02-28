@@ -2,32 +2,34 @@
   border: none;
   cursor: pointer;
   border-radius: 4px;
+  font: inherit;
   transition: background-color 150ms ease-out, color 150ms ease-out,
     outline-color 150ms ease-out;
-  background: var(--kd-color-background-ui-default);
+  background: transparent;
+  color: inherit;
   outline: 2px solid transparent;
   outline-offset: -2px;
 
   &:hover {
-    background: var(--kd-color-background-primary);
-    color: var(--kd-color-text-inversed);
-  }
-
-  &:active {
-    background: var(--kd-color-background-primary-pressed);
-    color: var(--kd-color-text-inversed);
+    background-color: var(--kd-color-background-ui-soft);
+    color: var(--kd-color-text-primary-hover);
   }
 
   &:focus {
     outline-color: var(--kd-color-border-focus);
+    background-color: var(--kd-color-background-ui-soft);
+    color: var(--kd-color-text-tertiary);
   }
 
-  &.active {
-    color: var(--kd-color-text-link);
+  &:active {
+    background-color: var(--kd-color-background-primary-pressed);
+    color: var(--kd-color-text-inversed);
+  }
 
-    &:hover {
-      color: var(--kd-color-text-inversed);
-    }
+  &[disabled] {
+    background-color: var(--kd-color-background-disabled) !important;
+    color: var(--kd-color-text-disabled) !important;
+    cursor: not-allowed !important;
   }
 }
 
@@ -39,12 +41,6 @@
 .menu {
   position: relative;
 
-  &::after {
-    content: '';
-    display: block;
-    height: 4px;
-  }
-
   .interactive {
     position: relative;
     cursor: pointer;
@@ -52,33 +48,38 @@
 
   &__content {
     position: fixed;
-    top: calc(var(--kd-header-height) - 4px);
-    border-top: 4px solid var(--kd-color-background-ui-default);
+    top: calc(var(--kd-header-height));
     right: 0;
     left: 0;
     bottom: 0;
     overflow-y: auto;
-    border-radius: 4px;
-    background: var(--kd-color-background-ui-soft);
+    background: var(--kd-color-background-accent-subtle);
+    border-bottom: 4px solid var(--kd-color-border-accent-spruce-light);
     transition: visibility 0.15s, opacity 0.15s ease-in-out,
       transform 0.15s ease-in-out;
     transform: translateY(-20px);
     visibility: hidden;
     opacity: 0;
     z-index: -1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    // min-width: 200px;
 
     &.slotted {
-      padding: 4px;
+      padding: 8px;
     }
 
     @media (min-width: 42rem) {
       position: absolute;
       // top: 100%;
+      top: calc(100% + 12px);
       right: 0;
       bottom: auto;
       left: auto;
       border-top: none;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      background: var(--kd-color-background-ui-soft);
+      box-shadow: 0px 2px 8px 0px rgba(61, 60, 60, 0.25);
       max-height: calc(100vh - var(--kd-header-height));
     }
 
@@ -104,12 +105,11 @@
 
   &.open {
     .interactive {
-      color: var(--kd-color-text-link);
-      background: var(--kd-color-background-ui-soft);
+      color: var(--kd-color-text-inversed);
+      background-color: var(--kd-color-background-focus);
 
-      &:hover {
-        background: var(--kd-color-background-primary);
-        color: var(--kd-color-text-inversed);
+      &:active {
+        background-color: var(--kd-color-background-primary-pressed);
       }
     }
   }

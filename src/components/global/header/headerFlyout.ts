@@ -9,7 +9,10 @@ import { classMap } from 'lit/directives/class-map.js';
 import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderFlyoutScss from './headerFlyout.scss';
-import caratDownIcon from '@carbon/icons/es/caret--down/16';
+import chevronIcon from '@carbon/icons/es/chevron--right/16';
+import backIcon from '@carbon/icons/es/arrow--left/16';
+
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 /**
  * Component for header flyout items.
@@ -32,7 +35,14 @@ export class HeaderFlyout extends LitElement {
   @property({ type: Boolean })
   hideArrow = false;
 
-  /** Button assistive text, title + aria-label. */
+  /** Button label. */
+  @property({ type: String })
+  label = '';
+
+  /**
+   * DEPRECATED. Use `label` instead.
+   * Button assistive text, title + aria-label.
+   */
   @property({ type: String })
   assistiveText = '';
 
@@ -41,23 +51,21 @@ export class HeaderFlyout extends LitElement {
   href = '';
 
   /**
-   * Determines if menu should be a small flyout or large flyout for small screens.
-   * @ignore
-   */
-  @state()
-  breakpointHit = false;
-
-  /**
    * Queries any slotted HTML elements.
    * @ignore
    */
   @queryAssignedElements()
   slottedElements!: Array<HTMLElement>;
 
+  /** Timeout function to delay modal close.
+   * @internal
+   */
+  @state()
+  timer: any;
+
   override render() {
     const classes = {
       menu: true,
-      'breakpoint-hit': this.breakpointHit,
       open: this.open,
     };
 
@@ -71,58 +79,77 @@ export class HeaderFlyout extends LitElement {
       <div
         class="${classMap(classes)}"
         @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
+        @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
       >
         ${this.href !== ''
           ? html`
               <a
                 class="btn interactive"
                 href=${this.href}
-                title=${this.assistiveText}
-                aria-label=${this.assistiveText}
+                title=${this.label || this.assistiveText}
+                aria-label=${this.label || this.assistiveText}
                 @click=${this.handleClick}
                 @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
               >
                 <slot name="button"></slot>
 
-                ${!this.hideArrow
-                  ? html`
-                      <kd-icon slot="button" .icon="${caratDownIcon}"></kd-icon>
-                    `
-                  : null}
+                <span class="label"> ${this.label || this.assistiveText} </span>
+
+                <kd-icon
+                  slot="button"
+                  class="arrow"
+                  .icon="${chevronIcon}"
+                ></kd-icon>
               </a>
             `
           : html`
               <button
                 class="btn interactive"
-                title=${this.assistiveText}
-                aria-label=${this.assistiveText}
+                title=${this.label || this.assistiveText}
+                aria-label=${this.label || this.assistiveText}
                 @click=${this.handleClick}
                 @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
               >
                 <slot name="button"></slot>
 
-                ${!this.hideArrow
-                  ? html`
-                      <kd-icon slot="button" .icon="${caratDownIcon}"></kd-icon>
-                    `
-                  : null}
+                <span class="label"> ${this.label || this.assistiveText} </span>
+
+                <kd-icon
+                  slot="button"
+                  class="arrow"
+                  .icon="${chevronIcon}"
+                ></kd-icon>
               </button>
             `}
 
-        <div class=${classMap(contentClasses)}><slot></slot></div>
+        <div class=${classMap(contentClasses)}>
+          <button class="go-back" @click=${() => this._handleBack()}>
+            <kd-icon .icon=${backIcon}></kd-icon>
+            Back
+          </button>
+          <slot></slot>
+        </div>
       </div>
     `;
   }
 
+  private _handleBack() {
+    this.open = false;
+  }
+
   private handlePointerEnter(e: PointerEvent) {
     if (e.pointerType === 'mouse') {
+      clearTimeout(this.timer);
       this.open = true;
     }
   }
 
   private handlePointerLeave(e: PointerEvent) {
     if (e.pointerType === 'mouse' && e.relatedTarget !== null) {
-      this.open = false;
+      this.timer = setTimeout(() => {
+        this.open = false;
+        clearTimeout(this.timer);
+      }, 300);
     }
   }
 
@@ -140,34 +167,12 @@ export class HeaderFlyout extends LitElement {
     super.connectedCallback();
 
     document.addEventListener('click', (e) => this.handleClickOut(e));
-
-    this.testBreakpoint();
-    window?.addEventListener(
-      'resize',
-      debounce(() => {
-        this.testBreakpoint();
-      })
-    );
   }
 
   override disconnectedCallback() {
     document.removeEventListener('click', (e) => this.handleClickOut(e));
 
-    window?.removeEventListener(
-      'resize',
-      debounce(() => {
-        this.testBreakpoint();
-      })
-    );
-
     super.disconnectedCallback();
-  }
-
-  private testBreakpoint() {
-    const nav = querySelectorDeep('kyn-header');
-    if (nav) {
-      this.breakpointHit = nav!.breakpointHit;
-    }
   }
 }
 

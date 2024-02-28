@@ -1,4 +1,5 @@
-@import '../../../common/scss/global.scss';
+@use '../../../common/scss/global.scss';
+@use './header-interactive.scss';
 
 :host {
   display: flex;
@@ -6,8 +7,50 @@
 
 .header-flyouts {
   display: flex;
+  align-items: center;
 }
 
 ::slotted(kyn-header-flyout) {
-  margin: 0 2px;
+  width: 100%;
+}
+
+kd-icon {
+  display: block;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+}
+
+.menu__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-bottom: none;
+  min-width: initial;
+  padding: 8px;
+}
+
+@media (min-width: 42rem) {
+  .interactive {
+    display: none;
+  }
+
+  .menu__content {
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    position: static;
+    background: transparent;
+    box-shadow: none;
+    overflow: initial;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    z-index: initial;
+    padding: 0;
+  }
 }

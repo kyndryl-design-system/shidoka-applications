@@ -4,8 +4,8 @@ import './';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import switcherIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/switcher.svg';
-import userAvatarIcon from '@carbon/icons/es/user--avatar/24';
-import helpIcon from '@carbon/icons/es/help/16';
+import userAvatarIcon from '@carbon/icons/es/user--avatar/20';
+import helpIcon from '@carbon/icons/es/help/20';
 
 export default {
   title: 'Global Components/Header',
@@ -100,21 +100,25 @@ export const WithFlyouts = {
       ?divider=${args.divider}
     >
       <kyn-header-flyouts>
-        <kyn-header-flyout>
-          <span slot="button">Sign in</span>
+        <kyn-header-flyout label="Menu Label">
+          <kd-icon .icon=${helpIcon} slot="button"></kd-icon>
 
           <div>
-            <kyn-header-link href="javascript:void(0)"> Login </kyn-header-link>
             <kyn-header-link href="javascript:void(0)">
-              Sign up
+              Example 1
+            </kyn-header-link>
+            <kyn-header-link href="javascript:void(0)">
+              Example 2
             </kyn-header-link>
           </div>
         </kyn-header-flyout>
 
-        <kyn-header-flyout assistiveText="My Account" hideArrow>
-          <kyn-header-avatar initials="KB" slot="button"></kyn-header-avatar>
+        <kyn-header-flyout label="Menu Label">
+          <kd-icon slot="button" .icon=${userAvatarIcon}></kd-icon>
 
-          <kyn-header-link href="javascript:void(0)"> Logout </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            Example Link
+          </kyn-header-link>
         </kyn-header-flyout>
       </kyn-header-flyouts>
     </kyn-header>
@@ -196,24 +200,7 @@ export const WithEverything = {
 
       <kyn-header-flyouts>
         <kyn-header-flyout>
-          <span slot="button">Sign in</span>
-
-          <div>
-            <kyn-header-link href="javascript:void(0)"> Login </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              Sign up
-            </kyn-header-link>
-          </div>
-        </kyn-header-flyout>
-
-        <kyn-header-flyout>
-          <span
-            slot="button"
-            style="display: flex; align-items: center; gap: 6px;"
-          >
-            <kd-icon .icon=${helpIcon}></kd-icon>
-            Support
-          </span>
+          <kd-icon .icon=${helpIcon} slot="button"></kd-icon>
 
           <div>
             <kyn-header-link href="javascript:void(0)">
@@ -226,9 +213,11 @@ export const WithEverything = {
         </kyn-header-flyout>
 
         <kyn-header-flyout assistiveText="My Account" hideArrow>
-          <kyn-header-avatar initials="KB" slot="button"></kyn-header-avatar>
+          <kd-icon slot="button" .icon=${userAvatarIcon}></kd-icon>
 
-          <kyn-header-link href="javascript:void(0)"> Logout </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            Example Link
+          </kyn-header-link>
         </kyn-header-flyout>
       </kyn-header-flyouts>
     </kyn-header>

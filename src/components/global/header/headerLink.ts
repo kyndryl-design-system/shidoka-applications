@@ -66,6 +66,12 @@ export class HeaderLink extends LitElement {
   @queryAssignedElements({ slot: 'links' })
   slottedElements!: Array<HTMLElement>;
 
+  /** Timeout function to delay modal close.
+   * @internal
+   */
+  @state()
+  timer: any;
+
   override render() {
     const classes = {
       menu: this.slottedElements.length,
@@ -92,6 +98,7 @@ export class HeaderLink extends LitElement {
       <div
         class="${classMap(classes)}"
         @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
+        @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
       >
         <a
           target=${this.target}
@@ -123,13 +130,17 @@ export class HeaderLink extends LitElement {
 
   private handlePointerEnter(e: PointerEvent) {
     if (e.pointerType === 'mouse') {
+      clearTimeout(this.timer);
       this.open = true;
     }
   }
 
   private handlePointerLeave(e: PointerEvent) {
     if (e.pointerType === 'mouse') {
-      this.open = false;
+      this.timer = setTimeout(() => {
+        this.open = false;
+        clearTimeout(this.timer);
+      }, 300);
     }
   }
 
