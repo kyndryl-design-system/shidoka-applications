@@ -5,15 +5,11 @@ import * as FormsStories from './forms.stories.js';
 
 # Forms
 
-Example form using our custom input components.
-
-<Canvas>
-  <Story of={FormsStories.Default} />
-</Canvas>
+This document explains how to use our form field components within a native HTML `<form>` to capture FormData on submit and perform validations.
 
 ## Form Participation
 
-Our custom input components are coded to be associated with forms so their values are included in [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData), which can be captured from the `submit` event of the `<form>` element.
+Our custom input components are form associated usin the [HTML ElementInternals API](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals) so their values are included in [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData), which can be captured from the `submit` event of the `<form>` element.
 
 ### Example
 
@@ -23,3 +19,13 @@ document.querySelector('form').addEventListener('submit', (e) => {
   const formData = new FormData(e.target);
 });
 ```
+
+## Validation
+
+All of our form field components use the [HTML Constraint Validation API](https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation). This means that native input validations like `required`, `minLength`, `pattern`, etc are all included out of the box. Custom validations can be performed externally from the components by passing a value to the `invalidText` property, which will take precedence over internal validation messages. Validation will not trigger until you interact with a form field, submit the form, call `reportValidity()` or `checkValidity()`, or set `invalidText`.
+
+## Example Form
+
+<Canvas>
+  <Story of={FormsStories.Default} />
+</Canvas>
