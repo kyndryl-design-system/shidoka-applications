@@ -22,7 +22,6 @@ export class SideDrawer extends LitElement {
       @supports (transition-behavior: allow-discrete) {
         @starting-style {
           dialog[open] {
-            right: -100%;
             transform: translateX(100%);
           }
         }

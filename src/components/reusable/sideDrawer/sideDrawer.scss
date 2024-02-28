@@ -15,7 +15,6 @@ dialog {
   min-height: 100%;
   left: auto;
   margin: 0;
-  //animation: slideOutRight 3s linear forwards;
 
   &[open] {
     animation: dialog-in 400ms forwards;
@@ -142,7 +141,6 @@ h1 {
   dialog {
     transition: right 400ms ease, transform 400ms ease,
       overlay 400ms ease allow-discrete, display 400ms ease allow-discrete;
-    right: -100%;
     transform: translateX(100%);
 
     &::backdrop {
@@ -153,7 +151,6 @@ h1 {
 
     &[open] {
       animation: none;
-      right: 0;
       transform: translateX(0);
 
       &::backdrop {
@@ -164,15 +161,9 @@ h1 {
 }
 @keyframes dialog-in {
   0% {
-    right: -100%;
     transform: translateX(100%);
   }
-  50% {
-    right: -50%;
-    transform: translateX(50%);
-  }
   100% {
-    right: 0;
     transform: translateX(0);
   }
 }
