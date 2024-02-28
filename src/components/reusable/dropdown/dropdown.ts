@@ -882,14 +882,20 @@ export class Dropdown extends LitElement {
     if (changedProps.has('value')) {
       this._validate(false, false);
 
+      const Slot: any = this.shadowRoot?.querySelector('slot#children');
+      const Options: Array<any> = Slot.assignedElements().filter(
+        (option: any) => !option.disabled
+      );
+      const SelectedOptions: Array<any> = Options.filter(
+        (option: any) => option.selected
+      );
+
       // sync "Select All" checkbox state
-      this.selectAllChecked =
-        this.selectedOptions.length === this.options.length;
+      this.selectAllChecked = SelectedOptions.length === Options.length;
 
       // sync "Select All" indeterminate state
       this.selectAllIndeterminate =
-        this.selectedOptions.length < this.options.length &&
-        this.selectedOptions.length > 0;
+        SelectedOptions.length < Options.length && SelectedOptions.length > 0;
 
       // close listbox
       if (!this.multiple) {
