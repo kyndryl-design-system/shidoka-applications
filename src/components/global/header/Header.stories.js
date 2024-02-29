@@ -6,6 +6,7 @@ import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import switcherIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/switcher.svg';
 import userAvatarIcon from '@carbon/icons/es/user--avatar/20';
 import helpIcon from '@carbon/icons/es/help/20';
+import circleIcon from '@carbon/icons/es/circle-stroke';
 
 export default {
   title: 'Global Components/Header',
@@ -60,7 +61,7 @@ export const Header = {
   `,
 };
 
-export const WithNavLinks = {
+export const WithNav = {
   args,
   render: (args) => html`
     <kyn-header
@@ -70,18 +71,24 @@ export const WithNavLinks = {
       ?divider=${args.divider}
     >
       <kyn-header-nav>
-        <kyn-header-link href="javascript:void(0)"> Link 1 </kyn-header-link>
+        <kyn-header-link href="javascript:void(0)">
+          <kd-icon .icon=${circleIcon}></kd-icon>
+          Link 1
+        </kyn-header-link>
         <kyn-header-link href="javascript:void(0)" isActive>
+          <kd-icon .icon=${circleIcon}></kd-icon>
           Link 2
         </kyn-header-link>
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${helpIcon}></kd-icon>
+          <kd-icon .icon=${circleIcon}></kd-icon>
           Link 3
 
-          <kyn-header-link slot="links" href="javascript:void(0)" divider>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
             Sub Link # 1
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
             Sub Link 2
           </kyn-header-link>
         </kyn-header-link>
@@ -105,9 +112,11 @@ export const WithFlyouts = {
 
           <div>
             <kyn-header-link href="javascript:void(0)">
+              <kd-icon .icon=${circleIcon}></kd-icon>
               Example 1
             </kyn-header-link>
             <kyn-header-link href="javascript:void(0)">
+              <kd-icon .icon=${circleIcon}></kd-icon>
               Example 2
             </kyn-header-link>
           </div>
@@ -117,6 +126,7 @@ export const WithFlyouts = {
           <kd-icon slot="button" .icon=${userAvatarIcon}></kd-icon>
 
           <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
             Example Link
           </kyn-header-link>
         </kyn-header-flyout>

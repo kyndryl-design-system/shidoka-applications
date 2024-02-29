@@ -10,7 +10,8 @@ import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderLinkScss from './headerLink.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import downIcon from '@carbon/icons/es/caret--down/16';
+import arrowIcon from '@carbon/icons/es/chevron--right/16';
+import backIcon from '@carbon/icons/es/arrow--left/16';
 
 /**
  * Component for navigation links within the Header.
@@ -53,13 +54,6 @@ export class HeaderLink extends LitElement {
   divider = false;
 
   /**
-   * Determines if menu should be a flyout or inline depending on screen size.
-   * @ignore
-   */
-  @state()
-  breakpointHit = false;
-
-  /**
    * Queries any slotted HTML elements.
    * @ignore
    */
@@ -72,10 +66,17 @@ export class HeaderLink extends LitElement {
   @state()
   timer: any;
 
+  /** Menu positioning
+   * @internal
+   */
+  @state()
+  menuPosition: any = {};
+
   override render() {
     const classes = {
       menu: this.slottedElements.length,
-      'breakpoint-hit': this.breakpointHit,
+      'level--1': this.level == 1,
+      'level--2': this.level == 2,
       divider: this.divider,
       open: this.open,
     };
@@ -83,14 +84,11 @@ export class HeaderLink extends LitElement {
     const linkClasses = {
       'nav-link': true,
       active: this.isActive,
-      'level--1': this.level == 1,
-      'level--2': this.level == 2,
-      interactive: this.level == 1 && this.breakpointHit,
+      interactive: this.level == 1,
     };
 
-    const slotClasses = {
-      menu__content: this.breakpointHit,
-      static: !this.breakpointHit,
+    const menuClasses = {
+      menu__content: true,
       slotted: this.slottedElements.length,
     };
 
@@ -110,17 +108,27 @@ export class HeaderLink extends LitElement {
         >
           <slot></slot>
 
-          ${this.slottedElements.length && this.breakpointHit
-            ? html` <kd-icon .icon=${downIcon}></kd-icon> `
+          ${this.slottedElements.length
+            ? html` <kd-icon class="arrow" .icon=${arrowIcon}></kd-icon> `
             : null}
         </a>
-        <slot
-          name="links"
-          class=${classMap(slotClasses)}
-          @slotchange=${this._handleLinksSlotChange}
-        ></slot>
+
+        <div
+          class=${classMap(menuClasses)}
+          style=${`top: ${this.menuPosition.top}px; left: ${this.menuPosition.left}px;`}
+        >
+          <button class="go-back" @click=${() => this._handleBack()}>
+            <kd-icon .icon=${backIcon}></kd-icon>
+            Back
+          </button>
+          <slot name="links" @slotchange=${this._handleLinksSlotChange}></slot>
+        </div>
       </div>
     `;
+  }
+
+  private _handleBack() {
+    this.open = false;
   }
 
   private _handleLinksSlotChange() {
@@ -167,10 +175,15 @@ export class HeaderLink extends LitElement {
 
   private determineLevel() {
     const parentTagName = this.shadowRoot!.host.parentNode!.nodeName;
-    if (parentTagName == 'KYN-HEADER-NAV') {
-      this.level = 1;
-    } else {
+
+    if (parentTagName === 'KYN-HEADER-LINK') {
       this.level = 2;
+    } else {
+      if (window.innerWidth < 672) {
+        this.level = 2;
+      } else {
+        this.level = 1;
+      }
     }
   }
 
@@ -178,16 +191,38 @@ export class HeaderLink extends LitElement {
     this.determineLevel();
   }
 
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('open') && this.open) {
+      // determine submenu positioning
+      const LinkBounds: any = this.getBoundingClientRect();
+      const MenuBounds: any = this.shadowRoot
+        ?.querySelector('.menu__content')
+        ?.getBoundingClientRect();
+      const Padding = 8;
+
+      const Top =
+        LinkBounds.top + MenuBounds.height > window.innerHeight
+          ? LinkBounds.top -
+            Padding -
+            (LinkBounds.top + MenuBounds.height - window.innerHeight)
+          : LinkBounds.top - Padding;
+
+      this.menuPosition = {
+        top: Top,
+        left: LinkBounds.right + 8,
+      };
+    }
+  }
+
   override connectedCallback() {
     super.connectedCallback();
 
     document.addEventListener('click', (e) => this.handleClickOut(e));
 
-    this.testBreakpoint();
     window?.addEventListener(
       'resize',
       debounce(() => {
-        this.testBreakpoint();
+        this.determineLevel();
       })
     );
   }
@@ -198,18 +233,11 @@ export class HeaderLink extends LitElement {
     window?.removeEventListener(
       'resize',
       debounce(() => {
-        this.testBreakpoint();
+        this.determineLevel();
       })
     );
 
     super.disconnectedCallback();
-  }
-
-  private testBreakpoint() {
-    const nav = querySelectorDeep('kyn-header');
-    if (nav) {
-      this.breakpointHit = nav!.breakpointHit;
-    }
   }
 }
 

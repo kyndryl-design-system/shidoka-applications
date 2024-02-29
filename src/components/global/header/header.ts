@@ -33,20 +33,9 @@ export class Header extends LitElement {
   @property({ type: String })
   appTitle = '';
 
-  /** The breakpoint (in px) to convert the nav to a flyout menu for small screens. */
-  @property({ type: Number })
-  breakpoint = 672;
-
   /** Adds a 1px shadow to the bottom of the header, for contrast with  white backgrounds. */
   @property({ type: Boolean })
   divider = false;
-
-  /**
-   * Determines if menu should be a flyout or inline depending on screen size.
-   * @ignore
-   */
-  @state()
-  breakpointHit = false;
 
   /** Small screen header nav visibility.
    * @ignore
@@ -75,7 +64,6 @@ export class Header extends LitElement {
   override render() {
     const classes = {
       header: true,
-      'breakpoint-hit': this.breakpointHit,
       divider: this.divider,
       'left-slotted': this.leftEls.length,
     };
@@ -97,91 +85,18 @@ export class Header extends LitElement {
 
         <div class="header__right">
           <slot @slotchange=${this.handleSlotChange}></slot>
-
-          ${!this.breakpointHit && this.navEls.length
-            ? html`
-                <div class="menu">
-                  <button
-                    class="menu-button interactive"
-                    @click=${() => this.toggleNavMenu()}
-                  >
-                    <kd-icon .icon=${overflowIcon}></kd-icon>
-                  </button>
-                </div>
-              `
-            : null}
         </div>
       </header>
     `;
-  }
-
-  override connectedCallback() {
-    super.connectedCallback();
-
-    document.addEventListener('click', (e) => this.handleMenuClickOut(e));
-
-    this.testBreakpoint();
-    window?.addEventListener(
-      'resize',
-      debounce(() => {
-        this.testBreakpoint();
-      })
-    );
-  }
-
-  override disconnectedCallback() {
-    document.removeEventListener('click', (e) => this.handleMenuClickOut(e));
-
-    window?.removeEventListener(
-      'resize',
-      debounce(() => {
-        this.testBreakpoint();
-      })
-    );
-
-    super.disconnectedCallback();
   }
 
   private handleSlotChange() {
     this.requestUpdate();
   }
 
-  private handleMenuClickOut(e: any) {
-    const button = this.shadowRoot?.querySelector('.menu-button');
-
-    if (
-      !e.composedPath().includes(this.navEls[0]) &&
-      !e.composedPath().includes(button)
-    ) {
-      this.menuOpen = false;
-      this.emitMenuToggle();
-    }
-  }
-
-  private testBreakpoint() {
-    if (window?.innerWidth >= this.breakpoint) {
-      this.breakpointHit = true;
-    } else {
-      this.breakpointHit = false;
-    }
-  }
-
   private handleRootLinkClick(e: Event) {
     const event = new CustomEvent('on-root-link-click', {
       detail: { origEvent: e },
-    });
-    this.dispatchEvent(event);
-  }
-
-  private toggleNavMenu() {
-    this.menuOpen = !this.menuOpen;
-
-    this.emitMenuToggle();
-  }
-
-  private emitMenuToggle() {
-    const event = new CustomEvent('on-menu-toggle', {
-      detail: this.menuOpen,
     });
     this.dispatchEvent(event);
   }
