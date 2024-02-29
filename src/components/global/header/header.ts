@@ -31,10 +31,6 @@ export class Header extends LitElement {
   @property({ type: String })
   appTitle = '';
 
-  /** Adds a 1px shadow to the bottom of the header, for contrast with  white backgrounds. */
-  @property({ type: Boolean })
-  divider = false;
-
   /** Small screen header nav visibility.
    * @ignore
    */
@@ -62,7 +58,6 @@ export class Header extends LitElement {
   override render() {
     const classes = {
       header: true,
-      divider: this.divider,
       'left-slotted': this.leftEls.length,
     };
 

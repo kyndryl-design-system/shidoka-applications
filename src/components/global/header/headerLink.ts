@@ -175,10 +175,11 @@ export class HeaderLink extends LitElement {
   private determineLevel() {
     const parentTagName = this.shadowRoot!.host.parentNode!.nodeName;
 
+    console.log(parentTagName);
     if (parentTagName === 'KYN-HEADER-LINK') {
       this.level = 2;
     } else {
-      if (window.innerWidth < 672) {
+      if (window.innerWidth < 672 && parentTagName !== 'KYN-HEADER-NAV') {
         this.level = 2;
       } else {
         this.level = 1;
