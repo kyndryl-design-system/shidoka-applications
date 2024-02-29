@@ -6,8 +6,6 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { querySelectorDeep } from 'query-selector-shadow-dom';
-import { debounce } from '../../../common/helpers/helpers';
 import HeaderFlyoutScss from './headerFlyout.scss';
 import chevronIcon from '@carbon/icons/es/chevron--right/16';
 import backIcon from '@carbon/icons/es/arrow--left/16';

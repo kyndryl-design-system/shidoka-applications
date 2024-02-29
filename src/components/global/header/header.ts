@@ -7,11 +7,9 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import { debounce } from '../../../common/helpers/helpers';
 import HeaderScss from './header.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import logo from '@kyndryl-design-system/shidoka-foundation/assets/svg/kyndryl-logo.svg';
-import overflowIcon from '@carbon/icons/es/overflow-menu--vertical/24';
 
 /**
  * The global Header component.

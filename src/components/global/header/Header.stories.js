@@ -44,7 +44,6 @@ export default {
 const args = {
   rootUrl: '/',
   appTitle: 'Application',
-  breakpoint: 672,
   divider: true,
 };
 
@@ -54,7 +53,6 @@ export const Header = {
     <kyn-header
       rootUrl=${args.rootUrl}
       appTitle=${args.appTitle}
-      breakpoint=${args.breakpoint}
       ?divider=${args.divider}
     >
     </kyn-header>
@@ -67,7 +65,6 @@ export const WithNav = {
     <kyn-header
       rootUrl=${args.rootUrl}
       appTitle=${args.appTitle}
-      breakpoint=${args.breakpoint}
       ?divider=${args.divider}
     >
       <kyn-header-nav>
@@ -103,7 +100,6 @@ export const WithFlyouts = {
     <kyn-header
       rootUrl=${args.rootUrl}
       appTitle=${args.appTitle}
-      breakpoint=${args.breakpoint}
       ?divider=${args.divider}
     >
       <kyn-header-flyouts>
@@ -141,7 +137,6 @@ export const WithPanel = {
     <kyn-header
       rootUrl=${args.rootUrl}
       appTitle=${args.appTitle}
-      breakpoint=${args.breakpoint}
       ?divider=${args.divider}
     >
       <kyn-header-panel slot="left" heading="Panel Heading">
@@ -170,7 +165,6 @@ export const WithEverything = {
     <kyn-header
       rootUrl=${args.rootUrl}
       appTitle=${args.appTitle}
-      breakpoint=${args.breakpoint}
       ?divider=${args.divider}
     >
       <kyn-header-panel slot="left" heading="Panel Heading">

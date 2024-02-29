@@ -6,7 +6,6 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderLinkScss from './headerLink.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';

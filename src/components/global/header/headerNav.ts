@@ -19,6 +19,7 @@ export class HeaderNav extends LitElement {
   @state()
   menuOpen = false;
 
+  /** Force correct slot */
   @property({ type: String, reflect: true })
   override slot = 'left';
 
