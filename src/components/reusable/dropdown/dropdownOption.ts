@@ -46,7 +46,7 @@ export class DropdownOption extends LitElement {
   text: any = '';
 
   /** Determines whether the checkbox is in an indeterminate state. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   indeterminate = false;
 
   override render() {

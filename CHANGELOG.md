@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.2...v1.6.3) (2024-02-28)
+
+
+### Bug Fixes
+
+* **dropdown:** correct select all states, resolves [#110](https://github.com/kyndryl-design-system/shidoka-applications/issues/110) ([6a5d8c2](https://github.com/kyndryl-design-system/shidoka-applications/commit/6a5d8c2e5b3e0fab5d0411d30ee3b4e7855a5431))
+
 ## [1.6.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.1...v1.6.2) (2024-02-27)
 
 
