@@ -1,3 +1,10 @@
+## [1.6.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.3...v1.6.4) (2024-03-01)
+
+
+### Bug Fixes
+
+* **forms:** decouple internal & external invalid messages, resolves [#111](https://github.com/kyndryl-design-system/shidoka-applications/issues/111) ([1d6c540](https://github.com/kyndryl-design-system/shidoka-applications/commit/1d6c5400709e38eb307c69592f5d76416e0b93f9))
+
 ## [1.6.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.2...v1.6.3) (2024-02-28)
 
 
