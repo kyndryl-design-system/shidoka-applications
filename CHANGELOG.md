@@ -1,3 +1,10 @@
+## [1.6.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.4...v1.6.5) (2024-03-04)
+
+
+### Bug Fixes
+
+* **modal:** add hideFooter prop, resolves [#114](https://github.com/kyndryl-design-system/shidoka-applications/issues/114) ([dc4e6d6](https://github.com/kyndryl-design-system/shidoka-applications/commit/dc4e6d697c35614ddc9e0e9a593495cf6a1443a0))
+
 ## [1.6.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.3...v1.6.4) (2024-03-01)
 
 
