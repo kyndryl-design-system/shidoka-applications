@@ -101,11 +101,6 @@ export class SideDrawer extends LitElement {
       'size--sm': this.size === 'sm',
     };
 
-    const contentClasses = {
-      'drawer-content-wrapper': true,
-      'drawer-content-wrapper-height': !this.hideFooter,
-    };
-
     return html`
       <button class="anchor" @click=${this._openDrawer}>
         <slot name="anchor"></slot>
@@ -117,28 +112,30 @@ export class SideDrawer extends LitElement {
         aria-labelledby="dialogLabel"
         @cancel=${(e: Event) => this._closeDrawer(e, 'cancel')}
       >
-        <div class="${classMap(contentClasses)}">
-          <!--  Header -->
-          <header>
-            <div class="header-label-title">
-              ${this.labelText !== ''
-                ? html`<span class="label">${this.labelText}</span>`
-                : null}
-              <h1 id="dialogLabel">${this.titleText}</h1>
-            </div>
-            <div class="close-wrapper">
-              <button
-                class="close"
-                @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
-              >
-                <kd-icon .icon=${closeIcon}></kd-icon>
-              </button>
-            </div>
-          </header>
-          <!-- Body -->
+        <!--  Header -->
+        <header>
+          <div class="header-label-title">
+            ${this.labelText !== ''
+              ? html`<span class="label">${this.labelText}</span>`
+              : null}
+            <h1 id="dialogLabel">${this.titleText}</h1>
+          </div>
 
+          <div class="close-wrapper">
+            <button
+              class="close"
+              @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
+            >
+              <kd-icon .icon=${closeIcon}></kd-icon>
+            </button>
+          </div>
+        </header>
+
+        <!-- Body -->
+        <div class="body">
           <slot></slot>
         </div>
+
         <!-- footer -->
         ${!this.hideFooter
           ? html`

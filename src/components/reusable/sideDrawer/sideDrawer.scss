@@ -6,15 +6,18 @@
 }
 
 dialog {
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0 32px;
   color: inherit;
   background: var(--kd-color-background-ui-default);
   border: 1px solid var(--kd-color-border-light);
   box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.12);
+  top: 0;
   right: 0;
-  min-height: 100%;
   left: auto;
-  margin: 0;
+  min-height: 100%;
 
   &[open] {
     animation: dialog-in 400ms forwards;
@@ -69,6 +72,9 @@ button {
   }
 }
 
+.body {
+  flex-grow: 1;
+}
 .anchor {
   display: inline-block;
   width: 100%;
@@ -117,7 +123,7 @@ h1 {
 .dialog-footer {
   position: sticky;
   bottom: 0px;
-  width: 100%;
+  margin: 32px -32px -32px;
   background-color: var(--kd-color-background-accent-subtle);
   padding: 24px 32px 24px 32px;
   border-top: 1px solid var(--kd-color-border-light);
