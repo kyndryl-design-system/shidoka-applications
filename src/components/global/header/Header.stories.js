@@ -41,7 +41,6 @@ export default {
 const args = {
   rootUrl: '/',
   appTitle: 'Application',
-  divider: true,
 };
 
 export const Header = {

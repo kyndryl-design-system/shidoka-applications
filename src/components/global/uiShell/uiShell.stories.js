@@ -28,7 +28,7 @@ export default {
 export const UIShell = {
   render: (args) => html`
     <kyn-ui-shell>
-      <kyn-header divider appTitle="UI Shell Example"></kyn-header>
+      <kyn-header appTitle="UI Shell Example"></kyn-header>
 
       <main>Main content here.</main>
 
@@ -45,7 +45,7 @@ export const UIShell = {
 export const WithLocalNav = {
   render: (args) => html`
     <kyn-ui-shell>
-      <kyn-header divider appTitle="UI Shell Example">
+      <kyn-header appTitle="UI Shell Example">
         <kyn-header-panel slot="left" heading="Panel Heading">
           <span slot="button">${unsafeHTML(switcherIcon)}</span>
 
