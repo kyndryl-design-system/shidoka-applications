@@ -136,9 +136,8 @@ export class SideDrawer extends LitElement {
             </div>
           </header>
           <!-- Body -->
-          <div>
-            <slot></slot>
-          </div>
+
+          <slot></slot>
         </div>
         <!-- footer -->
         ${!this.hideFooter
