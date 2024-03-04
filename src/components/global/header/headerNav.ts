@@ -51,6 +51,24 @@ export class HeaderNav extends LitElement {
   private _toggleMenuOpen() {
     this.menuOpen = !this.menuOpen;
   }
+
+  private _handleClickOut(e: Event) {
+    if (!e.composedPath().includes(this)) {
+      this.menuOpen = false;
+    }
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+
+    document.addEventListener('click', (e) => this._handleClickOut(e));
+  }
+
+  override disconnectedCallback() {
+    document.removeEventListener('click', (e) => this._handleClickOut(e));
+
+    super.disconnectedCallback();
+  }
 }
 
 declare global {
