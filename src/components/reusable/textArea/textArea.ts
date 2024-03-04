@@ -177,7 +177,7 @@ ${this.value}</textarea
       changedProps.has('invalidText') &&
       changedProps.get('invalidText') !== undefined
     ) {
-      this._validate(false, true);
+      this._validate(false, false);
     }
   }
 
@@ -198,7 +198,7 @@ ${this.value}</textarea
 
     // set internal validation message if value was changed by user input
     if (interacted) {
-      this.internalValidationMsg = this.internals.validationMessage;
+      this.internalValidationMsg = this.textareaEl.validationMessage;
     }
 
     // focus the form field to show validity
@@ -212,7 +212,7 @@ ${this.value}</textarea
   }
 
   private _handleInvalid() {
-    this.internalValidationMsg = this.internals.validationMessage;
+    this._validate(true, false);
   }
 
   override connectedCallback(): void {

@@ -68,6 +68,10 @@ export class Modal extends LitElement {
   @property({ type: Boolean })
   okDisabled = false;
 
+  /** Hides the footer/action buttons to create a passive modal. */
+  @property({ type: Boolean })
+  hideFooter = false;
+
   /** Function to execute before the modal can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`. */
   @property({ attribute: false })
   beforeClose!: Function;
@@ -115,30 +119,34 @@ export class Modal extends LitElement {
         <form method="dialog" class="body">
           <slot></slot>
 
-          <div class="actions">
-            <kd-button
-              value="ok"
-              ?destructive=${this.destructive}
-              ?disabled=${this.okDisabled}
-              @click=${(e: Event) => this._closeModal(e, 'ok')}
-            >
-              ${this.okText}
-            </kd-button>
+          ${!this.hideFooter
+            ? html`
+                <div class="actions">
+                  <kd-button
+                    value="ok"
+                    ?destructive=${this.destructive}
+                    ?disabled=${this.okDisabled}
+                    @click=${(e: Event) => this._closeModal(e, 'ok')}
+                  >
+                    ${this.okText}
+                  </kd-button>
 
-            <kd-button
-              value="cancel"
-              kind="secondary"
-              @click=${(e: Event) => this._closeModal(e, 'cancel')}
-            >
-              ${this.cancelText}
-            </kd-button>
+                  <kd-button
+                    value="cancel"
+                    kind="secondary"
+                    @click=${(e: Event) => this._closeModal(e, 'cancel')}
+                  >
+                    ${this.cancelText}
+                  </kd-button>
 
-            <!--
+                  <!--
             <div class="custom-actions">
               <slot name="actions"></slot>
             </div>
             -->
-          </div>
+                </div>
+              `
+            : null}
         </form>
       </dialog>
     `;

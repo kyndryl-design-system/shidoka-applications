@@ -732,7 +732,7 @@ export class Dropdown extends LitElement {
   }
 
   private _handleInvalid() {
-    this.internalValidationMsg = this.internals.validationMessage;
+    this._validate(true, false);
   }
 
   override connectedCallback() {
@@ -814,19 +814,17 @@ export class Dropdown extends LitElement {
     };
 
     // set validationMessage
+    const InternalMsg =
+      this.required && !this.value.length ? 'Please fill out this field.' : '';
     const ValidationMessage =
-      this.invalidText !== ''
-        ? this.invalidText
-        : this.required && !this.value.length
-        ? 'Please fill out this field.'
-        : '';
+      this.invalidText !== '' ? this.invalidText : InternalMsg;
 
     // set validity on custom element, anchor to buttonEl
     this.internals.setValidity(Validity, ValidationMessage, this.buttonEl);
 
     // set internal validation message if value was changed by user input
     if (interacted) {
-      this.internalValidationMsg = this.internals.validationMessage;
+      this.internalValidationMsg = InternalMsg;
     }
 
     // focus the buttonEl to show validity
@@ -876,20 +874,26 @@ export class Dropdown extends LitElement {
       changedProps.has('invalidText') &&
       changedProps.get('invalidText') !== undefined
     ) {
-      this._validate(false, true);
+      this._validate(false, false);
     }
 
     if (changedProps.has('value')) {
       this._validate(false, false);
 
+      const Slot: any = this.shadowRoot?.querySelector('slot#children');
+      const Options: Array<any> = Slot.assignedElements().filter(
+        (option: any) => !option.disabled
+      );
+      const SelectedOptions: Array<any> = Options.filter(
+        (option: any) => option.selected
+      );
+
       // sync "Select All" checkbox state
-      this.selectAllChecked =
-        this.selectedOptions.length === this.options.length;
+      this.selectAllChecked = SelectedOptions.length === Options.length;
 
       // sync "Select All" indeterminate state
       this.selectAllIndeterminate =
-        this.selectedOptions.length < this.options.length &&
-        this.selectedOptions.length > 0;
+        SelectedOptions.length < Options.length && SelectedOptions.length > 0;
 
       // close listbox
       if (!this.multiple) {

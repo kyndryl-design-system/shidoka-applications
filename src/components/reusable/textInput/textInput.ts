@@ -253,7 +253,7 @@ export class TextInput extends LitElement {
 
     // set internal validation message if value was changed by user input
     if (interacted) {
-      this.internalValidationMsg = this.internals.validationMessage;
+      this.internalValidationMsg = this.inputEl.validationMessage;
     }
 
     // focus the form field to show validity
@@ -275,7 +275,7 @@ export class TextInput extends LitElement {
     }
 
     if (changedProps.has('value')) {
-      // this.inputEl.value = this.value;
+      this.inputEl.value = this.value;
       // set form data value
       // this.internals.setFormValue(this.value);
 
@@ -286,7 +286,7 @@ export class TextInput extends LitElement {
       changedProps.has('invalidText') &&
       changedProps.get('invalidText') !== undefined
     ) {
-      this._validate(false, true);
+      this._validate(false, false);
     }
   }
 
@@ -303,7 +303,7 @@ export class TextInput extends LitElement {
   }
 
   private _handleInvalid() {
-    this.internalValidationMsg = this.internals.validationMessage;
+    this._validate(true, false);
   }
 
   override connectedCallback(): void {

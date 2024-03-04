@@ -22,7 +22,6 @@ export class SideDrawer extends LitElement {
       @supports (transition-behavior: allow-discrete) {
         @starting-style {
           dialog[open] {
-            right: -100%;
             transform: translateX(100%);
           }
         }
@@ -113,29 +112,30 @@ export class SideDrawer extends LitElement {
         aria-labelledby="dialogLabel"
         @cancel=${(e: Event) => this._closeDrawer(e, 'cancel')}
       >
-        <div class="drawer-content-wrapper">
-          <!--  Header -->
-          <header>
-            <div class="header-label-title">
-              ${this.labelText !== ''
-                ? html`<span class="label">${this.labelText}</span>`
-                : null}
-              <h1 id="dialogLabel">${this.titleText}</h1>
-            </div>
-            <div class="close-wrapper">
-              <button
-                class="close"
-                @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
-              >
-                <kd-icon .icon=${closeIcon}></kd-icon>
-              </button>
-            </div>
-          </header>
-          <!-- Body -->
-          <div>
-            <slot></slot>
+        <!--  Header -->
+        <header>
+          <div class="header-label-title">
+            ${this.labelText !== ''
+              ? html`<span class="label">${this.labelText}</span>`
+              : null}
+            <h1 id="dialogLabel">${this.titleText}</h1>
           </div>
+
+          <div class="close-wrapper">
+            <button
+              class="close"
+              @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
+            >
+              <kd-icon .icon=${closeIcon}></kd-icon>
+            </button>
+          </div>
+        </header>
+
+        <!-- Body -->
+        <div class="body">
+          <slot></slot>
         </div>
+
         <!-- footer -->
         ${!this.hideFooter
           ? html`

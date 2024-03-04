@@ -251,7 +251,7 @@ export class CheckboxGroup extends LitElement {
       changedProps.has('invalidText') &&
       changedProps.get('invalidText') !== undefined
     ) {
-      this._validate(false, true);
+      this._validate(false, false);
     }
 
     if (
@@ -281,19 +281,17 @@ export class CheckboxGroup extends LitElement {
     };
 
     // set validationMessage
+    const InternalMsg =
+      this.required && !this.value.length ? 'A selection is required.' : '';
     const ValidationMessage =
-      this.invalidText !== ''
-        ? this.invalidText
-        : this.required && !this.value.length
-        ? 'A selection is required.'
-        : '';
+      this.invalidText !== '' ? this.invalidText : InternalMsg;
 
     // set validity on custom element, anchor to first checkbox
     this.internals.setValidity(Validity, ValidationMessage, this.checkboxes[0]);
 
     // set internal validation message if value was changed by user input
     if (interacted) {
-      this.internalValidationMsg = this.internals.validationMessage;
+      this.internalValidationMsg = InternalMsg;
     }
 
     // focus the first checkbox to show validity
@@ -405,7 +403,7 @@ export class CheckboxGroup extends LitElement {
   }
 
   private _handleInvalid() {
-    this.internalValidationMsg = this.internals.validationMessage;
+    this._validate(true, false);
   }
 
   override connectedCallback() {
