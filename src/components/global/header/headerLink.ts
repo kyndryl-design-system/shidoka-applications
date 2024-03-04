@@ -8,6 +8,7 @@ import {
 import { classMap } from 'lit/directives/class-map.js';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderLinkScss from './headerLink.scss';
+import '../../reusable/textInput';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import arrowIcon from '@carbon/icons/es/chevron--right/16';
 import backIcon from '@carbon/icons/es/arrow--left/16';
@@ -52,12 +53,16 @@ export class HeaderLink extends LitElement {
   @property({ type: Boolean })
   divider = false;
 
+  /** Label for sub-menu link search input, which is visible with > 5 sub-links. */
+  @property({ type: String })
+  searchLabel = 'Search';
+
   /**
    * Queries any slotted HTML elements.
    * @ignore
    */
-  @queryAssignedElements({ slot: 'links' })
-  slottedElements!: Array<HTMLElement>;
+  @queryAssignedElements({ slot: 'links', selector: 'kyn-header-link' })
+  slottedLinks!: Array<HTMLElement>;
 
   /** Timeout function to delay modal close.
    * @internal
@@ -73,7 +78,7 @@ export class HeaderLink extends LitElement {
 
   override render() {
     const classes = {
-      menu: this.slottedElements.length,
+      menu: this.slottedLinks.length,
       'level--1': this.level == 1,
       'level--2': this.level == 2,
       divider: this.divider,
@@ -88,7 +93,7 @@ export class HeaderLink extends LitElement {
 
     const menuClasses = {
       menu__content: true,
-      slotted: this.slottedElements.length,
+      slotted: this.slottedLinks.length,
     };
 
     return html`
@@ -107,7 +112,7 @@ export class HeaderLink extends LitElement {
         >
           <slot></slot>
 
-          ${this.slottedElements.length
+          ${this.slottedLinks.length
             ? html` <kd-icon class="arrow" .icon=${arrowIcon}></kd-icon> `
             : null}
         </a>
@@ -120,10 +125,44 @@ export class HeaderLink extends LitElement {
             <kd-icon .icon=${backIcon}></kd-icon>
             Back
           </button>
+
+          ${this.slottedLinks.length > 5
+            ? html`
+                <kyn-text-input
+                  hideLabel
+                  placeholder=${this.searchLabel}
+                  @on-input=${(e: Event) => this._handleSearch(e)}
+                >
+                  ${this.searchLabel}
+                </kyn-text-input>
+              `
+            : null}
+
           <slot name="links" @slotchange=${this._handleLinksSlotChange}></slot>
         </div>
       </div>
     `;
+  }
+
+  private _handleSearch(e: any) {
+    const SearchTerm = e.detail.value.toLowerCase();
+
+    this.slottedLinks.forEach((link) => {
+      // get link text
+      const nodes: any = link.shadowRoot?.querySelector('slot')?.assignedNodes({
+        flatten: true,
+      });
+      let linkText = '';
+      for (let i = 0; i < nodes.length; i++) {
+        linkText += nodes[i].textContent.trim();
+      }
+
+      if (linkText.toLowerCase().includes(SearchTerm)) {
+        link.style.display = 'block';
+      } else {
+        link.style.display = 'none';
+      }
+    });
   }
 
   private _handleBack() {
@@ -131,7 +170,6 @@ export class HeaderLink extends LitElement {
   }
 
   private _handleLinksSlotChange() {
-    this.determineLevel();
     this.requestUpdate();
   }
 
@@ -154,7 +192,7 @@ export class HeaderLink extends LitElement {
   private handleClick(e: Event) {
     let preventDefault = false;
 
-    if (this.slottedElements.length) {
+    if (this.slottedLinks.length) {
       preventDefault = true;
       e.preventDefault();
       this.open = !this.open;
