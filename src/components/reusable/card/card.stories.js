@@ -13,6 +13,10 @@ export default {
       options: ['top', 'middle'],
       control: { type: 'select' },
     },
+    // options: {
+    //   options: ['overflowMenu', 'multiSelect', 'singleSelect'],
+    //   control: { type: 'select' },
+    // },
   },
 };
 
@@ -43,10 +47,40 @@ const tagGroupArr = [
   },
 ];
 
+// single tile select logic
+const handleTileSelected = (event) => {
+  const selectedTile = event.detail;
+  const tiles = document.querySelectorAll('kyn-card');
+  tiles.forEach((tile) => {
+    if (tile !== selectedTile) {
+      tile.selected = false;
+    }
+  });
+  action(event.type)(event);
+};
+
+// multiselect tile logic
+// let selectedTiles = [];
+
+// const handleTileSelected = (event) => {
+//   const { selected } = event.detail;
+//   if (selected) {
+//     selectedTiles.push(event.target);
+//   } else {
+//     selectedTiles = selectedTiles.filter((tile) => tile !== event.target);
+//   }
+//   console.log(
+//     'Selected Tiles:',
+//     selectedTiles.map((tile) => tile.title)
+//   );
+//   action(event.type)(event);
+// };
+
 export const Card = {
   args: {
     showLogo: false,
     showTags: false,
+    // showOptions: false,
     imagePosition: 'top',
     thumbnailSrc: thumbnailImg,
     productLogo: logoImg,
@@ -55,6 +89,7 @@ export const Card = {
     description:
       'Amazon EC2 Auto Scaling ensures that your application always has the right amount of compute lorem ipsum dummy text ilposin fogthi jkiuy',
     iconLink: '#',
+    // options: 'overflowMenu',
   },
   render: (args) => {
     return html`
@@ -68,6 +103,7 @@ export const Card = {
         subTitle=${args.subTitle}
         description=${args.description}
         iconLink=${args.iconLink}
+        @tile-selected="${handleTileSelected}"
       >
         ${args.showTags
           ? html` <kyn-tag-group slot="tags" limitTags>
@@ -84,6 +120,34 @@ export const Card = {
             </kyn-tag-group>`
           : null}
       </kyn-card>
+
+      <!-- <kyn-card
+        ?showLogo=${args.showLogo}
+        ?showTags=${args.showTags}
+        imagePosition=${args.imagePosition}
+        thumbnailSrc=${args.thumbnailSrc}
+        productLogo=${args.productLogo}
+        cardTitle=${args.cardTitle}
+        subTitle=${args.subTitle}
+        description=${args.description}
+        iconLink=${args.iconLink}
+        @tile-selected="${handleTileSelected}"
+      >
+        ${args.showTags
+        ? html` <kyn-tag-group slot="tags" limitTags>
+            ${tagGroupArr.map(
+              (tag) =>
+                html`
+                  <kyn-tag
+                    label=${tag.text}
+                    tagColor="spruce"
+                    @on-close=${(e) => action(e.type)(e)}
+                  ></kyn-tag>
+                `
+            )}
+          </kyn-tag-group>`
+        : null}
+      </kyn-card> -->
     `;
   },
 };

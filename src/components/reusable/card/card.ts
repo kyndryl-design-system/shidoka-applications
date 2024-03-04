@@ -13,8 +13,8 @@ import '../overflowMenu';
 
 /**
  * Card.
- * @fires on-card-change - Captures the change event and emits the selected values.
- * @slot tags - Slot for the tags.
+ * @fires tile-selected - Captures the change event and emits the selected values.
+ * @slot tags - Slot for the tag component. Note: Put `<kd-tag>` or `<kd-tag-group>` inside this slot only when `showTags = true`.
  * @slot unnamed - Slot for Card body content.
  */
 
@@ -34,15 +34,11 @@ export class Card extends LitElement {
   @property({ type: String })
   description = '';
 
-  /** Checkbox group selected values. */
-  @property({ type: Array })
-  value: Array<any> = [];
-
-  /** Card's thumbnail image position. `'top'` & `middle`. */
+  /** Card's thumbnail image position. `top` & `middle`. */
   @property({ type: String })
   imagePosition = 'top';
 
-  /** Whether show tags inside card */
+  /** Whether show tags inside card.*/
   @property({ type: Boolean })
   showTags = false;
 
@@ -66,6 +62,10 @@ export class Card extends LitElement {
   @property({ type: String })
   options = 'overflowMenu';
 
+  /** Show card options */
+  @property({ type: Boolean })
+  showOptions = false;
+
   /** Setting tag group properties if showTags is true */
   @property({ type: Object })
   tagGroupObject = {
@@ -78,18 +78,41 @@ export class Card extends LitElement {
     },
   };
 
+  @property({ type: Boolean })
+  selected = false;
+
   override render() {
     return html`
       <div class="card-wrapper">
         <!-- Options UI -->
-        <!-- <div class="card-option-wrapper">
-          <div>
-            <kyn-overflow-menu verticalDots>
-              <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
-              <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
-            </kyn-overflow-menu>
-          </div>
-        </div> -->
+        <div class="card-option-wrapper">
+          <!-- <kyn-overflow-menu verticalDots>
+            <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
+            <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
+          </kyn-overflow-menu> -->
+          <!-- <div
+            class="tile ${this.selected ? 'selected' : ''}"
+            @click="${this.handleTileClick}"
+          >
+            <input
+              type="radio"
+              class="radio"
+              name="tiles"
+              .checked="${this.selected}"
+            />
+          </div> -->
+
+          <!-- <div
+            class="tile ${this.selected ? 'selected' : ''}"
+            @click="${this.handleMultiTileClick}"
+          >
+            <input
+              type="checkbox"
+              class="checkbox"
+              .checked="${this.selected}"
+            />
+          </div> -->
+        </div>
 
         <!-- thumbnail UI Top -->
         ${this.imagePosition === 'top' ? this.renderThumbnailUI() : null}
@@ -133,6 +156,60 @@ export class Card extends LitElement {
     `;
   }
 
+  private handleTileClick() {
+    this.selected = !this.selected;
+    if (this.selected) {
+      this.dispatchEvent(
+        new CustomEvent('tile-selected', {
+          bubbles: true,
+          composed: true,
+          detail: this,
+        })
+      );
+    }
+  }
+
+  private handleMultiTileClick() {
+    this.selected = !this.selected;
+    this.dispatchEvent(
+      new CustomEvent('tile-selected', {
+        bubbles: true,
+        composed: true,
+        detail: { selected: this.selected },
+      })
+    );
+  }
+
+  private renderOptionsUI() {
+    if (this.option === 'overflowMenu') {
+      return html`
+        <kyn-overflow-menu verticalDots>
+          <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
+          <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
+        </kyn-overflow-menu>
+      `;
+    }
+    if (this.option === 'multiSelect') {
+      return html`
+        <div @click="${this.handleMultiTileClick}">
+          <input type="checkbox" class="checkbox" .checked="${this.selected}" />
+        </div>
+      `;
+    }
+    if (this.option === 'singleSelect') {
+      return html`
+        <div @click="${this.handleTileClick}">
+          <input
+            type="radio"
+            class="radio"
+            name="tiles"
+            .checked="${this.selected}"
+          />
+        </div>
+      `;
+    }
+  }
+
   private renderThumbnailUI() {
     return html`
       <div class="card-thumbnail-wrapper">
@@ -145,7 +222,13 @@ export class Card extends LitElement {
     `;
   }
 
-  override updated(changedProps: any) {}
+  override updated(changedProps: any) {
+    // if (changedProps.has('showOptions')) {
+    //   if (!this.showOptions) {
+    //     this.selected = false;
+    //   }
+    // }
+  }
 }
 
 declare global {
