@@ -6,17 +6,25 @@
 }
 
 dialog {
+  display: none;
+  flex-direction: column;
+  margin: 0;
   padding: 0;
   color: inherit;
   background: var(--kd-color-background-ui-default);
   border: 1px solid var(--kd-color-border-light);
   box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.12);
+  top: 0;
   right: 0;
-  min-height: 100%;
   left: auto;
-  margin: 0;
+  height: 100vh;
+
+  &:modal {
+    max-height: 100vh;
+  }
 
   &[open] {
+    display: flex;
     animation: dialog-in 400ms forwards;
   }
 
@@ -31,13 +39,6 @@ dialog {
   &.size--md {
     width: 800px;
   }
-}
-
-.drawer-content-wrapper {
-  position: relative;
-  padding: 0 32px 32px 32px;
-  height: 100vh;
-  margin-bottom: 10px;
 }
 
 button {
@@ -68,16 +69,18 @@ button {
 }
 
 header {
-  z-index: 90;
   position: sticky;
   top: 0;
-  background-color: #ffffff;
+  background-color: var(--kd-color-background-ui-default);
   display: flex;
   flex-direction: row;
-  width: 100%;
   justify-content: space-between;
-  padding-top: 32px;
-  padding-bottom: 16px;
+  padding: 32px;
+}
+
+.body {
+  padding: 0 32px;
+  flex-grow: 1;
 }
 
 .header-label-title {
@@ -110,7 +113,7 @@ h1 {
 .dialog-footer {
   position: sticky;
   bottom: 0px;
-  width: 100%;
+  margin-top: 32px;
   background-color: var(--kd-color-background-accent-subtle);
   padding: 24px 32px 24px 32px;
   border-top: 1px solid var(--kd-color-border-light);
