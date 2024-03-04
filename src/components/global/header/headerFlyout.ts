@@ -33,9 +33,13 @@ export class HeaderFlyout extends LitElement {
   @property({ type: Boolean })
   hideArrow = false;
 
-  /** Button label. */
+  /** Menu & button label. */
   @property({ type: String })
   label = '';
+
+  /** Hide the label at the top of the flyout menu. */
+  @property({ type: Boolean })
+  hideMenuLabel = false;
 
   /**
    * DEPRECATED. Use `label` instead.
@@ -121,6 +125,14 @@ export class HeaderFlyout extends LitElement {
             `}
 
         <div class=${classMap(contentClasses)}>
+          ${!this.hideMenuLabel
+            ? html`
+                <div class="menu-label">
+                  ${this.label || this.assistiveText}
+                </div>
+              `
+            : null}
+
           <button class="go-back" @click=${() => this._handleBack()}>
             <kd-icon .icon=${backIcon}></kd-icon>
             Back
