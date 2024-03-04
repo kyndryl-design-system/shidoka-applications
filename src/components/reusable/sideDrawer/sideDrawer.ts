@@ -101,6 +101,11 @@ export class SideDrawer extends LitElement {
       'size--sm': this.size === 'sm',
     };
 
+    const contentClasses = {
+      'drawer-content-wrapper': true,
+      'drawer-content-wrapper-height': !this.hideFooter,
+    };
+
     return html`
       <button class="anchor" @click=${this._openDrawer}>
         <slot name="anchor"></slot>
@@ -112,7 +117,7 @@ export class SideDrawer extends LitElement {
         aria-labelledby="dialogLabel"
         @cancel=${(e: Event) => this._closeDrawer(e, 'cancel')}
       >
-        <div class="drawer-content-wrapper">
+        <div class="${classMap(contentClasses)}">
           <!--  Header -->
           <header>
             <div class="header-label-title">

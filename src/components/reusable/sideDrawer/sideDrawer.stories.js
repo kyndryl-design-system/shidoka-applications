@@ -96,7 +96,19 @@ export const BeforeClose = {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin cursus,
           purus vitae egestas mollis, augue augue interdum quam, sit amet
           volutpat justo magna quis justo. Aliquam dapibus mi a arcu consequat,
-          sed placerat metus bibendum. Suspendisse pretium nibh
+          sed placerat metus bibendum. Suspendisse pretium nibh Lorem ipsum
+          dolor sit amet, consectetur adipiscing elit. Proin cursus, purus vitae
+          egestas mollis, augue augue interdum quam, sit amet volutpat justo
+          magna quis justo. Aliquam dapibus mi a arcu consequat, sed placerat
+          metus bibendum. Suspendisse pretium nibh Lorem ipsum dolor sit amet,
+          consectetur adipiscing elit. Proin cursus, purus vitae egestas mollis,
+          augue augue interdum quam, sit amet volutpat justo magna quis justo.
+          Aliquam dapibus mi a arcu consequat, sed placerat metus bibendum.
+          Suspendisse pretium nibh Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit. Proin cursus, purus vitae egestas mollis, augue augue
+          interdum quam, sit amet volutpat justo magna quis justo. Aliquam
+          dapibus mi a arcu consequat, sed placerat metus bibendum. Suspendisse
+          pretium nibh
         </div>
       </kyn-side-drawer>
     `;
