@@ -34,6 +34,7 @@ const args = {
   cancelText: 'Cancel',
   destructive: false,
   okDisabled: false,
+  hideFooter: false,
 };
 
 export const Modal = {
@@ -49,6 +50,7 @@ export const Modal = {
         cancelText=${args.cancelText}
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
+        ?hideFooter=${args.hideFooter}
         @on-close=${(e) => action(e.type)(e)}
       >
         <span slot="anchor">Open Modal</span>

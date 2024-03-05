@@ -140,7 +140,7 @@ export class RadioButtonGroup extends LitElement {
       changedProps.has('invalidText') &&
       changedProps.get('invalidText') !== undefined
     ) {
-      this._validate(false, true);
+      this._validate(false, false);
     }
 
     if (
@@ -168,12 +168,10 @@ export class RadioButtonGroup extends LitElement {
     };
 
     // set validationMessage
+    const InternalMsg =
+      this.required && this.value === '' ? 'A selection is required.' : '';
     const ValidationMessage =
-      this.invalidText !== ''
-        ? this.invalidText
-        : this.required && this.value === ''
-        ? 'A selection is required.'
-        : '';
+      this.invalidText !== '' ? this.invalidText : InternalMsg;
 
     // set validity on custom element, anchor to first radio
     this.internals.setValidity(
@@ -184,7 +182,7 @@ export class RadioButtonGroup extends LitElement {
 
     // set internal validation message if value was changed by user input
     if (interacted) {
-      this.internalValidationMsg = this.internals.validationMessage;
+      this.internalValidationMsg = InternalMsg;
     }
 
     // focus the first checkbox to show validity
@@ -211,7 +209,7 @@ export class RadioButtonGroup extends LitElement {
   }
 
   private _handleInvalid() {
-    this.internalValidationMsg = this.internals.validationMessage;
+    this._validate(true, false);
   }
 
   override connectedCallback() {

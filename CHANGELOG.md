@@ -1,3 +1,29 @@
+## [1.6.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.5...v1.6.6) (2024-03-04)
+
+
+### Bug Fixes
+
+* **drawer:** fix internal scrolling, fix display issue when closed, clean up padding/margin ([6b88f71](https://github.com/kyndryl-design-system/shidoka-applications/commit/6b88f71451733eee28c4931547a556a35ea6c82a))
+* **drawer:** scroll position for longer content ([bf1db75](https://github.com/kyndryl-design-system/shidoka-applications/commit/bf1db75189978786b30d319cfe67b362354c8596))
+* **style:** added auto focus on X icon ([474c957](https://github.com/kyndryl-design-system/shidoka-applications/commit/474c95758f3f35823e864f6bec180071646c85b5))
+* **style:** overflow scroll for content ([b8075ab](https://github.com/kyndryl-design-system/shidoka-applications/commit/b8075ab53642b17de581fdc3ea8495b2630075a8))
+* **style:** Remove autofocus from drawer close button ([407ce37](https://github.com/kyndryl-design-system/shidoka-applications/commit/407ce378cb6a545859fec377279890c4130559e7))
+* **style:** Remove unwanted style from drawer.scss ([3420a2a](https://github.com/kyndryl-design-system/shidoka-applications/commit/3420a2a709ebff305cc344ebda47b97aab02b0a9))
+
+## [1.6.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.4...v1.6.5) (2024-03-04)
+
+
+### Bug Fixes
+
+* **modal:** add hideFooter prop, resolves [#114](https://github.com/kyndryl-design-system/shidoka-applications/issues/114) ([dc4e6d6](https://github.com/kyndryl-design-system/shidoka-applications/commit/dc4e6d697c35614ddc9e0e9a593495cf6a1443a0))
+
+## [1.6.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.3...v1.6.4) (2024-03-01)
+
+
+### Bug Fixes
+
+* **forms:** decouple internal & external invalid messages, resolves [#111](https://github.com/kyndryl-design-system/shidoka-applications/issues/111) ([1d6c540](https://github.com/kyndryl-design-system/shidoka-applications/commit/1d6c5400709e38eb307c69592f5d76416e0b93f9))
+
 ## [1.6.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.2...v1.6.3) (2024-02-28)
 
 
