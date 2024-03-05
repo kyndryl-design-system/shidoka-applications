@@ -1,3 +1,10 @@
+## [1.6.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.6...v1.6.7) (2024-03-05)
+
+
+### Bug Fixes
+
+* **overflow-menu:** increase z-index ([8d4ecc4](https://github.com/kyndryl-design-system/shidoka-applications/commit/8d4ecc4d3fd809e56643fe787d993046d78f3cb0))
+
 ## [1.6.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.5...v1.6.6) (2024-03-04)
 
 
