@@ -11,6 +11,7 @@ import ToggleButtonScss from './toggleButton.scss';
 export class ToggleButton extends LitElement {
   static override styles = ToggleButtonScss;
 
+  /** @ignore */
   static override shadowRootOptions = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,

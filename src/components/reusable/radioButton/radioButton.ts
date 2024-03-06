@@ -11,6 +11,7 @@ import RadioButtonScss from './radioButton.scss';
 export class RadioButton extends LitElement {
   static override styles = RadioButtonScss;
 
+  /** @ignore */
   static override shadowRootOptions = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,

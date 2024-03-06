@@ -21,6 +21,7 @@ export class DateRangePicker extends LitElement {
    */
   static formAssociated = true;
 
+  /** @ignore */
   static override shadowRootOptions = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,

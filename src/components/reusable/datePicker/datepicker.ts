@@ -17,6 +17,7 @@ import DatePickerScss from './datepicker.scss';
 export class DatePicker extends LitElement {
   static override styles = DatePickerScss;
 
+  /** @ignore */
   static override shadowRootOptions = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,

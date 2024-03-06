@@ -12,6 +12,7 @@ import CheckboxScss from './checkbox.scss';
 export class Checkbox extends LitElement {
   static override styles = CheckboxScss;
 
+  /** @ignore */
   static override shadowRootOptions = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
