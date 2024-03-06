@@ -58,6 +58,13 @@ export class OverflowMenu extends LitElement {
    */
   @state() private _id = crypto.randomUUID();
 
+  /**
+   * Open drawer upwards.
+   * @ignore
+   */
+  @state()
+  _openUpwards = false;
+
   override render() {
     const buttonClasses = {
       btn: true,
@@ -70,6 +77,7 @@ export class OverflowMenu extends LitElement {
       open: this.open,
       right: this.anchorRight,
       fixed: this.fixed,
+      upwards: this._openUpwards,
     };
 
     return html`
@@ -137,6 +145,20 @@ export class OverflowMenu extends LitElement {
       this.menuItems.forEach((item: any) => {
         item.anchorRight = this.anchorRight;
       });
+    }
+
+    if (changedProps.has('open')) {
+      if (this.open) {
+        // open dropdown upwards if closer to bottom of viewport
+        if (
+          this._btnEl.getBoundingClientRect().top >
+          window.innerHeight * 0.6
+        ) {
+          this._openUpwards = true;
+        } else {
+          this._openUpwards = false;
+        }
+      }
     }
   }
 
