@@ -1,3 +1,10 @@
+## [1.6.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.7...v1.6.8) (2024-03-06)
+
+
+### Bug Fixes
+
+* **overflow-menu:** open upwards near bottom of viewport, resolves [#117](https://github.com/kyndryl-design-system/shidoka-applications/issues/117) ([c4c7162](https://github.com/kyndryl-design-system/shidoka-applications/commit/c4c7162b781cb57a5049a4331011f985e5bff2bc))
+
 ## [1.6.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.6...v1.6.7) (2024-03-05)
 
 
