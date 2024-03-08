@@ -1,3 +1,10 @@
+## [1.6.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.9...v1.6.10) (2024-03-08)
+
+
+### Bug Fixes
+
+* **style:** Dialog height while drawer closing ([b481add](https://github.com/kyndryl-design-system/shidoka-applications/commit/b481addbaaeaf938ecf541c91d2fe974823816ec))
+
 ## [1.6.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.8...v1.6.9) (2024-03-07)
 
 
