@@ -112,8 +112,9 @@ export class OverflowMenu extends LitElement {
   private toggleMenu() {
     this.open = !this.open;
     this._emitToggleEvent();
+  }
 
-    // set menu position on open
+  private _positionMenu() {
     if (this.open) {
       if (this.fixed) {
         const Top =
@@ -121,9 +122,12 @@ export class OverflowMenu extends LitElement {
           this._btnEl.getBoundingClientRect().height;
         const MenuHeight = this.menuItems.length * 48;
 
-        if (Top + MenuHeight > window.innerHeight) {
-          this._menuEl.style.top = 'initial';
-          this._menuEl.style.bottom = '0px';
+        console.log(this._openUpwards);
+
+        if (this._openUpwards) {
+          this._menuEl.style.top =
+            this._btnEl.getBoundingClientRect().top - MenuHeight - 18 + 'px';
+          this._menuEl.style.bottom = 'initial';
         } else {
           this._menuEl.style.top = Top + 'px';
           this._menuEl.style.bottom = 'initial';
@@ -159,6 +163,8 @@ export class OverflowMenu extends LitElement {
           this._openUpwards = false;
         }
       }
+
+      this._positionMenu();
     }
   }
 
