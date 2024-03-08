@@ -13,7 +13,7 @@ import '../overflowMenu';
 
 /**
  * Card.
- * @fires tile-selected - Captures the change event and emits the selected values.
+ * @fires on-card-change - Captures the change event and emits the selected card values.
  * @slot tags - Slot for the tag component. Note: Put `<kd-tag>` or `<kd-tag-group>` inside this slot only when `showTags = true`.
  * @slot unnamed - Slot for Card body content.
  */
@@ -60,7 +60,7 @@ export class Card extends LitElement {
 
   /** Card options. `overflowMenu`, `multiSelect` & `singleSelect`  */
   @property({ type: String })
-  options = 'overflowMenu';
+  optionType = 'overflowMenu';
 
   /** Show card options */
   @property({ type: Boolean })
@@ -81,6 +81,17 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   selected = false;
 
+  /**
+   * Radio button checked state, inherited from the parent group if value matches.
+   * @ignore
+   */
+  @property({ type: Boolean })
+  checked = false;
+
+  /** Radio button value for single select card */
+  @property({ type: String })
+  value = '';
+
   override render() {
     return html`
       <div class="card-wrapper">
@@ -90,15 +101,14 @@ export class Card extends LitElement {
             <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
             <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
           </kyn-overflow-menu> -->
-          <!-- <div
-            class="tile ${this.selected ? 'selected' : ''}"
-            @click="${this.handleTileClick}"
-          >
+          <!-- <div>
             <input
               type="radio"
               class="radio"
-              name="tiles"
-              .checked="${this.selected}"
+              value=${this.value}
+              .checked="${this.checked}"
+              ?checked=${this.checked}
+              @change=${(e: any) => this.handleChange(e)}
             />
           </div> -->
 
@@ -112,6 +122,7 @@ export class Card extends LitElement {
               .checked="${this.selected}"
             />
           </div> -->
+          ${this.showOptions ? this.renderOptionsUI() : null}
         </div>
 
         <!-- thumbnail UI Top -->
@@ -156,6 +167,20 @@ export class Card extends LitElement {
     `;
   }
 
+  private handleChange(e: any) {
+    // emit selected value, bubble so it can be captured by the radio group
+    const event = new CustomEvent('on-card-change', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        checked: e.target.checked,
+        value: e.target.value,
+        origEvent: e,
+      },
+    });
+    this.dispatchEvent(event);
+  }
+
   private handleTileClick() {
     this.selected = !this.selected;
     if (this.selected) {
@@ -170,7 +195,6 @@ export class Card extends LitElement {
   }
 
   private handleMultiTileClick() {
-    this.selected = !this.selected;
     this.dispatchEvent(
       new CustomEvent('tile-selected', {
         bubbles: true,
@@ -181,7 +205,7 @@ export class Card extends LitElement {
   }
 
   private renderOptionsUI() {
-    if (this.option === 'overflowMenu') {
+    if (this.optionType === 'overflowMenu') {
       return html`
         <kyn-overflow-menu verticalDots>
           <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
@@ -189,21 +213,29 @@ export class Card extends LitElement {
         </kyn-overflow-menu>
       `;
     }
-    if (this.option === 'multiSelect') {
+    if (this.optionType === 'multiSelect') {
       return html`
-        <div @click="${this.handleMultiTileClick}">
-          <input type="checkbox" class="checkbox" .checked="${this.selected}" />
+        <div>
+          <input
+            type="checkbox"
+            value=${this.value}
+            .checked=${this.checked}
+            ?checked=${this.checked}
+            @change=${(e: any) => this.handleChange(e)}
+          />
         </div>
       `;
     }
-    if (this.option === 'singleSelect') {
+    if (this.optionType === 'singleSelect') {
       return html`
-        <div @click="${this.handleTileClick}">
+        <div>
           <input
             type="radio"
             class="radio"
-            name="tiles"
-            .checked="${this.selected}"
+            value=${this.value}
+            .checked="${this.checked}"
+            ?checked=${this.checked}
+            @change=${(e: any) => this.handleChange(e)}
           />
         </div>
       `;
