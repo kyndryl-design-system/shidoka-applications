@@ -1,0 +1,83 @@
+import { LitElement, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+import PageTitleScss from './pageTitle.scss';
+
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
+
+/**
+ * Page Title
+ */
+
+@customElement('kyn-page-title')
+export class PageTitle extends LitElement {
+  static override styles = PageTitleScss;
+
+  /** Whether to show headline. */
+  @property({ type: Boolean })
+  showheadLine = false;
+
+  /** Headline text. */
+  @property({ type: String })
+  headLine = '';
+
+  /** Page title text (required). */
+  @property({ type: String })
+  title = '';
+
+  /** Whether to show subtitle. */
+  @property({ type: Boolean })
+  showSubTitle = false;
+
+  /** Page subtitle text. */
+  @property({ type: String })
+  subTitle = '';
+
+  /** Type of page title `primary` & `secondary`. */
+  @property({ type: String })
+  type = 'primary';
+
+  /** Whether to show icon. */
+  @property({ type: Boolean })
+  showIcon = false;
+
+  /** The imported carbon icon. Requires `showIcon` true. */
+  @property({ type: Object })
+  icon: any = {};
+
+  override render() {
+    const classes = {
+      'page-title': true,
+      [`page-title-${this.type}`]: true,
+    };
+
+    return html`
+      <div class="page-title-wrapper">
+        ${this.showIcon
+          ? html`<div class="icon-wrapper">
+              <kd-icon .icon=${this.icon} sizeOverride="56"></kd-icon>
+            </div>`
+          : null}
+
+        <div class="page-title-text-wrapper">
+          <!-- Headline -->
+          ${this.showheadLine
+            ? html`<div class="page-headline">${this.headLine}</div>`
+            : null}
+          <!-- Title -->
+          <div class="${classMap(classes)}">${this.title}</div>
+          <!-- Subtitle -->
+          ${this.showSubTitle
+            ? html`<div class="page-subtitle">${this.subTitle}</div>`
+            : null}
+        </div>
+      </div>
+    `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'kyn-page-title': PageTitle;
+  }
+}

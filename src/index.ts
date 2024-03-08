@@ -37,3 +37,4 @@ export { Tooltip } from './components/reusable/tooltip';
 export { Tag, TagGroup } from './components/reusable/tag';
 export { GlobalFilter } from './components/reusable/globalFilter';
 export { SideDrawer } from './components/reusable/sideDrawer';
+export { PageTitle } from './components/reusable/pagetitle';
