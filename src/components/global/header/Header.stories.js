@@ -13,6 +13,8 @@ export default {
   subcomponents: {
     'kyn-header-nav': 'kyn-header-nav',
     'kyn-header-link': 'kyn-header-link',
+    'kyn-header-category': 'kyn-header-category',
+    'kyn-header-divider': 'kyn-header-divider',
     'kyn-header-flyouts': 'kyn-header-flyouts',
     'kyn-header-flyout': 'kyn-header-flyout',
     'kyn-header-avatar': 'kyn-header-avatar',
@@ -59,13 +61,25 @@ export const WithNav = {
           <kd-icon .icon=${circleIcon}></kd-icon>
           Link 1
         </kyn-header-link>
-        <kyn-header-link href="javascript:void(0)" isActive>
-          <kd-icon .icon=${circleIcon}></kd-icon>
-          Link 2
-        </kyn-header-link>
+
+        <kyn-header-divider></kyn-header-divider>
+
+        <kyn-header-category heading="Category">
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Link 2
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Link 3
+          </kyn-header-link>
+        </kyn-header-category>
+
+        <kyn-header-divider></kyn-header-divider>
+
         <kyn-header-link href="javascript:void(0)">
           <kd-icon .icon=${circleIcon}></kd-icon>
-          Link 3
+          Link 4
 
           <kyn-header-link slot="links" href="javascript:void(0)">
             <kd-icon .icon=${circleIcon}></kd-icon>
@@ -139,13 +153,25 @@ export const WithEverything = {
           <kd-icon .icon=${circleIcon}></kd-icon>
           Link 1
         </kyn-header-link>
-        <kyn-header-link href="javascript:void(0)" isActive>
-          <kd-icon .icon=${circleIcon}></kd-icon>
-          Link 2
-        </kyn-header-link>
+
+        <kyn-header-divider></kyn-header-divider>
+
+        <kyn-header-category heading="Category">
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Link 2
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Link 3
+          </kyn-header-link>
+        </kyn-header-category>
+
+        <kyn-header-divider></kyn-header-divider>
+
         <kyn-header-link href="javascript:void(0)">
           <kd-icon .icon=${circleIcon}></kd-icon>
-          Link 3
+          Link 4
 
           <kyn-header-link slot="links" href="javascript:void(0)">
             <kd-icon .icon=${circleIcon}></kd-icon>
