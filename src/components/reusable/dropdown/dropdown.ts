@@ -25,6 +25,7 @@ import clearIcon16 from '@carbon/icons/es/close/16';
 export class Dropdown extends LitElement {
   static override styles = DropdownScss;
 
+  /** @ignore */
   static override shadowRootOptions = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,

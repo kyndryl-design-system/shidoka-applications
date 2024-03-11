@@ -19,6 +19,7 @@ import TimePickerScss from './timepicker.scss';
 export class TimePicker extends LitElement {
   static override styles = [TimePickerScss];
 
+  /** @ignore */
   static override shadowRootOptions = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,

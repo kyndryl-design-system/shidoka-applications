@@ -58,6 +58,13 @@ export class OverflowMenu extends LitElement {
    */
   @state() private _id = crypto.randomUUID();
 
+  /**
+   * Open drawer upwards.
+   * @ignore
+   */
+  @state()
+  _openUpwards = false;
+
   override render() {
     const buttonClasses = {
       btn: true,
@@ -70,6 +77,7 @@ export class OverflowMenu extends LitElement {
       open: this.open,
       right: this.anchorRight,
       fixed: this.fixed,
+      upwards: this._openUpwards,
     };
 
     return html`
@@ -104,8 +112,9 @@ export class OverflowMenu extends LitElement {
   private toggleMenu() {
     this.open = !this.open;
     this._emitToggleEvent();
+  }
 
-    // set menu position on open
+  private _positionMenu() {
     if (this.open) {
       if (this.fixed) {
         const Top =
@@ -113,9 +122,12 @@ export class OverflowMenu extends LitElement {
           this._btnEl.getBoundingClientRect().height;
         const MenuHeight = this.menuItems.length * 48;
 
-        if (Top + MenuHeight > window.innerHeight) {
-          this._menuEl.style.top = 'initial';
-          this._menuEl.style.bottom = '0px';
+        console.log(this._openUpwards);
+
+        if (this._openUpwards) {
+          this._menuEl.style.top =
+            this._btnEl.getBoundingClientRect().top - MenuHeight - 18 + 'px';
+          this._menuEl.style.bottom = 'initial';
         } else {
           this._menuEl.style.top = Top + 'px';
           this._menuEl.style.bottom = 'initial';
@@ -137,6 +149,22 @@ export class OverflowMenu extends LitElement {
       this.menuItems.forEach((item: any) => {
         item.anchorRight = this.anchorRight;
       });
+    }
+
+    if (changedProps.has('open')) {
+      if (this.open) {
+        // open dropdown upwards if closer to bottom of viewport
+        if (
+          this._btnEl.getBoundingClientRect().top >
+          window.innerHeight * 0.6
+        ) {
+          this._openUpwards = true;
+        } else {
+          this._openUpwards = false;
+        }
+      }
+
+      this._positionMenu();
     }
   }
 

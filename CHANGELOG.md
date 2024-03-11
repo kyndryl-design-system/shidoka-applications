@@ -1,3 +1,31 @@
+## [1.6.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.9...v1.6.10) (2024-03-08)
+
+
+### Bug Fixes
+
+* **style:** Dialog height while drawer closing ([b481add](https://github.com/kyndryl-design-system/shidoka-applications/commit/b481addbaaeaf938ecf541c91d2fe974823816ec))
+
+## [1.6.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.8...v1.6.9) (2024-03-07)
+
+
+### Bug Fixes
+
+* **overflow-menu:** correct fixed + open upwards positioning ([c519e2e](https://github.com/kyndryl-design-system/shidoka-applications/commit/c519e2ec0e1d05eae95b4b6fe87d2c61a255f249))
+
+## [1.6.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.7...v1.6.8) (2024-03-06)
+
+
+### Bug Fixes
+
+* **overflow-menu:** open upwards near bottom of viewport, resolves [#117](https://github.com/kyndryl-design-system/shidoka-applications/issues/117) ([c4c7162](https://github.com/kyndryl-design-system/shidoka-applications/commit/c4c7162b781cb57a5049a4331011f985e5bff2bc))
+
+## [1.6.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.6...v1.6.7) (2024-03-05)
+
+
+### Bug Fixes
+
+* **overflow-menu:** increase z-index ([8d4ecc4](https://github.com/kyndryl-design-system/shidoka-applications/commit/8d4ecc4d3fd809e56643fe787d993046d78f3cb0))
+
 ## [1.6.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.5...v1.6.6) (2024-03-04)
 
 
