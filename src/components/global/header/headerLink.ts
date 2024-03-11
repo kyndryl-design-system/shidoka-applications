@@ -49,7 +49,7 @@ export class HeaderLink extends LitElement {
   @state()
   level = 1;
 
-  /** Adds a 1px shadow to the bottom of the link. */
+  /** DEPRECATED. Adds a 1px shadow to the bottom of the link. */
   @property({ type: Boolean })
   divider = false;
 
