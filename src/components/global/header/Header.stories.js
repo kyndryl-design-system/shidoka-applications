@@ -119,16 +119,14 @@ export const WithFlyouts = {
         <kyn-header-flyout label="Menu Label">
           <kd-icon .icon=${helpIcon} slot="button"></kd-icon>
 
-          <div>
-            <kyn-header-link href="javascript:void(0)">
-              <kd-icon .icon=${circleIcon}></kd-icon>
-              Example 1
-            </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              <kd-icon .icon=${circleIcon}></kd-icon>
-              Example 2
-            </kyn-header-link>
-          </div>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example 2
+          </kyn-header-link>
         </kyn-header-flyout>
 
         <kyn-header-flyout label="Menu Label">
@@ -206,16 +204,14 @@ export const WithEverything = {
         <kyn-header-flyout label="Menu Label">
           <kd-icon .icon=${helpIcon} slot="button"></kd-icon>
 
-          <div>
-            <kyn-header-link href="javascript:void(0)">
-              <kd-icon .icon=${circleIcon}></kd-icon>
-              Example 1
-            </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              <kd-icon .icon=${circleIcon}></kd-icon>
-              Example 2
-            </kyn-header-link>
-          </div>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example 2
+          </kyn-header-link>
         </kyn-header-flyout>
 
         <kyn-header-flyout label="Menu Label">

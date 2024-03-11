@@ -216,7 +216,7 @@ export class HeaderLink extends LitElement {
     if (parentTagName === 'KYN-HEADER-LINK') {
       this.level = 2;
     } else {
-      if (window.innerWidth < 672 && parentTagName !== 'KYN-HEADER-NAV') {
+      if (window.innerWidth < 672 && parentTagName === 'KYN-HEADER-FLYOUT') {
         this.level = 2;
       } else {
         this.level = 1;
