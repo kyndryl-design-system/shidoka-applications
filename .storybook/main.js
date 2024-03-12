@@ -84,4 +84,8 @@ export default {
   docs: {
     autodocs: true,
   },
+  async babel(options) {
+    options.presets = ['@babel/preset-react'];
+    return options;
+  },
 };
