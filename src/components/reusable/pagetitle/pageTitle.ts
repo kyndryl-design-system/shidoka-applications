@@ -23,7 +23,7 @@ export class PageTitle extends LitElement {
 
   /** Page title text (required). */
   @property({ type: String })
-  title = '';
+  pageTitle = '';
 
   /** Whether to show subtitle. */
   @property({ type: Boolean })
@@ -65,7 +65,7 @@ export class PageTitle extends LitElement {
             ? html`<div class="page-headline">${this.headLine}</div>`
             : null}
           <!-- Title -->
-          <div class="${classMap(classes)}">${this.title}</div>
+          <div class="${classMap(classes)}">${this.pageTitle}</div>
           <!-- Subtitle -->
           ${this.showSubTitle
             ? html`<div class="page-subtitle">${this.subTitle}</div>`

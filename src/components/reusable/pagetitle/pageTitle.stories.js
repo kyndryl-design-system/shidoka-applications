@@ -22,7 +22,7 @@ export default {
 const args = {
   type: 'primary',
   headLine: 'Headline',
-  title: 'Page Title',
+  pageTitle: 'Page Title',
   subTitle: 'Subtitle',
   showheadLine: false,
   showSubTitle: false,
@@ -37,7 +37,7 @@ export const PageTitle = {
       <kyn-page-title
         type=${args.type}
         headLine=${args.headLine}
-        title=${args.title}
+        pageTitle=${args.pageTitle}
         subTitle=${args.subTitle}
         .icon=${args.icon}
         ?showheadLine=${args.showheadLine}
