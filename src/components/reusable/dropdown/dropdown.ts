@@ -338,7 +338,7 @@ export class Dropdown extends LitElement {
                   );
                   let text = '';
 
-                  if (option && option.shadowRoot) {
+                  if (option?.shadowRoot?.querySelector('slot')) {
                     const nodes = option.shadowRoot
                       .querySelector('slot')
                       .assignedNodes({
@@ -924,7 +924,7 @@ export class Dropdown extends LitElement {
           );
           let text = '';
 
-          if (option && option.shadowRoot) {
+          if (option?.shadowRoot?.querySelector('slot')) {
             const nodes = option.shadowRoot
               .querySelector('slot')
               .assignedNodes({
