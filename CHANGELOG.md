@@ -1,3 +1,10 @@
+## [1.6.12](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.11...v1.6.12) (2024-03-12)
+
+
+### Bug Fixes
+
+* **dropdown:** null slot element check ([374642c](https://github.com/kyndryl-design-system/shidoka-applications/commit/374642c7004347371ad366acf0289ebda019f167))
+
 ## [1.6.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.10...v1.6.11) (2024-03-12)
 
 
