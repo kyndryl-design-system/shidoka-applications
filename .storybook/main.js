@@ -3,7 +3,6 @@ import remarkGfm from 'remark-gfm';
 export default {
   stories: [
     '../src/stories/welcome.mdx', //force default page
-    '../src/**/*.mdx',
     '../src/**/*.stories.@(js|jsx|ts|tsx)',
   ],
   addons: [
@@ -73,6 +72,7 @@ export default {
         },
       },
     },
+    '@storybook/addon-webpack5-compiler-babel',
   ],
   framework: {
     name: '@storybook/web-components-webpack5',
