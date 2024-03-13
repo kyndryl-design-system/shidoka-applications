@@ -163,6 +163,8 @@ export class HeaderLink extends LitElement {
         link.style.display = 'none';
       }
     });
+
+    this._positionMenu();
   }
 
   private _handleBack() {
@@ -224,37 +226,41 @@ export class HeaderLink extends LitElement {
     }
   }
 
+  private _positionMenu() {
+    // determine submenu positioning
+    const LinkBounds: any = this.getBoundingClientRect();
+    const MenuBounds: any = this.shadowRoot
+      ?.querySelector('.menu__content')
+      ?.getBoundingClientRect();
+    const Padding = 8;
+
+    const LinkHalf = LinkBounds.top + LinkBounds.height / 2;
+    const MenuHalf = MenuBounds.height / 2;
+
+    const Top =
+      LinkHalf + MenuHalf > window.innerHeight
+        ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight)
+        : LinkHalf - MenuHalf;
+
+    // const Top =
+    //   LinkBounds.top + MenuBounds.height - Padding > window.innerHeight
+    //     ? LinkBounds.top -
+    //       (LinkBounds.top + MenuBounds.height - window.innerHeight)
+    //     : LinkBounds.top - Padding;
+
+    this.menuPosition = {
+      top: Top,
+      left: LinkBounds.right + Padding,
+    };
+  }
+
   override firstUpdated() {
     this.determineLevel();
   }
 
   override willUpdate(changedProps: any) {
     if (changedProps.has('open') && this.open) {
-      // determine submenu positioning
-      const LinkBounds: any = this.getBoundingClientRect();
-      const MenuBounds: any = this.shadowRoot
-        ?.querySelector('.menu__content')
-        ?.getBoundingClientRect();
-      const Padding = 8;
-
-      const LinkHalf = LinkBounds.top + LinkBounds.height / 2;
-      const MenuHalf = MenuBounds.height / 2;
-
-      const Top =
-        LinkHalf + MenuHalf > window.innerHeight
-          ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight)
-          : LinkHalf - MenuHalf;
-
-      // const Top =
-      //   LinkBounds.top + MenuBounds.height - Padding > window.innerHeight
-      //     ? LinkBounds.top -
-      //       (LinkBounds.top + MenuBounds.height - window.innerHeight)
-      //     : LinkBounds.top - Padding;
-
-      this.menuPosition = {
-        top: Top,
-        left: LinkBounds.right + Padding,
-      };
+      this._positionMenu();
     }
   }
 
