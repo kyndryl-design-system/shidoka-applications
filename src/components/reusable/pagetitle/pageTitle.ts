@@ -33,7 +33,7 @@ export class PageTitle extends LitElement {
   @property({ type: String })
   subTitle = '';
 
-  /** Type of page title `primary` & `secondary`. */
+  /** Type of page title `'primary'` & `'secondary'`. */
   @property({ type: String })
   type = 'primary';
 
@@ -41,7 +41,7 @@ export class PageTitle extends LitElement {
   @property({ type: Boolean })
   showIcon = false;
 
-  /** The imported carbon icon. Requires `showIcon` true. */
+  /** The imported carbon icon. Size 56 * 56. Requires `showIcon` true. */
   @property({ type: Object })
   icon: any = {};
 

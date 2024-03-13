@@ -14,7 +14,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/pQKkip0UrZqEbaGN2dQ3dY/Istanbul-Release?type=design&node-id=1345-63879&mode=design&t=yhPVQlRVw0TwFfLz-0',
+      url: 'https://www.figma.com/file/pQKkip0UrZqEbaGN2dQ3dY/Istanbul-Release?type=design&node-id=352-128746&mode=design&t=nxz6VzNlZIWAmTcg-0',
     },
   },
 };
