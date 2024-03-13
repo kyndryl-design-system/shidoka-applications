@@ -4,6 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import HeaderNavScss from './headerNav.scss';
 
 import menuIcon from '@carbon/icons/es/menu/24';
+import closeIcon from '@carbon/icons/es/close/24';
 
 /**
  * Container for header navigation links.
@@ -38,7 +39,7 @@ export class HeaderNav extends LitElement {
           title="Toggle Menu"
           @click=${() => this._toggleMenuOpen()}
         >
-          <kd-icon .icon=${menuIcon}></kd-icon>
+          <kd-icon .icon=${this.menuOpen ? closeIcon : menuIcon}></kd-icon>
         </button>
 
         <div class="menu__content left">

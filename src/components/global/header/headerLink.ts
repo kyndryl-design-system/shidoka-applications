@@ -237,11 +237,19 @@ export class HeaderLink extends LitElement {
         ?.getBoundingClientRect();
       const Padding = 8;
 
+      const LinkHalf = LinkBounds.top + LinkBounds.height / 2;
+      const MenuHalf = MenuBounds.height / 2;
+
       const Top =
-        LinkBounds.top + MenuBounds.height - Padding > window.innerHeight
-          ? LinkBounds.top -
-            (LinkBounds.top + MenuBounds.height - window.innerHeight)
-          : LinkBounds.top - Padding;
+        LinkHalf + MenuHalf > window.innerHeight
+          ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight)
+          : LinkHalf - MenuHalf;
+
+      // const Top =
+      //   LinkBounds.top + MenuBounds.height - Padding > window.innerHeight
+      //     ? LinkBounds.top -
+      //       (LinkBounds.top + MenuBounds.height - window.innerHeight)
+      //     : LinkBounds.top - Padding;
 
       this.menuPosition = {
         top: Top,

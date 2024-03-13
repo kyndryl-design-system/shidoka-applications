@@ -129,7 +129,7 @@ export const WithFlyouts = {
           </kyn-header-link>
         </kyn-header-flyout>
 
-        <kyn-header-flyout label="Menu Label">
+        <kyn-header-flyout label="Menu Label" hideMenuLabel>
           <kd-icon slot="button" .icon=${userAvatarIcon}></kd-icon>
 
           <kyn-header-link href="javascript:void(0)">
@@ -214,7 +214,7 @@ export const WithEverything = {
           </kyn-header-link>
         </kyn-header-flyout>
 
-        <kyn-header-flyout label="Menu Label">
+        <kyn-header-flyout label="Menu Label" hideMenuLabel>
           <kd-icon slot="button" .icon=${userAvatarIcon}></kd-icon>
 
           <kyn-header-link href="javascript:void(0)">
