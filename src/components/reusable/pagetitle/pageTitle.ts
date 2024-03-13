@@ -51,6 +51,11 @@ export class PageTitle extends LitElement {
       [`page-title-${this.type}`]: true,
     };
 
+    const subTitleClasses = {
+      'page-subtitle': true,
+      [`page-subtitle-${this.type}`]: true,
+    };
+
     return html`
       <div class="page-title-wrapper">
         ${this.showIcon
@@ -65,10 +70,12 @@ export class PageTitle extends LitElement {
             ? html`<div class="page-headline">${this.headLine}</div>`
             : null}
           <!-- Title -->
-          <div class="${classMap(classes)}">${this.pageTitle}</div>
+          <h1 class="${classMap(classes)}">${this.pageTitle}</h1>
           <!-- Subtitle -->
           ${this.showSubTitle
-            ? html`<div class="page-subtitle">${this.subTitle}</div>`
+            ? html`<h6 class="${classMap(subTitleClasses)}">
+                ${this.subTitle}
+              </h6>`
             : null}
         </div>
       </div>
