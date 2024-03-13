@@ -17,6 +17,7 @@ export default {
     'kyn-header-divider': 'kyn-header-divider',
     'kyn-header-flyouts': 'kyn-header-flyouts',
     'kyn-header-flyout': 'kyn-header-flyout',
+    'kyn-header-user-profile': 'kyn-header-user-profile',
   },
   decorators: [
     (story) =>
@@ -131,9 +132,22 @@ export const WithFlyouts = {
         <kyn-header-flyout label="Menu Label" hideMenuLabel>
           <kd-icon slot="button" .icon=${userAvatarIcon}></kd-icon>
 
+          <kyn-header-user-profile
+            name="User Name"
+            subtitle="Job Title"
+            email="user@kyndryl.com"
+            profileLink="#"
+          >
+            <img src="https://picsum.photos/id/237/112/112" />
+          </kyn-header-user-profile>
+
           <kyn-header-link href="javascript:void(0)">
             <kd-icon .icon=${circleIcon}></kd-icon>
-            Example Link
+            Example Link 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example Link 2
           </kyn-header-link>
         </kyn-header-flyout>
       </kyn-header-flyouts>
@@ -216,9 +230,22 @@ export const WithEverything = {
         <kyn-header-flyout label="Menu Label" hideMenuLabel>
           <kd-icon slot="button" .icon=${userAvatarIcon}></kd-icon>
 
+          <kyn-header-user-profile
+            name="User Name"
+            subtitle="Job Title"
+            email="user@kyndryl.com"
+            profileLink="#"
+          >
+            <img src="https://picsum.photos/id/237/112/112" />
+          </kyn-header-user-profile>
+
           <kyn-header-link href="javascript:void(0)">
             <kd-icon .icon=${circleIcon}></kd-icon>
-            Example Link
+            Example Link 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example Link 2
           </kyn-header-link>
         </kyn-header-flyout>
       </kyn-header-flyouts>

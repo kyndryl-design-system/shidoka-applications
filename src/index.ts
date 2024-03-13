@@ -6,6 +6,7 @@ export {
   HeaderDivider,
   HeaderFlyouts,
   HeaderFlyout,
+  HeaderUserProfile,
   HeaderAvatar,
   HeaderPanel,
   HeaderPanelLink,
