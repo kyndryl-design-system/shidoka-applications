@@ -17,7 +17,6 @@ export default {
     'kyn-header-divider': 'kyn-header-divider',
     'kyn-header-flyouts': 'kyn-header-flyouts',
     'kyn-header-flyout': 'kyn-header-flyout',
-    'kyn-header-avatar': 'kyn-header-avatar',
   },
   decorators: [
     (story) =>

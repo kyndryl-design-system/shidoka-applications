@@ -17,7 +17,7 @@ import logo from '@kyndryl-design-system/shidoka-foundation/assets/svg/kyndryl-l
  * @fires on-root-link-click - Captures the logo link click event and emits the original event details.
  * @slot unnamed - The default slot for all empty space right of the logo/title.
  * @slot logo - Slot for the logo, will overwrite the default logo.
- * @slot left - Slot left of the logo, intended for a header panel.
+ * @slot left - Slot left of the logo, intended for the header nav.
  */
 @customElement('kyn-header')
 export class Header extends LitElement {
