@@ -52,6 +52,10 @@ export class HeaderFlyout extends LitElement {
   @property({ type: String })
   href = '';
 
+  /** Text for mobile "Back" button. */
+  @property({ type: String })
+  backText = 'Back';
+
   /**
    * Queries any slotted HTML elements.
    * @ignore
@@ -135,7 +139,7 @@ export class HeaderFlyout extends LitElement {
 
           <button class="go-back" @click=${() => this._handleBack()}>
             <kd-icon .icon=${backIcon}></kd-icon>
-            Back
+            ${this.backText}
           </button>
           <slot></slot>
         </div>

@@ -57,6 +57,10 @@ export class HeaderLink extends LitElement {
   @property({ type: String })
   searchLabel = 'Search';
 
+  /** Text for mobile "Back" button. */
+  @property({ type: String })
+  backText = 'Back';
+
   /**
    * Queries any slotted HTML elements.
    * @ignore
@@ -123,7 +127,7 @@ export class HeaderLink extends LitElement {
         >
           <button class="go-back" @click=${() => this._handleBack()}>
             <kd-icon .icon=${backIcon}></kd-icon>
-            Back
+            ${this.backText}
           </button>
 
           ${this.slottedLinks.length > 5
