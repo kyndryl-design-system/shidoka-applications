@@ -3,19 +3,14 @@ import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import PageTitleScss from './pageTitle.scss';
 
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-
 /**
  * Page Title
+ * @slot icon - Slot for icon. Use size 56 * 56 as per UX guidelines.
  */
 
 @customElement('kyn-page-title')
 export class PageTitle extends LitElement {
   static override styles = PageTitleScss;
-
-  /** Whether to show headline. */
-  @property({ type: Boolean })
-  showheadLine = false;
 
   /** Headline text. */
   @property({ type: String })
@@ -25,10 +20,6 @@ export class PageTitle extends LitElement {
   @property({ type: String })
   pageTitle = '';
 
-  /** Whether to show subtitle. */
-  @property({ type: Boolean })
-  showSubTitle = false;
-
   /** Page subtitle text. */
   @property({ type: String })
   subTitle = '';
@@ -36,14 +27,6 @@ export class PageTitle extends LitElement {
   /** Type of page title `'primary'` & `'secondary'`. */
   @property({ type: String })
   type = 'primary';
-
-  /** Whether to show icon. */
-  @property({ type: Boolean })
-  showIcon = false;
-
-  /** The imported carbon icon. Size 56 * 56. Requires `showIcon` true. */
-  @property({ type: Object })
-  icon: any = {};
 
   override render() {
     const classes = {
@@ -58,24 +41,22 @@ export class PageTitle extends LitElement {
 
     return html`
       <div class="page-title-wrapper">
-        ${this.showIcon
-          ? html`<div class="icon-wrapper">
-              <kd-icon .icon=${this.icon} sizeOverride="56"></kd-icon>
-            </div>`
-          : null}
+        <div class="icon-wrapper">
+          <slot name="icon"></slot>
+        </div>
 
         <div class="page-title-text-wrapper">
           <!-- Headline -->
-          ${this.showheadLine
+          ${this.headLine !== ''
             ? html`<div class="page-headline">${this.headLine}</div>`
             : null}
           <!-- Title -->
           <h1 class="${classMap(classes)}">${this.pageTitle}</h1>
           <!-- Subtitle -->
-          ${this.showSubTitle
-            ? html`<h6 class="${classMap(subTitleClasses)}">
+          ${this.subTitle !== ''
+            ? html`<div class="${classMap(subTitleClasses)}">
                 ${this.subTitle}
-              </h6>`
+              </div>`
             : null}
         </div>
       </div>
