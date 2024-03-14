@@ -26,6 +26,11 @@ export const Default = {
           e.preventDefault();
           action('submit')(e);
           console.log(new FormData(e.target));
+
+          // console.log(e.submitter);
+          // submitter is not accessible with form associated custom elements, see https://github.com/WICG/webcomponents/issues/814
+
+          return false;
         }}
       >
         <kyn-radio-button-group
@@ -178,6 +183,7 @@ export const Default = {
 
         <kd-button
           type="submit"
+          name="test"
           @on-click=${() => {
             // check validity of the overall form
             console.log(

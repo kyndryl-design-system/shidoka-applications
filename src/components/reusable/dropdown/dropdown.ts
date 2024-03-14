@@ -25,6 +25,7 @@ import clearIcon16 from '@carbon/icons/es/close/16';
 export class Dropdown extends LitElement {
   static override styles = DropdownScss;
 
+  /** @ignore */
   static override shadowRootOptions = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
@@ -335,14 +336,18 @@ export class Dropdown extends LitElement {
                   const option = this.options.find(
                     (option) => option.value === value
                   );
-                  const nodes = option.shadowRoot
-                    .querySelector('slot')
-                    .assignedNodes({
-                      flatten: true,
-                    });
                   let text = '';
-                  for (let i = 0; i < nodes.length; i++) {
-                    text += nodes[i].textContent.trim();
+
+                  if (option?.shadowRoot?.querySelector('slot')) {
+                    const nodes = option.shadowRoot
+                      .querySelector('slot')
+                      .assignedNodes({
+                        flatten: true,
+                      });
+
+                    for (let i = 0; i < nodes.length; i++) {
+                      text += nodes[i].textContent.trim();
+                    }
                   }
 
                   return html`
@@ -917,13 +922,20 @@ export class Dropdown extends LitElement {
           const option = this.options.find(
             (option) => option.value === this.value
           );
-          const nodes = option.shadowRoot.querySelector('slot').assignedNodes({
-            flatten: true,
-          });
           let text = '';
-          for (let i = 0; i < nodes.length; i++) {
-            text += nodes[i].textContent.trim();
+
+          if (option?.shadowRoot?.querySelector('slot')) {
+            const nodes = option.shadowRoot
+              .querySelector('slot')
+              .assignedNodes({
+                flatten: true,
+              });
+
+            for (let i = 0; i < nodes.length; i++) {
+              text += nodes[i].textContent.trim();
+            }
           }
+
           this.text = text;
         }
 
