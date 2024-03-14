@@ -72,6 +72,10 @@ export class TextArea extends LitElement {
   @property({ type: Number })
   minLength!: number;
 
+  /** textarea rows attribute. The number of visible text lines. */
+  @property({ type: Number })
+  rows!: number;
+
   /**
    * Internal validation message.
    * @ignore
@@ -111,6 +115,7 @@ export class TextArea extends LitElement {
             ?invalid=${this.isInvalid}
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
+            rows=${this.rows}
             @input=${(e: any) => this.handleInput(e)}
           >
 ${this.value}</textarea
