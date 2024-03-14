@@ -1,3 +1,16 @@
+# [1.7.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.12...v1.7.0) (2024-03-14)
+
+
+### Bug Fixes
+
+* **page-title:** replaced slot for icon and style related changes ([dd97400](https://github.com/kyndryl-design-system/shidoka-applications/commit/dd97400cc7c0676baab45ad8ca1bccf7da898f99))
+* **page-title:** update title prop ([d844ad2](https://github.com/kyndryl-design-system/shidoka-applications/commit/d844ad2e6f9f5c4a167344d45c9929c6d649eb82))
+
+
+### Features
+
+* **page-title:** Added page title component UI ([9e51867](https://github.com/kyndryl-design-system/shidoka-applications/commit/9e518679cf6f9fb65f855a470db2ea88d56fd659))
+
 ## [1.6.12](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.11...v1.6.12) (2024-03-12)
 
 
