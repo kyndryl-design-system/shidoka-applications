@@ -1,3 +1,11 @@
+## [1.7.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.7.0...v1.7.1) (2024-03-14)
+
+
+### Bug Fixes
+
+* **dropdown:** search input flex, resolves [#124](https://github.com/kyndryl-design-system/shidoka-applications/issues/124) ([27b3240](https://github.com/kyndryl-design-system/shidoka-applications/commit/27b32400abd59571a7821ba3ab73d5812559917d))
+* **textarea:** add rows prop, resolves [#125](https://github.com/kyndryl-design-system/shidoka-applications/issues/125) ([0a88d65](https://github.com/kyndryl-design-system/shidoka-applications/commit/0a88d650485b92602b6a17d2c2620e136cc8786d))
+
 # [1.7.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.6.12...v1.7.0) (2024-03-14)
 
 
