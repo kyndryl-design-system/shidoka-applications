@@ -187,7 +187,7 @@ export class HeaderLink extends LitElement {
   }
 
   private handlePointerLeave(e: PointerEvent) {
-    if (e.pointerType === 'mouse') {
+    if (e.pointerType === 'mouse' && document.activeElement !== this) {
       this.timer = setTimeout(() => {
         this.open = false;
         clearTimeout(this.timer);
