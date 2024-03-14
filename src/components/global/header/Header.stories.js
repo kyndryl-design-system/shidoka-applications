@@ -1,11 +1,11 @@
 import { html } from 'lit';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import './';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/button';
 
-import switcherIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/switcher.svg';
-import userAvatarIcon from '@carbon/icons/es/user--avatar/24';
-import helpIcon from '@carbon/icons/es/help/16';
+import userAvatarIcon from '@carbon/icons/es/user--avatar/20';
+import helpIcon from '@carbon/icons/es/help/20';
+import circleIcon from '@carbon/icons/es/circle-stroke';
 
 export default {
   title: 'Global Components/Header',
@@ -13,11 +13,11 @@ export default {
   subcomponents: {
     'kyn-header-nav': 'kyn-header-nav',
     'kyn-header-link': 'kyn-header-link',
+    'kyn-header-category': 'kyn-header-category',
+    'kyn-header-divider': 'kyn-header-divider',
     'kyn-header-flyouts': 'kyn-header-flyouts',
     'kyn-header-flyout': 'kyn-header-flyout',
-    'kyn-header-avatar': 'kyn-header-avatar',
-    'kyn-header-panel': 'kyn-header-panel',
-    'kyn-header-panel-link': 'kyn-header-panel-link',
+    'kyn-header-user-profile': 'kyn-header-user-profile',
   },
   decorators: [
     (story) =>
@@ -43,46 +43,67 @@ export default {
 const args = {
   rootUrl: '/',
   appTitle: 'Application',
-  breakpoint: 672,
-  divider: true,
 };
 
 export const Header = {
   args,
   render: (args) => html`
-    <kyn-header
-      rootUrl=${args.rootUrl}
-      appTitle=${args.appTitle}
-      breakpoint=${args.breakpoint}
-      ?divider=${args.divider}
-    >
-    </kyn-header>
+    <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}> </kyn-header>
   `,
 };
 
-export const WithNavLinks = {
+export const WithNav = {
   args,
   render: (args) => html`
-    <kyn-header
-      rootUrl=${args.rootUrl}
-      appTitle=${args.appTitle}
-      breakpoint=${args.breakpoint}
-      ?divider=${args.divider}
-    >
+    <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
       <kyn-header-nav>
-        <kyn-header-link href="javascript:void(0)"> Link 1 </kyn-header-link>
-        <kyn-header-link href="javascript:void(0)" isActive>
-          Link 2
-        </kyn-header-link>
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${helpIcon}></kd-icon>
-          Link 3
+          <kd-icon .icon=${circleIcon}></kd-icon>
+          Link 1
+        </kyn-header-link>
 
-          <kyn-header-link slot="links" href="javascript:void(0)" divider>
-            Sub Link # 1
+        <kyn-header-divider></kyn-header-divider>
+
+        <kyn-header-category heading="Category">
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Link 2
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Link 3
+          </kyn-header-link>
+        </kyn-header-category>
+
+        <kyn-header-divider></kyn-header-divider>
+
+        <kyn-header-link href="javascript:void(0)">
+          <kd-icon .icon=${circleIcon}></kd-icon>
+          Link 4
+
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 1
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
             Sub Link 2
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 3
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 4
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 5
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 6
           </kyn-header-link>
         </kyn-header-link>
       </kyn-header-nav>
@@ -93,59 +114,43 @@ export const WithNavLinks = {
 export const WithFlyouts = {
   args,
   render: (args) => html`
-    <kyn-header
-      rootUrl=${args.rootUrl}
-      appTitle=${args.appTitle}
-      breakpoint=${args.breakpoint}
-      ?divider=${args.divider}
-    >
+    <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
       <kyn-header-flyouts>
-        <kyn-header-flyout>
-          <span slot="button">Sign in</span>
+        <kyn-header-flyout label="Menu Label">
+          <kd-icon .icon=${helpIcon} slot="button"></kd-icon>
 
-          <div>
-            <kyn-header-link href="javascript:void(0)"> Login </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              Sign up
-            </kyn-header-link>
-          </div>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example 2
+          </kyn-header-link>
         </kyn-header-flyout>
 
-        <kyn-header-flyout assistiveText="My Account" hideArrow>
-          <kyn-header-avatar initials="KB" slot="button"></kyn-header-avatar>
+        <kyn-header-flyout label="Menu Label" hideMenuLabel>
+          <kd-icon slot="button" .icon=${userAvatarIcon}></kd-icon>
 
-          <kyn-header-link href="javascript:void(0)"> Logout </kyn-header-link>
+          <kyn-header-user-profile
+            name="User Name"
+            subtitle="Job Title"
+            email="user@kyndryl.com"
+            profileLink="#"
+          >
+            <img src="https://picsum.photos/id/237/112/112" />
+          </kyn-header-user-profile>
+
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example Link 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example Link 2
+          </kyn-header-link>
         </kyn-header-flyout>
       </kyn-header-flyouts>
-    </kyn-header>
-  `,
-};
-
-export const WithPanel = {
-  args,
-  render: (args) => html`
-    <kyn-header
-      rootUrl=${args.rootUrl}
-      appTitle=${args.appTitle}
-      breakpoint=${args.breakpoint}
-      ?divider=${args.divider}
-    >
-      <kyn-header-panel slot="left" heading="Panel Heading">
-        <span slot="button">${unsafeHTML(switcherIcon)}</span>
-
-        <kyn-header-panel-link href="javascript:void(0)">
-          <kd-icon .icon=${userAvatarIcon}></kd-icon>
-          Link 1
-        </kyn-header-panel-link>
-        <kyn-header-panel-link href="javascript:void(0)">
-          <kd-icon .icon=${userAvatarIcon}></kd-icon>
-          Link 2
-        </kyn-header-panel-link>
-        <kyn-header-panel-link href="javascript:void(0)">
-          <kd-icon .icon=${userAvatarIcon}></kd-icon>
-          Link 3
-        </kyn-header-panel-link>
-      </kyn-header-panel>
     </kyn-header>
   `,
 };
@@ -153,82 +158,95 @@ export const WithPanel = {
 export const WithEverything = {
   args,
   render: (args) => html`
-    <kyn-header
-      rootUrl=${args.rootUrl}
-      appTitle=${args.appTitle}
-      breakpoint=${args.breakpoint}
-      ?divider=${args.divider}
-    >
-      <kyn-header-panel slot="left" heading="Panel Heading">
-        <span slot="button">${unsafeHTML(switcherIcon)}</span>
-
-        <kyn-header-panel-link href="javascript:void(0)">
-          <kd-icon .icon=${userAvatarIcon}></kd-icon>
-          Link 1
-        </kyn-header-panel-link>
-        <kyn-header-panel-link href="javascript:void(0)">
-          <kd-icon .icon=${userAvatarIcon}></kd-icon>
-          Link 2
-        </kyn-header-panel-link>
-        <kyn-header-panel-link href="javascript:void(0)">
-          <kd-icon .icon=${userAvatarIcon}></kd-icon>
-          Link 3
-        </kyn-header-panel-link>
-      </kyn-header-panel>
-
+    <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
       <kyn-header-nav>
-        <kyn-header-link href="javascript:void(0)"> Link 1 </kyn-header-link>
-        <kyn-header-link href="javascript:void(0)" isActive>
-          Link 2
-        </kyn-header-link>
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${helpIcon}></kd-icon>
-          Link 3
+          <kd-icon .icon=${circleIcon}></kd-icon>
+          Link 1
+        </kyn-header-link>
 
-          <kyn-header-link slot="links" href="javascript:void(0)" divider>
-            Sub Link # 1
+        <kyn-header-divider></kyn-header-divider>
+
+        <kyn-header-category heading="Category">
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Link 2
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Link 3
+          </kyn-header-link>
+        </kyn-header-category>
+
+        <kyn-header-divider></kyn-header-divider>
+
+        <kyn-header-link href="javascript:void(0)">
+          <kd-icon .icon=${circleIcon}></kd-icon>
+          Link 4
+
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 1
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
             Sub Link 2
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 3
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 4
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 5
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 6
           </kyn-header-link>
         </kyn-header-link>
       </kyn-header-nav>
 
+      <kd-button size="small">Button</kd-button>
+
       <kyn-header-flyouts>
-        <kyn-header-flyout>
-          <span slot="button">Sign in</span>
+        <kyn-header-flyout label="Menu Label">
+          <kd-icon .icon=${helpIcon} slot="button"></kd-icon>
 
-          <div>
-            <kyn-header-link href="javascript:void(0)"> Login </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              Sign up
-            </kyn-header-link>
-          </div>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example 2
+          </kyn-header-link>
         </kyn-header-flyout>
 
-        <kyn-header-flyout>
-          <span
-            slot="button"
-            style="display: flex; align-items: center; gap: 6px;"
+        <kyn-header-flyout label="Menu Label" hideMenuLabel>
+          <kd-icon slot="button" .icon=${userAvatarIcon}></kd-icon>
+
+          <kyn-header-user-profile
+            name="User Name"
+            subtitle="Job Title"
+            email="user@kyndryl.com"
+            profileLink="#"
           >
-            <kd-icon .icon=${helpIcon}></kd-icon>
-            Support
-          </span>
+            <img src="https://picsum.photos/id/237/112/112" />
+          </kyn-header-user-profile>
 
-          <div>
-            <kyn-header-link href="javascript:void(0)">
-              Example 1
-            </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              Example 2
-            </kyn-header-link>
-          </div>
-        </kyn-header-flyout>
-
-        <kyn-header-flyout assistiveText="My Account" hideArrow>
-          <kyn-header-avatar initials="KB" slot="button"></kyn-header-avatar>
-
-          <kyn-header-link href="javascript:void(0)"> Logout </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example Link 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example Link 2
+          </kyn-header-link>
         </kyn-header-flyout>
       </kyn-header-flyouts>
     </kyn-header>

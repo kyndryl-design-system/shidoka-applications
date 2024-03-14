@@ -6,11 +6,12 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderLinkScss from './headerLink.scss';
+import '../../reusable/textInput';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import downIcon from '@carbon/icons/es/caret--down/16';
+import arrowIcon from '@carbon/icons/es/chevron--right/16';
+import backIcon from '@carbon/icons/es/arrow--left/16';
 
 /**
  * Component for navigation links within the Header.
@@ -48,28 +49,42 @@ export class HeaderLink extends LitElement {
   @state()
   level = 1;
 
-  /** Adds a 1px shadow to the bottom of the link. */
+  /** DEPRECATED. Adds a 1px shadow to the bottom of the link. */
   @property({ type: Boolean })
   divider = false;
 
-  /**
-   * Determines if menu should be a flyout or inline depending on screen size.
-   * @ignore
-   */
-  @state()
-  breakpointHit = false;
+  /** Label for sub-menu link search input, which is visible with > 5 sub-links. */
+  @property({ type: String })
+  searchLabel = 'Search';
+
+  /** Text for mobile "Back" button. */
+  @property({ type: String })
+  backText = 'Back';
 
   /**
    * Queries any slotted HTML elements.
    * @ignore
    */
-  @queryAssignedElements({ slot: 'links' })
-  slottedElements!: Array<HTMLElement>;
+  @queryAssignedElements({ slot: 'links', selector: 'kyn-header-link' })
+  slottedLinks!: Array<HTMLElement>;
+
+  /** Timeout function to delay modal close.
+   * @internal
+   */
+  @state()
+  timer: any;
+
+  /** Menu positioning
+   * @internal
+   */
+  @state()
+  menuPosition: any = {};
 
   override render() {
     const classes = {
-      menu: this.slottedElements.length,
-      'breakpoint-hit': this.breakpointHit,
+      menu: this.slottedLinks.length,
+      'level--1': this.level == 1,
+      'level--2': this.level == 2,
       divider: this.divider,
       open: this.open,
     };
@@ -77,21 +92,19 @@ export class HeaderLink extends LitElement {
     const linkClasses = {
       'nav-link': true,
       active: this.isActive,
-      'level--1': this.level == 1,
-      'level--2': this.level == 2,
-      interactive: this.level == 1 && this.breakpointHit,
+      interactive: this.level == 1,
     };
 
-    const slotClasses = {
-      menu__content: this.breakpointHit,
-      static: !this.breakpointHit,
-      slotted: this.slottedElements.length,
+    const menuClasses = {
+      menu__content: true,
+      slotted: this.slottedLinks.length,
     };
 
     return html`
       <div
         class="${classMap(classes)}"
         @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
+        @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
       >
         <a
           target=${this.target}
@@ -103,40 +116,89 @@ export class HeaderLink extends LitElement {
         >
           <slot></slot>
 
-          ${this.slottedElements.length && this.breakpointHit
-            ? html` <kd-icon .icon=${downIcon}></kd-icon> `
+          ${this.slottedLinks.length
+            ? html` <kd-icon class="arrow" .icon=${arrowIcon}></kd-icon> `
             : null}
         </a>
-        <slot
-          name="links"
-          class=${classMap(slotClasses)}
-          @slotchange=${this._handleLinksSlotChange}
-        ></slot>
+
+        <div
+          class=${classMap(menuClasses)}
+          style=${`top: ${this.menuPosition.top}px; left: ${this.menuPosition.left}px;`}
+        >
+          <button class="go-back" @click=${() => this._handleBack()}>
+            <kd-icon .icon=${backIcon}></kd-icon>
+            ${this.backText}
+          </button>
+
+          ${this.slottedLinks.length > 5
+            ? html`
+                <kyn-text-input
+                  hideLabel
+                  placeholder=${this.searchLabel}
+                  @on-input=${(e: Event) => this._handleSearch(e)}
+                >
+                  ${this.searchLabel}
+                </kyn-text-input>
+              `
+            : null}
+
+          <slot name="links" @slotchange=${this._handleLinksSlotChange}></slot>
+        </div>
       </div>
     `;
   }
 
+  private _handleSearch(e: any) {
+    const SearchTerm = e.detail.value.toLowerCase();
+
+    this.slottedLinks.forEach((link) => {
+      // get link text
+      const nodes: any = link.shadowRoot?.querySelector('slot')?.assignedNodes({
+        flatten: true,
+      });
+      let linkText = '';
+      for (let i = 0; i < nodes.length; i++) {
+        linkText += nodes[i].textContent.trim();
+      }
+
+      if (linkText.toLowerCase().includes(SearchTerm)) {
+        link.style.display = 'block';
+      } else {
+        link.style.display = 'none';
+      }
+    });
+
+    this._positionMenu();
+  }
+
+  private _handleBack() {
+    this.open = false;
+  }
+
   private _handleLinksSlotChange() {
-    this.determineLevel();
     this.requestUpdate();
   }
 
   private handlePointerEnter(e: PointerEvent) {
     if (e.pointerType === 'mouse') {
+      clearTimeout(this.timer);
       this.open = true;
     }
   }
 
   private handlePointerLeave(e: PointerEvent) {
-    if (e.pointerType === 'mouse') {
-      this.open = false;
+    if (e.pointerType === 'mouse' && document.activeElement !== this) {
+      this.timer = setTimeout(() => {
+        this.open = false;
+        clearTimeout(this.timer);
+      }, 300);
     }
   }
 
   private handleClick(e: Event) {
     let preventDefault = false;
 
-    if (this.slottedElements.length) {
+    if (this.slottedLinks.length) {
       preventDefault = true;
       e.preventDefault();
       this.open = !this.open;
@@ -156,15 +218,54 @@ export class HeaderLink extends LitElement {
 
   private determineLevel() {
     const parentTagName = this.shadowRoot!.host.parentNode!.nodeName;
-    if (parentTagName == 'KYN-HEADER-NAV') {
-      this.level = 1;
-    } else {
+
+    if (parentTagName === 'KYN-HEADER-LINK') {
       this.level = 2;
+    } else {
+      if (window.innerWidth < 672 && parentTagName === 'KYN-HEADER-FLYOUT') {
+        this.level = 2;
+      } else {
+        this.level = 1;
+      }
     }
+  }
+
+  private _positionMenu() {
+    // determine submenu positioning
+    const LinkBounds: any = this.getBoundingClientRect();
+    const MenuBounds: any = this.shadowRoot
+      ?.querySelector('.menu__content')
+      ?.getBoundingClientRect();
+    const Padding = 8;
+
+    const LinkHalf = LinkBounds.top + LinkBounds.height / 2;
+    const MenuHalf = MenuBounds.height / 2;
+
+    const Top =
+      LinkHalf + MenuHalf > window.innerHeight
+        ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight)
+        : LinkHalf - MenuHalf;
+
+    // const Top =
+    //   LinkBounds.top + MenuBounds.height - Padding > window.innerHeight
+    //     ? LinkBounds.top -
+    //       (LinkBounds.top + MenuBounds.height - window.innerHeight)
+    //     : LinkBounds.top - Padding;
+
+    this.menuPosition = {
+      top: Top,
+      left: LinkBounds.right + Padding,
+    };
   }
 
   override firstUpdated() {
     this.determineLevel();
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('open') && this.open) {
+      this._positionMenu();
+    }
   }
 
   override connectedCallback() {
@@ -172,11 +273,10 @@ export class HeaderLink extends LitElement {
 
     document.addEventListener('click', (e) => this.handleClickOut(e));
 
-    this.testBreakpoint();
     window?.addEventListener(
       'resize',
       debounce(() => {
-        this.testBreakpoint();
+        this.determineLevel();
       })
     );
   }
@@ -187,18 +287,11 @@ export class HeaderLink extends LitElement {
     window?.removeEventListener(
       'resize',
       debounce(() => {
-        this.testBreakpoint();
+        this.determineLevel();
       })
     );
 
     super.disconnectedCallback();
-  }
-
-  private testBreakpoint() {
-    const nav = querySelectorDeep('kyn-header');
-    if (nav) {
-      this.breakpointHit = nav!.breakpointHit;
-    }
   }
 }
 

@@ -33,6 +33,22 @@
         },
         {
           "kind": "js",
+          "name": "HeaderCategory",
+          "declaration": {
+            "name": "HeaderCategory",
+            "module": "./components/global/header"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderDivider",
+          "declaration": {
+            "name": "HeaderDivider",
+            "module": "./components/global/header"
+          }
+        },
+        {
+          "kind": "js",
           "name": "HeaderFlyouts",
           "declaration": {
             "name": "HeaderFlyouts",
@@ -44,6 +60,14 @@
           "name": "HeaderFlyout",
           "declaration": {
             "name": "HeaderFlyout",
+            "module": "./components/global/header"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderUserProfile",
+          "declaration": {
+            "name": "HeaderUserProfile",
             "module": "./components/global/header"
           }
         },
@@ -731,7 +755,7 @@
               "name": "logo"
             },
             {
-              "description": "Slot left of the logo, intended for a header panel.",
+              "description": "Slot left of the logo, intended for the header nav.",
               "name": "left"
             }
           ],
@@ -757,46 +781,8 @@
               "attribute": "appTitle"
             },
             {
-              "kind": "field",
-              "name": "breakpoint",
-              "type": {
-                "text": "number"
-              },
-              "default": "672",
-              "description": "The breakpoint (in px) to convert the nav to a flyout menu for small screens.",
-              "attribute": "breakpoint"
-            },
-            {
-              "kind": "field",
-              "name": "divider",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds a 1px shadow to the bottom of the header, for contrast with  white backgrounds.",
-              "attribute": "divider"
-            },
-            {
               "kind": "method",
               "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleMenuClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "testBreakpoint",
               "privacy": "private"
             },
             {
@@ -811,16 +797,6 @@
                   }
                 }
               ]
-            },
-            {
-              "kind": "method",
-              "name": "toggleNavMenu",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "emitMenuToggle",
-              "privacy": "private"
             }
           ],
           "events": [
@@ -851,24 +827,6 @@
               "default": "''",
               "description": "App title text next to logo.  Hidden on smaller screens.",
               "fieldName": "appTitle"
-            },
-            {
-              "name": "breakpoint",
-              "type": {
-                "text": "number"
-              },
-              "default": "672",
-              "description": "The breakpoint (in px) to convert the nav to a flyout menu for small screens.",
-              "fieldName": "breakpoint"
-            },
-            {
-              "name": "divider",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds a 1px shadow to the bottom of the header, for contrast with  white backgrounds.",
-              "fieldName": "divider"
             }
           ],
           "superclass": {
@@ -958,6 +916,106 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/header/headerCategory.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Header link category",
+          "name": "HeaderCategory",
+          "slots": [
+            {
+              "description": "Slot for links.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "heading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "heading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-category",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderCategory",
+          "declaration": {
+            "name": "HeaderCategory",
+            "module": "src/components/global/header/headerCategory.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-category",
+          "declaration": {
+            "name": "HeaderCategory",
+            "module": "src/components/global/header/headerCategory.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerDivider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Header divider",
+          "name": "HeaderDivider",
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-divider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderDivider",
+          "declaration": {
+            "name": "HeaderDivider",
+            "module": "src/components/global/header/headerDivider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-divider",
+          "declaration": {
+            "name": "HeaderDivider",
+            "module": "src/components/global/header/headerDivider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/header/headerFlyout.ts",
       "declarations": [
         {
@@ -1007,12 +1065,32 @@
             },
             {
               "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Menu & button label.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "hideMenuLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the label at the top of the flyout menu.",
+              "attribute": "hideMenuLabel"
+            },
+            {
+              "kind": "field",
               "name": "assistiveText",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Button assistive text, title + aria-label.",
+              "description": "DEPRECATED. Use `label` instead.\r\nButton assistive text, title + aria-label.",
               "attribute": "assistiveText"
             },
             {
@@ -1024,6 +1102,21 @@
               "default": "''",
               "description": "Turns the button into a link.",
               "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
             },
             {
               "kind": "method",
@@ -1068,11 +1161,6 @@
                   }
                 }
               ]
-            },
-            {
-              "kind": "method",
-              "name": "testBreakpoint",
-              "privacy": "private"
             }
           ],
           "attributes": [
@@ -1104,12 +1192,30 @@
               "fieldName": "hideArrow"
             },
             {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Menu & button label.",
+              "fieldName": "label"
+            },
+            {
+              "name": "hideMenuLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the label at the top of the flyout menu.",
+              "fieldName": "hideMenuLabel"
+            },
+            {
               "name": "assistiveText",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Button assistive text, title + aria-label.",
+              "description": "DEPRECATED. Use `label` instead.\r\nButton assistive text, title + aria-label.",
               "fieldName": "assistiveText"
             },
             {
@@ -1120,6 +1226,15 @@
               "default": "''",
               "description": "Turns the button into a link.",
               "fieldName": "href"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
             }
           ],
           "superclass": {
@@ -1155,15 +1270,40 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Container for header flyout items, aligns to the right, place last.",
+          "description": "Container for header-flyout components..",
           "name": "HeaderFlyouts",
           "slots": [
             {
-              "description": "This element has a slot.",
+              "description": "Slot for header-flyout components.",
               "name": "unnamed"
             }
           ],
-          "members": [],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open"
+            },
+            {
+              "kind": "method",
+              "name": "_toggleOpen",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "open"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -1267,8 +1407,46 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Adds a 1px shadow to the bottom of the link.",
+              "description": "DEPRECATED. Adds a 1px shadow to the bottom of the link.",
               "attribute": "divider"
+            },
+            {
+              "kind": "field",
+              "name": "searchLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Search'",
+              "description": "Label for sub-menu link search input, which is visible with > 5 sub-links.",
+              "attribute": "searchLabel"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSearch",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
             },
             {
               "kind": "method",
@@ -1334,7 +1512,7 @@
             },
             {
               "kind": "method",
-              "name": "testBreakpoint",
+              "name": "_positionMenu",
               "privacy": "private"
             }
           ],
@@ -1396,8 +1574,26 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Adds a 1px shadow to the bottom of the link.",
+              "description": "DEPRECATED. Adds a 1px shadow to the bottom of the link.",
               "fieldName": "divider"
+            },
+            {
+              "name": "searchLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Search'",
+              "description": "Label for sub-menu link search input, which is visible with > 5 sub-links.",
+              "fieldName": "searchLabel"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
             }
           ],
           "superclass": {
@@ -1443,9 +1639,44 @@
           ],
           "members": [
             {
+              "kind": "field",
+              "name": "slot",
+              "type": {
+                "text": "string"
+              },
+              "default": "'left'",
+              "description": "Force correct slot",
+              "attribute": "slot",
+              "reflects": true
+            },
+            {
               "kind": "method",
-              "name": "testBreakpoint",
+              "name": "_toggleMenuOpen",
               "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "slot",
+              "type": {
+                "text": "string"
+              },
+              "default": "'left'",
+              "description": "Force correct slot",
+              "fieldName": "slot"
             }
           ],
           "superclass": {
@@ -1760,6 +1991,165 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/header/headerUserProfile.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Header user profile.",
+          "name": "HeaderUserProfile",
+          "slots": [
+            {
+              "description": "Slot for the profile picture img.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The user's name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "subtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The user's job title, or subtext.",
+              "attribute": "subtitle"
+            },
+            {
+              "kind": "field",
+              "name": "email",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The user's email address.",
+              "attribute": "email"
+            },
+            {
+              "kind": "field",
+              "name": "profileLink",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "View profile link URL.",
+              "attribute": "profileLink"
+            },
+            {
+              "kind": "field",
+              "name": "profileLinkText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'View Profile'",
+              "description": "View Profile link text.",
+              "attribute": "profileLinkText"
+            },
+            {
+              "kind": "method",
+              "name": "_handleProfileClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the view profile link click event and emits the original event details.",
+              "name": "on-profile-link-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The user's name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "subtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The user's job title, or subtext.",
+              "fieldName": "subtitle"
+            },
+            {
+              "name": "email",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The user's email address.",
+              "fieldName": "email"
+            },
+            {
+              "name": "profileLink",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "View profile link URL.",
+              "fieldName": "profileLink"
+            },
+            {
+              "name": "profileLinkText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'View Profile'",
+              "description": "View Profile link text.",
+              "fieldName": "profileLinkText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-user-profile",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderUserProfile",
+          "declaration": {
+            "name": "HeaderUserProfile",
+            "module": "src/components/global/header/headerUserProfile.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-user-profile",
+          "declaration": {
+            "name": "HeaderUserProfile",
+            "module": "src/components/global/header/headerUserProfile.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/header/index.ts",
       "declarations": [],
       "exports": [
@@ -1789,6 +2179,22 @@
         },
         {
           "kind": "js",
+          "name": "HeaderCategory",
+          "declaration": {
+            "name": "HeaderCategory",
+            "module": "./headerCategory"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderDivider",
+          "declaration": {
+            "name": "HeaderDivider",
+            "module": "./headerDivider"
+          }
+        },
+        {
+          "kind": "js",
           "name": "HeaderFlyouts",
           "declaration": {
             "name": "HeaderFlyouts",
@@ -1801,6 +2207,14 @@
           "declaration": {
             "name": "HeaderFlyout",
             "module": "./headerFlyout"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderUserProfile",
+          "declaration": {
+            "name": "HeaderUserProfile",
+            "module": "./headerUserProfile"
           }
         },
         {
@@ -1825,69 +2239,6 @@
           "declaration": {
             "name": "HeaderPanelLink",
             "module": "./headerPanelLink"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -2221,6 +2572,69 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/breadcrumbs/breadcrumbItem.ts",
       "declarations": [
         {
@@ -2342,6 +2756,539 @@
           "declaration": {
             "name": "Breadcrumbs",
             "module": "./breadcrumbs"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/checkbox/checkbox.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Checkbox.",
+          "name": "Checkbox",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Checkbox value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox checked state, inherited from the parent group if value matches.",
+              "attribute": "checked",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state, inherited from the parent group.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "visiblyHidden",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines whether the label should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes.",
+              "attribute": "visiblyHidden"
+            },
+            {
+              "kind": "field",
+              "name": "indeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines whether the checkbox is in an indeterminate state.",
+              "attribute": "indeterminate"
+            },
+            {
+              "kind": "method",
+              "name": "handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the change event and emits the selected value and original event details.",
+              "name": "on-checkbox-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Checkbox value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox checked state, inherited from the parent group if value matches.",
+              "fieldName": "checked"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state, inherited from the parent group.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "visiblyHidden",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines whether the label should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes.",
+              "fieldName": "visiblyHidden"
+            },
+            {
+              "name": "indeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines whether the checkbox is in an indeterminate state.",
+              "fieldName": "indeterminate"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-checkbox",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Checkbox",
+          "declaration": {
+            "name": "Checkbox",
+            "module": "src/components/reusable/checkbox/checkbox.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-checkbox",
+          "declaration": {
+            "name": "Checkbox",
+            "module": "src/components/reusable/checkbox/checkbox.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/checkbox/checkboxGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Checkbox group container.",
+          "name": "CheckboxGroup",
+          "slots": [
+            {
+              "description": "Slot for individual checkboxes.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for label text.",
+              "name": "label"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Checkbox input name attribute.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[]",
+              "description": "Checkbox group selected values.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes a single selection required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox group disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "horizontal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox group horizontal style.",
+              "attribute": "horizontal"
+            },
+            {
+              "kind": "field",
+              "name": "selectAll",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a \"Select All\" checkbox to the top of the group.",
+              "attribute": "selectAll"
+            },
+            {
+              "kind": "field",
+              "name": "hideLegend",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the group legend/label visually.",
+              "attribute": "hideLegend"
+            },
+            {
+              "kind": "field",
+              "name": "filterable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a search input to enable filtering of checkboxes.",
+              "attribute": "filterable"
+            },
+            {
+              "kind": "field",
+              "name": "limitCheckboxes",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible checkboxes (4) behind a \"Show all\" button.",
+              "attribute": "limitCheckboxes"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\r\n    selectAll: 'Select all',\r\n    showMore: 'Show more',\r\n    showLess: 'Show less',\r\n  }",
+              "description": "Text string customization.",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "field",
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Checkbox group invalid text.",
+              "attribute": "invalidText"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCheckboxChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitChangeEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFormdata",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleFilter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_toggleRevealed",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "revealed",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleInvalid",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the change event and emits the selected values.",
+              "name": "on-checkbox-group-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Checkbox input name attribute.",
+              "fieldName": "name"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[]",
+              "description": "Checkbox group selected values.",
+              "fieldName": "value"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes a single selection required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox group disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "horizontal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox group horizontal style.",
+              "fieldName": "horizontal"
+            },
+            {
+              "name": "selectAll",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a \"Select All\" checkbox to the top of the group.",
+              "fieldName": "selectAll"
+            },
+            {
+              "name": "hideLegend",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the group legend/label visually.",
+              "fieldName": "hideLegend"
+            },
+            {
+              "name": "filterable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a search input to enable filtering of checkboxes.",
+              "fieldName": "filterable"
+            },
+            {
+              "name": "limitCheckboxes",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible checkboxes (4) behind a \"Show all\" button.",
+              "fieldName": "limitCheckboxes"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\r\n    selectAll: 'Select all',\r\n    showMore: 'Show more',\r\n    showLess: 'Show less',\r\n  }",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Checkbox group invalid text.",
+              "fieldName": "invalidText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-checkbox-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CheckboxGroup",
+          "declaration": {
+            "name": "CheckboxGroup",
+            "module": "src/components/reusable/checkbox/checkboxGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-checkbox-group",
+          "declaration": {
+            "name": "CheckboxGroup",
+            "module": "src/components/reusable/checkbox/checkboxGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/checkbox/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Checkbox",
+          "declaration": {
+            "name": "Checkbox",
+            "module": "./checkbox"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "CheckboxGroup",
+          "declaration": {
+            "name": "CheckboxGroup",
+            "module": "./checkboxGroup"
           }
         }
       ]
@@ -3522,6 +4469,343 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Global Filter bar.",
+          "name": "GlobalFilter",
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-global-filter",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-global-filter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "./globalFilter"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/modal/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Modal",
+          "declaration": {
+            "name": "Modal",
+            "module": "./modal"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/modal/modal.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Modal.",
+          "name": "Modal",
+          "slots": [
+            {
+              "description": "Slot for modal body content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the anchor button content.",
+              "name": "anchor"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Modal open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'auto'",
+              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title/heading text, required.",
+              "attribute": "titleText"
+            },
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "okText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'OK'",
+              "description": "OK button text.",
+              "attribute": "okText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "attribute": "cancelText"
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "okDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "attribute": "okDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the footer/action buttons to create a passive modal.",
+              "attribute": "hideFooter"
+            },
+            {
+              "kind": "field",
+              "name": "beforeClose",
+              "type": {
+                "text": "Function"
+              },
+              "description": "Function to execute before the modal can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
+            },
+            {
+              "kind": "method",
+              "name": "_openModal",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_closeModal",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "returnValue",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitCloseEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Modal open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'auto'",
+              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
+              "fieldName": "size"
+            },
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title/heading text, required.",
+              "fieldName": "titleText"
+            },
+            {
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "fieldName": "labelText"
+            },
+            {
+              "name": "okText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'OK'",
+              "description": "OK button text.",
+              "fieldName": "okText"
+            },
+            {
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "fieldName": "cancelText"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "okDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "fieldName": "okDisabled"
+            },
+            {
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the footer/action buttons to create a passive modal.",
+              "fieldName": "hideFooter"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-modal",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Modal",
+          "declaration": {
+            "name": "Modal",
+            "module": "src/components/reusable/modal/modal.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-modal",
+          "declaration": {
+            "name": "Modal",
+            "module": "src/components/reusable/modal/modal.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
       "declarations": [
         {
@@ -3880,876 +5164,6 @@
           "declaration": {
             "name": "DateRangePicker",
             "module": "\"./daterangepicker\""
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/modal/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Modal",
-          "declaration": {
-            "name": "Modal",
-            "module": "./modal"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/modal/modal.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Modal.",
-          "name": "Modal",
-          "slots": [
-            {
-              "description": "Slot for modal body content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the anchor button content.",
-              "name": "anchor"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Modal open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'auto'",
-              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title/heading text, required.",
-              "attribute": "titleText"
-            },
-            {
-              "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "okText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'OK'",
-              "description": "OK button text.",
-              "attribute": "okText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelText"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "okDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "attribute": "okDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the footer/action buttons to create a passive modal.",
-              "attribute": "hideFooter"
-            },
-            {
-              "kind": "field",
-              "name": "beforeClose",
-              "type": {
-                "text": "Function"
-              },
-              "description": "Function to execute before the modal can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
-            },
-            {
-              "kind": "method",
-              "name": "_openModal",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_closeModal",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "returnValue",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitCloseEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Modal open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'auto'",
-              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
-              "fieldName": "size"
-            },
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title/heading text, required.",
-              "fieldName": "titleText"
-            },
-            {
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "fieldName": "labelText"
-            },
-            {
-              "name": "okText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'OK'",
-              "description": "OK button text.",
-              "fieldName": "okText"
-            },
-            {
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "fieldName": "cancelText"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "okDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "fieldName": "okDisabled"
-            },
-            {
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the footer/action buttons to create a passive modal.",
-              "fieldName": "hideFooter"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-modal",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Modal",
-          "declaration": {
-            "name": "Modal",
-            "module": "src/components/reusable/modal/modal.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-modal",
-          "declaration": {
-            "name": "Modal",
-            "module": "src/components/reusable/modal/modal.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Global Filter bar.",
-          "name": "GlobalFilter",
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-global-filter",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-global-filter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "./globalFilter"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/checkbox/checkbox.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Checkbox.",
-          "name": "Checkbox",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Checkbox value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "checked",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox checked state, inherited from the parent group if value matches.",
-              "attribute": "checked",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox disabled state, inherited from the parent group.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "visiblyHidden",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines whether the label should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes.",
-              "attribute": "visiblyHidden"
-            },
-            {
-              "kind": "field",
-              "name": "indeterminate",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines whether the checkbox is in an indeterminate state.",
-              "attribute": "indeterminate"
-            },
-            {
-              "kind": "method",
-              "name": "handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the change event and emits the selected value and original event details.",
-              "name": "on-checkbox-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Checkbox value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "checked",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox checked state, inherited from the parent group if value matches.",
-              "fieldName": "checked"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox disabled state, inherited from the parent group.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "visiblyHidden",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines whether the label should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes.",
-              "fieldName": "visiblyHidden"
-            },
-            {
-              "name": "indeterminate",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines whether the checkbox is in an indeterminate state.",
-              "fieldName": "indeterminate"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-checkbox",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Checkbox",
-          "declaration": {
-            "name": "Checkbox",
-            "module": "src/components/reusable/checkbox/checkbox.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-checkbox",
-          "declaration": {
-            "name": "Checkbox",
-            "module": "src/components/reusable/checkbox/checkbox.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/checkbox/checkboxGroup.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Checkbox group container.",
-          "name": "CheckboxGroup",
-          "slots": [
-            {
-              "description": "Slot for individual checkboxes.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for label text.",
-              "name": "label"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Checkbox input name attribute.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[]",
-              "description": "Checkbox group selected values.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes a single selection required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox group disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "horizontal",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox group horizontal style.",
-              "attribute": "horizontal"
-            },
-            {
-              "kind": "field",
-              "name": "selectAll",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds a \"Select All\" checkbox to the top of the group.",
-              "attribute": "selectAll"
-            },
-            {
-              "kind": "field",
-              "name": "hideLegend",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide the group legend/label visually.",
-              "attribute": "hideLegend"
-            },
-            {
-              "kind": "field",
-              "name": "filterable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds a search input to enable filtering of checkboxes.",
-              "attribute": "filterable"
-            },
-            {
-              "kind": "field",
-              "name": "limitCheckboxes",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible checkboxes (4) behind a \"Show all\" button.",
-              "attribute": "limitCheckboxes"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\r\n    selectAll: 'Select all',\r\n    showMore: 'Show more',\r\n    showLess: 'Show less',\r\n  }",
-              "description": "Text string customization.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Checkbox group invalid text.",
-              "attribute": "invalidText"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCheckboxChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitChangeEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFormdata",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleFilter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_toggleRevealed",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "revealed",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleInvalid",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the change event and emits the selected values.",
-              "name": "on-checkbox-group-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Checkbox input name attribute.",
-              "fieldName": "name"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[]",
-              "description": "Checkbox group selected values.",
-              "fieldName": "value"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes a single selection required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox group disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "horizontal",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox group horizontal style.",
-              "fieldName": "horizontal"
-            },
-            {
-              "name": "selectAll",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds a \"Select All\" checkbox to the top of the group.",
-              "fieldName": "selectAll"
-            },
-            {
-              "name": "hideLegend",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide the group legend/label visually.",
-              "fieldName": "hideLegend"
-            },
-            {
-              "name": "filterable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds a search input to enable filtering of checkboxes.",
-              "fieldName": "filterable"
-            },
-            {
-              "name": "limitCheckboxes",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible checkboxes (4) behind a \"Show all\" button.",
-              "fieldName": "limitCheckboxes"
-            },
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\r\n    selectAll: 'Select all',\r\n    showMore: 'Show more',\r\n    showLess: 'Show less',\r\n  }",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Checkbox group invalid text.",
-              "fieldName": "invalidText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-checkbox-group",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "CheckboxGroup",
-          "declaration": {
-            "name": "CheckboxGroup",
-            "module": "src/components/reusable/checkbox/checkboxGroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-checkbox-group",
-          "declaration": {
-            "name": "CheckboxGroup",
-            "module": "src/components/reusable/checkbox/checkboxGroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/checkbox/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Checkbox",
-          "declaration": {
-            "name": "Checkbox",
-            "module": "./checkbox"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "CheckboxGroup",
-          "declaration": {
-            "name": "CheckboxGroup",
-            "module": "./checkboxGroup"
           }
         }
       ]

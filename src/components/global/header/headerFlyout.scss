@@ -4,26 +4,31 @@
 
 :host {
   display: inline-flex;
-  height: 100%;
 }
 
 .btn {
   @include typography.type-ui-05;
   display: flex;
   align-items: center;
+  gap: 12px;
+  width: 100%;
   color: var(--kd-color-text-primary);
-  height: 100%;
-  padding: 0 8px;
+  padding: 12px 16px 12px 8px;
   text-decoration: none;
+
+  @media (min-width: 42rem) {
+    justify-content: center;
+    padding: 6px;
+  }
+}
+
+.menu-label {
+  @include typography.type-ui-02;
+  font-weight: 500;
+  padding: 12px 16px 12px 8px;
 }
 
 .menu {
-  .interactive {
-    ::slotted(div[slot='button']),
-    ::slotted(span[slot='button']) {
-    }
-  }
-
   &:hover {
     .interactive {
       ::slotted(kyn-header-avatar) {
@@ -43,6 +48,9 @@
       }
 
       &:hover {
+        background-color: var(--kd-color-background-ui-soft);
+        color: var(--kd-color-text-primary);
+
         ::slotted(kyn-header-avatar) {
           background: none;
           border-color: var(--kd-color-border-inverse);
@@ -64,14 +72,42 @@
 slot[name='button'] {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
 }
 
-kd-icon {
-  margin-left: 6px;
-  transition: transform 150ms ease-out;
+.arrow {
+  margin-left: auto;
+}
 
-  .open & {
-    transform: rotate(-180deg);
+@media (max-width: 42rem) {
+  .menu {
+    width: 100%;
+
+    &.open {
+      .menu__content {
+        transform: translateX(0);
+        z-index: 2;
+      }
+    }
+  }
+
+  .interactive {
+    width: 100%;
+  }
+
+  .menu__content {
+    top: var(--kd-header-height);
+    transform: translateX(100%);
+  }
+}
+
+@media (min-width: 42rem) {
+  .arrow {
+    display: none;
+  }
+
+  .label {
+    display: none;
   }
 }

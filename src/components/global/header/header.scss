@@ -13,13 +13,10 @@
   right: 0;
   left: 0;
   height: var(--kd-header-height);
-  background: var(--kd-color-background-ui-default);
+  background: var(--kd-color-neutral-webgray);
+  box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.1);
   padding: 4px 8px;
   z-index: var(--kd-z-header);
-
-  &.divider {
-    box-shadow: 0 1px 0 var(--kd-color-border-light);
-  }
 
   @media screen and (min-width: 42rem) {
     padding: 4px 24px;
@@ -31,6 +28,8 @@
 
   &__right {
     display: flex;
+    align-items: center;
+    gap: 24px;
     margin-left: auto;
   }
 }
@@ -39,8 +38,7 @@
   display: flex;
   align-items: center;
   padding: 0 8px;
-  // margin: 0 3px;
-  color: var(--kd-color-text-link);
+  // color: var(--kd-color-text-link);
   text-decoration: none;
 
   &:hover {
@@ -61,13 +59,14 @@
 
 .title {
   @include typography.type-ui-01;
+  font-weight: 300;
   display: none;
   margin-top: -3px;
-  margin-left: 8px;
-  padding-left: 8px;
-  border-left: 1px solid var(--kd-color-border-primary);
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid var(--kd-color-border-light);
 
-  .breakpoint-hit & {
+  @media (min-width: 42rem) {
     display: inline;
   }
 }
