@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.7.1...v1.8.0) (2024-03-14)
+
+
+### Features
+
+* **header:** header & primary navigation redesign ([#121](https://github.com/kyndryl-design-system/shidoka-applications/issues/121)) ([fd46284](https://github.com/kyndryl-design-system/shidoka-applications/commit/fd4628433e1aeb344ae0eab6199d128f6601897e))
+
 ## [1.7.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.7.0...v1.7.1) (2024-03-14)
 
 
