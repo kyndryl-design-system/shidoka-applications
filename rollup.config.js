@@ -23,7 +23,7 @@ export default {
   plugins: [
     del({ targets: 'dist/*' }),
     multiInput.default(),
-    resolve(),
+    resolve({ dedupe: ['@lit/reactive-element', 'lit-html'] }),
     renameNodeModules(),
     // peerDepsExternal(),
     copy({
