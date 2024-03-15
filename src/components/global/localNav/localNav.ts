@@ -25,27 +25,27 @@ export class LocalNav extends LitElement {
 
   /** Local nav pinned state. */
   @property({ type: Boolean })
-  pinned = false;
+  accessor pinned = false;
 
   /** Pin open button assistive text. */
   @property({ type: String })
-  pinText = 'Pin open';
+  accessor pinText = 'Pin open';
 
   /** Unpin button assistive text. */
   @property({ type: String })
-  unpinText = 'Unpin';
+  accessor unpinText = 'Unpin';
 
   /** Local nav expanded state.
    * @internal
    */
   @state()
-  _expanded = false;
+  accessor _expanded = false;
 
   /** Queries top-level slotted links links.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-local-nav-link' })
-  _navLinks!: any;
+  accessor _navLinks!: any;
 
   override render() {
     return html`

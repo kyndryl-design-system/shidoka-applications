@@ -17,7 +17,7 @@ export class Table extends LitElement {
 
   /** Determines if the table layout is fixed (true) or auto (false). */
   @property({ type: Boolean })
-  fixedLayout = false;
+  accessor fixedLayout = false;
 
   override render() {
     return html` <slot></slot> `;

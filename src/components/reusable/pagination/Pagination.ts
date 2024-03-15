@@ -25,42 +25,42 @@ export class Pagination extends LitElement {
 
   /** Total number of items that need pagination. */
   @property({ type: Number })
-  count = 0;
+  accessor count = 0;
 
   /** Current active page number.*/
   @property({ type: Number, reflect: true })
-  pageNumber = 1;
+  accessor pageNumber = 1;
 
   /** Number of items displayed per page.*/
   @property({ type: Number })
-  pageSize = 5;
+  accessor pageSize = 5;
 
   /** Available options for the page size.*/
   @property({ type: Array })
-  pageSizeOptions: number[] = [5, 10, 20, 30, 40, 50, 100];
+  accessor pageSizeOptions: number[] = [5, 10, 20, 30, 40, 50, 100];
 
   /** Label for the page size dropdown.*/
   @property({ type: String })
-  pageSizeLabel = PAGE_SIZE_LABEL;
+  accessor pageSizeLabel = PAGE_SIZE_LABEL;
 
   /** Option to hide the items range display. */
   @property({ type: Boolean })
-  hideItemsRange = false;
+  accessor hideItemsRange = false;
 
   /** Option to hide the page size dropdown. */
   @property({ type: Boolean })
-  hidePageSizeDropdown = false;
+  accessor hidePageSizeDropdown = false;
 
   /** Option to hide the navigation buttons. */
   @property({ type: Boolean })
-  hideNavigationButtons = false;
+  accessor hideNavigationButtons = false;
 
   /**
    * Determines the device type the component is being rendered on.
    * @ignore
    */
   @state()
-  isMobile = window.innerWidth < BREAKPOINT;
+  accessor isMobile = window.innerWidth < BREAKPOINT;
 
   /**
    * Handler for the event when the page size is changed by the user.

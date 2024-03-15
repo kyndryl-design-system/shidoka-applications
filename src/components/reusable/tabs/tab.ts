@@ -13,57 +13,57 @@ export class Tab extends LitElement {
 
   /** Tab ID, required. */
   @property({ type: String, reflect: true })
-  override id = '';
+  override accessor id = '';
 
   /** Tab selected state. Must match Tab Panel visible state. */
   @property({ type: Boolean, reflect: true })
-  selected = false;
+  accessor selected = false;
 
   /** Tab disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Size of the tab buttons. Inherited.
    * @internal
    */
   @state()
-  private _size = 'md';
+  accessor _size = 'md';
 
   /** Vertical orientation. Inherited.
    * @internal
    */
   @state()
-  private _vertical = false;
+  accessor _vertical = false;
 
   /** Tab style. Inherited.
    * @internal
    */
   @state()
-  private _tabStyle = 'contained';
+  accessor _tabStyle = 'contained';
 
   /** aria role.
    * @internal
    */
   @property({ type: String, reflect: true })
-  override role = 'tab';
+  override accessor role = 'tab';
 
   /** Make host tabbable.
    * @internal
    */
   @property({ type: Number, reflect: true })
-  override tabIndex = 0;
+  override accessor tabIndex = 0;
 
   /** aria-controls.
    * @internal
    */
   @property({ type: String, reflect: true })
-  'aria-selected' = 'false';
+  accessor 'aria-selected' = 'false';
 
   /** aria-controls.
    * @internal
    */
   @property({ type: String, reflect: true })
-  'aria-controls' = '';
+  accessor 'aria-controls' = '';
 
   override render() {
     const classes = {

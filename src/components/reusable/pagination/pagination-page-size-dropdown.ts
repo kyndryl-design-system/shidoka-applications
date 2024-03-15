@@ -21,15 +21,15 @@ export class PaginationPageSizeDropdown extends LitElement {
 
   /** Current page size. */
   @property({ type: Number })
-  pageSize = 5;
+  accessor pageSize = 5;
 
   /** Label for the page size dropdown. */
   @property({ type: String })
-  pageSizeLabel = PAGE_SIZE_LABEL;
+  accessor pageSizeLabel = PAGE_SIZE_LABEL;
 
   /** Available options for the page size. */
   @property({ type: Array })
-  pageSizeOptions: Array<number> = [5, 10, 20, 30, 40, 50];
+  accessor pageSizeOptions: Array<number> = [5, 10, 20, 30, 40, 50];
 
   /**
    * Handles the dropdown change event.

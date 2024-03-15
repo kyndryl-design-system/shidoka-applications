@@ -18,37 +18,37 @@ export class Tag extends LitElement {
    * Tag name (Required).
    */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /**
    * Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.
    */
   @property({ type: String })
-  tagSize = 'md';
+  accessor tagSize = 'md';
 
   /**
    * Specify if the Tag is disabled.
    */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /**
    * Determine if Tag state is filter.
    */
   @property({ type: Boolean })
-  filter = false;
+  accessor filter = false;
 
   /**
    * Shade `'light'` (default) and `'dark'` for tag
    */
   @property({ type: String })
-  shade = 'light';
+  accessor shade = 'light';
 
   /**
    * Color variants. Default spruce
    */
   @property({ type: String })
-  tagColor = 'spruce';
+  accessor tagColor = 'spruce';
 
   override render() {
     const baseColorClass = `tag-${this.tagColor}`;

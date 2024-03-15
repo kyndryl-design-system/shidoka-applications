@@ -39,59 +39,59 @@ export class SideDrawer extends LitElement {
    * Drawer open state.
    */
   @property({ type: Boolean })
-  open = false;
+  accessor open = false;
 
   /**
    * Drawer size. `'md'`, or `'sm'`.
    */
   @property({ type: String })
-  size = 'md';
+  accessor size = 'md';
 
   /**
    * Title / Heading text, required.
    */
   @property({ type: String })
-  titleText = '';
+  accessor titleText = '';
 
   /**
    * Label text, optional.
    */
   @property({ type: String })
-  labelText = '';
+  accessor labelText = '';
 
   /**
    * Submit button text.
    */
   @property({ type: String })
-  submitBtnText = 'Ok';
+  accessor submitBtnText = 'Ok';
 
   /**
    * Cancel button text.
    */
   @property({ type: String })
-  cancelBtnText = 'Cancel';
+  accessor cancelBtnText = 'Cancel';
 
   /** Disables the primary button. */
   @property({ type: Boolean })
-  submitBtnDisabled = false;
+  accessor submitBtnDisabled = false;
 
   /** Determine whether needs footer */
   @property({ type: Boolean })
-  hideFooter = false;
+  accessor hideFooter = false;
 
   /** Changes the primary button styles to indicate the action is destructive. */
   @property({ type: Boolean })
-  destructive = false;
+  accessor destructive = false;
 
   /** Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`. */
   @property({ attribute: false })
-  beforeClose!: Function;
+  accessor beforeClose!: Function;
 
   /** The dialog element
    * @internal
    */
   @query('dialog')
-  _dialog!: any;
+  accessor _dialog!: any;
 
   override render() {
     const classes = {

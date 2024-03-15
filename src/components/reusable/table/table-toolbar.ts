@@ -17,7 +17,7 @@ export class TableToolbar extends LitElement {
 
   /**The title for the toolbar */
   @property({ type: String })
-  tableTitle = '';
+  accessor tableTitle = '';
 
   override render() {
     return html`
