@@ -23,7 +23,7 @@ The method used (SCSS @use, CSS @import, JS import, or &lt;style&gt; tag) will v
 ### SCSS
 
 ```css
-@use '~@kyndryl-design-system/shidoka-foundation/scss/root.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/root.scss';
 ```
 
 ### CSS
