@@ -67,7 +67,7 @@ export class DataTable extends LitElement {
   /**
    * selectedRows: Set of row ids that are currently selected.
    */
-  @property({ type: Set })
+  @property({ attribute: false })
   accessor selectedRows = new Set<number>();
 
   /**
