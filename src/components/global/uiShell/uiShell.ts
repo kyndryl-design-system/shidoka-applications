@@ -12,19 +12,19 @@ export class UiShell extends LitElement {
 
   /** @internal */
   @queryAssignedElements({ selector: 'kyn-header' })
-  _headerEl!: any;
+  accessor _headerEl!: any;
 
   /** @internal */
   @queryAssignedElements({ selector: 'kyn-local-nav' })
-  _localNavEl!: any;
+  accessor _localNavEl!: any;
 
   /** @internal */
   @queryAssignedElements({ selector: 'kyn-footer' })
-  _footerEl!: any;
+  accessor _footerEl!: any;
 
   /** @internal */
   @queryAssignedElements({ selector: 'main' })
-  _mainEl!: any;
+  accessor _mainEl!: any;
 
   override render() {
     return html` <slot @slotchange=${this.handleSlotChange}></slot> `;

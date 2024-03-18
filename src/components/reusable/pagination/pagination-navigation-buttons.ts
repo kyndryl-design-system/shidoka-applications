@@ -24,18 +24,18 @@ export class PaginationNavigationButtons extends LitElement {
 
   // Current page number, defaults to 0
   @property({ type: Number, reflect: true })
-  pageNumber = 0;
+  accessor pageNumber = 0;
 
   // Total number of pages, defaults to 0
   @property({ type: Number, reflect: true })
-  numberOfPages = 0;
+  accessor numberOfPages = 0;
 
   /**
    * Determines the device type the component is being rendered on.
    * @ignore
    */
   @state()
-  isMobile = window.innerWidth < BREAKPOINT;
+  accessor isMobile = window.innerWidth < BREAKPOINT;
 
   // Constant representing the smallest possible page number
   private readonly SMALLEST_PAGE_NUMBER = 1;

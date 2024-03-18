@@ -13,39 +13,39 @@ export class TabPanel extends LitElement {
 
   /** Matching Tab ID, required. */
   @property({ type: String })
-  tabId = '';
+  accessor tabId = '';
 
   /** Tab Panel visible state.  Must match Tab selected state. */
   @property({ type: Boolean, reflect: true })
-  visible = false;
+  accessor visible = false;
 
   /** Remove side padding (left/right) on tab panel. */
   @property({ type: Boolean })
-  noPadding = false;
+  accessor noPadding = false;
 
   /** Vertical orientation. Inherited.
    * @internal
    */
   @state()
-  private _vertical = false;
+  accessor _vertical = false;
 
   /** Tab Panel ID.
    * @internal
    */
   @property({ type: String, reflect: true })
-  override id = '';
+  override accessor id = '';
 
   /** aria role.
    * @internal
    */
   @property({ type: String, reflect: true })
-  override role = 'tabpanel';
+  override accessor role = 'tabpanel';
 
   /** aria-labelledby, derived from tabId.
    * @internal
    */
   @property({ type: String, reflect: true })
-  'aria-labelledby' = '';
+  accessor 'aria-labelledby' = '';
 
   override render() {
     const classes = {

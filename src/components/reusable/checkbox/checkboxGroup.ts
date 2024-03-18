@@ -30,67 +30,67 @@ export class CheckboxGroup extends LitElement {
 
   /** Checkbox input name attribute. */
   @property({ type: String })
-  name = '';
+  accessor name = '';
 
   /** Checkbox group selected values. */
   @property({ type: Array })
-  value: Array<any> = [];
+  accessor value: Array<any> = [];
 
   /** Makes a single selection required. */
   @property({ type: Boolean })
-  required = false;
+  accessor required = false;
 
   /** Checkbox group disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Checkbox group horizontal style. */
   @property({ type: Boolean })
-  horizontal = false;
+  accessor horizontal = false;
 
   /** Adds a "Select All" checkbox to the top of the group. */
   @property({ type: Boolean })
-  selectAll = false;
+  accessor selectAll = false;
 
   /** Is "Select All" box checked.
    * @internal
    */
   @property({ type: Boolean })
-  selectAllChecked = false;
+  accessor selectAllChecked = false;
 
   /** Is "Select All" indeterminate.
    * @internal
    */
   @property({ type: Boolean })
-  selectAllIndeterminate = false;
+  accessor selectAllIndeterminate = false;
 
   /** Hide the group legend/label visually. */
   @property({ type: Boolean })
-  hideLegend = false;
+  accessor hideLegend = false;
 
   /** Adds a search input to enable filtering of checkboxes. */
   @property({ type: Boolean })
-  filterable = false;
+  accessor filterable = false;
 
   /** Filter text input value.
    * @internal
    */
   @state()
-  searchTerm = '';
+  accessor searchTerm = '';
 
   /** Limits visible checkboxes (4) behind a "Show all" button. */
   @property({ type: Boolean })
-  limitCheckboxes = false;
+  accessor limitCheckboxes = false;
 
   /** Checkbox limit visibility.
    * @internal
    */
   @state()
-  limitRevealed = false;
+  accessor limitRevealed = false;
 
   /** Text string customization. */
   @property({ type: Object })
-  textStrings = {
+  accessor textStrings = {
     selectAll: 'Select all',
     showMore: 'Show more',
     showLess: 'Show less',
@@ -98,35 +98,35 @@ export class CheckboxGroup extends LitElement {
 
   /** Checkbox group invalid text. */
   @property({ type: String })
-  invalidText = '';
+  accessor invalidText = '';
 
   /**
    * Queries for slotted checkboxes.
    * @ignore
    */
   @queryAssignedElements()
-  checkboxes!: Array<any>;
+  accessor checkboxes!: Array<any>;
 
   /**
    * Attached internals for form association.
    * @ignore
    */
   @state()
-  internals = this.attachInternals();
+  accessor internals = this.attachInternals();
 
   /**
    * Internal validation message.
    * @ignore
    */
   @state()
-  internalValidationMsg = '';
+  accessor internalValidationMsg = '';
 
   /**
    * isInvalid when internalValidationMsg or invalidText is non-empty.
    * @ignore
    */
   @state()
-  isInvalid = false;
+  accessor isInvalid = false;
 
   override render() {
     return html`

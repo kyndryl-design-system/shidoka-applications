@@ -16,25 +16,25 @@ export class Tooltip extends LitElement {
   static override styles = TooltipScss;
 
   @property({ type: Boolean })
-  open = false;
+  accessor open = false;
 
   /** Tooltip anchor position. `'start'`, `'end'`, or `'center'`. */
   @property({ type: String })
-  anchorPosition = 'center';
+  accessor anchorPosition = 'center';
 
   /** Tooltip direction. `'top'`, `'bottom'`, `'left'`, or `'right'`. */
   @property({ type: String })
-  direction = 'top';
+  accessor direction = 'top';
 
   /** Assistive text for anchor button. */
   @property({ type: String })
-  assistiveText = 'Toggle Tooltip';
+  accessor assistiveText = 'Toggle Tooltip';
 
   /** Timeout function to delay modal close.
    * @internal
    */
   @state()
-  timer: any;
+  accessor timer: any;
 
   override render() {
     const classes = {

@@ -42,159 +42,159 @@ export class Dropdown extends LitElement {
    * @ignore
    */
   @state()
-  internals = this.attachInternals();
+  accessor internals = this.attachInternals();
 
   /** Dropdown size/height. "sm", "md", or "lg". */
   @property({ type: String })
-  size = 'md';
+  accessor size = 'md';
 
   /** Dropdown inline style type. */
   @property({ type: Boolean })
-  inline = false;
+  accessor inline = false;
 
   /** Optional text beneath the input. */
   @property({ type: String })
-  caption = '';
+  accessor caption = '';
 
   /** Dropdown placeholder. */
   @property({ type: String })
-  placeholder = '';
+  accessor placeholder = '';
 
   /** Dropdown name. */
   @property({ type: String })
-  name = '';
+  accessor name = '';
 
   /** Listbox/drawer open state. */
   @property({ type: Boolean })
-  open = false;
+  accessor open = false;
 
   /** Makes the dropdown searchable. */
   @property({ type: Boolean })
-  searchable = false;
+  accessor searchable = false;
 
   /** Enabled multi-select functionality. */
   @property({ type: Boolean })
-  multiple = false;
+  accessor multiple = false;
 
   /** Makes the dropdown required. */
   @property({ type: Boolean })
-  required = false;
+  accessor required = false;
 
   /** Dropdown disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Dropdown invalid text. */
   @property({ type: String })
-  invalidText = '';
+  accessor invalidText = '';
 
   /** Hide the tags below multi-select. */
   @property({ type: Boolean })
-  hideTags = false;
+  accessor hideTags = false;
 
   /** Adds a "Select all" option to the top of a multi-select dropdown. */
   @property({ type: Boolean })
-  selectAll = false;
+  accessor selectAll = false;
 
   /** "Select all" text customization. */
   @property({ type: String })
-  selectAllText = 'Select all';
+  accessor selectAllText = 'Select all';
 
   /** Is "Select All" box checked.
    * @internal
    */
   @property({ type: Boolean })
-  selectAllChecked = false;
+  accessor selectAllChecked = false;
 
   /** Is "Select All" indeterminate.
    * @internal
    */
   @property({ type: Boolean })
-  selectAllIndeterminate = false;
+  accessor selectAllIndeterminate = false;
 
   /**
    * Selected option value.
    * @ignore
    */
   @state()
-  value: any = '';
+  accessor value: any = '';
 
   /**
    * Selected option text, automatically derived.
    * @ignore
    */
   @state()
-  text = '';
+  accessor text = '';
 
   /**
    * Search input value.
    * @ignore
    */
   @state()
-  searchText = '';
+  accessor searchText = '';
 
   /**
    * Assistive text for screen readers.
    * @ignore
    */
   @state()
-  assistiveText = 'Dropdown menu options.';
+  accessor assistiveText = 'Dropdown menu options.';
 
   /**
    * Queries any slotted options.
    * @ignore
    */
   @queryAssignedElements({ selector: 'kyn-dropdown-option' })
-  options!: Array<any>;
+  accessor options!: Array<any>;
 
   /**
    * Queries any slotted selected options.
    * @ignore
    */
   @queryAssignedElements({ selector: 'kyn-dropdown-option[selected]' })
-  selectedOptions!: Array<any>;
+  accessor selectedOptions!: Array<any>;
 
   /**
    * Queries the .search DOM element.
    * @ignore
    */
   @query('.search')
-  searchEl!: HTMLInputElement;
+  accessor searchEl!: HTMLInputElement;
 
   /**
    * Queries the .select DOM element.
    * @ignore
    */
   @query('.select')
-  buttonEl!: HTMLElement;
+  accessor buttonEl!: HTMLElement;
 
   /**
    * Queries the .options DOM element.
    * @ignore
    */
   @query('.options')
-  listboxEl!: HTMLElement;
+  accessor listboxEl!: HTMLElement;
 
   /**
    * Internal validation message.
    * @ignore
    */
   @state()
-  internalValidationMsg = '';
+  accessor internalValidationMsg = '';
 
   /**
    * isInvalid when internalValidationMsg or invalidText is non-empty.
    * @ignore
    */
   @state()
-  isInvalid = false;
+  accessor isInvalid = false;
 
   /**
    * Open drawer upwards.
    * @ignore
    */
   @state()
-  _openUpwards = false;
+  accessor _openUpwards = false;
 
   override render() {
     return html`

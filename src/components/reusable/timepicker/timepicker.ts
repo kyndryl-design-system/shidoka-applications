@@ -36,78 +36,78 @@ export class TimePicker extends LitElement {
    * @ignore
    */
   @state()
-  internals = this.attachInternals();
+  accessor internals = this.attachInternals();
 
   /** Input size. "sm", "md", or "lg". */
   @property({ type: String })
-  size = 'md';
+  accessor size = 'md';
 
   /** Optional text beneath the input. */
   @property({ type: String })
-  caption = '';
+  accessor caption = '';
 
   /** The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,
    *  regardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).
    *  If the time includes seconds (by step attribute), the format is always hh:mm:ss */
   @property({ type: String })
-  value = '';
+  accessor value = '';
 
   /** Time input name. */
   @property({ type: String })
-  name = '';
+  accessor name = '';
 
   /** Makes the input required. */
   @property({ type: Boolean })
-  required = false;
+  accessor required = false;
 
   /** Input disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Time input invalid text. */
   @property({ type: String })
-  invalidText = '';
+  accessor invalidText = '';
 
   /** Time input warn text. */
   @property({ type: String })
-  warnText = '';
+  accessor warnText = '';
 
   /** Maximum time in hh:mm or hh:mm:ss format
    * only must always greater than minTime. */
   @property({ type: String })
-  maxTime!: string;
+  accessor maxTime!: string;
 
   /** Minimum time in hh:mm or hh:mm:ss format
    *  only & must always lesser than maxTime. */
   @property({ type: String })
-  minTime!: string;
+  accessor minTime!: string;
 
   /** Specifies the granularity that the value must adhere to, or the special value any,
    * It takes value that equates to the number of seconds you want to increment by;
    * the default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes */
   @property({ type: String })
-  step!: string;
+  accessor step!: string;
 
   /**
    * Queries the <input> DOM element.
    * @ignore
    */
   @query('input')
-  inputEl!: HTMLInputElement;
+  accessor inputEl!: HTMLInputElement;
 
   /**
    * Internal validation message.
    * @ignore
    */
   @state()
-  internalValidationMsg = '';
+  accessor internalValidationMsg = '';
 
   /**
    * isInvalid when internalValidationMsg or invalidText is non-empty.
    * @ignore
    */
   @state()
-  isInvalid = false;
+  accessor isInvalid = false;
 
   override render() {
     return html`

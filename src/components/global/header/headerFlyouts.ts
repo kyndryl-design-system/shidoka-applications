@@ -15,7 +15,7 @@ export class HeaderFlyouts extends LitElement {
 
   /* Menu open state (small breakpoint). */
   @property({ type: Boolean })
-  open = false;
+  accessor open = false;
 
   override render() {
     return html`

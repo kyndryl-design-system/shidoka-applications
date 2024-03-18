@@ -24,44 +24,44 @@ export class LocalNavLink extends LitElement {
 
   /** Link url. */
   @property({ type: String })
-  href = '';
+  accessor href = '';
 
   /** Expanded state. */
   @property({ type: Boolean })
-  expanded = false;
+  accessor expanded = false;
 
   /** Active state. */
   @property({ type: Boolean })
-  active = false;
+  accessor active = false;
 
   /** Disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Link level, supports three levels.
    * @ignore
    */
   @state()
-  _level = 1;
+  accessor _level = 1;
 
   /** The local nav expanded state.
    * @internal
    */
   @state()
-  _navExpanded = false;
+  accessor _navExpanded = false;
 
   /** The slotted text.
    * @internal
    */
   @state()
-  _text = '';
+  accessor _text = '';
 
   /**
    * Queries slotted links.
    * @ignore
    */
   @queryAssignedElements({ slot: 'links', selector: 'kyn-local-nav-link' })
-  navLinks!: Array<any>;
+  accessor navLinks!: Array<any>;
 
   override render() {
     const classes = {
