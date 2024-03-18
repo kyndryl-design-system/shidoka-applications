@@ -21,12 +21,24 @@ export const GlobalFilter = {
 
       <br />
 
-      This example shows a standalone Global Filter pattern. It will update the
-      selected Tags automatically when changing checkbox selections. For
-      client-side filtering, you may want to perform the filtering immediately
-      on checkbox change. For server-side filtering, you may want to perform
-      filtering on the modal close event instead. There are example event
-      handler functions for each of the controls contained within.
+      <p>
+        This example shows a standalone Global Filter pattern. It will update
+        the selected Tags automatically when changing checkbox selections. For
+        client-side filtering, you may want to perform the filtering immediately
+        on checkbox change. For server-side filtering, you may want to perform
+        filtering on the modal close event instead. There are example event
+        handler functions for each of the controls contained within.
+      </p>
+
+      <br />
+
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/blob/main/src/components/reusable/globalFilter/globalFilter.sample.ts"
+        target="_blank"
+        rel="noopener"
+      >
+        See the full example component code here.
+      </a>
     `;
   },
 };
@@ -38,13 +50,31 @@ export const WithChart = {
 
       <br />
 
-      This example shows a Global Filter pattern applied to a Chart.
+      <p>This example shows a Global Filter pattern applied to a Chart.</p>
+
+      <br />
+
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/blob/main/src/components/reusable/globalFilter/globalFilter.chart.sample.ts"
+        target="_blank"
+        rel="noopener"
+      >
+        See the full example component code here.
+      </a>
     `;
   },
 };
 
 export const WithTable = {
   render: () => {
-    return html` To Do `;
+    return html`
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/issues/90"
+        target="_blank"
+        rel="noopener"
+      >
+        To do pending this issue.
+      </a>
+    `;
   },
 };
