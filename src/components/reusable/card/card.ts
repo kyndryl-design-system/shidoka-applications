@@ -22,6 +22,7 @@ export class Card extends LitElement {
   @property({ type: Number })
   cardWidth = 264;
 
+  /** Card navigation link when we click on entire card. Works with card type `'clickable'` */
   @property({ type: String })
   cardLink = '/';
 
