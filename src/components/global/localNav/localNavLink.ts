@@ -156,7 +156,7 @@ export class LocalNavLink extends LitElement {
   }
 
   private _handleTextSlotChange(e: Event) {
-    const Slot = e.target;
+    const Slot: any = e.target;
     let text = '';
 
     const nodes = Slot.assignedNodes({
