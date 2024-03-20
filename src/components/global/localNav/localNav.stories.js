@@ -23,11 +23,8 @@ export default {
 };
 
 export const LocalNav = {
-  args: {
-    pinned: false,
-  },
   render: (args) => html`
-    <kyn-local-nav ?pinned=${args.pinned}>
+    <kyn-local-nav>
       <kyn-local-nav-link href="javascript:void(0)" active>
         <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
         Link 1

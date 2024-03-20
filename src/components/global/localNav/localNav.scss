@@ -4,28 +4,33 @@
 
 :host {
   display: block;
+
+  @media (max-width: 42rem) {
+    position: sticky;
+    top: 0;
+    z-index: 10010;
+    // margin: 0 -16px;
+  }
 }
 
 nav {
   @include typography.type-ui-02;
-  @include elevation.shadow(2);
-  position: fixed;
   top: 0;
-  padding: 8px;
-  padding-top: calc(var(--kd-header-height) + 8px);
+  padding: 4px 8px;
   left: 0;
   width: 100%;
-
-  transition: height 250ms ease-out;
-  height: calc(var(--kd-header-height) + 8px + 56px);
-
-  flex-direction: column;
   background: var(--kd-color-background-ui-soft);
-  z-index: var(--kd-z-local-nav);
+  // position: relative;
+
+  // transition: height 250ms ease-out;
+  height: 56px;
 
   @media (min-width: 42rem) {
-    display: flex;
+    @include elevation.shadow(2);
+    position: fixed;
+    z-index: var(--kd-z-local-nav);
     height: 100%;
+    padding-top: calc(var(--kd-header-height) + 8px);
     border-bottom: 4px solid var(--kd-color-border-accent-spruce-light);
     transition: width 150ms ease-in-out;
     width: var(--kd-local-nav-width);
@@ -41,19 +46,41 @@ nav {
 }
 
 ul {
-  display: none;
+  visibility: hidden;
+  flex-direction: column;
+  gap: 2px;
   list-style: none;
-  padding: 0;
+  padding: 0 8px;
   margin: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: var(--kd-color-background-ui-soft);
+
+  transition: height 250ms ease-out, visibility 250ms ease-out;
+  height: 0;
 
   .nav--expanded & {
-    display: block;
+    display: flex;
+    height: calc(100vh - 56px);
+    visibility: visible;
+
+    @media (min-width: 42rem) {
+      height: 100%;
+    }
   }
 
   @media (min-width: 42rem) {
-    display: block;
+    position: static;
+    display: flex;
+    visibility: visible;
+    height: 100%;
+    padding: 0;
+    background: none;
+    // width: auto;
   }
 }
 

@@ -14,11 +14,7 @@ export default {
   decorators: [
     (story) =>
       html`
-        <div
-          style="transform: translate3d(0,0,0); margin: var(--kd-negative-page-gutter);"
-        >
-          ${story()}
-        </div>
+        <div style="margin: var(--kd-negative-page-gutter);">${story()}</div>
       `,
   ],
 };
@@ -77,10 +73,75 @@ export const WithLocalNav = {
               L3 Link 2
             </kyn-local-nav-link>
           </kyn-local-nav-link>
+          <kyn-local-nav-link slot="links" href="javascript:void(0)">
+            L2 Link 2
+          </kyn-local-nav-link>
         </kyn-local-nav-link>
       </kyn-local-nav>
 
-      <main>Main content here.</main>
+      <main>
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+        <br />
+        <br />
+        Main content here.
+      </main>
 
       <kyn-footer rootUrl=${args.rootUrl}>
         <span slot="copyright">

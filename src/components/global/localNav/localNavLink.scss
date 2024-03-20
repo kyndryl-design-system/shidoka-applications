@@ -1,4 +1,6 @@
 @use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :host {
   display: block;
@@ -74,24 +76,68 @@ a {
 }
 
 ul {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   visibility: hidden;
-  height: 0;
   list-style: none;
   padding: 0;
   margin: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: var(--kd-color-background-ui-soft);
+
   transition: transform 150ms ease-out, opacity 150ms ease-out,
     visibility 150ms ease-out;
+  transform: scaleX(0);
   opacity: 0;
-  transform: translateY(-10px);
+  transform-origin: right;
+
+  &.has-links {
+    padding: 4px 8px 8px;
+    // padding-top: calc(var(--kd-header-height) + 8px);
+
+    @media (min-width: 42rem) {
+      padding-top: 8px;
+      border-bottom: 4px solid var(--kd-color-border-accent-spruce-light);
+    }
+  }
+
+  @media (max-width: 42rem) {
+    top: 0 !important;
+    left: 0 !important;
+
+    // .level--1 & {
+    //   top: 56px !important;
+    // }
+  }
+
+  @media (min-width: 42rem) {
+    @include elevation.shadow(2);
+    position: fixed;
+    bottom: auto;
+    width: auto;
+    padding-top: 0;
+    transform: none;
+
+    transition: margin-left 150ms ease-out, opacity 150ms ease-out,
+      visibility 150ms ease-out;
+    margin-left: -20px;
+  }
 
   .link-expanded.nav-expanded & {
     // display: block;
     visibility: visible;
-    height: auto;
     opacity: 1;
-    transform: translateY(0);
+    transform: scaleX(1);
+
+    @media (min-width: 42rem) {
+      transform: none;
+      margin-left: 0;
+    }
   }
 }
 
@@ -101,20 +147,61 @@ li {
 
 .level {
   &--2 {
-    background: var(--kd-color-background-ui-default);
-    border-radius: 4px;
+    // background: var(--kd-color-background-ui-default);
+    // border-radius: 4px;
 
-    & a {
-      padding-left: 38px;
-    }
+    // & a {
+    //   padding-left: 38px;
+    // }
   }
 
   &--3 {
-    padding: 0 4px;
+    // padding: 0 4px;
 
-    & a {
-      padding-left: 34px;
-    }
+    // & a {
+    //   padding-left: 34px;
+    // }
+  }
+}
+
+.go-back {
+  @include typography.type-ui-02;
+  display: flex;
+  position: relative;
+  align-items: center;
+  padding: 12px 16px 12px 8px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  margin: 0;
+  border-radius: 4px;
+  width: 100%;
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    outline-color 150ms ease-out;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  color: var(--kd-color-text-secondary);
+
+  kd-icon {
+    margin-right: 16px;
+  }
+
+  &:hover {
+    background: var(--kd-color-background-primary);
+    color: var(--kd-color-text-inversed);
+  }
+
+  &:active {
+    background: var(--kd-color-background-primary-pressed);
+    color: var(--kd-color-text-inversed);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
+  }
+
+  @media (min-width: 42rem) {
+    display: none;
   }
 }
 
@@ -146,4 +233,5 @@ li {
 
 slot[name='icon']::slotted(*) {
   flex-shrink: 0;
+  padding: 0 4px;
 }

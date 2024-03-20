@@ -10,6 +10,7 @@ import LocalNavLinkScss from './localNavLink.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import arrowIcon from '@carbon/icons/es/chevron--right/16';
+import backIcon from '@carbon/icons/es/arrow--left/16';
 
 /**
  * Link component for use in the global Side Navigation component.
@@ -27,8 +28,8 @@ export class LocalNavLink extends LitElement {
   accessor href = '';
 
   /** Expanded state. */
-  @property({ type: Boolean })
-  accessor expanded = false;
+  @state()
+  accessor _expanded = false;
 
   /** Active state. */
   @property({ type: Boolean, reflect: true })
@@ -37,6 +38,10 @@ export class LocalNavLink extends LitElement {
   /** Disabled state. */
   @property({ type: Boolean })
   accessor disabled = false;
+
+  /** Text for mobile "Back" button. */
+  @property({ type: String })
+  accessor backText = 'Back';
 
   /** Link level, supports three levels.
    * @ignore
@@ -63,19 +68,35 @@ export class LocalNavLink extends LitElement {
   @queryAssignedElements({ slot: 'links', selector: 'kyn-local-nav-link' })
   accessor navLinks!: Array<any>;
 
+  /** Timeout function to delay modal close.
+   * @internal
+   */
+  @state()
+  accessor timer: any;
+
+  /** Menu positioning
+   * @internal
+   */
+  @state()
+  accessor menuPosition: any = {};
+
   override render() {
     const classes = {
       'level--1': this._level == 1,
       'level--2': this._level == 2,
       'level--3': this._level == 3,
       'nav-expanded': this._navExpanded,
-      'link-expanded': this.expanded,
+      'link-expanded': this._expanded,
       'link-active': this.active,
       'link-disabled': this.disabled,
     };
 
     return html`
-      <li class=${classMap(classes)}>
+      <li
+        class=${classMap(classes)}
+        @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
+        @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
+      >
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
           <slot name="icon"></slot>
           <span class="text">
@@ -91,7 +112,21 @@ export class LocalNavLink extends LitElement {
             : null}
         </a>
 
-        <ul>
+        <ul
+          class="${this.navLinks.length ? 'has-links' : ''}"
+          style=${this.navLinks.length
+            ? `top: ${this.menuPosition.top}px; left: ${this.menuPosition.left}px;`
+            : ''}
+        >
+          ${this.navLinks.length
+            ? html`
+                <button class="go-back" @click=${() => this._handleBack()}>
+                  <kd-icon .icon=${backIcon}></kd-icon>
+                  ${this.backText}
+                </button>
+              `
+            : null}
+
           <slot name="links" @slotchange=${this._handleSlotChange}></slot>
         </ul>
       </li>
@@ -105,6 +140,14 @@ export class LocalNavLink extends LitElement {
   override willUpdate(changedProps: any) {
     if (changedProps.has('_navExpanded')) {
       this.updateChildren();
+    }
+
+    if (
+      changedProps.has('_expanded') &&
+      this._expanded &&
+      this.navLinks.length
+    ) {
+      this._positionMenu();
     }
   }
 
@@ -130,6 +173,53 @@ export class LocalNavLink extends LitElement {
     }
   }
 
+  private handlePointerEnter(e: PointerEvent) {
+    if (e.pointerType === 'mouse' && this.navLinks.length) {
+      clearTimeout(this.timer);
+      this._expanded = true;
+    }
+  }
+
+  private handlePointerLeave(e: PointerEvent) {
+    if (
+      e.pointerType === 'mouse' &&
+      document.activeElement !== this &&
+      this.navLinks.length
+    ) {
+      this.timer = setTimeout(() => {
+        this._expanded = false;
+        clearTimeout(this.timer);
+      }, 300);
+    }
+  }
+
+  private _positionMenu() {
+    // determine submenu positioning
+    const LinkBounds: any = this.getBoundingClientRect();
+    const MenuBounds: any = this.shadowRoot
+      ?.querySelector('ul')
+      ?.getBoundingClientRect();
+    const Padding = 8;
+
+    const LinkHalf = LinkBounds.top + LinkBounds.height / 2;
+    const MenuHalf = MenuBounds.height / 2;
+
+    const Top =
+      LinkHalf + MenuHalf > window.innerHeight
+        ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight)
+        : LinkHalf - MenuHalf;
+    const Left = LinkBounds.right + Padding;
+
+    this.menuPosition = {
+      top: Top,
+      left: Left < 320 ? 320 : Left,
+    };
+  }
+
+  private _handleBack() {
+    this._expanded = false;
+  }
+
   private handleClick(e: Event) {
     let preventDefault = false;
 
@@ -139,7 +229,7 @@ export class LocalNavLink extends LitElement {
 
     if (this.navLinks.length) {
       preventDefault = true;
-      this.expanded = !this.expanded;
+      this._expanded = !this._expanded;
     }
 
     if (preventDefault) {

@@ -45,12 +45,18 @@ export class LocalNav extends LitElement {
   @queryAssignedElements({ selector: 'kyn-local-nav-link' })
   accessor _navLinks!: any;
 
+  /** Timeout function to delay modal close.
+   * @internal
+   */
+  @state()
+  accessor timer: any;
+
   override render() {
     return html`
       <nav
         class=${classMap({ 'nav--expanded': this._expanded })}
-        @mouseenter=${this._handleMouseenter}
-        @mouseleave=${this._handleMouseleave}
+        @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
+        @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
       >
         <button
           class="mobile-toggle"
@@ -78,12 +84,20 @@ export class LocalNav extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private _handleMouseenter() {
-    this._expanded = true;
+  private handlePointerEnter(e: PointerEvent) {
+    if (e.pointerType === 'mouse') {
+      clearTimeout(this.timer);
+      this._expanded = true;
+    }
   }
 
-  private _handleMouseleave() {
-    this._expanded = false;
+  private handlePointerLeave(e: PointerEvent) {
+    if (e.pointerType === 'mouse' && document.activeElement !== this) {
+      this.timer = setTimeout(() => {
+        this._expanded = false;
+        clearTimeout(this.timer);
+      }, 300);
+    }
   }
 
   private _updateChildren() {
