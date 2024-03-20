@@ -9,13 +9,13 @@ import { classMap } from 'lit/directives/class-map.js';
 import LocalNavLinkScss from './localNavLink.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import chevDownIcon from '@carbon/icons/es/chevron--down/20';
+import arrowIcon from '@carbon/icons/es/chevron--right/16';
 
 /**
  * Link component for use in the global Side Navigation component.
  * @fires on-click - Captures the click event and emits the original event, level, and if default was prevented.
  * @slot unnamed - The default slot, for the link text.
- * @slot icon - Slot for an icon, level 1 links only.
+ * @slot icon - Slot for an icon. Use 16px size.
  * @slot links - Slot for the next level of links, supports three levels.
  */
 @customElement('kyn-local-nav-link')
@@ -31,7 +31,7 @@ export class LocalNavLink extends LitElement {
   accessor expanded = false;
 
   /** Active state. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor active = false;
 
   /** Disabled state. */
@@ -85,7 +85,7 @@ export class LocalNavLink extends LitElement {
           ${this.navLinks.length
             ? html`
                 <span class="arrow-icon">
-                  <kd-icon .icon=${chevDownIcon}></kd-icon>
+                  <kd-icon .icon=${arrowIcon}></kd-icon>
                 </span>
               `
             : null}
@@ -149,6 +149,8 @@ export class LocalNavLink extends LitElement {
     this.requestUpdate();
 
     const event = new CustomEvent('on-click', {
+      composed: true,
+      bubbles: true,
       detail: {
         origEvent: e,
         level: this._level,

@@ -6,9 +6,7 @@ import '../header';
 import '../localNav';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import switcherIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/switcher.svg';
-import sampleIcon from '@carbon/icons/es/user--avatar/20';
-import sampleIcon24 from '@carbon/icons/es/user--avatar/24';
+import sampleIcon from '@carbon/icons/es/circle-stroke';
 
 export default {
   title: 'Global Components/UI Shell',
@@ -45,24 +43,7 @@ export const UIShell = {
 export const WithLocalNav = {
   render: (args) => html`
     <kyn-ui-shell>
-      <kyn-header appTitle="UI Shell Example">
-        <kyn-header-panel slot="left" heading="Panel Heading">
-          <span slot="button">${unsafeHTML(switcherIcon)}</span>
-
-          <kyn-header-panel-link href="javascript:void(0)">
-            <kd-icon .icon=${sampleIcon24}></kd-icon>
-            Link 1
-          </kyn-header-panel-link>
-          <kyn-header-panel-link href="javascript:void(0)">
-            <kd-icon .icon=${sampleIcon24}></kd-icon>
-            Link 2
-          </kyn-header-panel-link>
-          <kyn-header-panel-link href="javascript:void(0)">
-            <kd-icon .icon=${sampleIcon24}></kd-icon>
-            Link 3
-          </kyn-header-panel-link>
-        </kyn-header-panel>
-      </kyn-header>
+      <kyn-header appTitle="UI Shell Example"></kyn-header>
 
       <kyn-local-nav>
         <kyn-local-nav-link href="javascript:void(0)" active>
@@ -82,7 +63,7 @@ export const WithLocalNav = {
           </kyn-local-nav-link>
         </kyn-local-nav-link>
 
-        <kyn-local-nav-link href="javascript:void(0)" expanded>
+        <kyn-local-nav-link href="javascript:void(0)">
           <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
           Link 3
 

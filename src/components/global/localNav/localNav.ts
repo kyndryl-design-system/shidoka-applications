@@ -9,31 +9,23 @@ import { classMap } from 'lit/directives/class-map.js';
 import LocalNavScss from './localNav.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import openIcon from '@carbon/icons/es/side-panel--open/24';
-import closeIcon from '@carbon/icons/es/side-panel--close/24';
-import menuIcon from '@carbon/icons/es/menu/20';
-import xIcon from '@carbon/icons/es/close/20';
+import arrowIcon from '@carbon/icons/es/chevron--down/16';
 
 /**
  * The global Side Navigation component.
  * @slot unnamed - The default slot, for local nav links.
- * @fires on-toggle - Captures the click event and emits the pinned state and original event details.
+ * @fires on-toggle - Captures the click event and emits the open state and original event details.
  */
 @customElement('kyn-local-nav')
 export class LocalNav extends LitElement {
   static override styles = LocalNavScss;
 
-  /** Local nav pinned state. */
-  @property({ type: Boolean })
-  accessor pinned = false;
-
-  /** Pin open button assistive text. */
-  @property({ type: String })
-  accessor pinText = 'Pin open';
-
-  /** Unpin button assistive text. */
-  @property({ type: String })
-  accessor unpinText = 'Unpin';
+  /** Menu toggle button assistive text. */
+  @property({ type: Object })
+  accessor textStrings = {
+    toggleMenu: 'Toggle Menu',
+    collapse: 'Collapse',
+  };
 
   /** Local nav expanded state.
    * @internal
@@ -41,7 +33,13 @@ export class LocalNav extends LitElement {
   @state()
   accessor _expanded = false;
 
-  /** Queries top-level slotted links links.
+  /** Active Link text.
+   * @internal
+   */
+  @state()
+  accessor _activeLinkText!: string;
+
+  /** Queries top-level slotted links.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-local-nav-link' })
@@ -50,64 +48,89 @@ export class LocalNav extends LitElement {
   override render() {
     return html`
       <nav
-        class=${classMap({ 'nav--expanded': this._expanded || this.pinned })}
-        @mouseenter=${this.handleMouseenter}
-        @mouseleave=${this.handleMouseleave}
+        class=${classMap({ 'nav--expanded': this._expanded })}
+        @mouseenter=${this._handleMouseenter}
+        @mouseleave=${this._handleMouseleave}
       >
+        <button
+          class="mobile-toggle"
+          title=${this.textStrings.toggleMenu}
+          aria-label=${this.textStrings.toggleMenu}
+          @click=${(e: Event) => this._handleNavToggle(e)}
+        >
+          ${this._expanded ? this.textStrings.collapse : this._activeLinkText}
+          <kd-icon .icon=${arrowIcon}></kd-icon>
+        </button>
+
         <ul>
           <slot @slotchange=${this.handleSlotChange}></slot>
         </ul>
-
-        <div class="toggle-container">
-          <button
-            class="nav-toggle"
-            @click=${(e: Event) => this.onNavToggle(e)}
-            title="${this.pinned ? this.unpinText : this.pinText}"
-            aria-label="${this.pinned ? this.unpinText : this.pinText}"
-          >
-            <kd-icon .icon=${this.pinned ? closeIcon : openIcon}></kd-icon>
-          </button>
-        </div>
       </nav>
-
-      <button class="mobile-toggle" @click=${(e: Event) => this.onNavToggle(e)}>
-        <kd-icon .icon=${this.pinned ? xIcon : menuIcon}></kd-icon>
-      </button>
     `;
   }
 
-  private onNavToggle(e: Event) {
-    this.pinned = !this.pinned;
+  private _handleNavToggle(e: Event) {
+    this._expanded = !this._expanded;
 
     const event = new CustomEvent('on-toggle', {
-      detail: { pinned: this.pinned, origEvent: e },
+      detail: { open: this._expanded, pinned: this._expanded, origEvent: e },
     });
     this.dispatchEvent(event);
   }
 
-  private handleMouseenter() {
+  private _handleMouseenter() {
     this._expanded = true;
   }
 
-  private handleMouseleave() {
+  private _handleMouseleave() {
     this._expanded = false;
   }
 
-  private updateChildren() {
+  private _updateChildren() {
     this._navLinks.forEach((link: any) => {
-      link._navExpanded = this._expanded || this.pinned;
+      link._navExpanded = this._expanded;
     });
   }
 
   private handleSlotChange() {
-    this.updateChildren();
+    this._updateChildren();
+    this._setActiveLinkText();
     this.requestUpdate();
   }
 
-  override willUpdate(changedProps: any) {
-    if (changedProps.has('_expanded') || changedProps.has('pinned')) {
-      this.updateChildren();
+  private _setActiveLinkText() {
+    const Link: any = this.querySelector('kyn-local-nav-link[active]');
+    let text = '';
+
+    if (Link?.shadowRoot?.querySelector('.text slot')) {
+      const nodes = Link.shadowRoot.querySelector('.text slot')?.assignedNodes({
+        flatten: true,
+      });
+
+      for (let i = 0; i < nodes.length; i++) {
+        text += nodes[i].textContent.trim();
+      }
     }
+
+    this._activeLinkText = text;
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('_expanded')) {
+      this._updateChildren();
+    }
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+
+    this.addEventListener('on-click', () => this._setActiveLinkText());
+  }
+
+  override disconnectedCallback() {
+    this.removeEventListener('on-click', () => this._setActiveLinkText());
+
+    super.disconnectedCallback();
   }
 }
 

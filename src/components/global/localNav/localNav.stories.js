@@ -3,7 +3,7 @@ import './localNav';
 import './localNavLink';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import sampleIcon from '@carbon/icons/es/user--avatar/20';
+import sampleIcon from '@carbon/icons/es/circle-stroke';
 
 export default {
   title: 'Global Components/Local Nav',
@@ -49,10 +49,10 @@ export const LocalNav = {
         <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
         Link 3
 
-        <kyn-local-nav-link slot="links" href="javascript:void(0)" expanded>
+        <kyn-local-nav-link slot="links" href="javascript:void(0)">
           L2 Link 1
 
-          <kyn-local-nav-link slot="links" href="javascript:void(0)" wrapping>
+          <kyn-local-nav-link slot="links" href="javascript:void(0)">
             This is a long link that wraps lines
           </kyn-local-nav-link>
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
