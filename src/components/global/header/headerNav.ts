@@ -59,6 +59,17 @@ export class HeaderNav extends LitElement {
     }
   }
 
+  private willUpdate(changedProps) {
+    if (changedProps.has('menuOpen')) {
+      const event = new CustomEvent('on-nav-toggle', {
+        composed: true,
+        bubbles: true,
+        detail: { open: this.menuOpen },
+      });
+      this.dispatchEvent(event);
+    }
+  }
+
   override connectedCallback() {
     super.connectedCallback();
 

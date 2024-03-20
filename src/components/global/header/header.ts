@@ -31,12 +31,6 @@ export class Header extends LitElement {
   @property({ type: String })
   accessor appTitle = '';
 
-  /** Small screen header nav visibility.
-   * @ignore
-   */
-  @state()
-  accessor menuOpen = false;
-
   /** Queries for slotted header-nav.
    * @internal
    */
@@ -55,10 +49,23 @@ export class Header extends LitElement {
   @queryAssignedElements({ slot: 'left' })
   accessor leftEls!: any;
 
+  /** header-nav open state
+   * @internal
+   */
+  @state()
+  accessor _navOpen = false;
+
+  /** header-flyouts open state
+   * @internal
+   */
+  @state()
+  accessor _flyoutsOpen = false;
+
   override render() {
     const classes = {
       header: true,
       'left-slotted': this.leftEls.length,
+      'child-open': this._navOpen || this._flyoutsOpen,
     };
 
     return html`
@@ -92,6 +99,34 @@ export class Header extends LitElement {
       detail: { origEvent: e },
     });
     this.dispatchEvent(event);
+  }
+
+  private _handleNavToggle(e) {
+    this._navOpen = e.detail.open;
+  }
+
+  private _handleFlyoutsToggle(e) {
+    this._flyoutsOpen = e.detail.open;
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+
+    document.addEventListener('on-nav-toggle', (e) => this._handleNavToggle(e));
+    document.addEventListener('on-flyouts-toggle', (e) =>
+      this._handleFlyoutsToggle(e)
+    );
+  }
+
+  override disconnectedCallback() {
+    document.removeEventListener('on-nav-toggle', (e) =>
+      this._handleNavToggle(e)
+    );
+    document.removeEventListener('on-flyouts-toggle', (e) =>
+      this._handleFlyoutsToggle(e)
+    );
+
+    super.disconnectedCallback();
   }
 }
 
