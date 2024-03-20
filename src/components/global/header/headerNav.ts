@@ -39,7 +39,9 @@ export class HeaderNav extends LitElement {
           title="Toggle Menu"
           @click=${() => this._toggleMenuOpen()}
         >
-          <kd-icon .icon=${this.menuOpen ? closeIcon : menuIcon}></kd-icon>
+          ${this.menuOpen
+            ? html` <kd-icon .icon=${closeIcon}></kd-icon> `
+            : html` <kd-icon .icon=${menuIcon}></kd-icon> `}
         </button>
 
         <div class="menu__content left">
