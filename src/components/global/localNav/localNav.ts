@@ -96,7 +96,7 @@ export class LocalNav extends LitElement {
       this.timer = setTimeout(() => {
         this._expanded = false;
         clearTimeout(this.timer);
-      }, 300);
+      }, 200);
     }
   }
 

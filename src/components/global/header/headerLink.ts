@@ -191,7 +191,7 @@ export class HeaderLink extends LitElement {
       this.timer = setTimeout(() => {
         this.open = false;
         clearTimeout(this.timer);
-      }, 300);
+      }, 200);
     }
   }
 
