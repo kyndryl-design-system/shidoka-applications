@@ -135,13 +135,21 @@ export class LocalNav extends LitElement {
     }
   }
 
+  private _handleClickOut(e: Event) {
+    if (!e.composedPath().includes(this)) {
+      this._expanded = false;
+    }
+  }
+
   override connectedCallback() {
     super.connectedCallback();
 
+    document.addEventListener('click', (e) => this._handleClickOut(e));
     this.addEventListener('on-click', () => this._setActiveLinkText());
   }
 
   override disconnectedCallback() {
+    document.removeEventListener('click', (e) => this._handleClickOut(e));
     this.removeEventListener('on-click', () => this._setActiveLinkText());
 
     super.disconnectedCallback();
