@@ -52,9 +52,11 @@ export const WithLocalNav = {
           Link 2
 
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
+            <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
             L2 Link 1
           </kyn-local-nav-link>
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
+            <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
             L2 Link 2
           </kyn-local-nav-link>
         </kyn-local-nav-link>
@@ -64,16 +66,20 @@ export const WithLocalNav = {
           Link 3
 
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
+            <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
             L2 Link 1
 
             <kyn-local-nav-link slot="links" href="javascript:void(0)">
+              <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
               L3 Link 1
             </kyn-local-nav-link>
             <kyn-local-nav-link slot="links" href="javascript:void(0)">
+              <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
               L3 Link 2
             </kyn-local-nav-link>
           </kyn-local-nav-link>
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
+            <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
             L2 Link 2
           </kyn-local-nav-link>
         </kyn-local-nav-link>

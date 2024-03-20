@@ -100,7 +100,9 @@ export class LocalNavLink extends LitElement {
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
           <slot name="icon"></slot>
           <span class="text">
-            <slot></slot>
+            <slot
+              @slotchange=${(e: Event) => this._handleTextSlotChange(e)}
+            ></slot>
           </span>
 
           ${this.navLinks.length
@@ -127,6 +129,8 @@ export class LocalNavLink extends LitElement {
               `
             : null}
 
+          <div class="category">${this._text}</div>
+
           <slot name="links" @slotchange=${this._handleSlotChange}></slot>
         </ul>
       </li>
@@ -149,6 +153,23 @@ export class LocalNavLink extends LitElement {
     ) {
       this._positionMenu();
     }
+  }
+
+  private _handleTextSlotChange(e: Event) {
+    const Slot = e.target;
+    let text = '';
+
+    const nodes = Slot.assignedNodes({
+      flatten: true,
+    });
+
+    for (let i = 0; i < nodes.length; i++) {
+      text += nodes[i].textContent.trim();
+    }
+
+    this._text = text;
+
+    this.requestUpdate();
   }
 
   private _handleSlotChange() {
