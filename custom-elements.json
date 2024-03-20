@@ -797,6 +797,32 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleFlyoutsToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
             }
           ],
           "events": [
@@ -1270,7 +1296,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Container for header-flyout components..",
+          "description": "Container for header-flyout components.",
           "name": "HeaderFlyouts",
           "slots": [
             {
@@ -2462,6 +2488,19 @@
               "default": "'Back'",
               "description": "Text for mobile \"Back\" button.",
               "attribute": "backText"
+            },
+            {
+              "kind": "method",
+              "name": "_handleTextSlotChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
@@ -10071,325 +10110,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/timepicker/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TimePicker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "./timepicker"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/timepicker/timepicker.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Time picker.",
-          "name": "TimePicker",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\r\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\r\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input name.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input invalid text.",
-              "attribute": "invalidText"
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input warn text.",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "maxTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum Time hh:mm format.",
-              "attribute": "maxTime"
-            },
-            {
-              "kind": "field",
-              "name": "minTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Minimum Time in hh:mm format.",
-              "attribute": "minTime"
-            },
-            {
-              "kind": "field",
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nIt takes value that equates to the number of seconds you want to increment by;\r\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
-              "attribute": "step"
-            },
-            {
-              "kind": "method",
-              "name": "handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleFormdata",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleInvalid",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\r\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\r\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
-              "fieldName": "value"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input name.",
-              "fieldName": "name"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input invalid text.",
-              "fieldName": "invalidText"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input warn text.",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "maxTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum Time hh:mm format.",
-              "fieldName": "maxTime"
-            },
-            {
-              "name": "minTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Minimum Time in hh:mm format.",
-              "fieldName": "minTime"
-            },
-            {
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nIt takes value that equates to the number of seconds you want to increment by;\r\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
-              "fieldName": "step"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-time-picker",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TimePicker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "src/components/reusable/timepicker/timepicker.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-time-picker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "src/components/reusable/timepicker/timepicker.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/toggleButton/index.ts",
       "declarations": [],
       "exports": [
@@ -10794,6 +10514,325 @@
           "declaration": {
             "name": "Tooltip",
             "module": "src/components/reusable/tooltip/tooltip.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/timepicker/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TimePicker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "./timepicker"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/timepicker/timepicker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Time picker.",
+          "name": "TimePicker",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\r\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\r\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Time input name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Time input invalid text.",
+              "attribute": "invalidText"
+            },
+            {
+              "kind": "field",
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Time input warn text.",
+              "attribute": "warnText"
+            },
+            {
+              "kind": "field",
+              "name": "maxTime",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum Time hh:mm format.",
+              "attribute": "maxTime"
+            },
+            {
+              "kind": "field",
+              "name": "minTime",
+              "type": {
+                "text": "string"
+              },
+              "description": "Minimum Time in hh:mm format.",
+              "attribute": "minTime"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nIt takes value that equates to the number of seconds you want to increment by;\r\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
+              "attribute": "step"
+            },
+            {
+              "kind": "method",
+              "name": "handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleFormdata",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleInvalid",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\r\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\r\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
+              "fieldName": "value"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Time input name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Time input invalid text.",
+              "fieldName": "invalidText"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Time input warn text.",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "maxTime",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum Time hh:mm format.",
+              "fieldName": "maxTime"
+            },
+            {
+              "name": "minTime",
+              "type": {
+                "text": "string"
+              },
+              "description": "Minimum Time in hh:mm format.",
+              "fieldName": "minTime"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nIt takes value that equates to the number of seconds you want to increment by;\r\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
+              "fieldName": "step"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-time-picker",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TimePicker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "src/components/reusable/timepicker/timepicker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-time-picker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "src/components/reusable/timepicker/timepicker.ts"
           }
         }
       ]

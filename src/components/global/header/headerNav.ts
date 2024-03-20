@@ -59,7 +59,7 @@ export class HeaderNav extends LitElement {
     }
   }
 
-  private willUpdate(changedProps) {
+  override willUpdate(changedProps: any) {
     if (changedProps.has('menuOpen')) {
       const event = new CustomEvent('on-nav-toggle', {
         composed: true,
