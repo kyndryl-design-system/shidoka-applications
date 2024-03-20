@@ -38,18 +38,22 @@ export class HeaderFlyouts extends LitElement {
 
   private _toggleOpen() {
     this.open = !this.open;
-
-    const event = new CustomEvent('on-flyouts-toggle', {
-      composed: true,
-      bubbles: true,
-      detail: { open: this.open },
-    });
-    this.dispatchEvent(event);
   }
 
   private _handleClickOut(e: Event) {
     if (!e.composedPath().includes(this)) {
       this.open = false;
+    }
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('open')) {
+      const event = new CustomEvent('on-flyouts-toggle', {
+        composed: true,
+        bubbles: true,
+        detail: { open: this.open },
+      });
+      this.dispatchEvent(event);
     }
   }
 
