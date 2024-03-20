@@ -46,6 +46,24 @@ export class HeaderFlyouts extends LitElement {
     });
     this.dispatchEvent(event);
   }
+
+  private _handleClickOut(e: Event) {
+    if (!e.composedPath().includes(this)) {
+      this.open = false;
+    }
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+
+    document.addEventListener('click', (e) => this._handleClickOut(e));
+  }
+
+  override disconnectedCallback() {
+    document.removeEventListener('click', (e) => this._handleClickOut(e));
+
+    super.disconnectedCallback();
+  }
 }
 
 declare global {
