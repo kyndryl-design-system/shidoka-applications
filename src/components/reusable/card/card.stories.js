@@ -1,14 +1,9 @@
 import { html } from 'lit';
+import '@kyndryl-design-system/shidoka-foundation/css/grid.css';
 import './index';
 import { action } from '@storybook/addon-actions';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import actionIcon from '@carbon/icons/es/bookmark/20';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-
-import logoImg from './placeholder-logo.png';
-import thumbnailImg from './thumbnail-placeholder.png';
-import '../overflowMenu';
-import '../tag';
+import './card.sample';
+import './card.content.sample';
 
 export default {
   title: 'Components/Card',
@@ -18,124 +13,95 @@ export default {
       options: ['normal', 'clickable'],
       control: { type: 'select' },
     },
-    imagePosition: {
-      options: ['top', 'middle'],
+    target: {
+      options: ['_self', '_blank', '_top', '_parent'],
       control: { type: 'select' },
     },
   },
 };
 
-const tagGroupArr = [
-  {
-    value: '1',
-    text: 'Tag 1',
-  },
-  {
-    value: '2',
-    text: 'Tag 2',
-  },
-  {
-    value: '3',
-    text: 'Tag 3',
-  },
-  {
-    value: '4',
-    text: 'Tag 4',
-  },
-];
-
-export const Card = {
+export const Simple = {
   args: {
-    cardWidth: 264,
-    cardTitle: 'This is a card title with a  sentence of 2 lines',
-    subTitle: 'This is a subtitle with a sentence of 2 lines.',
-    description:
-      'Amazon EC2 Auto Scaling ensures that your application always has the right amount of compute capacity by dynamically adjusting the number of Amazon EC2 instances based on demand. Whether it is handling sudden spikes or adjusting to real-time demand, EC2 Auto Scaling adapts seamlessly.',
     type: 'normal',
-    showActionBtn: false,
-    cardLink: '/',
-    imagePosition: 'top',
+    href: '',
+    rel: '',
+    target: '_self',
   },
   render: (args) => {
     return html`
       <kyn-card
-        .cardWidth=${args.cardWidth}
-        cardTitle=${args.cardTitle}
-        subTitle=${args.subTitle}
-        description=${args.description}
         type=${args.type}
-        ?showActionBtn=${args.showActionBtn}
-        .cardLink=${args.cardLink}
-        imagePosition=${args.imagePosition}
+        href=${args.href}
+        target=${args.target}
+        rel=${args.rel}
       >
-        <!-- Example : card logo slot -->
-        <img slot="card-logo" src="${logoImg}" alt="product logo" />
+        <sample-card-component></sample-card-component>
       </kyn-card>
     `;
   },
 };
 
-export const WithSlots = {
-  args: Card.args,
+export const WithOtherContents = {
+  args: Simple.args,
+  render: (args) => {
+    return html`<kyn-card
+      type=${args.type}
+      href=${args.href}
+      target=${args.target}
+      rel=${args.rel}
+    >
+      <sample-card-content-component> </sample-card-content-component>
+    </kyn-card>`;
+  },
+};
+
+export const Clickable = {
+  args: {
+    type: 'clickable',
+    href: 'https://www.kyndryl.com',
+    rel: 'noopener',
+    target: '_blank',
+  },
   render: (args) => {
     return html`
       <kyn-card
-        .cardWidth=${args.cardWidth}
-        cardTitle=${args.cardTitle}
-        subTitle=${args.subTitle}
-        description=${args.description}
         type=${args.type}
-        ?showActionBtn=${args.showActionBtn}
-        .cardLink=${args.cardLink}
-        imagePosition=${args.imagePosition}
+        href=${args.href}
+        target=${args.target}
+        rel=${args.rel}
+        @on-card-click=${(e) => action(e.type)(e)}
       >
-        <!-- Example : card logo slot -->
-        <img slot="card-logo" src="${logoImg}" alt="product logo" />
-
-        <!-- Example : Card action button -->
-        <kd-button
-          slot="card-action-button"
-          kind="tertiary"
-          size="small"
-          iconPosition="center"
-        >
-          <kd-icon slot="icon" .icon=${actionIcon}></kd-icon>
-        </kd-button>
-
-        <!-- Example : overflow menu slot -->
-        <kyn-overflow-menu
-          slot="card-overflow-menu"
-          @click=${(e) => e.preventDefault()}
-        >
-          <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
-          <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
-        </kyn-overflow-menu>
-
-        <!-- Example : thumbnail image slot -->
-        <img slot="card-thumbnail" alt="Card thumbnail" src="${thumbnailImg}" />
-
-        <!-- Example : Tag slot -->
-        <kyn-tag-group slot="tags">
-          ${tagGroupArr.map(
-            (tag) =>
-              html`
-                <kyn-tag
-                  label=${tag.text}
-                  tagColor="spruce"
-                  @on-close=${(e) => action(e.type)(e)}
-                ></kyn-tag>
-              `
-          )}
-        </kyn-tag-group>
-
-        <!-- Example : card links slot -->
-        <kd-button slot="card-links" href="/" kind="tertiary" size="small"
-          >Link 1</kd-button
-        >
-        <kd-button slot="card-links" href="/" kind="tertiary" size="small"
-          >Link 2</kd-button
-        >
+        <sample-card-component></sample-card-component>
       </kyn-card>
+    `;
+  },
+};
+
+export const InsideGrid = {
+  render: () => {
+    return html`
+      <div class="kd-grid">
+        <div class="kd-grid__col--sm-2 kd-grid__col--md-3 kd-grid__col--lg-3">
+          <kyn-card style="width:100%;">
+            <sample-card-component></sample-card-component>
+          </kyn-card>
+        </div>
+        <div class="kd-grid__col--sm-2 kd-grid__col--md-3 kd-grid__col--lg-3">
+          <kyn-card style="width:100%;">
+            <sample-card-component></sample-card-component>
+          </kyn-card>
+        </div>
+        <div class="kd-grid__col--sm-2 kd-grid__col--md-3 kd-grid__col--lg-3">
+          <kyn-card style="width:100%;">
+            <sample-card-component></sample-card-component>
+          </kyn-card>
+        </div>
+        <div class="kd-grid__col--sm-2 kd-grid__col--md-3 kd-grid__col--lg-3">
+          <kyn-card style="width:100%;">
+            <sample-card-component></sample-card-component>
+          </kyn-card>
+        </div>
+      </div>
     `;
   },
 };
