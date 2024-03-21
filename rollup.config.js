@@ -8,7 +8,6 @@ import postcss from 'rollup-plugin-postcss';
 import litcss from 'rollup-plugin-postcss-lit';
 import InlineSvg from 'rollup-plugin-inline-svg';
 import copy from 'rollup-plugin-copy';
-import image from '@rollup/plugin-image';
 // import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 
 export default {
@@ -26,7 +25,6 @@ export default {
     multiInput.default(),
     resolve({ dedupe: ['@lit/reactive-element', 'lit-html'] }),
     renameNodeModules(),
-    image(),
     // peerDepsExternal(),
     copy({
       targets: [
