@@ -34,82 +34,82 @@ export class DatePicker extends LitElement {
    * @ignore
    */
   @state()
-  accessor internals = this.attachInternals();
+  internals = this.attachInternals();
 
   /** Datepicker size. "sm", "md", or "lg". */
   @property({ type: String })
-  accessor size = 'md';
+  size = 'md';
 
   /** Optional text beneath the input. */
   @property({ type: String })
-  accessor caption = '';
+  caption = '';
 
   /** Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format. */
   @property({ type: String })
-  accessor value = '';
+  value = '';
 
   /** Datepicker name. */
   @property({ type: String })
-  accessor name = '';
+  name = '';
 
   /** Makes the date required. */
   @property({ type: Boolean })
-  accessor required = false;
+  required = false;
 
   /** Date disabled state. */
   @property({ type: Boolean })
-  accessor disabled = false;
+  disabled = false;
 
   /** Date invalid text. */
   @property({ type: String })
-  accessor invalidText = '';
+  invalidText = '';
 
   /** Date warning text */
   @property({ type: String })
-  accessor warnText = '';
+  warnText = '';
 
   /** Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format.
    * If the value isn't a possible date string in the format, then the element has no maximum date value
    */
   @property({ type: String })
-  accessor maxDate!: string;
+  maxDate!: string;
 
   /** Minimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format,
    * If the value isn't a possible date string in the format, then the element has no minimum date value.
    */
   @property({ type: String })
-  accessor minDate!: string;
+  minDate!: string;
 
   /** Specifies the granularity that the value must adhere to, or the special value any,
    * For date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.
    * The default value of step is 1, indicating 1 day.*/
   @property({ type: String })
-  accessor step!: string;
+  step!: string;
 
   /** Date picker types. Default 'single' */
   @property({ type: String })
-  accessor datePickerType: DATE_PICKER_TYPES = DATE_PICKER_TYPES.SINGLE;
+  datePickerType: DATE_PICKER_TYPES = DATE_PICKER_TYPES.SINGLE;
 
   /**
    * Queries the <input> DOM element.
    * @ignore
    */
   @query('input')
-  accessor inputEl!: HTMLInputElement;
+  inputEl!: HTMLInputElement;
 
   /**
    * Internal validation message.
    * @ignore
    */
   @state()
-  accessor internalValidationMsg = '';
+  internalValidationMsg = '';
 
   /**
    * isInvalid when internalValidationMsg or invalidText is non-empty.
    * @ignore
    */
   @state()
-  accessor isInvalid = false;
+  isInvalid = false;
 
   override render() {
     return html`

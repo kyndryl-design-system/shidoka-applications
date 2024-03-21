@@ -44,98 +44,98 @@ export class TextInput extends LitElement {
    * @ignore
    */
   @state()
-  accessor internals = this.attachInternals();
+  internals = this.attachInternals();
 
   /** Input type, limited to options that are "text like". */
   @property({ type: String })
-  accessor type = 'text';
+  type = 'text';
 
   /** Input size. "sm", "md", or "lg". */
   @property({ type: String })
-  accessor size = 'md';
+  size = 'md';
 
   /** Optional text beneath the input. */
   @property({ type: String })
-  accessor caption = '';
+  caption = '';
 
   /** Input value. */
   @property({ type: String })
-  accessor value = '';
+  value = '';
 
   /** Input placeholder. */
   @property({ type: String })
-  accessor placeholder = '';
+  placeholder = '';
 
   /** Input name. */
   @property({ type: String })
-  accessor name = '';
+  name = '';
 
   /** Makes the input required. */
   @property({ type: Boolean })
-  accessor required = false;
+  required = false;
 
   /** Input disabled state. */
   @property({ type: Boolean })
-  accessor disabled = false;
+  disabled = false;
 
   /** Input invalid text. */
   @property({ type: String })
-  accessor invalidText = '';
+  invalidText = '';
 
   /** RegEx pattern to validate. */
   @property({ type: String })
-  accessor pattern!: string;
+  pattern!: string;
 
   /** Maximum number of characters. */
   @property({ type: Number })
-  accessor maxLength!: number;
+  maxLength!: number;
 
   /** Minimum number of characters. */
   @property({ type: Number })
-  accessor minLength!: number;
+  minLength!: number;
 
   /** Place icon on the right. */
   @property({ type: Boolean })
-  accessor iconRight = false;
+  iconRight = false;
 
   /** Visually hide the label. */
   @property({ type: Boolean })
-  accessor hideLabel = false;
+  hideLabel = false;
 
   /**
    * Queries the <input> DOM element.
    * @ignore
    */
   @query('input')
-  accessor inputEl!: HTMLInputElement;
+  inputEl!: HTMLInputElement;
 
   /**
    * Evaluates if an icon is slotted.
    * @ignore
    */
   @state()
-  accessor iconSlotted = false;
+  iconSlotted = false;
 
   /**
    * Queries any slotted icons.
    * @ignore
    */
   @queryAssignedElements({ slot: 'icon' })
-  accessor iconSlot!: Array<HTMLElement>;
+  iconSlot!: Array<HTMLElement>;
 
   /**
    * Internal validation message.
    * @ignore
    */
   @state()
-  accessor internalValidationMsg = '';
+  internalValidationMsg = '';
 
   /**
    * isInvalid when internalValidationMsg or invalidText is non-empty.
    * @ignore
    */
   @state()
-  accessor isInvalid = false;
+  isInvalid = false;
 
   override render() {
     return html`

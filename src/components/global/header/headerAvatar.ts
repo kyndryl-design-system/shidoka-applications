@@ -11,7 +11,7 @@ export class HeaderAvatar extends LitElement {
 
   /** Two letters, first and last initial, to show in the user avatar circle. */
   @property({ type: String })
-  accessor initials = '';
+  initials = '';
 
   override render() {
     return html` ${this.initials} `;

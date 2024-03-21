@@ -19,27 +19,27 @@ export class Tabs extends LitElement {
 
   /** Tab style. `'contained'` or `'line'`. */
   @property({ type: String })
-  accessor tabStyle = 'contained';
+  tabStyle = 'contained';
 
   /** Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px. */
   @property({ type: String })
-  accessor tabSize = 'md';
+  tabSize = 'md';
 
   /** Vertical orientation. */
   @property({ type: Boolean })
-  accessor vertical = false;
+  vertical = false;
 
   /** Queries for slotted tabs.
    * @internal
    */
   @queryAssignedElements({ slot: 'tabs', selector: 'kyn-tab' })
-  accessor _tabs!: any;
+  _tabs!: any;
 
   /** Queries for slotted tab panels.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-tab-panel' })
-  accessor _tabPanels!: any;
+  _tabPanels!: any;
 
   override render() {
     const wrapperClasses = {

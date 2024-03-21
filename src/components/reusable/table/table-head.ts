@@ -20,13 +20,13 @@ export class TableHead extends LitElement {
   static override styles = [styles];
 
   @property({ type: Boolean })
-  accessor stickyHeader = false;
+  stickyHeader = false;
 
   /**
    * @ignore
    */
   @queryAssignedElements()
-  accessor unnamedSlotEls!: Array<HTMLElement>;
+  unnamedSlotEls!: Array<HTMLElement>;
 
   override connectedCallback() {
     super.connectedCallback();

@@ -23,51 +23,51 @@ export class HeaderFlyout extends LitElement {
 
   /** Flyout open state. */
   @property({ type: Boolean })
-  accessor open = false;
+  open = false;
 
   /** Anchor flyout menu to the left edge of the button instead of the right edge. */
   @property({ type: Boolean })
-  accessor anchorLeft = false;
+  anchorLeft = false;
 
   /** Hides the arrow. */
   @property({ type: Boolean })
-  accessor hideArrow = false;
+  hideArrow = false;
 
   /** Menu & button label. */
   @property({ type: String })
-  accessor label = '';
+  label = '';
 
   /** Hide the label at the top of the flyout menu. */
   @property({ type: Boolean })
-  accessor hideMenuLabel = false;
+  hideMenuLabel = false;
 
   /**
    * DEPRECATED. Use `label` instead.
    * Button assistive text, title + aria-label.
    */
   @property({ type: String })
-  accessor assistiveText = '';
+  assistiveText = '';
 
   /** Turns the button into a link. */
   @property({ type: String })
-  accessor href = '';
+  href = '';
 
   /** Text for mobile "Back" button. */
   @property({ type: String })
-  accessor backText = 'Back';
+  backText = 'Back';
 
   /**
    * Queries any slotted HTML elements.
    * @ignore
    */
   @queryAssignedElements()
-  accessor slottedElements!: Array<HTMLElement>;
+  slottedElements!: Array<HTMLElement>;
 
   /** Timeout function to delay modal close.
    * @internal
    */
   @state()
-  accessor timer: any;
+  timer: any;
 
   override render() {
     const classes = {

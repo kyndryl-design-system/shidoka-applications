@@ -18,11 +18,11 @@ export class HeaderNav extends LitElement {
    * @ignore
    */
   @state()
-  accessor menuOpen = false;
+  menuOpen = false;
 
   /** Force correct slot */
   @property({ type: String, reflect: true })
-  override accessor slot = 'left';
+  override slot = 'left';
 
   override render() {
     const classes = {

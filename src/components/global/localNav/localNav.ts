@@ -22,7 +22,7 @@ export class LocalNav extends LitElement {
 
   /** Menu toggle button assistive text. */
   @property({ type: Object })
-  accessor textStrings = {
+  textStrings = {
     toggleMenu: 'Toggle Menu',
     collapse: 'Collapse',
   };
@@ -31,25 +31,25 @@ export class LocalNav extends LitElement {
    * @internal
    */
   @state()
-  accessor _expanded = false;
+  _expanded = false;
 
   /** Active Link text.
    * @internal
    */
   @state()
-  accessor _activeLinkText!: string;
+  _activeLinkText!: string;
 
   /** Queries top-level slotted links.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-local-nav-link' })
-  accessor _navLinks!: any;
+  _navLinks!: any;
 
   /** Timeout function to delay modal close.
    * @internal
    */
   @state()
-  accessor timer: any;
+  timer: any;
 
   override render() {
     return html`

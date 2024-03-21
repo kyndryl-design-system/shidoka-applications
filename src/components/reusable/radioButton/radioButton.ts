@@ -19,42 +19,42 @@ export class RadioButton extends LitElement {
 
   /** Radio button value. */
   @property({ type: String })
-  accessor value = '';
+  value = '';
 
   /**
    * Radio button name, inherited from the parent group.
    * @ignore
    */
   @property({ type: String })
-  accessor name = '';
+  name = '';
 
   /**
    * Radio button checked state, inherited from the parent group if value matches.
    * @ignore
    */
   @property({ type: Boolean })
-  accessor checked = false;
+  checked = false;
 
   /**
    * Makes the input required, inherited from the parent group.
    * @ignore
    */
   @property({ type: Boolean })
-  accessor required = false;
+  required = false;
 
   /**
    * Radio button disabled state, inherited from the parent group.
    * @ignore
    */
   @property({ type: Boolean })
-  accessor disabled = false;
+  disabled = false;
 
   /**
    * Radio button group invalid state, inherited from the parent group.
    * @ignore
    */
   @property({ type: Boolean })
-  accessor invalid = false;
+  invalid = false;
 
   override render() {
     return html`

@@ -17,30 +17,29 @@ export class HeaderPanel extends LitElement {
 
   /** Panel extends from right instead of left. */
   @property({ type: Boolean })
-  accessor right = false;
+  right = false;
 
   /** Panel open state. */
   @property({ type: Boolean })
-  accessor open = false;
+  open = false;
 
   /** Panel heading. */
   @property({ type: String })
-  accessor heading = '';
+  heading = '';
 
   /** Open button assistive text. */
   @property({ type: String })
-  accessor openText = 'Open Panel';
+  openText = 'Open Panel';
 
   /** Close button assistive text. */
   @property({ type: String })
-  accessor closeText = 'Close Panel';
+  closeText = 'Close Panel';
 
   /**
    * A generated unique id
    * @ignore
    */
-  @state()
-  accessor _id = crypto.randomUUID();
+  @state() private _id = crypto.randomUUID();
 
   override render() {
     const buttonClasses = {

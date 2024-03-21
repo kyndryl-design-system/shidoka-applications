@@ -1,6 +1,6 @@
 import multiInput from 'rollup-plugin-multi-input';
 import resolve from '@rollup/plugin-node-resolve';
-import terser from '@rollup/plugin-terser';
+import { terser } from 'rollup-plugin-terser';
 import del from 'rollup-plugin-delete';
 import typescript from 'rollup-plugin-typescript2';
 import renameNodeModules from 'rollup-plugin-rename-node-modules';
@@ -23,7 +23,7 @@ export default {
   plugins: [
     del({ targets: 'dist/*' }),
     multiInput.default(),
-    resolve({ dedupe: ['@lit/reactive-element', 'lit-html'] }),
+    resolve(),
     renameNodeModules(),
     // peerDepsExternal(),
     copy({

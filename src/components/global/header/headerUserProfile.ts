@@ -14,23 +14,23 @@ export class HeaderUserProfile extends LitElement {
 
   /** The user's name. */
   @property({ type: String })
-  accessor name = '';
+  name = '';
 
   /** The user's job title, or subtext. */
   @property({ type: String })
-  accessor subtitle = '';
+  subtitle = '';
 
   /** The user's email address. */
   @property({ type: String })
-  accessor email = '';
+  email = '';
 
   /** View profile link URL. */
   @property({ type: String })
-  accessor profileLink = '';
+  profileLink = '';
 
   /** View Profile link text. */
   @property({ type: String })
-  accessor profileLinkText = 'View Profile';
+  profileLinkText = 'View Profile';
 
   override render() {
     return html`

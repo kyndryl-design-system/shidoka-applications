@@ -25,41 +25,41 @@ export class Header extends LitElement {
 
   /** URL for the header logo link. Should target the application home page. */
   @property({ type: String })
-  accessor rootUrl = '/';
+  rootUrl = '/';
 
   /** App title text next to logo.  Hidden on smaller screens. */
   @property({ type: String })
-  accessor appTitle = '';
+  appTitle = '';
 
   /** Queries for slotted header-nav.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-header-nav' })
-  accessor navEls!: any;
+  navEls!: any;
 
   /** Queries for all slotted elements.
    * @internal
    */
   @queryAssignedElements()
-  accessor assignedElements!: any;
+  assignedElements!: any;
 
   /** Queries for elements in left slot.
    * @internal
    */
   @queryAssignedElements({ slot: 'left' })
-  accessor leftEls!: any;
+  leftEls!: any;
 
   /** header-nav open state
    * @internal
    */
   @state()
-  accessor _navOpen = false;
+  _navOpen = false;
 
   /** header-flyouts open state
    * @internal
    */
   @state()
-  accessor _flyoutsOpen = false;
+  _flyoutsOpen = false;
 
   override render() {
     const classes = {
