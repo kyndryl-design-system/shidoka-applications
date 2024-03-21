@@ -1,5 +1,4 @@
 import { html } from 'lit';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import './index';
 import '../footer';
 import '../header';
@@ -22,7 +21,7 @@ export default {
 };
 
 export const UIShell = {
-  render: (args) => html`
+  render: () => html`
     <kyn-ui-shell>
       <kyn-header appTitle="UI Shell Example"></kyn-header>
 
@@ -39,7 +38,7 @@ export const UIShell = {
 };
 
 export const WithLocalNav = {
-  render: (args) => html`
+  render: () => html`
     <kyn-ui-shell>
       <kyn-header appTitle="UI Shell Example"></kyn-header>
 
@@ -100,7 +99,7 @@ export const WithLocalNav = {
 };
 
 export const WithEverything = {
-  render: (args) => html`
+  render: () => html`
     <kyn-ui-shell>
       <kyn-header appTitle="UI Shell Example">
         <kyn-header-nav>
