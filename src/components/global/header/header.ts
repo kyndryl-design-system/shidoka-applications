@@ -31,11 +31,23 @@ export class Header extends LitElement {
   @property({ type: String })
   accessor appTitle = '';
 
+  /** Queries for slotted header-nav.
+   * @internal
+   */
+  @queryAssignedElements({ selector: 'kyn-header-nav' })
+  accessor navEls!: any;
+
+  /** Queries for all slotted elements.
+   * @internal
+   */
+  @queryAssignedElements()
+  accessor assignedElements!: any;
+
   /** Queries for elements in left slot.
    * @internal
    */
   @queryAssignedElements({ slot: 'left' })
-  accessor leftEls: Array<any> = [];
+  accessor leftEls!: any;
 
   /** header-nav open state
    * @internal

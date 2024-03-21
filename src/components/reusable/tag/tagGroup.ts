@@ -50,7 +50,7 @@ export class TagGroup extends LitElement {
    * @ignore
    */
   @queryAssignedElements()
-  accessor tags: Array<any> = [];
+  accessor tags!: Array<any>;
 
   override render() {
     const toggleBtnClasses = {

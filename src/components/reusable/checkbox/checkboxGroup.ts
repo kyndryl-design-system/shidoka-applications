@@ -105,7 +105,7 @@ export class CheckboxGroup extends LitElement {
    * @ignore
    */
   @queryAssignedElements()
-  accessor checkboxes: Array<any> = [];
+  accessor checkboxes!: Array<any>;
 
   /**
    * Attached internals for form association.

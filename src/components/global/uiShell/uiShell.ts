@@ -12,69 +12,69 @@ export class UiShell extends LitElement {
 
   /** @internal */
   @queryAssignedElements({ selector: 'kyn-header' })
-  accessor _headerEl: Array<any> = [];
+  accessor _headerEl!: any;
 
   /** @internal */
   @queryAssignedElements({ selector: 'kyn-local-nav' })
-  accessor _localNavEl: Array<any> = [];
+  accessor _localNavEl!: any;
 
   /** @internal */
   @queryAssignedElements({ selector: 'kyn-footer' })
-  accessor _footerEl: Array<any> = [];
+  accessor _footerEl!: any;
 
   /** @internal */
   @queryAssignedElements({ selector: 'main' })
-  accessor _mainEl: Array<any> = [];
+  accessor _mainEl!: any;
 
   override render() {
     return html` <slot @slotchange=${this.handleSlotChange}></slot> `;
   }
 
-  // override firstUpdated() {
-  //   if (this._localNavEl.length) {
-  //     const LocalNav = this._localNavEl[0];
-  //     const Main = this._mainEl[0];
+  override firstUpdated() {
+    if (this._localNavEl.length) {
+      const LocalNav = this._localNavEl[0];
+      const Main = this._mainEl[0];
 
-  //     LocalNav.addEventListener('on-toggle', (e: any) => {
-  //       e.detail.pinned
-  //         ? Main.classList.add('pinned')
-  //         : Main.classList.remove('pinned');
+      LocalNav.addEventListener('on-toggle', (e: any) => {
+        e.detail.pinned
+          ? Main.classList.add('pinned')
+          : Main.classList.remove('pinned');
 
-  //       if (this._footerEl.length) {
-  //         e.detail.pinned
-  //           ? this._footerEl[0].classList.add('pinned')
-  //           : this._footerEl[0].classList.remove('pinned');
-  //       }
-  //     });
-  //   }
-  // }
+        if (this._footerEl.length) {
+          e.detail.pinned
+            ? this._footerEl[0].classList.add('pinned')
+            : this._footerEl[0].classList.remove('pinned');
+        }
+      });
+    }
+  }
 
   private handleSlotChange() {
     const Main = this._mainEl[0];
 
     if (this._localNavEl.length) {
-      // const LocalNav = this._localNavEl[0];
+      const LocalNav = this._localNavEl[0];
 
       Main.classList.add('has-local-nav');
 
-      // LocalNav.pinned
-      //   ? Main.classList.add('pinned')
-      //   : Main.classList.remove('pinned');
+      LocalNav.pinned
+        ? Main.classList.add('pinned')
+        : Main.classList.remove('pinned');
 
       if (this._footerEl.length) {
         this._footerEl[0].classList.add('has-local-nav');
 
-        // LocalNav.pinned
-        //   ? this._footerEl[0].classList.add('pinned')
-        //   : this._footerEl[0].classList.remove('pinned');
+        LocalNav.pinned
+          ? this._footerEl[0].classList.add('pinned')
+          : this._footerEl[0].classList.remove('pinned');
       }
     } else {
       Main.classList.remove('has-local-nav');
-      // Main.classList.remove('pinned');
+      Main.classList.remove('pinned');
 
-      // if (this._footerEl.length) {
-      //   this._footerEl[0].classList.remove('pinned');
-      // }
+      if (this._footerEl.length) {
+        this._footerEl[0].classList.remove('pinned');
+      }
     }
 
     this.requestUpdate();

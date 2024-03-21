@@ -43,7 +43,7 @@ export class LocalNav extends LitElement {
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-local-nav-link' })
-  accessor _navLinks: Array<any> = [];
+  accessor _navLinks!: any;
 
   /** Timeout function to delay modal close.
    * @internal

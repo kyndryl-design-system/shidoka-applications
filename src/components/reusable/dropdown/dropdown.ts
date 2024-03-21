@@ -145,14 +145,14 @@ export class Dropdown extends LitElement {
    * @ignore
    */
   @queryAssignedElements({ selector: 'kyn-dropdown-option' })
-  accessor options: Array<any> = [];
+  accessor options!: Array<any>;
 
   /**
    * Queries any slotted selected options.
    * @ignore
    */
   @queryAssignedElements({ selector: 'kyn-dropdown-option[selected]' })
-  accessor selectedOptions: Array<any> = [];
+  accessor selectedOptions!: Array<any>;
 
   /**
    * Queries the .search DOM element.

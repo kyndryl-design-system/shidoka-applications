@@ -121,7 +121,7 @@ export class TextInput extends LitElement {
    * @ignore
    */
   @queryAssignedElements({ slot: 'icon' })
-  accessor iconSlot: Array<HTMLElement> = [];
+  accessor iconSlot!: Array<HTMLElement>;
 
   /**
    * Internal validation message.

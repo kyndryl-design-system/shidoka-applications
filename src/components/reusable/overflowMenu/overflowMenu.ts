@@ -44,7 +44,7 @@ export class OverflowMenu extends LitElement {
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-overflow-menu-item' })
-  accessor menuItems: Array<any> = [];
+  accessor menuItems!: any;
 
   @query('.btn')
   accessor _btnEl!: any;
