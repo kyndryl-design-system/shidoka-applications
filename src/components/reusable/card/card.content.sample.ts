@@ -56,7 +56,7 @@ export class SampleCardContentComponent extends LitElement {
             <div class="card-option-wrapper">
               <!-- Example : overflow menu -->
               <!-- Note : Use e.stopPropogation() / e.preventDefault() for any internal clickable elements when card type is 'clickable' to stop bubbling / prevent event -->
-              <kyn-overflow-menu @click=${(e) => e.preventDefault()}>
+              <kyn-overflow-menu @click=${(e: any) => e.preventDefault()}>
                 <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
                 <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
               </kyn-overflow-menu>
