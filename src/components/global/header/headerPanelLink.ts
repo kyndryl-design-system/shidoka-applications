@@ -13,15 +13,15 @@ export class HeaderPanelLink extends LitElement {
 
   /** Link url. */
   @property({ type: String })
-  accessor href = '';
+  href = '';
 
   /** Defines a target attribute for where to load the URL. Possible options include "_self" (default), "_blank", "_parent", "_top" */
   @property({ type: String })
-  accessor target = '_self' as const;
+  target = '_self' as const;
 
   /** Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship */
   @property({ type: String })
-  accessor rel = '';
+  rel = '';
 
   override render() {
     return html`

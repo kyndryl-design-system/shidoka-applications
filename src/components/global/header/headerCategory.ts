@@ -12,7 +12,7 @@ export class HeaderCategory extends LitElement {
 
   /** Link url. */
   @property({ type: String })
-  accessor heading = '';
+  heading = '';
 
   override render() {
     return html`

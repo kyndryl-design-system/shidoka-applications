@@ -19,7 +19,7 @@ import styles from './breadcrumbItem.scss';
 export class BreadcrumbItem extends LitElement {
   // Property to hold the URL for the breadcrumb item
   @property({ type: String })
-  accessor href = '';
+  href = '';
 
   static override styles = [styles];
 

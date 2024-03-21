@@ -34,68 +34,68 @@ export class TextArea extends LitElement {
    * @ignore
    */
   @state()
-  accessor internals = this.attachInternals();
+  internals = this.attachInternals();
 
   /** Optional text beneath the input. */
   @property({ type: String })
-  accessor caption = '';
+  caption = '';
 
   /** Input value. */
   @property({ type: String })
-  accessor value = '';
+  value = '';
 
   /** Input placeholder. */
   @property({ type: String })
-  accessor placeholder = '';
+  placeholder = '';
 
   /** Input name. */
   @property({ type: String })
-  accessor name = '';
+  name = '';
 
   /** Makes the input required. */
   @property({ type: Boolean })
-  accessor required = false;
+  required = false;
 
   /** Input disabled state. */
   @property({ type: Boolean })
-  accessor disabled = false;
+  disabled = false;
 
   /** Input invalid text. */
   @property({ type: String })
-  accessor invalidText = '';
+  invalidText = '';
 
   /** Maximum number of characters. */
   @property({ type: Number })
-  accessor maxLength!: number;
+  maxLength!: number;
 
   /** Minimum number of characters. */
   @property({ type: Number })
-  accessor minLength!: number;
+  minLength!: number;
 
   /** textarea rows attribute. The number of visible text lines. */
   @property({ type: Number })
-  accessor rows!: number;
+  rows!: number;
 
   /**
    * Internal validation message.
    * @ignore
    */
   @state()
-  accessor internalValidationMsg = '';
+  internalValidationMsg = '';
 
   /**
    * isInvalid when internalValidationMsg or invalidText is non-empty.
    * @ignore
    */
   @state()
-  accessor isInvalid = false;
+  isInvalid = false;
 
   /**
    * Queries the <textarea> DOM element.
    * @ignore
    */
   @query('textarea')
-  accessor textareaEl!: HTMLTextAreaElement;
+  textareaEl!: HTMLTextAreaElement;
 
   override render() {
     return html`

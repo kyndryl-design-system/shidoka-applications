@@ -23,14 +23,14 @@ export class TableHeader extends LitElement {
   static override styles = [styles];
 
   @property({ type: Boolean })
-  accessor dense = false;
+  dense = false;
 
   /**
    * Specifies the alignment of the content within the table header.
    * Options: 'left', 'center', 'right'
    */
   @property({ type: String, reflect: true })
-  accessor align: TABLE_CELL_ALIGN = TABLE_CELL_ALIGN.LEFT;
+  align: TABLE_CELL_ALIGN = TABLE_CELL_ALIGN.LEFT;
 
   /**
    * Specifies if the column is sortable.
@@ -38,18 +38,18 @@ export class TableHeader extends LitElement {
    * allowing the user to toggle sort directions.
    */
   @property({ type: Boolean, reflect: true })
-  accessor sortable = false;
+  sortable = false;
 
   /** Specifies the direction of sorting applied to the column. */
   @property({ type: String, reflect: true })
-  accessor sortDirection: SORT_DIRECTION = SORT_DIRECTION.DEFAULT;
+  sortDirection: SORT_DIRECTION = SORT_DIRECTION.DEFAULT;
 
   /**
    * The textual content associated with this component.
    * Represents the primary content or label that will be displayed.
    */
   @property({ type: String })
-  accessor headerLabel = '';
+  headerLabel = '';
 
   /**
    * The unique identifier representing this column header.
@@ -57,7 +57,7 @@ export class TableHeader extends LitElement {
    * to ensure that only one column is sorted at a time.
    */
   @property({ type: String })
-  accessor sortKey = '';
+  sortKey = '';
 
   /**
    * Determines whether the content should be hidden from visual view but remain accessible
@@ -67,13 +67,13 @@ export class TableHeader extends LitElement {
    * assistive technologies without cluttering the visual UI.
    */
   @property({ type: Boolean })
-  accessor visiblyHidden = false;
+  visiblyHidden = false;
 
   /**
    * @ignore
    */
   @queryAssignedNodes({ flatten: true })
-  accessor listItems!: Array<Node>;
+  listItems!: Array<Node>;
 
   /**
    * Resets the sorting direction of the component to its default state.

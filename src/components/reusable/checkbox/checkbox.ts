@@ -20,51 +20,51 @@ export class Checkbox extends LitElement {
 
   /** Checkbox value. */
   @property({ type: String })
-  accessor value = '';
+  value = '';
 
   /**
    * Checkbox name, inherited from the parent group.
    * @ignore
    */
   @property({ type: String })
-  accessor name = '';
+  name = '';
 
   /**
    * Checkbox checked state, inherited from the parent group if value matches.
    */
   @property({ type: Boolean, reflect: true })
-  accessor checked = false;
+  checked = false;
 
   /**
    * Makes the input required, inherited from the parent group.
    * @ignore
    */
   @property({ type: Boolean })
-  accessor required = false;
+  required = false;
 
   /**
    * Checkbox disabled state, inherited from the parent group.
    */
   @property({ type: Boolean })
-  accessor disabled = false;
+  disabled = false;
 
   /**
    * Checkbox group invalid state, inherited from the parent group.
    * @ignore
    */
   @property({ type: Boolean })
-  accessor invalid = false;
+  invalid = false;
 
   /**
    * Determines whether the label should be hidden from visual view but remain accessible
    * to screen readers for accessibility purposes.
    */
   @property({ type: Boolean })
-  accessor visiblyHidden = false;
+  visiblyHidden = false;
 
   /** Determines whether the checkbox is in an indeterminate state. */
   @property({ type: Boolean })
-  accessor indeterminate = false;
+  indeterminate = false;
 
   override render() {
     return html`

@@ -25,60 +25,60 @@ export class HeaderLink extends LitElement {
 
   /** Link open state. */
   @property({ type: Boolean })
-  accessor open = false;
+  open = false;
 
   /** Link url. */
   @property({ type: String })
-  accessor href = '';
+  href = '';
 
   /** Defines a target attribute for where to load the URL. Possible options include "_self" (default), "_blank", "_parent", "_top" */
   @property({ type: String })
-  accessor target = '_self' as const;
+  target = '_self' as const;
 
   /** Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship */
   @property({ type: String })
-  accessor rel = '';
+  rel = '';
 
   /** Link active state, for example when URL path matches link href. */
   @property({ type: Boolean })
-  accessor isActive = false;
+  isActive = false;
 
   /** Link level, supports two levels.
    * @ignore
    */
   @state()
-  accessor level = 1;
+  level = 1;
 
   /** DEPRECATED. Adds a 1px shadow to the bottom of the link. */
   @property({ type: Boolean })
-  accessor divider = false;
+  divider = false;
 
   /** Label for sub-menu link search input, which is visible with > 5 sub-links. */
   @property({ type: String })
-  accessor searchLabel = 'Search';
+  searchLabel = 'Search';
 
   /** Text for mobile "Back" button. */
   @property({ type: String })
-  accessor backText = 'Back';
+  backText = 'Back';
 
   /**
    * Queries any slotted HTML elements.
    * @ignore
    */
   @queryAssignedElements({ slot: 'links', selector: 'kyn-header-link' })
-  accessor slottedLinks!: Array<HTMLElement>;
+  slottedLinks!: Array<HTMLElement>;
 
   /** Timeout function to delay modal close.
    * @internal
    */
   @state()
-  accessor timer: any;
+  timer: any;
 
   /** Menu positioning
    * @internal
    */
   @state()
-  accessor menuPosition: any = {};
+  menuPosition: any = {};
 
   override render() {
     const classes = {

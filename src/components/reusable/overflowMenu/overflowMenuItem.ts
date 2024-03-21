@@ -14,22 +14,22 @@ export class OverflowMenuItem extends LitElement {
 
   /** Makes the item a link. */
   @property({ type: String })
-  accessor href = '';
+  href = '';
 
   /** Adds destructive styles. */
   @property({ type: Boolean })
-  accessor destructive = false;
+  destructive = false;
 
   /** Item disabled state. */
   @property({ type: Boolean })
-  accessor disabled = false;
+  disabled = false;
 
   /**
    * Menu anchorRight state, inherited from the parent.
    * @internal
    */
   @state()
-  accessor anchorRight = false;
+  anchorRight = false;
 
   override render() {
     const classes = {
