@@ -26,7 +26,7 @@ export class TableHead extends LitElement {
    * @ignore
    */
   @queryAssignedElements()
-  accessor unnamedSlotEls!: Array<HTMLElement>;
+  accessor unnamedSlotEls: Array<HTMLElement> = [];
 
   override connectedCallback() {
     super.connectedCallback();

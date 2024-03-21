@@ -61,7 +61,7 @@ export class HeaderFlyout extends LitElement {
    * @ignore
    */
   @queryAssignedElements()
-  accessor slottedElements!: Array<HTMLElement>;
+  accessor slottedElements: Array<HTMLElement> = [];
 
   /** Timeout function to delay modal close.
    * @internal

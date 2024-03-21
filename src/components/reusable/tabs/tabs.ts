@@ -33,13 +33,13 @@ export class Tabs extends LitElement {
    * @internal
    */
   @queryAssignedElements({ slot: 'tabs', selector: 'kyn-tab' })
-  accessor _tabs!: any;
+  accessor _tabs: Array<any> = [];
 
   /** Queries for slotted tab panels.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-tab-panel' })
-  accessor _tabPanels!: any;
+  accessor _tabPanels: Array<any> = [];
 
   override render() {
     const wrapperClasses = {

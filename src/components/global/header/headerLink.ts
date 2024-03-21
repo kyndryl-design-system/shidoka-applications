@@ -66,7 +66,7 @@ export class HeaderLink extends LitElement {
    * @ignore
    */
   @queryAssignedElements({ slot: 'links', selector: 'kyn-header-link' })
-  accessor slottedLinks!: Array<HTMLElement>;
+  accessor slottedLinks: Array<HTMLElement> = [];
 
   /** Timeout function to delay modal close.
    * @internal

@@ -55,7 +55,7 @@ export class RadioButtonGroup extends LitElement {
    * @ignore
    */
   @queryAssignedElements()
-  accessor radioButtons!: Array<any>;
+  accessor radioButtons: Array<any> = [];
 
   /**
    * Attached internals for form association.
