@@ -17,7 +17,7 @@ export class TableBody extends LitElement {
 
   /** Determines if the rows in the table body should be striped. */
   @property({ type: Boolean, reflect: true })
-  striped = false;
+  accessor striped = false;
 
   override render() {
     return html`<slot></slot>`;

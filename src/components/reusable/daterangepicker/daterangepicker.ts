@@ -32,89 +32,89 @@ export class DateRangePicker extends LitElement {
    * @ignore
    */
   @state()
-  internals = this.attachInternals();
+  accessor internals = this.attachInternals();
 
   /** Optional text beneath the input. */
   @property({ type: String })
-  caption = '';
+  accessor caption = '';
 
   /** Datepicker size. "sm", "md", or "lg". */
   @property({ type: String })
-  size = 'md';
+  accessor size = 'md';
 
   /** Datepicker Start date in YYYY-MM-DD format. */
   @property({ type: String })
-  startDate = '';
+  accessor startDate = '';
 
   /** Datepicker End date in YYYY-MM-DD format. */
   @property({ type: String })
-  endDate = '';
+  accessor endDate = '';
 
   /** Datepicker name. Required prop. as there could many fields into single form*/
   @property({ type: String })
-  name = '';
+  accessor name = '';
 
   /** Makes the date required. */
   @property({ type: Boolean })
-  required = false;
+  accessor required = false;
 
   /** Date disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Date invalid text. */
   @property({ type: String })
-  invalidText = '';
+  accessor invalidText = '';
 
   /** Date warning text */
   @property({ type: String })
-  warnText = '';
+  accessor warnText = '';
 
   /** Maximum date in YYYY-MM-DD format.
    * If the value isn't a possible date string in the format, then the element has no maximum date value
    */
   @property({ type: String })
-  maxDate!: string;
+  accessor maxDate!: string;
 
   /** Minimum date in YYYY-MM-DD format,
    * If the value isn't a possible date string in the format, then the element has no minimum date value.
    */
   @property({ type: String })
-  minDate!: string;
+  accessor minDate!: string;
 
   /** Specifies the granularity that the value must adhere to, or the special value any,
    * For date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.
    * The default value of step is 1, indicating 1 day.*/
   @property({ type: String })
-  step!: string;
+  accessor step!: string;
 
   /**
    * Internal validation message.
    * @ignore
    */
   @state()
-  internalValidationMsg = '';
+  accessor internalValidationMsg = '';
 
   /**
    * isInvalid when internalValidationMsg or invalidText is non-empty.
    * @ignore
    */
   @state()
-  isInvalid = false;
+  accessor isInvalid = false;
 
   /**
    * Queries the Start Date <input> DOM element.
    * @ignore
    */
   @query('input.date-start')
-  inputElStart!: HTMLInputElement;
+  accessor inputElStart!: HTMLInputElement;
 
   /**
    * Queries the End Date <input> DOM element.
    * @ignore
    */
   @query('input.date-end')
-  inputElEnd!: HTMLInputElement;
+  accessor inputElEnd!: HTMLInputElement;
 
   override render() {
     return html`

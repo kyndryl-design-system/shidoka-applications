@@ -14,19 +14,19 @@ export class PageTitle extends LitElement {
 
   /** Headline text. */
   @property({ type: String })
-  headLine = '';
+  accessor headLine = '';
 
   /** Page title text (required). */
   @property({ type: String })
-  pageTitle = '';
+  accessor pageTitle = '';
 
   /** Page subtitle text. */
   @property({ type: String })
-  subTitle = '';
+  accessor subTitle = '';
 
   /** Type of page title `'primary'` & `'secondary'`. */
   @property({ type: String })
-  type = 'primary';
+  accessor type = 'primary';
 
   override render() {
     const classes = {

@@ -9,15 +9,15 @@ export class ActionMenu extends LitElement {
   static override styles = [styles];
 
   @property({ type: Boolean })
-  opened = false;
+  accessor opened = false;
 
-  @property({ type: Function })
-  handleDelete = (id: number) => {
+  @property({ attribute: false })
+  accessor handleDelete = (id: number) => {
     console.log('Delete action triggered', id);
   };
 
   @property({ type: Number })
-  itemId = 0;
+  accessor itemId = 0;
 
   toggleMenu() {
     this.opened = !this.opened;

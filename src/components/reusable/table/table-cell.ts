@@ -1,4 +1,4 @@
-import { html, LitElement, PropertyValues} from 'lit';
+import { html, LitElement, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import styles from './table-cell.scss';
@@ -19,33 +19,33 @@ export class TableCell extends LitElement {
   static override styles = [styles];
 
   @property({ type: Boolean })
-  dense = false;
+  accessor dense = false;
 
   /** Determines the text alignment of the table cell's content. */
   @property({ type: String, reflect: true })
-  align: TABLE_CELL_ALIGN = TABLE_CELL_ALIGN.LEFT;
+  accessor align: TABLE_CELL_ALIGN = TABLE_CELL_ALIGN.LEFT;
 
   /** Reflects the sort direction when used within sortable columns. */
   @property({ type: String })
-  sortDirection: SORT_DIRECTION = SORT_DIRECTION.ASC;
+  accessor sortDirection: SORT_DIRECTION = SORT_DIRECTION.ASC;
 
   /**
    * Sets a fixed width for the cell.
    * Accepts standard CSS width values (e.g., '150px', '50%').
    */
   @property({ type: String })
-  width = '';
+  accessor width = '';
 
   /**
    * Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.
    * Accepts standard CSS width values (e.g., '150px', '50%').
    */
   @property({ type: String })
-  maxWidth = '';
+  accessor maxWidth = '';
 
   /** Truncates the cell's contents with ellipsis. */
   @property({ type: Boolean })
-  ellipsis = false;
+  accessor ellipsis = false;
 
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);

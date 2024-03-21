@@ -28,55 +28,55 @@ export class RadioButtonGroup extends LitElement {
 
   /** Radio button input name attribute. */
   @property({ type: String })
-  name = '';
+  accessor name = '';
 
   /** Radio button group selected value. */
   @property({ type: String })
-  value = '';
+  accessor value = '';
 
   /** Makes the input required. */
   @property({ type: Boolean })
-  required = false;
+  accessor required = false;
 
   /** Radio button group disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Radio button group horizontal layout. */
   @property({ type: Boolean })
-  horizontal = false;
+  accessor horizontal = false;
 
   /** Radio button group invalid text. */
   @property({ type: String })
-  invalidText = '';
+  accessor invalidText = '';
 
   /**
    * Queries for slotted radio buttons.
    * @ignore
    */
   @queryAssignedElements()
-  radioButtons!: Array<any>;
+  accessor radioButtons!: Array<any>;
 
   /**
    * Attached internals for form association.
    * @ignore
    */
   @state()
-  internals = this.attachInternals();
+  accessor internals = this.attachInternals();
 
   /**
    * Internal validation message.
    * @ignore
    */
   @state()
-  internalValidationMsg = '';
+  accessor internalValidationMsg = '';
 
   /**
    * isInvalid when internalValidationMsg or invalidText is non-empty.
    * @ignore
    */
   @state()
-  isInvalid = false;
+  accessor isInvalid = false;
 
   override render() {
     return html`

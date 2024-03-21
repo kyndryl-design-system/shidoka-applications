@@ -18,7 +18,7 @@ export class Footer extends LitElement {
 
   /** URL for the footer logo link. Should target the application home page. */
   @property({ type: String })
-  rootUrl = '/';
+  accessor rootUrl = '/';
 
   override render() {
     const classes = {
