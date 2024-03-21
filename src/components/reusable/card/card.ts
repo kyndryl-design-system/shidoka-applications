@@ -27,7 +27,7 @@ export class Card extends LitElement {
 
   /** Defines a target attribute for where to load the URL in case of clickable card. Possible options include "_self" (deafult), "_blank", "_parent", "_top" */
   @property({ type: String })
-  accessor target: '_self';
+  accessor target = '_self';
 
   override render() {
     return html`${this.type === 'clickable'
