@@ -131,7 +131,7 @@ export class LocalNavLink extends LitElement {
 
           <div class="category">${this._text}</div>
 
-          <slot name="links" @slotchange=${this._handleSlotChange}></slot>
+          <slot name="links" @slotchange=${this._handleLinksSlotChange}></slot>
         </ul>
       </li>
     `;
@@ -172,7 +172,7 @@ export class LocalNavLink extends LitElement {
     this.requestUpdate();
   }
 
-  private _handleSlotChange() {
+  private _handleLinksSlotChange() {
     this.updateChildren();
     this.requestUpdate();
   }
