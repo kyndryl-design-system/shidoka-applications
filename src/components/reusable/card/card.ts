@@ -15,19 +15,19 @@ export class Card extends LitElement {
 
   /** Card Type. `'normal'` & `'clickable'` */
   @property({ type: String })
-  accessor type = 'normal';
+  type = 'normal';
 
   /** Card link url for clickable cards. */
   @property({ type: String })
-  accessor href = '';
+  href = '';
 
   /** Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship. */
   @property({ type: String })
-  accessor rel = '';
+  rel = '';
 
   /** Defines a target attribute for where to load the URL in case of clickable card. Possible options include "_self" (deafult), "_blank", "_parent", "_top" */
   @property({ type: String })
-  accessor target = '_self';
+  target = '_self';
 
   override render() {
     return html`${this.type === 'clickable'
