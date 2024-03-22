@@ -18,6 +18,12 @@ export default {
       control: { type: 'select' },
     },
   },
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Applications-Specs-for-Devs?type=design&node-id=3881-2&mode=design&t=Vig86P5oNpzRye3u-0',
+    },
+  },
 };
 
 export const Simple = {
