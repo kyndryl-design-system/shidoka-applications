@@ -41,3 +41,4 @@ export { Tag, TagGroup } from './components/reusable/tag';
 export { GlobalFilter } from './components/reusable/globalFilter';
 export { SideDrawer } from './components/reusable/sideDrawer';
 export { PageTitle } from './components/reusable/pagetitle';
+export { Card } from './components/reusable/card';
