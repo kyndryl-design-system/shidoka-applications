@@ -246,12 +246,6 @@ export class HeaderLink extends LitElement {
         ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight)
         : LinkHalf - MenuHalf;
 
-    // const Top =
-    //   LinkBounds.top + MenuBounds.height - Padding > window.innerHeight
-    //     ? LinkBounds.top -
-    //       (LinkBounds.top + MenuBounds.height - window.innerHeight)
-    //     : LinkBounds.top - Padding;
-
     this.menuPosition = {
       top: Top,
       left: LinkBounds.right + Padding,
