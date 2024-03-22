@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 import CardSampleScss from './cardSample.scss';
 
 /**  Sample Lit component to show card pattern. */
