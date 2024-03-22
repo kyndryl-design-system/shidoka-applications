@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import CardSampleScss from './cardSample.scss';
 
 /**  Sample Lit component to show card pattern. */
@@ -19,13 +19,11 @@ export class SampleCardComponent extends LitElement {
         </div>
       </div>
       <h1 class="card-title">
-        This is a card title with a maximum sentence limit of 2 lines
+        <slot name="title"></slot>
       </h1>
       <div class="card-subtitle">This is card subtitle</div>
       <div class="card-description">
-        Amazon EC2 Auto Scaling ensures that your application always has the
-        right amount of compute capacity by dynamically adjusting the number of
-        Amazon EC2 instances based on demand.
+        <slot name="description"></slot>
       </div>
     `;
   }
