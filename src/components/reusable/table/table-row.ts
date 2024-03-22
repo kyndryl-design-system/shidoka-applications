@@ -16,16 +16,16 @@ export class TableRow extends LitElement {
   static override styles = [styles];
 
   @property({ type: Boolean, reflect: true })
-  accessor selected = false;
+  selected = false;
 
   // @property({ type: Boolean, reflect: true })
-  // accessor disabled = false;
+  // disabled = false;
 
   @property({ type: Boolean, reflect: true })
-  accessor clickable = false;
+  clickable = false;
 
   @property({ type: Boolean, reflect: true })
-  accessor expanded = false;
+  expanded = false;
 
   override connectedCallback() {
     super.connectedCallback();

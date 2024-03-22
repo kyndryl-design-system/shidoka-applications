@@ -38,49 +38,49 @@ export class Modal extends LitElement {
 
   /** Modal open state. */
   @property({ type: Boolean })
-  accessor open = false;
+  open = false;
 
   /** Modal size. `'auto'`, `'md'`, or `'lg'`. */
   @property({ type: String })
-  accessor size = 'auto';
+  size = 'auto';
 
   /** Title/heading text, required. */
   @property({ type: String })
-  accessor titleText = '';
+  titleText = '';
 
   /** Label text, optional. */
   @property({ type: String })
-  accessor labelText = '';
+  labelText = '';
 
   /** OK button text. */
   @property({ type: String })
-  accessor okText = 'OK';
+  okText = 'OK';
 
   /** Cancel button text. */
   @property({ type: String })
-  accessor cancelText = 'Cancel';
+  cancelText = 'Cancel';
 
   /** Changes the primary button styles to indicate the action is destructive. */
   @property({ type: Boolean })
-  accessor destructive = false;
+  destructive = false;
 
   /** Disables the primary button. */
   @property({ type: Boolean })
-  accessor okDisabled = false;
+  okDisabled = false;
 
   /** Hides the footer/action buttons to create a passive modal. */
   @property({ type: Boolean })
-  accessor hideFooter = false;
+  hideFooter = false;
 
   /** Function to execute before the modal can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`. */
   @property({ attribute: false })
-  accessor beforeClose!: Function;
+  beforeClose!: Function;
 
   /** The dialog element
    * @internal
    */
   @query('dialog')
-  accessor _dialog!: any;
+  _dialog!: any;
 
   override render() {
     const classes = {

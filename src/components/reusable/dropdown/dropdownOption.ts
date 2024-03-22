@@ -15,39 +15,39 @@ export class DropdownOption extends LitElement {
 
   /** Option value. */
   @property({ type: String })
-  accessor value = '';
+  value = '';
 
   /** Option selected state. */
   @property({ type: Boolean, reflect: true })
-  accessor selected = false;
+  selected = false;
 
   /** Option disabled state. */
   @property({ type: Boolean })
-  accessor disabled = false;
+  disabled = false;
 
   /**
    * Option highlighted state for keyboard navigation, automatically derived.
    * @ignore
    */
   @state()
-  accessor highlighted = false;
+  highlighted = false;
 
   /** Multi-select state, derived from parent.
    * @ignore
    */
   @property({ type: Boolean })
-  accessor multiple = false;
+  multiple = false;
 
   /**
    * Option text, automatically derived.
    * @ignore
    */
   @property()
-  accessor text: any = '';
+  text: any = '';
 
   /** Determines whether the checkbox is in an indeterminate state. */
   @property({ type: Boolean, reflect: true })
-  accessor indeterminate = false;
+  indeterminate = false;
 
   override render() {
     return html`

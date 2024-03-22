@@ -41,34 +41,34 @@ export class DataTable extends LitElement {
    * rows: Array of objects representing each row in the data table.
    */
   @property({ type: Array })
-  accessor rows: any[] = [];
+  rows: any[] = [];
 
   /**
    * columns: Array of objects defining column properties such as
    * field name, sorting function, etc.
    */
   @property({ type: Array })
-  accessor columns: ColumnDefinition[] = [];
+  columns: ColumnDefinition[] = [];
 
   /**
    * checkboxSelection: Boolean indicating whether rows should be
    * selectable using checkboxes.
    */
   @property({ type: Boolean })
-  accessor checkboxSelection = false;
+  checkboxSelection = false;
 
   /**
    * striped: Boolean indicating whether rows should have alternate
    * coloring.
    */
   @property({ type: Boolean })
-  accessor striped = false;
+  striped = false;
 
   /**
    * selectedRows: Set of row ids that are currently selected.
    */
-  @property({ attribute: false })
-  accessor selectedRows = new Set<number>();
+  @property({ type: Set })
+  selectedRows = new Set<number>();
 
   /**
    * selectAll: Boolean indicating whether all rows are currently
@@ -76,28 +76,28 @@ export class DataTable extends LitElement {
    * @ignore
    */
   @state()
-  accessor selectAll = false;
+  selectAll = false;
 
   /**
    * stickyHeader: Boolean indicating whether the table header
    * should be sticky.
    */
   @property({ type: Boolean })
-  accessor stickyHeader = false;
+  stickyHeader = false;
 
   /**
    * dense: Boolean indicating whether the table should be displayed
    * in dense mode.
    */
   @property({ type: Boolean })
-  accessor dense = false;
+  dense = false;
 
   /**
    * paginationModel: Object holding pagination information such as
    * current page, page size, etc.
    */
   @property({ type: Object })
-  accessor paginationModel = {
+  paginationModel = {
     count: 0,
     pageSize: 5,
     pageNumber: 0,
@@ -106,19 +106,19 @@ export class DataTable extends LitElement {
 
   /** Option to hide the items range display. */
   @property({ type: Boolean })
-  accessor hideItemsRange = false;
+  hideItemsRange = false;
 
   /** Option to hide the page size dropdown. */
   @property({ type: Boolean })
-  accessor hidePageSizeDropdown = false;
+  hidePageSizeDropdown = false;
 
   /** Option to hide the navigation buttons. */
   @property({ type: Boolean })
-  accessor hideNavigationButtons = false;
+  hideNavigationButtons = false;
 
   /** Determines if the table layout is fixed (true) or auto (false). */
   @property({ type: Boolean })
-  accessor fixedLayout = false;
+  fixedLayout = false;
 
   /**
    * headerCheckboxIndeterminate: Boolean indicating whether the header
@@ -126,7 +126,7 @@ export class DataTable extends LitElement {
    * @ignore
    */
   @state()
-  accessor headerCheckboxIndeterminate = false;
+  headerCheckboxIndeterminate = false;
 
   /**
    * headerCheckboxChecked: Boolean indicating whether the header checkbox is
@@ -134,7 +134,7 @@ export class DataTable extends LitElement {
    * @ignore
    */
   @state()
-  accessor headerCheckboxChecked = false;
+  headerCheckboxChecked = false;
 
   /**
    * Updates the state of the header checkbox based on the number of

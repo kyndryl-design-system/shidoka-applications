@@ -13,18 +13,18 @@ import '../index';
 export class BatchActions extends LitElement {
   static override styles = [styles];
 
-  @property({ attribute: false })
-  accessor handleDelete = () => {};
+  @property({ type: Function })
+  handleDelete = () => {};
 
   @property({ type: Boolean, reflect: true })
-  accessor opened = false;
+  opened = false;
 
   /**
    * Determines if the component is being rendered on a mobile device.
    * @ignore
    */
   @state()
-  accessor isMobile = window.innerWidth < 768;
+  isMobile = window.innerWidth < 768;
 
   handleClick = (e: Event) => {
     e.stopPropagation();

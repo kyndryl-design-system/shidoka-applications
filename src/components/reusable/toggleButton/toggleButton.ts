@@ -28,39 +28,39 @@ export class ToggleButton extends LitElement {
    * @ignore
    */
   @state()
-  accessor internals = this.attachInternals();
+  internals = this.attachInternals();
 
   /** Input name. */
   @property({ type: String })
-  accessor name = '';
+  name = '';
 
   /** Input value. */
   @property({ type: String })
-  accessor value = '';
+  value = '';
 
   /** Checkbox checked state. */
   @property({ type: Boolean })
-  accessor checked = false;
+  checked = false;
 
   /** Checked state text. */
   @property({ type: String })
-  accessor checkedText = 'On';
+  checkedText = 'On';
 
   /** Unchecked state text. */
   @property({ type: String })
-  accessor uncheckedText = 'Off';
+  uncheckedText = 'Off';
 
   /** Option to use small size. */
   @property({ type: Boolean })
-  accessor small = false;
+  small = false;
 
   /** Checkbox disabled state. */
   @property({ type: Boolean })
-  accessor disabled = false;
+  disabled = false;
 
   /** Reverse UI element order, label on the left. */
   @property({ type: Boolean })
-  accessor reverse = false;
+  reverse = false;
 
   override render() {
     return html`

@@ -22,49 +22,48 @@ export class OverflowMenu extends LitElement {
 
   /** Menu open state. */
   @property({ type: Boolean })
-  accessor open = false;
+  open = false;
 
   /** Anchors the menu to the right of the button. */
   @property({ type: Boolean })
-  accessor anchorRight = false;
+  anchorRight = false;
 
   /** 3 dots vertical orientation. */
   @property({ type: Boolean })
-  accessor verticalDots = false;
+  verticalDots = false;
 
   /** Use fixed instead of absolute position. Useful when placed within elements with overflow scroll. */
   @property({ type: Boolean })
-  accessor fixed = false;
+  fixed = false;
 
   /** Button assistive text.. */
   @property({ type: String })
-  accessor assistiveText = 'Toggle Menu';
+  assistiveText = 'Toggle Menu';
 
   /** Queries for slotted menu items.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-overflow-menu-item' })
-  accessor menuItems!: any;
+  menuItems!: any;
 
   @query('.btn')
-  accessor _btnEl!: any;
+  _btnEl!: any;
 
   @query('.menu')
-  accessor _menuEl!: any;
+  _menuEl!: any;
 
   /**
    * A generated unique id
    * @ignore
    */
-  @state()
-  accessor _id = crypto.randomUUID();
+  @state() private _id = crypto.randomUUID();
 
   /**
    * Open drawer upwards.
    * @ignore
    */
   @state()
-  accessor _openUpwards = false;
+  _openUpwards = false;
 
   override render() {
     const buttonClasses = {

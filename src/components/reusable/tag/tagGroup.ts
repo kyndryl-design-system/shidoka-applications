@@ -20,37 +20,37 @@ export class TagGroup extends LitElement {
 
   /** Text string customization. */
   @property({ type: Object })
-  accessor textStrings = {
+  textStrings = {
     showAll: 'Show all',
     showLess: 'Show less',
   };
 
   /** Limits visible tags (5) behind a "Show all" button. Use only if having more than 5 tags.*/
   @property({ type: Boolean })
-  accessor limitTags = false;
+  limitTags = false;
 
   /** Tag limit visibility.
    * @internal
    */
   @state()
-  accessor limitRevealed = false;
+  limitRevealed = false;
 
   /** Tag group filter */
   @property({ type: Boolean })
-  accessor filter = false;
+  filter = false;
 
   /**
    * Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.
    */
   @property({ type: String })
-  accessor tagSize = 'md';
+  tagSize = 'md';
 
   /**
    * Queries for slotted tags.
    * @ignore
    */
   @queryAssignedElements()
-  accessor tags!: Array<any>;
+  tags!: Array<any>;
 
   override render() {
     const toggleBtnClasses = {
