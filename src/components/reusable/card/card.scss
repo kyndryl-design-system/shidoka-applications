@@ -1,0 +1,36 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+
+:host {
+  display: inline-block;
+  width: 264px;
+}
+.card {
+  &-wrapper {
+    position: relative;
+    padding: 24px;
+    background-color: var(--kd-color-background-ui-default);
+    outline: 1px solid var(--kd-color-border-light);
+    border-radius: 8px;
+    height: 100%;
+  }
+  &-wrapper-clickable {
+    position: relative;
+    display: inline-block;
+    color: unset;
+    width: inherit;
+    text-decoration: none;
+    background-color: var(--kd-color-background-ui-default);
+    outline: 1px solid var(--kd-color-border-ui);
+    border-radius: 8px;
+    @include elevation.shadow(1);
+    padding: 24px;
+    transition: outline 200ms ease-out;
+    &:hover {
+      outline: 2px solid var(--kd-color-border-ui-hover);
+      @include elevation.shadow(2);
+    }
+  }
+}
