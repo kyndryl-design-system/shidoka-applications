@@ -35,6 +35,26 @@
   }
 }
 
+@media (min-width: 42rem) {
+  .overlay {
+    position: fixed;
+    top: var(--kd-header-height);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    backdrop-filter: blur(2px);
+    transition: background-color 300ms ease-out, visibility 300ms ease-out;
+    background: transparent;
+    visibility: hidden;
+
+    .open + & {
+      background: var(--kd-color-light-opacity-50);
+      visibility: visible;
+    }
+  }
+}
+
 .divider {
   box-shadow: 0 1px 0 var(--kd-color-border-light);
   margin-bottom: 1px;

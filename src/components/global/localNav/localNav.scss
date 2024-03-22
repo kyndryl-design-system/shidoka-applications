@@ -45,6 +45,26 @@ nav {
   }
 }
 
+@media (min-width: 42rem) {
+  .overlay {
+    position: fixed;
+    top: var(--kd-header-height);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    backdrop-filter: blur(2px);
+    z-index: calc(var(--kd-z-local-nav) - 1);
+    transition: background-color 300ms ease-out, visibility 300ms ease-out;
+    background: transparent;
+    visibility: hidden;
+
+    .nav--expanded + & {
+      background-color: var(--kd-color-light-opacity-50);
+      visibility: visible;
+    }
+  }
+}
+
 .links {
   visibility: hidden;
   flex-direction: column;

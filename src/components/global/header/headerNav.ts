@@ -48,6 +48,7 @@ export class HeaderNav extends LitElement {
           <slot></slot>
         </div>
       </div>
+      <div class="overlay" @click=${this._handleOverlayClick}></div>
     `;
   }
 
@@ -59,6 +60,10 @@ export class HeaderNav extends LitElement {
     if (!e.composedPath().includes(this)) {
       this.menuOpen = false;
     }
+  }
+
+  private _handleOverlayClick() {
+    this.menuOpen = false;
   }
 
   override willUpdate(changedProps: any) {

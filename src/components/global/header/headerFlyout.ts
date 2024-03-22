@@ -144,6 +144,7 @@ export class HeaderFlyout extends LitElement {
           <slot></slot>
         </div>
       </div>
+      <div class="overlay"></div>
     `;
   }
 

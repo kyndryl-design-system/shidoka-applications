@@ -72,6 +72,7 @@ export class LocalNav extends LitElement {
           <slot @slotchange=${this.handleSlotChange}></slot>
         </div>
       </nav>
+      <div class="overlay"></div>
     `;
   }
 

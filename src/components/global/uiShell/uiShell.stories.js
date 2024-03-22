@@ -236,71 +236,7 @@ export const WithEverything = {
         </kyn-local-nav-link>
       </kyn-local-nav>
 
-      <main>
-        Main content here.
-
-        <!-- TO DO: remove below -->
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-        <br />
-        <br />
-        Main content here.
-      </main>
+      <main>Main content here. Main content here. Main content here.</main>
 
       <kyn-footer>
         <span slot="copyright">
