@@ -68,9 +68,9 @@ export class LocalNav extends LitElement {
           <kd-icon .icon=${arrowIcon}></kd-icon>
         </button>
 
-        <ul>
+        <div class="links">
           <slot @slotchange=${this.handleSlotChange}></slot>
-        </ul>
+        </div>
       </nav>
     `;
   }

@@ -92,7 +92,7 @@ export class LocalNavLink extends LitElement {
     };
 
     return html`
-      <li
+      <div
         class=${classMap(classes)}
         @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
         @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
@@ -114,8 +114,8 @@ export class LocalNavLink extends LitElement {
             : null}
         </a>
 
-        <ul
-          class="${this.navLinks.length ? 'has-links' : ''}"
+        <div
+          class="sub-menu ${this.navLinks.length ? 'has-links' : ''}"
           style=${this.navLinks.length
             ? `top: ${this.menuPosition.top}px; left: ${this.menuPosition.left}px;`
             : ''}
@@ -132,8 +132,8 @@ export class LocalNavLink extends LitElement {
           <div class="category">${this._text}</div>
 
           <slot name="links" @slotchange=${this._handleLinksSlotChange}></slot>
-        </ul>
-      </li>
+        </div>
+      </div>
     `;
   }
 
@@ -218,7 +218,7 @@ export class LocalNavLink extends LitElement {
     // determine submenu positioning
     const LinkBounds: any = this.getBoundingClientRect();
     const MenuBounds: any = this.shadowRoot
-      ?.querySelector('ul')
+      ?.querySelector('.sub-menu')
       ?.getBoundingClientRect();
     const Padding = 8;
 

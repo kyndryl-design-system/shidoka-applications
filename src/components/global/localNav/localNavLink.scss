@@ -1,4 +1,5 @@
 @use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
@@ -75,7 +76,7 @@ a {
   }
 }
 
-ul {
+.sub-menu {
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -188,11 +189,14 @@ ul {
 }
 
 .text {
-  display: none;
-  min-width: 156px;
+  min-width: 120px;
 
   .nav-expanded & {
     display: block;
+  }
+
+  .level--1:not(.nav-expanded) & {
+    @include mixins.visually-hidden;
   }
 }
 
