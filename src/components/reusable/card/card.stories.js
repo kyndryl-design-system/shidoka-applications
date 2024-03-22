@@ -102,7 +102,7 @@ export const InsideGrid = {
     return html`
       <div class="kd-grid">
         <div class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-3">
-          <kyn-card style="width:100%;">
+          <kyn-card style="width:100%;height:100%;">
             <sample-card-component>
               <div slot="title">This is a card title</div>
               <div slot="description">
@@ -114,7 +114,7 @@ export const InsideGrid = {
           </kyn-card>
         </div>
         <div class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-3">
-          <kyn-card style="width:100%;">
+          <kyn-card style="width:100%;height:100%;">
             <sample-card-component>
               <div slot="title">This is a card title</div>
               <div slot="description">
@@ -128,7 +128,7 @@ export const InsideGrid = {
           </kyn-card>
         </div>
         <div class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-3">
-          <kyn-card style="width:100%;">
+          <kyn-card style="width:100%;height:100%;">
             <sample-card-component>
               <div slot="title">This is a card title</div>
               <div slot="description">
@@ -139,7 +139,7 @@ export const InsideGrid = {
           </kyn-card>
         </div>
         <div class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-3">
-          <kyn-card style="width:100%;">
+          <kyn-card style="width:100%;height:100%;">
             <sample-card-component>
               <div slot="title">This is a card title</div>
               <div slot="description">
