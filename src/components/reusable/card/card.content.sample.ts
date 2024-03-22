@@ -1,8 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import CardSampleScss from './cardSample.scss';
-import thumbnailImg from './thumbnail-placeholder.png';
-import logoImg from './placeholder-logo.png';
 import '../overflowMenu';
 import '../tag';
 
@@ -37,7 +35,11 @@ export class SampleCardContentComponent extends LitElement {
     return html`
       <div class="card-logo-container">
         <div class="card-logo">
-          <img class="card-logo-img" src="${logoImg}" alt="product logo" />
+          <img
+            class="card-logo-img"
+            src="https://fastly.picsum.photos/id/163/32/32.jpg?hmac=6Ev67xrdofIgcyzhr8G7E_OCYUUziK4DoqoH3XZ4I08"
+            alt="product logo"
+          />
         </div>
         <div class="card-logo-right">
           <div class="card-actions">
@@ -68,7 +70,7 @@ export class SampleCardContentComponent extends LitElement {
       <img
         class="card-thumbnail-img"
         alt="Card thumbnail"
-        src="${thumbnailImg}"
+        src="https://fastly.picsum.photos/id/521/216/128.jpg?hmac=r5KpZKHm2EaJAOKiLrULNwt5HEtevAOPle1qwxV6V3E"
       />
 
       <h1 class="card-title">
