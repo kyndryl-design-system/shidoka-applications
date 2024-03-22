@@ -1,3 +1,22 @@
+# [1.9.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.8.0...v1.9.0) (2024-03-22)
+
+
+### Bug Fixes
+
+* **card:** build fail bug ([9ac9feb](https://github.com/kyndryl-design-system/shidoka-applications/commit/9ac9feb7e144ff00cf5a4f58e14d2e8611a1fe56))
+* **card:** Build issue for local import image ([b16c5d5](https://github.com/kyndryl-design-system/shidoka-applications/commit/b16c5d503d47bcf69506fd72d454a95d78a7c4d1))
+* **card:** build typo bug ([f46c28a](https://github.com/kyndryl-design-system/shidoka-applications/commit/f46c28a13efc39a68fe64e860cba6f87b4b0ddc8))
+* **card:** fix title text ([d5c89ef](https://github.com/kyndryl-design-system/shidoka-applications/commit/d5c89ef326d717cc4196a1cc6d7710906246d2de))
+* **card:** fixes of stories with different sizes of card ([79f4b42](https://github.com/kyndryl-design-system/shidoka-applications/commit/79f4b421f3b06117ad1af79c26344bfb5106fd66))
+* **card:** revert rollup config file and package.json ([491348c](https://github.com/kyndryl-design-system/shidoka-applications/commit/491348c979187d9d8ca80bc75affe8a74ad6f1b1))
+* **card:** Rollup config for image import ([888410d](https://github.com/kyndryl-design-system/shidoka-applications/commit/888410dae41480d64d486e313a8a93fb94e823ee))
+
+
+### Features
+
+* **card:** Added card component default and with slots ([77c00b0](https://github.com/kyndryl-design-system/shidoka-applications/commit/77c00b066279bfa6b8e67c6abd30c469f93b871f))
+* **card:** Added card stories with single slot content ([2788ace](https://github.com/kyndryl-design-system/shidoka-applications/commit/2788ace5305e5be1fcb25163ab86692173afcca2))
+
 # [1.8.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.7.1...v1.8.0) (2024-03-14)
 
 
