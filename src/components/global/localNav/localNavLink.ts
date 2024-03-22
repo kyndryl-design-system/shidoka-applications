@@ -210,7 +210,7 @@ export class LocalNavLink extends LitElement {
       this.timer = setTimeout(() => {
         this._expanded = false;
         clearTimeout(this.timer);
-      }, 200);
+      }, 100);
     }
   }
 

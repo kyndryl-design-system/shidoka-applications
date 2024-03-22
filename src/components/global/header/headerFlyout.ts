@@ -163,7 +163,7 @@ export class HeaderFlyout extends LitElement {
       this.timer = setTimeout(() => {
         this.open = false;
         clearTimeout(this.timer);
-      }, 200);
+      }, 100);
     }
   }
 
