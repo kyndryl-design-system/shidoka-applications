@@ -85,9 +85,7 @@ export const Clickable = {
         @on-card-click=${(e) => action(e.type)(e)}
       >
         <sample-card-component>
-          <div slot="title">
-            This is a card title with a maximum sentence limit of 2 lines
-          </div>
+          <div slot="title">This is a card title</div>
           <div slot="description">
             Amazon EC2 Auto Scaling ensures that your application always has the
             right amount of compute capacity by dynamically adjusting the number

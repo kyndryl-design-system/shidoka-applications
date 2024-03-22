@@ -73,9 +73,7 @@ export class SampleCardContentComponent extends LitElement {
         src="https://fastly.picsum.photos/id/521/216/128.jpg?hmac=r5KpZKHm2EaJAOKiLrULNwt5HEtevAOPle1qwxV6V3E"
       />
 
-      <h1 class="card-title">
-        This is a card title with a maximum sentence limit of 2 lines
-      </h1>
+      <h1 class="card-title">This is a card title</h1>
       <div class="card-subtitle">This is card subtitle</div>
       <div class="card-description">
         Amazon EC2 Auto Scaling ensures that your application always has the
