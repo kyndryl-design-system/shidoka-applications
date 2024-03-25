@@ -13,8 +13,8 @@
   outline-offset: -2px;
 
   &:hover {
-    background-color: var(--kd-color-background-ui-soft);
-    color: var(--kd-color-text-primary-hover);
+    background-color: var(--kd-color-background-primary-hover);
+    color: var(--kd-color-text-inversed);
   }
 
   &:focus {
@@ -32,6 +32,26 @@
     background-color: var(--kd-color-background-disabled) !important;
     color: var(--kd-color-text-disabled) !important;
     cursor: not-allowed !important;
+  }
+}
+
+@media (min-width: 42rem) {
+  .overlay {
+    position: fixed;
+    top: var(--kd-header-height);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    backdrop-filter: blur(2px);
+    transition: background-color 300ms ease-out, visibility 300ms ease-out;
+    background: transparent;
+    visibility: hidden;
+
+    .open + & {
+      background: var(--kd-color-light-opacity-50);
+      visibility: visible;
+    }
   }
 }
 
@@ -58,8 +78,8 @@
     overflow-x: hidden;
     background: var(--kd-color-background-accent-subtle);
     border-bottom: 4px solid var(--kd-color-border-accent-spruce-light);
-    transition: visibility 0.15s, opacity 0.15s ease-in-out,
-      transform 0.15s ease-in-out;
+    transition: visibility 300ms, opacity 300ms ease-in-out,
+      transform 300ms ease-in-out;
     transform: translateY(-20px);
     visibility: hidden;
     opacity: 0;
@@ -67,7 +87,6 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
-    // min-width: 200px;
 
     &.slotted {
       padding: 8px;
@@ -75,7 +94,6 @@
 
     @media (min-width: 42rem) {
       position: absolute;
-      // top: 100%;
       top: calc(100% + 12px);
       right: 0;
       bottom: auto;
@@ -104,7 +122,11 @@
   &.open {
     .interactive {
       color: var(--kd-color-text-inversed);
-      background-color: var(--kd-color-background-focus);
+      background-color: var(--kd-color-background-primary);
+
+      &:hover {
+        background-color: var(--kd-color-background-primary-hover);
+      }
 
       &:active {
         background-color: var(--kd-color-background-primary-pressed);

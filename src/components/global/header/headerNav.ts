@@ -39,13 +39,16 @@ export class HeaderNav extends LitElement {
           title="Toggle Menu"
           @click=${() => this._toggleMenuOpen()}
         >
-          <kd-icon .icon=${this.menuOpen ? closeIcon : menuIcon}></kd-icon>
+          ${this.menuOpen
+            ? html` <kd-icon .icon=${closeIcon}></kd-icon> `
+            : html` <kd-icon .icon=${menuIcon}></kd-icon> `}
         </button>
 
         <div class="menu__content left">
           <slot></slot>
         </div>
       </div>
+      <div class="overlay" @click=${this._handleOverlayClick}></div>
     `;
   }
 
@@ -56,6 +59,21 @@ export class HeaderNav extends LitElement {
   private _handleClickOut(e: Event) {
     if (!e.composedPath().includes(this)) {
       this.menuOpen = false;
+    }
+  }
+
+  private _handleOverlayClick() {
+    this.menuOpen = false;
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('menuOpen')) {
+      const event = new CustomEvent('on-nav-toggle', {
+        composed: true,
+        bubbles: true,
+        detail: { open: this.menuOpen },
+      });
+      this.dispatchEvent(event);
     }
   }
 

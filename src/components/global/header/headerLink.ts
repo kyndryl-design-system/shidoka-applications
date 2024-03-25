@@ -191,7 +191,7 @@ export class HeaderLink extends LitElement {
       this.timer = setTimeout(() => {
         this.open = false;
         clearTimeout(this.timer);
-      }, 300);
+      }, 100);
     }
   }
 
@@ -245,12 +245,6 @@ export class HeaderLink extends LitElement {
       LinkHalf + MenuHalf > window.innerHeight
         ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight)
         : LinkHalf - MenuHalf;
-
-    // const Top =
-    //   LinkBounds.top + MenuBounds.height - Padding > window.innerHeight
-    //     ? LinkBounds.top -
-    //       (LinkBounds.top + MenuBounds.height - window.innerHeight)
-    //     : LinkBounds.top - Padding;
 
     this.menuPosition = {
       top: Top,

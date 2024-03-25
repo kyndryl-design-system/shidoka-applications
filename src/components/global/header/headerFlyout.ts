@@ -144,6 +144,7 @@ export class HeaderFlyout extends LitElement {
           <slot></slot>
         </div>
       </div>
+      <div class="overlay"></div>
     `;
   }
 
@@ -163,7 +164,7 @@ export class HeaderFlyout extends LitElement {
       this.timer = setTimeout(() => {
         this.open = false;
         clearTimeout(this.timer);
-      }, 300);
+      }, 100);
     }
   }
 

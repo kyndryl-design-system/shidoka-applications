@@ -9,13 +9,14 @@ import { classMap } from 'lit/directives/class-map.js';
 import LocalNavLinkScss from './localNavLink.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import chevDownIcon from '@carbon/icons/es/chevron--down/20';
+import arrowIcon from '@carbon/icons/es/chevron--right/16';
+import backIcon from '@carbon/icons/es/arrow--left/16';
 
 /**
  * Link component for use in the global Side Navigation component.
  * @fires on-click - Captures the click event and emits the original event, level, and if default was prevented.
  * @slot unnamed - The default slot, for the link text.
- * @slot icon - Slot for an icon, level 1 links only.
+ * @slot icon - Slot for an icon. Use 16px size.
  * @slot links - Slot for the next level of links, supports three levels.
  */
 @customElement('kyn-local-nav-link')
@@ -27,16 +28,20 @@ export class LocalNavLink extends LitElement {
   href = '';
 
   /** Expanded state. */
-  @property({ type: Boolean })
-  expanded = false;
+  @state()
+  _expanded = false;
 
   /** Active state. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   active = false;
 
   /** Disabled state. */
   @property({ type: Boolean })
   disabled = false;
+
+  /** Text for mobile "Back" button. */
+  @property({ type: String })
+  backText = 'Back';
 
   /** Link level, supports three levels.
    * @ignore
@@ -63,38 +68,72 @@ export class LocalNavLink extends LitElement {
   @queryAssignedElements({ slot: 'links', selector: 'kyn-local-nav-link' })
   navLinks!: Array<any>;
 
+  /** Timeout function to delay modal close.
+   * @internal
+   */
+  @state()
+  timer: any;
+
+  /** Menu positioning
+   * @internal
+   */
+  @state()
+  menuPosition: any = {};
+
   override render() {
     const classes = {
       'level--1': this._level == 1,
       'level--2': this._level == 2,
       'level--3': this._level == 3,
       'nav-expanded': this._navExpanded,
-      'link-expanded': this.expanded,
+      'link-expanded': this._expanded,
       'link-active': this.active,
       'link-disabled': this.disabled,
     };
 
     return html`
-      <li class=${classMap(classes)}>
+      <div
+        class=${classMap(classes)}
+        @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
+        @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
+      >
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
           <slot name="icon"></slot>
           <span class="text">
-            <slot></slot>
+            <slot
+              @slotchange=${(e: Event) => this._handleTextSlotChange(e)}
+            ></slot>
           </span>
 
           ${this.navLinks.length
             ? html`
                 <span class="arrow-icon">
-                  <kd-icon .icon=${chevDownIcon}></kd-icon>
+                  <kd-icon .icon=${arrowIcon}></kd-icon>
                 </span>
               `
             : null}
         </a>
 
-        <ul>
-          <slot name="links" @slotchange=${this._handleSlotChange}></slot>
-        </ul>
-      </li>
+        <div
+          class="sub-menu ${this.navLinks.length ? 'has-links' : ''}"
+          style=${this.navLinks.length
+            ? `top: ${this.menuPosition.top}px; left: ${this.menuPosition.left}px;`
+            : ''}
+        >
+          ${this.navLinks.length
+            ? html`
+                <button class="go-back" @click=${() => this._handleBack()}>
+                  <kd-icon .icon=${backIcon}></kd-icon>
+                  ${this.backText}
+                </button>
+              `
+            : null}
+
+          <div class="category">${this._text}</div>
+
+          <slot name="links" @slotchange=${this._handleLinksSlotChange}></slot>
+        </div>
+      </div>
     `;
   }
 
@@ -106,9 +145,34 @@ export class LocalNavLink extends LitElement {
     if (changedProps.has('_navExpanded')) {
       this.updateChildren();
     }
+
+    if (
+      changedProps.has('_expanded') &&
+      this._expanded &&
+      this.navLinks.length
+    ) {
+      this._positionMenu();
+    }
   }
 
-  private _handleSlotChange() {
+  private _handleTextSlotChange(e: Event) {
+    const Slot: any = e.target;
+    let text = '';
+
+    const nodes = Slot.assignedNodes({
+      flatten: true,
+    });
+
+    for (let i = 0; i < nodes.length; i++) {
+      text += nodes[i].textContent.trim();
+    }
+
+    this._text = text;
+
+    this.requestUpdate();
+  }
+
+  private _handleLinksSlotChange() {
     this.updateChildren();
     this.requestUpdate();
   }
@@ -130,6 +194,53 @@ export class LocalNavLink extends LitElement {
     }
   }
 
+  private handlePointerEnter(e: PointerEvent) {
+    if (e.pointerType === 'mouse' && this.navLinks.length) {
+      clearTimeout(this.timer);
+      this._expanded = true;
+    }
+  }
+
+  private handlePointerLeave(e: PointerEvent) {
+    if (
+      e.pointerType === 'mouse' &&
+      document.activeElement !== this &&
+      this.navLinks.length
+    ) {
+      this.timer = setTimeout(() => {
+        this._expanded = false;
+        clearTimeout(this.timer);
+      }, 100);
+    }
+  }
+
+  private _positionMenu() {
+    // determine submenu positioning
+    const LinkBounds: any = this.getBoundingClientRect();
+    const MenuBounds: any = this.shadowRoot
+      ?.querySelector('.sub-menu')
+      ?.getBoundingClientRect();
+    const Padding = 8;
+
+    const LinkHalf = LinkBounds.top + LinkBounds.height / 2;
+    const MenuHalf = MenuBounds.height / 2;
+
+    const Top =
+      LinkHalf + MenuHalf > window.innerHeight
+        ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight)
+        : LinkHalf - MenuHalf;
+    const Left = LinkBounds.right + Padding;
+
+    this.menuPosition = {
+      top: Top,
+      left: Left < 320 ? 320 : Left,
+    };
+  }
+
+  private _handleBack() {
+    this._expanded = false;
+  }
+
   private handleClick(e: Event) {
     let preventDefault = false;
 
@@ -139,7 +250,7 @@ export class LocalNavLink extends LitElement {
 
     if (this.navLinks.length) {
       preventDefault = true;
-      this.expanded = !this.expanded;
+      this._expanded = !this._expanded;
     }
 
     if (preventDefault) {
@@ -149,6 +260,8 @@ export class LocalNavLink extends LitElement {
     this.requestUpdate();
 
     const event = new CustomEvent('on-click', {
+      composed: true,
+      bubbles: true,
       detail: {
         origEvent: e,
         level: this._level,
@@ -156,6 +269,24 @@ export class LocalNavLink extends LitElement {
       },
     });
     this.dispatchEvent(event);
+  }
+
+  private _handleClickOut(e: Event) {
+    if (!e.composedPath().includes(this)) {
+      this._expanded = false;
+    }
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+
+    document.addEventListener('click', (e) => this._handleClickOut(e));
+  }
+
+  override disconnectedCallback() {
+    document.removeEventListener('click', (e) => this._handleClickOut(e));
+
+    super.disconnectedCallback();
   }
 }
 

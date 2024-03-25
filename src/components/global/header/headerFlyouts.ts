@@ -6,7 +6,7 @@ import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import overflowIcon from '@carbon/icons/es/overflow-menu--vertical/20';
 
 /**
- * Container for header-flyout components..
+ * Container for header-flyout components.
  * @slot unnamed - Slot for header-flyout components.
  */
 @customElement('kyn-header-flyouts')
@@ -38,6 +38,35 @@ export class HeaderFlyouts extends LitElement {
 
   private _toggleOpen() {
     this.open = !this.open;
+  }
+
+  private _handleClickOut(e: Event) {
+    if (!e.composedPath().includes(this)) {
+      this.open = false;
+    }
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('open')) {
+      const event = new CustomEvent('on-flyouts-toggle', {
+        composed: true,
+        bubbles: true,
+        detail: { open: this.open },
+      });
+      this.dispatchEvent(event);
+    }
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+
+    document.addEventListener('click', (e) => this._handleClickOut(e));
+  }
+
+  override disconnectedCallback() {
+    document.removeEventListener('click', (e) => this._handleClickOut(e));
+
+    super.disconnectedCallback();
   }
 }
 
