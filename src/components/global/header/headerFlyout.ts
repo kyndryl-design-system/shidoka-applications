@@ -41,6 +41,10 @@ export class HeaderFlyout extends LitElement {
   @property({ type: Boolean })
   hideMenuLabel = false;
 
+  /** Hide the label in the mobile button. */
+  @property({ type: Boolean })
+  hideButtonLabel = false;
+
   /**
    * DEPRECATED. Use `label` instead.
    * Button assistive text, title + aria-label.
@@ -99,7 +103,13 @@ export class HeaderFlyout extends LitElement {
               >
                 <slot name="button"></slot>
 
-                <span class="label"> ${this.label || this.assistiveText} </span>
+                ${!this.hideButtonLabel
+                  ? html`
+                      <span class="label">
+                        ${this.label || this.assistiveText}
+                      </span>
+                    `
+                  : null}
 
                 <kd-icon
                   slot="button"
@@ -118,7 +128,13 @@ export class HeaderFlyout extends LitElement {
               >
                 <slot name="button"></slot>
 
-                <span class="label"> ${this.label || this.assistiveText} </span>
+                ${!this.hideButtonLabel
+                  ? html`
+                      <span class="label">
+                        ${this.label || this.assistiveText}
+                      </span>
+                    `
+                  : null}
 
                 <kd-icon
                   slot="button"
