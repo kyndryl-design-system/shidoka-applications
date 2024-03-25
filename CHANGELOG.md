@@ -1,3 +1,10 @@
+## [1.10.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.2...v1.10.3) (2024-03-25)
+
+
+### Bug Fixes
+
+* **local-nav:** mobile margin ([7822471](https://github.com/kyndryl-design-system/shidoka-applications/commit/782247136f2268506713f0c6a5faaa6abd3c8870))
+
 ## [1.10.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.1...v1.10.2) (2024-03-25)
 
 
