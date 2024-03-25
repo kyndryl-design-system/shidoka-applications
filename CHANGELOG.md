@@ -1,3 +1,12 @@
+## [1.10.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.1...v1.10.2) (2024-03-25)
+
+
+### Bug Fixes
+
+* **header-flyout:** add hideButtonLabel prop ([94b7fa1](https://github.com/kyndryl-design-system/shidoka-applications/commit/94b7fa18c394e80b8fa4b63b8438a771855478ac))
+* **local-nav-link:** submenu bg color ([1c472ec](https://github.com/kyndryl-design-system/shidoka-applications/commit/1c472ec08b9e365a3c59fefe4000ad90ead3cde3))
+* **local-nav:** mobile negative margin to offset page margin ([41c5340](https://github.com/kyndryl-design-system/shidoka-applications/commit/41c53409e9314b9f6d0864771c4244b976c06c97))
+
 ## [1.10.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.0...v1.10.1) (2024-03-25)
 
 
