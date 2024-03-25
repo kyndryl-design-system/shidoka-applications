@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.9.0...v1.10.0) (2024-03-25)
+
+
+### Features
+
+* **local-nav:** local nav redesign ([#133](https://github.com/kyndryl-design-system/shidoka-applications/issues/133)) ([eec070a](https://github.com/kyndryl-design-system/shidoka-applications/commit/eec070a2d74658dcf0eab2abc20e46ee07a1c6e2))
+
 # [1.9.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.8.0...v1.9.0) (2024-03-22)
 
 
