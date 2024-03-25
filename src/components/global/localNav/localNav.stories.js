@@ -14,11 +14,6 @@ export default {
   decorators: [
     (story) =>
       html`
-        <style>
-          kyn-local-nav {
-            margin: 0;
-          }
-        </style>
         <div style="min-height: 300px; margin: var(--kd-negative-page-gutter);">
           ${story()}
         </div>
