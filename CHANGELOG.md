@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.0...v1.10.1) (2024-03-25)
+
+
+### Bug Fixes
+
+* update foundation ([1b609ed](https://github.com/kyndryl-design-system/shidoka-applications/commit/1b609ed43ce4b4a69679c0675fd76b675f6a4419))
+
 # [1.10.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.9.0...v1.10.0) (2024-03-25)
 
 
