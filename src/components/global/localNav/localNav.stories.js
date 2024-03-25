@@ -12,7 +12,17 @@ export default {
     'kyn-local-nav-link': 'kyn-local-nav-link',
   },
   decorators: [
-    (story) => html` <div style="min-height: 300px;">${story()}</div> `,
+    (story) =>
+      html`
+        <style>
+          kyn-local-nav {
+            margin: 0;
+          }
+        </style>
+        <div style="min-height: 300px; margin: var(--kd-negative-page-gutter);">
+          ${story()}
+        </div>
+      `,
   ],
   parameters: {
     design: {
