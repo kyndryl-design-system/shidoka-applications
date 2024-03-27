@@ -59,7 +59,7 @@ export class NotificationPanel extends LitElement {
     </div>`;
   }
 
-  private _handlefooterBtnEvent(e) {
+  private _handlefooterBtnEvent(e: any) {
     const event = new CustomEvent('on-footer-btn-click', {
       detail: {
         origEvent: e,

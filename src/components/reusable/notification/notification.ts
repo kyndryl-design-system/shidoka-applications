@@ -32,7 +32,7 @@ export class Notification extends LitElement {
 
   override render() {
     return html`
-      <kyn-card>
+      <kyn-card type="clickable">
         <div class="notification-wrapper">
           <div class="notification-title-wrap">
             <div class="notification-head">
