@@ -45,7 +45,7 @@ export class Notification extends LitElement {
               <!-- Title -->
               <h1 class="notification-title">${this.notificationTitle}</h1>
               <!-- subtitle -->
-              ${this.notificationSubtitle
+              ${this.notificationSubtitle !== ''
                 ? html` <div class="notification-subtitle">
                     ${this.notificationSubtitle}
                   </div>`
