@@ -27,8 +27,18 @@ export { Dropdown, DropdownOption } from './components/reusable/dropdown';
 export { DatePicker } from './components/reusable/datePicker';
 export { DateRangePicker } from './components/reusable/daterangepicker';
 export { Breadcrumbs, BreadcrumbItem } from './components/reusable/breadcrumbs';
-export { Table } from './components/reusable/table';
-export { DataTable } from './components/reusable/table/data-table';
+export {
+  Table,
+  TableCell,
+  TableRow,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableFooter,
+  TableToolbar,
+  TableContainer,
+  TableHeaderRow,
+} from './components/reusable/table';
 export { Pagination } from './components/reusable/pagination';
 export {
   OverflowMenu,
