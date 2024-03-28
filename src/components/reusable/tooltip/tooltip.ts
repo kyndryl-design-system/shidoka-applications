@@ -8,6 +8,7 @@ import infoIcon from '@carbon/icons/es/information/20';
 
 /**
  * Tooltip.
+ * @fires on-tooltip-toggle - Emits the open state of the tooltip on open/close.
  * @slot unnamed - Slot for tooltip content.
  * @slot anchor - Slot for custom anchor button content.
  */
@@ -96,6 +97,19 @@ export class Tooltip extends LitElement {
   private _handleEsc(e: KeyboardEvent) {
     if (this.open && e.key === 'Escape') {
       this.open = false;
+    }
+  }
+
+  private _emitToggle() {
+    const event = new CustomEvent('on-tooltip-toggle', {
+      detail: { open: this.open },
+    });
+    this.dispatchEvent(event);
+  }
+
+  override updated(changedProps: any) {
+    if (changedProps.has('open') && changedProps.get('open') !== undefined) {
+      this._emitToggle();
     }
   }
 
