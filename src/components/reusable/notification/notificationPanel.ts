@@ -1,6 +1,5 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-//import { classMap } from 'lit/directives/class-map.js';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 
 import NotificationPanelScss from './notificationPanel.scss';
@@ -19,9 +18,6 @@ export class NotificationPanel extends LitElement {
   /** Notification panel Title. */
   @property({ type: String })
   panelTitle = '';
-
-  @property({ type: Boolean })
-  showFooter = false;
 
   @property({ type: String })
   panelFooterBtnText = '';
@@ -58,7 +54,7 @@ export class NotificationPanel extends LitElement {
           </div>`}
     </div>`;
   }
-
+  // emit event on footer buton click
   private _handlefooterBtnEvent(e: any) {
     const event = new CustomEvent('on-footer-btn-click', {
       detail: {
