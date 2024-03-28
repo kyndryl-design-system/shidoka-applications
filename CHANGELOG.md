@@ -1,3 +1,10 @@
+## [1.10.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.3...v1.10.4) (2024-03-28)
+
+
+### Bug Fixes
+
+* **tooltip:** add toggle event, resolves [#138](https://github.com/kyndryl-design-system/shidoka-applications/issues/138) ([f4b1e74](https://github.com/kyndryl-design-system/shidoka-applications/commit/f4b1e74db5b9278383abc8eedb98e6a463243b36))
+
 ## [1.10.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.2...v1.10.3) (2024-03-25)
 
 
