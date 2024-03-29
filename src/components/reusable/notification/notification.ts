@@ -45,10 +45,10 @@ export class Notification extends LitElement {
   tagLabel = '';
 
   /** Set tagColor based on provided tagStatus.
-   * @internal
+   * @ignore
    */
   @state()
-  tagColor: string;
+  tagColor: any = '';
 
   override render() {
     return html`
