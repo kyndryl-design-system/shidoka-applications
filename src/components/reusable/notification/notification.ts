@@ -48,7 +48,7 @@ export class Notification extends LitElement {
    * @internal
    */
   @state()
-  tagColor: '';
+  tagColor: string;
 
   override render() {
     return html`
