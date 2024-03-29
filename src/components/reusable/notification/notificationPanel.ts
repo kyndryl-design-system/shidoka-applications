@@ -19,6 +19,7 @@ export class NotificationPanel extends LitElement {
   @property({ type: String })
   panelTitle = '';
 
+  /** Notification panel footer button text. */
   @property({ type: String })
   panelFooterBtnText = '';
 
