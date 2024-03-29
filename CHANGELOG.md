@@ -1,3 +1,18 @@
+## [1.10.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.4...v1.10.5) (2024-03-28)
+
+
+### Bug Fixes
+
+* **header-user-profile:** remove negative margin ([6a4da3a](https://github.com/kyndryl-design-system/shidoka-applications/commit/6a4da3a5f703ecc06f75598f2c91bc20c742f36f))
+* **local-nav-link:** update active style ([0d8bf1b](https://github.com/kyndryl-design-system/shidoka-applications/commit/0d8bf1bb4363b1508d18cb1f53c3c474c531a310))
+
+## [1.10.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.3...v1.10.4) (2024-03-28)
+
+
+### Bug Fixes
+
+* **tooltip:** add toggle event, resolves [#138](https://github.com/kyndryl-design-system/shidoka-applications/issues/138) ([f4b1e74](https://github.com/kyndryl-design-system/shidoka-applications/commit/f4b1e74db5b9278383abc8eedb98e6a463243b36))
+
 ## [1.10.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.2...v1.10.3) (2024-03-25)
 
 
