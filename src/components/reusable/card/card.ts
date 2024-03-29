@@ -30,7 +30,7 @@ export class Card extends LitElement {
   @property({ type: String })
   target = '_self';
 
-  /** Hide border. Use when clikable card use inside `<kyn-notification>` component. */
+  /** Hide card border. Useful when clickable card use inside `<kyn-notification>` component. */
   @property({ type: Boolean })
   hideBorder = false;
 

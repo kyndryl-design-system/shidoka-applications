@@ -73,6 +73,10 @@ const notificationTagStatusArr = [
     tagStatus: 'error',
     tagLabel: 'Error',
   },
+  {
+    tagStatus: 'warning',
+    tagLabel: 'Warning',
+  },
 ];
 
 export const Header = {

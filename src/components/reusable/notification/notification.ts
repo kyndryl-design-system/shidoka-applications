@@ -34,7 +34,7 @@ export class Notification extends LitElement {
 
   /** Notification status tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'` */
   @property({ type: String })
-  tagStatus = 'info';
+  tagStatus = 'default';
 
   /** Notification type. `'normal'` and `'clickable'`. clickable type can be use inside notification panel */
   @property({ type: String })
@@ -106,8 +106,6 @@ export class Notification extends LitElement {
 
   override updated(changedProps: any) {
     if (changedProps.has('tagStatus')) {
-      this.requestUpdate();
-
       switch (this.tagStatus) {
         case 'info':
           this.tagColor = 'spruce';

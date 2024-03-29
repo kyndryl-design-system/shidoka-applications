@@ -72,6 +72,15 @@ const notificationArr = [
     tagLabel: 'Error',
     tagStatus: 'error',
   },
+  {
+    notificationTitle: 'Notification Title 5',
+    notificationSubtitle: 'Bridge',
+    timeStamp: '7 mins ago',
+    description:
+      'Message, this is an additional line Ipsum iMessage, Lorem Ipsum is Message ghjyui fghrt',
+    tagLabel: 'Warning',
+    tagStatus: 'warning',
+  },
 ];
 
 export const NotificationPanel = {
