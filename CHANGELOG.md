@@ -1,3 +1,12 @@
+## [1.10.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.5...v1.10.6) (2024-03-29)
+
+
+### Bug Fixes
+
+* **dropdown:** add on-search event ([fa0d3da](https://github.com/kyndryl-design-system/shidoka-applications/commit/fa0d3daa7273d7ede0035654f225737c2d059916))
+* **dropdown:** use shidoka tags ([45327e8](https://github.com/kyndryl-design-system/shidoka-applications/commit/45327e86985227ddbb2f14a71451fcf7969d2f57))
+* **side-drawer:** add z-index to header & footer, resolves [#139](https://github.com/kyndryl-design-system/shidoka-applications/issues/139) ([6e7fea8](https://github.com/kyndryl-design-system/shidoka-applications/commit/6e7fea851f25cb7ffa0895597053e168e2b11dce))
+
 ## [1.10.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.4...v1.10.5) (2024-03-28)
 
 
