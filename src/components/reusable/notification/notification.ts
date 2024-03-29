@@ -1,15 +1,15 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 
 import NotificationScss from './notification.scss';
 import '../card';
+import '../tag';
 
 /**
  * Notification
- * @slot overflow-menu-slot - Slot for menu.
- * @slot status-tag-slot - Slot for status tag.
- * @slot unnamed - Slot for notification content.
- * @fires on-notification-click - Emit event when click on notification
+ * @slot action-slot - Slot for menu.
+ * @slot notification-body-slot - Slot for notification message.
+ * @fires on-notification-click - Emit event for clickable notification.
  */
 
 @customElement('kyn-notification')
@@ -20,13 +20,9 @@ export class Notification extends LitElement {
   @property({ type: String })
   notificationTitle = '';
 
-  /** Notification subtitle. */
+  /** Notification subtitle.(optional) */
   @property({ type: String })
   notificationSubtitle = '';
-
-  /** Notification description (Required). */
-  @property({ type: String })
-  description = '';
 
   /** Timestamp of notification. */
   @property({ type: String })
@@ -36,67 +32,106 @@ export class Notification extends LitElement {
   @property({ type: String })
   href = '';
 
+  /** Notification status tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'` */
+  @property({ type: String })
+  tagStatus = 'info';
+
+  /** Notification type. `'clickable'` and `'normal'`. */
+  @property({ type: String })
+  type = 'clickable';
+
+  /** Notification tag label. Insert text of tag according to notification status type. (Requires `tagStatus` other than default) */
+  @property({ type: String })
+  tagLabel = '';
+
+  /** Set tagColor based on provided tagStatus.
+   * @internal
+   */
+  @state()
+  tagColor: '';
+
   override render() {
     return html`
-      <kyn-card type="clickable" href=${this.href} target="_blank">
-        <div class="notification-wrapper">
-          <div class="notification-title-wrap">
-            <div class="notification-head">
-              <!-- Title -->
-              <h1 class="notification-title">${this.notificationTitle}</h1>
-              <!-- subtitle -->
-              ${this.notificationSubtitle !== ''
-                ? html` <div class="notification-subtitle">
-                    ${this.notificationSubtitle}
-                  </div>`
-                : null}
-            </div>
-            <!-- Slot for overflow menu -->
-            <div>
-              <slot name="overflow-menu-slot"></slot>
-            </div>
-          </div>
-          <!-- Description -->
-          <div class="notification-description">${this.description}</div>
-          <!-- Tag and timestamp -->
-          <div class="notification-content-wrapper">
-            <div class="status-tag">
-              <slot name="status-tag-slot"></slot>
-            </div>
-            <div class="timestamp-wrapper">
-              <div class="timestamp-text">${this.timeStamp}</div>
-            </div>
-          </div>
-          <!-- other content if any -->
-          <div>
-            <slot></slot>
-          </div>
-        </div>
-      </kyn-card>
+      ${this.type === 'clickable'
+        ? html`<kyn-card
+            type=${this.type}
+            href=${this.href}
+            target="_blank"
+            @on-card-click=${(e) => this._handleCardClick(e)}
+            >${this.renderInnerUI()}</kyn-card
+          >`
+        : html`<kyn-card type=${this.type}>${this.renderInnerUI()}</kyn-card>`}
     `;
   }
 
+  private renderInnerUI() {
+    return html`<div class="notification-wrapper">
+      <div class="notification-title-wrap">
+        <div class="notification-head">
+          <h1 class="notification-title">${this.notificationTitle}</h1>
+
+          ${this.notificationSubtitle !== ''
+            ? html` <div class="notification-subtitle">
+                ${this.notificationSubtitle}
+              </div>`
+            : null}
+        </div>
+
+        <div>
+          <slot name="action-slot"></slot>
+        </div>
+      </div>
+
+      <div class="notification-description">
+        <slot name="notification-body-slot"></slot>
+      </div>
+
+      <div class="notification-content-wrapper">
+        <div class="status-tag">
+          ${this.tagStatus !== 'default' && this.tagLabel !== ''
+            ? html`<kyn-tag
+                label=${this.tagLabel}
+                tagColor=${this.tagColor}
+                shade="dark"
+              ></kyn-tag>`
+            : null}
+        </div>
+        <div class="timestamp-wrapper">
+          <div class="timestamp-text">${this.timeStamp}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  override updated(changedProps: any) {
+    if (changedProps.has('tagStatus')) {
+      this.requestUpdate();
+
+      switch (this.tagStatus) {
+        case 'info':
+          this.tagColor = 'spruce';
+          break;
+        case 'warning':
+          this.tagColor = 'warning';
+          break;
+        case 'success':
+          this.tagColor = 'passed';
+          break;
+        case 'error':
+          this.tagColor = 'failed';
+          break;
+        default:
+          this.tagColor = '';
+          return;
+      }
+    }
+  }
+
   private _handleCardClick(e: any) {
-    console.log(e);
     const event = new CustomEvent('on-notification-click', {
-      detail: this,
+      detail: e.detail.origEvent,
     });
     this.dispatchEvent(event);
-  }
-
-  override connectedCallback() {
-    super.connectedCallback();
-    // capture card click event
-    this.addEventListener('on-card-click', (e: any) =>
-      this._handleCardClick(e)
-    );
-  }
-
-  override disconnectedCallback() {
-    this.removeEventListener('on-card-click', (e: any) =>
-      this._handleCardClick(e)
-    );
-    super.disconnectedCallback();
   }
 }
 

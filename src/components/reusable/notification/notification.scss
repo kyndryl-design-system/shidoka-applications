@@ -28,35 +28,31 @@
     @include typography.type-ui-02;
     color: var(--kd-color-text-secondary);
   }
-  &-description {
-    @include typography.type-ui-02;
-    color: var(--kd-color-text-primary);
-    padding-top: 8px;
-    display: -moz-box;
-    display: -webkit-box;
-    line-clamp: 2;
-    -moz-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+
   &-content-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 8px;
+    padding-top: 10px;
   }
 }
 
-.timestamp-wrapper {
-  display: inline-flex;
-  justify-content: flex-end;
-  flex: 1;
-  margin-left: 8px;
-}
-.timestamp-text {
-  @include typography.type-ui-03;
+.notification-description slot[name='notification-body-slot']::slotted(*) {
+  @include typography.type-ui-02;
   color: var(--kd-color-text-primary);
-  font-weight: 500;
+  padding-top: 10px;
+}
+
+.timestamp {
+  &-wrapper {
+    display: inline-flex;
+    justify-content: flex-end;
+    flex: 1;
+    margin-left: 8px;
+  }
+  &-text {
+    @include typography.type-ui-03;
+    color: var(--kd-color-text-primary);
+    font-weight: 500;
+  }
 }

@@ -7,7 +7,7 @@ import userAvatarIcon from '@carbon/icons/es/user--avatar/20';
 import useSetingIcon from '@carbon/icons/es/settings/20';
 import helpIcon from '@carbon/icons/es/help/20';
 import circleIcon from '@carbon/icons/es/circle-stroke';
-import filledNotificationIcon from '@carbon/icons/es/notification--filled/20';
+import filledNotificationIcon from '@carbon/icons/es/notification--new/20';
 
 import '../../global/header';
 import '../overflowMenu';
@@ -106,13 +106,12 @@ export const NotificationPanel = {
                   html`<kyn-notification
                     notificationTitle=${notification.notificationTitle}
                     notificationSubtitle=${notification.notificationSubtitle}
-                    description=${notification.description}
                     timeStamp=${notification.timeStamp}
                     href="#"
                     @on-notification-click=${(e) => action(e.type)(e)}
                   >
                     <kyn-overflow-menu
-                      slot="overflow-menu-slot"
+                      slot="action-slot"
                       anchorRight
                       @click=${(e) => e.preventDefault()}
                     >
@@ -124,12 +123,9 @@ export const NotificationPanel = {
                       >
                     </kyn-overflow-menu>
 
-                    <kyn-tag
-                      slot="status-tag-slot"
-                      label=${notification.tagLabel}
-                      tagColor=${notification.tagColor}
-                      shade="dark"
-                    ></kyn-tag>
+                    <div slot="notification-body-slot">
+                      ${notification.description}
+                    </div>
                   </kyn-notification>`
               )}
             </kyn-notification-panel>
