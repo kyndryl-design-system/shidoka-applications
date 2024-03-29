@@ -19,6 +19,7 @@ import clearIcon16 from '@carbon/icons/es/close/16';
 /**
  * Dropdown, single select.
  * @fires on-change - Captures the input event and emits the selected value and original event details.
+ * @fires on-search - Capture the search input event and emits the search text.
  * @slot unnamed - Slot for dropdown options.
  * @slot label - Slot for input label.
  */
@@ -599,6 +600,8 @@ export class Dropdown extends LitElement {
     this.searchText = '';
     this.searchEl.value = '';
 
+    this._emitSearch();
+
     // clear selection for single select
     if (!this.multiple) {
       this.value = '';
@@ -658,6 +661,8 @@ export class Dropdown extends LitElement {
     const value = e.target.value;
     this.searchText = value;
     this.open = true;
+
+    this._emitSearch();
 
     // find matches
     const options = this.options.filter((option: any) => {
@@ -845,6 +850,15 @@ export class Dropdown extends LitElement {
     this.dispatchEvent(event);
   }
 
+  private _emitSearch() {
+    const event = new CustomEvent('on-search', {
+      detail: {
+        searchText: this.searchText,
+      },
+    });
+    this.dispatchEvent(event);
+  }
+
   override willUpdate(changedProps: any) {
     if (changedProps.has('open')) {
       if (this.open) {
@@ -938,8 +952,8 @@ export class Dropdown extends LitElement {
         }
 
         // set search input value
-        this.searchText = this.text === this.placeholder ? '' : this.text;
-        if (this.searchEl) {
+        if (this.searchable) {
+          this.searchText = this.text === this.placeholder ? '' : this.text;
           this.searchEl.value = this.searchText;
         }
       }

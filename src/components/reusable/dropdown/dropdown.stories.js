@@ -93,6 +93,7 @@ export const SingleSearchable = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         @on-change=${(e) => action(e.type)(e)}
+        @on-search=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
@@ -164,6 +165,7 @@ export const MultiSelectSearchable = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         @on-change=${(e) => action(e.type)(e)}
+        @on-search=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
