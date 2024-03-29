@@ -36,9 +36,9 @@ export class Notification extends LitElement {
   @property({ type: String })
   tagStatus = 'info';
 
-  /** Notification type. `'clickable'` and `'normal'`. */
+  /** Notification type. `'normal'` and `'clickable'`. clickable type can be use inside notification panel */
   @property({ type: String })
-  type = 'clickable';
+  type = 'normal';
 
   /** Notification tag label. Insert text of tag according to notification status type. (Requires `tagStatus` other than default) */
   @property({ type: String })
@@ -58,6 +58,7 @@ export class Notification extends LitElement {
             href=${this.href}
             target="_blank"
             @on-card-click=${(e) => this._handleCardClick(e)}
+            hideBorder
             >${this.renderInnerUI()}</kyn-card
           >`
         : html`<kyn-card type=${this.type}>${this.renderInnerUI()}</kyn-card>`}

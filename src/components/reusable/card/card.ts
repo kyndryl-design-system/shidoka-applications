@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import CardScss from './card.scss';
 
@@ -29,10 +30,19 @@ export class Card extends LitElement {
   @property({ type: String })
   target = '_self';
 
+  /** Hide border. Use when clikable card use inside `<kyn-notification>` component. */
+  @property({ type: Boolean })
+  hideBorder = false;
+
   override render() {
+    const cardWrapperClasses = {
+      'card-wrapper-clickable': true,
+      'card-border': this.hideBorder === false,
+    };
+
     return html`${this.type === 'clickable'
       ? html`<a
-          class="card-wrapper-clickable"
+          class="${classMap(cardWrapperClasses)}"
           href=${this.href}
           target=${this.target}
           rel=${this.rel}

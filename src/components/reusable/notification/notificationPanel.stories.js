@@ -43,7 +43,7 @@ const notificationArr = [
     description:
       'Message, this is an additional line Ipsum iMessage, Lorem Ipsum is simply dummy and typesetting industry.',
     tagLabel: 'Success',
-    tagColor: 'passed',
+    tagStatus: 'success',
   },
   {
     notificationTitle: 'Notification Title 2',
@@ -52,7 +52,7 @@ const notificationArr = [
     description:
       'Message, this is an additional line Ipsum iMessage, Lorem Ipsum is simply dummy and typesetting industry. Lorem Ipsum is Message ghjyui fghrt',
     tagLabel: 'Info',
-    tagColor: 'spruce',
+    tagStatus: 'info',
   },
   {
     notificationTitle: 'Notification Title 3',
@@ -61,7 +61,7 @@ const notificationArr = [
     description:
       'Message, this is an additional line Ipsum iMessage, Lorem Ipsum is Message ghjyui fghrt',
     tagLabel: 'Warning',
-    tagColor: 'warning',
+    tagStatus: 'warning',
   },
   {
     notificationTitle: 'Notification Title 4',
@@ -70,7 +70,7 @@ const notificationArr = [
     description:
       'Message, this is an additional line Ipsum iMessage, Lorem Ipsum is simply dummy and typesetting industry.',
     tagLabel: 'Error',
-    tagColor: 'failed',
+    tagStatus: 'error',
   },
 ];
 
@@ -107,6 +107,9 @@ export const NotificationPanel = {
                     notificationTitle=${notification.notificationTitle}
                     notificationSubtitle=${notification.notificationSubtitle}
                     timeStamp=${notification.timeStamp}
+                    type="clickable"
+                    tagStatus=${notification.tagStatus}
+                    tagLabel=${notification.tagLabel}
                     href="#"
                     @on-notification-click=${(e) => action(e.type)(e)}
                   >

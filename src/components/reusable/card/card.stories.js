@@ -32,6 +32,7 @@ export const Simple = {
     href: '',
     rel: '',
     target: '_self',
+    hideBorder: false,
   },
   render: (args) => {
     return html`
@@ -62,6 +63,7 @@ export const WithOtherContents = {
       href=${args.href}
       target=${args.target}
       rel=${args.rel}
+      ?hideBorder=${args.hideBorder}
     >
       <sample-card-content-component></sample-card-content-component>
     </kyn-card>`;
@@ -74,6 +76,7 @@ export const Clickable = {
     href: 'https://www.kyndryl.com',
     rel: 'noopener',
     target: '_blank',
+    hideBorder: false,
   },
   render: (args) => {
     return html`
@@ -82,6 +85,7 @@ export const Clickable = {
         href=${args.href}
         target=${args.target}
         rel=${args.rel}
+        ?hideBorder=${args.hideBorder}
         @on-card-click=${(e) => action(e.type)(e)}
       >
         <sample-card-component>

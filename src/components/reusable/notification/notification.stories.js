@@ -41,7 +41,7 @@ export const Default = {
     notificationSubtitle: '',
     timeStamp: '2 mins ago',
     href: '#',
-    type: 'clickable',
+    type: 'normal',
     tagStatus: 'default',
     tagLabel: '',
   },
