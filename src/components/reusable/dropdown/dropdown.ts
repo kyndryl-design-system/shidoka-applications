@@ -9,6 +9,7 @@ import {
 import { classMap } from 'lit/directives/class-map.js';
 import DropdownScss from './dropdown.scss';
 import './dropdownOption';
+import '../tag';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import downIcon from '@carbon/icons/es/chevron--down/24';
 import errorIcon from '@carbon/icons/es/warning--filled/24';
@@ -331,7 +332,7 @@ export class Dropdown extends LitElement {
 
         ${this.multiple && !this.hideTags && this.value.length
           ? html`
-              <div class="tags">
+              <kyn-tag-group filter>
                 ${this.value.map((value: string) => {
                   const option = this.options.find(
                     (option) => option.value === value
@@ -351,17 +352,14 @@ export class Dropdown extends LitElement {
                   }
 
                   return html`
-                    <button
-                      class="tag"
-                      aria-label="Deselect ${text}"
-                      @click=${() => this.handleTagClear(option.value)}
-                    >
-                      ${text}
-                      <kd-icon .icon=${clearIcon16}></kd-icon>
-                    </button>
+                    <kyn-tag
+                      label=${text}
+                      @on-close=${(e: any) =>
+                        this.handleTagClear(e.detail.value)}
+                    ></kyn-tag>
                   `;
                 })}
-              </div>
+              </kyn-tag-group>
             `
           : null}
         ${this.caption !== ''
