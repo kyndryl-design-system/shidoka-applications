@@ -23,6 +23,7 @@ export default {
     'kyn-header-flyouts': 'kyn-header-flyouts',
     'kyn-header-flyout': 'kyn-header-flyout',
     'kyn-header-user-profile': 'kyn-header-user-profile',
+    'kyn-notification-panel': 'kyn-notification-panel',
   },
   decorators: [
     (story) =>
