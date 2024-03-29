@@ -11,6 +11,7 @@ import filledNotificationIcon from '@carbon/icons/es/notification--new/20';
 import useSetingIcon from '@carbon/icons/es/settings/20';
 
 import '../../reusable/notification';
+import '../../reusable/overflowMenu';
 
 export default {
   title: 'Global Components/Header',
