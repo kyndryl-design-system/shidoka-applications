@@ -2,18 +2,18 @@ import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 
-import NotificationPanelScss from './notificationPanel.scss';
+import HeaderNotificationPanelScss from './headerNotificationPanel.scss';
 
 /**
- * Notification Panel.
+ * Component for notification panel within the Header.
  * @slot menu-slot - Slot for panel menu
  * @slot unnamed - Slot for notification content.
  * @fires on-footer-btn-click - Emits the panel footer button event.
  */
 
-@customElement('kyn-notification-panel')
-export class NotificationPanel extends LitElement {
-  static override styles = NotificationPanelScss;
+@customElement('kyn-header-notification-panel')
+export class HeaderNotificationPanel extends LitElement {
+  static override styles = HeaderNotificationPanelScss;
 
   /** Notification panel Title. */
   @property({ type: String })
@@ -23,6 +23,7 @@ export class NotificationPanel extends LitElement {
   @property({ type: String })
   panelFooterBtnText = '';
 
+  /** Hide notification panel footer */
   @property({ type: Boolean })
   hidePanelFooter = false;
 
@@ -55,6 +56,7 @@ export class NotificationPanel extends LitElement {
           </div>`}
     </div>`;
   }
+
   // emit event on footer buton click
   private _handlefooterBtnEvent(e: any) {
     const event = new CustomEvent('on-footer-btn-click', {
@@ -68,6 +70,6 @@ export class NotificationPanel extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-notification-panel': NotificationPanel;
+    'kyn-header-notification-panel': HeaderNotificationPanel;
   }
 }

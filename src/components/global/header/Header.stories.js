@@ -24,7 +24,7 @@ export default {
     'kyn-header-flyouts': 'kyn-header-flyouts',
     'kyn-header-flyout': 'kyn-header-flyout',
     'kyn-header-user-profile': 'kyn-header-user-profile',
-    'kyn-notification-panel': 'kyn-notification-panel',
+    'kyn-header-notification-panel': 'kyn-header-notification-panel',
   },
   decorators: [
     (story) =>
@@ -201,7 +201,7 @@ export const WithNotificationPanel = {
       <kyn-header-flyout label="Notification" hideMenuLabel>
         <kd-icon slot="button" .icon=${filledNotificationIcon}></kd-icon>
         <!-- Notification panel inside <kyn-header-flyout></kyn-header-flyout> -->
-        <kyn-notification-panel
+        <kyn-header-notification-panel
           panelTitle=${notificationPanelArgs.panelTitle}
           panelFooterBtnText=${notificationPanelArgs.panelFooterBtnText}
           ?hidePanelFooter=${notificationPanelArgs.hidePanelFooter}
@@ -242,7 +242,7 @@ export const WithNotificationPanel = {
               </div>
             </kyn-notification>`
           )}
-        </kyn-notification-panel>
+        </kyn-header-notification-panel>
       </kyn-header-flyout>
 
       <kyn-header-flyout label="Menu Label">

@@ -9,3 +9,4 @@ export { HeaderUserProfile } from './headerUserProfile';
 export { HeaderAvatar } from './headerAvatar';
 export { HeaderPanel } from './headerPanel';
 export { HeaderPanelLink } from './headerPanelLink';
+export { HeaderNotificationPanel } from './headerNotificationPanel';

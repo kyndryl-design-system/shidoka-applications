@@ -10,6 +10,7 @@ export {
   HeaderAvatar,
   HeaderPanel,
   HeaderPanelLink,
+  HeaderNotificationPanel,
 } from './components/global/header';
 export { LocalNav, LocalNavLink } from './components/global/localNav';
 export { Footer, FooterNav, FooterNavLink } from './components/global/footer';
@@ -42,7 +43,4 @@ export { GlobalFilter } from './components/reusable/globalFilter';
 export { SideDrawer } from './components/reusable/sideDrawer';
 export { PageTitle } from './components/reusable/pagetitle';
 export { Card } from './components/reusable/card';
-export {
-  NotificationPanel,
-  Notification,
-} from './components/reusable/notification';
+export { Notification } from './components/reusable/notification';
