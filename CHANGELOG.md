@@ -1,3 +1,11 @@
+## [1.10.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.6...v1.10.7) (2024-03-30)
+
+
+### Bug Fixes
+
+* **header-link:** submenu always below header, resolves [#140](https://github.com/kyndryl-design-system/shidoka-applications/issues/140) ([fcee3fd](https://github.com/kyndryl-design-system/shidoka-applications/commit/fcee3fdcc5c50637c73327ff89cee08d30238c18))
+* **local-nav-link:** submenu always below header ([5c9ed50](https://github.com/kyndryl-design-system/shidoka-applications/commit/5c9ed50f2cf9436507e8d4783a5205b0ffb8833a))
+
 ## [1.10.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.5...v1.10.6) (2024-03-29)
 
 
