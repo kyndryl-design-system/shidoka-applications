@@ -221,6 +221,7 @@ export class LocalNavLink extends LitElement {
       ?.querySelector('.sub-menu')
       ?.getBoundingClientRect();
     const Padding = 8;
+    const HeaderHeight = 56;
 
     const LinkHalf = LinkBounds.top + LinkBounds.height / 2;
     const MenuHalf = MenuBounds.height / 2;
@@ -232,7 +233,7 @@ export class LocalNavLink extends LitElement {
     const Left = LinkBounds.right + Padding;
 
     this.menuPosition = {
-      top: Top,
+      top: Top < HeaderHeight ? HeaderHeight : Top,
       left: Left < 320 ? 320 : Left,
     };
   }
