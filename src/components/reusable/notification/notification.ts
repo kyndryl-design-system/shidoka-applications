@@ -57,6 +57,7 @@ export class Notification extends LitElement {
             type=${this.type}
             href=${this.href}
             target="_blank"
+            rel="noopener"
             @on-card-click=${(e: any) => this._handleCardClick(e)}
             hideBorder
             >${this.renderInnerUI()}</kd-card
