@@ -1,3 +1,11 @@
+## [1.12.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.12.0...v1.12.1) (2024-04-01)
+
+
+### Bug Fixes
+
+* **header-link:** allow any els in links slot ([a57b7db](https://github.com/kyndryl-design-system/shidoka-applications/commit/a57b7db641e5961f767ebe6b182d25d799cf7db6))
+* **header-link:** determineLevel adjustment ([dc7e1f4](https://github.com/kyndryl-design-system/shidoka-applications/commit/dc7e1f4c251b620c4bdcf6e886c574f9bb1944c0))
+
 # [1.12.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.11.1...v1.12.0) (2024-04-01)
 
 
