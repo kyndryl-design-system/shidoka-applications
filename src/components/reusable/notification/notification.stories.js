@@ -43,7 +43,6 @@ export const Default = {
     href: '#',
     type: 'normal',
     tagStatus: 'default',
-    tagLabel: '',
   },
   render: (args) => {
     return html`<kyn-notification

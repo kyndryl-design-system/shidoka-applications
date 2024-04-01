@@ -40,15 +40,25 @@ export class Notification extends LitElement {
   @property({ type: String })
   type = 'normal';
 
-  /** Notification tag label. Insert text of tag according to notification status type. (Requires `tagStatus` other than default) */
-  @property({ type: String })
-  tagLabel = '';
+  /** Customizable text strings. */
+  @property({ type: Object })
+  textStrings = {
+    success: 'Success',
+    warning: 'Warning',
+    info: 'Info',
+    error: 'Error',
+  };
 
   /** Set tagColor based on provided tagStatus.
-   * @ignore
+   * @internal
    */
   @state()
-  tagColor: any = '';
+  _tagColor = {
+    success: 'passed',
+    warning: 'warning',
+    info: 'cat01',
+    error: 'failed',
+  };
 
   override render() {
     return html`
@@ -73,9 +83,11 @@ export class Notification extends LitElement {
           <h1 class="notification-title">${this.notificationTitle}</h1>
 
           ${this.notificationSubtitle !== ''
-            ? html` <div class="notification-subtitle">
-                ${this.notificationSubtitle}
-              </div>`
+            ? html`
+                <div class="notification-subtitle">
+                  ${this.notificationSubtitle}
+                </div>
+              `
             : null}
         </div>
 
@@ -90,10 +102,10 @@ export class Notification extends LitElement {
 
       <div class="notification-content-wrapper">
         <div class="status-tag">
-          ${this.tagStatus !== 'default' && this.tagLabel !== ''
-            ? html`<kyn-tag
-                label=${this.tagLabel}
-                tagColor=${this.tagColor}
+          ${this.tagStatus !== 'default'
+            ? html` <kyn-tag
+                label=${this.textStrings[this.tagStatus]}
+                tagColor=${this._tagColor[this.tagStatus]}
                 shade="dark"
               ></kyn-tag>`
             : null}
@@ -103,28 +115,6 @@ export class Notification extends LitElement {
         </div>
       </div>
     </div>`;
-  }
-
-  override updated(changedProps: any) {
-    if (changedProps.has('tagStatus')) {
-      switch (this.tagStatus) {
-        case 'info':
-          this.tagColor = 'cat01';
-          break;
-        case 'warning':
-          this.tagColor = 'warning';
-          break;
-        case 'success':
-          this.tagColor = 'passed';
-          break;
-        case 'error':
-          this.tagColor = 'failed';
-          break;
-        default:
-          this.tagColor = '';
-          return;
-      }
-    }
   }
 
   private _handleCardClick(e: any) {
