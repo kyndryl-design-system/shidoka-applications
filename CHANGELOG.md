@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.11.0...v1.11.1) (2024-04-01)
+
+
+### Bug Fixes
+
+* **date-range-picker:** await update to validate inputs, resolves [#141](https://github.com/kyndryl-design-system/shidoka-applications/issues/141) ([9efdc7d](https://github.com/kyndryl-design-system/shidoka-applications/commit/9efdc7d01bdf6e3cc5fca75148b397b4bb65a04b))
+
 # [1.11.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.7...v1.11.0) (2024-04-01)
 
 
