@@ -6,9 +6,9 @@ import '@kyndryl-design-system/shidoka-foundation/components/card';
 import '../tag';
 
 /**
- * Notification
- * @slot action-slot - Slot for menu.
- * @slot notification-body-slot - Slot for notification message.
+ * Notification component.
+ * @slot unnamed - Slot for notification message body.
+ * @slot actions - Slot for menu.
  * @fires on-notification-click - Emit event for clickable notification.
  */
 
@@ -92,12 +92,12 @@ export class Notification extends LitElement {
         </div>
 
         <div>
-          <slot name="action-slot"></slot>
+          <slot name="actions"></slot>
         </div>
       </div>
 
       <div class="notification-description">
-        <slot name="notification-body-slot"></slot>
+        <slot></slot>
       </div>
 
       <div class="notification-content-wrapper">

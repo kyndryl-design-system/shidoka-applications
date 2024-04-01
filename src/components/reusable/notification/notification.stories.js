@@ -57,7 +57,7 @@ export const Default = {
       style="width:464px;"
     >
       <kyn-overflow-menu
-        slot="action-slot"
+        slot="actions"
         anchorRight
         @click=${(e) => {
           e.preventDefault();
@@ -68,7 +68,7 @@ export const Default = {
         <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
       </kyn-overflow-menu>
 
-      <div slot="notification-body-slot">${notificationBodyMsg}</div>
+      <div>${notificationBodyMsg}</div>
     </kyn-notification>`;
   },
 };
@@ -90,7 +90,7 @@ export const WithStatusTag = {
           style="width:464px;"
         >
           <kyn-overflow-menu
-            slot="action-slot"
+            slot="actions"
             anchorRight
             @click=${(e) => e.preventDefault()}
           >
@@ -98,7 +98,7 @@ export const WithStatusTag = {
             <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
           </kyn-overflow-menu>
 
-          <div slot="notification-body-slot">${notificationBodyMsg}</div>
+          <div>${notificationBodyMsg}</div>
         </kyn-notification>`;
       })}
     `;

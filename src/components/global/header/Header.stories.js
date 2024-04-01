@@ -61,23 +61,18 @@ const notificationPanelArgs = {
 const notificationTagStatusArr = [
   {
     tagStatus: 'info',
-    tagLabel: 'Info',
   },
   {
     tagStatus: 'warning',
-    tagLabel: 'Warning',
   },
   {
     tagStatus: 'success',
-    tagLabel: 'Success',
   },
   {
     tagStatus: 'error',
-    tagLabel: 'Error',
   },
   {
-    tagStatus: 'warning',
-    tagLabel: 'Warning',
+    tagStatus: 'default',
   },
 ];
 
@@ -217,30 +212,31 @@ export const WithNotificationPanel = {
 
           <!-- Notification component inside notification panel -->
           ${notificationTagStatusArr.map(
-            (ele) => html`<kyn-notification
-              notificationTitle="Notification Title"
-              notificationSubtitle="Application or Service"
-              timeStamp="2 mins ago"
-              href="#"
-              type="clickable"
-              tagStatus=${ele.tagStatus}
-              tagLabel=${ele.tagLabel}
-              @on-notification-click=${(e) => action(e.type)(e)}
-            >
-              <kyn-overflow-menu
-                slot="action-slot"
-                anchorRight
-                @click=${(e) => e.preventDefault()}
+            (ele) => html`
+              <kyn-notification
+                notificationTitle="Notification Title"
+                notificationSubtitle="Application or Service"
+                timeStamp="2 mins ago"
+                href="#"
+                type="clickable"
+                tagStatus=${ele.tagStatus}
+                @on-notification-click=${(e) => action(e.type)(e)}
               >
-                <kyn-overflow-menu-item>Mark as Read</kyn-overflow-menu-item>
-                <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
-              </kyn-overflow-menu>
+                <kyn-overflow-menu
+                  slot="actions"
+                  anchorRight
+                  @click=${(e) => e.preventDefault()}
+                >
+                  <kyn-overflow-menu-item>Mark as Read</kyn-overflow-menu-item>
+                  <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
+                </kyn-overflow-menu>
 
-              <div slot="notification-body-slot">
-                Message, this is an additional line Ipsum iMessage, Lorem Ipsum
-                is simply dummy and typesetting industry.
-              </div>
-            </kyn-notification>`
+                <div>
+                  Message, this is an additional line Ipsum iMessage, Lorem
+                  Ipsum is simply dummy and typesetting industry.
+                </div>
+              </kyn-notification>
+            `
           )}
         </kyn-header-notification-panel>
       </kyn-header-flyout>
