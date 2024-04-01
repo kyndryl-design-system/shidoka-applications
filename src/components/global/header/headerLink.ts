@@ -4,7 +4,6 @@ import {
   property,
   state,
   queryAssignedElements,
-  queryAll,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { debounce } from '../../../common/helpers/helpers';
@@ -221,12 +220,18 @@ export class HeaderLink extends LitElement {
   }
 
   private determineLevel() {
-    const parentTagName = this.shadowRoot!.host.parentNode!.nodeName;
+    const ParentNode: any = this.shadowRoot?.host.parentNode;
 
-    if (parentTagName === 'KYN-HEADER-LINK') {
+    if (
+      ParentNode.nodeName === 'KYN-HEADER-LINK' ||
+      ParentNode.slot === 'links'
+    ) {
       this.level = 2;
     } else {
-      if (window.innerWidth < 672 && parentTagName === 'KYN-HEADER-FLYOUT') {
+      if (
+        window.innerWidth < 672 &&
+        ParentNode.nodeName === 'KYN-HEADER-FLYOUT'
+      ) {
         this.level = 2;
       } else {
         this.level = 1;
