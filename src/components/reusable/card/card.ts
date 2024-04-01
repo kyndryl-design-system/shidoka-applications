@@ -5,7 +5,8 @@ import { classMap } from 'lit/directives/class-map.js';
 import CardScss from './card.scss';
 
 /**
- * Card.
+ * DEPRECATED. `kyn-card` Web Component.
+ * This is deprecated and moved to Foundation.
  * @fires on-card-click - Captures the click event of clickable card and emits the original event details. Use `e.stopPropogation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event.
  * @slot unnamed - Slot for card contents.
  */

@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import NotificationScss from './notification.scss';
-import '../card';
+import '@kyndryl-design-system/shidoka-foundation/components/card';
 import '../tag';
 
 /**
@@ -53,15 +53,15 @@ export class Notification extends LitElement {
   override render() {
     return html`
       ${this.type === 'clickable'
-        ? html`<kyn-card
+        ? html`<kd-card
             type=${this.type}
             href=${this.href}
             target="_blank"
             @on-card-click=${(e: any) => this._handleCardClick(e)}
             hideBorder
-            >${this.renderInnerUI()}</kyn-card
+            >${this.renderInnerUI()}</kd-card
           >`
-        : html`<kyn-card type=${this.type}>${this.renderInnerUI()}</kyn-card>`}
+        : html`<kd-card type=${this.type}>${this.renderInnerUI()}</kd-card>`}
     `;
   }
 

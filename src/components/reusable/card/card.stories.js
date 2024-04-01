@@ -6,7 +6,7 @@ import './card.sample';
 import './card.content.sample';
 
 export default {
-  title: 'Components/Card',
+  title: 'Components/Card - Deprecated',
   component: 'kyn-card',
   argTypes: {
     type: {
