@@ -7,13 +7,6 @@ import '../overflowMenu';
 const notificationBodyMsg =
   'Message, this is an additional line Ipsum iMessage, Lorem Ipsum is simply dummy and typesetting industry.';
 
-const notificationTagArr = [
-  { tagStatus: 'info', tagLabel: 'Info' },
-  { tagStatus: 'warning', tagLabel: 'Warning' },
-  { tagStatus: 'success', tagLabel: 'Success' },
-  { tagStatus: 'error', tagLabel: 'Error' },
-];
-
 export default {
   title: 'Components/Notification',
   component: 'kyn-notification',
@@ -35,7 +28,7 @@ export default {
   },
 };
 
-export const Default = {
+export const Notification = {
   args: {
     notificationTitle: 'Notification Title',
     notificationSubtitle: '',
@@ -52,7 +45,6 @@ export const Default = {
       href=${args.href}
       type=${args.type}
       tagStatus=${args.tagStatus}
-      tagLabel=${args.tagLabel}
       @on-notification-click=${(e) => action(e.type)(e)}
       style="width:464px;"
     >
@@ -70,37 +62,5 @@ export const Default = {
 
       <div>${notificationBodyMsg}</div>
     </kyn-notification>`;
-  },
-};
-
-export const WithStatusTag = {
-  args: { ...Default.args, notificationSubtitle: 'Application or Service' },
-  render: (args) => {
-    return html`
-      ${notificationTagArr.map((ele) => {
-        return html`<kyn-notification
-          notificationTitle=${args.notificationTitle}
-          notificationSubtitle=${args.notificationSubtitle}
-          timeStamp=${args.timeStamp}
-          href=${args.href}
-          type=${args.type}
-          tagStatus=${ele.tagStatus}
-          tagLabel=${ele.tagLabel}
-          @on-notification-click=${(e) => action(e.type)(e)}
-          style="width:464px;"
-        >
-          <kyn-overflow-menu
-            slot="actions"
-            anchorRight
-            @click=${(e) => e.preventDefault()}
-          >
-            <kyn-overflow-menu-item>Mark as Read</kyn-overflow-menu-item>
-            <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
-          </kyn-overflow-menu>
-
-          <div>${notificationBodyMsg}</div>
-        </kyn-notification>`;
-      })}
-    `;
   },
 };
