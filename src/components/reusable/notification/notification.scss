@@ -1,0 +1,58 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+  width: 100%;
+  kd-card {
+    width: 100%;
+    margin-top: 8px;
+  }
+}
+
+.notification {
+  &-title-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &-title {
+    @include typography.type-body-02;
+    font-weight: 500;
+    color: var(--kd-color-text-primary);
+    margin: 0;
+  }
+  &-subtitle {
+    @include typography.type-ui-02;
+    color: var(--kd-color-text-secondary);
+  }
+
+  &-content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+  }
+}
+
+.notification-description ::slotted(*) {
+  @include typography.type-ui-02;
+  color: var(--kd-color-text-primary);
+  padding-top: 10px;
+}
+
+.timestamp {
+  &-wrapper {
+    display: inline-flex;
+    justify-content: flex-end;
+    flex: 1;
+    margin-left: 8px;
+  }
+  &-text {
+    @include typography.type-ui-03;
+    color: var(--kd-color-text-primary);
+    font-weight: 500;
+  }
+}

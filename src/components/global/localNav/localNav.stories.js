@@ -28,7 +28,7 @@ export default {
 };
 
 export const LocalNav = {
-  render: (args) => html`
+  render: () => html`
     <kyn-local-nav>
       <kyn-local-nav-link href="javascript:void(0)" active>
         <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>

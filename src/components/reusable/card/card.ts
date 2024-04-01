@@ -1,10 +1,12 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import CardScss from './card.scss';
 
 /**
- * Card.
+ * DEPRECATED. `kyn-card` Web Component.
+ * This is deprecated and moved to Foundation.
  * @fires on-card-click - Captures the click event of clickable card and emits the original event details. Use `e.stopPropogation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event.
  * @slot unnamed - Slot for card contents.
  */
@@ -29,10 +31,19 @@ export class Card extends LitElement {
   @property({ type: String })
   target = '_self';
 
+  /** Hide card border. Useful when clickable card use inside `<kyn-notification>` component. */
+  @property({ type: Boolean })
+  hideBorder = false;
+
   override render() {
+    const cardWrapperClasses = {
+      'card-wrapper-clickable': true,
+      'card-border': this.hideBorder === false,
+    };
+
     return html`${this.type === 'clickable'
       ? html`<a
-          class="card-wrapper-clickable"
+          class="${classMap(cardWrapperClasses)}"
           href=${this.href}
           target=${this.target}
           rel=${this.rel}

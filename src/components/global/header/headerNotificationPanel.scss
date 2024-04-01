@@ -1,0 +1,65 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+.panel {
+  &-wrapper {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: calc(100vh - var(--kd-header-height) - 48px - 16px - 4px);
+    /* 48px = mobile back button+, 16px = flyout top/bottom padding, 4px = flyout bottom border */
+
+    @media (min-width: 42rem) {
+      width: 480px;
+      max-height: calc(80vh - var(--kd-header-height) - 16px - 4px);
+    }
+  }
+  &-header-wrapper {
+    // padding: 8px 8px 0px 8px;
+    padding-top: 8px;
+  }
+  &-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &-header-text {
+    @include typography.type-ui-02;
+    font-weight: 500;
+    color: var(--kd-color-background-ui-strong);
+    margin: 0;
+  }
+  &-left {
+    padding: 12px 16px 12px 8px;
+  }
+  &-left-slot {
+    display: inline-flex;
+    align-items: center;
+  }
+  &-divider {
+    margin: 0;
+    height: 0px;
+    border: 1px solid transparent;
+    border-bottom-color: var(--kd-color-background-ui-subtle);
+    padding-top: 8px;
+  }
+  &-body {
+    flex-grow: 1;
+    //padding: 8px;
+    padding: 8px 2px 8px 2px;
+    /* for panel scroll we need atleast 2px at left and right side */
+    overflow-y: auto;
+  }
+  &-footer {
+    text-align: center;
+    // padding: 12px 8px 4px 8px;
+    padding: 12px 0px 4px 0px;
+  }
+}

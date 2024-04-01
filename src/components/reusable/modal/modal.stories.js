@@ -5,9 +5,6 @@ import { action } from '@storybook/addon-actions';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import printIcon from '@carbon/icons/es/printer/20';
-import downloadIcon from '@carbon/icons/es/download/20';
-
 export default {
   title: 'Components/Modal',
   component: 'kyn-modal',
