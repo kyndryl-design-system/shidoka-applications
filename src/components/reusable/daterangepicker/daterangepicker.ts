@@ -212,17 +212,19 @@ export class DateRangePicker extends LitElement {
   }
 
   // on-change start date
-  private handleStartDate(e: any) {
+  private async handleStartDate(e: any) {
     this.startDate = e.target.value;
 
+    await this.updateComplete;
     this._validate(true, false);
     this._emitValue(e);
   }
 
   // on-change end date
-  private handleEndDate(e: any) {
+  private async handleEndDate(e: any) {
     this.endDate = e.target.value;
 
+    await this.updateComplete;
     this._validate(true, false);
     this._emitValue(e);
   }
