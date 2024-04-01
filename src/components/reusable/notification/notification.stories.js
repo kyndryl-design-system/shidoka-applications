@@ -60,7 +60,10 @@ export const Default = {
       <kyn-overflow-menu
         slot="action-slot"
         anchorRight
-        @click=${(e) => e.stopPropagation()}
+        @click=${(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
       >
         <kyn-overflow-menu-item>Mark as Read</kyn-overflow-menu-item>
         <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
