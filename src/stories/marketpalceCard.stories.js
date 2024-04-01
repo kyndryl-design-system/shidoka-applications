@@ -24,15 +24,35 @@ export const Simple = {
           </div>
         </sample-card-story-component>
       </kd-card>
+
+      <br /><br />
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/blob/main/src/stories/sampleCardComponents/card.sample.ts"
+        target="_blank"
+        rel="noopener"
+      >
+        See the full example component code here.
+      </a>
     `;
   },
 };
 
 export const WithOtherContents = {
   render: () => {
-    return html`<kd-card type="normal" href="" target="" rel="">
-      <sample-card-story-content-component></sample-card-story-content-component>
-    </kd-card>`;
+    return html`
+      <kd-card type="normal" href="" target="" rel="">
+        <sample-card-story-content-component></sample-card-story-content-component>
+      </kd-card>
+
+      <br /><br />
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/blob/main/src/stories/sampleCardComponents/card.content.sample.ts"
+        target="_blank"
+        rel="noopener"
+      >
+        See the full example component code here.
+      </a>
+    `;
   },
 };
 
@@ -55,6 +75,15 @@ export const Clickable = {
           </div>
         </sample-card-story-component>
       </kd-card>
+
+      <br /><br />
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/blob/main/src/stories/sampleCardComponents/card.sample.ts"
+        target="_blank"
+        rel="noopener"
+      >
+        See the full example component code here.
+      </a>
     `;
   },
 };
@@ -65,14 +94,14 @@ export const InsideGrid = {
       <div class="kd-grid">
         <div class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-3">
           <kd-card style="width:100%;height:100%;">
-            <sample-card--story-component>
+            <sample-card-story-component>
               <div slot="title">This is a card title</div>
               <div slot="description">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
                 enim ad minim veniam, quis nostrud exercitation ullamco laboris.
               </div>
-            </sample-card--story-component>
+            </sample-card-story-component>
           </kd-card>
         </div>
         <div class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-3">
@@ -116,6 +145,15 @@ export const InsideGrid = {
           </kd-card>
         </div>
       </div>
+
+      <br /><br />
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/blob/main/src/stories/sampleCardComponents/card.sample.ts"
+        target="_blank"
+        rel="noopener"
+      >
+        See the full example component code here.
+      </a>
     `;
   },
 };
