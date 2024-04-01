@@ -1,12 +1,13 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import maleIcon from '@carbon/icons/es/gender--male/16';
 import femaleIcon from '@carbon/icons/es/gender--female/16';
 import './action-menu';
-import { repeat } from 'lit/directives/repeat.js';
+import '../../pagination';
 
 import {
   sortById,
@@ -14,6 +15,7 @@ import {
   sortByDate,
   sortByFName,
   sortByLName,
+  extractData,
 } from './ultils';
 
 import '../index';
@@ -63,6 +65,51 @@ class MyStoryTable extends LitElement {
 
   @property({ type: String, reflect: true })
   tableTitle = 'Table Title';
+
+  @property({ type: Boolean })
+  showPagination = false;
+
+  @property({ type: Number })
+  pageSize: 5;
+
+  @property({ type: Number })
+  pageNumber: 0;
+
+  @property({ type: Array })
+  pageSizeOptions: [5, 10];
+
+  /** Option to hide the items range display. */
+  @property({ type: Boolean })
+  hideItemsRange = false;
+
+  /** Option to hide the page size dropdown. */
+  @property({ type: Boolean })
+  hidePageSizeDropdown = false;
+
+  /** Option to hide the navigation buttons. */
+  @property({ type: Boolean })
+  hideNavigationButtons = false;
+
+  /**
+   * Handles the change of page size in pagination.
+   */
+  async onPageSizeChange(event: CustomEvent) {
+    this.pageSize = Number(event.detail.value);
+    this.pageNumber = 1;
+    await this.updateComplete;
+
+    this.kynTable?.updateAfterExternalChanges()
+  }
+
+  /**
+   * Handles the change of page number in pagination.
+   */
+  async onPageNumberChange(event: CustomEvent) {
+    this.pageNumber = event.detail.value;
+
+    await this.updateComplete;
+    this.kynTable?.updateAfterExternalChanges()
+  }
 
   handleSortByIdNumber(e: CustomEvent) {
     const { sortDirection } = e.detail;
@@ -141,9 +188,16 @@ class MyStoryTable extends LitElement {
       fixedLayout,
       stickyHeader,
       checkboxSelection,
+      pageSize,
+      pageNumber,
+      pageSizeOptions,
     } = this;
-    const fNameMaxWidth = this.ellipsis ? '100px' : 'auto';
 
+    const currentRows = this.showPagination
+      ? extractData(rows, pageNumber, pageSize)
+      : rows;
+
+    const fNameMaxWidth = this.ellipsis ? '100px' : 'auto';
     const tableTitle =
       selectedRows.length > 0
         ? selectedRows.length === 1
@@ -213,7 +267,7 @@ class MyStoryTable extends LitElement {
           </kyn-thead>
           <kyn-tbody>
             ${repeat(
-              rows,
+              currentRows,
               (row: any) => row.id,
               (row: any) => html`
                 <kyn-tr .rowId=${row.id} key="row-${row.id}">
@@ -241,6 +295,19 @@ class MyStoryTable extends LitElement {
           </kyn-tbody>
         </kyn-table>
       </kyn-table-container>
+      ${this.showPagination
+        ? html` <kyn-pagination
+            .count=${rows.length}
+            .pageSize=${pageSize}
+            .pageNumber=${pageNumber}
+            .pageSizeOptions=${pageSizeOptions}
+            .hideItemsRange=${this.hideItemsRange}
+            .hidePageSizeDropdown=${this.hidePageSizeDropdown}
+            .hideNavigationButtons=${this.hideNavigationButtons}
+            @on-page-size-change=${this.onPageSizeChange}
+            @on-page-number-change=${this.onPageNumberChange}
+          ></kyn-pagination>`
+        : null}
     </div>`;
   }
 }

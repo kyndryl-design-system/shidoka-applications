@@ -43,11 +43,16 @@ type Story = StoryObj;
  * @returns {import("lit").TemplateResult} Rendered table
  */
 const tableRenderer = (args: any, params: any) => {
-  const { title, rows } = params;
+  const { title, rows, showPagination } = params;
+  const { pageSize, pageNumber, pageSizeOptions } = args;
 
   return html` <story-table
     .tableTitle=${title}
     .rows=${rows}
+    .pageSize=${pageSize}
+    .pageNumber=${pageNumber}
+    .pageSizeOptions=${pageSizeOptions}
+    .showPagination=${showPagination}
     ?showTableActions=${args.showTableActions}
     ?dense=${args.dense}
     ?ellipsis=${args.ellipsis}
@@ -60,12 +65,25 @@ const tableRenderer = (args: any, params: any) => {
   </story-table>`;
 };
 
+const parameters = {
+  docs: {
+    source: {
+      code: `
+      // For guidance on how to construct this code, please refer to the 'table-story.ts' file.
+      // You can find it at the following path:
+      // https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/table/story-helpers/table-story.ts
+      `,
+    },
+  },
+};
+
 export const Basic: Story = {
   args: {},
   render: (args) => {
     const rows = allData.slice(0, 5);
     return tableRenderer(args, { title: 'Basic', rows });
   },
+  parameters,
 };
 
 export const Sorting: Story = {
@@ -76,6 +94,7 @@ export const Sorting: Story = {
     const rows = allData.slice(0, 5);
     return tableRenderer(args, { title: 'Sorting', rows });
   },
+  parameters
 };
 
 export const Selection: Story = {
@@ -86,6 +105,7 @@ export const Selection: Story = {
     const rows = allData.slice(0, 5);
     return tableRenderer(args, { title: 'Selection', rows });
   },
+  parameters
 };
 
 export const BatchActions: Story = {
@@ -97,6 +117,24 @@ export const BatchActions: Story = {
     const rows = allData.slice(0, 5);
     return tableRenderer(args, { title: 'Batch Actions', rows });
   },
+  parameters
+};
+
+export const Pagination: Story = {
+  args: {
+    pageSize: 5,
+    pageNumber: 1,
+    pageSizeOptions: [5, 10, 20, 30, 40, 50, 100],
+  },
+  render: (args) => {
+    const rows = allData;
+    return tableRenderer(args, {
+      title: 'Pagination',
+      rows,
+      showPagination: true,
+    });
+  },
+  parameters
 };
 
 export const StickyHeader: Story = {
@@ -107,6 +145,7 @@ export const StickyHeader: Story = {
     const rows = allData;
     return tableRenderer(args, { title: 'Sticky Header', rows });
   },
+  parameters
 };
 
 export const StripedRows: Story = {
@@ -117,6 +156,7 @@ export const StripedRows: Story = {
     const rows = allData.slice(0, 5);
     return tableRenderer(args, { title: 'Striped Rows', rows });
   },
+  parameters
 };
 
 export const Dense: Story = {
@@ -127,6 +167,7 @@ export const Dense: Story = {
     const rows = allData.slice(0, 5);
     return tableRenderer(args, { title: 'Dense', rows });
   },
+  parameters
 };
 
 export const Ellipsis: Story = {
@@ -142,6 +183,7 @@ export const Ellipsis: Story = {
     });
     return tableRenderer(args, { title: 'Ellipsis', rows });
   },
+  parameters
 };
 
 export const FixedLayout: Story = {
@@ -152,4 +194,5 @@ export const FixedLayout: Story = {
     const rows = allData.slice(0, 5);
     return tableRenderer(args, { title: 'Fixed Layout', rows });
   },
+  parameters
 };

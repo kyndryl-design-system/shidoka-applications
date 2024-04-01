@@ -170,3 +170,10 @@ export const sortByDate = (sortDirection: SORT_DIRECTION) => {
     }
   };
 };
+
+
+export const extractData = (dataTable: any, pageNumber: number, pageSize: number) => {
+  const start = (pageNumber - 1) * pageSize;
+  const end = start + pageSize;
+  return dataTable.slice(start, end);
+};
