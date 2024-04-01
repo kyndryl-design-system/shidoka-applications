@@ -108,7 +108,7 @@ export class Notification extends LitElement {
     if (changedProps.has('tagStatus')) {
       switch (this.tagStatus) {
         case 'info':
-          this.tagColor = 'spruce';
+          this.tagColor = 'cat01';
           break;
         case 'warning':
           this.tagColor = 'warning';
