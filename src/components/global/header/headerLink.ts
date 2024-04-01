@@ -4,6 +4,7 @@ import {
   property,
   state,
   queryAssignedElements,
+  queryAll,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { debounce } from '../../../common/helpers/helpers';
@@ -65,8 +66,8 @@ export class HeaderLink extends LitElement {
    * Queries any slotted HTML elements.
    * @ignore
    */
-  @queryAssignedElements({ slot: 'links', selector: 'kyn-header-link' })
-  slottedLinks!: Array<HTMLElement>;
+  @queryAssignedElements({ slot: 'links' })
+  slottedEls!: Array<HTMLElement>;
 
   /** Timeout function to delay modal close.
    * @internal
@@ -82,7 +83,7 @@ export class HeaderLink extends LitElement {
 
   override render() {
     const classes = {
-      menu: this.slottedLinks.length,
+      menu: this.slottedEls.length,
       'level--1': this.level == 1,
       'level--2': this.level == 2,
       divider: this.divider,
@@ -97,8 +98,10 @@ export class HeaderLink extends LitElement {
 
     const menuClasses = {
       menu__content: true,
-      slotted: this.slottedLinks.length,
+      slotted: this.slottedEls.length,
     };
+
+    const Links = this.querySelectorAll('kyn-header-link');
 
     return html`
       <div
@@ -116,7 +119,7 @@ export class HeaderLink extends LitElement {
         >
           <slot></slot>
 
-          ${this.slottedLinks.length
+          ${this.slottedEls.length
             ? html` <kd-icon class="arrow" .icon=${arrowIcon}></kd-icon> `
             : null}
         </a>
@@ -130,7 +133,7 @@ export class HeaderLink extends LitElement {
             ${this.backText}
           </button>
 
-          ${this.slottedLinks.length > 5
+          ${Links.length > 5
             ? html`
                 <kyn-text-input
                   hideLabel
@@ -150,8 +153,9 @@ export class HeaderLink extends LitElement {
 
   private _handleSearch(e: any) {
     const SearchTerm = e.detail.value.toLowerCase();
+    const Links: any = this.querySelectorAll('kyn-header-link');
 
-    this.slottedLinks.forEach((link) => {
+    Links.forEach((link: any) => {
       // get link text
       const nodes: any = link.shadowRoot?.querySelector('slot')?.assignedNodes({
         flatten: true,
@@ -198,7 +202,7 @@ export class HeaderLink extends LitElement {
   private handleClick(e: Event) {
     let preventDefault = false;
 
-    if (this.slottedLinks.length) {
+    if (this.slottedEls.length) {
       preventDefault = true;
       e.preventDefault();
       this.open = !this.open;
