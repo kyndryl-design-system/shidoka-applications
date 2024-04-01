@@ -70,13 +70,13 @@ class MyStoryTable extends LitElement {
   showPagination = false;
 
   @property({ type: Number })
-  pageSize: 5;
+  pageSize = 5;
 
   @property({ type: Number })
-  pageNumber: 0;
+  pageNumber = 0;
 
   @property({ type: Array })
-  pageSizeOptions: [5, 10];
+  pageSizeOptions = [5, 10];
 
   /** Option to hide the items range display. */
   @property({ type: Boolean })
