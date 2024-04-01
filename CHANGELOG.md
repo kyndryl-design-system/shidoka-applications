@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.7...v1.11.0) (2024-04-01)
+
+
+### Features
+
+* **table:** refactor table component for conditional rendering ([#137](https://github.com/kyndryl-design-system/shidoka-applications/issues/137)) ([d3b98a6](https://github.com/kyndryl-design-system/shidoka-applications/commit/d3b98a657d9852dc2cb4c687ec92347079b59c00))
+
 ## [1.10.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.10.6...v1.10.7) (2024-03-30)
 
 
