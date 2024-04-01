@@ -225,7 +225,10 @@ export const WithNotificationPanel = {
                 <kyn-overflow-menu
                   slot="actions"
                   anchorRight
-                  @click=${(e) => e.preventDefault()}
+                  @click=${(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
                 >
                   <kyn-overflow-menu-item>Mark as Read</kyn-overflow-menu-item>
                   <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
