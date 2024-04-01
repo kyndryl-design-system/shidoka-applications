@@ -3,7 +3,10 @@ import {
   customElement,
   property,
   queryAssignedElements,
+  state,
 } from 'lit/decorators.js';
+import { ContextConsumer } from '@lit/context';
+import { tableContext, TableContextType } from './table-context';
 
 import styles from './table-head.scss';
 
@@ -13,14 +16,42 @@ import styles from './table-head.scss';
  * Represents a custom table head (`<thead>`) for Shidoka's design system tables.
  * Designed to contain and style table header rows (`<tr>`) and header cells (`<th>`).
  *
- * @slot unnamed - The content slot for adding table header rows (`<kyn-tr>`).
+ * @slot unnamed - The content slot for adding table header rows (`<kyn-header-tr>`).
  */
 @customElement('kyn-thead')
 export class TableHead extends LitElement {
   static override styles = [styles];
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   stickyHeader = false;
+
+  /**
+   * Context consumer for the table context.
+   * Updates the cell's dense and ellipsis properties when the context changes.
+   * @private
+   * @ignore
+   * @type {ContextConsumer<TableContextType, TableCell>}
+   */
+  @state()
+  // @ts-expect-error - This is a context consumer
+  private _contextConsumer = new ContextConsumer(
+    this,
+    tableContext,
+    (context) => {
+      if (context) this.handleContextChange(context);
+    },
+    true
+  );
+
+  /**
+   * Update the stickyHeader property when the context changes.
+   * @param {TableContextType} context - The updated context.
+   */
+  handleContextChange = ({ stickyHeader }: TableContextType) => {
+    if (typeof stickyHeader == 'boolean') {
+      this.stickyHeader = stickyHeader;
+    }
+  };
 
   /**
    * @ignore

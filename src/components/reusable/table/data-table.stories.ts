@@ -19,7 +19,7 @@ import './story-helpers/batch-actions';
 import { SORT_DIRECTION } from './defs';
 
 const meta: Meta = {
-  title: 'Components/Data Table',
+  title: 'Components/DataTable - Deprecated',
   component: 'kyn-data-table',
   argTypes: {
     checkboxSelection: { control: 'boolean', table: { position: 1 } },
@@ -430,9 +430,9 @@ const tableRenderer = (
     >
       deprecated due to a critical issue
     </a>
-    . Please do not use it going forward. Instead, use the individual table
+    . Please do not use it going forward. Instead, use the new Data Table
     components found in the
-    <a href="/?path=/story/components-data-table--basic-table">Basic Table</a>
+    <a href="/?path=/docs/components-datatable--docs">Data Table</a>
     example.
     <div style=${args.stickyHeader ? 'height: 400px' : ''}>
       <kyn-table-toolbar tableTitle=${tableTitle}>

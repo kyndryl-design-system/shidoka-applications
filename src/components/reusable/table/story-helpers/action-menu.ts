@@ -24,6 +24,12 @@ export class ActionMenu extends LitElement {
   }
 
   deleteHandler = (itemId: number, e: any) => {
+    this.dispatchEvent(
+      new CustomEvent('on-delete', {
+        bubbles: true,
+        composed: true,
+      })
+    );
     e.detail.origEvent.stopPropagation();
     this.handleDelete(itemId);
     this.toggleMenu();

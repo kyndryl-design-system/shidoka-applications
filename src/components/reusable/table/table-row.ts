@@ -1,7 +1,10 @@
 import { html, LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
+import { ContextConsumer } from '@lit/context';
+import { tableContext, TableContextType } from './table-context';
 
 import styles from './table-row.scss';
+import '../checkbox/checkbox';
 
 /**
  * `kyn-tr` Web Component.
@@ -15,38 +18,92 @@ import styles from './table-row.scss';
 export class TableRow extends LitElement {
   static override styles = [styles];
 
+  /**
+   * rowId: String - Unique identifier for the row.
+   */
+  @property({ type: String, reflect: true })
+  rowId = '';
+
+  /**
+   * selected: Boolean indicating whether the row is selected.
+   * Reflects the `selected` attribute.
+   */
   @property({ type: Boolean, reflect: true })
   selected = false;
 
-  // @property({ type: Boolean, reflect: true })
-  // disabled = false;
-
+  /**
+   * checkboxSelection: Boolean indicating whether rows should be
+   * selectable using checkboxes.
+   */
   @property({ type: Boolean, reflect: true })
-  clickable = false;
+  checkboxSelection = false;
 
-  @property({ type: Boolean, reflect: true })
-  expanded = false;
+  /**
+   * dense: Boolean indicating whether the table should be displayed
+   * in dense mode.
+   */
+  @property({ type: Boolean })
+  dense = false;
 
-  override connectedCallback() {
-    super.connectedCallback();
-    this.addEventListener('click', this.handleClick as EventListener);
-  }
 
-  override disconnectedCallback() {
-    super.disconnectedCallback();
-    this.removeEventListener('click', this.handleClick as EventListener);
-  }
 
-  handleClick() {
-    const event = new CustomEvent('on-row-clicked', {
-      bubbles: true,
-      composed: true,
-    });
-    this.dispatchEvent(event);
+  /**
+   * Context consumer for the table context.
+   * Updates the cell's dense and ellipsis properties when the context changes.
+   * @private
+   * @ignore
+   * @type {ContextConsumer<TableContextType, TableHeader>}
+   */
+  @state()
+  // @ts-expect-error - This is a context consumer
+  private _contextConsumer = new ContextConsumer(
+    this,
+    tableContext,
+    (context) => {
+      if (context) this.handleContextChange(context);
+    },
+    true
+  );
+
+  /**
+   * Updates the cell's dense and ellipsis properties when the context changes.
+   * @param {TableContextType} context - The updated context.
+   */
+  handleContextChange = ({ checkboxSelection }: TableContextType) => {
+    if (typeof checkboxSelection == 'boolean') {
+      this.checkboxSelection = checkboxSelection;
+    }
+
+  };
+
+  /**
+   * Handles the change of selection state for a specific row.
+   */
+  handleRowSelectionChange(event: CustomEvent) {
+    this.selected = event.detail.checked;
+    // Emit the custom event with the selected row and its new state
+    this.dispatchEvent(
+      new CustomEvent('on-row-select', {
+        detail: event.detail,
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   override render() {
-    return html` <slot></slot> `;
+    return html`
+      ${this.checkboxSelection
+        ? html`<kyn-td .align=${'center'} ?dense=${this.dense}
+            ><kyn-checkbox
+              .checked=${this.selected}
+              visiblyHidden
+              @on-checkbox-change=${this.handleRowSelectionChange}
+            ></kyn-checkbox
+          ></kyn-td>`
+        : null}
+      <slot></slot>
+    `;
   }
 }
 
