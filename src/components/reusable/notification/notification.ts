@@ -42,7 +42,7 @@ export class Notification extends LitElement {
 
   /** Customizable text strings. */
   @property({ type: Object })
-  textStrings = {
+  textStrings: any = {
     success: 'Success',
     warning: 'Warning',
     info: 'Info',
@@ -53,7 +53,7 @@ export class Notification extends LitElement {
    * @internal
    */
   @state()
-  _tagColor = {
+  _tagColor: any = {
     success: 'passed',
     warning: 'warning',
     info: 'cat01',
