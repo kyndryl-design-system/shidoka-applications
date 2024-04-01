@@ -1,7 +1,15 @@
 import { html, LitElement } from 'lit';
-import { customElement, property, queryAssignedNodes } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  queryAssignedNodes,
+  state,
+} from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
+import { ContextConsumer } from '@lit/context';
+import { tableContext, TableContextType } from './table-context';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import arrowUpIcon from '@carbon/icons/es/arrow--up/16';
@@ -22,8 +30,44 @@ import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
 export class TableHeader extends LitElement {
   static override styles = [styles];
 
-  @property({ type: Boolean })
+  /** Determines if the cell should have a denser layout. */
+  @property({ type: Boolean, reflect: true })
   dense = false;
+
+  /** Truncates the cell's contents with ellipsis. */
+  @property({ type: Boolean, reflect: true })
+  ellipsis = false;
+
+  /**
+   * Context consumer for the table context.
+   * Updates the cell's dense and ellipsis properties when the context changes.
+   * @private
+   * @ignore
+   * @type {ContextConsumer<TableContextType, TableHeader>}
+   */
+  @state()
+  // @ts-expect-error - This is a context consumer
+  private _contextConsumer = new ContextConsumer(
+    this,
+    tableContext,
+    (context) => {
+      if (context) this.handleContextChange(context);
+    },
+    true
+  );
+
+  /**
+   * Updates the cell's dense and ellipsis properties when the context changes.
+   * @param {TableContextType} context - The updated context.
+   */
+  handleContextChange = ({ dense, ellipsis }: TableContextType) => {
+    if (typeof dense == 'boolean') {
+      this.dense = dense;
+    }
+    if (typeof ellipsis == 'boolean') {
+      this.ellipsis = ellipsis;
+    }
+  };
 
   /**
    * Specifies the alignment of the content within the table header.

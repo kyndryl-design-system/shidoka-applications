@@ -1,9 +1,11 @@
-import { html, LitElement, PropertyValues} from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { html, LitElement, PropertyValues } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { ContextConsumer } from '@lit/context';
+import { tableContext, TableContextType } from './table-context';
 
 import styles from './table-cell.scss';
 
-import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
+import { TABLE_CELL_ALIGN } from './defs';
 
 /**
  * `kyn-td` Web Component.
@@ -18,34 +20,61 @@ import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
 export class TableCell extends LitElement {
   static override styles = [styles];
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   dense = false;
 
   /** Determines the text alignment of the table cell's content. */
   @property({ type: String, reflect: true })
   align: TABLE_CELL_ALIGN = TABLE_CELL_ALIGN.LEFT;
 
-  /** Reflects the sort direction when used within sortable columns. */
-  @property({ type: String })
-  sortDirection: SORT_DIRECTION = SORT_DIRECTION.ASC;
-
   /**
    * Sets a fixed width for the cell.
    * Accepts standard CSS width values (e.g., '150px', '50%').
    */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   width = '';
 
   /**
    * Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.
    * Accepts standard CSS width values (e.g., '150px', '50%').
    */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   maxWidth = '';
 
   /** Truncates the cell's contents with ellipsis. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   ellipsis = false;
+
+  /**
+   * Context consumer for the table context.
+   * Updates the cell's dense and ellipsis properties when the context changes.
+   * @private
+   * @ignore
+   * @type {ContextConsumer<TableContextType, TableCell>}
+   */
+  @state()
+  // @ts-expect-error - This is a context consumer
+  private _contextConsumer = new ContextConsumer(
+    this,
+    tableContext,
+    (context) => {
+      if (context) this.handleContextChange(context);
+    },
+    true
+  );
+
+  /**
+   * Updates the cell's dense and ellipsis properties when the context changes.
+   * @param {TableContextType} context - The updated context.
+   */
+  handleContextChange = ({ dense, ellipsis }: TableContextType) => {
+    if (typeof dense == 'boolean') {
+      this.dense = dense;
+    }
+    if (typeof ellipsis == 'boolean') {
+      this.ellipsis = ellipsis;
+    }
+  };
 
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);

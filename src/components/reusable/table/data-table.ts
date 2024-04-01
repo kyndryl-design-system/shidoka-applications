@@ -8,6 +8,7 @@ import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import '../checkbox/checkbox';
+import '../pagination'
 import './index';
 import styles from './data-table.scss';
 
@@ -241,7 +242,11 @@ export class DataTable extends LitElement {
 
     return html`
       <kyn-table-container>
-        <kyn-table ?fixedLayout=${this.fixedLayout}>
+        <kyn-table
+          ?fixedLayout=${this.fixedLayout}
+          ?stickyHeader=${this.stickyHeader}
+          ?
+        >
           <kyn-thead ?stickyHeader=${this.stickyHeader}>
             <kyn-tr>
               ${this.checkboxSelection

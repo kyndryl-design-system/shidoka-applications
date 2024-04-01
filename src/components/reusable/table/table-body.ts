@@ -1,5 +1,7 @@
 import { html, LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
+import { ContextConsumer } from '@lit/context';
+import { tableContext, TableContextType } from './table-context';
 
 import styles from './table-body.scss';
 
@@ -18,6 +20,34 @@ export class TableBody extends LitElement {
   /** Determines if the rows in the table body should be striped. */
   @property({ type: Boolean, reflect: true })
   striped = false;
+
+  /**
+   * Context consumer for the table context.
+   * Updates the cell's dense and ellipsis properties when the context changes.
+   * @private
+   * @ignore
+   * @type {ContextConsumer<TableContextType, TableCell>}
+   */
+  @state()
+  // @ts-expect-error - This is a context consumer
+  private _contextConsumer = new ContextConsumer(
+    this,
+    tableContext,
+    (context) => {
+      if (context) this.handleContextChange(context);
+    },
+    true
+  );
+
+  /**
+   * Updates the row's striped property when the context changes.
+   * @param {TableContextType} context - The updated context.
+   */
+  handleContextChange = ({ striped }: TableContextType) => {
+    if (typeof striped == 'boolean') {
+      this.striped = striped;
+    }
+  };
 
   override render() {
     return html`<slot></slot>`;
