@@ -1,3 +1,42 @@
+# [1.12.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.11.1...v1.12.0) (2024-04-01)
+
+
+### Bug Fixes
+
+* **card:** Added hideborder prop for notification type clickable ([77fb34e](https://github.com/kyndryl-design-system/shidoka-applications/commit/77fb34ecaee8f3939f6e3e70a864b924fe5d831a))
+* **header:** added mising import of overflow menu ([ea64f1b](https://github.com/kyndryl-design-system/shidoka-applications/commit/ea64f1b7aa18f9ec85c357b84cb8295639a09244))
+* **notification-panel:** added imports for card ([07715b6](https://github.com/kyndryl-design-system/shidoka-applications/commit/07715b6f05344b16cf3c8b79483f906ee71833ce))
+* **notification-panel:** Added subtitle check ([a3a36e1](https://github.com/kyndryl-design-system/shidoka-applications/commit/a3a36e1a9c02563985b73bafb76ef503db2e7641))
+* **notification-panel:** max-heights and widths ([730a3f3](https://github.com/kyndryl-design-system/shidoka-applications/commit/730a3f327b465a40b2a854a3dd0caad4cc349078))
+* **notification-panel:** Scroll related fixes and update docs ([30ed303](https://github.com/kyndryl-design-system/shidoka-applications/commit/30ed30379f72c331a846e4c526f764b99625ae64))
+* **notification:** add default status text strings ([b7dd05a](https://github.com/kyndryl-design-system/shidoka-applications/commit/b7dd05a1665e1ed50a135f6cdd6e6f7af62ad752))
+* **notification:** Added fixes for state type ([746bef7](https://github.com/kyndryl-design-system/shidoka-applications/commit/746bef7c36afc1ded74b23f9bc1c96cfd19dca85))
+* **notification:** added notification panel as subcomponent of Header ([caf8d1d](https://github.com/kyndryl-design-system/shidoka-applications/commit/caf8d1df6cf58eb52b013d1aae755d0a4c701421))
+* **notification:** build fail issue ([2531a8b](https://github.com/kyndryl-design-system/shidoka-applications/commit/2531a8b33553a10ba737983db2e0e5dfa560d7c9))
+* **notification:** build fail issue on event ([441239a](https://github.com/kyndryl-design-system/shidoka-applications/commit/441239a979fa6ac85efe535896e60007839a27d8))
+* **notification:** css for padding ([9f93ed2](https://github.com/kyndryl-design-system/shidoka-applications/commit/9f93ed220b46836edc6432836478329b31169c79))
+* **notification:** event prevent inside Header stories ([f6c51a0](https://github.com/kyndryl-design-system/shidoka-applications/commit/f6c51a020bc510dfd85bf5f77248ec34bc0590b7))
+* **notification:** fixes for styles ([63e29e4](https://github.com/kyndryl-design-system/shidoka-applications/commit/63e29e44a8e0a3fca664819d5441a2269f569891))
+* **notification:** lint errors ([e04621c](https://github.com/kyndryl-design-system/shidoka-applications/commit/e04621c8681489e0729199ec38ac4ef974b947d3))
+* **notification:** rel noopener ([da5b6bb](https://github.com/kyndryl-design-system/shidoka-applications/commit/da5b6bb823ef4c91c79b9101eb819968121ad037))
+* **notification:** slot names ([123711e](https://github.com/kyndryl-design-system/shidoka-applications/commit/123711e0304ab9adac7342798007de25e1436ff5))
+* **notification:** tag color from spruce to cat01 for info tag ([9755474](https://github.com/kyndryl-design-system/shidoka-applications/commit/9755474ec17823fca4ad226d03a61b4d68083445))
+* some lint warnings ([57d86d5](https://github.com/kyndryl-design-system/shidoka-applications/commit/57d86d543d0ed7b6a720cab053f3a641c8801ea7))
+* Update test cases of notification ([137a132](https://github.com/kyndryl-design-system/shidoka-applications/commit/137a132d277b21c11486abfcd42bc2f3363330a8))
+
+
+### Features
+
+* **card:** Added sample components inside pattern marketplace card ([60e63f0](https://github.com/kyndryl-design-system/shidoka-applications/commit/60e63f0d8a381c73a466351ca43c4036abba9bf6))
+* **header:** Added story with notification panel inside header ([dfc2e87](https://github.com/kyndryl-design-system/shidoka-applications/commit/dfc2e87f09a86b6c33a74ee1e182f516185c4ddc))
+* **market-place-card:** Added market place card under patterns ([ec941a7](https://github.com/kyndryl-design-system/shidoka-applications/commit/ec941a7e6d8d1d0ef96e9257c5b1231e690b1b1f))
+* **notification-panel:** Added notification component with card inside and build fixes ([0268a7f](https://github.com/kyndryl-design-system/shidoka-applications/commit/0268a7faa99a057ae8e696af34e5101ed466dc32))
+* **notification-panel:** Added notification component with kyn-card ([fbe39ec](https://github.com/kyndryl-design-system/shidoka-applications/commit/fbe39ec1327b004ba42faa0febbe76c5ba58d15a))
+* **notification-panel:** Added notification panel component ([35a599c](https://github.com/kyndryl-design-system/shidoka-applications/commit/35a599c3aaacaef74c23bd3a977cf7b563991f87))
+* **notification-panel:** moved notification panel inside header component ([0250323](https://github.com/kyndryl-design-system/shidoka-applications/commit/0250323f924af81fcabe6a0e470f2f09ed32c748))
+* **notification:** Added kd-card inside notification component and removed kyn-card ([50d925e](https://github.com/kyndryl-design-system/shidoka-applications/commit/50d925e29764d777e876500ab6050345c3693529))
+* **notification:** Added notification component with stories ([ad7d0b4](https://github.com/kyndryl-design-system/shidoka-applications/commit/ad7d0b4b03dac0aba0e28f785baff3b19f9c416c))
+
 ## [1.11.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.11.0...v1.11.1) (2024-04-01)
 
 
