@@ -219,7 +219,9 @@ export class CheckboxGroup extends LitElement {
       ).length;
 
       // sync "Select All" checkbox state
-      this.selectAllChecked = CheckedBoxesCount === this.checkboxes.length;
+      this.selectAllChecked =
+        this.checkboxes.length > 0 &&
+        CheckedBoxesCount === this.checkboxes.length;
 
       // sync "Select All" indeterminate state
       this.selectAllIndeterminate =
