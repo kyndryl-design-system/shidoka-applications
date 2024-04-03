@@ -129,7 +129,10 @@ export class RadioButtonGroup extends LitElement {
       });
     }
 
-    if (changedProps.has('disabled')) {
+    if (
+      changedProps.has('disabled') &&
+      changedProps.get('disabled') !== undefined
+    ) {
       // set disabled for each radio button
       this.radioButtons.forEach((radio: any) => {
         radio.disabled = this.disabled;

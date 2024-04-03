@@ -6,7 +6,13 @@ export default {
   title: 'Components/Radio Button',
   component: 'kyn-radio-button-group',
   subcomponents: {
-    RadioButton: 'kyn-radio-button',
+    'kyn-radio-button': 'kyn-radio-button',
+  },
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=32%3A2346&mode=dev',
+    },
   },
 };
 
@@ -37,12 +43,5 @@ export const RadioButtonGroup = {
         <kyn-radio-button value="3"> Option 3 </kyn-radio-button>
       </kyn-radio-button-group>
     `;
-  },
-};
-
-RadioButtonGroup.parameters = {
-  design: {
-    type: 'figma',
-    url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=32%3A2346&mode=dev',
   },
 };
