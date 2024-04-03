@@ -1,3 +1,11 @@
+## [1.12.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.12.2...v1.12.3) (2024-04-03)
+
+
+### Bug Fixes
+
+* **checkbox-group:** add on-search and on-limit-toggle events ([a26b7f3](https://github.com/kyndryl-design-system/shidoka-applications/commit/a26b7f3bd1cb827d9bfceb5bb314bbebea234a5a))
+* **tab:** add aria-disabled attribute ([0b90abc](https://github.com/kyndryl-design-system/shidoka-applications/commit/0b90abc6adbbcb79b8b1e55e6b791541c1974ee5))
+
 ## [1.12.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.12.1...v1.12.2) (2024-04-03)
 
 
