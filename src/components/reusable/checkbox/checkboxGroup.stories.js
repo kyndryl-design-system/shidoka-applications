@@ -50,6 +50,8 @@ export const CheckboxGroup = {
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
         @on-checkbox-group-change=${(e) => action(e.type)(e)}
+        @on-search=${(e) => action(e.type)(e)}
+        @on-limit-toggle=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
         <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
