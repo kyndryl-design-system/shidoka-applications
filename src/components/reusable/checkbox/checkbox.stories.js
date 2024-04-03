@@ -5,6 +5,12 @@ import { action } from '@storybook/addon-actions';
 export default {
   title: 'Components/Checkbox',
   component: 'kyn-checkbox',
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=62%3A1137&mode=dev',
+    },
+  },
 };
 
 export const Checkbox = {
@@ -27,12 +33,5 @@ export const Checkbox = {
         ${args.unnamed}
       </kyn-checkbox>
     `;
-  },
-};
-
-Checkbox.parameters = {
-  design: {
-    type: 'figma',
-    url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=62%3A1137&mode=dev',
   },
 };

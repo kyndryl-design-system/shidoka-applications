@@ -242,7 +242,10 @@ export class CheckboxGroup extends LitElement {
       });
     }
 
-    if (changedProps.has('disabled')) {
+    if (
+      changedProps.has('disabled') &&
+      changedProps.get('disabled') !== undefined
+    ) {
       // set disabled for each checkbox
       this.checkboxes.forEach((checkbox: any) => {
         checkbox.disabled = this.disabled;
