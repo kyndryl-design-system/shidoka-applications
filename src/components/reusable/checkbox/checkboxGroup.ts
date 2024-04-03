@@ -16,7 +16,7 @@ import errorIcon from '@carbon/icons/es/warning--filled/16';
  * Checkbox group container.
  * @fires on-checkbox-group-change - Captures the change event and emits the selected values.
  * @fires on-search - Captures the search input event and emits the search term.
- * @fires on-limit-toggle - Captures the show more/less click and emits the new state.
+ * @fires on-limit-toggle - Captures the show more/less click and emits the expanded state.
  * @slot unnamed - Slot for individual checkboxes.
  * @slot label - Slot for label text.
  */
