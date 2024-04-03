@@ -1,3 +1,12 @@
+## [1.12.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.12.1...v1.12.2) (2024-04-03)
+
+
+### Bug Fixes
+
+* **checkbox-group:** don't select all when zero checkboxes ([ded9caf](https://github.com/kyndryl-design-system/shidoka-applications/commit/ded9caf92483fb8b093700020b417fff8169cfb3))
+* **checkbox:** disable individual checkboxes ([008ab30](https://github.com/kyndryl-design-system/shidoka-applications/commit/008ab3088151bda99cac95142591dad4846d8406))
+* **radio-button:** expose disabled prop ([6c7f356](https://github.com/kyndryl-design-system/shidoka-applications/commit/6c7f35626c62e7b81cb0ae34ae5745053729bb97))
+
 ## [1.12.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.12.0...v1.12.1) (2024-04-01)
 
 
