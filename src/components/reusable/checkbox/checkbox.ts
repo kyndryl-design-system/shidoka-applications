@@ -31,13 +31,14 @@ export class Checkbox extends LitElement {
 
   /**
    * Checkbox checked state, inherited from the parent group if value matches.
+   * @internal
    */
   @property({ type: Boolean, reflect: true })
   checked = false;
 
   /**
    * Makes the input required, inherited from the parent group.
-   * @ignore
+   * @internal
    */
   @property({ type: Boolean })
   required = false;
@@ -50,7 +51,7 @@ export class Checkbox extends LitElement {
 
   /**
    * Checkbox group invalid state, inherited from the parent group.
-   * @ignore
+   * @internal
    */
   @property({ type: Boolean })
   invalid = false;

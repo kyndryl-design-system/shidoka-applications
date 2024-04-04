@@ -15,6 +15,8 @@ import errorIcon from '@carbon/icons/es/warning--filled/16';
 /**
  * Checkbox group container.
  * @fires on-checkbox-group-change - Captures the change event and emits the selected values.
+ * @fires on-search - Captures the search input event and emits the search term.
+ * @fires on-limit-toggle - Captures the show more/less click and emits the expanded state.
  * @slot unnamed - Slot for individual checkboxes.
  * @slot label - Slot for label text.
  */
@@ -219,7 +221,9 @@ export class CheckboxGroup extends LitElement {
       ).length;
 
       // sync "Select All" checkbox state
-      this.selectAllChecked = CheckedBoxesCount === this.checkboxes.length;
+      this.selectAllChecked =
+        this.checkboxes.length > 0 &&
+        CheckedBoxesCount === this.checkboxes.length;
 
       // sync "Select All" indeterminate state
       this.selectAllIndeterminate =
@@ -240,7 +244,10 @@ export class CheckboxGroup extends LitElement {
       });
     }
 
-    if (changedProps.has('disabled')) {
+    if (
+      changedProps.has('disabled') &&
+      changedProps.get('disabled') !== undefined
+    ) {
       // set disabled for each checkbox
       this.checkboxes.forEach((checkbox: any) => {
         checkbox.disabled = this.disabled;
@@ -268,7 +275,10 @@ export class CheckboxGroup extends LitElement {
       });
     }
 
-    if (changedProps.has('limitCheckboxes')) {
+    if (
+      changedProps.has('limitCheckboxes') &&
+      changedProps.get('limitCheckboxes') !== undefined
+    ) {
       this._toggleRevealed(false);
     }
   }
@@ -376,6 +386,11 @@ export class CheckboxGroup extends LitElement {
         }
       }
     });
+
+    const event = new CustomEvent('on-search', {
+      detail: { searchTerm: this.searchTerm },
+    });
+    this.dispatchEvent(event);
   }
 
   private _toggleRevealed(revealed: boolean) {
@@ -396,6 +411,11 @@ export class CheckboxGroup extends LitElement {
         }
       }
     });
+
+    const event = new CustomEvent('on-limit-toggle', {
+      detail: { expanded: this.limitRevealed },
+    });
+    this.dispatchEvent(event);
   }
 
   private _handleSlotChange() {

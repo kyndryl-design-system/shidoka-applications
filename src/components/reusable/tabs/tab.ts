@@ -65,6 +65,12 @@ export class Tab extends LitElement {
   @property({ type: String, reflect: true })
   'aria-controls' = '';
 
+  /** aria-disabled.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  'aria-disabled' = 'false';
+
   override render() {
     const classes = {
       tab: true,
@@ -106,6 +112,10 @@ export class Tab extends LitElement {
     if (changedProps.has('selected')) {
       this['aria-selected'] = this.selected.toString();
       this.tabIndex = this.selected ? 0 : -1;
+    }
+
+    if (changedProps.has('disabled')) {
+      this['aria-disabled'] = this.disabled.toString();
     }
   }
 

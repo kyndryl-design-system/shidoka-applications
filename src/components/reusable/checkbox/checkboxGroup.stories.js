@@ -6,7 +6,13 @@ export default {
   title: 'Components/Checkbox',
   component: 'kyn-checkbox-group',
   subcomponents: {
-    Checkbox: 'kyn-checkbox',
+    'kyn-checkbox': 'kyn-checkbox',
+  },
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=32%3A2346&mode=dev',
+    },
   },
 };
 
@@ -44,6 +50,8 @@ export const CheckboxGroup = {
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
         @on-checkbox-group-change=${(e) => action(e.type)(e)}
+        @on-search=${(e) => action(e.type)(e)}
+        @on-limit-toggle=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
         <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
@@ -54,12 +62,5 @@ export const CheckboxGroup = {
         <kyn-checkbox value="6"> Option 6 </kyn-checkbox>
       </kyn-checkbox-group>
     `;
-  },
-};
-
-CheckboxGroup.parameters = {
-  design: {
-    type: 'figma',
-    url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=32%3A2346&mode=dev',
   },
 };

@@ -44,7 +44,6 @@ export class RadioButton extends LitElement {
 
   /**
    * Radio button disabled state, inherited from the parent group.
-   * @ignore
    */
   @property({ type: Boolean })
   disabled = false;
