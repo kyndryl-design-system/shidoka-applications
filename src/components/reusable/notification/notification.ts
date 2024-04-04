@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state, query } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 
 import NotificationScss from './notification.scss';
 //import '@kyndryl-design-system/shidoka-foundation/components/card';
