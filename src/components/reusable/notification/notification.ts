@@ -76,7 +76,6 @@ export class Notification extends LitElement {
             rel="noopener"
             @on-card-click=${(e: any) => this._handleCardClick(e)}
             hideBorder
-            .markNotificationRead
             >${this.renderInnerUI()}</kyn-card
           >`
         : html`<kyn-card type=${this.type}>${this.renderInnerUI()}</kyn-card>`}
