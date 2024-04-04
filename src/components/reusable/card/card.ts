@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import CardScss from './card.scss';
@@ -35,10 +35,18 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   hideBorder = false;
 
+  /** State for notification Read.
+   * @ignore
+   */
+  @state()
+  markNotificationRead = false;
+
   override render() {
     const cardWrapperClasses = {
       'card-wrapper-clickable': true,
       'card-border': this.hideBorder === false,
+      'card-notification-read': !this.markNotificationRead,
+      'card-notification-unread': this.markNotificationRead,
     };
 
     return html`${this.type === 'clickable'

@@ -1,5 +1,9 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  queryAssignedElements,
+} from 'lit/decorators.js';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 
 import HeaderNotificationPanelScss from './headerNotificationPanel.scss';
@@ -27,6 +31,24 @@ export class HeaderNotificationPanel extends LitElement {
   @property({ type: Boolean })
   hidePanelFooter = false;
 
+  /** Customizable text strings. */
+  @property({ type: Object })
+  textStrings: any = {
+    markAllRead: 'Mark all as Read',
+    markAllUnread: 'Mark all as Unread',
+  };
+
+  /** Mark all Read */
+  @property({ type: Boolean })
+  markAllRead = false;
+
+  /**
+   * Queries for slotted Notifications.
+   * @ignore
+   */
+  @queryAssignedElements({ selector: 'kyn-notification' })
+  notifications!: Array<any>;
+
   override render() {
     return html` <div class="panel-wrapper">
       <header class="panel-header-wrapper">
@@ -35,6 +57,13 @@ export class HeaderNotificationPanel extends LitElement {
             <h1 class="panel-header-text">${this.panelTitle}</h1>
           </div>
           <div class="panel-left-slot">
+            <kd-button
+              kind="tertiary"
+              @click=${(e: Event) => this._toggleMarkAllReadUnread(e)}
+              >${this.markAllRead
+                ? this.textStrings.markAllUnread
+                : this.textStrings.markAllRead}</kd-button
+            >
             <slot name="menu-slot"></slot>
           </div>
         </div>
@@ -57,6 +86,27 @@ export class HeaderNotificationPanel extends LitElement {
     </div>`;
   }
 
+  private _toggleMarkAllReadUnread(e: any) {
+    this.markAllRead = !this.markAllRead;
+    const event = new CustomEvent('on-all-notifications-read-unread', {
+      detail: {
+        markAllRead: this.markAllRead,
+        origEvent: e,
+      },
+    });
+    this.dispatchEvent(event);
+  }
+
+  override updated(changedProps: any) {
+    if (changedProps.has('markAllRead')) {
+      // set read / unread for each notification
+      console.log(this.notifications);
+      // TODO how to sync when only single notification prop is unread
+      this.notifications.forEach((notification: any) => {
+        notification.markRead = this.markAllRead;
+      });
+    }
+  }
   // emit event on footer buton click
   private _handlefooterBtnEvent(e: any) {
     const event = new CustomEvent('on-footer-btn-click', {
