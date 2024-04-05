@@ -2,11 +2,8 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import NotificationScss from './notification.scss';
-//import '@kyndryl-design-system/shidoka-foundation/components/card';
+import '@kyndryl-design-system/shidoka-foundation/components/card';
 import '../tag';
-// To check only here I used kyn-card instead kd-card once done will move changes to kd-card
-import '../card';
-
 /**
  * Notification component.
  * @slot unnamed - Slot for notification message body.
@@ -62,14 +59,14 @@ export class Notification extends LitElement {
     error: 'failed',
   };
 
-  /** Set markAsRead prop */
+  /** Set notification mark read prop.*/
   @property({ type: Boolean, reflect: true })
   markRead: any = false;
 
   override render() {
     return html`
       ${this.type === 'clickable'
-        ? html`<kyn-card
+        ? html`<kd-card
             class="${this.markRead
               ? 'notification-mark-read'
               : 'notification-mark-unread'}"
@@ -79,9 +76,9 @@ export class Notification extends LitElement {
             rel="noopener"
             @on-card-click=${(e: any) => this._handleCardClick(e)}
             hideBorder
-            >${this.renderInnerUI()}</kyn-card
+            >${this.renderInnerUI()}</kd-card
           >`
-        : html`<kyn-card type=${this.type}>${this.renderInnerUI()}</kyn-card>`}
+        : html`<kd-card type=${this.type}>${this.renderInnerUI()}</kd-card>`}
     `;
   }
 
