@@ -70,6 +70,9 @@ export class Notification extends LitElement {
     return html`
       ${this.type === 'clickable'
         ? html`<kyn-card
+            class="${this.markRead
+              ? 'notification-mark-read'
+              : 'notification-mark-unread'}"
             type=${this.type}
             href=${this.href}
             target="_blank"
@@ -96,9 +99,6 @@ export class Notification extends LitElement {
               `
             : null}
         </div>
-
-        ${this.markRead ? html`<p>Read</p>` : html`<p>Unread</p>`}
-
         <div>
           <slot name="actions"></slot>
         </div>

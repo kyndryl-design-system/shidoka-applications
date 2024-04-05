@@ -76,6 +76,21 @@ const notificationTagStatusArr = [
   },
 ];
 
+// Example of change prop markRead of <kyn-notification> when we select Mark all as Read
+const selectAllNotificationsAsRead = (e) => {
+  const notifications = document.querySelectorAll('kyn-notification');
+  notifications.forEach((notification) => {
+    // markRead is notification prop
+    notification.markRead = true;
+  });
+  action(e.type)(e);
+};
+
+const handleOverflowClick = (e) => {
+  action(e.type)(e);
+  // overflow link click logic here to mark as unread
+};
+
 export const Header = {
   args,
   render: (args) => html`
@@ -208,6 +223,12 @@ export const WithNotificationPanel = {
           <kd-button
             slot="menu-slot"
             kind="tertiary"
+            @click=${(e) => selectAllNotificationsAsRead(e)}
+            >Mark all as Read</kd-button
+          >
+          <kd-button
+            slot="menu-slot"
+            kind="tertiary"
             @click=${(e) => console.log(e)}
           >
             <kd-icon .icon=${useSetingIcon}></kd-icon>
@@ -233,7 +254,10 @@ export const WithNotificationPanel = {
                     e.stopPropagation();
                   }}
                 >
-                  <kyn-overflow-menu-item>Mark as Read</kyn-overflow-menu-item>
+                  <kyn-overflow-menu-item
+                    @on-click=${(e) => handleOverflowClick(e)}
+                    >Mark as Read</kyn-overflow-menu-item
+                  >
                   <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
                 </kyn-overflow-menu>
 
