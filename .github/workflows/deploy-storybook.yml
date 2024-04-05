@@ -1,0 +1,24 @@
+name: 'Deploy Storybook'
+on:
+  push:
+    branches:
+      - main
+env:
+  GH_TOKEN: '${{ secrets.GH_TOKEN }}'
+jobs:
+  Build_Deploy_Storybook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+      - name: Build Storybook
+        run: npm run build-storybook
+      - name: Deploy Storybook to GitHub Pages
+        run: npm run deploy-storybook -- --ci --existing-output-dir=storybook-static
