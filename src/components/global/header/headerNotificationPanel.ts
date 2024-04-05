@@ -27,13 +27,6 @@ export class HeaderNotificationPanel extends LitElement {
   @property({ type: Boolean })
   hidePanelFooter = false;
 
-  /** Customizable text strings. */
-  @property({ type: Object })
-  textStrings: any = {
-    markAllRead: 'Mark all as Read',
-    markAllUnread: 'Mark all as Unread',
-  };
-
   override render() {
     return html` <div class="panel-wrapper">
       <header class="panel-header-wrapper">

@@ -218,7 +218,6 @@ export const WithNotificationPanel = {
           panelFooterBtnText=${notificationPanelArgs.panelFooterBtnText}
           ?hidePanelFooter=${notificationPanelArgs.hidePanelFooter}
           @on-footer-btn-click=${(e) => action(e.type)(e)}
-          @on-all-notifications-read-unread=${(e) => action(e.type)(e)}
         >
           <kd-button
             slot="menu-slot"
