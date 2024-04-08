@@ -4,7 +4,6 @@ import { customElement, property, state } from 'lit/decorators.js';
 import NotificationScss from './notification.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/card';
 import '../tag';
-
 /**
  * Notification component.
  * @slot unnamed - Slot for notification message body.
@@ -60,10 +59,17 @@ export class Notification extends LitElement {
     error: 'failed',
   };
 
+  /** Set notification mark read prop. Required `type: 'clickable'`.*/
+  @property({ type: Boolean, reflect: true })
+  unRead = false;
+
   override render() {
     return html`
       ${this.type === 'clickable'
         ? html`<kd-card
+            class="${this.unRead
+              ? 'notification-mark-unread'
+              : 'notification-mark-read'}"
             type=${this.type}
             href=${this.href}
             target="_blank"
@@ -90,7 +96,6 @@ export class Notification extends LitElement {
               `
             : null}
         </div>
-
         <div>
           <slot name="actions"></slot>
         </div>
