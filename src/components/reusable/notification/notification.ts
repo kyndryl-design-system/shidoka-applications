@@ -59,7 +59,7 @@ export class Notification extends LitElement {
     error: 'failed',
   };
 
-  /** Set notification mark read prop.*/
+  /** Set notification mark read prop. Required `type: 'clickable'`.*/
   @property({ type: Boolean, reflect: true })
   unRead = false;
 
