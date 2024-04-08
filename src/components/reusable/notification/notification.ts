@@ -61,7 +61,7 @@ export class Notification extends LitElement {
 
   /** Set notification mark read prop.*/
   @property({ type: Boolean, reflect: true })
-  unRead: Boolean = false;
+  unRead = false;
 
   override render() {
     return html`

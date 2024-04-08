@@ -7,6 +7,11 @@ import '../overflowMenu';
 const notificationBodyMsg =
   'Message, this is an additional line Ipsum iMessage, Lorem Ipsum is simply dummy and typesetting industry.';
 
+const handleOverflowClick = (e) => {
+  action(e.type)(e);
+  // overflow link click logic here to mark as unread
+};
+
 export default {
   title: 'Components/Notification',
   component: 'kyn-notification',
@@ -36,6 +41,7 @@ export const Notification = {
     href: '#',
     type: 'normal',
     tagStatus: 'default',
+    unRead: false,
   },
   render: (args) => {
     return html`<kyn-notification
@@ -45,6 +51,7 @@ export const Notification = {
       href=${args.href}
       type=${args.type}
       tagStatus=${args.tagStatus}
+      ?unRead=${args.unRead}
       @on-notification-click=${(e) => action(e.type)(e)}
       style="width:464px;"
     >
@@ -56,7 +63,9 @@ export const Notification = {
           e.stopPropagation();
         }}
       >
-        <kyn-overflow-menu-item>Mark as Read</kyn-overflow-menu-item>
+        <kyn-overflow-menu-item @on-click=${(e) => handleOverflowClick(e)}
+          >Mark as Read</kyn-overflow-menu-item
+        >
         <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
       </kyn-overflow-menu>
 
