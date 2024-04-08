@@ -76,12 +76,12 @@ const notificationTagStatusArr = [
   },
 ];
 
-// Example of change prop markRead of <kyn-notification> when we select Mark all as Read
+// Example of change prop unRead of <kyn-notification> when we select Mark all as Read
 const selectAllNotificationsAsRead = (e) => {
   const notifications = document.querySelectorAll('kyn-notification');
   notifications.forEach((notification) => {
-    // markRead is notification prop
-    notification.markRead = true;
+    // unRead is notification prop
+    notification.unRead = false;
   });
   action(e.type)(e);
 };
@@ -243,6 +243,7 @@ export const WithNotificationPanel = {
                 href="#"
                 type="clickable"
                 tagStatus=${ele.tagStatus}
+                unRead
                 @on-notification-click=${(e) => action(e.type)(e)}
               >
                 <kyn-overflow-menu

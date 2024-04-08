@@ -61,15 +61,15 @@ export class Notification extends LitElement {
 
   /** Set notification mark read prop.*/
   @property({ type: Boolean, reflect: true })
-  markRead: any = false;
+  unRead: Boolean = false;
 
   override render() {
     return html`
       ${this.type === 'clickable'
         ? html`<kd-card
-            class="${this.markRead
-              ? 'notification-mark-read'
-              : 'notification-mark-unread'}"
+            class="${this.unRead
+              ? 'notification-mark-unread'
+              : 'notification-mark-read'}"
             type=${this.type}
             href=${this.href}
             target="_blank"
