@@ -50,7 +50,7 @@ export const Modal = {
         ?hideFooter=${args.hideFooter}
         @on-close=${(e) => action(e.type)(e)}
       >
-        <span slot="anchor">Open Modal</span>
+        <kd-button slot="anchor"> Open Modal </kd-button>
 
         Basic Modal example.
       </kyn-modal>
@@ -113,7 +113,7 @@ export const BeforeClose = {
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
       >
-        <span slot="anchor">Open Modal</span>
+        <kd-button slot="anchor"> Open Modal </kd-button>
 
         Modal with custom beforeClose handler function.
       </kyn-modal>

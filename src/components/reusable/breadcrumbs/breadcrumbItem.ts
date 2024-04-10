@@ -23,14 +23,20 @@ export class BreadcrumbItem extends LitElement {
 
   static override styles = [styles];
 
+  /** role
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  override role = 'listitem';
+
   override render() {
     return html`
-      <li class="breadcrumb-item">
+      <div class="breadcrumb-item">
         <!-- Render as link if href is provided, otherwise render as plain text -->
         ${this.href
           ? html`<a href="${this.href}"><slot></slot></a>`
           : html`<span><slot></slot></span>`}
-      </li>
+      </div>
     `;
   }
 }

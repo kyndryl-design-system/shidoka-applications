@@ -71,7 +71,7 @@ export class PaginationNavigationButtons extends LitElement {
         size="small"
         ?disabled=${disableBackButton}
         @on-click=${() => this.handleButtonClick(false)}
-        aria-label="Previous page"
+        description="Previous page"
       >
         <kd-icon slot="icon" .icon=${chevLeftIcon}></kd-icon>
       </kd-button>
@@ -88,7 +88,7 @@ export class PaginationNavigationButtons extends LitElement {
         size="small"
         ?disabled=${disableNextButton}
         @on-click=${() => this.handleButtonClick(true)}
-        aria-label="Next page"
+        description="Next page"
       >
         <kd-icon slot="icon" .icon=${chevRightIcon}></kd-icon>
       </kd-button>

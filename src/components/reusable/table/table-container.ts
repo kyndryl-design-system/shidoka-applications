@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 import styles from './table-container.scss';
 
@@ -14,6 +14,9 @@ import styles from './table-container.scss';
 @customElement('kyn-table-container')
 export class TableContainer extends LitElement {
   static override styles = [styles];
+
+  @property({ type: Number, reflect: true })
+  override tabIndex = 0;
 
   override render() {
     return html` <slot></slot> `;

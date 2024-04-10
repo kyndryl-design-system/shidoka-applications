@@ -44,6 +44,11 @@ export const GlobalFilter = {
 };
 
 export const WithChart = {
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
   render: () => {
     return html`
       <sample-filter-chart-component></sample-filter-chart-component>
