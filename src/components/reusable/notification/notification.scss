@@ -7,8 +7,20 @@
   width: 100%;
   kd-card {
     width: 100%;
-    margin-top: 8px;
   }
+}
+
+// Change card style based on notification read prop
+kd-card.notification-mark-unread::part(card-wrapper) {
+  background-color: var(--kd-color-skye-10);
+  outline: 1px solid var(--kd-color-skye-20);
+  &:hover {
+    outline: 2px solid var(--kd-color-border-ui-hover);
+  }
+}
+
+kd-card.notification-mark-read::part(card-wrapper) {
+  background-color: var(--kd-color-background-ui-default);
 }
 
 .notification {

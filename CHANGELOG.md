@@ -1,3 +1,20 @@
+# [1.13.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.12.3...v1.13.0) (2024-04-08)
+
+
+### Bug Fixes
+
+* **card:** inside notification revert kyn-card to kd-card ([42c9fed](https://github.com/kyndryl-design-system/shidoka-applications/commit/42c9fed148c15ae1e5ced72bb6fb2ba11765667e))
+* **card:** removed changes from deprecated card file ([bae6559](https://github.com/kyndryl-design-system/shidoka-applications/commit/bae655909286efbf7eb99234c58d3f44e301e6cd))
+* **notification:** import un used ([63b9f7f](https://github.com/kyndryl-design-system/shidoka-applications/commit/63b9f7f9be4981fe3386392c25363cbdeb3e9ded))
+* **notification:** read prop and make it false by default ([0adad80](https://github.com/kyndryl-design-system/shidoka-applications/commit/0adad80696075b55bd0653ee66c000eece864926))
+* **notification:** removed un used imports ([51b7b6a](https://github.com/kyndryl-design-system/shidoka-applications/commit/51b7b6a85d53135f6e4881e5fef8ddde65d5a370))
+* **notification:** unwanted props ([461ee5a](https://github.com/kyndryl-design-system/shidoka-applications/commit/461ee5a63f186bd0779ad6f514eb2b6f97f7da31))
+
+
+### Features
+
+* **notification:** unRead for story and docs update ([fa7f4ae](https://github.com/kyndryl-design-system/shidoka-applications/commit/fa7f4ae08c684d9c768b6ef1909a884f09ad63f9))
+
 ## [1.12.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.12.2...v1.12.3) (2024-04-03)
 
 
