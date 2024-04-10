@@ -12,14 +12,29 @@ module.exports = {
   async postVisit(page, context) {
     const storyContext = await getStoryContext(page, context);
 
-    // run accessibility tests
+    // run accessibility tests if not disabled
     if (!storyContext.parameters?.a11y?.disable) {
-      await checkA11y(page, '#storybook-root', {
+      const Options = {
         detailedReport: true,
         detailedReportOptions: {
           html: true,
         },
-      });
+      };
+
+      // get custom rules, convert from array to object structure, inject to options
+      const Rules = storyContext.parameters?.a11y?.config?.rules;
+      if (Rules) {
+        const RulesObj = {};
+        Rules.forEach((rule) => {
+          RulesObj[rule.id] = { enabled: rule.enabled };
+        });
+
+        Options.axeOptions = {
+          rules: RulesObj,
+        };
+      }
+
+      await checkA11y(page, '#storybook-root', Options);
     }
 
     // // run snapshot tests
