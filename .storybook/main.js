@@ -47,7 +47,7 @@ export default {
                     minify: true,
                   },
                 },
-                // 'extract-loader',
+                'extract-loader',
                 {
                   loader: 'css-loader',
                   options: {
