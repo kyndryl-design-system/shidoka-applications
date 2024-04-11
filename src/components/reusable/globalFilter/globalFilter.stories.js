@@ -2,6 +2,7 @@ import { html } from 'lit';
 
 import './globalFilter.sample';
 import './globalFilter.chart.sample';
+import './globalFilter.table.sample';
 
 export default {
   title: 'Patterns/Global Filter',
@@ -84,6 +85,21 @@ export const WithChart = {
 
 export const WithTable = {
   render: () => {
-    return html` To do `;
+    return html`
+      <sample-filter-table-component></sample-filter-table-component>
+      <br />
+
+      <p>This example shows a Global Filter pattern applied to a Table.</p>
+
+      <br />
+
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/blob/main/src/components/reusable/globalFilter/globalFilter.table.sample.ts"
+        target="_blank"
+        rel="noopener"
+      >
+        See the full example component code here.
+      </a>
+    `;
   },
 };
