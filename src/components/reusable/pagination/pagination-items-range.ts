@@ -21,11 +21,11 @@ export class PaginationItemsRange extends LitElement {
 
   /** Current page number being displayed. */
   @property({ type: Number })
-  pageNumber = 1;
+  pageNumber = 0;
 
   /** Number of items displayed per page. */
   @property({ type: Number })
-  pageSize = 10;
+  pageSize = 5;
 
   /**
    * Determines the device type the component is being rendered on.
@@ -36,7 +36,10 @@ export class PaginationItemsRange extends LitElement {
 
   private get itemsRangeText(): string {
     const baseTotalItemsByPage = this.pageSize * this.pageNumber;
-    const lowerRangeItemsCount = baseTotalItemsByPage - this.pageSize + 1;
+    const lowerRangeItemsCount =
+      baseTotalItemsByPage > 0
+        ? baseTotalItemsByPage - this.pageSize + 1
+        : baseTotalItemsByPage;
     const higherRangeItemsCount =
       baseTotalItemsByPage < this.count ? baseTotalItemsByPage : this.count;
 

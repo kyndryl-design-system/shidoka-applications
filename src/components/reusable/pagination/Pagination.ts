@@ -70,7 +70,7 @@ export class Pagination extends LitElement {
    */
   private handlePageSizeChange(e: CustomEvent) {
     this.pageSize = e.detail.value;
-    this.pageNumber = 1;
+    this.pageNumber = this.count > 0 ? 1 : 0;
   }
 
   /**
