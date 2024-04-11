@@ -1,5 +1,5 @@
 import { html, css, LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { action } from '@storybook/addon-actions';
 import { repeat } from 'lit/directives/repeat.js';
 
