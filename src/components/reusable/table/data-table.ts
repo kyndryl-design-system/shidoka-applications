@@ -8,7 +8,7 @@ import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import '../checkbox/checkbox';
-import '../pagination'
+import '../pagination';
 import './index';
 import styles from './data-table.scss';
 
@@ -68,7 +68,7 @@ export class DataTable extends LitElement {
   /**
    * selectedRows: Set of row ids that are currently selected.
    */
-  @property({ type: Set })
+  @property({ attribute: false })
   selectedRows = new Set<number>();
 
   /**
@@ -245,7 +245,6 @@ export class DataTable extends LitElement {
         <kyn-table
           ?fixedLayout=${this.fixedLayout}
           ?stickyHeader=${this.stickyHeader}
-          ?
         >
           <kyn-thead ?stickyHeader=${this.stickyHeader}>
             <kyn-tr>

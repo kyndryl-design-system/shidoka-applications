@@ -13,7 +13,7 @@ import '../index';
 export class BatchActions extends LitElement {
   static override styles = [styles];
 
-  @property({ type: Function })
+  @property({ attribute: false })
   handleDelete = () => {};
 
   @property({ type: Boolean, reflect: true })

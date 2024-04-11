@@ -11,7 +11,7 @@ export class ActionMenu extends LitElement {
   @property({ type: Boolean })
   opened = false;
 
-  @property({ type: Function })
+  @property({ attribute: false })
   handleDelete = (id: number) => {
     console.log('Delete action triggered', id);
   };
