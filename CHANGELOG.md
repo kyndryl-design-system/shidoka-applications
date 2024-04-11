@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.14.0...v1.15.0) (2024-04-11)
+
+
+### Features
+
+* **form-inputs:** add css part for label ([ff1f2b3](https://github.com/kyndryl-design-system/shidoka-applications/commit/ff1f2b38cb7eca0c903044850453925080c56d85))
+
 # [1.14.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.13.1...v1.14.0) (2024-04-11)
 
 
