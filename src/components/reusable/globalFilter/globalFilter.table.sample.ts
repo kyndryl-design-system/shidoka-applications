@@ -47,15 +47,15 @@ export class SampleFilterTableComponent extends LitElement {
       text: 'Lannister',
     },
     {
-      value: 'Taragaryen',
-      text: 'Taragaryen',
+      value: 'Targaryen',
+      text: 'Targaryen',
     },
   ];
 
   @state()
-  houses: Array<string> = ['Stark', 'Lannister', 'Taragaryen'];
+  houses: Array<string> = ['Stark', 'Lannister', 'Targaryen'];
 
- @state()
+  @state()
   filteredHouses: Array<string> = [];
 
   @state()
@@ -250,7 +250,7 @@ export class SampleFilterTableComponent extends LitElement {
         </kyn-thead>
         <kyn-tbody>
           ${repeat(
-           this.characters,
+            this.characters,
             (row: any) => row.name,
             (row: any) => html`
               <kyn-tr .rowId=${row.name}>
@@ -346,16 +346,22 @@ export class SampleFilterTableComponent extends LitElement {
       this.filteredHouses = this.houses;
     }
 
-    // perform search query filtering
-    if (query !== '') {
-      this.filteredHouses = this.filteredHouses.filter((label) => {
-        return label.toLowerCase().includes(query.toLowerCase());
-      });
-    }
-
     this.characters = this.characters_backup.filter((character) => {
       return this.filteredHouses.includes(character.house);
-    })
+    });
+
+    // perform search query filtering
+    if (query !== '') {
+      this.characters = this.characters.filter((character) => {
+        return (
+          character.name.toLowerCase().includes(query.toLowerCase()) ||
+          character.house.toLowerCase().includes(query.toLowerCase())
+        );
+      });
+      // this.filteredHouses = this.houses.filter((label) => {
+      //   return label.toLowerCase().includes(query.toLowerCase());
+      // });
+    }
   }
 
   override firstUpdated() {
