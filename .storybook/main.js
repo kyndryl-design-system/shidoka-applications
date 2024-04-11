@@ -1,4 +1,5 @@
 import remarkGfm from 'remark-gfm';
+const Sass = require('sass');
 
 export default {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
@@ -42,16 +43,10 @@ export default {
             {
               use: [
                 {
-                  loader: 'lit-scss-loader',
+                  loader: 'lit-css-loader',
                   options: {
-                    minify: true,
-                  },
-                },
-                'extract-loader',
-                {
-                  loader: 'css-loader',
-                  options: {
-                    url: false,
+                    transform: (data, { filePath }) =>
+                      Sass.renderSync({ data, file: filePath }).css.toString(),
                   },
                 },
                 'sass-loader',
