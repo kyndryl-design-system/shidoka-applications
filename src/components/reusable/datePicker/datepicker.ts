@@ -11,6 +11,7 @@ import DatePickerScss from './datepicker.scss';
  * @prop {string} minDate - Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.
  * @prop {string} maxDate - Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value
  * @slot unnamed - Slot for label text.
+ * @csspart label - Styles the label.
  */
 
 @customElement('kyn-date-picker')
@@ -114,6 +115,7 @@ export class DatePicker extends LitElement {
   override render() {
     return html`
       <label
+        part="label"
         class="datepicker-label-text"
         for=${this.name}
         ?disabled=${this.disabled}

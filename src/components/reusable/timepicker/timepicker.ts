@@ -13,6 +13,7 @@ import TimePickerScss from './timepicker.scss';
  * @prop {string} minTime - Minimum Time in hh:mm format.
  * @prop {string} maxTime - Maximum Time hh:mm format.
  * @slot unnamed - Slot for label text.
+ * @csspart label - Styles the label.
  */
 
 @customElement('kyn-time-picker')
@@ -112,7 +113,7 @@ export class TimePicker extends LitElement {
   override render() {
     return html`
       <div class="time-picker" ?disabled=${this.disabled}>
-        <label class="label-text" for=${this.name}>
+        <label part="label" class="label-text" for=${this.name}>
           ${this.required ? html`<span class="required">*</span>` : null}
           <slot></slot>
         </label>
