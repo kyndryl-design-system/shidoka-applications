@@ -226,12 +226,10 @@ export class Dropdown extends LitElement {
                 'size--lg': this.size === 'lg',
                 inline: this.inline,
               })}"
-              role="button"
               aria-labelledby="label-${this.name}"
               ?required=${this.required}
               ?disabled=${this.disabled}
               ?invalid=${this.isInvalid}
-              tabindex=${this.searchable ? '-1' : '0'}
               @click=${() => this.handleClick()}
               @keydown=${(e: any) => this.handleButtonKeydown(e)}
               @mousedown=${(e: any) => {

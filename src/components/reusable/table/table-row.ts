@@ -45,8 +45,6 @@ export class TableRow extends LitElement {
   @property({ type: Boolean })
   dense = false;
 
-
-
   /**
    * Context consumer for the table context.
    * Updates the cell's dense and ellipsis properties when the context changes.
@@ -73,7 +71,6 @@ export class TableRow extends LitElement {
     if (typeof checkboxSelection == 'boolean') {
       this.checkboxSelection = checkboxSelection;
     }
-
   };
 
   /**
@@ -94,13 +91,17 @@ export class TableRow extends LitElement {
   override render() {
     return html`
       ${this.checkboxSelection
-        ? html`<kyn-td .align=${'center'} ?dense=${this.dense}
-            ><kyn-checkbox
-              .checked=${this.selected}
-              visiblyHidden
-              @on-checkbox-change=${this.handleRowSelectionChange}
-            ></kyn-checkbox
-          ></kyn-td>`
+        ? html`
+            <kyn-td .align=${'center'} ?dense=${this.dense}>
+              <kyn-checkbox
+                .checked=${this.selected}
+                visiblyHidden
+                @on-checkbox-change=${this.handleRowSelectionChange}
+              >
+                ${this.selected ? 'Deselect' : 'Select'} Row ${this.rowId}
+              </kyn-checkbox>
+            </kyn-td>
+          `
         : null}
       <slot></slot>
     `;

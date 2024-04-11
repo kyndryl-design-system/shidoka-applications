@@ -137,7 +137,8 @@ export class DateRangePicker extends LitElement {
             })}"
             type="date"
             id="${this.name}-start"
-            name="${this.name}-start"
+            name="${this.name}-end"
+            aria-label="Start Date"
             value=${this.startDate}
             ?required=${this.required}
             ?disabled=${this.disabled}
@@ -160,6 +161,7 @@ export class DateRangePicker extends LitElement {
             type="date"
             id="${this.name}-end"
             name="${this.name}-end"
+            aria-label="End Date"
             value=${this.endDate}
             ?required=${this.required}
             ?disabled=${this.disabled}

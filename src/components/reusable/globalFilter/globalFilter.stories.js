@@ -44,6 +44,23 @@ export const GlobalFilter = {
 };
 
 export const WithChart = {
+  parameters: {
+    a11y: {
+      // disable violations flagged in chartjs-plugin-a11y-legend
+      config: {
+        rules: [
+          {
+            id: 'aria-toggle-field-name',
+            enabled: false,
+          },
+          {
+            id: 'aria-required-parent',
+            enabled: false,
+          },
+        ],
+      },
+    },
+  },
   render: () => {
     return html`
       <sample-filter-chart-component></sample-filter-chart-component>

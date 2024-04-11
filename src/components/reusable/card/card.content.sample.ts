@@ -49,6 +49,7 @@ export class SampleCardContentComponent extends LitElement {
                 kind="tertiary"
                 size="small"
                 iconPosition="center"
+                description="Action"
                 @click=${(e: Event) => e.preventDefault()}
               >
                 <kd-icon slot="icon" .icon=${actionIcon}></kd-icon>
