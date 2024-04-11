@@ -19,6 +19,7 @@ import errorIcon from '@carbon/icons/es/warning--filled/16';
  * @fires on-limit-toggle - Captures the show more/less click and emits the expanded state.
  * @slot unnamed - Slot for individual checkboxes.
  * @slot label - Slot for label text.
+ * @csspart label - Styles the label/legend.
  */
 @customElement('kyn-checkbox-group')
 export class CheckboxGroup extends LitElement {
@@ -148,7 +149,7 @@ export class CheckboxGroup extends LitElement {
           : null}
 
         <div class="${this.horizontal ? 'horizontal' : ''}">
-          <legend class="${this.hideLegend ? 'sr-only' : ''}">
+          <legend part="legend" class="${this.hideLegend ? 'sr-only' : ''}">
             ${this.required ? html`<span class="required">*</span>` : null}
             <slot name="label"></slot>
           </legend>

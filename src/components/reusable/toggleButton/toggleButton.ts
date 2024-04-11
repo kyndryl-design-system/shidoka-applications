@@ -6,6 +6,7 @@ import ToggleButtonScss from './toggleButton.scss';
  * Toggle Button.
  * @fires on-change - Captures the change event and emits the selected value and original event details.
  * @slot unnamed - Slot for label text.
+ * @csspart label - Styles the label.
  */
 @customElement('kyn-toggle-button')
 export class ToggleButton extends LitElement {
@@ -65,7 +66,7 @@ export class ToggleButton extends LitElement {
   override render() {
     return html`
       <div class="toggle-button" ?disabled=${this.disabled}>
-        <label class="label-text" for=${this.name}>
+        <label part="label" class="label-text" for=${this.name}>
           <slot></slot>
         </label>
 

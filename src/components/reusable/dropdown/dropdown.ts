@@ -22,6 +22,7 @@ import clearIcon16 from '@carbon/icons/es/close/16';
  * @fires on-search - Capture the search input event and emits the search text.
  * @slot unnamed - Slot for dropdown options.
  * @slot label - Slot for input label.
+ * @csspart label - Styles the label.
  */
 @customElement('kyn-dropdown')
 export class Dropdown extends LitElement {
@@ -207,7 +208,12 @@ export class Dropdown extends LitElement {
         ?inline=${this.inline}
         ?searchable=${this.searchable}
       >
-        <label for=${this.name} id="label-${this.name}" class="label-text">
+        <label
+          part="label"
+          for=${this.name}
+          id="label-${this.name}"
+          class="label-text"
+        >
           ${this.required ? html`<span class="required">*</span>` : null}
           <slot name="label"></slot>
         </label>
