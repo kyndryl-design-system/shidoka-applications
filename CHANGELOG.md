@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.13.0...v1.13.1) (2024-04-11)
+
+
+### Bug Fixes
+
+* **pagination:** fixed item ranges when there is no data ([#146](https://github.com/kyndryl-design-system/shidoka-applications/issues/146)) ([3bed2e5](https://github.com/kyndryl-design-system/shidoka-applications/commit/3bed2e5955811746abccbfdb0d7825d67ccb802b))
+
 # [1.13.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.12.3...v1.13.0) (2024-04-08)
 
 
