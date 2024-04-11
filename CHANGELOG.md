@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.13.1...v1.14.0) (2024-04-11)
+
+
+### Features
+
+* **filter:** added global filter applied to table ([#145](https://github.com/kyndryl-design-system/shidoka-applications/issues/145)) ([a34b650](https://github.com/kyndryl-design-system/shidoka-applications/commit/a34b6500e9937549a09d8c20bca37d2c83f73950))
+
 ## [1.13.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.13.0...v1.13.1) (2024-04-11)
 
 
