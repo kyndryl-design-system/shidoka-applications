@@ -1,3 +1,10 @@
+## [1.15.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.2...v1.15.3) (2024-04-12)
+
+
+### Bug Fixes
+
+* **local-nav:** prevent link on-click event bubbling ([b06c554](https://github.com/kyndryl-design-system/shidoka-applications/commit/b06c554c176f08486906f82b426df29ba35b54e5))
+
 ## [1.15.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.1...v1.15.2) (2024-04-12)
 
 
