@@ -1,0 +1,45 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+.widget-header {
+  display: flex;
+  // align-items: center;
+  background: var(--kd-color-background-ui-soft);
+  margin: -24px -24px 24px -24px;
+  padding: 24px;
+  border-radius: 8px 8px 0 0;
+
+  &.pill {
+    background: none;
+  }
+
+  &.has-drag-handle {
+    padding-left: 52px;
+  }
+}
+
+.title-desc {
+  .pill & {
+    display: none;
+  }
+}
+
+.title {
+  @include typography.type-ui-02;
+  font-weight: 500;
+}
+
+.description {
+  @include typography.type-ui-03;
+  color: var(--kd-color-text-secondary);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
