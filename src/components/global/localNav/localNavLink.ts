@@ -261,6 +261,15 @@ export class LocalNavLink extends LitElement {
     this.requestUpdate();
 
     const event = new CustomEvent('on-click', {
+      detail: {
+        origEvent: e,
+        level: this._level,
+        defaultPrevented: preventDefault,
+      },
+    });
+    this.dispatchEvent(event);
+
+    const event2 = new CustomEvent('on-click-internal', {
       composed: true,
       bubbles: true,
       detail: {
@@ -269,7 +278,7 @@ export class LocalNavLink extends LitElement {
         defaultPrevented: preventDefault,
       },
     });
-    this.dispatchEvent(event);
+    this.dispatchEvent(event2);
   }
 
   private _handleClickOut(e: Event) {
