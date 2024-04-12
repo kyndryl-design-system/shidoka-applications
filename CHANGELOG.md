@@ -1,3 +1,10 @@
+## [1.15.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.1...v1.15.2) (2024-04-12)
+
+
+### Bug Fixes
+
+* **local-nav:** prevent arrow jiggle ([a5356a0](https://github.com/kyndryl-design-system/shidoka-applications/commit/a5356a022c966254076556b0dbf867edb45412f7))
+
 ## [1.15.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.0...v1.15.1) (2024-04-12)
 
 
