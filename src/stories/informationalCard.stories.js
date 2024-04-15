@@ -8,7 +8,7 @@ import './sampleCardComponents/card.sample.ts';
 import './sampleCardComponents/card.content.sample.ts';
 
 export default {
-  title: 'Patterns/Marketplace Card',
+  title: 'Patterns/Informational Card',
 };
 
 export const Simple = {
