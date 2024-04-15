@@ -1,8 +1,16 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  state,
+  queryAssignedElements,
+} from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import Styles from './widgetHeader.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
+
+import dragIcon from '@carbon/icons/es/draggable/16';
 
 /**
  * Widget header.
@@ -32,23 +40,59 @@ export class WidgetHeader extends LitElement {
   @state()
   _pill = false;
 
+  /** Query for slotted widget action elements.
+   * @internal
+   */
+  @queryAssignedElements()
+  _slottedEls!: any;
+
   override render() {
+    const Classes = {
+      'widget-header': true,
+      pill: this._pill,
+      slotted: this._slottedEls.length,
+      'has-drag-handle': this._dragHandle,
+    };
+
     return html`
-      <div
-        class="widget-header ${this._pill ? 'pill' : ''} ${this._dragHandle
-          ? 'has-drag-handle'
-          : ''}"
-      >
+      <div class=${classMap(Classes)}>
+        ${this._dragHandle
+          ? html`
+              <span
+                class="drag-handle"
+                @pointerdown=${this._handleDragStart}
+                @pointerup=${this._handleDragEnd}
+                @pointerleave=${this._handleDragEnd}
+              >
+                <kd-icon .icon=${dragIcon}></kd-icon>
+              </span>
+            `
+          : null}
+
         <div class="title-desc">
           <div class="title">${this.widgetTitle}</div>
           <div class="description">${this.description}</div>
         </div>
 
         <div class="actions">
-          <slot></slot>
+          <slot @slotchange=${this._handleSlotChange}></slot>
         </div>
       </div>
     `;
+  }
+
+  private _handleSlotChange() {
+    this.requestUpdate();
+  }
+
+  private _handleDragStart() {
+    const Widget: any = this.parentElement;
+    Widget._dragActive = true;
+  }
+
+  private _handleDragEnd() {
+    const Widget: any = this.parentElement;
+    Widget._dragActive = false;
   }
 }
 

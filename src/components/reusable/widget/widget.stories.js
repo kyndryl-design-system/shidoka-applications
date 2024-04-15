@@ -15,6 +15,7 @@ export default {
   component: 'kyn-widget',
   subcomponents: {
     'kyn-widget-header': 'kyn-widget-header',
+    'kyn-widget-footer': 'kyn-widget-footer',
   },
   parameters: {
     design: {
@@ -26,7 +27,6 @@ export default {
 
 const args = {
   dragHandle: false,
-  pill: false,
 };
 
 export const Widget = {
@@ -36,11 +36,10 @@ export const Widget = {
       <div style="max-width: 500px;">
         <kyn-widget
           ?dragHandle=${args.dragHandle}
-          ?pill=${args.pill}
-          @dragstart=${(e) => action(e.type)(e)}
-          @dragend=${(e) => action(e.type)(e)}
+          @on-drag-handle-grabbed=${(e) => action(e.type)(e)}
+          @on-drag-handle-released=${(e) => action(e.type)(e)}
         >
-          <kyn-widget-header widgetTitle="Widget"> </kyn-widget-header>
+          <kyn-widget-header widgetTitle="Widget Title"> </kyn-widget-header>
 
           Widget Content
         </kyn-widget>
@@ -56,11 +55,10 @@ export const WithActions = {
       <div style="max-width: 500px;">
         <kyn-widget
           ?dragHandle=${args.dragHandle}
-          ?pill=${args.pill}
-          @dragstart=${(e) => action(e.type)(e)}
-          @dragend=${(e) => action(e.type)(e)}
+          @on-drag-handle-grabbed=${(e) => action(e.type)(e)}
+          @on-drag-handle-released=${(e) => action(e.type)(e)}
         >
-          <kyn-widget-header widgetTitle="Widget">
+          <kyn-widget-header widgetTitle="Widget Title">
             <kd-button kind="tertiary" size="small" description="Settings">
               <kd-icon slot="icon" .icon=${settingsIcon}></kd-icon>
             </kd-button>
@@ -76,6 +74,28 @@ export const WithActions = {
           </kyn-widget-header>
 
           Widget Content
+        </kyn-widget>
+      </div>
+    `;
+  },
+};
+
+export const Pill = {
+  args,
+  render: (args) => {
+    return html`
+      <div style="max-width: 200px;">
+        <kyn-widget
+          pill
+          ?dragHandle=${args.dragHandle}
+          @on-drag-handle-grabbed=${(e) => action(e.type)(e)}
+          @on-drag-handle-released=${(e) => action(e.type)(e)}
+        >
+          <kyn-widget-header></kyn-widget-header>
+
+          Widget Content
+
+          <kyn-widget-footer widgetTitle="Widget Title"></kyn-widget-footer>
         </kyn-widget>
       </div>
     `;
@@ -106,14 +126,13 @@ export const WithChart = {
       <div style="max-width: 500px;">
         <kyn-widget
           ?dragHandle=${args.dragHandle}
-          ?pill=${args.pill}
-          @dragstart=${(e) => action(e.type)(e)}
-          @dragend=${(e) => action(e.type)(e)}
+          @on-drag-handle-grabbed=${(e) => action(e.type)(e)}
+          @on-drag-handle-released=${(e) => action(e.type)(e)}
         >
           <kd-chart
             type="bar"
             noBorder
-            chartTitle="Bar Chart"
+            chartTitle="Widget Title"
             .labels=${['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']}
             .datasets=${[
               {
@@ -158,6 +177,7 @@ export const GridLayout = {
             Widget Content
           </kyn-widget>
         </div>
+
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4">
           <kyn-widget>
             <kyn-widget-header widgetTitle="Widget"></kyn-widget-header>
@@ -169,6 +189,7 @@ export const GridLayout = {
             Widget Content
           </kyn-widget>
         </div>
+
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4">
           <kyn-widget>
             <kyn-widget-header widgetTitle="Widget"></kyn-widget-header>
@@ -177,6 +198,77 @@ export const GridLayout = {
             <br />
             Widget Content
           </kyn-widget>
+        </div>
+      </div>
+
+      <div class="kd-grid" style="margin-top: 32px;">
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-8">
+          <kyn-widget>
+            <kyn-widget-header widgetTitle="Widget"></kyn-widget-header>
+
+            Widget Content
+          </kyn-widget>
+        </div>
+
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4">
+          <div class="kd-grid">
+            <div
+              class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
+            >
+              <kyn-widget pill>
+                Widget Content
+
+                <kyn-widget-footer
+                  widgetTitle="Widget Title"
+                ></kyn-widget-footer>
+              </kyn-widget>
+            </div>
+
+            <div
+              class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
+            >
+              <kyn-widget pill>
+                Widget Content
+
+                <kyn-widget-footer
+                  widgetTitle="Widget Title"
+                ></kyn-widget-footer>
+              </kyn-widget>
+            </div>
+            <div
+              class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
+            >
+              <kyn-widget pill>
+                Widget Content
+
+                <kyn-widget-footer
+                  widgetTitle="Widget Title"
+                ></kyn-widget-footer>
+              </kyn-widget>
+            </div>
+            <div
+              class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
+            >
+              <kyn-widget pill>
+                Widget Content
+
+                <kyn-widget-footer
+                  widgetTitle="Widget Title"
+                ></kyn-widget-footer>
+              </kyn-widget>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kd-grid" style="margin-top: 32px;">
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
+          <kyn-widget>
+            <kyn-widget-header widgetTitle="Widget"></kyn-widget-header>
+
+            Widget Content
+          </kyn-widget>
+        </div>
         </div>
       </div>
     `;

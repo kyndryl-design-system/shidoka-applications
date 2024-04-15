@@ -7,18 +7,20 @@
 
 .widget-header {
   display: flex;
-  // align-items: center;
+  align-items: center;
   background: var(--kd-color-background-ui-soft);
-  margin: -24px -24px 24px -24px;
-  padding: 24px;
+  margin: -16px -16px 16px -16px;
+  padding: 16px;
   border-radius: 8px 8px 0 0;
 
   &.pill {
     background: none;
-  }
+    margin-bottom: 0;
 
-  &.has-drag-handle {
-    padding-left: 52px;
+    &:not(.slotted):not(.has-drag-handle) {
+      padding: 0;
+      margin: 0;
+    }
   }
 }
 
@@ -26,6 +28,16 @@
   .pill & {
     display: none;
   }
+}
+
+.drag-handle {
+  cursor: move;
+  // width: 24px;
+  // height: 24px;
+  padding-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .title {
