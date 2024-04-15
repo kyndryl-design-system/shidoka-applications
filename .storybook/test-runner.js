@@ -1,4 +1,4 @@
-const { injectAxe, checkA11y } = require('axe-playwright');
+const { injectAxe, checkA11y, configureAxe } = require('axe-playwright');
 const { getStoryContext } = require('@storybook/test-runner');
 
 /*
@@ -24,14 +24,18 @@ module.exports = {
       // get custom rules, convert from array to object structure, inject to options
       const Rules = storyContext.parameters?.a11y?.config?.rules;
       if (Rules) {
-        const RulesObj = {};
-        Rules.forEach((rule) => {
-          RulesObj[rule.id] = { enabled: rule.enabled };
-        });
+        // const RulesObj = {};
+        // Rules.forEach((rule) => {
+        //   RulesObj[rule.id] = { enabled: rule.enabled };
+        // });
 
-        Options.axeOptions = {
-          rules: RulesObj,
-        };
+        // Options.axeOptions = {
+        //   rules: RulesObj,
+        // };
+
+        await configureAxe(page, {
+          rules: Rules,
+        });
       }
 
       await checkA11y(page, '#storybook-root', Options);

@@ -1,3 +1,10 @@
+## [1.15.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.3...v1.15.4) (2024-04-15)
+
+
+### Bug Fixes
+
+* **checkbox-group:** limitRevealed on slot change ([11f35e8](https://github.com/kyndryl-design-system/shidoka-applications/commit/11f35e8bba80f4de077aca571d22db0add2d04b5))
+
 ## [1.15.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.2...v1.15.3) (2024-04-12)
 
 
