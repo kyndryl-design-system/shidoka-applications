@@ -420,6 +420,7 @@ export class CheckboxGroup extends LitElement {
   }
 
   private _handleSlotChange() {
+    this._toggleRevealed(this.limitRevealed);
     this.requestUpdate();
   }
 
