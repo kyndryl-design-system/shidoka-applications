@@ -131,7 +131,6 @@ export const WithChart = {
         >
           <kd-chart
             type="bar"
-            noBorder
             chartTitle="Widget Title"
             .labels=${['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']}
             .datasets=${[

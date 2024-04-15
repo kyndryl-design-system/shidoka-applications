@@ -26,23 +26,23 @@ export class Widget extends LitElement {
   @property({ type: Boolean })
   pill = false;
 
-  /** Widget title, inherited from child header.
-   * @internal
-   */
-  @state()
-  _widgetTitle = '';
-
   /** Widget drag handle active state.
    * @internal
    */
   @state()
   _dragActive = false;
 
-  /** Query for widget header
+  /** Query for widget header.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-widget-header' })
   _widgetHeaders!: any;
+
+  /** Query for slotted charts.
+   * @internal
+   */
+  @queryAssignedElements({ selector: 'kd-chart' })
+  _charts!: any;
 
   override render() {
     const Classes = {
@@ -84,7 +84,11 @@ export class Widget extends LitElement {
     if (this._widgetHeaders.length) {
       this._widgetHeaders[0]._dragHandle = this.dragHandle;
       this._widgetHeaders[0]._pill = this.pill;
-      this._widgetTitle = this._widgetHeaders[0].widgetTitle;
+    }
+
+    if (this._charts.length) {
+      this._charts[0]._widget = true;
+      this._charts[0]._dragHandle = this.dragHandle;
     }
   }
 }

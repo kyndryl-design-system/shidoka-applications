@@ -60,9 +60,8 @@ export class WidgetHeader extends LitElement {
           ? html`
               <span
                 class="drag-handle"
-                @pointerdown=${this._handleDragStart}
-                @pointerup=${this._handleDragEnd}
-                @pointerleave=${this._handleDragEnd}
+                @pointerdown=${this._handleDragGrabbed}
+                @pointerup=${this._handleDragReleased}
               >
                 <kd-icon .icon=${dragIcon}></kd-icon>
               </span>
@@ -85,12 +84,12 @@ export class WidgetHeader extends LitElement {
     this.requestUpdate();
   }
 
-  private _handleDragStart() {
+  private _handleDragGrabbed() {
     const Widget: any = this.parentElement;
     Widget._dragActive = true;
   }
 
-  private _handleDragEnd() {
+  private _handleDragReleased() {
     const Widget: any = this.parentElement;
     Widget._dragActive = false;
   }
