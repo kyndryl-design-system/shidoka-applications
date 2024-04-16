@@ -41,7 +41,7 @@ export const Widget = {
         >
           <kyn-widget-header widgetTitle="Widget Title"> </kyn-widget-header>
 
-          Widget Content
+          <div>Widget Content</div>
         </kyn-widget>
       </div>
     `;
@@ -73,7 +73,7 @@ export const WithActions = {
             </kd-button>
           </kyn-widget-header>
 
-          Widget Content
+          <div>Widget Content</div>
         </kyn-widget>
       </div>
     `;
@@ -93,7 +93,7 @@ export const Pill = {
         >
           <kyn-widget-header></kyn-widget-header>
 
-          Widget Content
+          <div>Widget Content</div>
 
           <kyn-widget-footer widgetTitle="Widget Title"></kyn-widget-footer>
         </kyn-widget>
@@ -165,15 +165,14 @@ export const WithChart = {
 };
 
 export const GridLayout = {
-  args: {},
-  render: (args) => {
+  render: () => {
     return html`
       <div class="kd-grid">
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4">
           <kyn-widget>
             <kyn-widget-header widgetTitle="Widget"></kyn-widget-header>
 
-            Widget Content
+            <div>Widget Content</div>
           </kyn-widget>
         </div>
 
@@ -181,11 +180,13 @@ export const GridLayout = {
           <kyn-widget>
             <kyn-widget-header widgetTitle="Widget"></kyn-widget-header>
 
-            Widget Content
-            <br />
-            Widget Content
-            <br />
-            Widget Content
+            <div>
+              Widget Content
+              <br />
+              Widget Content
+              <br />
+              Widget Content
+            </div>
           </kyn-widget>
         </div>
 
@@ -193,9 +194,11 @@ export const GridLayout = {
           <kyn-widget>
             <kyn-widget-header widgetTitle="Widget"></kyn-widget-header>
 
-            Widget Content
-            <br />
-            Widget Content
+            <div>
+              Widget Content
+              <br />
+              Widget Content
+            </div>
           </kyn-widget>
         </div>
       </div>
@@ -205,7 +208,7 @@ export const GridLayout = {
           <kyn-widget>
             <kyn-widget-header widgetTitle="Widget"></kyn-widget-header>
 
-            Widget Content
+            <div>Widget Content</div>
           </kyn-widget>
         </div>
 
@@ -215,7 +218,7 @@ export const GridLayout = {
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
               <kyn-widget pill>
-                Widget Content
+                <div>Widget Content</div>
 
                 <kyn-widget-footer
                   widgetTitle="Widget Title"
@@ -227,7 +230,7 @@ export const GridLayout = {
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
               <kyn-widget pill>
-                Widget Content
+                <div>Widget Content</div>
 
                 <kyn-widget-footer
                   widgetTitle="Widget Title"
@@ -238,7 +241,7 @@ export const GridLayout = {
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
               <kyn-widget pill>
-                Widget Content
+                <div>Widget Content</div>
 
                 <kyn-widget-footer
                   widgetTitle="Widget Title"
@@ -249,7 +252,7 @@ export const GridLayout = {
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
               <kyn-widget pill>
-                Widget Content
+                <div>Widget Content</div>
 
                 <kyn-widget-footer
                   widgetTitle="Widget Title"
@@ -265,7 +268,7 @@ export const GridLayout = {
           <kyn-widget>
             <kyn-widget-header widgetTitle="Widget"></kyn-widget-header>
 
-            Widget Content
+            <div>Widget Content</div>
           </kyn-widget>
         </div>
         </div>
