@@ -3456,12 +3456,12 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
+      "path": "src/components/reusable/datePicker/datepicker.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Date-Range picker",
-          "name": "DateRangePicker",
+          "description": "Datepicker.",
+          "name": "DatePicker",
           "cssParts": [
             {
               "description": "Styles the label.",
@@ -3477,16 +3477,6 @@
           "members": [
             {
               "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
               "name": "size",
               "type": {
                 "text": "string"
@@ -3497,23 +3487,23 @@
             },
             {
               "kind": "field",
-              "name": "startDate",
+              "name": "caption",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "attribute": "startDate"
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
             },
             {
               "kind": "field",
-              "name": "endDate",
+              "name": "value",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "attribute": "endDate"
+              "description": "Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format.",
+              "attribute": "value"
             },
             {
               "kind": "field",
@@ -3522,7 +3512,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker name. Required prop. as there could many fields into single form",
+              "description": "Datepicker name.",
               "attribute": "name"
             },
             {
@@ -3571,7 +3561,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
+              "description": "Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value",
               "attribute": "maxDate"
             },
             {
@@ -3580,7 +3570,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "description": "Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
               "attribute": "minDate"
             },
             {
@@ -3593,21 +3583,17 @@
               "attribute": "step"
             },
             {
-              "kind": "method",
-              "name": "handleStartDate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
+              "kind": "field",
+              "name": "datePickerType",
+              "type": {
+                "text": "DATE_PICKER_TYPES"
+              },
+              "description": "Date picker types. Default 'single'",
+              "attribute": "datePickerType"
             },
             {
               "kind": "method",
-              "name": "handleEndDate",
+              "name": "handleInput",
               "privacy": "private",
               "parameters": [
                 {
@@ -3639,19 +3625,6 @@
             },
             {
               "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
               "name": "_handleFormdata",
               "privacy": "private",
               "parameters": [
@@ -3671,20 +3644,11 @@
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
+              "description": "Captures the input event and emits the selected value and original event details.",
               "name": "on-input"
             }
           ],
           "attributes": [
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
             {
               "name": "size",
               "type": {
@@ -3695,22 +3659,22 @@
               "fieldName": "size"
             },
             {
-              "name": "startDate",
+              "name": "caption",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "fieldName": "startDate"
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
             },
             {
-              "name": "endDate",
+              "name": "value",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "fieldName": "endDate"
+              "description": "Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format.",
+              "fieldName": "value"
             },
             {
               "name": "name",
@@ -3718,7 +3682,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker name. Required prop. as there could many fields into single form",
+              "description": "Datepicker name.",
               "fieldName": "name"
             },
             {
@@ -3762,7 +3726,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
+              "description": "Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value",
               "fieldName": "maxDate"
             },
             {
@@ -3770,7 +3734,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "description": "Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
               "fieldName": "minDate"
             },
             {
@@ -3780,46 +3744,101 @@
               },
               "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\r\nThe default value of step is 1, indicating 1 day.",
               "fieldName": "step"
+            },
+            {
+              "name": "datePickerType",
+              "type": {
+                "text": "DATE_PICKER_TYPES"
+              },
+              "description": "Date picker types. Default 'single'",
+              "fieldName": "datePickerType"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-date-range-picker",
+          "tagName": "kyn-date-picker",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "DateRangePicker",
+          "name": "DatePicker",
           "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+            "name": "DatePicker",
+            "module": "src/components/reusable/datePicker/datepicker.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-date-range-picker",
+          "name": "kyn-date-picker",
           "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+            "name": "DatePicker",
+            "module": "src/components/reusable/datePicker/datepicker.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/index.ts",
+      "path": "src/components/reusable/datePicker/defs.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "regexDateFormat",
+          "default": "/^\\d{4}-\\d{2}-\\d{2}$/"
+        },
+        {
+          "kind": "variable",
+          "name": "regexDateTimeFormat",
+          "default": "/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$/"
+        },
+        {
+          "kind": "variable",
+          "name": "regexDateTimeFormatSec",
+          "default": "/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$/"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "regexDateFormat",
+          "declaration": {
+            "name": "regexDateFormat",
+            "module": "src/components/reusable/datePicker/defs.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "regexDateTimeFormat",
+          "declaration": {
+            "name": "regexDateTimeFormat",
+            "module": "src/components/reusable/datePicker/defs.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "regexDateTimeFormatSec",
+          "declaration": {
+            "name": "regexDateTimeFormatSec",
+            "module": "src/components/reusable/datePicker/defs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/datePicker/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "DateRangePicker",
+          "name": "DatePicker",
           "declaration": {
-            "name": "DateRangePicker",
-            "module": "\"./daterangepicker\""
+            "name": "DatePicker",
+            "module": "./datepicker"
           }
         }
       ]
@@ -4353,12 +4372,12 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/datePicker/datepicker.ts",
+      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Datepicker.",
-          "name": "DatePicker",
+          "description": "Date-Range picker",
+          "name": "DateRangePicker",
           "cssParts": [
             {
               "description": "Styles the label.",
@@ -4374,16 +4393,6 @@
           "members": [
             {
               "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
               "name": "caption",
               "type": {
                 "text": "string"
@@ -4394,13 +4403,33 @@
             },
             {
               "kind": "field",
-              "name": "value",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "startDate",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format.",
-              "attribute": "value"
+              "description": "Datepicker Start date in YYYY-MM-DD format.",
+              "attribute": "startDate"
+            },
+            {
+              "kind": "field",
+              "name": "endDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker End date in YYYY-MM-DD format.",
+              "attribute": "endDate"
             },
             {
               "kind": "field",
@@ -4409,7 +4438,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker name.",
+              "description": "Datepicker name. Required prop. as there could many fields into single form",
               "attribute": "name"
             },
             {
@@ -4458,7 +4487,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value",
+              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
               "attribute": "maxDate"
             },
             {
@@ -4467,7 +4496,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
               "attribute": "minDate"
             },
             {
@@ -4480,17 +4509,21 @@
               "attribute": "step"
             },
             {
-              "kind": "field",
-              "name": "datePickerType",
-              "type": {
-                "text": "DATE_PICKER_TYPES"
-              },
-              "description": "Date picker types. Default 'single'",
-              "attribute": "datePickerType"
+              "kind": "method",
+              "name": "handleStartDate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
-              "name": "handleInput",
+              "name": "handleEndDate",
               "privacy": "private",
               "parameters": [
                 {
@@ -4522,6 +4555,19 @@
             },
             {
               "kind": "method",
+              "name": "_emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "_handleFormdata",
               "privacy": "private",
               "parameters": [
@@ -4541,20 +4587,11 @@
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the selected value and original event details.",
+              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
               "name": "on-input"
             }
           ],
           "attributes": [
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
             {
               "name": "caption",
               "type": {
@@ -4565,13 +4602,31 @@
               "fieldName": "caption"
             },
             {
-              "name": "value",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "startDate",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format.",
-              "fieldName": "value"
+              "description": "Datepicker Start date in YYYY-MM-DD format.",
+              "fieldName": "startDate"
+            },
+            {
+              "name": "endDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker End date in YYYY-MM-DD format.",
+              "fieldName": "endDate"
             },
             {
               "name": "name",
@@ -4579,7 +4634,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker name.",
+              "description": "Datepicker name. Required prop. as there could many fields into single form",
               "fieldName": "name"
             },
             {
@@ -4623,7 +4678,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value",
+              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
               "fieldName": "maxDate"
             },
             {
@@ -4631,7 +4686,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
               "fieldName": "minDate"
             },
             {
@@ -4641,101 +4696,46 @@
               },
               "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\r\nThe default value of step is 1, indicating 1 day.",
               "fieldName": "step"
-            },
-            {
-              "name": "datePickerType",
-              "type": {
-                "text": "DATE_PICKER_TYPES"
-              },
-              "description": "Date picker types. Default 'single'",
-              "fieldName": "datePickerType"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-date-picker",
+          "tagName": "kyn-date-range-picker",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "DatePicker",
+          "name": "DateRangePicker",
           "declaration": {
-            "name": "DatePicker",
-            "module": "src/components/reusable/datePicker/datepicker.ts"
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-date-picker",
+          "name": "kyn-date-range-picker",
           "declaration": {
-            "name": "DatePicker",
-            "module": "src/components/reusable/datePicker/datepicker.ts"
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/datePicker/defs.ts",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "regexDateFormat",
-          "default": "/^\\d{4}-\\d{2}-\\d{2}$/"
-        },
-        {
-          "kind": "variable",
-          "name": "regexDateTimeFormat",
-          "default": "/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$/"
-        },
-        {
-          "kind": "variable",
-          "name": "regexDateTimeFormatSec",
-          "default": "/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$/"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "regexDateFormat",
-          "declaration": {
-            "name": "regexDateFormat",
-            "module": "src/components/reusable/datePicker/defs.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "regexDateTimeFormat",
-          "declaration": {
-            "name": "regexDateTimeFormat",
-            "module": "src/components/reusable/datePicker/defs.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "regexDateTimeFormatSec",
-          "declaration": {
-            "name": "regexDateTimeFormatSec",
-            "module": "src/components/reusable/datePicker/defs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/datePicker/index.ts",
+      "path": "src/components/reusable/daterangepicker/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "DatePicker",
+          "name": "DateRangePicker",
           "declaration": {
-            "name": "DatePicker",
-            "module": "./datepicker"
+            "name": "DateRangePicker",
+            "module": "\"./daterangepicker\""
           }
         }
       ]
@@ -5542,659 +5542,6 @@
           "declaration": {
             "name": "DropdownOption",
             "module": "./dropdownOption"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Sample Lit component to show global filter pattern applied to a Chart.",
-          "name": "SampleFilterChartComponent",
-          "members": [
-            {
-              "kind": "field",
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\r\n    {\r\n      value: 'Red',\r\n      text: 'Red',\r\n    },\r\n    {\r\n      value: 'Blue',\r\n      text: 'Blue',\r\n    },\r\n    {\r\n      value: 'Yellow',\r\n      text: 'Yellow',\r\n    },\r\n    {\r\n      value: 'Green',\r\n      text: 'Green',\r\n    },\r\n    {\r\n      value: 'Purple',\r\n      text: 'Purple',\r\n    },\r\n    {\r\n      value: 'Orange',\r\n      text: 'Orange',\r\n    },\r\n  ]",
-              "description": "Array of sample checkbox filter options.",
-              "attribute": "checkboxOptions"
-            },
-            {
-              "kind": "field",
-              "name": "chartLabels",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[\r\n    'Red',\r\n    'Blue',\r\n    'Yellow',\r\n    'Green',\r\n    'Purple',\r\n    'Orange',\r\n  ]",
-              "attribute": "chartLabels"
-            },
-            {
-              "kind": "field",
-              "name": "filteredChartLabels",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "attribute": "filteredChartLabels"
-            },
-            {
-              "kind": "field",
-              "name": "chartDatasets",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\r\n    {\r\n      label: 'Dataset 1',\r\n      data: [12, 19, 3, 5, 2, 3],\r\n    },\r\n    {\r\n      label: 'Dataset 2',\r\n      data: [8, 15, 7, 9, 6, 13],\r\n    },\r\n  ]",
-              "attribute": "chartDatasets"
-            },
-            {
-              "kind": "field",
-              "name": "chartOptions",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\r\n    scales: {\r\n      x: {\r\n        title: {\r\n          text: 'Color',\r\n        },\r\n      },\r\n      y: {\r\n        title: {\r\n          text: 'Votes',\r\n        },\r\n      },\r\n    },\r\n  }",
-              "attribute": "chartOptions"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSearch",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCheckboxes",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleModalClose",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleTagClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "option",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClearTags",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_filter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "query",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\r\n    {\r\n      value: 'Red',\r\n      text: 'Red',\r\n    },\r\n    {\r\n      value: 'Blue',\r\n      text: 'Blue',\r\n    },\r\n    {\r\n      value: 'Yellow',\r\n      text: 'Yellow',\r\n    },\r\n    {\r\n      value: 'Green',\r\n      text: 'Green',\r\n    },\r\n    {\r\n      value: 'Purple',\r\n      text: 'Purple',\r\n    },\r\n    {\r\n      value: 'Orange',\r\n      text: 'Orange',\r\n    },\r\n  ]",
-              "description": "Array of sample checkbox filter options.",
-              "fieldName": "checkboxOptions"
-            },
-            {
-              "name": "chartLabels",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[\r\n    'Red',\r\n    'Blue',\r\n    'Yellow',\r\n    'Green',\r\n    'Purple',\r\n    'Orange',\r\n  ]",
-              "fieldName": "chartLabels"
-            },
-            {
-              "name": "filteredChartLabels",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "fieldName": "filteredChartLabels"
-            },
-            {
-              "name": "chartDatasets",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\r\n    {\r\n      label: 'Dataset 1',\r\n      data: [12, 19, 3, 5, 2, 3],\r\n    },\r\n    {\r\n      label: 'Dataset 2',\r\n      data: [8, 15, 7, 9, 6, 13],\r\n    },\r\n  ]",
-              "fieldName": "chartDatasets"
-            },
-            {
-              "name": "chartOptions",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\r\n    scales: {\r\n      x: {\r\n        title: {\r\n          text: 'Color',\r\n        },\r\n      },\r\n      y: {\r\n        title: {\r\n          text: 'Votes',\r\n        },\r\n      },\r\n    },\r\n  }",
-              "fieldName": "chartOptions"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "sample-filter-chart-component",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SampleFilterChartComponent",
-          "declaration": {
-            "name": "SampleFilterChartComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "sample-filter-chart-component",
-          "declaration": {
-            "name": "SampleFilterChartComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.sample.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Sample Lit component to show global filter pattern.",
-          "name": "SampleFilterComponent",
-          "members": [
-            {
-              "kind": "field",
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\r\n    {\r\n      value: '1',\r\n      text: 'Option 1',\r\n    },\r\n    {\r\n      value: '2',\r\n      text: 'Option 2',\r\n    },\r\n    {\r\n      value: '3',\r\n      text: 'Option 3',\r\n    },\r\n    {\r\n      value: '4',\r\n      text: 'Option 4',\r\n    },\r\n    {\r\n      value: '5',\r\n      text: 'Option 5',\r\n    },\r\n    {\r\n      value: '6',\r\n      text: 'Option 6',\r\n    },\r\n  ]",
-              "description": "Array of sample checkbox filter options.",
-              "attribute": "checkboxOptions"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSearch",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCheckboxes",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleModalClose",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleTagClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "option",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClearTags",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCustomAction",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleOverflowClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\r\n    {\r\n      value: '1',\r\n      text: 'Option 1',\r\n    },\r\n    {\r\n      value: '2',\r\n      text: 'Option 2',\r\n    },\r\n    {\r\n      value: '3',\r\n      text: 'Option 3',\r\n    },\r\n    {\r\n      value: '4',\r\n      text: 'Option 4',\r\n    },\r\n    {\r\n      value: '5',\r\n      text: 'Option 5',\r\n    },\r\n    {\r\n      value: '6',\r\n      text: 'Option 6',\r\n    },\r\n  ]",
-              "description": "Array of sample checkbox filter options.",
-              "fieldName": "checkboxOptions"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "sample-filter-component",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SampleFilterComponent",
-          "declaration": {
-            "name": "SampleFilterComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.sample.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "sample-filter-component",
-          "declaration": {
-            "name": "SampleFilterComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.sample.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.table.sample.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Sample Lit component to show global filter pattern applied to a Chart.",
-          "name": "SampleFilterTableComponent",
-          "members": [
-            {
-              "kind": "field",
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\r\n    {\r\n      value: 'Stark',\r\n      text: 'Stark',\r\n    },\r\n    {\r\n      value: 'Lannister',\r\n      text: 'Lannister',\r\n    },\r\n    {\r\n      value: 'Targaryen',\r\n      text: 'Targaryen',\r\n    },\r\n  ]",
-              "description": "Array of sample checkbox filter options."
-            },
-            {
-              "kind": "field",
-              "name": "houses",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "['Stark', 'Lannister', 'Targaryen']"
-            },
-            {
-              "kind": "field",
-              "name": "filteredHouses",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]"
-            },
-            {
-              "kind": "field",
-              "name": "characters",
-              "type": {
-                "text": "array"
-              },
-              "privacy": "private",
-              "default": "[\r\n    { name: 'Jon Snow', age: 23, house: 'Stark' },\r\n    { name: 'Daenerys Targaryen', age: 22, house: 'Targaryen' },\r\n    { name: 'Tyrion Lannister', age: 39, house: 'Lannister' },\r\n    { name: 'Cersei Lannister', age: 42, house: 'Lannister' },\r\n    { name: 'Arya Stark', age: 18, house: 'Stark' },\r\n    { name: 'Sansa Stark', age: 20, house: 'Stark' },\r\n    { name: 'Bran Stark', age: 17, house: 'Stark' },\r\n    { name: 'Jaime Lannister', age: 44, house: 'Lannister' },\r\n  ]"
-            },
-            {
-              "kind": "field",
-              "name": "characters_backup",
-              "type": {
-                "text": "array"
-              },
-              "privacy": "private",
-              "default": "[\r\n    { name: 'Jon Snow', age: 23, house: 'Stark' },\r\n    { name: 'Daenerys Targaryen', age: 22, house: 'Targaryen' },\r\n    { name: 'Tyrion Lannister', age: 39, house: 'Lannister' },\r\n    { name: 'Cersei Lannister', age: 42, house: 'Lannister' },\r\n    { name: 'Arya Stark', age: 18, house: 'Stark' },\r\n    { name: 'Sansa Stark', age: 20, house: 'Stark' },\r\n    { name: 'Bran Stark', age: 17, house: 'Stark' },\r\n    { name: 'Jaime Lannister', age: 44, house: 'Lannister' },\r\n  ]"
-            },
-            {
-              "kind": "field",
-              "name": "selectedRows",
-              "type": {
-                "text": "array"
-              },
-              "default": "[]"
-            },
-            {
-              "kind": "field",
-              "name": "opened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false"
-            },
-            {
-              "kind": "method",
-              "name": "toggleMenu",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "textInput",
-              "type": {
-                "text": "any"
-              },
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSearch",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCheckboxes",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleModalClose",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleTagClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "option",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClearTags",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_filter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "query",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleOverflowClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_deleteSelectedRows",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSelectedRowsChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCustomAction",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "sample-filter-table-component",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SampleFilterTableComponent",
-          "declaration": {
-            "name": "SampleFilterTableComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.table.sample.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "sample-filter-table-component",
-          "declaration": {
-            "name": "SampleFilterTableComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.table.sample.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Global Filter bar.",
-          "name": "GlobalFilter",
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-global-filter",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-global-filter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "./globalFilter"
           }
         }
       ]
@@ -7059,6 +6406,659 @@
           "declaration": {
             "name": "OverflowMenuItem",
             "module": "src/components/reusable/overflowMenu/overflowMenuItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Sample Lit component to show global filter pattern applied to a Chart.",
+          "name": "SampleFilterChartComponent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\r\n    {\r\n      value: 'Red',\r\n      text: 'Red',\r\n    },\r\n    {\r\n      value: 'Blue',\r\n      text: 'Blue',\r\n    },\r\n    {\r\n      value: 'Yellow',\r\n      text: 'Yellow',\r\n    },\r\n    {\r\n      value: 'Green',\r\n      text: 'Green',\r\n    },\r\n    {\r\n      value: 'Purple',\r\n      text: 'Purple',\r\n    },\r\n    {\r\n      value: 'Orange',\r\n      text: 'Orange',\r\n    },\r\n  ]",
+              "description": "Array of sample checkbox filter options.",
+              "attribute": "checkboxOptions"
+            },
+            {
+              "kind": "field",
+              "name": "chartLabels",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[\r\n    'Red',\r\n    'Blue',\r\n    'Yellow',\r\n    'Green',\r\n    'Purple',\r\n    'Orange',\r\n  ]",
+              "attribute": "chartLabels"
+            },
+            {
+              "kind": "field",
+              "name": "filteredChartLabels",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "attribute": "filteredChartLabels"
+            },
+            {
+              "kind": "field",
+              "name": "chartDatasets",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\r\n    {\r\n      label: 'Dataset 1',\r\n      data: [12, 19, 3, 5, 2, 3],\r\n    },\r\n    {\r\n      label: 'Dataset 2',\r\n      data: [8, 15, 7, 9, 6, 13],\r\n    },\r\n  ]",
+              "attribute": "chartDatasets"
+            },
+            {
+              "kind": "field",
+              "name": "chartOptions",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\r\n    scales: {\r\n      x: {\r\n        title: {\r\n          text: 'Color',\r\n        },\r\n      },\r\n      y: {\r\n        title: {\r\n          text: 'Votes',\r\n        },\r\n      },\r\n    },\r\n  }",
+              "attribute": "chartOptions"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSearch",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCheckboxes",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleModalClose",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleTagClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "option",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClearTags",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_filter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "query",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\r\n    {\r\n      value: 'Red',\r\n      text: 'Red',\r\n    },\r\n    {\r\n      value: 'Blue',\r\n      text: 'Blue',\r\n    },\r\n    {\r\n      value: 'Yellow',\r\n      text: 'Yellow',\r\n    },\r\n    {\r\n      value: 'Green',\r\n      text: 'Green',\r\n    },\r\n    {\r\n      value: 'Purple',\r\n      text: 'Purple',\r\n    },\r\n    {\r\n      value: 'Orange',\r\n      text: 'Orange',\r\n    },\r\n  ]",
+              "description": "Array of sample checkbox filter options.",
+              "fieldName": "checkboxOptions"
+            },
+            {
+              "name": "chartLabels",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[\r\n    'Red',\r\n    'Blue',\r\n    'Yellow',\r\n    'Green',\r\n    'Purple',\r\n    'Orange',\r\n  ]",
+              "fieldName": "chartLabels"
+            },
+            {
+              "name": "filteredChartLabels",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "fieldName": "filteredChartLabels"
+            },
+            {
+              "name": "chartDatasets",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\r\n    {\r\n      label: 'Dataset 1',\r\n      data: [12, 19, 3, 5, 2, 3],\r\n    },\r\n    {\r\n      label: 'Dataset 2',\r\n      data: [8, 15, 7, 9, 6, 13],\r\n    },\r\n  ]",
+              "fieldName": "chartDatasets"
+            },
+            {
+              "name": "chartOptions",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\r\n    scales: {\r\n      x: {\r\n        title: {\r\n          text: 'Color',\r\n        },\r\n      },\r\n      y: {\r\n        title: {\r\n          text: 'Votes',\r\n        },\r\n      },\r\n    },\r\n  }",
+              "fieldName": "chartOptions"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "sample-filter-chart-component",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SampleFilterChartComponent",
+          "declaration": {
+            "name": "SampleFilterChartComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "sample-filter-chart-component",
+          "declaration": {
+            "name": "SampleFilterChartComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.sample.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Sample Lit component to show global filter pattern.",
+          "name": "SampleFilterComponent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\r\n    {\r\n      value: '1',\r\n      text: 'Option 1',\r\n    },\r\n    {\r\n      value: '2',\r\n      text: 'Option 2',\r\n    },\r\n    {\r\n      value: '3',\r\n      text: 'Option 3',\r\n    },\r\n    {\r\n      value: '4',\r\n      text: 'Option 4',\r\n    },\r\n    {\r\n      value: '5',\r\n      text: 'Option 5',\r\n    },\r\n    {\r\n      value: '6',\r\n      text: 'Option 6',\r\n    },\r\n  ]",
+              "description": "Array of sample checkbox filter options.",
+              "attribute": "checkboxOptions"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSearch",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCheckboxes",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleModalClose",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleTagClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "option",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClearTags",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCustomAction",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleOverflowClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\r\n    {\r\n      value: '1',\r\n      text: 'Option 1',\r\n    },\r\n    {\r\n      value: '2',\r\n      text: 'Option 2',\r\n    },\r\n    {\r\n      value: '3',\r\n      text: 'Option 3',\r\n    },\r\n    {\r\n      value: '4',\r\n      text: 'Option 4',\r\n    },\r\n    {\r\n      value: '5',\r\n      text: 'Option 5',\r\n    },\r\n    {\r\n      value: '6',\r\n      text: 'Option 6',\r\n    },\r\n  ]",
+              "description": "Array of sample checkbox filter options.",
+              "fieldName": "checkboxOptions"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "sample-filter-component",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SampleFilterComponent",
+          "declaration": {
+            "name": "SampleFilterComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.sample.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "sample-filter-component",
+          "declaration": {
+            "name": "SampleFilterComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.sample.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.table.sample.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Sample Lit component to show global filter pattern applied to a Chart.",
+          "name": "SampleFilterTableComponent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\r\n    {\r\n      value: 'Stark',\r\n      text: 'Stark',\r\n    },\r\n    {\r\n      value: 'Lannister',\r\n      text: 'Lannister',\r\n    },\r\n    {\r\n      value: 'Targaryen',\r\n      text: 'Targaryen',\r\n    },\r\n  ]",
+              "description": "Array of sample checkbox filter options."
+            },
+            {
+              "kind": "field",
+              "name": "houses",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "['Stark', 'Lannister', 'Targaryen']"
+            },
+            {
+              "kind": "field",
+              "name": "filteredHouses",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "characters",
+              "type": {
+                "text": "array"
+              },
+              "privacy": "private",
+              "default": "[\r\n    { name: 'Jon Snow', age: 23, house: 'Stark' },\r\n    { name: 'Daenerys Targaryen', age: 22, house: 'Targaryen' },\r\n    { name: 'Tyrion Lannister', age: 39, house: 'Lannister' },\r\n    { name: 'Cersei Lannister', age: 42, house: 'Lannister' },\r\n    { name: 'Arya Stark', age: 18, house: 'Stark' },\r\n    { name: 'Sansa Stark', age: 20, house: 'Stark' },\r\n    { name: 'Bran Stark', age: 17, house: 'Stark' },\r\n    { name: 'Jaime Lannister', age: 44, house: 'Lannister' },\r\n  ]"
+            },
+            {
+              "kind": "field",
+              "name": "characters_backup",
+              "type": {
+                "text": "array"
+              },
+              "privacy": "private",
+              "default": "[\r\n    { name: 'Jon Snow', age: 23, house: 'Stark' },\r\n    { name: 'Daenerys Targaryen', age: 22, house: 'Targaryen' },\r\n    { name: 'Tyrion Lannister', age: 39, house: 'Lannister' },\r\n    { name: 'Cersei Lannister', age: 42, house: 'Lannister' },\r\n    { name: 'Arya Stark', age: 18, house: 'Stark' },\r\n    { name: 'Sansa Stark', age: 20, house: 'Stark' },\r\n    { name: 'Bran Stark', age: 17, house: 'Stark' },\r\n    { name: 'Jaime Lannister', age: 44, house: 'Lannister' },\r\n  ]"
+            },
+            {
+              "kind": "field",
+              "name": "selectedRows",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "opened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "method",
+              "name": "toggleMenu",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "textInput",
+              "type": {
+                "text": "any"
+              },
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSearch",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCheckboxes",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleModalClose",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleTagClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "option",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClearTags",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_filter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "query",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleOverflowClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_deleteSelectedRows",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSelectedRowsChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCustomAction",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "sample-filter-table-component",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SampleFilterTableComponent",
+          "declaration": {
+            "name": "SampleFilterTableComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.table.sample.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "sample-filter-table-component",
+          "declaration": {
+            "name": "SampleFilterTableComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.table.sample.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Global Filter bar.",
+          "name": "GlobalFilter",
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-global-filter",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-global-filter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "./globalFilter"
           }
         }
       ]
@@ -12647,6 +12647,16 @@
             },
             {
               "kind": "field",
+              "name": "resizable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a resize handle.",
+              "attribute": "resizable"
+            },
+            {
+              "kind": "field",
               "name": "pill",
               "type": {
                 "text": "boolean"
@@ -12674,6 +12684,10 @@
             {
               "description": "Event that emits when the drag handle is released.",
               "name": "on-drag-handle-released"
+            },
+            {
+              "description": "Emits when the widget is resized and returns the ResizeObserverEntry details. We recommend using a debounce function in your event listener so you're not executing on every pixel shift. This will also fire on load, and window resize.",
+              "name": "on-resize"
             }
           ],
           "attributes": [
@@ -12685,6 +12699,15 @@
               "default": "false",
               "description": "Enables drag handle.",
               "fieldName": "dragHandle"
+            },
+            {
+              "name": "resizable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a resize handle.",
+              "fieldName": "resizable"
             },
             {
               "name": "pill",

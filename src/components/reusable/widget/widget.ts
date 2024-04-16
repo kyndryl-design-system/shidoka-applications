@@ -12,6 +12,7 @@ import Styles from './widget.scss';
  * Widget.
  * @fires on-drag-handle-grabbed - Event that emits when the drag handle is grabbed.
  * @fires on-drag-handle-released - Event that emits when the drag handle is released.
+ * @fires on-resize - Emits when the widget is resized and returns the ResizeObserverEntry details. We recommend using a debounce function in your event listener so you're not executing on every pixel shift. This will also fire on load, content size change, and window resize.
  * @slot unnamed - Slot for widget content.
  */
 @customElement('kyn-widget')
@@ -21,6 +22,10 @@ export class Widget extends LitElement {
   /** Enables drag handle. */
   @property({ type: Boolean })
   dragHandle = false;
+
+  /** Adds a resize handle. */
+  @property({ type: Boolean })
+  resizable = false;
 
   /** Pill style widget. */
   @property({ type: Boolean })
@@ -44,11 +49,29 @@ export class Widget extends LitElement {
   @queryAssignedElements({ selector: 'kd-chart' })
   _charts!: any;
 
+  /** Initializes a resize observer.
+   * @internal
+   */
+  resizeObserver = new ResizeObserver((entries) => {
+    if (this.resizable) {
+      entries.forEach((entry) => {
+        console.log(entry);
+        const event = new CustomEvent('on-resize', {
+          detail: {
+            entry,
+          },
+        });
+        this.dispatchEvent(event);
+      });
+    }
+  });
+
   override render() {
     const Classes = {
       widget: true,
       pill: this.pill,
       'drag-active': this._dragActive,
+      resizable: this.resizable,
     };
 
     return html`
@@ -75,6 +98,23 @@ export class Widget extends LitElement {
         this.dispatchEvent(event);
       }
     }
+  }
+
+  override updated(changedProps: any) {
+    if (changedProps.has('resizable')) {
+      if (this.resizable) {
+        const Widget: any = this.shadowRoot?.querySelector('.widget');
+        this.resizeObserver.observe(Widget);
+      } else {
+        this.resizeObserver.disconnect();
+      }
+    }
+  }
+
+  override disconnectedCallback() {
+    this.resizeObserver.disconnect();
+
+    super.disconnectedCallback();
   }
 
   private _handleSlotChange() {

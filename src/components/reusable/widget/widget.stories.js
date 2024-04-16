@@ -27,6 +27,7 @@ export default {
 
 const args = {
   dragHandle: false,
+  resizable: false,
 };
 
 export const Widget = {
@@ -36,8 +37,10 @@ export const Widget = {
       <div style="max-width: 500px;">
         <kyn-widget
           ?dragHandle=${args.dragHandle}
+          ?resizable=${args.resizable}
           @on-drag-handle-grabbed=${(e) => action(e.type)(e)}
           @on-drag-handle-released=${(e) => action(e.type)(e)}
+          @on-resize=${(e) => action(e.type)(e)}
         >
           <kyn-widget-header widgetTitle="Widget Title"> </kyn-widget-header>
 
@@ -55,8 +58,10 @@ export const WithActions = {
       <div style="max-width: 500px;">
         <kyn-widget
           ?dragHandle=${args.dragHandle}
+          ?resizable=${args.resizable}
           @on-drag-handle-grabbed=${(e) => action(e.type)(e)}
           @on-drag-handle-released=${(e) => action(e.type)(e)}
+          @on-resize=${(e) => action(e.type)(e)}
         >
           <kyn-widget-header widgetTitle="Widget Title">
             <kd-button kind="tertiary" size="small" description="Settings">
@@ -126,8 +131,10 @@ export const WithChart = {
       <div style="max-width: 500px;">
         <kyn-widget
           ?dragHandle=${args.dragHandle}
+          ?resizable=${args.resizable}
           @on-drag-handle-grabbed=${(e) => action(e.type)(e)}
           @on-drag-handle-released=${(e) => action(e.type)(e)}
+          @on-resize=${(e) => action(e.type)(e)}
         >
           <kd-chart
             type="bar"
