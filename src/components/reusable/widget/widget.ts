@@ -48,6 +48,7 @@ export class Widget extends LitElement {
     const Classes = {
       widget: true,
       pill: this.pill,
+      'drag-active': this._dragActive,
     };
 
     return html`
