@@ -1,3 +1,10 @@
+## [1.15.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.4...v1.15.5) (2024-04-16)
+
+
+### Bug Fixes
+
+* **labels:** 14px, bold, no transform ([33e33b0](https://github.com/kyndryl-design-system/shidoka-applications/commit/33e33b02988e6cfe0a08101f8343f9880bcfad09))
+
 ## [1.15.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.3...v1.15.4) (2024-04-15)
 
 
