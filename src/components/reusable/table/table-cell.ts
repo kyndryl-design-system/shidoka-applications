@@ -41,6 +41,14 @@ export class TableCell extends LitElement {
   @property({ type: String, reflect: true })
   maxWidth = '';
 
+  /**
+   * Sets a minimum width for the cell;
+   * Accepts standard CSS width values (e.g., '150px', '50%').
+   * @type {string}
+   */
+  @property({ type: String, reflect: true })
+  minWidth = '';
+
   /** Truncates the cell's contents with ellipsis. */
   @property({ type: Boolean, reflect: true })
   ellipsis = false;
@@ -84,6 +92,10 @@ export class TableCell extends LitElement {
 
     if (this.width && changedProperties.has('width')) {
       this.style.setProperty('--kyn-td-width', this.width);
+    }
+
+    if (this.width && changedProperties.has('minWidth')) {
+      this.style.setProperty('--kyn-td-min-width', this.minWidth);
     }
   }
 
