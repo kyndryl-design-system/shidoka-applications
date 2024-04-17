@@ -9,7 +9,8 @@ import type { Meta, StoryObj } from '@storybook/web-components';
 // Kyndryl Design System Components and Icons
 import './index';
 import './story-helpers/table-story';
-import { allData } from './story-helpers/ultils';
+import { characters } from './story-helpers/ultils';
+import allData from './story-helpers/table-data.json';
 
 const meta: Meta = {
   title: 'Components/DataTable',
@@ -36,35 +37,6 @@ export default meta;
 // Type definition for the story
 type Story = StoryObj;
 
-/**
- * Renders the table based on the given arguments
- * @param {object} args - Arguments for the table
- * @param {string} title - Title of the table
- * @returns {import("lit").TemplateResult} Rendered table
- */
-const tableRenderer = (args: any, params: any) => {
-  const { title, rows, showPagination } = params;
-  const { pageSize, pageNumber, pageSizeOptions } = args;
-
-  return html` <story-table
-    .tableTitle=${title}
-    .rows=${rows}
-    .pageSize=${pageSize}
-    .pageNumber=${pageNumber}
-    .pageSizeOptions=${pageSizeOptions}
-    .showPagination=${showPagination}
-    ?showTableActions=${args.showTableActions}
-    ?dense=${args.dense}
-    ?ellipsis=${args.ellipsis}
-    ?sortable=${args.sortable}
-    ?checkboxSelection=${args.checkboxSelection}
-    ?fixedLayout=${args.fixedLayout}
-    ?stickyHeader=${args.stickyHeader}
-    ?striped=${args.striped}
-  >
-  </story-table>`;
-};
-
 const parameters = {
   docs: {
     source: {
@@ -78,10 +50,10 @@ const parameters = {
 };
 
 export const Basic: Story = {
-  args: {},
-  render: (args) => {
-    const rows = allData.slice(0, 5);
-    return tableRenderer(args, { title: 'Basic', rows });
+  render: () => {
+    return html`
+      <story-table .tableTitle=${'Basic'} .rows=${characters}> </story-table>
+    `;
   },
   parameters,
 };
@@ -91,21 +63,44 @@ export const Sorting: Story = {
     sortable: true,
   },
   render: (args) => {
-    const rows = allData.slice(0, 5);
-    return tableRenderer(args, { title: 'Sorting', rows });
+    return html`
+      <story-table
+        .tableTitle=${'Sorting'}
+        .rows=${characters}
+        ?sortable=${args.sortable}
+      >
+      </story-table>
+    `;
   },
-  parameters
+  parameters,
 };
 
 export const Selection: Story = {
-  args: {
-    checkboxSelection: true,
+  render: () => {
+    return html`
+      <h4>Important Information about Row Selection</h4>
+      <ul>
+        <li>
+          <b>Note:</b> The 'rowId' attribute is required when enabling multi-selection
+          functionality.
+        </li>
+
+        <li>
+          The 'getSelectedRows' method is publicly accessible and can be
+          optionally used to fetch the currently selected rows from the table,
+          as per requirement.
+        </li>
+      </ul>
+
+      <story-table
+        .tableTitle=${'Selection'}
+        .rows=${characters}
+        ?checkboxSelection=${true}
+      >
+      </story-table>
+    `;
   },
-  render: (args) => {
-    const rows = allData.slice(0, 5);
-    return tableRenderer(args, { title: 'Selection', rows });
-  },
-  parameters
+  parameters,
 };
 
 export const BatchActions: Story = {
@@ -114,10 +109,17 @@ export const BatchActions: Story = {
     showTableActions: true,
   },
   render: (args) => {
-    const rows = allData.slice(0, 5);
-    return tableRenderer(args, { title: 'Batch Actions', rows });
+    return html`
+      <story-table
+        .tableTitle=${'Batch Actions'}
+        .rows=${characters}
+        ?checkboxSelection=${args.checkboxSelection}
+        ?showTableActions=${args.showTableActions}
+      >
+      </story-table>
+    `;
   },
-  parameters
+  parameters,
 };
 
 export const Pagination: Story = {
@@ -128,13 +130,19 @@ export const Pagination: Story = {
   },
   render: (args) => {
     const rows = allData;
-    return tableRenderer(args, {
-      title: 'Pagination',
-      rows,
-      showPagination: true,
-    });
+    return html`
+      <story-table
+        .tableTitle=${'Pagination'}
+        .rows=${rows}
+        .pageSize=${args.pageSize}
+        .pageNumber=${args.pageNumber}
+        .pageSizeOptions=${args.pageSizeOptions}
+        .showPagination=${true}
+      >
+      </story-table>
+    `;
   },
-  parameters
+  parameters,
 };
 
 export const StickyHeader: Story = {
@@ -143,9 +151,16 @@ export const StickyHeader: Story = {
   },
   render: (args) => {
     const rows = allData;
-    return tableRenderer(args, { title: 'Sticky Header', rows });
+    return html`
+      <story-table
+        .tableTitle=${'Sticky Header'}
+        .rows=${rows}
+        ?stickyHeader=${args.stickyHeader}
+      >
+      </story-table>
+    `;
   },
-  parameters
+  parameters,
 };
 
 export const StripedRows: Story = {
@@ -153,10 +168,16 @@ export const StripedRows: Story = {
     striped: true,
   },
   render: (args) => {
-    const rows = allData.slice(0, 5);
-    return tableRenderer(args, { title: 'Striped Rows', rows });
+    return html`
+      <story-table
+        .tableTitle=${'Striped Rows'}
+        .rows=${characters}
+        ?striped=${args.striped}
+      >
+      </story-table>
+    `;
   },
-  parameters
+  parameters,
 };
 
 export const Dense: Story = {
@@ -164,10 +185,16 @@ export const Dense: Story = {
     dense: true,
   },
   render: (args) => {
-    const rows = allData.slice(0, 5);
-    return tableRenderer(args, { title: 'Dense', rows });
+    return html`
+      <story-table
+        .tableTitle=${'Dense'}
+        .rows=${characters}
+        ?dense=${args.dense}
+      >
+      </story-table>
+    `;
   },
-  parameters
+  parameters,
 };
 
 export const Ellipsis: Story = {
@@ -175,15 +202,22 @@ export const Ellipsis: Story = {
     ellipsis: true,
   },
   render: (args) => {
-    const rows = allData.slice(0, 5).map((row: any) => {
+    const rows = characters.map((row: any) => {
       return {
         ...row,
         firstName: 'This is a very long description that should be truncated.',
       };
     });
-    return tableRenderer(args, { title: 'Ellipsis', rows });
+    return html`
+      <story-table
+        .tableTitle=${'Ellipsis'}
+        .rows=${rows}
+        ?ellipsis=${args.ellipsis}
+      >
+      </story-table>
+    `;
   },
-  parameters
+  parameters,
 };
 
 export const FixedLayout: Story = {
@@ -191,8 +225,14 @@ export const FixedLayout: Story = {
     fixedLayout: true,
   },
   render: (args) => {
-    const rows = allData.slice(0, 5);
-    return tableRenderer(args, { title: 'Fixed Layout', rows });
+    return html`
+      <story-table
+        .tableTitle=${'Fixed Layout'}
+        .rows=${characters}
+        ?fixedLayout=${args.fixedLayout}
+      >
+      </story-table>
+    `;
   },
-  parameters
+  parameters,
 };

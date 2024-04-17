@@ -89,7 +89,13 @@ export const WithTable = {
       <sample-filter-table-component></sample-filter-table-component>
       <br />
 
-      <p>This example shows a Global Filter pattern applied to a Table.</p>
+      <p>
+        This example shows a Global Filter pattern applied to a Table. The
+        Global Filter component can be added to tables to allow users to search
+        and filter the data. The complete global filter toolbar is shown below.
+        All of the components on this toolbar are optional, and the behavior of
+        the components need to be programmed separately.
+      </p>
 
       <br />
 

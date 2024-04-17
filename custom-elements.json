@@ -5524,6 +5524,292 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/modal/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Modal",
+          "declaration": {
+            "name": "Modal",
+            "module": "./modal"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/modal/modal.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Modal.",
+          "name": "Modal",
+          "slots": [
+            {
+              "description": "Slot for modal body content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the anchor button content.",
+              "name": "anchor"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Modal open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'auto'",
+              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title/heading text, required.",
+              "attribute": "titleText"
+            },
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "okText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'OK'",
+              "description": "OK button text.",
+              "attribute": "okText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "attribute": "cancelText"
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "okDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "attribute": "okDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the footer/action buttons to create a passive modal.",
+              "attribute": "hideFooter"
+            },
+            {
+              "kind": "field",
+              "name": "beforeClose",
+              "type": {
+                "text": "Function"
+              },
+              "description": "Function to execute before the modal can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
+            },
+            {
+              "kind": "method",
+              "name": "_openModal",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_closeModal",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "returnValue",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitCloseEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Modal open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'auto'",
+              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
+              "fieldName": "size"
+            },
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title/heading text, required.",
+              "fieldName": "titleText"
+            },
+            {
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "fieldName": "labelText"
+            },
+            {
+              "name": "okText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'OK'",
+              "description": "OK button text.",
+              "fieldName": "okText"
+            },
+            {
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "fieldName": "cancelText"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "okDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "fieldName": "okDisabled"
+            },
+            {
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the footer/action buttons to create a passive modal.",
+              "fieldName": "hideFooter"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-modal",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Modal",
+          "declaration": {
+            "name": "Modal",
+            "module": "src/components/reusable/modal/modal.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-modal",
+          "declaration": {
+            "name": "Modal",
+            "module": "src/components/reusable/modal/modal.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts",
       "declarations": [
         {
@@ -6171,292 +6457,6 @@
           "declaration": {
             "name": "GlobalFilter",
             "module": "./globalFilter"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/modal/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Modal",
-          "declaration": {
-            "name": "Modal",
-            "module": "./modal"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/modal/modal.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Modal.",
-          "name": "Modal",
-          "slots": [
-            {
-              "description": "Slot for modal body content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the anchor button content.",
-              "name": "anchor"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Modal open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'auto'",
-              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title/heading text, required.",
-              "attribute": "titleText"
-            },
-            {
-              "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "okText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'OK'",
-              "description": "OK button text.",
-              "attribute": "okText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelText"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "okDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "attribute": "okDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the footer/action buttons to create a passive modal.",
-              "attribute": "hideFooter"
-            },
-            {
-              "kind": "field",
-              "name": "beforeClose",
-              "type": {
-                "text": "Function"
-              },
-              "description": "Function to execute before the modal can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
-            },
-            {
-              "kind": "method",
-              "name": "_openModal",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_closeModal",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "returnValue",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitCloseEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Modal open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'auto'",
-              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
-              "fieldName": "size"
-            },
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title/heading text, required.",
-              "fieldName": "titleText"
-            },
-            {
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "fieldName": "labelText"
-            },
-            {
-              "name": "okText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'OK'",
-              "description": "OK button text.",
-              "fieldName": "okText"
-            },
-            {
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "fieldName": "cancelText"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "okDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "fieldName": "okDisabled"
-            },
-            {
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the footer/action buttons to create a passive modal.",
-              "fieldName": "hideFooter"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-modal",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Modal",
-          "declaration": {
-            "name": "Modal",
-            "module": "src/components/reusable/modal/modal.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-modal",
-          "declaration": {
-            "name": "Modal",
-            "module": "src/components/reusable/modal/modal.ts"
           }
         }
       ]
@@ -7874,292 +7874,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/sideDrawer/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SideDrawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "./sideDrawer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/sideDrawer/sideDrawer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Side Drawer.",
-          "name": "SideDrawer",
-          "slots": [
-            {
-              "description": "Slot for drawer body content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the anchor button content.",
-              "name": "anchor"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Drawer open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Drawer size. `'md'`, or `'sm'`.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title / Heading text, required.",
-              "attribute": "titleText"
-            },
-            {
-              "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "submitBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Ok'",
-              "description": "Submit button text.",
-              "attribute": "submitBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "submitBtnDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "attribute": "submitBtnDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine whether needs footer",
-              "attribute": "hideFooter"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "beforeClose",
-              "type": {
-                "text": "Function"
-              },
-              "description": "Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
-            },
-            {
-              "kind": "method",
-              "name": "_openDrawer",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_closeDrawer",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "returnValue",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitCloseEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Drawer open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Drawer size. `'md'`, or `'sm'`.",
-              "fieldName": "size"
-            },
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title / Heading text, required.",
-              "fieldName": "titleText"
-            },
-            {
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "fieldName": "labelText"
-            },
-            {
-              "name": "submitBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Ok'",
-              "description": "Submit button text.",
-              "fieldName": "submitBtnText"
-            },
-            {
-              "name": "cancelBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "fieldName": "cancelBtnText"
-            },
-            {
-              "name": "submitBtnDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "fieldName": "submitBtnDisabled"
-            },
-            {
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine whether needs footer",
-              "fieldName": "hideFooter"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "fieldName": "destructive"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-side-drawer",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SideDrawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-side-drawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/radioButton/index.ts",
       "declarations": [],
       "exports": [
@@ -8504,6 +8218,292 @@
           "declaration": {
             "name": "RadioButtonGroup",
             "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/sideDrawer/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SideDrawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "./sideDrawer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/sideDrawer/sideDrawer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Side Drawer.",
+          "name": "SideDrawer",
+          "slots": [
+            {
+              "description": "Slot for drawer body content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the anchor button content.",
+              "name": "anchor"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Drawer open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Drawer size. `'md'`, or `'sm'`.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title / Heading text, required.",
+              "attribute": "titleText"
+            },
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "submitBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Ok'",
+              "description": "Submit button text.",
+              "attribute": "submitBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "attribute": "cancelBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "submitBtnDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "attribute": "submitBtnDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine whether needs footer",
+              "attribute": "hideFooter"
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "beforeClose",
+              "type": {
+                "text": "Function"
+              },
+              "description": "Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
+            },
+            {
+              "kind": "method",
+              "name": "_openDrawer",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_closeDrawer",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "returnValue",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitCloseEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Drawer open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Drawer size. `'md'`, or `'sm'`.",
+              "fieldName": "size"
+            },
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title / Heading text, required.",
+              "fieldName": "titleText"
+            },
+            {
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "fieldName": "labelText"
+            },
+            {
+              "name": "submitBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Ok'",
+              "description": "Submit button text.",
+              "fieldName": "submitBtnText"
+            },
+            {
+              "name": "cancelBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "fieldName": "cancelBtnText"
+            },
+            {
+              "name": "submitBtnDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "fieldName": "submitBtnDisabled"
+            },
+            {
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine whether needs footer",
+              "fieldName": "hideFooter"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "fieldName": "destructive"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-side-drawer",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SideDrawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-side-drawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
           }
         }
       ]
@@ -8969,6 +8969,15 @@
                   }
                 }
               ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-rows-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Dispatched when the rows in the table body change."
             }
           ],
           "attributes": [
@@ -10174,12 +10183,14 @@
             },
             {
               "kind": "method",
-              "name": "updateHeaderCheckbox",
+              "name": "_updateHeaderCheckbox",
+              "privacy": "private",
               "description": "Updates the state of the header checkbox based on the number of\nselected rows."
             },
             {
               "kind": "method",
-              "name": "handleRowSelectionChange",
+              "name": "_handleRowSelectionChange",
+              "privacy": "private",
               "parameters": [
                 {
                   "name": "event",
@@ -10192,7 +10203,8 @@
             },
             {
               "kind": "method",
-              "name": "toggleSelectionAll",
+              "name": "_toggleSelectionAll",
+              "privacy": "private",
               "parameters": [
                 {
                   "name": "event",
@@ -10206,8 +10218,8 @@
             {
               "kind": "method",
               "name": "updateAfterExternalChanges",
-              "description": "Resets the selection state of all rows in the table.\nThis method is called when the table is reset or cleared.",
               "privacy": "public",
+              "description": "Resets the selection state of all rows in the table.\nThis method is called when the table is reset or cleared.",
               "return": {
                 "type": {
                   "text": ""
@@ -10217,13 +10229,33 @@
             {
               "kind": "method",
               "name": "getSelectedRows",
+              "privacy": "public",
               "description": "Returns the selected rows in the table.",
               "return": {
                 "type": {
                   "text": ""
                 }
-              },
-              "privacy": "public"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_handleRowsChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent"
+                  },
+                  "description": "The custom event containing the updated rows."
+                }
+              ],
+              "description": "Handles the change of rows in the table body."
+            },
+            {
+              "kind": "method",
+              "name": "_updateSelectionStates",
+              "privacy": "private"
             }
           ],
           "events": [
@@ -13233,34 +13265,6 @@
       "declarations": [
         {
           "kind": "function",
-          "name": "getRandomName"
-        },
-        {
-          "kind": "function",
-          "name": "getRandomBirthDate"
-        },
-        {
-          "kind": "function",
-          "name": "ageGenerator",
-          "parameters": [
-            {
-              "name": "birthday",
-              "type": {
-                "text": "string"
-              }
-            }
-          ]
-        },
-        {
-          "kind": "variable",
-          "name": "allData",
-          "description": "Generates an array of mock data",
-          "type": {
-            "text": "Array<object>"
-          }
-        },
-        {
-          "kind": "function",
           "name": "sortByFName",
           "parameters": [
             {
@@ -13342,41 +13346,17 @@
               }
             }
           ]
+        },
+        {
+          "kind": "variable",
+          "name": "characters",
+          "type": {
+            "text": "array"
+          },
+          "default": "[\n  {\n    id: 1,\n    firstName: 'Jon',\n    lastName: 'Snow',\n    age: 23,\n    birthday: 'December 26',\n    fullname: 'Jon Snow',\n    gender: 'Male',\n  },\n  {\n    id: 2,\n    firstName: 'Daenerys',\n    lastName: 'Targaryen',\n    age: 22,\n    birthday: 'April 23',\n    fullname: 'Daenerys Targaryen',\n    gender: 'Female',\n  },\n  {\n    id: 3,\n    firstName: 'Tyrion',\n    lastName: 'Lannister',\n    age: 39,\n    birthday: 'June 12',\n    fullname: 'Tyrion Lannister',\n    gender: 'Male',\n  },\n  {\n    id: 4,\n    firstName: 'Arya',\n    lastName: 'Stark',\n    age: 18,\n    birthday: 'February 15',\n    fullname: 'Arya Stark',\n    gender: 'Female',\n  },\n  {\n    id: 5,\n    firstName: 'Cersei',\n    lastName: 'Lannister',\n    age: 42,\n    birthday: 'November 30',\n    fullname: 'Cersei Lannister',\n    gender: 'Female',\n  },\n]"
         }
       ],
       "exports": [
-        {
-          "kind": "js",
-          "name": "getRandomName",
-          "declaration": {
-            "name": "getRandomName",
-            "module": "src/components/reusable/table/story-helpers/ultils.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "getRandomBirthDate",
-          "declaration": {
-            "name": "getRandomBirthDate",
-            "module": "src/components/reusable/table/story-helpers/ultils.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "ageGenerator",
-          "declaration": {
-            "name": "ageGenerator",
-            "module": "src/components/reusable/table/story-helpers/ultils.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "allData",
-          "declaration": {
-            "name": "allData",
-            "module": "src/components/reusable/table/story-helpers/ultils.ts"
-          }
-        },
         {
           "kind": "js",
           "name": "sortByFName",
@@ -13422,6 +13402,14 @@
           "name": "extractData",
           "declaration": {
             "name": "extractData",
+            "module": "src/components/reusable/table/story-helpers/ultils.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "characters",
+          "declaration": {
+            "name": "characters",
             "module": "src/components/reusable/table/story-helpers/ultils.ts"
           }
         }
