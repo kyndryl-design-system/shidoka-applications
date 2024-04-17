@@ -1,3 +1,10 @@
+## [1.15.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.6...v1.15.7) (2024-04-17)
+
+
+### Bug Fixes
+
+* **header-link:** sub-link active style ([afdd93e](https://github.com/kyndryl-design-system/shidoka-applications/commit/afdd93efa04f9f389f38bae6d6ca4563800196b0))
+
 ## [1.15.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.5...v1.15.6) (2024-04-17)
 
 
