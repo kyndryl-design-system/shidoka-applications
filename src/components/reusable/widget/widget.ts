@@ -55,7 +55,6 @@ export class Widget extends LitElement {
   resizeObserver = new ResizeObserver((entries) => {
     if (this.resizable) {
       entries.forEach((entry) => {
-        console.log(entry);
         const event = new CustomEvent('on-resize', {
           detail: {
             entry,
