@@ -25,6 +25,7 @@ export class LocalNav extends LitElement {
   textStrings = {
     toggleMenu: 'Toggle Menu',
     collapse: 'Collapse',
+    menu: 'Menu',
   };
 
   /** Local nav expanded state.
@@ -64,7 +65,9 @@ export class LocalNav extends LitElement {
           aria-label=${this.textStrings.toggleMenu}
           @click=${(e: Event) => this._handleNavToggle(e)}
         >
-          ${this._expanded ? this.textStrings.collapse : this._activeLinkText}
+          ${this._expanded
+            ? this.textStrings.collapse
+            : this._activeLinkText || this.textStrings.menu}
           <kd-icon .icon=${arrowIcon}></kd-icon>
         </button>
 
