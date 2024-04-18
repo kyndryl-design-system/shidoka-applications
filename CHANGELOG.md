@@ -1,3 +1,11 @@
+## [1.15.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.7...v1.15.8) (2024-04-18)
+
+
+### Bug Fixes
+
+* **local-nav:** adjust mobile active text logic ([9d4eff7](https://github.com/kyndryl-design-system/shidoka-applications/commit/9d4eff770f4ec073e72dfcc1117dd6f89e30f197))
+* **local-nav:** fallback text if no active link ([3e09330](https://github.com/kyndryl-design-system/shidoka-applications/commit/3e09330b9899c3a1bd256b7f54f5d0ae48be3f8b))
+
 ## [1.15.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.6...v1.15.7) (2024-04-17)
 
 
