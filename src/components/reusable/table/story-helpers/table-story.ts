@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 
@@ -23,6 +23,14 @@ import { Table } from '../table';
 
 @customElement('story-table')
 class MyStoryTable extends LitElement {
+  static override styles = css`
+    .min-max-width-100 {
+      --kyn-td-min-width: 100px;
+      --kyn-td-max-width: 100px;
+      --kyn-td-width: 100px;
+    }
+  `;
+
   /**
    * kynTable: Reference to the kyn-table component.
    * @ignore
@@ -98,7 +106,7 @@ class MyStoryTable extends LitElement {
     this.pageNumber = 1;
     await this.updateComplete;
 
-    this.kynTable?.updateAfterExternalChanges()
+    this.kynTable?.updateAfterExternalChanges();
   }
 
   /**
@@ -108,7 +116,7 @@ class MyStoryTable extends LitElement {
     this.pageNumber = event.detail.value;
 
     await this.updateComplete;
-    this.kynTable?.updateAfterExternalChanges()
+    this.kynTable?.updateAfterExternalChanges();
   }
 
   handleSortByIdNumber(e: CustomEvent) {
@@ -273,7 +281,7 @@ class MyStoryTable extends LitElement {
                 <kyn-tr .rowId=${row.id} key="row-${row.id}">
                   <kyn-td .align=${'center'}>${row.id}</kyn-td>
                   <kyn-td .maxWidth=${fNameMaxWidth}>${row.firstName}</kyn-td>
-                  <kyn-td>${row.lastName}</kyn-td>
+                  <kyn-td class="min-max-width-100">${row.lastName}</kyn-td>
                   <kyn-td>${row.birthday}</kyn-td>
                   <kyn-td .align=${'right'}>${row.age}</kyn-td>
                   <kyn-td>${row.firstName} ${row.lastName}</kyn-td>

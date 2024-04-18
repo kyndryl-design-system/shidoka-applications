@@ -113,6 +113,14 @@ export class Table extends LitElement {
   private _selectedRows: TableRow[] = [];
 
   /**
+   * selectedRowIds: Set of row ids that are currently selected.
+   * @ignore
+   * @private
+   */
+  @state()
+  private _selectedRowIds: Set<string> = new Set();
+
+  /**
    * headerCheckboxIndeterminate: Boolean indicating whether the header
    * checkbox is in an indeterminate state.
    * @ignore
@@ -133,8 +141,9 @@ export class Table extends LitElement {
   /**
    * Updates the state of the header checkbox based on the number of
    * selected rows.
+   * @private
    */
-  updateHeaderCheckbox() {
+  private _updateHeaderCheckbox() {
     if (this._selectedRows.length === 0 || this._allRows.length === 0) {
       this._headerCheckboxIndeterminate = false;
       this._headerCheckboxChecked = false;
@@ -155,7 +164,7 @@ export class Table extends LitElement {
   /**
    * Handles the change of selection state for a specific row.
    */
-  handleRowSelectionChange(event: CustomEvent) {
+  private _handleRowSelectionChange(event: CustomEvent) {
     const { target } = event;
     const { _selectedRows: selectedRows } = this;
 
@@ -165,11 +174,13 @@ export class Table extends LitElement {
 
     if (selectedRows.includes(target as TableRow)) {
       this._selectedRows = selectedRows.filter((e) => e !== target);
+      this._selectedRowIds.delete((target as TableRow).rowId);
     } else {
       this._selectedRows.push(target as TableRow);
+      this._selectedRowIds.add((target as TableRow).rowId);
     }
 
-    this.updateHeaderCheckbox();
+    this._updateHeaderCheckbox();
 
     const init = {
       bubbles: true,
@@ -186,7 +197,7 @@ export class Table extends LitElement {
   /**
    * Toggles the selection state of all rows in the table.
    */
-  toggleSelectionAll(event: CustomEvent) {
+  private _toggleSelectionAll(event: CustomEvent) {
     const {
       detail: { checked },
       target,
@@ -203,11 +214,15 @@ export class Table extends LitElement {
 
     if (!checked) {
       this._selectedRows = [];
+      this._selectedRowIds = new Set();
     } else {
       this._selectedRows = [...allRows];
+      this._selectedRowIds = new Set(
+        this._selectedRows.map((row) => row.rowId)
+      );
     }
 
-    this.updateHeaderCheckbox();
+    this._updateHeaderCheckbox();
 
     const init = {
       bubbles: true,
@@ -226,14 +241,14 @@ export class Table extends LitElement {
    * @public
    * @returns void
    */
-  updateAfterExternalChanges() {
+  public updateAfterExternalChanges() {
     // Re-query the DOM to update the _allRows based on current children elements
     this._allRows = Array.from(this.querySelectorAll('kyn-tr'));
 
     // Update _selectedRows based on whether the row elements are marked as selected
     this._selectedRows = this._allRows.filter((row) => row.selected);
 
-    this.updateHeaderCheckbox();
+    this._updateHeaderCheckbox();
     this.requestUpdate();
   }
 
@@ -242,8 +257,40 @@ export class Table extends LitElement {
    * @returns Array of selected rows.
    * @public
    */
-  getSelectedRows() {
+  public getSelectedRows() {
     return this._selectedRows;
+  }
+
+  /**
+   * Handles the change of rows in the table body.
+   * @param {CustomEvent} event - The custom event containing the updated rows.
+   * @private
+   */
+  private _handleRowsChange(event: CustomEvent) {
+    const {
+      detail: { rows },
+    } = event;
+    this._allRows = rows;
+    this._updateSelectionStates();
+    this._updateHeaderCheckbox();
+  }
+
+  private _updateSelectionStates() {
+    // Temporary array to hold updated selected rows
+    const updatedSelectedRows: TableRow[] = [];
+
+    // Loop through all rows to update their selected state and rebuild the selectedRows array
+    this._allRows.forEach((row) => {
+      if (this._selectedRowIds.has(row.rowId)) {
+        row.selected = true; // Update the selected property if the rowId matches
+        updatedSelectedRows.push(row); // Add the actual row element to the updated selected rows array
+      } else {
+        row.selected = false; // Ensure non-selected rows are marked as such
+      }
+    });
+
+    // Replace the old selectedRows with the updated selected rows
+    this._selectedRows = updatedSelectedRows;
   }
 
   override connectedCallback() {
@@ -251,11 +298,15 @@ export class Table extends LitElement {
 
     this.addEventListener(
       'on-header-checkbox-toggle',
-      this.toggleSelectionAll as EventListener
+      this._toggleSelectionAll as EventListener
     );
     this.addEventListener(
       'on-row-select',
-      this.handleRowSelectionChange as EventListener
+      this._handleRowSelectionChange as EventListener
+    );
+    this.addEventListener(
+      'on-rows-change',
+      this._handleRowsChange as EventListener
     );
   }
 
@@ -264,16 +315,19 @@ export class Table extends LitElement {
 
     this.removeEventListener(
       'on-header-checkbox-toggle',
-      this.toggleSelectionAll as EventListener
+      this._toggleSelectionAll as EventListener
     );
     this.removeEventListener(
       'on-row-select',
-      this.handleRowSelectionChange as EventListener
+      this._handleRowSelectionChange as EventListener
+    );
+    this.removeEventListener(
+      'on-rows-change',
+      this._handleRowsChange as EventListener
     );
   }
 
   override firstUpdated() {
-    this._allRows = Array.from(this.querySelectorAll('kyn-tr'));
     this._tableHeaderRow = this.querySelector('kyn-header-tr');
   }
 

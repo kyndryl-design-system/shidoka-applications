@@ -2,6 +2,7 @@ import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { ContextConsumer } from '@lit/context';
 import { tableContext, TableContextType } from './table-context';
+import { TableRow } from './table-row';
 
 import styles from './table-body.scss';
 
@@ -12,6 +13,7 @@ import styles from './table-body.scss';
  * a consistent look and feel, and can offer striped rows for enhanced readability.
  *
  * @slot unnamed - The content slot for adding rows (`<kyn-tr>`) within the table body.
+ * @fires on-rows-change - Dispatched when the rows in the table body change.
  */
 @customElement('kyn-tbody')
 export class TableBody extends LitElement {
@@ -49,8 +51,28 @@ export class TableBody extends LitElement {
     }
   };
 
+  /**
+   * Handles the slot change event and dispatches a custom event with the updated rows.
+   * @param {Event} e - The slot change event.
+   * @fires on-rows-change - Dispatched when the rows in the table body change.
+   * @private
+   * @ignore
+   */
+  private handleSlotChange(e: Event) {
+    const slot = e.target as HTMLSlotElement;
+    const nodes = slot.assignedNodes();
+    const rows = nodes.filter((node) => node instanceof TableRow);
+    this.dispatchEvent(
+      new CustomEvent('on-rows-change', {
+        detail: { rows },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
   override render() {
-    return html`<slot></slot>`;
+    return html`<slot @slotchange=${this.handleSlotChange}></slot>`;
   }
 }
 
