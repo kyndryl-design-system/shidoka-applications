@@ -100,9 +100,7 @@ export class LocalNavLink extends LitElement {
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
           <slot name="icon"></slot>
           <span class="text">
-            <slot
-              @slotchange=${(e: Event) => this._handleTextSlotChange(e)}
-            ></slot>
+            <slot @slotchange=${this._handleTextSlotChange}></slot>
           </span>
 
           ${this.navLinks.length
@@ -155,8 +153,28 @@ export class LocalNavLink extends LitElement {
     }
   }
 
-  private _handleTextSlotChange(e: Event) {
-    const Slot: any = e.target;
+  override updated(changedProps: any) {
+    if (changedProps.has('active') && this.active) {
+      this._getSlotText();
+
+      const event = new CustomEvent('on-link-active', {
+        composed: true,
+        bubbles: true,
+        detail: {
+          text: this._text,
+        },
+      });
+      this.dispatchEvent(event);
+    }
+  }
+
+  private _handleTextSlotChange() {
+    this._getSlotText();
+    this.requestUpdate();
+  }
+
+  private _getSlotText() {
+    const Slot: any = this.shadowRoot?.querySelector('.text slot');
     let text = '';
 
     const nodes = Slot.assignedNodes({
@@ -168,8 +186,6 @@ export class LocalNavLink extends LitElement {
     }
 
     this._text = text;
-
-    this.requestUpdate();
   }
 
   private _handleLinksSlotChange() {
@@ -268,17 +284,6 @@ export class LocalNavLink extends LitElement {
       },
     });
     this.dispatchEvent(event);
-
-    const event2 = new CustomEvent('on-click-internal', {
-      composed: true,
-      bubbles: true,
-      detail: {
-        origEvent: e,
-        level: this._level,
-        defaultPrevented: preventDefault,
-      },
-    });
-    this.dispatchEvent(event2);
   }
 
   private _handleClickOut(e: Event) {
