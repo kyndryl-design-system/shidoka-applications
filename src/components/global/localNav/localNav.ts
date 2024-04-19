@@ -25,6 +25,7 @@ export class LocalNav extends LitElement {
   textStrings = {
     toggleMenu: 'Toggle Menu',
     collapse: 'Collapse',
+    menu: 'Menu',
   };
 
   /** Local nav expanded state.
@@ -64,7 +65,9 @@ export class LocalNav extends LitElement {
           aria-label=${this.textStrings.toggleMenu}
           @click=${(e: Event) => this._handleNavToggle(e)}
         >
-          ${this._expanded ? this.textStrings.collapse : this._activeLinkText}
+          ${this._expanded
+            ? this.textStrings.collapse
+            : this._activeLinkText || this.textStrings.menu}
           <kd-icon .icon=${arrowIcon}></kd-icon>
         </button>
 
@@ -109,25 +112,12 @@ export class LocalNav extends LitElement {
 
   private handleSlotChange() {
     this._updateChildren();
-    this._setActiveLinkText();
     this.requestUpdate();
   }
 
-  private _setActiveLinkText() {
-    const Link: any = this.querySelector('kyn-local-nav-link[active]');
-    let text = '';
-
-    if (Link?.shadowRoot?.querySelector('.text slot')) {
-      const nodes = Link.shadowRoot.querySelector('.text slot')?.assignedNodes({
-        flatten: true,
-      });
-
-      for (let i = 0; i < nodes.length; i++) {
-        text += nodes[i].textContent.trim();
-      }
-    }
-
-    this._activeLinkText = text;
+  private _handleLinkActive(e: any) {
+    console.log(e);
+    this._activeLinkText = e.detail.text;
   }
 
   override willUpdate(changedProps: any) {
@@ -146,13 +136,13 @@ export class LocalNav extends LitElement {
     super.connectedCallback();
 
     document.addEventListener('click', (e) => this._handleClickOut(e));
-    this.addEventListener('on-click-internal', () => this._setActiveLinkText());
+    this.addEventListener('on-link-active', (e) => this._handleLinkActive(e));
   }
 
   override disconnectedCallback() {
     document.removeEventListener('click', (e) => this._handleClickOut(e));
-    this.removeEventListener('on-click-internal', () =>
-      this._setActiveLinkText()
+    this.removeEventListener('on-link-active', (e) =>
+      this._handleLinkActive(e)
     );
 
     super.disconnectedCallback();
