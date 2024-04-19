@@ -1,3 +1,2 @@
 export { Widget } from './widget';
-export { WidgetHeader } from './widgetHeader';
-export { WidgetFooter } from './widgetFooter';
+export { WidgetDragHandle } from './widgetDragHandle';

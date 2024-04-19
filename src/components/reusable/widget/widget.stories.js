@@ -1,6 +1,8 @@
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
+import 'gridstack/dist/gridstack.min.css';
+import { GridStack } from 'gridstack';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
@@ -8,14 +10,12 @@ import '@kyndryl-design-system/shidoka-charts/components/chart';
 import '../overflowMenu';
 
 import settingsIcon from '@carbon/icons/es/settings/16';
-import closeIcon from '@carbon/icons/es/close/16';
 
 export default {
   title: 'Components/Widget',
   component: 'kyn-widget',
   subcomponents: {
-    'kyn-widget-header': 'kyn-widget-header',
-    'kyn-widget-footer': 'kyn-widget-footer',
+    'kyn-widget-drag-handle': 'kyn-widget-drag-handle',
   },
   parameters: {
     design: {
@@ -26,8 +26,10 @@ export default {
 };
 
 const args = {
+  widgetTitle: 'Widget Title',
+  subTitle: 'Subtitle',
   dragHandle: false,
-  resizable: false,
+  // resizable: false,
 };
 
 export const Widget = {
@@ -36,14 +38,14 @@ export const Widget = {
     return html`
       <div style="max-width: 500px;">
         <kyn-widget
+          widgetTitle=${args.widgetTitle}
+          subTitle=${args.subTitle}
           ?dragHandle=${args.dragHandle}
           ?resizable=${args.resizable}
           @on-drag-handle-grabbed=${(e) => action(e.type)(e)}
           @on-drag-handle-released=${(e) => action(e.type)(e)}
           @on-resize=${(e) => action(e.type)(e)}
         >
-          <kyn-widget-header widgetTitle="Widget Title"> </kyn-widget-header>
-
           <div>Widget Content</div>
         </kyn-widget>
       </div>
@@ -57,50 +59,29 @@ export const WithActions = {
     return html`
       <div style="max-width: 500px;">
         <kyn-widget
+          widgetTitle=${args.widgetTitle}
+          subTitle=${args.subTitle}
           ?dragHandle=${args.dragHandle}
           ?resizable=${args.resizable}
           @on-drag-handle-grabbed=${(e) => action(e.type)(e)}
           @on-drag-handle-released=${(e) => action(e.type)(e)}
           @on-resize=${(e) => action(e.type)(e)}
         >
-          <kyn-widget-header widgetTitle="Widget Title">
-            <kd-button kind="tertiary" size="small" description="Settings">
-              <kd-icon slot="icon" .icon=${settingsIcon}></kd-icon>
-            </kd-button>
+          <kd-button
+            slot="actions"
+            kind="tertiary"
+            size="small"
+            description="Settings"
+          >
+            <kd-icon slot="icon" .icon=${settingsIcon}></kd-icon>
+          </kd-button>
 
-            <kyn-overflow-menu anchorRight verticalDots>
-              <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
-              <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
-            </kyn-overflow-menu>
-
-            <kd-button kind="tertiary" size="small" description="Close">
-              <kd-icon slot="icon" .icon=${closeIcon}></kd-icon>
-            </kd-button>
-          </kyn-widget-header>
-
-          <div>Widget Content</div>
-        </kyn-widget>
-      </div>
-    `;
-  },
-};
-
-export const Pill = {
-  args,
-  render: (args) => {
-    return html`
-      <div style="max-width: 200px;">
-        <kyn-widget
-          pill
-          ?dragHandle=${args.dragHandle}
-          @on-drag-handle-grabbed=${(e) => action(e.type)(e)}
-          @on-drag-handle-released=${(e) => action(e.type)(e)}
-        >
-          <kyn-widget-header></kyn-widget-header>
+          <kyn-overflow-menu slot="actions" anchorRight verticalDots>
+            <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
+            <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
+          </kyn-overflow-menu>
 
           <div>Widget Content</div>
-
-          <kyn-widget-footer widgetTitle="Widget Title"></kyn-widget-footer>
         </kyn-widget>
       </div>
     `;
@@ -138,7 +119,8 @@ export const WithChart = {
         >
           <kd-chart
             type="bar"
-            chartTitle="Widget Title"
+            chartTitle=${args.widgetTitle}
+            description=${args.subTitle}
             .labels=${['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']}
             .datasets=${[
               {
@@ -164,59 +146,59 @@ export const WithChart = {
                 },
               },
             }}
-          ></kd-chart>
+          >
+            <kyn-widget-drag-handle></kyn-widget-drag-handle>
+          </kd-chart>
         </kyn-widget>
       </div>
     `;
   },
 };
 
-export const GridLayout = {
+export const StaticGrid = {
   render: () => {
     return html`
+      This example uses
+      <a
+        href="https://kyndryl-design-system.github.io/shidoka-foundation/?path=/docs/foundation-grid--docs"
+        target="_blank"
+        rel="noopener"
+        >Shidoka Foundation Grid</a
+      >
+      for a static dashboard layout.
+      <br /><br />
+
       <div class="kd-grid">
-        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4">
-          <kyn-widget>
-            <kyn-widget-header widgetTitle="Widget"></kyn-widget-header>
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
+          <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
+        </div>
 
-            <div>Widget Content</div>
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
+          <kyn-widget widgetTitle="Widget">
+            Widget Content
+            <br />
+            Widget Content
+            <br />
+            Widget Content
           </kyn-widget>
         </div>
 
-        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4">
-          <kyn-widget>
-            <kyn-widget-header widgetTitle="Widget"></kyn-widget-header>
-
-            <div>
-              Widget Content
-              <br />
-              Widget Content
-              <br />
-              Widget Content
-            </div>
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
+          <kyn-widget widgetTitle="Widget">
+            Widget Content
+            <br />
+            Widget Content
           </kyn-widget>
         </div>
 
-        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4">
-          <kyn-widget>
-            <kyn-widget-header widgetTitle="Widget"></kyn-widget-header>
-
-            <div>
-              Widget Content
-              <br />
-              Widget Content
-            </div>
-          </kyn-widget>
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
+          <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
         </div>
       </div>
 
       <div class="kd-grid" style="margin-top: 32px;">
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-8">
-          <kyn-widget>
-            <kyn-widget-header widgetTitle="Widget"></kyn-widget-header>
-
-            <div>Widget Content</div>
-          </kyn-widget>
+          <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
         </div>
 
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4">
@@ -224,47 +206,23 @@ export const GridLayout = {
             <div
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
-              <kyn-widget pill>
-                <div>Widget Content</div>
-
-                <kyn-widget-footer
-                  widgetTitle="Widget Title"
-                ></kyn-widget-footer>
-              </kyn-widget>
+              <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
             </div>
 
             <div
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
-              <kyn-widget pill>
-                <div>Widget Content</div>
-
-                <kyn-widget-footer
-                  widgetTitle="Widget Title"
-                ></kyn-widget-footer>
-              </kyn-widget>
+              <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
             </div>
             <div
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
-              <kyn-widget pill>
-                <div>Widget Content</div>
-
-                <kyn-widget-footer
-                  widgetTitle="Widget Title"
-                ></kyn-widget-footer>
-              </kyn-widget>
+              <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
             </div>
             <div
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
-              <kyn-widget pill>
-                <div>Widget Content</div>
-
-                <kyn-widget-footer
-                  widgetTitle="Widget Title"
-                ></kyn-widget-footer>
-              </kyn-widget>
+              <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
             </div>
           </div>
         </div>
@@ -272,12 +230,290 @@ export const GridLayout = {
 
       <div class="kd-grid" style="margin-top: 32px;">
         <div class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
-          <kyn-widget>
-            <kyn-widget-header widgetTitle="Widget"></kyn-widget-header>
+          <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
+        </div>
+      </div>
 
-            <div>Widget Content</div>
+      <div class="kd-grid" style="margin-top: 32px;">
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-6">
+          <kyn-widget>
+            <kd-chart
+              type="bar"
+              chartTitle="Widget"
+              .labels=${['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']}
+              .datasets=${[
+                {
+                  label: 'Dataset 1',
+                  data: [12, 19, 3, 5, 2, 3],
+                },
+                {
+                  label: 'Dataset 2',
+                  data: [8, 15, 7, 9, 6, 13],
+                },
+              ]}
+              .options=${{
+                scales: {
+                  x: {
+                    title: {
+                      text: 'Color',
+                    },
+                  },
+                  y: {
+                    title: {
+                      text: 'Votes',
+                    },
+                  },
+                },
+              }}
+            >
+              <kyn-widget-drag-handle></kyn-widget-drag-handle>
+            </kd-chart>
           </kyn-widget>
         </div>
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-6">
+          <kyn-widget>
+            <kd-chart
+              type="doughnut"
+              chartTitle="Widget"
+              .labels=${['Blue', 'Red', 'Orange', 'Yellow', 'Green', 'Purple']}
+              .datasets=${[
+                {
+                  label: 'Dataset 1',
+                  data: [120, 190, 300, 500, 200, 300],
+                },
+              ]}
+              .options=${{
+                aspectRatio: 2,
+                scales: {
+                  x: {
+                    title: {
+                      text: 'Color',
+                    },
+                  },
+                  y: {
+                    title: {
+                      text: 'Votes',
+                    },
+                  },
+                },
+              }}
+            ></kd-chart>
+          </kyn-widget>
+        </div>
+      </div>
+    `;
+  },
+};
+
+export const Gridstack = {
+  decorators: [
+    (story) =>
+      html`
+        <style>
+          .grid-stack > .grid-stack-item > .grid-stack-item-content {
+            overflow: visible;
+          }
+        </style>
+        ${story()}
+      `,
+  ],
+  render: () => {
+    setTimeout(function () {
+      const Grid = GridStack.init({
+        handle: 'kyn-widget-drag-handle',
+      });
+
+      Grid.on('dragstart', function (e, el) {
+        e.target.querySelector('kyn-widget').dragActive = true;
+      });
+
+      Grid.on('dragstop', function (e, el) {
+        e.target.querySelector('kyn-widget').dragActive = false;
+      });
+    });
+
+    return html`
+      This example uses
+      <a href="https://gridstackjs.com/" target="_blank" rel="noopener"
+        >Gridstack</a
+      >
+      for a customizable dashboard layout.
+      <br /><br />
+
+      <div class="grid-stack">
+        <div class="grid-stack-item" gs-w="3" gs-h="2">
+          <div class="grid-stack-item-content">
+            <kyn-widget widgetTitle="Widget">
+              <kyn-widget-drag-handle></kyn-widget-drag-handle>
+              Widget Content
+            </kyn-widget>
+          </div>
+        </div>
+
+        <div class="grid-stack-item" gs-w="3" gs-h="2">
+          <div class="grid-stack-item-content">
+            <kyn-widget widgetTitle="Widget">
+              <kyn-widget-drag-handle></kyn-widget-drag-handle>
+              Widget Content
+            </kyn-widget>
+          </div>
+        </div>
+
+        <div class="grid-stack-item" gs-w="3" gs-h="2">
+          <div class="grid-stack-item-content">
+            <kyn-widget widgetTitle="Widget">
+              <kyn-widget-drag-handle></kyn-widget-drag-handle>
+              Widget Content
+            </kyn-widget>
+          </div>
+        </div>
+
+        <div class="grid-stack-item" gs-w="3" gs-h="2">
+          <div class="grid-stack-item-content">
+            <kyn-widget widgetTitle="Widget">
+              <kyn-widget-drag-handle></kyn-widget-drag-handle>
+              Widget Content
+            </kyn-widget>
+          </div>
+        </div>
+
+        <div class="grid-stack-item" gs-w="8" gs-h="4">
+          <div class="grid-stack-item-content">
+            <kyn-widget widgetTitle="Widget">
+              <kyn-widget-drag-handle></kyn-widget-drag-handle>
+              Widget Content
+            </kyn-widget>
+          </div>
+        </div>
+
+        <div class="grid-stack-item" gs-w="2" gs-h="2">
+          <div class="grid-stack-item-content">
+            <kyn-widget widgetTitle="Widget">
+              <kyn-widget-drag-handle></kyn-widget-drag-handle>
+              Widget Content
+            </kyn-widget>
+          </div>
+        </div>
+
+        <div class="grid-stack-item" gs-w="2" gs-h="2">
+          <div class="grid-stack-item-content">
+            <kyn-widget widgetTitle="Widget">
+              <kyn-widget-drag-handle></kyn-widget-drag-handle>
+              Widget Content
+            </kyn-widget>
+          </div>
+        </div>
+
+        <div class="grid-stack-item" gs-w="2" gs-h="2">
+          <div class="grid-stack-item-content">
+            <kyn-widget widgetTitle="Widget">
+              <kyn-widget-drag-handle></kyn-widget-drag-handle>
+              Widget Content
+            </kyn-widget>
+          </div>
+        </div>
+
+        <div class="grid-stack-item" gs-w="2" gs-h="2">
+          <div class="grid-stack-item-content">
+            <kyn-widget widgetTitle="Widget">
+              <kyn-widget-drag-handle></kyn-widget-drag-handle>
+              Widget Content
+            </kyn-widget>
+          </div>
+        </div>
+
+        <div class="grid-stack-item" gs-w="12" gs-h="4">
+          <div class="grid-stack-item-content">
+            <kyn-widget widgetTitle="Widget">
+              <kyn-widget-drag-handle></kyn-widget-drag-handle>
+              Widget Content
+            </kyn-widget>
+          </div>
+        </div>
+
+        <div class="grid-stack-item" gs-w="6" gs-h="4">
+          <div class="grid-stack-item-content">
+            <kyn-widget>
+              <kd-chart
+                type="bar"
+                chartTitle="Widget"
+                .labels=${[
+                  'Red',
+                  'Blue',
+                  'Yellow',
+                  'Green',
+                  'Purple',
+                  'Orange',
+                ]}
+                .datasets=${[
+                  {
+                    label: 'Dataset 1',
+                    data: [12, 19, 3, 5, 2, 3],
+                  },
+                  {
+                    label: 'Dataset 2',
+                    data: [8, 15, 7, 9, 6, 13],
+                  },
+                ]}
+                .options=${{
+                  scales: {
+                    x: {
+                      title: {
+                        text: 'Color',
+                      },
+                    },
+                    y: {
+                      title: {
+                        text: 'Votes',
+                      },
+                    },
+                  },
+                }}
+              >
+                <kyn-widget-drag-handle></kyn-widget-drag-handle>
+              </kd-chart>
+            </kyn-widget>
+          </div>
+        </div>
+
+        <div class="grid-stack-item" gs-w="6" gs-h="4">
+          <div class="grid-stack-item-content">
+            <kyn-widget>
+              <kd-chart
+                type="doughnut"
+                chartTitle="Widget"
+                .labels=${[
+                  'Blue',
+                  'Red',
+                  'Orange',
+                  'Yellow',
+                  'Green',
+                  'Purple',
+                ]}
+                .datasets=${[
+                  {
+                    label: 'Dataset 1',
+                    data: [120, 190, 300, 500, 200, 300],
+                  },
+                ]}
+                .options=${{
+                  aspectRatio: 2,
+                  scales: {
+                    x: {
+                      title: {
+                        text: 'Color',
+                      },
+                    },
+                    y: {
+                      title: {
+                        text: 'Votes',
+                      },
+                    },
+                  },
+                }}
+              ></kd-chart>
+            </kyn-widget>
+          </div>
         </div>
       </div>
     `;
