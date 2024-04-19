@@ -489,7 +489,9 @@ export const Gridstack = {
                     },
                   },
                 }}
-              ></kd-chart>
+              >
+                <kyn-widget-drag-handle></kyn-widget-drag-handle>
+              </kd-chart>
             </kyn-widget>
           </div>
         </div>
