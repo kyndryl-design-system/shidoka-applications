@@ -22,75 +22,6 @@ export default {
       type: 'figma',
       url: '',
     },
-  },
-};
-
-const args = {
-  widgetTitle: 'Widget Title',
-  subTitle: 'Subtitle',
-  dragHandle: false,
-  // resizable: false,
-};
-
-export const Widget = {
-  args,
-  render: (args) => {
-    return html`
-      <div style="max-width: 500px;">
-        <kyn-widget
-          widgetTitle=${args.widgetTitle}
-          subTitle=${args.subTitle}
-          ?dragHandle=${args.dragHandle}
-          ?resizable=${args.resizable}
-          @on-drag-handle-grabbed=${(e) => action(e.type)(e)}
-          @on-drag-handle-released=${(e) => action(e.type)(e)}
-          @on-resize=${(e) => action(e.type)(e)}
-        >
-          <div>Widget Content</div>
-        </kyn-widget>
-      </div>
-    `;
-  },
-};
-
-export const WithActions = {
-  args,
-  render: (args) => {
-    return html`
-      <div style="max-width: 500px;">
-        <kyn-widget
-          widgetTitle=${args.widgetTitle}
-          subTitle=${args.subTitle}
-          ?dragHandle=${args.dragHandle}
-          ?resizable=${args.resizable}
-          @on-drag-handle-grabbed=${(e) => action(e.type)(e)}
-          @on-drag-handle-released=${(e) => action(e.type)(e)}
-          @on-resize=${(e) => action(e.type)(e)}
-        >
-          <kd-button
-            slot="actions"
-            kind="tertiary"
-            size="small"
-            description="Settings"
-          >
-            <kd-icon slot="icon" .icon=${settingsIcon}></kd-icon>
-          </kd-button>
-
-          <kyn-overflow-menu slot="actions" anchorRight verticalDots>
-            <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
-            <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
-          </kyn-overflow-menu>
-
-          <div>Widget Content</div>
-        </kyn-widget>
-      </div>
-    `;
-  },
-};
-
-export const WithChart = {
-  args,
-  parameters: {
     a11y: {
       // disable violations flagged in chartjs-plugin-a11y-legend
       config: {
@@ -107,16 +38,63 @@ export const WithChart = {
       },
     },
   },
+};
+
+const args = {
+  widgetTitle: 'Widget Title',
+  subTitle: 'Subtitle',
+};
+
+export const Widget = {
+  args,
+  render: (args) => {
+    return html`
+      <div style="display: flex; max-width: 500px; min-height: 200px;">
+        <div style="flex-grow: 1;">
+          <kyn-widget widgetTitle=${args.widgetTitle} subTitle=${args.subTitle}>
+            Widget Content
+          </kyn-widget>
+        </div>
+      </div>
+    `;
+  },
+};
+
+export const WithActions = {
+  args,
+  render: (args) => {
+    return html`
+      <div style="display: flex; max-width: 500px; min-height: 200px;">
+        <div style="flex-grow: 1;">
+          <kyn-widget widgetTitle=${args.widgetTitle} subTitle=${args.subTitle}>
+            <kd-button
+              slot="actions"
+              kind="tertiary"
+              size="small"
+              description="Settings"
+            >
+              <kd-icon slot="icon" .icon=${settingsIcon}></kd-icon>
+            </kd-button>
+
+            <kyn-overflow-menu slot="actions" anchorRight verticalDots>
+              <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
+              <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
+            </kyn-overflow-menu>
+
+            Widget Content
+          </kyn-widget>
+        </div>
+      </div>
+    `;
+  },
+};
+
+export const WithChart = {
+  args,
   render: (args) => {
     return html`
       <div style="max-width: 500px;">
-        <kyn-widget
-          ?dragHandle=${args.dragHandle}
-          ?resizable=${args.resizable}
-          @on-drag-handle-grabbed=${(e) => action(e.type)(e)}
-          @on-drag-handle-released=${(e) => action(e.type)(e)}
-          @on-resize=${(e) => action(e.type)(e)}
-        >
+        <kyn-widget>
           <kd-chart
             type="bar"
             chartTitle=${args.widgetTitle}
@@ -311,7 +289,7 @@ export const Gridstack = {
       html`
         <style>
           .grid-stack > .grid-stack-item > .grid-stack-item-content {
-            overflow: visible;
+            overflow: hidden;
           }
         </style>
         ${story()}
