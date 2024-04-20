@@ -149,11 +149,13 @@ export const StaticGrid = {
 
       <div class="kd-grid">
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
-          <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
+          <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+            Widget Content
+          </kyn-widget>
         </div>
 
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
-          <kyn-widget widgetTitle="Widget">
+          <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
             Widget Content
             <br />
             Widget Content
@@ -163,7 +165,7 @@ export const StaticGrid = {
         </div>
 
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
-          <kyn-widget widgetTitle="Widget">
+          <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
             Widget Content
             <br />
             Widget Content
@@ -171,13 +173,17 @@ export const StaticGrid = {
         </div>
 
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
-          <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
+          <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+            Widget Content
+          </kyn-widget>
         </div>
       </div>
 
       <div class="kd-grid" style="margin-top: 32px;">
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-8">
-          <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
+          <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+            Widget Content
+          </kyn-widget>
         </div>
 
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4">
@@ -185,23 +191,31 @@ export const StaticGrid = {
             <div
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
-              <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+                Widget Content
+              </kyn-widget>
             </div>
 
             <div
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
-              <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+                Widget Content
+              </kyn-widget>
             </div>
             <div
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
-              <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+                Widget Content
+              </kyn-widget>
             </div>
             <div
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
-              <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+                Widget Content
+              </kyn-widget>
             </div>
           </div>
         </div>
@@ -209,7 +223,9 @@ export const StaticGrid = {
 
       <div class="kd-grid" style="margin-top: 32px;">
         <div class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
-          <kyn-widget widgetTitle="Widget"> Widget Content </kyn-widget>
+          <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+            Widget Content
+          </kyn-widget>
         </div>
       </div>
 
@@ -218,7 +234,8 @@ export const StaticGrid = {
           <kyn-widget>
             <kd-chart
               type="bar"
-              chartTitle="Widget"
+              chartTitle="Widget Title"
+              description="Widget Subtitle"
               height="400"
               .labels=${['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']}
               .datasets=${[
@@ -245,9 +262,7 @@ export const StaticGrid = {
                   },
                 },
               }}
-            >
-              <kyn-widget-drag-handle></kyn-widget-drag-handle>
-            </kd-chart>
+            ></kd-chart>
           </kyn-widget>
         </div>
 
@@ -255,7 +270,8 @@ export const StaticGrid = {
           <kyn-widget>
             <kd-chart
               type="doughnut"
-              chartTitle="Widget"
+              chartTitle="Widget Title"
+              description="Widget Subtitle"
               height="400"
               .labels=${['Blue', 'Red', 'Orange', 'Yellow', 'Green', 'Purple']}
               .datasets=${[
@@ -348,7 +364,7 @@ export const Gridstack = {
             gs-min-h="2"
           >
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget">
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
                 Widget Content
               </kyn-widget>
@@ -363,7 +379,7 @@ export const Gridstack = {
             gs-min-h="2"
           >
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget">
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
                 Widget Content
               </kyn-widget>
@@ -378,7 +394,7 @@ export const Gridstack = {
             gs-min-h="2"
           >
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget">
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
                 Widget Content
               </kyn-widget>
@@ -393,7 +409,7 @@ export const Gridstack = {
             gs-min-h="2"
           >
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget">
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
                 Widget Content
               </kyn-widget>
@@ -408,7 +424,7 @@ export const Gridstack = {
             gs-min-h="2"
           >
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget">
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
                 Widget Content
               </kyn-widget>
@@ -423,7 +439,7 @@ export const Gridstack = {
             gs-min-h="2"
           >
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget">
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
                 Widget Content
               </kyn-widget>
@@ -438,7 +454,7 @@ export const Gridstack = {
             gs-min-h="2"
           >
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget">
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
                 Widget Content
               </kyn-widget>
@@ -453,7 +469,7 @@ export const Gridstack = {
             gs-min-h="2"
           >
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget">
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
                 Widget Content
               </kyn-widget>
@@ -468,7 +484,7 @@ export const Gridstack = {
             gs-min-h="2"
           >
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget">
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
                 Widget Content
               </kyn-widget>
@@ -483,7 +499,7 @@ export const Gridstack = {
             gs-min-h="2"
           >
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget">
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
                 Widget Content
               </kyn-widget>
@@ -501,7 +517,9 @@ export const Gridstack = {
               <kyn-widget>
                 <kd-chart
                   type="bar"
-                  chartTitle="Widget"
+                  chartTitle="Widget Title"
+                  description="Widget Subtitle"
+                  hideCaptions
                   .labels=${[
                     'Red',
                     'Blue',
@@ -554,7 +572,9 @@ export const Gridstack = {
               <kyn-widget>
                 <kd-chart
                   type="doughnut"
-                  chartTitle="Widget"
+                  chartTitle="Widget Title"
+                  description="Widget Subtitle"
+                  hideCaptions
                   .labels=${[
                     'Blue',
                     'Red',
