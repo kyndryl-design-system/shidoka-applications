@@ -2,6 +2,7 @@ import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
 import 'gridstack/dist/gridstack.min.css';
+import 'gridstack/dist/gridstack-extra.min.css';
 import { GridStack } from 'gridstack';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
@@ -213,11 +214,12 @@ export const StaticGrid = {
       </div>
 
       <div class="kd-grid" style="margin-top: 32px;">
-        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-6">
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-8">
           <kyn-widget>
             <kd-chart
               type="bar"
               chartTitle="Widget"
+              height="400"
               .labels=${['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']}
               .datasets=${[
                 {
@@ -248,11 +250,13 @@ export const StaticGrid = {
             </kd-chart>
           </kyn-widget>
         </div>
-        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-6">
+
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4">
           <kyn-widget>
             <kd-chart
               type="doughnut"
               chartTitle="Widget"
+              height="400"
               .labels=${['Blue', 'Red', 'Orange', 'Yellow', 'Green', 'Purple']}
               .datasets=${[
                 {
@@ -261,7 +265,6 @@ export const StaticGrid = {
                 },
               ]}
               .options=${{
-                aspectRatio: 2,
                 scales: {
                   x: {
                     title: {
@@ -288,8 +291,17 @@ export const Gridstack = {
     (story) =>
       html`
         <style>
+          .grid-wrapper {
+            margin: 0 -16px;
+          }
+
+          .grid-stack {
+            max-width: calc(1584px + 32px);
+            margin: 0 auto;
+          }
+
           .grid-stack > .grid-stack-item > .grid-stack-item-content {
-            overflow: hidden;
+            overflow: initial;
           }
         </style>
         ${story()}
@@ -299,14 +311,22 @@ export const Gridstack = {
     setTimeout(function () {
       const Grid = GridStack.init({
         handle: 'kyn-widget-drag-handle',
+        margin: 16,
+        // columnOpts: {
+        //   breakpointForWindow: true,
+        //   breakpoints: [
+        //     { w: 672, c: 4 },
+        //     { w: 1184, c: 8 },
+        //   ],
+        // },
       });
 
       Grid.on('dragstart', function (e, el) {
-        e.target.querySelector('kyn-widget').dragActive = true;
+        el.querySelector('kyn-widget').dragActive = true;
       });
 
       Grid.on('dragstop', function (e, el) {
-        e.target.querySelector('kyn-widget').dragActive = false;
+        el.querySelector('kyn-widget').dragActive = false;
       });
     });
 
@@ -318,181 +338,258 @@ export const Gridstack = {
       for a customizable dashboard layout.
       <br /><br />
 
-      <div class="grid-stack">
-        <div class="grid-stack-item" gs-w="3" gs-h="2">
-          <div class="grid-stack-item-content">
-            <kyn-widget widgetTitle="Widget">
-              <kyn-widget-drag-handle></kyn-widget-drag-handle>
-              Widget Content
-            </kyn-widget>
-          </div>
-        </div>
-
-        <div class="grid-stack-item" gs-w="3" gs-h="2">
-          <div class="grid-stack-item-content">
-            <kyn-widget widgetTitle="Widget">
-              <kyn-widget-drag-handle></kyn-widget-drag-handle>
-              Widget Content
-            </kyn-widget>
-          </div>
-        </div>
-
-        <div class="grid-stack-item" gs-w="3" gs-h="2">
-          <div class="grid-stack-item-content">
-            <kyn-widget widgetTitle="Widget">
-              <kyn-widget-drag-handle></kyn-widget-drag-handle>
-              Widget Content
-            </kyn-widget>
-          </div>
-        </div>
-
-        <div class="grid-stack-item" gs-w="3" gs-h="2">
-          <div class="grid-stack-item-content">
-            <kyn-widget widgetTitle="Widget">
-              <kyn-widget-drag-handle></kyn-widget-drag-handle>
-              Widget Content
-            </kyn-widget>
-          </div>
-        </div>
-
-        <div class="grid-stack-item" gs-w="8" gs-h="4">
-          <div class="grid-stack-item-content">
-            <kyn-widget widgetTitle="Widget">
-              <kyn-widget-drag-handle></kyn-widget-drag-handle>
-              Widget Content
-            </kyn-widget>
-          </div>
-        </div>
-
-        <div class="grid-stack-item" gs-w="2" gs-h="2">
-          <div class="grid-stack-item-content">
-            <kyn-widget widgetTitle="Widget">
-              <kyn-widget-drag-handle></kyn-widget-drag-handle>
-              Widget Content
-            </kyn-widget>
-          </div>
-        </div>
-
-        <div class="grid-stack-item" gs-w="2" gs-h="2">
-          <div class="grid-stack-item-content">
-            <kyn-widget widgetTitle="Widget">
-              <kyn-widget-drag-handle></kyn-widget-drag-handle>
-              Widget Content
-            </kyn-widget>
-          </div>
-        </div>
-
-        <div class="grid-stack-item" gs-w="2" gs-h="2">
-          <div class="grid-stack-item-content">
-            <kyn-widget widgetTitle="Widget">
-              <kyn-widget-drag-handle></kyn-widget-drag-handle>
-              Widget Content
-            </kyn-widget>
-          </div>
-        </div>
-
-        <div class="grid-stack-item" gs-w="2" gs-h="2">
-          <div class="grid-stack-item-content">
-            <kyn-widget widgetTitle="Widget">
-              <kyn-widget-drag-handle></kyn-widget-drag-handle>
-              Widget Content
-            </kyn-widget>
-          </div>
-        </div>
-
-        <div class="grid-stack-item" gs-w="12" gs-h="4">
-          <div class="grid-stack-item-content">
-            <kyn-widget widgetTitle="Widget">
-              <kyn-widget-drag-handle></kyn-widget-drag-handle>
-              Widget Content
-            </kyn-widget>
-          </div>
-        </div>
-
-        <div class="grid-stack-item" gs-w="6" gs-h="4">
-          <div class="grid-stack-item-content">
-            <kyn-widget>
-              <kd-chart
-                type="bar"
-                chartTitle="Widget"
-                .labels=${[
-                  'Red',
-                  'Blue',
-                  'Yellow',
-                  'Green',
-                  'Purple',
-                  'Orange',
-                ]}
-                .datasets=${[
-                  {
-                    label: 'Dataset 1',
-                    data: [12, 19, 3, 5, 2, 3],
-                  },
-                  {
-                    label: 'Dataset 2',
-                    data: [8, 15, 7, 9, 6, 13],
-                  },
-                ]}
-                .options=${{
-                  scales: {
-                    x: {
-                      title: {
-                        text: 'Color',
-                      },
-                    },
-                    y: {
-                      title: {
-                        text: 'Votes',
-                      },
-                    },
-                  },
-                }}
-              >
+      <div class="grid-wrapper">
+        <div class="grid-stack">
+          <div
+            class="grid-stack-item"
+            gs-w="3"
+            gs-h="2"
+            gs-min-w="2"
+            gs-min-h="2"
+          >
+            <div class="grid-stack-item-content">
+              <kyn-widget widgetTitle="Widget">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
-              </kd-chart>
-            </kyn-widget>
+                Widget Content
+              </kyn-widget>
+            </div>
           </div>
-        </div>
 
-        <div class="grid-stack-item" gs-w="6" gs-h="4">
-          <div class="grid-stack-item-content">
-            <kyn-widget>
-              <kd-chart
-                type="doughnut"
-                chartTitle="Widget"
-                .labels=${[
-                  'Blue',
-                  'Red',
-                  'Orange',
-                  'Yellow',
-                  'Green',
-                  'Purple',
-                ]}
-                .datasets=${[
-                  {
-                    label: 'Dataset 1',
-                    data: [120, 190, 300, 500, 200, 300],
-                  },
-                ]}
-                .options=${{
-                  aspectRatio: 2,
-                  scales: {
-                    x: {
-                      title: {
-                        text: 'Color',
-                      },
-                    },
-                    y: {
-                      title: {
-                        text: 'Votes',
-                      },
-                    },
-                  },
-                }}
-              >
+          <div
+            class="grid-stack-item"
+            gs-w="3"
+            gs-h="2"
+            gs-min-w="2"
+            gs-min-h="2"
+          >
+            <div class="grid-stack-item-content">
+              <kyn-widget widgetTitle="Widget">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
-              </kd-chart>
-            </kyn-widget>
+                Widget Content
+              </kyn-widget>
+            </div>
+          </div>
+
+          <div
+            class="grid-stack-item"
+            gs-w="3"
+            gs-h="2"
+            gs-min-w="2"
+            gs-min-h="2"
+          >
+            <div class="grid-stack-item-content">
+              <kyn-widget widgetTitle="Widget">
+                <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                Widget Content
+              </kyn-widget>
+            </div>
+          </div>
+
+          <div
+            class="grid-stack-item"
+            gs-w="3"
+            gs-h="2"
+            gs-min-w="2"
+            gs-min-h="2"
+          >
+            <div class="grid-stack-item-content">
+              <kyn-widget widgetTitle="Widget">
+                <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                Widget Content
+              </kyn-widget>
+            </div>
+          </div>
+
+          <div
+            class="grid-stack-item"
+            gs-w="8"
+            gs-h="4"
+            gs-min-w="4"
+            gs-min-h="2"
+          >
+            <div class="grid-stack-item-content">
+              <kyn-widget widgetTitle="Widget">
+                <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                Widget Content
+              </kyn-widget>
+            </div>
+          </div>
+
+          <div
+            class="grid-stack-item"
+            gs-w="2"
+            gs-h="2"
+            gs-min-w="2"
+            gs-min-h="2"
+          >
+            <div class="grid-stack-item-content">
+              <kyn-widget widgetTitle="Widget">
+                <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                Widget Content
+              </kyn-widget>
+            </div>
+          </div>
+
+          <div
+            class="grid-stack-item"
+            gs-w="2"
+            gs-h="2"
+            gs-min-w="2"
+            gs-min-h="2"
+          >
+            <div class="grid-stack-item-content">
+              <kyn-widget widgetTitle="Widget">
+                <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                Widget Content
+              </kyn-widget>
+            </div>
+          </div>
+
+          <div
+            class="grid-stack-item"
+            gs-w="2"
+            gs-h="2"
+            gs-min-w="2"
+            gs-min-h="2"
+          >
+            <div class="grid-stack-item-content">
+              <kyn-widget widgetTitle="Widget">
+                <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                Widget Content
+              </kyn-widget>
+            </div>
+          </div>
+
+          <div
+            class="grid-stack-item"
+            gs-w="2"
+            gs-h="2"
+            gs-min-w="2"
+            gs-min-h="2"
+          >
+            <div class="grid-stack-item-content">
+              <kyn-widget widgetTitle="Widget">
+                <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                Widget Content
+              </kyn-widget>
+            </div>
+          </div>
+
+          <div
+            class="grid-stack-item"
+            gs-w="12"
+            gs-h="4"
+            gs-min-w="4"
+            gs-min-h="2"
+          >
+            <div class="grid-stack-item-content">
+              <kyn-widget widgetTitle="Widget">
+                <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                Widget Content
+              </kyn-widget>
+            </div>
+          </div>
+
+          <div
+            class="grid-stack-item"
+            gs-w="8"
+            gs-h="4"
+            gs-min-w="4"
+            gs-min-h="4"
+          >
+            <div class="grid-stack-item-content">
+              <kyn-widget>
+                <kd-chart
+                  type="bar"
+                  chartTitle="Widget"
+                  .labels=${[
+                    'Red',
+                    'Blue',
+                    'Yellow',
+                    'Green',
+                    'Purple',
+                    'Orange',
+                  ]}
+                  .datasets=${[
+                    {
+                      label: 'Dataset 1',
+                      data: [12, 19, 3, 5, 2, 3],
+                    },
+                    {
+                      label: 'Dataset 2',
+                      data: [8, 15, 7, 9, 6, 13],
+                    },
+                  ]}
+                  .options=${{
+                    // aspectRatio: 1,
+                    maintainAspectRatio: false,
+                    scales: {
+                      x: {
+                        title: {
+                          text: 'Color',
+                        },
+                      },
+                      y: {
+                        title: {
+                          text: 'Votes',
+                        },
+                      },
+                    },
+                  }}
+                >
+                  <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                </kd-chart>
+              </kyn-widget>
+            </div>
+          </div>
+
+          <div
+            class="grid-stack-item"
+            gs-w="4"
+            gs-h="4"
+            gs-min-w="4"
+            gs-min-h="4"
+          >
+            <div class="grid-stack-item-content">
+              <kyn-widget>
+                <kd-chart
+                  type="doughnut"
+                  chartTitle="Widget"
+                  .labels=${[
+                    'Blue',
+                    'Red',
+                    'Orange',
+                    'Yellow',
+                    'Green',
+                    'Purple',
+                  ]}
+                  .datasets=${[
+                    {
+                      label: 'Dataset 1',
+                      data: [120, 190, 300, 500, 200, 300],
+                    },
+                  ]}
+                  .options=${{
+                    // aspectRatio: 2,
+                    maintainAspectRatio: false,
+                    scales: {
+                      x: {
+                        title: {
+                          text: 'Color',
+                        },
+                      },
+                      y: {
+                        title: {
+                          text: 'Votes',
+                        },
+                      },
+                    },
+                  }}
+                >
+                  <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                </kd-chart>
+              </kyn-widget>
+            </div>
           </div>
         </div>
       </div>

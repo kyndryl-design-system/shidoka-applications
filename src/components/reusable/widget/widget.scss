@@ -14,12 +14,11 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 16px;
+  padding-top: 8px;
   border: 1px solid var(--kd-color-border-light);
   border-radius: 8px;
   container-type: inline-size;
   transition: box-shadow 100ms ease-out;
-  overflow: auto;
 
   &.drag-active {
     @include elevation.shadow(4);
@@ -29,7 +28,7 @@
 .widget-header {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  padding: 8px 16px 0 16px;
 
   .has-chart & {
     display: none;
@@ -60,4 +59,10 @@
     align-items: center;
     margin-left: auto;
   }
+}
+
+.widget-content {
+  padding: 8px 16px 16px 16px;
+  overflow: auto;
+  flex-grow: 1;
 }
