@@ -26,9 +26,8 @@ export class VitalCardMobileSampleComponent extends LitElement {
           <kd-button
             iconposition="center"
             kind="tertiary"
-            type="button"
             size="small"
-            href=""
+            description="cta button"
             @click=${(e: Event) => e.preventDefault()}
           >
             <kd-icon slot="icon" .icon=${chevronRightIcon}></kd-icon>
