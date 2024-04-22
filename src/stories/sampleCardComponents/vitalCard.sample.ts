@@ -15,10 +15,11 @@ export class VitalCardSampleComponent extends LitElement {
         <div class="vital-card-title-label">Title</div>
         <div class="vital-card-content-wrapper">
           <h1 class="vital-card-title">9,999.99k</h1>
-          <h3 class="vital-card-category-text">Category</h3>
-          <h3 class="vital-card-subcategory-text">Subcategory</h3>
+          <h2 class="vital-card-category-text">Category</h2>
+          <h2 class="vital-card-subcategory-text">Subcategory</h2>
           <div class="vital-card-cta">
             <button
+              aria-label="cta"
               class="vital-card-btn"
               @click=${(e: Event) => e.preventDefault()}
             >

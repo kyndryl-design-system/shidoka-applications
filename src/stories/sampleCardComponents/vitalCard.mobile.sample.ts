@@ -19,8 +19,8 @@ export class VitalCardMobileSampleComponent extends LitElement {
               <h1 class="vital-card-mobile-title">9,999.99k</h1>
             </div>
             <div class="vital-card-cat-subcat-text">
-              <h3 class="vital-card-category-text">Category</h3>
-              <h3 class="vital-card-subcategory-text">Subcategory</h3>
+              <h2 class="vital-card-category-text">Category</h2>
+              <h2 class="vital-card-subcategory-text">Subcategory</h2>
             </div>
           </div>
           <kd-button
