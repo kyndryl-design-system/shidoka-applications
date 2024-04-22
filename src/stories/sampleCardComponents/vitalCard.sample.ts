@@ -23,8 +23,12 @@ export class VitalCardSampleComponent extends LitElement {
               @click=${(e: Event) => e.preventDefault()}
             >
               CTA Title
-              <kd-icon class="vital-card-btn-icon" slot="icon" .icon=${chevronRightIcon}></kd-icon>
-            </kd-button>
+              <kd-icon
+                class="vital-card-btn-icon"
+                slot="icon"
+                .icon=${chevronRightIcon}
+              ></kd-icon>
+            </button>
           </div>
         </div>
       </div>
