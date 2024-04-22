@@ -94,7 +94,7 @@ export class TableCell extends LitElement {
       this.style.setProperty('--kyn-td-width', this.width);
     }
 
-    if (this.width && changedProperties.has('minWidth')) {
+    if (this.minWidth && changedProperties.has('minWidth')) {
       this.style.setProperty('--kyn-td-min-width', this.minWidth);
     }
   }

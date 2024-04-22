@@ -25,35 +25,35 @@ export class Table extends LitElement {
    * selectable using checkboxes.
    */
   @property({ type: Boolean })
-  checkboxSelection = false;
+  checkboxSelection?: boolean;
 
   /**
    * striped: Boolean indicating whether rows should have alternate
    * coloring.
    */
   @property({ type: Boolean })
-  striped = false;
+  striped?: boolean;
 
   /**
    * stickyHeader: Boolean indicating whether the table header
    * should be sticky.
    */
   @property({ type: Boolean })
-  stickyHeader = false;
+  stickyHeader?: boolean;
 
   /**
    * dense: Boolean indicating whether the table should be displayed
    * in dense mode.
    */
   @property({ type: Boolean })
-  dense = false;
+  dense?: boolean;
 
   /**
    * ellipsis: Boolean indicating whether the table should truncate
    * text content with an ellipsis.
    */
   @property({ type: Boolean })
-  ellipsis = false;
+  ellipsis?: boolean;
 
   /**
    * fixedLayout: Boolean indicating whether the table should have a fixed layout.
@@ -284,8 +284,8 @@ export class Table extends LitElement {
       if (this._selectedRowIds.has(row.rowId)) {
         row.selected = true; // Update the selected property if the rowId matches
         updatedSelectedRows.push(row); // Add the actual row element to the updated selected rows array
-      } else {
-        row.selected = false; // Ensure non-selected rows are marked as such
+      } else if (row.selected) {
+        this._selectedRowIds.add(row.rowId); // Add the rowId to the selectedRowIds set
       }
     });
 
