@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import Styles from './gridstack.sample.scss';
 import './index';
 import { debounce } from '../../../common/helpers/helpers';
@@ -322,11 +322,13 @@ export class GridstackSample extends LitElement {
     );
 
     this._grid.on('dragstart', function (e: Event, el: HTMLElement) {
+      console.log(e);
       const Widget: any = el.querySelector('kyn-widget');
       Widget.dragActive = true;
     });
 
     this._grid.on('dragstop', function (e: Event, el: HTMLElement) {
+      console.log(e);
       const Widget: any = el.querySelector('kyn-widget');
       Widget.dragActive = false;
     });
