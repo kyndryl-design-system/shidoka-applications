@@ -2,8 +2,6 @@ import { html } from 'lit';
 import '@kyndryl-design-system/shidoka-foundation/css/grid.css';
 import '@kyndryl-design-system/shidoka-foundation/components/card';
 
-import { action } from '@storybook/addon-actions';
-
 import './sampleCardComponents/vitalCard.sample.ts';
 import './sampleCardComponents/vitalCard.mobile.sample.ts';
 
