@@ -1,3 +1,10 @@
+## [1.15.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.9...v1.15.10) (2024-04-24)
+
+
+### Bug Fixes
+
+* **forms:** remove label css parts ([7d835cf](https://github.com/kyndryl-design-system/shidoka-applications/commit/7d835cf23b74ad46b89d17520601214074e03c54))
+
 ## [1.15.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.8...v1.15.9) (2024-04-24)
 
 

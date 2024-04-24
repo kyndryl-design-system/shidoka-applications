@@ -22,7 +22,6 @@ import errorIcon from '@carbon/icons/es/warning--filled/24';
  * @prop {number} maxLength - Maximum number of characters.
  * @slot unnamed - Slot for label text.
  * @slot icon - Slot for contextual icon.
- * @csspart label - Styles the label.
  */
 @customElement('kyn-text-input')
 export class TextInput extends LitElement {
@@ -142,7 +141,6 @@ export class TextInput extends LitElement {
     return html`
       <div class="text-input" ?disabled=${this.disabled}>
         <label
-          part="label"
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
           for=${this.name}
         >

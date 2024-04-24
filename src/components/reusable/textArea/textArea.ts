@@ -12,7 +12,6 @@ import errorIcon from '@carbon/icons/es/warning--filled/24';
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
  * @slot unnamed - Slot for label text.
- * @csspart label - Styles the label.
  */
 @customElement('kyn-text-area')
 export class TextArea extends LitElement {
@@ -101,7 +100,7 @@ export class TextArea extends LitElement {
   override render() {
     return html`
       <div class="text-area" ?disabled=${this.disabled}>
-        <label part="label" class="label-text" for=${this.name}>
+        <label class="label-text" for=${this.name}>
           ${this.required ? html`<span class="required">*</span>` : null}
           <slot></slot>
         </label>

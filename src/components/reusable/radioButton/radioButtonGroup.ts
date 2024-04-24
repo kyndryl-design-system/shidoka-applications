@@ -15,7 +15,6 @@ import errorIcon from '@carbon/icons/es/warning--filled/16';
  * @fires on-radio-group-change - Captures the change event and emits the selected value.
  * @slot unnamed - Slot for individual radio buttons.
  * @slot label - Slot for label text.
- * @csspart label - Styles the label.
  */
 @customElement('kyn-radio-button-group')
 export class RadioButtonGroup extends LitElement {
@@ -83,7 +82,7 @@ export class RadioButtonGroup extends LitElement {
     return html`
       <fieldset ?disabled=${this.disabled}>
         <div class="${this.horizontal ? 'horizontal' : ''}">
-          <legend part="label">
+          <legend>
             ${this.required ? html`<span class="required">*</span>` : null}
             <slot name="label"></slot>
           </legend>
