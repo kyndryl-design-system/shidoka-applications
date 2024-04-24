@@ -2060,7 +2060,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Header fly-out panel.",
+          "description": "DEPRECATED. Header fly-out panel.",
           "name": "HeaderPanel",
           "slots": [
             {
@@ -3437,12 +3437,12 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
+      "path": "src/components/reusable/datePicker/datepicker.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Date-Range picker",
-          "name": "DateRangePicker",
+          "description": "Datepicker.",
+          "name": "DatePicker",
           "cssParts": [
             {
               "description": "Styles the label.",
@@ -3458,16 +3458,6 @@
           "members": [
             {
               "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
               "name": "size",
               "type": {
                 "text": "string"
@@ -3478,23 +3468,23 @@
             },
             {
               "kind": "field",
-              "name": "startDate",
+              "name": "caption",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "attribute": "startDate"
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
             },
             {
               "kind": "field",
-              "name": "endDate",
+              "name": "value",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "attribute": "endDate"
+              "description": "Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format.",
+              "attribute": "value"
             },
             {
               "kind": "field",
@@ -3503,7 +3493,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker name. Required prop. as there could many fields into single form",
+              "description": "Datepicker name.",
               "attribute": "name"
             },
             {
@@ -3552,7 +3542,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
+              "description": "Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value",
               "attribute": "maxDate"
             },
             {
@@ -3561,7 +3551,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "description": "Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
               "attribute": "minDate"
             },
             {
@@ -3574,21 +3564,17 @@
               "attribute": "step"
             },
             {
-              "kind": "method",
-              "name": "handleStartDate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
+              "kind": "field",
+              "name": "datePickerType",
+              "type": {
+                "text": "DATE_PICKER_TYPES"
+              },
+              "description": "Date picker types. Default 'single'",
+              "attribute": "datePickerType"
             },
             {
               "kind": "method",
-              "name": "handleEndDate",
+              "name": "handleInput",
               "privacy": "private",
               "parameters": [
                 {
@@ -3620,19 +3606,6 @@
             },
             {
               "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
               "name": "_handleFormdata",
               "privacy": "private",
               "parameters": [
@@ -3652,20 +3625,11 @@
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
+              "description": "Captures the input event and emits the selected value and original event details.",
               "name": "on-input"
             }
           ],
           "attributes": [
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
             {
               "name": "size",
               "type": {
@@ -3676,22 +3640,22 @@
               "fieldName": "size"
             },
             {
-              "name": "startDate",
+              "name": "caption",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "fieldName": "startDate"
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
             },
             {
-              "name": "endDate",
+              "name": "value",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "fieldName": "endDate"
+              "description": "Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format.",
+              "fieldName": "value"
             },
             {
               "name": "name",
@@ -3699,7 +3663,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker name. Required prop. as there could many fields into single form",
+              "description": "Datepicker name.",
               "fieldName": "name"
             },
             {
@@ -3743,7 +3707,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
+              "description": "Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value",
               "fieldName": "maxDate"
             },
             {
@@ -3751,7 +3715,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "description": "Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
               "fieldName": "minDate"
             },
             {
@@ -3761,46 +3725,101 @@
               },
               "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\r\nThe default value of step is 1, indicating 1 day.",
               "fieldName": "step"
+            },
+            {
+              "name": "datePickerType",
+              "type": {
+                "text": "DATE_PICKER_TYPES"
+              },
+              "description": "Date picker types. Default 'single'",
+              "fieldName": "datePickerType"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-date-range-picker",
+          "tagName": "kyn-date-picker",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "DateRangePicker",
+          "name": "DatePicker",
           "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+            "name": "DatePicker",
+            "module": "src/components/reusable/datePicker/datepicker.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-date-range-picker",
+          "name": "kyn-date-picker",
           "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+            "name": "DatePicker",
+            "module": "src/components/reusable/datePicker/datepicker.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/index.ts",
+      "path": "src/components/reusable/datePicker/defs.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "regexDateFormat",
+          "default": "/^\\d{4}-\\d{2}-\\d{2}$/"
+        },
+        {
+          "kind": "variable",
+          "name": "regexDateTimeFormat",
+          "default": "/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$/"
+        },
+        {
+          "kind": "variable",
+          "name": "regexDateTimeFormatSec",
+          "default": "/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$/"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "regexDateFormat",
+          "declaration": {
+            "name": "regexDateFormat",
+            "module": "src/components/reusable/datePicker/defs.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "regexDateTimeFormat",
+          "declaration": {
+            "name": "regexDateTimeFormat",
+            "module": "src/components/reusable/datePicker/defs.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "regexDateTimeFormatSec",
+          "declaration": {
+            "name": "regexDateTimeFormatSec",
+            "module": "src/components/reusable/datePicker/defs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/datePicker/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "DateRangePicker",
+          "name": "DatePicker",
           "declaration": {
-            "name": "DateRangePicker",
-            "module": "\"./daterangepicker\""
+            "name": "DatePicker",
+            "module": "./datepicker"
           }
         }
       ]
@@ -4334,12 +4353,12 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/datePicker/datepicker.ts",
+      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Datepicker.",
-          "name": "DatePicker",
+          "description": "Date-Range picker",
+          "name": "DateRangePicker",
           "cssParts": [
             {
               "description": "Styles the label.",
@@ -4355,16 +4374,6 @@
           "members": [
             {
               "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
               "name": "caption",
               "type": {
                 "text": "string"
@@ -4375,13 +4384,33 @@
             },
             {
               "kind": "field",
-              "name": "value",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "startDate",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format.",
-              "attribute": "value"
+              "description": "Datepicker Start date in YYYY-MM-DD format.",
+              "attribute": "startDate"
+            },
+            {
+              "kind": "field",
+              "name": "endDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker End date in YYYY-MM-DD format.",
+              "attribute": "endDate"
             },
             {
               "kind": "field",
@@ -4390,7 +4419,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker name.",
+              "description": "Datepicker name. Required prop. as there could many fields into single form",
               "attribute": "name"
             },
             {
@@ -4439,7 +4468,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value",
+              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
               "attribute": "maxDate"
             },
             {
@@ -4448,7 +4477,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
               "attribute": "minDate"
             },
             {
@@ -4461,17 +4490,21 @@
               "attribute": "step"
             },
             {
-              "kind": "field",
-              "name": "datePickerType",
-              "type": {
-                "text": "DATE_PICKER_TYPES"
-              },
-              "description": "Date picker types. Default 'single'",
-              "attribute": "datePickerType"
+              "kind": "method",
+              "name": "handleStartDate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
-              "name": "handleInput",
+              "name": "handleEndDate",
               "privacy": "private",
               "parameters": [
                 {
@@ -4503,6 +4536,19 @@
             },
             {
               "kind": "method",
+              "name": "_emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "_handleFormdata",
               "privacy": "private",
               "parameters": [
@@ -4522,20 +4568,11 @@
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the selected value and original event details.",
+              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
               "name": "on-input"
             }
           ],
           "attributes": [
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
             {
               "name": "caption",
               "type": {
@@ -4546,13 +4583,31 @@
               "fieldName": "caption"
             },
             {
-              "name": "value",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "startDate",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format.",
-              "fieldName": "value"
+              "description": "Datepicker Start date in YYYY-MM-DD format.",
+              "fieldName": "startDate"
+            },
+            {
+              "name": "endDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker End date in YYYY-MM-DD format.",
+              "fieldName": "endDate"
             },
             {
               "name": "name",
@@ -4560,7 +4615,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker name.",
+              "description": "Datepicker name. Required prop. as there could many fields into single form",
               "fieldName": "name"
             },
             {
@@ -4604,7 +4659,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value",
+              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
               "fieldName": "maxDate"
             },
             {
@@ -4612,7 +4667,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
               "fieldName": "minDate"
             },
             {
@@ -4622,101 +4677,46 @@
               },
               "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\r\nThe default value of step is 1, indicating 1 day.",
               "fieldName": "step"
-            },
-            {
-              "name": "datePickerType",
-              "type": {
-                "text": "DATE_PICKER_TYPES"
-              },
-              "description": "Date picker types. Default 'single'",
-              "fieldName": "datePickerType"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-date-picker",
+          "tagName": "kyn-date-range-picker",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "DatePicker",
+          "name": "DateRangePicker",
           "declaration": {
-            "name": "DatePicker",
-            "module": "src/components/reusable/datePicker/datepicker.ts"
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-date-picker",
+          "name": "kyn-date-range-picker",
           "declaration": {
-            "name": "DatePicker",
-            "module": "src/components/reusable/datePicker/datepicker.ts"
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/datePicker/defs.ts",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "regexDateFormat",
-          "default": "/^\\d{4}-\\d{2}-\\d{2}$/"
-        },
-        {
-          "kind": "variable",
-          "name": "regexDateTimeFormat",
-          "default": "/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$/"
-        },
-        {
-          "kind": "variable",
-          "name": "regexDateTimeFormatSec",
-          "default": "/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$/"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "regexDateFormat",
-          "declaration": {
-            "name": "regexDateFormat",
-            "module": "src/components/reusable/datePicker/defs.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "regexDateTimeFormat",
-          "declaration": {
-            "name": "regexDateTimeFormat",
-            "module": "src/components/reusable/datePicker/defs.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "regexDateTimeFormatSec",
-          "declaration": {
-            "name": "regexDateTimeFormatSec",
-            "module": "src/components/reusable/datePicker/defs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/datePicker/index.ts",
+      "path": "src/components/reusable/daterangepicker/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "DatePicker",
+          "name": "DateRangePicker",
           "declaration": {
-            "name": "DatePicker",
-            "module": "./datepicker"
+            "name": "DateRangePicker",
+            "module": "\"./daterangepicker\""
           }
         }
       ]
@@ -5529,6 +5529,292 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/modal/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Modal",
+          "declaration": {
+            "name": "Modal",
+            "module": "./modal"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/modal/modal.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Modal.",
+          "name": "Modal",
+          "slots": [
+            {
+              "description": "Slot for modal body content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the anchor button content.",
+              "name": "anchor"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Modal open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'auto'",
+              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title/heading text, required.",
+              "attribute": "titleText"
+            },
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "okText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'OK'",
+              "description": "OK button text.",
+              "attribute": "okText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "attribute": "cancelText"
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "okDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "attribute": "okDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the footer/action buttons to create a passive modal.",
+              "attribute": "hideFooter"
+            },
+            {
+              "kind": "field",
+              "name": "beforeClose",
+              "type": {
+                "text": "Function"
+              },
+              "description": "Function to execute before the modal can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
+            },
+            {
+              "kind": "method",
+              "name": "_openModal",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_closeModal",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "returnValue",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitCloseEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Modal open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'auto'",
+              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
+              "fieldName": "size"
+            },
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title/heading text, required.",
+              "fieldName": "titleText"
+            },
+            {
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "fieldName": "labelText"
+            },
+            {
+              "name": "okText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'OK'",
+              "description": "OK button text.",
+              "fieldName": "okText"
+            },
+            {
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "fieldName": "cancelText"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "okDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "fieldName": "okDisabled"
+            },
+            {
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the footer/action buttons to create a passive modal.",
+              "fieldName": "hideFooter"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-modal",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Modal",
+          "declaration": {
+            "name": "Modal",
+            "module": "src/components/reusable/modal/modal.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-modal",
+          "declaration": {
+            "name": "Modal",
+            "module": "src/components/reusable/modal/modal.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts",
       "declarations": [
         {
@@ -6196,292 +6482,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/modal/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Modal",
-          "declaration": {
-            "name": "Modal",
-            "module": "./modal"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/modal/modal.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Modal.",
-          "name": "Modal",
-          "slots": [
-            {
-              "description": "Slot for modal body content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the anchor button content.",
-              "name": "anchor"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Modal open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'auto'",
-              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title/heading text, required.",
-              "attribute": "titleText"
-            },
-            {
-              "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "okText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'OK'",
-              "description": "OK button text.",
-              "attribute": "okText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelText"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "okDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "attribute": "okDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the footer/action buttons to create a passive modal.",
-              "attribute": "hideFooter"
-            },
-            {
-              "kind": "field",
-              "name": "beforeClose",
-              "type": {
-                "text": "Function"
-              },
-              "description": "Function to execute before the modal can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
-            },
-            {
-              "kind": "method",
-              "name": "_openModal",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_closeModal",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "returnValue",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitCloseEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Modal open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'auto'",
-              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
-              "fieldName": "size"
-            },
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title/heading text, required.",
-              "fieldName": "titleText"
-            },
-            {
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "fieldName": "labelText"
-            },
-            {
-              "name": "okText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'OK'",
-              "description": "OK button text.",
-              "fieldName": "okText"
-            },
-            {
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "fieldName": "cancelText"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "okDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "fieldName": "okDisabled"
-            },
-            {
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the footer/action buttons to create a passive modal.",
-              "fieldName": "hideFooter"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-modal",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Modal",
-          "declaration": {
-            "name": "Modal",
-            "module": "src/components/reusable/modal/modal.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-modal",
-          "declaration": {
-            "name": "Modal",
-            "module": "src/components/reusable/modal/modal.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/notification/index.ts",
       "declarations": [],
       "exports": [
@@ -6717,6 +6717,142 @@
           "declaration": {
             "name": "Notification",
             "module": "src/components/reusable/notification/notification.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagetitle/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageTitle",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "./pageTitle"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagetitle/pageTitle.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Page Title",
+          "name": "PageTitle",
+          "slots": [
+            {
+              "description": "Slot for icon. Use size 56 * 56 as per UX guidelines.",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "headLine",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Headline text.",
+              "attribute": "headLine"
+            },
+            {
+              "kind": "field",
+              "name": "pageTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page title text (required).",
+              "attribute": "pageTitle"
+            },
+            {
+              "kind": "field",
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page subtitle text.",
+              "attribute": "subTitle"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'primary'",
+              "description": "Type of page title `'primary'` & `'secondary'`.",
+              "attribute": "type"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "headLine",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Headline text.",
+              "fieldName": "headLine"
+            },
+            {
+              "name": "pageTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page title text (required).",
+              "fieldName": "pageTitle"
+            },
+            {
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page subtitle text.",
+              "fieldName": "subTitle"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'primary'",
+              "description": "Type of page title `'primary'` & `'secondary'`.",
+              "fieldName": "type"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-page-title",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageTitle",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "src/components/reusable/pagetitle/pageTitle.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-page-title",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "src/components/reusable/pagetitle/pageTitle.ts"
           }
         }
       ]
@@ -7054,142 +7190,6 @@
           "declaration": {
             "name": "OverflowMenuItem",
             "module": "src/components/reusable/overflowMenu/overflowMenuItem.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/pagetitle/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PageTitle",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "./pageTitle"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/pagetitle/pageTitle.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Page Title",
-          "name": "PageTitle",
-          "slots": [
-            {
-              "description": "Slot for icon. Use size 56 * 56 as per UX guidelines.",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "headLine",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Headline text.",
-              "attribute": "headLine"
-            },
-            {
-              "kind": "field",
-              "name": "pageTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page title text (required).",
-              "attribute": "pageTitle"
-            },
-            {
-              "kind": "field",
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page subtitle text.",
-              "attribute": "subTitle"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'primary'",
-              "description": "Type of page title `'primary'` & `'secondary'`.",
-              "attribute": "type"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "headLine",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Headline text.",
-              "fieldName": "headLine"
-            },
-            {
-              "name": "pageTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page title text (required).",
-              "fieldName": "pageTitle"
-            },
-            {
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page subtitle text.",
-              "fieldName": "subTitle"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'primary'",
-              "description": "Type of page title `'primary'` & `'secondary'`.",
-              "fieldName": "type"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-page-title",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PageTitle",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "src/components/reusable/pagetitle/pageTitle.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-page-title",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "src/components/reusable/pagetitle/pageTitle.ts"
           }
         }
       ]
