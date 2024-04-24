@@ -16,7 +16,7 @@ export default {
 
 export const Default = {
   render: () => {
-    return html`<kd-card type="normal" href="" target="" rel="">
+    return html`<kd-card type="normal">
       <vital-card-sample-component></vital-card-sample-component>
     </kd-card>`;
   },

@@ -1,7 +1,7 @@
 @use '../../common/scss/global.scss';
 @use '../../common/scss/mixins.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
-@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 
 .vital-card {
   &-title-label {
@@ -67,14 +67,8 @@
     }
     &-text {
       @media (max-width: 42rem) {
-        @include visibility.hidden;
+        @include visibility.sr-only;
       }
-    }
-  }
-  &-icon-btn {
-    display: block;
-    @media (min-width: 42rem) {
-      display: none;
     }
   }
 }
