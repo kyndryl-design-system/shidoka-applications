@@ -2,6 +2,60 @@
 @use '../../common/scss/mixins.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
+// .vital-card {
+//   &-title-label {
+//     @include typography.type-body-02;
+//     color: var(--kd-color-text-secondary);
+//     margin-bottom: 8px;
+//   }
+//   &-title {
+//     @include typography.type-headline-07;
+//     color: var(--kd-color-text-primary);
+//     margin-top: 0px;
+//     margin-bottom: 4px;
+//   }
+//   &-category-text {
+//     @include typography.type-ui-02;
+//     color: var(--kd-color-text-primary);
+//     margin-top: 4px;
+//     margin-bottom: 0px;
+//   }
+//   &-subcategory-text {
+//     @include typography.type-ui-03;
+//     color: var(--kd-color-text-secondary);
+//     margin-top: 0;
+//     margin-bottom: 4px;
+//   }
+//   &-link {
+//     margin-top: 10px;
+//   }
+//   &-label-mobile {
+//     @include typography.type-body-02;
+//     color: var(--kd-color-text-secondary);
+//     margin-bottom: 0px;
+//   }
+//   &-title-div {
+//     padding-right: 4px;
+//   }
+//   &-mobile-title {
+//     @include typography.type-body-02;
+//     color: var(--kd-color-text-primary);
+//     margin: 0;
+//   }
+//   &-mobile-wrapper {
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+//   }
+//   &-mobile-wrapper-subdiv {
+//     display: flex;
+//     align-items: center;
+//   }
+//   &-cat-subcat-text {
+//     padding: 0px 8px;
+//   }
+// }
+
 .vital-card {
   &-title-label {
     @include typography.type-body-02;
@@ -9,15 +63,42 @@
     margin-bottom: 8px;
   }
   &-title {
-    @include typography.type-headline-07;
-    color: var(--kd-color-text-primary);
+    @include typography.type-body-02;
+    font-weight: 500;
     margin-top: 0px;
-    margin-bottom: 4px;
+    margin-bottom: 0px;
+    color: var(--kd-color-text-primary);
+    // for large device after md size
+    @media (min-width: 42rem) {
+      @include typography.type-headline-07;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
   }
+  &-title-div {
+    padding-right: 4px;
+  }
+
+  &-content-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    @media (min-width: 42rem) {
+      display: block;
+    }
+  }
+  &-mobile-wrapper-subdiv {
+    display: flex;
+    align-items: center;
+    @media (min-width: 42rem) {
+      display: block;
+    }
+  }
+
   &-category-text {
     @include typography.type-ui-02;
     color: var(--kd-color-text-primary);
-    margin-top: 4px;
+    margin-top: 0px;
     margin-bottom: 0px;
   }
   &-subcategory-text {
@@ -26,32 +107,23 @@
     margin-top: 0;
     margin-bottom: 4px;
   }
-  &-link {
-    margin-top: 10px;
-  }
-  &-label-mobile {
-    @include typography.type-body-02;
-    color: var(--kd-color-text-secondary);
-    margin-bottom: 0px;
-  }
-  &-title-div {
-    padding-right: 4px;
-  }
-  &-mobile-title {
-    @include typography.type-body-02;
-    color: var(--kd-color-text-primary);
-    margin: 0;
-  }
-  &-mobile-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  &-mobile-wrapper-subdiv {
-    display: flex;
-    align-items: center;
-  }
   &-cat-subcat-text {
     padding: 0px 8px;
+    @media (min-width: 42rem) {
+      padding: 0;
+    }
+  }
+  &-link {
+    display: none;
+    @media (min-width: 42rem) {
+      display: block;
+      margin-top: 10px;
+    }
+  }
+  &-icon-btn {
+    display: block;
+    @media (min-width: 42rem) {
+      display: none;
+    }
   }
 }
