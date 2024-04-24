@@ -308,7 +308,19 @@ export const Gridstack = {
         >Gridstack</a
       >
       for a customizable dashboard layout.
-      <br /><br />
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/widget/gridstack.sample.ts"
+        target="_blank"
+        rel="noopener"
+        >Full code sample here</a
+      >
+      and
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/widget/gridstack.sample.scss"
+        target="_blank"
+        rel="noopener"
+        >style overrides here</a
+      >. <br /><br />
 
       <kyn-gridstack-sample></kyn-gridstack-sample>
     `;

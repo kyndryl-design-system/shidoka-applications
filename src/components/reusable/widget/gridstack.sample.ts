@@ -17,7 +17,7 @@ export class GridstackSample extends LitElement {
   @state()
   _breakpoint = '';
 
-  /** Widget size definitions. */
+  /** Widget size and position definitions for each breakpoint. */
   @state()
   _layout: any = {
     w1: {
@@ -231,8 +231,7 @@ export class GridstackSample extends LitElement {
                     },
                   ]}
                   .options=${{
-                    // aspectRatio: 1,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: false, // disable chart aspect ratio so it scales with widget instead
                     scales: {
                       x: {
                         title: {
@@ -276,8 +275,7 @@ export class GridstackSample extends LitElement {
                     },
                   ]}
                   .options=${{
-                    // aspectRatio: 2,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: false, // disable chart aspect ratio so it scales with widget instead
                     scales: {
                       x: {
                         title: {
@@ -305,28 +303,31 @@ export class GridstackSample extends LitElement {
   override firstUpdated() {
     this._setBreakpoint();
 
+    // initialize the GridStack
     const El: any = this.shadowRoot?.querySelector('.grid-stack');
     this._grid = GridStack.init(
       {
-        handle: 'kyn-widget-drag-handle',
-        margin: 16,
+        handle: 'kyn-widget-drag-handle', // set the drag handle
+        margin: 16, // 32px gap
         columnOpts: {
-          breakpointForWindow: true,
+          breakpointForWindow: true, // break based on viewport size, not grid size
           breakpoints: [
-            { w: 672, c: 4 },
-            { w: 1184, c: 8 },
+            { w: 671, c: 4 }, // shidoka-foundation sm breakpoint -1px
+            { w: 1183, c: 8 }, // shidoka-foundation md breakpoint -1px
           ],
         },
       },
       El
     );
 
+    // set drag state on widget on dragstart
     this._grid.on('dragstart', function (e: Event, el: HTMLElement) {
       console.log(e);
       const Widget: any = el.querySelector('kyn-widget');
       Widget.dragActive = true;
     });
 
+    // unset drag state on widget on dragstop
     this._grid.on('dragstop', function (e: Event, el: HTMLElement) {
       console.log(e);
       const Widget: any = el.querySelector('kyn-widget');
@@ -339,6 +340,7 @@ export class GridstackSample extends LitElement {
       const Widgets: any =
         this.shadowRoot?.querySelectorAll('.grid-stack-item');
 
+      // update the gridstack size/position of each widget when breakpoint changes
       Widgets.forEach((widgetEl: any) => {
         const Options =
           this._layout[widgetEl.id].sizes[this._breakpoint] ||
@@ -371,6 +373,7 @@ export class GridstackSample extends LitElement {
   }
 
   private _setBreakpoint() {
+    // get and set current breakpoint variable
     this._breakpoint = getComputedStyle(
       document.documentElement
     ).getPropertyValue('--kd-current-breakpoint');
