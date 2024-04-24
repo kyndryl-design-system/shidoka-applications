@@ -2,7 +2,8 @@ import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import vitalCardScss from './vitalCard.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '@kyndryl-design-system/shidoka-foundation/components/link';
+
 import chevronRightIcon from '@carbon/icons/es/chevron--right/20';
 
 /**  Sample Lit component to show vital card pattern. */
@@ -18,18 +19,20 @@ export class VitalCardSampleComponent extends LitElement {
           <h2 class="vital-card-category-text">Category</h2>
           <h2 class="vital-card-subcategory-text">Subcategory</h2>
           <div class="vital-card-cta">
-            <button
-              aria-label="cta"
-              class="vital-card-btn"
-              @click=${(e: Event) => e.preventDefault()}
+            <slot></slot>
+            <kd-link
+              class="vital-card-link"
+              standalone
+              href="#"
+              @on-click=${(e: Event) => e.preventDefault()}
             >
               CTA Title
               <kd-icon
-                class="vital-card-btn-icon"
                 slot="icon"
+                sizeoverride="16"
                 .icon=${chevronRightIcon}
               ></kd-icon>
-            </button>
+            </kd-link>
           </div>
         </div>
       </div>
