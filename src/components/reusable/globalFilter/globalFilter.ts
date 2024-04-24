@@ -4,6 +4,9 @@ import GlobalFilterScss from './globalFilter.scss';
 
 /**
  * Global Filter bar.
+ * @slot unnamed - Left slot, intended for search input and modal.
+ * @slot actions - Right slot, intended for action buttons and overflow menu.
+ * @slot tags - Slot below the filter bar, for tag group.
  */
 @customElement('kyn-global-filter')
 export class GlobalFilter extends LitElement {
