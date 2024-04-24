@@ -53,12 +53,6 @@ export class OverflowMenu extends LitElement {
   _menuEl!: any;
 
   /**
-   * A generated unique id
-   * @ignore
-   */
-  @state() private _id = crypto.randomUUID();
-
-  /**
    * Open drawer upwards.
    * @ignore
    */
@@ -85,7 +79,7 @@ export class OverflowMenu extends LitElement {
         <button
           class=${classMap(buttonClasses)}
           @click=${this.toggleMenu}
-          aria-controls=${this._id}
+          aria-controls="menu"
           aria-expanded=${this.open}
           title=${this.assistiveText}
           aria-label=${this.assistiveText}
@@ -93,7 +87,7 @@ export class OverflowMenu extends LitElement {
           <kd-icon .icon=${overflowIcon}></kd-icon>
         </button>
 
-        <div id=${this._id} class=${classMap(menuClasses)}>
+        <div id="menu" class=${classMap(menuClasses)}>
           <slot @slotchange=${this.handleSlotChange}></slot>
         </div>
       </div>

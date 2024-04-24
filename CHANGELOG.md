@@ -1,3 +1,17 @@
+## [1.15.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.9...v1.15.10) (2024-04-24)
+
+
+### Bug Fixes
+
+* **forms:** remove label css parts ([7d835cf](https://github.com/kyndryl-design-system/shidoka-applications/commit/7d835cf23b74ad46b89d17520601214074e03c54))
+
+## [1.15.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.8...v1.15.9) (2024-04-24)
+
+
+### Bug Fixes
+
+* **overflow-menu:** remove crypto ([1cd33b8](https://github.com/kyndryl-design-system/shidoka-applications/commit/1cd33b89d4a0e3bc25ad44b05e423c1d40fd99e6))
+
 ## [1.15.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.7...v1.15.8) (2024-04-18)
 
 
