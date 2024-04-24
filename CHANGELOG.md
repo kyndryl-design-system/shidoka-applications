@@ -1,3 +1,10 @@
+## [1.15.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.8...v1.15.9) (2024-04-24)
+
+
+### Bug Fixes
+
+* **overflow-menu:** remove crypto ([1cd33b8](https://github.com/kyndryl-design-system/shidoka-applications/commit/1cd33b89d4a0e3bc25ad44b05e423c1d40fd99e6))
+
 ## [1.15.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.7...v1.15.8) (2024-04-18)
 
 
