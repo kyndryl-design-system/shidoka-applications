@@ -1,60 +1,7 @@
 @use '../../common/scss/global.scss';
 @use '../../common/scss/mixins.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
-
-// .vital-card {
-//   &-title-label {
-//     @include typography.type-body-02;
-//     color: var(--kd-color-text-secondary);
-//     margin-bottom: 8px;
-//   }
-//   &-title {
-//     @include typography.type-headline-07;
-//     color: var(--kd-color-text-primary);
-//     margin-top: 0px;
-//     margin-bottom: 4px;
-//   }
-//   &-category-text {
-//     @include typography.type-ui-02;
-//     color: var(--kd-color-text-primary);
-//     margin-top: 4px;
-//     margin-bottom: 0px;
-//   }
-//   &-subcategory-text {
-//     @include typography.type-ui-03;
-//     color: var(--kd-color-text-secondary);
-//     margin-top: 0;
-//     margin-bottom: 4px;
-//   }
-//   &-link {
-//     margin-top: 10px;
-//   }
-//   &-label-mobile {
-//     @include typography.type-body-02;
-//     color: var(--kd-color-text-secondary);
-//     margin-bottom: 0px;
-//   }
-//   &-title-div {
-//     padding-right: 4px;
-//   }
-//   &-mobile-title {
-//     @include typography.type-body-02;
-//     color: var(--kd-color-text-primary);
-//     margin: 0;
-//   }
-//   &-mobile-wrapper {
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-between;
-//   }
-//   &-mobile-wrapper-subdiv {
-//     display: flex;
-//     align-items: center;
-//   }
-//   &-cat-subcat-text {
-//     padding: 0px 8px;
-//   }
-// }
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 
 .vital-card {
   &-title-label {
@@ -114,10 +61,14 @@
     }
   }
   &-link {
-    display: none;
+    margin-top: 0px;
     @media (min-width: 42rem) {
-      display: block;
       margin-top: 10px;
+    }
+    &-text {
+      @media (max-width: 42rem) {
+        @include visibility.hidden;
+      }
     }
   }
   &-icon-btn {

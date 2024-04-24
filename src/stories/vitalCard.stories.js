@@ -3,7 +3,6 @@ import '@kyndryl-design-system/shidoka-foundation/css/grid.css';
 import '@kyndryl-design-system/shidoka-foundation/components/card';
 
 import './sampleCardComponents/vitalCard.sample.ts';
-//import './sampleCardComponents/vitalCard.mobile.sample.ts';
 
 export default {
   title: 'Patterns/Vital Card',
@@ -22,27 +21,3 @@ export const Default = {
     </kd-card>`;
   },
 };
-
-export const Clickable = {
-  render: () => {
-    return html`<kd-card type="clickable" href="" target="" rel="">
-      <vital-card-sample-component></vital-card-sample-component
-    ></kd-card>`;
-  },
-};
-
-// export const DefaultMobile = {
-//   render: () => {
-//     return html`<kd-card type="normal" href="" target="" rel="">
-//       <vital-card-mobile-sample-component></vital-card-mobile-sample-component
-//     ></kd-card>`;
-//   },
-// };
-
-// export const MobileClickable = {
-//   render: () => {
-//     return html`<kd-card type="clickable" href="" target="" rel="">
-//       <vital-card-mobile-sample-component></vital-card-mobile-sample-component
-//     ></kd-card>`;
-//   },
-// };

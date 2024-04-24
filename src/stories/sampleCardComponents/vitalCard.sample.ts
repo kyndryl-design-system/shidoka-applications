@@ -3,7 +3,6 @@ import { customElement } from 'lit/decorators.js';
 import vitalCardScss from './vitalCard.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/link';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
 
 import chevronRightIcon from '@carbon/icons/es/chevron--right/20';
 
@@ -32,24 +31,13 @@ export class VitalCardSampleComponent extends LitElement {
             href="#"
             @on-click=${(e: Event) => e.preventDefault()}
           >
-            CTA Title
+            <span class="vital-card-link-text">CTA Title</span>
             <kd-icon
               slot="icon"
               sizeoverride="16"
               .icon=${chevronRightIcon}
             ></kd-icon>
           </kd-link>
-
-          <kd-button
-            class="vital-card-icon-btn"
-            iconposition="center"
-            kind="tertiary"
-            size="small"
-            description="cta button"
-            @click=${(e: Event) => e.preventDefault()}
-          >
-            <kd-icon slot="icon" .icon=${chevronRightIcon}></kd-icon>
-          </kd-button>
         </div>
       </div>
     `;
