@@ -27,6 +27,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 0,
         y: 0,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w2',
@@ -34,6 +36,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 3,
         y: 0,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w3',
@@ -41,6 +45,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 6,
         y: 0,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w4',
@@ -48,6 +54,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 9,
         y: 0,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w5',
@@ -55,6 +63,8 @@ export class GridstackSample extends LitElement {
         h: 4,
         x: 0,
         y: 2,
+        minW: 4,
+        minH: 2,
       },
       {
         id: 'w6',
@@ -62,6 +72,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 8,
         y: 2,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w7',
@@ -69,6 +81,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 10,
         y: 2,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w8',
@@ -76,6 +90,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 8,
         y: 4,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w9',
@@ -83,6 +99,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 10,
         y: 4,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w10',
@@ -90,6 +108,8 @@ export class GridstackSample extends LitElement {
         h: 3,
         x: 0,
         y: 19,
+        minW: 4,
+        minH: 2,
       },
       {
         id: 'w11',
@@ -97,6 +117,8 @@ export class GridstackSample extends LitElement {
         h: 4,
         x: 0,
         y: 22,
+        minW: 4,
+        minH: 4,
       },
       {
         id: 'w12',
@@ -104,6 +126,8 @@ export class GridstackSample extends LitElement {
         h: 4,
         x: 8,
         y: 22,
+        minW: 4,
+        minH: 4,
       },
     ],
     md: [
@@ -113,6 +137,8 @@ export class GridstackSample extends LitElement {
         h: 3,
         x: 0,
         y: 0,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w2',
@@ -120,6 +146,8 @@ export class GridstackSample extends LitElement {
         h: 3,
         x: 4,
         y: 0,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w3',
@@ -127,6 +155,8 @@ export class GridstackSample extends LitElement {
         h: 3,
         x: 0,
         y: 3,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w4',
@@ -134,6 +164,8 @@ export class GridstackSample extends LitElement {
         h: 3,
         x: 4,
         y: 3,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w5',
@@ -141,6 +173,8 @@ export class GridstackSample extends LitElement {
         h: 4,
         x: 0,
         y: 6,
+        minW: 4,
+        minH: 2,
       },
       {
         id: 'w6',
@@ -148,6 +182,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 4,
         y: 6,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w7',
@@ -155,6 +191,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 6,
         y: 6,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w8',
@@ -162,6 +200,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 4,
         y: 8,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w9',
@@ -169,6 +209,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 6,
         y: 8,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w10',
@@ -176,6 +218,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 0,
         y: 10,
+        minW: 4,
+        minH: 2,
       },
       {
         id: 'w11',
@@ -183,6 +227,8 @@ export class GridstackSample extends LitElement {
         h: 4,
         x: 0,
         y: 12,
+        minW: 4,
+        minH: 4,
       },
       {
         id: 'w12',
@@ -190,6 +236,8 @@ export class GridstackSample extends LitElement {
         h: 4,
         x: 4,
         y: 12,
+        minW: 4,
+        minH: 4,
       },
     ],
     sm: [
@@ -199,6 +247,8 @@ export class GridstackSample extends LitElement {
         h: 3,
         x: 0,
         y: 0,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w2',
@@ -206,6 +256,8 @@ export class GridstackSample extends LitElement {
         h: 3,
         x: 0,
         y: 3,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w3',
@@ -213,6 +265,8 @@ export class GridstackSample extends LitElement {
         h: 3,
         x: 0,
         y: 6,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w4',
@@ -220,6 +274,8 @@ export class GridstackSample extends LitElement {
         h: 3,
         x: 0,
         y: 9,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w5',
@@ -227,6 +283,8 @@ export class GridstackSample extends LitElement {
         h: 3,
         x: 0,
         y: 12,
+        minW: 4,
+        minH: 2,
       },
       {
         id: 'w6',
@@ -234,6 +292,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 0,
         y: 15,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w7',
@@ -241,6 +301,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 2,
         y: 15,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w8',
@@ -248,6 +310,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 0,
         y: 17,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w9',
@@ -255,6 +319,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 2,
         y: 17,
+        minW: 2,
+        minH: 2,
       },
       {
         id: 'w10',
@@ -262,6 +328,8 @@ export class GridstackSample extends LitElement {
         h: 2,
         x: 0,
         y: 19,
+        minW: 4,
+        minH: 2,
       },
       {
         id: 'w11',
@@ -269,6 +337,8 @@ export class GridstackSample extends LitElement {
         h: 4,
         x: 0,
         y: 21,
+        minW: 4,
+        minH: 4,
       },
       {
         id: 'w12',
@@ -276,6 +346,8 @@ export class GridstackSample extends LitElement {
         h: 4,
         x: 0,
         y: 25,
+        minW: 4,
+        minH: 4,
       },
     ],
   };
@@ -288,7 +360,7 @@ export class GridstackSample extends LitElement {
     return html`
       <div class="grid-wrapper">
         <div class="grid-stack">
-          <div id="w1" class="grid-stack-item" gs-min-w="2" gs-min-h="2">
+          <div id="w1" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -297,7 +369,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w2" class="grid-stack-item" gs-min-w="2" gs-min-h="2">
+          <div id="w2" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -306,7 +378,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w3" class="grid-stack-item" gs-min-w="2" gs-min-h="2">
+          <div id="w3" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -315,7 +387,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w4" class="grid-stack-item" gs-min-w="2" gs-min-h="2">
+          <div id="w4" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -324,7 +396,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w5" class="grid-stack-item" gs-min-w="4" gs-min-h="2">
+          <div id="w5" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -333,7 +405,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w6" class="grid-stack-item" gs-min-w="2" gs-min-h="2">
+          <div id="w6" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -342,7 +414,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w7" class="grid-stack-item" gs-min-w="2" gs-min-h="2">
+          <div id="w7" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -351,7 +423,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w8" class="grid-stack-item" gs-min-w="2" gs-min-h="2">
+          <div id="w8" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -360,7 +432,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w9" class="grid-stack-item" gs-min-w="2" gs-min-h="2">
+          <div id="w9" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -369,7 +441,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w10" class="grid-stack-item" gs-min-w="4" gs-min-h="2">
+          <div id="w10" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -378,7 +450,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w11" class="grid-stack-item" gs-min-w="4" gs-min-h="4">
+          <div id="w11" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget>
                 <kd-chart
@@ -426,7 +498,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w12" class="grid-stack-item" gs-min-w="4" gs-min-h="4">
+          <div id="w12" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget>
                 <kd-chart
