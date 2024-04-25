@@ -20,90 +20,264 @@ export class GridstackSample extends LitElement {
   /** Widget size and position definitions for each breakpoint. */
   @state()
   _layout: any = {
-    w1: {
-      sizes: {
-        default: { w: 3, h: 2, x: 0, y: 0 },
-        md: { w: 4, h: 3, x: 0, y: 0 },
-        sm: { w: 4, h: 3, x: 0, y: 0 },
+    default: [
+      {
+        id: 'w1',
+        w: 3,
+        h: 2,
+        x: 0,
+        y: 0,
       },
-    },
-    w2: {
-      sizes: {
-        default: { w: 3, h: 2, x: 3, y: 0 },
-        md: { w: 4, h: 3, x: 4, y: 0 },
-        sm: { w: 4, h: 3, x: 0, y: 3 },
+      {
+        id: 'w2',
+        w: 3,
+        h: 2,
+        x: 3,
+        y: 0,
       },
-    },
-    w3: {
-      sizes: {
-        default: { w: 3, h: 2, x: 6, y: 0 },
-        md: { w: 4, h: 3, x: 0, y: 3 },
-        sm: { w: 4, h: 3, x: 0, y: 6 },
+      {
+        id: 'w3',
+        w: 3,
+        h: 2,
+        x: 6,
+        y: 0,
       },
-    },
-    w4: {
-      sizes: {
-        default: { w: 3, h: 2, x: 9, y: 0 },
-        md: { w: 4, h: 3, x: 4, y: 3 },
-        sm: { w: 4, h: 3, x: 0, y: 9 },
+      {
+        id: 'w4',
+        w: 3,
+        h: 2,
+        x: 9,
+        y: 0,
       },
-    },
-    w5: {
-      sizes: {
-        default: { w: 8, h: 4, x: 0, y: 2 },
-        md: { w: 4, h: 4, x: 0, y: 6 },
-        sm: { w: 4, h: 3, x: 0, y: 12 },
+      {
+        id: 'w5',
+        w: 8,
+        h: 4,
+        x: 0,
+        y: 2,
       },
-    },
-    w6: {
-      sizes: {
-        default: { w: 2, h: 2, x: 8, y: 2 },
-        md: { w: 2, h: 2, x: 4, y: 6 },
-        sm: { w: 2, h: 2, x: 0, y: 15 },
+      {
+        id: 'w6',
+        w: 2,
+        h: 2,
+        x: 8,
+        y: 2,
       },
-    },
-    w7: {
-      sizes: {
-        default: { w: 2, h: 2, x: 10, y: 2 },
-        md: { w: 2, h: 2, x: 6, y: 6 },
-        sm: { w: 2, h: 2, x: 2, y: 15 },
+      {
+        id: 'w7',
+        w: 2,
+        h: 2,
+        x: 10,
+        y: 2,
       },
-    },
-    w8: {
-      sizes: {
-        default: { w: 2, h: 2, x: 8, y: 4 },
-        md: { w: 2, h: 2, x: 4, y: 8 },
-        sm: { w: 2, h: 2, x: 0, y: 17 },
+      {
+        id: 'w8',
+        w: 2,
+        h: 2,
+        x: 8,
+        y: 4,
       },
-    },
-    w9: {
-      sizes: {
-        default: { w: 2, h: 2, x: 10, y: 4 },
-        md: { w: 2, h: 2, x: 6, y: 8 },
-        sm: { w: 2, h: 2, x: 2, y: 17 },
+      {
+        id: 'w9',
+        w: 2,
+        h: 2,
+        x: 10,
+        y: 4,
       },
-    },
-    w10: {
-      sizes: {
-        default: { w: 12, h: 3, x: 0, y: 19 },
-        md: { w: 8, h: 2, x: 0, y: 10 },
-        sm: { w: 3, h: 2, x: 0, y: 19 },
+      {
+        id: 'w10',
+        w: 12,
+        h: 3,
+        x: 0,
+        y: 19,
       },
-    },
-    w11: {
-      sizes: {
-        default: { w: 8, h: 4, x: 0, y: 22 },
-        md: { w: 4, h: 4, x: 0, y: 12 },
-        sm: { w: 4, h: 4, x: 0, y: 21 },
+      {
+        id: 'w11',
+        w: 8,
+        h: 4,
+        x: 0,
+        y: 22,
       },
-    },
-    w12: {
-      sizes: {
-        default: { w: 4, h: 4, x: 8, y: 22 },
-        md: { w: 4, h: 4, x: 4, y: 12 },
-        sm: { w: 4, h: 4, x: 0, y: 25 },
+      {
+        id: 'w12',
+        w: 4,
+        h: 4,
+        x: 8,
+        y: 22,
       },
-    },
+    ],
+    md: [
+      {
+        id: 'w1',
+        w: 4,
+        h: 3,
+        x: 0,
+        y: 0,
+      },
+      {
+        id: 'w2',
+        w: 4,
+        h: 3,
+        x: 4,
+        y: 0,
+      },
+      {
+        id: 'w3',
+        w: 4,
+        h: 3,
+        x: 0,
+        y: 3,
+      },
+      {
+        id: 'w4',
+        w: 4,
+        h: 3,
+        x: 4,
+        y: 3,
+      },
+      {
+        id: 'w5',
+        w: 4,
+        h: 4,
+        x: 0,
+        y: 6,
+      },
+      {
+        id: 'w6',
+        w: 2,
+        h: 2,
+        x: 4,
+        y: 6,
+      },
+      {
+        id: 'w7',
+        w: 2,
+        h: 2,
+        x: 6,
+        y: 6,
+      },
+      {
+        id: 'w8',
+        w: 2,
+        h: 2,
+        x: 4,
+        y: 8,
+      },
+      {
+        id: 'w9',
+        w: 2,
+        h: 2,
+        x: 6,
+        y: 8,
+      },
+      {
+        id: 'w10',
+        w: 8,
+        h: 2,
+        x: 0,
+        y: 10,
+      },
+      {
+        id: 'w11',
+        w: 4,
+        h: 4,
+        x: 0,
+        y: 12,
+      },
+      {
+        id: 'w12',
+        w: 4,
+        h: 4,
+        x: 4,
+        y: 12,
+      },
+    ],
+    sm: [
+      {
+        id: 'w1',
+        w: 4,
+        h: 3,
+        x: 0,
+        y: 0,
+      },
+      {
+        id: 'w2',
+        w: 4,
+        h: 3,
+        x: 0,
+        y: 3,
+      },
+      {
+        id: 'w3',
+        w: 4,
+        h: 3,
+        x: 0,
+        y: 6,
+      },
+      {
+        id: 'w4',
+        w: 4,
+        h: 3,
+        x: 0,
+        y: 9,
+      },
+      {
+        id: 'w5',
+        w: 4,
+        h: 3,
+        x: 0,
+        y: 12,
+      },
+      {
+        id: 'w6',
+        w: 2,
+        h: 2,
+        x: 0,
+        y: 15,
+      },
+      {
+        id: 'w7',
+        w: 2,
+        h: 2,
+        x: 2,
+        y: 15,
+      },
+      {
+        id: 'w8',
+        w: 2,
+        h: 2,
+        x: 0,
+        y: 17,
+      },
+      {
+        id: 'w9',
+        w: 2,
+        h: 2,
+        x: 2,
+        y: 17,
+      },
+      {
+        id: 'w10',
+        w: 3,
+        h: 2,
+        x: 0,
+        y: 19,
+      },
+      {
+        id: 'w11',
+        w: 4,
+        h: 4,
+        x: 0,
+        y: 21,
+      },
+      {
+        id: 'w12',
+        w: 4,
+        h: 4,
+        x: 0,
+        y: 25,
+      },
+    ],
   };
 
   /** GridStack instance. */
@@ -336,18 +510,25 @@ export class GridstackSample extends LitElement {
   }
 
   override willUpdate(changedProps: any) {
-    if (changedProps.has('_breakpoint')) {
-      const Widgets: any =
-        this.shadowRoot?.querySelectorAll('.grid-stack-item');
-
-      // update the gridstack size/position of each widget when breakpoint changes
-      Widgets.forEach((widgetEl: any) => {
-        const Options =
-          this._layout[widgetEl.id].sizes[this._breakpoint] ||
-          this._layout[widgetEl.id].sizes['default'];
-        this._grid.update(widgetEl, Options);
-      });
+    if (changedProps.has('_breakpoint') || changedProps.has('_layout')) {
+      // update the gridstack size/position of each widget when breakpoint or layout changes
+      this._updateWidgets();
     }
+  }
+
+  private _updateWidgets() {
+    // get widget elements
+    const Widgets: any = this.shadowRoot?.querySelectorAll('.grid-stack-item');
+    // get layout for current breakpoint
+    const Layout = this._layout[this._breakpoint] || this._layout['default'];
+
+    // update each widget
+    Widgets.forEach((widgetEl: any) => {
+      // get widget options
+      const Options = Layout.find((specs: any) => specs.id === widgetEl.id);
+      // call gridstack update function
+      this._grid.update(widgetEl, Options);
+    });
   }
 
   override connectedCallback() {
