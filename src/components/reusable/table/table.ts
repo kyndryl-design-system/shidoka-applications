@@ -23,46 +23,58 @@ export class Table extends LitElement {
   /**
    * checkboxSelection: Boolean indicating whether rows should be
    * selectable using checkboxes.
+   * @type {boolean}
+   * @default false
    */
   @property({ type: Boolean })
-  checkboxSelection = false;
+  checkboxSelection?: boolean;
 
   /**
    * striped: Boolean indicating whether rows should have alternate
    * coloring.
+   * @type {boolean}
+   * @default false
    */
   @property({ type: Boolean })
-  striped = false;
+  striped?: boolean;
 
   /**
    * stickyHeader: Boolean indicating whether the table header
    * should be sticky.
+   * @type {boolean}
+   * @default false
    */
   @property({ type: Boolean })
-  stickyHeader = false;
+  stickyHeader?: boolean;
 
   /**
    * dense: Boolean indicating whether the table should be displayed
    * in dense mode.
+   * @type {boolean}
+   * @default false
    */
   @property({ type: Boolean })
-  dense = false;
+  dense?: boolean;
 
   /**
    * ellipsis: Boolean indicating whether the table should truncate
    * text content with an ellipsis.
+   * @type {boolean}
+   * @default false
    */
   @property({ type: Boolean })
-  ellipsis = false;
+  ellipsis?: boolean;
 
   /**
    * fixedLayout: Boolean indicating whether the table should have a fixed layout.
    * This will set the table's layout to fixed, which means the table and column widths
    * will be determined by the width of the columns and not by the content of the cells.
    * This can be useful when you want to have a consistent column width across multiple tables.
+   * @type {boolean}
+   * @default false
    * */
   @property({ type: Boolean })
-  fixedLayout = false;
+  fixedLayout?: boolean;
 
   /**
    * _provider: Context provider for the table.
@@ -78,14 +90,20 @@ export class Table extends LitElement {
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
-    // Update the context provider with the latest values
-    this._provider.setValue({
-      dense: this.dense,
-      ellipsis: this.ellipsis,
-      striped: this.striped,
-      checkboxSelection: this.checkboxSelection,
-      stickyHeader: this.stickyHeader,
-    });
+    // Create an object to hold the new values
+    const newValues: Partial<any> = {};
+
+    // Check each property in _propsToCheck and add it to newValues if it has really changed
+    if (changedProperties.has('dense')) newValues.dense = this.dense;
+    if (changedProperties.has('ellipsis')) newValues.ellipsis = this.ellipsis;
+    if (changedProperties.has('striped')) newValues.striped = this.striped;
+    if (changedProperties.has('checkboxSelection'))
+      newValues.checkboxSelection = this.checkboxSelection;
+    if (changedProperties.has('stickyHeader'))
+      newValues.stickyHeader = this.stickyHeader;
+
+    // Update the context provider with the new values
+    this._provider.setValue(newValues);
   }
 
   /**
@@ -165,6 +183,8 @@ export class Table extends LitElement {
    * Handles the change of selection state for a specific row.
    */
   private _handleRowSelectionChange(event: CustomEvent) {
+    event.stopPropagation();
+
     const { target } = event;
     const { _selectedRows: selectedRows } = this;
 
@@ -198,6 +218,8 @@ export class Table extends LitElement {
    * Toggles the selection state of all rows in the table.
    */
   private _toggleSelectionAll(event: CustomEvent) {
+    event.stopPropagation();
+
     const {
       detail: { checked },
       target,
@@ -209,18 +231,13 @@ export class Table extends LitElement {
     }
 
     allRows.forEach((row) => {
+      if ((row as TableRow).disabled) return;
+
       (row as TableRow).selected = checked;
     });
 
-    if (!checked) {
-      this._selectedRows = [];
-      this._selectedRowIds = new Set();
-    } else {
-      this._selectedRows = [...allRows];
-      this._selectedRowIds = new Set(
-        this._selectedRows.map((row) => row.rowId)
-      );
-    }
+    this._selectedRows = [...allRows.filter((row) => row.selected)];
+    this._selectedRowIds = new Set(this._selectedRows.map((row) => row.rowId));
 
     this._updateHeaderCheckbox();
 
@@ -270,6 +287,8 @@ export class Table extends LitElement {
     const {
       detail: { rows },
     } = event;
+    event.stopPropagation();
+
     this._allRows = rows;
     this._updateSelectionStates();
     this._updateHeaderCheckbox();
@@ -284,8 +303,9 @@ export class Table extends LitElement {
       if (this._selectedRowIds.has(row.rowId)) {
         row.selected = true; // Update the selected property if the rowId matches
         updatedSelectedRows.push(row); // Add the actual row element to the updated selected rows array
-      } else {
-        row.selected = false; // Ensure non-selected rows are marked as such
+      } else if (row.selected) {
+        this._selectedRowIds.add(row.rowId); // Add the rowId to the selectedRowIds set
+        updatedSelectedRows.push(row); // Add the actual row element to the updated selected rows array
       }
     });
 

@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement, PropertyValues } from 'lit';
 import {
   customElement,
   property,
@@ -114,6 +114,28 @@ export class TableHeader extends LitElement {
   visiblyHidden = false;
 
   /**
+   * Sets a fixed width for the cell.
+   * Accepts standard CSS width values (e.g., '150px', '50%').
+   */
+  @property({ type: String, reflect: true })
+  width = '';
+
+  /**
+   * Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.
+   * Accepts standard CSS width values (e.g., '150px', '50%').
+   */
+  @property({ type: String, reflect: true })
+  maxWidth = '';
+
+  /**
+   * Sets a minimum width for the cell;
+   * Accepts standard CSS width values (e.g., '150px', '50%').
+   * @type {string}
+   */
+  @property({ type: String, reflect: true })
+  minWidth = '';
+
+  /**
    * @ignore
    */
   @queryAssignedNodes({ flatten: true })
@@ -157,8 +179,21 @@ export class TableHeader extends LitElement {
     );
   }
 
-  override updated() {
+  override updated(changedProperties: PropertyValues) {
     this.getTextContent();
+
+    super.updated(changedProperties);
+    if (this.maxWidth && changedProperties.has('maxWidth')) {
+      this.style.setProperty('--kyn-th-max-width', this.maxWidth);
+    }
+
+    if (this.width && changedProperties.has('width')) {
+      this.style.setProperty('--kyn-th-width', this.width);
+    }
+
+    if (this.minWidth && changedProperties.has('minWidth')) {
+      this.style.setProperty('--kyn-th-min-width', this.minWidth);
+    }
   }
 
   getTextContent() {

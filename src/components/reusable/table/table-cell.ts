@@ -53,6 +53,9 @@ export class TableCell extends LitElement {
   @property({ type: Boolean, reflect: true })
   ellipsis = false;
 
+  @property({ type: Boolean, reflect: true })
+  disabled = false;
+
   /**
    * Context consumer for the table context.
    * Updates the cell's dense and ellipsis properties when the context changes.
@@ -94,14 +97,14 @@ export class TableCell extends LitElement {
       this.style.setProperty('--kyn-td-width', this.width);
     }
 
-    if (this.width && changedProperties.has('minWidth')) {
+    if (this.minWidth && changedProperties.has('minWidth')) {
       this.style.setProperty('--kyn-td-min-width', this.minWidth);
     }
   }
 
   override render() {
     return html`
-      <div class="slot-wrapper">
+      <div class="slot-wrapper" aria-disabled=${this.disabled}>
         <slot></slot>
       </div>
     `;

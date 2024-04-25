@@ -5,7 +5,23 @@
   vertical-align: middle;
 }
 
-:host([selected]),
-:host([checkboxselection]:hover) {
+:host([selected]:not([disabled])),
+:host([checkboxselection]:hover:not([disabled])) {
   background-color: var(--kd-color-background-inverse-hover) !important;
+}
+
+.kyn--table-expand__button {
+  --kd-color-text-tertiary: var(--kd-color-text-primary);
+}
+
+.kyn--table-expand__button kd-icon {
+  transition: transform 200ms ease-in-out;
+}
+
+:host([expanded]) .kyn--table-expand__button kd-icon {
+  transform: rotate(-180deg);
+}
+
+:host([disabled]) {
+  pointer-events: none;
 }
