@@ -1,11 +1,5 @@
 import { LitElement, html } from 'lit';
-import {
-  customElement,
-  property,
-  state,
-  queryAssignedElements,
-  query,
-} from 'lit/decorators.js';
+import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import SCSS from './overflowMenu.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
@@ -39,12 +33,6 @@ export class OverflowMenu extends LitElement {
   /** Button assistive text.. */
   @property({ type: String })
   assistiveText = 'Toggle Menu';
-
-  /** Queries for slotted menu items.
-   * @internal
-   */
-  @queryAssignedElements({ selector: 'kyn-overflow-menu-item' })
-  menuItems!: any;
 
   @query('.btn')
   _btnEl!: any;
@@ -88,7 +76,7 @@ export class OverflowMenu extends LitElement {
         </button>
 
         <div id="menu" class=${classMap(menuClasses)}>
-          <slot @slotchange=${this.handleSlotChange}></slot>
+          <slot></slot>
         </div>
       </div>
     `;
@@ -114,9 +102,8 @@ export class OverflowMenu extends LitElement {
         const Top =
           this._btnEl.getBoundingClientRect().top +
           this._btnEl.getBoundingClientRect().height;
-        const MenuHeight = this.menuItems.length * 48;
-
-        console.log(this._openUpwards);
+        const MenuHeight =
+          this.querySelectorAll('kyn-overflow-menu-item').length * 48;
 
         if (this._openUpwards) {
           this._menuEl.style.top =
@@ -132,19 +119,7 @@ export class OverflowMenu extends LitElement {
     }
   }
 
-  private handleSlotChange() {
-    this.menuItems.forEach((item: any) => {
-      item.anchorRight = this.anchorRight;
-    });
-  }
-
   override willUpdate(changedProps: any) {
-    if (changedProps.has('anchorRight')) {
-      this.menuItems.forEach((item: any) => {
-        item.anchorRight = this.anchorRight;
-      });
-    }
-
     if (changedProps.has('open')) {
       if (this.open) {
         // open dropdown upwards if closer to bottom of viewport

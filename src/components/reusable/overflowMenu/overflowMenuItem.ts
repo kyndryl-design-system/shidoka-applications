@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import SCSS from './overflowMenuItem.scss';
 
@@ -24,18 +24,10 @@ export class OverflowMenuItem extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
-  /**
-   * Menu anchorRight state, inherited from the parent.
-   * @internal
-   */
-  @state()
-  anchorRight = false;
-
   override render() {
     const classes = {
       'overflow-menu-item': true,
       destructive: this.destructive,
-      right: this.anchorRight,
     };
 
     if (this.href !== '') {
