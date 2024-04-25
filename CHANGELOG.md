@@ -1,3 +1,10 @@
+## [1.15.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.10...v1.15.11) (2024-04-25)
+
+
+### Bug Fixes
+
+* **overflow-menu:** change item count calc ([ae7bc6b](https://github.com/kyndryl-design-system/shidoka-applications/commit/ae7bc6b9fddcbe70233fc451d6b70f859e8656fa))
+
 ## [1.15.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.9...v1.15.10) (2024-04-24)
 
 
