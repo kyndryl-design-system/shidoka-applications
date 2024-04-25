@@ -16,10 +16,15 @@
   height: 100%;
   padding-top: 8px;
   background: var(--kd-color-background-ui-default);
-  border: 1px solid var(--kd-color-border-light);
-  border-radius: 8px;
+  border-radius: 4px;
   container-type: inline-size;
-  transition: box-shadow 100ms ease-out;
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  transition: box-shadow 100ms ease-out, outline-color 150ms ease-out;
+
+  &:focus-within {
+    outline-color: var(--kd-color-border-focus);
+  }
 
   &.drag-active {
     @include elevation.shadow(4);

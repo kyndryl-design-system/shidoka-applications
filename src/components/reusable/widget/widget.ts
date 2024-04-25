@@ -26,6 +26,10 @@ export class Widget extends LitElement {
   @property({ type: Boolean })
   dragActive = false;
 
+  /** Widget disabled state. */
+  @property({ type: Boolean })
+  disabled = false;
+
   /** Slotted chart element.
    * @internal
    */
@@ -37,6 +41,7 @@ export class Widget extends LitElement {
       widget: true,
       'drag-active': this.dragActive,
       'has-chart': this._chart,
+      disabled: this.disabled,
     };
 
     return html`
