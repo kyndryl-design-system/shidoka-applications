@@ -42,6 +42,8 @@ export default {
 const args = {
   widgetTitle: 'Widget Title',
   subTitle: 'Subtitle',
+  disabled: false,
+  dragActive: false,
 };
 
 export const Widget = {
@@ -50,7 +52,12 @@ export const Widget = {
     return html`
       <div style="display: flex; max-width: 500px; min-height: 200px;">
         <div style="flex-grow: 1;">
-          <kyn-widget widgetTitle=${args.widgetTitle} subTitle=${args.subTitle}>
+          <kyn-widget
+            widgetTitle=${args.widgetTitle}
+            subTitle=${args.subTitle}
+            ?disabled=${args.disabled}
+            ?dragActive=${args.dragActive}
+          >
             Widget Content
           </kyn-widget>
         </div>
@@ -65,7 +72,12 @@ export const WithActions = {
     return html`
       <div style="display: flex; max-width: 500px; min-height: 200px;">
         <div style="flex-grow: 1;">
-          <kyn-widget widgetTitle=${args.widgetTitle} subTitle=${args.subTitle}>
+          <kyn-widget
+            widgetTitle=${args.widgetTitle}
+            subTitle=${args.subTitle}
+            ?disabled=${args.disabled}
+            ?dragActive=${args.dragActive}
+          >
             <kd-button
               slot="actions"
               kind="tertiary"
@@ -93,7 +105,7 @@ export const WithChart = {
   render: (args) => {
     return html`
       <div style="max-width: 500px;">
-        <kyn-widget>
+        <kyn-widget ?disabled=${args.disabled} ?dragActive=${args.dragActive}>
           <kd-chart
             type="bar"
             chartTitle=${args.widgetTitle}
@@ -123,9 +135,7 @@ export const WithChart = {
                 },
               },
             }}
-          >
-            <kyn-widget-drag-handle></kyn-widget-drag-handle>
-          </kd-chart>
+          ></kd-chart>
         </kyn-widget>
       </div>
     `;
