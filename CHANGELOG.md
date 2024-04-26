@@ -1,3 +1,10 @@
+# [1.17.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.16.0...v1.17.0) (2024-04-26)
+
+
+### Features
+
+* **modal:** added the 3rd cta ([#158](https://github.com/kyndryl-design-system/shidoka-applications/issues/158)) ([6eb2bfd](https://github.com/kyndryl-design-system/shidoka-applications/commit/6eb2bfd12d36e485fa7c9362a35e56367ae5eeaf))
+
 # [1.16.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.11...v1.16.0) (2024-04-26)
 
 
