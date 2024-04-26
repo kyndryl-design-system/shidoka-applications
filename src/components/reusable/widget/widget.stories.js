@@ -19,7 +19,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: '',
+      url: 'https://www.figma.com/file/CQuDZEeLiuGiALvCWjAKlu/Applications---Component-Library?node-id=10395%3A701&mode=dev',
     },
     a11y: {
       // disable violations flagged in chartjs-plugin-a11y-legend
