@@ -1,3 +1,26 @@
+# [1.16.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.11...v1.16.0) (2024-04-26)
+
+
+### Bug Fixes
+
+* **dropdown:** add filterable search option ([a3e2f56](https://github.com/kyndryl-design-system/shidoka-applications/commit/a3e2f5643514e2460272f0ec0783af10a2780c13))
+* **widget:** add drag shadow ([f7e07a4](https://github.com/kyndryl-design-system/shidoka-applications/commit/f7e07a43c8098043f5f285f91f0f944e87230e52))
+* **widget:** add resizeable option ([64c450b](https://github.com/kyndryl-design-system/shidoka-applications/commit/64c450bcf272a2f184df6bf8ee5f10fa444be212))
+* **widget:** bg color ([823e517](https://github.com/kyndryl-design-system/shidoka-applications/commit/823e5171f8340fb146dc8e5dc6851d377607e204))
+* **widget:** chart interop responsiveness ([aa16091](https://github.com/kyndryl-design-system/shidoka-applications/commit/aa16091f4469f31bbeddd3f097bb884ce3521519))
+* **widget:** chart responsiveness in grid ([5e111e8](https://github.com/kyndryl-design-system/shidoka-applications/commit/5e111e8ff3829f8b760d7938788f341d64504345))
+* **widget:** chart test ([4b70f5e](https://github.com/kyndryl-design-system/shidoka-applications/commit/4b70f5ef946919347bf0f0f202d952ffbdb4d526))
+* **widget:** disabled style ([dbf622d](https://github.com/kyndryl-design-system/shidoka-applications/commit/dbf622d01bec5b32816c423b61602888b0c2d66e))
+* **widget:** disabled, focus, border/radius, resize handle ([a16d935](https://github.com/kyndryl-design-system/shidoka-applications/commit/a16d93566f5573414dac95993842b03d1968867d))
+* **widget:** handle colors/spacing ([72eca97](https://github.com/kyndryl-design-system/shidoka-applications/commit/72eca973c1df1709a6aedffe824a5cfed7e53292))
+* **widget:** updates ([30fbaf5](https://github.com/kyndryl-design-system/shidoka-applications/commit/30fbaf5bc50f62884bd57a2e0b47ff02df491cd3))
+
+
+### Features
+
+* **widget:** style updates and gridstack example ([bbf8510](https://github.com/kyndryl-design-system/shidoka-applications/commit/bbf8510013050d27a111b2c75f5964432674b8d0))
+* **widget:** widget component initial commit ([f8b3b49](https://github.com/kyndryl-design-system/shidoka-applications/commit/f8b3b494d3b96227996ef484b794d6544d0afa30))
+
 ## [1.15.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.15.10...v1.15.11) (2024-04-25)
 
 
