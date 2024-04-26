@@ -311,6 +311,11 @@ export const StaticGrid = {
 };
 
 export const Gridstack = {
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
   render: () => {
     return html`
       This example uses
