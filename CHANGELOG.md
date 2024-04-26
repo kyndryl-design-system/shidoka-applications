@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.17.0...v1.18.0) (2024-04-26)
+
+
+### Features
+
+* **table:** added new feature - expanded rows ([#157](https://github.com/kyndryl-design-system/shidoka-applications/issues/157)) ([d45881e](https://github.com/kyndryl-design-system/shidoka-applications/commit/d45881e4daaa9df10465536d8697bac58a27c57d))
+
 # [1.17.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.16.0...v1.17.0) (2024-04-26)
 
 
