@@ -17,7 +17,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Applications-Specs-for-Devs?node-id=1287%3A171858&mode=dev',
+      url: 'https://www.figma.com/file/uwR7B1xbaRXA5spwPvzzFO/Florence-Release?type=design&node-id=2252%3A2&mode=design&t=E0KHOCJHSb38i6RZ-1',
     },
   },
 };
@@ -32,6 +32,9 @@ const args = {
   destructive: false,
   okDisabled: false,
   hideFooter: false,
+  showSecondaryButton: true,
+  secondaryButtonText: 'Secondary',
+  hideCancelButton: false,
 };
 
 export const Modal = {
@@ -53,6 +56,33 @@ export const Modal = {
         <kd-button slot="anchor"> Open Modal </kd-button>
 
         Basic Modal example.
+      </kyn-modal>
+    `;
+  },
+};
+
+export const Action_Buttons = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-modal
+        ?open=${args.open}
+        size=${args.size}
+        titleText=${args.titleText}
+        labelText=${args.labelText}
+        okText=${args.okText}
+        cancelText=${args.cancelText}
+        ?destructive=${args.destructive}
+        ?okDisabled=${args.okDisabled}
+        ?hideFooter=${args.hideFooter}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        secondaryButtonText=${args.secondaryButtonText}
+        ?hideCancelButton=${args.hideCancelButton}
+        @on-close=${(e) => action(e.type)(e)}
+      >
+        <kd-button slot="anchor"> Open Modal </kd-button>
+
+        Basic Modal with All Buttons.
       </kyn-modal>
     `;
   },
