@@ -72,6 +72,18 @@ export class Modal extends LitElement {
   @property({ type: Boolean })
   hideFooter = false;
 
+  /** Secondary button text. */
+  @property({ type: String })
+  secondaryButtonText = 'Secondary';
+
+  /** Hides the secondary button. */
+  @property({ type: Boolean })
+  showSecondaryButton = false;
+
+  /** Hides the cancel button. */
+  @property({ type: Boolean })
+  hideCancelButton = false;
+
   /** Function to execute before the modal can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`. */
   @property({ attribute: false })
   beforeClose!: Function;
@@ -123,6 +135,7 @@ export class Modal extends LitElement {
             ? html`
                 <div class="actions">
                   <kd-button
+                    class="action-button"
                     value="ok"
                     ?destructive=${this.destructive}
                     ?disabled=${this.okDisabled}
@@ -130,15 +143,31 @@ export class Modal extends LitElement {
                   >
                     ${this.okText}
                   </kd-button>
-
-                  <kd-button
-                    value="cancel"
-                    kind="secondary"
-                    @click=${(e: Event) => this._closeModal(e, 'cancel')}
-                  >
-                    ${this.cancelText}
-                  </kd-button>
-
+                  ${this.showSecondaryButton
+                    ? html`
+                        <kd-button
+                          class="action-button"
+                          value="Secondary"
+                          kind="secondary"
+                          @click=${(e: Event) =>
+                            this._closeModal(e, 'secondary')}
+                        >
+                          ${this.secondaryButtonText}
+                        </kd-button>
+                      `
+                    : null}
+                  ${this.hideCancelButton
+                    ? null
+                    : html`
+                        <kd-button
+                          class="action-button"
+                          value="cancel"
+                          kind="tertiary"
+                          @click=${(e: Event) => this._closeModal(e, 'cancel')}
+                        >
+                          ${this.cancelText}
+                        </kd-button>
+                      `}
                   <!--
             <div class="custom-actions">
               <slot name="actions"></slot>

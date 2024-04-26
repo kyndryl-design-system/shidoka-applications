@@ -1,17 +1,19 @@
 @use '../../../common/scss/global.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :host {
   display: inline-block;
 }
 
 dialog {
+  @include elevation.shadow(3);
+
   padding: 32px;
   color: inherit;
   background: var(--kd-color-background-ui-default);
   border-radius: 8px;
   border: 1px solid var(--kd-color-border-light);
-  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.12);
   min-width: 288px;
   max-width: calc(100% - 32px);
   max-height: calc(100% - 32px);
@@ -25,7 +27,7 @@ dialog {
   }
 
   &.size--md {
-    width: 384px;
+    width: 387px;
   }
 
   &.size--lg {
@@ -147,4 +149,8 @@ h1 {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.action-button:nth-child(3) {
+  margin-left: auto;
 }
