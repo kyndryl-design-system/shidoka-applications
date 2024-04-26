@@ -1,4 +1,4 @@
-import { customElement, state } from 'lit/decorators.js';
+import { customElement, state, property } from 'lit/decorators.js';
 import { TableRow } from './table-row';
 import { html } from 'lit';
 
@@ -31,6 +31,22 @@ export class TableHeaderRow extends TableRow {
   private headerCheckboxChecked = false;
 
   /**
+   * expandableColumnWidth: The width of the expandable column.
+   * @type {string}
+   * @default '64px'
+   */
+  @property({ type: String })
+  expandableColumnWidth = '64px';
+
+  /**
+   * multiSelectColumnWidth: The width of the multi-select column.
+   * @type {string}
+   * @default '64px'
+   */
+  @property({ type: String })
+  multiSelectColumnWidth = '64px';
+
+  /**
    * Toggles the selection state of all rows in the table.
    */
   handleToggleSelectionAll(event: CustomEvent) {
@@ -58,9 +74,19 @@ export class TableHeaderRow extends TableRow {
 
     super.render();
     return html`
+      ${this.expandable
+        ? html`<kyn-th
+            .align="${'center'}"
+            .width=${this.expandableColumnWidth}
+          ></kyn-th>`
+        : null}
       ${this.checkboxSelection
-        ? html` <kyn-th .align=${'center'} ?dense=${this.dense}
+        ? html` <kyn-th
+            .align=${'center'}
+            ?dense=${this.dense}
+            .width=${this.multiSelectColumnWidth}
             ><kyn-checkbox
+              ?disabled=${this.disabled}
               .indeterminate=${headerCheckboxIndeterminate}
               .checked=${headerCheckboxChecked}
               visiblyHidden

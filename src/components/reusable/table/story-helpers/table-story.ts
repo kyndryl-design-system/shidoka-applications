@@ -99,6 +99,14 @@ class MyStoryTable extends LitElement {
   hideNavigationButtons = false;
 
   /**
+   * multiSelectColumnWidth: The width of the multi-select column.
+   * @type {string}
+   * @default '64px'
+   */
+  @property({ type: String })
+  multiSelectColumnWidth = '64px';
+
+  /**
    * Handles the change of page size in pagination.
    */
   async onPageSizeChange(event: CustomEvent) {
@@ -199,6 +207,7 @@ class MyStoryTable extends LitElement {
       pageSize,
       pageNumber,
       pageSizeOptions,
+      multiSelectColumnWidth,
     } = this;
 
     const currentRows = this.showPagination
@@ -233,7 +242,7 @@ class MyStoryTable extends LitElement {
           @on-all-rows-selection-change=${this.handleSelectedRowsChange}
         >
           <kyn-thead>
-            <kyn-header-tr>
+            <kyn-header-tr .multiSelectColumnWidth=${multiSelectColumnWidth}>
               <kyn-th
                 .align=${'center'}
                 .sortable=${this.sortable}

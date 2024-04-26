@@ -1,10 +1,20 @@
-import { html, LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { html, LitElement, PropertyValues } from 'lit';
+import {
+  customElement,
+  property,
+  state,
+  queryAssignedElements,
+} from 'lit/decorators.js';
 import { ContextConsumer } from '@lit/context';
 import { tableContext, TableContextType } from './table-context';
 
+import chevronDownIcon from '@carbon/icons/es/chevron--down/20';
+
 import styles from './table-row.scss';
 import '../checkbox/checkbox';
+
+import { TableExpandedRow } from './table-expanded-row';
+import { TableCell } from './table-cell';
 
 /**
  * `kyn-tr` Web Component.
@@ -44,6 +54,30 @@ export class TableRow extends LitElement {
    */
   @property({ type: Boolean })
   dense = false;
+
+  /**
+   * expandable: Boolean indicating whether the row is expandable.
+   */
+  @property({ type: Boolean, reflect: true })
+  expandable = false;
+
+  /**
+   * expanded: Boolean indicating whether the row is expanded.
+   */
+  @property({ type: Boolean, reflect: true })
+  expanded = false;
+
+  /**
+   * disabled: Boolean indicating whether the row is disabled.
+   */
+  @property({ type: Boolean, reflect: true })
+  disabled = false;
+
+  /**
+   * @ignore
+   */
+  @queryAssignedElements()
+  unnamedSlotEls!: Array<HTMLElement>;
 
   /**
    * Context consumer for the table context.
@@ -88,12 +122,79 @@ export class TableRow extends LitElement {
     );
   }
 
+  override updated(changedProperties: PropertyValues) {
+    // Reflect the expanded state to the next sibling expanded row
+    if (changedProperties.has('expanded')) {
+      const { expanded, nextElementSibling } = this;
+      if (nextElementSibling?.matches('kyn-expanded-tr')) {
+        (nextElementSibling as TableExpandedRow).expanded = expanded;
+      }
+    }
+
+    // Reflect the disabled state to the tabindex attribute
+    if (changedProperties.has('disabled')) {
+      if (this.disabled) {
+        this.setAttribute('tabindex', '-1');
+      } else {
+        this.removeAttribute('tabindex');
+      }
+
+      this.unnamedSlotEls.forEach((el) => {
+        (el as TableCell).disabled = this.disabled;
+      });
+    }
+  }
+
+  _handleUserInitiatedToggleExpando(expanded = !this.expanded) {
+    const init = {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+      detail: {
+        expanded,
+      },
+    };
+    if (
+      this.dispatchEvent(
+        new CustomEvent('table-row-expando-beingtoggled', init)
+      )
+    ) {
+      this.expanded = expanded;
+      this.dispatchEvent(new CustomEvent('table-row-expando-toggled', init));
+    }
+  }
+
+  private _handleExpanding() {
+    this._handleUserInitiatedToggleExpando();
+  }
+
   override render() {
     return html`
+      ${this.expandable
+        ? html`
+            <kyn-td .align=${'center'} ?dense=${this.dense}>
+              <div class="kyn--table-expand">
+                <kd-button
+                  class="kyn--table-expand__button"
+                  kind="tertiary"
+                  type="button"
+                  ?disabled=${this.disabled}
+                  size="small"
+                  iconPosition="center"
+                  description="Expand row"
+                  @on-click=${this._handleExpanding}
+                >
+                  <kd-icon slot="icon" .icon=${chevronDownIcon}></kd-icon>
+                </kd-button>
+              </div>
+            </kyn-td>
+          `
+        : null}
       ${this.checkboxSelection
         ? html`
             <kyn-td .align=${'center'} ?dense=${this.dense}>
               <kyn-checkbox
+                ?disabled=${this.disabled}
                 .checked=${this.selected}
                 visiblyHidden
                 @on-checkbox-change=${this.handleRowSelectionChange}

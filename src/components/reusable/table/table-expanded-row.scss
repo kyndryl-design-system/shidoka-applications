@@ -1,0 +1,27 @@
+:host {
+  display: table-row;
+  block-size: 0;
+
+  td {
+    padding: 0;
+    vertical-align: middle;
+
+    .child-row-inner-container {
+      overflow: hidden;
+      block-size: 0;
+    }
+  }
+}
+
+:host([expanded]) {
+  block-size: auto;
+
+  td {
+    block-size: auto;
+    border-bottom: 1px solid var(--kd-color-border-light);
+
+    .child-row-inner-container {
+      block-size: auto;
+    }
+  }
+}

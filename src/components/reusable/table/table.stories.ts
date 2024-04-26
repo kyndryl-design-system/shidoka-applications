@@ -4,13 +4,17 @@
 
 // Import external libraries
 import { html } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
 import type { Meta, StoryObj } from '@storybook/web-components';
 
 // Kyndryl Design System Components and Icons
 import './index';
+import './story-helpers/action-menu';
 import './story-helpers/table-story';
 import { characters } from './story-helpers/ultils';
 import allData from './story-helpers/table-data.json';
+import maleIcon from '@carbon/icons/es/gender--male/16';
+import femaleIcon from '@carbon/icons/es/gender--female/16';
 
 const meta: Meta = {
   title: 'Components/DataTable',
@@ -81,8 +85,8 @@ export const Selection: Story = {
       <h4>Important Information about Row Selection</h4>
       <ul>
         <li>
-          <b>Note:</b> The 'rowId' attribute is required when enabling multi-selection
-          functionality.
+          <b>Note:</b> The 'rowId' attribute is required when enabling
+          multi-selection functionality.
         </li>
 
         <li>
@@ -96,9 +100,126 @@ export const Selection: Story = {
         .tableTitle=${'Selection'}
         .rows=${characters}
         ?checkboxSelection=${true}
+        .multiSelectColumnWidth=${'64px'}
       >
       </story-table>
     `;
+  },
+  parameters,
+};
+
+export const NestedTable: Story = {
+  render: () => {
+    const rows = allData.slice(0, 5);
+    return html` <style>
+        .story-table-container {
+          padding-bottom: 30px;
+        }
+      </style>
+      <kyn-table-toolbar tableTitle=${'Nesting Table'}> </kyn-table-toolbar>
+      <kyn-table>
+        <kyn-thead>
+          <kyn-header-tr expandable checkboxSelection>
+            <kyn-th .align=${'center'}>ID</kyn-th>
+            <kyn-th>First Name</kyn-th>
+            <kyn-th>Last Name</kyn-th>
+            <kyn-th>Birthday</kyn-th>
+            <kyn-th .align=${'right'}>Age</kyn-th>
+            <kyn-th>Full Name</kyn-th>
+            <kyn-th .align=${'center'}>Gender</kyn-th>
+          </kyn-header-tr>
+        </kyn-thead>
+        <kyn-tbody>
+          ${repeat(
+            rows,
+            (row: any) => row.id,
+            (row: any) => html`
+              <kyn-tr
+                .rowId=${row.id}
+                key="row-${row.id}"
+                expandable
+                checkboxSelection
+              >
+                <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                <kyn-td>${row.firstName}</kyn-td>
+                <kyn-td>${row.lastName}</kyn-td>
+                <kyn-td>${row.birthday}</kyn-td>
+                <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
+                <kyn-td .align=${'center'}>
+                  ${row.gender === 'male'
+                    ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
+                    : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
+                </kyn-td>
+              </kyn-tr>
+              <kyn-expanded-tr .colSpan=${8}>
+                <div class="story-table-container">
+                  <story-table
+                    checkboxSelection
+                    .rows=${characters}
+                    .tableTitle=${'Nested Table'}
+                  ></story-table>
+                </div>
+              </kyn-expanded-tr>
+            `
+          )}
+        </kyn-tbody>
+      </kyn-table>`;
+  },
+  parameters,
+};
+
+export const ExpandableRows: Story = {
+  render: () => {
+    return html` <style>
+        .center-content {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 140px;
+        }
+      </style>
+      <kyn-table-toolbar tableTitle=${'Expanded Rows'}> </kyn-table-toolbar>
+      <kyn-table>
+        <kyn-thead>
+          <kyn-header-tr expandable .expandableColumnWidth=${'64px'}>
+            <kyn-th .align=${'center'}>ID</kyn-th>
+            <kyn-th>First Name</kyn-th>
+            <kyn-th>Last Name</kyn-th>
+            <kyn-th>Birthday</kyn-th>
+            <kyn-th .align=${'right'}>Age</kyn-th>
+            <kyn-th>Full Name</kyn-th>
+            <kyn-th .align=${'center'}>Gender</kyn-th>
+          </kyn-header-tr>
+        </kyn-thead>
+        <kyn-tbody>
+          ${repeat(
+            characters,
+            (row: any) => row.id,
+            (row: any) => html`
+              <kyn-tr .rowId=${row.id} key="row-${row.id}" expandable>
+                <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                <kyn-td>${row.firstName}</kyn-td>
+                <kyn-td>${row.lastName}</kyn-td>
+                <kyn-td>${row.birthday}</kyn-td>
+                <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
+                <kyn-td .align=${'center'}>
+                  ${row.gender === 'male'
+                    ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
+                    : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
+                </kyn-td>
+              </kyn-tr>
+              <kyn-expanded-tr .colSpan=${8}>
+                <div class="center-content">
+                  <!-- Put your expanded table content here -->
+                  <h4>Expanded content goes here</h4>
+                </div>
+              </kyn-expanded-tr>
+            `
+          )}
+        </kyn-tbody>
+      </kyn-table>`;
   },
   parameters,
 };
@@ -233,6 +354,53 @@ export const FixedLayout: Story = {
       >
       </story-table>
     `;
+  },
+  parameters,
+};
+
+export const DisabledRows: Story = {
+  render: () => {
+    return html` <kyn-table-toolbar tableTitle=${'Disabled Rows'}>
+      </kyn-table-toolbar>
+      <kyn-table checkboxSelection>
+        <kyn-thead>
+          <kyn-header-tr>
+            <kyn-th .align=${'center'}>ID</kyn-th>
+            <kyn-th>First Name</kyn-th>
+            <kyn-th>Last Name</kyn-th>
+            <kyn-th>Birthday</kyn-th>
+            <kyn-th .align=${'right'}>Age</kyn-th>
+            <kyn-th>Full Name</kyn-th>
+            <kyn-th .align=${'center'}>Action</kyn-th>
+          </kyn-header-tr>
+        </kyn-thead>
+        <kyn-tbody>
+          ${repeat(
+            characters,
+            (row: any) => row.id,
+            (row: any) => html`
+              <kyn-tr
+                .rowId=${row.id}
+                key="row-${row.id}"
+                ?disabled=${row.id == 1 || row.id == 3 ? true : false}
+                ?selected=${row.id == 3 ? true : false}
+              >
+                <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                <kyn-td>${row.firstName}</kyn-td>
+                <kyn-td>${row.lastName}</kyn-td>
+                <kyn-td>${row.birthday}</kyn-td>
+                <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
+                <kyn-td .align=${'center'}>
+                  <action-menu
+                    ?disabled=${row.id == 1 || row.id == 3 ? true : false}
+                  ></action-menu>
+                </kyn-td>
+              </kyn-tr>
+            `
+          )}
+        </kyn-tbody>
+      </kyn-table>`;
   },
   parameters,
 };
