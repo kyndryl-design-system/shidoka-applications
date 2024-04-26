@@ -1,0 +1,78 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.widget {
+  @include elevation.shadow(1);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding-top: 8px;
+  background: var(--kd-color-background-ui-default);
+  border-radius: 4px;
+  container-type: inline-size;
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  transition: box-shadow 100ms ease-out, outline-color 150ms ease-out;
+
+  &.disabled {
+    opacity: 0.6;
+  }
+
+  &:focus-within {
+    outline-color: var(--kd-color-border-focus);
+  }
+
+  &.drag-active {
+    @include elevation.shadow(4);
+  }
+}
+
+.widget-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px 0 16px;
+
+  .has-chart & {
+    display: none;
+  }
+
+  // .title-desc {
+  //   display: none;
+  // }
+
+  // @container (min-width: 300px) {
+  //   .title-desc {
+  //     display: block;
+  //   }
+  // }
+
+  .title {
+    @include typography.type-ui-01;
+    font-weight: 500;
+  }
+
+  .description {
+    @include typography.type-ui-03;
+    color: var(--kd-color-text-secondary);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+}
+
+.widget-content {
+  padding: 8px 16px 16px 16px;
+  overflow: auto;
+  flex-grow: 1;
+}
