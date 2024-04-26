@@ -1,3 +1,10 @@
+## [1.18.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.18.1...v1.18.2) (2024-04-26)
+
+
+### Bug Fixes
+
+* **widget:** content scrollable wcag ([d1c58cf](https://github.com/kyndryl-design-system/shidoka-applications/commit/d1c58cf57443a155dd8bca807d29251cb413680e))
+
 ## [1.18.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.18.0...v1.18.1) (2024-04-26)
 
 
