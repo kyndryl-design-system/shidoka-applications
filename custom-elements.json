@@ -4846,6 +4846,16 @@
             },
             {
               "kind": "field",
+              "name": "filterSearch",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Searchable variant filters results.",
+              "attribute": "filterSearch"
+            },
+            {
+              "kind": "field",
               "name": "multiple",
               "type": {
                 "text": "boolean"
@@ -5272,6 +5282,15 @@
               "default": "false",
               "description": "Makes the dropdown searchable.",
               "fieldName": "searchable"
+            },
+            {
+              "name": "filterSearch",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Searchable variant filters results.",
+              "fieldName": "filterSearch"
             },
             {
               "name": "multiple",
@@ -12653,7 +12672,7 @@
               "type": {
                 "text": "any"
               },
-              "default": "{\r\n    w1: {\r\n      sizes: {\r\n        default: { w: 3, h: 2, x: 0, y: 0 },\r\n        md: { w: 4, h: 3, x: 0, y: 0 },\r\n        sm: { w: 4, h: 3, x: 0, y: 0 },\r\n      },\r\n    },\r\n    w2: {\r\n      sizes: {\r\n        default: { w: 3, h: 2, x: 3, y: 0 },\r\n        md: { w: 4, h: 3, x: 4, y: 0 },\r\n        sm: { w: 4, h: 3, x: 0, y: 3 },\r\n      },\r\n    },\r\n    w3: {\r\n      sizes: {\r\n        default: { w: 3, h: 2, x: 6, y: 0 },\r\n        md: { w: 4, h: 3, x: 0, y: 3 },\r\n        sm: { w: 4, h: 3, x: 0, y: 6 },\r\n      },\r\n    },\r\n    w4: {\r\n      sizes: {\r\n        default: { w: 3, h: 2, x: 9, y: 0 },\r\n        md: { w: 4, h: 3, x: 4, y: 3 },\r\n        sm: { w: 4, h: 3, x: 0, y: 9 },\r\n      },\r\n    },\r\n    w5: {\r\n      sizes: {\r\n        default: { w: 8, h: 4, x: 0, y: 2 },\r\n        md: { w: 4, h: 4, x: 0, y: 6 },\r\n        sm: { w: 4, h: 3, x: 0, y: 12 },\r\n      },\r\n    },\r\n    w6: {\r\n      sizes: {\r\n        default: { w: 2, h: 2, x: 8, y: 2 },\r\n        md: { w: 2, h: 2, x: 4, y: 6 },\r\n        sm: { w: 2, h: 2, x: 0, y: 15 },\r\n      },\r\n    },\r\n    w7: {\r\n      sizes: {\r\n        default: { w: 2, h: 2, x: 10, y: 2 },\r\n        md: { w: 2, h: 2, x: 6, y: 6 },\r\n        sm: { w: 2, h: 2, x: 2, y: 15 },\r\n      },\r\n    },\r\n    w8: {\r\n      sizes: {\r\n        default: { w: 2, h: 2, x: 8, y: 4 },\r\n        md: { w: 2, h: 2, x: 4, y: 8 },\r\n        sm: { w: 2, h: 2, x: 0, y: 17 },\r\n      },\r\n    },\r\n    w9: {\r\n      sizes: {\r\n        default: { w: 2, h: 2, x: 10, y: 4 },\r\n        md: { w: 2, h: 2, x: 6, y: 8 },\r\n        sm: { w: 2, h: 2, x: 2, y: 17 },\r\n      },\r\n    },\r\n    w10: {\r\n      sizes: {\r\n        default: { w: 12, h: 3, x: 0, y: 19 },\r\n        md: { w: 8, h: 2, x: 0, y: 10 },\r\n        sm: { w: 3, h: 2, x: 0, y: 19 },\r\n      },\r\n    },\r\n    w11: {\r\n      sizes: {\r\n        default: { w: 8, h: 4, x: 0, y: 22 },\r\n        md: { w: 4, h: 4, x: 0, y: 12 },\r\n        sm: { w: 4, h: 4, x: 0, y: 21 },\r\n      },\r\n    },\r\n    w12: {\r\n      sizes: {\r\n        default: { w: 4, h: 4, x: 8, y: 22 },\r\n        md: { w: 4, h: 4, x: 4, y: 12 },\r\n        sm: { w: 4, h: 4, x: 0, y: 25 },\r\n      },\r\n    },\r\n  }",
+              "default": "{\r\n    default: [\r\n      {\r\n        id: 'w1',\r\n        w: 3,\r\n        h: 2,\r\n        x: 0,\r\n        y: 0,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w2',\r\n        w: 3,\r\n        h: 2,\r\n        x: 3,\r\n        y: 0,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w3',\r\n        w: 3,\r\n        h: 2,\r\n        x: 6,\r\n        y: 0,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w4',\r\n        w: 3,\r\n        h: 2,\r\n        x: 9,\r\n        y: 0,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w5',\r\n        w: 8,\r\n        h: 4,\r\n        x: 0,\r\n        y: 2,\r\n        minW: 4,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w6',\r\n        w: 2,\r\n        h: 2,\r\n        x: 8,\r\n        y: 2,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w7',\r\n        w: 2,\r\n        h: 2,\r\n        x: 10,\r\n        y: 2,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w8',\r\n        w: 2,\r\n        h: 2,\r\n        x: 8,\r\n        y: 4,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w9',\r\n        w: 2,\r\n        h: 2,\r\n        x: 10,\r\n        y: 4,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w10',\r\n        w: 12,\r\n        h: 3,\r\n        x: 0,\r\n        y: 19,\r\n        minW: 4,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w11',\r\n        w: 8,\r\n        h: 4,\r\n        x: 0,\r\n        y: 22,\r\n        minW: 4,\r\n        minH: 4,\r\n      },\r\n      {\r\n        id: 'w12',\r\n        w: 4,\r\n        h: 4,\r\n        x: 8,\r\n        y: 22,\r\n        minW: 4,\r\n        minH: 4,\r\n      },\r\n    ],\r\n    md: [\r\n      {\r\n        id: 'w1',\r\n        w: 4,\r\n        h: 3,\r\n        x: 0,\r\n        y: 0,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w2',\r\n        w: 4,\r\n        h: 3,\r\n        x: 4,\r\n        y: 0,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w3',\r\n        w: 4,\r\n        h: 3,\r\n        x: 0,\r\n        y: 3,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w4',\r\n        w: 4,\r\n        h: 3,\r\n        x: 4,\r\n        y: 3,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w5',\r\n        w: 4,\r\n        h: 4,\r\n        x: 0,\r\n        y: 6,\r\n        minW: 4,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w6',\r\n        w: 2,\r\n        h: 2,\r\n        x: 4,\r\n        y: 6,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w7',\r\n        w: 2,\r\n        h: 2,\r\n        x: 6,\r\n        y: 6,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w8',\r\n        w: 2,\r\n        h: 2,\r\n        x: 4,\r\n        y: 8,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w9',\r\n        w: 2,\r\n        h: 2,\r\n        x: 6,\r\n        y: 8,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w10',\r\n        w: 8,\r\n        h: 2,\r\n        x: 0,\r\n        y: 10,\r\n        minW: 4,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w11',\r\n        w: 4,\r\n        h: 4,\r\n        x: 0,\r\n        y: 12,\r\n        minW: 4,\r\n        minH: 4,\r\n      },\r\n      {\r\n        id: 'w12',\r\n        w: 4,\r\n        h: 4,\r\n        x: 4,\r\n        y: 12,\r\n        minW: 4,\r\n        minH: 4,\r\n      },\r\n    ],\r\n    sm: [\r\n      {\r\n        id: 'w1',\r\n        w: 4,\r\n        h: 3,\r\n        x: 0,\r\n        y: 0,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w2',\r\n        w: 4,\r\n        h: 3,\r\n        x: 0,\r\n        y: 3,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w3',\r\n        w: 4,\r\n        h: 3,\r\n        x: 0,\r\n        y: 6,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w4',\r\n        w: 4,\r\n        h: 3,\r\n        x: 0,\r\n        y: 9,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w5',\r\n        w: 4,\r\n        h: 3,\r\n        x: 0,\r\n        y: 12,\r\n        minW: 4,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w6',\r\n        w: 2,\r\n        h: 2,\r\n        x: 0,\r\n        y: 15,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w7',\r\n        w: 2,\r\n        h: 2,\r\n        x: 2,\r\n        y: 15,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w8',\r\n        w: 2,\r\n        h: 2,\r\n        x: 0,\r\n        y: 17,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w9',\r\n        w: 2,\r\n        h: 2,\r\n        x: 2,\r\n        y: 17,\r\n        minW: 2,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w10',\r\n        w: 3,\r\n        h: 2,\r\n        x: 0,\r\n        y: 19,\r\n        minW: 4,\r\n        minH: 2,\r\n      },\r\n      {\r\n        id: 'w11',\r\n        w: 4,\r\n        h: 4,\r\n        x: 0,\r\n        y: 21,\r\n        minW: 4,\r\n        minH: 4,\r\n      },\r\n      {\r\n        id: 'w12',\r\n        w: 4,\r\n        h: 4,\r\n        x: 0,\r\n        y: 25,\r\n        minW: 4,\r\n        minH: 4,\r\n      },\r\n    ],\r\n  }",
               "description": "Widget size and position definitions for each breakpoint."
             },
             {
@@ -12663,6 +12682,11 @@
                 "text": "any"
               },
               "description": "GridStack instance."
+            },
+            {
+              "kind": "method",
+              "name": "_updateWidgets",
+              "privacy": "private"
             },
             {
               "kind": "method",

@@ -78,7 +78,7 @@ export const Single = {
 };
 
 export const SingleSearchable = {
-  args: args,
+  args: { ...args, filterSearch: false },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -88,6 +88,7 @@ export const SingleSearchable = {
         name=${args.name}
         ?open=${args.open}
         searchable
+        ?filterSearch=${args.filterSearch}
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
@@ -146,7 +147,7 @@ export const MultiSelect = {
 };
 
 export const MultiSelectSearchable = {
-  args: args,
+  args: { ...args, filterSearch: false },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -156,6 +157,7 @@ export const MultiSelectSearchable = {
         name=${args.name}
         ?open=${args.open}
         searchable
+        ?filterSearch=${args.filterSearch}
         multiple
         ?required=${args.required}
         ?disabled=${args.disabled}
