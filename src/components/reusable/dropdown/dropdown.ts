@@ -74,6 +74,10 @@ export class Dropdown extends LitElement {
   @property({ type: Boolean })
   searchable = false;
 
+  /** Searchable variant filters results. */
+  @property({ type: Boolean })
+  filterSearch = false;
+
   /** Enabled multi-select functionality. */
   @property({ type: Boolean })
   multiple = false;
@@ -600,6 +604,13 @@ export class Dropdown extends LitElement {
 
     this._emitSearch();
 
+    if (this.filterSearch) {
+      // reveal all options
+      this.options.map((option: any) => {
+        option.style.display = 'block';
+      });
+    }
+
     // clear selection for single select
     if (!this.multiple) {
       this.value = '';
@@ -662,19 +673,31 @@ export class Dropdown extends LitElement {
 
     this._emitSearch();
 
-    // find matches
-    const options = this.options.filter((option: any) => {
-      const text = option.text;
-      return text.toLowerCase().startsWith(value.toLowerCase());
-    });
+    if (this.filterSearch) {
+      // hide items that don't match
+      this.options.map((option: any) => {
+        const text = option.text;
+        if (text.toLowerCase().includes(value.toLowerCase())) {
+          option.style.display = 'block';
+        } else {
+          option.style.display = 'none';
+        }
+      });
+    } else {
+      // find matches
+      const options = this.options.filter((option: any) => {
+        const text = option.text;
+        return text.toLowerCase().startsWith(value.toLowerCase());
+      });
 
-    // reset options highlighted state
-    this.options.forEach((option) => (option.highlighted = false));
+      // reset options highlighted state
+      this.options.forEach((option) => (option.highlighted = false));
 
-    // option highlight and scroll
-    if (value !== '' && options.length) {
-      options[0].highlighted = true;
-      options[0].scrollIntoView({ block: 'nearest' });
+      // option highlight and scroll
+      if (value !== '' && options.length) {
+        options[0].highlighted = true;
+        options[0].scrollIntoView({ block: 'nearest' });
+      }
     }
   }
 
