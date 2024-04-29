@@ -116,7 +116,6 @@ export class LocalNav extends LitElement {
   }
 
   private _handleLinkActive(e: any) {
-    console.log(e);
     this._activeLinkText = e.detail.text;
   }
 
