@@ -92,24 +92,44 @@ export const Inline = {
   },
   render: (args) => {
     return html`<kyn-notification
-      notificationTitle=${args.notificationTitle}
-      type=${args.type}
-      tagStatus=${args.tagStatus}
-      @on-notification-click=${(e) => action(e.type)(e)}
-    >
-      <kd-button
-        slot="actions"
-        kind="tertiary"
-        size="small"
-        description="close-btn"
-        iconPosition="left"
-        @on-click="${(e) => onClose(e)}"
+        notificationTitle=${args.notificationTitle}
+        type=${args.type}
+        tagStatus=${args.tagStatus}
+        @on-notification-click=${(e) => action(e.type)(e)}
       >
-        <kd-icon slot="icon" fill="#3D3C3C" .icon=${closeIcon}></kd-icon>
-      </kd-button>
+        <kd-button
+          slot="actions"
+          kind="tertiary"
+          size="small"
+          description="close-btn"
+          iconPosition="left"
+          @on-click="${(e) => onClose(e)}"
+        >
+          <kd-icon slot="icon" fill="#3D3C3C" .icon=${closeIcon}></kd-icon>
+        </kd-button>
 
-      <div>${notificationBodyMsg}</div>
-    </kyn-notification>`;
+        <div>${notificationBodyMsg}</div>
+      </kyn-notification>
+      <br />
+      <p><u>Without Description</u></p>
+      <br />
+      <kyn-notification
+        notificationTitle=${args.notificationTitle}
+        type=${args.type}
+        tagStatus=${args.tagStatus}
+        @on-notification-click=${(e) => action(e.type)(e)}
+      >
+        <kd-button
+          slot="actions"
+          kind="tertiary"
+          size="small"
+          description="close-btn"
+          iconPosition="left"
+          @on-click="${(e) => onClose(e)}"
+        >
+          <kd-icon slot="icon" fill="#3D3C3C" .icon=${closeIcon}></kd-icon>
+        </kd-button>
+      </kyn-notification> `;
   },
 };
 
