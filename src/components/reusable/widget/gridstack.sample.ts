@@ -360,7 +360,7 @@ export class GridstackSample extends LitElement {
     return html`
       <div class="grid-wrapper">
         <div class="grid-stack">
-          <div id="w1" class="grid-stack-item">
+          <div gs-id="w1" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -369,7 +369,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w2" class="grid-stack-item">
+          <div gs-id="w2" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -378,7 +378,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w3" class="grid-stack-item">
+          <div gs-id="w3" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -387,7 +387,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w4" class="grid-stack-item">
+          <div gs-id="w4" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -396,7 +396,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w5" class="grid-stack-item">
+          <div gs-id="w5" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -405,7 +405,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w6" class="grid-stack-item">
+          <div gs-id="w6" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -414,7 +414,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w7" class="grid-stack-item">
+          <div gs-id="w7" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -423,7 +423,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w8" class="grid-stack-item">
+          <div gs-id="w8" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -432,7 +432,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w9" class="grid-stack-item">
+          <div gs-id="w9" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -441,7 +441,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w10" class="grid-stack-item">
+          <div gs-id="w10" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -450,7 +450,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w11" class="grid-stack-item">
+          <div gs-id="w11" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget>
                 <kd-chart
@@ -498,7 +498,7 @@ export class GridstackSample extends LitElement {
             </div>
           </div>
 
-          <div id="w12" class="grid-stack-item">
+          <div gs-id="w12" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget>
                 <kd-chart
@@ -549,7 +549,7 @@ export class GridstackSample extends LitElement {
   override firstUpdated() {
     this._setBreakpoint();
 
-    // initialize the GridStack
+    // initialize the GridStack with Shidoka default options
     const El: any = this.shadowRoot?.querySelector('.grid-stack');
     this._grid = GridStack.init(
       {
@@ -558,49 +558,63 @@ export class GridstackSample extends LitElement {
         columnOpts: {
           breakpointForWindow: true, // break based on viewport size, not grid size
           breakpoints: [
-            { w: 671, c: 4 }, // shidoka-foundation sm breakpoint -1px
-            { w: 1183, c: 8 }, // shidoka-foundation md breakpoint -1px
+            { w: 671, c: 4 }, // shidoka-foundation sm breakpoint, 4 column grid
+            { w: 1183, c: 8 }, // shidoka-foundation md breakpoint, 8 column grid
           ],
         },
       },
       El
     );
 
-    // set drag state on widget on dragstart
-    this._grid.on('dragstart', function (e: Event, el: HTMLElement) {
+    // set widget drag state on dragstart
+    this._grid.on('dragstart', (e: Event, el: HTMLElement) => {
       console.log(e);
       const Widget: any = el.querySelector('kyn-widget');
       Widget.dragActive = true;
     });
 
-    // unset drag state on widget on dragstop
-    this._grid.on('dragstop', function (e: Event, el: HTMLElement) {
+    // unset widget drag state and save layout on dragstop
+    this._grid.on('dragstop', (e: Event, el: HTMLElement) => {
       console.log(e);
       const Widget: any = el.querySelector('kyn-widget');
       Widget.dragActive = false;
+
+      this._saveLayout();
+    });
+
+    // save layout on resizestop
+    this._grid.on('resizestop', () => {
+      this._saveLayout();
     });
   }
 
   override willUpdate(changedProps: any) {
     if (changedProps.has('_breakpoint') || changedProps.has('_layout')) {
       // update the gridstack size/position of each widget when breakpoint or layout changes
-      this._updateWidgets();
+      this._updateLayout();
     }
   }
 
-  private _updateWidgets() {
-    // get widget elements
-    const Widgets: any = this.shadowRoot?.querySelectorAll('.grid-stack-item');
+  private _saveLayout() {
+    // get new grid layout
+    const NewLayout = this._grid.save(false);
+
+    // update grid layout for current breakpoint
+    if (this._layout[this._breakpoint]) {
+      this._layout[this._breakpoint] = NewLayout;
+    } else {
+      this._layout['default'] = NewLayout;
+    }
+  }
+
+  private _updateLayout() {
     // get layout for current breakpoint
     const Layout = this._layout[this._breakpoint] || this._layout['default'];
 
-    // update each widget
-    Widgets.forEach((widgetEl: any) => {
-      // get widget options
-      const Options = Layout.find((specs: any) => specs.id === widgetEl.id);
-      // call gridstack update function
-      this._grid.update(widgetEl, Options);
-    });
+    if (this._grid) {
+      // load grid layout
+      this._grid.load(Layout, false);
+    }
   }
 
   override connectedCallback() {
