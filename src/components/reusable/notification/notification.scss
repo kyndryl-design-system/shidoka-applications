@@ -1,6 +1,7 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/mixins.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :host {
   display: block;
@@ -9,7 +10,29 @@
     width: 100%;
   }
 }
-
+// change card backgound and outline as per types
+kd-card.notification-inline::part(card-wrapper) {
+  outline: none;
+}
+kd-card.notification-toast::part(card-wrapper) {
+  @include elevation.shadow(3);
+  outline: none;
+}
+kd-card.notification-error::part(card-wrapper) {
+  background-color: var(--kd-color-background-error-light, #f7e6e6);
+}
+kd-card.notification-success::part(card-wrapper) {
+  background-color: var(--kd-color-background-success-light, #e5f7eb);
+}
+kd-card.notification-warning::part(card-wrapper) {
+  background-color: var(--kd-color-background-warning-light, #fef9e5);
+}
+kd-card.notification-info::part(card-wrapper) {
+  background-color: var(--kd-color-background-informational-light, #e9f2ff);
+}
+kd-card.notification-default::part(card-wrapper) {
+  background-color: var(--kd-color-background-ui-soft, #f1f0f0);
+}
 // Change card style based on notification read prop
 kd-card.notification-mark-unread::part(card-wrapper) {
   background-color: var(--kd-color-skye-10);
@@ -47,12 +70,52 @@ kd-card.notification-mark-read::part(card-wrapper) {
     align-items: center;
     padding-top: 10px;
   }
+  &-state-icon {
+    padding-right: 8px;
+  }
 }
 
+.notification-inline .notification-head,
+.notification-toast .notification-head {
+  display: flex;
+  align-items: center;
+}
+
+.notification-inline .notification-content-wrapper,
+.notification-toast .notification-content-wrapper {
+  padding: 0;
+}
 .notification-description ::slotted(*) {
   @include typography.type-ui-02;
   color: var(--kd-color-text-primary);
   padding-top: 10px;
+}
+.notification-inline .notification-description ::slotted(*),
+.notification-toast .notification-description ::slotted(*) {
+  padding-top: 0px;
+  padding-left: 24px;
+}
+.notification-inline.notification-default
+  .notification-description
+  ::slotted(*),
+.notification-toast.notification-default
+  .notification-description
+  ::slotted(*) {
+  padding-top: 0px;
+  padding-left: 0px;
+}
+.notification-inline .notification-inline-toast-action ::slotted(*),
+.notification-toast .notification-inline-toast-action ::slotted(*) {
+  padding-top: 4px;
+  padding-left: 24px;
+}
+.notification-toast.notification-default
+  .notification-inline-toast-action
+  ::slotted(*),
+.notification-inline.notification-default
+  .notification-inline-toast-action
+  ::slotted(*) {
+  padding-left: 0;
 }
 
 .timestamp {
