@@ -91,8 +91,6 @@ export class Notification extends LitElement {
         this.tagStatus === 'default',
     };
 
-    const classTagColor = {};
-
     return html`
       ${this.type === 'clickable'
         ? html`<kd-card
@@ -114,14 +112,14 @@ export class Notification extends LitElement {
   }
 
   private renderInnerUI() {
-    const notificationIcon: Object = {
+    const notificationIcon: any = {
       success: successIcon,
       error: warningErrorIcon,
       warning: warningErrorIcon,
       info: infoIcon,
     };
 
-    const notificationIconFillColor: Object = {
+    const notificationIconFillColor: any = {
       success: 'var(--kd-color-border-success, #1FA452)',
       error: 'var(--kd-color-border-destructive, #CC1800)',
       warning: 'var(--kd-color-border-warning,#F5C400)',
