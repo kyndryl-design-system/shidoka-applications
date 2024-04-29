@@ -1,3 +1,10 @@
+## [1.18.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.18.2...v1.18.3) (2024-04-29)
+
+
+### Bug Fixes
+
+* **local-nav:** remove console.log ([4c75984](https://github.com/kyndryl-design-system/shidoka-applications/commit/4c75984ed89e2d2d22127677c87cb7f6d404af54))
+
 ## [1.18.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.18.1...v1.18.2) (2024-04-26)
 
 
