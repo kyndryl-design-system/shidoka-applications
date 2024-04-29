@@ -54,4 +54,8 @@ export { SideDrawer } from './components/reusable/sideDrawer';
 export { PageTitle } from './components/reusable/pagetitle';
 export { Card } from './components/reusable/card';
 export { Notification } from './components/reusable/notification';
-export { Widget, WidgetDragHandle } from './components/reusable/widget';
+export {
+  Widget,
+  WidgetDragHandle,
+  WidgetGridstack,
+} from './components/reusable/widget';
