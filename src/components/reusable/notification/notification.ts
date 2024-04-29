@@ -14,7 +14,6 @@ import '../tag';
  * Notification component.
  * @slot unnamed - Slot for notification message body.
  * @slot actions - Slot for menu.
- * @slot action-link - Slot for action link.
  * @fires on-notification-click - Emit event for clickable notification.
  */
 
@@ -174,10 +173,6 @@ export class Notification extends LitElement {
         <div class="timestamp-wrapper">
           <div class="timestamp-text">${this.timeStamp}</div>
         </div>
-      </div>
-
-      <div class="notification-inline-toast-action">
-        <slot name="action-link"></slot>
       </div>
     </div>`;
   }

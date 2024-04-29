@@ -181,15 +181,14 @@ export const Toast = {
           <kd-icon slot="icon" fill="#3D3C3C" .icon=${closeIcon}></kd-icon>
         </kd-button>
 
-        <kd-link
-          slot="action-link"
-          href="#"
-          @on-click=${(e) => e.preventDefault()}
-        >
-          Link
-        </kd-link>
-
-        <div>${notificationBodyMsg}</div>
+        <div>
+          ${notificationBodyMsg}
+          <div style="margin-top: 10px;">
+            <kd-link href="#" @on-click=${(e) => e.preventDefault()}>
+              Link
+            </kd-link>
+          </div>
+        </div>
       </kyn-notification> `;
   },
 };
