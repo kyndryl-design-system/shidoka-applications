@@ -17,6 +17,10 @@ kd-card.notification-inline::part(card-wrapper) {
 kd-card.notification-toast::part(card-wrapper) {
   @include elevation.shadow(3);
   outline: none;
+  &:hover {
+    @include elevation.shadow(2);
+    transition: box-shadow 300ms ease-out;
+  }
 }
 kd-card.notification-error::part(card-wrapper) {
   background-color: var(--kd-color-background-error-light, #f7e6e6);
@@ -103,19 +107,6 @@ kd-card.notification-mark-read::part(card-wrapper) {
   ::slotted(*) {
   padding-top: 0px;
   padding-left: 0px;
-}
-.notification-inline .notification-inline-toast-action ::slotted(*),
-.notification-toast .notification-inline-toast-action ::slotted(*) {
-  padding-top: 4px;
-  padding-left: 24px;
-}
-.notification-toast.notification-default
-  .notification-inline-toast-action
-  ::slotted(*),
-.notification-inline.notification-default
-  .notification-inline-toast-action
-  ::slotted(*) {
-  padding-left: 0;
 }
 
 .timestamp {
