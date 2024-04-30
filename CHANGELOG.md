@@ -1,3 +1,10 @@
+## [1.18.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.18.3...v1.18.4) (2024-04-30)
+
+
+### Bug Fixes
+
+* **side-drawer:** prevent nested focusable ([c5693ad](https://github.com/kyndryl-design-system/shidoka-applications/commit/c5693ad559dd55cbf791cd58477235f2f52f34c5))
+
 ## [1.18.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.18.2...v1.18.3) (2024-04-29)
 
 
