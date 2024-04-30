@@ -102,9 +102,9 @@ export class SideDrawer extends LitElement {
     };
 
     return html`
-      <button class="anchor" @click=${this._openDrawer}>
+      <span class="anchor" @click=${this._openDrawer}>
         <slot name="anchor"></slot>
-      </button>
+      </span>
 
       <dialog
         class="${classMap(classes)}"
