@@ -188,7 +188,7 @@ export class HeaderLink extends LitElement {
   }
 
   private handlePointerEnter(e: PointerEvent) {
-    if (e.pointerType === 'mouse') {
+    if (e.pointerType === 'mouse' && this.slottedEls.length) {
       clearTimeout(this._leaveTimer);
 
       this._enterTimer = setTimeout(() => {
@@ -198,7 +198,7 @@ export class HeaderLink extends LitElement {
   }
 
   private handlePointerLeave(e: PointerEvent) {
-    if (e.pointerType === 'mouse' && document.activeElement !== this) {
+    if (e.pointerType === 'mouse' && this.slottedEls.length) {
       clearTimeout(this._enterTimer);
 
       this._leaveTimer = setTimeout(() => {
