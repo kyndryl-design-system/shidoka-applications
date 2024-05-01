@@ -125,7 +125,6 @@ export class LocalNav extends LitElement {
 
       this._enterTimer = setTimeout(() => {
         this._expanded = true;
-        clearTimeout(this._leaveTimer);
       }, 150);
     }
   }
@@ -136,7 +135,6 @@ export class LocalNav extends LitElement {
 
       this._leaveTimer = setTimeout(() => {
         this._expanded = false;
-        clearTimeout(this._leaveTimer);
       }, 150);
     }
   }

@@ -68,11 +68,16 @@ export class HeaderLink extends LitElement {
   @queryAssignedElements({ slot: 'links' })
   slottedEls!: Array<HTMLElement>;
 
-  /** Timeout function to delay modal close.
+  /** Timeout function to delay flyout open.
+   * @internal
+   */
+  _enterTimer: any;
+
+  /** Timeout function to delay flyout close.
    * @internal
    */
   @state()
-  timer: any;
+  _leaveTimer: any;
 
   /** Menu positioning
    * @internal
@@ -184,17 +189,21 @@ export class HeaderLink extends LitElement {
 
   private handlePointerEnter(e: PointerEvent) {
     if (e.pointerType === 'mouse') {
-      clearTimeout(this.timer);
-      this.open = true;
+      clearTimeout(this._leaveTimer);
+
+      this._enterTimer = setTimeout(() => {
+        this.open = true;
+      }, 150);
     }
   }
 
   private handlePointerLeave(e: PointerEvent) {
     if (e.pointerType === 'mouse' && document.activeElement !== this) {
-      this.timer = setTimeout(() => {
+      clearTimeout(this._enterTimer);
+
+      this._leaveTimer = setTimeout(() => {
         this.open = false;
-        clearTimeout(this.timer);
-      }, 100);
+      }, 150);
     }
   }
 
