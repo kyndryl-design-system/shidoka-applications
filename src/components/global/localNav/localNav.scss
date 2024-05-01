@@ -14,6 +14,8 @@
 
 nav {
   @include typography.type-ui-02;
+  display: flex;
+  flex-direction: column;
   top: 0;
   padding: 4px 8px;
   left: 0;
@@ -48,7 +50,7 @@ nav {
     right: 0;
     bottom: 0;
     left: 0;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(1px);
     z-index: calc(var(--kd-z-local-nav) - 1);
     transition: background-color 300ms ease-out, visibility 300ms ease-out;
     background: transparent;
@@ -130,5 +132,51 @@ nav {
 
   @media (min-width: 42rem) {
     display: none;
+  }
+}
+
+.toggle-container {
+  display: none;
+  padding-top: 4px;
+}
+
+.nav-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  background: none;
+  color: var(--kd-color-text-link);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    outline-color 150ms ease-out;
+
+  kd-icon {
+    display: block;
+  }
+
+  &:hover {
+    background-color: var(--kd-color-background-primary);
+    color: var(--kd-color-text-inversed);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
+  }
+
+  &:active {
+    background-color: var(--kd-color-background-primary-pressed);
+    color: var(--kd-color-text-inversed);
+  }
+}
+
+@media (min-width: 42rem) {
+  .toggle-container {
+    display: flex;
   }
 }
