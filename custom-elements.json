@@ -7992,6 +7992,292 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/sideDrawer/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SideDrawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "./sideDrawer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/sideDrawer/sideDrawer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Side Drawer.",
+          "name": "SideDrawer",
+          "slots": [
+            {
+              "description": "Slot for drawer body content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the anchor button content.",
+              "name": "anchor"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Drawer open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Drawer size. `'md'`, or `'sm'`.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title / Heading text, required.",
+              "attribute": "titleText"
+            },
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "submitBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Ok'",
+              "description": "Submit button text.",
+              "attribute": "submitBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "attribute": "cancelBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "submitBtnDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "attribute": "submitBtnDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine whether needs footer",
+              "attribute": "hideFooter"
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "beforeClose",
+              "type": {
+                "text": "Function"
+              },
+              "description": "Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
+            },
+            {
+              "kind": "method",
+              "name": "_openDrawer",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_closeDrawer",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "returnValue",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitCloseEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Drawer open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Drawer size. `'md'`, or `'sm'`.",
+              "fieldName": "size"
+            },
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title / Heading text, required.",
+              "fieldName": "titleText"
+            },
+            {
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "fieldName": "labelText"
+            },
+            {
+              "name": "submitBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Ok'",
+              "description": "Submit button text.",
+              "fieldName": "submitBtnText"
+            },
+            {
+              "name": "cancelBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "fieldName": "cancelBtnText"
+            },
+            {
+              "name": "submitBtnDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "fieldName": "submitBtnDisabled"
+            },
+            {
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine whether needs footer",
+              "fieldName": "hideFooter"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "fieldName": "destructive"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-side-drawer",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SideDrawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-side-drawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/radioButton/index.ts",
       "declarations": [],
       "exports": [
@@ -8330,292 +8616,6 @@
           "declaration": {
             "name": "RadioButtonGroup",
             "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/sideDrawer/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SideDrawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "./sideDrawer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/sideDrawer/sideDrawer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Side Drawer.",
-          "name": "SideDrawer",
-          "slots": [
-            {
-              "description": "Slot for drawer body content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the anchor button content.",
-              "name": "anchor"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Drawer open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Drawer size. `'md'`, or `'sm'`.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title / Heading text, required.",
-              "attribute": "titleText"
-            },
-            {
-              "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "submitBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Ok'",
-              "description": "Submit button text.",
-              "attribute": "submitBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "submitBtnDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "attribute": "submitBtnDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine whether needs footer",
-              "attribute": "hideFooter"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "beforeClose",
-              "type": {
-                "text": "Function"
-              },
-              "description": "Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
-            },
-            {
-              "kind": "method",
-              "name": "_openDrawer",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_closeDrawer",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "returnValue",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitCloseEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Drawer open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Drawer size. `'md'`, or `'sm'`.",
-              "fieldName": "size"
-            },
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title / Heading text, required.",
-              "fieldName": "titleText"
-            },
-            {
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "fieldName": "labelText"
-            },
-            {
-              "name": "submitBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Ok'",
-              "description": "Submit button text.",
-              "fieldName": "submitBtnText"
-            },
-            {
-              "name": "cancelBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "fieldName": "cancelBtnText"
-            },
-            {
-              "name": "submitBtnDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "fieldName": "submitBtnDisabled"
-            },
-            {
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine whether needs footer",
-              "fieldName": "hideFooter"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "fieldName": "destructive"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-side-drawer",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SideDrawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-side-drawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
           }
         }
       ]
@@ -12151,325 +12151,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/timepicker/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TimePicker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "./timepicker"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/timepicker/timepicker.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Time picker.",
-          "name": "TimePicker",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input name.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input invalid text.",
-              "attribute": "invalidText"
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input warn text.",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "maxTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum Time hh:mm format.",
-              "attribute": "maxTime"
-            },
-            {
-              "kind": "field",
-              "name": "minTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Minimum Time in hh:mm format.",
-              "attribute": "minTime"
-            },
-            {
-              "kind": "field",
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nIt takes value that equates to the number of seconds you want to increment by;\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
-              "attribute": "step"
-            },
-            {
-              "kind": "method",
-              "name": "handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleFormdata",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleInvalid",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
-              "fieldName": "value"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input name.",
-              "fieldName": "name"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input invalid text.",
-              "fieldName": "invalidText"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input warn text.",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "maxTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum Time hh:mm format.",
-              "fieldName": "maxTime"
-            },
-            {
-              "name": "minTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Minimum Time in hh:mm format.",
-              "fieldName": "minTime"
-            },
-            {
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nIt takes value that equates to the number of seconds you want to increment by;\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
-              "fieldName": "step"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-time-picker",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TimePicker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "src/components/reusable/timepicker/timepicker.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-time-picker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "src/components/reusable/timepicker/timepicker.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/textInput/index.ts",
       "declarations": [],
       "exports": [
@@ -12868,6 +12549,325 @@
           "declaration": {
             "name": "TextInput",
             "module": "src/components/reusable/textInput/textInput.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/timepicker/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TimePicker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "./timepicker"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/timepicker/timepicker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Time picker.",
+          "name": "TimePicker",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Time input name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Time input invalid text.",
+              "attribute": "invalidText"
+            },
+            {
+              "kind": "field",
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Time input warn text.",
+              "attribute": "warnText"
+            },
+            {
+              "kind": "field",
+              "name": "maxTime",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum Time hh:mm format.",
+              "attribute": "maxTime"
+            },
+            {
+              "kind": "field",
+              "name": "minTime",
+              "type": {
+                "text": "string"
+              },
+              "description": "Minimum Time in hh:mm format.",
+              "attribute": "minTime"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nIt takes value that equates to the number of seconds you want to increment by;\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
+              "attribute": "step"
+            },
+            {
+              "kind": "method",
+              "name": "handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleFormdata",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleInvalid",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
+              "fieldName": "value"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Time input name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Time input invalid text.",
+              "fieldName": "invalidText"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Time input warn text.",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "maxTime",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum Time hh:mm format.",
+              "fieldName": "maxTime"
+            },
+            {
+              "name": "minTime",
+              "type": {
+                "text": "string"
+              },
+              "description": "Minimum Time in hh:mm format.",
+              "fieldName": "minTime"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nIt takes value that equates to the number of seconds you want to increment by;\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
+              "fieldName": "step"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-time-picker",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TimePicker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "src/components/reusable/timepicker/timepicker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-time-picker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "src/components/reusable/timepicker/timepicker.ts"
           }
         }
       ]
@@ -13289,419 +13289,6 @@
           "declaration": {
             "name": "Tooltip",
             "module": "src/components/reusable/tooltip/tooltip.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/dashboard.sample.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Gridstack sample usage.",
-          "name": "GridstackSample",
-          "members": [
-            {
-              "kind": "field",
-              "name": "_breakpoint",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Current breakpoint."
-            },
-            {
-              "kind": "field",
-              "name": "_layout",
-              "type": {
-                "text": "any"
-              },
-              "default": "{\n    default: [\n      {\n        id: 'w1',\n        w: 3,\n        h: 3,\n        x: 0,\n        y: 0,\n        minW: 3,\n        minH: 3,\n      },\n      {\n        id: 'w2',\n        w: 3,\n        h: 3,\n        x: 3,\n        y: 0,\n        minW: 3,\n        minH: 3,\n      },\n      {\n        id: 'w3',\n        w: 3,\n        h: 3,\n        x: 6,\n        y: 0,\n        minW: 3,\n        minH: 3,\n      },\n      {\n        id: 'w4',\n        w: 3,\n        h: 3,\n        x: 9,\n        y: 0,\n        minW: 3,\n        minH: 3,\n      },\n      {\n        id: 'w5',\n        w: 12,\n        h: 3,\n        x: 0,\n        y: 3,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 4,\n        h: 4,\n        x: 4,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 4,\n        h: 4,\n        x: 8,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 10,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 4,\n        h: 4,\n        x: 4,\n        y: 10,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 4,\n        h: 4,\n        x: 8,\n        y: 10,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 14,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w13',\n        w: 4,\n        h: 4,\n        x: 4,\n        y: 14,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w14',\n        w: 12,\n        h: 4,\n        x: 0,\n        y: 18,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n    md: [\n      {\n        id: 'w1',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w2',\n        w: 4,\n        h: 3,\n        x: 4,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w3',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w4',\n        w: 4,\n        h: 3,\n        x: 4,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w5',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 6,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 2,\n        h: 2,\n        x: 4,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 2,\n        h: 2,\n        x: 6,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 2,\n        h: 2,\n        x: 4,\n        y: 8,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 2,\n        h: 2,\n        x: 6,\n        y: 8,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 8,\n        h: 2,\n        x: 0,\n        y: 10,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 12,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 4,\n        y: 12,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n    sm: [\n      {\n        id: 'w1',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w2',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w3',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w4',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 9,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w5',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 12,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 2,\n        h: 2,\n        x: 0,\n        y: 15,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 2,\n        h: 2,\n        x: 2,\n        y: 15,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 2,\n        h: 2,\n        x: 0,\n        y: 17,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 2,\n        h: 2,\n        x: 2,\n        y: 17,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 3,\n        h: 2,\n        x: 0,\n        y: 19,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 21,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 25,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n  }",
-              "description": "Widget size and position definitions for each breakpoint."
-            },
-            {
-              "kind": "field",
-              "name": "_grid",
-              "type": {
-                "text": "any"
-              },
-              "description": "GridStack instance."
-            },
-            {
-              "kind": "field",
-              "name": "handleClick"
-            },
-            {
-              "kind": "method",
-              "name": "renderOverflowMenu"
-            },
-            {
-              "kind": "field",
-              "name": "renderViewDetailsButton"
-            },
-            {
-              "kind": "field",
-              "name": "renderViewAllButton"
-            },
-            {
-              "kind": "field",
-              "name": "renderLaunhButton"
-            },
-            {
-              "kind": "field",
-              "name": "renderChevronRightButton"
-            },
-            {
-              "kind": "field",
-              "name": "renderPrimaryArrow"
-            },
-            {
-              "kind": "field",
-              "name": "renderDestruciveArrow"
-            },
-            {
-              "kind": "field",
-              "name": "renderGridItems"
-            },
-            {
-              "kind": "method",
-              "name": "_updateWidgets",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_setBreakpoint",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-dashboard-sample",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GridstackSample",
-          "declaration": {
-            "name": "GridstackSample",
-            "module": "src/components/reusable/widget/dashboard.sample.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-dashboard-sample",
-          "declaration": {
-            "name": "GridstackSample",
-            "module": "src/components/reusable/widget/dashboard.sample.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/gridstack.sample.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Gridstack sample usage.",
-          "name": "GridstackSample",
-          "members": [
-            {
-              "kind": "field",
-              "name": "_breakpoint",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Current breakpoint."
-            },
-            {
-              "kind": "field",
-              "name": "_layout",
-              "type": {
-                "text": "any"
-              },
-              "default": "{\n    default: [\n      {\n        id: 'w1',\n        w: 3,\n        h: 2,\n        x: 0,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w2',\n        w: 3,\n        h: 2,\n        x: 3,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w3',\n        w: 3,\n        h: 2,\n        x: 6,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w4',\n        w: 3,\n        h: 2,\n        x: 9,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w5',\n        w: 8,\n        h: 4,\n        x: 0,\n        y: 2,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 2,\n        h: 2,\n        x: 8,\n        y: 2,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 2,\n        h: 2,\n        x: 10,\n        y: 2,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 2,\n        h: 2,\n        x: 8,\n        y: 4,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 2,\n        h: 2,\n        x: 10,\n        y: 4,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 12,\n        h: 3,\n        x: 0,\n        y: 19,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 8,\n        h: 4,\n        x: 0,\n        y: 22,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 8,\n        y: 22,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n    md: [\n      {\n        id: 'w1',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w2',\n        w: 4,\n        h: 3,\n        x: 4,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w3',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w4',\n        w: 4,\n        h: 3,\n        x: 4,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w5',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 6,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 2,\n        h: 2,\n        x: 4,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 2,\n        h: 2,\n        x: 6,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 2,\n        h: 2,\n        x: 4,\n        y: 8,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 2,\n        h: 2,\n        x: 6,\n        y: 8,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 8,\n        h: 2,\n        x: 0,\n        y: 10,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 12,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 4,\n        y: 12,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n    sm: [\n      {\n        id: 'w1',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w2',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w3',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w4',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 9,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w5',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 12,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 2,\n        h: 2,\n        x: 0,\n        y: 15,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 2,\n        h: 2,\n        x: 2,\n        y: 15,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 2,\n        h: 2,\n        x: 0,\n        y: 17,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 2,\n        h: 2,\n        x: 2,\n        y: 17,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 3,\n        h: 2,\n        x: 0,\n        y: 19,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 21,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 25,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n  }",
-              "description": "Widget size and position definitions for each breakpoint."
-            },
-            {
-              "kind": "field",
-              "name": "_grid",
-              "type": {
-                "text": "any"
-              },
-              "description": "GridStack instance."
-            },
-            {
-              "kind": "method",
-              "name": "_updateWidgets",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_setBreakpoint",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-dashboard-sample",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GridstackSample",
-          "declaration": {
-            "name": "GridstackSample",
-            "module": "src/components/reusable/widget/gridstack.sample.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-gridstack-sample",
-          "declaration": {
-            "name": "GridstackSample",
-            "module": "src/components/reusable/widget/gridstack.sample.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Widget",
-          "declaration": {
-            "name": "Widget",
-            "module": "./widget"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "WidgetDragHandle",
-          "declaration": {
-            "name": "WidgetDragHandle",
-            "module": "./widgetDragHandle"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/widget-status-content.ts",
-      "declarations": [],
-      "exports": []
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/widget.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Widget.",
-          "name": "Widget",
-          "slots": [
-            {
-              "description": "Slot for widget content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for action buttons.",
-              "name": "action"
-            },
-            {
-              "description": "Slot for tooltip in header.",
-              "name": "tooltip"
-            },
-            {
-              "description": "Slot for drag handle.",
-              "name": "draghandle-"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "widgetTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Widget title.",
-              "attribute": "widgetTitle"
-            },
-            {
-              "kind": "field",
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Widget sub-title.",
-              "attribute": "subTitle"
-            },
-            {
-              "kind": "field",
-              "name": "dragActive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Widget drag active state.",
-              "attribute": "dragActive"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Widget disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "widgetTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Widget title.",
-              "fieldName": "widgetTitle"
-            },
-            {
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Widget sub-title.",
-              "fieldName": "subTitle"
-            },
-            {
-              "name": "dragActive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Widget drag active state.",
-              "fieldName": "dragActive"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Widget disabled state.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-widget",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Widget",
-          "declaration": {
-            "name": "Widget",
-            "module": "src/components/reusable/widget/widget.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-widget",
-          "declaration": {
-            "name": "Widget",
-            "module": "src/components/reusable/widget/widget.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/widgetDragHandle.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Widget drag handle.",
-          "name": "WidgetDragHandle",
-          "members": [
-            {
-              "kind": "field",
-              "name": "slot",
-              "type": {
-                "text": "string"
-              },
-              "default": "'draghandle'",
-              "description": "Force widget slot",
-              "attribute": "slot",
-              "reflects": true
-            }
-          ],
-          "attributes": [
-            {
-              "name": "slot",
-              "type": {
-                "text": "string"
-              },
-              "default": "'draghandle'",
-              "description": "Force widget slot",
-              "fieldName": "slot"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-widget-drag-handle",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "WidgetDragHandle",
-          "declaration": {
-            "name": "WidgetDragHandle",
-            "module": "src/components/reusable/widget/widgetDragHandle.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-widget-drag-handle",
-          "declaration": {
-            "name": "WidgetDragHandle",
-            "module": "src/components/reusable/widget/widgetDragHandle.ts"
           }
         }
       ]
@@ -14804,6 +14391,309 @@
           "declaration": {
             "name": "dataForColumns",
             "module": "src/components/reusable/table/story-helpers/ultils.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/gridstack.sample.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Gridstack sample usage.",
+          "name": "GridstackSample",
+          "members": [
+            {
+              "kind": "field",
+              "name": "_breakpoint",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Current breakpoint."
+            },
+            {
+              "kind": "field",
+              "name": "_layout",
+              "type": {
+                "text": "any"
+              },
+              "default": "{\n    default: [\n      {\n        id: 'w1',\n        w: 3,\n        h: 2,\n        x: 0,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w2',\n        w: 3,\n        h: 2,\n        x: 3,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w3',\n        w: 3,\n        h: 2,\n        x: 6,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w4',\n        w: 3,\n        h: 2,\n        x: 9,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w5',\n        w: 8,\n        h: 4,\n        x: 0,\n        y: 2,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 2,\n        h: 2,\n        x: 8,\n        y: 2,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 2,\n        h: 2,\n        x: 10,\n        y: 2,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 2,\n        h: 2,\n        x: 8,\n        y: 4,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 2,\n        h: 2,\n        x: 10,\n        y: 4,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 12,\n        h: 3,\n        x: 0,\n        y: 19,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 8,\n        h: 4,\n        x: 0,\n        y: 22,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 8,\n        y: 22,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n    md: [\n      {\n        id: 'w1',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w2',\n        w: 4,\n        h: 3,\n        x: 4,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w3',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w4',\n        w: 4,\n        h: 3,\n        x: 4,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w5',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 6,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 2,\n        h: 2,\n        x: 4,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 2,\n        h: 2,\n        x: 6,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 2,\n        h: 2,\n        x: 4,\n        y: 8,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 2,\n        h: 2,\n        x: 6,\n        y: 8,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 8,\n        h: 2,\n        x: 0,\n        y: 10,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 12,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 4,\n        y: 12,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n    sm: [\n      {\n        id: 'w1',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w2',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w3',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w4',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 9,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w5',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 12,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 2,\n        h: 2,\n        x: 0,\n        y: 15,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 2,\n        h: 2,\n        x: 2,\n        y: 15,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 2,\n        h: 2,\n        x: 0,\n        y: 17,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 2,\n        h: 2,\n        x: 2,\n        y: 17,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 3,\n        h: 2,\n        x: 0,\n        y: 19,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 21,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 25,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n  }",
+              "description": "Widget size and position definitions for each breakpoint."
+            },
+            {
+              "kind": "field",
+              "name": "_grid",
+              "type": {
+                "text": "any"
+              },
+              "description": "GridStack instance."
+            },
+            {
+              "kind": "method",
+              "name": "_saveLayout",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateLayout",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_setBreakpoint",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-gridstack-sample",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GridstackSample",
+          "declaration": {
+            "name": "GridstackSample",
+            "module": "src/components/reusable/widget/gridstack.sample.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-gridstack-sample",
+          "declaration": {
+            "name": "GridstackSample",
+            "module": "src/components/reusable/widget/gridstack.sample.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Widget",
+          "declaration": {
+            "name": "Widget",
+            "module": "./widget"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "WidgetDragHandle",
+          "declaration": {
+            "name": "WidgetDragHandle",
+            "module": "./widgetDragHandle"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/widget.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Widget.",
+          "name": "Widget",
+          "slots": [
+            {
+              "description": "Slot for widget content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for action buttons.",
+              "name": "action"
+            },
+            {
+              "description": "Slot for tooltip in header.",
+              "name": "tooltip"
+            },
+            {
+              "description": "Slot for drag handle.",
+              "name": "draghandle-"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "widgetTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget title.",
+              "attribute": "widgetTitle"
+            },
+            {
+              "kind": "field",
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget sub-title.",
+              "attribute": "subTitle"
+            },
+            {
+              "kind": "field",
+              "name": "dragActive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget drag active state.",
+              "attribute": "dragActive"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "widgetTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget title.",
+              "fieldName": "widgetTitle"
+            },
+            {
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget sub-title.",
+              "fieldName": "subTitle"
+            },
+            {
+              "name": "dragActive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget drag active state.",
+              "fieldName": "dragActive"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget disabled state.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-widget",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Widget",
+          "declaration": {
+            "name": "Widget",
+            "module": "src/components/reusable/widget/widget.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-widget",
+          "declaration": {
+            "name": "Widget",
+            "module": "src/components/reusable/widget/widget.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/widgetDragHandle.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Widget drag handle.",
+          "name": "WidgetDragHandle",
+          "members": [
+            {
+              "kind": "field",
+              "name": "slot",
+              "type": {
+                "text": "string"
+              },
+              "default": "'draghandle'",
+              "description": "Force widget slot",
+              "attribute": "slot",
+              "reflects": true
+            }
+          ],
+          "attributes": [
+            {
+              "name": "slot",
+              "type": {
+                "text": "string"
+              },
+              "default": "'draghandle'",
+              "description": "Force widget slot",
+              "fieldName": "slot"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-widget-drag-handle",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "WidgetDragHandle",
+          "declaration": {
+            "name": "WidgetDragHandle",
+            "module": "src/components/reusable/widget/widgetDragHandle.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-widget-drag-handle",
+          "declaration": {
+            "name": "WidgetDragHandle",
+            "module": "src/components/reusable/widget/widgetDragHandle.ts"
           }
         }
       ]

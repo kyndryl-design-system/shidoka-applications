@@ -266,18 +266,6 @@ class StoryTableSettings extends LitElement {
     }
 
     return html`
-      <style>
-        .sr-only {
-          position: absolute;
-          width: 1px;
-          height: 1px;
-          padding: 0;
-          margin: -1px;
-          overflow: hidden;
-          clip: rect(0, 0, 0, 0);
-          border: 0;
-        }
-      </style>
       <kyn-global-filter>
         <kyn-text-input
           type="search"
@@ -289,18 +277,32 @@ class StoryTableSettings extends LitElement {
           Search
           <kd-icon slot="icon" .icon=${searchIcon}></kd-icon>
         </kyn-text-input>
-        <kd-button
-          slot="actions"
-          iconposition="left"
-          kind="tertiary"
-          type="button"
-          size="small"
-          @on-click=${(e: CustomEvent) => this.handleSettingsClick(e)}
-          description="settings button"
-        >
-          Settings
-          <kd-icon slot="icon" .icon=${settingsIcon}></kd-icon>
-        </kd-button>
+
+        <div slot="actions">
+          <kyn-side-drawer
+            ?open=${this.open}
+            size=${'md'}
+            titleText=${'Column Settings'}
+            submitBtnText=${'Save'}
+            cancelBtnText=${'Cancel'}
+            @on-close=${(e: CustomEvent) => this.handleClose(e)}
+          >
+            <div slot="anchor">
+              <kd-button
+                iconposition="left"
+                kind="tertiary"
+                type="button"
+                size="small"
+                @on-click=${(e: CustomEvent) => this.handleSettingsClick(e)}
+                description="settings button"
+              >
+                Settings
+                <kd-icon slot="icon" .icon=${settingsIcon}></kd-icon>
+              </kd-button>
+            </div>
+            <story-column-setting .rows=${this.columns}></story-column-setting>
+          </kyn-side-drawer>
+        </div>
       </kyn-global-filter>
       <div class="table-container" tabindex="0">
         <kyn-table class=${lockedCol ? 'first-col-locked' : ''}>
@@ -342,17 +344,6 @@ class StoryTableSettings extends LitElement {
           </kyn-tbody>
         </kyn-table>
       </div>
-      <kyn-side-drawer
-        ?open=${this.open}
-        size=${'md'}
-        titleText=${'Column Settings'}
-        submitBtnText=${'Save'}
-        cancelBtnText=${'Cancel'}
-        @on-close=${(e: CustomEvent) => this.handleClose(e)}
-      >
-        <span slot="anchor" class="sr-only">Open Drawer</span>
-        <story-column-setting .rows=${this.columns}></story-column-setting>
-      </kyn-side-drawer>
     `;
   }
 }
