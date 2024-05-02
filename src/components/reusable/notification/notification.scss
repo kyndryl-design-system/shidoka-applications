@@ -77,6 +77,11 @@ kd-card.notification-mark-read::part(card-wrapper) {
   &-state-icon {
     padding-right: 8px;
   }
+  &-toast {
+    z-index: 999999;
+    animation: fadeIn 600ms ease-in-out forwards;
+    //animation: slideInRight 600ms ease-in-out forwards;
+  }
 }
 
 .notification-inline .notification-head,
@@ -116,5 +121,23 @@ kd-card.notification-mark-read::part(card-wrapper) {
     @include typography.type-ui-03;
     color: var(--kd-color-text-primary);
     font-weight: 500;
+  }
+}
+// fadeIn animation
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+// optional slidein right animation
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
   }
 }

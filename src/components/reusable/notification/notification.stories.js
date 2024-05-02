@@ -95,7 +95,6 @@ export const Inline = {
         notificationTitle=${args.notificationTitle}
         type=${args.type}
         tagStatus=${args.tagStatus}
-        @on-notification-click=${(e) => action(e.type)(e)}
       >
         <kd-button
           slot="actions"
@@ -117,7 +116,6 @@ export const Inline = {
         notificationTitle=${args.notificationTitle}
         type=${args.type}
         tagStatus=${args.tagStatus}
-        @on-notification-click=${(e) => action(e.type)(e)}
       >
         <kd-button
           slot="actions"
@@ -129,46 +127,14 @@ export const Inline = {
         >
           <kd-icon slot="icon" fill="#3D3C3C" .icon=${closeIcon}></kd-icon>
         </kd-button>
-      </kyn-notification> `;
-  },
-};
-
-export const Toast = {
-  args: {
-    notificationTitle: 'Notification Title',
-    type: 'toast',
-    tagStatus: 'info',
-  },
-  render: (args) => {
-    return html`<kyn-notification
-        notificationTitle=${args.notificationTitle}
-        type=${args.type}
-        tagStatus=${args.tagStatus}
-        @on-notification-click=${(e) => action(e.type)(e)}
-        style="width:440px;"
-      >
-        <kd-button
-          slot="actions"
-          kind="tertiary"
-          size="small"
-          description="close-btn"
-          iconPosition="left"
-          @on-click="${(e) => onClose(e)}"
-        >
-          <kd-icon slot="icon" fill="#3D3C3C" .icon=${closeIcon}></kd-icon>
-        </kd-button>
-        <div>${notificationBodyMsg}</div>
       </kyn-notification>
       <br />
-      <p><u>With Action link</u></p>
+      <p><u>With Action Link</u></p>
       <br />
       <kyn-notification
         notificationTitle=${args.notificationTitle}
-        notificationSubtitle=${args.notificationSubtitle}
         type=${args.type}
         tagStatus=${args.tagStatus}
-        @on-notification-click=${(e) => action(e.type)(e)}
-        style="width:440px;"
       >
         <kd-button
           slot="actions"
@@ -190,5 +156,70 @@ export const Toast = {
           </div>
         </div>
       </kyn-notification> `;
+  },
+};
+
+export const Toast = {
+  args: {
+    notificationTitle: 'Notification Title',
+    tagStatus: 'info',
+    hideCloseButton: false,
+    timeout: 6,
+  },
+  render: (args) => {
+    return html`
+      <p>
+        Wrap your <code>kyn-notification</code> component inside
+        <code>kyn-notification-container</code>
+      </p>
+      <br />
+
+      <kyn-notification-container>
+        <kyn-notification
+          notificationTitle=${args.notificationTitle}
+          type="toast"
+          tagStatus=${args.tagStatus}
+          timeout=${args.timeout}
+          ?hideCloseButton=${args.hideCloseButton}
+          style="width:440px;"
+        >
+          <div>
+            I will disappear as requested, after
+            <code>${args.timeout}</code> seconds.
+          </div>
+        </kyn-notification>
+        <kyn-notification
+          notificationTitle=${args.notificationTitle}
+          type="toast"
+          tagStatus="default"
+          timeout=${8}
+          ?hideCloseButton=${args.hideCloseButton}
+          style="width:440px;"
+        >
+          <div>I will disappear after (default) <code>8</code> seconds.</div>
+        </kyn-notification>
+        <kyn-notification
+          notificationTitle=${args.notificationTitle}
+          type="toast"
+          tagStatus="warning"
+          ?hideCloseButton=${args.hideCloseButton}
+          timeout=${12}
+          style="width:440px;"
+        >
+          <div>I will disappear after <code>12</code> seconds.</div>
+        </kyn-notification>
+
+        <kyn-notification
+          notificationTitle=${args.notificationTitle}
+          type="toast"
+          tagStatus="error"
+          ?hideCloseButton=${args.hideCloseButton}
+          timeout=${0}
+          style="width:440px;"
+        >
+          <div>I will remain untill you click on <code>X</code> icon.</div>
+        </kyn-notification>
+      </kyn-notification-container>
+    `;
   },
 };

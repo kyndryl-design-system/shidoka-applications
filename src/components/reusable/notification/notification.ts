@@ -2,6 +2,10 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
+import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import closeIcon from '@carbon/icons/es/close/16';
+
 import NotificationScss from './notification.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/card';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
@@ -65,9 +69,17 @@ export class Notification extends LitElement {
     error: 'failed',
   };
 
-  /** Set notification mark read prop. Required `type: 'clickable'`.*/
+  /** Set notification mark read prop. Required ony for `type: 'clickable'`.*/
   @property({ type: Boolean, reflect: true })
   unRead = false;
+
+  /** Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true. */
+  @property({ type: Boolean })
+  hideCloseButton = false;
+
+  /** Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'` */
+  @property({ type: Number })
+  timeout = 8;
 
   override render() {
     const cardBgClasses = {
@@ -149,8 +161,24 @@ export class Notification extends LitElement {
               `
             : null}
         </div>
-        <!-- actions slot could be an overflow menu, close icon etc. -->
+
         <div>
+          ${this.type === 'toast' && !this.hideCloseButton
+            ? html` <kd-button
+                kind="tertiary"
+                size="small"
+                description="close-btn"
+                iconPosition="left"
+                @on-click="${(e: Event) => this.onCloseToast(e)}"
+              >
+                <kd-icon
+                  slot="icon"
+                  fill="#3D3C3C"
+                  .icon=${closeIcon}
+                ></kd-icon>
+              </kd-button>`
+            : null}
+          <!-- actions slot could be an overflow menu, close icon (for other notification types) etc. -->
           <slot name="actions"></slot>
         </div>
       </div>
@@ -175,6 +203,35 @@ export class Notification extends LitElement {
         </div>
       </div>
     </div>`;
+  }
+
+  override updated(changedProperties: any) {
+    // Close toast notification if timeout > 0
+    if (
+      this.type === 'toast' &&
+      changedProperties.has('timeout') &&
+      this.timeout > 0
+    ) {
+      setTimeout(() => {
+        this.removeToast();
+      }, this.timeout * 1000);
+    }
+  }
+
+  // Remove toast from DOM
+  private removeToast() {
+    const animation = this.animate([{ opacity: '1' }, { opacity: '0' }], {
+      duration: 500,
+      easing: 'ease-in-out',
+      fill: 'forwards',
+    });
+    animation.onfinish = () => {
+      this.parentNode.removeChild(this);
+    };
+  }
+
+  private onCloseToast(e: Event) {
+    this.removeToast();
   }
 
   private _handleCardClick(e: any) {
