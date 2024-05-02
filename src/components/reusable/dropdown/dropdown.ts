@@ -20,6 +20,7 @@ import clearIcon16 from '@carbon/icons/es/close/16';
  * Dropdown, single select.
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @fires on-search - Capture the search input event and emits the search text.
+ * @fires on-clear-all - Captures the the multi-select clear all button click event and emits the value.
  * @slot unnamed - Slot for dropdown options.
  * @slot label - Slot for input label.
  */
@@ -585,6 +586,13 @@ export class Dropdown extends LitElement {
     this._validate(true, false);
     this._updateSelectedOptions();
     this.emitValue();
+
+    const event = new CustomEvent('on-clear-all', {
+      detail: {
+        value: this.value,
+      },
+    });
+    this.dispatchEvent(event);
   }
 
   private handleTagClear(value: string) {
