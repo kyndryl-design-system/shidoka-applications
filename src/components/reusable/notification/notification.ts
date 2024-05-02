@@ -169,7 +169,7 @@ export class Notification extends LitElement {
                 size="small"
                 description="close-btn"
                 iconPosition="left"
-                @on-click="${(e: Event) => this.onCloseToast(e)}"
+                @on-click="${(e: any) => this.onCloseToast()}"
               >
                 <kd-icon
                   slot="icon"
@@ -226,11 +226,11 @@ export class Notification extends LitElement {
       fill: 'forwards',
     });
     animation.onfinish = () => {
-      this.parentNode.removeChild(this);
+      this.parentNode?.removeChild(this);
     };
   }
 
-  private onCloseToast(e: Event) {
+  private onCloseToast() {
     this.removeToast();
   }
 
