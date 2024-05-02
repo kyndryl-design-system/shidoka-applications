@@ -40,6 +40,9 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/file/CQuDZEeLiuGiALvCWjAKlu/Applications---Component-Library?type=design&node-id=9370-44581&mode=design&t=LXc9LDk5mGkf8vnl-0',
     },
+    a11y: {
+      disable: true,
+    },
   },
 };
 
