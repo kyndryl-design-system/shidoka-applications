@@ -163,7 +163,8 @@ export class Notification extends LitElement {
         </div>
 
         <div>
-          ${this.type === 'toast' && !this.hideCloseButton
+          ${(this.type === 'toast' || this.type === 'inline') &&
+          !this.hideCloseButton
             ? html` <kd-button
                 class="notification-toast-close-btn"
                 kind="tertiary"
@@ -221,6 +222,10 @@ export class Notification extends LitElement {
 
   // Remove toast from DOM
   private removeToast() {
+    if (this.type === 'inline') {
+      this.parentNode?.removeChild(this);
+      return;
+    }
     const animation = this.animate([{ opacity: '1' }, { opacity: '0' }], {
       duration: 500,
       easing: 'ease-in-out',

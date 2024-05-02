@@ -92,24 +92,15 @@ export const Inline = {
     notificationTitle: 'Notification Title',
     type: 'inline',
     tagStatus: 'info',
+    hideCloseButton: false,
   },
   render: (args) => {
     return html`<kyn-notification
         notificationTitle=${args.notificationTitle}
         type=${args.type}
         tagStatus=${args.tagStatus}
+        ?hideCloseButton=${args.hideCloseButton}
       >
-        <kd-button
-          slot="actions"
-          kind="tertiary"
-          size="small"
-          description="close-btn"
-          iconPosition="left"
-          @on-click="${(e) => onClose(e)}"
-        >
-          <kd-icon slot="icon" fill="#3D3C3C" .icon=${closeIcon}></kd-icon>
-        </kd-button>
-
         <div>${notificationBodyMsg}</div>
       </kyn-notification>
       <br />
@@ -119,17 +110,8 @@ export const Inline = {
         notificationTitle=${args.notificationTitle}
         type=${args.type}
         tagStatus=${args.tagStatus}
+        ?hideCloseButton=${args.hideCloseButton}
       >
-        <kd-button
-          slot="actions"
-          kind="tertiary"
-          size="small"
-          description="close-btn"
-          iconPosition="left"
-          @on-click="${(e) => onClose(e)}"
-        >
-          <kd-icon slot="icon" fill="#3D3C3C" .icon=${closeIcon}></kd-icon>
-        </kd-button>
       </kyn-notification>
       <br />
       <p><u>With Action Link</u></p>
@@ -138,18 +120,8 @@ export const Inline = {
         notificationTitle=${args.notificationTitle}
         type=${args.type}
         tagStatus=${args.tagStatus}
+        ?hideCloseButton=${args.hideCloseButton}
       >
-        <kd-button
-          slot="actions"
-          kind="tertiary"
-          size="small"
-          description="close-btn"
-          iconPosition="left"
-          @on-click="${(e) => onClose(e)}"
-        >
-          <kd-icon slot="icon" fill="#3D3C3C" .icon=${closeIcon}></kd-icon>
-        </kd-button>
-
         <div>
           ${notificationBodyMsg}
           <div style="margin-top: 10px;">
