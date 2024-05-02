@@ -169,7 +169,7 @@ export class Notification extends LitElement {
                 size="small"
                 description="close-btn"
                 iconPosition="left"
-                @on-click="${(e: any) => this.onCloseToast()}"
+                @on-click="${() => this.onCloseToast()}"
               >
                 <kd-icon
                   slot="icon"
