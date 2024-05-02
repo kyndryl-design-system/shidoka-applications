@@ -1,3 +1,10 @@
+## [1.20.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.0...v1.20.1) (2024-05-02)
+
+
+### Bug Fixes
+
+* **dropdown:** add on-clear-all event ([1cf59fe](https://github.com/kyndryl-design-system/shidoka-applications/commit/1cf59fe2da130e6d90b6d63a1b04df2f2dbea9c6))
+
 # [1.20.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.19.1...v1.20.0) (2024-05-02)
 
 
