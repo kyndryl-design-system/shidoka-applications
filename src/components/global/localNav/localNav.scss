@@ -53,12 +53,17 @@ nav {
     backdrop-filter: blur(1px);
     z-index: calc(var(--kd-z-local-nav) - 1);
     transition: background-color 300ms ease-out, visibility 300ms ease-out;
-    background: transparent;
+    background-color: transparent;
     visibility: hidden;
 
     .nav--expanded + & {
       background-color: var(--kd-color-light-opacity-50);
       visibility: visible;
+
+      &.pinned {
+        background-color: transparent;
+        visibility: hidden;
+      }
     }
   }
 }

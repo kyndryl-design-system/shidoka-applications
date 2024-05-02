@@ -106,7 +106,7 @@ export class LocalNav extends LitElement {
         </div>
       </nav>
 
-      <div class="overlay"></div>
+      <div class="overlay ${this.pinned ? 'pinned' : ''}"></div>
     `;
   }
 
