@@ -1,3 +1,15 @@
+# [1.20.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.19.1...v1.20.0) (2024-05-02)
+
+
+### Bug Fixes
+
+* flyout interactions ([#168](https://github.com/kyndryl-design-system/shidoka-applications/issues/168)) ([6442499](https://github.com/kyndryl-design-system/shidoka-applications/commit/6442499869151172922c185e5ef08554298d7a35))
+
+
+### Features
+
+* **toast-inline:** Toast and Inline variants of notification ([#162](https://github.com/kyndryl-design-system/shidoka-applications/issues/162)) ([40259f6](https://github.com/kyndryl-design-system/shidoka-applications/commit/40259f66f3d42bb143f7254dba422742371f5770))
+
 ## [1.19.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.19.0...v1.19.1) (2024-05-02)
 
 
