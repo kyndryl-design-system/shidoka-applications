@@ -109,8 +109,6 @@ export class Tag extends LitElement {
   private handleTagClear(e: any, value: string) {
     if (!this.disabled) {
       const event = new CustomEvent('on-close', {
-        bubbles: true,
-        composed: true,
         detail: {
           value,
           origEvent: e,

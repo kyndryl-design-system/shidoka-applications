@@ -1,3 +1,10 @@
+## [1.19.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.19.0...v1.19.1) (2024-05-02)
+
+
+### Bug Fixes
+
+* **tag:** prevent on-close bubbling ([9529504](https://github.com/kyndryl-design-system/shidoka-applications/commit/952950496280ba99051239313ad46af34310e71f))
+
 # [1.19.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.18.4...v1.19.0) (2024-05-02)
 
 
