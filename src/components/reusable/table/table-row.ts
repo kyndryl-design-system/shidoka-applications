@@ -56,6 +56,14 @@ export class TableRow extends LitElement {
   dense = false;
 
   /**
+   * locked: Boolean indicating whether the row is locked.
+   * If a row is selected before it is locked, it remains selected even after being locked.
+   * A row can be selected and disabled/locked simultaneously.
+   */
+  @property({ type: Boolean, reflect: true })
+  locked = false;
+
+  /**
    * expandable: Boolean indicating whether the row is expandable.
    */
   @property({ type: Boolean, reflect: true })
@@ -69,9 +77,24 @@ export class TableRow extends LitElement {
 
   /**
    * disabled: Boolean indicating whether the row is disabled.
+   * A disabled row is not allowed to have any user interactions.
+   * A row can be selected and disabled/locked simultaneously.
    */
   @property({ type: Boolean, reflect: true })
   disabled = false;
+
+  /**
+   * preventHighlight: Boolean indicating whether the row should not be highlighted.
+   */
+  @property({ type: Boolean, reflect: true })
+  preventHighlight = false;
+
+  /**
+   * dimmed: Boolean indicating whether the row is dimmed.
+   * A row should not be selected and dimmed simultaneously.
+   */
+  @property({ type: Boolean, reflect: true })
+  dimmed = false;
 
   /**
    * @ignore
@@ -143,6 +166,14 @@ export class TableRow extends LitElement {
         (el as TableCell).disabled = this.disabled;
       });
     }
+
+    // A row can be selected and disabled/locked simultaneously.
+    // However, a row should not be both selected and dimmed at the same time.
+    if (changedProperties.has('dimmed') || changedProperties.has('selected')) {
+      this.unnamedSlotEls.forEach((el) => {
+        (el as TableCell).dimmed = this.dimmed && !this.selected;
+      });
+    }
   }
 
   _handleUserInitiatedToggleExpando(expanded = !this.expanded) {
@@ -194,7 +225,7 @@ export class TableRow extends LitElement {
         ? html`
             <kyn-td .align=${'center'} ?dense=${this.dense}>
               <kyn-checkbox
-                ?disabled=${this.disabled}
+                ?disabled=${this.disabled || this.locked}
                 .checked=${this.selected}
                 visiblyHidden
                 @on-checkbox-change=${this.handleRowSelectionChange}
