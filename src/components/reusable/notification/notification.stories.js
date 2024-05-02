@@ -1,6 +1,11 @@
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
+import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/link';
+
+import closeIcon from '@carbon/icons/es/close/16';
 
 import '../overflowMenu';
 
@@ -12,12 +17,17 @@ const handleOverflowClick = (e) => {
   // overflow link click logic here to mark as unread
 };
 
+const onClose = (e) => {
+  action(e.type)(e);
+  // To close notification
+};
+
 export default {
   title: 'Components/Notification',
   component: 'kyn-notification',
   argTypes: {
     type: {
-      options: ['normal', 'clickable'],
+      options: ['normal', 'clickable', 'inline', 'toast'],
       control: { type: 'select' },
     },
     tagStatus: {
@@ -29,6 +39,9 @@ export default {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/CQuDZEeLiuGiALvCWjAKlu/Applications---Component-Library?type=design&node-id=9370-44581&mode=design&t=LXc9LDk5mGkf8vnl-0',
+    },
+    a11y: {
+      disable: true,
     },
   },
 };
@@ -71,5 +84,127 @@ export const Notification = {
 
       <div>${notificationBodyMsg}</div>
     </kyn-notification>`;
+  },
+};
+
+export const Inline = {
+  args: {
+    notificationTitle: 'Notification Title',
+    type: 'inline',
+    tagStatus: 'info',
+    hideCloseButton: false,
+  },
+  render: (args) => {
+    return html`<kyn-notification
+        notificationTitle=${args.notificationTitle}
+        type=${args.type}
+        tagStatus=${args.tagStatus}
+        ?hideCloseButton=${args.hideCloseButton}
+      >
+        <div>${notificationBodyMsg}</div>
+      </kyn-notification>
+      <br />
+      <p><u>Without Description</u></p>
+      <br />
+      <kyn-notification
+        notificationTitle=${args.notificationTitle}
+        type=${args.type}
+        tagStatus=${args.tagStatus}
+        ?hideCloseButton=${args.hideCloseButton}
+      >
+      </kyn-notification>
+      <br />
+      <p><u>With Action Link</u></p>
+      <br />
+      <kyn-notification
+        notificationTitle=${args.notificationTitle}
+        type=${args.type}
+        tagStatus=${args.tagStatus}
+        ?hideCloseButton=${args.hideCloseButton}
+      >
+        <div>
+          ${notificationBodyMsg}
+          <div style="margin-top: 10px;">
+            <kd-link href="#" @on-click=${(e) => e.preventDefault()}>
+              Link
+            </kd-link>
+          </div>
+        </div>
+      </kyn-notification> `;
+  },
+};
+
+export const Toast = {
+  decorators: [
+    (story) =>
+      html`
+        <div
+          style="height: 80vh; min-height: 250px; transform: translate3d(0,0,0); margin: var(--kd-negative-page-gutter);"
+        >
+          ${story()}
+        </div>
+      `,
+  ],
+  args: {
+    notificationTitle: 'Notification Title',
+    tagStatus: 'info',
+    hideCloseButton: false,
+    timeout: 6,
+  },
+  render: (args) => {
+    return html`
+      <p>
+        Wrap your <code>kyn-notification</code> component inside
+        <code>kyn-notification-container</code>
+      </p>
+      <br />
+
+      <kyn-notification-container>
+        <kyn-notification
+          notificationTitle=${args.notificationTitle}
+          type="toast"
+          tagStatus=${args.tagStatus}
+          timeout=${args.timeout}
+          ?hideCloseButton=${args.hideCloseButton}
+          style="width:440px;"
+        >
+          <div>
+            I will disappear as requested, after
+            <code>${args.timeout}</code> seconds.
+          </div>
+        </kyn-notification>
+        <kyn-notification
+          notificationTitle=${args.notificationTitle}
+          type="toast"
+          tagStatus="default"
+          timeout=${8}
+          ?hideCloseButton=${args.hideCloseButton}
+          style="width:440px;"
+        >
+          <div>I will disappear after (default) <code>8</code> seconds.</div>
+        </kyn-notification>
+        <kyn-notification
+          notificationTitle=${args.notificationTitle}
+          type="toast"
+          tagStatus="warning"
+          ?hideCloseButton=${args.hideCloseButton}
+          timeout=${12}
+          style="width:440px;"
+        >
+          <div>I will disappear after <code>12</code> seconds.</div>
+        </kyn-notification>
+
+        <kyn-notification
+          notificationTitle=${args.notificationTitle}
+          type="toast"
+          tagStatus="error"
+          ?hideCloseButton=${args.hideCloseButton}
+          timeout=${0}
+          style="width:440px;"
+        >
+          <div>I will remain untill you click on <code>X</code> icon.</div>
+        </kyn-notification>
+      </kyn-notification-container>
+    `;
   },
 };
