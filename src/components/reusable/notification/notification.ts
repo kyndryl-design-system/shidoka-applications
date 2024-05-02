@@ -165,6 +165,7 @@ export class Notification extends LitElement {
         <div>
           ${this.type === 'toast' && !this.hideCloseButton
             ? html` <kd-button
+                class="notification-toast-close-btn"
                 kind="tertiary"
                 size="small"
                 description="close-btn"
