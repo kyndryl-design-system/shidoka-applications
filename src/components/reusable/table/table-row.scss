@@ -5,7 +5,7 @@
   vertical-align: middle;
 }
 
-:host([selected]:not([disabled])),
+:host([selected]:not([disabled]):not([preventHighlight])),
 :host([checkboxselection]:hover:not([disabled])) {
   background-color: var(--kd-color-background-inverse-hover) !important;
 }
@@ -24,4 +24,11 @@
 
 :host([disabled]) {
   pointer-events: none;
+}
+
+:host([locked]) {
+  kyn-td,
+  ::slotted(kyn-td) {
+    border-bottom: 1px solid var(--kd-color-border-primary);
+  }
 }

@@ -11,7 +11,8 @@ import type { Meta, StoryObj } from '@storybook/web-components';
 import './index';
 import './story-helpers/action-menu';
 import './story-helpers/table-story';
-import { characters } from './story-helpers/ultils';
+import './story-helpers/table.settings';
+import { characters, dataForColumns } from './story-helpers/ultils';
 import allData from './story-helpers/table-data.json';
 import maleIcon from '@carbon/icons/es/gender--male/16';
 import femaleIcon from '@carbon/icons/es/gender--female/16';
@@ -402,5 +403,30 @@ export const DisabledRows: Story = {
         </kyn-tbody>
       </kyn-table>`;
   },
-  parameters,
+};
+
+export const ColumnSettings: Story = {
+  args: {
+    fixedLayout: true,
+  },
+  render: () => {
+    return html`
+      <story-table-settings .rows=${dataForColumns}> </story-table-settings>
+    `;
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `
+        // For guidance on how to construct this code, please refer to the 'table-story.ts' file.
+        // You can find it at the following path:
+        // https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/table/story-helpers/table.settings.ts
+        `,
+      },
+    },
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/P3l7EMKOWmohY4aqYfGh1e/Florence-Prototypes?type=design&node-id=0%3A1&mode=design&t=hWVdRJTz3EdL7ltN-1',
+    },
+  },
 };

@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.18.4...v1.19.0) (2024-05-02)
+
+
+### Features
+
+* **table:** added column settings feature ([#164](https://github.com/kyndryl-design-system/shidoka-applications/issues/164)) ([79b24ad](https://github.com/kyndryl-design-system/shidoka-applications/commit/79b24adcf78afa11d9dfe6f502e11313ada89f0d))
+
 ## [1.18.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.18.3...v1.18.4) (2024-04-30)
 
 

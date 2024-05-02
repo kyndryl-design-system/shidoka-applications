@@ -53,8 +53,13 @@ export class TableCell extends LitElement {
   @property({ type: Boolean, reflect: true })
   ellipsis = false;
 
+  /** Disables the cell. */
   @property({ type: Boolean, reflect: true })
   disabled = false;
+
+  /** Dim the cell. */
+  @property({ type: Boolean, reflect: true })
+  dimmed = false;
 
   /**
    * Context consumer for the table context.
