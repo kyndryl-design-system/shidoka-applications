@@ -465,6 +465,14 @@
         },
         {
           "kind": "js",
+          "name": "NotificationContainer",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "./components/reusable/notification"
+          }
+        },
+        {
+          "kind": "js",
           "name": "Widget",
           "declaration": {
             "name": "Widget",
@@ -2653,6 +2661,69 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/localNav/index.ts",
       "declarations": [],
       "exports": [
@@ -3047,69 +3118,6 @@
           "declaration": {
             "name": "LocalNavLink",
             "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -6596,6 +6604,14 @@
             "name": "Notification",
             "module": "./notification"
           }
+        },
+        {
+          "kind": "js",
+          "name": "NotificationContainer",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "./notificationContainer"
+          }
         }
       ]
     },
@@ -6665,7 +6681,7 @@
                 "text": "string"
               },
               "default": "'default'",
-              "description": "Notification status tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`",
+              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
               "attribute": "tagStatus"
             },
             {
@@ -6675,7 +6691,7 @@
                 "text": "string"
               },
               "default": "'normal'",
-              "description": "Notification type. `'normal'` and `'clickable'`. clickable type can be use inside notification panel",
+              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
               "attribute": "type"
             },
             {
@@ -6695,13 +6711,43 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Set notification mark read prop. Required `type: 'clickable'`.",
+              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
               "attribute": "unRead",
               "reflects": true
             },
             {
+              "kind": "field",
+              "name": "hideCloseButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
+              "attribute": "hideCloseButton"
+            },
+            {
+              "kind": "field",
+              "name": "timeout",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
+              "attribute": "timeout"
+            },
+            {
               "kind": "method",
               "name": "renderInnerUI",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "removeToast",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onCloseToast",
               "privacy": "private"
             },
             {
@@ -6767,7 +6813,7 @@
                 "text": "string"
               },
               "default": "'default'",
-              "description": "Notification status tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`",
+              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
               "fieldName": "tagStatus"
             },
             {
@@ -6776,7 +6822,7 @@
                 "text": "string"
               },
               "default": "'normal'",
-              "description": "Notification type. `'normal'` and `'clickable'`. clickable type can be use inside notification panel",
+              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
               "fieldName": "type"
             },
             {
@@ -6794,8 +6840,26 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Set notification mark read prop. Required `type: 'clickable'`.",
+              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
               "fieldName": "unRead"
+            },
+            {
+              "name": "hideCloseButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
+              "fieldName": "hideCloseButton"
+            },
+            {
+              "name": "timeout",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
+              "fieldName": "timeout"
             }
           ],
           "superclass": {
@@ -6821,6 +6885,48 @@
           "declaration": {
             "name": "Notification",
             "module": "src/components/reusable/notification/notification.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/notification/notificationContainer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Notification container component for Toast notification.\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
+          "name": "NotificationContainer",
+          "slots": [
+            {
+              "description": "Slot for <kyn-notification type=\"toast\"> component.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-notification-container",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NotificationContainer",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "src/components/reusable/notification/notificationContainer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-notification-container",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "src/components/reusable/notification/notificationContainer.ts"
           }
         }
       ]
@@ -7992,292 +8098,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/sideDrawer/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SideDrawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "./sideDrawer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/sideDrawer/sideDrawer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Side Drawer.",
-          "name": "SideDrawer",
-          "slots": [
-            {
-              "description": "Slot for drawer body content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the anchor button content.",
-              "name": "anchor"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Drawer open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Drawer size. `'md'`, or `'sm'`.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title / Heading text, required.",
-              "attribute": "titleText"
-            },
-            {
-              "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "submitBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Ok'",
-              "description": "Submit button text.",
-              "attribute": "submitBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "submitBtnDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "attribute": "submitBtnDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine whether needs footer",
-              "attribute": "hideFooter"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "beforeClose",
-              "type": {
-                "text": "Function"
-              },
-              "description": "Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
-            },
-            {
-              "kind": "method",
-              "name": "_openDrawer",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_closeDrawer",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "returnValue",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitCloseEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Drawer open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Drawer size. `'md'`, or `'sm'`.",
-              "fieldName": "size"
-            },
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title / Heading text, required.",
-              "fieldName": "titleText"
-            },
-            {
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "fieldName": "labelText"
-            },
-            {
-              "name": "submitBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Ok'",
-              "description": "Submit button text.",
-              "fieldName": "submitBtnText"
-            },
-            {
-              "name": "cancelBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "fieldName": "cancelBtnText"
-            },
-            {
-              "name": "submitBtnDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "fieldName": "submitBtnDisabled"
-            },
-            {
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine whether needs footer",
-              "fieldName": "hideFooter"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "fieldName": "destructive"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-side-drawer",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SideDrawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-side-drawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/radioButton/index.ts",
       "declarations": [],
       "exports": [
@@ -8616,6 +8436,292 @@
           "declaration": {
             "name": "RadioButtonGroup",
             "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/sideDrawer/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SideDrawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "./sideDrawer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/sideDrawer/sideDrawer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Side Drawer.",
+          "name": "SideDrawer",
+          "slots": [
+            {
+              "description": "Slot for drawer body content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the anchor button content.",
+              "name": "anchor"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Drawer open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Drawer size. `'md'`, or `'sm'`.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title / Heading text, required.",
+              "attribute": "titleText"
+            },
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "submitBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Ok'",
+              "description": "Submit button text.",
+              "attribute": "submitBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "attribute": "cancelBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "submitBtnDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "attribute": "submitBtnDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine whether needs footer",
+              "attribute": "hideFooter"
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "beforeClose",
+              "type": {
+                "text": "Function"
+              },
+              "description": "Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
+            },
+            {
+              "kind": "method",
+              "name": "_openDrawer",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_closeDrawer",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "returnValue",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitCloseEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Drawer open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Drawer size. `'md'`, or `'sm'`.",
+              "fieldName": "size"
+            },
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title / Heading text, required.",
+              "fieldName": "titleText"
+            },
+            {
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "fieldName": "labelText"
+            },
+            {
+              "name": "submitBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Ok'",
+              "description": "Submit button text.",
+              "fieldName": "submitBtnText"
+            },
+            {
+              "name": "cancelBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "fieldName": "cancelBtnText"
+            },
+            {
+              "name": "submitBtnDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "fieldName": "submitBtnDisabled"
+            },
+            {
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine whether needs footer",
+              "fieldName": "hideFooter"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "fieldName": "destructive"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-side-drawer",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SideDrawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-side-drawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
           }
         }
       ]
@@ -13295,6 +13401,309 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/widget/gridstack.sample.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Gridstack sample usage.",
+          "name": "GridstackSample",
+          "members": [
+            {
+              "kind": "field",
+              "name": "_breakpoint",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Current breakpoint."
+            },
+            {
+              "kind": "field",
+              "name": "_layout",
+              "type": {
+                "text": "any"
+              },
+              "default": "{\n    default: [\n      {\n        id: 'w1',\n        w: 3,\n        h: 2,\n        x: 0,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w2',\n        w: 3,\n        h: 2,\n        x: 3,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w3',\n        w: 3,\n        h: 2,\n        x: 6,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w4',\n        w: 3,\n        h: 2,\n        x: 9,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w5',\n        w: 8,\n        h: 4,\n        x: 0,\n        y: 2,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 2,\n        h: 2,\n        x: 8,\n        y: 2,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 2,\n        h: 2,\n        x: 10,\n        y: 2,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 2,\n        h: 2,\n        x: 8,\n        y: 4,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 2,\n        h: 2,\n        x: 10,\n        y: 4,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 12,\n        h: 3,\n        x: 0,\n        y: 19,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 8,\n        h: 4,\n        x: 0,\n        y: 22,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 8,\n        y: 22,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n    md: [\n      {\n        id: 'w1',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w2',\n        w: 4,\n        h: 3,\n        x: 4,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w3',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w4',\n        w: 4,\n        h: 3,\n        x: 4,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w5',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 6,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 2,\n        h: 2,\n        x: 4,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 2,\n        h: 2,\n        x: 6,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 2,\n        h: 2,\n        x: 4,\n        y: 8,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 2,\n        h: 2,\n        x: 6,\n        y: 8,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 8,\n        h: 2,\n        x: 0,\n        y: 10,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 12,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 4,\n        y: 12,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n    sm: [\n      {\n        id: 'w1',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w2',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w3',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w4',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 9,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w5',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 12,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 2,\n        h: 2,\n        x: 0,\n        y: 15,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 2,\n        h: 2,\n        x: 2,\n        y: 15,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 2,\n        h: 2,\n        x: 0,\n        y: 17,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 2,\n        h: 2,\n        x: 2,\n        y: 17,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 3,\n        h: 2,\n        x: 0,\n        y: 19,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 21,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 25,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n  }",
+              "description": "Widget size and position definitions for each breakpoint."
+            },
+            {
+              "kind": "field",
+              "name": "_grid",
+              "type": {
+                "text": "any"
+              },
+              "description": "GridStack instance."
+            },
+            {
+              "kind": "method",
+              "name": "_saveLayout",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateLayout",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_setBreakpoint",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-gridstack-sample",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GridstackSample",
+          "declaration": {
+            "name": "GridstackSample",
+            "module": "src/components/reusable/widget/gridstack.sample.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-gridstack-sample",
+          "declaration": {
+            "name": "GridstackSample",
+            "module": "src/components/reusable/widget/gridstack.sample.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Widget",
+          "declaration": {
+            "name": "Widget",
+            "module": "./widget"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "WidgetDragHandle",
+          "declaration": {
+            "name": "WidgetDragHandle",
+            "module": "./widgetDragHandle"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/widget.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Widget.",
+          "name": "Widget",
+          "slots": [
+            {
+              "description": "Slot for widget content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for action buttons.",
+              "name": "action"
+            },
+            {
+              "description": "Slot for tooltip in header.",
+              "name": "tooltip"
+            },
+            {
+              "description": "Slot for drag handle.",
+              "name": "draghandle-"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "widgetTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget title.",
+              "attribute": "widgetTitle"
+            },
+            {
+              "kind": "field",
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget sub-title.",
+              "attribute": "subTitle"
+            },
+            {
+              "kind": "field",
+              "name": "dragActive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget drag active state.",
+              "attribute": "dragActive"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "widgetTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget title.",
+              "fieldName": "widgetTitle"
+            },
+            {
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget sub-title.",
+              "fieldName": "subTitle"
+            },
+            {
+              "name": "dragActive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget drag active state.",
+              "fieldName": "dragActive"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget disabled state.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-widget",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Widget",
+          "declaration": {
+            "name": "Widget",
+            "module": "src/components/reusable/widget/widget.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-widget",
+          "declaration": {
+            "name": "Widget",
+            "module": "src/components/reusable/widget/widget.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/widgetDragHandle.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Widget drag handle.",
+          "name": "WidgetDragHandle",
+          "members": [
+            {
+              "kind": "field",
+              "name": "slot",
+              "type": {
+                "text": "string"
+              },
+              "default": "'draghandle'",
+              "description": "Force widget slot",
+              "attribute": "slot",
+              "reflects": true
+            }
+          ],
+          "attributes": [
+            {
+              "name": "slot",
+              "type": {
+                "text": "string"
+              },
+              "default": "'draghandle'",
+              "description": "Force widget slot",
+              "fieldName": "slot"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-widget-drag-handle",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "WidgetDragHandle",
+          "declaration": {
+            "name": "WidgetDragHandle",
+            "module": "src/components/reusable/widget/widgetDragHandle.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-widget-drag-handle",
+          "declaration": {
+            "name": "WidgetDragHandle",
+            "module": "src/components/reusable/widget/widgetDragHandle.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/table/story-helpers/action-menu.ts",
       "declarations": [
         {
@@ -14391,309 +14800,6 @@
           "declaration": {
             "name": "dataForColumns",
             "module": "src/components/reusable/table/story-helpers/ultils.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/gridstack.sample.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Gridstack sample usage.",
-          "name": "GridstackSample",
-          "members": [
-            {
-              "kind": "field",
-              "name": "_breakpoint",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Current breakpoint."
-            },
-            {
-              "kind": "field",
-              "name": "_layout",
-              "type": {
-                "text": "any"
-              },
-              "default": "{\n    default: [\n      {\n        id: 'w1',\n        w: 3,\n        h: 2,\n        x: 0,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w2',\n        w: 3,\n        h: 2,\n        x: 3,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w3',\n        w: 3,\n        h: 2,\n        x: 6,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w4',\n        w: 3,\n        h: 2,\n        x: 9,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w5',\n        w: 8,\n        h: 4,\n        x: 0,\n        y: 2,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 2,\n        h: 2,\n        x: 8,\n        y: 2,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 2,\n        h: 2,\n        x: 10,\n        y: 2,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 2,\n        h: 2,\n        x: 8,\n        y: 4,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 2,\n        h: 2,\n        x: 10,\n        y: 4,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 12,\n        h: 3,\n        x: 0,\n        y: 19,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 8,\n        h: 4,\n        x: 0,\n        y: 22,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 8,\n        y: 22,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n    md: [\n      {\n        id: 'w1',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w2',\n        w: 4,\n        h: 3,\n        x: 4,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w3',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w4',\n        w: 4,\n        h: 3,\n        x: 4,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w5',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 6,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 2,\n        h: 2,\n        x: 4,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 2,\n        h: 2,\n        x: 6,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 2,\n        h: 2,\n        x: 4,\n        y: 8,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 2,\n        h: 2,\n        x: 6,\n        y: 8,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 8,\n        h: 2,\n        x: 0,\n        y: 10,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 12,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 4,\n        y: 12,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n    sm: [\n      {\n        id: 'w1',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 0,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w2',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 3,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w3',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 6,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w4',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 9,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w5',\n        w: 4,\n        h: 3,\n        x: 0,\n        y: 12,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w6',\n        w: 2,\n        h: 2,\n        x: 0,\n        y: 15,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w7',\n        w: 2,\n        h: 2,\n        x: 2,\n        y: 15,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w8',\n        w: 2,\n        h: 2,\n        x: 0,\n        y: 17,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w9',\n        w: 2,\n        h: 2,\n        x: 2,\n        y: 17,\n        minW: 2,\n        minH: 2,\n      },\n      {\n        id: 'w10',\n        w: 3,\n        h: 2,\n        x: 0,\n        y: 19,\n        minW: 4,\n        minH: 2,\n      },\n      {\n        id: 'w11',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 21,\n        minW: 4,\n        minH: 4,\n      },\n      {\n        id: 'w12',\n        w: 4,\n        h: 4,\n        x: 0,\n        y: 25,\n        minW: 4,\n        minH: 4,\n      },\n    ],\n  }",
-              "description": "Widget size and position definitions for each breakpoint."
-            },
-            {
-              "kind": "field",
-              "name": "_grid",
-              "type": {
-                "text": "any"
-              },
-              "description": "GridStack instance."
-            },
-            {
-              "kind": "method",
-              "name": "_saveLayout",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateLayout",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_setBreakpoint",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-gridstack-sample",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GridstackSample",
-          "declaration": {
-            "name": "GridstackSample",
-            "module": "src/components/reusable/widget/gridstack.sample.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-gridstack-sample",
-          "declaration": {
-            "name": "GridstackSample",
-            "module": "src/components/reusable/widget/gridstack.sample.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Widget",
-          "declaration": {
-            "name": "Widget",
-            "module": "./widget"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "WidgetDragHandle",
-          "declaration": {
-            "name": "WidgetDragHandle",
-            "module": "./widgetDragHandle"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/widget.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Widget.",
-          "name": "Widget",
-          "slots": [
-            {
-              "description": "Slot for widget content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for action buttons.",
-              "name": "action"
-            },
-            {
-              "description": "Slot for tooltip in header.",
-              "name": "tooltip"
-            },
-            {
-              "description": "Slot for drag handle.",
-              "name": "draghandle-"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "widgetTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Widget title.",
-              "attribute": "widgetTitle"
-            },
-            {
-              "kind": "field",
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Widget sub-title.",
-              "attribute": "subTitle"
-            },
-            {
-              "kind": "field",
-              "name": "dragActive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Widget drag active state.",
-              "attribute": "dragActive"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Widget disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "widgetTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Widget title.",
-              "fieldName": "widgetTitle"
-            },
-            {
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Widget sub-title.",
-              "fieldName": "subTitle"
-            },
-            {
-              "name": "dragActive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Widget drag active state.",
-              "fieldName": "dragActive"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Widget disabled state.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-widget",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Widget",
-          "declaration": {
-            "name": "Widget",
-            "module": "src/components/reusable/widget/widget.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-widget",
-          "declaration": {
-            "name": "Widget",
-            "module": "src/components/reusable/widget/widget.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/widgetDragHandle.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Widget drag handle.",
-          "name": "WidgetDragHandle",
-          "members": [
-            {
-              "kind": "field",
-              "name": "slot",
-              "type": {
-                "text": "string"
-              },
-              "default": "'draghandle'",
-              "description": "Force widget slot",
-              "attribute": "slot",
-              "reflects": true
-            }
-          ],
-          "attributes": [
-            {
-              "name": "slot",
-              "type": {
-                "text": "string"
-              },
-              "default": "'draghandle'",
-              "description": "Force widget slot",
-              "fieldName": "slot"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-widget-drag-handle",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "WidgetDragHandle",
-          "declaration": {
-            "name": "WidgetDragHandle",
-            "module": "src/components/reusable/widget/widgetDragHandle.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-widget-drag-handle",
-          "declaration": {
-            "name": "WidgetDragHandle",
-            "module": "src/components/reusable/widget/widgetDragHandle.ts"
           }
         }
       ]
