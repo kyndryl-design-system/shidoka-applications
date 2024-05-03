@@ -50,7 +50,6 @@ nav {
     right: 0;
     bottom: 0;
     left: 0;
-    backdrop-filter: blur(1px);
     z-index: calc(var(--kd-z-local-nav) - 1);
     transition: background-color 300ms ease-out, visibility 300ms ease-out;
     background-color: transparent;
@@ -143,6 +142,10 @@ nav {
 .toggle-container {
   display: none;
   padding-top: 4px;
+
+  @media (min-width: 42rem) {
+    display: flex;
+  }
 }
 
 .nav-toggle {
@@ -180,8 +183,10 @@ nav {
   }
 }
 
-@media (min-width: 42rem) {
-  .toggle-container {
-    display: flex;
+.pin-icon {
+  transition: transform 150ms ease-out;
+
+  .pinned & {
+    transform: rotate(180deg);
   }
 }
