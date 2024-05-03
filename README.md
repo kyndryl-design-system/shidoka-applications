@@ -102,9 +102,9 @@ You can get around this in by not declaring Shidoka components as dependencies, 
 
 For example, from the shidoka-applications rollup.js config using [the external option](https://rollupjs.org/configuration-options/#external): `external: [/shidoka-foundation\/components/]`. Since shidoka-foundation components are used within shidoka-applications components, this prevents the foundation components from being bundled, meaning it leaves the import statements unaltered (ex: `import '@kyndryl-design-system/...'`). This way, the application bundler can handle it instead.
 
-This works with bundling from node_modules, but not with CDN hosted files since the deployed application wouldn't know how to resolve aliased node_modules imports like: `import '@kyndryl-design-system/...'`. In this case you probably need a workaround.
+This works with bundling from node_modules, but not with CDN hosted files since the deployed application won't know how to resolve aliased node_modules imports ex: `import '@kyndryl-design-system/...'`. In this case, you probably need a workaround.
 
 #### Workaround
 
 If for some reason the above suggestion does not help, there is a library containing a script/polyfill that can be used which allows custom elements to be redefined:
-https://github.com/caridy/redefine-custom-elements.
+https://github.com/caridy/redefine-custom-elements. We've found that this script works best when served from the app's `<head>` tag.

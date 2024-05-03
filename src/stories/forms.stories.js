@@ -37,7 +37,7 @@ export const Default = {
           name="radio"
           @on-radio-group-change=${(e) => action(e.type)(e)}
         >
-          <span slot="label">Radio Buttons</span>
+          <span slot="label">Radio buttons</span>
           <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
           <kyn-radio-button value="2"> Option 2 </kyn-radio-button>
           <kyn-radio-button value="3"> Option 3 </kyn-radio-button>
@@ -62,7 +62,7 @@ export const Default = {
           value="example"
           @on-change=${(e) => action(e.type)(e)}
         >
-          Toggle Button
+          Toggle button
         </kyn-toggle-button>
 
         <br /><br />
@@ -98,7 +98,7 @@ export const Default = {
           caption="Searchable Multi-Select Dropdown example"
           @on-change=${(e) => action(e.type)(e)}
         >
-          <span slot="label">Multi-Select Dropdown</span>
+          <span slot="label">Multi-select dropdown</span>
           <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
           <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
           <kyn-dropdown-option value="3" disabled>
@@ -118,7 +118,7 @@ export const Default = {
           caption="Text input example"
           @on-input=${(e) => action(e.type)(e)}
         >
-          Text Input
+          Text input
         </kyn-text-input>
 
         <br /><br />
@@ -130,7 +130,7 @@ export const Default = {
           @on-input=${(e) => action(e.type)(e)}
           @keydown=${(e) => e.stopPropagation()}
         >
-          Text Area
+          Text area
         </kyn-text-area>
 
         <br /><br />
@@ -165,7 +165,7 @@ export const Default = {
           caption="Date time picker example"
           @on-input=${(e) => action(e.type)(e)}
         >
-          Date Time
+          Date time
         </kyn-date-picker>
 
         <br /><br />
@@ -176,7 +176,7 @@ export const Default = {
           caption="Date range picker example"
           @on-input=${(e) => action(e.type)(e)}
         >
-          Date Range
+          Date range
         </kyn-date-range-picker>
 
         <br /><br />
