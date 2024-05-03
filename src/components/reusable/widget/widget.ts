@@ -63,7 +63,7 @@ export class Widget extends LitElement {
           </div>
         </div>
 
-        <div class="widget-content" tabindex="0">
+        <div class="widget-content">
           <slot @slotchange=${this._handleSlotChange}></slot>
         </div>
       </div>
