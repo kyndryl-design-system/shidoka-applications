@@ -1,3 +1,10 @@
+## [1.20.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.2...v1.20.3) (2024-05-04)
+
+
+### Bug Fixes
+
+* flyout interactions ([#169](https://github.com/kyndryl-design-system/shidoka-applications/issues/169)) ([4fe2d55](https://github.com/kyndryl-design-system/shidoka-applications/commit/4fe2d5571f2b32769bac0fe5ba3c3c8079c1f282))
+
 ## [1.20.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.1...v1.20.2) (2024-05-02)
 
 
