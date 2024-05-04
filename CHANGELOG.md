@@ -1,3 +1,10 @@
+## [1.20.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.3...v1.20.4) (2024-05-04)
+
+
+### Bug Fixes
+
+* **local-nav:** slotted svg size correction ([54e6c43](https://github.com/kyndryl-design-system/shidoka-applications/commit/54e6c437570b642ae984a5e42caea0255b4b0e49))
+
 ## [1.20.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.2...v1.20.3) (2024-05-04)
 
 
