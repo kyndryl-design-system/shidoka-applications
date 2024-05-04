@@ -24,17 +24,6 @@ export class HeaderNav extends LitElement {
   @property({ type: String, reflect: true })
   override slot = 'left';
 
-  /** Timeout function to delay flyout open.
-   * @internal
-   */
-  _enterTimer: any;
-
-  /** Timeout function to delay flyout close.
-   * @internal
-   */
-  @state()
-  _leaveTimer: any;
-
   override render() {
     const classes = {
       'header-nav': true,
@@ -49,19 +38,13 @@ export class HeaderNav extends LitElement {
           aria-label="Toggle Menu"
           title="Toggle Menu"
           @click=${() => this._toggleMenuOpen()}
-          @pointerenter=${(e: PointerEvent) => this._handlePointerEnter(e)}
-          @pointerleave=${(e: PointerEvent) => this._handlePointerLeave(e)}
         >
           ${this.menuOpen
             ? html` <kd-icon .icon=${closeIcon}></kd-icon> `
             : html` <kd-icon .icon=${menuIcon}></kd-icon> `}
         </button>
 
-        <div
-          class="menu__content left"
-          @pointerenter=${(e: PointerEvent) => this._handlePointerEnter(e)}
-          @pointerleave=${(e: PointerEvent) => this._handlePointerLeave(e)}
-        >
+        <div class="menu__content left">
           <slot></slot>
         </div>
       </div>
@@ -69,29 +52,7 @@ export class HeaderNav extends LitElement {
     `;
   }
 
-  private _handlePointerEnter(e: PointerEvent) {
-    if (e.pointerType === 'mouse') {
-      clearTimeout(this._leaveTimer);
-
-      this._enterTimer = setTimeout(() => {
-        this.menuOpen = true;
-      }, 150);
-    }
-  }
-
-  private _handlePointerLeave(e: PointerEvent) {
-    if (e.pointerType === 'mouse' && e.relatedTarget !== null) {
-      clearTimeout(this._enterTimer);
-
-      this._leaveTimer = setTimeout(() => {
-        this.menuOpen = false;
-      }, 150);
-    }
-  }
-
   private _toggleMenuOpen() {
-    clearTimeout(this._enterTimer);
-    clearTimeout(this._leaveTimer);
     this.menuOpen = !this.menuOpen;
   }
 

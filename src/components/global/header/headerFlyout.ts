@@ -2,7 +2,6 @@ import { LitElement, html } from 'lit';
 import {
   customElement,
   property,
-  state,
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -67,17 +66,6 @@ export class HeaderFlyout extends LitElement {
   @queryAssignedElements()
   slottedElements!: Array<HTMLElement>;
 
-  /** Timeout function to delay flyout open.
-   * @internal
-   */
-  _enterTimer: any;
-
-  /** Timeout function to delay modal close.
-   * @internal
-   */
-  @state()
-  _leaveTimer: any;
-
   override render() {
     const classes = {
       menu: true,
@@ -100,8 +88,6 @@ export class HeaderFlyout extends LitElement {
                 title=${this.label || this.assistiveText}
                 aria-label=${this.label || this.assistiveText}
                 @click=${this.handleClick}
-                @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
-                @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
               >
                 <slot name="button"></slot>
 
@@ -126,8 +112,6 @@ export class HeaderFlyout extends LitElement {
                 title=${this.label || this.assistiveText}
                 aria-label=${this.label || this.assistiveText}
                 @click=${this.handleClick}
-                @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
-                @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
               >
                 <slot name="button"></slot>
 
@@ -147,11 +131,7 @@ export class HeaderFlyout extends LitElement {
               </button>
             `}
 
-        <div
-          class=${classMap(contentClasses)}
-          @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
-          @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
-        >
+        <div class=${classMap(contentClasses)}>
           ${!this.hideMenuLabel
             ? html`
                 <div class="menu-label">
@@ -167,7 +147,7 @@ export class HeaderFlyout extends LitElement {
           <slot></slot>
         </div>
       </div>
-      <div class="overlay"></div>
+      <div class="overlay" @click=${this._handleOverlayClick}></div>
     `;
   }
 
@@ -175,29 +155,7 @@ export class HeaderFlyout extends LitElement {
     this.open = false;
   }
 
-  private handlePointerEnter(e: PointerEvent) {
-    if (e.pointerType === 'mouse') {
-      clearTimeout(this._leaveTimer);
-
-      this._enterTimer = setTimeout(() => {
-        this.open = true;
-      }, 150);
-    }
-  }
-
-  private handlePointerLeave(e: PointerEvent) {
-    if (e.pointerType === 'mouse' && e.relatedTarget !== null) {
-      clearTimeout(this._enterTimer);
-
-      this._leaveTimer = setTimeout(() => {
-        this.open = false;
-      }, 150);
-    }
-  }
-
   private handleClick() {
-    clearTimeout(this._enterTimer);
-    clearTimeout(this._leaveTimer);
     this.open = !this.open;
   }
 
@@ -205,6 +163,10 @@ export class HeaderFlyout extends LitElement {
     if (!e.composedPath().includes(this)) {
       this.open = false;
     }
+  }
+
+  private _handleOverlayClick() {
+    this.open = false;
   }
 
   override connectedCallback() {

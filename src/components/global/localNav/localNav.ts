@@ -10,8 +10,7 @@ import LocalNavScss from './localNav.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import arrowIcon from '@carbon/icons/es/chevron--down/16';
-import openIcon from '@carbon/icons/es/side-panel--open/24';
-import closeIcon from '@carbon/icons/es/side-panel--close/24';
+import pinIcon from '@carbon/icons/es/side-panel--open/24';
 
 /**
  * The global Side Navigation component.
@@ -74,7 +73,10 @@ export class LocalNav extends LitElement {
   override render() {
     return html`
       <nav
-        class=${classMap({ 'nav--expanded': this._expanded || this.pinned })}
+        class=${classMap({
+          'nav--expanded': this._expanded || this.pinned,
+          pinned: this.pinned,
+        })}
         @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
         @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
       >
@@ -101,7 +103,7 @@ export class LocalNav extends LitElement {
             title="${this.pinned ? this.unpinText : this.pinText}"
             aria-label="${this.pinned ? this.unpinText : this.pinText}"
           >
-            <kd-icon .icon=${this.pinned ? closeIcon : openIcon}></kd-icon>
+            <kd-icon class="pin-icon" .icon=${pinIcon}></kd-icon>
           </button>
         </div>
       </nav>
