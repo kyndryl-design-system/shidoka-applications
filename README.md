@@ -2,13 +2,13 @@
 
 [![shidoka-applications](https://github.com/kyndryl-design-system/shidoka-applications/actions/workflows/actions.yml/badge.svg)](https://github.com/kyndryl-design-system/shidoka-applications/actions/workflows/actions.yml)
 
-# Contributing to this project
+# Contributing
 
 Read the [Contributing Guide](CONTRIBUTING.md) here.
 
-# Using this library in another project
+# Usage
 
-## Install the package
+## Install
 
 <!-- Note: This will not work until you have configured the enterprise package registry following the instructions above. -->
 
@@ -40,7 +40,7 @@ import '@kyndryl-design-system/shidoka-foundation/css/root.css';
 
 ### Use CSS tokens/variables
 
-You can make use of tokens/variables included in root.css such as `--kd-header-height` to pad the body for the fixed position header, `--kd-page-gutter` for the padding on your main container, or any of the color tokens. These are very bare-bones currently, and will need to be fleshed out later.
+After installation, you can make use of tokens/variables included in root.css such as the color tokens.
 
 ## Start using components
 
@@ -76,17 +76,13 @@ import '@kyndryl-design-system/shidoka-applications/components/global/header/hea
 
 ### React usage
 
-React does not yet support automatic interop with Web Components. This means that React treats all props passed to Web Components as string attributes. It sounds like they are [planning to release it eventually](https://github.com/facebook/react/issues/11347#issuecomment-988970952), and is now available behind an `@experimental` flag. Until you've upgraded to a version of React that has support, you will need to use a library like [@lit/react](https://www.npmjs.com/package/@lit/react) to use these components in React.
+**[React 19 has introduced native support for Custom Elements](https://react.dev/blog/2024/04/25/react-19#support-for-custom-elements).**
 
-Some options for React wrapper libraries:
-
-1. [@lit/react](https://www.npmjs.com/package/@lit/react)
-2. [reactify-wc](https://www.npmjs.com/package/reactify-wc)
-3. [wc-react](https://www.npmjs.com/package/wc-react)
+Older versions of React do not support automatic interop with Custom Elements. This means that React treats all props passed to Web Components as string attributes. Until you've upgraded to React 19+, you will need to use a library like [@lit/react](https://www.npmjs.com/package/@lit/react) or [reactify-wc](https://www.npmjs.com/package/reactify-wc) to wrap these components for use in React.
 
 ### Server-Side Rendering (SSR)
 
-When using with an SSR framework like Next.js, you will encounter errors with code that only runs client-side, like `window` references for example. This is because web components cannot render on the server. Here is an article that provides some methods to work around this: [Using Non-SSR Friendly Components with Next.js](https://blog.bitsrc.io/using-non-ssr-friendly-components-with-next-js-916f38e8992c) and [How to entirely disable server-side rendering in next.js v13?](https://stackoverflow.com/questions/75406728/how-to-entirely-disable-server-side-rendering-in-next-js-v13). Basically, they need their rendering deferred to only happen on the client-side.
+When using with an SSR framework like Next.js, you will encounter errors with code that only runs client-side, like `window` references for example. This is because web components cannot render on the server. Here is an article that provides some methods to work around this: [Using Non-SSR Friendly Components with Next.js](https://blog.bitsrc.io/using-non-ssr-friendly-components-with-next-js-916f38e8992c) and [How to entirely disable server-side rendering in next.js v13?](https://stackoverflow.com/questions/75406728/how-to-entirely-disable-server-side-rendering-in-next-js-v13). Basically, web components need their rendering deferred to only happen on the client-side.
 
 Here is some additional information about why SSR does not work for web components, and some potential polyfills/solutions to enable server rendering: https://lit.dev/docs/ssr/overview/
 
