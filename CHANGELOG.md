@@ -1,3 +1,10 @@
+## [1.20.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.4...v1.20.5) (2024-05-06)
+
+
+### Bug Fixes
+
+* **story:** global filter applied to table story ([#171](https://github.com/kyndryl-design-system/shidoka-applications/issues/171)) ([ceb3957](https://github.com/kyndryl-design-system/shidoka-applications/commit/ceb39572fcb4d05bdbede507cb2fed4cdbb5388f))
+
 ## [1.20.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.3...v1.20.4) (2024-05-04)
 
 
