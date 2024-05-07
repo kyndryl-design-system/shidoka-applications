@@ -56,16 +56,17 @@ export class DropdownOption extends LitElement {
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
+        aria-disabled=${this.disabled}
         ?multiple=${this.multiple}
         @click=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
-        tabindex="-1"
       >
         <span>
           ${this.multiple
             ? html`
                 <input
                   type="checkbox"
+                  aria-hidden="true"
                   tabindex="-1"
                   @mousedown=${(e: any) => e.preventDefault()}
                   .checked=${this.selected}
