@@ -89,3 +89,30 @@ export const DateRangePicker = {
     `;
   },
 };
+
+export const DateTimeRangePicker = {
+  args: { ...args, datePickerType: 'date-time' },
+  render: (args) => {
+    return html`
+      <kyn-date-range-picker
+        size=${args.size}
+        name=${args.name}
+        datePickerType=${args.datePickerType}
+        caption=${args.caption}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        warnText=${args.warnText}
+        startDate=${args.startDate}
+        endDate=${args.endDate}
+        minDate=${ifDefined(args.minDate)}
+        maxDate=${ifDefined(args.maxDate)}
+        step=${ifDefined(args.step)}
+        @on-input=${(e) => action(e.type)(e)}
+        @keydown=${(e) => e.stopPropagation()}
+      >
+        ${args.unnamed}
+      </kyn-date-range-picker>
+    `;
+  },
+};
