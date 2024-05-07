@@ -1,3 +1,10 @@
+# [1.21.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.5...v1.21.0) (2024-05-07)
+
+
+### Features
+
+* **dropdown:** add dropdown-category subcomponent ([#173](https://github.com/kyndryl-design-system/shidoka-applications/issues/173)) ([3ff4174](https://github.com/kyndryl-design-system/shidoka-applications/commit/3ff417457d9ba10b878e0943549726eb96950c8a))
+
 ## [1.20.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.4...v1.20.5) (2024-05-06)
 
 
