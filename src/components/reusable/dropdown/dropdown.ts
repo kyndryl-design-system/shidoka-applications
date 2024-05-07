@@ -984,10 +984,12 @@ export class Dropdown extends LitElement {
       }
 
       if (this.open) {
-        // open dropdown upwards if closer to bottom fo viewport
+        // open dropdown upwards if closer to bottom of viewport
+        const Threshold = 0.6;
+
         if (
           this.buttonEl.getBoundingClientRect().top >
-          window.innerHeight * 0.6
+          window.innerHeight * Threshold
         ) {
           this._openUpwards = true;
         } else {
