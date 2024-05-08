@@ -1,3 +1,10 @@
+# [1.22.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.21.0...v1.22.0) (2024-05-08)
+
+
+### Features
+
+* **daterange-picker:** Added date time with date range picker ([#172](https://github.com/kyndryl-design-system/shidoka-applications/issues/172)) ([976746b](https://github.com/kyndryl-design-system/shidoka-applications/commit/976746b5d3078d11fc402a5591149b476bca6113))
+
 # [1.21.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.5...v1.21.0) (2024-05-07)
 
 
