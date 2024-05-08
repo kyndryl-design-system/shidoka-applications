@@ -232,6 +232,7 @@ export class Dropdown extends LitElement {
                 inline: this.inline,
               })}"
               aria-labelledby="label-${this.name}"
+              name=${this.name}
               ?required=${this.required}
               ?disabled=${this.disabled}
               ?invalid=${this.isInvalid}
@@ -289,6 +290,8 @@ export class Dropdown extends LitElement {
                 open: this.open,
                 upwards: this._openUpwards,
               })}
+              aria-labelledby="label-${this.name}"
+              name=${this.name}
               role="listbox"
               tabindex="0"
               aria-expanded=${this.open}
@@ -742,6 +745,11 @@ export class Dropdown extends LitElement {
 
     this._updateSelectedOptions();
 
+    // close listbox
+    if (!this.multiple) {
+      this.open = false;
+    }
+
     // emit selected value
     this.emitValue();
   }
@@ -888,22 +896,6 @@ export class Dropdown extends LitElement {
     this.dispatchEvent(event);
   }
 
-  override willUpdate(changedProps: any) {
-    if (changedProps.has('open')) {
-      if (this.open) {
-        // open dropdown upwards if closer to bottom fo viewport
-        if (
-          this.buttonEl.getBoundingClientRect().top >
-          window.innerHeight * 0.6
-        ) {
-          this._openUpwards = true;
-        } else {
-          this._openUpwards = false;
-        }
-      }
-    }
-  }
-
   override updated(changedProps: any) {
     if (
       changedProps.has('invalidText') ||
@@ -940,11 +932,6 @@ export class Dropdown extends LitElement {
       // sync "Select All" indeterminate state
       this.selectAllIndeterminate =
         SelectedOptions.length < Options.length && SelectedOptions.length > 0;
-
-      // close listbox
-      if (!this.multiple) {
-        this.open = false;
-      }
 
       // set form data value
       // if (this.multiple) {
@@ -994,6 +981,20 @@ export class Dropdown extends LitElement {
         this.listboxEl.focus({ preventScroll: true });
         this.assistiveText =
           'Selecting items. Use up and down arrow keys to navigate.';
+      }
+
+      if (this.open) {
+        // open dropdown upwards if closer to bottom of viewport
+        const Threshold = 0.6;
+
+        if (
+          this.buttonEl.getBoundingClientRect().top >
+          window.innerHeight * Threshold
+        ) {
+          this._openUpwards = true;
+        } else {
+          this._openUpwards = false;
+        }
       }
     }
 
