@@ -2,7 +2,7 @@ import { LitElement, html, PropertyValues } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
-
+import { DATE_PICKER_TYPES } from '../datePicker/defs';
 import DateRangePickerScss from './daterangepicker.scss';
 
 /**
@@ -61,6 +61,10 @@ export class DateRangePicker extends LitElement {
   /** Date disabled state. */
   @property({ type: Boolean })
   disabled = false;
+
+  /** Date range picker types. Default 'single' */
+  @property({ type: String })
+  datePickerType: DATE_PICKER_TYPES = DATE_PICKER_TYPES.SINGLE;
 
   /** Date invalid text. */
   @property({ type: String })
@@ -135,7 +139,9 @@ export class DateRangePicker extends LitElement {
               'size--sm': this.size === 'sm',
               'size--lg': this.size === 'lg',
             })}"
-            type="date"
+            type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
+              ? 'datetime-local'
+              : 'date'}
             id="${this.name}-start"
             name="${this.name}-end"
             aria-label="Start Date"
@@ -158,7 +164,9 @@ export class DateRangePicker extends LitElement {
               'size--sm': this.size === 'sm',
               'size--lg': this.size === 'lg',
             })}"
-            type="date"
+            type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
+              ? 'datetime-local'
+              : 'date'}
             id="${this.name}-end"
             name="${this.name}-end"
             aria-label="End Date"

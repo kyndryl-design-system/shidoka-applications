@@ -181,6 +181,18 @@ export const Default = {
 
         <br /><br />
 
+        <kyn-date-range-picker
+          size="md"
+          name="date-time-range"
+          datePickerType="date-time"
+          caption="Date time range picker example"
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          Date time range
+        </kyn-date-range-picker>
+
+        <br /><br />
+
         <kd-button
           type="submit"
           name="test"
