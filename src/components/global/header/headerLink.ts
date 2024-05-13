@@ -12,6 +12,7 @@ import '../../reusable/textInput';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import arrowIcon from '@carbon/icons/es/chevron--right/16';
 import backIcon from '@carbon/icons/es/arrow--left/16';
+import searchIcon from '@carbon/icons/es/search/24';
 
 /**
  * Component for navigation links within the Header.
@@ -60,6 +61,10 @@ export class HeaderLink extends LitElement {
   /** Text for mobile "Back" button. */
   @property({ type: String })
   backText = 'Back';
+
+  /** Text for mobile "Back" button. */
+  @state()
+  _searchTerm = '';
 
   /**
    * Queries any slotted HTML elements.
@@ -142,8 +147,10 @@ export class HeaderLink extends LitElement {
                 <kyn-text-input
                   hideLabel
                   placeholder=${this.searchLabel}
+                  value=${this._searchTerm}
                   @on-input=${(e: Event) => this._handleSearch(e)}
                 >
+                  <kd-icon .icon=${searchIcon} slot="icon"></kd-icon>
                   ${this.searchLabel}
                 </kyn-text-input>
               `
@@ -156,7 +163,11 @@ export class HeaderLink extends LitElement {
   }
 
   private _handleSearch(e: any) {
-    const SearchTerm = e.detail.value.toLowerCase();
+    this._searchTerm = e.detail.value.toLowerCase();
+    this._searchFilter();
+  }
+
+  private _searchFilter() {
     const Links: any = this.querySelectorAll('kyn-header-link');
 
     Links.forEach((link: any) => {
@@ -169,7 +180,7 @@ export class HeaderLink extends LitElement {
         linkText += nodes[i].textContent.trim();
       }
 
-      if (linkText.toLowerCase().includes(SearchTerm)) {
+      if (linkText.toLowerCase().includes(this._searchTerm)) {
         link.style.display = 'block';
       } else {
         link.style.display = 'none';
@@ -198,7 +209,11 @@ export class HeaderLink extends LitElement {
   }
 
   private handlePointerLeave(e: PointerEvent) {
-    if (e.pointerType === 'mouse' && this.slottedEls.length) {
+    if (
+      e.pointerType === 'mouse' &&
+      this.slottedEls.length &&
+      this._searchTerm === ''
+    ) {
       clearTimeout(this._enterTimer);
 
       this._leaveTimer = setTimeout(() => {
@@ -225,6 +240,8 @@ export class HeaderLink extends LitElement {
   private handleClickOut(e: Event) {
     if (!e.composedPath().includes(this)) {
       this.open = false;
+      this._searchTerm = '';
+      this._searchFilter();
     }
   }
 
