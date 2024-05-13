@@ -1,3 +1,11 @@
+## [1.22.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.22.0...v1.22.1) (2024-05-13)
+
+
+### Bug Fixes
+
+* **header-link:** add search icon, remain open with active search text, clear search on close ([adddb12](https://github.com/kyndryl-design-system/shidoka-applications/commit/adddb123298cb040369fe63d2ff17bb2980360d2))
+* **widget:** title font ([3806d9a](https://github.com/kyndryl-design-system/shidoka-applications/commit/3806d9a7449f604e8777466d94da7407e247670b))
+
 # [1.22.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.21.0...v1.22.0) (2024-05-08)
 
 
