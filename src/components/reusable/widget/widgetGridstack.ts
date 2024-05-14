@@ -86,9 +86,7 @@ export class WidgetGridstack extends LitElement {
     const NewLayout = this.grid.save(false);
 
     // update grid layout for current breakpoint
-    const LayoutClone = JSON.parse(JSON.stringify(this.layout));
-    LayoutClone[this._breakpoint] = NewLayout;
-    this.layout = LayoutClone;
+    this.layout[this._breakpoint] = NewLayout;
 
     // emit save event with new layout in detail
     const event = new CustomEvent('on-grid-save', {
