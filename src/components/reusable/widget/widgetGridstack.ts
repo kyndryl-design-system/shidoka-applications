@@ -49,16 +49,16 @@ export class WidgetGridstack extends LitElement {
     this.grid = GridStack.init(this.gridstackConfig, GridstackEl);
 
     // set widget drag state on dragstart
-    this.grid.on('dragstart', (e: Event, el: HTMLElement) => {
-      console.log(e);
-      const Widget: any = querySelectorDeep('kyn-widget', el);
+    this.grid.on('dragstart', (e: Event) => {
+      const El: any = e.target;
+      const Widget: any = querySelectorDeep('kyn-widget', El);
       Widget.dragActive = true;
     });
 
     // unset widget drag state and save layout on dragstop
-    this.grid.on('dragstop', (e: Event, el: HTMLElement) => {
-      console.log(e);
-      const Widget: any = querySelectorDeep('kyn-widget', el);
+    this.grid.on('dragstop', (e: Event) => {
+      const El: any = e.target;
+      const Widget: any = querySelectorDeep('kyn-widget', El);
       Widget.dragActive = false;
 
       this._saveLayout();
@@ -71,7 +71,11 @@ export class WidgetGridstack extends LitElement {
   }
 
   override willUpdate(changedProps: any) {
-    if (changedProps.has('_breakpoint') || changedProps.has('layout')) {
+    if (
+      this.layout &&
+      this._breakpoint &&
+      (changedProps.has('_breakpoint') || changedProps.has('layout'))
+    ) {
       // update the gridstack size/position of each widget when breakpoint or layout changes
       this._updateLayout();
     }
@@ -82,12 +86,11 @@ export class WidgetGridstack extends LitElement {
     const NewLayout = this.grid.save(false);
 
     // update grid layout for current breakpoint
-    if (this.layout[this._breakpoint]) {
-      this.layout[this._breakpoint] = NewLayout;
-    } else {
-      this.layout['default'] = NewLayout;
-    }
+    const LayoutClone = JSON.parse(JSON.stringify(this.layout));
+    LayoutClone[this._breakpoint] = NewLayout;
+    this.layout = LayoutClone;
 
+    // emit save event with new layout in detail
     const event = new CustomEvent('on-grid-save', {
       detail: { layout: this.layout },
     });
@@ -96,11 +99,14 @@ export class WidgetGridstack extends LitElement {
 
   private _updateLayout() {
     // get layout for current breakpoint
-    const Layout = this.layout[this._breakpoint] || this.layout['default'];
+    const Layout = this.layout[this._breakpoint];
 
     if (this.grid) {
       // load grid layout
-      this.grid.load(Layout, false);
+      this.grid.load(Layout);
+
+      // enable gridstack animations
+      this.grid.setAnimation(true);
     }
   }
 

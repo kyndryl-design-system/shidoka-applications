@@ -83,51 +83,6 @@ export const Gridstack = {
           <div gs-id="w6" class="grid-stack-item">
             <div class="grid-stack-item-content">
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                Widget Content
-              </kyn-widget>
-            </div>
-          </div>
-
-          <div gs-id="w7" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                Widget Content
-              </kyn-widget>
-            </div>
-          </div>
-
-          <div gs-id="w8" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                Widget Content
-              </kyn-widget>
-            </div>
-          </div>
-
-          <div gs-id="w9" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                Widget Content
-              </kyn-widget>
-            </div>
-          </div>
-
-          <div gs-id="w10" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                Widget Content
-              </kyn-widget>
-            </div>
-          </div>
-
-          <div gs-id="w11" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget>
                 <kd-chart
                   type="bar"
                   chartTitle="Widget Title"
@@ -173,9 +128,9 @@ export const Gridstack = {
             </div>
           </div>
 
-          <div gs-id="w12" class="grid-stack-item">
+          <div gs-id="w7" class="grid-stack-item">
             <div class="grid-stack-item-content">
-              <kyn-widget>
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
                 <kd-chart
                   type="doughnut"
                   chartTitle="Widget Title"
@@ -213,6 +168,15 @@ export const Gridstack = {
                 >
                   <kyn-widget-drag-handle></kyn-widget-drag-handle>
                 </kd-chart>
+              </kyn-widget>
+            </div>
+          </div>
+
+          <div gs-id="w8" class="grid-stack-item">
+            <div class="grid-stack-item-content">
+              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+                <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                Widget Content
               </kyn-widget>
             </div>
           </div>

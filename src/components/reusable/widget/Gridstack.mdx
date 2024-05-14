@@ -34,30 +34,35 @@ import { UsageExample } from '../../../../.storybook/usageBlock.jsx';
 
 ## Widget Sizes
 
-Widget size definitons are provided. These can be imported and included in Layout deifinitions.
+[Widget Size and Constraint definitions are provided as JSON objects](https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/common/helpers/gridstack.ts), which can be imported and included in Layout deifinitions.
 
 ### Example
 
 ```js
-import { WidgetSizes } from '@kyndryl-design-system/shidoka-applications/common/helpers/gridstack';
+import {
+  WidgetSizes,
+  WidgetConstraints,
+} from '@kyndryl-design-system/shidoka-applications/common/helpers/gridstack';
 
 const Layout = {
-  md: [
+  max: [
     {
       id: 'widget1',
-      ...WidgetSizes.tower.md,
+      ...WidgetSizes.standard.max,
     },
-  ],
-  sm: [
     {
-      id: 'widget1',
-      ...WidgetSizes.tower.sm,
+      id: 'widget2',
+      ...WidgetSizes.wide.max,
+      ...WidgetConstraints.chart.max,
     },
   ],
+  // provide widget sizes for every breakpoint
 };
 ```
 
 ## Sample Gridstack
+
+[Full sample Layout definition here](https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/widget/sample-layout.ts).
 
 <Canvas>
   <Story of={GridstackStories.Gridstack} />
