@@ -18,6 +18,25 @@ export default {
       disable: true,
     },
   },
+  decorators: [
+    (story) => html`
+      <style>
+        body {
+          background: var(--kd-color-background-accent-subtle);
+        }
+
+        .test {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--kd-color-background-ui-soft);
+          height: 100%;
+          border-radius: 4px;
+        }
+      </style>
+      ${story()}
+    `,
+  ],
 };
 
 const args = {
@@ -37,55 +56,55 @@ export const Gridstack = {
         <div class="grid-stack">
           <div gs-id="w1" class="grid-stack-item">
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+              <kyn-widget widgetTitle="Widget 1" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                Widget Content
+                <div class="test">Widget Content</div>
               </kyn-widget>
             </div>
           </div>
 
           <div gs-id="w2" class="grid-stack-item">
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+              <kyn-widget widgetTitle="Widget 2" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                Widget Content
+                <div class="test">Widget Content</div>
               </kyn-widget>
             </div>
           </div>
 
           <div gs-id="w3" class="grid-stack-item">
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+              <kyn-widget widgetTitle="Widget 3" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                Widget Content
+                <div class="test">Widget Content</div>
               </kyn-widget>
             </div>
           </div>
 
           <div gs-id="w4" class="grid-stack-item">
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+              <kyn-widget widgetTitle="Widget 4" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                Widget Content
+                <div class="test">Widget Content</div>
               </kyn-widget>
             </div>
           </div>
 
           <div gs-id="w5" class="grid-stack-item">
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+              <kyn-widget widgetTitle="Widget 5" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                Widget Content
+                <div class="test">Widget Content</div>
               </kyn-widget>
             </div>
           </div>
 
           <div gs-id="w6" class="grid-stack-item">
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+              <kyn-widget>
                 <kd-chart
                   type="bar"
-                  chartTitle="Widget Title"
+                  chartTitle="Widget 6"
                   description="Widget Subtitle"
                   hideCaptions
                   .labels=${[
@@ -130,10 +149,10 @@ export const Gridstack = {
 
           <div gs-id="w7" class="grid-stack-item">
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+              <kyn-widget>
                 <kd-chart
                   type="doughnut"
-                  chartTitle="Widget Title"
+                  chartTitle="Widget 7"
                   description="Widget Subtitle"
                   hideCaptions
                   .labels=${[
@@ -174,9 +193,9 @@ export const Gridstack = {
 
           <div gs-id="w8" class="grid-stack-item">
             <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
+              <kyn-widget widgetTitle="Widget 8" subTitle="Widget Subtitle">
                 <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                Widget Content
+                <div class="test">Widget Content</div>
               </kyn-widget>
             </div>
           </div>

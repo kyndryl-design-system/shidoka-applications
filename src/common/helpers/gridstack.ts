@@ -281,6 +281,28 @@ export const WidgetSizes = {
 };
 
 export const WidgetConstraints = {
+  default: {
+    max: {
+      minW: WidgetSizes.pill.max.w,
+      minH: WidgetSizes.pill.max.h,
+    },
+    xl: {
+      minW: WidgetSizes.pill.xl.w,
+      minH: WidgetSizes.pill.xl.h,
+    },
+    lg: {
+      minW: WidgetSizes.pill.lg.w,
+      minH: WidgetSizes.pill.lg.h,
+    },
+    md: {
+      minW: WidgetSizes.pill.md.w,
+      minH: WidgetSizes.pill.md.h,
+    },
+    sm: {
+      minW: WidgetSizes.pill.sm.w,
+      minH: WidgetSizes.pill.sm.h,
+    },
+  },
   table: {
     max: {
       minW: WidgetSizes.wide.max.w,
