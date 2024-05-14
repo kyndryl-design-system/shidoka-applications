@@ -205,6 +205,40 @@ const items = [
   },
 ];
 
+export const Grouped = {
+  args: args,
+  render: (args) => {
+    return html`
+      <kyn-dropdown
+        placeholder=${args.placeholder}
+        size=${args.size}
+        ?inline=${args.inline}
+        name=${args.name}
+        ?open=${args.open}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        caption=${args.caption}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+        <span slot="label">${args.label}</span>
+        <kyn-dropdown-category>Category 1</kyn-dropdown-category>
+        <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+
+        <kyn-dropdown-category>Category 2</kyn-dropdown-category>
+        <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+        <kyn-dropdown-option value="3" disabled>
+          Disabled Option
+        </kyn-dropdown-option>
+        <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
+        <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
+        <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
+        <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
+      </kyn-dropdown>
+    `;
+  },
+};
+
 export const DataDrivenOptions = {
   args: args,
   render: (args) => {

@@ -19,11 +19,15 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Run Chromatic
+        id: chromatic
         uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           autoAcceptChanges: '(main|beta)'
           onlyChanged: true
-          untraced: '**/preview.js'
+          untraced: '**/custom-elements.json'
           debug: true
           zip: true
+
+      - name: Publish Summary
+        run: echo -e "| Results |  |\n| --- | --- |\n| Build Results | ${{steps.chromatic.outputs.buildUrl}} |\n| Storybook Preview | ${{steps.chromatic.outputs.storybookUrl}} |\n| Component Count | ${{steps.chromatic.outputs.componentCount}} |" >> $GITHUB_STEP_SUMMARY

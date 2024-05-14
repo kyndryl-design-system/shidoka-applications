@@ -2,6 +2,10 @@ import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createOptionsArray } from '../../../common/helpers/helpers';
+
+import { DATE_PICKER_TYPES } from '../datePicker/defs';
+const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
 
 export default {
   title: 'Components/Date Range Picker',
@@ -32,6 +36,13 @@ export default {
     endDate: {
       control: { type: 'text' },
     },
+    datePickerType: {
+      options: createSelectOptions(DATE_PICKER_TYPES),
+      control: { type: 'select', labels: { null: DATE_PICKER_TYPES.SINGLE } },
+      table: {
+        defaultValue: { summary: DATE_PICKER_TYPES.SINGLE },
+      },
+    },
   },
 };
 
@@ -44,6 +55,7 @@ const args = {
   caption: '',
   required: false,
   disabled: false,
+  datePickerType: 'single',
   invalidText: '',
   warnText: '',
   minDate: undefined,
@@ -58,6 +70,34 @@ export const DateRangePicker = {
       <kyn-date-range-picker
         size=${args.size}
         name=${args.name}
+        datePickerType=${args.datePickerType}
+        caption=${args.caption}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        warnText=${args.warnText}
+        startDate=${args.startDate}
+        endDate=${args.endDate}
+        minDate=${ifDefined(args.minDate)}
+        maxDate=${ifDefined(args.maxDate)}
+        step=${ifDefined(args.step)}
+        @on-input=${(e) => action(e.type)(e)}
+        @keydown=${(e) => e.stopPropagation()}
+      >
+        ${args.unnamed}
+      </kyn-date-range-picker>
+    `;
+  },
+};
+
+export const DateTimeRangePicker = {
+  args: { ...args, datePickerType: 'date-time' },
+  render: (args) => {
+    return html`
+      <kyn-date-range-picker
+        size=${args.size}
+        name=${args.name}
+        datePickerType=${args.datePickerType}
         caption=${args.caption}
         ?required=${args.required}
         ?disabled=${args.disabled}

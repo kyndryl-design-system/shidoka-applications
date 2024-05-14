@@ -1,3 +1,100 @@
+## [1.22.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.22.0...v1.22.1) (2024-05-13)
+
+
+### Bug Fixes
+
+* **header-link:** add search icon, remain open with active search text, clear search on close ([adddb12](https://github.com/kyndryl-design-system/shidoka-applications/commit/adddb123298cb040369fe63d2ff17bb2980360d2))
+* **widget:** title font ([3806d9a](https://github.com/kyndryl-design-system/shidoka-applications/commit/3806d9a7449f604e8777466d94da7407e247670b))
+
+# [1.22.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.21.0...v1.22.0) (2024-05-08)
+
+
+### Features
+
+* **daterange-picker:** Added date time with date range picker ([#172](https://github.com/kyndryl-design-system/shidoka-applications/issues/172)) ([976746b](https://github.com/kyndryl-design-system/shidoka-applications/commit/976746b5d3078d11fc402a5591149b476bca6113))
+
+# [1.21.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.5...v1.21.0) (2024-05-07)
+
+
+### Features
+
+* **dropdown:** add dropdown-category subcomponent ([#173](https://github.com/kyndryl-design-system/shidoka-applications/issues/173)) ([3ff4174](https://github.com/kyndryl-design-system/shidoka-applications/commit/3ff417457d9ba10b878e0943549726eb96950c8a))
+
+## [1.20.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.4...v1.20.5) (2024-05-06)
+
+
+### Bug Fixes
+
+* **story:** global filter applied to table story ([#171](https://github.com/kyndryl-design-system/shidoka-applications/issues/171)) ([ceb3957](https://github.com/kyndryl-design-system/shidoka-applications/commit/ceb39572fcb4d05bdbede507cb2fed4cdbb5388f))
+
+## [1.20.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.3...v1.20.4) (2024-05-04)
+
+
+### Bug Fixes
+
+* **local-nav:** slotted svg size correction ([54e6c43](https://github.com/kyndryl-design-system/shidoka-applications/commit/54e6c437570b642ae984a5e42caea0255b4b0e49))
+
+## [1.20.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.2...v1.20.3) (2024-05-04)
+
+
+### Bug Fixes
+
+* flyout interactions ([#169](https://github.com/kyndryl-design-system/shidoka-applications/issues/169)) ([4fe2d55](https://github.com/kyndryl-design-system/shidoka-applications/commit/4fe2d5571f2b32769bac0fe5ba3c3c8079c1f282))
+
+## [1.20.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.1...v1.20.2) (2024-05-02)
+
+
+### Bug Fixes
+
+* **local-nav:** hide overlay when pinned ([50e17ad](https://github.com/kyndryl-design-system/shidoka-applications/commit/50e17ad25c2d119f35a60e130270c7ce89349e6f))
+
+## [1.20.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.20.0...v1.20.1) (2024-05-02)
+
+
+### Bug Fixes
+
+* **dropdown:** add on-clear-all event ([1cf59fe](https://github.com/kyndryl-design-system/shidoka-applications/commit/1cf59fe2da130e6d90b6d63a1b04df2f2dbea9c6))
+
+# [1.20.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.19.1...v1.20.0) (2024-05-02)
+
+
+### Bug Fixes
+
+* flyout interactions ([#168](https://github.com/kyndryl-design-system/shidoka-applications/issues/168)) ([6442499](https://github.com/kyndryl-design-system/shidoka-applications/commit/6442499869151172922c185e5ef08554298d7a35))
+
+
+### Features
+
+* **toast-inline:** Toast and Inline variants of notification ([#162](https://github.com/kyndryl-design-system/shidoka-applications/issues/162)) ([40259f6](https://github.com/kyndryl-design-system/shidoka-applications/commit/40259f66f3d42bb143f7254dba422742371f5770))
+
+## [1.19.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.19.0...v1.19.1) (2024-05-02)
+
+
+### Bug Fixes
+
+* **tag:** prevent on-close bubbling ([9529504](https://github.com/kyndryl-design-system/shidoka-applications/commit/952950496280ba99051239313ad46af34310e71f))
+
+# [1.19.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.18.4...v1.19.0) (2024-05-02)
+
+
+### Features
+
+* **table:** added column settings feature ([#164](https://github.com/kyndryl-design-system/shidoka-applications/issues/164)) ([79b24ad](https://github.com/kyndryl-design-system/shidoka-applications/commit/79b24adcf78afa11d9dfe6f502e11313ada89f0d))
+
+## [1.18.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.18.3...v1.18.4) (2024-04-30)
+
+
+### Bug Fixes
+
+* **side-drawer:** prevent nested focusable ([c5693ad](https://github.com/kyndryl-design-system/shidoka-applications/commit/c5693ad559dd55cbf791cd58477235f2f52f34c5))
+
+## [1.18.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.18.2...v1.18.3) (2024-04-29)
+
+
+### Bug Fixes
+
+* **local-nav:** remove console.log ([4c75984](https://github.com/kyndryl-design-system/shidoka-applications/commit/4c75984ed89e2d2d22127677c87cb7f6d404af54))
+
 ## [1.18.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.18.1...v1.18.2) (2024-04-26)
 
 

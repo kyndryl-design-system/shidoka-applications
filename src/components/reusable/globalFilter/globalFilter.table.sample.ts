@@ -253,7 +253,7 @@ export class SampleFilterTableComponent extends LitElement {
             this.characters,
             (row: any) => row.name,
             (row: any) => html`
-              <kyn-tr .rowId=${row.name}>
+              <kyn-tr .rowId=${row.name} checkboxSelection>
                 <kyn-td>${row.name}</kyn-td>
                 <kyn-td>${row.age}</kyn-td>
                 <kyn-td>${row.house}</kyn-td>

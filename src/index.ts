@@ -24,7 +24,11 @@ export { TextInput } from './components/reusable/textInput';
 export { TextArea } from './components/reusable/textArea';
 export { ToggleButton } from './components/reusable/toggleButton';
 export { TimePicker } from './components/reusable/timepicker';
-export { Dropdown, DropdownOption } from './components/reusable/dropdown';
+export {
+  Dropdown,
+  DropdownOption,
+  DropdownCategory,
+} from './components/reusable/dropdown';
 export { DatePicker } from './components/reusable/datePicker';
 export { DateRangePicker } from './components/reusable/daterangepicker';
 export { Breadcrumbs, BreadcrumbItem } from './components/reusable/breadcrumbs';
@@ -53,7 +57,10 @@ export { GlobalFilter } from './components/reusable/globalFilter';
 export { SideDrawer } from './components/reusable/sideDrawer';
 export { PageTitle } from './components/reusable/pagetitle';
 export { Card } from './components/reusable/card';
-export { Notification } from './components/reusable/notification';
+export {
+  Notification,
+  NotificationContainer,
+} from './components/reusable/notification';
 export {
   Widget,
   WidgetDragHandle,

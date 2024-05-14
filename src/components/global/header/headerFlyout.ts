@@ -2,7 +2,6 @@ import { LitElement, html } from 'lit';
 import {
   customElement,
   property,
-  state,
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -67,12 +66,6 @@ export class HeaderFlyout extends LitElement {
   @queryAssignedElements()
   slottedElements!: Array<HTMLElement>;
 
-  /** Timeout function to delay modal close.
-   * @internal
-   */
-  @state()
-  timer: any;
-
   override render() {
     const classes = {
       menu: true,
@@ -86,11 +79,7 @@ export class HeaderFlyout extends LitElement {
     };
 
     return html`
-      <div
-        class="${classMap(classes)}"
-        @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
-        @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
-      >
+      <div class="${classMap(classes)}">
         ${this.href !== ''
           ? html`
               <a
@@ -99,7 +88,6 @@ export class HeaderFlyout extends LitElement {
                 title=${this.label || this.assistiveText}
                 aria-label=${this.label || this.assistiveText}
                 @click=${this.handleClick}
-                @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
               >
                 <slot name="button"></slot>
 
@@ -124,7 +112,6 @@ export class HeaderFlyout extends LitElement {
                 title=${this.label || this.assistiveText}
                 aria-label=${this.label || this.assistiveText}
                 @click=${this.handleClick}
-                @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
               >
                 <slot name="button"></slot>
 
@@ -160,28 +147,12 @@ export class HeaderFlyout extends LitElement {
           <slot></slot>
         </div>
       </div>
-      <div class="overlay"></div>
+      <div class="overlay" @click=${this._handleOverlayClick}></div>
     `;
   }
 
   private _handleBack() {
     this.open = false;
-  }
-
-  private handlePointerEnter(e: PointerEvent) {
-    if (e.pointerType === 'mouse') {
-      clearTimeout(this.timer);
-      this.open = true;
-    }
-  }
-
-  private handlePointerLeave(e: PointerEvent) {
-    if (e.pointerType === 'mouse' && e.relatedTarget !== null) {
-      this.timer = setTimeout(() => {
-        this.open = false;
-        clearTimeout(this.timer);
-      }, 100);
-    }
   }
 
   private handleClick() {
@@ -192,6 +163,10 @@ export class HeaderFlyout extends LitElement {
     if (!e.composedPath().includes(this)) {
       this.open = false;
     }
+  }
+
+  private _handleOverlayClick() {
+    this.open = false;
   }
 
   override connectedCallback() {

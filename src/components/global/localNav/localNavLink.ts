@@ -68,11 +68,16 @@ export class LocalNavLink extends LitElement {
   @queryAssignedElements({ slot: 'links', selector: 'kyn-local-nav-link' })
   navLinks!: Array<any>;
 
-  /** Timeout function to delay modal close.
+  /** Timeout function to delay flyout open.
+   * @internal
+   */
+  _enterTimer: any;
+
+  /** Timeout function to delay flyout close.
    * @internal
    */
   @state()
-  timer: any;
+  _leaveTimer: any;
 
   /** Menu positioning
    * @internal
@@ -212,8 +217,11 @@ export class LocalNavLink extends LitElement {
 
   private handlePointerEnter(e: PointerEvent) {
     if (e.pointerType === 'mouse' && this.navLinks.length) {
-      clearTimeout(this.timer);
-      this._expanded = true;
+      clearTimeout(this._leaveTimer);
+
+      this._enterTimer = setTimeout(() => {
+        this._expanded = true;
+      }, 150);
     }
   }
 
@@ -223,10 +231,11 @@ export class LocalNavLink extends LitElement {
       document.activeElement !== this &&
       this.navLinks.length
     ) {
-      this.timer = setTimeout(() => {
+      clearTimeout(this._enterTimer);
+
+      this._leaveTimer = setTimeout(() => {
         this._expanded = false;
-        clearTimeout(this.timer);
-      }, 100);
+      }, 150);
     }
   }
 
