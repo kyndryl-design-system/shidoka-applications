@@ -49,12 +49,12 @@ export default {
   xl: [
     {
       id: 'w1',
-      ...WidgetSizes.pill.xl,
+      ...WidgetSizes.standard.xl,
       ...WidgetConstraints.default.xl,
     },
     {
       id: 'w2',
-      ...WidgetSizes.pill.xl,
+      ...WidgetSizes.standard.xl,
       ...WidgetConstraints.default.xl,
     },
     {
@@ -64,12 +64,12 @@ export default {
     },
     {
       id: 'w4',
-      ...WidgetSizes.standard.xl,
+      ...WidgetSizes.wideShort.xl,
       ...WidgetConstraints.default.xl,
     },
     {
       id: 'w5',
-      ...WidgetSizes.standardShort.xl,
+      ...WidgetSizes.wideShort.xl,
       ...WidgetConstraints.default.xl,
     },
     {
@@ -91,12 +91,12 @@ export default {
   lg: [
     {
       id: 'w1',
-      ...WidgetSizes.pill.lg,
+      ...WidgetSizes.standard.lg,
       ...WidgetConstraints.default.lg,
     },
     {
       id: 'w2',
-      ...WidgetSizes.pill.lg,
+      ...WidgetSizes.standard.lg,
       ...WidgetConstraints.default.lg,
     },
     {
@@ -106,12 +106,12 @@ export default {
     },
     {
       id: 'w4',
-      ...WidgetSizes.standard.lg,
+      ...WidgetSizes.wideShort.lg,
       ...WidgetConstraints.default.lg,
     },
     {
       id: 'w5',
-      ...WidgetSizes.standardShort.lg,
+      ...WidgetSizes.wideShort.lg,
       ...WidgetConstraints.default.lg,
     },
     {

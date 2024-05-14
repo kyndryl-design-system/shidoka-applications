@@ -86,11 +86,12 @@ export class WidgetGridstack extends LitElement {
     const NewLayout = this.grid.save(false);
 
     // update grid layout for current breakpoint
-    // manually update each widget's layout properties because GridStack drops "w" or "h" if they match their respective min values and freezes
     NewLayout.forEach((NewWidget: any) => {
       const LayoutWidget = this.layout[this._breakpoint].find(
         (Widget: any) => Widget.id === NewWidget.id
       );
+
+      // manually update each widget's layout properties because GridStack drops "w" or "h" if they match their respective min values and freezes the browser
       LayoutWidget.x = NewWidget.x;
       LayoutWidget.y = NewWidget.y;
       LayoutWidget.w = NewWidget.w || NewWidget.minW;
