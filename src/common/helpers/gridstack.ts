@@ -327,24 +327,24 @@ export const WidgetConstraints = {
   },
   chart: {
     max: {
-      minW: WidgetSizes.standard.max.w,
-      minH: WidgetSizes.standard.max.h,
+      minW: WidgetSizes.wide.max.w,
+      minH: WidgetSizes.wide.max.h,
     },
     xl: {
-      minW: WidgetSizes.standard.xl.w,
-      minH: WidgetSizes.standard.xl.h,
+      minW: WidgetSizes.wide.xl.w,
+      minH: WidgetSizes.wide.xl.h,
     },
     lg: {
-      minW: WidgetSizes.standard.lg.w,
-      minH: WidgetSizes.standard.lg.h,
+      minW: WidgetSizes.wide.lg.w,
+      minH: WidgetSizes.wide.lg.h,
     },
     md: {
-      minW: WidgetSizes.standard.md.w,
-      minH: WidgetSizes.standard.md.h,
+      minW: WidgetSizes.wide.md.w,
+      minH: WidgetSizes.wide.md.h,
     },
     sm: {
-      minW: WidgetSizes.standard.sm.w,
-      minH: WidgetSizes.standard.sm.h,
+      minW: WidgetSizes.wide.sm.w,
+      minH: WidgetSizes.wide.sm.h,
     },
   },
   list: {
