@@ -83,21 +83,19 @@ export class WidgetGridstack extends LitElement {
 
   private _saveLayout() {
     // get new grid layout
-    const NewLayout = this.grid.save(false);
+    let NewLayout = this.grid.save(false);
 
-    // update grid layout for current breakpoint
-    NewLayout.forEach((NewWidget: any) => {
-      const Layout = this.layout[this._breakpoint] || this.layout['max'];
-      const LayoutWidget = Layout.find(
-        (Widget: any) => Widget.id === NewWidget.id
-      );
-
-      // manually update each widget's layout properties because GridStack drops "w" or "h" if they match their respective min values and freezes the browser
-      LayoutWidget.x = NewWidget.x;
-      LayoutWidget.y = NewWidget.y;
-      LayoutWidget.w = NewWidget.w || NewWidget.minW;
-      LayoutWidget.h = NewWidget.h || NewWidget.minH;
+    // manually update each widget's properties because GridStack drops "w" or "h" if they match their respective min values and freezes the browser
+    NewLayout = NewLayout.map((Widget: any) => {
+      return {
+        ...Widget,
+        w: Widget.w || Widget.minW,
+        h: Widget.h || Widget.minH,
+      };
     });
+
+    // update layout for current breakpoint
+    this.layout[this._breakpoint] = NewLayout;
 
     // emit save event with new layout in detail
     const event = new CustomEvent('on-grid-save', {
