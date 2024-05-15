@@ -87,7 +87,8 @@ export class WidgetGridstack extends LitElement {
 
     // update grid layout for current breakpoint
     NewLayout.forEach((NewWidget: any) => {
-      const LayoutWidget = this.layout[this._breakpoint].find(
+      const Layout = this.layout[this._breakpoint] || this.layout['max'];
+      const LayoutWidget = Layout.find(
         (Widget: any) => Widget.id === NewWidget.id
       );
 
@@ -107,7 +108,7 @@ export class WidgetGridstack extends LitElement {
 
   private _updateLayout() {
     // get layout for current breakpoint
-    const Layout = this.layout[this._breakpoint];
+    const Layout = this.layout[this._breakpoint] || this.layout['max'];
     console.log(Layout);
 
     if (this.grid) {
