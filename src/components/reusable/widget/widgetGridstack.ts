@@ -109,7 +109,6 @@ export class WidgetGridstack extends LitElement {
   private _updateLayout() {
     // get layout for current breakpoint
     const Layout = this.layout[this._breakpoint] || this.layout['max'];
-    console.log(Layout);
 
     if (this.grid) {
       // load grid layout
