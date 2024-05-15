@@ -1,0 +1,76 @@
+import {
+  Meta,
+  Story,
+  Canvas,
+  Controls,
+  Stories,
+  Description,
+  Title,
+} from '@storybook/blocks';
+import * as GridstackStories from './gridstack.stories.js';
+import { UsageExample } from '../../../../.storybook/usageBlock.jsx';
+
+<Meta of={GridstackStories} name="Docs" />
+
+<Title />
+
+<Description />
+
+<UsageExample />
+
+### Styles
+
+#### SCSS
+
+```css
+@use '@kyndryl-design-system/shidoka-applications/common/scss/utility/gridstack-shidoka.scss';
+```
+
+#### CSS
+
+```css
+@use '@kyndryl-design-system/shidoka-applications/common/css/gridstack-shidoka.css';
+```
+
+## Widget Sizes
+
+[Widget Size and Constraint definitions are provided as JSON objects](https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/common/helpers/gridstack.ts), which can be imported and included in Layout deifinitions. These sizes & constraints are provided as a baseline, and you can provide your own sizes and contraints as needed.
+
+**Note:** Widget sizes and constraints (min/max sizes) must be provided for each breakpoint.
+
+### Example
+
+```js
+import {
+  WidgetSizes,
+  WidgetConstraints,
+} from '@kyndryl-design-system/shidoka-applications/common/helpers/gridstack';
+
+const Layout = {
+  max: [
+    {
+      id: 'widget1',
+      ...WidgetSizes.standard.max,
+      ...WidgetConstraints.default.max,
+    },
+    {
+      id: 'widget2',
+      ...WidgetSizes.wide.max,
+      ...WidgetConstraints.chart.max,
+    },
+  ],
+  // provide widget sizes for every breakpoint
+};
+```
+
+## Sample Gridstack
+
+[Full sample Layout definition here](https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/widget/sample-layout.ts).
+
+<Canvas>
+  <Story of={GridstackStories.Gridstack} />
+</Canvas>
+
+### Properties & Controls
+
+<Controls of={GridstackStories.Gridstack} />

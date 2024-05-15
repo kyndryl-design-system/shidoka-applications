@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import './index';
-import './gridstack.sample.ts';
 import { action } from '@storybook/addon-actions';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
@@ -306,38 +305,6 @@ export const StaticGrid = {
           </kyn-widget>
         </div>
       </div>
-    `;
-  },
-};
-
-export const Gridstack = {
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
-  render: () => {
-    return html`
-      This example uses
-      <a href="https://gridstackjs.com/" target="_blank" rel="noopener"
-        >Gridstack</a
-      >
-      for a customizable dashboard layout.
-      <a
-        href="https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/widget/gridstack.sample.ts"
-        target="_blank"
-        rel="noopener"
-        >Full code sample here</a
-      >
-      and
-      <a
-        href="https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/widget/gridstack.sample.scss"
-        target="_blank"
-        rel="noopener"
-        >style overrides here</a
-      >. <br /><br />
-
-      <kyn-gridstack-sample></kyn-gridstack-sample>
     `;
   },
 };

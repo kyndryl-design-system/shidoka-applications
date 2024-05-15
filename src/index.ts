@@ -61,4 +61,8 @@ export {
   Notification,
   NotificationContainer,
 } from './components/reusable/notification';
-export { Widget, WidgetDragHandle } from './components/reusable/widget';
+export {
+  Widget,
+  WidgetDragHandle,
+  WidgetGridstack,
+} from './components/reusable/widget';

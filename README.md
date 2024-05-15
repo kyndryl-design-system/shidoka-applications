@@ -16,7 +16,7 @@ Read the [Contributing Guide](CONTRIBUTING.md) here.
 npm install @kyndryl-design-system/shidoka-applications @kyndryl-design-system/shidoka-foundation -S
 ```
 
-## Import the root stylesheet to your app's global styles
+## Import the root stylesheets to your app's global styles
 
 The method used (SCSS @use, CSS @import, JS import, or &lt;style&gt; tag) will vary based on your framework/bundler. Some examples:
 
@@ -24,18 +24,21 @@ The method used (SCSS @use, CSS @import, JS import, or &lt;style&gt; tag) will v
 
 ```css
 @use '~@kyndryl-design-system/shidoka-foundation/scss/root.scss';
+@use '~@kyndryl-design-system/shidoka-applications/common/scss/root.scss';
 ```
 
 ### CSS
 
 ```css
 @import '@kyndryl-design-system/shidoka-foundation/css/root.css';
+@import '@kyndryl-design-system/shidoka-applications/common/css/root.css';
 ```
 
 ### JS
 
 ```js
 import '@kyndryl-design-system/shidoka-foundation/css/root.css';
+import '@kyndryl-design-system/shidoka-applications/common/css/root.css';
 ```
 
 ### Use CSS tokens/variables

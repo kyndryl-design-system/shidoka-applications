@@ -8,7 +8,7 @@ import Styles from './widget.scss';
  * @slot unnamed - Slot for widget content.
  * @slot action - Slot for action buttons.
  * @slot tooltip - Slot for tooltip in header.
- * @slot draghandle- Slot for drag handle.
+ * @slot draghandle - Slot for drag handle.
  */
 @customElement('kyn-widget')
 export class Widget extends LitElement {
@@ -63,7 +63,7 @@ export class Widget extends LitElement {
           </div>
         </div>
 
-        <div class="widget-content" tabindex="0">
+        <div class="widget-content">
           <slot @slotchange=${this._handleSlotChange}></slot>
         </div>
       </div>
