@@ -103,7 +103,7 @@ export class TagGroup extends LitElement {
       tag.tagSize = this.tagSize;
     });
 
-    this._toggleRevealed(false);
+    this._toggleRevealed(this.limitRevealed);
   }
 
   private _toggleRevealed(revealed: boolean) {

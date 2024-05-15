@@ -1,3 +1,10 @@
+## [1.22.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.22.1...v1.22.2) (2024-05-15)
+
+
+### Bug Fixes
+
+* **tag-group:** maintain revealed state on slotchange ([323e515](https://github.com/kyndryl-design-system/shidoka-applications/commit/323e51562fe7d5b6b999ddea28ba402b037e6718))
+
 ## [1.22.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.22.0...v1.22.1) (2024-05-13)
 
 
