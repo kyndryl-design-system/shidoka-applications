@@ -1,3 +1,10 @@
+# [1.23.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.22.2...v1.23.0) (2024-05-15)
+
+
+### Features
+
+* **widget-gridstack:** add gridstack wrapper component ([#166](https://github.com/kyndryl-design-system/shidoka-applications/issues/166)) ([b846114](https://github.com/kyndryl-design-system/shidoka-applications/commit/b84611424f9b88d3e69dfbcaa6759f346f4a088d))
+
 ## [1.22.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.22.1...v1.22.2) (2024-05-15)
 
 
