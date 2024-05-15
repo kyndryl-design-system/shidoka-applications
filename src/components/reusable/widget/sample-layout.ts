@@ -46,90 +46,90 @@ export default {
       ...WidgetConstraints.default.max,
     },
   ],
-  // xl: [
-  //   {
-  //     id: 'w1',
-  //     ...WidgetSizes.standard.xl,
-  //     ...WidgetConstraints.default.xl,
-  //   },
-  //   {
-  //     id: 'w2',
-  //     ...WidgetSizes.standard.xl,
-  //     ...WidgetConstraints.default.xl,
-  //   },
-  //   {
-  //     id: 'w3',
-  //     ...WidgetSizes.standard.xl,
-  //     ...WidgetConstraints.default.xl,
-  //   },
-  //   {
-  //     id: 'w4',
-  //     ...WidgetSizes.wideShort.xl,
-  //     ...WidgetConstraints.default.xl,
-  //   },
-  //   {
-  //     id: 'w5',
-  //     ...WidgetSizes.wideShort.xl,
-  //     ...WidgetConstraints.default.xl,
-  //   },
-  //   {
-  //     id: 'w6',
-  //     ...WidgetSizes.wide.xl,
-  //     ...WidgetConstraints.chart.xl,
-  //   },
-  //   {
-  //     id: 'w7',
-  //     ...WidgetSizes.wide.xl,
-  //     ...WidgetConstraints.chart.xl,
-  //   },
-  //   {
-  //     id: 'w8',
-  //     ...WidgetSizes.tower.xl,
-  //     ...WidgetConstraints.default.xl,
-  //   },
-  // ],
-  // lg: [
-  //   {
-  //     id: 'w1',
-  //     ...WidgetSizes.standard.lg,
-  //     ...WidgetConstraints.default.lg,
-  //   },
-  //   {
-  //     id: 'w2',
-  //     ...WidgetSizes.standard.lg,
-  //     ...WidgetConstraints.default.lg,
-  //   },
-  //   {
-  //     id: 'w3',
-  //     ...WidgetSizes.standard.lg,
-  //     ...WidgetConstraints.default.lg,
-  //   },
-  //   {
-  //     id: 'w4',
-  //     ...WidgetSizes.wideShort.lg,
-  //     ...WidgetConstraints.default.lg,
-  //   },
-  //   {
-  //     id: 'w5',
-  //     ...WidgetSizes.wideShort.lg,
-  //     ...WidgetConstraints.default.lg,
-  //   },
-  //   {
-  //     id: 'w6',
-  //     ...WidgetSizes.wide.lg,
-  //     ...WidgetConstraints.chart.lg,
-  //   },
-  //   {
-  //     id: 'w7',
-  //     ...WidgetSizes.wide.lg,
-  //     ...WidgetConstraints.chart.lg,
-  //   },
-  //   {
-  //     id: 'w8',
-  //     ...WidgetSizes.tower.lg,
-  //     ...WidgetConstraints.default.lg,
-  //   },
-  // ],
+  xl: [
+    {
+      id: 'w1',
+      ...WidgetSizes.standard.xl,
+      ...WidgetConstraints.default.xl,
+    },
+    {
+      id: 'w2',
+      ...WidgetSizes.standard.xl,
+      ...WidgetConstraints.default.xl,
+    },
+    {
+      id: 'w3',
+      ...WidgetSizes.standard.xl,
+      ...WidgetConstraints.default.xl,
+    },
+    {
+      id: 'w4',
+      ...WidgetSizes.wideShort.xl,
+      ...WidgetConstraints.default.xl,
+    },
+    {
+      id: 'w5',
+      ...WidgetSizes.wideShort.xl,
+      ...WidgetConstraints.default.xl,
+    },
+    {
+      id: 'w6',
+      ...WidgetSizes.wide.xl,
+      ...WidgetConstraints.chart.xl,
+    },
+    {
+      id: 'w7',
+      ...WidgetSizes.wide.xl,
+      ...WidgetConstraints.chart.xl,
+    },
+    {
+      id: 'w8',
+      ...WidgetSizes.tower.xl,
+      ...WidgetConstraints.default.xl,
+    },
+  ],
+  lg: [
+    {
+      id: 'w1',
+      ...WidgetSizes.standard.lg,
+      ...WidgetConstraints.default.lg,
+    },
+    {
+      id: 'w2',
+      ...WidgetSizes.standard.lg,
+      ...WidgetConstraints.default.lg,
+    },
+    {
+      id: 'w3',
+      ...WidgetSizes.standard.lg,
+      ...WidgetConstraints.default.lg,
+    },
+    {
+      id: 'w4',
+      ...WidgetSizes.wideShort.lg,
+      ...WidgetConstraints.default.lg,
+    },
+    {
+      id: 'w5',
+      ...WidgetSizes.wideShort.lg,
+      ...WidgetConstraints.default.lg,
+    },
+    {
+      id: 'w6',
+      ...WidgetSizes.wide.lg,
+      ...WidgetConstraints.chart.lg,
+    },
+    {
+      id: 'w7',
+      ...WidgetSizes.wide.lg,
+      ...WidgetConstraints.chart.lg,
+    },
+    {
+      id: 'w8',
+      ...WidgetSizes.tower.lg,
+      ...WidgetConstraints.default.lg,
+    },
+  ],
   md: [
     {
       id: 'w1',
