@@ -19,7 +19,7 @@ export class WidgetGridstack extends LitElement {
   @property({ type: Object })
   layout: any = {};
 
-  /** GridStack donfig. */
+  /** GridStack config. */
   @property({ type: Object })
   gridstackConfig: any = GridstackConfig;
 
