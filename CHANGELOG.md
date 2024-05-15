@@ -1,3 +1,10 @@
+## [1.23.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.0...v1.23.1) (2024-05-15)
+
+
+### Bug Fixes
+
+* debounce listener removal ([6136cde](https://github.com/kyndryl-design-system/shidoka-applications/commit/6136cde1460bb2328be54e70c1b2bb19ffacbf83))
+
 # [1.23.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.22.2...v1.23.0) (2024-05-15)
 
 
