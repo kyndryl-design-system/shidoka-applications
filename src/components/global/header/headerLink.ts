@@ -246,7 +246,7 @@ export class HeaderLink extends LitElement {
   }
 
   private determineLevel() {
-    const ParentNode: any = this.shadowRoot?.host.parentNode;
+    const ParentNode: any = this.parentNode;
 
     if (
       ParentNode.nodeName === 'KYN-HEADER-LINK' ||
@@ -288,6 +288,11 @@ export class HeaderLink extends LitElement {
     };
   }
 
+  /** @internal */
+  private _debounceResize = debounce(() => {
+    this.determineLevel();
+  });
+
   override firstUpdated() {
     this.determineLevel();
   }
@@ -303,23 +308,13 @@ export class HeaderLink extends LitElement {
 
     document.addEventListener('click', (e) => this.handleClickOut(e));
 
-    window?.addEventListener(
-      'resize',
-      debounce(() => {
-        this.determineLevel();
-      })
-    );
+    window?.addEventListener('resize', this._debounceResize);
   }
 
   override disconnectedCallback() {
     document.removeEventListener('click', (e) => this.handleClickOut(e));
 
-    window?.removeEventListener(
-      'resize',
-      debounce(() => {
-        this.determineLevel();
-      })
-    );
+    window?.removeEventListener('resize', this._debounceResize);
 
     super.disconnectedCallback();
   }

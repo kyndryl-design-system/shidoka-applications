@@ -120,24 +120,19 @@ export class WidgetGridstack extends LitElement {
     }
   }
 
+  /** @internal */
+  private _debounceResize = debounce(() => {
+    this._setBreakpoint();
+  });
+
   override connectedCallback() {
     super.connectedCallback();
 
-    window?.addEventListener(
-      'resize',
-      debounce(() => {
-        this._setBreakpoint();
-      })
-    );
+    window?.addEventListener('resize', this._debounceResize);
   }
 
   override disconnectedCallback() {
-    window?.removeEventListener(
-      'resize',
-      debounce(() => {
-        this._setBreakpoint();
-      })
-    );
+    window?.removeEventListener('resize', this._debounceResize);
 
     super.disconnectedCallback();
   }
