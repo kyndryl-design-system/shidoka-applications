@@ -112,55 +112,57 @@ export class SideDrawer extends LitElement {
         aria-labelledby="dialogLabel"
         @cancel=${(e: Event) => this._closeDrawer(e, 'cancel')}
       >
-        <!--  Header -->
-        <header>
-          <div class="header-label-title">
-            ${this.labelText !== ''
-              ? html`<span class="label">${this.labelText}</span>`
-              : null}
-            <h1 id="dialogLabel">${this.titleText}</h1>
+        <form method="dialog">
+          <!--  Header -->
+          <header>
+            <div class="header-label-title">
+              ${this.labelText !== ''
+                ? html`<span class="label">${this.labelText}</span>`
+                : null}
+              <h1 id="dialogLabel">${this.titleText}</h1>
+            </div>
+
+            <div class="close-wrapper">
+              <button
+                class="close"
+                @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
+              >
+                <kd-icon .icon=${closeIcon}></kd-icon>
+              </button>
+            </div>
+          </header>
+
+          <!-- Body -->
+          <div class="body">
+            <slot></slot>
           </div>
 
-          <div class="close-wrapper">
-            <button
-              class="close"
-              @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
-            >
-              <kd-icon .icon=${closeIcon}></kd-icon>
-            </button>
-          </div>
-        </header>
+          <!-- footer -->
+          ${!this.hideFooter
+            ? html`
+                <div class="dialog-footer">
+                  <div class="actions">
+                    <kd-button
+                      value="Ok"
+                      ?disabled=${this.submitBtnDisabled}
+                      ?destructive=${this.destructive}
+                      @click=${(e: Event) => this._closeDrawer(e, 'ok')}
+                    >
+                      ${this.submitBtnText}
+                    </kd-button>
 
-        <!-- Body -->
-        <div class="body">
-          <slot></slot>
-        </div>
-
-        <!-- footer -->
-        ${!this.hideFooter
-          ? html`
-              <div class="dialog-footer">
-                <div class="actions">
-                  <kd-button
-                    value="Ok"
-                    ?disabled=${this.submitBtnDisabled}
-                    ?destructive=${this.destructive}
-                    @click=${(e: Event) => this._closeDrawer(e, 'ok')}
-                  >
-                    ${this.submitBtnText}
-                  </kd-button>
-
-                  <kd-button
-                    value="Cancel"
-                    kind="secondary"
-                    @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
-                  >
-                    ${this.cancelBtnText}
-                  </kd-button>
+                    <kd-button
+                      value="Cancel"
+                      kind="secondary"
+                      @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
+                    >
+                      ${this.cancelBtnText}
+                    </kd-button>
+                  </div>
                 </div>
-              </div>
-            `
-          : null}
+              `
+            : null}
+        </form>
       </dialog>
     `;
   }
