@@ -22,6 +22,7 @@ export const ToggleButton = {
     small: false,
     disabled: false,
     reverse: false,
+    hideLabel: false,
     checkedText: 'On',
     uncheckedText: 'Off',
   },
@@ -34,6 +35,7 @@ export const ToggleButton = {
         ?small=${args.small}
         ?disabled=${args.disabled}
         ?reverse=${args.reverse}
+        ?hideLabel=${args.hideLabel}
         checkedText=${args.checkedText}
         uncheckedText=${args.uncheckedText}
         @on-change=${(e) => action(e.type)(e)}

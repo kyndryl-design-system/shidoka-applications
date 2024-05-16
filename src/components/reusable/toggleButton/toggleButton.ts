@@ -62,10 +62,17 @@ export class ToggleButton extends LitElement {
   @property({ type: Boolean })
   reverse = false;
 
+  /** Hides the label visually. */
+  @property({ type: Boolean })
+  hideLabel = false;
+
   override render() {
     return html`
       <div class="toggle-button" ?disabled=${this.disabled}>
-        <label class="label-text" for=${this.name}>
+        <label
+          class="label-text  ${this.hideLabel ? 'sr-only' : ''}"
+          for=${this.name}
+        >
           <slot></slot>
         </label>
 
