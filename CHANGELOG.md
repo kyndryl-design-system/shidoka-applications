@@ -1,3 +1,13 @@
+## [1.23.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.2...v1.23.3) (2024-05-16)
+
+
+### Bug Fixes
+
+* **modal:** move scroll to body ([19b4702](https://github.com/kyndryl-design-system/shidoka-applications/commit/19b47029286a3c145f64280df0c085e80ce34fbf))
+* **side-drawer:** add secondary button ([f15575c](https://github.com/kyndryl-design-system/shidoka-applications/commit/f15575c65d688cf52b4c996d02afdac4a8ed1a31))
+* **side-drawer:** move scroll to body ([302ee9a](https://github.com/kyndryl-design-system/shidoka-applications/commit/302ee9a084551d07dfe077cf4aa92c73fb76e08a))
+* **toggle-button:** add hideLabel prop ([8d9778f](https://github.com/kyndryl-design-system/shidoka-applications/commit/8d9778fe26455de481c488708d728acde565db7e))
+
 ## [1.23.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.1...v1.23.2) (2024-05-15)
 
 
