@@ -112,28 +112,30 @@ export class Modal extends LitElement {
         aria-labelledby="dialogLabel"
         @cancel=${(e: Event) => this._closeModal(e, 'cancel')}
       >
-        <button
-          class="close"
-          @click=${(e: Event) => this._closeModal(e, 'cancel')}
-        >
-          <kd-icon .icon=${closeIcon}></kd-icon>
-        </button>
+        <form method="dialog">
+          <button
+            class="close"
+            @click=${(e: Event) => this._closeModal(e, 'cancel')}
+          >
+            <kd-icon .icon=${closeIcon}></kd-icon>
+          </button>
 
-        <header>
-          <div>
-            ${this.labelText !== ''
-              ? html`<span class="label">${this.labelText}</span>`
-              : null}
-            <h1 id="dialogLabel">${this.titleText}</h1>
+          <header>
+            <div>
+              ${this.labelText !== ''
+                ? html`<span class="label">${this.labelText}</span>`
+                : null}
+              <h1 id="dialogLabel">${this.titleText}</h1>
+            </div>
+          </header>
+
+          <div class="body">
+            <slot></slot>
           </div>
-        </header>
-
-        <form method="dialog" class="body">
-          <slot></slot>
 
           ${!this.hideFooter
             ? html`
-                <div class="actions">
+                <div class="footer">
                   <kd-button
                     class="action-button"
                     value="ok"

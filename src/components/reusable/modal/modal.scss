@@ -8,7 +8,6 @@
 
 dialog {
   @include elevation.shadow(3);
-
   padding: 32px;
   color: inherit;
   background: var(--kd-color-background-ui-default);
@@ -19,6 +18,7 @@ dialog {
   max-height: calc(100% - 32px);
 
   &[open] {
+    display: flex;
     animation: dialog-in 400ms ease-out;
   }
 
@@ -33,6 +33,12 @@ dialog {
   &.size--lg {
     width: 711px;
   }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 @supports (transition-behavior: allow-discrete) {
@@ -129,7 +135,7 @@ h1 {
   order: 1;
 }
 
-.actions {
+.footer {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -153,4 +159,10 @@ h1 {
 
 .action-button:nth-child(3) {
   margin-left: auto;
+}
+
+.body {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 24px;
 }
