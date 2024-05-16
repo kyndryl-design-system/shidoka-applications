@@ -31,6 +31,9 @@ const args = {
   submitBtnDisabled: false,
   hideFooter: false,
   destructive: false,
+  showSecondaryButton: true,
+  secondaryButtonText: 'Secondary',
+  hideCancelButton: false,
 };
 
 export const SideDrawer = {
@@ -47,6 +50,9 @@ export const SideDrawer = {
         ?submitBtnDisabled=${args.submitBtnDisabled}
         ?hideFooter=${args.hideFooter}
         ?destructive=${args.destructive}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        secondaryButtonText=${args.secondaryButtonText}
+        ?hideCancelButton=${args.hideCancelButton}
         @on-close=${(e) => action(e.type)(e)}
       >
         <span slot="anchor">Open Drawer</span>

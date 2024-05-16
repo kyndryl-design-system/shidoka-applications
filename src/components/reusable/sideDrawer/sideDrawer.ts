@@ -83,6 +83,18 @@ export class SideDrawer extends LitElement {
   @property({ type: Boolean })
   destructive = false;
 
+  /** Secondary button text. */
+  @property({ type: String })
+  secondaryButtonText = 'Secondary';
+
+  /** Hides the secondary button. */
+  @property({ type: Boolean })
+  showSecondaryButton = false;
+
+  /** Hides the cancel button. */
+  @property({ type: Boolean })
+  hideCancelButton = false;
+
   /** Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`. */
   @property({ attribute: false })
   beforeClose!: Function;
@@ -143,6 +155,7 @@ export class SideDrawer extends LitElement {
                 <div class="dialog-footer">
                   <div class="actions">
                     <kd-button
+                      class="action-button"
                       value="Ok"
                       ?disabled=${this.submitBtnDisabled}
                       ?destructive=${this.destructive}
@@ -151,13 +164,32 @@ export class SideDrawer extends LitElement {
                       ${this.submitBtnText}
                     </kd-button>
 
-                    <kd-button
-                      value="Cancel"
-                      kind="secondary"
-                      @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
-                    >
-                      ${this.cancelBtnText}
-                    </kd-button>
+                    ${this.showSecondaryButton
+                      ? html`
+                          <kd-button
+                            class="action-button"
+                            value="Secondary"
+                            kind="secondary"
+                            @click=${(e: Event) =>
+                              this._closeDrawer(e, 'secondary')}
+                          >
+                            ${this.secondaryButtonText}
+                          </kd-button>
+                        `
+                      : null}
+                    ${this.hideCancelButton
+                      ? null
+                      : html`
+                          <kd-button
+                            class="action-button"
+                            value="Cancel"
+                            kind="tertiary"
+                            @click=${(e: Event) =>
+                              this._closeDrawer(e, 'cancel')}
+                          >
+                            ${this.cancelBtnText}
+                          </kd-button>
+                        `}
                   </div>
                 </div>
               `
