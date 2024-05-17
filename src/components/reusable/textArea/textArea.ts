@@ -173,6 +173,7 @@ ${this.value}</textarea
     }
 
     if (changedProps.has('value')) {
+      this.textareaEl.value = this.value;
       // set form data value
       // this.internals.setFormValue(this.value);
 
