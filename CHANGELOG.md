@@ -1,3 +1,10 @@
+## [1.23.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.3...v1.23.4) (2024-05-17)
+
+
+### Bug Fixes
+
+* **textarea:** make value prop change override typed text ([5c93f62](https://github.com/kyndryl-design-system/shidoka-applications/commit/5c93f627bc2699775d58a0e98a3ab5ab650dda91))
+
 ## [1.23.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.2...v1.23.3) (2024-05-16)
 
 
