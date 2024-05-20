@@ -1,3 +1,10 @@
+## [1.23.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.4...v1.23.5) (2024-05-20)
+
+
+### Bug Fixes
+
+* **dropdown:** disabled tags & clear, resolves [#176](https://github.com/kyndryl-design-system/shidoka-applications/issues/176) ([c1c50f0](https://github.com/kyndryl-design-system/shidoka-applications/commit/c1c50f06519b94c2ac702e42055e5741e1387d48))
+
 ## [1.23.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.3...v1.23.4) (2024-05-17)
 
 
