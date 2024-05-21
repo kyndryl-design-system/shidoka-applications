@@ -1,3 +1,11 @@
+## [1.23.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.5...v1.23.6) (2024-05-21)
+
+
+### Bug Fixes
+
+* **breadcrumbs:** correct type style, add on-click event ([5d45d28](https://github.com/kyndryl-design-system/shidoka-applications/commit/5d45d28c0dbaa69e6e4e3fb088f4b3cbec120a71))
+* **header:** add center slot ([2253d2f](https://github.com/kyndryl-design-system/shidoka-applications/commit/2253d2f3e1ae76f786b09cd3dfe95c45e66b931b))
+
 ## [1.23.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.4...v1.23.5) (2024-05-20)
 
 
