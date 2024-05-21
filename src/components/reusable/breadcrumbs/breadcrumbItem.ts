@@ -11,9 +11,8 @@ import styles from './breadcrumbItem.scss';
 
 /**
  * Breadcrumb Item
- *
+ * @fires on-click - Captures the click event and emits the original event details.
  * @slot unnamed - Slot for the content of the breadcrumb item, usually the label or text.
- *
  */
 @customElement('kyn-breadcrumb-item')
 export class BreadcrumbItem extends LitElement {
@@ -34,10 +33,21 @@ export class BreadcrumbItem extends LitElement {
       <div class="breadcrumb-item">
         <!-- Render as link if href is provided, otherwise render as plain text -->
         ${this.href
-          ? html`<a href="${this.href}"><slot></slot></a>`
+          ? html`<a
+              href="${this.href}"
+              @click=${(e: Event) => this._handleClick(e)}
+              ><slot></slot
+            ></a>`
           : html`<span><slot></slot></span>`}
       </div>
     `;
+  }
+
+  private _handleClick(e) {
+    const event = new CustomEvent('on-click', {
+      detail: { origEvent: e },
+    });
+    this.dispatchEvent(event);
   }
 }
 
