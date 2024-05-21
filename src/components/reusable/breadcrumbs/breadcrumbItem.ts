@@ -33,17 +33,19 @@ export class BreadcrumbItem extends LitElement {
       <div class="breadcrumb-item">
         <!-- Render as link if href is provided, otherwise render as plain text -->
         ${this.href
-          ? html`<a
-              href="${this.href}"
-              @click=${(e: Event) => this._handleClick(e)}
-              ><slot></slot
-            ></a>`
-          : html`<span><slot></slot></span>`}
+          ? html`
+              <a
+                href="${this.href}"
+                @click=${(e: Event) => this._handleClick(e)}
+                ><slot></slot
+              ></a>
+            `
+          : html` <span><slot></slot></span> `}
       </div>
     `;
   }
 
-  private _handleClick(e) {
+  private _handleClick(e: Event) {
     const event = new CustomEvent('on-click', {
       detail: { origEvent: e },
     });
