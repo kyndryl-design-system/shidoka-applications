@@ -24,6 +24,12 @@ class StoryColumSetting extends LitElement {
       --kyn-th-max-width: 100px;
       --kyn-th-width: 100px;
     }
+    .unlockedRow kd-button {
+      opacity: 0;
+    }
+    .unlockedRow:hover kd-button {
+      opacity: 1;
+    }
   `;
 
   @property({ type: Array })
@@ -168,7 +174,7 @@ class StoryColumSetting extends LitElement {
           Hidden Column
         </kyn-checkbox>
         <kyn-checkbox @on-checkbox-change=${this.handleShowVisibleColsChange}>
-          Visiable Column
+          Visible Column
         </kyn-checkbox>
       </kyn-global-filter>
       <kyn-table>
@@ -187,6 +193,7 @@ class StoryColumSetting extends LitElement {
             (row: any) => row.id,
             (row: any) => html`
               <kyn-tr
+                class="${row.locked ? 'lockedRow' : 'unlockedRow'}"
                 @on-row-select=${(e: CustomEvent) =>
                   this.handleRowSelectionChange(e, row.id)}
                 .rowId=${row.id}
@@ -198,7 +205,7 @@ class StoryColumSetting extends LitElement {
                 .dimmed=${!row.visible}
               >
                 <kyn-td>${row.colName}</kyn-td>
-                <kyn-td .align=${'center'} class="min-max-width-100" }
+                <kyn-td .align=${'center'} class="min-max-width-100"
                   ><kd-button
                     @mouseover=${() => this.handleMouseOver(row.id)}
                     @mouseout=${this.handleMouseOut}
