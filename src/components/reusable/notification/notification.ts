@@ -150,7 +150,7 @@ export class Notification extends LitElement {
               ></kd-icon>`
             : null}
 
-          <h1 class="notification-title">${this.notificationTitle}</h1>
+          <div class="notification-title">${this.notificationTitle}</div>
 
           ${this.notificationSubtitle !== '' &&
           (this.type === 'normal' || this.type === 'clickable')
