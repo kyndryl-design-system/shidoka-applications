@@ -1,0 +1,64 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+
+:host {
+  display: inline-block;
+}
+
+.search {
+  display: flex;
+  position: relative;
+}
+
+kd-button {
+  display: none;
+}
+
+.collapsed {
+  kd-button {
+    display: inline-block;
+  }
+
+  kyn-text-input {
+    display: none;
+  }
+}
+
+.suggestions {
+  @include elevation.shadow(3);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  border-radius: 4px;
+  max-height: 280px;
+  overflow-y: auto;
+  transition: transform 150ms ease-out, opacity 150ms ease-out,
+    outline-color 150ms ease-out, visibility 150ms ease-out;
+  visibility: hidden;
+  transform: scaleY(0);
+  transform-origin: top;
+  opacity: 0;
+  z-index: -1;
+
+  .focused.has-value &,
+  &:focus {
+    visibility: visible;
+    transform: scaleY(1);
+    opacity: 1;
+    z-index: 1;
+  }
+
+  .suggestion {
+    padding: 16px;
+    cursor: pointer;
+    transition: background-color 150ms ease-out;
+    background-color: var(--kd-color-background-ui-default);
+
+    &:hover,
+    &[highlighted] {
+      background-color: var(--kd-color-background-inverse-hover);
+    }
+  }
+}

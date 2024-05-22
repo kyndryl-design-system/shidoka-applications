@@ -66,3 +66,4 @@ export {
   WidgetDragHandle,
   WidgetGridstack,
 } from './components/reusable/widget';
+export { Search } from './components/reusable/search';
