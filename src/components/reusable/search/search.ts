@@ -168,7 +168,6 @@ export class Search extends LitElement {
 
         suggestionEls[highlightedIndex].removeAttribute('highlighted');
         suggestionEls[nextIndex].setAttribute('highlighted', true);
-        console.log(suggestionEls[nextIndex].innerText);
 
         // scroll to option
         suggestionEls[nextIndex].scrollIntoView({ block: 'nearest' });
