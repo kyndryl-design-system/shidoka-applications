@@ -1,3 +1,11 @@
+## [1.23.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.6...v1.23.7) (2024-05-22)
+
+
+### Bug Fixes
+
+* **notification:** remove h1 tag ([6b7c9e3](https://github.com/kyndryl-design-system/shidoka-applications/commit/6b7c9e3901f1adbeda9a693944f50c111adb6d19))
+* **page-title:** remove max-widths ([cb1b869](https://github.com/kyndryl-design-system/shidoka-applications/commit/cb1b8690043fd4379a3616993461878eb1d1c3eb))
+
 ## [1.23.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.5...v1.23.6) (2024-05-21)
 
 
