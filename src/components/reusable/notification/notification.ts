@@ -19,6 +19,7 @@ import '../tag';
  * @slot unnamed - Slot for notification message body.
  * @slot actions - Slot for menu.
  * @fires on-notification-click - Emit event for clickable notification.
+ * @fires on-close - Emits when an inline/toast notification closes.
  */
 
 @customElement('kyn-notification')
@@ -171,7 +172,7 @@ export class Notification extends LitElement {
                 size="small"
                 description="close-btn"
                 iconPosition="left"
-                @on-click="${() => this.onCloseToast()}"
+                @on-click="${() => this._handleClose()}"
               >
                 <kd-icon
                   slot="icon"
@@ -215,13 +216,13 @@ export class Notification extends LitElement {
       this.timeout > 0
     ) {
       setTimeout(() => {
-        this.removeToast();
+        this._close();
       }, this.timeout * 1000);
     }
   }
 
   // Remove toast from DOM
-  private removeToast() {
+  private _close() {
     const animation = this.animate([{ opacity: '1' }, { opacity: '0' }], {
       duration: 500,
       easing: 'ease-in-out',
@@ -230,10 +231,14 @@ export class Notification extends LitElement {
     animation.onfinish = () => {
       this.parentNode?.removeChild(this);
     };
+
+    // emit on-close event
+    const event = new CustomEvent('on-close');
+    this.dispatchEvent(event);
   }
 
-  private onCloseToast() {
-    this.removeToast();
+  private _handleClose() {
+    this._close();
   }
 
   private _handleCardClick(e: any) {
