@@ -1,3 +1,10 @@
+## [1.23.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.7...v1.23.8) (2024-05-22)
+
+
+### Bug Fixes
+
+* **notification:** add on-close event ([f92ba77](https://github.com/kyndryl-design-system/shidoka-applications/commit/f92ba7708f9d14d32c31ff5b537928664a584cca))
+
 ## [1.23.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.6...v1.23.7) (2024-05-22)
 
 
