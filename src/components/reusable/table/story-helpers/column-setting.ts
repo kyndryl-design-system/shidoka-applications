@@ -30,6 +30,18 @@ class StoryColumSetting extends LitElement {
     .unlockedRow:hover kd-button {
       opacity: 1;
     }
+    kyn-global-filter {
+      position: fixed;
+      width: calc(100% - 88px);
+      z-index: 3;
+    }
+    .lockedRow {
+      position: sticky;
+      width: calc(100% - 88px);
+      background: white;
+      top: 115px;
+      z-index: 3;
+    }
   `;
 
   @property({ type: Array })
@@ -177,8 +189,8 @@ class StoryColumSetting extends LitElement {
           Visible Column
         </kyn-checkbox>
       </kyn-global-filter>
-      <kyn-table>
-        <kyn-thead>
+      <kyn-table stickyHeader style="margin-top:72px;">
+        <kyn-thead style="top:64px;">
           <kyn-header-tr>
             <kyn-th .align=${'center'} class="min-max-width-th-100">
               VISIBLE
