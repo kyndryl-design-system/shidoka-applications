@@ -23,13 +23,21 @@ export class Search extends LitElement {
   @property({ type: String })
   label = 'Search';
 
-  /** Collapsed state. */
+  /** Expandable style search. */
   @property({ type: Boolean })
-  collapsed = false;
+  expandable = false;
 
   /** Input value. */
   @property({ type: String })
   value = '';
+
+  /** Input & button size. */
+  @property({ type: String })
+  size = 'md';
+
+  /** Disabled state. */
+  @property({ type: Boolean })
+  disabled = false;
 
   /** Auto-suggest array of strings that should match the current value. Update this array externally after on-input. */
   @property({ type: Array })
@@ -41,17 +49,29 @@ export class Search extends LitElement {
   @state()
   _focused = false;
 
+  /** Expanded state.
+   * @internal
+   */
+  @state()
+  _expanded = false;
+
   override render() {
     const classes = {
       search: true,
-      collapsed: this.collapsed,
+      expanded: this._expanded,
+      expandable: this.expandable,
       focused: this._focused,
       'has-value': this.value !== '',
     };
 
     return html`
       <div class="${classMap(classes)}">
-        <kd-button kind="secondary" @on-click=${this._handleButtonClick}>
+        <kd-button
+          kind="secondary"
+          size=${this._buttonSizeMap()}
+          ?disabled=${this.disabled}
+          @on-click=${this._handleButtonClick}
+        >
           <kd-icon slot="icon" .icon=${searchIcon}></kd-icon>
         </kd-button>
 
@@ -61,9 +81,11 @@ export class Search extends LitElement {
           placeholder=${this.label}
           hideLabel
           value=${this.value}
+          size=${this.size}
+          ?disabled=${this.disabled}
           @on-input=${(e: CustomEvent) => this._handleInput(e)}
-          @focus=${() => (this._focused = true)}
-          @blur=${() => (this._focused = false)}
+          @focus=${this._handleFocus}
+          @blur=${this._handleBlur}
           @keydown=${(e: any) => this.handleSearchKeydown(e)}
         >
           ${this.label}
@@ -90,8 +112,33 @@ export class Search extends LitElement {
     `;
   }
 
+  private _buttonSizeMap() {
+    switch (this.size) {
+      case 'sm':
+        return 'small';
+      case 'lg':
+        return 'large';
+      case 'md':
+      default:
+        return 'medium';
+    }
+  }
+
+  private _handleFocus() {
+    this._focused = true;
+  }
+
+  private _handleBlur() {
+    this._focused = false;
+    this._expanded = false;
+  }
+
   private _handleButtonClick() {
-    this.collapsed = false;
+    this._expanded = true;
+
+    setTimeout(() => {
+      this.shadowRoot?.querySelector('kyn-text-input')?.focus();
+    }, 0);
   }
 
   private _handleInput(e: CustomEvent) {
