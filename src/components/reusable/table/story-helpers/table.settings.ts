@@ -43,7 +43,7 @@ class StoryTableSettings extends LitElement {
     kyn-table.first-col-locked kyn-td:first-child {
       background-color: white;
     }
-    kyn-global-filter dialog {
+    kyn-global-filter kyn-side-drawer::part(drawer-dialog) {
       overflow-y: hidden;
     }
   `;

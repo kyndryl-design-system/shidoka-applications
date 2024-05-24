@@ -119,6 +119,7 @@ export class SideDrawer extends LitElement {
       </span>
 
       <dialog
+        part="drawer-dialog"
         class="${classMap(classes)}"
         autofocus
         aria-labelledby="dialogLabel"
