@@ -1,3 +1,33 @@
+## [1.23.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.7...v1.23.8) (2024-05-22)
+
+
+### Bug Fixes
+
+* **notification:** add on-close event ([f92ba77](https://github.com/kyndryl-design-system/shidoka-applications/commit/f92ba7708f9d14d32c31ff5b537928664a584cca))
+
+## [1.23.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.6...v1.23.7) (2024-05-22)
+
+
+### Bug Fixes
+
+* **notification:** remove h1 tag ([6b7c9e3](https://github.com/kyndryl-design-system/shidoka-applications/commit/6b7c9e3901f1adbeda9a693944f50c111adb6d19))
+* **page-title:** remove max-widths ([cb1b869](https://github.com/kyndryl-design-system/shidoka-applications/commit/cb1b8690043fd4379a3616993461878eb1d1c3eb))
+
+## [1.23.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.5...v1.23.6) (2024-05-21)
+
+
+### Bug Fixes
+
+* **breadcrumbs:** correct type style, add on-click event ([5d45d28](https://github.com/kyndryl-design-system/shidoka-applications/commit/5d45d28c0dbaa69e6e4e3fb088f4b3cbec120a71))
+* **header:** add center slot ([2253d2f](https://github.com/kyndryl-design-system/shidoka-applications/commit/2253d2f3e1ae76f786b09cd3dfe95c45e66b931b))
+
+## [1.23.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.4...v1.23.5) (2024-05-20)
+
+
+### Bug Fixes
+
+* **dropdown:** disabled tags & clear, resolves [#176](https://github.com/kyndryl-design-system/shidoka-applications/issues/176) ([c1c50f0](https://github.com/kyndryl-design-system/shidoka-applications/commit/c1c50f06519b94c2ac702e42055e5741e1387d48))
+
 ## [1.23.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.3...v1.23.4) (2024-05-17)
 
 

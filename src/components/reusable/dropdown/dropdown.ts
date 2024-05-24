@@ -250,6 +250,7 @@ export class Dropdown extends LitElement {
                     <button
                       class="clear-multiple"
                       aria-label="Clear selections"
+                      ?disabled=${this.disabled}
                       @click=${(e: Event) => this.handleClearMultiple(e)}
                     >
                       ${this.value.length}
@@ -361,6 +362,7 @@ export class Dropdown extends LitElement {
                   return html`
                     <kyn-tag
                       label=${text}
+                      ?disabled=${this.disabled}
                       @on-close=${(e: any) =>
                         this.handleTagClear(e.detail.value)}
                     ></kyn-tag>

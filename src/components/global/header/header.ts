@@ -18,6 +18,7 @@ import logo from '@kyndryl-design-system/shidoka-foundation/assets/svg/kyndryl-l
  * @slot unnamed - The default slot for all empty space right of the logo/title.
  * @slot logo - Slot for the logo, will overwrite the default logo.
  * @slot left - Slot left of the logo, intended for the header nav.
+ * @slot center - Slot between logo/title and right flyouts.
  */
 @customElement('kyn-header')
 export class Header extends LitElement {
@@ -71,6 +72,7 @@ export class Header extends LitElement {
     return html`
       <header class="${classMap(classes)}">
         <slot name="left" @slotchange=${this.handleSlotChange}></slot>
+
         <a
           href="${this.rootUrl}"
           class="logo-link interactive"
@@ -82,6 +84,8 @@ export class Header extends LitElement {
 
           <span class="title">${this.appTitle}</span>
         </a>
+
+        <slot name="center"></slot>
 
         <div class="header__right">
           <slot @slotchange=${this.handleSlotChange}></slot>

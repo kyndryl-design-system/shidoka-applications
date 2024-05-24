@@ -1057,6 +1057,10 @@
             {
               "description": "Slot left of the logo, intended for the header nav.",
               "name": "left"
+            },
+            {
+              "description": "Slot between logo/title and right flyouts.",
+              "name": "center"
             }
           ],
           "members": [
@@ -3275,6 +3279,25 @@
               },
               "default": "''",
               "attribute": "href"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event details.",
+              "name": "on-click"
             }
           ],
           "attributes": [
@@ -6943,12 +6966,12 @@
             },
             {
               "kind": "method",
-              "name": "removeToast",
+              "name": "_close",
               "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "onCloseToast",
+              "name": "_handleClose",
               "privacy": "private"
             },
             {
@@ -6969,6 +6992,10 @@
             {
               "description": "Emit event for clickable notification.",
               "name": "on-notification-click"
+            },
+            {
+              "description": "Emits when an inline/toast notification closes.",
+              "name": "on-close"
             }
           ],
           "attributes": [

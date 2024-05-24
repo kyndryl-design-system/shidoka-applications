@@ -2,16 +2,12 @@
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 .breadcrumbs {
-  @include typography.type-ui-01;
-
   list-style: none;
   padding: 0;
   display: flex;
-  color: var(--kd-color-text-primary);
-  font-weight: var(--kd-font-weight-medium);
-  margin-left: -8px;
+  margin: 0 -8px;
 
-  ::slotted(*) {
+  ::slotted(kyn-breadcrumb-item:not(:last-child)) {
     display: inline-flex;
     color: var(--kd-color-text-tertiary);
 
@@ -22,12 +18,6 @@
       font-weight: var(--kd-font-weight-regular);
       letter-spacing: -2px;
       font-size: var(--kd-font-size-utility-3-max);
-    }
-  }
-
-  ::slotted(*:last-child) {
-    &::after {
-      content: none; // Hide the ::after pseudo-element for the last item
     }
   }
 }
