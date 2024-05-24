@@ -1,3 +1,10 @@
+## [1.23.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.8...v1.23.9) (2024-05-24)
+
+
+### Bug Fixes
+
+* **modal:** dialog overflow hidden ([8c07de0](https://github.com/kyndryl-design-system/shidoka-applications/commit/8c07de00ab47f5864349b6cf541b0000eb7a97e7))
+
 ## [1.23.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.7...v1.23.8) (2024-05-22)
 
 
