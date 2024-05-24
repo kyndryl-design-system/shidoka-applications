@@ -129,11 +129,13 @@ export class Search extends LitElement {
   }
 
   private _handleBlur() {
-    this._focused = false;
+    setTimeout(() => {
+      this._focused = false;
 
-    if (this.value === '') {
-      this._expanded = false;
-    }
+      if (this.value === '') {
+        this._expanded = false;
+      }
+    }, 100);
   }
 
   private _handleButtonClick() {
