@@ -1,3 +1,15 @@
+# [1.24.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.9...v1.24.0) (2024-05-24)
+
+
+### Bug Fixes
+
+* **pagination:** min-width on dropdown ([763b032](https://github.com/kyndryl-design-system/shidoka-applications/commit/763b0322afb2efb4be0bdd6b183cbfb3df0ddf8e))
+
+
+### Features
+
+* **seach:** add search component ([#178](https://github.com/kyndryl-design-system/shidoka-applications/issues/178)) ([9f473e0](https://github.com/kyndryl-design-system/shidoka-applications/commit/9f473e0e57cb0449c5152fedd0e1c5b8cd3540d7))
+
 ## [1.23.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.8...v1.23.9) (2024-05-24)
 
 
