@@ -1,3 +1,10 @@
+## [1.24.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.0...v1.24.1) (2024-05-27)
+
+
+### Bug Fixes
+
+* **table-settings:** Minor fixes according to UX  ([#180](https://github.com/kyndryl-design-system/shidoka-applications/issues/180)) ([2b791ab](https://github.com/kyndryl-design-system/shidoka-applications/commit/2b791ab0f69a3673e8b98358b8887dc506db7d2b))
+
 # [1.24.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.23.9...v1.24.0) (2024-05-24)
 
 
