@@ -29,15 +29,22 @@ class StoryTableSettings extends LitElement {
     .table-container {
       overflow-x: auto;
     }
+    .first-col-locked {
+      border-collapse: initial; // to scroll rest column over the 1st column
+    }
 
     kyn-table.first-col-locked kyn-th:first-child,
     kyn-table.first-col-locked kyn-td:first-child {
       position: sticky;
       left: 0;
       z-index: 3; /* To make sure the sticky cells stay on top of others */
+      box-shadow: 0px 2px 8px rgba(61, 60, 60, 0.25);
     }
     kyn-table.first-col-locked kyn-td:first-child {
       background-color: white;
+    }
+    kyn-global-filter kyn-side-drawer::part(drawer-dialog) {
+      overflow-y: hidden;
     }
   `;
 

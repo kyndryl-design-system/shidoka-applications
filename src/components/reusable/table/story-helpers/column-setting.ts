@@ -24,6 +24,35 @@ class StoryColumSetting extends LitElement {
       --kyn-th-max-width: 100px;
       --kyn-th-width: 100px;
     }
+    .unlockedRow kd-button {
+      opacity: 0;
+    }
+    .unlockedRow:hover kd-button {
+      opacity: 1;
+    }
+    kyn-global-filter {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+    }
+    .lockedRow {
+      position: sticky;
+      background: white;
+      top: 124px;
+      z-index: 3;
+    }
+    .first-row-locked {
+      border-collapse: initial;
+    }
+    .t-head {
+      top: 72px;
+    }
+    .seperator-div {
+      height: 8px;
+      background: white;
+      position: sticky;
+      top: 64px;
+    }
   `;
 
   @property({ type: Array })
@@ -168,61 +197,65 @@ class StoryColumSetting extends LitElement {
           Hidden Column
         </kyn-checkbox>
         <kyn-checkbox @on-checkbox-change=${this.handleShowVisibleColsChange}>
-          Visiable Column
+          Visible Column
         </kyn-checkbox>
       </kyn-global-filter>
-      <kyn-table>
-        <kyn-thead>
-          <kyn-header-tr>
-            <kyn-th .align=${'center'} class="min-max-width-th-100">
-              VISIBLE
-            </kyn-th>
-            <kyn-th> COLUMN NAME </kyn-th>
-            <kyn-th .align=${'center'}>FREEZE</kyn-th>
-          </kyn-header-tr>
-        </kyn-thead>
-        <kyn-tbody>
-          ${repeat(
-            showingRows,
-            (row: any) => row.id,
-            (row: any) => html`
-              <kyn-tr
-                @on-row-select=${(e: CustomEvent) =>
-                  this.handleRowSelectionChange(e, row.id)}
-                .rowId=${row.id}
-                key="row-${row.id}"
-                .checkboxSelection=${true}
-                .locked=${row.locked}
-                .selected=${row.selected || row.locked || row.visible}
-                .preventHighlight=${row.visible}
-                .dimmed=${!row.visible}
-              >
-                <kyn-td>${row.colName}</kyn-td>
-                <kyn-td .align=${'center'} class="min-max-width-100" }
-                  ><kd-button
-                    @mouseover=${() => this.handleMouseOver(row.id)}
-                    @mouseout=${this.handleMouseOut}
-                    iconposition="center"
-                    kind="tertiary"
-                    type="button"
-                    size="small"
-                    @on-click=${(e: CustomEvent) =>
-                      this.handleLockingRow(e, row.id, row.locked)}
-                    description="freeze column"
-                  >
-                    <kd-icon
-                      slot="icon"
-                      .icon=${row.locked && row.id === this.hoveredButtonId
-                        ? unlockedIcon
-                        : lockedIcon}
-                    ></kd-icon>
-                  </kd-button>
-                </kyn-td>
-              </kyn-tr>
-            `
-          )}
-        </kyn-tbody>
-      </kyn-table>
+      <div class="seperator-div"></div>
+      <div>
+        <kyn-table stickyHeader class="${lockedRow ? 'first-row-locked' : ''}">
+          <kyn-thead class="t-head">
+            <kyn-header-tr>
+              <kyn-th .align=${'center'} class="min-max-width-th-100">
+                VISIBLE
+              </kyn-th>
+              <kyn-th> COLUMN NAME </kyn-th>
+              <kyn-th .align=${'center'}>FREEZE</kyn-th>
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            ${repeat(
+              showingRows,
+              (row: any) => row.id,
+              (row: any) => html`
+                <kyn-tr
+                  class="${row.locked ? 'lockedRow' : 'unlockedRow'}"
+                  @on-row-select=${(e: CustomEvent) =>
+                    this.handleRowSelectionChange(e, row.id)}
+                  .rowId=${row.id}
+                  key="row-${row.id}"
+                  .checkboxSelection=${true}
+                  .locked=${row.locked}
+                  .selected=${row.selected || row.locked || row.visible}
+                  .preventHighlight=${row.visible}
+                  .dimmed=${!row.visible}
+                >
+                  <kyn-td>${row.colName}</kyn-td>
+                  <kyn-td .align=${'center'} class="min-max-width-100"
+                    ><kd-button
+                      @mouseover=${() => this.handleMouseOver(row.id)}
+                      @mouseout=${this.handleMouseOut}
+                      iconposition="center"
+                      kind="tertiary"
+                      type="button"
+                      size="small"
+                      @on-click=${(e: CustomEvent) =>
+                        this.handleLockingRow(e, row.id, row.locked)}
+                      description="freeze column"
+                    >
+                      <kd-icon
+                        slot="icon"
+                        .icon=${row.locked && row.id === this.hoveredButtonId
+                          ? unlockedIcon
+                          : lockedIcon}
+                      ></kd-icon>
+                    </kd-button>
+                  </kyn-td>
+                </kyn-tr>
+              `
+            )}
+          </kyn-tbody>
+        </kyn-table>
+      </div>
     `;
   }
 }
