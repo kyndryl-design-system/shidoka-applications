@@ -31,25 +31,26 @@ class StoryColumSetting extends LitElement {
       opacity: 1;
     }
     kyn-global-filter {
-      position: fixed;
-      width: calc(100% - 88px);
+      position: sticky;
+      top: 0;
       z-index: 3;
     }
     .lockedRow {
       position: sticky;
-      width: calc(100% - 88px);
       background: white;
-      top: 115px;
+      top: 124px;
       z-index: 3;
     }
     .first-row-locked {
-      margin-top: 72px;
       border-collapse: initial;
     }
-    .first-row-unlocked {
-      margin-top: 72px;
-    }
     .t-head {
+      top: 72px;
+    }
+    .seperator-div {
+      height: 8px;
+      background: white;
+      position: sticky;
       top: 64px;
     }
   `;
@@ -199,11 +200,9 @@ class StoryColumSetting extends LitElement {
           Visible Column
         </kyn-checkbox>
       </kyn-global-filter>
+      <div class="seperator-div"></div>
       <div>
-        <kyn-table
-          ?stickyHeader=${lockedRow ? true : false}
-          class="${lockedRow ? 'first-row-locked1' : 'first-row-unlocked'}"
-        >
+        <kyn-table stickyHeader class="${lockedRow ? 'first-row-locked' : ''}">
           <kyn-thead class="t-head">
             <kyn-header-tr>
               <kyn-th .align=${'center'} class="min-max-width-th-100">
