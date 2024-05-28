@@ -132,6 +132,11 @@ export class HeaderFlyout extends LitElement {
             `}
 
         <div class=${classMap(contentClasses)}>
+          <button class="go-back" @click=${() => this._handleBack()}>
+            <kd-icon .icon=${backIcon}></kd-icon>
+            ${this.backText}
+          </button>
+
           ${!this.hideMenuLabel
             ? html`
                 <div class="menu-label">
@@ -140,10 +145,6 @@ export class HeaderFlyout extends LitElement {
               `
             : null}
 
-          <button class="go-back" @click=${() => this._handleBack()}>
-            <kd-icon .icon=${backIcon}></kd-icon>
-            ${this.backText}
-          </button>
           <slot></slot>
         </div>
       </div>
