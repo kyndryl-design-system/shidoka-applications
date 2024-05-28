@@ -1,3 +1,10 @@
+## [1.24.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.1...v1.24.2) (2024-05-28)
+
+
+### Bug Fixes
+
+* **header-flyout:** move mobile back button above menu label ([26bde6b](https://github.com/kyndryl-design-system/shidoka-applications/commit/26bde6bc9664ea1f042b7312d00ddfd3f4d4371a))
+
 ## [1.24.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.0...v1.24.1) (2024-05-27)
 
 
