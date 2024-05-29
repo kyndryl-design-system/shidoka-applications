@@ -216,7 +216,12 @@ export class DateRangePicker extends LitElement {
       this._validate(false, false);
     }
 
-    if (changedProps.has('startDate') || changedProps.has('endDate')) {
+    if (changedProps.has('startDate')) {
+      this.inputElStart.value = this.startDate;
+      this._validate(false, false);
+    }
+    if (changedProps.has('endDate')) {
+      this.inputElEnd.value = this.endDate;
       this._validate(false, false);
     }
   }
