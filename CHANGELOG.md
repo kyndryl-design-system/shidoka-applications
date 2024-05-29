@@ -1,3 +1,10 @@
+## [1.24.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.2...v1.24.3) (2024-05-29)
+
+
+### Bug Fixes
+
+* **table:** reduce sticky header z-index, resolves [#181](https://github.com/kyndryl-design-system/shidoka-applications/issues/181) ([bde8df5](https://github.com/kyndryl-design-system/shidoka-applications/commit/bde8df545496f2fb4d4b38e1b28d58ba2893e589))
+
 ## [1.24.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.1...v1.24.2) (2024-05-28)
 
 
