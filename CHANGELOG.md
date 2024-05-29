@@ -1,3 +1,10 @@
+## [1.24.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.3...v1.24.4) (2024-05-29)
+
+
+### Bug Fixes
+
+* **table:** add expanded row to root exports ([eb1c4cc](https://github.com/kyndryl-design-system/shidoka-applications/commit/eb1c4ccc72432310c416ce6ee2112133fa0031da))
+
 ## [1.24.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.2...v1.24.3) (2024-05-29)
 
 
