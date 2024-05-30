@@ -43,6 +43,7 @@ export {
   TableToolbar,
   TableContainer,
   TableHeaderRow,
+  TableExpandedRow,
 } from './components/reusable/table';
 export { Pagination } from './components/reusable/pagination';
 export {

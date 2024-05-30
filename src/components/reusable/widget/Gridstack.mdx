@@ -14,7 +14,7 @@ import { UsageExample } from '../../../../.storybook/usageBlock.jsx';
 
 <Title />
 
-<Description />
+[GridStack](https://gridstackjs.com/) wrapper component that allows you to easily build a dashboard with drag & drop and resize using Shidoka Widgets with default configuration and styles provided out of the box.
 
 <UsageExample />
 
@@ -42,7 +42,9 @@ import { UsageExample } from '../../../../.storybook/usageBlock.jsx';
 - `max` layout must be provided because it is the default/fallback.
 - `md` and `sm` layouts must also be provided because the grid changes from 12 columns to 8 columns and 4 columns respectively.
 
-### Example
+## Example
+
+### JS
 
 ```js
 import {
@@ -65,6 +67,37 @@ const Layout = {
   ],
   // provide widget sizes for every breakpoint
 };
+```
+
+### HTML
+
+```html
+<kyn-widget-gridstack
+  .layout="${Layout}"
+  @on-grid-save="${(e) => console.log(e.detail.layout)}"
+>
+  <div class="grid-stack">
+    <div gs-id="widget1" class="grid-stack-item">
+      <div class="grid-stack-item-content">
+        <kyn-widget widgetTitle="Widget 1" subTitle="Widget Subtitle">
+          <kyn-widget-drag-handle></kyn-widget-drag-handle>
+
+          <div>Widget Content</div>
+        </kyn-widget>
+      </div>
+    </div>
+
+    <div gs-id="widget2" class="grid-stack-item">
+      <div class="grid-stack-item-content">
+        <kyn-widget widgetTitle="Widget 2" subTitle="Widget Subtitle">
+          <kyn-widget-drag-handle></kyn-widget-drag-handle>
+
+          <div>Widget Content</div>
+        </kyn-widget>
+      </div>
+    </div>
+  </div>
+</kyn-widget-gridstack>
 ```
 
 ## Sample Gridstack
