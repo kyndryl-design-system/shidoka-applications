@@ -1,3 +1,10 @@
+## [1.24.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.5...v1.24.6) (2024-05-30)
+
+
+### Bug Fixes
+
+* **checkbox-group:** hide "show more" when less checkboxes than limit, resolves [#186](https://github.com/kyndryl-design-system/shidoka-applications/issues/186) ([56b2092](https://github.com/kyndryl-design-system/shidoka-applications/commit/56b20923b3f8c88055e4f59c348599c39a247920))
+
 ## [1.24.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.4...v1.24.5) (2024-05-30)
 
 
