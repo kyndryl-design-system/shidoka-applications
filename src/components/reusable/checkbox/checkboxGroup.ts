@@ -80,9 +80,15 @@ export class CheckboxGroup extends LitElement {
   @state()
   searchTerm = '';
 
-  /** Limits visible checkboxes (4) behind a "Show all" button. */
+  /** Limits visible checkboxes behind a "Show all" button. */
   @property({ type: Boolean })
   limitCheckboxes = false;
+
+  /** Number of checkboxes visible when limited.
+   * @internal
+   */
+  @state()
+  _limitCount = 4;
 
   /** Checkbox limit visibility.
    * @internal
@@ -172,7 +178,7 @@ export class CheckboxGroup extends LitElement {
 
           <slot @slotchange=${this._handleSlotChange}></slot>
 
-          ${this.limitCheckboxes
+          ${this.limitCheckboxes && this.checkboxes.length > this._limitCount
             ? html`
                 <button
                   class="reveal-toggle"
@@ -371,7 +377,7 @@ export class CheckboxGroup extends LitElement {
       if (this.limitCheckboxes && !this.limitRevealed) {
         if (
           checkboxText.toLowerCase().includes(this.searchTerm) &&
-          visibleCount < 4
+          visibleCount < this._limitCount
         ) {
           checkboxEl.style.display = 'block';
           visibleCount++;
@@ -394,8 +400,6 @@ export class CheckboxGroup extends LitElement {
   }
 
   private _toggleRevealed(revealed: boolean) {
-    const Limit = 4;
-
     this.limitRevealed = revealed;
 
     this.searchTerm = '';
@@ -404,7 +408,7 @@ export class CheckboxGroup extends LitElement {
       if (!this.limitCheckboxes || this.limitRevealed) {
         checkboxEl.style.display = 'block';
       } else {
-        if (index < Limit) {
+        if (index < this._limitCount) {
           checkboxEl.style.display = 'block';
         } else {
           checkboxEl.style.display = 'none';
