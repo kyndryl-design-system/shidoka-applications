@@ -1,3 +1,10 @@
+## [1.24.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.4...v1.24.5) (2024-05-30)
+
+
+### Bug Fixes
+
+* **daterangepicker:** Force prop change to update element value ([#185](https://github.com/kyndryl-design-system/shidoka-applications/issues/185)) ([4793ec9](https://github.com/kyndryl-design-system/shidoka-applications/commit/4793ec9f7e1d837e070e9c64fae83654467a6b16))
+
 ## [1.24.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.3...v1.24.4) (2024-05-29)
 
 
