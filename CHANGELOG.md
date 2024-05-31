@@ -1,3 +1,10 @@
+## [1.24.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.6...v1.24.7) (2024-05-31)
+
+
+### Bug Fixes
+
+* **tag:** add noTruncation prop which removes label max width ([cb94c2c](https://github.com/kyndryl-design-system/shidoka-applications/commit/cb94c2c7c65df8124421522c6d82bfa1f11951c2))
+
 ## [1.24.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.5...v1.24.6) (2024-05-30)
 
 
