@@ -39,6 +39,12 @@ export class Tag extends LitElement {
   filter = false;
 
   /**
+   * Removes label text truncation.
+   */
+  @property({ type: Boolean })
+  noTruncation = false;
+
+  /**
    * Shade `'light'` (default) and `'dark'` for tag
    */
   @property({ type: String })
@@ -73,6 +79,7 @@ export class Tag extends LitElement {
 
     const labelClasses = {
       'tag-label': true,
+      'no-truncation': this.noTruncation,
       [`${sizeClass}-label`]: true,
       [`${sizeClass}-label-filter`]: this.filter,
     };

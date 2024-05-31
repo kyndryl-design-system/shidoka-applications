@@ -56,6 +56,7 @@ const args = {
   tagColor: 'spruce',
   disabled: false,
   filter: false,
+  noTruncation: false,
 };
 
 export const Tag = {
@@ -69,6 +70,7 @@ export const Tag = {
         tagColor=${args.tagColor}
         ?disabled=${args.disabled}
         ?filter=${args.filter}
+        ?noTruncation=${args.noTruncation}
         @on-close=${(e) => action(e.type)(e)}
       /></kyn-tag>
     `;
