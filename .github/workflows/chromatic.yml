@@ -1,24 +1,25 @@
 name: 'Chromatic'
-on: push
+on:
+  push:
+    branches:
+      - main
+      - beta
+      - next
+  pull_request:
+    types: [review_requested]
 jobs:
   chromatic:
     runs-on: ubuntu-latest
     steps:
-      - uses: 8BitJonny/gh-get-current-pr@3.0.0
-        id: PR
-
       - name: Checkout code
-        if: steps.PR.outputs.pr_found == 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Install dependencies
-        if: steps.PR.outputs.pr_found == 'true'
         run: npm ci --legacy-peer-deps
 
       - name: Run Chromatic
-        if: steps.PR.outputs.pr_found == 'true'
         id: chromatic
         uses: chromaui/action@latest
         with:
@@ -30,5 +31,4 @@ jobs:
           zip: true
 
       - name: Publish Summary
-        if: steps.PR.outputs.pr_found == 'true'
         run: echo -e "| Results |  |\n| --- | --- |\n| Build Results | ${{steps.chromatic.outputs.buildUrl}} |\n| Storybook Preview | ${{steps.chromatic.outputs.storybookUrl}} |\n| Component Count | ${{steps.chromatic.outputs.componentCount}} |" >> $GITHUB_STEP_SUMMARY
