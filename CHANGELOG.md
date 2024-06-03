@@ -1,3 +1,10 @@
+## [1.24.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.7...v1.24.8) (2024-06-03)
+
+
+### Bug Fixes
+
+* **checkbox:** label use position relative, resolves [#182](https://github.com/kyndryl-design-system/shidoka-applications/issues/182) ([1e7dacc](https://github.com/kyndryl-design-system/shidoka-applications/commit/1e7dacc911f890ee5acea579b46aab5dd48fbd72))
+
 ## [1.24.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.6...v1.24.7) (2024-05-31)
 
 
