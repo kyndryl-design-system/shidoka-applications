@@ -322,6 +322,6 @@ export class HeaderLink extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-header-nav-link': HeaderLink;
+    'kyn-header-link': HeaderLink;
   }
 }
