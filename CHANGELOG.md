@@ -1,3 +1,10 @@
+## [1.24.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.9...v1.24.10) (2024-06-04)
+
+
+### Bug Fixes
+
+* **checkbox-group:** expose search text string ([9863c73](https://github.com/kyndryl-design-system/shidoka-applications/commit/9863c730bc911175d1b0c78a94415927e8b5582d))
+
 ## [1.24.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.8...v1.24.9) (2024-06-04)
 
 
