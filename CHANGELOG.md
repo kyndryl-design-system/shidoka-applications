@@ -1,3 +1,10 @@
+## [1.24.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.8...v1.24.9) (2024-06-04)
+
+
+### Bug Fixes
+
+* **header-link:** correct tag name map ([667b052](https://github.com/kyndryl-design-system/shidoka-applications/commit/667b0526ff8d659439574d27fa4debccdd16322d))
+
 ## [1.24.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.7...v1.24.8) (2024-06-03)
 
 
