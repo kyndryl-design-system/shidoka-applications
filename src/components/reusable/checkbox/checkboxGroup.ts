@@ -102,6 +102,7 @@ export class CheckboxGroup extends LitElement {
     selectAll: 'Select all',
     showMore: 'Show more',
     showLess: 'Show less',
+    search: 'Search',
   };
 
   /** Checkbox group invalid text. */
@@ -145,11 +146,13 @@ export class CheckboxGroup extends LitElement {
                 class="search"
                 type="search"
                 size="sm"
-                placeholder="Search"
+                placeholder=${this.textStrings.search}
                 hideLabel
                 value=${this.searchTerm}
                 @on-input=${(e: Event) => this._handleFilter(e)}
-              ></kyn-text-input>
+              >
+                ${this.textStrings.search}
+              </kyn-text-input>
             `
           : null}
 

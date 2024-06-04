@@ -33,6 +33,7 @@ export const CheckboxGroup = {
       selectAll: 'Select all',
       showMore: 'Show more',
       showLess: 'Show less',
+      search: 'Search',
     },
   },
   render: (args) => {
