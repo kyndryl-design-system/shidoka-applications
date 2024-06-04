@@ -1,3 +1,10 @@
+## [1.24.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.10...v1.24.11) (2024-06-04)
+
+
+### Bug Fixes
+
+* **checkbox:** disabled styles ([9f3b6ca](https://github.com/kyndryl-design-system/shidoka-applications/commit/9f3b6ca3f32704bcc45ca58b7540cf3500e0b71a))
+
 ## [1.24.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.9...v1.24.10) (2024-06-04)
 
 
