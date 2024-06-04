@@ -67,9 +67,19 @@ legend {
   cursor: pointer;
   outline: 2px solid transparent;
 
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+    cursor: default;
+  }
+
   &:hover {
     text-decoration: underline;
     color: var(--kd-color-text-link-hover);
+
+    [disabled] & {
+      text-decoration: none;
+      color: var(--kd-color-text-disabled);
+    }
   }
 
   &:active {

@@ -139,7 +139,7 @@ export class CheckboxGroup extends LitElement {
 
   override render() {
     return html`
-      <fieldset ?disabled=${this.disabled}>
+      <div>
         ${this.filterable
           ? html`
               <kyn-text-input
@@ -149,6 +149,7 @@ export class CheckboxGroup extends LitElement {
                 placeholder=${this.textStrings.search}
                 hideLabel
                 value=${this.searchTerm}
+                ?disabled=${this.disabled}
                 @on-input=${(e: Event) => this._handleFilter(e)}
               >
                 ${this.textStrings.search}
@@ -156,56 +157,59 @@ export class CheckboxGroup extends LitElement {
             `
           : null}
 
-        <div class="${this.horizontal ? 'horizontal' : ''}">
-          <legend class="${this.hideLegend ? 'sr-only' : ''}">
-            ${this.required ? html`<span class="required">*</span>` : null}
-            <slot name="label"></slot>
-          </legend>
+        <fieldset ?disabled=${this.disabled}>
+          <div class="${this.horizontal ? 'horizontal' : ''}">
+            <legend class="${this.hideLegend ? 'sr-only' : ''}">
+              ${this.required ? html`<span class="required">*</span>` : null}
+              <slot name="label"></slot>
+            </legend>
 
-          ${this.selectAll
+            ${this.selectAll
+              ? html`
+                  <kyn-checkbox
+                    class="select-all"
+                    value="selectAll"
+                    ?checked=${this.selectAllChecked}
+                    ?indeterminate=${this.selectAllIndeterminate}
+                    ?required=${this.required}
+                    ?disabled=${this.disabled}
+                    ?invalid=${this.invalidText !== '' ||
+                    this.internalValidationMsg !== ''}
+                  >
+                    ${this.textStrings.selectAll}
+                  </kyn-checkbox>
+                `
+              : null}
+
+            <slot @slotchange=${this._handleSlotChange}></slot>
+
+            ${this.limitCheckboxes && this.checkboxes.length > this._limitCount
+              ? html`
+                  <button
+                    class="reveal-toggle"
+                    @click=${() => this._toggleRevealed(!this.limitRevealed)}
+                  >
+                    ${this.limitRevealed
+                      ? this.textStrings.showLess
+                      : html`
+                          ${this.textStrings.showMore}
+                          (${this.checkboxes.length})
+                        `}
+                  </button>
+                `
+              : null}
+          </div>
+
+          ${this.isInvalid
             ? html`
-                <kyn-checkbox
-                  class="select-all"
-                  value="selectAll"
-                  ?checked=${this.selectAllChecked}
-                  ?indeterminate=${this.selectAllIndeterminate}
-                  ?required=${this.required}
-                  ?disabled=${this.disabled}
-                  ?invalid=${this.invalidText !== '' ||
-                  this.internalValidationMsg !== ''}
-                >
-                  ${this.textStrings.selectAll}
-                </kyn-checkbox>
+                <div class="error">
+                  <kd-icon .icon="${errorIcon}"></kd-icon>
+                  ${this.invalidText || this.internalValidationMsg}
+                </div>
               `
             : null}
-
-          <slot @slotchange=${this._handleSlotChange}></slot>
-
-          ${this.limitCheckboxes && this.checkboxes.length > this._limitCount
-            ? html`
-                <button
-                  class="reveal-toggle"
-                  @click=${() => this._toggleRevealed(!this.limitRevealed)}
-                >
-                  ${this.limitRevealed
-                    ? this.textStrings.showLess
-                    : html`
-                        ${this.textStrings.showMore} (${this.checkboxes.length})
-                      `}
-                </button>
-              `
-            : null}
-        </div>
-
-        ${this.isInvalid
-          ? html`
-              <div class="error">
-                <kd-icon .icon="${errorIcon}"></kd-icon>
-                ${this.invalidText || this.internalValidationMsg}
-              </div>
-            `
-          : null}
-      </fieldset>
+        </fieldset>
+      </div>
     `;
   }
 
@@ -427,11 +431,18 @@ export class CheckboxGroup extends LitElement {
 
   private _handleSlotChange() {
     this._toggleRevealed(this.limitRevealed);
+    this._updateChildren();
     this.requestUpdate();
   }
 
   private _handleInvalid() {
     this._validate(true, false);
+  }
+
+  private _updateChildren() {
+    this.checkboxes.forEach((checkbox) => {
+      checkbox.disabled = this.disabled;
+    });
   }
 
   override connectedCallback() {
