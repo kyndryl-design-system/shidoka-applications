@@ -1,3 +1,13 @@
+## [1.24.12](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.11...v1.24.12) (2024-06-05)
+
+
+### Bug Fixes
+
+* **dropdown:** add menuMinWidth prop, resolves [#189](https://github.com/kyndryl-design-system/shidoka-applications/issues/189), other various fixes ([7749fc4](https://github.com/kyndryl-design-system/shidoka-applications/commit/7749fc43bf3232be9b32f376644a563616913643))
+* **local-nav:** separate expanded states for desktop & mobile ([a25a4cf](https://github.com/kyndryl-design-system/shidoka-applications/commit/a25a4cf6707611dcda2a8479fc96f91cda626016))
+* **pagination:** add spacing to prevent outline overlap ([d654fca](https://github.com/kyndryl-design-system/shidoka-applications/commit/d654fca38d03b741f000d851dd103bed628e39c3))
+* **table-head:** z-index increase ([0e901ec](https://github.com/kyndryl-design-system/shidoka-applications/commit/0e901ec1fba535ea6a2f7e40bdd57b8cfdd89d15))
+
 ## [1.24.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.10...v1.24.11) (2024-06-04)
 
 
