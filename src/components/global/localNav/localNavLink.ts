@@ -49,11 +49,17 @@ export class LocalNavLink extends LitElement {
   @state()
   _level = 1;
 
-  /** The local nav expanded state.
+  /** The local nav desktop expanded state.
    * @internal
    */
   @state()
   _navExpanded = false;
+
+  /** The local nav mobile expanded state.
+   * @internal
+   */
+  @state()
+  _navExpandedMobile = false;
 
   /** The slotted text.
    * @internal
@@ -90,7 +96,7 @@ export class LocalNavLink extends LitElement {
       'level--1': this._level == 1,
       'level--2': this._level == 2,
       'level--3': this._level == 3,
-      'nav-expanded': this._navExpanded,
+      'nav-expanded': this._navExpanded || this._navExpandedMobile,
       'link-expanded': this._expanded,
       'link-active': this.active,
       'link-disabled': this.disabled,

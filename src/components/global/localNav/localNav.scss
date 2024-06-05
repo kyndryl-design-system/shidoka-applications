@@ -37,9 +37,11 @@ nav {
     }
   }
 
-  &.nav--expanded {
+  .nav--expanded-mobile & {
     height: 100%;
+  }
 
+  &.nav--expanded {
     @media (min-width: 42rem) {
       width: var(--kd-local-nav-width-expanded);
       // border-bottom-color: var(--kd-color-border-accent-spruce-light);
@@ -89,11 +91,13 @@ nav {
   transition: height 250ms ease-out, visibility 250ms ease-out;
   height: 0;
 
-  .nav--expanded & {
+  .nav--expanded-mobile & {
     display: flex;
     height: calc(100vh - 56px);
     visibility: visible;
+  }
 
+  .nav--expanded & {
     @media (min-width: 42rem) {
       height: 100%;
     }
@@ -133,7 +137,7 @@ nav {
     display: block;
     transition: transform 150ms ease-out;
 
-    .nav--expanded & {
+    .nav--expanded-mobile & {
       transform: rotate(-180deg);
     }
   }

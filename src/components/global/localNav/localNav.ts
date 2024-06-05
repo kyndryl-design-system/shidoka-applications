@@ -41,11 +41,17 @@ export class LocalNav extends LitElement {
     menu: 'Menu',
   };
 
-  /** Local nav expanded state.
+  /** Local nav desktop expanded state.
    * @internal
    */
   @state()
   _expanded = false;
+
+  /** Local nav mobile expanded state.
+   * @internal
+   */
+  @state()
+  _mobileExpanded = false;
 
   /** Active Link text.
    * @internal
@@ -75,6 +81,7 @@ export class LocalNav extends LitElement {
       <nav
         class=${classMap({
           'nav--expanded': this._expanded || this.pinned,
+          'nav--expanded-mobile': this._mobileExpanded,
           pinned: this.pinned,
         })}
         @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
@@ -84,9 +91,9 @@ export class LocalNav extends LitElement {
           class="mobile-toggle"
           title=${this.textStrings.toggleMenu}
           aria-label=${this.textStrings.toggleMenu}
-          @click=${(e: Event) => this._handleNavToggle(e)}
+          @click=${this._handleMobileNavToggle}
         >
-          ${this._expanded
+          ${this._mobileExpanded
             ? this.textStrings.collapse
             : this._activeLinkText || this.textStrings.menu}
           <kd-icon .icon=${arrowIcon}></kd-icon>
@@ -121,6 +128,10 @@ export class LocalNav extends LitElement {
     this.dispatchEvent(event);
   }
 
+  private _handleMobileNavToggle() {
+    this._mobileExpanded = !this._mobileExpanded;
+  }
+
   private handlePointerEnter(e: PointerEvent) {
     if (e.pointerType === 'mouse') {
       clearTimeout(this._leaveTimer);
@@ -144,6 +155,7 @@ export class LocalNav extends LitElement {
   private _updateChildren() {
     this._navLinks.forEach((link: any) => {
       link._navExpanded = this._expanded || this.pinned;
+      link._navExpandedMobile = this._mobileExpanded;
     });
   }
 
@@ -157,7 +169,11 @@ export class LocalNav extends LitElement {
   }
 
   override willUpdate(changedProps: any) {
-    if (changedProps.has('_expanded') || changedProps.has('pinned')) {
+    if (
+      changedProps.has('_expanded') ||
+      changedProps.has('pinned') ||
+      changedProps.has('_mobileExpanded')
+    ) {
       this._updateChildren();
     }
   }
