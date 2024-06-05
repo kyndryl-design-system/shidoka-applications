@@ -44,6 +44,7 @@ const args = {
   selectAllText: 'Select all',
   invalidText: '',
   caption: '',
+  menuMinWidth: 'initial',
 };
 
 export const Single = {
@@ -60,6 +61,7 @@ export const Single = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
         @on-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
@@ -93,6 +95,7 @@ export const SingleSearchable = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >
@@ -129,6 +132,7 @@ export const MultiSelect = {
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
         @on-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
@@ -166,6 +170,7 @@ export const MultiSelectSearchable = {
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >
@@ -219,6 +224,7 @@ export const Grouped = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
         @on-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
@@ -254,6 +260,7 @@ export const DataDrivenOptions = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
         @on-change=${(e) => {
           // console.log(e.detail);
           action(e.type)(e);

@@ -4197,6 +4197,387 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Date-Range picker",
+          "name": "DateRangePicker",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "startDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker Start date in YYYY-MM-DD format.",
+              "attribute": "startDate"
+            },
+            {
+              "kind": "field",
+              "name": "endDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker End date in YYYY-MM-DD format.",
+              "attribute": "endDate"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker name. Required prop. as there could many fields into single form",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the date required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Date disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "datePickerType",
+              "type": {
+                "text": "DATE_PICKER_TYPES"
+              },
+              "description": "Date range picker types. Default 'single'",
+              "attribute": "datePickerType"
+            },
+            {
+              "kind": "field",
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Date invalid text.",
+              "attribute": "invalidText"
+            },
+            {
+              "kind": "field",
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Date warning text",
+              "attribute": "warnText"
+            },
+            {
+              "kind": "field",
+              "name": "maxDate",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
+              "attribute": "maxDate"
+            },
+            {
+              "kind": "field",
+              "name": "minDate",
+              "type": {
+                "text": "string"
+              },
+              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "attribute": "minDate"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\r\nThe default value of step is 1, indicating 1 day.",
+              "attribute": "step"
+            },
+            {
+              "kind": "method",
+              "name": "handleStartDate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleEndDate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleFormdata",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleInvalid",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "startDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker Start date in YYYY-MM-DD format.",
+              "fieldName": "startDate"
+            },
+            {
+              "name": "endDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker End date in YYYY-MM-DD format.",
+              "fieldName": "endDate"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker name. Required prop. as there could many fields into single form",
+              "fieldName": "name"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the date required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Date disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "datePickerType",
+              "type": {
+                "text": "DATE_PICKER_TYPES"
+              },
+              "description": "Date range picker types. Default 'single'",
+              "fieldName": "datePickerType"
+            },
+            {
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Date invalid text.",
+              "fieldName": "invalidText"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Date warning text",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "maxDate",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
+              "fieldName": "maxDate"
+            },
+            {
+              "name": "minDate",
+              "type": {
+                "text": "string"
+              },
+              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "fieldName": "minDate"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\r\nThe default value of step is 1, indicating 1 day.",
+              "fieldName": "step"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-date-range-picker",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-date-range-picker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "\"./daterangepicker\""
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/datePicker/datepicker.ts",
       "declarations": [
         {
@@ -4580,387 +4961,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Date-Range picker",
-          "name": "DateRangePicker",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "startDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "attribute": "startDate"
-            },
-            {
-              "kind": "field",
-              "name": "endDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "attribute": "endDate"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker name. Required prop. as there could many fields into single form",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the date required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Date disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "datePickerType",
-              "type": {
-                "text": "DATE_PICKER_TYPES"
-              },
-              "description": "Date range picker types. Default 'single'",
-              "attribute": "datePickerType"
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Date invalid text.",
-              "attribute": "invalidText"
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Date warning text",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "maxDate",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
-              "attribute": "maxDate"
-            },
-            {
-              "kind": "field",
-              "name": "minDate",
-              "type": {
-                "text": "string"
-              },
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
-              "attribute": "minDate"
-            },
-            {
-              "kind": "field",
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\r\nThe default value of step is 1, indicating 1 day.",
-              "attribute": "step"
-            },
-            {
-              "kind": "method",
-              "name": "handleStartDate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleEndDate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleFormdata",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleInvalid",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "startDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "fieldName": "startDate"
-            },
-            {
-              "name": "endDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "fieldName": "endDate"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker name. Required prop. as there could many fields into single form",
-              "fieldName": "name"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the date required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Date disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "datePickerType",
-              "type": {
-                "text": "DATE_PICKER_TYPES"
-              },
-              "description": "Date range picker types. Default 'single'",
-              "fieldName": "datePickerType"
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Date invalid text.",
-              "fieldName": "invalidText"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Date warning text",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "maxDate",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
-              "fieldName": "maxDate"
-            },
-            {
-              "name": "minDate",
-              "type": {
-                "text": "string"
-              },
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
-              "fieldName": "minDate"
-            },
-            {
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\r\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\r\nThe default value of step is 1, indicating 1 day.",
-              "fieldName": "step"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-date-range-picker",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-date-range-picker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "\"./daterangepicker\""
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/dropdown/dropdown.ts",
       "declarations": [
         {
@@ -5127,6 +5127,16 @@
               "default": "'Select all'",
               "description": "\"Select all\" text customization.",
               "attribute": "selectAllText"
+            },
+            {
+              "kind": "field",
+              "name": "menuMinWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "'initial'",
+              "description": "Menu CSS min-width value.",
+              "attribute": "menuMinWidth"
             },
             {
               "kind": "method",
@@ -5580,6 +5590,15 @@
               "default": "'Select all'",
               "description": "\"Select all\" text customization.",
               "fieldName": "selectAllText"
+            },
+            {
+              "name": "menuMinWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "'initial'",
+              "description": "Menu CSS min-width value.",
+              "fieldName": "menuMinWidth"
             }
           ],
           "superclass": {
@@ -6519,349 +6538,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/notification/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "./notification"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "NotificationContainer",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "./notificationContainer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/notification/notification.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Notification component.",
-          "name": "Notification",
-          "slots": [
-            {
-              "description": "Slot for notification message body.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for menu.",
-              "name": "actions"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "notificationTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification Title (Required).",
-              "attribute": "notificationTitle"
-            },
-            {
-              "kind": "field",
-              "name": "notificationSubtitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification subtitle.(optional)",
-              "attribute": "notificationSubtitle"
-            },
-            {
-              "kind": "field",
-              "name": "timeStamp",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Timestamp of notification.",
-              "attribute": "timeStamp"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card href link",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "tagStatus",
-              "type": {
-                "text": "string"
-              },
-              "default": "'default'",
-              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
-              "attribute": "tagStatus"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'normal'",
-              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "any"
-              },
-              "default": "{\r\n    success: 'Success',\r\n    warning: 'Warning',\r\n    info: 'Info',\r\n    error: 'Error',\r\n  }",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "field",
-              "name": "unRead",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
-              "attribute": "unRead",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "hideCloseButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
-              "attribute": "hideCloseButton"
-            },
-            {
-              "kind": "field",
-              "name": "timeout",
-              "type": {
-                "text": "number"
-              },
-              "default": "8",
-              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
-              "attribute": "timeout"
-            },
-            {
-              "kind": "method",
-              "name": "renderInnerUI",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_close",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClose",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleCardClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emit event for clickable notification.",
-              "name": "on-notification-click"
-            },
-            {
-              "description": "Emits when an inline/toast notification closes.",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "notificationTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification Title (Required).",
-              "fieldName": "notificationTitle"
-            },
-            {
-              "name": "notificationSubtitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification subtitle.(optional)",
-              "fieldName": "notificationSubtitle"
-            },
-            {
-              "name": "timeStamp",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Timestamp of notification.",
-              "fieldName": "timeStamp"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card href link",
-              "fieldName": "href"
-            },
-            {
-              "name": "tagStatus",
-              "type": {
-                "text": "string"
-              },
-              "default": "'default'",
-              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
-              "fieldName": "tagStatus"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'normal'",
-              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
-              "fieldName": "type"
-            },
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "any"
-              },
-              "default": "{\r\n    success: 'Success',\r\n    warning: 'Warning',\r\n    info: 'Info',\r\n    error: 'Error',\r\n  }",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "unRead",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
-              "fieldName": "unRead"
-            },
-            {
-              "name": "hideCloseButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
-              "fieldName": "hideCloseButton"
-            },
-            {
-              "name": "timeout",
-              "type": {
-                "text": "number"
-              },
-              "default": "8",
-              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
-              "fieldName": "timeout"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-notification",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "src/components/reusable/notification/notification.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "src/components/reusable/notification/notification.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/notification/notificationContainer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Notification container component for Toast notification.\r\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
-          "name": "NotificationContainer",
-          "slots": [
-            {
-              "description": "Slot for <kyn-notification type=\"toast\"> component.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-notification-container",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "NotificationContainer",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "src/components/reusable/notification/notificationContainer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-notification-container",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "src/components/reusable/notification/notificationContainer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/modal/index.ts",
       "declarations": [],
       "exports": [
@@ -7199,6 +6875,349 @@
           "declaration": {
             "name": "Modal",
             "module": "src/components/reusable/modal/modal.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/notification/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "./notification"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NotificationContainer",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "./notificationContainer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/notification/notification.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Notification component.",
+          "name": "Notification",
+          "slots": [
+            {
+              "description": "Slot for notification message body.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for menu.",
+              "name": "actions"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "notificationTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification Title (Required).",
+              "attribute": "notificationTitle"
+            },
+            {
+              "kind": "field",
+              "name": "notificationSubtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification subtitle.(optional)",
+              "attribute": "notificationSubtitle"
+            },
+            {
+              "kind": "field",
+              "name": "timeStamp",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Timestamp of notification.",
+              "attribute": "timeStamp"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card href link",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "tagStatus",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default'",
+              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
+              "attribute": "tagStatus"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'normal'",
+              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
+              "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "any"
+              },
+              "default": "{\r\n    success: 'Success',\r\n    warning: 'Warning',\r\n    info: 'Info',\r\n    error: 'Error',\r\n  }",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "field",
+              "name": "unRead",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
+              "attribute": "unRead",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "hideCloseButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
+              "attribute": "hideCloseButton"
+            },
+            {
+              "kind": "field",
+              "name": "timeout",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
+              "attribute": "timeout"
+            },
+            {
+              "kind": "method",
+              "name": "renderInnerUI",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_close",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleCardClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emit event for clickable notification.",
+              "name": "on-notification-click"
+            },
+            {
+              "description": "Emits when an inline/toast notification closes.",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "notificationTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification Title (Required).",
+              "fieldName": "notificationTitle"
+            },
+            {
+              "name": "notificationSubtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification subtitle.(optional)",
+              "fieldName": "notificationSubtitle"
+            },
+            {
+              "name": "timeStamp",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Timestamp of notification.",
+              "fieldName": "timeStamp"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card href link",
+              "fieldName": "href"
+            },
+            {
+              "name": "tagStatus",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default'",
+              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
+              "fieldName": "tagStatus"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'normal'",
+              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
+              "fieldName": "type"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "any"
+              },
+              "default": "{\r\n    success: 'Success',\r\n    warning: 'Warning',\r\n    info: 'Info',\r\n    error: 'Error',\r\n  }",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "unRead",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
+              "fieldName": "unRead"
+            },
+            {
+              "name": "hideCloseButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
+              "fieldName": "hideCloseButton"
+            },
+            {
+              "name": "timeout",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
+              "fieldName": "timeout"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-notification",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "src/components/reusable/notification/notification.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "src/components/reusable/notification/notification.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/notification/notificationContainer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Notification container component for Toast notification.\r\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
+          "name": "NotificationContainer",
+          "slots": [
+            {
+              "description": "Slot for <kyn-notification type=\"toast\"> component.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-notification-container",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NotificationContainer",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "src/components/reusable/notification/notificationContainer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-notification-container",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "src/components/reusable/notification/notificationContainer.ts"
           }
         }
       ]

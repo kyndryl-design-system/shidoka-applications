@@ -42,7 +42,7 @@ export class DropdownOption extends LitElement {
    * Option text, automatically derived.
    * @ignore
    */
-  @property()
+  @state()
   text: any = '';
 
   /** Determines whether the checkbox is in an indeterminate state. */
@@ -58,6 +58,7 @@ export class DropdownOption extends LitElement {
         ?disabled=${this.disabled}
         aria-disabled=${this.disabled}
         ?multiple=${this.multiple}
+        title=${this.text}
         @click=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
       >

@@ -107,6 +107,10 @@ export class Dropdown extends LitElement {
   @property({ type: String })
   selectAllText = 'Select all';
 
+  /** Menu CSS min-width value. */
+  @property({ type: String })
+  menuMinWidth = 'initial';
+
   /** Is "Select All" box checked.
    * @internal
    */
@@ -212,7 +216,12 @@ export class Dropdown extends LitElement {
         ?inline=${this.inline}
         ?searchable=${this.searchable}
       >
-        <label for=${this.name} id="label-${this.name}" class="label-text">
+        <label
+          for=${this.name}
+          id="label-${this.name}"
+          class="label-text"
+          @click=${this._handleLabelClick}
+        >
           ${this.required ? html`<span class="required">*</span>` : null}
           <slot name="label"></slot>
         </label>
@@ -236,6 +245,7 @@ export class Dropdown extends LitElement {
               ?required=${this.required}
               ?disabled=${this.disabled}
               ?invalid=${this.isInvalid}
+              tabindex="0"
               @click=${() => this.handleClick()}
               @keydown=${(e: any) => this.handleButtonKeydown(e)}
               @mousedown=${(e: any) => {
@@ -291,6 +301,7 @@ export class Dropdown extends LitElement {
                 open: this.open,
                 upwards: this._openUpwards,
               })}
+              style="min-width: ${this.menuMinWidth};"
               aria-labelledby="label-${this.name}"
               name=${this.name}
               role="listbox"
@@ -433,6 +444,16 @@ export class Dropdown extends LitElement {
     }
   }
 
+  private _handleLabelClick() {
+    this.open = !this.open;
+
+    if (this.searchable) {
+      this.searchEl.focus();
+    } else {
+      this.buttonEl.focus();
+    }
+  }
+
   private handleButtonKeydown(e: any) {
     this.handleKeyboard(e, e.keyCode, 'button');
   }
@@ -452,8 +473,8 @@ export class Dropdown extends LitElement {
 
     // don't blur if clicking an option inside
     if (
-      !e.relatedTarget ||
-      (e.relatedTarget && e.relatedTarget.localName !== 'kyn-dropdown-option')
+      e.relatedTarget &&
+      e.relatedTarget.localName !== 'kyn-dropdown-option'
     ) {
       this.open = false;
     }
@@ -505,13 +526,11 @@ export class Dropdown extends LitElement {
     switch (keyCode) {
       case ENTER_KEY_CODE: {
         // select highlighted option
-        if (target === 'list') {
-          this.updateValue(
-            this.options[highlightedIndex].value,
-            !this.options[highlightedIndex].selected
-          );
-          this.assistiveText = 'Selected an item.';
-        }
+        this.updateValue(
+          this.options[highlightedIndex].value,
+          !this.options[highlightedIndex].selected
+        );
+        this.assistiveText = 'Selected an item.';
         return;
       }
       case DOWN_ARROW_KEY_CODE: {
@@ -782,8 +801,16 @@ export class Dropdown extends LitElement {
     this._validate(true, false);
   }
 
+  private _handleClickOut(e: Event) {
+    if (!e.composedPath().includes(this)) {
+      this.open = false;
+    }
+  }
+
   override connectedCallback() {
     super.connectedCallback();
+
+    document.addEventListener('click', (e) => this._handleClickOut(e));
 
     // capture child options click event
     this.addEventListener('on-click', (e: any) => this._handleClick(e));
@@ -803,6 +830,7 @@ export class Dropdown extends LitElement {
   }
 
   override disconnectedCallback() {
+    document.removeEventListener('click', (e) => this._handleClickOut(e));
     this.addEventListener('on-click', (e: any) => this._handleClick(e));
     this.addEventListener('on-blur', (e: any) => this._handleBlur(e));
 
