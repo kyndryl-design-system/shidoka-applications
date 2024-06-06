@@ -46,12 +46,14 @@ class StoryColumSetting extends LitElement {
     }
     .t-head {
       top: 72px;
+      z-index: 2;
     }
     .seperator-div {
       height: 8px;
       background: white;
       position: sticky;
       top: 64px;
+      z-index: 3; // hide column behind scroll
     }
   `;
 
