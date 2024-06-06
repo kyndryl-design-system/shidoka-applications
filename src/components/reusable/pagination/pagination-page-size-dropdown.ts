@@ -38,6 +38,8 @@ export class PaginationPageSizeDropdown extends LitElement {
   private handleChange(event: CustomEvent) {
     this.pageSize = event.detail.value;
 
+    // this.shadowRoot?.querySelector('kyn-dropdown')?.resetSelection();
+
     this.dispatchEvent(
       new CustomEvent('on-page-size-change', {
         detail: { value: event.detail.value },
@@ -52,16 +54,14 @@ export class PaginationPageSizeDropdown extends LitElement {
       <label> ${this.pageSizeLabel} </label>
       <kyn-dropdown
         inline
-        placeholder=${this.pageSize}
         size="sm"
+        updateByValue
+        value=${this.pageSize}
         @on-change=${(e: CustomEvent) => this.handleChange(e)}
       >
         ${this.pageSizeOptions.map((option) => {
           return html`
-            <kyn-dropdown-option
-              ?selected=${this.pageSize === option}
-              value=${option}
-            >
+            <kyn-dropdown-option value=${option}>
               ${option}
             </kyn-dropdown-option>
           `;

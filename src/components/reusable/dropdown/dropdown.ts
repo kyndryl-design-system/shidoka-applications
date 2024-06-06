@@ -47,6 +47,10 @@ export class Dropdown extends LitElement {
   @state()
   internals = this.attachInternals();
 
+  /** Update by value instead of deriving value from child selections. */
+  @property({ type: Boolean })
+  updateByValue = false;
+
   /** Dropdown size/height. "sm", "md", or "lg". */
   @property({ type: String })
   size = 'md';
@@ -124,10 +128,9 @@ export class Dropdown extends LitElement {
   selectAllIndeterminate = false;
 
   /**
-   * Selected option value.
-   * @ignore
+   * Dropdown value(s).
    */
-  @state()
+  @property({ type: String })
   value: any = '';
 
   /**
@@ -353,22 +356,14 @@ export class Dropdown extends LitElement {
           ? html`
               <kyn-tag-group filter>
                 ${this.value.map((value: string) => {
-                  const option = this.options.find(
-                    (option) => option.value === value
+                  const Options: any = Array.from(
+                    this.querySelectorAll('kyn-dropdown-option')
                   );
-                  let text = '';
 
-                  if (option?.shadowRoot?.querySelector('slot')) {
-                    const nodes = option.shadowRoot
-                      .querySelector('slot')
-                      .assignedNodes({
-                        flatten: true,
-                      });
-
-                    for (let i = 0; i < nodes.length; i++) {
-                      text += nodes[i].textContent.trim();
-                    }
-                  }
+                  const option = Options.find(
+                    (option: any) => option.value === value
+                  );
+                  const text = option.textContent;
 
                   return html`
                     <kyn-tag
@@ -429,8 +424,12 @@ export class Dropdown extends LitElement {
    * @function
    */
   public resetSelection() {
-    this._updateChildren();
-    this.emitValue();
+    if (this.updateByValue) {
+      this._updateOptions();
+    } else {
+      this._updateChildren();
+      this.emitValue();
+    }
   }
 
   private handleClick() {
@@ -974,27 +973,22 @@ export class Dropdown extends LitElement {
       //   this.internals.setFormValue(this.value);
       // }
 
+      if (this.updateByValue) {
+        this._updateOptions();
+      }
+
       // update selected option text
+      const AllOptions: any = Array.from(
+        this.querySelectorAll('kyn-dropdown-option')
+      );
+
       if (!this.multiple) {
-        if (this.options.length && this.value !== '') {
-          const option = this.options.find(
-            (option) => option.value === this.value
+        if (AllOptions.length && this.value !== '') {
+          const option = AllOptions.find(
+            (option: any) => option.value === this.value
           );
-          let text = '';
 
-          if (option?.shadowRoot?.querySelector('slot')) {
-            const nodes = option.shadowRoot
-              .querySelector('slot')
-              .assignedNodes({
-                flatten: true,
-              });
-
-            for (let i = 0; i < nodes.length; i++) {
-              text += nodes[i].textContent.trim();
-            }
-          }
-
-          this.text = text;
+          this.text = option.textContent;
         }
 
         // set search input value
@@ -1034,6 +1028,16 @@ export class Dropdown extends LitElement {
         option.multiple = this.multiple;
       });
     }
+  }
+
+  private _updateOptions() {
+    this.options.forEach((option) => {
+      if (!this.multiple) {
+        option.selected = this.value.includes(option.value);
+      } else {
+        option.selected === this.value;
+      }
+    });
   }
 
   private _updateChildren() {
