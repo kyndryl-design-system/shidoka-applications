@@ -1,3 +1,11 @@
+## [1.24.13](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.12...v1.24.13) (2024-06-06)
+
+
+### Bug Fixes
+
+* **table-head:** stickyheader z-index 2 ([cc27bd8](https://github.com/kyndryl-design-system/shidoka-applications/commit/cc27bd8c822b2594d79562231465082ea599db25))
+* **table-setting:** hide column checkbox and lock icon when scroll ([#190](https://github.com/kyndryl-design-system/shidoka-applications/issues/190)) ([fce9fee](https://github.com/kyndryl-design-system/shidoka-applications/commit/fce9feeb2a655ce8519cf2abe9236c26f0a3042a))
+
 ## [1.24.12](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.11...v1.24.12) (2024-06-05)
 
 
