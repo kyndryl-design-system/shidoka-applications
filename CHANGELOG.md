@@ -1,3 +1,10 @@
+## [1.24.14](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.13...v1.24.14) (2024-06-06)
+
+
+### Bug Fixes
+
+* **dropdown:** add updateByValue prop ([7f4e6a5](https://github.com/kyndryl-design-system/shidoka-applications/commit/7f4e6a516f85e5991a5c8d9aeca60e8fdd41f2cd))
+
 ## [1.24.13](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.12...v1.24.13) (2024-06-06)
 
 
