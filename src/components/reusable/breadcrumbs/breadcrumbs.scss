@@ -3,21 +3,58 @@
 
 .breadcrumbs {
   list-style: none;
-  padding: 0;
   display: flex;
-  margin: 0 -8px;
+  align-items: center;
+  gap: 16px;
 
+  ::slotted(span) {
+    @include typography.type-ui-02;
+    font-weight: 500;
+  }
+
+  ::slotted(kd-link) {
+    @include typography.type-ui-02;
+  }
+
+  .desktop::slotted(kd-link),
+  .desktop::slotted(kyn-overflow-menu) {
+    display: flex;
+    align-items: center;
+
+    &::after {
+      content: '';
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik05LjYyNDk1IDdMNS4yNDk5NSAxMS4zNzVMNC42Mzc0NSAxMC43NjI1TDguMzk5OTUgN0w0LjYzNzQ1IDMuMjM3NUw1LjI0OTk1IDIuNjI1TDkuNjI0OTUgN1oiIGZpbGw9IiM4OTg4ODgiLz4NCjwvc3ZnPiA=');
+      width: 16px;
+      height: 16px;
+      margin-top: 1px;
+      margin-left: 16px;
+    }
+  }
+
+  /* old styles to be removed */
   ::slotted(kyn-breadcrumb-item:not(:last-child)) {
     display: inline-flex;
     color: var(--kd-color-text-tertiary);
 
     &::after {
       content: '\2014\2014'; // Unicode for double em dash
-      margin: 0px 8px; // Provide margins on both sides of the double em dash
+      margin-left: 16px;
       color: var(--kd-color-background-ui-subtle);
       font-weight: var(--kd-font-weight-regular);
       letter-spacing: -2px;
       font-size: var(--kd-font-size-utility-3-max);
     }
+  }
+}
+
+slot.desktop {
+  @media (max-width: 42rem) {
+    display: none;
+  }
+}
+
+slot[name='mobile'] {
+  @media (min-width: 42rem) {
+    display: none;
   }
 }

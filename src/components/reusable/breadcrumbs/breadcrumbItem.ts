@@ -37,10 +37,15 @@ export class BreadcrumbItem extends LitElement {
               <a
                 href="${this.href}"
                 @click=${(e: Event) => this._handleClick(e)}
-                ><slot></slot
-              ></a>
+              >
+                <slot></slot>
+              </a>
             `
-          : html` <span><slot></slot></span> `}
+          : html`
+              <span>
+                <slot></slot>
+              </span>
+            `}
       </div>
     `;
   }
