@@ -27,7 +27,7 @@ export const Breadcrumbs = {
 
         <kd-link standalone href="/path">Level 1</kd-link>
         <kd-link standalone href="/path">Level 2</kd-link>
-        <span>Current page</span>
+        <strong>Current page</strong>
       </kyn-breadcrumbs>
     `;
   },
@@ -51,7 +51,7 @@ export const WithOverflow = {
         </kyn-overflow-menu>
 
         <kd-link standalone href="/path">Level 5</kd-link>
-        <span>Current page</span>
+        <strong>Current page</strong>
       </kyn-breadcrumbs>
     `;
   },
