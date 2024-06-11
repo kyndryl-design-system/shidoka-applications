@@ -108,8 +108,6 @@ export const WithNav = {
           Link 1
         </kyn-header-link>
 
-        <kyn-header-divider></kyn-header-divider>
-
         <kyn-header-category heading="Category">
           <kyn-header-link href="javascript:void(0)">
             <kd-icon .icon=${circleIcon}></kd-icon>
@@ -127,32 +125,30 @@ export const WithNav = {
           <kd-icon .icon=${circleIcon}></kd-icon>
           Link 4
 
-          <div slot="links">
-            <kyn-header-link slot="links" href="javascript:void(0)">
-              <kd-icon .icon=${circleIcon}></kd-icon>
-              Sub Link 1
-            </kyn-header-link>
-            <kyn-header-link slot="links" href="javascript:void(0)">
-              <kd-icon .icon=${circleIcon}></kd-icon>
-              Sub Link 2
-            </kyn-header-link>
-            <kyn-header-link slot="links" href="javascript:void(0)">
-              <kd-icon .icon=${circleIcon}></kd-icon>
-              Sub Link 3
-            </kyn-header-link>
-            <kyn-header-link slot="links" href="javascript:void(0)">
-              <kd-icon .icon=${circleIcon}></kd-icon>
-              Sub Link 4
-            </kyn-header-link>
-            <kyn-header-link slot="links" href="javascript:void(0)">
-              <kd-icon .icon=${circleIcon}></kd-icon>
-              Sub Link 5
-            </kyn-header-link>
-            <kyn-header-link slot="links" href="javascript:void(0)">
-              <kd-icon .icon=${circleIcon}></kd-icon>
-              Sub Link 6
-            </kyn-header-link>
-          </div>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 1
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 2
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 3
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 4
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 5
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Sub Link 6
+          </kyn-header-link>
         </kyn-header-link>
       </kyn-header-nav>
     </kyn-header>
@@ -317,8 +313,6 @@ export const WithEverything = {
           <kd-icon .icon=${circleIcon}></kd-icon>
           Link 1
         </kyn-header-link>
-
-        <kyn-header-divider></kyn-header-divider>
 
         <kyn-header-category heading="Category">
           <kyn-header-link href="javascript:void(0)">
