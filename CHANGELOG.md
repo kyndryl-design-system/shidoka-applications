@@ -1,3 +1,15 @@
+## [1.24.16](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.15...v1.24.16) (2024-06-11)
+
+
+### Bug Fixes
+
+* **header:** category borders, padding ([c9917de](https://github.com/kyndryl-design-system/shidoka-applications/commit/c9917ded0fcf7bc6e757e55eaf684ac906b62641))
+
+
+### Reverts
+
+* Revert "Revert "fix(header): menu label style adjustments"" ([2c86690](https://github.com/kyndryl-design-system/shidoka-applications/commit/2c86690fd49924a7a48ffc7ec4f8188e4ff92197))
+
 ## [1.24.15](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.14...v1.24.15) (2024-06-11)
 
 
