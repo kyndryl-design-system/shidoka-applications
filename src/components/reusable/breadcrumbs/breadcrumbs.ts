@@ -16,8 +16,7 @@ export class Breadcrumbs extends LitElement {
   override render() {
     return html`
       <nav class="breadcrumbs">
-        <slot name="mobile"></slot>
-        <slot class="desktop"></slot>
+        <slot></slot>
       </nav>
     `;
   }

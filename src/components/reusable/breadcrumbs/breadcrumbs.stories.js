@@ -20,11 +20,6 @@ export const Breadcrumbs = {
   render: () => {
     return html`
       <kyn-breadcrumbs>
-        <kd-link slot="mobile" standalone iconLeft href="/path">
-          <kd-icon slot="icon" .icon=${backIcon}></kd-icon>
-          Back
-        </kd-link>
-
         <kd-link standalone href="/path">Level 1</kd-link>
         <kd-link standalone href="/path">Level 2</kd-link>
         <strong>Current page</strong>
@@ -37,11 +32,6 @@ export const WithOverflow = {
   render: () => {
     return html`
       <kyn-breadcrumbs>
-        <kd-link slot="mobile" standalone iconLeft href="/path">
-          <kd-icon slot="icon" .icon=${backIcon}></kd-icon>
-          Back
-        </kd-link>
-
         <kd-link standalone href="/path">Level 1</kd-link>
         <kd-link standalone href="/path">Level 2</kd-link>
 
