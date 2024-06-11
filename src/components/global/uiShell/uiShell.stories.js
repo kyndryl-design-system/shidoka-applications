@@ -118,8 +118,6 @@ export const WithEverything = {
               Link 1
             </kyn-header-link>
 
-            <kyn-header-divider></kyn-header-divider>
-
             <kyn-header-category heading="Category">
               <kyn-header-link href="javascript:void(0)">
                 <kd-icon .icon=${sampleIcon}></kd-icon>
