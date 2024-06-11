@@ -1,3 +1,10 @@
+## [1.24.15](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.14...v1.24.15) (2024-06-11)
+
+
+### Bug Fixes
+
+* **header:** menu label style adjustments ([0725089](https://github.com/kyndryl-design-system/shidoka-applications/commit/07250892a75455fc97278acad5a4fd9e2c2a3e0c))
+
 ## [1.24.14](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.13...v1.24.14) (2024-06-06)
 
 
