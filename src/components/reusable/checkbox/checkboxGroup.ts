@@ -158,12 +158,12 @@ export class CheckboxGroup extends LitElement {
           : null}
 
         <fieldset ?disabled=${this.disabled}>
-          <div class="${this.horizontal ? 'horizontal' : ''}">
-            <legend class="${this.hideLegend ? 'sr-only' : ''}">
-              ${this.required ? html`<span class="required">*</span>` : null}
-              <slot name="label"></slot>
-            </legend>
+          <legend class="${this.hideLegend ? 'sr-only' : ''}">
+            ${this.required ? html`<span class="required">*</span>` : null}
+            <slot name="label"></slot>
+          </legend>
 
+          <div class="${this.horizontal ? 'horizontal' : ''}">
             ${this.selectAll
               ? html`
                   <kyn-checkbox

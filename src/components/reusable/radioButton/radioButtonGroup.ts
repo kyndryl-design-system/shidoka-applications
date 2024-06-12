@@ -81,12 +81,12 @@ export class RadioButtonGroup extends LitElement {
   override render() {
     return html`
       <fieldset ?disabled=${this.disabled}>
-        <div class="${this.horizontal ? 'horizontal' : ''}">
-          <legend>
-            ${this.required ? html`<span class="required">*</span>` : null}
-            <slot name="label"></slot>
-          </legend>
+        <legend>
+          ${this.required ? html`<span class="required">*</span>` : null}
+          <slot name="label"></slot>
+        </legend>
 
+        <div class="${this.horizontal ? 'horizontal' : ''}">
           <slot></slot>
         </div>
 
