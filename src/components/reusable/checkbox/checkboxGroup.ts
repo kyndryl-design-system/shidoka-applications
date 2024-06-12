@@ -1,10 +1,5 @@
 import { LitElement, html } from 'lit';
-import {
-  customElement,
-  property,
-  state,
-  queryAssignedElements,
-} from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import CheckboxGroupScss from './checkboxGroup.scss';
 
 import '../textInput';
@@ -109,12 +104,15 @@ export class CheckboxGroup extends LitElement {
   @property({ type: String })
   invalidText = '';
 
-  /**
-   * Queries for slotted checkboxes.
-   * @ignore
-   */
-  @queryAssignedElements()
-  checkboxes!: Array<any>;
+  // /**
+  //  * Queries for slotted checkboxes.
+  //  * @ignore
+  //  */
+  // @queryAssignedElements()
+  // checkboxes!: Array<any>;
+
+  @state()
+  checkboxes: Array<any> = [];
 
   /**
    * Attached internals for form association.
@@ -430,8 +428,9 @@ export class CheckboxGroup extends LitElement {
   }
 
   private _handleSlotChange() {
-    this._toggleRevealed(this.limitRevealed);
+    this.checkboxes = Array.from(this.querySelectorAll('kyn-checkbox'));
     this._updateChildren();
+    this._toggleRevealed(this.limitRevealed);
     this.requestUpdate();
   }
 
@@ -442,7 +441,86 @@ export class CheckboxGroup extends LitElement {
   private _updateChildren() {
     this.checkboxes.forEach((checkbox) => {
       checkbox.disabled = this.disabled;
+      checkbox.checked = this.value.includes(checkbox.value);
     });
+
+    const CheckedBoxesCount = this.checkboxes.filter(
+      (checkbox) => checkbox.checked
+    ).length;
+
+    // sync "Select All" checkbox state
+    this.selectAllChecked =
+      this.checkboxes.length > 0 &&
+      CheckedBoxesCount === this.checkboxes.length;
+
+    // sync "Select All" indeterminate state
+    this.selectAllIndeterminate =
+      CheckedBoxesCount < this.checkboxes.length && CheckedBoxesCount > 0;
+  }
+
+  private _handleSubgroupChange(e: any) {
+    const newValues = [...this.value];
+    const {
+      isParent,
+      parentChecked,
+      parentValue,
+      value,
+      checked,
+      childValues,
+    } = e.detail;
+
+    if (isParent) {
+      if (checked) {
+        if (!newValues.includes(value)) {
+          newValues.push(value);
+        }
+
+        childValues.forEach((value: string) => {
+          if (!newValues.includes(value)) {
+            newValues.push(value);
+          }
+        });
+      } else {
+        const index = newValues.indexOf(value);
+        newValues.splice(index, 1);
+
+        childValues.forEach((value: string) => {
+          const index = newValues.indexOf(value);
+          if (index !== -1) {
+            newValues.splice(index, 1);
+          }
+        });
+      }
+    } else {
+      if (checked) {
+        if (!newValues.includes(value)) {
+          newValues.push(value);
+        }
+      } else {
+        const index = newValues.indexOf(value);
+        if (index !== -1) {
+          newValues.splice(index, 1);
+        }
+      }
+
+      if (parentChecked) {
+        if (!newValues.includes(parentValue)) {
+          newValues.push(parentValue);
+        }
+      } else {
+        const index = newValues.indexOf(parentValue);
+        if (index !== -1) {
+          newValues.splice(index, 1);
+        }
+      }
+    }
+    console.log(newValues);
+
+    this.value = newValues;
+
+    this._validate(true, false);
+
+    this._emitChangeEvent();
   }
 
   override connectedCallback() {
@@ -451,6 +529,11 @@ export class CheckboxGroup extends LitElement {
     // capture child checkboxes change event
     this.addEventListener('on-checkbox-change', (e: any) =>
       this._handleCheckboxChange(e)
+    );
+
+    // capture subgroup change event
+    this.addEventListener('on-checkbox-subgroup-change', (e: any) =>
+      this._handleSubgroupChange(e)
     );
 
     if (this.internals.form) {
@@ -467,6 +550,10 @@ export class CheckboxGroup extends LitElement {
   override disconnectedCallback() {
     this.removeEventListener('on-checkbox-change', (e: any) =>
       this._handleCheckboxChange(e)
+    );
+
+    this.removeEventListener('on-checkbox-subgroup-change', (e: any) =>
+      this._handleSubgroupChange(e)
     );
 
     if (this.internals.form) {
