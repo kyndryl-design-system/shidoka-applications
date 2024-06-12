@@ -1,3 +1,10 @@
+## [1.25.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.25.0...v1.25.1) (2024-06-12)
+
+
+### Bug Fixes
+
+* checkbox/radio horizontal label position ([e7db0ae](https://github.com/kyndryl-design-system/shidoka-applications/commit/e7db0ae21a0b11bac8ed08422cc0b7ec2f07e6b3))
+
 # [1.25.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.16...v1.25.0) (2024-06-12)
 
 
