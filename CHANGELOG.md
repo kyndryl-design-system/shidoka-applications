@@ -1,3 +1,10 @@
+# [1.25.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.16...v1.25.0) (2024-06-12)
+
+
+### Features
+
+* **breadcrumbs:** responsive redesign using kd-link ([#192](https://github.com/kyndryl-design-system/shidoka-applications/issues/192)) ([93cf20b](https://github.com/kyndryl-design-system/shidoka-applications/commit/93cf20b56b2366cfb7ff09c2ae4333056c5e093c))
+
 ## [1.24.16](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.15...v1.24.16) (2024-06-11)
 
 
