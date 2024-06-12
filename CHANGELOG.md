@@ -1,3 +1,10 @@
+## [1.26.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.0...v1.26.1) (2024-06-12)
+
+
+### Bug Fixes
+
+* **dropdown:** add right padding for searchable variant ([9987521](https://github.com/kyndryl-design-system/shidoka-applications/commit/9987521784d2d56feb415492a1f92ad1d5e302fc))
+
 # [1.26.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.25.1...v1.26.0) (2024-06-12)
 
 
