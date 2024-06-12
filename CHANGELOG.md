@@ -1,3 +1,10 @@
+# [1.26.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.25.1...v1.26.0) (2024-06-12)
+
+
+### Features
+
+* **checkbox:** add checkbox-subgroup ([4b8449e](https://github.com/kyndryl-design-system/shidoka-applications/commit/4b8449e2f5eff686f0fface1fa51ee20e2061248))
+
 ## [1.25.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.25.0...v1.25.1) (2024-06-12)
 
 
