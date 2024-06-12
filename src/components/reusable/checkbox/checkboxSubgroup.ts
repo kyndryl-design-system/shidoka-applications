@@ -1,10 +1,5 @@
 import { LitElement, html } from 'lit';
-import {
-  customElement,
-  property,
-  state,
-  queryAssignedElements,
-} from 'lit/decorators.js';
+import { customElement, queryAssignedElements } from 'lit/decorators.js';
 import Styles from './checkboxSubgroup.scss';
 
 /**
