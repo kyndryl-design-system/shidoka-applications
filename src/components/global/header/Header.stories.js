@@ -116,6 +116,10 @@ export const WithNav = {
           <kyn-header-link href="javascript:void(0)">
             <kd-icon .icon=${circleIcon}></kd-icon>
             Link 3
+
+            <button slot="button">
+              <kd-icon .icon=${circleIcon}></kd-icon>
+            </button>
           </kyn-header-link>
         </kyn-header-category>
 
@@ -128,6 +132,10 @@ export const WithNav = {
           <kyn-header-link slot="links" href="javascript:void(0)">
             <kd-icon .icon=${circleIcon}></kd-icon>
             Sub Link 1
+
+            <button slot="button">
+              <kd-icon .icon=${circleIcon}></kd-icon>
+            </button>
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
             <kd-icon .icon=${circleIcon}></kd-icon>

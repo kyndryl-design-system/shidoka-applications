@@ -7,20 +7,9 @@
   position: relative;
 }
 
-.nav-link {
-  display: flex;
-  position: relative;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 16px 16px 8px;
-  text-decoration: none;
+.container {
   color: var(--kd-color-text-primary);
-  white-space: nowrap;
   border-radius: 4px;
-  transition: background-color 150ms ease-out, color 150ms ease-out,
-    outline-color 150ms ease-out;
-  outline: 2px solid transparent;
-  outline-offset: -2px;
 
   &:hover {
     background: var(--kd-color-background-primary-hover);
@@ -46,6 +35,46 @@
   }
 }
 
+.nav-link {
+  display: flex;
+  position: relative;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 16px 8px;
+  text-decoration: none;
+  // color: var(--kd-color-text-primary);
+  white-space: nowrap;
+  border-radius: 4px;
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    outline-color 150ms ease-out;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  color: inherit;
+
+  // &:hover {
+  //   background: var(--kd-color-background-primary-hover);
+  //   color: var(--kd-color-text-inversed);
+  // }
+
+  // &:active {
+  //   background: var(--kd-color-background-primary-pressed);
+  //   color: var(--kd-color-text-inversed);
+  // }
+
+  // &:focus {
+  //   outline-color: var(--kd-color-border-tertiary-bold);
+  // }
+
+  // &.active {
+  //   color: var(--kd-color-text-link);
+  //   font-weight: 500;
+
+  //   &:hover {
+  //     color: var(--kd-color-text-inversed);
+  //   }
+  // }
+}
+
 .level {
   &--1 {
     .nav-link {
@@ -58,15 +87,11 @@
   }
 
   &--2 {
-    .nav-link {
-      @include typography.type-ui-02;
-      padding: 8px 16px 8px 8px;
-      height: 40px;
+    .container {
       color: var(--kd-color-text-secondary);
 
       &.active {
         color: var(--kd-color-text-link);
-        font-weight: 500;
 
         &:hover {
           color: var(--kd-color-text-inversed);
@@ -77,6 +102,27 @@
       &:active {
         color: var(--kd-color-text-inversed);
       }
+    }
+
+    .nav-link {
+      @include typography.type-ui-02;
+      padding: 8px 16px 8px 8px;
+      height: 40px;
+      // color: var(--kd-color-text-secondary);
+
+      &.active {
+        // color: var(--kd-color-text-link);
+        font-weight: 500;
+
+        // &:hover {
+        //   color: var(--kd-color-text-inversed);
+        // }
+      }
+
+      // &:hover,
+      // &:active {
+      //   color: var(--kd-color-text-inversed);
+      // }
     }
   }
 }
@@ -149,5 +195,27 @@ kyn-text-input {
     left: 0 !important;
     transform: scaleX(0);
     transform-origin: right;
+  }
+}
+
+slot[name='button']::slotted(button) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  position: absolute;
+  right: 12px;
+  top: calc(50% - 12px);
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  transition: opacity 150ms ease-out;
+  opacity: 0;
+
+  .container:hover & {
+    opacity: 1;
   }
 }

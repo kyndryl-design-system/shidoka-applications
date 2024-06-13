@@ -19,6 +19,7 @@ import searchIcon from '@carbon/icons/es/search/24';
  * @fires on-click - Captures the click event and emits the original event details.
  * @slot unnamed - Slot for link text/content.
  * @slot links - Slot for sublinks (up to two levels).
+ * @slot button - Slot for HTML <button> for custom actions like bookmark/favorite.
  */
 @customElement('kyn-header-link')
 export class HeaderLink extends LitElement {
@@ -118,20 +119,23 @@ export class HeaderLink extends LitElement {
         @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
         @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
       >
-        <a
-          target=${this.target}
-          rel=${this.rel}
-          href=${this.href}
-          class=${classMap(linkClasses)}
-          @click=${(e: Event) => this.handleClick(e)}
-          @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
-        >
-          <slot></slot>
+        <div class="container">
+          <a
+            target=${this.target}
+            rel=${this.rel}
+            href=${this.href}
+            class=${classMap(linkClasses)}
+            @click=${(e: Event) => this.handleClick(e)}
+            @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
+          >
+            <slot></slot>
 
-          ${this.slottedEls.length
-            ? html` <kd-icon class="arrow" .icon=${arrowIcon}></kd-icon> `
-            : null}
-        </a>
+            ${this.slottedEls.length
+              ? html` <kd-icon class="arrow" .icon=${arrowIcon}></kd-icon> `
+              : null}
+          </a>
+          <slot name="button"></slot>
+        </div>
 
         <div
           class=${classMap(menuClasses)}
@@ -298,7 +302,7 @@ export class HeaderLink extends LitElement {
   }
 
   override willUpdate(changedProps: any) {
-    if (changedProps.has('open') && this.open) {
+    if (changedProps.has('open') && this.open && this.slottedEls.length) {
       this._positionMenu();
     }
   }
