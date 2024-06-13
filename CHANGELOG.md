@@ -1,3 +1,10 @@
+## [1.26.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.1...v1.26.2) (2024-06-13)
+
+
+### Bug Fixes
+
+* **dropdown:** scroll to selected option on open ([24975fa](https://github.com/kyndryl-design-system/shidoka-applications/commit/24975fa04178e70db9b2184d7a0b7de46e4604c7))
+
 ## [1.26.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.0...v1.26.1) (2024-06-12)
 
 
