@@ -1008,6 +1008,13 @@ export class Dropdown extends LitElement {
       }
 
       if (this.open) {
+        if (!this.multiple) {
+          // scroll to selected option
+          this.options
+            .find((option) => option.selected)
+            ?.scrollIntoView({ block: 'nearest' });
+        }
+
         // open dropdown upwards if closer to bottom of viewport
         const Threshold = 0.6;
 

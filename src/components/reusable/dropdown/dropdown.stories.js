@@ -61,7 +61,6 @@ export const Single = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         caption=${args.caption}
-        value="1"
         menuMinWidth=${args.menuMinWidth}
         @on-change=${(e) => action(e.type)(e)}
       >
