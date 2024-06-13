@@ -1,3 +1,10 @@
+## [1.26.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.2...v1.26.3) (2024-06-13)
+
+
+### Bug Fixes
+
+* **header:** menu micro alignments ([8b75661](https://github.com/kyndryl-design-system/shidoka-applications/commit/8b756614363e338d49e645716b3e4ad5e959af3a))
+
 ## [1.26.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.1...v1.26.2) (2024-06-13)
 
 
