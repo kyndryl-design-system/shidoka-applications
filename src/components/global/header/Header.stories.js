@@ -117,7 +117,7 @@ export const WithNav = {
             <kd-icon .icon=${circleIcon}></kd-icon>
             Link 3
 
-            <button slot="button">
+            <button slot="button" aria-label="Action" title="Action">
               <kd-icon .icon=${circleIcon}></kd-icon>
             </button>
           </kyn-header-link>
@@ -133,7 +133,7 @@ export const WithNav = {
             <kd-icon .icon=${circleIcon}></kd-icon>
             Sub Link 1
 
-            <button slot="button">
+            <button slot="button" aria-label="Action" title="Action">
               <kd-icon .icon=${circleIcon}></kd-icon>
             </button>
           </kyn-header-link>
