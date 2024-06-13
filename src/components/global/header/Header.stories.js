@@ -6,7 +6,8 @@ import '@kyndryl-design-system/shidoka-foundation/components/button';
 
 import userAvatarIcon from '@carbon/icons/es/user--avatar/20';
 import helpIcon from '@carbon/icons/es/help/20';
-import circleIcon from '@carbon/icons/es/circle-stroke';
+import circleIcon from '@carbon/icons/es/circle--outline/16';
+import circleIcon24 from '@carbon/icons/es/circle--outline/24';
 import filledNotificationIcon from '@carbon/icons/es/notification--new/20';
 import useSetingIcon from '@carbon/icons/es/settings/20';
 
@@ -104,17 +105,17 @@ export const WithNav = {
     <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
       <kyn-header-nav>
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${circleIcon}></kd-icon>
+          <kd-icon .icon=${circleIcon24}></kd-icon>
           Link 1
         </kyn-header-link>
 
         <kyn-header-category heading="Category">
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <kd-icon .icon=${circleIcon24}></kd-icon>
             Link 2
           </kyn-header-link>
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <kd-icon .icon=${circleIcon24}></kd-icon>
             Link 3
           </kyn-header-link>
         </kyn-header-category>
@@ -122,7 +123,7 @@ export const WithNav = {
         <kyn-header-divider></kyn-header-divider>
 
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${circleIcon}></kd-icon>
+          <kd-icon .icon=${circleIcon24}></kd-icon>
           Link 4
 
           <kyn-header-link slot="links" href="javascript:void(0)">
@@ -310,17 +311,17 @@ export const WithEverything = {
     <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
       <kyn-header-nav>
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${circleIcon}></kd-icon>
+          <kd-icon .icon=${circleIcon24}></kd-icon>
           Link 1
         </kyn-header-link>
 
         <kyn-header-category heading="Category">
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <kd-icon .icon=${circleIcon24}></kd-icon>
             Link 2
           </kyn-header-link>
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <kd-icon .icon=${circleIcon24}></kd-icon>
             Link 3
           </kyn-header-link>
         </kyn-header-category>
@@ -328,7 +329,7 @@ export const WithEverything = {
         <kyn-header-divider></kyn-header-divider>
 
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${circleIcon}></kd-icon>
+          <kd-icon .icon=${circleIcon24}></kd-icon>
           Link 4
 
           <kyn-header-link slot="links" href="javascript:void(0)">
