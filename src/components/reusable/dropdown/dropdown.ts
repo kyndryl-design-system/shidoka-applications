@@ -6,7 +6,6 @@ import {
   query,
   queryAssignedElements,
 } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import DropdownScss from './dropdown.scss';
 import './dropdownOption';
