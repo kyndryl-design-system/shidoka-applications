@@ -1,3 +1,10 @@
+## [1.26.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.5...v1.26.6) (2024-06-17)
+
+
+### Bug Fixes
+
+* **dropdown:** prevent focus when disabled ([534999b](https://github.com/kyndryl-design-system/shidoka-applications/commit/534999b3238ff02bdbb2893825dc6dffe60c8b27))
+
 ## [1.26.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.4...v1.26.5) (2024-06-17)
 
 
