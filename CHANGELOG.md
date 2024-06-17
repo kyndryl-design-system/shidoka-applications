@@ -1,3 +1,10 @@
+## [1.26.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.4...v1.26.5) (2024-06-17)
+
+
+### Bug Fixes
+
+* radio/checkbox horizontal wrapping ([a31c2f7](https://github.com/kyndryl-design-system/shidoka-applications/commit/a31c2f7a95ea2752c02f351cd2b9a3a3d4355001))
+
 ## [1.26.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.3...v1.26.4) (2024-06-17)
 
 
