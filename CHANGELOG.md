@@ -1,3 +1,10 @@
+## [1.26.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.3...v1.26.4) (2024-06-17)
+
+
+### Bug Fixes
+
+* **navigation:** slotted svg styles ([f2bb33f](https://github.com/kyndryl-design-system/shidoka-applications/commit/f2bb33fe91baa01a0fc93a79e730e59709870456))
+
 ## [1.26.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.2...v1.26.3) (2024-06-13)
 
 
