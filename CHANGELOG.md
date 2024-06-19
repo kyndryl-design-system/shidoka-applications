@@ -1,3 +1,10 @@
+## [1.26.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.6...v1.26.7) (2024-06-19)
+
+
+### Bug Fixes
+
+* **modal:** add body padding so input outlines dont get cut off ([3f6f2bb](https://github.com/kyndryl-design-system/shidoka-applications/commit/3f6f2bb63bb0ec9f391c08149644225094acd021))
+
 ## [1.26.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.5...v1.26.6) (2024-06-17)
 
 
