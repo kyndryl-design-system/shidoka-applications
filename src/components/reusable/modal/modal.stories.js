@@ -4,6 +4,7 @@ import { action } from '@storybook/addon-actions';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import '../textInput';
 
 export default {
   title: 'Components/Modal',
@@ -61,7 +62,7 @@ export const Modal = {
   },
 };
 
-export const Action_Buttons = {
+export const ActionButtons = {
   args,
   render: (args) => {
     return html`
@@ -154,6 +155,55 @@ export const BeforeClose = {
 const handleBeforeClose = (returnValue) => {
   if (returnValue === 'ok') {
     return confirm(`beforeClose handler triggered.`);
+  } else {
+    return true;
+  }
+};
+
+export const WithForm = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-modal
+        ?open=${args.open}
+        size=${args.size}
+        titleText=${args.titleText}
+        labelText=${args.labelText}
+        okText=${args.okText}
+        cancelText=${args.cancelText}
+        ?destructive=${args.destructive}
+        ?okDisabled=${args.okDisabled}
+        ?hideFooter=${args.hideFooter}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        secondaryButtonText=${args.secondaryButtonText}
+        ?hideCancelButton=${args.hideCancelButton}
+        .beforeClose=${(returnValue) => handleBeforeCloseSubmit(returnValue)}
+        @on-close=${(e) => action(e.type)(e)}
+      >
+        <kd-button slot="anchor"> Open Modal </kd-button>
+
+        Modal with form validation.
+        <br /><br />
+
+        <form @submit=${(e) => handleSubmit(e)}>
+          <kyn-text-input name="test" required>Required input</kyn-text-input>
+        </form>
+      </kyn-modal>
+    `;
+  },
+};
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  console.log(...formData);
+};
+
+const handleBeforeCloseSubmit = (returnValue) => {
+  if (returnValue !== 'cancel') {
+    const Form = document.querySelector('form');
+    Form.requestSubmit(); // submit the form
+    return Form.checkValidity(); // close dialog if form is valid
   } else {
     return true;
   }

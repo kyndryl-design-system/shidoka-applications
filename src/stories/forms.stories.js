@@ -25,8 +25,8 @@ export const Default = {
         @submit=${(e) => {
           e.preventDefault();
           action('submit')(e);
-          const FormData = new FormData(e.target);
-          console.log(...FormData);
+          const formData = new FormData(e.target);
+          console.log(...formData);
 
           // console.log(e.submitter);
           // submitter is not accessible with form associated custom elements, see https://github.com/WICG/webcomponents/issues/814
