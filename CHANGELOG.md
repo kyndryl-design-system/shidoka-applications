@@ -1,3 +1,10 @@
+## [1.26.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.7...v1.26.8) (2024-06-21)
+
+
+### Bug Fixes
+
+* **pagination:** pageSize guardrails ([ed3ac03](https://github.com/kyndryl-design-system/shidoka-applications/commit/ed3ac037d1965a4c13381481bb8c379bd400f2ed))
+
 ## [1.26.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.6...v1.26.7) (2024-06-19)
 
 
