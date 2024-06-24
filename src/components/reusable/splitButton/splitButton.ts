@@ -1,9 +1,8 @@
-import { LitElement, html, PropertyValues } from 'lit';
+import { LitElement, html } from 'lit';
 import {
   customElement,
   property,
   state,
-  query,
   queryAssignedElements,
 } from 'lit/decorators.js';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
