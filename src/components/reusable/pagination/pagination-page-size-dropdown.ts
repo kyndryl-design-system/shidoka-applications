@@ -42,7 +42,7 @@ export class PaginationPageSizeDropdown extends LitElement {
 
     this.dispatchEvent(
       new CustomEvent('on-page-size-change', {
-        detail: { value: event.detail.value },
+        detail: { value: Number(event.detail.value) },
         bubbles: true, // So that parent components can catch it
         composed: true, // Required for the event to pass through the Shadow DOM boundary
       })

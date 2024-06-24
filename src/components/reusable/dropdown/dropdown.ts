@@ -223,6 +223,7 @@ export class Dropdown extends LitElement {
           for=${this.name}
           id="label-${this.name}"
           class="label-text"
+          disabled
           @click=${this._handleLabelClick}
         >
           ${this.required ? html`<span class="required">*</span>` : null}
@@ -248,7 +249,7 @@ export class Dropdown extends LitElement {
               ?required=${this.required}
               ?disabled=${this.disabled}
               ?invalid=${this.isInvalid}
-              tabindex="0"
+              tabindex=${this.disabled ? '' : '0'}
               @click=${() => this.handleClick()}
               @keydown=${(e: any) => this.handleButtonKeydown(e)}
               @mousedown=${(e: any) => {
@@ -444,12 +445,14 @@ export class Dropdown extends LitElement {
   }
 
   private _handleLabelClick() {
-    this.open = !this.open;
+    if (!this.disabled) {
+      this.open = !this.open;
 
-    if (this.searchable) {
-      this.searchEl.focus();
-    } else {
-      this.buttonEl.focus();
+      if (this.searchable) {
+        this.searchEl.focus();
+      } else {
+        this.buttonEl.focus();
+      }
     }
   }
 
@@ -1008,6 +1011,13 @@ export class Dropdown extends LitElement {
       }
 
       if (this.open) {
+        if (!this.multiple) {
+          // scroll to selected option
+          this.options
+            .find((option) => option.selected)
+            ?.scrollIntoView({ block: 'nearest' });
+        }
+
         // open dropdown upwards if closer to bottom of viewport
         const Threshold = 0.6;
 

@@ -27,17 +27,21 @@ export class Pagination extends LitElement {
   @property({ type: Number })
   count = 0;
 
-  /** Current active page number.*/
+  /** Current active page number. */
   @property({ type: Number, reflect: true })
   pageNumber = 1;
 
-  /** Number of items displayed per page.*/
+  /** Number of items displayed per page. */
   @property({ type: Number })
   pageSize = 5;
 
-  /** Available options for the page size.*/
+  /** Available options for the page size. */
   @property({ type: Array })
   pageSizeOptions: number[] = [5, 10, 20, 30, 40, 50, 100];
+
+  /** Number of pages. */
+  @state()
+  _numberOfPages = 1;
 
   /** Label for the page size dropdown.*/
   @property({ type: String })
@@ -84,8 +88,6 @@ export class Pagination extends LitElement {
   }
 
   override render() {
-    const numberOfPages = Math.ceil(this.count / this.pageSize);
-
     return html`
       ${!this.hideItemsRange
         ? html`
@@ -112,12 +114,20 @@ export class Pagination extends LitElement {
         ? html`
             <kyn-pagination-navigation-buttons
               .pageNumber=${this.pageNumber}
-              .numberOfPages=${numberOfPages}
+              .numberOfPages=${this._numberOfPages}
               @on-page-number-change=${this.handlePageNumberChange}
             ></kyn-pagination-navigation-buttons>
           `
         : null}
     `;
+  }
+
+  override updated(changedProps: any) {
+    if (changedProps.has('count') || changedProps.has('pageSize')) {
+      if (this.pageSize && this.count) {
+        this._numberOfPages = Math.ceil(this.count / this.pageSize);
+      }
+    }
   }
 }
 

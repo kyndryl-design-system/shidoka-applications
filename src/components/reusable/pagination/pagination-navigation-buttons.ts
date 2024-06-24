@@ -24,11 +24,11 @@ export class PaginationNavigationButtons extends LitElement {
 
   // Current page number, defaults to 0
   @property({ type: Number, reflect: true })
-  pageNumber = 0;
+  pageNumber = 1;
 
   // Total number of pages, defaults to 0
   @property({ type: Number, reflect: true })
-  numberOfPages = 0;
+  numberOfPages = 1;
 
   /**
    * Determines the device type the component is being rendered on.

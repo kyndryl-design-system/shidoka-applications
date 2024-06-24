@@ -3,7 +3,7 @@ import './localNav';
 import './localNavLink';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import sampleIcon from '@carbon/icons/es/circle-stroke';
+import sampleIcon from '@carbon/icons/es/circle--outline/16';
 
 export default {
   title: 'Global Components/Local Nav',

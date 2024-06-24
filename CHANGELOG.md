@@ -1,3 +1,99 @@
+## [1.26.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.7...v1.26.8) (2024-06-21)
+
+
+### Bug Fixes
+
+* **pagination:** pageSize guardrails ([ed3ac03](https://github.com/kyndryl-design-system/shidoka-applications/commit/ed3ac037d1965a4c13381481bb8c379bd400f2ed))
+
+## [1.26.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.6...v1.26.7) (2024-06-19)
+
+
+### Bug Fixes
+
+* **modal:** add body padding so input outlines dont get cut off ([3f6f2bb](https://github.com/kyndryl-design-system/shidoka-applications/commit/3f6f2bb63bb0ec9f391c08149644225094acd021))
+
+## [1.26.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.5...v1.26.6) (2024-06-17)
+
+
+### Bug Fixes
+
+* **dropdown:** prevent focus when disabled ([534999b](https://github.com/kyndryl-design-system/shidoka-applications/commit/534999b3238ff02bdbb2893825dc6dffe60c8b27))
+
+## [1.26.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.4...v1.26.5) (2024-06-17)
+
+
+### Bug Fixes
+
+* radio/checkbox horizontal wrapping ([a31c2f7](https://github.com/kyndryl-design-system/shidoka-applications/commit/a31c2f7a95ea2752c02f351cd2b9a3a3d4355001))
+
+## [1.26.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.3...v1.26.4) (2024-06-17)
+
+
+### Bug Fixes
+
+* **navigation:** slotted svg styles ([f2bb33f](https://github.com/kyndryl-design-system/shidoka-applications/commit/f2bb33fe91baa01a0fc93a79e730e59709870456))
+
+## [1.26.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.2...v1.26.3) (2024-06-13)
+
+
+### Bug Fixes
+
+* **header:** menu micro alignments ([8b75661](https://github.com/kyndryl-design-system/shidoka-applications/commit/8b756614363e338d49e645716b3e4ad5e959af3a))
+
+## [1.26.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.1...v1.26.2) (2024-06-13)
+
+
+### Bug Fixes
+
+* **dropdown:** scroll to selected option on open ([24975fa](https://github.com/kyndryl-design-system/shidoka-applications/commit/24975fa04178e70db9b2184d7a0b7de46e4604c7))
+
+## [1.26.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.0...v1.26.1) (2024-06-12)
+
+
+### Bug Fixes
+
+* **dropdown:** add right padding for searchable variant ([9987521](https://github.com/kyndryl-design-system/shidoka-applications/commit/9987521784d2d56feb415492a1f92ad1d5e302fc))
+
+# [1.26.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.25.1...v1.26.0) (2024-06-12)
+
+
+### Features
+
+* **checkbox:** add checkbox-subgroup ([4b8449e](https://github.com/kyndryl-design-system/shidoka-applications/commit/4b8449e2f5eff686f0fface1fa51ee20e2061248))
+
+## [1.25.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.25.0...v1.25.1) (2024-06-12)
+
+
+### Bug Fixes
+
+* checkbox/radio horizontal label position ([e7db0ae](https://github.com/kyndryl-design-system/shidoka-applications/commit/e7db0ae21a0b11bac8ed08422cc0b7ec2f07e6b3))
+
+# [1.25.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.16...v1.25.0) (2024-06-12)
+
+
+### Features
+
+* **breadcrumbs:** responsive redesign using kd-link ([#192](https://github.com/kyndryl-design-system/shidoka-applications/issues/192)) ([93cf20b](https://github.com/kyndryl-design-system/shidoka-applications/commit/93cf20b56b2366cfb7ff09c2ae4333056c5e093c))
+
+## [1.24.16](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.15...v1.24.16) (2024-06-11)
+
+
+### Bug Fixes
+
+* **header:** category borders, padding ([c9917de](https://github.com/kyndryl-design-system/shidoka-applications/commit/c9917ded0fcf7bc6e757e55eaf684ac906b62641))
+
+
+### Reverts
+
+* Revert "Revert "fix(header): menu label style adjustments"" ([2c86690](https://github.com/kyndryl-design-system/shidoka-applications/commit/2c86690fd49924a7a48ffc7ec4f8188e4ff92197))
+
+## [1.24.15](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.14...v1.24.15) (2024-06-11)
+
+
+### Bug Fixes
+
+* **header:** menu label style adjustments ([0725089](https://github.com/kyndryl-design-system/shidoka-applications/commit/07250892a75455fc97278acad5a4fd9e2c2a3e0c))
+
 ## [1.24.14](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.24.13...v1.24.14) (2024-06-06)
 
 

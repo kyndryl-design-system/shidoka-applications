@@ -13,19 +13,33 @@
   gap: 12px;
   width: 100%;
   color: var(--kd-color-text-primary);
-  padding: 12px 16px 12px 8px;
+  padding: 16px 12px 16px 8px;
+  height: 56px;
   text-decoration: none;
+
+  ::slotted(kd-icon),
+  ::slotted(svg) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+  }
 
   @media (min-width: 42rem) {
     justify-content: center;
     padding: 6px;
+    height: auto;
   }
 }
 
 .menu-label {
-  @include typography.type-ui-02;
+  @include typography.type-ui-03;
+  color: var(--kd-color-text-tertiary-bold);
   font-weight: 500;
-  padding: 12px 16px 12px 8px;
+  text-transform: uppercase;
+  padding: 8px;
+  border-bottom: 1px solid var(--kd-color-border-light);
 }
 
 .menu {

@@ -9,7 +9,8 @@ import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import userAvatarIcon from '@carbon/icons/es/user--avatar/20';
 import helpIcon from '@carbon/icons/es/help/20';
-import sampleIcon from '@carbon/icons/es/circle-stroke';
+import sampleIcon from '@carbon/icons/es/circle--outline/16';
+import circleIcon24 from '@carbon/icons/es/circle--outline/24';
 
 export default {
   title: 'Global Components/UI Shell',
@@ -114,19 +115,17 @@ export const WithEverything = {
         <kyn-header appTitle="UI Shell Example">
           <kyn-header-nav>
             <kyn-header-link href="javascript:void(0)">
-              <kd-icon .icon=${sampleIcon}></kd-icon>
+              <kd-icon .icon=${circleIcon24}></kd-icon>
               Link 1
             </kyn-header-link>
 
-            <kyn-header-divider></kyn-header-divider>
-
             <kyn-header-category heading="Category">
               <kyn-header-link href="javascript:void(0)">
-                <kd-icon .icon=${sampleIcon}></kd-icon>
+                <kd-icon .icon=${circleIcon24}></kd-icon>
                 Link 2
               </kyn-header-link>
               <kyn-header-link href="javascript:void(0)">
-                <kd-icon .icon=${sampleIcon}></kd-icon>
+                <kd-icon .icon=${circleIcon24}></kd-icon>
                 Link 3
               </kyn-header-link>
             </kyn-header-category>
@@ -134,7 +133,7 @@ export const WithEverything = {
             <kyn-header-divider></kyn-header-divider>
 
             <kyn-header-link href="javascript:void(0)">
-              <kd-icon .icon=${sampleIcon}></kd-icon>
+              <kd-icon .icon=${circleIcon24}></kd-icon>
               Link 4
 
               <kyn-header-link slot="links" href="javascript:void(0)">
