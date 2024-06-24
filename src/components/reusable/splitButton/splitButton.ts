@@ -43,11 +43,11 @@ export class SplitButton extends LitElement {
     delegatesFocus: true,
   };
 
-  /** ARIA label for the button for accessibility. */
+  /** ARIA label for the buttons for accessibility. */
   @property({ type: String })
   description = '';
 
-  /** Button name. */
+  /** Split button name. */
   @property({ type: String })
   name = '';
 
@@ -139,6 +139,8 @@ export class SplitButton extends LitElement {
             ...classes,
             [`kyn-split-btn--${this.size}-arrow-btn`]: true,
             'kyn-split-btn-icon': true,
+            'kyn-split-btn-margin-overlapped':
+              this.kind === SPLIT_BTN_KINDS.SECONDARY,
           })}
           type="button"
           ?disabled=${this.disabled}
