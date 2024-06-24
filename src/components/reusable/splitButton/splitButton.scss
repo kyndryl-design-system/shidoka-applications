@@ -3,48 +3,9 @@
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
-  //   display: flex;
   display: inline-block;
 }
 
-.split-button {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
-.main-button,
-.dropdown-button {
-  padding: 10px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  cursor: pointer;
-}
-.main-button {
-  border-right: none;
-}
-.dropdown-button {
-  border-left: none;
-}
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 50px;
-  left: 0;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  z-index: 1000;
-}
-.dropdown-menu.open {
-  display: block;
-}
-.dropdown-item {
-  padding: 10px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-.dropdown-item:hover {
-  background-color: #f1f1f1;
-}
 /* ----------------- Split btn -------------------- */
 .split-btn-wrapper {
   display: inline-flex;
@@ -345,27 +306,5 @@ span {
   transform: rotate(0deg);
   .open & {
     transform: rotate(180deg);
-  }
-}
-.kyn-split-btn--icon {
-  // Styles for buttons with icons on the left side
-  &-left span {
-    // Reverse the flex direction to place the icon to the left
-    flex-direction: row-reverse;
-
-    // Styling for the actual icon within the button
-    slot[name='icon']::slotted(*) {
-      // Add margin to the right to space the icon from the text
-      margin-right: 8px;
-    }
-  }
-
-  // Styles for buttons with icons on the right side
-  &-right {
-    // Styling for the actual icon within the button
-    slot[name='icon']::slotted(*) {
-      // Add margin to the left to space the icon from the text
-      margin-left: 8px;
-    }
   }
 }

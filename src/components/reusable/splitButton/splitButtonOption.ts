@@ -21,7 +21,7 @@ export class SplitButtonOption extends LitElement {
   @property({ type: Boolean, reflect: true })
   selected = false;
 
-  /** Split button menu ption disabled state. */
+  /** Split button menu option disabled state. */
   @property({ type: Boolean })
   disabled = false;
 
@@ -75,7 +75,7 @@ export class SplitButtonOption extends LitElement {
     if (this.disabled) {
       return;
     }
-    // emit selected value, bubble so it can be captured by the parent dropdown
+    // emit selected value, bubble so it can be captured by the parent element
     const event = new CustomEvent('on-click', {
       bubbles: true,
       composed: true,

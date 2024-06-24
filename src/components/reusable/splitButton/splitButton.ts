@@ -3,6 +3,7 @@ import {
   customElement,
   property,
   state,
+  query,
   queryAssignedElements,
 } from 'lit/decorators.js';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
@@ -18,13 +19,6 @@ import {
 import './splitButtonOption';
 import SplitButtonScss from './splitButton.scss';
 import { ifDefined } from 'lit/directives/if-defined.js';
-
-// 3 variants - Primary, scondary and destructive
-// Reference carbon combo button
-// size - same as button sizes
-// separate pressed state - like carbon
-// event - fire on both button click
-// split arrow - on open / close menu item
 
 /**
  * Split Button
@@ -55,7 +49,7 @@ export class SplitButton extends LitElement {
   @property({ type: String })
   kind: SPLIT_BTN_KINDS = SPLIT_BTN_KINDS.PRIMARY_APP;
 
-  /** Specifies the size of the button. */
+  /** Specifies the size of the split button. */
   @property({ type: String })
   size: SPLIT_BTN_SIZES = SPLIT_BTN_SIZES.MEDIUM;
 
@@ -63,7 +57,7 @@ export class SplitButton extends LitElement {
   @property({ type: String })
   iconPosition: SPLIIT_BTN_ICON_POSITION = SPLIIT_BTN_ICON_POSITION.LEFT;
 
-  /** Split button name (required) */
+  /** Split button text (required) */
   @property({ type: String })
   label = '';
 
@@ -79,6 +73,7 @@ export class SplitButton extends LitElement {
   @property({ type: String })
   menuMinWidth = 'initial';
 
+  /** Listbox/menu open state. */
   @property({ type: Boolean })
   open = false;
 
@@ -88,6 +83,20 @@ export class SplitButton extends LitElement {
    */
   @queryAssignedElements({ selector: 'kyn-splitbutton-option' })
   options!: Array<any>;
+
+  /**
+   * Open menu upwards.
+   * @ignore
+   */
+  @state()
+  _openUpwards = false;
+
+  /**
+   * Queries the .select DOM element.
+   * @ignore
+   */
+  @query('.select')
+  buttonEl!: HTMLElement;
 
   /**
    * Assistive text for screen readers.
@@ -126,7 +135,6 @@ export class SplitButton extends LitElement {
           aria-label=${ifDefined(this.description)}
           title=${ifDefined(this.description)}
           name=${ifDefined(this.name)}
-          @click=${(e: Event) => this.handleClick(e)}
         >
           <span>
             ${this.label}
@@ -137,6 +145,7 @@ export class SplitButton extends LitElement {
         <button
           class=${classMap({
             ...classes,
+            select: true,
             [`kyn-split-btn--${this.size}-arrow-btn`]: true,
             'kyn-split-btn-icon': true,
             'kyn-split-btn-margin-overlapped':
@@ -160,6 +169,7 @@ export class SplitButton extends LitElement {
           class=${classMap({
             options: true,
             open: this.open,
+            upwards: this._openUpwards,
           })}
           style="min-width: ${this.menuMinWidth};"
           aria-labelledby="label-${this.name}"
@@ -178,7 +188,26 @@ export class SplitButton extends LitElement {
     `;
   }
 
-  //   override updated(changedProps: any) {}
+  override updated(changedProps: any) {
+    if (changedProps.has('open')) {
+      if (this.open) {
+        // scroll to selected option
+        this.options
+          .find((option) => option.selected)
+          ?.scrollIntoView({ block: 'nearest' });
+        // open menu upwards if closer to bottom of viewport
+        const Threshold = 0.6;
+        if (
+          this.buttonEl.getBoundingClientRect().top >
+          window.innerHeight * Threshold
+        ) {
+          this._openUpwards = true;
+        } else {
+          this._openUpwards = false;
+        }
+      }
+    }
+  }
 
   private handleListBlur(e: any) {
     this.options.forEach((option) => (option.highlighted = false));
@@ -298,6 +327,7 @@ export class SplitButton extends LitElement {
       case ESCAPE_KEY_CODE: {
         // close listbox
         this.open = false;
+        this.buttonEl.focus();
         this.assistiveText = 'Split button menu options.';
         return;
       }
@@ -305,13 +335,6 @@ export class SplitButton extends LitElement {
         return;
       }
     }
-  }
-
-  private handleClick(e: Event) {
-    const event = new CustomEvent('on-click', {
-      detail: { origEvent: e },
-    });
-    this.dispatchEvent(event);
   }
 
   private toggleDropdown = () => {

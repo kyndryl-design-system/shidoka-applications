@@ -52,7 +52,6 @@ export default {
 const args = {
   size: 'medium',
   kind: 'primary-app',
-  type: 'button',
   destructive: false,
   disabled: false,
   description: 'Split button description',
