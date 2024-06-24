@@ -20,7 +20,7 @@ export class PaginationPageSizeDropdown extends LitElement {
   static override styles = [styles];
 
   /** Current page size. */
-  @property({ type: Number })
+  @property({ type: Number, reflect: true })
   pageSize = 5;
 
   /** Label for the page size dropdown. */
@@ -56,7 +56,7 @@ export class PaginationPageSizeDropdown extends LitElement {
         inline
         size="sm"
         updateByValue
-        value=${this.pageSize}
+        value=${this.pageSize.toString()}
         @on-change=${(e: CustomEvent) => this.handleChange(e)}
       >
         ${this.pageSizeOptions.map((option) => {

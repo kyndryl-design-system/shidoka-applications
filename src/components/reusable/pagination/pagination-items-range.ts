@@ -16,15 +16,15 @@ export class PaginationItemsRange extends LitElement {
   static override styles = [styles];
 
   /** Total number of items. */
-  @property({ type: Number })
+  @property({ type: Number, reflect: true })
   count = 0;
 
   /** Current page number being displayed. */
-  @property({ type: Number })
-  pageNumber = 0;
+  @property({ type: Number, reflect: true })
+  pageNumber = 1;
 
   /** Number of items displayed per page. */
-  @property({ type: Number })
+  @property({ type: Number, reflect: true })
   pageSize = 5;
 
   /**

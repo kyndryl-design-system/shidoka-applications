@@ -24,7 +24,7 @@ export class Pagination extends LitElement {
   static override styles = [styles];
 
   /** Total number of items that need pagination. */
-  @property({ type: Number })
+  @property({ type: Number, reflect: true })
   count = 0;
 
   /** Current active page number. */
@@ -32,7 +32,7 @@ export class Pagination extends LitElement {
   pageNumber = 1;
 
   /** Number of items displayed per page. */
-  @property({ type: Number })
+  @property({ type: Number, reflect: true })
   pageSize = 5;
 
   /** Available options for the page size. */
@@ -74,7 +74,7 @@ export class Pagination extends LitElement {
    */
   private handlePageSizeChange(e: CustomEvent) {
     this.pageSize = e.detail.value;
-    this.pageNumber = this.count > 0 ? 1 : 0;
+    this.pageNumber = 1;
   }
 
   /**
