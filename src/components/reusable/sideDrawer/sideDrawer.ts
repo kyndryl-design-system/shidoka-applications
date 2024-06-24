@@ -110,6 +110,7 @@ export class SideDrawer extends LitElement {
       modal: true,
       dialog: true,
       'size--md': this.size === 'md',
+      'size--standard': this.size === 'standard',
       'size--sm': this.size === 'sm',
     };
 

@@ -1,3 +1,10 @@
+## [1.26.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.8...v1.26.9) (2024-06-24)
+
+
+### Bug Fixes
+
+* **side-drawer:** add standard size ([d766d38](https://github.com/kyndryl-design-system/shidoka-applications/commit/d766d3895691b5f09e92ba747049cbe6be52e9a2))
+
 ## [1.26.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.7...v1.26.8) (2024-06-21)
 
 
