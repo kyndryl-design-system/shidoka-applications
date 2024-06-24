@@ -55,7 +55,7 @@ const args = {
   type: 'button',
   destructive: false,
   disabled: false,
-  description: '',
+  description: 'Split button description',
   label: 'Primary Action',
   name: '',
   iconPosition: 'left',
