@@ -1,3 +1,10 @@
+## [1.26.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.9...v1.26.10) (2024-06-24)
+
+
+### Bug Fixes
+
+* **pagination:** reflect some props for debugging ([2ea08a4](https://github.com/kyndryl-design-system/shidoka-applications/commit/2ea08a4a437704e09858ef300cb4795f1a82e76c))
+
 ## [1.26.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.8...v1.26.9) (2024-06-24)
 
 
