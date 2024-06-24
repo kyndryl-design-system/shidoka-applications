@@ -1,0 +1,127 @@
+:host {
+  display: block;
+}
+
+.skeleton-placeholder {
+  //   position: relative;
+  //   padding: 0;
+  //   border: none;
+  //   background: var(--cds-skeleton-background, #e8e8e8);
+  //   box-shadow: none;
+  //   pointer-events: none;
+  //   block-size: 6.25rem;
+  //   inline-size: 6.25rem;
+
+  position: relative;
+  padding: 0;
+  border: none;
+  background: var(--cds-skeleton-background, #e8e8e8);
+  box-shadow: none;
+  pointer-events: none;
+  /* block-size: 6.25rem; */
+  /* inline-size: 6.25rem; */
+  height: inherit; /* Can be overridden */
+  width: inherit; /* Can be overridden */
+  min-height: 20px;
+  min-width: 6.25rem;
+
+  &::before {
+    position: absolute;
+    -webkit-animation: 3000ms ease-in-out cds--skeleton infinite;
+    animation: 3000ms ease-in-out kynSkeleton infinite;
+    background: #c6c6c6;
+    block-size: 100%;
+    content: '';
+    inline-size: 100%;
+    will-change: transform-origin, transform, opacity;
+  }
+}
+
+:host([inline]) {
+  display: inline-block;
+  //   width: 100px; /* Default width, can be overridden */
+  //   height: 16px; /* Default height, can be overridden */
+  //   background-color: #e8e8e8;
+  //   border-radius: 4px;
+  //   animation: kynSkeleton 3000ms infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+// carbon skeleton animation
+@keyframes kynSkeleton {
+  0% {
+    opacity: 0.3;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transform-origin: left;
+    transform-origin: left;
+  }
+
+  20% {
+    opacity: 1;
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+    -webkit-transform-origin: left;
+    transform-origin: left;
+  }
+
+  28% {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+    -webkit-transform-origin: right;
+    transform-origin: right;
+  }
+
+  51% {
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transform-origin: right;
+    transform-origin: right;
+  }
+
+  58% {
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transform-origin: right;
+    transform-origin: right;
+  }
+
+  82% {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+    -webkit-transform-origin: right;
+    transform-origin: right;
+  }
+
+  83% {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+    -webkit-transform-origin: left;
+    transform-origin: left;
+  }
+
+  96% {
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transform-origin: left;
+    transform-origin: left;
+  }
+
+  100% {
+    opacity: 0.3;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transform-origin: left;
+    transform-origin: left;
+  }
+}
