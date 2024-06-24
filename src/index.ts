@@ -68,3 +68,7 @@ export {
   WidgetGridstack,
 } from './components/reusable/widget';
 export { Search } from './components/reusable/search';
+export {
+  SplitButton,
+  SplitButtonOption,
+} from './components/reusable/splitButton';

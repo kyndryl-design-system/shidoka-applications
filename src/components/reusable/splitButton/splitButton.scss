@@ -1,0 +1,367 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  //   display: flex;
+  display: inline-block;
+}
+
+.split-button {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.main-button,
+.dropdown-button {
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+}
+.main-button {
+  border-right: none;
+}
+.dropdown-button {
+  border-left: none;
+}
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  z-index: 1000;
+}
+.dropdown-menu.open {
+  display: block;
+}
+.dropdown-item {
+  padding: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+/* ----------------- Split btn -------------------- */
+.split-btn-wrapper {
+  display: inline-flex;
+  position: relative;
+  column-gap: 0.0625rem;
+  -webkit-column-gap: 0.0625rem; // separation between dropdown and button
+  -moz-column-gap: 0.0625rem;
+}
+.kyn-split-btn {
+  transition: outline-color 0.2s ease-in-out, color 0.2s ease-in-out,
+    background-color 0.2s ease-in-out;
+  white-space: nowrap;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  //   border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  width: 100%;
+  min-width: 96px;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include typography.type-body-02;
+
+  &-label {
+    border-radius: 4px 0px 0px 4px;
+  }
+
+  &-icon {
+    border-radius: 0px 4px 4px 0px;
+  }
+
+  &--small {
+    padding: 4px 16px;
+    height: 32px;
+    &-arrow-btn {
+      min-width: 32px;
+      width: 32px;
+    }
+  }
+
+  &--medium {
+    padding: 12px 16px;
+    height: 48px;
+    &-arrow-btn {
+      min-width: 48px;
+      width: 48px;
+    }
+  }
+
+  &--large {
+    padding: 16px 16px;
+    height: 56px;
+    &-arrow-btn {
+      min-width: 56px;
+      width: 56px;
+    }
+  }
+}
+
+// Disabled Button Styles
+@mixin kyn-split-btn-disabled {
+  background-color: var(--kd-color-background-disabled);
+  color: var(--kd-color-text-inversed);
+  border: none;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+@mixin kyn-split-btn-focus {
+  outline-color: var(--kd-color-border-focus);
+}
+
+span {
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+// Primary Split Button Styles (Web & App)
+.kyn-split-btn--primary-web,
+.kyn-split-btn--primary-app {
+  @extend .kyn-split-btn;
+  background-color: var(--kd-color-background-primary);
+  color: var(--kd-color-text-inversed);
+  border: none;
+  position: relative;
+  overflow: hidden;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--kd-color-background-primary-hover);
+    transition: transform 300ms ease-out, opacity 200ms ease-out,
+      background-color 150ms ease-in-out;
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 0;
+  }
+
+  &:hover {
+    &:before {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    border: none;
+
+    &:before {
+      background-color: var(--kd-color-background-primary-pressed);
+    }
+  }
+
+  &:focus {
+    @include kyn-split-btn-focus;
+  }
+
+  &:disabled {
+    @include kyn-split-btn-disabled;
+  }
+}
+
+.kyn-split-btn--primary-web {
+  background-color: var(--kd-color-background-secondary);
+
+  &:before {
+    background-color: var(--kd-color-background-secondary-hover);
+  }
+
+  &:active:before {
+    background-color: var(--kd-color-background-secondary-pressed);
+  }
+}
+
+// Primary Destructive Button
+.kyn-split-btn--primary-app-destructive,
+.kyn-split-btn--primary-web-destructive {
+  @extend .kyn-split-btn;
+  background-color: var(--kd-color-background-destructive);
+  color: var(--kd-color-text-inversed);
+  border: none;
+  position: relative;
+  overflow: hidden;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--kd-color-background-destructive-hover);
+    transition: transform 300ms ease-out, opacity 200ms ease-out,
+      background-color 150ms ease-in-out;
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 0;
+  }
+
+  &:hover {
+    &:before {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+  }
+
+  &:active:before {
+    background-color: var(--kd-color-background-destructive-pressed);
+  }
+
+  &:focus {
+    @include kyn-split-btn-focus;
+  }
+
+  &:disabled {
+    @include kyn-split-btn-disabled;
+  }
+}
+
+// Secondary Button Styles
+.kyn-split-btn--secondary {
+  @extend .kyn-split-btn;
+  background-color: var(--kd-color-transparent);
+  color: var(--kd-color-text-primary);
+  border: 1px solid var(--kd-color-border-primary);
+
+  &:hover {
+    background-color: var(--kd-color-background-secondary-hover);
+    color: var(--kd-color-text-inversed);
+    border-color: var(--kd-color-background-secondary-hover);
+  }
+
+  &:active {
+    background-color: var(--kd-color-background-secondary-pressed);
+    color: var(--kd-color-text-inversed);
+    border-color: var(--kd-color-border-primary);
+  }
+
+  &:focus {
+    @include kyn-split-btn-focus;
+  }
+
+  &:disabled {
+    @include kyn-split-btn-disabled;
+    background-color: var(--kd-color-transparent);
+    color: var(--kd-color-text-disabled);
+    border: 1px solid var(--kd-color-border-disabled);
+  }
+}
+// Secondary Destructive Button
+.kyn-split-btn--secondary-destructive {
+  @extend .kyn-split-btn--secondary;
+  color: var(--kd-color-text-destructive);
+  border-color: var(--kd-color-border-destructive);
+
+  &:hover,
+  &:active {
+    background-color: var(--kd-color-background-destructive-hover);
+    color: var(--kd-color-text-inversed);
+    border-color: transparent;
+  }
+}
+
+.kyn-split-btn--icon {
+  // Styles for buttons with icons on the left side
+  &-left span {
+    // Reverse the flex direction to place the icon to the left
+    flex-direction: row-reverse;
+
+    // Styling for the actual icon within the button
+    slot[name='icon']::slotted(*) {
+      // Add margin to the right to space the icon from the text
+      margin-right: 8px;
+    }
+  }
+
+  // Styles for buttons with icons on the right side
+  &-right {
+    // Styling for the actual icon within the button
+    slot[name='icon']::slotted(*) {
+      // Add margin to the left to space the icon from the text
+      margin-left: 8px;
+    }
+  }
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 100%;
+  margin-top: 4px;
+  width: 100%;
+  max-height: 280px;
+  overflow-y: auto;
+  outline: none;
+  background: var(--kd-color-background-inverse);
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12),
+    0px 4px 12px 0px rgba(0, 0, 0, 0.08);
+  outline: 2px solid transparent;
+  transition: transform 150ms ease-out, opacity 150ms ease-out,
+    outline-color 150ms ease-out, visibility 150ms ease-out;
+  visibility: hidden;
+  transform: scaleY(0);
+  transform-origin: top;
+  opacity: 0;
+  z-index: -1;
+
+  &.upwards {
+    transform-origin: bottom;
+    top: auto;
+    bottom: 100%;
+  }
+
+  &.open {
+    visibility: visible;
+    transform: scaleY(1);
+    opacity: 1;
+    z-index: 11;
+  }
+}
+
+.arrow-icon {
+  transform: rotate(0deg);
+  .open & {
+    transform: rotate(180deg);
+  }
+}
+.kyn-split-btn--icon {
+  // Styles for buttons with icons on the left side
+  &-left span {
+    // Reverse the flex direction to place the icon to the left
+    flex-direction: row-reverse;
+
+    // Styling for the actual icon within the button
+    slot[name='icon']::slotted(*) {
+      // Add margin to the right to space the icon from the text
+      margin-right: 8px;
+    }
+  }
+
+  // Styles for buttons with icons on the right side
+  &-right {
+    // Styling for the actual icon within the button
+    slot[name='icon']::slotted(*) {
+      // Add margin to the left to space the icon from the text
+      margin-left: 8px;
+    }
+  }
+}
