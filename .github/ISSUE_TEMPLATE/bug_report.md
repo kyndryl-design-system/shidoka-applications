@@ -7,6 +7,13 @@ projects: 'kyndryl-design-system/1'
 assignees: ''
 ---
 
+**Before submitting a bug:**
+
+- [ ] Is this reproducible in the latest version of Shidoka?
+- [ ] Is this reproducible in the [Shidoka Storybook](https://kyndryl-design-system.github.io/shidoka-applications/)?
+- [ ] Is this reproducible in a [Sandbox](https://codesandbox.io)?
+- If it's not reproducible in any of the above scenarios, please do not open a bug report as it is an application-level issue.
+
 **Describe the bug**
 
 A clear and concise description of what the bug is.
