@@ -1,3 +1,10 @@
+## [1.26.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.10...v1.26.11) (2024-06-25)
+
+
+### Bug Fixes
+
+* **dropdown:** fix updateByValue equality ([074d100](https://github.com/kyndryl-design-system/shidoka-applications/commit/074d100bd72f37a3962003d5da15bccdf2520d0a))
+
 ## [1.26.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.9...v1.26.10) (2024-06-24)
 
 
