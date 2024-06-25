@@ -1,9 +1,16 @@
 @use '../../../common/scss/global.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 
 :host {
   @include typography.type-body-02;
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.page-range {
+  @media (max-width: 42rem) {
+    @include visibility.sr-only;
+  }
 }

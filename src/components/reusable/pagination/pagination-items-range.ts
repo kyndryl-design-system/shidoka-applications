@@ -27,14 +27,7 @@ export class PaginationItemsRange extends LitElement {
   @property({ type: Number, reflect: true })
   pageSize = 5;
 
-  /**
-   * Determines the device type the component is being rendered on.
-   * @ignore
-   */
-  @state()
-  isMobile = window.innerWidth < BREAKPOINT;
-
-  private get itemsRangeText(): string {
+  private itemsRangeText(isMobile: Boolean): string {
     const baseTotalItemsByPage = this.pageSize * this.pageNumber;
     const lowerRangeItemsCount =
       baseTotalItemsByPage > 0
@@ -43,14 +36,17 @@ export class PaginationItemsRange extends LitElement {
     const higherRangeItemsCount =
       baseTotalItemsByPage < this.count ? baseTotalItemsByPage : this.count;
 
-    return this.isMobile
+    return isMobile
       ? `${lowerRangeItemsCount}\u2014${higherRangeItemsCount} ${OF_TEXT} ${this.count}`
       : `${SHOWING_TEXT} ${lowerRangeItemsCount} \u2014 ${higherRangeItemsCount} ${OF_TEXT} ${this.count} ${ITEMS_TEXT}`;
   }
 
   override render() {
     return html`
-      <span role="status" aria-live="polite">${this.itemsRangeText}</span>
+      <span role="status" aria-live="polite">
+        <span class="mobile">${this.itemsRangeText(true)}</span>
+        <span class="desktop">${this.itemsRangeText(false)}</span>
+      </span>
     `;
   }
 }

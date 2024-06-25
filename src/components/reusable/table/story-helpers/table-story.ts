@@ -6,6 +6,9 @@ import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import maleIcon from '@carbon/icons/es/gender--male/16';
 import femaleIcon from '@carbon/icons/es/gender--female/16';
+import successIcon from '@carbon/icons/es/checkmark--filled/20';
+import warningIcon from '@carbon/icons/es/warning--filled/20';
+import failedIcon from '@carbon/icons/es/misuse/20';
 import './action-menu';
 import '../../pagination';
 
@@ -76,6 +79,9 @@ class MyStoryTable extends LitElement {
 
   @property({ type: Boolean })
   showPagination = false;
+
+  @property({ type: Boolean })
+  showLegend = false;
 
   @property({ type: Number })
   pageSize = 5;
@@ -230,6 +236,7 @@ class MyStoryTable extends LitElement {
             ></action-menu>`
           : html``}
       </kyn-table-toolbar>
+
       <kyn-table-container>
         <kyn-table
           ?striped=${striped}
@@ -312,19 +319,42 @@ class MyStoryTable extends LitElement {
           </kyn-tbody>
         </kyn-table>
       </kyn-table-container>
-      ${this.showPagination
-        ? html` <kyn-pagination
-            .count=${rows.length}
-            .pageSize=${pageSize}
-            .pageNumber=${pageNumber}
-            .pageSizeOptions=${pageSizeOptions}
-            .hideItemsRange=${this.hideItemsRange}
-            .hidePageSizeDropdown=${this.hidePageSizeDropdown}
-            .hideNavigationButtons=${this.hideNavigationButtons}
-            @on-page-size-change=${this.onPageSizeChange}
-            @on-page-number-change=${this.onPageNumberChange}
-          ></kyn-pagination>`
-        : null}
+
+      <kyn-table-footer>
+        ${this.showLegend
+          ? html`
+              <kyn-table-legend>
+                <kyn-table-legend-item>
+                  <kd-icon .icon=${successIcon} fill="#00AF41"></kd-icon>
+                  Success
+                </kyn-table-legend-item>
+                <kyn-table-legend-item>
+                  <kd-icon .icon=${warningIcon} fill="#F5C400"></kd-icon>
+                  Warning
+                </kyn-table-legend-item>
+                <kyn-table-legend-item>
+                  <kd-icon .icon=${failedIcon} fill="#CC1800"></kd-icon>
+                  Failed
+                </kyn-table-legend-item>
+              </kyn-table-legend>
+            `
+          : null}
+        ${this.showPagination
+          ? html`
+              <kyn-pagination
+                .count=${rows.length}
+                .pageSize=${pageSize}
+                .pageNumber=${pageNumber}
+                .pageSizeOptions=${pageSizeOptions}
+                .hideItemsRange=${this.hideItemsRange}
+                .hidePageSizeDropdown=${this.hidePageSizeDropdown}
+                .hideNavigationButtons=${this.hideNavigationButtons}
+                @on-page-size-change=${this.onPageSizeChange}
+                @on-page-number-change=${this.onPageNumberChange}
+              ></kyn-pagination>
+            `
+          : null}
+      </kyn-table-footer>
     </div>`;
   }
 }

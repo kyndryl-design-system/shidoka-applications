@@ -8,7 +8,7 @@ import chevLeftIcon from '@carbon/icons/es/chevron--left/16';
 import chevRightIcon from '@carbon/icons/es/chevron--right/16';
 
 import styles from './pagination-navigation-buttons.scss';
-import { OF_TEXT, PAGES_TEXT, BREAKPOINT } from './constants';
+import { OF_TEXT, PAGES_TEXT } from './constants';
 
 /**
  * `kyn-pagination-navigation-buttons` Web Component.
@@ -29,13 +29,6 @@ export class PaginationNavigationButtons extends LitElement {
   // Total number of pages, defaults to 0
   @property({ type: Number, reflect: true })
   numberOfPages = 1;
-
-  /**
-   * Determines the device type the component is being rendered on.
-   * @ignore
-   */
-  @state()
-  isMobile = window.innerWidth < BREAKPOINT;
 
   // Constant representing the smallest possible page number
   private readonly SMALLEST_PAGE_NUMBER = 1;
@@ -75,12 +68,11 @@ export class PaginationNavigationButtons extends LitElement {
       >
         <kd-icon slot="icon" .icon=${chevLeftIcon}></kd-icon>
       </kd-button>
-      ${this.isMobile
-        ? null
-        : html` <span role="status" aria-live="polite">
-            ${this.pageNumber} ${OF_TEXT} ${this.numberOfPages}
-            ${PAGES_TEXT}</span
-          >`}
+
+      <span class="page-range" role="status" aria-live="polite">
+        ${this.pageNumber} ${OF_TEXT} ${this.numberOfPages} ${PAGES_TEXT}</span
+      >
+
       <kd-button
         iconposition="center"
         kind="tertiary"

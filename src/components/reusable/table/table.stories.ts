@@ -18,16 +18,20 @@ import maleIcon from '@carbon/icons/es/gender--male/16';
 import femaleIcon from '@carbon/icons/es/gender--female/16';
 
 const meta: Meta = {
-  title: 'Components/DataTable',
+  title: 'Components/Data Table',
   component: 'kyn-table',
   subcomponents: {
+    'kyn-table-container': 'kyn-table-container',
     'kyn-th': 'kyn-th',
     'kyn-tr': 'kyn-tr',
     'kyn-td': 'kyn-td',
     'kyn-thead': 'kyn-thead',
     'kyn-tbody': 'kyn-tbody',
     'kyn-header-tr': 'kyn-header-tr',
-    'kyn-table-container': 'kyn-table-container',
+    'kyn-tfoot': 'kyn-tfoot',
+    'kyn-table-footer': 'kyn-table-footer',
+    'kyn-table-legend': 'kyn-table-legend',
+    'kyn-table-legend-item': 'kyn-table-legend-item',
   },
   parameters: {
     design: {
@@ -259,7 +263,31 @@ export const Pagination: Story = {
         .pageSize=${args.pageSize}
         .pageNumber=${args.pageNumber}
         .pageSizeOptions=${args.pageSizeOptions}
-        .showPagination=${true}
+        showPagination
+      >
+      </story-table>
+    `;
+  },
+  parameters,
+};
+
+export const Legend: Story = {
+  args: {
+    pageSize: 5,
+    pageNumber: 1,
+    pageSizeOptions: [5, 10, 20, 30, 40, 50, 100],
+  },
+  render: (args) => {
+    const rows = allData;
+    return html`
+      <story-table
+        .tableTitle=${'Legend'}
+        .rows=${characters}
+        .pageSize=${args.pageSize}
+        .pageNumber=${args.pageNumber}
+        .pageSizeOptions=${args.pageSizeOptions}
+        showLegend
+        showPagination
       >
       </story-table>
     `;

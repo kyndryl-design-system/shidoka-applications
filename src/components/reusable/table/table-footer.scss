@@ -1,5 +1,21 @@
 @use '../../../common/scss/global.scss';
 
 :host {
-  display: table-footer-group;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 16px 0;
+
+  @media (min-width: 42rem) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 42rem) {
+  ::slotted(kyn-pagination) {
+    order: -1;
+  }
 }

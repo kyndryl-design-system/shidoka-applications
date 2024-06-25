@@ -4,9 +4,11 @@ export { TableRow } from './table-row';
 export { TableBody } from './table-body';
 export { TableHead } from './table-head';
 export { TableHeader } from './table-header';
+export { TableFoot } from './table-foot';
 export { TableFooter } from './table-footer';
+export { TableLegend } from './table-legend';
+export { TableLegendItem } from './table-legend-item';
 export { TableToolbar } from './table-toolbar';
 export { TableContainer } from './table-container';
 export { TableHeaderRow } from './table-header-row';
 export { TableExpandedRow } from './table-expanded-row';
-
