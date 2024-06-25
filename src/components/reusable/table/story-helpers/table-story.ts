@@ -294,7 +294,11 @@ class MyStoryTable extends LitElement {
               currentRows,
               (row: any) => row.id,
               (row: any) => html`
-                <kyn-tr .rowId=${row.id} key="row-${row.id}">
+                <kyn-tr
+                  .rowId=${row.id}
+                  key="row-${row.id}"
+                  ?unread=${row.unread}
+                >
                   <kyn-td .align=${'center'}>${row.id}</kyn-td>
                   <kyn-td .maxWidth=${fNameMaxWidth} title=${row.firstName}>
                     ${row.firstName}
