@@ -278,7 +278,6 @@ export const Legend: Story = {
     pageSizeOptions: [5, 10, 20, 30, 40, 50, 100],
   },
   render: (args) => {
-    const rows = allData;
     return html`
       <story-table
         .tableTitle=${'Legend'}

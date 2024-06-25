@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { property, customElement, state } from 'lit/decorators.js';
+import { property, customElement } from 'lit/decorators.js';
 
 // Import required components and icons
 import '@kyndryl-design-system/shidoka-foundation/components/button';

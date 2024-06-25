@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit';
-import { property, customElement, state } from 'lit/decorators.js';
+import { property, customElement } from 'lit/decorators.js';
 
-import { SHOWING_TEXT, OF_TEXT, ITEMS_TEXT, BREAKPOINT } from './constants';
+import { SHOWING_TEXT, OF_TEXT, ITEMS_TEXT } from './constants';
 import styles from './pagination-items-range.scss';
 
 /**
