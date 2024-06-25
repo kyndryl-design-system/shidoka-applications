@@ -1042,10 +1042,10 @@ export class Dropdown extends LitElement {
 
   private _updateOptions() {
     this.options.forEach((option) => {
-      if (!this.multiple) {
+      if (this.multiple) {
         option.selected = this.value.includes(option.value);
       } else {
-        option.selected === this.value;
+        option.selected = this.value === option.value;
       }
     });
   }
