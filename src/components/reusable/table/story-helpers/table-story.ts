@@ -231,10 +231,10 @@ class MyStoryTable extends LitElement {
     return html` <div style=${stickyHeader ? 'height: 400px' : ''}>
       <kyn-table-toolbar tableTitle=${tableTitle}>
         ${showTableActions
-          ? html`<action-menu
-              @on-delete=${this.deleteSelectedRows}
-            ></action-menu>`
-          : html``}
+          ? html`
+              <action-menu @on-delete=${this.deleteSelectedRows}></action-menu>
+            `
+          : null}
       </kyn-table-toolbar>
 
       <kyn-table-container>
@@ -296,7 +296,9 @@ class MyStoryTable extends LitElement {
               (row: any) => html`
                 <kyn-tr .rowId=${row.id} key="row-${row.id}">
                   <kyn-td .align=${'center'}>${row.id}</kyn-td>
-                  <kyn-td .maxWidth=${fNameMaxWidth}>${row.firstName}</kyn-td>
+                  <kyn-td .maxWidth=${fNameMaxWidth} title=${row.firstName}>
+                    ${row.firstName}
+                  </kyn-td>
                   <kyn-td class="min-max-width-100">${row.lastName}</kyn-td>
                   <kyn-td>${row.birthday}</kyn-td>
                   <kyn-td .align=${'right'}>${row.age}</kyn-td>
