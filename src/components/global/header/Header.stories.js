@@ -13,6 +13,7 @@ import useSetingIcon from '@carbon/icons/es/settings/20';
 
 import '../../reusable/notification';
 import '../../reusable/overflowMenu';
+import '../../reusable/tooltip';
 
 export default {
   title: 'Global Components/Header',
@@ -161,6 +162,23 @@ export const WithFlyouts = {
   render: (args) => html`
     <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
       <kyn-header-flyouts>
+        <kyn-header-flyout label="Menu Label" hideButtonLabel>
+          <kd-icon .icon=${helpIcon} slot="button"></kd-icon>
+          <kyn-tooltip slot="button" direction="bottom">
+            <span slot="anchor">Short ... Text</span>
+            Full Button Text
+          </kyn-tooltip>
+
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <kd-icon .icon=${circleIcon}></kd-icon>
+            Example 2
+          </kyn-header-link>
+        </kyn-header-flyout>
+
         <kyn-header-flyout label="Menu Label">
           <kd-icon .icon=${helpIcon} slot="button"></kd-icon>
 
