@@ -2,7 +2,6 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import './index';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import infoIcon16 from '@carbon/icons/es/information/16';
 
 export default {
   title: 'Components/Tooltip',
@@ -53,10 +52,7 @@ export const Tooltip = {
 };
 
 export const CustomAnchor = {
-  args: {
-    ...args,
-    unnamed: 'Small info icon anchor.',
-  },
+  args,
   render: (args) => {
     return html`
       <kyn-tooltip
@@ -65,7 +61,7 @@ export const CustomAnchor = {
         direction=${args.direction}
         @on-tooltip-toggle=${(e) => action(e.type)(e)}
       >
-        <kd-icon slot="anchor" .icon=${infoIcon16}></kd-icon>
+        <span slot="anchor">Custom anchor</span>
 
         ${args.unnamed}
       </kyn-tooltip>
