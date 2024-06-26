@@ -248,6 +248,7 @@ export class Dropdown extends LitElement {
               aria-expanded=${this.open}
               aria-controls="options"
               role="combobox"
+              id=${this.name}
               name=${this.name}
               ?required=${this.required}
               ?disabled=${this.disabled}

@@ -53,12 +53,15 @@ export class PaginationPageSizeDropdown extends LitElement {
     return html`
       <label> ${this.pageSizeLabel} </label>
       <kyn-dropdown
+        name="page-size"
         inline
         size="sm"
         updateByValue
         value=${this.pageSize.toString()}
         @on-change=${(e: CustomEvent) => this.handleChange(e)}
       >
+        <span slot="label">${this.pageSizeLabel}</span>
+
         ${this.pageSizeOptions.map((option) => {
           return html`
             <kyn-dropdown-option value=${option}>
