@@ -4,14 +4,13 @@ import { customElement } from 'lit/decorators.js';
 import styles from './table-footer.scss';
 
 /**
- * `kyn-tfoot` Web Component.
+ * Table Footer
  *
- * Represents a custom table footer (`<tfoot>`) for Shidoka's design system tables.
- * Designed to contain and style table footer rows (`<tr>`) and footer cells (`<td>`).
+ * Intended to contain Legend and Pagination.
  *
- * @slot - The content slot for adding table footer rows.
+ * @slot unnamed - Default slot.
  */
-@customElement('kyn-tfoot')
+@customElement('kyn-table-footer')
 export class TableFooter extends LitElement {
   static override styles = [styles];
 
@@ -23,6 +22,6 @@ export class TableFooter extends LitElement {
 // Define the custom element in the global namespace
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-tfoot': TableFooter;
+    'kyn-table-footer': TableFooter;
   }
 }

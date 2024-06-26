@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { PAGE_SIZE_LABEL, BREAKPOINT } from './constants';
+import { PAGE_SIZE_LABEL } from './constants';
 import styles from './pagination.scss';
 
 import './pagination-items-range';
@@ -60,13 +60,6 @@ export class Pagination extends LitElement {
   hideNavigationButtons = false;
 
   /**
-   * Determines the device type the component is being rendered on.
-   * @ignore
-   */
-  @state()
-  isMobile = window.innerWidth < BREAKPOINT;
-
-  /**
    * Handler for the event when the page size is changed by the user.
    * Updates the `pageSize` and resets the `pageNumber` to 1.
    *
@@ -98,9 +91,7 @@ export class Pagination extends LitElement {
             ></kyn-pagination-items-range>
           `
         : null}
-      ${this.isMobile
-        ? null
-        : !this.hidePageSizeDropdown
+      ${!this.hidePageSizeDropdown
         ? html`
             <kyn-pagination-page-size-dropdown
               .pageSize=${this.pageSize}

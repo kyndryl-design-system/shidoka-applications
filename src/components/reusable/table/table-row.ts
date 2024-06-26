@@ -56,6 +56,12 @@ export class TableRow extends LitElement {
   dense = false;
 
   /**
+   * Unread row state.
+   */
+  @property({ type: Boolean })
+  unread = false;
+
+  /**
    * locked: Boolean indicating whether the row is locked.
    * If a row is selected before it is locked, it remains selected even after being locked.
    * A row can be selected and disabled/locked simultaneously.

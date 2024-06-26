@@ -69,6 +69,7 @@ export const characters = [
     birthday: 'December 26',
     fullname: 'Jon Snow',
     gender: 'Male',
+    unread: true,
   },
   {
     id: 2,

@@ -245,6 +245,10 @@ export class Dropdown extends LitElement {
                 inline: this.inline,
               })}"
               aria-labelledby="label-${this.name}"
+              aria-expanded=${this.open}
+              aria-controls="options"
+              role="combobox"
+              id=${this.name}
               name=${this.name}
               ?required=${this.required}
               ?disabled=${this.disabled}
@@ -300,6 +304,7 @@ export class Dropdown extends LitElement {
             </div>
 
             <ul
+              id="options"
               class=${classMap({
                 options: true,
                 open: this.open,
