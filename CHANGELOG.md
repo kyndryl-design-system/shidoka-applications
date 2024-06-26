@@ -1,3 +1,17 @@
+# [1.27.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.11...v1.27.0) (2024-06-26)
+
+
+### Bug Fixes
+
+* **dropdown:** aria attributes ([72452b7](https://github.com/kyndryl-design-system/shidoka-applications/commit/72452b7b929f83a36a6fbf5537df9e52021d51e4))
+* **pagination:** add pagesize dropdown label ([1b48336](https://github.com/kyndryl-design-system/shidoka-applications/commit/1b483361cbe10784bcab818e36cc006cf2835b04))
+
+
+### Features
+
+* **table-row:** add unread prop ([2d7db4c](https://github.com/kyndryl-design-system/shidoka-applications/commit/2d7db4c596011e2f105d87c1e7da9d3dd93a4a8f))
+* **table:** add table footer and legend, pagination responsive css ([363a584](https://github.com/kyndryl-design-system/shidoka-applications/commit/363a5849963f6b217637a2150cf2e95aa6fb902a))
+
 ## [1.26.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.10...v1.26.11) (2024-06-25)
 
 
