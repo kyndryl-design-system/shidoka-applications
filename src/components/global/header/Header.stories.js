@@ -164,10 +164,12 @@ export const WithFlyouts = {
       <kyn-header-flyouts>
         <kyn-header-flyout label="Menu Label" hideButtonLabel>
           <kd-icon .icon=${helpIcon} slot="button"></kd-icon>
+          <span slot="button" title="Full Button Text">Short ... Text</span>
+          <!--
           <kyn-tooltip slot="button" direction="bottom">
             <span slot="anchor">Short ... Text</span>
-            Full Button Text
           </kyn-tooltip>
+          -->
 
           <kyn-header-link href="javascript:void(0)">
             <kd-icon .icon=${circleIcon}></kd-icon>
