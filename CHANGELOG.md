@@ -1,3 +1,10 @@
+## [1.27.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.0...v1.27.1) (2024-06-26)
+
+
+### Bug Fixes
+
+* **header-flyout:** text in button nowrap ([0effa59](https://github.com/kyndryl-design-system/shidoka-applications/commit/0effa59710cd0f29374c1e436c543de12ddd7977))
+
 # [1.27.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.26.11...v1.27.0) (2024-06-26)
 
 
