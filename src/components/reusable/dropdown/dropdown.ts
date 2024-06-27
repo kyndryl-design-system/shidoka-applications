@@ -223,7 +223,6 @@ export class Dropdown extends LitElement {
           for=${this.name}
           id="label-${this.name}"
           class="label-text"
-          disabled
           @click=${this._handleLabelClick}
         >
           ${this.required ? html`<span class="required">*</span>` : null}
