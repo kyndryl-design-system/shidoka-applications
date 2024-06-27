@@ -1,3 +1,10 @@
+## [1.27.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.1...v1.27.2) (2024-06-27)
+
+
+### Bug Fixes
+
+* **dropdown:** label disabled style ([04649a7](https://github.com/kyndryl-design-system/shidoka-applications/commit/04649a7c3310c39202634d55ce55d3a53ea12d14))
+
 ## [1.27.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.0...v1.27.1) (2024-06-26)
 
 
