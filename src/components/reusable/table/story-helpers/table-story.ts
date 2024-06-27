@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { action } from '@storybook/addon-actions';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
@@ -190,6 +191,7 @@ class MyStoryTable extends LitElement {
   }
 
   handleSelectedRowsChange(e: CustomEvent) {
+    action(e.type)(e);
     const { selectedRows } = e.detail;
     this.selectedRows = selectedRows;
     this.requestUpdate();

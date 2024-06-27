@@ -6,6 +6,7 @@
 import { html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import type { Meta, StoryObj } from '@storybook/web-components';
+import { action } from '@storybook/addon-actions';
 
 // Kyndryl Design System Components and Icons
 import './index';
@@ -122,7 +123,10 @@ export const NestedTable: Story = {
         }
       </style>
       <kyn-table-toolbar tableTitle=${'Nesting Table'}> </kyn-table-toolbar>
-      <kyn-table>
+      <kyn-table
+        @on-row-selection-change=${(e: Event) => action(e.type)(e)}
+        @on-all-rows-selection-change=${(e: Event) => action(e.type)(e)}
+      >
         <kyn-thead>
           <kyn-header-tr expandable checkboxSelection>
             <kyn-th .align=${'center'}>ID</kyn-th>
