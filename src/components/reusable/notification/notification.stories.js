@@ -12,16 +12,6 @@ import '../overflowMenu';
 const notificationBodyMsg =
   'Message, this is an additional line Ipsum iMessage, Lorem Ipsum is simply dummy and typesetting industry.';
 
-const handleOverflowClick = (e) => {
-  action(e.type)(e);
-  // overflow link click logic here to mark as unread
-};
-
-const onClose = (e) => {
-  action(e.type)(e);
-  // To close notification
-};
-
 export default {
   title: 'Components/Notification',
   component: 'kyn-notification',
@@ -76,7 +66,7 @@ export const Notification = {
           e.stopPropagation();
         }}
       >
-        <kyn-overflow-menu-item @on-click=${(e) => handleOverflowClick(e)}
+        <kyn-overflow-menu-item @on-click=${(e) => action(e.type)(e)}
           >Mark as Read</kyn-overflow-menu-item
         >
         <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
@@ -100,6 +90,7 @@ export const Inline = {
         type=${args.type}
         tagStatus=${args.tagStatus}
         ?hideCloseButton=${args.hideCloseButton}
+        @on-close=${(e) => action(e.type)(e)}
       >
         <div>${notificationBodyMsg}</div>
       </kyn-notification>
@@ -111,6 +102,7 @@ export const Inline = {
         type=${args.type}
         tagStatus=${args.tagStatus}
         ?hideCloseButton=${args.hideCloseButton}
+        @on-close=${(e) => action(e.type)(e)}
       >
       </kyn-notification>
       <br />
@@ -121,6 +113,7 @@ export const Inline = {
         type=${args.type}
         tagStatus=${args.tagStatus}
         ?hideCloseButton=${args.hideCloseButton}
+        @on-close=${(e) => action(e.type)(e)}
       >
         <div>
           ${notificationBodyMsg}
@@ -166,6 +159,7 @@ export const Toast = {
           tagStatus=${args.tagStatus}
           timeout=${args.timeout}
           ?hideCloseButton=${args.hideCloseButton}
+          @on-close=${(e) => action(e.type)(e)}
           style="width:440px;"
         >
           <div>
@@ -179,6 +173,7 @@ export const Toast = {
           tagStatus="default"
           timeout=${8}
           ?hideCloseButton=${args.hideCloseButton}
+          @on-close=${(e) => action(e.type)(e)}
           style="width:440px;"
         >
           <div>I will disappear after (default) <code>8</code> seconds.</div>
@@ -188,6 +183,7 @@ export const Toast = {
           type="toast"
           tagStatus="warning"
           ?hideCloseButton=${args.hideCloseButton}
+          @on-close=${(e) => action(e.type)(e)}
           timeout=${12}
           style="width:440px;"
         >
@@ -199,6 +195,7 @@ export const Toast = {
           type="toast"
           tagStatus="error"
           ?hideCloseButton=${args.hideCloseButton}
+          @on-close=${(e) => action(e.type)(e)}
           timeout=${0}
           style="width:440px;"
         >
