@@ -114,6 +114,9 @@ export class CheckboxGroup extends LitElement {
   @state()
   checkboxes: Array<any> = [];
 
+  @state()
+  filteredCheckboxes: Array<any> = [];
+
   /**
    * Attached internals for form association.
    * @ignore
@@ -181,7 +184,8 @@ export class CheckboxGroup extends LitElement {
 
             <slot @slotchange=${this._handleSlotChange}></slot>
 
-            ${this.limitCheckboxes && this.checkboxes.length > this._limitCount
+            ${this.limitCheckboxes &&
+            this.filteredCheckboxes.length > this._limitCount
               ? html`
                   <button
                     class="reveal-toggle"
@@ -191,7 +195,7 @@ export class CheckboxGroup extends LitElement {
                       ? this.textStrings.showLess
                       : html`
                           ${this.textStrings.showMore}
-                          (${this.checkboxes.length})
+                          (${this.filteredCheckboxes.length})
                         `}
                   </button>
                 `
@@ -368,20 +372,18 @@ export class CheckboxGroup extends LitElement {
 
     this.searchTerm = e.detail.value.toLowerCase();
 
+    this.filteredCheckboxes = this.checkboxes.filter((checkboxEl) => {
+      return checkboxEl.textContent.toLowerCase().includes(this.searchTerm);
+    });
+
     this.checkboxes.forEach((checkboxEl) => {
       // get checkbox label text
-      const nodes = checkboxEl.shadowRoot.querySelector('slot').assignedNodes({
-        flatten: true,
-      });
-      let checkboxText = '';
-      for (let i = 0; i < nodes.length; i++) {
-        checkboxText += nodes[i].textContent.trim();
-      }
+      const checkboxText = checkboxEl.textContent.toLowerCase();
 
       // hide checkbox if no match to search term
       if (this.limitCheckboxes && !this.limitRevealed) {
         if (
-          checkboxText.toLowerCase().includes(this.searchTerm) &&
+          checkboxText.includes(this.searchTerm) &&
           visibleCount < this._limitCount
         ) {
           checkboxEl.style.display = 'block';
@@ -390,7 +392,7 @@ export class CheckboxGroup extends LitElement {
           checkboxEl.style.display = 'none';
         }
       } else {
-        if (checkboxText.toLowerCase().includes(this.searchTerm)) {
+        if (checkboxText.includes(this.searchTerm)) {
           checkboxEl.style.display = 'block';
         } else {
           checkboxEl.style.display = 'none';
@@ -407,9 +409,9 @@ export class CheckboxGroup extends LitElement {
   private _toggleRevealed(revealed: boolean) {
     this.limitRevealed = revealed;
 
-    this.searchTerm = '';
+    // this.searchTerm = '';
 
-    this.checkboxes.forEach((checkboxEl, index) => {
+    this.filteredCheckboxes.forEach((checkboxEl, index) => {
       if (!this.limitCheckboxes || this.limitRevealed) {
         checkboxEl.style.display = 'block';
       } else {
@@ -429,6 +431,7 @@ export class CheckboxGroup extends LitElement {
 
   private _handleSlotChange() {
     this.checkboxes = Array.from(this.querySelectorAll('kyn-checkbox'));
+    this.filteredCheckboxes = this.checkboxes;
     this._updateChildren();
     this._toggleRevealed(this.limitRevealed);
     this.requestUpdate();
