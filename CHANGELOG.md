@@ -1,3 +1,10 @@
+## [1.27.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.2...v1.27.3) (2024-07-08)
+
+
+### Bug Fixes
+
+* **checkbox-group:** filter & limit interop ([d649f02](https://github.com/kyndryl-design-system/shidoka-applications/commit/d649f022f9e5ae2a148e2ab7f211a4fa6a92f52a))
+
 ## [1.27.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.1...v1.27.2) (2024-06-27)
 
 
