@@ -28,8 +28,23 @@ export default {
 };
 
 export const LocalNav = {
-  render: () => html`
-    <kyn-local-nav>
+  args: {
+    pinned: false,
+    pinText: 'Pin',
+    unpinText: 'Unpin',
+    textStrings: {
+      toggleMenu: 'Toggle Menu',
+      collapse: 'Collapse',
+      menu: 'Menu',
+    },
+  },
+  render: (args) => html`
+    <kyn-local-nav
+      ?pinned=${args.pinned}
+      pinText=${args.pinText}
+      unpinText=${args.unpinText}
+      .textStrings=${args.textStrings}
+    >
       <kyn-local-nav-link href="javascript:void(0)" active>
         <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
         Link 1
