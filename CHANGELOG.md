@@ -1,3 +1,10 @@
+## [1.27.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.4...v1.27.5) (2024-07-10)
+
+
+### Bug Fixes
+
+* **dropdown:** search input width flex ([641aab4](https://github.com/kyndryl-design-system/shidoka-applications/commit/641aab49a0ee2a53bbaed1119081c744563eb33f))
+
 ## [1.27.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.3...v1.27.4) (2024-07-09)
 
 
