@@ -1,3 +1,10 @@
+## [1.27.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.3...v1.27.4) (2024-07-09)
+
+
+### Bug Fixes
+
+* **local-nav:** hide overflow when collapsed ([0885a4a](https://github.com/kyndryl-design-system/shidoka-applications/commit/0885a4af29de13fd0f2f3e2e8dd869bfaeb8919f))
+
 ## [1.27.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.2...v1.27.3) (2024-07-08)
 
 
