@@ -72,3 +72,10 @@ export {
   WidgetGridstack,
 } from './components/reusable/widget';
 export { Search } from './components/reusable/search';
+export {
+  Stepper,
+  StepperComponent,
+  StepperVariant,
+  StepperFinalComponent,
+  StepperItem,
+} from './components/reusable/stepper';

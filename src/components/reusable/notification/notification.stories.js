@@ -167,6 +167,7 @@ export const Toast = {
           timeout=${args.timeout}
           ?hideCloseButton=${args.hideCloseButton}
           style="width:440px;"
+          @on-close=${(e) => action(e.type)(e)}
         >
           <div>
             I will disappear as requested, after
@@ -201,6 +202,7 @@ export const Toast = {
           ?hideCloseButton=${args.hideCloseButton}
           timeout=${0}
           style="width:440px;"
+          @on-close=${(e) => action(e.type)(e)}
         >
           <div>I will remain untill you click on <code>X</code> icon.</div>
         </kyn-notification>

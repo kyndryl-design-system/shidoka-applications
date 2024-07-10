@@ -1,0 +1,74 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+.stepper {
+  min-width: 189px;
+  min-height: 70px;
+}
+.stepper-wrapper {
+  display: flex;
+}
+/* new styles*/
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+.st-parent {
+  //max-width: 200px;
+  width: calc(100% / 6);
+  flex-grow: 1;
+}
+.st-wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+.st-txt-container {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  flex-direction: column;
+  gap: 4px;
+}
+.st-step-text {
+  margin: 8px 0 0 0;
+  text-align: center;
+}
+.st-step-title {
+  margin: 0;
+  text-align: center;
+}
+.progress-hidden {
+  visibility: hidden;
+}
+progress[value] {
+  appearance: none;
+}
+
+progress[value] {
+  --color: #3fadbd;
+  --background: #ddf0f3; /* the background color */
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  height: 3px;
+  background: var(--background);
+}
+progress[value]::-webkit-progress-bar {
+  background: var(--background);
+}
+progress[value]::-webkit-progress-value {
+  background: var(--color);
+}
+progress[value]::-moz-progress-bar {
+  background: var(--color);
+}
+kd-icon svg {
+  fill: #2f808c;
+}
