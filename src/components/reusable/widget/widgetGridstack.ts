@@ -3,7 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import Styles from './widgetGridstack.scss';
 import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
-import GridstackConfig from '../../../common/helpers/gridstack';
+import { Config } from '../../../common/helpers/gridstack';
 import { GridStack } from 'gridstack';
 
 /**
@@ -21,7 +21,7 @@ export class WidgetGridstack extends LitElement {
 
   /** GridStack config. */
   @property({ type: Object })
-  gridstackConfig: any = GridstackConfig;
+  gridstackConfig: any = Config;
 
   /** GridStack instance. */
   @property({ attribute: false })

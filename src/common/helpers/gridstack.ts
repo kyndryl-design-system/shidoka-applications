@@ -11,8 +11,6 @@ export const Config = {
   },
 };
 
-export default Config;
-
 export const WidgetSizes = {
   pill: {
     max: {
