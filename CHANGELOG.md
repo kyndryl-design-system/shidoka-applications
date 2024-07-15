@@ -1,3 +1,10 @@
+## [1.27.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.5...v1.27.6) (2024-07-15)
+
+
+### Bug Fixes
+
+* **textarea:** only allow vertical resize, more right offset for count, resolves [#205](https://github.com/kyndryl-design-system/shidoka-applications/issues/205) ([852c0eb](https://github.com/kyndryl-design-system/shidoka-applications/commit/852c0ebab464d453c5fc1b3eae5650711a660cf2))
+
 ## [1.27.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.4...v1.27.5) (2024-07-10)
 
 
