@@ -5,7 +5,7 @@ import SideDrawerScss from './sideDrawer.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import closeIcon from '@carbon/icons/es/close/32';
+import closeIcon from '@carbon/icons/es/close/20';
 
 /**
  * Side Drawer.
@@ -129,20 +129,18 @@ export class SideDrawer extends LitElement {
           <!--  Header -->
           <header>
             <div class="header-label-title">
+              <h1 id="dialogLabel">${this.titleText}</h1>
               ${this.labelText !== ''
                 ? html`<span class="label">${this.labelText}</span>`
                 : null}
-              <h1 id="dialogLabel">${this.titleText}</h1>
             </div>
 
-            <div class="close-wrapper">
-              <button
-                class="close"
-                @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
-              >
-                <kd-icon .icon=${closeIcon}></kd-icon>
-              </button>
-            </div>
+            <button
+              class="close"
+              @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
+            >
+              <kd-icon .icon=${closeIcon}></kd-icon>
+            </button>
           </header>
 
           <!-- Body -->

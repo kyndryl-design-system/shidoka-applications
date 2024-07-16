@@ -6,7 +6,7 @@ import ModalScss from './modal.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import closeIcon from '@carbon/icons/es/close/32';
+import closeIcon from '@carbon/icons/es/close/20';
 
 /**
  * Modal.
@@ -122,10 +122,10 @@ export class Modal extends LitElement {
 
           <header>
             <div>
+              <h1 id="dialogLabel">${this.titleText}</h1>
               ${this.labelText !== ''
                 ? html`<span class="label">${this.labelText}</span>`
                 : null}
-              <h1 id="dialogLabel">${this.titleText}</h1>
             </div>
           </header>
 
