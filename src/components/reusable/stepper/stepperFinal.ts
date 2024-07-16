@@ -5,6 +5,8 @@ import {
   queryAssignedElements,
   state,
 } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+
 import stepperStyles from './stepperFinal.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
@@ -19,8 +21,13 @@ import './stepperItem';
 export class StepperFinalComponent extends LitElement {
   static override styles = [stepperStyles];
 
+  /** Wheter the stepper is in vertical type. */
   @property({ type: Boolean })
   vertical = false;
+
+  /** Stepper size `'large'` & `'small'`. Bydefault `'large'`. Use small size only for status stepper.  */
+  @property({ type: String })
+  size = 'large';
 
   /**
    * Queries any slotted step items.
@@ -31,7 +38,7 @@ export class StepperFinalComponent extends LitElement {
 
   override render() {
     return html`
-      <!-- Horizontal stepper -->
+      <!-- Stepper -->
 
       <div
         class="${this.vertical
@@ -63,9 +70,35 @@ export class StepperFinalComponent extends LitElement {
           </div>
         </div> -->
       </div>
-      <br /><br /><br />
-      <!---------------------- VERTICAL STEPPER ----------------->
     `;
+  }
+  // Called on firstload
+  override firstUpdated() {
+    if (this.options?.length > 0) {
+      this.options[0].isFirstStep = true;
+      this.options[this.options.length - 1].isLastStep = true;
+    }
+    // if(this.options.length == 2){
+
+    // }
+  }
+  // Whenever any props / state changes
+  override updated(changedProps: any) {
+    if (changedProps.has('vertical')) {
+      if (this.vertical) {
+        this.options.forEach((step) => (step.vertical = true));
+      } else {
+        this.options.forEach((step) => (step.vertical = false));
+      }
+    }
+    if (changedProps.has('size')) {
+      //   if (this.size === 'large') {
+      //     this.options.forEach((step) => (step.size = 'large'));
+      //   } else {
+      //     this.options.forEach((step) => (step.size = 'small'));
+      //   }
+      this.options.forEach((step) => (step.size = this.size));
+    }
   }
 
   override connectedCallback() {
