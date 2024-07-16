@@ -1,3 +1,10 @@
+## [1.27.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.7...v1.27.8) (2024-07-16)
+
+
+### Bug Fixes
+
+* modal and side drawer label position ([de9f2f1](https://github.com/kyndryl-design-system/shidoka-applications/commit/de9f2f14437f7185cd06bb95e6901638cdf46494))
+
 ## [1.27.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.6...v1.27.7) (2024-07-15)
 
 
