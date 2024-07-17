@@ -1,3 +1,10 @@
+## [1.27.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.10...v1.27.11) (2024-07-17)
+
+
+### Bug Fixes
+
+* **gridstack:** add on-grid-init event ([dee68e5](https://github.com/kyndryl-design-system/shidoka-applications/commit/dee68e56b37cef42f7dd7677069a696946eb26d5))
+
 ## [1.27.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.9...v1.27.10) (2024-07-17)
 
 
