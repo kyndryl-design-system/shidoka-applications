@@ -22,10 +22,46 @@ export default {
   },
 };
 
+const steps = [
+  { stepName: 'Step 1', stepTitle: 'Step Title', disabled: false },
+  { stepName: 'Step 2', stepTitle: 'Step Title', disabled: false },
+  { stepName: 'Step 3', stepTitle: 'Step Title', disabled: false },
+  { stepName: 'Step 4', stepTitle: 'Step Title', disabled: false },
+  { stepName: 'Step 5', stepTitle: 'Step Title', disabled: false },
+];
+
 const args = {
+  stepperType: 'default',
   stepperSize: 'large',
   vertical: false,
   currentIndex: 0,
+};
+
+const onNext = () => {
+  if (args.currentIndex < steps.length - 1) {
+    args.currentIndex += 1;
+  }
+};
+const onPrev = () => {
+  if (args.currentIndex > 0) {
+    args.currentIndex -= 1;
+  }
+};
+
+// const calculateProgress = (currentStep, totalSteps) => {
+//   return (currentStep / totalSteps) * 100;
+// };
+
+// Example of how to pass stepState prop. to <kyn-stepper-item>//
+const returnStepState = (currentIndex, index, disabled) => {
+  if (!disabled) {
+    return currentIndex > index
+      ? 'completed'
+      : currentIndex === index
+      ? 'active'
+      : 'pending';
+  }
+  return '';
 };
 
 export const Horizontal = {
@@ -36,35 +72,21 @@ export const Horizontal = {
       ?vertical=${args.vertical}
       currentIndex=${args.currentIndex}
     >
-      <kyn-stepper-item
-        stepName="Step 1"
-        stepTitle="Step Title"
-      ></kyn-stepper-item>
-      <kyn-stepper-item
-        stepName="Step 2"
-        stepTitle="Step Title"
-      ></kyn-stepper-item>
-      <kyn-stepper-item
-        stepName="Step 3"
-        stepTitle="Step Title"
-      ></kyn-stepper-item>
-      <kyn-stepper-item
-        stepName="Step 4"
-        stepTitle="Step Title"
-      ></kyn-stepper-item>
-      <kyn-stepper-item
-        stepName="Step 5"
-        stepTitle="Step Title"
-      ></kyn-stepper-item>
-      <kyn-stepper-item
-        stepName="Step 6"
-        stepTitle="Step Title"
-      ></kyn-stepper-item>
-      <kyn-stepper-item
-        stepName="Step 7"
-        stepTitle="Step Title"
-      ></kyn-stepper-item>
-    </kyn-stepper>`;
+      ${steps.map(
+        (step, index) => html`
+          <kyn-stepper-item
+            stepName=${step.stepName}
+            stepTitle=${step.stepTitle}
+            stepState=${returnStepState(
+              args.currentIndex,
+              index,
+              step.disabled
+            )}
+            ?disabled=${step.disabled}
+          ></kyn-stepper-item>
+        `
+      )}
+    </kyn-stepper> `;
   },
 };
 

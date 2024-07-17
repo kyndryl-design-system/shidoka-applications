@@ -84,9 +84,16 @@ p {
   position: absolute;
   transition: transform 0.2s linear;
   transform-origin: left;
+  background-color: var(--kd-color-border-accent-spruce-light, #3fadbd);
+  &-completed {
+    background-color: var(--kd-color-spruce-50);
+  }
 }
 .customstep-bar {
   background-color: var(--kd-color-border-accent-spruce-light, #3fadbd);
+  &-completed {
+    background-color: var(--kd-color-spruce-50);
+  }
 }
 .step-content {
   display: flex;
@@ -109,6 +116,11 @@ p {
   font-weight: 600;
   line-height: normal;
   text-transform: uppercase;
+  &-disabled {
+    cursor: not-allowed;
+    color: var(--kd-color-darkstone-40);
+    pointer-events: none;
+  }
 }
 .step-title {
   margin-top: 4px;

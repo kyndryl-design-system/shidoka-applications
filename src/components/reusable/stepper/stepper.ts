@@ -19,6 +19,14 @@ import './stepperItem';
 export class Stepper extends LitElement {
   static override styles = stepperStyles;
 
+  /** Stepper type. `'procedure'` & `'status'`. By default `'procedure'`.
+   * procedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure must use the `'large'` size stepper.
+   * status: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.
+   * Note: Read the stepper guidelines before changing this option.
+   */
+  @property({ type: String })
+  stepperType = 'procedure';
+
   /** Wheter the stepper is in vertical type. */
   @property({ type: Boolean })
   vertical = false;
@@ -81,6 +89,7 @@ export class Stepper extends LitElement {
 
     this.steps?.forEach((step: any) => {
       step.vertical = this.vertical;
+      step.stepperType = this.stepperType;
     });
   }
 }

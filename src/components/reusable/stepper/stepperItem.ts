@@ -38,9 +38,17 @@ export class StepperItem extends LitElement {
   @property({ type: String })
   stepTitle = '';
 
-  /** Step state. Default `'pending'`. `'pending'`, `'active'`, `'completed'`, `'excluded'` & `'disabled'`. */
+  /** Step state. Default `'pending'`. `'pending'`, `'active'`, `'completed'` & `'excluded'`. */
   @property({ type: String })
   stepState = 'pending';
+
+  /** Stepper type. Inherited from <kyn-stepper>.*/
+  @property({ type: String })
+  stepperType = 'procedure';
+
+  /** Disable step. */
+  @property({ type: Boolean })
+  disabled = false;
 
   /** Progress of stepper.
    * @ignore
@@ -74,8 +82,8 @@ export class StepperItem extends LitElement {
   override render() {
     const iconMapper: any = {
       active: this.stepSize === 'large' ? circleFilled : circleFilled16,
-      excluded: this.stepSize === 'large' ? errorFilled : errorFilled16,
-      disabled: this.stepSize === 'large' ? substractFilled : substractFilled16,
+      excluded: this.stepSize === 'large' ? substractFilled : substractFilled16,
+      disabled: this.stepSize === 'large' ? errorFilled : errorFilled16,
       completed:
         this.stepSize === 'large' ? checkmarkFilled : checkmarkFilled16,
     };
@@ -118,16 +126,21 @@ export class StepperItem extends LitElement {
         ? html`<div>Vertical ${this.stepSize}</div>`
         : html`<div class="${classMap(stepContainerClasses)}">
             <div class="${classMap(stepperIconClasses)}">
+              <!-- Stepper icon -->
               ${this.stepState !== 'pending'
                 ? html` <kd-icon
                     slot="icon"
-                    .icon=${iconMapper[this.stepState]}
-                    fill=${this.stepState === 'disabled'
+                    .icon=${this.disabled
+                      ? iconMapper.disabled
+                      : iconMapper[this.stepState]}
+                    fill=${this.disabled
                       ? iconFillColor.disabled
                       : iconFillColor[this.stepState]}
                   ></kd-icon>`
                 : null}
             </div>
+
+            <!-- Stepper progress bar -->
             ${this.isLastStep
               ? null
               : html`<div
@@ -138,22 +151,30 @@ export class StepperItem extends LitElement {
                   aria-valuemax="100"
                 >
                   <div
-                    class="progressbar customstep-bar"
+                    class="${this.progress === 100
+                      ? 'progressbar-completed'
+                      : ''} progressbar"
                     style="width:${this.progress}%;"
                   ></div>
                 </div>`}
+
+            <!-- Stepper content -->
             <div class="${classMap(stepContentClasses)}">
-              <p class="step-text">${this.stepName}</p>
+              <p class="${this.disabled ? 'step-text-disabled' : ''} step-text">
+                ${this.stepName}
+              </p>
               <!-- <p class="step-title">Title 1</p> -->
-              <kd-link
-                standalone
-                href=""
-                target="_self"
-                kind="primary"
-                ?disabled=${this.stepState === 'disabled'}
-                @on-click=${(e: any) => console.log(e)}
-                >${this.stepTitle}</kd-link
-              >
+              ${this.stepTitle === ''
+                ? null
+                : html`<kd-link
+                    standalone
+                    href=""
+                    target="_self"
+                    kind="primary"
+                    ?disabled=${this.disabled}
+                    @on-click=${(e: any) => console.log(e)}
+                    >${this.stepTitle}</kd-link
+                  >`}
             </div>
           </div>`}
     `;
@@ -161,7 +182,14 @@ export class StepperItem extends LitElement {
   override updated(changedProps: any) {
     if (changedProps.has('stepState')) {
       if (this.stepState === 'active') {
+        // show random progress
         this.progress = 50;
+      }
+      if (this.stepState === 'pending') {
+        this.progress = 0;
+      }
+      if (this.stepState === 'completed') {
+        this.progress = 100;
       }
     }
   }
