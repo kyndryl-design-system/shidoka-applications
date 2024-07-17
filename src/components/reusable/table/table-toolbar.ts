@@ -19,11 +19,21 @@ export class TableToolbar extends LitElement {
   @property({ type: String })
   tableTitle = '';
 
+  /**The subtitle for the toolbar */
+  @property({ type: String })
+  tableSubtitle = '';
+
   override render() {
     return html`
-      ${this.tableTitle
-        ? html`<span class="title">${this.tableTitle}</span>`
-        : ''}
+      <div class="title-wrapper">
+        ${this.tableTitle
+          ? html`<div class="title">${this.tableTitle}</div>`
+          : ''}
+        ${this.tableSubtitle
+          ? html`<div class="subtitle">${this.tableSubtitle}</div>`
+          : ''}
+      </div>
+
       <div class="slot-wrapper">
         <slot></slot>
       </div>

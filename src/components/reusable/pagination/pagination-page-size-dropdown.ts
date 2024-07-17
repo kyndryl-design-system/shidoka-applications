@@ -5,7 +5,7 @@ import '../dropdown/dropdown';
 import '../dropdown/dropdownOption';
 
 import styles from './pagination-page-size-dropdown.scss';
-import { PAGE_SIZE_LABEL } from './constants';
+// import { PAGE_SIZE_LABEL } from './constants';
 
 /**
  * `kyn-pagination-page-size-dropdown` Web Component.
@@ -23,13 +23,15 @@ export class PaginationPageSizeDropdown extends LitElement {
   @property({ type: Number, reflect: true })
   pageSize = 5;
 
-  /** Label for the page size dropdown. */
-  @property({ type: String })
-  pageSizeLabel = PAGE_SIZE_LABEL;
-
   /** Available options for the page size. */
   @property({ type: Array })
   pageSizeOptions: Array<number> = [5, 10, 20, 30, 40, 50];
+
+  /** Customizable text strings. Inherited from parent
+   * @internal
+   */
+  @property({ type: Object })
+  textStrings: any = {};
 
   /**
    * Handles the dropdown change event.
@@ -51,7 +53,7 @@ export class PaginationPageSizeDropdown extends LitElement {
 
   override render() {
     return html`
-      <label> ${this.pageSizeLabel} </label>
+      <label> ${this.textStrings.itemsPerPage} </label>
       <kyn-dropdown
         name="page-size"
         inline
@@ -60,7 +62,7 @@ export class PaginationPageSizeDropdown extends LitElement {
         value=${this.pageSize.toString()}
         @on-change=${(e: CustomEvent) => this.handleChange(e)}
       >
-        <span slot="label">${this.pageSizeLabel}</span>
+        <span slot="label">${this.textStrings.itemsPerPage}</span>
 
         ${this.pageSizeOptions.map((option) => {
           return html`

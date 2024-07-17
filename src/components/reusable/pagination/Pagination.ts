@@ -59,6 +59,18 @@ export class Pagination extends LitElement {
   @property({ type: Boolean })
   hideNavigationButtons = false;
 
+  /** Customizable text strings */
+  @property({ type: Object })
+  textStrings = {
+    showing: 'Showing',
+    of: 'of',
+    items: 'items',
+    pages: 'pages',
+    itemsPerPage: 'Items per page:',
+    previousPage: 'Previous page',
+    nextPage: 'Next page',
+  };
+
   /**
    * Handler for the event when the page size is changed by the user.
    * Updates the `pageSize` and resets the `pageNumber` to 1.
@@ -88,6 +100,7 @@ export class Pagination extends LitElement {
               .pageNumber=${this.pageNumber}
               .pageSize=${this.pageSize}
               .count=${this.count}
+              .textStrings=${this.textStrings}
             ></kyn-pagination-items-range>
           `
         : null}
@@ -97,6 +110,7 @@ export class Pagination extends LitElement {
               .pageSize=${this.pageSize}
               .pageSizeOptions=${this.pageSizeOptions}
               .pageSizeLabel=${this.pageSizeLabel}
+              .textStrings=${this.textStrings}
               @on-page-size-change=${this.handlePageSizeChange}
             ></kyn-pagination-page-size-dropdown>
           `
@@ -106,6 +120,7 @@ export class Pagination extends LitElement {
             <kyn-pagination-navigation-buttons
               .pageNumber=${this.pageNumber}
               .numberOfPages=${this._numberOfPages}
+              .textStrings=${this.textStrings}
               @on-page-number-change=${this.handlePageNumberChange}
             ></kyn-pagination-navigation-buttons>
           `
