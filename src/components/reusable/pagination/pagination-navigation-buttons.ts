@@ -30,6 +30,12 @@ export class PaginationNavigationButtons extends LitElement {
   @property({ type: Number, reflect: true })
   numberOfPages = 1;
 
+  /** Customizable text strings. Inherited from parent
+   * @internal
+   */
+  @property({ type: Object })
+  textStrings: any = {};
+
   // Constant representing the smallest possible page number
   private readonly SMALLEST_PAGE_NUMBER = 1;
 
@@ -64,7 +70,7 @@ export class PaginationNavigationButtons extends LitElement {
         size="small"
         ?disabled=${disableBackButton}
         @on-click=${() => this.handleButtonClick(false)}
-        description="Previous page"
+        description=${this.textStrings.previousPage}
       >
         <kd-icon slot="icon" .icon=${chevLeftIcon}></kd-icon>
       </kd-button>
@@ -80,7 +86,7 @@ export class PaginationNavigationButtons extends LitElement {
         size="small"
         ?disabled=${disableNextButton}
         @on-click=${() => this.handleButtonClick(true)}
-        description="Next page"
+        description=${this.textStrings.nextPage}
       >
         <kd-icon slot="icon" .icon=${chevRightIcon}></kd-icon>
       </kd-button>

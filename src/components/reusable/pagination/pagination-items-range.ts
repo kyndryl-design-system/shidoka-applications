@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
-import { SHOWING_TEXT, OF_TEXT, ITEMS_TEXT } from './constants';
+// import { SHOWING_TEXT, OF_TEXT, ITEMS_TEXT } from './constants';
 import styles from './pagination-items-range.scss';
 
 /**
@@ -27,6 +27,12 @@ export class PaginationItemsRange extends LitElement {
   @property({ type: Number, reflect: true })
   pageSize = 5;
 
+  /** Customizable text strings. Inherited from parent
+   * @internal
+   */
+  @property({ type: Object })
+  textStrings: any = {};
+
   private itemsRangeText(isMobile: Boolean): string {
     const baseTotalItemsByPage = this.pageSize * this.pageNumber;
     const lowerRangeItemsCount =
@@ -37,8 +43,8 @@ export class PaginationItemsRange extends LitElement {
       baseTotalItemsByPage < this.count ? baseTotalItemsByPage : this.count;
 
     return isMobile
-      ? `${lowerRangeItemsCount}\u2014${higherRangeItemsCount} ${OF_TEXT} ${this.count}`
-      : `${SHOWING_TEXT} ${lowerRangeItemsCount} \u2014 ${higherRangeItemsCount} ${OF_TEXT} ${this.count} ${ITEMS_TEXT}`;
+      ? `${lowerRangeItemsCount}\u2014${higherRangeItemsCount} ${this.textStrings.of} ${this.count}`
+      : `${this.textStrings.showing} ${lowerRangeItemsCount} \u2014 ${higherRangeItemsCount} ${this.textStrings.of} ${this.count} ${this.textStrings.items}`;
   }
 
   override render() {
