@@ -27,7 +27,9 @@ const args = {
     of: 'of',
     items: 'items',
     pages: 'pages',
-    itemsPerPage: 'Items Per Page:',
+    itemsPerPage: 'Items per page:',
+    previousPage: 'Previous page',
+    nextPage: 'Next page',
   },
 };
 
