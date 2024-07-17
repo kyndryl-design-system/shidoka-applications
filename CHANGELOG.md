@@ -1,3 +1,10 @@
+## [1.27.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.8...v1.27.9) (2024-07-17)
+
+
+### Bug Fixes
+
+* **data-table:** Added hover on table row according to UX ([#208](https://github.com/kyndryl-design-system/shidoka-applications/issues/208)) ([ca5d33e](https://github.com/kyndryl-design-system/shidoka-applications/commit/ca5d33e2c7330c2607b1b0f300d15f5b9d0c5cca))
+
 ## [1.27.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.7...v1.27.8) (2024-07-16)
 
 
