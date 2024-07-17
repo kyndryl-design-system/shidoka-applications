@@ -1,3 +1,11 @@
+## [1.27.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.9...v1.27.10) (2024-07-17)
+
+
+### Bug Fixes
+
+* **data-table:** add subtitle to toolbar ([cb5abb6](https://github.com/kyndryl-design-system/shidoka-applications/commit/cb5abb64f09e2c6b544b1b527975ff76374e6fa5))
+* **pagination:** expose internal text strings to customization. resolves [#209](https://github.com/kyndryl-design-system/shidoka-applications/issues/209) ([df22b5d](https://github.com/kyndryl-design-system/shidoka-applications/commit/df22b5d124035de7de29228cb5bfd6b66d1049de))
+
 ## [1.27.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.8...v1.27.9) (2024-07-17)
 
 
