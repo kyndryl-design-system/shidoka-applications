@@ -42,8 +42,10 @@ export class StepperItem extends LitElement {
   @property({ type: String })
   stepState = 'pending';
 
-  /** Stepper type. Inherited from <kyn-stepper>.*/
-  @property({ type: String })
+  /** Stepper type. Inherited from <kyn-stepper>.
+   * @ignore
+   */
+  @state()
   stepperType = 'procedure';
 
   /** Disable step. */
@@ -120,15 +122,42 @@ export class StepperItem extends LitElement {
       [`stepper-icon-${this.stepSize}`]: true,
     };
 
+    const verticalStepContainerClasses = {
+      'vertical-stepper-container': true,
+      [`vertical-stepper-container-${this.stepSize}`]: true,
+    };
+
+    const verticalIconClasses = {
+      'vertical-icon-wrapper': true,
+      [`vertical-icon-wrapper-${this.stepSize}`]: true,
+      'vertical-icon-wrapper-pending': this.stepState === 'pending',
+    };
+
+    const verticalStepperLineClasses = {
+      'vertical-stepper-line': true,
+      [`vertical-stepper-line-${this.stepSize}`]: true,
+    };
+
     console.log(this.stepSize);
     return html`
+      <!-- -------------------------|| Vertical stepper || ----------------------------------->
+
       ${this.vertical
-        ? html`<div>Vertical ${this.stepSize}</div>`
-        : html`<div class="${classMap(stepContainerClasses)}">
-            <div class="${classMap(stepperIconClasses)}">
-              <!-- Stepper icon -->
+        ? html`<div class="${classMap(verticalStepContainerClasses)}">
+            ${this.isLastStep
+              ? null
+              : html`<div class="${classMap(verticalStepperLineClasses)}">
+                  <div
+                    class="${this.progress === 100
+                      ? 'vertical-progress-line-completed'
+                      : ''} vertical-progress-line"
+                    style="height:${this.progress}%;"
+                  ></div>
+                </div>`}
+
+            <div class="${classMap(verticalIconClasses)}">
               ${this.stepState !== 'pending'
-                ? html` <kd-icon
+                ? html`<kd-icon
                     slot="icon"
                     .icon=${this.disabled
                       ? iconMapper.disabled
@@ -140,33 +169,19 @@ export class StepperItem extends LitElement {
                 : null}
             </div>
 
-            <!-- Stepper progress bar -->
-            ${this.isLastStep
-              ? null
-              : html`<div
-                  class="${classMap(stepperProgressClass)}"
-                  role="progressbar"
-                  aria-valuenow="${this.progress}"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                >
-                  <div
-                    class="${this.progress === 100
-                      ? 'progressbar-completed'
-                      : ''} progressbar"
-                    style="width:${this.progress}%;"
-                  ></div>
-                </div>`}
-
-            <!-- Stepper content -->
-            <div class="${classMap(stepContentClasses)}">
-              <p class="${this.disabled ? 'step-text-disabled' : ''} step-text">
+            <div class="vertical-item-content">
+              <p
+                class="${this.stepSize === 'large'
+                  ? 'vertical-step-text-large'
+                  : ''} vertical-step-text"
+              >
                 ${this.stepName}
               </p>
-              <!-- <p class="step-title">Title 1</p> -->
+
               ${this.stepTitle === ''
                 ? null
-                : html`<kd-link
+                : this.stepperType === 'procedure'
+                ? html`<kd-link
                     standalone
                     href=""
                     target="_self"
@@ -174,16 +189,91 @@ export class StepperItem extends LitElement {
                     ?disabled=${this.disabled}
                     @on-click=${(e: any) => console.log(e)}
                     >${this.stepTitle}</kd-link
-                  >`}
+                  >`
+                : this.stepperType === 'status'
+                ? html`<p class="step-title-text">${this.stepTitle}</p>`
+                : null}
             </div>
-          </div>`}
+          </div>`
+        : html` <!-- -------------------------|| horizontal stepper || ----------------------------------->
+            <div class="${classMap(stepContainerClasses)}">
+              <div class="${classMap(stepperIconClasses)}">
+                <!-- Stepper icon -->
+                ${this.stepState !== 'pending'
+                  ? html` <kd-icon
+                      slot="icon"
+                      .icon=${this.disabled
+                        ? iconMapper.disabled
+                        : iconMapper[this.stepState]}
+                      fill=${this.disabled
+                        ? iconFillColor.disabled
+                        : iconFillColor[this.stepState]}
+                    ></kd-icon>`
+                  : null}
+              </div>
+
+              <!----------------[ Stepper progress bar ]--------------->
+              ${this.isLastStep
+                ? null
+                : html`<div
+                    class="${classMap(stepperProgressClass)}"
+                    role="progressbar"
+                    aria-valuenow="${this.progress}"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  >
+                    <div
+                      class="${this.progress === 100
+                        ? 'progressbar-completed'
+                        : ''} progressbar"
+                      style="width:${this.progress}%;"
+                    ></div>
+                  </div>`}
+
+              <!-----------------[ Stepper content ]--------------------->
+              <div class="${classMap(stepContentClasses)}">
+                <p
+                  class="${this.disabled ? 'step-text-disabled' : ''} step-text"
+                >
+                  ${this.stepName}
+                </p>
+
+                ${this.stepTitle === ''
+                  ? null
+                  : this.stepperType === 'procedure'
+                  ? html`<kd-link
+                      standalone
+                      href=""
+                      target="_self"
+                      kind="primary"
+                      ?disabled=${this.disabled}
+                      @on-click=${(e: any) => console.log(e)}
+                      >${this.stepTitle}</kd-link
+                    >`
+                  : this.stepperType === 'status'
+                  ? html`<p class="step-title-text">${this.stepTitle}</p>`
+                  : null}
+              </div>
+            </div>`}
     `;
   }
   override updated(changedProps: any) {
-    if (changedProps.has('stepState')) {
+    if (changedProps.has('stepState') && !this.vertical) {
       if (this.stepState === 'active') {
         // show random progress
         this.progress = 50;
+      }
+      if (this.stepState === 'pending') {
+        this.progress = 0;
+      }
+      if (this.stepState === 'completed') {
+        this.progress = 100;
+      }
+    }
+
+    if (this.vertical) {
+      if (this.stepState === 'active') {
+        this.progress = 20;
       }
       if (this.stepState === 'pending') {
         this.progress = 0;

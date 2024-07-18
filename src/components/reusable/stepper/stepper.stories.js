@@ -9,6 +9,10 @@ export default {
     StepperItem: 'kyn-stepper-item',
   },
   argTypes: {
+    stepperType: {
+      options: ['procedure', 'status'],
+      control: { type: 'select' },
+    },
     stepperSize: {
       options: ['large', 'small'],
       control: { type: 'select' },
@@ -29,13 +33,6 @@ const steps = [
   { stepName: 'Step 4', stepTitle: 'Step Title', disabled: false },
   { stepName: 'Step 5', stepTitle: 'Step Title', disabled: false },
 ];
-
-const args = {
-  stepperType: 'default',
-  stepperSize: 'large',
-  vertical: false,
-  currentIndex: 0,
-};
 
 const onNext = () => {
   if (args.currentIndex < steps.length - 1) {
@@ -64,12 +61,18 @@ const returnStepState = (currentIndex, index, disabled) => {
   return '';
 };
 
+const args = {
+  stepperType: 'procedure',
+  stepperSize: 'large',
+  currentIndex: 0,
+};
+
 export const Horizontal = {
   args,
   render: (args) => {
     return html`<kyn-stepper
+      stepperType=${args.stepperType}
       stepperSize=${args.stepperSize}
-      ?vertical=${args.vertical}
       currentIndex=${args.currentIndex}
     >
       ${steps.map(
@@ -91,14 +94,29 @@ export const Horizontal = {
 };
 
 export const Vertical = {
-  args: { ...args, vertical: true },
+  args,
   render: (args) => {
     return html`
       <kyn-stepper
+        stepperType=${args.stepperType}
         stepperSize=${args.stepperSize}
-        ?vertical=${args.vertical}
+        ?vertical=${true}
         currentIndex=${args.currentIndex}
       >
+        ${steps.map(
+          (step, index) => html`
+            <kyn-stepper-item
+              stepName=${step.stepName}
+              stepTitle=${step.stepTitle}
+              stepState=${returnStepState(
+                args.currentIndex,
+                index,
+                step.disabled
+              )}
+              ?disabled=${step.disabled}
+            ></kyn-stepper-item>
+          `
+        )}
       </kyn-stepper>
     `;
   },

@@ -89,12 +89,6 @@ p {
     background-color: var(--kd-color-spruce-50);
   }
 }
-.customstep-bar {
-  background-color: var(--kd-color-border-accent-spruce-light, #3fadbd);
-  &-completed {
-    background-color: var(--kd-color-spruce-50);
-  }
-}
 .step-content {
   display: flex;
   flex-direction: column;
@@ -125,6 +119,15 @@ p {
 .step-title {
   margin-top: 4px;
 }
+.step-title-text {
+  color: var(--kd-color-text-secondary);
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.16px;
+}
 /** vertical stepper styles */
 
 .vertical-wrapper {
@@ -141,33 +144,48 @@ p {
   position: relative;
 }
 .vertical-stepper-container {
-  padding-left: 32px;
   padding-bottom: 20px;
   position: relative;
   min-height: 50px;
+  display: flex;
+  &-large {
+    padding-left: 32px;
+  }
+  &-small {
+    padding-left: 24px;
+  }
 }
 .vertical-stepper-line {
   position: absolute;
   border-left-style: solid;
-  border-left-width: 3px;
+  border-left-width: 1px;
   bottom: 0;
-  left: 11.5px;
-  top: 32px;
   border-color: var(--kd-color-background-inverse-hover, #ddf0f3);
   border-radius: 5px;
+  &-large {
+    top: 27px;
+    left: 11.5px;
+  }
+  &-small {
+    left: 8px;
+    top: 19px;
+  }
 }
 .vertical-progress-line {
-  border-color: var(--kd-color-border-accent-spruce-light, #3fadbd);
   top: 0;
-  height: 50%;
+  height: 0;
   left: auto;
   right: 0;
   bottom: 0;
   position: absolute;
   border-left-style: solid;
-  border-left-width: 3px;
+  border-left-width: 1px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  border-color: var(--kd-color-border-accent-spruce-light, #3fadbd);
+  &-completed {
+    border-color: var(--kd-color-spruce-50);
+  }
 }
 
 .vertical-icon-wrapper {
@@ -177,8 +195,14 @@ p {
   text-align: center;
   top: 0;
   left: 0;
-  width: 24px;
-  height: 24px;
+  &-large {
+    width: 24px;
+    height: 24px;
+  }
+  &-small {
+    width: 16px;
+    height: 16px;
+  }
 
   &-pending {
     border: 2px dashed var(--kd-color-spruce-20, #8ecfd9);
@@ -199,7 +223,9 @@ p {
   font-weight: 600;
   line-height: normal;
   text-transform: uppercase;
-  margin-top: 5px;
+  &-large {
+    margin-top: 5px;
+  }
 }
 
 .vertical-step-content {

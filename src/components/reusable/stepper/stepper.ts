@@ -75,6 +75,11 @@ export class Stepper extends LitElement {
   }
 
   override updated(changedProperties: any) {
+    // optional to change if more than 7 steps then automatically switch to vertical mode
+    // if (this.steps?.length > 7) {
+    //   this.vertical = true;
+    // }
+
     if (changedProperties.has('stepperSize')) {
       if (this.stepperSize === 'large') {
         this.steps.forEach((step: any) => {
