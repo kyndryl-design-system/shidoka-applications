@@ -351,28 +351,28 @@ export const Dense: Story = {
   parameters,
 };
 
-export const Ellipsis: Story = {
-  args: {
-    ellipsis: true,
-  },
-  render: (args) => {
-    const rows = characters.map((row: any) => {
-      return {
-        ...row,
-        firstName: 'This is a very long description that should be truncated.',
-      };
-    });
-    return html`
-      <story-table
-        .tableTitle=${'Ellipsis'}
-        .rows=${rows}
-        ?ellipsis=${args.ellipsis}
-      >
-      </story-table>
-    `;
-  },
-  parameters,
-};
+// export const Ellipsis: Story = {
+//   args: {
+//     ellipsis: true,
+//   },
+//   render: (args) => {
+//     const rows = characters.map((row: any) => {
+//       return {
+//         ...row,
+//         firstName: 'This is a very long description that should be truncated.',
+//       };
+//     });
+//     return html`
+//       <story-table
+//         .tableTitle=${'Ellipsis'}
+//         .rows=${rows}
+//         ?ellipsis=${args.ellipsis}
+//       >
+//       </story-table>
+//     `;
+//   },
+//   parameters,
+// };
 
 export const FixedLayout: Story = {
   args: {

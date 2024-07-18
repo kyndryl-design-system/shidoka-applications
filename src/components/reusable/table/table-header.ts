@@ -34,7 +34,9 @@ export class TableHeader extends LitElement {
   @property({ type: Boolean, reflect: true })
   dense = false;
 
-  /** Truncates the cell's contents with ellipsis. */
+  /** Truncates the cell's contents with ellipsis.
+   * @ignore
+   */
   @property({ type: Boolean, reflect: true })
   ellipsis = false;
 
