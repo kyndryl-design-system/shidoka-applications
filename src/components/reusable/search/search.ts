@@ -184,7 +184,7 @@ export class Search extends LitElement {
   }
 
   private handleKeyboard(e: any, keyCode: number) {
-    const SPACEBAR_KEY_CODE = [0, 32];
+    // const SPACEBAR_KEY_CODE = [0, 32];
     const ENTER_KEY_CODE = 13;
     const DOWN_ARROW_KEY_CODE = 40;
     const UP_ARROW_KEY_CODE = 38;
@@ -200,9 +200,9 @@ export class Search extends LitElement {
       : 0;
 
     // prevent page scroll on spacebar press
-    if (SPACEBAR_KEY_CODE.includes(keyCode)) {
-      e.preventDefault();
-    }
+    // if (SPACEBAR_KEY_CODE.includes(keyCode)) {
+    //   e.preventDefault();
+    // }
 
     switch (keyCode) {
       case ENTER_KEY_CODE: {
