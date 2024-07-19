@@ -1,3 +1,10 @@
+## [1.27.12](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.11...v1.27.12) (2024-07-19)
+
+
+### Bug Fixes
+
+* **search:** allow spaces ([39cdd84](https://github.com/kyndryl-design-system/shidoka-applications/commit/39cdd8447bd96c42435350bd9241dc777d9b2829))
+
 ## [1.27.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.10...v1.27.11) (2024-07-17)
 
 
