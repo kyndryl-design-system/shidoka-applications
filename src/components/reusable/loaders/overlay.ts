@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import lottie from 'lottie-web';
-import animationData from './json/overlay.json';
+import animationData from './json/preload.json';
 import Styles from './overlay.scss';
 
 /**
