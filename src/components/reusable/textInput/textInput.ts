@@ -102,6 +102,12 @@ export class TextInput extends LitElement {
   @property({ type: Boolean })
   hideLabel = false;
 
+  /** Customizable text strings. */
+  @property({ type: Object })
+  textStrings = {
+    clearAll: 'Clear all',
+  };
+
   /**
    * Queries the <input> DOM element.
    * @ignore
@@ -172,6 +178,8 @@ export class TextInput extends LitElement {
             ?required=${this.required}
             ?disabled=${this.disabled}
             ?invalid=${this.isInvalid}
+            aria-invalid=${this.isInvalid}
+            aria-describedby=${this.isInvalid ? 'error' : ''}
             pattern=${ifDefined(this.pattern)}
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
@@ -186,6 +194,8 @@ export class TextInput extends LitElement {
                 <button
                   ?disabled=${this.disabled}
                   class="clear"
+                  aria-label=${this.textStrings.clearAll}
+                  title=${this.textStrings.clearAll}
                   @click=${() => this._handleClear()}
                 >
                   <kd-icon .icon=${clearIcon}></kd-icon>
@@ -199,7 +209,7 @@ export class TextInput extends LitElement {
           : null}
         ${this.isInvalid
           ? html`
-              <div class="error">
+              <div id="error" class="error">
                 ${this.invalidText || this.internalValidationMsg}
               </div>
             `
