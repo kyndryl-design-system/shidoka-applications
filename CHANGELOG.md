@@ -1,3 +1,10 @@
+## [1.27.13](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.12...v1.27.13) (2024-07-23)
+
+
+### Bug Fixes
+
+* **text-input:** wcag improvements ([339d125](https://github.com/kyndryl-design-system/shidoka-applications/commit/339d125d972bc7408584b4d3d62659522f77292b))
+
 ## [1.27.12](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.11...v1.27.12) (2024-07-19)
 
 
