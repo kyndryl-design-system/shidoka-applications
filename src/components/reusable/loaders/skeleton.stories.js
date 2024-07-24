@@ -32,7 +32,7 @@ export const Inline = {
     return html`
       <style>
         kyn-skeleton[inline] {
-          width: 108px;
+          /* width: 108px; */
           height: 16px;
         }
       </style>
