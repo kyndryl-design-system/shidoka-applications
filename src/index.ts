@@ -75,7 +75,7 @@ export {
   WidgetGridstack,
 } from './components/reusable/widget';
 export { Search } from './components/reusable/search';
-export { LoaderOverlay } from './components/reusable/loaders';
+export { Loader, LoaderInline } from './components/reusable/loaders';
 
 export {
   debounce,

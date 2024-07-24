@@ -1,1 +1,2 @@
-export { LoaderOverlay } from './overlay';
+export { Loader } from './loader';
+export { LoaderInline } from './inline';

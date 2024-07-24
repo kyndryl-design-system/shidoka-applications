@@ -3,8 +3,8 @@ import './index';
 // import { action } from '@storybook/addon-actions';
 
 export default {
-  title: 'Components/Loaders',
-  component: 'kyn-loader-overlay',
+  title: 'Components/Loaders/Inline',
+  component: 'kyn-loader-inline',
   parameters: {
     design: {
       type: 'figma',
@@ -13,13 +13,15 @@ export default {
   },
 };
 
-export const Overlay = {
+export const Inline = {
   args: {
     stopped: false,
   },
   render: (args) => {
     return html`
-      <kyn-loader-overlay ?stopped=${args.stopped}></kyn-loader-overlay>
+      <kyn-loader-inline ?stopped=${args.stopped}>
+        Loading...
+      </kyn-loader-inline>
     `;
   },
 };

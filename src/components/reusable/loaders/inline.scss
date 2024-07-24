@@ -3,26 +3,32 @@
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
-  display: block;
+  display: inline-block;
 }
 
-.overlay {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+.container {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--kd-color-dark-opacity-50);
   transition: opacity 500ms ease-out;
 
-  &.stopped {
+  .stopped & {
     opacity: 0;
   }
 
-  &.hidden {
+  .hidden & {
     visibility: hidden;
   }
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+svg {
+  display: block;
+  width: 24px !important;
 }

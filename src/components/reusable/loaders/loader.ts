@@ -2,19 +2,25 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import lottie from 'lottie-web';
-import animationData from './json/preload.json';
-import Styles from './overlay.scss';
+import animationData from './json/loader.json';
+import Styles from './loader.scss';
 
 /**
  * Loader.
+ * @fires on-start - Emits when the loader been started.
+ * @fires on-stop - Emits when the loader has been stopped and all animations have completed.
  */
-@customElement('kyn-loader-overlay')
-export class LoaderOverlay extends LitElement {
+@customElement('kyn-loader')
+export class Loader extends LitElement {
   static override styles = Styles;
 
   /** Animation stopped state */
   @property({ type: Boolean })
   stopped = false;
+
+  /** Display the loader as an overlay */
+  @property({ type: Boolean })
+  overlay = false;
 
   /** Animation loop has finished and stopped
    * @internal
@@ -22,13 +28,13 @@ export class LoaderOverlay extends LitElement {
   @state()
   private _stopped = false;
 
-  /** Overlay element
+  /** Wrapper element
    * @internal
    */
-  @query('.overlay')
-  private _overlayEl!: any;
+  @query('.wrapper')
+  private _wrapperEl!: any;
 
-  /** Overlay hidden state
+  /** Hidden state
    * @internal
    */
   @state()
@@ -48,7 +54,8 @@ export class LoaderOverlay extends LitElement {
 
   override render() {
     const Classes = {
-      overlay: true,
+      wrapper: true,
+      overlay: this.overlay,
       stopped: this._stopped,
       hidden: this._hidden,
     };
@@ -67,7 +74,6 @@ export class LoaderOverlay extends LitElement {
 
     // initialize the animation
     this._animation = lottie.loadAnimation({
-      name: 'overlay',
       container: this._containerEl, // the dom element that will contain the animation
       renderer: 'svg',
       loop: true,
@@ -83,10 +89,11 @@ export class LoaderOverlay extends LitElement {
       }
     });
 
-    // hide the overlay element after stopped and transitionend
-    this._overlayEl.addEventListener('transitionend', () => {
+    // hide the wrapper element and emit an event after stopped and transitionend
+    this._wrapperEl.addEventListener('transitionend', () => {
       if (this._stopped) {
         this._hidden = true;
+        this._emitStop();
       }
     });
   }
@@ -98,13 +105,24 @@ export class LoaderOverlay extends LitElement {
         this._animation.play();
         this._stopped = false;
         this._hidden = false;
+        this._emitStart();
       }
     }
+  }
+
+  private _emitStart() {
+    const event = new CustomEvent('on-start');
+    this.dispatchEvent(event);
+  }
+
+  private _emitStop() {
+    const event = new CustomEvent('on-stop');
+    this.dispatchEvent(event);
   }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-loader-overlay': LoaderOverlay;
+    'kyn-loader': Loader;
   }
 }
