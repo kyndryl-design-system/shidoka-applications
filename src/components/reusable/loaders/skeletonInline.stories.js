@@ -3,8 +3,8 @@ import './index';
 // import { action } from '@storybook/addon-actions';
 
 export default {
-  title: 'Components/Loaders/Loader Inline',
-  component: 'kyn-loader-inline',
+  title: 'Components/Loaders/Skeleton Inline',
+  component: 'kyn-skeleton-inline',
   parameters: {
     design: {
       type: 'figma',
@@ -14,14 +14,11 @@ export default {
 };
 
 export const Inline = {
-  args: {
-    stopped: false,
-  },
-  render: (args) => {
+  render: () => {
     return html`
-      <kyn-loader-inline ?stopped=${args.stopped}>
-        Loading...
-      </kyn-loader-inline>
+      <kyn-skeleton-inline
+        style="width: 108px; height: 16px;"
+      ></kyn-skeleton-inline>
     `;
   },
 };
