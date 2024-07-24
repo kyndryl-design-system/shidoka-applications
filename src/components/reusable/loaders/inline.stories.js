@@ -16,11 +16,12 @@ export default {
 export const Inline = {
   args: {
     stopped: false,
+    unnamed: 'Loading...',
   },
   render: (args) => {
     return html`
       <kyn-loader-inline ?stopped=${args.stopped}>
-        Loading...
+        ${args.unnamed}
       </kyn-loader-inline>
     `;
   },
