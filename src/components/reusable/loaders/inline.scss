@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 500ms ease-out;
+  transition: opacity 250ms ease-in-out;
 
   .stopped & {
     opacity: 0;
@@ -22,6 +22,7 @@
 }
 
 .wrapper {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,5 +31,28 @@
 
 svg {
   display: block;
-  width: 24px !important;
+  width: 16px !important;
+}
+
+.status-icon {
+  position: absolute;
+  left: 0;
+  transition: opacity 250ms ease-in-out;
+  opacity: 0;
+}
+
+.success {
+  color: var(--kd-color-text-success);
+
+  .status-success & {
+    opacity: 1;
+  }
+}
+
+.error {
+  color: var(--kd-color-text-error);
+
+  .status-error & {
+    opacity: 1;
+  }
 }
