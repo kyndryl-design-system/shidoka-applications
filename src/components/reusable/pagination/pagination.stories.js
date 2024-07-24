@@ -22,6 +22,15 @@ const args = {
   hideItemsRange: false,
   hidePageSizeDropdown: false,
   hideNavigationButtons: false,
+  textStrings: {
+    showing: 'Showing',
+    of: 'of',
+    items: 'items',
+    pages: 'pages',
+    itemsPerPage: 'Items per page:',
+    previousPage: 'Previous page',
+    nextPage: 'Next page',
+  },
 };
 
 export const Pagination = {
@@ -37,6 +46,7 @@ export const Pagination = {
         ?hideItemsRange=${args.hideItemsRange}
         ?hidePageSizeDropdown=${args.hidePageSizeDropdown}
         ?hideNavigationButtons=${args.hideNavigationButtons}
+        .textStrings=${args.textStrings}
         @on-page-size-change=${(e) => action(e.type)(e)}
         @on-page-number-change=${(e) => action(e.type)(e)}
       ></kyn-pagination>

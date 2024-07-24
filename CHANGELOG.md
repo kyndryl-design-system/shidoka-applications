@@ -1,3 +1,46 @@
+## [1.27.13](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.12...v1.27.13) (2024-07-23)
+
+
+### Bug Fixes
+
+* **text-input:** wcag improvements ([339d125](https://github.com/kyndryl-design-system/shidoka-applications/commit/339d125d972bc7408584b4d3d62659522f77292b))
+
+## [1.27.12](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.11...v1.27.12) (2024-07-19)
+
+
+### Bug Fixes
+
+* **search:** allow spaces ([39cdd84](https://github.com/kyndryl-design-system/shidoka-applications/commit/39cdd8447bd96c42435350bd9241dc777d9b2829))
+
+## [1.27.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.10...v1.27.11) (2024-07-17)
+
+
+### Bug Fixes
+
+* **gridstack:** add on-grid-init event ([dee68e5](https://github.com/kyndryl-design-system/shidoka-applications/commit/dee68e56b37cef42f7dd7677069a696946eb26d5))
+
+## [1.27.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.9...v1.27.10) (2024-07-17)
+
+
+### Bug Fixes
+
+* **data-table:** add subtitle to toolbar ([cb5abb6](https://github.com/kyndryl-design-system/shidoka-applications/commit/cb5abb64f09e2c6b544b1b527975ff76374e6fa5))
+* **pagination:** expose internal text strings to customization. resolves [#209](https://github.com/kyndryl-design-system/shidoka-applications/issues/209) ([df22b5d](https://github.com/kyndryl-design-system/shidoka-applications/commit/df22b5d124035de7de29228cb5bfd6b66d1049de))
+
+## [1.27.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.8...v1.27.9) (2024-07-17)
+
+
+### Bug Fixes
+
+* **data-table:** Added hover on table row according to UX ([#208](https://github.com/kyndryl-design-system/shidoka-applications/issues/208)) ([ca5d33e](https://github.com/kyndryl-design-system/shidoka-applications/commit/ca5d33e2c7330c2607b1b0f300d15f5b9d0c5cca))
+
+## [1.27.8](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.7...v1.27.8) (2024-07-16)
+
+
+### Bug Fixes
+
+* modal and side drawer label position ([de9f2f1](https://github.com/kyndryl-design-system/shidoka-applications/commit/de9f2f14437f7185cd06bb95e6901638cdf46494))
+
 ## [1.27.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.6...v1.27.7) (2024-07-15)
 
 

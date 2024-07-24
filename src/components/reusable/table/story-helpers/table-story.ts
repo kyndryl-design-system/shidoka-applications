@@ -60,6 +60,7 @@ class MyStoryTable extends LitElement {
   @property({ type: Boolean, reflect: true })
   dense = false;
 
+  /** @ignore */
   @property({ type: Boolean, reflect: true })
   ellipsis = false;
 
@@ -77,6 +78,9 @@ class MyStoryTable extends LitElement {
 
   @property({ type: String, reflect: true })
   tableTitle = 'Table Title';
+
+  @property({ type: String, reflect: true })
+  tableSubtitle = 'Table Subtitle';
 
   @property({ type: Boolean })
   showPagination = false;
@@ -231,7 +235,10 @@ class MyStoryTable extends LitElement {
         : this.tableTitle;
 
     return html` <div style=${stickyHeader ? 'height: 400px' : ''}>
-      <kyn-table-toolbar tableTitle=${tableTitle}>
+      <kyn-table-toolbar
+        tableTitle=${tableTitle}
+        tableSubtitle=${this.tableSubtitle}
+      >
         ${showTableActions
           ? html`
               <action-menu @on-delete=${this.deleteSelectedRows}></action-menu>

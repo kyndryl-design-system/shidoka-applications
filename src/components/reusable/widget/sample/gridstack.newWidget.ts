@@ -1,58 +1,56 @@
-import { html } from 'lit';
-import './index';
-import './sample/gridstack.newWidget';
-import { Config } from '../../../common/helpers/gridstack';
-import sampleLayout from './sample-layout';
+import { LitElement, html } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { Config } from '../../../../common/helpers/gridstack';
+import sampleLayout from '../sample-layout';
 import { action } from '@storybook/addon-actions';
-
+import '../index';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
+import Styles from './gridstack.newWidget.scss';
 
-export default {
-  title: 'Components/Widget/Gridstack',
-  component: 'kyn-widget-gridstack',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/CQuDZEeLiuGiALvCWjAKlu/Applications---Component-Library?node-id=10395%3A701&mode=dev',
-    },
-    a11y: {
-      disable: true,
-    },
-  },
-  decorators: [
-    (story) => html`
-      <style>
-        body {
-          background: var(--kd-color-background-accent-subtle);
-        }
+/**
+ * New Widget sample.
+ */
+@customElement('new-widget-sample')
+export class NewWidgetSample extends LitElement {
+  static override styles = Styles;
 
-        .test {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: var(--kd-color-background-ui-soft);
-          height: 100%;
-          border-radius: 4px;
-        }
-      </style>
-      ${story()}
-    `,
-  ],
-};
+  private _handleInit(e: any) {
+    e.detail.gridStack.setupDragIn(
+      this.shadowRoot?.querySelectorAll('.new-widget'),
+      {
+        appendTo: 'body',
+        helper: 'clone',
+      }
+    );
+  }
 
-const args = {
-  gridstackConfig: Config,
-  layout: sampleLayout,
-};
+  override render() {
+    const modifiedConfig = {
+      ...Config,
+      acceptWidgets: true,
+    };
 
-export const Gridstack = {
-  args,
-  render: (args) => {
     return html`
+      <div style="width: 280px;">
+        <div class="grid-stack-item new-widget">
+          <div class="grid-stack-item-content">
+            <kyn-widget widgetTitle="New Widget" subTitle="Widget Subtitle">
+              <kyn-widget-drag-handle></kyn-widget-drag-handle>
+              <div class="test">Drag Me</div>
+            </kyn-widget>
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <hr />
+      <br />
+
       <kyn-widget-gridstack
-        .layout=${args.layout}
-        .gridstackConfig=${args.gridstackConfig}
-        @on-grid-save=${(e) => action(e.type)(e)}
+        .layout=${sampleLayout}
+        .gridstackConfig=${modifiedConfig}
+        @on-grid-init=${(e: any) => this._handleInit(e)}
+        @on-grid-save=${(e: any) => action(e.type)(e)}
       >
         <div class="grid-stack">
           <div gs-id="w1" class="grid-stack-item">
@@ -203,15 +201,11 @@ export const Gridstack = {
         </div>
       </kyn-widget-gridstack>
     `;
-  },
-};
+  }
+}
 
-export const AddWidget = {
-  render: () => {
-    // document
-    //   .querySelector('kyn-widget-gridstack')
-    //   .grid.setupDragIn('.newWidget', { appendTo: 'body', helper: 'clone' });
-
-    return html` <new-widget-sample></new-widget-sample> `;
-  },
-};
+declare global {
+  interface HTMLElementTagNameMap {
+    'new-widget-sample': NewWidgetSample;
+  }
+}
