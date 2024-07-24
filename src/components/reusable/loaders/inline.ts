@@ -28,11 +28,11 @@ export class LoaderInline extends LitElement {
   @state()
   private _stopped = false;
 
-  /** Wrapper element
-   * @internal
-   */
-  @query('.wrapper')
-  private _wrapperEl!: any;
+  // /** Wrapper element
+  //  * @internal
+  //  */
+  // @query('.wrapper')
+  // private _wrapperEl!: any;
 
   /** Hidden state
    * @internal
@@ -46,11 +46,11 @@ export class LoaderInline extends LitElement {
   @query('.container')
   private _containerEl!: any;
 
-  /** Animation instance
-   * @internal
-   */
-  @state()
-  private _animation!: any;
+  // /** Animation instance
+  //  * @internal
+  //  */
+  // @state()
+  // private _animation!: any;
 
   override render() {
     const Classes = {
@@ -80,7 +80,7 @@ export class LoaderInline extends LitElement {
     this._hidden = this._stopped;
 
     // initialize the animation
-    this._animation = lottie.loadAnimation({
+    lottie.loadAnimation({
       container: this._containerEl, // the dom element that will contain the animation
       renderer: 'svg',
       loop: true,
