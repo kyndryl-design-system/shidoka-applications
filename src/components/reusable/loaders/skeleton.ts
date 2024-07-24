@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import Styles from './skeleton.scss';
 
 /**
@@ -8,6 +8,10 @@ import Styles from './skeleton.scss';
 @customElement('kyn-skeleton')
 export class Skeleton extends LitElement {
   static override styles = Styles;
+
+  /** Use inline style instead of block. */
+  @property({ type: Boolean })
+  inline = false;
 
   override render() {
     return html` <div class="skeleton"></div> `;
