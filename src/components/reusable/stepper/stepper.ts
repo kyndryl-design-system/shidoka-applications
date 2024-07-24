@@ -1,9 +1,8 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import {
   customElement,
   property,
   queryAssignedElements,
-  state,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
@@ -13,6 +12,7 @@ import './stepperItem';
 /**
  * Stepper
  * @slot unnamed - Slot for step items.
+ * @fires on-step-change - Captures the current step index and emits the selected step and original event details.
  */
 
 @customElement('kyn-stepper')
@@ -35,7 +35,7 @@ export class Stepper extends LitElement {
   @property({ type: String })
   stepperSize = 'large';
 
-  /** Curent index of stepper. Default 0. */
+  /** Curent index of stepper. Default 0. Usefull for navigation like next, prev etc. Also represent current step.*/
   @property({ type: Number })
   currentIndex = 0;
 
@@ -56,6 +56,27 @@ export class Stepper extends LitElement {
         <slot></slot>
       </div>
     `;
+  }
+
+  /**
+   * This method is called when navigate next step of stepper.
+   * @public
+   */
+  public next() {
+    if (this.currentIndex < this.steps.length - 1) {
+      this.currentIndex += 1;
+      this.requestUpdate();
+    }
+  }
+  /**
+   * This method is called when navigate to previous step of stepper.
+   * @public
+   */
+  public prev() {
+    if (this.currentIndex > 0) {
+      this.currentIndex -= 1;
+      this.requestUpdate();
+    }
   }
 
   // when firstmost load component
@@ -96,6 +117,22 @@ export class Stepper extends LitElement {
       step.vertical = this.vertical;
       step.stepperType = this.stepperType;
     });
+
+    if (changedProperties.has('currentIndex')) {
+      this.emitChangeEvent();
+    }
+  }
+
+  private emitChangeEvent() {
+    const event = new CustomEvent('on-step-change', {
+      detail: {
+        currentIndex: this.currentIndex,
+        step: this.steps[this.currentIndex],
+      },
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(event);
   }
 }
 
