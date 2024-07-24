@@ -1,21 +1,21 @@
 import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import Styles from './skeletonBlock.scss';
+import Styles from './skeleton.scss';
 
 /**
  * Skeleton block
  */
-@customElement('kyn-skeleton-block')
-export class SkeletonBlock extends LitElement {
+@customElement('kyn-skeleton')
+export class Skeleton extends LitElement {
   static override styles = Styles;
 
   override render() {
-    return html` <div class="skeleton-block"></div> `;
+    return html` <div class="skeleton"></div> `;
   }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-skeleton-block': SkeletonBlock;
+    'kyn-skeleton': Skeleton;
   }
 }
