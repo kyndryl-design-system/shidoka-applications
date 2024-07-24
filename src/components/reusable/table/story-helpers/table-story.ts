@@ -60,6 +60,7 @@ class MyStoryTable extends LitElement {
   @property({ type: Boolean, reflect: true })
   dense = false;
 
+  /** @ignore */
   @property({ type: Boolean, reflect: true })
   ellipsis = false;
 

@@ -61,6 +61,7 @@ export class Table extends LitElement {
    * text content with an ellipsis.
    * @type {boolean}
    * @default false
+   * @ignore
    */
   @property({ type: Boolean })
   ellipsis?: boolean;

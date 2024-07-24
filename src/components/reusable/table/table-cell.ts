@@ -49,7 +49,9 @@ export class TableCell extends LitElement {
   @property({ type: String, reflect: true })
   minWidth = '';
 
-  /** Truncates the cell's contents with ellipsis. */
+  /** Truncates the cell's contents with ellipsis.
+   * @ignore
+   */
   @property({ type: Boolean, reflect: true })
   ellipsis = false;
 

@@ -1,3 +1,32 @@
+## [1.27.13](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.12...v1.27.13) (2024-07-23)
+
+
+### Bug Fixes
+
+* **text-input:** wcag improvements ([339d125](https://github.com/kyndryl-design-system/shidoka-applications/commit/339d125d972bc7408584b4d3d62659522f77292b))
+
+## [1.27.12](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.11...v1.27.12) (2024-07-19)
+
+
+### Bug Fixes
+
+* **search:** allow spaces ([39cdd84](https://github.com/kyndryl-design-system/shidoka-applications/commit/39cdd8447bd96c42435350bd9241dc777d9b2829))
+
+## [1.27.11](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.10...v1.27.11) (2024-07-17)
+
+
+### Bug Fixes
+
+* **gridstack:** add on-grid-init event ([dee68e5](https://github.com/kyndryl-design-system/shidoka-applications/commit/dee68e56b37cef42f7dd7677069a696946eb26d5))
+
+## [1.27.10](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.9...v1.27.10) (2024-07-17)
+
+
+### Bug Fixes
+
+* **data-table:** add subtitle to toolbar ([cb5abb6](https://github.com/kyndryl-design-system/shidoka-applications/commit/cb5abb64f09e2c6b544b1b527975ff76374e6fa5))
+* **pagination:** expose internal text strings to customization. resolves [#209](https://github.com/kyndryl-design-system/shidoka-applications/issues/209) ([df22b5d](https://github.com/kyndryl-design-system/shidoka-applications/commit/df22b5d124035de7de29228cb5bfd6b66d1049de))
+
 ## [1.27.9](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.8...v1.27.9) (2024-07-17)
 
 

@@ -170,7 +170,7 @@ export class Search extends LitElement {
   private handleSearchKeydown(e: any) {
     e.stopPropagation();
 
-    this.handleKeyboard(e, e.keyCode);
+    this.handleKeyboard(e.keyCode);
   }
 
   private handleListKeydown(e: any) {
@@ -180,11 +180,11 @@ export class Search extends LitElement {
       e.preventDefault();
     }
 
-    this.handleKeyboard(e, e.keyCode);
+    this.handleKeyboard(e.keyCode);
   }
 
-  private handleKeyboard(e: any, keyCode: number) {
-    const SPACEBAR_KEY_CODE = [0, 32];
+  private handleKeyboard(keyCode: number) {
+    // const SPACEBAR_KEY_CODE = [0, 32];
     const ENTER_KEY_CODE = 13;
     const DOWN_ARROW_KEY_CODE = 40;
     const UP_ARROW_KEY_CODE = 38;
@@ -200,9 +200,9 @@ export class Search extends LitElement {
       : 0;
 
     // prevent page scroll on spacebar press
-    if (SPACEBAR_KEY_CODE.includes(keyCode)) {
-      e.preventDefault();
-    }
+    // if (SPACEBAR_KEY_CODE.includes(keyCode)) {
+    //   e.preventDefault();
+    // }
 
     switch (keyCode) {
       case ENTER_KEY_CODE: {

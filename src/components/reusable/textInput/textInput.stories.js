@@ -45,6 +45,9 @@ const args = {
   pattern: undefined,
   minLength: undefined,
   maxLength: undefined,
+  textStrings: {
+    clearAll: 'Clear all',
+  },
 };
 
 export const TextInput = {
@@ -65,6 +68,7 @@ export const TextInput = {
         pattern=${ifDefined(args.pattern)}
         minLength=${ifDefined(args.minLength)}
         maxLength=${ifDefined(args.maxLength)}
+        .textStrings=${args.textStrings}
         @on-input=${(e) => action(e.type)(e)}
       >
         ${args.unnamed}
@@ -99,10 +103,17 @@ export const WithIcon = {
         pattern=${ifDefined(args.pattern)}
         minLength=${ifDefined(args.minLength)}
         maxLength=${ifDefined(args.maxLength)}
+        .textStrings=${args.textStrings}
         @on-input=${(e) => action(e.type)(e)}
       >
         ${args.unnamed}
-        <kd-icon slot="icon" .icon=${currencyIcon}></kd-icon>
+        <kd-icon
+          slot="icon"
+          .icon=${currencyIcon}
+          role="img"
+          aria-label="Currency"
+          title="Currency"
+        ></kd-icon>
       </kyn-text-input>
     `;
   },

@@ -8,6 +8,7 @@ import { GridStack } from 'gridstack';
 
 /**
  * GridStack wrapper that includes Shidoka default config and styles.
+ * @fires on-grid-init - Emits after GridStack initializes.
  * @fires on-grid-save - Emits the GridStack save() method results (new layout) on dragstop and resizestop.
  * @slot unnamed - Slot for .grid-stack container element.
  */
@@ -24,6 +25,10 @@ export class WidgetGridstack extends LitElement {
   gridstackConfig: any = Config;
 
   /** GridStack instance. */
+  @property({ attribute: false })
+  gridStack: any = GridStack;
+
+  /** GridStack grid instance. */
   @property({ attribute: false })
   grid!: any;
 
@@ -46,7 +51,7 @@ export class WidgetGridstack extends LitElement {
 
     // initialize the GridStack with Shidoka default options
     const GridstackEl: any = this.querySelector('.grid-stack');
-    this.grid = GridStack.init(this.gridstackConfig, GridstackEl);
+    this.grid = this.gridStack.init(this.gridstackConfig, GridstackEl);
 
     // set widget drag state on dragstart
     this.grid.on('dragstart', (e: Event) => {
@@ -68,6 +73,12 @@ export class WidgetGridstack extends LitElement {
     this.grid.on('resizestop', () => {
       this._saveLayout();
     });
+
+    // emit init event
+    const event = new CustomEvent('on-grid-init', {
+      detail: { grid: this.grid, gridStack: this.gridStack },
+    });
+    this.dispatchEvent(event);
   }
 
   override willUpdate(changedProps: any) {
