@@ -17,6 +17,10 @@ import substractFilled16 from '@carbon/icons/es/subtract--filled/16';
 import errorFilled from '@carbon/icons/es/error--filled/24';
 import errorFilled16 from '@carbon/icons/es/error--filled/16';
 
+/** Stepper Item.
+ * @fires on-step-click - Emits the step details to the parent stepper component when click on step title.
+ */
+
 @customElement('kyn-stepper-item')
 export class StepperItem extends LitElement {
   static override styles = stepperItemStyles;
@@ -56,11 +60,18 @@ export class StepperItem extends LitElement {
    */
   @state()
   progress = 0;
+
   /** Internal state to indicate whether it's 1st step.
    * @ignore
    */
   @state()
   isFirstStep = false;
+
+  /** Internal state for step index.
+   * @ignore
+   */
+  @state()
+  stepIndex = 0;
 
   /** Internal state to indicate whether it's last step.
    * @ignore
@@ -186,7 +197,7 @@ export class StepperItem extends LitElement {
                     target="_self"
                     kind="primary"
                     ?disabled=${this.disabled}
-                    @on-click=${(e: any) => console.log(e)}
+                    @on-click=${(e: any) => this._handleStepClick(e)}
                     >${this.stepTitle}</kd-link
                   >`
                 : this.stepperType === 'status'
@@ -220,6 +231,7 @@ export class StepperItem extends LitElement {
                     aria-valuenow="${this.progress}"
                     aria-valuemin="0"
                     aria-valuemax="100"
+                    aria-label="Step progress: ${this.progress}%"
                   >
                     <div
                       class="${this.progress === 100
@@ -246,7 +258,7 @@ export class StepperItem extends LitElement {
                       target="_self"
                       kind="primary"
                       ?disabled=${this.disabled}
-                      @on-click=${(e: any) => console.log(e)}
+                      @on-click=${(e: any) => this._handleStepClick(e)}
                       >${this.stepTitle}</kd-link
                     >`
                   : this.stepperType === 'status'
@@ -256,6 +268,25 @@ export class StepperItem extends LitElement {
             </div>`}
     `;
   }
+
+  private _handleStepClick(e: Event) {
+    // prevent click if disabled
+    if (this.disabled) {
+      return;
+    }
+    // emit selected value, bubble so it can be captured by the parent element
+    const event = new CustomEvent('on-step-click', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        step: this,
+        stepIndex: this.stepIndex,
+        origEvent: e,
+      },
+    });
+    this.dispatchEvent(event);
+  }
+
   override updated(changedProps: any) {
     if (changedProps.has('stepState') && !this.vertical) {
       if (this.stepState === 'active') {

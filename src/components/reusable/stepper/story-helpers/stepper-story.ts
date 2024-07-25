@@ -116,6 +116,7 @@ class MyStoryStepper extends LitElement {
         currentIndex=${this.currentIndex}
         ?vertical=${this.vertical}
         @on-step-change=${(e: any) => action(e.type)(e)}
+        @on-click=${(e: any) => action(e.type)(e)}
       >
         ${stepArr.map(
           (step, index) => html`
@@ -165,6 +166,10 @@ class MyStoryStepper extends LitElement {
     this.stepper.prev();
     this.currentIndex -= 1;
   }
+
+  //   gotoStep(n: Number) {
+  //     this.stepper.gotoStep(n);
+  //   }
 }
 
 declare global {

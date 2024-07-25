@@ -4,7 +4,6 @@ import {
   property,
   queryAssignedElements,
 } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
 
 import stepperStyles from './stepper.scss';
 import './stepperItem';
@@ -13,6 +12,7 @@ import './stepperItem';
  * Stepper
  * @slot unnamed - Slot for step items.
  * @fires on-step-change - Captures the current step index and emits the selected step and original event details.
+ * @fires on-click - Captures the event and emits the active step and original event details when click on any step title. This is only for procedure type stepper. Status stepper doesn't emit this event.
  */
 
 @customElement('kyn-stepper')
@@ -92,25 +92,17 @@ export class Stepper extends LitElement {
       if (this.steps.length === 2) {
         this.steps[0].isTwoStepStepper = true;
       }
+      this.steps.forEach((step, index) => (step.stepIndex = index));
     }
   }
 
   override updated(changedProperties: any) {
-    // optional to change if more than 7 steps then automatically switch to vertical mode
-    // if (this.steps?.length > 7) {
-    //   this.vertical = true;
-    // }
-
     if (changedProperties.has('stepperSize')) {
-      if (this.stepperSize === 'large') {
-        this.steps.forEach((step: any) => {
-          step.stepSize = 'large';
-        });
-      } else {
-        this.steps.forEach((step: any) => {
-          step.stepSize = 'small';
-        });
-      }
+      this.steps?.forEach((step: any) => {
+        this.stepperSize === 'large'
+          ? (step.stepSize = 'large')
+          : (step.stepSize = 'small');
+      });
     }
 
     this.steps?.forEach((step: any) => {
@@ -122,7 +114,7 @@ export class Stepper extends LitElement {
       this.emitChangeEvent();
     }
   }
-
+  // Called when step changed - dispatched event
   private emitChangeEvent() {
     const event = new CustomEvent('on-step-change', {
       detail: {
@@ -133,6 +125,33 @@ export class Stepper extends LitElement {
       composed: true,
     });
     this.dispatchEvent(event);
+  }
+
+  // Called when click on any step's title.
+  private _handleStepClick(e: any) {
+    const event = new CustomEvent('on-click', {
+      detail: {
+        origEvent: e,
+        step: e.detail.step,
+        stepIndex: e.detail.stepIndex,
+      },
+    });
+    this.dispatchEvent(event);
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    // capture step click event when click on step's title
+    this.addEventListener('on-step-click', (e: any) =>
+      this._handleStepClick(e)
+    );
+  }
+
+  override disconnectedCallback() {
+    this.removeEventListener('on-step-click', (e: any) =>
+      this._handleStepClick(e)
+    );
+    super.disconnectedCallback();
   }
 }
 
