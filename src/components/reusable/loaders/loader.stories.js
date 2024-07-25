@@ -13,16 +13,30 @@ export default {
   },
 };
 
-export const Loader = {
+export const Block = {
   args: {
     stopped: false,
-    overlay: false,
   },
   render: (args) => {
     return html`
       <kyn-loader
         ?stopped=${args.stopped}
-        ?overlay=${args.overlay}
+        @on-start=${(e) => action(e.type)(e)}
+        @on-stop=${(e) => action(e.type)(e)}
+      ></kyn-loader>
+    `;
+  },
+};
+
+export const Overlay = {
+  args: {
+    stopped: false,
+  },
+  render: (args) => {
+    return html`
+      <kyn-loader
+        overlay
+        ?stopped=${args.stopped}
         @on-start=${(e) => action(e.type)(e)}
         @on-stop=${(e) => action(e.type)(e)}
       ></kyn-loader>

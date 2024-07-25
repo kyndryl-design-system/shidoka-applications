@@ -31,13 +31,13 @@ export const Inline = {
   render: () => {
     return html`
       <style>
-        kyn-skeleton[inline] {
+        kyn-skeleton.inline-example {
           width: 108px;
           height: 16px;
         }
       </style>
 
-      <kyn-skeleton inline></kyn-skeleton>
+      <kyn-skeleton inline class="inline-example"></kyn-skeleton>
     `;
   },
 };
