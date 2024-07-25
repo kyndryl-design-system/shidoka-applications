@@ -1,3 +1,10 @@
+# [1.28.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.13...v1.28.0) (2024-07-25)
+
+
+### Features
+
+* **loaders:** initial loaders and skeletons ([#207](https://github.com/kyndryl-design-system/shidoka-applications/issues/207)) ([c87748c](https://github.com/kyndryl-design-system/shidoka-applications/commit/c87748c7950b9c0722e5ba10fed0f867938f9431))
+
 ## [1.27.13](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.12...v1.27.13) (2024-07-23)
 
 
