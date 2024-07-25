@@ -106,9 +106,6 @@ class MyStoryStepper extends LitElement {
       return '';
     };
 
-    const stepArr =
-      this.stepperType === 'procedure' ? this.steps : this.statusSteps;
-
     return html`
       <kyn-stepper
         stepperType=${this.stepperType}
@@ -118,7 +115,7 @@ class MyStoryStepper extends LitElement {
         @on-step-change=${(e: any) => action(e.type)(e)}
         @on-click=${(e: any) => action(e.type)(e)}
       >
-        ${stepArr.map(
+        ${this.steps.map(
           (step, index) => html`
             <kyn-stepper-item
               stepName=${step.stepName}

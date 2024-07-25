@@ -32,9 +32,54 @@ export default {
 //   return (currentStep / totalSteps) * 100;
 // };
 
+const statusSteps = [
+  {
+    stepName: 'Processing Request',
+    stepTitle: 'Monday June 26, 2023 2:05:25 PM',
+    disabled: false,
+  },
+  {
+    stepName: 'Processing Request',
+    stepTitle: 'Monday June 26, 2023 3:05:25 PM',
+    disabled: false,
+  },
+  {
+    stepName: 'Draft',
+    stepTitle: 'Monday June 26, 2023 4:05:25 PM',
+    disabled: false,
+  },
+  {
+    stepName: 'Request Received',
+    stepTitle: 'Monday June 26, 2023 6:05:25 PM',
+    disabled: false,
+  },
+  {
+    stepName: 'Generating Contract',
+    stepTitle: 'Tuesday June 26, 2023 6:05:25 PM',
+    disabled: false,
+  },
+  {
+    stepName: 'Contract Ready for Review',
+    stepTitle: 'Tuesday June 26, 2023 7:05:25 PM',
+    disabled: false,
+  },
+];
+
+const returnStepState = (currentIndex, index, disabled) => {
+  if (!disabled) {
+    return currentIndex > index
+      ? 'completed'
+      : currentIndex === index
+      ? 'active'
+      : 'pending';
+  }
+  return '';
+};
+
 const args = {
   stepperType: 'procedure',
   stepperSize: 'large',
+  currentIndex: 0,
 };
 
 export const Horizontal = {
@@ -61,13 +106,30 @@ export const Vertical = {
 };
 
 export const StatusStepper = {
-  render: () => {
+  args,
+  render: (args) => {
     return html`
-      <story-stepper
+      <kyn-stepper
         stepperType="status"
         stepperSize="small"
+        currentIndex=${args.currentIndex}
         ?vertical=${true}
-      ></story-stepper>
+      >
+        ${statusSteps.map(
+          (step, index) => html`
+            <kyn-stepper-item
+              stepName=${step.stepName}
+              stepTitle=${step.stepTitle}
+              stepState=${returnStepState(
+                args.currentIndex,
+                index,
+                step.disabled
+              )}
+              ?disabled=${step.disabled}
+            ></kyn-stepper-item>
+          `
+        )}
+      </kyn-stepper>
     `;
   },
 };
