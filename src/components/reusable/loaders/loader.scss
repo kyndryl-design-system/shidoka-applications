@@ -1,0 +1,44 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  transition: opacity 500ms ease-out;
+
+  &.stopped {
+    opacity: 0;
+  }
+
+  &.hidden {
+    visibility: hidden;
+  }
+
+  &.overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: var(--kd-color-dark-opacity-50);
+    z-index: var(--kd-z-overlay);
+  }
+}
+
+svg {
+  display: block;
+  width: 100px !important;
+}
