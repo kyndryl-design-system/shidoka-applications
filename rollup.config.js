@@ -8,6 +8,8 @@ import postcss from 'rollup-plugin-postcss';
 import litcss from 'rollup-plugin-postcss-lit';
 import InlineSvg from 'rollup-plugin-inline-svg';
 import copy from 'rollup-plugin-copy';
+import commonjs from '@rollup/plugin-commonjs';
+import json from '@rollup/plugin-json';
 // import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 
 export default {
@@ -39,6 +41,8 @@ export default {
       inject: false,
     }),
     litcss(),
+    commonjs(),
+    json(),
     terser(),
   ],
 };
