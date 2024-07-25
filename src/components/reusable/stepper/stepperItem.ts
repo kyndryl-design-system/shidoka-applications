@@ -41,7 +41,7 @@ export class StepperItem extends LitElement {
   @property({ type: String })
   stepTitle = '';
 
-  /** Step state. Default `'pending'`. `'pending'`, `'active'`, `'completed'` & `'excluded'`. */
+  /** Step state. Default `'pending'`. `'pending'`, `'active'`, `'completed'`, `'excluded'` & `'error'`. */
   @property({ type: String })
   stepState = 'pending';
 
@@ -98,12 +98,14 @@ export class StepperItem extends LitElement {
       disabled: this.stepSize === 'large' ? errorFilled : errorFilled16,
       completed:
         this.stepSize === 'large' ? checkmarkFilled : checkmarkFilled16,
+      error: this.stepSize === 'large' ? substractFilled : substractFilled16,
     };
     const iconFillColor: any = {
       active: 'var(--kd-color-border-accent-spruce-light, #3FADBD)',
       completed: 'var(--kd-color-spruce-50,#2F808C)',
       excluded: 'var(--kd-color-background-secondary, ##3D3C3C)',
       disabled: 'var(--kd-color-background-ui, #898888)',
+      error: 'var(--kd-color-background-destructive, #CC1800)',
     };
     // map first step and last step class to parent div
     const stepContainerClasses = {
@@ -132,6 +134,12 @@ export class StepperItem extends LitElement {
       [`stepper-icon-${this.stepSize}`]: true,
     };
 
+    const horizontalStepTextClass = {
+      'step-text': true,
+      'step-text-disabled': this.disabled,
+      'step-text-error': this.stepState === 'error',
+    };
+
     const verticalStepContainerClasses = {
       'vertical-stepper-container': true,
       [`vertical-stepper-container-${this.stepSize}`]: true,
@@ -146,6 +154,13 @@ export class StepperItem extends LitElement {
     const verticalStepperLineClasses = {
       'vertical-stepper-line': true,
       [`vertical-stepper-line-${this.stepSize}`]: true,
+    };
+
+    const verticalStepNameClasses = {
+      'vertical-step-text': true,
+      'vertical-step-text-error': this.stepState === 'error',
+      'vertical-step-text-large': this.stepSize === 'large',
+      'vertical-step-text-disabled': this.disabled,
     };
 
     console.log(this.stepSize);
@@ -180,11 +195,7 @@ export class StepperItem extends LitElement {
             </div>
 
             <div class="vertical-item-content">
-              <p
-                class="${this.stepSize === 'large'
-                  ? 'vertical-step-text-large'
-                  : ''} vertical-step-text"
-              >
+              <p class="${classMap(verticalStepNameClasses)}">
                 ${this.stepName}
               </p>
 
@@ -243,9 +254,7 @@ export class StepperItem extends LitElement {
 
               <!-----------------[ Stepper content ]--------------------->
               <div class="${classMap(stepContentClasses)}">
-                <p
-                  class="${this.disabled ? 'step-text-disabled' : ''} step-text"
-                >
+                <p class="${classMap(horizontalStepTextClass)}">
                   ${this.stepName}
                 </p>
 
