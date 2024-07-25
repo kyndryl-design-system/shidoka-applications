@@ -19,6 +19,7 @@ import errorFilled16 from '@carbon/icons/es/error--filled/16';
 
 /** Stepper Item.
  * @fires on-step-click - Emits the step details to the parent stepper component when click on step title.
+ * @slot tooltip - Slot for tooltip.
  */
 
 @customElement('kyn-stepper-item')
@@ -199,21 +200,25 @@ export class StepperItem extends LitElement {
                 ${this.stepName}
               </p>
 
-              ${this.stepTitle === ''
-                ? null
-                : this.stepperType === 'procedure'
-                ? html`<kd-link
-                    standalone
-                    href=""
-                    target="_self"
-                    kind="primary"
-                    ?disabled=${this.disabled}
-                    @on-click=${(e: any) => this._handleStepClick(e)}
-                    >${this.stepTitle}</kd-link
-                  >`
-                : this.stepperType === 'status'
-                ? html`<p class="step-title-text">${this.stepTitle}</p>`
-                : null}
+              <div class="vertical-title-wrapper">
+                ${this.stepTitle === ''
+                  ? null
+                  : this.stepperType === 'procedure'
+                  ? html`<kd-link
+                      standalone
+                      href=""
+                      target="_self"
+                      kind="primary"
+                      ?disabled=${this.disabled}
+                      @on-click=${(e: any) => this._handleStepClick(e)}
+                      >${this.stepTitle}</kd-link
+                    >`
+                  : this.stepperType === 'status'
+                  ? html`<p class="step-title-text">${this.stepTitle}</p>`
+                  : null}
+                <!-- Tooltip slot --->
+                <slot name="tooltip"></slot>
+              </div>
             </div>
           </div>`
         : html` <!-- -------------------------|| horizontal stepper || ----------------------------------->
@@ -257,22 +262,26 @@ export class StepperItem extends LitElement {
                 <p class="${classMap(horizontalStepTextClass)}">
                   ${this.stepName}
                 </p>
+                <div class="step-title-wrapper">
+                  ${this.stepTitle === ''
+                    ? null
+                    : this.stepperType === 'procedure'
+                    ? html`<kd-link
+                        standalone
+                        href=""
+                        target="_self"
+                        kind="primary"
+                        ?disabled=${this.disabled}
+                        @on-click=${(e: any) => this._handleStepClick(e)}
+                        >${this.stepTitle}</kd-link
+                      >`
+                    : this.stepperType === 'status'
+                    ? html`<p class="step-title-text">${this.stepTitle}</p>`
+                    : null}
 
-                ${this.stepTitle === ''
-                  ? null
-                  : this.stepperType === 'procedure'
-                  ? html`<kd-link
-                      standalone
-                      href=""
-                      target="_self"
-                      kind="primary"
-                      ?disabled=${this.disabled}
-                      @on-click=${(e: any) => this._handleStepClick(e)}
-                      >${this.stepTitle}</kd-link
-                    >`
-                  : this.stepperType === 'status'
-                  ? html`<p class="step-title-text">${this.stepTitle}</p>`
-                  : null}
+                  <!-- Tooltip slot --->
+                  <slot name="tooltip"></slot>
+                </div>
               </div>
             </div>`}
     `;
