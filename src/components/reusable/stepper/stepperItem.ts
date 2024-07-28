@@ -42,7 +42,7 @@ export class StepperItem extends LitElement {
   @property({ type: String })
   stepTitle = '';
 
-  /** Step state. Default `'pending'`. `'pending'`, `'active'`, `'completed'`, `'excluded'` & `'error'`. */
+  /** Step state. Default `'pending'`. `'pending'`, `'active'`, `'completed'`, `'excluded'` & `'destructive'`. */
   @property({ type: String })
   stepState = 'pending';
 
@@ -99,14 +99,15 @@ export class StepperItem extends LitElement {
       disabled: this.stepSize === 'large' ? errorFilled : errorFilled16,
       completed:
         this.stepSize === 'large' ? checkmarkFilled : checkmarkFilled16,
-      error: this.stepSize === 'large' ? substractFilled : substractFilled16,
+      destructive:
+        this.stepSize === 'large' ? substractFilled : substractFilled16,
     };
     const iconFillColor: any = {
       active: 'var(--kd-color-border-accent-spruce-light, #3FADBD)',
       completed: 'var(--kd-color-spruce-50,#2F808C)',
       excluded: 'var(--kd-color-background-secondary, ##3D3C3C)',
       disabled: 'var(--kd-color-background-ui, #898888)',
-      error: 'var(--kd-color-background-destructive, #CC1800)',
+      destructive: 'var(--kd-color-background-destructive, #CC1800)',
     };
     // map first step and last step class to parent div
     const stepContainerClasses = {
@@ -131,14 +132,14 @@ export class StepperItem extends LitElement {
 
     const stepperIconClasses = {
       'stepper-icon': true,
-      'stepper-icon-pending': this.stepState === 'pending',
+      'stepper-icon-pending': this.stepState === 'pending' && !this.disabled,
       [`stepper-icon-${this.stepSize}`]: true,
     };
 
     const horizontalStepTextClass = {
       'step-text': true,
       'step-text-disabled': this.disabled,
-      'step-text-error': this.stepState === 'error',
+      'step-text-error': this.stepState === 'destructive',
     };
 
     const verticalStepContainerClasses = {
@@ -149,7 +150,8 @@ export class StepperItem extends LitElement {
     const verticalIconClasses = {
       'vertical-icon-wrapper': true,
       [`vertical-icon-wrapper-${this.stepSize}`]: true,
-      'vertical-icon-wrapper-pending': this.stepState === 'pending',
+      'vertical-icon-wrapper-pending':
+        this.stepState === 'pending' && !this.disabled,
     };
 
     const verticalStepperLineClasses = {
@@ -159,7 +161,7 @@ export class StepperItem extends LitElement {
 
     const verticalStepNameClasses = {
       'vertical-step-text': true,
-      'vertical-step-text-error': this.stepState === 'error',
+      'vertical-step-text-error': this.stepState === 'destructive',
       'vertical-step-text-large': this.stepSize === 'large',
       'vertical-step-text-disabled': this.disabled,
     };
@@ -183,7 +185,7 @@ export class StepperItem extends LitElement {
 
             <div class="${classMap(verticalIconClasses)}">
               ${this.stepState !== 'pending'
-                ? html`<kd-icon
+                ? html` <kd-icon
                     slot="icon"
                     .icon=${this.disabled
                       ? iconMapper.disabled
@@ -192,6 +194,14 @@ export class StepperItem extends LitElement {
                       ? iconFillColor.disabled
                       : iconFillColor[this.stepState]}
                   ></kd-icon>`
+                : this.stepState === 'pending' && this.disabled
+                ? html`
+                    <kd-icon
+                      slot="icon"
+                      .icon=${iconMapper.disabled}
+                      fill=${iconFillColor.disabled}
+                    ></kd-icon>
+                  `
                 : null}
             </div>
 
@@ -235,6 +245,14 @@ export class StepperItem extends LitElement {
                         ? iconFillColor.disabled
                         : iconFillColor[this.stepState]}
                     ></kd-icon>`
+                  : this.stepState === 'pending' && this.disabled
+                  ? html`
+                      <kd-icon
+                        slot="icon"
+                        .icon=${iconMapper.disabled}
+                        fill=${iconFillColor.disabled}
+                      ></kd-icon>
+                    `
                   : null}
               </div>
 
@@ -314,19 +332,19 @@ export class StepperItem extends LitElement {
       if (this.stepState === 'pending') {
         this.progress = 0;
       }
-      if (this.stepState === 'completed') {
+      if (this.stepState === 'completed' || this.stepState === 'excluded') {
         this.progress = 100;
       }
     }
 
     if (this.vertical) {
       if (this.stepState === 'active') {
-        this.progress = 20;
+        this.progress = 50;
       }
       if (this.stepState === 'pending') {
         this.progress = 0;
       }
-      if (this.stepState === 'completed') {
+      if (this.stepState === 'completed' || this.stepState === 'excluded') {
         this.progress = 100;
       }
     }

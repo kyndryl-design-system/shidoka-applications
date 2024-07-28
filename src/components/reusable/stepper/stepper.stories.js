@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions';
 
 import './index';
 import './story-helpers/stepper-story';
+import '../tooltip';
 
 export default {
   title: 'Components/Stepper',
@@ -31,6 +32,45 @@ export default {
 // const calculateProgress = (currentStep, totalSteps) => {
 //   return (currentStep / totalSteps) * 100;
 // };
+
+const steps = [
+  {
+    stepName: 'Step 1',
+    stepTitle: 'Completed',
+    stepState: 'completed',
+    disabled: false,
+  },
+  {
+    stepName: 'Step 2',
+    stepTitle: 'Excluded',
+    stepState: 'excluded',
+    disabled: false,
+  },
+  {
+    stepName: 'Step 2',
+    stepTitle: 'Destructive',
+    stepState: 'destructive',
+    disabled: false,
+  },
+  {
+    stepName: 'Step 3',
+    stepTitle: 'Active',
+    stepState: 'active',
+    disabled: false,
+  },
+  {
+    stepName: 'Step 4',
+    stepTitle: 'Disabled',
+    stepState: 'pending',
+    disabled: true,
+  },
+  {
+    stepName: 'Step 5',
+    stepTitle: 'Pending',
+    stepState: 'pending',
+    disabled: false,
+  },
+];
 
 const statusSteps = [
   {
@@ -65,6 +105,7 @@ const statusSteps = [
   },
 ];
 
+// Example of how to pass stepState prop. to <kyn-stepper-item>
 const returnStepState = (currentIndex, index, disabled) => {
   if (!disabled) {
     return currentIndex > index
@@ -85,10 +126,34 @@ const args = {
 export const Horizontal = {
   args,
   render: (args) => {
-    return html` <story-stepper
+    return html` <kyn-stepper
       stepperType=${args.stepperType}
       stepperSize=${args.stepperSize}
-    ></story-stepper>`;
+      @on-click=${(e) => action(e.type)(e)}
+    >
+      ${steps.map(
+        (step, index) => html`
+          <kyn-stepper-item
+            stepName=${step.stepName}
+            stepTitle=${step.stepTitle}
+            stepState=${step.stepState}
+            ?disabled=${step.disabled}
+          >
+            ${index == 2
+              ? html`
+                  <kyn-tooltip
+                    slot="tooltip"
+                    anchorPosition="start"
+                    direction="top"
+                  >
+                    Tooltip example
+                  </kyn-tooltip>
+                `
+              : null}
+          </kyn-stepper-item>
+        `
+      )}
+    </kyn-stepper>`;
   },
 };
 
@@ -96,11 +161,35 @@ export const Vertical = {
   args,
   render: (args) => {
     return html`
-      <story-stepper
+      <kyn-stepper
         stepperType=${args.stepperType}
         stepperSize=${args.stepperSize}
         ?vertical=${true}
-      ></story-stepper>
+        @on-click=${(e) => action(e.type)(e)}
+      >
+        ${steps.map(
+          (step, index) => html`
+            <kyn-stepper-item
+              stepName=${step.stepName}
+              stepTitle=${step.stepTitle}
+              stepState=${step.stepState}
+              ?disabled=${step.disabled}
+            >
+              ${index == 2
+                ? html`
+                    <kyn-tooltip
+                      slot="tooltip"
+                      anchorPosition="start"
+                      direction="top"
+                    >
+                      Tooltip example
+                    </kyn-tooltip>
+                  `
+                : null}
+            </kyn-stepper-item>
+          `
+        )}
+      </kyn-stepper>
     `;
   },
 };
