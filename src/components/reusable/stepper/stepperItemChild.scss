@@ -1,0 +1,92 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  width: 100%;
+}
+p {
+  margin: 0;
+}
+.child-wrapper {
+  padding-bottom: 20px;
+  position: relative;
+  min-height: 50px;
+  display: flex;
+  &-large {
+    padding-left: 32px;
+  }
+  &-small {
+    padding-left: 24px;
+  }
+}
+.child-step {
+  &-line {
+    position: absolute;
+    top: 24px;
+    border-left-style: solid;
+    border-left-width: 1px;
+    bottom: 0;
+    border-color: var(--kd-color-background-inverse-hover, #ddf0f3);
+    border-radius: 5px;
+    &-large {
+      left: 11.5px;
+    }
+    &-small {
+      left: 8px;
+    }
+  }
+  &-progress-line {
+    top: 0;
+    height: 0;
+    left: auto;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-color: var(--kd-color-border-accent-spruce-light, #3fadbd);
+  }
+  &-icon-wrapper {
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    top: 8px;
+    &-large {
+      left: 8px;
+    }
+    &-small {
+      left: 4.5px;
+    }
+  }
+  &-icon {
+    width: 8px;
+    height: 8px;
+    outline: 1px solid var(--kd-color-spruce-20);
+    border-radius: 50%;
+    &-active,
+    &-completed {
+      outline: none;
+      background-color: var(--kd-color-spruce-30);
+    }
+  }
+  &-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  &-subtitle {
+    color: var(--kd-color-text-secondary);
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.16px;
+  }
+}

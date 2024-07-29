@@ -1,5 +1,10 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  queryAssignedElements,
+  state,
+} from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import stepperItemStyles from './stepperItem.scss';
@@ -17,9 +22,13 @@ import substractFilled16 from '@carbon/icons/es/subtract--filled/16';
 import errorFilled from '@carbon/icons/es/error--filled/24';
 import errorFilled16 from '@carbon/icons/es/error--filled/16';
 
+import './stepperItemChild';
+
 /** Stepper Item.
  * @fires on-step-click - Emits the step details to the parent stepper component when click on step title.
  * @slot tooltip - Slot for tooltip.
+ * @slot child - Children slot. Used for nested children in vertical stepper. Visible only when step state is active.
+ * @slot unnamed - Optional slot for cntent in vertical stepper. Visible only when step state is active.
  */
 
 @customElement('kyn-stepper-item')
@@ -91,6 +100,12 @@ export class StepperItem extends LitElement {
    */
   @state()
   isTwoStepStepper = false;
+  /**
+   * Queries any slotted step child items.
+   * @ignore
+   */
+  @queryAssignedElements({ slot: 'child', selector: 'kyn-stepper-item-child' })
+  childSteps!: Array<any>;
 
   override render() {
     const iconMapper: any = {
@@ -166,71 +181,76 @@ export class StepperItem extends LitElement {
       'vertical-step-text-disabled': this.disabled,
     };
 
-    console.log(this.stepSize);
     return html`
       <!-- -------------------------|| Vertical stepper || ----------------------------------->
 
       ${this.vertical
         ? html`<div class="${classMap(verticalStepContainerClasses)}">
-            ${this.isLastStep
-              ? null
-              : html`<div class="${classMap(verticalStepperLineClasses)}">
-                  <div
-                    class="${this.progress === 100
-                      ? 'vertical-progress-line-completed'
-                      : ''} vertical-progress-line"
-                    style="height:${this.progress}%;"
-                  ></div>
-                </div>`}
+              ${this.isLastStep
+                ? null
+                : html`<div class="${classMap(verticalStepperLineClasses)}">
+                    <div
+                      class="${this.progress === 100
+                        ? 'vertical-progress-line-completed'
+                        : ''} vertical-progress-line"
+                      style="height:${this.progress}%;"
+                    ></div>
+                  </div>`}
 
-            <div class="${classMap(verticalIconClasses)}">
-              ${this.stepState !== 'pending'
-                ? html` <kd-icon
-                    slot="icon"
-                    .icon=${this.disabled
-                      ? iconMapper.disabled
-                      : iconMapper[this.stepState]}
-                    fill=${this.disabled
-                      ? iconFillColor.disabled
-                      : iconFillColor[this.stepState]}
-                  ></kd-icon>`
-                : this.stepState === 'pending' && this.disabled
-                ? html`
-                    <kd-icon
+              <div class="${classMap(verticalIconClasses)}">
+                ${this.stepState !== 'pending'
+                  ? html` <kd-icon
                       slot="icon"
-                      .icon=${iconMapper.disabled}
-                      fill=${iconFillColor.disabled}
-                    ></kd-icon>
-                  `
-                : null}
-            </div>
-
-            <div class="vertical-item-content">
-              <p class="${classMap(verticalStepNameClasses)}">
-                ${this.stepName}
-              </p>
-
-              <div class="vertical-title-wrapper">
-                ${this.stepTitle === ''
-                  ? null
-                  : this.stepperType === 'procedure'
-                  ? html`<kd-link
-                      standalone
-                      href=""
-                      target="_self"
-                      kind="primary"
-                      ?disabled=${this.disabled}
-                      @on-click=${(e: any) => this._handleStepClick(e)}
-                      >${this.stepTitle}</kd-link
-                    >`
-                  : this.stepperType === 'status'
-                  ? html`<p class="step-title-text">${this.stepTitle}</p>`
+                      .icon=${this.disabled
+                        ? iconMapper.disabled
+                        : iconMapper[this.stepState]}
+                      fill=${this.disabled
+                        ? iconFillColor.disabled
+                        : iconFillColor[this.stepState]}
+                    ></kd-icon>`
+                  : this.stepState === 'pending' && this.disabled
+                  ? html`
+                      <kd-icon
+                        slot="icon"
+                        .icon=${iconMapper.disabled}
+                        fill=${iconFillColor.disabled}
+                      ></kd-icon>
+                    `
                   : null}
-                <!-- Tooltip slot --->
-                <slot name="tooltip"></slot>
+              </div>
+
+              <div class="vertical-item-content">
+                <p class="${classMap(verticalStepNameClasses)}">
+                  ${this.stepName}
+                </p>
+
+                <div class="vertical-title-wrapper">
+                  ${this.stepTitle === ''
+                    ? null
+                    : this.stepperType === 'procedure'
+                    ? html`<kd-link
+                        standalone
+                        href=""
+                        target="_self"
+                        kind="primary"
+                        ?disabled=${this.disabled}
+                        @on-click=${(e: any) => this._handleStepClick(e)}
+                        >${this.stepTitle}</kd-link
+                      >`
+                    : this.stepperType === 'status'
+                    ? html`<p class="step-title-text">${this.stepTitle}</p>`
+                    : null}
+                  <!-- Tooltip slot --->
+                  <slot name="tooltip"></slot>
+                </div>
+                <!-- Optional slot : when active-->
+                ${this.stepState === 'active' ? html` <slot></slot>` : null}
               </div>
             </div>
-          </div>`
+            <!-- Child slot : when active -->
+            ${this.stepState === 'active'
+              ? html`<slot name="child"></slot>`
+              : null} `
         : html` <!-- -------------------------|| horizontal stepper || ----------------------------------->
             <div class="${classMap(stepContainerClasses)}">
               <div class="${classMap(stepperIconClasses)}">
@@ -306,7 +326,6 @@ export class StepperItem extends LitElement {
   }
 
   private _handleStepClick(e: Event) {
-    // prevent click if disabled
     if (this.disabled) {
       return;
     }
@@ -321,6 +340,20 @@ export class StepperItem extends LitElement {
       },
     });
     this.dispatchEvent(event);
+  }
+
+  // when firstmost load component
+  override firstUpdated() {
+    if (this.vertical) {
+      if (this.stepState === 'active' && this.childSteps?.length > 0) {
+        this.childSteps.forEach((child, index) => {
+          child.childSize = this.stepSize;
+          child.childIndex = index;
+        });
+        // First child is active bydefault when step is active
+        this.childSteps[0].childState = 'active';
+      }
+    }
   }
 
   override updated(changedProps: any) {
@@ -338,7 +371,10 @@ export class StepperItem extends LitElement {
     }
 
     if (this.vertical) {
-      if (this.stepState === 'active') {
+      if (this.stepState === 'active' && this.childSteps?.length > 0) {
+        this.progress = 100;
+      }
+      if (this.stepState === 'active' && this.childSteps?.length == 0) {
         this.progress = 50;
       }
       if (this.stepState === 'pending') {
@@ -346,6 +382,20 @@ export class StepperItem extends LitElement {
       }
       if (this.stepState === 'completed' || this.stepState === 'excluded') {
         this.progress = 100;
+      }
+    }
+    if (changedProps.has('stepSize')) {
+      if (this.childSteps?.length > 0) {
+        this.childSteps.forEach((child) => {
+          child.childSize = this.stepSize;
+        });
+      }
+    }
+    if (changedProps.has('disabled')) {
+      if (this.childSteps?.length > 0) {
+        this.childSteps.forEach((child) => {
+          child.disabled = this.disabled;
+        });
       }
     }
   }

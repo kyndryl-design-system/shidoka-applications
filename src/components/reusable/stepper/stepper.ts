@@ -11,7 +11,6 @@ import './stepperItem';
 /**
  * Stepper
  * @slot unnamed - Slot for step items.
- * @fires on-step-change - Captures the current step index and emits the selected step and original event details.
  * @fires on-click - Captures the event and emits the active step and original event details when click on any step title. This is only for procedure type stepper. Status stepper doesn't emit this event.
  */
 
@@ -58,27 +57,6 @@ export class Stepper extends LitElement {
     `;
   }
 
-  /**
-   * This method is called when navigate next step of stepper.
-   * @public
-   */
-  public next() {
-    if (this.currentIndex < this.steps.length - 1) {
-      this.currentIndex += 1;
-      this.requestUpdate();
-    }
-  }
-  /**
-   * This method is called when navigate to previous step of stepper.
-   * @public
-   */
-  public prev() {
-    if (this.currentIndex > 0) {
-      this.currentIndex -= 1;
-      this.requestUpdate();
-    }
-  }
-
   // when firstmost load component
   override firstUpdated(): void {
     if (this.steps?.length > 0) {
@@ -88,7 +66,7 @@ export class Stepper extends LitElement {
       if (this.steps.length >= 3) {
         this.steps[this.steps.length - 2].isSecondLastStep = true;
       }
-      // only 2 steps - 1st is left align and 2nd is right aligned
+      // Only 2 steps - 1st is left align and 2nd is right aligned
       if (this.steps.length === 2) {
         this.steps[0].isTwoStepStepper = true;
       }
@@ -109,22 +87,6 @@ export class Stepper extends LitElement {
       step.vertical = this.vertical;
       step.stepperType = this.stepperType;
     });
-
-    if (changedProperties.has('currentIndex')) {
-      this.emitChangeEvent();
-    }
-  }
-  // Called when step changed - dispatched event
-  private emitChangeEvent() {
-    const event = new CustomEvent('on-step-change', {
-      detail: {
-        currentIndex: this.currentIndex,
-        step: this.steps[this.currentIndex],
-      },
-      bubbles: true,
-      composed: true,
-    });
-    this.dispatchEvent(event);
   }
 
   // Called when click on any step's title.

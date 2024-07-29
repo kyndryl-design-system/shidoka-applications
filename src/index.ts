@@ -88,4 +88,8 @@ export {
   WidgetConstraints,
 } from './common/helpers/gridstack';
 
-export { Stepper, StepperItem } from './components/reusable/stepper';
+export {
+  Stepper,
+  StepperItem,
+  StepperItemChild,
+} from './components/reusable/stepper';

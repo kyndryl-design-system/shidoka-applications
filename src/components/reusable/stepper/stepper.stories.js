@@ -10,6 +10,7 @@ export default {
   component: 'kyn-stepper',
   subcomponents: {
     StepperItem: 'kyn-stepper-item',
+    StepperItemChild: 'kyn-stepper-item-child',
   },
   argTypes: {
     stepperType: {
@@ -26,12 +27,11 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/design/ssZ3MSPHNv0qhIvdiY3rXi/Dubrovnik-Release?node-id=772-11352&m=dev',
     },
+    a11y: {
+      disable: true,
+    },
   },
 };
-
-// const calculateProgress = (currentStep, totalSteps) => {
-//   return (currentStep / totalSteps) * 100;
-// };
 
 const steps = [
   {
@@ -132,24 +132,13 @@ export const Horizontal = {
       @on-click=${(e) => action(e.type)(e)}
     >
       ${steps.map(
-        (step, index) => html`
+        (step) => html`
           <kyn-stepper-item
             stepName=${step.stepName}
             stepTitle=${step.stepTitle}
             stepState=${step.stepState}
             ?disabled=${step.disabled}
           >
-            ${index == 2
-              ? html`
-                  <kyn-tooltip
-                    slot="tooltip"
-                    anchorPosition="start"
-                    direction="top"
-                  >
-                    Tooltip example
-                  </kyn-tooltip>
-                `
-              : null}
           </kyn-stepper-item>
         `
       )}
@@ -167,35 +156,106 @@ export const Vertical = {
         ?vertical=${true}
         @on-click=${(e) => action(e.type)(e)}
       >
-        ${steps.map(
-          (step, index) => html`
-            <kyn-stepper-item
-              stepName=${step.stepName}
-              stepTitle=${step.stepTitle}
-              stepState=${step.stepState}
-              ?disabled=${step.disabled}
-            >
-              ${index == 2
-                ? html`
-                    <kyn-tooltip
-                      slot="tooltip"
-                      anchorPosition="start"
-                      direction="top"
-                    >
-                      Tooltip example
-                    </kyn-tooltip>
-                  `
-                : null}
-            </kyn-stepper-item>
-          `
-        )}
+        <kyn-stepper-item
+          stepName="Step 1"
+          stepTitle="Completed"
+          stepState="completed"
+        ></kyn-stepper-item>
+        <kyn-stepper-item
+          stepName="Step 2"
+          stepTitle="Excluded"
+          stepState="excluded"
+        >
+        </kyn-stepper-item>
+        <kyn-stepper-item
+          stepName="Step 3"
+          stepTitle="Destructive"
+          stepState="destructive"
+        >
+          <kyn-tooltip slot="tooltip" anchorPosition="start" direction="top">
+            Tooltip example
+          </kyn-tooltip>
+        </kyn-stepper-item>
+        <kyn-stepper-item
+          stepName="Step 4"
+          stepTitle="Active"
+          stepState="active"
+        >
+        </kyn-stepper-item>
+        <kyn-stepper-item
+          stepName="Step 5"
+          stepTitle="Disabled"
+          stepState="pending"
+          disabled
+        ></kyn-stepper-item>
+        <kyn-stepper-item
+          stepName="Step 6"
+          stepTitle="Pending"
+          stepState="pending"
+        ></kyn-stepper-item>
+      </kyn-stepper>
+    `;
+  },
+};
+
+export const NestedSteps = {
+  args,
+  render: (args) => {
+    return html`
+      <h4>Note: Nested steps are only for vertical stepper.</h4>
+      <br />
+      <kyn-stepper
+        stepperType="procedure"
+        stepperSize=${args.stepperSize}
+        ?vertical=${true}
+        @on-click=${(e) => action(e.type)(e)}
+      >
+        <kyn-stepper-item
+          stepName="Step 1"
+          stepTitle="Step Title"
+          stepState="completed"
+        ></kyn-stepper-item>
+        <kyn-stepper-item
+          stepName="Step 2"
+          stepTitle="Step Title"
+          stepState="completed"
+        ></kyn-stepper-item>
+        <kyn-stepper-item
+          stepName="Step 3"
+          stepTitle="Step Title"
+          stepState="active"
+        >
+          <kyn-stepper-item-child
+            slot="child"
+            childTitle="Nested Step Title"
+            childSubTitle="Optional subtitle"
+            @on-child-click=${(e) => action(e.type)(e)}
+          >
+          </kyn-stepper-item-child>
+          <kyn-stepper-item-child
+            slot="child"
+            childTitle="Nested Step Title"
+            @on-child-click=${(e) => action(e.type)(e)}
+          ></kyn-stepper-item-child>
+        </kyn-stepper-item>
+        <kyn-stepper-item
+          stepName="Step 4"
+          stepTitle="Step Title"
+          stepState="pending"
+        >
+        </kyn-stepper-item>
+        <kyn-stepper-item
+          stepName="Step 5"
+          stepTitle="Step Title"
+          stepState="pending"
+        ></kyn-stepper-item>
       </kyn-stepper>
     `;
   },
 };
 
 export const StatusStepper = {
-  args,
+  args: { currentIndex: 0 },
   render: (args) => {
     return html`
       <kyn-stepper
@@ -215,7 +275,20 @@ export const StatusStepper = {
                 step.disabled
               )}
               ?disabled=${step.disabled}
-            ></kyn-stepper-item>
+            >
+              <kyn-stepper-item-child
+                slot="child"
+                childTitle="Nested Step Title"
+                childSubTitle="Optional subtitle"
+                @on-child-click=${(e) => action(e.type)(e)}
+              >
+              </kyn-stepper-item-child>
+              <kyn-stepper-item-child
+                slot="child"
+                childTitle="Nested Step Title"
+                @on-child-click=${(e) => action(e.type)(e)}
+              ></kyn-stepper-item-child>
+            </kyn-stepper-item>
           `
         )}
       </kyn-stepper>
