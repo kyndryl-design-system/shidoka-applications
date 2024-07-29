@@ -46,6 +46,10 @@ const args = {
   step: 1,
   min: undefined,
   max: undefined,
+  textStrings: {
+    subtract: 'Subtract',
+    add: 'Add',
+  },
 };
 
 export const NumberInput = {
@@ -65,6 +69,7 @@ export const NumberInput = {
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
         max=${ifDefined(args.max)}
+        .textStrings=${args.textStrings}
         @on-input=${(e) => action(e.type)(e)}
       >
         ${args.unnamed}

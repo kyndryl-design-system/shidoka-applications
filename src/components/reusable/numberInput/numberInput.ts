@@ -85,6 +85,13 @@ export class NumberInput extends LitElement {
   @property({ type: Boolean })
   hideLabel = false;
 
+  /** Customizable text strings. */
+  @property({ type: Object })
+  textStrings = {
+    subtract: 'Subtract',
+    add: 'Add',
+  };
+
   /**
    * Queries the <input> DOM element.
    * @ignore
@@ -126,6 +133,7 @@ export class NumberInput extends LitElement {
             kind="secondary"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value === this.min}
+            description=${this.textStrings.subtract}
             @on-click=${this._handleSubtract}
           >
             <kd-icon slot="icon" .icon=${subtractIcon}></kd-icon>
@@ -157,6 +165,7 @@ export class NumberInput extends LitElement {
             kind="secondary"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value === this.max}
+            description=${this.textStrings.add}
             @on-click=${this._handleAdd}
           >
             <kd-icon slot="icon" .icon=${addIcon}></kd-icon>
