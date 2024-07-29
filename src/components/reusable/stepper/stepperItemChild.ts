@@ -8,7 +8,7 @@ import StepChildCss from './stepperItemChild.scss';
 /**
  * Stepper Item child.
  * @slot unnamed - Slot for other elements.
- * @fires on-child-click - Emits event on child click.
+ * @fires on-child-click - Emits event on child click. Only for vertical mode.
  */
 @customElement('kyn-stepper-item-child')
 export class StepperItemChild extends LitElement {

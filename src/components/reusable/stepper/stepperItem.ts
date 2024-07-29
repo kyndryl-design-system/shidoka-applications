@@ -28,7 +28,7 @@ import './stepperItemChild';
  * @fires on-step-click - Emits the step details to the parent stepper component when click on step title.
  * @slot tooltip - Slot for tooltip.
  * @slot child - Children slot. Used for nested children in vertical stepper. Visible only when step state is active.
- * @slot unnamed - Optional slot for cntent in vertical stepper. Visible only when step state is active.
+ * @slot unnamed - Optional slot for content in vertical stepper. Visible only when step state is active.
  */
 
 @customElement('kyn-stepper-item')
@@ -39,7 +39,7 @@ export class StepperItem extends LitElement {
   @property({ type: Boolean })
   vertical = false;
 
-  /** Stepper size `'large'` & `'small'`. Bydefault `'large'`. Use small size only for status stepper.  */
+  /** Stepper size `'large'` & `'small'`. Use small size only for status stepper.  */
   @property({ type: String })
   stepSize = 'large';
 
@@ -47,11 +47,11 @@ export class StepperItem extends LitElement {
   @property({ type: String })
   stepName = '';
 
-  /** Step title. Optional */
+  /** Step title. */
   @property({ type: String })
   stepTitle = '';
 
-  /** Step state. Default `'pending'`. `'pending'`, `'active'`, `'completed'`, `'excluded'` & `'destructive'`. */
+  /** Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'` & `'destructive'`. */
   @property({ type: String })
   stepState = 'pending';
 
