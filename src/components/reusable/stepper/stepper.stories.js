@@ -276,18 +276,6 @@ export const StatusStepper = {
               )}
               ?disabled=${step.disabled}
             >
-              <kyn-stepper-item-child
-                slot="child"
-                childTitle="Nested Step Title"
-                childSubTitle="Optional subtitle"
-                @on-child-click=${(e) => action(e.type)(e)}
-              >
-              </kyn-stepper-item-child>
-              <kyn-stepper-item-child
-                slot="child"
-                childTitle="Nested Step Title"
-                @on-child-click=${(e) => action(e.type)(e)}
-              ></kyn-stepper-item-child>
             </kyn-stepper-item>
           `
         )}
