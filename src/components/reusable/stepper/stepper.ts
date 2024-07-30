@@ -20,11 +20,11 @@ export class Stepper extends LitElement {
 
   /** Stepper type `'procedure'` & `'status'`.
    *
-   * procedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure must use the `'large'` size stepper.
+   * procedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.
    *
    * status: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.
    *
-   * Note: Read the stepper guidelines before changing this option.
+   * Note: Read the stepper guidelines for more info.
    */
   @property({ type: String })
   stepperType = 'procedure';
@@ -33,11 +33,11 @@ export class Stepper extends LitElement {
   @property({ type: Boolean })
   vertical = false;
 
-  /** Stepper size `'large'` & `'small'`. Use small size only for status stepper.  */
+  /** Stepper size `'large'` & `'small'`. */
   @property({ type: String })
   stepperSize = 'large';
 
-  /** Curent index of stepper. Usefull for navigation like next, prev etc. Also represent current step.*/
+  /** Curent index of stepper. Usefull for navigation logic like next, prev etc.*/
   @property({ type: Number })
   currentIndex = 0;
 

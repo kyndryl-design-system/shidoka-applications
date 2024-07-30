@@ -202,7 +202,7 @@ export const NestedSteps = {
   args,
   render: (args) => {
     return html`
-      <h4>Note: Nested steps are only for vertical stepper.</h4>
+      <h4>Note: Nested steps are only for vertical & procedure stepper.</h4>
       <br />
       <kyn-stepper
         stepperType="procedure"

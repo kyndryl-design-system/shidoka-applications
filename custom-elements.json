@@ -4432,387 +4432,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Date-Range picker",
-          "name": "DateRangePicker",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "startDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "attribute": "startDate"
-            },
-            {
-              "kind": "field",
-              "name": "endDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "attribute": "endDate"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker name. Required prop. as there could many fields into single form",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the date required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Date disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "datePickerType",
-              "type": {
-                "text": "DATE_PICKER_TYPES"
-              },
-              "description": "Date range picker types. Default 'single'",
-              "attribute": "datePickerType"
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Date invalid text.",
-              "attribute": "invalidText"
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Date warning text",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "maxDate",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
-              "attribute": "maxDate"
-            },
-            {
-              "kind": "field",
-              "name": "minDate",
-              "type": {
-                "text": "string"
-              },
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
-              "attribute": "minDate"
-            },
-            {
-              "kind": "field",
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
-              "attribute": "step"
-            },
-            {
-              "kind": "method",
-              "name": "handleStartDate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleEndDate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleFormdata",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleInvalid",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "startDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "fieldName": "startDate"
-            },
-            {
-              "name": "endDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "fieldName": "endDate"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker name. Required prop. as there could many fields into single form",
-              "fieldName": "name"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the date required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Date disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "datePickerType",
-              "type": {
-                "text": "DATE_PICKER_TYPES"
-              },
-              "description": "Date range picker types. Default 'single'",
-              "fieldName": "datePickerType"
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Date invalid text.",
-              "fieldName": "invalidText"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Date warning text",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "maxDate",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
-              "fieldName": "maxDate"
-            },
-            {
-              "name": "minDate",
-              "type": {
-                "text": "string"
-              },
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
-              "fieldName": "minDate"
-            },
-            {
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
-              "fieldName": "step"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-date-range-picker",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-date-range-picker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "\"./daterangepicker\""
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/datePicker/datepicker.ts",
       "declarations": [
         {
@@ -5190,6 +4809,387 @@
           "declaration": {
             "name": "DatePicker",
             "module": "./datepicker"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Date-Range picker",
+          "name": "DateRangePicker",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "startDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker Start date in YYYY-MM-DD format.",
+              "attribute": "startDate"
+            },
+            {
+              "kind": "field",
+              "name": "endDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker End date in YYYY-MM-DD format.",
+              "attribute": "endDate"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker name. Required prop. as there could many fields into single form",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the date required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Date disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "datePickerType",
+              "type": {
+                "text": "DATE_PICKER_TYPES"
+              },
+              "description": "Date range picker types. Default 'single'",
+              "attribute": "datePickerType"
+            },
+            {
+              "kind": "field",
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Date invalid text.",
+              "attribute": "invalidText"
+            },
+            {
+              "kind": "field",
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Date warning text",
+              "attribute": "warnText"
+            },
+            {
+              "kind": "field",
+              "name": "maxDate",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
+              "attribute": "maxDate"
+            },
+            {
+              "kind": "field",
+              "name": "minDate",
+              "type": {
+                "text": "string"
+              },
+              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "attribute": "minDate"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
+              "attribute": "step"
+            },
+            {
+              "kind": "method",
+              "name": "handleStartDate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleEndDate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleFormdata",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleInvalid",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "startDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker Start date in YYYY-MM-DD format.",
+              "fieldName": "startDate"
+            },
+            {
+              "name": "endDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker End date in YYYY-MM-DD format.",
+              "fieldName": "endDate"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker name. Required prop. as there could many fields into single form",
+              "fieldName": "name"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the date required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Date disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "datePickerType",
+              "type": {
+                "text": "DATE_PICKER_TYPES"
+              },
+              "description": "Date range picker types. Default 'single'",
+              "fieldName": "datePickerType"
+            },
+            {
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Date invalid text.",
+              "fieldName": "invalidText"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Date warning text",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "maxDate",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
+              "fieldName": "maxDate"
+            },
+            {
+              "name": "minDate",
+              "type": {
+                "text": "string"
+              },
+              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "fieldName": "minDate"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
+              "fieldName": "step"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-date-range-picker",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-date-range-picker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "\"./daterangepicker\""
           }
         }
       ]
@@ -9589,484 +9589,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "./stepper"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "StepperItem",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "./stepperItem"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "StepperItemChild",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "./stepperItemChild"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepper.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper",
-          "name": "Stepper",
-          "slots": [
-            {
-              "description": "Slot for step items.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "stepperType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure must use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines before changing this option.",
-              "attribute": "stepperType"
-            },
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Wheter the stepper is in vertical type.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "stepperSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`. Use small size only for status stepper.",
-              "attribute": "stepperSize"
-            },
-            {
-              "kind": "field",
-              "name": "currentIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Curent index of stepper. Usefull for navigation like next, prev etc. Also represent current step.",
-              "attribute": "currentIndex"
-            },
-            {
-              "kind": "method",
-              "name": "_handleStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the event and emits the active step and original event details when click on any step title. This is only for procedure type stepper. Status stepper doesn't emit this event.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "stepperType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure must use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines before changing this option.",
-              "fieldName": "stepperType"
-            },
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Wheter the stepper is in vertical type.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "stepperSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`. Use small size only for status stepper.",
-              "fieldName": "stepperSize"
-            },
-            {
-              "name": "currentIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Curent index of stepper. Usefull for navigation like next, prev etc. Also represent current step.",
-              "fieldName": "currentIndex"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "src/components/reusable/stepper/stepper.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "src/components/reusable/stepper/stepper.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepperItem.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper Item.",
-          "name": "StepperItem",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            },
-            {
-              "description": "Children slot. Used for nested children in vertical stepper. Visible only when step state is active.",
-              "name": "child"
-            },
-            {
-              "description": "Optional slot for content in vertical stepper. Visible only when step state is active.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Wheter the stepper is in vertical type.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "stepSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`. Use small size only for status stepper.",
-              "attribute": "stepSize"
-            },
-            {
-              "kind": "field",
-              "name": "stepName",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step name.",
-              "attribute": "stepName"
-            },
-            {
-              "kind": "field",
-              "name": "stepTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step title.",
-              "attribute": "stepTitle"
-            },
-            {
-              "kind": "field",
-              "name": "stepState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'` & `'destructive'`.",
-              "attribute": "stepState"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disable step.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "_handleStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the step details to the parent stepper component when click on step title.",
-              "name": "on-step-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Wheter the stepper is in vertical type.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "stepSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`. Use small size only for status stepper.",
-              "fieldName": "stepSize"
-            },
-            {
-              "name": "stepName",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step name.",
-              "fieldName": "stepName"
-            },
-            {
-              "name": "stepTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step title.",
-              "fieldName": "stepTitle"
-            },
-            {
-              "name": "stepState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'` & `'destructive'`.",
-              "fieldName": "stepState"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disable step.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper-item",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StepperItem",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "src/components/reusable/stepper/stepperItem.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper-item",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "src/components/reusable/stepper/stepperItem.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepperItemChild.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper Item child.",
-          "name": "StepperItemChild",
-          "slots": [
-            {
-              "description": "Slot for other elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "childTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child title. Required for nested child inside step.",
-              "attribute": "childTitle"
-            },
-            {
-              "kind": "field",
-              "name": "childSubTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child title. Required for nested child inside step.",
-              "attribute": "childSubTitle"
-            },
-            {
-              "kind": "field",
-              "name": "childState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Child state. `'pending', `'active'` & `'completed'`.",
-              "attribute": "childState"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChildStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits event on child click. Only for vertical mode.",
-              "name": "on-child-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "childTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child title. Required for nested child inside step.",
-              "fieldName": "childTitle"
-            },
-            {
-              "name": "childSubTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child title. Required for nested child inside step.",
-              "fieldName": "childSubTitle"
-            },
-            {
-              "name": "childState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Child state. `'pending', `'active'` & `'completed'`.",
-              "fieldName": "childState"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper-item-child",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StepperItemChild",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "src/components/reusable/stepper/stepperItemChild.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper-item-child",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "src/components/reusable/stepper/stepperItemChild.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/sideDrawer/index.ts",
       "declarations": [],
       "exports": [
@@ -10404,6 +9926,509 @@
           "declaration": {
             "name": "SideDrawer",
             "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "./stepper"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StepperItem",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "./stepperItem"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StepperItemChild",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "./stepperItemChild"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepper.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper",
+          "name": "Stepper",
+          "slots": [
+            {
+              "description": "Slot for step items.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "stepperType",
+              "type": {
+                "text": "string"
+              },
+              "default": "'procedure'",
+              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
+              "attribute": "stepperType"
+            },
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Wheter the stepper is in vertical type.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "stepperSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "attribute": "stepperSize"
+            },
+            {
+              "kind": "field",
+              "name": "currentIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
+              "attribute": "currentIndex"
+            },
+            {
+              "kind": "method",
+              "name": "_handleStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the event and emits the active step and original event details when click on any step title. This is only for procedure type stepper. Status stepper doesn't emit this event.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "stepperType",
+              "type": {
+                "text": "string"
+              },
+              "default": "'procedure'",
+              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
+              "fieldName": "stepperType"
+            },
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Wheter the stepper is in vertical type.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "stepperSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "fieldName": "stepperSize"
+            },
+            {
+              "name": "currentIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
+              "fieldName": "currentIndex"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "src/components/reusable/stepper/stepper.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "src/components/reusable/stepper/stepper.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepperItem.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper Item.",
+          "name": "StepperItem",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            },
+            {
+              "description": "Children slot. Used for nested children in vertical stepper. Visible only when step state is active. Do not use inside stepperType `'status'`.",
+              "name": "child"
+            },
+            {
+              "description": "Optional slot for content in vertical stepper. Visible only when step state is active.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the stepper is in vertical type.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "stepSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "attribute": "stepSize"
+            },
+            {
+              "kind": "field",
+              "name": "stepName",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step name.",
+              "attribute": "stepName"
+            },
+            {
+              "kind": "field",
+              "name": "stepTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step title. Required for actions.",
+              "attribute": "stepTitle"
+            },
+            {
+              "kind": "field",
+              "name": "stepState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'` & `'destructive'`.",
+              "attribute": "stepState"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disable step.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChildToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getProgressValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the step details to the parent stepper component when click on step title.",
+              "name": "on-step-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the stepper is in vertical type.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "stepSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "fieldName": "stepSize"
+            },
+            {
+              "name": "stepName",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step name.",
+              "fieldName": "stepName"
+            },
+            {
+              "name": "stepTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step title. Required for actions.",
+              "fieldName": "stepTitle"
+            },
+            {
+              "name": "stepState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'` & `'destructive'`.",
+              "fieldName": "stepState"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disable step.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "StepperItem",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "src/components/reusable/stepper/stepperItem.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper-item",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "src/components/reusable/stepper/stepperItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepperItemChild.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper Item child.",
+          "name": "StepperItemChild",
+          "slots": [
+            {
+              "description": "Slot for other elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "childTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Child Title. Required for nested child inside step.",
+              "attribute": "childTitle"
+            },
+            {
+              "kind": "field",
+              "name": "childSubTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional Child Subtitle.",
+              "attribute": "childSubTitle"
+            },
+            {
+              "kind": "field",
+              "name": "childState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
+              "attribute": "childState"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChildStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getProgressValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits event on child click. Only for vertical mode.",
+              "name": "on-child-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "childTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Child Title. Required for nested child inside step.",
+              "fieldName": "childTitle"
+            },
+            {
+              "name": "childSubTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional Child Subtitle.",
+              "fieldName": "childSubTitle"
+            },
+            {
+              "name": "childState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
+              "fieldName": "childState"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper-item-child",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "StepperItemChild",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "src/components/reusable/stepper/stepperItemChild.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper-item-child",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "src/components/reusable/stepper/stepperItemChild.ts"
           }
         }
       ]

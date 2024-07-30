@@ -14,11 +14,11 @@ import StepChildCss from './stepperItemChild.scss';
 export class StepperItemChild extends LitElement {
   static override styles = StepChildCss;
 
-  /** Child title. Required for nested child inside step. */
+  /** Child Title. Required for nested child inside step. */
   @property({ type: String })
   childTitle = '';
 
-  /** Child title. Required for nested child inside step. */
+  /** Optional Child Subtitle. */
   @property({ type: String })
   childSubTitle = '';
 
@@ -28,23 +28,23 @@ export class StepperItemChild extends LitElement {
   @state()
   disabled = false;
 
-  /** Child state. `'pending', `'active'` & `'completed'`.  */
+  /** Child State. `'pending'`, `'active'` & `'completed'`.  */
   @property({ type: String })
   childState = 'pending';
 
-  /** Child size. Inherit from `<kyn-step-item>`.
+  /** Child Size. Inherit from `<kyn-step-item>`.
    * @ignore
    */
   @state()
   childSize = 'large';
 
-  /** Child progress calculate Internal progress.
+  /** Child progress, calculate Internal progress.
    * @ignore
    */
   @state()
   progress = 0;
 
-  /** child index
+  /** Child index.
    * @ignore
    */
   @state()
@@ -58,12 +58,21 @@ export class StepperItemChild extends LitElement {
 
     return html`
       <div class=" child-wrapper child-wrapper-${this.childSize}">
-        <div class="child-step-line-${this.childSize} child-step-line">
+        <!-- Child Progress -->
+        <div
+          class="child-step-line-${this.childSize} child-step-line"
+          role="progressbar"
+          aria-valuenow="${this.progress}"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-label="Child progress: ${this.progress}%"
+        >
           <div
             class="child-step-progress-line"
             style="height:${this.progress}%;"
           ></div>
         </div>
+        <!-- Child Icon -->
         <div
           class="child-step-icon-wrapper child-step-icon-wrapper-${this
             .childSize}"
@@ -71,7 +80,9 @@ export class StepperItemChild extends LitElement {
           <div class="${classMap(childIconClasses)}"></div>
         </div>
         <div class="child-step-content">
+          <!-- Child Title & Optional Subtitle -->
           <kd-link
+            class=${classMap({ 'active-child': this.childState === 'active' })}
             standalone
             kind="primary"
             ?disabled=${this.disabled}
@@ -81,6 +92,8 @@ export class StepperItemChild extends LitElement {
           ${this.childSubTitle !== ''
             ? html` <p class="child-step-subtitle">${this.childSubTitle}</p>`
             : null}
+
+          <!-- Slot for other UI -->
           <div>
             <slot></slot>
           </div>
@@ -89,12 +102,11 @@ export class StepperItemChild extends LitElement {
     `;
   }
 
+  // Emit event on child click
   private _handleChildStepClick(e: Event) {
     if (this.disabled) {
       return;
     }
-    // Prevent the event from propagating to parent elements
-    e.stopPropagation();
     const event = new CustomEvent('on-child-click', {
       detail: {
         child: this,
@@ -107,13 +119,19 @@ export class StepperItemChild extends LitElement {
 
   override updated(changedProps: any) {
     if (changedProps.has('childState')) {
-      if (this.childState === 'active') {
-        this.progress = 50;
-      } else if (this.childState === 'pending') {
-        this.progress = 0;
-      } else {
-        this.progress = 100;
-      }
+      this.progress = this.getProgressValue();
+    }
+  }
+
+  private getProgressValue(): number {
+    switch (this.childState) {
+      case 'active':
+        return 50;
+      case 'completed':
+        return 100;
+      case 'pending':
+      default:
+        return 0;
     }
   }
 }

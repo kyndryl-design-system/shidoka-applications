@@ -29,7 +29,7 @@ import './stepperItemChild';
 /** Stepper Item.
  * @fires on-step-click - Emits the step details to the parent stepper component when click on step title.
  * @slot tooltip - Slot for tooltip.
- * @slot child - Children slot. Used for nested children in vertical stepper. Visible only when step state is active.
+ * @slot child - Children slot. Used for nested children in vertical stepper. Visible only when step state is active. Do not use inside stepperType `'status'`.
  * @slot unnamed - Optional slot for content in vertical stepper. Visible only when step state is active.
  */
 
@@ -37,11 +37,11 @@ import './stepperItemChild';
 export class StepperItem extends LitElement {
   static override styles = stepperItemStyles;
 
-  /** Wheter the stepper is in vertical type. */
+  /** Whether the stepper is in vertical type. */
   @property({ type: Boolean })
   vertical = false;
 
-  /** Stepper size `'large'` & `'small'`. Use small size only for status stepper.  */
+  /** Stepper size `'large'` & `'small'`. */
   @property({ type: String })
   stepSize = 'large';
 
@@ -49,7 +49,7 @@ export class StepperItem extends LitElement {
   @property({ type: String })
   stepName = '';
 
-  /** Step title. */
+  /** Step title. Required for actions.*/
   @property({ type: String })
   stepTitle = '';
 
@@ -191,13 +191,21 @@ export class StepperItem extends LitElement {
     };
 
     return html`
-      <!-- -------------------------|| Vertical stepper || ----------------------------------->
+      <!-- -------------------------||>> Vertical stepper <<|| ----------------------------------->
 
       ${this.vertical
         ? html`<div class="${classMap(verticalStepContainerClasses)}">
+              <!-- Step progress -->
               ${this.isLastStep
                 ? null
-                : html`<div class="${classMap(verticalStepperLineClasses)}">
+                : html`<div
+                    class="${classMap(verticalStepperLineClasses)}"
+                    role="progressbar"
+                    aria-valuenow="${this.progress}"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-label="Step progress: ${this.progress}%"
+                  >
                     <div
                       class="${this.progress === 100
                         ? 'vertical-progress-line-completed'
@@ -205,7 +213,7 @@ export class StepperItem extends LitElement {
                       style="height:${this.progress}%;"
                     ></div>
                   </div>`}
-
+              <!-- Step icons -->
               <div class="${classMap(verticalIconClasses)}">
                 ${this.stepState !== 'pending'
                   ? html` <kd-icon
@@ -227,12 +235,12 @@ export class StepperItem extends LitElement {
                     `
                   : null}
               </div>
-
+              <!-- Step name -->
               <div class="vertical-item-content">
                 <p class="${classMap(verticalStepNameClasses)}">
                   ${this.stepName}
                 </p>
-
+                <!-- Step title -->
                 <div class="vertical-title-wrapper">
                   ${this.stepTitle === ''
                     ? null
@@ -277,7 +285,7 @@ export class StepperItem extends LitElement {
                       `
                     : null}
                 </div>
-                <!-- Optional slot : when active-->
+                <!-- Optional slot : when active -->
                 ${this.stepState === 'active' ? html` <slot></slot>` : null}
               </div>
             </div>
@@ -292,10 +300,11 @@ export class StepperItem extends LitElement {
                   <slot name="child"></slot>
                 </ul>`
               : null} `
-        : html` <!-- -------------------------|| horizontal stepper || ----------------------------------->
+        : html` <!-- -------------------------||>> Horizontal stepper <<|| ----------------------------------->
+
             <div class="${classMap(stepContainerClasses)}">
               <div class="${classMap(stepperIconClasses)}">
-                <!-- Stepper icon -->
+                <!-- Step icon -->
                 ${this.stepState !== 'pending'
                   ? html` <kd-icon
                       slot="icon"
@@ -317,7 +326,7 @@ export class StepperItem extends LitElement {
                   : null}
               </div>
 
-              <!----------------[ Stepper progress bar ]--------------->
+              <!-- Step progress bar  -->
               ${this.isLastStep
                 ? null
                 : html`<div
@@ -336,11 +345,12 @@ export class StepperItem extends LitElement {
                     ></div>
                   </div>`}
 
-              <!-----------------[ Stepper content ]--------------------->
               <div class="${classMap(stepContentClasses)}">
+                <!--- Step name ---->
                 <p class="${classMap(horizontalStepTextClass)}">
                   ${this.stepName}
                 </p>
+                <!-- Step Title -->
                 <div class="step-title-wrapper">
                   ${this.stepTitle === ''
                     ? null
@@ -371,10 +381,8 @@ export class StepperItem extends LitElement {
   }
 
   private _handleStepClick(e: Event) {
-    if (this.disabled) {
-      return;
-    }
-    // emit selected value, bubble so it can be captured by the parent element
+    if (this.disabled) return;
+    // emit selected value step
     const event = new CustomEvent('on-step-click', {
       bubbles: true,
       composed: true,
@@ -388,62 +396,52 @@ export class StepperItem extends LitElement {
   }
 
   // when firstmost load component
-  override firstUpdated() {
-    if (this.vertical) {
-      if (this.stepState === 'active' && this.childSteps?.length > 0) {
-        this.openChildren = true; // default open toggle
-        const children = this.childSteps;
-        children.forEach((child, index) => {
-          child.childSize = this.stepSize;
-          child.childIndex = index;
-        });
+  override async firstUpdated() {
+    if (
+      this.vertical &&
+      this.stepState === 'active' &&
+      this.childSteps?.length > 0
+    ) {
+      this.openChildren = true; // default open toggle when state is active
+      await this.updateComplete;
+      this.childSteps?.forEach((child, index) => {
         // First child is active bydefault when step is active
-        children[0].childState = 'active';
-      }
+        if (index === 0) child.childState = 'active';
+        // update children props / states
+        child.childSize = this.stepSize;
+        child.childIndex = index;
+      });
     }
   }
 
   override updated(changedProps: any) {
-    if (changedProps.has('stepState') && !this.vertical) {
-      if (this.stepState === 'active') {
-        // show random progress
-        this.progress = 50;
-      }
-      if (this.stepState === 'pending') {
-        this.progress = 0;
-      }
-      if (this.stepState === 'completed' || this.stepState === 'excluded') {
-        this.progress = 100;
-      }
+    if (changedProps.has('stepState')) {
+      this.progress = this.getProgressValue();
     }
 
-    if (this.vertical) {
-      if (this.stepState === 'active' && this.childSteps?.length > 0) {
-        this.progress = 100;
-      }
-      if (this.stepState === 'active' && this.childSteps?.length == 0) {
-        this.progress = 50;
-      }
-      if (this.stepState === 'pending') {
-        this.progress = 0;
-      }
-      if (this.stepState === 'completed' || this.stepState === 'excluded') {
-        this.progress = 100;
-      }
+    if (changedProps.has('stepSize') && this.childSteps?.length > 0) {
+      this.childSteps.forEach((child) => {
+        child.childSize = this.stepSize;
+      });
     }
-    if (changedProps.has('stepSize')) {
-      if (this.childSteps?.length > 0) {
-        this.childSteps.forEach((child) => {
-          child.childSize = this.stepSize;
-        });
-      }
+
+    if (changedProps.has('disabled') && this.childSteps?.length > 0) {
+      this.childSteps.forEach((child) => {
+        child.disabled = this.disabled;
+      });
     }
-    if (changedProps.has('disabled')) {
-      if (this.childSteps?.length > 0) {
-        this.childSteps.forEach((child) => {
-          child.disabled = this.disabled;
-        });
-      }
+  }
+
+  private getProgressValue(): number {
+    switch (this.stepState) {
+      case 'active':
+        return this.vertical ? (this.childSteps?.length > 0 ? 100 : 50) : 50;
+      case 'completed':
+      case 'excluded':
+        return 100;
+      case 'pending':
+      default:
+        return 0;
     }
   }
 }
