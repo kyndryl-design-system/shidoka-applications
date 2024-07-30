@@ -67,6 +67,10 @@ export class StepperItem extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Optional. Show counter for vertical stepper when stepState is `'pending'`. */
+  @property({ type: Boolean })
+  showCounter = false;
+
   /** Progress of stepper.
    * @ignore
    */
@@ -233,6 +237,10 @@ export class StepperItem extends LitElement {
                         fill=${iconFillColor.disabled}
                       ></kd-icon>
                     `
+                  : this.showCounter
+                  ? html`<p class="counter-txt ${this.stepSize}">
+                      ${this.stepIndex + 1}
+                    </p>`
                   : null}
               </div>
               <!-- Step name -->
@@ -268,6 +276,7 @@ export class StepperItem extends LitElement {
                     ? html`
                         <button
                           class="toggle-icon-button"
+                          aria-label="Toggle children"
                           type="button"
                           @click=${() => this._handleChildToggle()}
                           ?disabled=${this.disabled}
@@ -291,14 +300,14 @@ export class StepperItem extends LitElement {
             </div>
             <!-- Child slot : when active -->
             ${this.stepState === 'active'
-              ? html`<ul
+              ? html`<div
                   class=${classMap({
                     children: true,
                     open: this.openChildren,
                   })}
                 >
                   <slot name="child"></slot>
-                </ul>`
+                </div>`
               : null} `
         : html` <!-- -------------------------||>> Horizontal stepper <<|| ----------------------------------->
 

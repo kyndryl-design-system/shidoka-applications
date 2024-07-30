@@ -2,7 +2,6 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 
 import './index';
-import './story-helpers/stepper-story';
 import '../tooltip';
 
 export default {
@@ -25,7 +24,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/ssZ3MSPHNv0qhIvdiY3rXi/Dubrovnik-Release?node-id=772-11352&m=dev',
+      url: 'https://www.figma.com/design/CQuDZEeLiuGiALvCWjAKlu/Applications---Component-Library?node-id=13321-23753&m=dev',
     },
     a11y: {
       disable: true,
