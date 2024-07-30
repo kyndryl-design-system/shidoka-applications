@@ -4,6 +4,7 @@ import '../components/reusable/checkbox';
 import '../components/reusable/toggleButton';
 import '../components/reusable/textInput';
 import '../components/reusable/textArea';
+import '../components/reusable/numberInput';
 import '../components/reusable/dropdown';
 import '../components/reusable/timepicker';
 import '../components/reusable/datePicker';
@@ -133,6 +134,16 @@ export const Default = {
         >
           Text area
         </kyn-text-area>
+
+        <br /><br />
+
+        <kyn-number-input
+          name="numberInput"
+          caption="Number input example"
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          Number input
+        </kyn-number-input>
 
         <br /><br />
 
