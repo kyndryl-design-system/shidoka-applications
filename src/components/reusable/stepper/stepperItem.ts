@@ -7,6 +7,8 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
+import downIcon from '@carbon/icons/es/chevron--down/20';
+
 import stepperItemStyles from './stepperItem.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/link';
@@ -100,6 +102,13 @@ export class StepperItem extends LitElement {
    */
   @state()
   isTwoStepStepper = false;
+
+  /** Open children toggle
+   * @ignore
+   */
+  @state()
+  openChildren = false;
+
   /**
    * Queries any slotted step child items.
    * @ignore
@@ -242,6 +251,31 @@ export class StepperItem extends LitElement {
                     : null}
                   <!-- Tooltip slot --->
                   <slot name="tooltip"></slot>
+
+                  <!-- Toggle children stuff -->
+                  ${this.stepTitle !== '' &&
+                  this.stepState === 'active' &&
+                  this.childSteps?.length > 0 &&
+                  this.stepperType === 'procedure'
+                    ? html`
+                        <button
+                          class="toggle-icon-button"
+                          type="button"
+                          @click=${() => this._handleChildToggle()}
+                          ?disabled=${this.disabled}
+                        >
+                          <kd-icon
+                            slot="icon"
+                            class=${classMap({
+                              'arrow-icon': true,
+                              open: this.openChildren,
+                            })}
+                            .icon=${downIcon}
+                            fill=${this.disabled ? '#898888' : '#29707A'}
+                          ></kd-icon>
+                        </button>
+                      `
+                    : null}
                 </div>
                 <!-- Optional slot : when active-->
                 ${this.stepState === 'active' ? html` <slot></slot>` : null}
@@ -249,7 +283,14 @@ export class StepperItem extends LitElement {
             </div>
             <!-- Child slot : when active -->
             ${this.stepState === 'active'
-              ? html`<slot name="child"></slot>`
+              ? html`<ul
+                  class=${classMap({
+                    children: true,
+                    open: this.openChildren,
+                  })}
+                >
+                  <slot name="child"></slot>
+                </ul>`
               : null} `
         : html` <!-- -------------------------|| horizontal stepper || ----------------------------------->
             <div class="${classMap(stepContainerClasses)}">
@@ -325,6 +366,10 @@ export class StepperItem extends LitElement {
     `;
   }
 
+  private _handleChildToggle() {
+    this.openChildren = !this.openChildren;
+  }
+
   private _handleStepClick(e: Event) {
     if (this.disabled) {
       return;
@@ -346,12 +391,14 @@ export class StepperItem extends LitElement {
   override firstUpdated() {
     if (this.vertical) {
       if (this.stepState === 'active' && this.childSteps?.length > 0) {
-        this.childSteps.forEach((child, index) => {
+        this.openChildren = true; // default open toggle
+        const children = this.childSteps;
+        children.forEach((child, index) => {
           child.childSize = this.stepSize;
           child.childIndex = index;
         });
         // First child is active bydefault when step is active
-        this.childSteps[0].childState = 'active';
+        children[0].childState = 'active';
       }
     }
   }

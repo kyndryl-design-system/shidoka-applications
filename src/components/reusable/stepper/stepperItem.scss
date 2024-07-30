@@ -249,3 +249,35 @@ p {
     }
   }
 }
+
+.toggle-icon-button {
+  display: flex;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.arrow-icon {
+  transform: rotate(0deg);
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+.children {
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  transform: scaleY(0);
+  display: none;
+  transition: all 200ms ease-out;
+  &.open {
+    opacity: 1;
+    display: block;
+    transform: scaleY(1);
+  }
+}
