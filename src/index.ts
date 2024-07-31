@@ -76,6 +76,7 @@ export {
 } from './components/reusable/widget';
 export { Search } from './components/reusable/search';
 export { Loader, LoaderInline, Skeleton } from './components/reusable/loaders';
+export { NumberInput } from './components/reusable/numberInput';
 
 export {
   debounce,
