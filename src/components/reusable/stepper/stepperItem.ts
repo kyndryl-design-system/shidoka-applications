@@ -259,7 +259,7 @@ export class StepperItem extends LitElement {
                         target="_self"
                         kind="primary"
                         ?disabled=${this.disabled}
-                        @on-click=${(e: any) => this._handleStepClick(e)}
+                        @on-click=${(e: Event) => this._handleStepClick(e)}
                         >${this.stepTitle}</kd-link
                       >`
                     : this.stepperType === 'status'
@@ -370,7 +370,7 @@ export class StepperItem extends LitElement {
                         target="_self"
                         kind="primary"
                         ?disabled=${this.disabled}
-                        @on-click=${(e: any) => this._handleStepClick(e)}
+                        @on-click=${(e: Event) => this._handleStepClick(e)}
                         >${this.stepTitle}</kd-link
                       >`
                     : this.stepperType === 'status'
@@ -389,7 +389,7 @@ export class StepperItem extends LitElement {
     this.openChildren = !this.openChildren;
   }
 
-  private _handleStepClick(e: Event) {
+  private _handleStepClick(e: any) {
     if (this.disabled) return;
     // emit selected value step
     const event = new CustomEvent('on-step-click', {
@@ -398,7 +398,7 @@ export class StepperItem extends LitElement {
       detail: {
         step: this,
         stepIndex: this.stepIndex,
-        origEvent: e,
+        origEvent: e.detail.origEvent,
       },
     });
     this.dispatchEvent(event);

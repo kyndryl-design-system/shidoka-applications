@@ -119,7 +119,6 @@ const returnStepState = (currentIndex, index, disabled) => {
 const args = {
   stepperType: 'procedure',
   stepperSize: 'large',
-  currentIndex: 0,
 };
 
 export const Horizontal = {

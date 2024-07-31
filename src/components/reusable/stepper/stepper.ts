@@ -85,18 +85,23 @@ export class Stepper extends LitElement {
           : (step.stepSize = 'small');
       });
     }
-
-    this.steps?.forEach((step: any) => {
-      step.vertical = this.vertical;
-      step.stepperType = this.stepperType;
-    });
+    if (changedProperties.has('vertical')) {
+      this.steps?.forEach((step) => {
+        step.vertical = this.vertical;
+      });
+    }
+    if (changedProperties.has('stepperType')) {
+      this.steps?.forEach((step: any) => {
+        step.stepperType = this.stepperType;
+      });
+    }
   }
 
   // Called when click on any step's title.
   private _handleStepClick(e: any) {
     const event = new CustomEvent('on-click', {
       detail: {
-        origEvent: e,
+        origEvent: e.detail.origEvent,
         step: e.detail.step,
         stepIndex: e.detail.stepIndex,
       },
