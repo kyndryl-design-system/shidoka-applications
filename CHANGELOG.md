@@ -1,3 +1,12 @@
+## [1.29.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.29.1...v1.29.2) (2024-07-31)
+
+
+### Bug Fixes
+
+* **dropdown:** expose searchText as prop ([29e81c2](https://github.com/kyndryl-design-system/shidoka-applications/commit/29e81c269f5bd0278041e4f79fcdd0f980eb2cc7))
+* **dropdown:** keyboard controls with filter search, visible only ([0ccb212](https://github.com/kyndryl-design-system/shidoka-applications/commit/0ccb212618889b148cf44f36153700c5534284b7))
+* **dropdown:** remove error icon due to clear overlap ([08229e4](https://github.com/kyndryl-design-system/shidoka-applications/commit/08229e44a06acfe2ce64ed3dba6f550d516693fb))
+
 ## [1.29.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.29.0...v1.29.1) (2024-07-31)
 
 
