@@ -44,6 +44,7 @@ const args = {
   selectAllText: 'Select all',
   invalidText: '',
   caption: '',
+  searchText: '',
   menuMinWidth: 'initial',
 };
 
@@ -96,6 +97,7 @@ export const SingleSearchable = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
+        searchText=${args.searchText}
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >
@@ -171,6 +173,7 @@ export const MultiSelectSearchable = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
+        searchText=${args.searchText}
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >

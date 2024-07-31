@@ -142,9 +142,8 @@ export class Dropdown extends LitElement {
 
   /**
    * Search input value.
-   * @ignore
    */
-  @state()
+  @property({ type: String })
   searchText = '';
 
   /**
@@ -999,7 +998,7 @@ export class Dropdown extends LitElement {
         }
 
         // set search input value
-        if (this.searchable) {
+        if (this.searchable && this.text) {
           this.searchText = this.text === this.placeholder ? '' : this.text;
           this.searchEl.value = this.searchText;
         }
@@ -1041,6 +1040,10 @@ export class Dropdown extends LitElement {
       this.options.forEach((option: any) => {
         option.multiple = this.multiple;
       });
+    }
+
+    if (changedProps.has('searchText')) {
+      this.searchEl.value = this.searchText;
     }
   }
 
