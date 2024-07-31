@@ -1,3 +1,10 @@
+# [1.29.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.28.0...v1.29.0) (2024-07-30)
+
+
+### Features
+
+* **number-input:** add number input component ([#211](https://github.com/kyndryl-design-system/shidoka-applications/issues/211)) ([915b5ec](https://github.com/kyndryl-design-system/shidoka-applications/commit/915b5ec3ba1cde22ab676082cb4c04b1e115c73e))
+
 # [1.28.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.27.13...v1.28.0) (2024-07-25)
 
 
