@@ -351,9 +351,11 @@ export class Dropdown extends LitElement {
                 </button>
               `
             : null}
+          <!--
           ${this.isInvalid
             ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
             : null}
+            -->
         </div>
 
         ${this.multiple && !this.hideTags && this.value.length
