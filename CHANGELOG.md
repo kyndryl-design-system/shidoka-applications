@@ -1,3 +1,10 @@
+## [1.29.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.29.0...v1.29.1) (2024-07-31)
+
+
+### Bug Fixes
+
+* **pagination:** missing text strings for buttons subcomponent, closes [#209](https://github.com/kyndryl-design-system/shidoka-applications/issues/209) ([c5be950](https://github.com/kyndryl-design-system/shidoka-applications/commit/c5be9508b0ffb48a352796053c22dc834c9c629e))
+
 # [1.29.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.28.0...v1.29.0) (2024-07-30)
 
 
