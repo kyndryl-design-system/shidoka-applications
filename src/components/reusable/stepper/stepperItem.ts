@@ -21,8 +21,12 @@ import circleFilled16 from '@carbon/icons/es/circle--filled/16';
 
 import substractFilled from '@carbon/icons/es/subtract--filled/24';
 import substractFilled16 from '@carbon/icons/es/subtract--filled/16';
+
 import errorFilled from '@carbon/icons/es/error--filled/24';
 import errorFilled16 from '@carbon/icons/es/error--filled/16';
+
+import warningFilled from '@carbon/icons/es/warning--filled/24';
+import warningFilled16 from '@carbon/icons/es/warning--filled/16';
 
 import './stepperItemChild';
 
@@ -53,7 +57,10 @@ export class StepperItem extends LitElement {
   @property({ type: String })
   stepTitle = '';
 
-  /** Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'` & `'destructive'`. */
+  /** Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.
+   *
+   * `'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.
+   */
   @property({ type: String })
   stepState = 'pending';
 
@@ -113,6 +120,9 @@ export class StepperItem extends LitElement {
   @state()
   openChildren = false;
 
+  @state()
+  isResponsive = false;
+
   /**
    * Queries any slotted step child items.
    * @ignore
@@ -129,6 +139,7 @@ export class StepperItem extends LitElement {
         this.stepSize === 'large' ? checkmarkFilled : checkmarkFilled16,
       destructive:
         this.stepSize === 'large' ? substractFilled : substractFilled16,
+      warning: this.stepSize === 'large' ? warningFilled : warningFilled16,
     };
     const iconFillColor: any = {
       active: 'var(--kd-color-border-accent-spruce-light, #3FADBD)',
@@ -136,6 +147,7 @@ export class StepperItem extends LitElement {
       excluded: 'var(--kd-color-background-secondary, ##3D3C3C)',
       disabled: 'var(--kd-color-background-ui, #898888)',
       destructive: 'var(--kd-color-background-destructive, #CC1800)',
+      warning: 'var(--kd-color-background-warning, #F5C400)',
     };
     // map first step and last step class to parent div
     const stepContainerClasses = {
@@ -193,125 +205,12 @@ export class StepperItem extends LitElement {
       'vertical-step-text-large': this.stepSize === 'large',
       'vertical-step-text-disabled': this.disabled,
     };
-
-    return html`
-      <!-- -------------------------||>> Vertical stepper <<|| ----------------------------------->
-
-      ${this.vertical
-        ? html`<div class="${classMap(verticalStepContainerClasses)}">
-              <!-- Step progress -->
-              ${this.isLastStep
-                ? null
-                : html`<div
-                    class="${classMap(verticalStepperLineClasses)}"
-                    role="progressbar"
-                    aria-valuenow="${this.progress}"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    aria-label="Step progress: ${this.progress}%"
-                  >
-                    <div
-                      class="${this.progress === 100
-                        ? 'vertical-progress-line-completed'
-                        : ''} vertical-progress-line"
-                      style="height:${this.progress}%;"
-                    ></div>
-                  </div>`}
-              <!-- Step icons -->
-              <div class="${classMap(verticalIconClasses)}">
-                ${this.stepState !== 'pending'
-                  ? html` <kd-icon
-                      slot="icon"
-                      .icon=${this.disabled
-                        ? iconMapper.disabled
-                        : iconMapper[this.stepState]}
-                      fill=${this.disabled
-                        ? iconFillColor.disabled
-                        : iconFillColor[this.stepState]}
-                    ></kd-icon>`
-                  : this.stepState === 'pending' && this.disabled
-                  ? html`
-                      <kd-icon
-                        slot="icon"
-                        .icon=${iconMapper.disabled}
-                        fill=${iconFillColor.disabled}
-                      ></kd-icon>
-                    `
-                  : this.showCounter
-                  ? html`<p class="counter-txt ${this.stepSize}">
-                      ${this.stepIndex + 1}
-                    </p>`
-                  : null}
-              </div>
-              <!-- Step name -->
-              <div class="vertical-item-content">
-                <p class="${classMap(verticalStepNameClasses)}">
-                  ${this.stepName}
-                </p>
-                <!-- Step title -->
-                <div class="vertical-title-wrapper">
-                  ${this.stepTitle === ''
-                    ? null
-                    : this.stepperType === 'procedure'
-                    ? html`<kd-link
-                        standalone
-                        href=""
-                        target="_self"
-                        kind="primary"
-                        ?disabled=${this.disabled}
-                        @on-click=${(e: Event) => this._handleStepClick(e)}
-                        >${this.stepTitle}</kd-link
-                      >`
-                    : this.stepperType === 'status'
-                    ? html`<p class="step-title-text">${this.stepTitle}</p>`
-                    : null}
-                  <!-- Tooltip slot --->
-                  <slot name="tooltip"></slot>
-
-                  <!-- Toggle children stuff -->
-                  ${this.stepTitle !== '' &&
-                  this.stepState === 'active' &&
-                  this.childSteps?.length > 0 &&
-                  this.stepperType === 'procedure'
-                    ? html`
-                        <button
-                          class="toggle-icon-button"
-                          aria-label="Toggle children"
-                          type="button"
-                          @click=${() => this._handleChildToggle()}
-                          ?disabled=${this.disabled}
-                        >
-                          <kd-icon
-                            slot="icon"
-                            class=${classMap({
-                              'arrow-icon': true,
-                              open: this.openChildren,
-                            })}
-                            .icon=${downIcon}
-                            fill=${this.disabled ? '#898888' : '#29707A'}
-                          ></kd-icon>
-                        </button>
-                      `
-                    : null}
-                </div>
-                <!-- Optional slot : when active -->
-                ${this.stepState === 'active' ? html` <slot></slot>` : null}
-              </div>
-            </div>
-            <!-- Child slot : when active -->
-            ${this.stepState === 'active'
-              ? html`<div
-                  class=${classMap({
-                    children: true,
-                    open: this.openChildren,
-                  })}
-                >
-                  <slot name="child"></slot>
-                </div>`
-              : null} `
-        : html` <!-- -------------------------||>> Horizontal stepper <<|| ----------------------------------->
-
-            <div class="${classMap(stepContainerClasses)}">
+    // -------------------------||>> Horizontal stepper <<|| --------------------------------- //
+    const renderHorizontalUI = () => {
+      return html`
+        ${this.isResponsive
+          ? renderVerticalUI()
+          : html` <div class="${classMap(stepContainerClasses)}">
               <div class="${classMap(stepperIconClasses)}">
                 <!-- Step icon -->
                 ${this.stepState !== 'pending'
@@ -382,7 +281,125 @@ export class StepperItem extends LitElement {
                 </div>
               </div>
             </div>`}
-    `;
+      `;
+    };
+
+    // -------------------------||>> Vertical stepper <<|| -----------------------------------> //
+    const renderVerticalUI = () => {
+      return html`
+        <div class="${classMap(verticalStepContainerClasses)}">
+          <!-- Step progress -->
+          ${this.isLastStep
+            ? null
+            : html`<div
+                class="${classMap(verticalStepperLineClasses)}"
+                role="progressbar"
+                aria-valuenow="${this.progress}"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-label="Step progress: ${this.progress}%"
+              >
+                <div
+                  class="${this.progress === 100
+                    ? 'vertical-progress-line-completed'
+                    : ''} vertical-progress-line"
+                  style="height:${this.progress}%;"
+                ></div>
+              </div>`}
+          <!-- Step icons -->
+          <div class="${classMap(verticalIconClasses)}">
+            ${this.stepState !== 'pending'
+              ? html` <kd-icon
+                  slot="icon"
+                  .icon=${this.disabled
+                    ? iconMapper.disabled
+                    : iconMapper[this.stepState]}
+                  fill=${this.disabled
+                    ? iconFillColor.disabled
+                    : iconFillColor[this.stepState]}
+                ></kd-icon>`
+              : this.stepState === 'pending' && this.disabled
+              ? html`
+                  <kd-icon
+                    slot="icon"
+                    .icon=${iconMapper.disabled}
+                    fill=${iconFillColor.disabled}
+                  ></kd-icon>
+                `
+              : this.showCounter
+              ? html`<p class="counter-txt ${this.stepSize}">
+                  ${this.stepIndex + 1}
+                </p>`
+              : null}
+          </div>
+          <!-- Step name -->
+          <div class="vertical-item-content">
+            <p class="${classMap(verticalStepNameClasses)}">${this.stepName}</p>
+            <!-- Step title -->
+            <div class="vertical-title-wrapper">
+              ${this.stepTitle === ''
+                ? null
+                : this.stepperType === 'procedure'
+                ? html`<kd-link
+                    standalone
+                    href=""
+                    target="_self"
+                    kind="primary"
+                    ?disabled=${this.disabled}
+                    @on-click=${(e: Event) => this._handleStepClick(e)}
+                    >${this.stepTitle}</kd-link
+                  >`
+                : this.stepperType === 'status'
+                ? html`<p class="step-title-text">${this.stepTitle}</p>`
+                : null}
+              <!-- Tooltip slot --->
+              <slot name="tooltip"></slot>
+
+              <!-- Toggle children stuff -->
+              ${this.stepTitle !== '' &&
+              this.stepState === 'active' &&
+              this.childSteps?.length > 0 &&
+              this.stepperType === 'procedure'
+                ? html`
+                    <button
+                      class="toggle-icon-button"
+                      aria-label="Toggle children"
+                      type="button"
+                      @click=${() => this._handleChildToggle()}
+                      ?disabled=${this.disabled}
+                    >
+                      <kd-icon
+                        slot="icon"
+                        class=${classMap({
+                          'arrow-icon': true,
+                          open: this.openChildren,
+                        })}
+                        .icon=${downIcon}
+                        fill=${this.disabled ? '#898888' : '#29707A'}
+                      ></kd-icon>
+                    </button>
+                  `
+                : null}
+            </div>
+            <!-- Optional slot : when active -->
+            ${this.stepState === 'active' ? html` <slot></slot>` : null}
+          </div>
+        </div>
+        <!-- Child slot : when active -->
+        ${this.stepState === 'active'
+          ? html`<div
+              class=${classMap({
+                children: true,
+                open: this.openChildren,
+              })}
+            >
+              <slot name="child"></slot>
+            </div>`
+          : null}
+      `;
+    };
+
+    return html` ${this.vertical ? renderVerticalUI() : renderHorizontalUI()} `;
   }
 
   private _handleChildToggle() {

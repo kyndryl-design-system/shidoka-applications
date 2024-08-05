@@ -46,25 +46,31 @@ const steps = [
     disabled: false,
   },
   {
-    stepName: 'Step 2',
+    stepName: 'Step 3',
     stepTitle: 'Destructive',
     stepState: 'destructive',
     disabled: false,
   },
   {
-    stepName: 'Step 3',
+    stepName: 'Step 4',
     stepTitle: 'Active',
     stepState: 'active',
     disabled: false,
   },
   {
-    stepName: 'Step 4',
+    stepName: 'Step 5',
     stepTitle: 'Disabled',
     stepState: 'pending',
     disabled: true,
   },
   {
-    stepName: 'Step 5',
+    stepName: 'Step 6',
+    stepTitle: 'Warning',
+    stepState: 'warning',
+    disabled: false,
+  },
+  {
+    stepName: 'Step 7',
     stepTitle: 'Pending',
     stepState: 'pending',
     disabled: false,
@@ -78,8 +84,8 @@ const statusSteps = [
     disabled: false,
   },
   {
-    stepName: 'Processing Request',
-    stepTitle: 'Monday June 26, 2023 3:05:25 PM',
+    stepName: 'Request Accepted',
+    stepTitle: 'Monday June 26, 2023 2:10:25 PM',
     disabled: false,
   },
   {
@@ -88,7 +94,7 @@ const statusSteps = [
     disabled: false,
   },
   {
-    stepName: 'Request Received',
+    stepName: 'Response Received',
     stepTitle: 'Monday June 26, 2023 6:05:25 PM',
     disabled: false,
   },
@@ -104,7 +110,7 @@ const statusSteps = [
   },
 ];
 
-// Example of how to pass stepState prop. to <kyn-stepper-item>
+// Example of how to pass stepState prop. to <kyn-stepper-item> & usage of currentIndex to navigate.
 const returnStepState = (currentIndex, index, disabled) => {
   if (!disabled) {
     return currentIndex > index
@@ -188,6 +194,11 @@ export const Vertical = {
         ></kyn-stepper-item>
         <kyn-stepper-item
           stepName="Step 6"
+          stepTitle="Warning"
+          stepState="warning"
+        ></kyn-stepper-item>
+        <kyn-stepper-item
+          stepName="Step 7"
           stepTitle="Pending"
           stepState="pending"
         ></kyn-stepper-item>
@@ -253,7 +264,7 @@ export const NestedSteps = {
 };
 
 export const StatusStepper = {
-  args: { currentIndex: 0 },
+  args: { currentIndex: 2 },
   render: (args) => {
     return html`
       <kyn-stepper
