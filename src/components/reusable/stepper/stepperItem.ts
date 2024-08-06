@@ -433,19 +433,16 @@ export class StepperItem extends LitElement {
     ) {
       this.openChildren = true; // default open toggle when state is active
       await this.updateComplete;
-      this.childSteps?.forEach((child, index) => {
-        // First child is active bydefault when step is active
-        if (index === 0) child.childState = 'active';
-        // update children props / states
-        child.childSize = this.stepSize;
-        child.childIndex = index;
-      });
+      this.updateChildren();
     }
   }
 
   override updated(changedProps: any) {
     if (changedProps.has('stepState')) {
       this.progress = this.getProgressValue();
+      if (this.stepState === 'active') {
+        this.updateChildren();
+      }
     }
 
     if (changedProps.has('stepSize') && this.childSteps?.length > 0) {
@@ -457,6 +454,19 @@ export class StepperItem extends LitElement {
     if (changedProps.has('disabled') && this.childSteps?.length > 0) {
       this.childSteps.forEach((child) => {
         child.disabled = this.disabled;
+      });
+    }
+  }
+
+  private updateChildren() {
+    if (this.childSteps?.length > 0) {
+      this.childSteps?.forEach((child, index) => {
+        // First child is active bydefault when step is active
+        if (index === 0) child.childState = 'active';
+        this.openChildren = true;
+        // update children props / states
+        child.childSize = this.stepSize;
+        child.childIndex = index;
       });
     }
   }
