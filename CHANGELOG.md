@@ -1,3 +1,10 @@
+# [1.31.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.30.0...v1.31.0) (2024-08-06)
+
+
+### Features
+
+* **table:** Added table rollover color as per UX updates ([#212](https://github.com/kyndryl-design-system/shidoka-applications/issues/212)) ([2e31c85](https://github.com/kyndryl-design-system/shidoka-applications/commit/2e31c85eaac3d2f49d7dd1f1d6580db01d604b20))
+
 # [1.30.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.29.3...v1.30.0) (2024-08-06)
 
 
