@@ -82,7 +82,6 @@ export class StepperItemChild extends LitElement {
         <div class="child-step-content">
           <!-- Child Title & Optional Subtitle -->
           <kd-link
-            class=${classMap({ 'active-child': this.childState === 'active' })}
             standalone
             kind="primary"
             ?disabled=${this.disabled}
