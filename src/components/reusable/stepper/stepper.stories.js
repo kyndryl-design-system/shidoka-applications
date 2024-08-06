@@ -100,12 +100,12 @@ const statusSteps = [
   },
   {
     stepName: 'Generating Contract',
-    stepTitle: 'Tuesday June 26, 2023 6:05:25 PM',
+    stepTitle: 'Tuesday June 27, 2023 6:05:25 PM',
     disabled: false,
   },
   {
     stepName: 'Contract Ready for Review',
-    stepTitle: 'Tuesday June 26, 2023 7:05:25 PM',
+    stepTitle: 'Tuesday June 27, 2023 7:05:25 PM',
     disabled: false,
   },
 ];
