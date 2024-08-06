@@ -375,8 +375,7 @@ export class Dropdown extends LitElement {
                     <kyn-tag
                       label=${text}
                       ?disabled=${this.disabled}
-                      @on-close=${(e: any) =>
-                        this.handleTagClear(e.detail.value)}
+                      @on-close=${() => this.handleTagClear(value)}
                     ></kyn-tag>
                   `;
                 })}
@@ -1050,7 +1049,7 @@ export class Dropdown extends LitElement {
       });
     }
 
-    if (changedProps.has('searchText')) {
+    if (changedProps.has('searchText') && this.searchEl) {
       this.searchEl.value = this.searchText;
     }
   }
