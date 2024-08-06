@@ -142,9 +142,8 @@ export class Dropdown extends LitElement {
 
   /**
    * Search input value.
-   * @ignore
    */
-  @state()
+  @property({ type: String })
   searchText = '';
 
   /**
@@ -352,9 +351,11 @@ export class Dropdown extends LitElement {
                 </button>
               `
             : null}
+          <!--
           ${this.isInvalid
             ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
             : null}
+            -->
         </div>
 
         ${this.multiple && !this.hideTags && this.value.length
@@ -495,14 +496,17 @@ export class Dropdown extends LitElement {
     const ESCAPE_KEY_CODE = 27;
 
     // get highlighted element + index and selected element
-    const highlightedEl = this.options.find(
+    const visibleOptions = this.options.filter(
+      (option: any) => option.style.display !== 'none'
+    );
+    const highlightedEl = visibleOptions.find(
       (option: any) => option.highlighted
     );
-    const selectedEl = this.options.find((option: any) => option.selected);
+    const selectedEl = visibleOptions.find((option: any) => option.selected);
     const highlightedIndex = highlightedEl
-      ? this.options.indexOf(highlightedEl)
-      : this.options.find((option: any) => option.selected)
-      ? this.options.indexOf(selectedEl)
+      ? visibleOptions.indexOf(highlightedEl)
+      : visibleOptions.find((option: any) => option.selected)
+      ? visibleOptions.indexOf(selectedEl)
       : 0;
 
     // prevent page scroll on spacebar press
@@ -520,11 +524,11 @@ export class Dropdown extends LitElement {
 
       if (openDropdown) {
         this.open = true;
-        this.options[highlightedIndex].highlighted = true;
+        visibleOptions[highlightedIndex].highlighted = true;
 
         // scroll to highlighted option
         if (!this.multiple && this.value !== '') {
-          this.options[highlightedIndex].scrollIntoView({ block: 'nearest' });
+          visibleOptions[highlightedIndex].scrollIntoView({ block: 'nearest' });
         }
       }
     }
@@ -533,10 +537,11 @@ export class Dropdown extends LitElement {
       case ENTER_KEY_CODE: {
         // select highlighted option
         this.updateValue(
-          this.options[highlightedIndex].value,
-          !this.options[highlightedIndex].selected
+          visibleOptions[highlightedIndex].value,
+          !visibleOptions[highlightedIndex].selected
         );
         this.assistiveText = 'Selected an item.';
+        this.emitValue();
         return;
       }
       case DOWN_ARROW_KEY_CODE: {
@@ -544,43 +549,45 @@ export class Dropdown extends LitElement {
         let nextIndex =
           !highlightedEl && !selectedEl
             ? 0
-            : highlightedIndex === this.options.length - 1
+            : highlightedIndex === visibleOptions.length - 1
             ? 0
             : highlightedIndex + 1;
 
         // skip disabled options
-        if (this.options[nextIndex].disabled) {
-          nextIndex = nextIndex === this.options.length - 1 ? 0 : nextIndex + 1;
+        if (visibleOptions[nextIndex].disabled) {
+          nextIndex =
+            nextIndex === visibleOptions.length - 1 ? 0 : nextIndex + 1;
         }
 
-        this.options[highlightedIndex].highlighted = false;
-        this.options[nextIndex].highlighted = true;
+        visibleOptions[highlightedIndex].highlighted = false;
+        visibleOptions[nextIndex].highlighted = true;
 
         // scroll to option
-        this.options[nextIndex].scrollIntoView({ block: 'nearest' });
+        visibleOptions[nextIndex].scrollIntoView({ block: 'nearest' });
 
-        this.assistiveText = this.options[nextIndex].text;
+        this.assistiveText = visibleOptions[nextIndex].text;
         return;
       }
       case UP_ARROW_KEY_CODE: {
         // go to previous option
         let nextIndex =
           highlightedIndex === 0
-            ? this.options.length - 1
+            ? visibleOptions.length - 1
             : highlightedIndex - 1;
 
         // skip disabled options
-        if (this.options[nextIndex].disabled) {
-          nextIndex = nextIndex === 0 ? this.options.length - 1 : nextIndex - 1;
+        if (visibleOptions[nextIndex].disabled) {
+          nextIndex =
+            nextIndex === 0 ? visibleOptions.length - 1 : nextIndex - 1;
         }
 
-        this.options[highlightedIndex].highlighted = false;
-        this.options[nextIndex].highlighted = true;
+        visibleOptions[highlightedIndex].highlighted = false;
+        visibleOptions[nextIndex].highlighted = true;
 
         // scroll to option
-        this.options[nextIndex].scrollIntoView({ block: 'nearest' });
+        visibleOptions[nextIndex].scrollIntoView({ block: 'nearest' });
 
-        this.assistiveText = this.options[nextIndex].text;
+        this.assistiveText = visibleOptions[nextIndex].text;
         return;
       }
       case ESCAPE_KEY_CODE: {
@@ -999,7 +1006,7 @@ export class Dropdown extends LitElement {
         }
 
         // set search input value
-        if (this.searchable) {
+        if (this.searchable && this.text) {
           this.searchText = this.text === this.placeholder ? '' : this.text;
           this.searchEl.value = this.searchText;
         }
@@ -1041,6 +1048,10 @@ export class Dropdown extends LitElement {
       this.options.forEach((option: any) => {
         option.multiple = this.multiple;
       });
+    }
+
+    if (changedProps.has('searchText')) {
+      this.searchEl.value = this.searchText;
     }
   }
 

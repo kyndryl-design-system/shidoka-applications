@@ -8,7 +8,7 @@ import chevLeftIcon from '@carbon/icons/es/chevron--left/16';
 import chevRightIcon from '@carbon/icons/es/chevron--right/16';
 
 import styles from './pagination-navigation-buttons.scss';
-import { OF_TEXT, PAGES_TEXT } from './constants';
+// import { OF_TEXT, PAGES_TEXT } from './constants';
 
 /**
  * `kyn-pagination-navigation-buttons` Web Component.
@@ -76,8 +76,9 @@ export class PaginationNavigationButtons extends LitElement {
       </kd-button>
 
       <span class="page-range" role="status" aria-live="polite">
-        ${this.pageNumber} ${OF_TEXT} ${this.numberOfPages} ${PAGES_TEXT}</span
-      >
+        ${this.pageNumber} ${this.textStrings.of} ${this.numberOfPages}
+        ${this.textStrings.pages}
+      </span>
 
       <kd-button
         iconposition="center"
