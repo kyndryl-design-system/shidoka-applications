@@ -1,3 +1,10 @@
+## [1.29.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.29.2...v1.29.3) (2024-08-06)
+
+
+### Bug Fixes
+
+* **dropdown:** tag clear correct option, resolves [#213](https://github.com/kyndryl-design-system/shidoka-applications/issues/213) ([f81e81a](https://github.com/kyndryl-design-system/shidoka-applications/commit/f81e81a4a6958b9393fe89fdd704b6d1ad478fab))
+
 ## [1.29.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.29.1...v1.29.2) (2024-07-31)
 
 
