@@ -221,17 +221,17 @@ export const NestedSteps = {
       >
         <kyn-stepper-item
           stepName="Step 1"
-          stepTitle="Step Title"
+          stepTitle="Completed"
           stepState="completed"
         ></kyn-stepper-item>
         <kyn-stepper-item
           stepName="Step 2"
-          stepTitle="Step Title"
+          stepTitle="Completed"
           stepState="completed"
         ></kyn-stepper-item>
         <kyn-stepper-item
           stepName="Step 3"
-          stepTitle="Step Title"
+          stepTitle="Active"
           stepState="active"
         >
           <kyn-stepper-item-child
@@ -249,13 +249,13 @@ export const NestedSteps = {
         </kyn-stepper-item>
         <kyn-stepper-item
           stepName="Step 4"
-          stepTitle="Step Title"
+          stepTitle="Pending"
           stepState="pending"
         >
         </kyn-stepper-item>
         <kyn-stepper-item
           stepName="Step 5"
-          stepTitle="Step Title"
+          stepTitle="Pending"
           stepState="pending"
         ></kyn-stepper-item>
       </kyn-stepper>

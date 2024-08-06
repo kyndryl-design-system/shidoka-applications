@@ -120,6 +120,9 @@ export class StepperItem extends LitElement {
   @state()
   openChildren = false;
 
+  /** if its responsive
+   * @ignore
+   */
   @state()
   isResponsive = false;
 

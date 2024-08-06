@@ -63,7 +63,7 @@ export class Stepper extends LitElement {
         class=${this.vertical
           ? 'vertical-stepper-wrapper'
           : `${
-              this.isResponsive ? 'stepper-responsive' : null
+              this.isResponsive ? 'stepper-responsive' : ''
             } horizontal-stepper-wrapper`}
       >
         <slot></slot>
