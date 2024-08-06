@@ -1,3 +1,10 @@
+# [1.30.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.29.3...v1.30.0) (2024-08-06)
+
+
+### Features
+
+* **stepper:** Added stepper component ([#210](https://github.com/kyndryl-design-system/shidoka-applications/issues/210)) ([cc15078](https://github.com/kyndryl-design-system/shidoka-applications/commit/cc15078f470880e4d8823205780ba2521896ea8e))
+
 ## [1.29.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.29.2...v1.29.3) (2024-08-06)
 
 
