@@ -1,3 +1,10 @@
+## [1.31.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.0...v1.31.1) (2024-08-07)
+
+
+### Bug Fixes
+
+* **radio-button:** prevent radio distortion ([e4f13a9](https://github.com/kyndryl-design-system/shidoka-applications/commit/e4f13a90bc223121344b6b88135b2eabd98d46e0))
+
 # [1.31.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.30.0...v1.31.0) (2024-08-06)
 
 
