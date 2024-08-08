@@ -1,3 +1,10 @@
+## [1.31.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.1...v1.31.2) (2024-08-08)
+
+
+### Bug Fixes
+
+* **widget:** remove container query context ([3e99238](https://github.com/kyndryl-design-system/shidoka-applications/commit/3e9923832da7c20b2edf123dd9553f73a7ca3bf4))
+
 ## [1.31.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.0...v1.31.1) (2024-08-07)
 
 
