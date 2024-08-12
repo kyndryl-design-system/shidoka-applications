@@ -1,3 +1,10 @@
+## [1.31.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.2...v1.31.3) (2024-08-12)
+
+
+### Bug Fixes
+
+* **number-input:** validate when using stepper buttons, resolves [#215](https://github.com/kyndryl-design-system/shidoka-applications/issues/215) ([224118e](https://github.com/kyndryl-design-system/shidoka-applications/commit/224118e63cbb32be0cb5053604ef149e00ba10d7))
+
 ## [1.31.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.1...v1.31.2) (2024-08-08)
 
 
