@@ -205,6 +205,7 @@ export class NumberInput extends LitElement {
     this.inputEl.stepDown();
     this.value = Number(this.inputEl.value);
 
+    this._validate(true, false);
     this._emitValue();
   }
 
@@ -212,6 +213,7 @@ export class NumberInput extends LitElement {
     this.inputEl.stepUp();
     this.value = Number(this.inputEl.value);
 
+    this._validate(true, false);
     this._emitValue();
   }
 
