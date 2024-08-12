@@ -132,7 +132,7 @@ export class NumberInput extends LitElement {
           <kd-button
             kind="secondary"
             size=${this._sizeMap(this.size)}
-            ?disabled=${this.disabled || this.value === this.min}
+            ?disabled=${this.disabled || this.value <= this.min}
             description=${this.textStrings.subtract}
             @on-click=${this._handleSubtract}
           >
@@ -164,7 +164,7 @@ export class NumberInput extends LitElement {
           <kd-button
             kind="secondary"
             size=${this._sizeMap(this.size)}
-            ?disabled=${this.disabled || this.value === this.max}
+            ?disabled=${this.disabled || this.value >= this.max}
             description=${this.textStrings.add}
             @on-click=${this._handleAdd}
           >
@@ -218,7 +218,12 @@ export class NumberInput extends LitElement {
   }
 
   private _handleInput(e: any) {
-    this.value = Number(e.target.value);
+    if (e.target.value === '') {
+      this.value = 0;
+      this.inputEl.value = '0';
+    } else {
+      this.value = Number(e.target.value);
+    }
 
     this._validate(true, false);
     this._emitValue(e);
