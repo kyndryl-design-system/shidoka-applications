@@ -1,3 +1,10 @@
+## [1.31.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.3...v1.31.4) (2024-08-12)
+
+
+### Bug Fixes
+
+* **number-input:** validate empty string input correctly, resolves [#216](https://github.com/kyndryl-design-system/shidoka-applications/issues/216) ([b1a5346](https://github.com/kyndryl-design-system/shidoka-applications/commit/b1a5346d619e87b2a3737f9f2efe6d56e26cefc9))
+
 ## [1.31.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.2...v1.31.3) (2024-08-12)
 
 
