@@ -46,6 +46,7 @@ const args = {
   caption: '',
   searchText: '',
   menuMinWidth: 'initial',
+  updateByValue: false,
 };
 
 export const Single = {
@@ -63,6 +64,7 @@ export const Single = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
+        ?updateByValue=${args.updateByValue}
         @on-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
@@ -98,6 +100,7 @@ export const SingleSearchable = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
+        ?updateByValue=${args.updateByValue}
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >
@@ -135,6 +138,7 @@ export const MultiSelect = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
+        ?updateByValue=${args.updateByValue}
         @on-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
@@ -174,6 +178,7 @@ export const MultiSelectSearchable = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
+        ?updateByValue=${args.updateByValue}
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >
@@ -228,6 +233,7 @@ export const Grouped = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
+        ?updateByValue=${args.updateByValue}
         @on-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
@@ -264,6 +270,7 @@ export const DataDrivenOptions = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
+        ?updateByValue=${args.updateByValue}
         @on-change=${(e) => {
           // console.log(e.detail);
           action(e.type)(e);
