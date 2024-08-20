@@ -860,10 +860,11 @@ export class Dropdown extends LitElement {
   }
 
   private updateValue(value: string, selected = false) {
-    const values = JSON.parse(JSON.stringify(this.value));
-
     // set value
     if (this.multiple) {
+      const values =
+        this.value === '' ? [] : JSON.parse(JSON.stringify(this.value));
+
       // update array
       if (selected) {
         values.push(value);
