@@ -26,9 +26,6 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/design/CQuDZEeLiuGiALvCWjAKlu/Applications---Component-Library?node-id=13321-23753&m=dev',
     },
-    a11y: {
-      disable: true,
-    },
   },
 };
 
