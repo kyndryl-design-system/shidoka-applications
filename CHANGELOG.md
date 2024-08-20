@@ -1,3 +1,10 @@
+# [1.32.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.6...v1.32.0) (2024-08-20)
+
+
+### Features
+
+* **modal:** Added disabled option to secondary button ([#218](https://github.com/kyndryl-design-system/shidoka-applications/issues/218)) ([b24cb81](https://github.com/kyndryl-design-system/shidoka-applications/commit/b24cb81a2d8e3fadfa0d137f7fc5123ad11599c2))
+
 ## [1.31.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.5...v1.31.6) (2024-08-20)
 
 
