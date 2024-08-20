@@ -1,3 +1,10 @@
+## [1.31.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.4...v1.31.5) (2024-08-20)
+
+
+### Bug Fixes
+
+* **dropdown:** multiselect updateByValue console errors ([6fcfafd](https://github.com/kyndryl-design-system/shidoka-applications/commit/6fcfafd87843c5bf2e63ccc756e1db5ac930e19f))
+
 ## [1.31.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.3...v1.31.4) (2024-08-12)
 
 
