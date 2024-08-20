@@ -35,6 +35,7 @@ const args = {
   hideFooter: false,
   showSecondaryButton: true,
   secondaryButtonText: 'Secondary',
+  secondaryDisabled: false,
   hideCancelButton: false,
 };
 
@@ -78,6 +79,7 @@ export const ActionButtons = {
         ?hideFooter=${args.hideFooter}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
+        ?secondaryDisabled=${args.secondaryDisabled}
         ?hideCancelButton=${args.hideCancelButton}
         @on-close=${(e) => action(e.type)(e)}
       >
@@ -176,6 +178,7 @@ export const WithForm = {
         ?hideFooter=${args.hideFooter}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
+        ?secondaryDisabled=${args.secondaryDisabled}
         ?hideCancelButton=${args.hideCancelButton}
         .beforeClose=${(returnValue) => handleBeforeCloseSubmit(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
