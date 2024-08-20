@@ -1,3 +1,10 @@
+## [1.31.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.5...v1.31.6) (2024-08-20)
+
+
+### Bug Fixes
+
+* **stepper:** horizontal responsive scrolling ([7bf68f9](https://github.com/kyndryl-design-system/shidoka-applications/commit/7bf68f99723d4d11e662d35d2ebe8d09a731bb3b))
+
 ## [1.31.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.4...v1.31.5) (2024-08-20)
 
 
