@@ -1,3 +1,10 @@
+## [1.32.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.0...v1.32.1) (2024-08-20)
+
+
+### Bug Fixes
+
+* **wcag:** accessibility fixes for checkboxes and radios ([3aad437](https://github.com/kyndryl-design-system/shidoka-applications/commit/3aad437bdc38620512cf8014c38a7d32ae1b95c0))
+
 # [1.32.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.6...v1.32.0) (2024-08-20)
 
 
