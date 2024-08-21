@@ -1060,6 +1060,9 @@ export class Dropdown extends LitElement {
     const Tags: Array<object> = [];
 
     Options.forEach((option: any) => {
+      // set option multiple state
+      option.multiple = this.multiple;
+
       if (this.multiple) {
         const Selected = this.value.includes(option.value);
         // set option selected state
