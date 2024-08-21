@@ -1,3 +1,10 @@
+## [1.32.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.1...v1.32.2) (2024-08-21)
+
+
+### Bug Fixes
+
+* **dropdown:** tag option value matching null check ([80d36c8](https://github.com/kyndryl-design-system/shidoka-applications/commit/80d36c845e9ad7e6ba99b11a14db2f7db2bedaac))
+
 ## [1.32.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.0...v1.32.1) (2024-08-20)
 
 
