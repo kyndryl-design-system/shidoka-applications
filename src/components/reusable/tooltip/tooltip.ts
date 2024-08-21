@@ -169,11 +169,19 @@ export class Tooltip extends LitElement {
       }
     } else if (vertical === 'middle') {
       if (horizontal === 'right') {
-        this._direction = 'right';
-        this._anchorPosition = 'center';
+        if (ViewportWidth < 672) {
+          this._direction = 'top';
+          this._anchorPosition = 'start';
 
-        this._contentEl.style.top = AnchorMiddle + 'px';
-        this._contentEl.style.left = AnchorRight + 'px';
+          this._contentEl.style.top = AnchorTop + 'px';
+          this._contentEl.style.left = AnchorCenter + 'px';
+        } else {
+          this._direction = 'right';
+          this._anchorPosition = 'center';
+
+          this._contentEl.style.top = AnchorMiddle + 'px';
+          this._contentEl.style.left = AnchorRight + 'px';
+        }
       } else if (horizontal === 'center') {
         this._direction = 'top';
         this._anchorPosition = 'center';
@@ -181,11 +189,19 @@ export class Tooltip extends LitElement {
         this._contentEl.style.top = AnchorTop + 'px';
         this._contentEl.style.left = AnchorCenter + 'px';
       } else {
-        this._direction = 'left';
-        this._anchorPosition = 'center';
+        if (ViewportWidth < 672) {
+          this._direction = 'top';
+          this._anchorPosition = 'end';
 
-        this._contentEl.style.top = AnchorMiddle + 'px';
-        this._contentEl.style.left = AnchorLeft + 'px';
+          this._contentEl.style.top = AnchorTop + 'px';
+          this._contentEl.style.left = AnchorCenter + 'px';
+        } else {
+          this._direction = 'left';
+          this._anchorPosition = 'center';
+
+          this._contentEl.style.top = AnchorMiddle + 'px';
+          this._contentEl.style.left = AnchorLeft + 'px';
+        }
       }
     } else {
       if (horizontal === 'right') {
