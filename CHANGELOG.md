@@ -1,3 +1,10 @@
+## [1.32.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.2...v1.32.3) (2024-08-21)
+
+
+### Bug Fixes
+
+* **dropdown:** better tag handling for data driven multiselect ([231d4f4](https://github.com/kyndryl-design-system/shidoka-applications/commit/231d4f47fb3430412002e030370194519d6bc5e9))
+
 ## [1.32.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.1...v1.32.2) (2024-08-21)
 
 
