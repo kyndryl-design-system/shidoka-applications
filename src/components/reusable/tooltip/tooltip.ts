@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import TooltipScss from './tooltip.scss';
 
@@ -16,43 +16,63 @@ import infoIcon from '@carbon/icons/es/information/20';
 export class Tooltip extends LitElement {
   static override styles = TooltipScss;
 
-  @property({ type: Boolean })
-  open = false;
-
-  /** Tooltip anchor position. `'start'`, `'end'`, or `'center'`. */
-  @property({ type: String })
-  anchorPosition = 'center';
-
-  /** Tooltip direction. `'top'`, `'bottom'`, `'left'`, or `'right'`. */
-  @property({ type: String })
-  direction = 'top';
-
   /** Assistive text for anchor button. */
   @property({ type: String })
   assistiveText = 'Toggle Tooltip';
+
+  /** Tooltip open state.
+   * @internal
+   */
+  @state()
+  _open = false;
+
+  /** Tooltip anchor position. `'start'`, `'end'`, or `'center'`.
+   * @internal
+   */
+  @state()
+  _anchorPosition = 'center';
+
+  /** Tooltip direction. `'top'`, `'bottom'`, `'left'`, or `'right'`.
+   * @internal
+   */
+  @state()
+  _direction = 'top';
 
   /** Timeout function to delay modal close.
    * @internal
    */
   @state()
-  timer: any;
+  _timer: any;
+
+  /** Anchor element
+   * @internal
+   */
+  @query('.anchor')
+  _anchorEl!: any;
+
+  /** Content element
+   * @internal
+   */
+  @query('.content')
+  _contentEl!: any;
 
   override render() {
     const classes = {
       content: true,
-      open: this.open,
-      'anchor--start': this.anchorPosition === 'start',
-      'anchor--end': this.anchorPosition === 'end',
-      'anchor--center': this.anchorPosition === 'center',
-      'direction--top': this.direction === 'top',
-      'direction--bottom': this.direction === 'bottom',
-      'direction--left': this.direction === 'left',
-      'direction--right': this.direction === 'right',
+      open: this._open,
+      'anchor--start': this._anchorPosition === 'start',
+      'anchor--end': this._anchorPosition === 'end',
+      'anchor--center': this._anchorPosition === 'center',
+      'direction--top': this._direction === 'top',
+      'direction--bottom': this._direction === 'bottom',
+      'direction--left': this._direction === 'left',
+      'direction--right': this._direction === 'right',
     };
 
     return html`
       <div class="tooltip">
         <button
+          class="anchor"
           aria-label=${this.assistiveText}
           title=${this.assistiveText}
           aria-describedby="tooltip"
@@ -66,7 +86,7 @@ export class Tooltip extends LitElement {
 
         <div
           id="tooltip"
-          aria-hidden=${!this.open}
+          aria-hidden=${!this._open}
           role="tooltip"
           class=${classMap(classes)}
           @mouseenter=${this._handleOpen}
@@ -78,31 +98,179 @@ export class Tooltip extends LitElement {
     `;
   }
 
+  private _positionTooltip() {
+    const AnchorTop = this._anchorEl.getBoundingClientRect().top;
+    const AnchorMiddle =
+      this._anchorEl.getBoundingClientRect().top +
+      this._anchorEl.getBoundingClientRect().height / 2;
+    const AnchorBottom =
+      this._anchorEl.getBoundingClientRect().top +
+      this._anchorEl.getBoundingClientRect().height;
+    const AnchorLeft = this._anchorEl.getBoundingClientRect().left;
+    const AnchorCenter =
+      this._anchorEl.getBoundingClientRect().left +
+      this._anchorEl.getBoundingClientRect().width / 2;
+    const AnchorRight =
+      this._anchorEl.getBoundingClientRect().left +
+      this._anchorEl.getBoundingClientRect().width;
+    const ViewportHeight = window.innerHeight;
+    const ViewportWidth = window.innerWidth;
+
+    let vertical = 'down';
+    let horizontal = 'right';
+
+    if (AnchorTop > ViewportHeight * 0.67) {
+      vertical = 'up';
+    } else if (AnchorTop > ViewportHeight * 0.33) {
+      vertical = 'middle';
+    }
+
+    if (AnchorLeft > ViewportWidth * 0.67) {
+      horizontal = 'left';
+    } else if (AnchorLeft > ViewportWidth * 0.33) {
+      horizontal = 'center';
+    }
+
+    if (vertical === 'down') {
+      if (horizontal === 'right') {
+        if (ViewportWidth < 672) {
+          this._direction = 'bottom';
+          this._anchorPosition = 'start';
+
+          this._contentEl.style.top = AnchorBottom + 'px';
+          this._contentEl.style.left = AnchorCenter + 'px';
+        } else {
+          this._direction = 'right';
+          this._anchorPosition = 'start';
+
+          this._contentEl.style.top = AnchorMiddle + 'px';
+          this._contentEl.style.left = AnchorRight + 'px';
+        }
+      } else if (horizontal === 'center') {
+        this._direction = 'bottom';
+        this._anchorPosition = 'center';
+
+        this._contentEl.style.top = AnchorBottom + 'px';
+        this._contentEl.style.left = AnchorCenter + 'px';
+      } else {
+        if (ViewportWidth < 672) {
+          this._direction = 'bottom';
+          this._anchorPosition = 'end';
+
+          this._contentEl.style.top = AnchorBottom + 'px';
+          this._contentEl.style.left = AnchorCenter + 'px';
+        } else {
+          this._direction = 'left';
+          this._anchorPosition = 'start';
+
+          this._contentEl.style.top = AnchorMiddle + 'px';
+          this._contentEl.style.left = AnchorLeft + 'px';
+        }
+      }
+    } else if (vertical === 'middle') {
+      if (horizontal === 'right') {
+        if (ViewportWidth < 672) {
+          this._direction = 'top';
+          this._anchorPosition = 'start';
+
+          this._contentEl.style.top = AnchorTop + 'px';
+          this._contentEl.style.left = AnchorCenter + 'px';
+        } else {
+          this._direction = 'right';
+          this._anchorPosition = 'center';
+
+          this._contentEl.style.top = AnchorMiddle + 'px';
+          this._contentEl.style.left = AnchorRight + 'px';
+        }
+      } else if (horizontal === 'center') {
+        this._direction = 'top';
+        this._anchorPosition = 'center';
+
+        this._contentEl.style.top = AnchorTop + 'px';
+        this._contentEl.style.left = AnchorCenter + 'px';
+      } else {
+        if (ViewportWidth < 672) {
+          this._direction = 'top';
+          this._anchorPosition = 'end';
+
+          this._contentEl.style.top = AnchorTop + 'px';
+          this._contentEl.style.left = AnchorCenter + 'px';
+        } else {
+          this._direction = 'left';
+          this._anchorPosition = 'center';
+
+          this._contentEl.style.top = AnchorMiddle + 'px';
+          this._contentEl.style.left = AnchorLeft + 'px';
+        }
+      }
+    } else {
+      if (horizontal === 'right') {
+        if (ViewportWidth < 672) {
+          this._direction = 'top';
+          this._anchorPosition = 'start';
+
+          this._contentEl.style.top = AnchorTop + 'px';
+          this._contentEl.style.left = AnchorCenter + 'px';
+        } else {
+          this._direction = 'right';
+          this._anchorPosition = 'end';
+
+          this._contentEl.style.top = AnchorMiddle + 'px';
+          this._contentEl.style.left = AnchorRight + 'px';
+        }
+      } else if (horizontal === 'center') {
+        this._direction = 'top';
+        this._anchorPosition = 'center';
+
+        this._contentEl.style.top = AnchorTop + 'px';
+        this._contentEl.style.left = AnchorCenter + 'px';
+      } else {
+        if (ViewportWidth < 672) {
+          this._direction = 'top';
+          this._anchorPosition = 'end';
+
+          this._contentEl.style.top = AnchorTop + 'px';
+          this._contentEl.style.left = AnchorCenter + 'px';
+        } else {
+          this._direction = 'left';
+          this._anchorPosition = 'end';
+
+          this._contentEl.style.top = AnchorMiddle + 'px';
+          this._contentEl.style.left = AnchorLeft + 'px';
+        }
+      }
+    }
+  }
+
   private _handleOpen() {
-    clearTimeout(this.timer);
-    this.open = true;
+    clearTimeout(this._timer);
+    this._positionTooltip();
+
+    setTimeout(() => {
+      this._open = true;
+    }, 100);
   }
 
   private _handleClose() {
-    this.open = false;
+    this._open = false;
   }
 
   private _handleMouseLeave() {
-    this.timer = setTimeout(() => {
-      this.open = false;
-      clearTimeout(this.timer);
+    this._timer = setTimeout(() => {
+      this._open = false;
+      clearTimeout(this._timer);
     }, 500);
   }
 
   private _handleEsc(e: KeyboardEvent) {
-    if (this.open && e.key === 'Escape') {
-      this.open = false;
+    if (this._open && e.key === 'Escape') {
+      this._open = false;
     }
   }
 
   private _emitToggle() {
     const event = new CustomEvent('on-tooltip-toggle', {
-      detail: { open: this.open },
+      detail: { open: this._open },
     });
     this.dispatchEvent(event);
   }

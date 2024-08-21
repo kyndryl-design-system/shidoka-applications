@@ -41,10 +41,7 @@ slot[name='anchor']::slotted(svg) {
   cursor: initial;
   inline-size: max-content;
   max-inline-size: 288px;
-  position: absolute;
-  left: 50%;
-  top: 0;
-  transform: translate3d(-50%, calc(-100% - 8px), 0);
+  position: fixed;
   background: var(--kd-color-background-ui-strong);
   color: var(--kd-color-text-inversed);
   padding: 24px;
@@ -52,8 +49,8 @@ slot[name='anchor']::slotted(svg) {
   z-index: 2;
   transition: visibility 150ms ease-out, transform 150ms ease-out;
   visibility: hidden;
-  transform: translate3d(-50%, calc(-100% - 8px), 0) scale(0);
   transform-origin: center bottom;
+  transform: translate3d(-50%, calc(-100% - 8px), 0) scale(0);
 
   &::before {
     content: '';
@@ -87,13 +84,11 @@ slot[name='anchor']::slotted(svg) {
   }
 
   &.anchor--end {
-    transform: translate3d(14px, calc(-100% - 8px), 0) scale(0);
-    left: auto;
-    right: 50%;
+    transform: translate3d(calc(-100% + 14px), calc(-100% - 8px), 0) scale(0);
     transform-origin: right bottom;
 
     &.open {
-      transform: translate3d(14px, calc(-100% - 8px), 0) scale(1);
+      transform: translate3d(calc(-100% + 14px), calc(-100% - 8px), 0) scale(1);
     }
 
     &::before {
@@ -103,13 +98,11 @@ slot[name='anchor']::slotted(svg) {
   }
 
   &.direction--bottom {
-    top: auto;
-    bottom: 0;
-    transform: translate3d(-50%, calc(100% + 8px), 0) scale(0);
+    transform: translate3d(-50%, 8px, 0) scale(0);
     transform-origin: center top;
 
     &.open {
-      transform: translate3d(-50%, calc(100% + 8px), 0) scale(1);
+      transform: translate3d(-50%, 8px, 0) scale(1);
     }
 
     &::before {
@@ -120,27 +113,25 @@ slot[name='anchor']::slotted(svg) {
     }
 
     &.anchor--start {
-      transform: translate3d(-14px, calc(100% + 8px), 0) scale(0);
+      transform: translate3d(-14px, 8px, 0) scale(0);
       transform-origin: left top;
 
       &.open {
-        transform: translate3d(-14px, calc(100% + 8px), 0) scale(1);
+        transform: translate3d(-14px, 8px, 0) scale(1);
       }
     }
 
     &.anchor--end {
-      transform: translate3d(14px, calc(100% + 8px), 0) scale(0);
+      transform: translate3d(calc(-100% + 14px), 8px, 0) scale(0);
       transform-origin: right top;
 
       &.open {
-        transform: translate3d(14px, calc(100% + 8px), 0) scale(1);
+        transform: translate3d(calc(-100% + 14px), 8px, 0) scale(1);
       }
     }
   }
 
   &.direction--left {
-    top: 50%;
-    left: 0;
     transform: translate3d(calc(-100% - 8px), -50%, 0) scale(0);
     transform-origin: center right;
 
@@ -160,7 +151,7 @@ slot[name='anchor']::slotted(svg) {
 
     &.anchor--start {
       transform: translate3d(calc(-100% - 8px), -14px, 0) scale(0);
-      transform-origin: top right;
+      transform-origin: right top;
 
       &.open {
         transform: translate3d(calc(-100% - 8px), -14px, 0) scale(1);
@@ -172,13 +163,12 @@ slot[name='anchor']::slotted(svg) {
     }
 
     &.anchor--end {
-      top: auto;
-      bottom: 50%;
-      transform: translate3d(calc(-100% - 8px), 14px, 0) scale(0);
+      transform: translate3d(calc(-100% - 8px), calc(-100% + 14px), 0) scale(0);
       transform-origin: bottom right;
 
       &.open {
-        transform: translate3d(calc(-100% - 8px), 14px, 0) scale(1);
+        transform: translate3d(calc(-100% - 8px), calc(-100% + 14px), 0)
+          scale(1);
       }
 
       &::before {
@@ -189,14 +179,11 @@ slot[name='anchor']::slotted(svg) {
   }
 
   &.direction--right {
-    top: 50%;
-    left: auto;
-    right: 0;
-    transform: translate3d(calc(100% + 8px), -50%, 0) scale(0);
+    transform: translate3d(8px, -50%, 0) scale(0);
     transform-origin: center left;
 
     &.open {
-      transform: translate3d(calc(100% + 8px), -50%, 0) scale(1);
+      transform: translate3d(8px, -50%, 0) scale(1);
     }
 
     &::before {
@@ -209,11 +196,11 @@ slot[name='anchor']::slotted(svg) {
     }
 
     &.anchor--start {
-      transform: translate3d(calc(100% + 8px), -14px, 0) scale(0);
-      transform-origin: top left;
+      transform: translate3d(8px, -14px, 0) scale(0);
+      transform-origin: left top;
 
       &.open {
-        transform: translate3d(calc(100% + 8px), -14px, 0) scale(1);
+        transform: translate3d(8px, -14px, 0) scale(1);
       }
 
       &::before {
@@ -222,13 +209,11 @@ slot[name='anchor']::slotted(svg) {
     }
 
     &.anchor--end {
-      top: auto;
-      bottom: 50%;
-      transform: translate3d(calc(100% + 8px), 14px, 0) scale(0);
-      transform-origin: bottom left;
+      transform: translate3d(8px, calc(-100% + 14px), 0) scale(0);
+      transform-origin: left bottom;
 
       &.open {
-        transform: translate3d(calc(100% + 8px), 14px, 0) scale(1);
+        transform: translate3d(8px, calc(-100% + 14px), 0) scale(1);
       }
 
       &::before {
