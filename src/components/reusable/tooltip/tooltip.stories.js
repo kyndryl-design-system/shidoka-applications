@@ -6,19 +6,6 @@ import '@kyndryl-design-system/shidoka-foundation/components/icon';
 export default {
   title: 'Components/Tooltip',
   component: 'kyn-tooltip',
-  argTypes: {
-    anchorPosition: {
-      options: ['start', 'center', 'end'],
-      control: { type: 'select' },
-    },
-    direction: {
-      options: ['top', 'bottom', 'left', 'right'],
-      control: { type: 'select' },
-    },
-  },
-  decorators: [
-    (story) => html` <div style="padding: 60px 280px;">${story()}</div> `,
-  ],
   parameters: {
     design: {
       type: 'figma',
@@ -28,9 +15,6 @@ export default {
 };
 
 const args = {
-  open: false,
-  anchorPosition: 'center',
-  direction: 'top',
   assistiveText: 'Toggle Tooltip',
   unnamed: 'Tooltip content here.',
 };
@@ -39,12 +23,7 @@ export const Tooltip = {
   args,
   render: (args) => {
     return html`
-      <kyn-tooltip
-        ?open=${args.open}
-        anchorPosition=${args.anchorPosition}
-        direction=${args.direction}
-        @on-tooltip-toggle=${(e) => action(e.type)(e)}
-      >
+      <kyn-tooltip @on-tooltip-toggle=${(e) => action(e.type)(e)}>
         ${args.unnamed}
       </kyn-tooltip>
     `;
@@ -55,13 +34,166 @@ export const CustomAnchor = {
   args,
   render: (args) => {
     return html`
+      <kyn-tooltip @on-tooltip-toggle=${(e) => action(e.type)(e)}>
+        <span slot="anchor">Custom<br />anchor</span>
+
+        ${args.unnamed}
+      </kyn-tooltip>
+    `;
+  },
+};
+
+export const Positions = {
+  args,
+  render: (args) => {
+    return html`
       <kyn-tooltip
-        ?open=${args.open}
-        anchorPosition=${args.anchorPosition}
-        direction=${args.direction}
+        style="position: absolute; top: 16px; left: 16px;"
         @on-tooltip-toggle=${(e) => action(e.type)(e)}
       >
-        <span slot="anchor">Custom anchor</span>
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; top: 16px; left: 50%;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; top: 16px; right: 16px;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; top: 50%;; left: 16px;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; top: 50%;; left: 50%;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; top: 50%;; right: 16px;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; bottom: 16px; left: 16px;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; bottom: 16px; left: 50%;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; bottom: 16px; right: 16px;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        ${args.unnamed}
+      </kyn-tooltip>
+    `;
+  },
+};
+
+export const PositionsCustom = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-tooltip
+        style="position: absolute; top: 16px; left: 16px;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        <span slot="anchor">Custom<br />anchor</span>
+
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; top: 16px; left: 50%;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        <span slot="anchor">Custom<br />anchor</span>
+
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; top: 16px; right: 16px;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        <span slot="anchor">Custom<br />anchor</span>
+
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; top: 50%;; left: 16px;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        <span slot="anchor">Custom<br />anchor</span>
+
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; top: 50%;; left: 50%;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        <span slot="anchor">Custom<br />anchor</span>
+
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; top: 50%;; right: 16px;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        <span slot="anchor">Custom<br />anchor</span>
+
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; bottom: 16px; left: 16px;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        <span slot="anchor">Custom<br />anchor</span>
+
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; bottom: 16px; left: 50%;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        <span slot="anchor">Custom<br />anchor</span>
+
+        ${args.unnamed}
+      </kyn-tooltip>
+
+      <kyn-tooltip
+        style="position: absolute; bottom: 16px; right: 16px;"
+        @on-tooltip-toggle=${(e) => action(e.type)(e)}
+      >
+        <span slot="anchor">Custom<br />anchor</span>
 
         ${args.unnamed}
       </kyn-tooltip>
