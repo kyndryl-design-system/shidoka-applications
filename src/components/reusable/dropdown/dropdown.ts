@@ -209,6 +209,13 @@ export class Dropdown extends LitElement {
   @state()
   _openUpwards = false;
 
+  /**
+   * Tags value/text reference.
+   * @ignore
+   */
+  @state()
+  _tags: Array<object> = [];
+
   override render() {
     return html`
       <div
@@ -361,21 +368,12 @@ export class Dropdown extends LitElement {
         ${this.multiple && !this.hideTags && this.value.length
           ? html`
               <kyn-tag-group filter>
-                ${this.value.map((value: string) => {
-                  const Options: any = Array.from(
-                    this.querySelectorAll('kyn-dropdown-option')
-                  );
-
-                  const option = Options.find(
-                    (option: any) => option.value === value.toString()
-                  );
-                  const text = option ? option.textContent : '';
-
+                ${this._tags.map((tag: any) => {
                   return html`
                     <kyn-tag
-                      label=${text}
+                      label=${tag.text}
                       ?disabled=${this.disabled}
-                      @on-close=${() => this.handleTagClear(value)}
+                      @on-close=${() => this.handleTagClear(tag.value)}
                     ></kyn-tag>
                   `;
                 })}
@@ -1056,13 +1054,30 @@ export class Dropdown extends LitElement {
   }
 
   private _updateOptions() {
-    this.options.forEach((option) => {
+    const Options: any = Array.from(
+      this.querySelectorAll('kyn-dropdown-option')
+    );
+    const Tags: Array<object> = [];
+
+    Options.forEach((option: any) => {
       if (this.multiple) {
-        option.selected = this.value.includes(option.value);
+        const Selected = this.value.includes(option.value);
+        // set option selected state
+        option.selected = Selected;
+
+        if (Selected) {
+          // add selected options to Tags array
+          Tags.push({
+            value: option.value,
+            text: option.textContent,
+          });
+        }
       } else {
         option.selected = this.value === option.value;
       }
     });
+
+    this._tags = Tags;
   }
 
   private _updateChildren() {
