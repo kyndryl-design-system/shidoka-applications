@@ -1,3 +1,10 @@
+# [1.33.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.4...v1.33.0) (2024-08-21)
+
+
+### Features
+
+* **tooltip:** automatic fixed positioning ([#219](https://github.com/kyndryl-design-system/shidoka-applications/issues/219)) ([ccd1613](https://github.com/kyndryl-design-system/shidoka-applications/commit/ccd16135ecaba8f342a8f3b8b56692203b87a444))
+
 ## [1.32.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.3...v1.32.4) (2024-08-21)
 
 
