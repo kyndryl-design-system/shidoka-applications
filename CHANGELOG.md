@@ -1,3 +1,10 @@
+## [1.32.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.3...v1.32.4) (2024-08-21)
+
+
+### Bug Fixes
+
+* **dropdown:** set multiple state on child options for updatebyvalue variant ([dcc4084](https://github.com/kyndryl-design-system/shidoka-applications/commit/dcc4084ae67deb38d3fa86a8faa271b6165afe18))
+
 ## [1.32.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.2...v1.32.3) (2024-08-21)
 
 
