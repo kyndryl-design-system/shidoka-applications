@@ -367,9 +367,9 @@ export class Dropdown extends LitElement {
                   );
 
                   const option = Options.find(
-                    (option: any) => option.value === value
+                    (option: any) => option.value === value.toString()
                   );
-                  const text = option.textContent;
+                  const text = option ? option.textContent : '';
 
                   return html`
                     <kyn-tag
