@@ -1,3 +1,10 @@
+## [1.33.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.33.0...v1.33.1) (2024-08-21)
+
+
+### Bug Fixes
+
+* **modal:** reduce body right padding ([6daf628](https://github.com/kyndryl-design-system/shidoka-applications/commit/6daf628066b558d2bea8fbd775cb093607ba0e86))
+
 # [1.33.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.4...v1.33.0) (2024-08-21)
 
 
