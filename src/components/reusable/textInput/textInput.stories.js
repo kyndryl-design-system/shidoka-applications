@@ -35,7 +35,7 @@ const args = {
   type: 'text',
   name: 'textInput',
   value: '',
-  placeholder: 'Placeholder',
+  placeholder: '',
   caption: '',
   required: false,
   disabled: false,

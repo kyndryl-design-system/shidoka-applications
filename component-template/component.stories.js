@@ -22,14 +22,14 @@ export const Component = {
   },
   render: (args) => {
     return html`
-      <kyn-toggle-button
+      <kyn-component
         stringProp=${args.stringProp}
         ?booleanProp=${args.booleanProp}
         .arrayProp=${args.arrayProp}
         @on-click=${(e) => action(e.type)(e)}
       >
         ${args.unnamed}
-      </kyn-toggle-button>
+      </kyn-component>
     `;
   },
 };

@@ -170,7 +170,7 @@ export class CheckboxGroup extends LitElement {
           : null}
 
         <fieldset ?disabled=${this.disabled}>
-          <legend class="${this.hideLegend ? 'sr-only' : ''}">
+          <legend class="label-text ${this.hideLegend ? 'sr-only' : ''}">
             ${this.required
               ? html`
                   <abbr

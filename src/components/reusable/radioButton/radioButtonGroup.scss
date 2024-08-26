@@ -1,6 +1,6 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/mixins.scss';
-@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '../../../common/scss/form-input.scss';
 
 :host {
   display: block;
@@ -21,46 +21,6 @@ fieldset {
   gap: 12px;
 }
 
-legend {
-  @include typography.type-ui-02;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0;
-  margin-bottom: 8px;
-
-  .horizontal & {
-    margin-bottom: 0;
-  }
-
-  fieldset[disabled] & {
-    color: var(--kd-color-text-disabled);
-  }
-}
-
-.required {
-  text-decoration: none;
-  color: var(--kd-color-text-error);
-
-  [disabled] & {
-    color: var(--kd-color-text-disabled);
-  }
-}
-
 .error {
-  @include typography.type-ui-03;
-  display: flex;
-  align-items: center;
-  color: var(--kd-color-text-error);
-  margin-top: 8px;
   order: 1;
-
-  kd-icon {
-    margin-right: 8px;
-  }
-
-  [disabled] & {
-    color: var(--kd-color-text-disabled);
-  }
 }

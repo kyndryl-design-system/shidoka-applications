@@ -97,7 +97,7 @@ export class RadioButtonGroup extends LitElement {
   override render() {
     return html`
       <fieldset ?disabled=${this.disabled}>
-        <legend>
+        <legend class="label-text">
           ${this.required
             ? html`
                 <abbr

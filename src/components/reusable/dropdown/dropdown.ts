@@ -245,6 +245,7 @@ export class Dropdown extends LitElement {
             <div
               class="${classMap({
                 select: true,
+                'input-custom': true,
                 'size--sm': this.size === 'sm',
                 'size--lg': this.size === 'lg',
                 inline: this.inline,
