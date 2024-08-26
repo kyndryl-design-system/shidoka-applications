@@ -25,6 +25,10 @@ export const RadioButtonGroup = {
     disabled: false,
     horizontal: false,
     invalidText: '',
+    textStrings: {
+      required: 'Required',
+      error: 'Error',
+    },
   },
   render: (args) => {
     return html`
@@ -35,6 +39,7 @@ export const RadioButtonGroup = {
         ?disabled=${args.disabled}
         ?horizontal=${args.horizontal}
         invalidText=${args.invalidText}
+        .textStrings=${args.textStrings}
         @on-radio-group-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>

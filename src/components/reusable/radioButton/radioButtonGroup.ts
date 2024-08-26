@@ -5,10 +5,16 @@ import {
   state,
   queryAssignedElements,
 } from 'lit/decorators.js';
+import { deepmerge } from 'deepmerge-ts';
 import RadioButtonGroupScss from './radioButtonGroup.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@carbon/icons/es/warning--filled/16';
+
+const _defaultTextStrings = {
+  required: 'Required',
+  error: 'Error',
+};
 
 /**
  * Radio button group container.
@@ -50,6 +56,16 @@ export class RadioButtonGroup extends LitElement {
   @property({ type: String })
   invalidText = '';
 
+  /** Text string customization. */
+  @property({ type: Object })
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
+
   /**
    * Queries for slotted radio buttons.
    * @ignore
@@ -81,25 +97,45 @@ export class RadioButtonGroup extends LitElement {
   override render() {
     return html`
       <fieldset ?disabled=${this.disabled}>
-        <legend>
-          ${this.required ? html`<span class="required">*</span>` : null}
+        <legend class="label-text">
+          ${this.required
+            ? html`
+                <abbr
+                  class="required"
+                  title=${this._textStrings.required}
+                  aria-label=${this._textStrings.required}
+                >
+                  *
+                </abbr>
+              `
+            : null}
           <slot name="label"></slot>
         </legend>
-
-        <div class="${this.horizontal ? 'horizontal' : ''}">
-          <slot></slot>
-        </div>
 
         ${this.isInvalid
           ? html`
               <div class="error">
-                <kd-icon .icon="${errorIcon}"></kd-icon>
+                <kd-icon
+                  .icon="${errorIcon}"
+                  title=${this._textStrings.error}
+                  aria-label=${this._textStrings.error}
+                ></kd-icon>
                 ${this.invalidText || this.internalValidationMsg}
               </div>
             `
           : null}
+
+        <div class="${this.horizontal ? 'horizontal' : ''}">
+          <slot></slot>
+        </div>
       </fieldset>
     `;
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
   }
 
   override updated(changedProps: any) {

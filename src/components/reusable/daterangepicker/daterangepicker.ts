@@ -122,79 +122,77 @@ export class DateRangePicker extends LitElement {
 
   override render() {
     return html`
-      <label
-        class="datepicker-label-text"
-        for=${this.name}
-        ?disabled=${this.disabled}
-      >
-        ${this.required ? html`<span class="required">*</span>` : null}
-        <slot></slot>
-      </label>
+      <div class="daterange-picker" ?disabled=${this.disabled}>
+        <label class="label-text" for=${this.name} ?disabled=${this.disabled}>
+          ${this.required ? html`<span class="required">*</span>` : null}
+          <slot></slot>
+        </label>
 
-      <div class="wrapper">
-        <div class="input-wrapper">
-          <input
-            class="${classMap({
-              'date-start': true,
-              'size--sm': this.size === 'sm',
-              'size--lg': this.size === 'lg',
-            })}"
-            type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
-              ? 'datetime-local'
-              : 'date'}
-            id="${this.name}-start"
-            name="${this.name}-end"
-            aria-label="Start Date"
-            value=${this.startDate}
-            ?required=${this.required}
-            ?disabled=${this.disabled}
-            ?invalid=${this.isInvalid}
-            min=${ifDefined(this.minDate)}
-            max=${ifDefined(this.endDate ?? this.maxDate ?? '')}
-            step=${ifDefined(this.step)}
-            @input=${(e: any) => this.handleStartDate(e)}
-          />
+        <div class="wrapper">
+          <div class="input-wrapper">
+            <input
+              class="${classMap({
+                'date-start': true,
+                'size--sm': this.size === 'sm',
+                'size--lg': this.size === 'lg',
+              })}"
+              type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
+                ? 'datetime-local'
+                : 'date'}
+              id="${this.name}-start"
+              name="${this.name}-end"
+              aria-label="Start Date"
+              value=${this.startDate}
+              ?required=${this.required}
+              ?disabled=${this.disabled}
+              ?invalid=${this.isInvalid}
+              min=${ifDefined(this.minDate)}
+              max=${ifDefined(this.endDate ?? this.maxDate ?? '')}
+              step=${ifDefined(this.step)}
+              @input=${(e: any) => this.handleStartDate(e)}
+            />
+          </div>
+
+          <span class="range-span">—</span>
+          <div class="input-wrapper">
+            <input
+              class="${classMap({
+                'date-end': true,
+                'size--sm': this.size === 'sm',
+                'size--lg': this.size === 'lg',
+              })}"
+              type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
+                ? 'datetime-local'
+                : 'date'}
+              id="${this.name}-end"
+              name="${this.name}-end"
+              aria-label="End Date"
+              value=${this.endDate}
+              ?required=${this.required}
+              ?disabled=${this.disabled}
+              ?invalid=${this.isInvalid}
+              min=${ifDefined(this.startDate ?? this.minDate ?? '')}
+              max=${ifDefined(this.maxDate)}
+              step=${ifDefined(this.step)}
+              @input=${(e: any) => this.handleEndDate(e)}
+            />
+          </div>
         </div>
 
-        <span class="range-span">—</span>
-        <div class="input-wrapper">
-          <input
-            class="${classMap({
-              'date-end': true,
-              'size--sm': this.size === 'sm',
-              'size--lg': this.size === 'lg',
-            })}"
-            type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
-              ? 'datetime-local'
-              : 'date'}
-            id="${this.name}-end"
-            name="${this.name}-end"
-            aria-label="End Date"
-            value=${this.endDate}
-            ?required=${this.required}
-            ?disabled=${this.disabled}
-            ?invalid=${this.isInvalid}
-            min=${ifDefined(this.startDate ?? this.minDate ?? '')}
-            max=${ifDefined(this.maxDate)}
-            step=${ifDefined(this.step)}
-            @input=${(e: any) => this.handleEndDate(e)}
-          />
-        </div>
+        ${this.caption !== ''
+          ? html` <div class="caption">${this.caption}</div> `
+          : null}
+        ${this.isInvalid
+          ? html`
+              <div class="error">
+                ${this.invalidText || this.internalValidationMsg}
+              </div>
+            `
+          : null}
+        ${this.warnText !== '' && !this.isInvalid
+          ? html`<div class="warn">${this.warnText}</div>`
+          : null}
       </div>
-
-      ${this.caption !== ''
-        ? html` <div class="caption">${this.caption}</div> `
-        : null}
-      ${this.isInvalid
-        ? html`
-            <div class="error">
-              ${this.invalidText || this.internalValidationMsg}
-            </div>
-          `
-        : null}
-      ${this.warnText !== '' && !this.isInvalid
-        ? html`<div class="warn">${this.warnText}</div>`
-        : null}
     `;
   }
 

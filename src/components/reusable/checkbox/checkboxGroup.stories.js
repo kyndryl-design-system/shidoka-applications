@@ -34,6 +34,8 @@ const args = {
     showMore: 'Show more',
     showLess: 'Show less',
     search: 'Search',
+    required: 'Required',
+    error: 'Error',
   },
 };
 

@@ -1,5 +1,6 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/mixins.scss';
+@use '../../../common/scss/form-input.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
@@ -7,18 +8,6 @@
 }
 
 .label-text {
-  @include typography.type-ui-02;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0;
-  margin-bottom: 8px;
-
-  [disabled] & {
-    color: var(--kd-color-text-disabled);
-  }
-
   [inline] & {
     @include mixins.visually-hidden;
   }
@@ -37,19 +26,14 @@
 }
 
 .select {
-  @include typography.type-body-02;
+  display: flex;
+  align-items: center;
   -webkit-appearance: none;
   appearance: none;
   border: 1px solid var(--kd-color-border-ui);
   border-radius: 4px;
   height: 48px;
   padding: 0 48px 0 16px;
-  color: var(--kd-color-text-primary);
-  transition: background-color 150ms ease-out, border-color 150ms ease-out,
-    outline-color 150ms ease-out;
-  background: var(--kd-color-background-inverse);
-  outline: 2px solid transparent;
-  outline-offset: 2px;
   cursor: default;
   white-space: nowrap;
 
@@ -71,19 +55,7 @@
   }
 
   &[invalid] {
-    border-color: var(--kd-color-border-error);
     padding-right: 80px;
-  }
-
-  &:hover {
-    border-color: var(--kd-color-border-ui-hover);
-    background-color: var(--kd-color-background-inverse-hover);
-  }
-
-  &[disabled] {
-    color: var(--kd-color-text-disabled);
-    background-color: var(--kd-color-background-inverse);
-    border-color: var(--kd-color-border-ui-disabled);
   }
 
   .dropdown:focus-within & {
@@ -103,11 +75,6 @@
       }
     }
   }
-}
-
-.select {
-  display: flex;
-  align-items: center;
 }
 
 .arrow-icon {
@@ -165,16 +132,6 @@
 }
 
 .error {
-  @include typography.type-ui-03;
-  display: flex;
-  align-items: center;
-  color: var(--kd-color-text-error);
-  margin-top: 8px;
-
-  [disabled] & {
-    color: var(--kd-color-text-disabled);
-  }
-
   [inline] & {
     margin-left: 16px;
   }
@@ -186,22 +143,9 @@
   right: 48px;
   left: auto;
   transform: translateY(-50%);
-  color: var(--kd-color-text-error);
-
-  [disabled] & {
-    color: var(--kd-color-text-disabled);
-  }
 }
 
 .caption {
-  @include typography.type-ui-03;
-  margin-top: 8px;
-  color: var(--kd-color-text-secondary);
-
-  [disabled] & {
-    color: var(--kd-color-text-disabled);
-  }
-
   [inline] & {
     margin-left: 16px;
   }
@@ -216,7 +160,6 @@
 }
 
 .search {
-  @include typography.type-body-02;
   border: none;
   background: none;
   outline: none;

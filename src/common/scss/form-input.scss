@@ -1,0 +1,117 @@
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+.label-text {
+  @include typography.type-ui-02;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin-bottom: 8px;
+
+  &.sr-only {
+    @include visibility.sr-only;
+  }
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
+}
+
+.required {
+  color: var(--kd-color-text-error);
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+}
+
+input,
+.input-custom,
+textarea {
+  @include typography.type-body-02;
+  border-color: var(--kd-color-border-ui);
+  color: var(--kd-color-text-primary);
+  transition: background-color 150ms ease-out, border-color 150ms ease-out,
+    outline-color 150ms ease-out;
+  background: var(--kd-color-background-inverse);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+
+  &[invalid] {
+    border-color: var(--kd-color-border-error);
+  }
+
+  &[disabled] {
+    color: var(--kd-color-text-disabled);
+    border-color: var(--kd-color-border-ui-disabled);
+  }
+
+  &:hover {
+    border-color: var(--kd-color-border-ui-hover);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
+  }
+
+  &::placeholder {
+    color: var(--kd-color-text-placeholder);
+  }
+}
+
+.error {
+  @include typography.type-ui-03;
+  display: flex;
+  align-items: center;
+  color: var(--kd-color-text-error);
+  margin-top: 8px;
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
+
+  kd-icon {
+    margin-right: 8px;
+  }
+}
+
+.error-icon {
+  color: var(--kd-color-text-error);
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
+}
+
+.caption {
+  @include typography.type-ui-02;
+  margin-top: 8px;
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+    border-color: var(--kd-color-border-ui-disabled);
+  }
+}
+
+.warn {
+  @include typography.type-ui-03;
+  display: flex;
+  align-items: center;
+  color: var(--kd-color-text-secondary);
+  margin-top: 8px;
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
+
+  kd-icon {
+    margin-right: 8px;
+  }
+}

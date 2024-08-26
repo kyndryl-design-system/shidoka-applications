@@ -1,11 +1,21 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { deepmerge } from 'deepmerge-ts';
 import CheckboxGroupScss from './checkboxGroup.scss';
 
 import '../textInput';
 import './checkbox';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@carbon/icons/es/warning--filled/16';
+
+const _defaultTextStrings = {
+  selectAll: 'Select all',
+  showMore: 'Show more',
+  showLess: 'Show less',
+  search: 'Search',
+  required: 'Required',
+  error: 'Error',
+};
 
 /**
  * Checkbox group container.
@@ -93,12 +103,13 @@ export class CheckboxGroup extends LitElement {
 
   /** Text string customization. */
   @property({ type: Object })
-  textStrings = {
-    selectAll: 'Select all',
-    showMore: 'Show more',
-    showLess: 'Show less',
-    search: 'Search',
-  };
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
 
   /** Checkbox group invalid text. */
   @property({ type: String })
@@ -147,22 +158,45 @@ export class CheckboxGroup extends LitElement {
                 class="search"
                 type="search"
                 size="sm"
-                placeholder=${this.textStrings.search}
+                placeholder=${this._textStrings.search}
                 hideLabel
                 value=${this.searchTerm}
                 ?disabled=${this.disabled}
                 @on-input=${(e: Event) => this._handleFilter(e)}
               >
-                ${this.textStrings.search}
+                ${this._textStrings.search}
               </kyn-text-input>
             `
           : null}
 
         <fieldset ?disabled=${this.disabled}>
-          <legend class="${this.hideLegend ? 'sr-only' : ''}">
-            ${this.required ? html`<span class="required">*</span>` : null}
+          <legend class="label-text ${this.hideLegend ? 'sr-only' : ''}">
+            ${this.required
+              ? html`
+                  <abbr
+                    class="required"
+                    title=${this._textStrings.required}
+                    aria-label=${this._textStrings.required}
+                  >
+                    *
+                  </abbr>
+                `
+              : null}
             <slot name="label"></slot>
           </legend>
+
+          ${this.isInvalid
+            ? html`
+                <div class="error">
+                  <kd-icon
+                    .icon="${errorIcon}"
+                    title=${this._textStrings.error}
+                    aria-label=${this._textStrings.error}
+                  ></kd-icon>
+                  ${this.invalidText || this.internalValidationMsg}
+                </div>
+              `
+            : null}
 
           <div class="${this.horizontal ? 'horizontal' : ''}">
             ${this.selectAll
@@ -177,7 +211,7 @@ export class CheckboxGroup extends LitElement {
                     ?invalid=${this.invalidText !== '' ||
                     this.internalValidationMsg !== ''}
                   >
-                    ${this.textStrings.selectAll}
+                    ${this._textStrings.selectAll}
                   </kyn-checkbox>
                 `
               : null}
@@ -192,27 +226,24 @@ export class CheckboxGroup extends LitElement {
                     @click=${() => this._toggleRevealed(!this.limitRevealed)}
                   >
                     ${this.limitRevealed
-                      ? this.textStrings.showLess
+                      ? this._textStrings.showLess
                       : html`
-                          ${this.textStrings.showMore}
+                          ${this._textStrings.showMore}
                           (${this.filteredCheckboxes.length})
                         `}
                   </button>
                 `
               : null}
           </div>
-
-          ${this.isInvalid
-            ? html`
-                <div class="error">
-                  <kd-icon .icon="${errorIcon}"></kd-icon>
-                  ${this.invalidText || this.internalValidationMsg}
-                </div>
-              `
-            : null}
         </fieldset>
       </div>
     `;
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
   }
 
   override updated(changedProps: any) {

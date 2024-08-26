@@ -1,6 +1,5 @@
 @use '../../../common/scss/global.scss';
-@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
-@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '../../../common/scss/form-input.scss';
 
 :host {
   display: inline-block;
@@ -26,24 +25,6 @@ label {
   display: block;
 }
 
-.label-text {
-  @include typography.type-ui-02;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0;
-  margin-bottom: 8px;
-
-  &.sr-only {
-    @include visibility.sr-only;
-  }
-
-  [disabled] & {
-    color: var(--kd-color-text-disabled);
-  }
-}
-
 input {
   -webkit-appearance: none;
   appearance: none;
@@ -53,9 +34,6 @@ input {
   padding: 0;
   margin: 0;
   border-radius: 12px;
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  transition: background-color 150ms ease-out, outline-color 150ms ease-out;
   background: var(--kd-color-background-secondary);
 
   &:before {

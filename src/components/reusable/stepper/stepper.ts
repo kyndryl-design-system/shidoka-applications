@@ -3,9 +3,7 @@ import {
   customElement,
   property,
   queryAssignedElements,
-  state,
 } from 'lit/decorators.js';
-import { debounce } from '../../../common/helpers/helpers';
 
 import stepperStyles from './stepper.scss';
 import './stepperItem';
@@ -44,13 +42,6 @@ export class Stepper extends LitElement {
   currentIndex = 0;
 
   /**
-   * Internal state to identify whether stepper is responsive after certain width.
-   * @ignore
-   */
-  @state()
-  isResponsive = false;
-
-  /**
    * Queries any slotted step items.
    * @ignore
    */
@@ -62,9 +53,7 @@ export class Stepper extends LitElement {
       <div
         class=${this.vertical
           ? 'vertical-stepper-wrapper'
-          : `${
-              this.isResponsive ? 'stepper-responsive' : ''
-            } horizontal-stepper-wrapper`}
+          : 'horizontal-stepper-wrapper'}
       >
         <slot></slot>
       </div>
@@ -73,7 +62,7 @@ export class Stepper extends LitElement {
 
   // when firstmost load component
   override firstUpdated(): void {
-    this._updateContainerWidth();
+    // this._updateContainerWidth();
     if (this.steps?.length > 0) {
       this.steps[0].isFirstStep = true;
       this.steps[this.steps.length - 1].isLastStep = true;
@@ -97,19 +86,16 @@ export class Stepper extends LitElement {
           : (step.stepSize = 'small');
       });
     }
+
     if (changedProperties.has('vertical')) {
       this.steps?.forEach((step) => {
         step.vertical = this.vertical;
       });
     }
+
     if (changedProperties.has('stepperType')) {
       this.steps?.forEach((step: any) => {
         step.stepperType = this.stepperType;
-      });
-    }
-    if (changedProperties.has('isResponsive')) {
-      this.steps?.forEach((step: any) => {
-        step.isResponsive = this.isResponsive;
       });
     }
   }
@@ -126,36 +112,20 @@ export class Stepper extends LitElement {
     this.dispatchEvent(event);
   }
 
-  /** @internal */
-  private _debounceResize = debounce(() => {
-    this._updateContainerWidth();
-  });
-
-  private _updateContainerWidth() {
-    const stepperElement = this.renderRoot.querySelector(
-      '.horizontal-stepper-wrapper'
-    );
-    if (stepperElement) {
-      const containerWidth = stepperElement.clientWidth;
-      this.isResponsive = containerWidth <= 672;
-      this.requestUpdate();
-    }
-  }
-
   override connectedCallback() {
     super.connectedCallback();
+
     // capture step click event when click on step's title
     this.addEventListener('on-step-click', (e: any) =>
       this._handleStepClick(e)
     );
-    window?.addEventListener('resize', this._debounceResize);
   }
 
   override disconnectedCallback() {
     this.removeEventListener('on-step-click', (e: any) =>
       this._handleStepClick(e)
     );
-    window.removeEventListener('resize', this._debounceResize);
+
     super.disconnectedCallback();
   }
 }

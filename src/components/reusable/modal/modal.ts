@@ -68,6 +68,10 @@ export class Modal extends LitElement {
   @property({ type: Boolean })
   okDisabled = false;
 
+  /** Disables the secondary button. */
+  @property({ type: Boolean })
+  secondaryDisabled = false;
+
   /** Hides the footer/action buttons to create a passive modal. */
   @property({ type: Boolean })
   hideFooter = false;
@@ -151,6 +155,7 @@ export class Modal extends LitElement {
                           class="action-button"
                           value="Secondary"
                           kind="secondary"
+                          ?disabled=${this.secondaryDisabled}
                           @click=${(e: Event) =>
                             this._closeModal(e, 'secondary')}
                         >

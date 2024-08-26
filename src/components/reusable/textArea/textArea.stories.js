@@ -21,7 +21,7 @@ export const TextArea = {
     unnamed: 'Label',
     name: 'name',
     value: '',
-    placeholder: 'Placeholder',
+    placeholder: '',
     caption: '',
     required: false,
     disabled: false,

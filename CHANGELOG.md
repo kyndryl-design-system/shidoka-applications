@@ -1,3 +1,73 @@
+## [1.33.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.33.1...v1.33.2) (2024-08-26)
+
+
+### Bug Fixes
+
+* **wcag:** form input contrast and scss consolidation ([73d40e7](https://github.com/kyndryl-design-system/shidoka-applications/commit/73d40e703b34e8037deb3d7bda4eb268ff675392))
+
+## [1.33.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.33.0...v1.33.1) (2024-08-21)
+
+
+### Bug Fixes
+
+* **modal:** reduce body right padding ([6daf628](https://github.com/kyndryl-design-system/shidoka-applications/commit/6daf628066b558d2bea8fbd775cb093607ba0e86))
+
+# [1.33.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.4...v1.33.0) (2024-08-21)
+
+
+### Features
+
+* **tooltip:** automatic fixed positioning ([#219](https://github.com/kyndryl-design-system/shidoka-applications/issues/219)) ([ccd1613](https://github.com/kyndryl-design-system/shidoka-applications/commit/ccd16135ecaba8f342a8f3b8b56692203b87a444))
+
+## [1.32.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.3...v1.32.4) (2024-08-21)
+
+
+### Bug Fixes
+
+* **dropdown:** set multiple state on child options for updatebyvalue variant ([dcc4084](https://github.com/kyndryl-design-system/shidoka-applications/commit/dcc4084ae67deb38d3fa86a8faa271b6165afe18))
+
+## [1.32.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.2...v1.32.3) (2024-08-21)
+
+
+### Bug Fixes
+
+* **dropdown:** better tag handling for data driven multiselect ([231d4f4](https://github.com/kyndryl-design-system/shidoka-applications/commit/231d4f47fb3430412002e030370194519d6bc5e9))
+
+## [1.32.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.1...v1.32.2) (2024-08-21)
+
+
+### Bug Fixes
+
+* **dropdown:** tag option value matching null check ([80d36c8](https://github.com/kyndryl-design-system/shidoka-applications/commit/80d36c845e9ad7e6ba99b11a14db2f7db2bedaac))
+
+## [1.32.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.32.0...v1.32.1) (2024-08-20)
+
+
+### Bug Fixes
+
+* **wcag:** accessibility fixes for checkboxes and radios ([3aad437](https://github.com/kyndryl-design-system/shidoka-applications/commit/3aad437bdc38620512cf8014c38a7d32ae1b95c0))
+
+# [1.32.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.6...v1.32.0) (2024-08-20)
+
+
+### Features
+
+* **modal:** Added disabled option to secondary button ([#218](https://github.com/kyndryl-design-system/shidoka-applications/issues/218)) ([b24cb81](https://github.com/kyndryl-design-system/shidoka-applications/commit/b24cb81a2d8e3fadfa0d137f7fc5123ad11599c2))
+
+## [1.31.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.5...v1.31.6) (2024-08-20)
+
+
+### Bug Fixes
+
+* **stepper:** horizontal responsive scrolling ([7bf68f9](https://github.com/kyndryl-design-system/shidoka-applications/commit/7bf68f99723d4d11e662d35d2ebe8d09a731bb3b))
+
+## [1.31.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.4...v1.31.5) (2024-08-20)
+
+
+### Bug Fixes
+
+* **dropdown:** multiselect updateByValue console errors ([6fcfafd](https://github.com/kyndryl-design-system/shidoka-applications/commit/6fcfafd87843c5bf2e63ccc756e1db5ac930e19f))
+
 ## [1.31.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.31.3...v1.31.4) (2024-08-12)
 
 

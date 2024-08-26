@@ -113,54 +113,52 @@ export class DatePicker extends LitElement {
 
   override render() {
     return html`
-      <label
-        class="datepicker-label-text"
-        for=${this.name}
-        ?disabled=${this.disabled}
-      >
-        ${this.required ? html`<span class="required">*</span>` : null}
-        <slot></slot>
-      </label>
+      <div class="date-picker" ?disabled=${this.disabled}>
+        <label class="label-text" for=${this.name} ?disabled=${this.disabled}>
+          ${this.required ? html`<span class="required">*</span>` : null}
+          <slot></slot>
+        </label>
 
-      <div
-        class="${classMap({
-          'input-wrapper': true,
-        })}"
-      >
-        <input
+        <div
           class="${classMap({
-            'size--sm': this.size === 'sm',
-            'size--lg': this.size === 'lg',
+            'input-wrapper': true,
           })}"
-          datePickerType=${this.datePickerType}
-          type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
-            ? 'datetime-local'
-            : 'date'}
-          id=${this.name ? this.name : 'datepicker-1'}
-          name=${this.name}
-          value=${this.value}
-          ?required=${this.required}
-          ?disabled=${this.disabled}
-          ?invalid=${this.isInvalid}
-          min=${ifDefined(this.minDate)}
-          max=${ifDefined(this.maxDate)}
-          step=${ifDefined(this.step)}
-          @input=${(e: any) => this.handleInput(e)}
-        />
+        >
+          <input
+            class="${classMap({
+              'size--sm': this.size === 'sm',
+              'size--lg': this.size === 'lg',
+            })}"
+            datePickerType=${this.datePickerType}
+            type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
+              ? 'datetime-local'
+              : 'date'}
+            id=${this.name ? this.name : 'datepicker-1'}
+            name=${this.name}
+            value=${this.value}
+            ?required=${this.required}
+            ?disabled=${this.disabled}
+            ?invalid=${this.isInvalid}
+            min=${ifDefined(this.minDate)}
+            max=${ifDefined(this.maxDate)}
+            step=${ifDefined(this.step)}
+            @input=${(e: any) => this.handleInput(e)}
+          />
+        </div>
+        ${this.caption !== ''
+          ? html` <div class="caption">${this.caption}</div> `
+          : null}
+        ${this.isInvalid
+          ? html`
+              <div class="error">
+                ${this.invalidText || this.internalValidationMsg}
+              </div>
+            `
+          : null}
+        ${this.warnText !== '' && !this.isInvalid
+          ? html`<div class="warn">${this.warnText}</div>`
+          : null}
       </div>
-      ${this.caption !== ''
-        ? html` <div class="caption">${this.caption}</div> `
-        : null}
-      ${this.isInvalid
-        ? html`
-            <div class="error">
-              ${this.invalidText || this.internalValidationMsg}
-            </div>
-          `
-        : null}
-      ${this.warnText !== '' && !this.isInvalid
-        ? html`<div class="warn">${this.warnText}</div>`
-        : null}
     `;
   }
 

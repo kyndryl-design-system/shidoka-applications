@@ -34,9 +34,15 @@ export class OverflowMenu extends LitElement {
   @property({ type: String })
   assistiveText = 'Toggle Menu';
 
+  /** Button element
+   * @internal
+   */
   @query('.btn')
   _btnEl!: any;
 
+  /** Menu element
+   * @internal
+   */
   @query('.menu')
   _menuEl!: any;
 

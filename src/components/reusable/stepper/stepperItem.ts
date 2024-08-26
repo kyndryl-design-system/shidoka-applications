@@ -120,12 +120,6 @@ export class StepperItem extends LitElement {
   @state()
   openChildren = false;
 
-  /** if its responsive
-   * @ignore
-   */
-  @state()
-  isResponsive = false;
-
   /**
    * Queries any slotted step child items.
    * @ignore
@@ -211,86 +205,88 @@ export class StepperItem extends LitElement {
     // -------------------------||>> Horizontal stepper <<|| --------------------------------- //
     const renderHorizontalUI = () => {
       return html`
-        ${this.isResponsive
-          ? renderVerticalUI()
-          : html` <div class="${classMap(stepContainerClasses)}">
-              <div class="${classMap(stepperIconClasses)}">
-                <!-- Step icon -->
-                ${this.stepState !== 'pending'
-                  ? html` <kd-icon
-                      slot="icon"
-                      .icon=${this.disabled
-                        ? iconMapper.disabled
-                        : iconMapper[this.stepState]}
-                      fill=${this.disabled
-                        ? iconFillColor.disabled
-                        : iconFillColor[this.stepState]}
-                    ></kd-icon>`
-                  : this.stepState === 'pending' && this.disabled
-                  ? html`
-                      <kd-icon
-                        slot="icon"
-                        .icon=${iconMapper.disabled}
-                        fill=${iconFillColor.disabled}
-                      ></kd-icon>
-                    `
-                  : null}
-              </div>
+        <div
+          class="${classMap(stepContainerClasses)}"
+          aria-disabled=${this.disabled}
+        >
+          <div class="${classMap(stepperIconClasses)}">
+            <!-- Step icon -->
+            ${this.stepState !== 'pending'
+              ? html` <kd-icon
+                  slot="icon"
+                  .icon=${this.disabled
+                    ? iconMapper.disabled
+                    : iconMapper[this.stepState]}
+                  fill=${this.disabled
+                    ? iconFillColor.disabled
+                    : iconFillColor[this.stepState]}
+                ></kd-icon>`
+              : this.stepState === 'pending' && this.disabled
+              ? html`
+                  <kd-icon
+                    slot="icon"
+                    .icon=${iconMapper.disabled}
+                    fill=${iconFillColor.disabled}
+                  ></kd-icon>
+                `
+              : null}
+          </div>
 
-              <!-- Step progress bar  -->
-              ${this.isLastStep
+          <!-- Step progress bar  -->
+          ${this.isLastStep
+            ? null
+            : html`<div
+                class="${classMap(stepperProgressClass)}"
+                role="progressbar"
+                aria-valuenow="${this.progress}"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-label="Step progress: ${this.progress}%"
+              >
+                <div
+                  class="${this.progress === 100
+                    ? 'progressbar-completed'
+                    : ''} progressbar"
+                  style="width:${this.progress}%;"
+                ></div>
+              </div>`}
+
+          <div class="${classMap(stepContentClasses)}">
+            <!--- Step name ---->
+            <p class="${classMap(horizontalStepTextClass)}">${this.stepName}</p>
+            <!-- Step Title -->
+            <div class="step-title-wrapper">
+              ${this.stepTitle === ''
                 ? null
-                : html`<div
-                    class="${classMap(stepperProgressClass)}"
-                    role="progressbar"
-                    aria-valuenow="${this.progress}"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    aria-label="Step progress: ${this.progress}%"
-                  >
-                    <div
-                      class="${this.progress === 100
-                        ? 'progressbar-completed'
-                        : ''} progressbar"
-                      style="width:${this.progress}%;"
-                    ></div>
-                  </div>`}
+                : this.stepperType === 'procedure'
+                ? html`<kd-link
+                    standalone
+                    href=""
+                    target="_self"
+                    kind="primary"
+                    ?disabled=${this.disabled}
+                    @on-click=${(e: Event) => this._handleStepClick(e)}
+                    >${this.stepTitle}</kd-link
+                  >`
+                : this.stepperType === 'status'
+                ? html`<p class="step-title-text">${this.stepTitle}</p>`
+                : null}
 
-              <div class="${classMap(stepContentClasses)}">
-                <!--- Step name ---->
-                <p class="${classMap(horizontalStepTextClass)}">
-                  ${this.stepName}
-                </p>
-                <!-- Step Title -->
-                <div class="step-title-wrapper">
-                  ${this.stepTitle === ''
-                    ? null
-                    : this.stepperType === 'procedure'
-                    ? html`<kd-link
-                        standalone
-                        href=""
-                        target="_self"
-                        kind="primary"
-                        ?disabled=${this.disabled}
-                        @on-click=${(e: Event) => this._handleStepClick(e)}
-                        >${this.stepTitle}</kd-link
-                      >`
-                    : this.stepperType === 'status'
-                    ? html`<p class="step-title-text">${this.stepTitle}</p>`
-                    : null}
-
-                  <!-- Tooltip slot --->
-                  <slot name="tooltip"></slot>
-                </div>
-              </div>
-            </div>`}
+              <!-- Tooltip slot --->
+              <slot name="tooltip"></slot>
+            </div>
+          </div>
+        </div>
       `;
     };
 
     // -------------------------||>> Vertical stepper <<|| -----------------------------------> //
     const renderVerticalUI = () => {
       return html`
-        <div class="${classMap(verticalStepContainerClasses)}">
+        <div
+          class="${classMap(verticalStepContainerClasses)}"
+          aria-disabled=${this.disabled}
+        >
           <!-- Step progress -->
           ${this.isLastStep
             ? null
