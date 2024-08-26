@@ -1,0 +1,110 @@
+    @use '../../../common/scss/global.scss';
+    @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+    :host {
+        display: inline-block;
+    }
+
+    #toaster {
+        text-align: left;
+        position: fixed;
+        width: 440px;
+        color: black;
+        border: none;
+        padding: 0.25rem 2rem 0.5rem;
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        box-shadow: rgba(61, 60, 60, 0.25) 0px 2px 12px 0px;
+        font-family: Arial;
+        border-radius: 8px;
+
+        &.success {
+            background-color: rgba(21, 190, 114, 0.2);
+        }
+
+        &.error {
+            background-color: rgba(255, 0, 0, 0.2);
+        }
+
+        &.warning {
+            background-color: rgba(255, 255, 0, 0.2);
+        }
+
+        &.default {
+            background-color: rgba(91, 122, 244, 0.2);
+        }
+    }
+
+    #toaster-title {
+        @include typography.type-ui-01;
+        margin-bottom: 0;
+
+        kd-icon {
+            vertical-align: -2px;
+            margin-right: 0.5rem;
+        }
+
+        &.default kd-icon svg {
+            fill: black;
+        }
+
+        &.success kd-icon svg {
+            fill: green !important;
+        }
+
+        &.warning kd-icon svg {
+            fill: yellow;
+        }
+
+        &.error kd-icon svg {
+            fill: red;
+        }
+    }
+
+    #toaster-body {
+        @include typography.type-ui-02;
+        margin-top: 0.35rem;
+        padding-top: 0;
+        margin-left: 1.5rem;
+    }
+
+    #timestamp {
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.75rem;
+        @include typography.type-ui-03;
+        color: grey;
+    }
+
+    .show-hide-button {
+        min-width: 10rem;
+    }
+
+    .x-out {
+        background-color: transparent;
+        border: none;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        padding-top: 5px;
+        box-shadow: none;
+        margin: 0;
+        font-size: 12px;
+        cursor: pointer;
+        font-weight: lighter;
+        border-radius: 3px;
+
+        &:hover {
+            background-color: white;
+            opacity: 0.5;
+            color: black;
+            opacity: 0.8;
+        }
+    }
+
+    button:hover {
+        box-shadow: none;
+        color: white;
+        transition: ease-in-out all 0.5s;
+    }

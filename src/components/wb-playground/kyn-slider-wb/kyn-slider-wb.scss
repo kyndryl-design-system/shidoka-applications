@@ -1,0 +1,108 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+
+:host {
+    display: inline-block;
+    width: 100%;
+}
+
+#slider {
+    min-height: 10rem;
+    width: 100%;
+
+    &.auto {
+        max-width: 95%;
+    }
+
+    &.sm {
+        max-width: 28rem;
+    }
+
+    &.md {
+        max-width: 38rem;
+    }
+
+    &.lg {
+        max-width: 40rem;
+    }
+
+    #slider-inner {
+        height: 12rem;
+    }
+
+    .min-max-value {
+        @include typography.type-ui-02;
+        vertical-align: -2px;
+    }
+
+    @each $theme in (spruce, earth, skye) {
+        #slider-input[type="range"] {
+            width: 75%;
+            height: 0.25rem;
+            border-radius: 0.75rem;
+            appearance: none;
+            outline: none;
+            margin: 1.5rem 0;
+            padding: 0;
+            cursor: pointer;
+
+            &.theme-#{$theme} {
+                background: linear-gradient(to right,
+                    var(--kd-color-#{$theme}-70) 0%,
+                    var(--kd-color-#{$theme}-70) var(--slider-percentage, 0%),
+                    lightgrey var(--slider-percentage, 0%),
+                    lightgrey 100%);
+
+                &::-webkit-slider-thumb {
+                    background-color: var(--kd-color-#{$theme}-70);
+                }
+
+                &::-moz-range-thumb {
+                    background-color: var(--kd-color-#{$theme}-70);
+                }
+            }
+
+
+            &::-webkit-slider-thumb {
+                appearance: none;
+                width: 1.25rem;
+                height: 1.25rem;
+                border-radius: 50%;
+                cursor: pointer;
+            }
+
+            &::-moz-range-thumb {
+                width: 1.5rem;
+                height: 1.5rem;
+                border-radius: 50%;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+#slider-label {
+    @include typography.type-ui-02;
+    display: block;
+    margin-bottom: 0;
+    color: grey;
+    width: 100%;
+}
+
+@each $theme in (spruce, earth, skye) {
+    #displayed-slider-value {
+        display: inline-block;
+        @include typography.type-ui-02;
+        background-color: rgb(231, 231, 231);
+        width: 60px;
+        margin-left: 1.75rem;
+        text-align: center;
+        padding: 10px 5px;
+
+        &.theme-#{$theme} {
+            color: var(--kd-color-#{$theme}-70);
+            border-bottom: 2px solid var(--kd-color-#{$theme}-70);
+        }
+    }
+}

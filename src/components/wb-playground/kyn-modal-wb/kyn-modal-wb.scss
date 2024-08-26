@@ -1,0 +1,134 @@
+    @use '../../../common/scss/global.scss';
+    @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+    @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+
+    :host {
+        display: inline-block;
+    }
+
+    #modal {
+        @include elevation.shadow(3);
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        min-height: 100vh;
+        background-color: rgba(0, 0, 0, 0.6);
+        top: 0;
+        left: 0;
+        z-index: 2;
+        overflow: hidden;
+    }
+
+    #modal-inner {
+        text-align: left;
+        width: 95%;
+        height: 90vh;
+        min-height: 15rem;
+        color: black;
+        border: none;
+        margin: 0.5rem auto;
+        padding: 1.5rem 2rem 0.5em;
+        box-shadow: rgba(61, 60, 60, 0.25) 0px 2px 12px 0px;
+        background-color: white;
+        font-family: Arial;
+        border-radius: 8px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        overflow-y: auto;
+        transform: translateX(-50%) translateY(-53%);
+
+        &.auto {
+            max-width: 95%;
+            max-height: 90vh;
+        }
+
+        &.sm {
+            max-width: 25rem;
+            max-height: 22rem;
+
+            #modal-body {
+                max-height: 43%;
+            }
+        }
+
+        &.md {
+            max-width: 35rem;
+            max-height: 28rem;
+        }
+
+        &.lg {
+            max-width: 45rem;
+            max-height: 32rem;
+        }
+    }
+
+    #modal-title {
+        @include typography.type-headline-05;
+        margin-bottom: 0;
+    }
+
+    #modal-subheader {
+        margin-top: 0.35rem;
+        @include typography.type-ui-01;
+    }
+
+    #modal-body {
+        @include typography.type-ui-02;
+        margin-top: 1.25rem;
+        padding-top: 0;
+        line-height: 1.6;
+        width: 95%;
+        min-height: 6rem;
+        padding-bottom: 10%;
+        max-height: 48%;
+        overflow-y: auto;
+    }
+
+    #timestamp {
+        position: absolute;
+        bottom: 1.25rem;
+        right: 1.75rem;
+        font-size: 0.8rem;
+        color: grey;
+    }
+
+    .show-hide-button {
+        min-width: 10rem;
+    }
+
+    #modal-footer {
+        position: absolute;
+        bottom: 1.5rem;
+        left: 1.5rem;
+        width: 100%;
+        padding-top: 1rem;
+        top: auto;
+        background-color: white;
+
+        .hide-on-modal {
+            margin-right: 1rem;
+        }
+    }
+
+    .x-out {
+        background-color: transparent;
+        border: none;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        padding: 0.5rem 0.75rem;
+        box-shadow: none;
+        margin: 0;
+        font-size: 12px;
+        cursor: pointer;
+        font-weight: lighter;
+        border-radius: 3px;
+    }
+
+    .x-out:hover {
+        background-color: lightgray;
+        opacity: 0.2;
+        color: black;
+        opacity: 0.8;
+    }
