@@ -1,3 +1,10 @@
+## [1.33.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.33.1...v1.33.2) (2024-08-26)
+
+
+### Bug Fixes
+
+* **wcag:** form input contrast and scss consolidation ([73d40e7](https://github.com/kyndryl-design-system/shidoka-applications/commit/73d40e703b34e8037deb3d7bda4eb268ff675392))
+
 ## [1.33.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.33.0...v1.33.1) (2024-08-21)
 
 
