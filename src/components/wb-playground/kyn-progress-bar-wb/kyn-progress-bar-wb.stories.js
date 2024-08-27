@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './index';
 
 export default {
-  title: 'Components/KynProgressBarWb',
+  title: 'Components/ProgressBar',
   component: 'kyn-progress-bar-wb',
   argTypes: {
     size: {

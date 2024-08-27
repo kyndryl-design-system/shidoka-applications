@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './index';
 
 export default {
-  title: 'Components/KynModalWb',
+  title: 'Components/TextHeavyModal',
   component: 'kyn-modal-wb',
   argTypes: {
     size: {
