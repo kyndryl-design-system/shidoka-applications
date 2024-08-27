@@ -12,48 +12,36 @@ export class KynProgressBarWb extends LitElement {
 
   /**
    * Percent -- numeric value to be converted to string percentage
-   * @type {number}
-   * @default 0
    */
   @property({ type: Number })
   progress = 0;
 
   /**
    * Progress bar size. `'auto'`, `'md'`, or `'lg'`.
-   * @type {string}
-   * @default 'auto'
    */
   @property({ type: String })
   size = 'auto';
 
   /**
    * Progress bar animation speed. `'default'`, `'slow'`, or `'fast'`.
-   * @type {string}
-   * @default ''
    */
   @property({ type: String })
   animationSpeed = 'default';
 
   /**
    * Progress bar animated status color
-   * @type {string}
-   * @default 'spruce'
    */
   @property({ type: String })
   progressBarThemeColor = 'spruce';
 
   /**
    * Main progress bar title header, required.
-   * @type {string}
-   * @default ''
    */
   @property({ type: String })
   mainHeader = '';
 
   /**
    * Progress bar subheader, optional.
-   * @type {string}
-   * @default ''
    */
   @property({ type: String })
   subheader = '';
@@ -102,8 +90,8 @@ export class KynProgressBarWb extends LitElement {
     `;
   }
 
-  override updated(changedProperties: Map<string, any>) {
-    super.updated(changedProperties);
+  override willUpdate(changedProperties: Map<string, any>) {
+    super.willUpdate(changedProperties);
     this._progressBarFillLevel =
       this.progress > 75 ? 'full' : this.progress > 50 ? 'med' : 'light';
 

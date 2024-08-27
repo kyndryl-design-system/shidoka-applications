@@ -1,6 +1,5 @@
 import { LitElement, html, PropertyValues } from 'lit';
-import { customElement, state, query, property } from 'lit/decorators.js';
-import _formatDate from '../utils/formatDate';
+import { customElement, query, state, property } from 'lit/decorators.js';
 import ModalStyles from './kyn-modal-wb.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/link';
@@ -17,55 +16,38 @@ import closeIcon from '@carbon/icons/es/close/20';
 export class KynModalWb extends LitElement {
   static override styles = [ModalStyles];
 
-  /** Date formatting function
-   * @internal
-   */
-  private static _formatDate = _formatDate;
-
   /**
    * Modal size `'auto'`, `'sm'`, `'md'`, or `'lg'`.
-   * @type {string}
-   * @default 'sm'
    */
   @property({ type: String })
   size = 'sm';
 
   /**
    * Title/heading text, required.
-   * @type {string}
-   * @default ''
    */
   @property({ type: String })
   modalTitle = '';
 
   /**
    * Subheading text, optional.
-   * @type {string}
-   * @default ''
    */
   @property({ type: String })
   subheader = '';
 
   /**
    * Body text, optional.
-   * @type {string}
-   * @default ''
    */
   @property({ type: String })
   modalBody = '';
 
   /**
    * Modal open state.
-   * @type {boolean}
-   * @default false
    */
   @property({ type: Boolean })
   showModal = false;
 
   /**
    * Subheader href to determine if is link.
-   * @type {string}
-   * @default ''
    */
   @property({ type: String })
   subheaderHref = '';
@@ -74,12 +56,13 @@ export class KynModalWb extends LitElement {
    * @internal
    */
   @state()
-  timestamp: string = KynModalWb._formatDate(Date.now());
+  _timestamp: string = new Date(Date.UTC(2012, 11, 20, 3, 0, 0)).toLocaleString(
+    'en-GB',
+    { timeZone: 'UTC' }
+  );
 
   /**
    * Timestamp visible state.
-   * @type {boolean}
-   * @default false
    */
   @property({ type: Boolean })
   timestampVisible = false;
@@ -109,11 +92,11 @@ export class KynModalWb extends LitElement {
         <div id="modal-inner" class=${this.size}>
           <button
             @click=${() => {
-              this.showModal = !this.showModal;
+              this._toggleModal();
             }}
             @keydown=${(e: KeyboardEvent) => {
               if (e.key === 'Enter') {
-                this.showModal = !this.showModal;
+                this._toggleModal();
               }
             }}
             class="x-out"
@@ -132,7 +115,7 @@ export class KynModalWb extends LitElement {
             : null}
           <p id="modal-body">${this.modalBody}</p>
           <span ?hidden=${!this.timestampVisible} id="timestamp"
-            >${this.timestamp}</span
+            >${this._timestamp}</span
           >
           <div id="modal-footer">
             <kd-button
@@ -164,10 +147,24 @@ export class KynModalWb extends LitElement {
       clearTimeout(this._toastTimeoutId);
       this._toastTimeoutId = undefined;
     }
+
+    if (this._modal) {
+      const player = this._modal.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 400,
+        easing: 'ease-out',
+        fill: 'forwards',
+      });
+
+      if (!this.showModal) {
+        player.reverse();
+      }
+    }
   }
 
-  override updated(changedProperties: PropertyValues<this>): void {
-    if (changedProperties.has('showModal')) {
+  override willUpdate(changedProperties: PropertyValues<this>): void {
+    super.willUpdate(changedProperties);
+
+    if (changedProperties.has('showModal') && this._modal) {
       const player = this._modal.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: 400,
         easing: 'ease-out',

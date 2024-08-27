@@ -11,64 +11,48 @@ export class KynSliderWb extends LitElement {
 
   /**
    * Slider size `'auto'`, `'sm'`, `'md'`, or `'lg'`.
-   * @type {string}
-   * @default 'auto'
    */
   @property({ type: String })
   size = 'auto';
 
   /**
    * Slider label, optional.
-   * @type {string}
-   * @default ''
    */
   @property({ type: String })
   sliderLabel = '';
 
   /**
    * Sets color of slider thumb and preceding fill of status bar (ex: #, rgb).
-   * @type {string}
-   * @default 'spruce'
    */
   @property({ type: String })
   sliderThemeColor = 'spruce';
 
   /**
    * Default, pre-set slider value, optional.
-   * @type {number}
-   * @default 0
    */
   @property({ type: Number })
   defaultSliderValue = 0;
 
   /**
    * Default lower slider threshold value, optional.
-   * @type {number}
-   * @default 0
    */
   @property({ type: Number })
   lowerValue = 0;
 
   /**
    * Default upper slider threshold value, optional.
-   * @type {number}
-   * @default 0
    */
   @property({ type: Number })
   upperValue = 100;
 
   /**
    * Show/hide current slider value.
-   * @type {boolean}
-   * @default true
    */
   @property({ type: Boolean })
   sliderValueVisible = true;
 
   /**
    * Show/hide min/max values on either side of slider.
-   * @type {boolean}
-   * @default true
    */
   @property({ type: Boolean })
   minMaxVisible = true;

@@ -1,6 +1,5 @@
 import { LitElement, html, PropertyValues } from 'lit';
 import { customElement, state, query, property } from 'lit/decorators.js';
-import _formatDate from '../utils/formatDate';
 import ToastStyles from './kyn-toast-wb.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
@@ -19,47 +18,32 @@ import infoIcon from '@carbon/icons/es/information--filled/16';
 export class KynToastWb extends LitElement {
   static override styles = [ToastStyles];
 
-  /** Date formatting function
-   * @internal
-   */
-  private static _formatDate = _formatDate;
-
   /**
    * Body text, optional
-   * @type {boolean}
-   * @default false
    */
   @property({ type: Boolean })
   showToast = false;
 
   /**
    * Toaster notification mode/status. `'default'`, `'success'`, `'warning'`, or `'error'`.
-   * @type {string}
-   * @default 'success'
    */
   @property({ type: String })
   toastStatus = 'default';
 
   /**
    * Title/heading text, required.
-   * @type {string}
-   * @default ''
    */
   @property({ type: String })
   toasterTitle = '';
 
   /**
    * Body text, optional
-   * @type {string}
-   * @default ''
    */
   @property({ type: String })
   toasterBody = '';
 
   /**
    * Duration that toaster is visible to the user
-   * @type {number}
-   * @default 5000
    */
   @property({ type: Number })
   toastLifespan = 5000;
@@ -68,12 +52,13 @@ export class KynToastWb extends LitElement {
    * @internal
    */
   @state()
-  _timestamp = KynToastWb._formatDate(Date.now());
+  _timestamp: string = new Date(Date.UTC(2012, 11, 20, 3, 0, 0)).toLocaleString(
+    'en-GB',
+    { timeZone: 'UTC' }
+  );
 
   /**
    *Timestamp visible state
-   * @type {boolean}
-   * @default false
    */
   @property({ type: Boolean })
   timestampVisible = false;
@@ -120,8 +105,8 @@ export class KynToastWb extends LitElement {
     `;
   }
 
-  override updated(changedProperties: PropertyValues<this>): void {
-    if (changedProperties.has('showToast')) {
+  override willUpdate(changedProperties: PropertyValues<this>): void {
+    if (changedProperties.has('showToast') && this._toaster) {
       const toasterWidth = this._toaster.getBoundingClientRect().width;
       const startingPosition = window.innerWidth - toasterWidth;
       const player = this._toaster.animate(

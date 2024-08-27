@@ -15,48 +15,36 @@ export class KynLinkedDivWb extends LitElement {
 
   /**
    * Item size, required.
-   * @type {string}
-   * @default 'auto'
    */
   @property({ type: String })
   size = 'auto';
 
   /**
    * Title text, required.
-   * @type {string}
-   * @default ''
    */
   @property({ type: String })
   divTitle = '';
 
   /**
    * Main header text, required.
-   * @type {string}
-   * @default ''
    */
   @property({ type: String })
   mainHeader = '';
 
   /**
    * Background hover color.
-   * @type {string}
-   * @default '#23564d'
    */
   @property({ type: String })
   hoverColor = '#23564d';
 
   /**
    * Body text, required.
-   * @type {string}
-   * @default ''
    */
   @property({ type: String })
   body = '';
 
   /**
    * External/internal url for kd-link, required.
-   * @type {string}
-   * @default ''
    */
   @property({ type: String })
   linkHref = '';
