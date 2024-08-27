@@ -26,7 +26,7 @@ export default {
 const args = {
   size: 'lg',
   sliderLabel: 'Slider 1',
-  defaultSliderValue: 50,
+  defaultSliderValue: 0,
   lowerValue: 0,
   upperValue: 1000,
   sliderValueVisible: true,
