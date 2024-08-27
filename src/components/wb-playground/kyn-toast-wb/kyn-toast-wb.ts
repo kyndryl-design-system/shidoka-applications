@@ -105,28 +105,6 @@ export class KynToastWb extends LitElement {
     `;
   }
 
-  override willUpdate(changedProperties: PropertyValues<this>): void {
-    if (changedProperties.has('showToast') && this._toaster) {
-      const toasterWidth = this._toaster.getBoundingClientRect().width;
-      const startingPosition = window.innerWidth - toasterWidth;
-      const player = this._toaster.animate(
-        [
-          { transform: `translateX(${startingPosition}px)` },
-          { transform: `translateX(0)` },
-        ],
-        {
-          duration: 400,
-          easing: 'ease-out',
-          fill: 'forwards',
-        }
-      );
-
-      if (!this.showToast) {
-        player.reverse();
-      }
-    }
-  }
-
   private _toggleToast(toastTimeout = 5000) {
     this.showToast = !this.showToast;
 

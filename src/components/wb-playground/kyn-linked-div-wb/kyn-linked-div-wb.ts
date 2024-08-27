@@ -8,6 +8,7 @@ import { customElement, property } from 'lit/decorators.js';
 
 /**
  * Linked div.
+ * @slot body -- slot for body text
  */
 @customElement('kyn-linked-div-wb')
 export class KynLinkedDivWb extends LitElement {
@@ -38,12 +39,6 @@ export class KynLinkedDivWb extends LitElement {
   hoverColor = '#23564d';
 
   /**
-   * Body text, required.
-   */
-  @property({ type: String })
-  body = '';
-
-  /**
    * External/internal url for kd-link, required.
    */
   @property({ type: String })
@@ -60,7 +55,8 @@ export class KynLinkedDivWb extends LitElement {
           <div id="linked-div-content">
             <h3 id="secondary-header">${this.divTitle}</h3>
             <h2 id="main-header">${this.mainHeader}</h2>
-            <p id="body">${this.body}</p>
+            <br />
+            <slot id="body-slot-wrapper"></slot>
           </div>
         </kd-link>
       </div>

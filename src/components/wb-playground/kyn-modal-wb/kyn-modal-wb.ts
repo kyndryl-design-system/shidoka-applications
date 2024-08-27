@@ -147,34 +147,6 @@ export class KynModalWb extends LitElement {
       clearTimeout(this._toastTimeoutId);
       this._toastTimeoutId = undefined;
     }
-
-    if (this._modal) {
-      const player = this._modal.animate([{ opacity: 0 }, { opacity: 1 }], {
-        duration: 400,
-        easing: 'ease-out',
-        fill: 'forwards',
-      });
-
-      if (!this.showModal) {
-        player.reverse();
-      }
-    }
-  }
-
-  override willUpdate(changedProperties: PropertyValues<this>): void {
-    super.willUpdate(changedProperties);
-
-    if (changedProperties.has('showModal') && this._modal) {
-      const player = this._modal.animate([{ opacity: 0 }, { opacity: 1 }], {
-        duration: 400,
-        easing: 'ease-out',
-        fill: 'forwards',
-      });
-
-      if (!this.showModal) {
-        player.reverse();
-      }
-    }
   }
 }
 

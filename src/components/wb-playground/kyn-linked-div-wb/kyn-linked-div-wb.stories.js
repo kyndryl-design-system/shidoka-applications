@@ -36,9 +36,9 @@ export const KynLinkedDivWb = {
         hoverColor=${args.hoverColor}
         divTitle=${args.divTitle}
         mainHeader=${args.mainHeader}
-        body=${args.body}
         linkHref=${args.linkHref}
       >
+        <p>${args.body}</p>
       </kyn-linked-div-wb>
     `;
   },
