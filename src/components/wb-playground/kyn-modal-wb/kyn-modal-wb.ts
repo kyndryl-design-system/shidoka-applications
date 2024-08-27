@@ -1,4 +1,4 @@
-import { LitElement, html, PropertyValues } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, query, state, property } from 'lit/decorators.js';
 import ModalStyles from './kyn-modal-wb.scss';
 
@@ -11,6 +11,7 @@ import closeIcon from '@carbon/icons/es/close/20';
 /**
  * Modal.
  * @slot anchor - Slot for the anchor button content.
+ * @slot modalBody -- Slot for the modal body content.
  */
 @customElement('kyn-modal-wb')
 export class KynModalWb extends LitElement {
@@ -33,12 +34,6 @@ export class KynModalWb extends LitElement {
    */
   @property({ type: String })
   subheader = '';
-
-  /**
-   * Body text, optional.
-   */
-  @property({ type: String })
-  modalBody = '';
 
   /**
    * Modal open state.
@@ -113,7 +108,9 @@ export class KynModalWb extends LitElement {
                     >`}
               </h3>`
             : null}
-          <p id="modal-body">${this.modalBody}</p>
+          <div id="modal-body">
+            <slot name="modal-body"></slot>
+          </div>
           <span ?hidden=${!this.timestampVisible} id="timestamp"
             >${this._timestamp}</span
           >

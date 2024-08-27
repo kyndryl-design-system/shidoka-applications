@@ -43,11 +43,11 @@ export const KynModalWb = {
         size=${args.size}
         modalTitle=${args.modalTitle}
         subheader=${args.subheader}
-        modalBody=${args.modalBody}
         subheaderHref=${args.subheaderHref}
         ?showModal=${args.showModal}
         ?timestampVisible=${args.timestampVisible}
       >
+        <p slot="modal-body">${args.modalBody}</p>
         <kd-button slot="anchor">Open Modal</kd-button>
       </kyn-modal-wb>
     `;
