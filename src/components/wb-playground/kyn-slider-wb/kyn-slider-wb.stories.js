@@ -32,6 +32,7 @@ const args = {
   sliderValueVisible: true,
   sliderThemeColor: 'spruce',
   minMaxVisible: true,
+  step: 1,
 };
 
 export const KynSliderWb = {
@@ -44,6 +45,7 @@ export const KynSliderWb = {
         defaultSliderValue=${args.defaultSliderValue}
         lowerValue=${args.lowerValue}
         upperValue=${args.upperValue}
+        step=${args.step}
         ?sliderValueVisible=${args.sliderValueVisible}
         sliderThemeColor=${args.sliderThemeColor}
         ?minMaxVisible=${args.minMaxVisible}

@@ -52,6 +52,12 @@ export class KynSliderWb extends LitElement {
   sliderValueVisible = true;
 
   /**
+   * Step interval for slider.
+   */
+  @property({ type: Number })
+  step = 1;
+
+  /**
    * Show/hide min/max values on either side of slider.
    */
   @property({ type: Boolean })
@@ -87,10 +93,15 @@ export class KynSliderWb extends LitElement {
           type="range"
           min=${this.lowerValue}
           max=${this.upperValue}
-          value=${this._currentValue}
+          .value=${this._currentValue.toString()}
           @input=${this.handleSliderChange}
           class="${`${this.size} theme-${this.sliderThemeColor}`}"
           style="--slider-percentage: ${this.calculatePercentage()}%;"
+          aria-valuemin=${this.lowerValue}
+          aria-valuemax=${this.upperValue}
+          aria-valuenow=${this._currentValue}
+          aria-label=${this.ariaLabel || 'Slider'}
+          step=${this.step || '1'}
         />
         <span class="min-max-value" ?hidden=${!this.minMaxVisible}
           >${this.upperValue}</span
@@ -118,6 +129,9 @@ export class KynSliderWb extends LitElement {
   private handleSliderChange(event: Event) {
     const sliderValue = (event.target as HTMLInputElement).value;
     this._currentValue = Number(sliderValue);
+    this.dispatchEvent(
+      new CustomEvent('change', { detail: this._currentValue })
+    );
     this.updateSliderColor();
   }
 
