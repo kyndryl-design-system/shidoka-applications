@@ -10,6 +10,18 @@ export default {
       options: ['auto', 'sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    value: {
+      control: { type: 'number' },
+    },
+    step: {
+      control: { type: 'number' },
+    },
+    min: {
+      control: { type: 'number' },
+    },
+    max: {
+      control: { type: 'number' },
+    },
     sliderThemeColor: {
       options: ['spruce', 'earth', 'skye'],
       control: { type: 'select' },
@@ -26,9 +38,12 @@ export default {
 const args = {
   size: 'lg',
   sliderLabel: 'Slider 1',
+  value: 0,
   defaultSliderValue: 0,
-  lowerValue: 0,
-  upperValue: 1000,
+  name: 'Slider1',
+  disabled: false,
+  min: 0,
+  max: 1000,
   sliderValueVisible: true,
   sliderThemeColor: 'spruce',
   minMaxVisible: true,
@@ -42,9 +57,12 @@ export const KynSliderWb = {
       <kyn-slider-wb
         size=${args.size}
         sliderLabel=${args.sliderLabel}
+        name=${args.name}
+        value=${args.value}
+        ?disabled=${args.disabled}
         defaultSliderValue=${args.defaultSliderValue}
-        lowerValue=${args.lowerValue}
-        upperValue=${args.upperValue}
+        min=${args.min}
+        max=${args.max}
         step=${args.step}
         ?sliderValueVisible=${args.sliderValueVisible}
         sliderThemeColor=${args.sliderThemeColor}

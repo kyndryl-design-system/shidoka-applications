@@ -1,5 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import SliderStyles from './kyn-slider-wb.scss';
 
 /**
@@ -9,11 +10,34 @@ import SliderStyles from './kyn-slider-wb.scss';
 export class KynSliderWb extends LitElement {
   static override styles = [SliderStyles];
 
+  /** @ignore */
+  static override shadowRootOptions = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
+  /**
+   * Associate the component with forms.
+   * @ignore
+   */
+  static formAssociated = true;
+
+  /**
+   * Attached internals for form association.
+   * @ignore
+   */
+  @state()
+  internals = this.attachInternals();
+
   /**
    * Slider size `'auto'`, `'sm'`, `'md'`, or `'lg'`.
    */
   @property({ type: String })
   size = 'auto';
+
+  /** Slider name. */
+  @property({ type: String })
+  name = '';
 
   /**
    * Slider label, optional.
@@ -33,17 +57,25 @@ export class KynSliderWb extends LitElement {
   @property({ type: Number })
   defaultSliderValue = 0;
 
+  /** Input disabled state. */
+  @property({ type: Boolean })
+  disabled = false;
+
   /**
    * Default lower slider threshold value, optional.
    */
   @property({ type: Number })
-  lowerValue = 0;
+  min!: number;
 
   /**
    * Default upper slider threshold value, optional.
    */
   @property({ type: Number })
-  upperValue = 100;
+  max!: number;
+
+  /** Input invalid text. */
+  @property({ type: String })
+  invalidText = '';
 
   /**
    * Show/hide current slider value.
@@ -63,11 +95,16 @@ export class KynSliderWb extends LitElement {
   @property({ type: Boolean })
   minMaxVisible = true;
 
-  /** Modal element
-   * @internal
+  /** Input value. */
+  @property({ type: Number })
+  value = 0;
+
+  /**
+   * Queries the <input> DOM element.
+   * @ignore
    */
-  @state()
-  _currentValue = 0;
+  @query('input')
+  inputEl!: HTMLInputElement;
 
   /** Slider element
    * @internal
@@ -86,32 +123,33 @@ export class KynSliderWb extends LitElement {
       <div id="slider" class=${this.size}>
         <label id="slider-label">${this.sliderLabel}</label>
         <span class="min-max-value" ?hidden=${!this.minMaxVisible}
-          >${this.lowerValue}</span
+          >${this.min}</span
         >
         <input
           id="slider-input"
+          name=${this.name}
           type="range"
-          min=${this.lowerValue}
-          max=${this.upperValue}
-          .value=${this._currentValue.toString()}
-          @input=${this.handleSliderChange}
+          min=${ifDefined(this.min)}
+          max=${ifDefined(this.max)}
+          value=${this.value.toString()}
+          @input=${(e: any) => this._handleSliderChange(e)}
           class="${`${this.size} theme-${this.sliderThemeColor}`}"
           style="--slider-percentage: ${this.calculatePercentage()}%;"
-          aria-valuemin=${this.lowerValue}
-          aria-valuemax=${this.upperValue}
-          aria-valuenow=${this._currentValue}
+          aria-valuemin=${this.min}
+          aria-valuemax=${this.max}
+          aria-valuenow=${this.value}
           aria-label=${this.ariaLabel || 'Slider'}
-          step=${this.step || '1'}
+          step=${ifDefined(this.step)}
         />
         <span class="min-max-value" ?hidden=${!this.minMaxVisible}
-          >${this.upperValue}</span
+          >${this.max}</span
         >
         ${this.sliderValueVisible
           ? html`<div
               id="displayed-slider-value"
               class=${`theme-${this.sliderThemeColor}`}
             >
-              ${this._currentValue}
+              ${this.value}
             </div>`
           : null}
       </div>
@@ -122,16 +160,14 @@ export class KynSliderWb extends LitElement {
    * @internal
    */
   override firstUpdated() {
-    this._currentValue = this.defaultSliderValue || 0;
+    this.value = this.defaultSliderValue || 0;
     this.updateSliderColor();
   }
 
-  private handleSliderChange(event: Event) {
-    const sliderValue = (event.target as HTMLInputElement).value;
-    this._currentValue = Number(sliderValue);
-    this.dispatchEvent(
-      new CustomEvent('change', { detail: this._currentValue })
-    );
+  private _handleSliderChange(e: any) {
+    const sliderValue = (e.target as HTMLInputElement).value;
+    this.value = Number(sliderValue);
+    this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
     this.updateSliderColor();
   }
 
@@ -146,11 +182,7 @@ export class KynSliderWb extends LitElement {
   }
 
   private calculatePercentage(): number {
-    return (
-      ((this._currentValue - this.lowerValue) /
-        (this.upperValue - this.lowerValue)) *
-      100
-    );
+    return ((this.value - this.min) / (this.max - this.min)) * 100;
   }
 }
 
