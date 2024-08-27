@@ -58,16 +58,16 @@ export const KynSliderWb = {
         size=${args.size}
         sliderLabel=${args.sliderLabel}
         name=${args.name}
-        value=${args.value}
         ?disabled=${args.disabled}
-        defaultSliderValue=${args.defaultSliderValue}
-        min=${args.min}
-        max=${args.max}
-        step=${args.step}
+        .defaultSliderValue=${args.defaultSliderValue}
+        .value=${args.value}
+        .min=${args.min}
+        .max=${args.max}
+        .step=${args.step}
         ?sliderValueVisible=${args.sliderValueVisible}
         sliderThemeColor=${args.sliderThemeColor}
         ?minMaxVisible=${args.minMaxVisible}
-        @on-slider-change=${(e) => action(e.type)(e)}
+        @change=${(e) => action('change')(e.detail)}
       >
       </kyn-slider-wb>
     `;
