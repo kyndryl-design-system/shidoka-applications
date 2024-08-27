@@ -1,4 +1,4 @@
-import { html, css, LitElement } from 'lit';
+import { html, LitElement } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import ProgressBarStyles from './kyn-progress-bar-wb.scss';
@@ -8,7 +8,7 @@ import ProgressBarStyles from './kyn-progress-bar-wb.scss';
  */
 @customElement('kyn-progress-bar-wb')
 export class KynProgressBarWb extends LitElement {
-  static override styles = [ProgressBarStyles, css``];
+  static override styles = [ProgressBarStyles];
 
   /**
    * Percent -- numeric value to be converted to string percentage
@@ -58,7 +58,7 @@ export class KynProgressBarWb extends LitElement {
   @property({ type: String })
   subheader = '';
 
-  /** Prgoress bar element
+  /** Progress bar element
    * @internal
    */
   @query('#progress-bar')

@@ -104,11 +104,7 @@ export class KynToastWb extends LitElement {
       >
         <slot name="anchor"></slot>
       </span>
-      <div
-        id="toaster"
-        class=${`${this.toastStatus} toast-visible-${this.showToast}`}
-        ?hidden=${!this.showToast}
-      >
+      <div id="toaster" class=${this.toastStatus} ?hidden=${!this.showToast}>
         <button class="x-out" @click=${this._toggleToast}>
           <kd-icon .icon=${closeIcon}></kd-icon>
         </button>
