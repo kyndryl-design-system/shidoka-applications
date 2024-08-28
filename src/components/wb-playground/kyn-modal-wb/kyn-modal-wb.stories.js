@@ -1,6 +1,8 @@
 import { html } from 'lit';
 import './index';
 
+import '@kyndryl-design-system/shidoka-foundation/components/button';
+
 export default {
   title: 'Components/TextHeavyModal',
   component: 'kyn-modal-wb',
@@ -8,12 +10,6 @@ export default {
     size: {
       options: ['auto', 'sm', 'md', 'lg'],
       control: { type: 'select' },
-    },
-    modalTitle: {
-      control: { type: 'text' },
-    },
-    modalBody: {
-      control: { type: 'text' },
     },
   },
   parameters: {
@@ -25,14 +21,17 @@ export default {
 };
 
 const args = {
+  open: false,
   size: 'md',
-  modalTitle: 'Modal title',
+  modalTitle: 'Modal 1',
   subheader: 'Subheader content',
   modalBody:
     'This is the modal lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin cursus, purus vitae egestas mollis, augue augue interdum quam, sit amet volutpat justo magna quis justo. Aliquam dapibus mi a arcu consequat, sed placerat metus bibendum. Suspendisse pretium nibh Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin cursus, purus vitae egestas mollis, augue augue interdum quam, sit amet volutpat justo magna quis justo. Aliquam dapibus mi a arcu consequat, sed placerat metus bibendum. Suspendisse pretium nibh Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin cursus, purus vitae egestas mollis, augue augue interdum quam, sit amet volutpat justo magna quis justo. Aliquam dapibus mi a arcu consequat, sed placerat metus bibendum. Suspendisse pretium nibh Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin cursus, purus vitae egestas mollis, augue augue interdum quam, sit amet volutpat justo magna quis justo. Aliquam dapibus mi a arcu consequat, sed placerat metus bibendum. Suspendisse pretium nibh',
   subheaderHref: 'https://www.example.com',
-  showModal: false,
+  destructive: false,
   timestampVisible: false,
+  primaryButtonText: 'Ok',
+  secondaryButtonText: 'Cancel',
 };
 
 export const KynModalWb = {
@@ -40,15 +39,18 @@ export const KynModalWb = {
   render: (args) => {
     return html`
       <kyn-modal-wb
+        ?open=${args.open}
         size=${args.size}
         modalTitle=${args.modalTitle}
         subheader=${args.subheader}
         subheaderHref=${args.subheaderHref}
-        ?showModal=${args.showModal}
+        ?destructive=${args.destructive}
         ?timestampVisible=${args.timestampVisible}
+        primaryButtonText=${args.primaryButtonText}
+        secondaryButtonText=${args.secondaryButtonText}
       >
-        <p slot="modal-body">${args.modalBody}</p>
         <kd-button slot="anchor">Open Modal</kd-button>
+        <p slot="modal-body">${args.modalBody}</p>
       </kyn-modal-wb>
     `;
   },

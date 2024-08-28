@@ -6,72 +6,69 @@
     display: inline-block;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-#modal {
+dialog {
     @include elevation.shadow(3);
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    min-height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
-    top: 0;
-    left: 0;
-    z-index: 2;
+    padding: 32px 45px;
+    color: inherit;
+    background: var(--kd-color-background-ui-default);
+    border-radius: 8px;
+    border: 1px solid var(--kd-color-border-light);
+    min-width: 288px;
+    max-width: calc(100% - 32px);
+    max-height: calc(100% - 32px);
     overflow: hidden;
-    animation: fadeIn 0.3s ease-in;
+
+    &[open] {
+        display: flex;
+        animation: dialog-in 400ms ease-out;
+    }
+
+    &::backdrop {
+        background: rgba(60, 61, 60, 0.4);
+    }
+
+    &.size--sm {
+        width: 384px;
+    }
+
+    &.size--md {
+        width: 800px;
+    }
+
+    &.size--lg {
+        width: 900px;
+    }
+
+    &.size--auto {
+        width: 95%;
+    }
 }
 
-#modal-inner {
-    text-align: left;
-    width: 95%;
-    height: 90vh;
-    min-height: 240px;
-    color: black;
-    border: none;
-    margin: 8px auto;
-    padding: 24px 32px 8px;
-    box-shadow: rgba(61, 60, 60, 0.25) 0px 2px 12px 0px;
-    background-color: white;
-    font-family: Arial;
-    border-radius: 8px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    overflow-y: auto;
-    transform: translateX(-50%) translateY(-53%);
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: var(--kd-color-background-ui-default);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0;
+}
 
-    &.auto {
-        max-width: 95%;
-        max-height: 90vh;
-    }
+form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
 
-    &.sm {
-        max-width: 400px;
-        max-height: 352px;
-
-        #modal-body {
-            max-height: 43%;
-        }
-    }
-
-    &.md {
-        max-width: 560px;
-        max-height: 448px;
-    }
-
-    &.lg {
-        max-width: 720px;
-        max-height: 512px;
-    }
+.dialog-footer {
+    position: sticky;
+    bottom: 0px;
+    z-index: 1;
+    margin-top: 32px;
+    background-color: var(--kd-color-background-accent-subtle);
+    padding: 24px 32px 24px 32px;
+    border-top: 1px solid var(--kd-color-border-light);
 }
 
 #modal-title {
@@ -80,13 +77,13 @@
 }
 
 #modal-subheader {
-    margin-top: 5.6px;
+    display: block;
+    margin: 10px 0 20px;
     @include typography.type-ui-01;
 }
 
-#modal-body {
+.body {
     @include typography.type-ui-02;
-    margin-top: 20px;
     padding-top: 0;
     line-height: 1.6;
     width: 95%;
@@ -103,35 +100,35 @@
         margin: 0;
         padding: 0;
     }
-}
 
-#timestamp {
-    position: absolute;
-    bottom: 20px;
-    right: 28px;
-    font-size: 12.8px;
-    color: grey;
-}
-
-.show-hide-button {
-    min-width: 160px;
-}
-
-#modal-footer {
-    position: absolute;
-    bottom: 24px;
-    left: 24px;
-    width: 100%;
-    padding-top: 16px;
-    top: auto;
-    background-color: white;
-
-    .hide-on-modal {
-        margin-right: 16px;
+    &.modal-body-sm {
+        max-height: 15rem;
     }
 }
 
-.x-out {
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 25px 45px;
+    top: auto;
+    background-color: white;
+
+    .action-button {
+        width: 100px;
+
+        &:nth-of-type(2) {
+            margin-left: 25px;
+        }
+    }
+
+    .hide-on-modal {
+        margin-right: 26px;
+    }
+}
+
+.close {
     background-color: transparent;
     border: none;
     position: absolute;
@@ -147,9 +144,47 @@
     transition: all ease-in-out 400ms;
 }
 
-.x-out:hover {
+.close:hover {
     background-color: lightgray;
     opacity: 0.2;
     color: black;
     opacity: 0.8;
+}
+
+@supports (transition-behavior: allow-discrete) {
+    dialog {
+        transition: opacity 400ms ease-out, transform 400ms ease-out,
+            overlay 400ms ease-out allow-discrete,
+            display 400ms ease-out allow-discrete;
+        opacity: 0;
+        transform: scale(0);
+
+        &::backdrop {
+            background-color: rgba(0, 0, 0, 0);
+            transition: display 400ms allow-discrete, overlay 400ms allow-discrete,
+                background-color 400ms;
+        }
+
+        &[open] {
+            animation: none;
+            opacity: 1;
+            transform: scale(1);
+
+            &::backdrop {
+                background-color: rgba(0, 0, 0, 0.4);
+            }
+        }
+    }
+}
+
+@keyframes dialog-in {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
