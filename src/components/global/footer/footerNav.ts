@@ -3,7 +3,7 @@ import { customElement } from 'lit/decorators.js';
 import FooterNavScss from './footerNav.scss';
 
 /**
- * Container for footer navigation links.
+ * DEPRECATED. Container for footer navigation links.
  * @slot unnamed - Slot for footer links.
  */
 @customElement('kyn-footer-nav')

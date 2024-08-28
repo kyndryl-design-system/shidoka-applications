@@ -1,13 +1,14 @@
 import { html } from 'lit';
 import './index';
+import '@kyndryl-design-system/shidoka-foundation/components/link';
 
 export default {
   title: 'Global Components/Footer',
   component: 'kyn-footer',
-  subcomponents: {
-    FooterNav: 'kyn-footer-nav',
-    FooterNavLink: 'kyn-footer-link',
-  },
+  // subcomponents: {
+  //   FooterNav: 'kyn-footer-nav',
+  //   FooterNavLink: 'kyn-footer-link',
+  // },
   decorators: [
     (story) =>
       html`
@@ -28,12 +29,10 @@ export const Footer = {
   },
   render: (args) => html`
     <kyn-footer rootUrl=${args.rootUrl}>
-      <kyn-footer-nav>
-        <kyn-footer-link href="javascript:void(0);">Link 1</kyn-footer-link>
-        <kyn-footer-link href="javascript:void(0);">Link 2</kyn-footer-link>
-        <kyn-footer-link href="javascript:void(0);">Link 3</kyn-footer-link>
-        <kyn-footer-link href="javascript:void(0);">Link 4</kyn-footer-link>
-      </kyn-footer-nav>
+      <kd-link href="javascript:void(0);">Link 1</kd-link>
+      <kd-link href="javascript:void(0);">Link 2</kd-link>
+      <kd-link href="javascript:void(0);">Link 3</kd-link>
+      <kd-link href="javascript:void(0);">Link 4</kd-link>
 
       <span slot="copyright">
         Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights
