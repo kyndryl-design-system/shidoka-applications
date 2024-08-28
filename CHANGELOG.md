@@ -1,3 +1,10 @@
+## [1.33.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.33.2...v1.33.3) (2024-08-27)
+
+
+### Bug Fixes
+
+* **form-inputs:** caption fonts ([bb8415a](https://github.com/kyndryl-design-system/shidoka-applications/commit/bb8415a4f4cffc2f87a30d43305795afd6d22b39))
+
 ## [1.33.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.33.1...v1.33.2) (2024-08-26)
 
 
