@@ -115,6 +115,7 @@ export const Default = {
         <br /><br />
 
         <kyn-text-input
+          required
           name="textInput"
           placeholder="Placeholder text"
           caption="Text input example"
