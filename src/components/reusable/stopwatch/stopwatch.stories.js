@@ -14,7 +14,10 @@ export default {
 
 const args = {
     buttonSize: 'medium',
-    buttonDescription: 'Button Description'
+    startButtonDescription: 'Start button',
+    pauseButtonDescription: 'Pause button',
+    stopButtonDescription: 'Stop button',
+    resetButtonDescription: 'Reset button'
 };
 
 export const Stopwatch = {
@@ -23,7 +26,10 @@ export const Stopwatch = {
         return html`
             <kyn-stopwatch
                 buttonSize=${args.buttonSize}
-                buttonDescription=${args.description}
+                startButtonDescription=${args.startButtonDescription}
+                pauseButtonDescription=${args.pauseButtonDescription}
+                stopButtonDescription=${args.stopButtonDescription}
+                resetButtonDescription=${args.resetButtonDescription}
             ></kyn-stopwatch>
         `;
     },

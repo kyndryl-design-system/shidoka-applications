@@ -9,44 +9,85 @@ import pauseIcon from '@carbon/icons/es/pause/20';
 import stopIcon from '@carbon/icons/es/stop/20';
 import resetIcon from '@carbon/icons/es/reset/20';
 
+/**
+ * Stopwatch.
+ */
 @customElement("kyn-stopwatch")
 export class Stopwatch extends LitElement {
     static override styles = [StopwatchScss];
 
-    @property({ type: String }) buttonSize = 'medium'; // small, medium, large
-    @property({ type: String }) buttonDescription = 'Button description'; // small, medium, large
+    /** 
+     * Start, Reset, Pause & Stop button size. `'small'`, `'medium'` (default), `'large'`.
+     */
+    @property({ type: String }) buttonSize = 'medium';
 
-    @state() startTime = 0;
-    @state() elapsedTime = 0;
-    @state() timeInString = '00:00:00';
-    @state() timerInterval: any;
-    @state() timerState = 'stopped'; // stopped, running, paused
+    /** Start button description. */
+    @property({ type: String }) startButtonDescription = 'Start button';
+
+    /** Pause button description. */
+    @property({ type: String }) pauseButtonDescription = 'Pause button';
+
+    /** Stop button description. */
+    @property({ type: String }) stopButtonDescription = 'Stop button';
+
+    /** Reset button description. */
+    @property({ type: String }) resetButtonDescription = 'Reset button';
+
+    /** Start time in milliseconds.
+     * @internal
+     */
+    @state()
+    _startTime = 0;
+
+    /** Elapsed time in milliseconds.
+     * @internal
+     */
+    @state()
+    _elapsedTime = 0;
+
+    /** Time in string format.
+     * @internal
+     */
+    @state()
+    _timeInString = '00:00:00';
+
+    /** Timer interval.
+     * @internal
+     */
+    @state()
+    _timerInterval: any;
+
+    /** Timer state. `'stopped'`, `'running'`, `'paused'`.
+     * @internal
+     */
+    @state()
+    _timerState = 'stopped';
 
 
     override render() {
         return html`
             <div class="stopwatch-container">
-                <h1>Stopwatch</h1>
+                <p>Stopwatch</p>
                 <div class="stopwatch-time">
-                    <span>${this.timeInString}</span>
+                    <span>${this._timeInString}</span>
                 </div>
                 <div class="stopwatch-controls">
-                    ${this.timerState === 'stopped' || this.timerState === 'paused'
+                    ${this._timerState === 'stopped' || this._timerState === 'paused'
                 ? html`
-                        <kd-button class="stopwatch-button" size=${this.buttonSize} description=${this.buttonDescription} @click=${() => this.startTimer()}>
+                        <kd-button class="stopwatch-button" size=${this.buttonSize} description=${this.startButtonDescription} @click=${() => this.startTimer()}>
                             <kd-icon slot="icon" .icon=${startIcon}>
                         </kd-button>
-                        ${this.elapsedTime > 0 ? html`
-                            <kd-button class="stopwatch-button" kind="secondary" size=${this.buttonSize} description=${this.buttonDescription} @click=${() => this.stopTimer()}>
+                        ${this._elapsedTime > 0 ? html`
+                            <kd-button class="stopwatch-button" kind="secondary" size=${this.buttonSize} description=${this.resetButtonDescription} @click=${() => this.stopTimer()}>
                                 <kd-icon slot="icon" .icon=${resetIcon}>
                             </kd-button>
                         ` : null}
                     `
                 : html`
-                        <kd-button class="stopwatch-button" size=${this.buttonSize} description=${this.buttonDescription} @click=${() => this.pauseTimer()}>
+                        <kd-button class="stopwatch-button" size=${this.buttonSize} description=${this.pauseButtonDescription} @click=${() => this.pauseTimer()}>
                             <kd-icon slot="icon" .icon=${pauseIcon}>
                         </kd-button>
-                        <kd-button class="stopwatch-button" kind="secondary" size=${this.buttonSize} description=${this.buttonDescription} @click=${() => this.stopTimer()}>
+                        <kd-button class="stopwatch-button" kind="secondary" size=${this.buttonSize} description=${this.stopButtonDescription} @click=${() => this.stopTimer()}>
                             <kd-icon slot="icon" .icon=${stopIcon}>
                         </kd-button>
                     `
@@ -57,24 +98,24 @@ export class Stopwatch extends LitElement {
     }
 
     startTimer() {
-        this.startTime = Date.now() - this.elapsedTime;
-        this.timerInterval = setInterval(() => {
-            this.elapsedTime = Date.now() - this.startTime;
-            this.timeInString = this.timeToString(this.elapsedTime);
+        this._startTime = Date.now() - this._elapsedTime;
+        this._timerInterval = setInterval(() => {
+            this._elapsedTime = Date.now() - this._startTime;
+            this._timeInString = this.timeToString(this._elapsedTime);
         }, 30);
-        this.timerState = 'running';
+        this._timerState = 'running';
     }
 
     pauseTimer() {
-        clearInterval(this.timerInterval);
-        this.timerState = 'paused';
+        clearInterval(this._timerInterval);
+        this._timerState = 'paused';
     }
 
     stopTimer() {
-        clearInterval(this.timerInterval);
-        this.elapsedTime = 0;
-        this.timeInString = this.timeToString(this.elapsedTime);
-        this.timerState = 'stopped';
+        clearInterval(this._timerInterval);
+        this._elapsedTime = 0;
+        this._timeInString = this.timeToString(this._elapsedTime);
+        this._timerState = 'stopped';
     }
 
     timeToString(time: number) {
