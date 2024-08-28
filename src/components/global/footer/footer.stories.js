@@ -45,6 +45,6 @@ export const Footer = {
 Footer.parameters = {
   design: {
     type: 'figma',
-    url: 'https://www.figma.com/file/zGyRSDM6stIrSjC3TOyGGQ/719820--Kyndryl-Bridge-Navigation-Patterns?node-id=1921%3A5110&t=l4gSUzqO6Vbo3YOX-1',
+    url: 'https://www.figma.com/design/CQuDZEeLiuGiALvCWjAKlu/Applications---Component-Library?node-id=10033-1598&m=dev',
   },
 };
