@@ -33,6 +33,12 @@ export {
   DropdownOption,
   DropdownCategory,
 } from './components/reusable/dropdown';
+export {
+  DropdownAddNewBtn,
+  DropdownAddNewBtnOption,
+} from './components/reusable/dropdownAddNewBtn';
+export { Details } from './components/reusable/details';
+export { RepeatInput } from './components/reusable/repeatInput/repeatInput';
 export { DatePicker } from './components/reusable/datePicker';
 export { DateRangePicker } from './components/reusable/daterangepicker';
 export { Breadcrumbs, BreadcrumbItem } from './components/reusable/breadcrumbs';

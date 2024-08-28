@@ -1,0 +1,43 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  /* web components are display: inline; by default */
+  display: block;
+}
+
+.component {
+  // example typography usage
+  @include typography.type-ui-02;
+}
+
+.detail-prop {
+  background-color: lightgreen;
+  animation-name: detail-prop-animation;
+  animation-duration: 4s;
+}
+
+.gradient-text {
+  // background: linear-gradient(to right, yellow, violet);
+  padding: 0.5rem;
+  animation-name: gradient-prop-animation;
+  animation-duration: 4s;
+}
+
+@keyframes gradient-prop-animation {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes detail-prop-animation {
+  from {
+    background-color: lightgreen;
+  }
+  to {
+    background-color: yellow;
+  }
+}

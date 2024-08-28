@@ -1,0 +1,85 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/form-input.scss';
+
+:host {
+  /* web components are display: inline; by default */
+  display: inline-block;
+}
+
+.input-wrapper {
+  .context-icon {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+  }
+
+  &.icon--right .context-icon {
+    left: auto;
+    right: 16px;
+  }
+
+  &.icon--left input {
+    padding-left: 48px;
+  }
+}
+
+slot[name='icon']::slotted(*) {
+  display: block;
+}
+
+.size--sm {
+  height: 32px;
+}
+
+.size--md {
+  height: 48px;
+}
+
+input {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  border: 1px solid var(--kd-color-border-ui);
+  border-radius: 4px;
+  height: 48px;
+  padding: 0 48px 0 16px;
+
+  &.size--sm {
+    height: 32px;
+  }
+
+  &.size--lg {
+    height: 56px;
+  }
+
+  &.icon--left {
+    padding-left: 48px;
+  }
+}
+
+.clear {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--kd-color-text-primary);
+  background: var(--kd-color-background-inverse);
+  display: block;
+
+  &[disabled] {
+    color: var(--kd-color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  kd-icon {
+    display: block;
+  }
+}
