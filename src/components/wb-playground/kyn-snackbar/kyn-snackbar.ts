@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import SnackbarStyles from './kyn-snackbar-wb.scss';
+import SnackbarStyles from './kyn-snackbar.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/link';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
@@ -10,15 +10,27 @@ import closeIcon from '@carbon/icons/es/close/24';
 /**
  *  Snackbar component.
  */
-@customElement('kyn-snackbar-wb')
-export class KynSnackbarWb extends LitElement {
+@customElement('kyn-snackbar')
+export class KynSnackbar extends LitElement {
   static override styles = [SnackbarStyles];
 
+  /**
+   * Message to be displayed in snackbar notification.
+   */
   @property({ type: String })
   message = '';
 
+  /**
+   * Snackbar notification visibility status.
+   */
   @property({ type: Boolean })
   snackbarVisible = false;
+
+  /**
+   * Unique id to isolate snackbar notification for toggling open/close
+   */
+  @property({ type: String })
+  snackbarId = '';
 
   override render() {
     return html` ${this.snackbarVisible ? this._renderSnackbar() : null} `;
@@ -32,10 +44,10 @@ export class KynSnackbarWb extends LitElement {
           <button id="undo">UNDO</button>
           <button
             id="x-out"
-            @click=${this.toggleSnackbar}
+            @click=${() => this._toggleSnackbar()}
             @keydown=${(e: KeyboardEvent) => {
               if (e.key === 'Enter') {
-                this.toggleSnackbar();
+                this._toggleSnackbar();
               }
             }}
           >
@@ -46,11 +58,13 @@ export class KynSnackbarWb extends LitElement {
     `;
   }
 
-  toggleSnackbar() {
+  private _toggleSnackbar() {
     this.snackbarVisible = !this.snackbarVisible;
     this.dispatchEvent(
       new CustomEvent('visibility-changed', {
         detail: { visible: this.snackbarVisible },
+        bubbles: true,
+        composed: true,
       })
     );
   }
@@ -58,6 +72,6 @@ export class KynSnackbarWb extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-snackbar-wb': KynSnackbarWb;
+    'kyn-snackbar': KynSnackbar;
   }
 }
