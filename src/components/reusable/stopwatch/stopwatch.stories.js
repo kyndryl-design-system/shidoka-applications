@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import './index';
+import { action } from '@storybook/addon-actions';
 
 export default {
     title: 'Components/Stopwatch',
@@ -30,6 +31,8 @@ export const Stopwatch = {
                 pauseButtonDescription=${args.pauseButtonDescription}
                 stopButtonDescription=${args.stopButtonDescription}
                 resetButtonDescription=${args.resetButtonDescription}
+                @on-pause=${(e) => action(e.type)(e)}
+                @on-stop=${(e) => action(e.type)(e)}
             ></kyn-stopwatch>
         `;
     },

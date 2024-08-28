@@ -11,6 +11,8 @@ import resetIcon from '@carbon/icons/es/reset/20';
 
 /**
  * Stopwatch.
+ * @fires on-pause - Emits the current time when the stopwatch is paused.
+ * @fires on-stop - Emits the current time when the stopwatch is stopped or reset.
  */
 @customElement("kyn-stopwatch")
 export class Stopwatch extends LitElement {
@@ -74,20 +76,20 @@ export class Stopwatch extends LitElement {
                 <div class="stopwatch-controls">
                     ${this._timerState === 'stopped' || this._timerState === 'paused'
                 ? html`
-                        <kd-button class="stopwatch-button" size=${this.buttonSize} description=${this.startButtonDescription} @click=${() => this.startTimer()}>
+                        <kd-button class="stopwatch-button" size=${this.buttonSize} description=${this.startButtonDescription} @click=${() => this._startTimer()}>
                             <kd-icon slot="icon" .icon=${startIcon}>
                         </kd-button>
                         ${this._elapsedTime > 0 ? html`
-                            <kd-button class="stopwatch-button" kind="secondary" size=${this.buttonSize} description=${this.resetButtonDescription} @click=${() => this.stopTimer()}>
+                            <kd-button class="stopwatch-button" kind="secondary" size=${this.buttonSize} description=${this.resetButtonDescription} @click=${() => this._stopTimer()}>
                                 <kd-icon slot="icon" .icon=${resetIcon}>
                             </kd-button>
                         ` : null}
                     `
                 : html`
-                        <kd-button class="stopwatch-button" size=${this.buttonSize} description=${this.pauseButtonDescription} @click=${() => this.pauseTimer()}>
+                        <kd-button class="stopwatch-button" size=${this.buttonSize} description=${this.pauseButtonDescription} @click=${() => this._pauseTimer()}>
                             <kd-icon slot="icon" .icon=${pauseIcon}>
                         </kd-button>
-                        <kd-button class="stopwatch-button" kind="secondary" size=${this.buttonSize} description=${this.stopButtonDescription} @click=${() => this.stopTimer()}>
+                        <kd-button class="stopwatch-button" kind="secondary" size=${this.buttonSize} description=${this.stopButtonDescription} @click=${() => this._stopTimer()}>
                             <kd-icon slot="icon" .icon=${stopIcon}>
                         </kd-button>
                     `
@@ -97,28 +99,30 @@ export class Stopwatch extends LitElement {
         `;
     }
 
-    startTimer() {
+    private _startTimer() {
         this._startTime = Date.now() - this._elapsedTime;
         this._timerInterval = setInterval(() => {
             this._elapsedTime = Date.now() - this._startTime;
-            this._timeInString = this.timeToString(this._elapsedTime);
+            this._timeInString = this._timeToString(this._elapsedTime);
         }, 30);
         this._timerState = 'running';
     }
 
-    pauseTimer() {
+    private _pauseTimer() {
         clearInterval(this._timerInterval);
         this._timerState = 'paused';
+        this._emitPause();
     }
 
-    stopTimer() {
+    private _stopTimer() {
         clearInterval(this._timerInterval);
-        this._elapsedTime = 0;
-        this._timeInString = this.timeToString(this._elapsedTime);
         this._timerState = 'stopped';
+        this._emitStop();
+        this._elapsedTime = 0;
+        this._timeInString = this._timeToString(this._elapsedTime);
     }
 
-    timeToString(time: number) {
+    private _timeToString(time: number) {
         const diffInHrs = time / 3600000;
         const hh = Math.floor(diffInHrs);
 
@@ -136,6 +140,26 @@ export class Stopwatch extends LitElement {
         const formattedMS = ms.toString().padStart(2, "0");
 
         return `${formattedMM}:${formattedSS}:${formattedMS}`;
+    }
+
+    private _emitPause() {
+        const event = new CustomEvent('on-pause', {
+            detail: {
+                time: this._timeInString,
+                action: 'pause'
+            }
+        });
+        this.dispatchEvent(event);
+    }
+
+    private _emitStop() {
+        const event = new CustomEvent('on-stop', {
+            detail: {
+                time: this._timeInString,
+                action: 'stop'
+            }
+        });
+        this.dispatchEvent(event);
     }
 }
 
