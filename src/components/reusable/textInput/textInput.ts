@@ -28,25 +28,6 @@ import errorIcon from '@carbon/icons/es/warning--filled/24';
 export class TextInput extends FormMixin(LitElement) {
   static override styles = TextInputScss;
 
-  // /** @ignore */
-  // static override shadowRootOptions = {
-  //   ...LitElement.shadowRootOptions,
-  //   delegatesFocus: true,
-  // };
-
-  // /**
-  //  * Associate the component with forms.
-  //  * @ignore
-  //  */
-  // static formAssociated = true;
-
-  // /**
-  //  * Attached internals for form association.
-  //  * @ignore
-  //  */
-  // @state()
-  // internals = this.attachInternals();
-
   /** Input type, limited to options that are "text like". */
   @property({ type: String })
   type = 'text';
@@ -59,17 +40,9 @@ export class TextInput extends FormMixin(LitElement) {
   @property({ type: String })
   caption = '';
 
-  // /** Input value. */
-  // @property({ type: String })
-  // value = '';
-
   /** Input placeholder. */
   @property({ type: String })
   placeholder = '';
-
-  // /** Input name. */
-  // @property({ type: String })
-  // name = '';
 
   /** Makes the input required. */
   @property({ type: Boolean })
@@ -78,10 +51,6 @@ export class TextInput extends FormMixin(LitElement) {
   /** Input disabled state. */
   @property({ type: Boolean })
   disabled = false;
-
-  // /** Input invalid text. */
-  // @property({ type: String })
-  // invalidText = '';
 
   /** RegEx pattern to validate. */
   @property({ type: String })
@@ -129,20 +98,6 @@ export class TextInput extends FormMixin(LitElement) {
    */
   @queryAssignedElements({ slot: 'icon' })
   iconSlot!: Array<HTMLElement>;
-
-  // /**
-  //  * Internal validation message.
-  //  * @ignore
-  //  */
-  // @state()
-  // internalValidationMsg = '';
-
-  // /**
-  //  * isInvalid when internalValidationMsg or invalidText is non-empty.
-  //  * @ignore
-  //  */
-  // @state()
-  // isInvalid = false;
 
   override render() {
     return html`
@@ -274,33 +229,15 @@ export class TextInput extends FormMixin(LitElement) {
     }
   }
 
-  // override updated(changedProps: any) {
-  //   if (
-  //     changedProps.has('invalidText') ||
-  //     changedProps.has('internalValidationMsg')
-  //   ) {
-  //     //check if any (internal / external )error msg. present then isInvalid is true
-  //     this.isInvalid =
-  //       this.invalidText !== '' || this.internalValidationMsg !== ''
-  //         ? true
-  //         : false;
-  //   }
+  override updated(changedProps: any) {
+    // preserve FormMixin updated function
+    this._onUpdated(changedProps);
 
-  //   if (changedProps.has('value')) {
-  //     this.inputEl.value = this.value;
-  //     // set form data value
-  //     // this._internals.setFormValue(this.value);
-
-  //     this._validate(false, false);
-  //   }
-
-  //   if (
-  //     changedProps.has('invalidText') &&
-  //     changedProps.get('invalidText') !== undefined
-  //   ) {
-  //     this._validate(false, false);
-  //   }
-  // }
+    if (changedProps.has('value')) {
+      // set value on input element
+      this.inputEl.value = this.value;
+    }
+  }
 
   override firstUpdated() {
     this.determineIfSlotted();
@@ -309,42 +246,6 @@ export class TextInput extends FormMixin(LitElement) {
   private determineIfSlotted() {
     this.iconSlotted = this.iconSlot.length ? true : false;
   }
-
-  // private _handleFormdata(e: any) {
-  //   e.formData.append(this.name, this.value);
-  // }
-
-  // private _handleInvalid() {
-  //   this._validate(true, false);
-  // }
-
-  // override connectedCallback(): void {
-  //   super.connectedCallback();
-
-  //   if (this._internals.form) {
-  //     this._internals.form.addEventListener('formdata', (e) =>
-  //       this._handleFormdata(e)
-  //     );
-
-  //     this.addEventListener('invalid', () => {
-  //       this._handleInvalid();
-  //     });
-  //   }
-  // }
-
-  // override disconnectedCallback(): void {
-  //   if (this._internals.form) {
-  //     this._internals.form.removeEventListener('formdata', (e) =>
-  //       this._handleFormdata(e)
-  //     );
-
-  //     this.removeEventListener('invalid', () => {
-  //       this._handleInvalid();
-  //     });
-  //   }
-
-  //   super.disconnectedCallback();
-  // }
 }
 
 declare global {

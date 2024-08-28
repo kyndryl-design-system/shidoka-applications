@@ -10,6 +10,9 @@ export declare class FormMixinInterface {
   invalidText: string;
   _internalValidationMsg: string;
   _isInvalid: boolean;
+  _onUpdated: Function;
+  _onConnected: Function;
+  _onDisconnected: Function;
 }
 
 export const FormMixin = <T extends Constructor<LitElement>>(superClass: T) => {
@@ -61,40 +64,46 @@ export const FormMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     @state()
     _isInvalid = false;
 
+    // /** Handles the form element formdata event and appends the name/value. Alternative solution to internals.setFormValue. */
     // private _handleFormdata(e: any) {
     //   e.formData.append(this.name, this.value);
     // }
 
+    /** Handles the invalid event, triggered on form submit, and runs validation. */
     private _handleInvalid() {
       this._validate(true, false);
     }
 
+    /** Component _validate function reference. */
     abstract _validate(interacted: Boolean, report: Boolean): void;
 
-    override updated(changedProps: any) {
+    private _onUpdated(changedProps: any) {
       if (changedProps.has('value')) {
+        // set form value on element internals
         this._internals.setFormValue(this.value);
+
+        // trigger validation
+        this._validate(false, false);
       }
 
       if (
         changedProps.has('invalidText') ||
         changedProps.has('_internalValidationMsg')
       ) {
-        //check if any (internal / external) error msg. present then isInvalid is true
+        // set _isInvalid prop based on internal or external invalid message presence
         this._isInvalid =
           this.invalidText !== '' || this._internalValidationMsg !== ''
             ? true
             : false;
       }
-
-      if (changedProps.has('value') || changedProps.has('invalidText')) {
-        this._validate(false, false);
-      }
     }
 
-    override connectedCallback(): void {
-      super.connectedCallback();
+    override updated(changedProps: any) {
+      this._onUpdated(changedProps);
+    }
 
+    private _onConnected() {
+      // attach event listeners if within a form
       if (this._internals.form) {
         // this._internals.form.addEventListener('formdata', (e) =>
         //   this._handleFormdata(e)
@@ -104,7 +113,14 @@ export const FormMixin = <T extends Constructor<LitElement>>(superClass: T) => {
       }
     }
 
-    override disconnectedCallback(): void {
+    override connectedCallback(): void {
+      super.connectedCallback();
+
+      this._onConnected();
+    }
+
+    private _onDisconnected() {
+      // detach event listeners if within a form
       if (this._internals.form) {
         // this._internals.form.removeEventListener('formdata', (e) =>
         //   this._handleFormdata(e)
@@ -112,6 +128,10 @@ export const FormMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
         this.removeEventListener('invalid', this._handleInvalid);
       }
+    }
+
+    override disconnectedCallback(): void {
+      this._onDisconnected();
 
       super.disconnectedCallback();
     }
