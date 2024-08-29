@@ -10,6 +10,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import DropdownScss from './dropdown.scss';
 import './dropdownOption';
 import '../tag';
+import { FormMixin } from '../../../common/mixins/form-input';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import downIcon from '@carbon/icons/es/chevron--down/24';
 import errorIcon from '@carbon/icons/es/warning--filled/24';
@@ -25,27 +26,8 @@ import clearIcon16 from '@carbon/icons/es/close/16';
  * @slot label - Slot for input label.
  */
 @customElement('kyn-dropdown')
-export class Dropdown extends LitElement {
+export class Dropdown extends FormMixin(LitElement) {
   static override styles = DropdownScss;
-
-  /** @ignore */
-  static override shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
-  };
-
-  /**
-   * Associate the component with forms.
-   * @ignore
-   */
-  static formAssociated = true;
-
-  /**
-   * Attached internals for form association.
-   * @ignore
-   */
-  @state()
-  internals = this.attachInternals();
 
   /** Update by value instead of deriving value from child selections. */
   @property({ type: Boolean })
@@ -66,10 +48,6 @@ export class Dropdown extends LitElement {
   /** Dropdown placeholder. */
   @property({ type: String })
   placeholder = '';
-
-  /** Dropdown name. */
-  @property({ type: String })
-  name = '';
 
   /** Listbox/drawer open state. */
   @property({ type: Boolean })
@@ -94,10 +72,6 @@ export class Dropdown extends LitElement {
   /** Dropdown disabled state. */
   @property({ type: Boolean })
   disabled = false;
-
-  /** Dropdown invalid text. */
-  @property({ type: String })
-  invalidText = '';
 
   /** Hide the tags below multi-select. */
   @property({ type: Boolean })
@@ -126,12 +100,6 @@ export class Dropdown extends LitElement {
    */
   @property({ type: Boolean })
   selectAllIndeterminate = false;
-
-  /**
-   * Dropdown value(s).
-   */
-  @property({ type: String })
-  value: any = '';
 
   /**
    * Selected option text, automatically derived.
@@ -189,20 +157,6 @@ export class Dropdown extends LitElement {
   listboxEl!: HTMLElement;
 
   /**
-   * Internal validation message.
-   * @ignore
-   */
-  @state()
-  internalValidationMsg = '';
-
-  /**
-   * isInvalid when internalValidationMsg or invalidText is non-empty.
-   * @ignore
-   */
-  @state()
-  isInvalid = false;
-
-  /**
    * Open drawer upwards.
    * @ignore
    */
@@ -258,7 +212,7 @@ export class Dropdown extends LitElement {
               name=${this.name}
               ?required=${this.required}
               ?disabled=${this.disabled}
-              ?invalid=${this.isInvalid}
+              ?invalid=${this._isInvalid}
               tabindex=${this.disabled ? '' : '0'}
               @click=${() => this.handleClick()}
               @keydown=${(e: any) => this.handleButtonKeydown(e)}
@@ -360,7 +314,7 @@ export class Dropdown extends LitElement {
               `
             : null}
           <!--
-          ${this.isInvalid
+          ${this._isInvalid
             ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
             : null}
             -->
@@ -384,10 +338,10 @@ export class Dropdown extends LitElement {
         ${this.caption !== ''
           ? html` <div class="caption">${this.caption}</div> `
           : null}
-        ${this.isInvalid
+        ${this._isInvalid
           ? html`
               <div class="error">
-                ${this.invalidText || this.internalValidationMsg}
+                ${this.invalidText || this._internalValidationMsg}
               </div>
             `
           : null}
@@ -798,19 +752,15 @@ export class Dropdown extends LitElement {
     }
   }
 
-  private _handleFormdata(e: any) {
-    if (this.multiple) {
-      this.value.forEach((value: string) => {
-        e.formData.append(this.name, value);
-      });
-    } else {
-      e.formData.append(this.name, this.value);
-    }
-  }
-
-  private _handleInvalid() {
-    this._validate(true, false);
-  }
+  // private _handleFormdata(e: any) {
+  //   if (this.multiple) {
+  //     this.value.forEach((value: string) => {
+  //       e.formData.append(this.name, value);
+  //     });
+  //   } else {
+  //     e.formData.append(this.name, this.value);
+  //   }
+  // }
 
   private _handleClickOut(e: Event) {
     if (!e.composedPath().includes(this)) {
@@ -821,6 +771,9 @@ export class Dropdown extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
 
+    // preserve FormMixin connectedCallback function
+    this._onConnected();
+
     document.addEventListener('click', (e) => this._handleClickOut(e));
 
     // capture child options click event
@@ -828,32 +781,15 @@ export class Dropdown extends LitElement {
 
     // capture child options blur event
     this.addEventListener('on-blur', (e: any) => this._handleBlur(e));
-
-    if (this.internals.form) {
-      this.internals.form.addEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-
-      this.addEventListener('invalid', () => {
-        this._handleInvalid();
-      });
-    }
   }
 
   override disconnectedCallback() {
+    // preserve FormMixin disconnectedCallback function
+    this._onDisconnected();
+
     document.removeEventListener('click', (e) => this._handleClickOut(e));
     this.addEventListener('on-click', (e: any) => this._handleClick(e));
     this.addEventListener('on-blur', (e: any) => this._handleBlur(e));
-
-    if (this.internals.form) {
-      this.internals.form.removeEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-
-      this.removeEventListener('invalid', () => {
-        this._handleInvalid();
-      });
-    }
 
     super.disconnectedCallback();
   }
@@ -907,16 +843,16 @@ export class Dropdown extends LitElement {
       this.invalidText !== '' ? this.invalidText : InternalMsg;
 
     // set validity on custom element, anchor to buttonEl
-    this.internals.setValidity(Validity, ValidationMessage, this.buttonEl);
+    this._internals.setValidity(Validity, ValidationMessage, this.buttonEl);
 
     // set internal validation message if value was changed by user input
     if (interacted) {
-      this.internalValidationMsg = InternalMsg;
+      this._internalValidationMsg = InternalMsg;
     }
 
     // focus the buttonEl to show validity
     if (report) {
-      this.internals.reportValidity();
+      this._internals.reportValidity();
     }
   }
 
@@ -939,27 +875,10 @@ export class Dropdown extends LitElement {
   }
 
   override updated(changedProps: any) {
-    if (
-      changedProps.has('invalidText') ||
-      changedProps.has('internalValidationMsg')
-    ) {
-      //check if any (internal / external )error msg. present then isInvalid is true
-      this.isInvalid =
-        this.invalidText !== '' || this.internalValidationMsg !== ''
-          ? true
-          : false;
-    }
-
-    if (
-      changedProps.has('invalidText') &&
-      changedProps.get('invalidText') !== undefined
-    ) {
-      this._validate(false, false);
-    }
+    // preserve FormMixin updated function
+    this._onUpdated(changedProps);
 
     if (changedProps.has('value')) {
-      this._validate(false, false);
-
       const Slot: any = this.shadowRoot?.querySelector('slot#children');
       const Options: Array<any> = Slot.assignedElements().filter(
         (option: any) => !option.disabled
