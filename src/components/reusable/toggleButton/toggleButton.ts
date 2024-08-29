@@ -125,6 +125,12 @@ export class ToggleButton extends FormMixin(LitElement) {
       this._internals.setFormValue(this.checked ? this.value : null);
     }
   }
+
+  // private _handleFormdata(e: any) {
+  //   if (this.checked) {
+  //     e.formData.append(this.name, this.value);
+  //   }
+  // }
 }
 
 declare global {
