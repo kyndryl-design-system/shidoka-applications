@@ -123,6 +123,7 @@ export class Stopwatch extends LitElement {
     }
 
     private _timeToString(time: number) {
+
         const diffInHrs = time / 3600000;
         const hh = Math.floor(diffInHrs);
 
