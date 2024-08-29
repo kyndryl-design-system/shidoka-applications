@@ -8,6 +8,7 @@ import {
 } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { FormMixin } from '../../../common/mixins/form-input';
 import TextInputScss from './textInput.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
@@ -24,27 +25,8 @@ import errorIcon from '@carbon/icons/es/warning--filled/24';
  * @slot icon - Slot for contextual icon.
  */
 @customElement('kyn-text-input')
-export class TextInput extends LitElement {
+export class TextInput extends FormMixin(LitElement) {
   static override styles = TextInputScss;
-
-  /** @ignore */
-  static override shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
-  };
-
-  /**
-   * Associate the component with forms.
-   * @ignore
-   */
-  static formAssociated = true;
-
-  /**
-   * Attached internals for form association.
-   * @ignore
-   */
-  @state()
-  internals = this.attachInternals();
 
   /** Input type, limited to options that are "text like". */
   @property({ type: String })
@@ -58,17 +40,9 @@ export class TextInput extends LitElement {
   @property({ type: String })
   caption = '';
 
-  /** Input value. */
-  @property({ type: String })
-  value = '';
-
   /** Input placeholder. */
   @property({ type: String })
   placeholder = '';
-
-  /** Input name. */
-  @property({ type: String })
-  name = '';
 
   /** Makes the input required. */
   @property({ type: Boolean })
@@ -77,10 +51,6 @@ export class TextInput extends LitElement {
   /** Input disabled state. */
   @property({ type: Boolean })
   disabled = false;
-
-  /** Input invalid text. */
-  @property({ type: String })
-  invalidText = '';
 
   /** RegEx pattern to validate. */
   @property({ type: String })
@@ -113,7 +83,7 @@ export class TextInput extends LitElement {
    * @ignore
    */
   @query('input')
-  inputEl!: HTMLInputElement;
+  _inputEl!: HTMLInputElement;
 
   /**
    * Evaluates if an icon is slotted.
@@ -128,20 +98,6 @@ export class TextInput extends LitElement {
    */
   @queryAssignedElements({ slot: 'icon' })
   iconSlot!: Array<HTMLElement>;
-
-  /**
-   * Internal validation message.
-   * @ignore
-   */
-  @state()
-  internalValidationMsg = '';
-
-  /**
-   * isInvalid when internalValidationMsg or invalidText is non-empty.
-   * @ignore
-   */
-  @state()
-  isInvalid = false;
 
   override render() {
     return html`
@@ -177,16 +133,16 @@ export class TextInput extends LitElement {
             placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
-            ?invalid=${this.isInvalid}
-            aria-invalid=${this.isInvalid}
-            aria-describedby=${this.isInvalid ? 'error' : ''}
+            ?invalid=${this._isInvalid}
+            aria-invalid=${this._isInvalid}
+            aria-describedby=${this._isInvalid ? 'error' : ''}
             pattern=${ifDefined(this.pattern)}
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             @input=${(e: any) => this._handleInput(e)}
           />
 
-          ${this.isInvalid
+          ${this._isInvalid
             ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
             : null}
           ${this.value !== ''
@@ -207,10 +163,10 @@ export class TextInput extends LitElement {
         ${this.caption !== ''
           ? html` <div class="caption">${this.caption}</div> `
           : null}
-        ${this.isInvalid
+        ${this._isInvalid
           ? html`
               <div id="error" class="error">
-                ${this.invalidText || this.internalValidationMsg}
+                ${this.invalidText || this._internalValidationMsg}
               </div>
             `
           : null}
@@ -227,7 +183,7 @@ export class TextInput extends LitElement {
 
   private _handleClear() {
     this.value = '';
-    this.inputEl.value = '';
+    this._inputEl.value = '';
 
     this._validate(true, false);
     this._emitValue();
@@ -251,53 +207,35 @@ export class TextInput extends LitElement {
     // get validity state from inputEl, combine customError flag if invalidText is provided
     const Validity =
       this.invalidText !== ''
-        ? { ...this.inputEl.validity, customError: true }
-        : this.inputEl.validity;
+        ? { ...this._inputEl.validity, customError: true }
+        : this._inputEl.validity;
     // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
     const ValidationMessage =
       this.invalidText !== ''
         ? this.invalidText
-        : this.inputEl.validationMessage;
+        : this._inputEl.validationMessage;
 
     // set validity on custom element, anchor to inputEl
-    this.internals.setValidity(Validity, ValidationMessage, this.inputEl);
+    this._internals.setValidity(Validity, ValidationMessage, this._inputEl);
 
     // set internal validation message if value was changed by user input
     if (interacted) {
-      this.internalValidationMsg = this.inputEl.validationMessage;
+      this._internalValidationMsg = this._inputEl.validationMessage;
     }
 
     // focus the form field to show validity
     if (report) {
-      this.internals.reportValidity();
+      this._internals.reportValidity();
     }
   }
 
   override updated(changedProps: any) {
-    if (
-      changedProps.has('invalidText') ||
-      changedProps.has('internalValidationMsg')
-    ) {
-      //check if any (internal / external )error msg. present then isInvalid is true
-      this.isInvalid =
-        this.invalidText !== '' || this.internalValidationMsg !== ''
-          ? true
-          : false;
-    }
+    // preserve FormMixin updated function
+    this._onUpdated(changedProps);
 
     if (changedProps.has('value')) {
-      this.inputEl.value = this.value;
-      // set form data value
-      // this.internals.setFormValue(this.value);
-
-      this._validate(false, false);
-    }
-
-    if (
-      changedProps.has('invalidText') &&
-      changedProps.get('invalidText') !== undefined
-    ) {
-      this._validate(false, false);
+      // set value on input element
+      this._inputEl.value = this.value;
     }
   }
 
@@ -307,42 +245,6 @@ export class TextInput extends LitElement {
 
   private determineIfSlotted() {
     this.iconSlotted = this.iconSlot.length ? true : false;
-  }
-
-  private _handleFormdata(e: any) {
-    e.formData.append(this.name, this.value);
-  }
-
-  private _handleInvalid() {
-    this._validate(true, false);
-  }
-
-  override connectedCallback(): void {
-    super.connectedCallback();
-
-    if (this.internals.form) {
-      this.internals.form.addEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-
-      this.addEventListener('invalid', () => {
-        this._handleInvalid();
-      });
-    }
-  }
-
-  override disconnectedCallback(): void {
-    if (this.internals.form) {
-      this.internals.form.removeEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-
-      this.removeEventListener('invalid', () => {
-        this._handleInvalid();
-      });
-    }
-
-    super.disconnectedCallback();
   }
 }
 

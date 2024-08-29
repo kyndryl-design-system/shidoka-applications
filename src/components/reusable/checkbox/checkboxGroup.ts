@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { deepmerge } from 'deepmerge-ts';
+import { FormMixin } from '../../../common/mixins/form-input';
 import CheckboxGroupScss from './checkboxGroup.scss';
 
 import '../textInput';
@@ -26,22 +27,12 @@ const _defaultTextStrings = {
  * @slot label - Slot for label text.
  */
 @customElement('kyn-checkbox-group')
-export class CheckboxGroup extends LitElement {
+export class CheckboxGroup extends FormMixin(LitElement) {
   static override styles = CheckboxGroupScss;
-
-  /**
-   * Associate the component with forms.
-   * @ignore
-   */
-  static formAssociated = true;
-
-  /** Checkbox input name attribute. */
-  @property({ type: String })
-  name = '';
 
   /** Checkbox group selected values. */
   @property({ type: Array })
-  value: Array<any> = [];
+  override value: Array<any> = [];
 
   /** Makes a single selection required. */
   @property({ type: Boolean })
@@ -111,10 +102,6 @@ export class CheckboxGroup extends LitElement {
   @state()
   _textStrings = _defaultTextStrings;
 
-  /** Checkbox group invalid text. */
-  @property({ type: String })
-  invalidText = '';
-
   // /**
   //  * Queries for slotted checkboxes.
   //  * @ignore
@@ -127,27 +114,6 @@ export class CheckboxGroup extends LitElement {
 
   @state()
   filteredCheckboxes: Array<any> = [];
-
-  /**
-   * Attached internals for form association.
-   * @ignore
-   */
-  @state()
-  internals = this.attachInternals();
-
-  /**
-   * Internal validation message.
-   * @ignore
-   */
-  @state()
-  internalValidationMsg = '';
-
-  /**
-   * isInvalid when internalValidationMsg or invalidText is non-empty.
-   * @ignore
-   */
-  @state()
-  isInvalid = false;
 
   override render() {
     return html`
@@ -185,7 +151,7 @@ export class CheckboxGroup extends LitElement {
             <slot name="label"></slot>
           </legend>
 
-          ${this.isInvalid
+          ${this._isInvalid
             ? html`
                 <div class="error">
                   <kd-icon
@@ -193,7 +159,7 @@ export class CheckboxGroup extends LitElement {
                     title=${this._textStrings.error}
                     aria-label=${this._textStrings.error}
                   ></kd-icon>
-                  ${this.invalidText || this.internalValidationMsg}
+                  ${this.invalidText || this._internalValidationMsg}
                 </div>
               `
             : null}
@@ -209,7 +175,7 @@ export class CheckboxGroup extends LitElement {
                     ?required=${this.required}
                     ?disabled=${this.disabled}
                     ?invalid=${this.invalidText !== '' ||
-                    this.internalValidationMsg !== ''}
+                    this._internalValidationMsg !== ''}
                   >
                     ${this._textStrings.selectAll}
                   </kyn-checkbox>
@@ -247,6 +213,9 @@ export class CheckboxGroup extends LitElement {
   }
 
   override updated(changedProps: any) {
+    // preserve FormMixin updated function
+    this._onUpdated(changedProps);
+
     if (changedProps.has('name')) {
       // set name for each checkbox
       this.checkboxes.forEach((checkbox: any) => {
@@ -255,8 +224,6 @@ export class CheckboxGroup extends LitElement {
     }
 
     if (changedProps.has('value')) {
-      this._validate(false, false);
-
       // set checked state for each checkbox
       this.checkboxes.forEach((checkbox: any) => {
         checkbox.checked = this.value.includes(checkbox.value);
@@ -276,11 +243,11 @@ export class CheckboxGroup extends LitElement {
         CheckedBoxesCount < this.checkboxes.length && CheckedBoxesCount > 0;
 
       // set form data value
-      // const entries = new FormData();
-      // this.value.forEach((value) => {
-      //   entries.append(this.name, value);
-      // });
-      // this.internals.setFormValue(entries);
+      const entries = new FormData();
+      this.value.forEach((value) => {
+        entries.append(this.name, value);
+      });
+      this._internals.setFormValue(entries);
     }
 
     if (changedProps.has('required')) {
@@ -301,23 +268,12 @@ export class CheckboxGroup extends LitElement {
     }
 
     if (
-      changedProps.has('invalidText') &&
-      changedProps.get('invalidText') !== undefined
-    ) {
-      this._validate(false, false);
-    }
-
-    if (
       changedProps.has('invalidText') ||
       changedProps.has('internalValidationMsg')
     ) {
-      this.isInvalid =
-        this.invalidText !== '' || this.internalValidationMsg !== ''
-          ? true
-          : false;
       // set invalid state for each checkbox
       this.checkboxes.forEach((checkbox: any) => {
-        checkbox.invalid = this.isInvalid;
+        checkbox.invalid = this._isInvalid;
       });
     }
 
@@ -343,16 +299,20 @@ export class CheckboxGroup extends LitElement {
       this.invalidText !== '' ? this.invalidText : InternalMsg;
 
     // set validity on custom element, anchor to first checkbox
-    this.internals.setValidity(Validity, ValidationMessage, this.checkboxes[0]);
+    this._internals.setValidity(
+      Validity,
+      ValidationMessage,
+      this.checkboxes[0]
+    );
 
     // set internal validation message if value was changed by user input
     if (interacted) {
-      this.internalValidationMsg = InternalMsg;
+      this._internalValidationMsg = InternalMsg;
     }
 
     // focus the first checkbox to show validity
     if (report) {
-      this.internals.reportValidity();
+      this._internals.reportValidity();
     }
   }
 
@@ -392,11 +352,11 @@ export class CheckboxGroup extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private _handleFormdata(e: any) {
-    this.value.forEach((value) => {
-      e.formData.append(this.name, value);
-    });
-  }
+  // private _handleFormdata(e: any) {
+  //   this.value.forEach((value) => {
+  //     e.formData.append(this.name, value);
+  //   });
+  // }
 
   private _handleFilter(e: any) {
     let visibleCount = 0;
@@ -466,10 +426,6 @@ export class CheckboxGroup extends LitElement {
     this._updateChildren();
     this._toggleRevealed(this.limitRevealed);
     this.requestUpdate();
-  }
-
-  private _handleInvalid() {
-    this._validate(true, false);
   }
 
   private _updateChildren() {
@@ -560,6 +516,9 @@ export class CheckboxGroup extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
 
+    // preserve FormMixin connectedCallback function
+    this._onConnected();
+
     // capture child checkboxes change event
     this.addEventListener('on-checkbox-change', (e: any) =>
       this._handleCheckboxChange(e)
@@ -569,19 +528,12 @@ export class CheckboxGroup extends LitElement {
     this.addEventListener('on-checkbox-subgroup-change', (e: any) =>
       this._handleSubgroupChange(e)
     );
-
-    if (this.internals.form) {
-      this.internals.form.addEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-
-      this.addEventListener('invalid', () => {
-        this._handleInvalid();
-      });
-    }
   }
 
   override disconnectedCallback() {
+    // preserve FormMixin disconnectedCallback function
+    this._onDisconnected();
+
     this.removeEventListener('on-checkbox-change', (e: any) =>
       this._handleCheckboxChange(e)
     );
@@ -589,16 +541,6 @@ export class CheckboxGroup extends LitElement {
     this.removeEventListener('on-checkbox-subgroup-change', (e: any) =>
       this._handleSubgroupChange(e)
     );
-
-    if (this.internals.form) {
-      this.internals.form.removeEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-
-      this.removeEventListener('invalid', () => {
-        this._handleInvalid();
-      });
-    }
 
     super.disconnectedCallback();
   }
