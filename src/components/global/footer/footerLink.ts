@@ -4,7 +4,7 @@ import FooterLinkScss from './footerLink.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 /**
- * Component for navigation links within the Footer.
+ * DEPRECATED. Component for navigation links within the Footer.
  * @fires on-click - Captures the click event and emits the original event details.
  * @slot unnamed - Slot for link text/content.
  */

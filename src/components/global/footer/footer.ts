@@ -8,7 +8,7 @@ import FooterScss from './footer.scss';
 /**
  * The global Footer component.
  * @fires on-root-link-click - Captures the logo link click event and emits the original event.
- * @slot unnamed - Default slot, for the footer-nav.
+ * @slot unnamed - Default slot, for links.
  * @slot logo - Slot for the logo, will overwrite the default logo.
  * @slot copyright - Slot for the copyright text.
  */
@@ -27,18 +27,19 @@ export class Footer extends LitElement {
 
     return html`
       <footer class="${classMap(classes)}">
-        <div class="footer-links"><slot></slot></div>
-        <div class="footer-cpr">
-          <div class="logo-container">
-            <a
-              href="${this.rootUrl}"
-              class="logo-link"
-              @click="${(e: Event) => this.handleRootLinkClick(e)}"
-            >
-              <slot name="logo">${unsafeHTML(logo)}</slot>
-            </a>
-          </div>
+        <div>
+          <div class="footer-links"><slot></slot></div>
           <div class="copyright"><slot name="copyright"></slot></div>
+        </div>
+
+        <div class="logo-container">
+          <a
+            href="${this.rootUrl}"
+            class="logo-link"
+            @click="${(e: Event) => this.handleRootLinkClick(e)}"
+          >
+            <slot name="logo">${unsafeHTML(logo)}</slot>
+          </a>
         </div>
       </footer>
     `;
