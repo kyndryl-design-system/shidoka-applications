@@ -1,0 +1,94 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+    display: inline-block;
+    width: 100%;
+}
+
+#card {
+    width: 100%;
+    height: inherit;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    min-height: 225px;
+
+    .card-img-wrapper {
+        width: 100%;
+        height: 30vh;
+        background-size: cover;
+    }
+
+    &.card--simple {
+        max-width: 450px;
+    }
+
+    &.card--vertical {
+        max-width: 450px;
+
+        .card-body {
+            padding-bottom: 80px;
+        }
+
+        .card-footer {
+            padding: 10px 20px;
+        }
+    }
+
+    &.card--horizontal {
+        max-width: 850px;
+        max-height: 400px;
+        display: flex;
+        flex-direction: row;
+
+        .card-img-wrapper {
+            width: 100%;
+            max-width: 35vw;
+            height: auto;
+        }
+
+        .card-body {
+            padding: 25px 30px 60px;
+        }
+
+        .card-footer {
+            padding: 10px 20px;
+        }
+    }
+
+    &.card--page {
+        max-width: 95%;
+        height: 275px;
+    }
+
+    .card-body {
+        padding: 25px 35px 0;
+    }
+
+    h3 {
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        color: dimgrey;
+    }
+
+    h2 {
+        margin: 12px 0 16px;
+    }
+
+    .card-footer {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding: 15px 30px;
+
+        kd-link {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+    }
+}

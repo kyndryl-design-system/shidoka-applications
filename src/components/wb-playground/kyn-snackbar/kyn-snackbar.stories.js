@@ -39,16 +39,16 @@ export const KynSnackbar = {
     };
 
     return html`
-      <div style="margin-bottom: 3rem;">
+      <div style="margin-bottom: 48px;">
         <p>
           Wrap your
           <code
-            style="background-color: rgba(0,0,0,0.6); padding: 0.5rem; color: white;"
+            style="background-color: rgba(0,0,0,0.6); padding: 8px; color: white;"
             >kyn-snackbar</code
           >
           component inside
           <code
-            style="background-color: rgba(0,0,0,0.6); padding: 0.5rem; color: white;"
+            style="background-color: rgba(0,0,0,0.6); padding: 8px; color: white;"
             >kyn-snackbar-container</code
           >
         </p>
@@ -59,7 +59,7 @@ export const KynSnackbar = {
           slot="anchor"
           kind="primary-app"
           class="slot-action-button"
-          style="margin-right: 2rem;"
+          style="margin-right: 32px;"
           @click=${(e) => toggleSnackbar(e, 'snackbar1')}
           >Open Snackbar 1</kd-button
         >

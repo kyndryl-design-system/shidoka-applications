@@ -4,8 +4,6 @@ import Styles from './kyn-linked-div-wb.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/link';
 import { customElement, property } from 'lit/decorators.js';
 
-////// INCLUDE IN A TARGET PROP
-
 /**
  * Linked div.
  * @slot body -- slot for body text
