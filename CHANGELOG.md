@@ -1,3 +1,17 @@
+## [1.34.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.0...v1.34.1) (2024-08-29)
+
+
+### Bug Fixes
+
+* husky commit linting on mac ([3cf61ff](https://github.com/kyndryl-design-system/shidoka-applications/commit/3cf61ffbecc8236acbdcc392d0d1117e1fc1a00b))
+
+# [1.34.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.33.3...v1.34.0) (2024-08-29)
+
+
+### Features
+
+* **footer:** footer design updates ([#222](https://github.com/kyndryl-design-system/shidoka-applications/issues/222)) ([0fd05be](https://github.com/kyndryl-design-system/shidoka-applications/commit/0fd05be6521f8628a31390757738f2b68dcbd65e))
+
 ## [1.33.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.33.2...v1.33.3) (2024-08-27)
 
 
