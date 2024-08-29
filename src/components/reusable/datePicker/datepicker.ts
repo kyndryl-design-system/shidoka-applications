@@ -1,8 +1,9 @@
 import { LitElement, html, PropertyValues } from 'lit';
-import { customElement, property, state, query } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { DATE_PICKER_TYPES } from './defs';
+import { FormMixin } from '../../../common/mixins/form-input';
 import DatePickerScss from './datepicker.scss';
 
 /**
@@ -14,27 +15,8 @@ import DatePickerScss from './datepicker.scss';
  */
 
 @customElement('kyn-date-picker')
-export class DatePicker extends LitElement {
+export class DatePicker extends FormMixin(LitElement) {
   static override styles = DatePickerScss;
-
-  /** @ignore */
-  static override shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
-  };
-
-  /**
-   * Associate the component with forms.
-   * @ignore
-   */
-  static formAssociated = true;
-
-  /**
-   * Attached internals for form association.
-   * @ignore
-   */
-  @state()
-  internals = this.attachInternals();
 
   /** Datepicker size. "sm", "md", or "lg". */
   @property({ type: String })
@@ -46,11 +28,7 @@ export class DatePicker extends LitElement {
 
   /** Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format. */
   @property({ type: String })
-  value = '';
-
-  /** Datepicker name. */
-  @property({ type: String })
-  name = '';
+  override value = '';
 
   /** Makes the date required. */
   @property({ type: Boolean })
@@ -59,10 +37,6 @@ export class DatePicker extends LitElement {
   /** Date disabled state. */
   @property({ type: Boolean })
   disabled = false;
-
-  /** Date invalid text. */
-  @property({ type: String })
-  invalidText = '';
 
   /** Date warning text */
   @property({ type: String })
@@ -95,21 +69,7 @@ export class DatePicker extends LitElement {
    * @ignore
    */
   @query('input')
-  inputEl!: HTMLInputElement;
-
-  /**
-   * Internal validation message.
-   * @ignore
-   */
-  @state()
-  internalValidationMsg = '';
-
-  /**
-   * isInvalid when internalValidationMsg or invalidText is non-empty.
-   * @ignore
-   */
-  @state()
-  isInvalid = false;
+  _inputEl!: HTMLInputElement;
 
   override render() {
     return html`
@@ -138,7 +98,7 @@ export class DatePicker extends LitElement {
             value=${this.value}
             ?required=${this.required}
             ?disabled=${this.disabled}
-            ?invalid=${this.isInvalid}
+            ?invalid=${this._isInvalid}
             min=${ifDefined(this.minDate)}
             max=${ifDefined(this.maxDate)}
             step=${ifDefined(this.step)}
@@ -148,14 +108,14 @@ export class DatePicker extends LitElement {
         ${this.caption !== ''
           ? html` <div class="caption">${this.caption}</div> `
           : null}
-        ${this.isInvalid
+        ${this._isInvalid
           ? html`
               <div class="error">
-                ${this.invalidText || this.internalValidationMsg}
+                ${this.invalidText || this._internalValidationMsg}
               </div>
             `
           : null}
-        ${this.warnText !== '' && !this.isInvalid
+        ${this.warnText !== '' && !this._isInvalid
           ? html`<div class="warn">${this.warnText}</div>`
           : null}
       </div>
@@ -179,30 +139,12 @@ export class DatePicker extends LitElement {
   }
 
   override updated(changedProps: PropertyValues) {
-    if (
-      changedProps.has('invalidText') ||
-      changedProps.has('internalValidationMsg')
-    ) {
-      //check if any (internal / external )error msg. present then isInvalid is true
-      this.isInvalid =
-        this.invalidText !== '' || this.internalValidationMsg !== ''
-          ? true
-          : false;
-    }
-
-    if (
-      changedProps.has('invalidText') &&
-      changedProps.get('invalidText') !== undefined
-    ) {
-      this._validate(false, false);
-    }
+    // preserve FormMixin updated function
+    this._onUpdated(changedProps);
 
     if (changedProps.has('value')) {
-      this.inputEl.value = this.value;
-      // set form data value
-      // this.internals.setFormValue(this.value);
-
-      this._validate(false, false);
+      // set value on input element
+      this._inputEl.value = this.value;
     }
   }
 
@@ -210,62 +152,26 @@ export class DatePicker extends LitElement {
     // get validity state from inputEl, combine customError flag if invalidText is provided
     const Validity =
       this.invalidText !== ''
-        ? { ...this.inputEl.validity, customError: true }
-        : this.inputEl.validity;
+        ? { ...this._inputEl.validity, customError: true }
+        : this._inputEl.validity;
     // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
     const ValidationMessage =
       this.invalidText !== ''
         ? this.invalidText
-        : this.inputEl.validationMessage;
+        : this._inputEl.validationMessage;
 
     // set validity on custom element, anchor to inputEl
-    this.internals.setValidity(Validity, ValidationMessage, this.inputEl);
+    this._internals.setValidity(Validity, ValidationMessage, this._inputEl);
 
     // set internal validation message if value was changed by user input
     if (interacted) {
-      this.internalValidationMsg = this.inputEl.validationMessage;
+      this._internalValidationMsg = this._inputEl.validationMessage;
     }
 
     // focus the form field to show validity
     if (report) {
-      this.internals.reportValidity();
+      this._internals.reportValidity();
     }
-  }
-
-  private _handleFormdata(e: any) {
-    e.formData.append(this.name, this.value);
-  }
-
-  private _handleInvalid() {
-    this._validate(true, false);
-  }
-
-  override connectedCallback(): void {
-    super.connectedCallback();
-
-    if (this.internals.form) {
-      this.internals.form.addEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-
-      this.addEventListener('invalid', () => {
-        this._handleInvalid();
-      });
-    }
-  }
-
-  override disconnectedCallback(): void {
-    if (this.internals.form) {
-      this.internals.form.removeEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-
-      this.removeEventListener('invalid', () => {
-        this._handleInvalid();
-      });
-    }
-
-    super.disconnectedCallback();
   }
 }
 declare global {

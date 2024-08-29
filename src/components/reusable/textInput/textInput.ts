@@ -83,7 +83,7 @@ export class TextInput extends FormMixin(LitElement) {
    * @ignore
    */
   @query('input')
-  inputEl!: HTMLInputElement;
+  _inputEl!: HTMLInputElement;
 
   /**
    * Evaluates if an icon is slotted.
@@ -183,7 +183,7 @@ export class TextInput extends FormMixin(LitElement) {
 
   private _handleClear() {
     this.value = '';
-    this.inputEl.value = '';
+    this._inputEl.value = '';
 
     this._validate(true, false);
     this._emitValue();
@@ -207,20 +207,20 @@ export class TextInput extends FormMixin(LitElement) {
     // get validity state from inputEl, combine customError flag if invalidText is provided
     const Validity =
       this.invalidText !== ''
-        ? { ...this.inputEl.validity, customError: true }
-        : this.inputEl.validity;
+        ? { ...this._inputEl.validity, customError: true }
+        : this._inputEl.validity;
     // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
     const ValidationMessage =
       this.invalidText !== ''
         ? this.invalidText
-        : this.inputEl.validationMessage;
+        : this._inputEl.validationMessage;
 
     // set validity on custom element, anchor to inputEl
-    this._internals.setValidity(Validity, ValidationMessage, this.inputEl);
+    this._internals.setValidity(Validity, ValidationMessage, this._inputEl);
 
     // set internal validation message if value was changed by user input
     if (interacted) {
-      this._internalValidationMsg = this.inputEl.validationMessage;
+      this._internalValidationMsg = this._inputEl.validationMessage;
     }
 
     // focus the form field to show validity
@@ -235,7 +235,7 @@ export class TextInput extends FormMixin(LitElement) {
 
     if (changedProps.has('value')) {
       // set value on input element
-      this.inputEl.value = this.value;
+      this._inputEl.value = this.value;
     }
   }
 

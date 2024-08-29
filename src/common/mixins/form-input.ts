@@ -6,7 +6,7 @@ type Constructor<T> = new (...args: any[]) => T;
 export declare class FormMixinInterface {
   _internals: any;
   name: string;
-  value: string;
+  value: any;
   invalidText: string;
   _internalValidationMsg: string;
   _isInvalid: boolean;
@@ -95,6 +95,13 @@ export const FormMixin = <T extends Constructor<LitElement>>(superClass: T) => {
           this.invalidText !== '' || this._internalValidationMsg !== ''
             ? true
             : false;
+      }
+
+      if (
+        changedProps.has('invalidText') &&
+        changedProps.get('invalidText') !== undefined
+      ) {
+        this._validate(false, false);
       }
     }
 

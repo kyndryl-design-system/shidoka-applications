@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
+import { FormMixin } from '../../../common/mixins/form-input';
 import ToggleButtonScss from './toggleButton.scss';
 
 /**
@@ -8,35 +9,8 @@ import ToggleButtonScss from './toggleButton.scss';
  * @slot unnamed - Slot for label text.
  */
 @customElement('kyn-toggle-button')
-export class ToggleButton extends LitElement {
+export class ToggleButton extends FormMixin(LitElement) {
   static override styles = ToggleButtonScss;
-
-  /** @ignore */
-  static override shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
-  };
-
-  /**
-   * Associate the component with forms.
-   * @ignore
-   */
-  static formAssociated = true;
-
-  /**
-   * Attached internals for form association.
-   * @ignore
-   */
-  @state()
-  internals = this.attachInternals();
-
-  /** Input name. */
-  @property({ type: String })
-  name = '';
-
-  /** Input value. */
-  @property({ type: String })
-  value = '';
 
   /** Checkbox checked state. */
   @property({ type: Boolean })
@@ -65,6 +39,13 @@ export class ToggleButton extends LitElement {
   /** Hides the label visually. */
   @property({ type: Boolean })
   hideLabel = false;
+
+  /**
+   * Queries the <input> DOM element.
+   * @internal
+   */
+  @query('input')
+  _inputEl!: HTMLInputElement;
 
   override render() {
     return html`
@@ -110,37 +91,39 @@ export class ToggleButton extends LitElement {
     this.dispatchEvent(event);
   }
 
+  private _validate(interacted: Boolean, report: Boolean) {
+    // get validity state from inputEl, combine customError flag if invalidText is provided
+    const Validity =
+      this.invalidText !== ''
+        ? { ...this._inputEl.validity, customError: true }
+        : this._inputEl.validity;
+    // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
+    const ValidationMessage =
+      this.invalidText !== ''
+        ? this.invalidText
+        : this._inputEl.validationMessage;
+
+    // set validity on custom element, anchor to inputEl
+    this._internals.setValidity(Validity, ValidationMessage, this._inputEl);
+
+    // set internal validation message if value was changed by user input
+    if (interacted) {
+      this._internalValidationMsg = this._inputEl.validationMessage;
+    }
+
+    // focus the form field to show validity
+    if (report) {
+      this._internals.reportValidity();
+    }
+  }
+
   override updated(changedProps: any) {
+    this._onUpdated(changedProps);
+
     if (changedProps.has('checked')) {
       // set form data value
-      // this.internals.setFormValue(this.checked ? this.value : null);
+      this._internals.setFormValue(this.checked ? this.value : null);
     }
-  }
-
-  private _handleFormdata(e: any) {
-    if (this.checked) {
-      e.formData.append(this.name, this.value);
-    }
-  }
-
-  override connectedCallback(): void {
-    super.connectedCallback();
-
-    if (this.internals.form) {
-      this.internals.form.addEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-    }
-  }
-
-  override disconnectedCallback(): void {
-    if (this.internals.form) {
-      this.internals.form.removeEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-    }
-
-    super.disconnectedCallback();
   }
 }
 
