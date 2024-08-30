@@ -40,7 +40,7 @@ export class KynSnackbar extends LitElement {
   private _renderSnackbar() {
     return html`
       <div class="snackbar">
-        <slot></slot>
+        <span><slot></slot></span>
         <div class="right-aligned-controls">
           <button id="undo">UNDO</button>
           <button
