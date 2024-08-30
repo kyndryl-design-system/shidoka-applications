@@ -10,6 +10,8 @@ export declare class FormMixinInterface {
   invalidText: string;
   _internalValidationMsg: string;
   _isInvalid: boolean;
+  _handleInvalid: Function;
+  _handleFormdata: Function;
   _onUpdated: Function;
   _onConnected: Function;
   _onDisconnected: Function;
@@ -64,15 +66,19 @@ export const FormMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     @state()
     _isInvalid = false;
 
-    // /** Handles the form element formdata event and appends the name/value. Alternative solution to internals.setFormValue. */
-    // private _handleFormdata(e: any) {
+    // /** Handles the form element formdata event and appends the name/value. Alternative solution to internals.setFormValue.
+    //  * @internal
+    // */
+    // private _handleFormdata = (e: any) => {
     //   e.formData.append(this.name, this.value);
-    // }
+    // };
 
-    /** Handles the invalid event, triggered on form submit, and runs validation. */
-    private _handleInvalid() {
+    /** Handles the invalid event, triggered on form submit, and runs validation.
+     * @internal
+     */
+    private _handleInvalid = () => {
       this._validate(true, false);
-    }
+    };
 
     /** Component _validate function reference. */
     abstract _validate(interacted: Boolean, report: Boolean): void;
