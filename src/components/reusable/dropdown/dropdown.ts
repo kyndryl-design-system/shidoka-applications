@@ -788,8 +788,8 @@ export class Dropdown extends FormMixin(LitElement) {
     this._onDisconnected();
 
     document.removeEventListener('click', (e) => this._handleClickOut(e));
-    this.addEventListener('on-click', (e: any) => this._handleClick(e));
-    this.addEventListener('on-blur', (e: any) => this._handleBlur(e));
+    this.removeEventListener('on-click', (e: any) => this._handleClick(e));
+    this.removeEventListener('on-blur', (e: any) => this._handleBlur(e));
 
     super.disconnectedCallback();
   }

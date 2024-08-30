@@ -352,7 +352,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     this.dispatchEvent(event);
   }
 
-  // private _handleFormdata(e: any) {
+  // override _handleFormdata = (e: any) => {
   //   this.value.forEach((value) => {
   //     e.formData.append(this.name, value);
   //   });
