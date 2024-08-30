@@ -1,3 +1,10 @@
+## [1.34.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.1...v1.34.2) (2024-08-30)
+
+
+### Bug Fixes
+
+* **dropdown:** remove event listeners on disconnected ([893fbe6](https://github.com/kyndryl-design-system/shidoka-applications/commit/893fbe61e2bd41713a5f0b88dec557cc9c7b7161))
+
 ## [1.34.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.0...v1.34.1) (2024-08-29)
 
 
