@@ -1,4 +1,4 @@
-import { LitElement, html, PropertyValues } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, state, query, property } from 'lit/decorators.js';
 import ToastStyles from './kyn-toast-wb.scss';
 
@@ -12,6 +12,7 @@ import infoIcon from '@carbon/icons/es/information--filled/16';
 
 /**
  * Toast notification.
+ * @slot unnamed - Slot for toaster message content.
  * @slot anchor - Slot for the anchor button content.
  */
 @customElement('kyn-toast-wb')
@@ -97,7 +98,7 @@ export class KynToastWb extends LitElement {
           <kd-icon .icon=${notificationIcon[this.toastStatus]}></kd-icon>${this
             .toasterTitle}
         </p>
-        <p id="toaster-body">${this.toasterBody}</p>
+        <p id="toaster-body"><slot></slot></p>
         ${this.timestampVisible
           ? html`<span id="timestamp">${this._timestamp}</span>`
           : null}

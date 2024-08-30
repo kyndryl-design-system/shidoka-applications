@@ -9,6 +9,7 @@ import closeIcon from '@carbon/icons/es/close/24';
 
 /**
  *  Snackbar component.
+ * @slot unnamed - Slot for the snackbar message content.
  */
 @customElement('kyn-snackbar')
 export class KynSnackbar extends LitElement {
@@ -39,7 +40,7 @@ export class KynSnackbar extends LitElement {
   private _renderSnackbar() {
     return html`
       <div class="snackbar">
-        <span>${this.message}</span>
+        <slot></slot>
         <div class="right-aligned-controls">
           <button id="undo">UNDO</button>
           <button

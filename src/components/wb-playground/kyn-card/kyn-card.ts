@@ -7,7 +7,7 @@ import { classMap } from 'lit/directives/class-map.js';
 
 /**
  * Card item -- to be used as a standalone component or included in a carousel.
- * @slot body -- slot for body text
+ * @slot unnamed -- Slot for body text
  */
 @customElement('kyn-card-item')
 export class KynCard extends LitElement {
@@ -73,7 +73,7 @@ export class KynCard extends LitElement {
           <h2 id="card-subheader">${this.cardSubheader}</h2>
         </div>
         <div id="body-text">
-          <slot id="body-slot-wrapper"></slot>
+          <slot></slot>
         </div>
       </div>
       <div class="card-footer">

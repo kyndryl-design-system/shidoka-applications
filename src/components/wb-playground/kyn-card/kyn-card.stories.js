@@ -41,7 +41,7 @@ export const KynCardSimple = {
         cardLinkText=${args.cardLinkText}
         cardLinkHref=${args.cardLinkHref}
       >
-        <p>${args.body}</p>
+        <slot>${args.body}</slot>
       </kyn-card-item>
     `;
   },
@@ -84,7 +84,7 @@ export const KynCardVertical = {
         cardLinkText=${args.cardLinkText}
         cardLinkHref=${args.cardLinkHref}
       >
-        <p>${args.body}</p>
+        <slot>${args.body}</slot>
       </kyn-card-item>
     `;
   },
@@ -102,7 +102,7 @@ export const KynCardHorizontal = {
         cardLinkText=${args.cardLinkText}
         cardLinkHref=${args.cardLinkHref}
       >
-        <p>${args.body}</p>
+        <slot>${args.body}</slot>
       </kyn-card-item>
     `;
   },

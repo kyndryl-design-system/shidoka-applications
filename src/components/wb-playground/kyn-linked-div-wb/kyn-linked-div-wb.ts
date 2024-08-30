@@ -6,7 +6,7 @@ import { customElement, property } from 'lit/decorators.js';
 
 /**
  * Linked div.
- * @slot body -- slot for body text
+ * @slot unnamed -- slot for body text
  */
 @customElement('kyn-linked-div-wb')
 export class KynLinkedDivWb extends LitElement {

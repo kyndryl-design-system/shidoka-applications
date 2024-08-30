@@ -34,11 +34,11 @@ export const KynToastWb = {
       <kyn-toast-wb
         toastStatus=${args.toastStatus}
         toasterTitle=${args.toasterTitle}
-        toasterBody=${args.toasterBody}
         toastLifespan=${args.toastLifespan}
         ?showToast=${args.showToast}
         ?timestampVisible=${args.timestampVisible}
       >
+        <slot>${args.toasterBody}</slot>
         <kd-button slot="anchor" kind="primary-app"
           >${args.showToast ? 'Hide' : 'Show'} Toast</kd-button
         >

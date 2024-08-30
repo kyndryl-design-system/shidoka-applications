@@ -50,7 +50,7 @@ export const KynModalWb = {
         secondaryButtonText=${args.secondaryButtonText}
       >
         <kd-button slot="anchor">Open Modal</kd-button>
-        <p slot="modal-body">${args.modalBody}</p>
+        <slot>${args.modalBody}</slot>
       </kyn-modal-wb>
     `;
   },

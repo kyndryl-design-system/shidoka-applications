@@ -74,15 +74,15 @@ export const KynSnackbar = {
 
         <kyn-snackbar
           snackbarId="snackbar1"
-          message=${args.message}
           ?snackbarVisible=${args.snackbarVisible}
-        ></kyn-snackbar>
+          ><span>${args.message}</span></kyn-snackbar
+        >
 
         <kyn-snackbar
           snackbarId="snackbar2"
-          message="Snackbar notication 2"
           ?snackbarVisible=${args.snackbarVisible}
-        ></kyn-snackbar>
+          ><span>Another custom message</span></kyn-snackbar
+        >
       </kyn-snackbar-container>
     `;
   },

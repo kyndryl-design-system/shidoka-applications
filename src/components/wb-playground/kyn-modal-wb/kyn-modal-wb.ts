@@ -11,8 +11,8 @@ import closeIcon from '@carbon/icons/es/close/20';
 
 /**
  * Modal.
+ * @slot unnamed - Slot for the modal body content.
  * @slot anchor - Slot for the anchor button content.
- * @slot modalBody - Slot for the modal body content.
  */
 @customElement('kyn-modal-wb')
 export class KynModalWb extends LitElement {
@@ -131,7 +131,7 @@ export class KynModalWb extends LitElement {
           </header>
 
           <div class=${`body modal-body-${this.size}`}>
-            <slot name="modal-body"></slot>
+            <slot></slot>
           </div>
 
           <div class="footer">
