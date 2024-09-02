@@ -1,8 +1,8 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state, query } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import TextAreaScss from './textArea.scss';
-
+import { FormMixin } from '../../../common/mixins/form-input';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@carbon/icons/es/warning--filled/24';
 
@@ -14,43 +14,16 @@ import errorIcon from '@carbon/icons/es/warning--filled/24';
  * @slot unnamed - Slot for label text.
  */
 @customElement('kyn-text-area')
-export class TextArea extends LitElement {
+export class TextArea extends FormMixin(LitElement) {
   static override styles = TextAreaScss;
-
-  /** @ignore */
-  static override shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
-  };
-
-  /**
-   * Associate the component with forms.
-   * @ignore
-   */
-  static formAssociated = true;
-
-  /**
-   * Attached internals for form association.
-   * @ignore
-   */
-  @state()
-  internals = this.attachInternals();
 
   /** Optional text beneath the input. */
   @property({ type: String })
   caption = '';
 
-  /** Input value. */
-  @property({ type: String })
-  value = '';
-
   /** Input placeholder. */
   @property({ type: String })
   placeholder = '';
-
-  /** Input name. */
-  @property({ type: String })
-  name = '';
 
   /** Makes the input required. */
   @property({ type: Boolean })
@@ -59,10 +32,6 @@ export class TextArea extends LitElement {
   /** Input disabled state. */
   @property({ type: Boolean })
   disabled = false;
-
-  /** Input invalid text. */
-  @property({ type: String })
-  invalidText = '';
 
   /** Maximum number of characters. */
   @property({ type: Number })
@@ -75,20 +44,6 @@ export class TextArea extends LitElement {
   /** textarea rows attribute. The number of visible text lines. */
   @property({ type: Number })
   rows!: number;
-
-  /**
-   * Internal validation message.
-   * @ignore
-   */
-  @state()
-  internalValidationMsg = '';
-
-  /**
-   * isInvalid when internalValidationMsg or invalidText is non-empty.
-   * @ignore
-   */
-  @state()
-  isInvalid = false;
 
   /**
    * Queries the <textarea> DOM element.
@@ -112,7 +67,7 @@ export class TextArea extends LitElement {
             placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
-            ?invalid=${this.isInvalid}
+            ?invalid=${this._isInvalid}
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             rows=${this.rows}
@@ -121,7 +76,7 @@ export class TextArea extends LitElement {
 ${this.value}</textarea
           >
 
-          ${this.isInvalid
+          ${this._isInvalid
             ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
             : null}
           ${this.maxLength
@@ -134,10 +89,10 @@ ${this.value}</textarea
         ${this.caption !== ''
           ? html` <div class="caption">${this.caption}</div> `
           : null}
-        ${this.isInvalid
+        ${this._isInvalid
           ? html`
               <div class="error">
-                ${this.invalidText || this.internalValidationMsg}
+                ${this.invalidText || this._internalValidationMsg}
               </div>
             `
           : null}
@@ -161,30 +116,11 @@ ${this.value}</textarea
   }
 
   override updated(changedProps: any) {
-    if (
-      changedProps.has('invalidText') ||
-      changedProps.has('internalValidationMsg')
-    ) {
-      //check if any (internal / external )error msg. present then isInvalid is true
-      this.isInvalid =
-        this.invalidText !== '' || this.internalValidationMsg !== ''
-          ? true
-          : false;
-    }
+    // preserve FormMixin updated function
+    this._onUpdated(changedProps);
 
     if (changedProps.has('value')) {
       this.textareaEl.value = this.value;
-      // set form data value
-      // this.internals.setFormValue(this.value);
-
-      this._validate(false, false);
-    }
-
-    if (
-      changedProps.has('invalidText') &&
-      changedProps.get('invalidText') !== undefined
-    ) {
-      this._validate(false, false);
     }
   }
 
@@ -201,53 +137,17 @@ ${this.value}</textarea
         : this.textareaEl.validationMessage;
 
     // set validity on custom element, anchor to textareaEl
-    this.internals.setValidity(Validity, ValidationMessage, this.textareaEl);
+    this._internals.setValidity(Validity, ValidationMessage, this.textareaEl);
 
     // set internal validation message if value was changed by user input
     if (interacted) {
-      this.internalValidationMsg = this.textareaEl.validationMessage;
+      this._internalValidationMsg = this.textareaEl.validationMessage;
     }
 
     // focus the form field to show validity
     if (report) {
-      this.internals.reportValidity();
+      this._internals.reportValidity();
     }
-  }
-
-  private _handleFormdata(e: any) {
-    e.formData.append(this.name, this.value);
-  }
-
-  private _handleInvalid() {
-    this._validate(true, false);
-  }
-
-  override connectedCallback(): void {
-    super.connectedCallback();
-
-    if (this.internals.form) {
-      this.internals.form.addEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-    }
-
-    this.addEventListener('invalid', () => {
-      this._handleInvalid();
-    });
-  }
-
-  override disconnectedCallback(): void {
-    if (this.internals.form) {
-      this.internals.form.removeEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-
-      this.removeEventListener('invalid', () => {
-        this._handleInvalid();
-      });
-    }
-
-    super.disconnectedCallback();
   }
 }
 

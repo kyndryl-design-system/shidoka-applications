@@ -7,7 +7,7 @@ import {
 } from 'lit/decorators.js';
 import { deepmerge } from 'deepmerge-ts';
 import RadioButtonGroupScss from './radioButtonGroup.scss';
-
+import { FormMixin } from '../../../common/mixins/form-input';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@carbon/icons/es/warning--filled/16';
 
@@ -23,22 +23,8 @@ const _defaultTextStrings = {
  * @slot label - Slot for label text.
  */
 @customElement('kyn-radio-button-group')
-export class RadioButtonGroup extends LitElement {
+export class RadioButtonGroup extends FormMixin(LitElement) {
   static override styles = RadioButtonGroupScss;
-
-  /**
-   * Associate the component with forms.
-   * @ignore
-   */
-  static formAssociated = true;
-
-  /** Radio button input name attribute. */
-  @property({ type: String })
-  name = '';
-
-  /** Radio button group selected value. */
-  @property({ type: String })
-  value = '';
 
   /** Makes the input required. */
   @property({ type: Boolean })
@@ -51,10 +37,6 @@ export class RadioButtonGroup extends LitElement {
   /** Radio button group horizontal layout. */
   @property({ type: Boolean })
   horizontal = false;
-
-  /** Radio button group invalid text. */
-  @property({ type: String })
-  invalidText = '';
 
   /** Text string customization. */
   @property({ type: Object })
@@ -72,27 +54,6 @@ export class RadioButtonGroup extends LitElement {
    */
   @queryAssignedElements()
   radioButtons!: Array<any>;
-
-  /**
-   * Attached internals for form association.
-   * @ignore
-   */
-  @state()
-  internals = this.attachInternals();
-
-  /**
-   * Internal validation message.
-   * @ignore
-   */
-  @state()
-  internalValidationMsg = '';
-
-  /**
-   * isInvalid when internalValidationMsg or invalidText is non-empty.
-   * @ignore
-   */
-  @state()
-  isInvalid = false;
 
   override render() {
     return html`
@@ -112,7 +73,7 @@ export class RadioButtonGroup extends LitElement {
           <slot name="label"></slot>
         </legend>
 
-        ${this.isInvalid
+        ${this._isInvalid
           ? html`
               <div class="error">
                 <kd-icon
@@ -120,7 +81,7 @@ export class RadioButtonGroup extends LitElement {
                   title=${this._textStrings.error}
                   aria-label=${this._textStrings.error}
                 ></kd-icon>
-                ${this.invalidText || this.internalValidationMsg}
+                ${this.invalidText || this._internalValidationMsg}
               </div>
             `
           : null}
@@ -139,6 +100,9 @@ export class RadioButtonGroup extends LitElement {
   }
 
   override updated(changedProps: any) {
+    // preserve FormMixin updated function
+    this._onUpdated(changedProps);
+
     if (changedProps.has('name')) {
       // set name for each radio button
       this.radioButtons.forEach((radio: any) => {
@@ -147,15 +111,10 @@ export class RadioButtonGroup extends LitElement {
     }
 
     if (changedProps.has('value')) {
-      this._validate(false, false);
-
       // set checked state for each radio button
       this.radioButtons.forEach((radio: any) => {
         radio.checked = radio.value === this.value;
       });
-
-      // set form data value
-      // this.internals.setFormValue(this.value);
     }
 
     if (changedProps.has('required')) {
@@ -176,25 +135,12 @@ export class RadioButtonGroup extends LitElement {
     }
 
     if (
-      changedProps.has('invalidText') &&
-      changedProps.get('invalidText') !== undefined
-    ) {
-      this._validate(false, false);
-    }
-
-    if (
       changedProps.has('invalidText') ||
       changedProps.has('internalValidationMsg')
     ) {
-      //check if any (internal / external )error msg. present then isInvalid is true
-      this.isInvalid =
-        this.invalidText !== '' || this.internalValidationMsg !== ''
-          ? true
-          : false;
-
       // set invalid state for each radio button
       this.radioButtons.forEach((radio: any) => {
-        radio.invalid = this.isInvalid;
+        radio.invalid = this._isInvalid;
       });
     }
   }
@@ -213,7 +159,7 @@ export class RadioButtonGroup extends LitElement {
       this.invalidText !== '' ? this.invalidText : InternalMsg;
 
     // set validity on custom element, anchor to first radio
-    this.internals.setValidity(
+    this._internals.setValidity(
       Validity,
       ValidationMessage,
       this.radioButtons[0]
@@ -221,12 +167,12 @@ export class RadioButtonGroup extends LitElement {
 
     // set internal validation message if value was changed by user input
     if (interacted) {
-      this.internalValidationMsg = InternalMsg;
+      this._internalValidationMsg = InternalMsg;
     }
 
     // focus the first checkbox to show validity
     if (report) {
-      this.internals.reportValidity();
+      this._internals.reportValidity();
     }
   }
 
@@ -243,47 +189,25 @@ export class RadioButtonGroup extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private _handleFormdata(e: any) {
-    e.formData.append(this.name, this.value);
-  }
-
-  private _handleInvalid() {
-    this._validate(true, false);
-  }
-
   override connectedCallback() {
     super.connectedCallback();
+
+    // preserve FormMixin connectedCallback function
+    this._onConnected();
 
     // capture child radio buttons change event
     this.addEventListener('on-radio-change', (e: any) =>
       this._handleRadioChange(e)
     );
-
-    if (this.internals.form) {
-      this.internals.form.addEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-
-      this.addEventListener('invalid', () => {
-        this._handleInvalid();
-      });
-    }
   }
 
   override disconnectedCallback(): void {
+    // preserve FormMixin disconnectedCallback function
+    this._onDisconnected();
+
     this.removeEventListener('on-radio-change', (e: any) =>
       this._handleRadioChange(e)
     );
-
-    if (this.internals.form) {
-      this.internals.form.removeEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-
-      this.removeEventListener('invalid', () => {
-        this._handleInvalid();
-      });
-    }
 
     super.disconnectedCallback();
   }

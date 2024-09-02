@@ -1,8 +1,9 @@
 import { LitElement, html, PropertyValues } from 'lit';
-import { customElement, property, state, query } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { DATE_PICKER_TYPES } from '../datePicker/defs';
+import { FormMixin } from '../../../common/mixins/form-input';
 import DateRangePickerScss from './daterangepicker.scss';
 
 /**
@@ -13,26 +14,8 @@ import DateRangePickerScss from './daterangepicker.scss';
  * @slot unnamed - Slot for label text.
  */
 @customElement('kyn-date-range-picker')
-export class DateRangePicker extends LitElement {
+export class DateRangePicker extends FormMixin(LitElement) {
   static override styles = DateRangePickerScss;
-  /**
-   * Associate the component with forms.
-   * @ignore
-   */
-  static formAssociated = true;
-
-  /** @ignore */
-  static override shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
-  };
-
-  /**
-   * Attached internals for form association.
-   * @ignore
-   */
-  @state()
-  internals = this.attachInternals();
 
   /** Optional text beneath the input. */
   @property({ type: String })
@@ -50,10 +33,6 @@ export class DateRangePicker extends LitElement {
   @property({ type: String })
   endDate = '';
 
-  /** Datepicker name. Required prop. as there could many fields into single form*/
-  @property({ type: String })
-  name = '';
-
   /** Makes the date required. */
   @property({ type: Boolean })
   required = false;
@@ -65,10 +44,6 @@ export class DateRangePicker extends LitElement {
   /** Date range picker types. Default 'single' */
   @property({ type: String })
   datePickerType: DATE_PICKER_TYPES = DATE_PICKER_TYPES.SINGLE;
-
-  /** Date invalid text. */
-  @property({ type: String })
-  invalidText = '';
 
   /** Date warning text */
   @property({ type: String })
@@ -91,20 +66,6 @@ export class DateRangePicker extends LitElement {
    * The default value of step is 1, indicating 1 day.*/
   @property({ type: String })
   step!: string;
-
-  /**
-   * Internal validation message.
-   * @ignore
-   */
-  @state()
-  internalValidationMsg = '';
-
-  /**
-   * isInvalid when internalValidationMsg or invalidText is non-empty.
-   * @ignore
-   */
-  @state()
-  isInvalid = false;
 
   /**
    * Queries the Start Date <input> DOM element.
@@ -145,7 +106,7 @@ export class DateRangePicker extends LitElement {
               value=${this.startDate}
               ?required=${this.required}
               ?disabled=${this.disabled}
-              ?invalid=${this.isInvalid}
+              ?invalid=${this._isInvalid}
               min=${ifDefined(this.minDate)}
               max=${ifDefined(this.endDate ?? this.maxDate ?? '')}
               step=${ifDefined(this.step)}
@@ -170,7 +131,7 @@ export class DateRangePicker extends LitElement {
               value=${this.endDate}
               ?required=${this.required}
               ?disabled=${this.disabled}
-              ?invalid=${this.isInvalid}
+              ?invalid=${this._isInvalid}
               min=${ifDefined(this.startDate ?? this.minDate ?? '')}
               max=${ifDefined(this.maxDate)}
               step=${ifDefined(this.step)}
@@ -182,14 +143,14 @@ export class DateRangePicker extends LitElement {
         ${this.caption !== ''
           ? html` <div class="caption">${this.caption}</div> `
           : null}
-        ${this.isInvalid
+        ${this._isInvalid
           ? html`
               <div class="error">
-                ${this.invalidText || this.internalValidationMsg}
+                ${this.invalidText || this._internalValidationMsg}
               </div>
             `
           : null}
-        ${this.warnText !== '' && !this.isInvalid
+        ${this.warnText !== '' && !this._isInvalid
           ? html`<div class="warn">${this.warnText}</div>`
           : null}
       </div>
@@ -197,30 +158,26 @@ export class DateRangePicker extends LitElement {
   }
 
   override updated(changedProps: PropertyValues) {
-    if (
-      changedProps.has('invalidText') ||
-      changedProps.has('internalValidationMsg')
-    ) {
-      this.isInvalid =
-        this.invalidText !== '' || this.internalValidationMsg !== ''
-          ? true
-          : false;
-    }
-
-    if (
-      changedProps.has('invalidText') &&
-      changedProps.get('invalidText') !== undefined
-    ) {
-      this._validate(false, false);
-    }
+    // preserve FormMixin updated function
+    this._onUpdated(changedProps);
 
     if (changedProps.has('startDate')) {
       this.inputElStart.value = this.startDate;
-      this._validate(false, false);
     }
+
     if (changedProps.has('endDate')) {
       this.inputElEnd.value = this.endDate;
+    }
+
+    if (changedProps.has('startDate') || changedProps.has('endDate')) {
       this._validate(false, false);
+
+      const combineVals =
+        this.startDate !== '' && this.endDate !== ''
+          ? `${this.startDate}:${this.endDate}`
+          : '';
+      // set form value on element internals
+      this._internals.setFormValue(combineVals);
     }
   }
 
@@ -248,7 +205,7 @@ export class DateRangePicker extends LitElement {
 
     if (StartValid && EndValid) {
       // clear validation errors
-      this.internals.setValidity({});
+      this._internals.setValidity({});
     } else if (!StartValid) {
       // validate start date
 
@@ -264,7 +221,7 @@ export class DateRangePicker extends LitElement {
           ? this.invalidText
           : this.inputElStart.validationMessage;
 
-      this.internals.setValidity(
+      this._internals.setValidity(
         Validity,
         ValidationMessage,
         this.inputElStart
@@ -284,19 +241,19 @@ export class DateRangePicker extends LitElement {
           ? this.invalidText
           : this.inputElEnd.validationMessage;
 
-      this.internals.setValidity(Validity, ValidationMessage, this.inputElEnd);
+      this._internals.setValidity(Validity, ValidationMessage, this.inputElEnd);
     }
 
     // set internal validation message if value was changed by user input
     if (interacted) {
-      this.internalValidationMsg =
+      this._internalValidationMsg =
         this.inputElStart.validationMessage ||
         this.inputElEnd.validationMessage;
     }
 
     // focus the form field to show validity
     if (report) {
-      this.internals.reportValidity();
+      this._internals.reportValidity();
     }
   }
 
@@ -311,45 +268,13 @@ export class DateRangePicker extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private _handleFormdata(e: any) {
-    const combineVals =
-      this.startDate !== '' && this.endDate !== ''
-        ? `${this.startDate}:${this.endDate}`
-        : '';
-    e.formData.append(this.name, combineVals);
-  }
-
-  private _handleInvalid() {
-    this._validate(true, false);
-  }
-
-  override connectedCallback(): void {
-    super.connectedCallback();
-
-    if (this.internals.form) {
-      this.internals.form.addEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-
-      this.addEventListener('invalid', () => {
-        this._handleInvalid();
-      });
-    }
-  }
-
-  override disconnectedCallback(): void {
-    if (this.internals.form) {
-      this.internals.form.removeEventListener('formdata', (e) =>
-        this._handleFormdata(e)
-      );
-
-      this.removeEventListener('invalid', () => {
-        this._handleInvalid();
-      });
-    }
-
-    super.disconnectedCallback();
-  }
+  // private _handleFormdata(e: any) {
+  //   const combineVals =
+  //     this.startDate !== '' && this.endDate !== ''
+  //       ? `${this.startDate}:${this.endDate}`
+  //       : '';
+  //   e.formData.append(this.name, combineVals);
+  // }
 }
 
 declare global {
