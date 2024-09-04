@@ -1,3 +1,10 @@
+## [1.34.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.3...v1.34.4) (2024-09-04)
+
+
+### Bug Fixes
+
+* **dropdown:** resolve multi-select tags not displaying ([62235a4](https://github.com/kyndryl-design-system/shidoka-applications/commit/62235a46dcb089ca1d6e255ae4b3a77c2b734790))
+
 ## [1.34.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.2...v1.34.3) (2024-09-04)
 
 
