@@ -1,0 +1,109 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+    display: block;
+    font-family: var(--kd-font-family);
+}
+
+.code-view {
+    &__title {
+        margin-bottom: var(--kd-spacing-06);
+        @include typography.type-headline-08;
+    }
+
+    &__container {
+        position: relative;
+        background-color: var(--kd-color-background-inverse);
+        border-radius: var(--kd-border-radius-md);
+        overflow: hidden;
+        padding-bottom: 40px;
+
+        pre {
+            margin: 0;
+            padding: var(--kd-spacing-05);
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: var(--kd-font-family-mono);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    }
+
+    &__copy-button {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+    }
+}
+
+.code_view__container {
+    border-radius: 4px;
+    background-color: var(--kd-color-background-ui-strong);
+
+    pre {
+        background-color: var(--kd-color-background-ui-strong);
+    }
+
+    &.type--inline {
+        padding: 8px 10px;
+        display: inline-block;
+        font-size: 14px;
+
+        pre {
+            margin: 0;
+            padding: 4px 10px;
+            overflow-x: auto;
+            color: white;
+        }
+    }
+
+    &.type--block {
+        border: 1px solid black;
+        padding: 0px 16px 20px;
+        position: relative;
+        color: white;
+
+        &.size--auto {
+            max-width: 95%;
+            font-size: 16px;
+
+            pre {
+                max-height: 400px;
+                overflow: auto;
+            }
+        }
+
+        &.size--sm {
+            max-width: 480px;
+            font-size: 12px;
+
+            pre {
+                max-height: 240px;
+                overflow: auto;
+            }
+        }
+
+        &.size--md {
+            max-width: 560px;
+            font-size: 14px;
+
+            pre {
+                max-height: 320px;
+                overflow: auto;
+            }
+        }
+
+        &.size--lg {
+            max-width: 640px;
+            font-size: 16px;
+
+            pre {
+                max-height: 400px;
+                overflow: auto;
+            }
+        }
+    }
+}
