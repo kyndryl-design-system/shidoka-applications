@@ -1,3 +1,10 @@
+## [1.34.3](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.2...v1.34.3) (2024-09-04)
+
+
+### Bug Fixes
+
+* **Tooltip:** on-tooltip-toggle emit event listeners ([9967290](https://github.com/kyndryl-design-system/shidoka-applications/commit/9967290b5b26ff892ab0635f11878d59d2548e7b))
+
 ## [1.34.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.1...v1.34.2) (2024-08-30)
 
 
