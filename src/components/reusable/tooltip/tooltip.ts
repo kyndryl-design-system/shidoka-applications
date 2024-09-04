@@ -276,7 +276,7 @@ export class Tooltip extends LitElement {
   }
 
   override updated(changedProps: any) {
-    if (changedProps.has('open') && changedProps.get('open') !== undefined) {
+    if (changedProps.has('_open') && changedProps.get('_open') !== undefined) {
       this._emitToggle();
     }
   }
