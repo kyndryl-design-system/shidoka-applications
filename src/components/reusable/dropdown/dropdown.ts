@@ -320,7 +320,7 @@ export class Dropdown extends FormMixin(LitElement) {
             -->
         </div>
 
-        ${this.multiple && !this.hideTags && this.value.length
+        ${this.multiple && !this.hideTags && this._tags.length
           ? html`
               <kyn-tag-group filter>
                 ${this._tags.map((tag: any) => {
@@ -909,6 +909,8 @@ export class Dropdown extends FormMixin(LitElement) {
         this._updateOptions();
       }
 
+      this._updateTags();
+
       // update selected option text
       const AllOptions: any = Array.from(
         this.querySelectorAll('kyn-dropdown-option')
@@ -973,11 +975,33 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   }
 
+  // add selected options to Tags array
+  private _updateTags() {
+    if (this.multiple) {
+      const Options: any = Array.from(
+        this.querySelectorAll('kyn-dropdown-option')
+      );
+      const Tags: Array<object> = [];
+
+      if (Options) {
+        Options.forEach((option: any) => {
+          if (option.selected) {
+            Tags.push({
+              value: option.value,
+              text: option.textContent,
+            });
+          }
+        });
+
+        this._tags = Tags;
+      }
+    }
+  }
+
   private _updateOptions() {
     const Options: any = Array.from(
       this.querySelectorAll('kyn-dropdown-option')
     );
-    const Tags: Array<object> = [];
 
     Options.forEach((option: any) => {
       // set option multiple state
@@ -987,20 +1011,10 @@ export class Dropdown extends FormMixin(LitElement) {
         const Selected = this.value.includes(option.value);
         // set option selected state
         option.selected = Selected;
-
-        if (Selected) {
-          // add selected options to Tags array
-          Tags.push({
-            value: option.value,
-            text: option.textContent,
-          });
-        }
       } else {
         option.selected = this.value === option.value;
       }
     });
-
-    this._tags = Tags;
   }
 
   private _updateChildren() {
