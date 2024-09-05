@@ -9,6 +9,8 @@ import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import copyIcon from '@carbon/icons/es/copy/20';
+import checkmarkIcon from '@carbon/icons/es/checkmark/20';
+import checkMarkOutlineIcon from '@carbon/icons/es/checkmark--outline/20';
 
 import CodeViewStyles from './codeView.scss';
 
@@ -16,17 +18,18 @@ import CodeViewStyles from './codeView.scss';
  * Code view component.
  * @fires copy - Emits when the copy button is clicked.
  * @slot unnamed - Slot for custom copy button.
+ * @slot tooltip - Slot for tooltip in header.
  */
 @customElement('kyn-code-view')
 export class CodeView extends LitElement {
   static override styles = CodeViewStyles;
 
   /** Code view size: `sm`, `md`, or `lg`. */
-  @property({ type: String, reflect: true })
+  @property({ type: String })
   size = 'md';
 
   /** Language: `javascript`, `css`, `scss`, `json`, `html`, `xml`, `markdown` */
-  @property({ type: String, reflect: true })
+  @property({ type: String })
   language = '';
 
   /** Title for code view. */
@@ -37,13 +40,17 @@ export class CodeView extends LitElement {
   @property({ type: String })
   label = '';
 
-  /** Code view type: `inline`or `block`. */
-  @property({ type: String, reflect: true })
-  type: 'inline' | 'block' = 'inline';
+  /** Code view type: `block` or `inline`. */
+  @property({ type: String })
+  type = 'block';
+
+  /** Copy button text (empty string sets visibility to hidden) */
+  @property({ type: String })
+  copyButtonText = '';
 
   /** Copy code option available for user: true/false. */
-  @property({ type: Boolean, reflect: true })
-  copyOptionVisible = true;
+  @property({ type: Boolean })
+  copyOptionVisible = false;
 
   /** The code content to display and copy. */
   @property({ type: String })
@@ -52,30 +59,63 @@ export class CodeView extends LitElement {
   @state()
   private _highlightedCode = '';
 
-  copyCode() {
-    console.log('Copying code:', this.code);
+  @state()
+  private codeCopied = false;
+
+  formatExampleCode = (code: any) => {
+    return {
+      fullSnippet: code,
+    };
+  };
+
+  private _copyCode(e: Event) {
+    const originalText = this.copyButtonText;
     navigator.clipboard
       .writeText(this.code)
-      .then(() =>
-        this.dispatchEvent(new CustomEvent('copy', { detail: 'Code copied!' }))
-      )
+      .then(() => {
+        this.codeCopied = true;
+        this.copyButtonText = originalText.length > 1 ? 'Copied!' : '';
+        this.dispatchEvent(
+          new CustomEvent('on-custom-copy', {
+            detail: {
+              origEvent: e,
+              code: this.formatExampleCode(this.code),
+            },
+          })
+        );
+        setTimeout(() => {
+          this.codeCopied = false;
+          this.copyButtonText = originalText;
+        }, 3000);
+      })
       .catch((err) => console.error('Failed to copy code:', err));
   }
 
-  override updated(changedProperties: PropertyValues) {
-    console.log('CONNECTED');
+  override firstUpdated(changedProperties: PropertyValues) {
     if (changedProperties.has('language') || changedProperties.has('code')) {
       this.highlightCode();
     }
   }
 
+  private _sizeMap(type: string): string {
+    let btnSize = 'small';
+
+    switch (type) {
+      case 'inline':
+        btnSize = 'medium';
+        break;
+    }
+
+    return btnSize;
+  }
+
   private highlightCode() {
     if (this.code && this.language) {
-      const grammar = Prism.languages[this.language];
-      if (grammar) {
+      const langAvailable = Prism.languages[this.language];
+      if (langAvailable) {
         this._highlightedCode = Prism.highlight(
           this.code,
-          grammar,
+          langAvailable,
           this.language
         );
       } else {
@@ -107,21 +147,29 @@ export class CodeView extends LitElement {
         <pre><code class="language-${this.language}">${unsafeHTML(
           this._highlightedCode
         )}</code></pre>
-        ${this.copyOptionVisible && this.type === 'block'
+
+        ${this.copyOptionVisible
           ? html`<slot name="copy-button">
               <kd-button
                 class="code-view__copy-button"
                 slot="actions"
-                kind="primary-app"
-                size="small"
+                kind="primary-web"
+                size=${this._sizeMap(this.type)}
                 iconPosition="left"
-                @click=${this.copyCode}
+                ?disabled=${this.codeCopied}
+                @click=${(e: Event) => this._copyCode(e)}
               >
-                <kd-icon slot="icon" .icon=${copyIcon}></kd-icon>
-                <span class="copy-text">Copy</span>
+                <kd-icon
+                  slot="icon"
+                  class="copy-icon"
+                  .icon=${this.codeCopied ? checkmarkIcon : copyIcon}
+                ></kd-icon>
+                <span class="copy-text" ?hidden=${this.copyButtonText === ''}
+                  >${this.copyButtonText}</span
+                >
               </kd-button>
             </slot>`
-          : ''}
+          : null}
       </div>
     `;
   }

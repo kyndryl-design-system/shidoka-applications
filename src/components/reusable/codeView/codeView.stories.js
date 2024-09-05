@@ -49,6 +49,7 @@ const args = {
   language: 'javascript',
   type: CODE_VIEW_TYPES.INLINE,
   copyOptionVisible: true,
+  copyButtonText: ' ',
   code: 'console.log("Hello, World!");',
 };
 
@@ -61,16 +62,21 @@ const Template = (args) => html`
     language=${args.language}
     ?copyOptionVisible=${args.copyOptionVisible}
     code=${args.code}
-    @copy=${(e) => action('copy')(e.detail)}
+    copyButtonText=${args.copyButtonText}
+    @on-custom-copy=${(e) => action('copy')(e.detail)}
   >
     <kd-button
-      @on-click=${(e) => {
+      @click=${(e) => {
         e.target.dispatchEvent(
-          new CustomEvent('custom-copy', { bubbles: true, composed: true })
+          new CustomEvent('on-custom-copy', {
+            bubbles: true,
+            composed: true,
+            detail: { code: args.code },
+          })
         );
-        action('copy button clicked')(e);
       }}
     >
+      ${args.copyButtonText}
     </kd-button>
   </kyn-code-view>
 `;
@@ -85,6 +91,7 @@ export const BlockCodeView = Template.bind({});
 BlockCodeView.args = {
   ...args,
   type: CODE_VIEW_TYPES.BLOCK,
+  copyButtonText: 'Copy',
   code: `const greetUser = (name) => {
   console.log(\`Hello, \${name}!\`);
 }
@@ -93,11 +100,61 @@ greetUser('World');
   `.trim(),
 };
 
+export const JavascriptExample = Template.bind({});
+JavascriptExample.args = {
+  ...args,
+  language: 'javascript',
+  type: CODE_VIEW_TYPES.BLOCK,
+  copyButtonText: 'Copy',
+  code: `
+  const addNumbers = (a, b) => {
+    return a + b;
+  };
+
+  const multiplyNumbers = (a, b) => {
+    return a * b;
+  };
+
+  const divideNumbers = (a, b) => {
+    return a / b;
+  };
+
+  const subtractNumbers = (a, b) => {
+    return a - b;
+  };
+
+  const squareNumber = (a) => {
+    return a * a;
+  };
+
+  const findMaxNumber = (numbers) => {
+    return Math.max(...numbers);
+  };
+
+  const findMinNumber = (numbers) => {
+    return Math.min(...numbers);
+  };
+
+  const isEven = (number) => {
+    return number % 2 === 0;
+  };
+
+  const isOdd = (number) => {
+    return number % 2 !== 0;
+  };
+
+  const generateRandomNumber = () => {
+    return Math.random();
+  };
+  `.trim(),
+};
+
 export const HTMLExample = Template.bind({});
 HTMLExample.args = {
   ...args,
   language: 'html',
   type: CODE_VIEW_TYPES.BLOCK,
+  copyButtonText: 'Copy',
   code: `<div class="container">
   <h1>Welcome to my website</h1>
   <p>This is a paragraph of text.</p>
@@ -111,6 +168,7 @@ CSSExample.args = {
   ...args,
   language: 'css',
   type: CODE_VIEW_TYPES.BLOCK,
+  copyButtonText: 'Copy',
   code: `.container {
     max-width: 1200px;
     margin: 0 auto;
