@@ -8,7 +8,24 @@
 
 :host(kyn-code-view) {
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 0;
+}
+
+::slotted([slot="inline-example"]) {
+    display: inline-block;
+    font-style: normal;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 .code-view {
@@ -17,160 +34,158 @@
         @include typography.type-ui-05;
         color: var(--kd-color-text-secondary);
     }
-
-    &__container {
-        position: relative;
-        background-color: var(--kd-color-background-inverse);
-        overflow: hidden;
-
-        pre {
-            margin: 0;
-            padding: var(--kd-spacing-05);
-            overflow-x: auto;
-        }
-
-        code {
-            font-family: var(--kd-font-family-mono);
-            font-size: 14px;
-            line-height: 1.5;
-        }
-    }
 }
 
 .code_view__container {
-    background-color: var(--kd-color-background-ui-strong);
+    background-color: var(--kd-color-background-ui-soft);
     position: relative;
+    overflow: hidden;
+
+    pre {
+        margin: 0;
+        overflow-x: auto;
+        color: var(--kd-color-text-primary);
+        background-color: var(--kd-color-background-ui-soft);
+    }
+
+    code {
+        font-family: var(--kd-font-family-mono);
+        font-size: 14px;
+        line-height: 1.5;
+    }
 
     .code-view__copy-button {
+        z-index: 1;
+        cursor: pointer;
+
         .copy-text {
             margin-left: 4px;
         }
 
         &:disabled {
             cursor: not-allowed;
-            opacity: 0.9;
 
             .copy-text,
             .copy-icon {
                 color: var(--kd-color-background-ui-pressed);
             }
         }
-    }
 
-    pre {
-        background-color: var(--kd-color-background-ui-strong);
+        &.icon-only {
+            padding: 8px;
+            min-width: unset;
+        }
     }
 
     &.type--inline {
+        display: inline-block;
         width: fit-content;
         border-radius: 2px;
-        display: flex;
-        align-items: stretch;
-        font-size: 14px;
-        position: relative;
+        vertical-align: bottom;
+        margin: 0 4px;
 
         pre {
-            margin: 0;
-            padding: 18px 20px;
-            padding-right: calc(20px + 48px);
-            overflow-x: auto;
-            color: white;
-            display: flex;
-            min-height: 48px;
-            align-items: center;
+            padding: 0 5px;
             line-height: 1.5;
-        }
-
-        .code-view__copy-button {
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: auto;
-            padding: 4px;
-            margin-left: 15px;
-            border-top-right-radius: 2px;
-            border-bottom-right-radius: 2px;
-        }
-
-        &.size--sm {
-            min-width: 250px;
-        }
-
-        &.size--md {
-            min-width: 400px;
-        }
-
-        &.size--lg {
-            min-width: 500px;
-        }
-
-        &.size--auto {
-            min-width: 95%;
         }
     }
 
     &.type--block {
         border-radius: 4px;
-        border: 1px solid black;
-        padding: 0px 16px 20px;
-        position: relative;
-        color: white;
+
+        pre {
+            padding: 0px 16px 5px;
+            tab-size: 4;
+            white-space: pre;
+            width: fit-content;
+
+            code {
+                display: block;
+                white-space: pre;
+                padding: 10px;
+            }
+        }
+
+        .code-view__copy-button {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: auto;
+            padding: 10px 8px;
+        }
 
         .code-view__copied {
             bottom: -45px;
             top: auto;
         }
 
-        &.size--auto {
-            max-width: 95%;
-            font-size: 16px;
+        &.single-line {
+            width: fit-content;
 
             pre {
-                max-height: 90vh;
-                overflow: auto;
+                padding: 1px 100px 1px 16px;
+                display: flex;
+                align-items: center;
+                line-height: 1.5;
+                max-width: 75vw;
+                min-height: 40px;
+            }
+
+            .code-view__copy-button {
+                position: absolute;
+                right: 2px;
+                top: 0;
+                bottom: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: auto;
+                padding: 6px;
+                border-top-right-radius: 2px;
+                border-bottom-right-radius: 2px;
+            }
+
+            &.size--sm pre code {
+                font-size: 12px;
             }
         }
 
-        &.size--sm {
-            max-width: 480px;
-            font-size: 12px;
+        :not(.single-line) {
+            &.size--auto {
+                max-width: 95%;
 
-            pre {
-                max-height: 240px;
-                overflow: auto;
+                pre {
+                    max-height: 90vh;
+                }
             }
-        }
 
-        &.size--md {
-            max-width: 560px;
-            font-size: 14px;
+            &.size--sm {
+                max-width: 480px;
 
-            pre {
-                max-height: 320px;
-                overflow: auto;
+                pre {
+                    max-height: 240px;
+
+                    code {
+                        font-size: 12px;
+                    }
+                }
             }
-        }
 
-        &.size--lg {
-            max-width: 640px;
-            font-size: 16px;
+            &.size--md {
+                max-width: 560px;
 
-            pre {
-                max-height: 400px;
-                overflow: auto;
+                pre {
+                    max-height: 320px;
+                }
             }
-        }
 
-        .code-view__copy-button {
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            width: auto;
-            padding: 10px 8px;
+            &.size--lg {
+                max-width: 640px;
+
+                pre {
+                    max-height: 400px;
+                }
+            }
         }
     }
 }

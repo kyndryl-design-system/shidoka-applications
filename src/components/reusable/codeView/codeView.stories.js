@@ -11,6 +11,23 @@ const CODE_VIEW_TYPES = {
 
 const createSelectOptions = (defs) => [null, ...Object.values(defs)];
 
+const removeLeadingWhitespace = (code) => {
+  if (!code) return '';
+  const lines = code.split('\n');
+  const minIndent = lines.reduce((min, line) => {
+    const indent = line.match(/^\s*/)[0].length;
+    return line.trim().length ? Math.min(min, indent) : min;
+  }, Infinity);
+  return lines
+    .map((line) => line.slice(minIndent))
+    .join('\n')
+    .trim();
+};
+
+const isSingleLineCode = (code) => {
+  return code.trim().split('\n').length === 1;
+};
+
 export default {
   title: 'Components/CodeView',
   component: 'kyn-code-view',
@@ -44,149 +61,180 @@ export default {
 
 const args = {
   title: 'Code View Title Here',
-  size: 'md',
-  label: 'code view label',
+  codeCopied: false,
   language: 'javascript',
   type: CODE_VIEW_TYPES.INLINE,
   copyOptionVisible: true,
-  copyButtonText: ' ',
+  isSingleLine: false,
+  copyButtonText: '',
   code: 'console.log("Hello, World!");',
 };
 
-const Template = (args) => html`
-  <kyn-code-view
-    size=${args.size}
-    title=${args.title}
-    label=${args.label}
-    type=${args.type}
-    language=${args.language}
-    ?copyOptionVisible=${args.copyOptionVisible}
-    code=${args.code}
-    copyButtonText=${args.copyButtonText}
-    @on-custom-copy=${(e) => action('copy')(e.detail)}
-  >
-    <kd-button
-      @click=${(e) => {
-        e.target.dispatchEvent(
-          new CustomEvent('on-custom-copy', {
-            bubbles: true,
-            composed: true,
-            detail: { code: args.code },
-          })
-        );
-      }}
+const InlineTemplate = (args) => {
+  return html`
+    <kyn-code-view
+      title=${args.title}
+      type=${args.type}
+      language=${args.language}
+      ?codeCopied=${args.codeCopied}
+      ?copyOptionVisible=${false}
+      copyButtonText=${''}
+      @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
     >
-      ${args.copyButtonText}
-    </kd-button>
-  </kyn-code-view>
-`;
+      <span slot="inline-example">${args.exampleInlinetext}</span>
+      <pre><code>${removeLeadingWhitespace(args.code)}</code></pre>
+    </kyn-code-view>
+  `;
+};
 
-export const InlineCodeView = Template.bind({});
+const BlockTemplate = (args) => {
+  const isSingleLine = isSingleLineCode(args.code);
+  return html`
+    <kyn-code-view
+      size=${args.size}
+      title=${args.title}
+      type=${args.type}
+      language=${args.language}
+      ?codeCopied=${args.codeCopied}
+      ?copyOptionVisible=${args.copyOptionVisible}
+      copyButtonText=${args.copyButtonText}
+      ?isSingleLine=${isSingleLine}
+      @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
+    >
+      <pre><code>${removeLeadingWhitespace(args.code)}</code></pre>
+    </kyn-code-view>
+  `;
+};
+
+export const InlineCodeView = InlineTemplate.bind({});
 InlineCodeView.args = {
   ...args,
+  size: 'md',
+  title: 'Inline Code Snippet',
+  exampleInlinetext: 'Example inline text:',
   type: CODE_VIEW_TYPES.INLINE,
 };
 
-export const BlockCodeView = Template.bind({});
+export const BlockCodeView = BlockTemplate.bind({});
 BlockCodeView.args = {
   ...args,
+  size: 'md',
   type: CODE_VIEW_TYPES.BLOCK,
+  title: 'Block Code Snippet',
   copyButtonText: 'Copy',
-  code: `const greetUser = (name) => {
-  console.log(\`Hello, \${name}!\`);
-}
+  code: `
+    const greetUser = (name) => {
+      console.log(\`Hello, \${name}!\`);
+    }
 
-greetUser('World');
-  `.trim(),
+    greetUser('World');
+  `,
 };
 
-export const JavascriptExample = Template.bind({});
+export const SingleLineView = BlockTemplate.bind({});
+SingleLineView.args = {
+  ...args,
+  size: 'md',
+  type: CODE_VIEW_TYPES.BLOCK,
+  title: 'Single Line Code Snippet',
+  copyButtonText: '',
+  code: `console.log("Hello, World!");`,
+};
+
+export const JavascriptExample = BlockTemplate.bind({});
 JavascriptExample.args = {
   ...args,
+  size: 'md',
   language: 'javascript',
+  title: 'Javascript Code Snippet',
   type: CODE_VIEW_TYPES.BLOCK,
   copyButtonText: 'Copy',
   code: `
-  const addNumbers = (a, b) => {
-    return a + b;
-  };
+    const addNumbers = (a, b) => {
+      return a + b;
+    };
 
-  const multiplyNumbers = (a, b) => {
-    return a * b;
-  };
+    const multiplyNumbers = (a, b) => {
+      return a * b;
+    };
 
-  const divideNumbers = (a, b) => {
-    return a / b;
-  };
+    const divideNumbers = (a, b) => {
+      return a / b;
+    };
 
-  const subtractNumbers = (a, b) => {
-    return a - b;
-  };
+    const subtractNumbers = (a, b) => {
+      return a - b;
+    };
 
-  const squareNumber = (a) => {
-    return a * a;
-  };
+    const squareNumber = (a) => {
+      return a * a;
+    };
 
-  const findMaxNumber = (numbers) => {
-    return Math.max(...numbers);
-  };
+    const findMaxNumber = (numbers) => {
+      return Math.max(...numbers);
+    };
 
-  const findMinNumber = (numbers) => {
-    return Math.min(...numbers);
-  };
+    const findMinNumber = (numbers) => {
+      return Math.min(...numbers);
+    };
 
-  const isEven = (number) => {
-    return number % 2 === 0;
-  };
+    const isEven = (number) => {
+      return number % 2 === 0;
+    };
 
-  const isOdd = (number) => {
-    return number % 2 !== 0;
-  };
+    const isOdd = (number) => {
+      return number % 2 !== 0;
+    };
 
-  const generateRandomNumber = () => {
-    return Math.random();
-  };
-  `.trim(),
+    const generateRandomNumber = () => {
+      return Math.random();
+    };
+  `,
 };
 
-export const HTMLExample = Template.bind({});
+export const HTMLExample = BlockTemplate.bind({});
 HTMLExample.args = {
   ...args,
+  size: 'md',
   language: 'html',
+  title: 'HTML Code Snippet',
   type: CODE_VIEW_TYPES.BLOCK,
   copyButtonText: 'Copy',
-  code: `<div class="container">
-  <h1>Welcome to my website</h1>
-  <p>This is a paragraph of text.</p>
-  <button class="btn">Click me!</button>
-</div>
-  `.trim(),
+  code: `
+    <div class="container">
+      <h1>Welcome to my website</h1>
+      <p>This is a paragraph of text.</p>
+      <button class="btn">Click me!</button>
+    </div>
+  `,
 };
 
-export const CSSExample = Template.bind({});
+export const CSSExample = BlockTemplate.bind({});
 CSSExample.args = {
   ...args,
   language: 'css',
+  title: 'CSS Code Snippet',
   type: CODE_VIEW_TYPES.BLOCK,
   copyButtonText: 'Copy',
-  code: `.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
+  code: `
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
 
-  .btn {
-    background-color: #0056b3;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
+    .btn {
+      background-color: #0056b3;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
 
-  .btn:hover {
-    background-color: #003d7a;
-    border: 1px solid white;
-  }
-  `.trim(),
+    .btn:hover {
+      background-color: #003d7a;
+      border: 1px solid white;
+    }
+  `,
 };
