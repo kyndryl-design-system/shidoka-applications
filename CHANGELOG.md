@@ -1,3 +1,10 @@
+## [1.34.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.4...v1.34.5) (2024-09-04)
+
+
+### Bug Fixes
+
+* **form-input:** remove dots under required asterisk ([bdbb299](https://github.com/kyndryl-design-system/shidoka-applications/commit/bdbb2994b13a7156e18efd094b29905795230c32))
+
 ## [1.34.4](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.3...v1.34.4) (2024-09-04)
 
 
