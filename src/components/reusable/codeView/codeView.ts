@@ -5,13 +5,14 @@ import { classMap } from 'lit/directives/class-map.js';
 
 import Prism from 'prismjs';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-
 import copyIcon from '@carbon/icons/es/copy/20';
 import checkmarkIcon from '@carbon/icons/es/checkmark--outline/20';
 
+import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
+
 import CodeViewStyles from './codeView.scss';
+import PrismStyles from './prismSyntaxStyles.scss';
 
 /**
  * Code view component.
@@ -22,7 +23,7 @@ import CodeViewStyles from './codeView.scss';
  */
 @customElement('kyn-code-view')
 export class CodeView extends LitElement {
-  static override styles = CodeViewStyles;
+  static override styles = [CodeViewStyles, PrismStyles];
 
   /** Code View (block only) size: `auto`, `sm`, `md`, or `lg`. */
   @property({ type: String }) size = 'md';
@@ -48,7 +49,72 @@ export class CodeView extends LitElement {
   @state() private _highlightedCode = '';
   @state() private codeCopied = false;
 
+  @state()
   private _codeContent = '';
+
+  override render() {
+    return html`
+      ${this.title
+        ? html`<div class="code-view__title">
+            <h3 class="kd-type--headline-02">${this.title}</h3>
+          </div>`
+        : null}
+      ${this.type === 'inline'
+        ? html`<span class="inline-example"
+            ><slot name="inline-example"></slot
+          ></span>`
+        : null}
+      <div
+        class="${classMap({
+          'size--auto': this.size === 'auto',
+          'size--sm': this.size === 'sm',
+          'size--md': this.size === 'md',
+          'size--lg': this.size === 'lg',
+          code_view__container: true,
+          'type--block': this.type === 'block',
+          'type--inline': this.type === 'inline',
+          'single-line-true': this.isSingleLine,
+          'single-line-false': !this.isSingleLine,
+        })}"
+      >
+        <pre
+          tabindex="0"
+          @keydown="${this.handleKeyDown}"
+          aria-label=${this.isSingleLine
+            ? 'Code block'
+            : 'Code block, use arrow keys to scroll'}
+        ><code class="language-${this.language}">${unsafeHTML(
+          this._highlightedCode
+        )}</code></pre>
+        <slot @slotchange=${this.highlightCode} style="display: none;"></slot>
+
+        ${this.copyOptionVisible
+          ? html`<slot name="copy-slot">
+              <kd-button
+                class="code-view__copy-button"
+                kind="primary-web"
+                title="Copy code"
+                size=${this._sizeMap(this.type)}
+                name="copy code button"
+                description="copy code button"
+                iconPosition="left"
+                ?disabled=${this.codeCopied}
+                @click=${(e: Event) => this._copyCode(e)}
+              >
+                <kd-icon
+                  slot="icon"
+                  class="copy-icon"
+                  .icon=${this.codeCopied ? checkmarkIcon : copyIcon}
+                ></kd-icon>
+                ${this.copyButtonText
+                  ? html`<span class="copy-text">${this.copyButtonText}</span>`
+                  : null}
+              </kd-button>
+            </slot>`
+          : null}
+      </div>
+    `;
+  }
 
   private formatExampleCode = (code: string) => {
     return {
@@ -99,6 +165,36 @@ export class CodeView extends LitElement {
     }
   }
 
+  private getCodeLanguage(lang: string): Prism.Grammar | null {
+    switch (lang.toLowerCase()) {
+      case 'javascript':
+      case 'js':
+        return Prism.languages.javascript;
+      case 'css':
+        return Prism.languages.css;
+      case 'html':
+      case 'xml':
+        return Prism.languages.markup;
+      case 'json':
+        return Prism.languages.json;
+      case 'typescript':
+        return Prism.languages.typescript;
+      case 'bash':
+        return Prism.languages.bash;
+      case 'scss':
+        return Prism.languages.scss;
+      case 'svg':
+        return Prism.languages.svg;
+      case 'yaml':
+        return Prism.languages.yaml;
+      default:
+        console.warn(
+          `Language '${lang}' is not supported. Falling back to plain text.`
+        );
+        return null;
+    }
+  }
+
   private highlightCode() {
     const slot = this.shadowRoot?.querySelector(
       'slot:not([name])'
@@ -110,84 +206,22 @@ export class CodeView extends LitElement {
         .join('')
         .trim() || '';
 
-    if (this._codeContent && this.language) {
-      const langAvailable = Prism.languages[this.language];
-      if (langAvailable) {
+    if (this._codeContent) {
+      const grammar = this.getCodeLanguage(this.language);
+      if (grammar) {
         this._highlightedCode = Prism.highlight(
           this._codeContent,
-          langAvailable,
+          grammar,
           this.language
         );
       } else {
+        // Fallback to plain text if language is not supported
         this._highlightedCode = this._codeContent;
       }
     } else {
-      this._highlightedCode = this._codeContent;
+      this._highlightedCode = '';
     }
     this.requestUpdate();
-  }
-
-  override render() {
-    return html`
-      ${this.title
-        ? html`<div class="code-view__title">
-            <h3 class="kd-type--headline-02">${this.title}</h3>
-          </div>`
-        : null}
-      ${this.type === 'inline'
-        ? html`<span class="inline-example"
-            ><slot name="inline-example"></slot
-          ></span>`
-        : null}
-      <div
-        class="${classMap({
-          'size--auto': this.size === 'auto',
-          'size--sm': this.size === 'sm',
-          'size--md': this.size === 'md',
-          'size--lg': this.size === 'lg',
-          code_view__container: true,
-          'type--block': this.type === 'block',
-          'type--inline': this.type === 'inline',
-          'single-line': this.isSingleLine,
-        })}"
-      >
-        <pre
-          tabindex="0"
-          @keydown="${this.handleKeyDown}"
-          aria-label=${this.isSingleLine
-            ? 'Code block'
-            : 'Code block, use arrow keys to scroll'}
-        ><code class="language-${this.language}">${unsafeHTML(
-          this._highlightedCode
-        )}</code></pre>
-        <slot @slotchange=${this.highlightCode} style="display: none;"></slot>
-
-        ${this.copyOptionVisible
-          ? html`<slot name="copy-slot">
-              <kd-button
-                class="code-view__copy-button"
-                kind="primary-web"
-                title="Copy code"
-                size=${this._sizeMap(this.type)}
-                name="copy code button"
-                description="copy code button"
-                iconPosition="left"
-                ?disabled=${this.codeCopied}
-                @click=${(e: Event) => this._copyCode(e)}
-              >
-                <kd-icon
-                  slot="icon"
-                  class="copy-icon"
-                  .icon=${this.codeCopied ? checkmarkIcon : copyIcon}
-                ></kd-icon>
-                ${this.copyButtonText
-                  ? html`<span class="copy-text">${this.copyButtonText}</span>`
-                  : null}
-              </kd-button>
-            </slot>`
-          : null}
-      </div>
-    `;
   }
 }
 

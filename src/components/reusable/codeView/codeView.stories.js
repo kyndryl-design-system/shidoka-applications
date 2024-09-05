@@ -43,7 +43,18 @@ export default {
       control: { type: 'select' },
     },
     language: {
-      options: ['javascript', 'html', 'css', 'scss', 'json', 'xml', 'markdown'],
+      options: [
+        'javascript',
+        'html',
+        'css',
+        'scss',
+        'json',
+        'xml',
+        'markdown',
+        'svg',
+        'yaml',
+        'bash',
+      ],
       control: { type: 'select' },
     },
     type: {
@@ -109,7 +120,6 @@ const BlockTemplate = (args) => {
 export const InlineCodeView = InlineTemplate.bind({});
 InlineCodeView.args = {
   ...args,
-  size: 'md',
   title: 'Inline Code Snippet',
   exampleInlinetext: 'Example inline text:',
   type: CODE_VIEW_TYPES.INLINE,
@@ -117,8 +127,8 @@ InlineCodeView.args = {
 
 export const BlockCodeView = BlockTemplate.bind({});
 BlockCodeView.args = {
-  ...args,
   size: 'md',
+  ...args,
   type: CODE_VIEW_TYPES.BLOCK,
   title: 'Block Code Snippet',
   copyButtonText: 'Copy',
@@ -133,8 +143,8 @@ BlockCodeView.args = {
 
 export const SingleLineView = BlockTemplate.bind({});
 SingleLineView.args = {
-  ...args,
   size: 'md',
+  ...args,
   type: CODE_VIEW_TYPES.BLOCK,
   title: 'Single Line Code Snippet',
   copyButtonText: '',
@@ -143,8 +153,8 @@ SingleLineView.args = {
 
 export const JavascriptExample = BlockTemplate.bind({});
 JavascriptExample.args = {
-  ...args,
   size: 'md',
+  ...args,
   language: 'javascript',
   title: 'Javascript Code Snippet',
   type: CODE_VIEW_TYPES.BLOCK,
@@ -194,8 +204,8 @@ JavascriptExample.args = {
 
 export const HTMLExample = BlockTemplate.bind({});
 HTMLExample.args = {
-  ...args,
   size: 'md',
+  ...args,
   language: 'html',
   title: 'HTML Code Snippet',
   type: CODE_VIEW_TYPES.BLOCK,
@@ -211,6 +221,7 @@ HTMLExample.args = {
 
 export const CSSExample = BlockTemplate.bind({});
 CSSExample.args = {
+  size: 'md',
   ...args,
   language: 'css',
   title: 'CSS Code Snippet',
