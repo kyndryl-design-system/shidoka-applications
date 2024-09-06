@@ -24,10 +24,6 @@ const removeLeadingWhitespace = (code) => {
     .trim();
 };
 
-const isSingleLineCode = (code) => {
-  return code.trim().split('\n').length === 1;
-};
-
 export default {
   title: 'Components/CodeView',
   component: 'kyn-code-view',
@@ -72,11 +68,9 @@ export default {
 
 const args = {
   title: 'Code View Title Here',
-  codeCopied: false,
   language: 'javascript',
   type: CODE_VIEW_TYPES.INLINE,
   copyOptionVisible: true,
-  isSingleLine: false,
   copyButtonText: '',
   code: 'console.log("Hello, World!");',
 };
@@ -87,7 +81,6 @@ const InlineTemplate = (args) => {
       title=${args.title}
       type=${args.type}
       language=${args.language}
-      ?codeCopied=${args.codeCopied}
       ?copyOptionVisible=${false}
       copyButtonText=${''}
       @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
@@ -99,17 +92,14 @@ const InlineTemplate = (args) => {
 };
 
 const BlockTemplate = (args) => {
-  const isSingleLine = isSingleLineCode(args.code);
   return html`
     <kyn-code-view
       size=${args.size}
       title=${args.title}
       type=${args.type}
       language=${args.language}
-      ?codeCopied=${args.codeCopied}
       ?copyOptionVisible=${args.copyOptionVisible}
       copyButtonText=${args.copyButtonText}
-      ?isSingleLine=${isSingleLine}
       @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
     >
       <pre><code>${removeLeadingWhitespace(args.code)}</code></pre>

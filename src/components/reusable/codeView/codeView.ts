@@ -26,25 +26,34 @@ export class CodeView extends LitElement {
   static override styles = [CodeViewStyles, PrismStyles];
 
   /** Code snippet type: `inline`, `block` */
-  @property({ type: String }) type = 'block';
+  @property({ type: String })
+  type = 'block';
 
   /** *For block type only* -- size: `auto`, `sm`, `md`, or `lg`. */
-  @property({ type: String }) size = 'md';
+  @property({ type: String })
+  size = 'md';
 
   /** Code language (ex: `javascript`, `css`, `markdown`, `xml`). */
-  @property({ type: String }) language = '';
+  @property({ type: String })
+  language = '';
 
   /** Optional title to be displayed above code snippet. */
-  @property({ type: String }) override title = '';
+  @property({ type: String })
+  override title = '';
 
   /** Copy code option available */
-  @property({ type: Boolean }) copyOptionVisible = false;
+  @property({ type: Boolean })
+  copyOptionVisible = false;
 
   /** Copy button text (optional) */
-  @property({ type: String }) copyButtonText = '';
+  @property({ type: String })
+  copyButtonText = '';
 
-  /** Auto-detect whether code snippet is single line (boolean) -- styled accordingly */
-  @property({ type: Boolean }) isSingleLine = false;
+  /** Auto-detect whether code snippet is single line (boolean) -- styled accordingly
+   *  * @internal
+   */
+  @state()
+  _isSingleLine = false;
 
   /** Formatted code (prism.js) to be displayed.
    * @internal
@@ -56,7 +65,7 @@ export class CodeView extends LitElement {
    * @internal
    */
   @state()
-  private codeCopied = false;
+  private _codeCopied = false;
 
   /** Copied code content displayed in storybook action printout.
    * @internal
@@ -85,14 +94,14 @@ export class CodeView extends LitElement {
           code_view__container: true,
           'type--block': this.type === 'block',
           'type--inline': this.type === 'inline',
-          'single-line-true': this.isSingleLine,
-          'single-line-false': !this.isSingleLine,
+          'single-line': this._isSingleLine,
+          'multi-line': !this._isSingleLine,
         })}"
       >
         <pre
           tabindex="0"
           @keydown="${this.handleKeyDown}"
-          aria-label=${this.isSingleLine
+          aria-label=${this._isSingleLine
             ? 'Code block'
             : 'Code block, use arrow keys to scroll'}
         ><code class="language-${this.language}">${unsafeHTML(
@@ -110,13 +119,13 @@ export class CodeView extends LitElement {
                 name="copy code button"
                 description="copy code button"
                 iconPosition="left"
-                ?disabled=${this.codeCopied}
+                ?disabled=${this._codeCopied}
                 @click=${(e: Event) => this._copyCode(e)}
               >
                 <kd-icon
                   slot="icon"
                   class="copy-icon"
-                  .icon=${this.codeCopied ? checkmarkIcon : copyIcon}
+                  .icon=${this._codeCopied ? checkmarkIcon : copyIcon}
                 ></kd-icon>
                 ${this.copyButtonText
                   ? html`<span class="copy-text">${this.copyButtonText}</span>`
@@ -126,6 +135,10 @@ export class CodeView extends LitElement {
           : null}
       </div>
     `;
+  }
+
+  private isSingleLineCode(code: string): boolean {
+    return (this._isSingleLine = code.trim().split('\n').length === 1);
   }
 
   private formatExampleCode = (code: string) => {
@@ -139,7 +152,7 @@ export class CodeView extends LitElement {
     navigator.clipboard
       .writeText(this._codeContent)
       .then(() => {
-        this.codeCopied = true;
+        this._codeCopied = true;
         this.copyButtonText = originalText.length > 1 ? 'Copied!' : '';
         this.dispatchEvent(
           new CustomEvent('on-custom-copy', {
@@ -150,15 +163,14 @@ export class CodeView extends LitElement {
           })
         );
         setTimeout(() => {
-          this.codeCopied = false;
+          this._codeCopied = false;
           this.copyButtonText = originalText;
         }, 3000);
       })
       .catch((err) => console.error('Failed to copy code:', err));
   }
 
-  override firstUpdated(changedProperties: PropertyValues) {
-    console.log({ changedProperties });
+  override firstUpdated() {
     this.highlightCode();
   }
 
@@ -178,32 +190,28 @@ export class CodeView extends LitElement {
   }
 
   private getCodeLanguage(lang: string): Prism.Grammar | null {
-    switch (lang.toLowerCase()) {
-      case 'javascript':
-      case 'js':
-        return Prism.languages.javascript;
-      case 'css':
-        return Prism.languages.css;
-      case 'html':
-      case 'xml':
-        return Prism.languages.markup;
-      case 'json':
-        return Prism.languages.json;
-      case 'typescript':
-        return Prism.languages.typescript;
-      case 'bash':
-        return Prism.languages.bash;
-      case 'scss':
-        return Prism.languages.scss;
-      case 'svg':
-        return Prism.languages.svg;
-      case 'yaml':
-        return Prism.languages.yaml;
-      default:
-        console.warn(
-          `Language '${lang}' is not supported. Falling back to plain text.`
-        );
-        return null;
+    const languageMap: { [key: string]: Prism.Grammar } = {
+      javascript: Prism.languages.javascript,
+      js: Prism.languages.javascript,
+      css: Prism.languages.css,
+      html: Prism.languages.markup,
+      xml: Prism.languages.markup,
+      json: Prism.languages.json,
+      typescript: Prism.languages.typescript,
+      bash: Prism.languages.bash,
+      scss: Prism.languages.scss,
+      svg: Prism.languages.svg,
+      yaml: Prism.languages.yaml,
+    };
+
+    const detectedLanguage = languageMap[lang.toLowerCase()];
+    if (detectedLanguage) {
+      return detectedLanguage;
+    } else {
+      console.warn(
+        `Language '${lang}' is not supported. Falling back to plain text.`
+      );
+      return null;
     }
   }
 
@@ -219,18 +227,21 @@ export class CodeView extends LitElement {
         .trim() || '';
 
     if (this._codeContent) {
-      const grammar = this.getCodeLanguage(this.language);
-      if (grammar) {
+      this.isSingleLineCode(this._codeContent);
+      const detectedLanguage = this.getCodeLanguage(this.language);
+      if (detectedLanguage) {
         this._highlightedCode = Prism.highlight(
           this._codeContent,
-          grammar,
+          detectedLanguage,
           this.language
         );
       } else {
-        // Fallback to plain text if language is not supported
+        // fallback to plain text if language is not supported
         this._highlightedCode = this._codeContent;
+        this.isSingleLineCode(this._codeContent);
       }
     } else {
+      // fallback to plain text if no lanugage detected
       this._highlightedCode = '';
     }
     this.requestUpdate();
