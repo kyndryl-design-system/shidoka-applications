@@ -75,9 +75,9 @@ export class CodeView extends LitElement {
 
   override render() {
     return html`
-      ${this.title
+      ${this.title && this.snippetType !== 'inline'
         ? html`<div class="code-view__title">
-            <h3 class="kd-type--headline-02">${this.title}</h3>
+            <label>${this.title}</label>
           </div>`
         : null}
       ${this.snippetType === 'inline'
@@ -87,11 +87,11 @@ export class CodeView extends LitElement {
         : null}
       <div
         class="${classMap({
+          code_view__container: true,
           'size--auto': this.size === 'auto',
           'size--sm': this.size === 'sm',
           'size--md': this.size === 'md',
           'size--lg': this.size === 'lg',
-          code_view__container: true,
           'snippetType--block': this.snippetType === 'block',
           'snippetType--inline': this.snippetType === 'inline',
           'single-line': this._isSingleLine,
