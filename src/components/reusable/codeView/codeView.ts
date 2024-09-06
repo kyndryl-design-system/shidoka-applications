@@ -27,9 +27,9 @@ export class CodeView extends LitElement {
 
   /** Code snippet type: `inline`, `block` */
   @property({ type: String })
-  type = 'block';
+  snippetType = 'block';
 
-  /** *For block type only* -- size: `auto`, `sm`, `md`, or `lg`. */
+  /** *For block snippetType only* -- size: `auto`, `sm`, `md`, or `lg`. */
   @property({ type: String })
   size = 'md';
 
@@ -80,7 +80,7 @@ export class CodeView extends LitElement {
             <h3 class="kd-type--headline-02">${this.title}</h3>
           </div>`
         : null}
-      ${this.type === 'inline'
+      ${this.snippetType === 'inline'
         ? html`<span class="inline-example"
             ><slot name="inline-example"></slot
           ></span>`
@@ -92,8 +92,8 @@ export class CodeView extends LitElement {
           'size--md': this.size === 'md',
           'size--lg': this.size === 'lg',
           code_view__container: true,
-          'type--block': this.type === 'block',
-          'type--inline': this.type === 'inline',
+          'snippetType--block': this.snippetType === 'block',
+          'snippetType--inline': this.snippetType === 'inline',
           'single-line': this._isSingleLine,
           'multi-line': !this._isSingleLine,
         })}"
@@ -115,7 +115,7 @@ export class CodeView extends LitElement {
                 class="code-view__copy-button"
                 kind="primary-web"
                 title="Copy code"
-                size=${this._sizeMap(this.type)}
+                size=${this._sizeMap(this.snippetType)}
                 name="copy code button"
                 description="copy code button"
                 iconPosition="left"
@@ -180,8 +180,8 @@ export class CodeView extends LitElement {
     this.highlightCode();
   }
 
-  private _sizeMap(type: string): string {
-    return type === 'inline' ? 'medium' : 'small';
+  private _sizeMap(snippetType: string): string {
+    return snippetType === 'inline' ? 'medium' : 'small';
   }
 
   // accesibility for scrolling code block
@@ -197,7 +197,7 @@ export class CodeView extends LitElement {
   }
 
   private highlightCode() {
-    if (this.type === 'inline') {
+    if (this.snippetType === 'inline') {
       const slot = this.shadowRoot?.querySelector(
         'slot:not([name])'
       ) as HTMLSlotElement;

@@ -69,7 +69,7 @@ export default {
 const args = {
   title: 'Code View Title Here',
   language: 'javascript',
-  type: CODE_VIEW_TYPES.INLINE,
+  snippetType: CODE_VIEW_TYPES.INLINE,
   copyOptionVisible: true,
   copyButtonText: '',
   code: 'console.log("Hello, World!");',
@@ -79,7 +79,7 @@ const InlineTemplate = (args) => {
   return html`
     <kyn-code-view
       title=${args.title}
-      type=${args.type}
+      snippetType=${args.snippetType}
       language=${args.language}
       ?copyOptionVisible=${false}
       copyButtonText=${''}
@@ -96,7 +96,7 @@ const BlockTemplate = (args) => {
     <kyn-code-view
       size=${args.size}
       title=${args.title}
-      type=${args.type}
+      snippetType=${args.snippetType}
       language=${args.language}
       ?copyOptionVisible=${args.copyOptionVisible}
       copyButtonText=${args.copyButtonText}
@@ -112,14 +112,14 @@ InlineCodeView.args = {
   ...args,
   title: 'Inline Code Snippet',
   exampleInlinetext: 'Example inline text:',
-  type: CODE_VIEW_TYPES.INLINE,
+  snippetType: CODE_VIEW_TYPES.INLINE,
 };
 
 export const BlockCodeView = BlockTemplate.bind({});
 BlockCodeView.args = {
   size: 'md',
   ...args,
-  type: CODE_VIEW_TYPES.BLOCK,
+  snippetType: CODE_VIEW_TYPES.BLOCK,
   title: 'Block Code Snippet',
   copyButtonText: 'Copy',
   code: `
@@ -135,7 +135,7 @@ export const SingleLineView = BlockTemplate.bind({});
 SingleLineView.args = {
   size: 'md',
   ...args,
-  type: CODE_VIEW_TYPES.BLOCK,
+  snippetType: CODE_VIEW_TYPES.BLOCK,
   title: 'Single Line Code Snippet',
   copyButtonText: '',
   code: `console.log("Hello, World!");`,
@@ -147,7 +147,7 @@ JavascriptExample.args = {
   ...args,
   language: 'javascript',
   title: 'Javascript Code Snippet',
-  type: CODE_VIEW_TYPES.BLOCK,
+  snippetType: CODE_VIEW_TYPES.BLOCK,
   copyButtonText: 'Copy',
   code: `
     const addNumbers = (a, b) => {
@@ -198,7 +198,7 @@ HTMLExample.args = {
   ...args,
   language: 'html',
   title: 'HTML Code Snippet',
-  type: CODE_VIEW_TYPES.BLOCK,
+  snippetType: CODE_VIEW_TYPES.BLOCK,
   copyButtonText: 'Copy',
   code: `
     <div class="container">
@@ -215,7 +215,7 @@ CSSExample.args = {
   ...args,
   language: 'css',
   title: 'CSS Code Snippet',
-  type: CODE_VIEW_TYPES.BLOCK,
+  snippetType: CODE_VIEW_TYPES.BLOCK,
   copyButtonText: 'Copy',
   code: `
     .container {
