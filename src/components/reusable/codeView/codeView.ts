@@ -1,4 +1,4 @@
-import { html, LitElement, PropertyValues } from 'lit';
+import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -184,6 +184,7 @@ export class CodeView extends LitElement {
     return type === 'inline' ? 'medium' : 'small';
   }
 
+  // accesibility for scrolling code block
   private handleKeyDown(e: KeyboardEvent) {
     const pre = e.target as HTMLPreElement;
     if (e.key === 'ArrowDown') {
@@ -195,60 +196,39 @@ export class CodeView extends LitElement {
     }
   }
 
-  private getCodeLanguage(lang: string): Prism.Grammar | null {
-    const languageMap: { [key: string]: Prism.Grammar } = {
-      javascript: Prism.languages.javascript,
-      js: Prism.languages.javascript,
-      css: Prism.languages.css,
-      html: Prism.languages.markup,
-      xml: Prism.languages.markup,
-      json: Prism.languages.json,
-      typescript: Prism.languages.typescript,
-      bash: Prism.languages.bash,
-      scss: Prism.languages.scss,
-      svg: Prism.languages.svg,
-      yaml: Prism.languages.yaml,
-    };
-
-    const detectedLanguage = languageMap[lang.toLowerCase()];
-    if (detectedLanguage) {
-      return detectedLanguage;
-    } else {
-      console.warn(
-        `Language '${lang}' is not supported. Falling back to plain text.`
-      );
-      return null;
-    }
-  }
-
   private highlightCode() {
-    const slot = this.shadowRoot?.querySelector(
-      'slot:not([name])'
-    ) as HTMLSlotElement;
-    const nodes = slot?.assignedNodes();
-    this._codeContent =
-      nodes
-        ?.map((node) => node.textContent)
-        .join('')
-        .trim() || '';
+    if (this.type === 'inline') {
+      const slot = this.shadowRoot?.querySelector(
+        'slot:not([name])'
+      ) as HTMLSlotElement;
+      const nodes = slot?.assignedNodes();
+      this._codeContent =
+        nodes
+          ?.map((node) => node.textContent)
+          .join('')
+          .trim() || '';
+      this._highlightedCode = this._codeContent;
+    } else {
+      const slot = this.shadowRoot?.querySelector(
+        'slot:not([name])'
+      ) as HTMLSlotElement;
+      const nodes = slot?.assignedNodes();
+      this._codeContent =
+        nodes
+          ?.map((node) => node.textContent)
+          .join('')
+          .trim() || '';
 
-    if (this._codeContent) {
-      this.isSingleLineCode(this._codeContent);
-      const detectedLanguage = this.getCodeLanguage(this.language);
-      if (detectedLanguage) {
+      if (this._codeContent) {
+        this.isSingleLineCode(this._codeContent);
         this._highlightedCode = Prism.highlight(
           this._codeContent,
-          detectedLanguage,
+          Prism.languages[this.language],
           this.language
         );
       } else {
-        // fallback to plain text if language is not supported
-        this._highlightedCode = this._codeContent;
-        this.isSingleLineCode(this._codeContent);
+        this._highlightedCode = '';
       }
-    } else {
-      // fallback to plain text if no lanugage detected
-      this._highlightedCode = '';
     }
     this.requestUpdate();
   }
