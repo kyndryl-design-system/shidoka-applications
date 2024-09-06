@@ -12,8 +12,9 @@
 }
 
 ::slotted([slot="inline-example"]) {
-    display: inline-block;
-    font-style: normal;
+    display: inline;
+    margin-right: 0.25em;
+    vertical-align: baseline;
 }
 
 .code-view__title {
@@ -64,15 +65,26 @@
     }
 
     &.type--inline {
-        display: inline-block;
-        width: fit-content;
-        border-radius: 2px;
-        vertical-align: bottom;
-        margin: 0 4px;
+        display: inline-flex;
+        align-items: center;
+        width: auto;
+        border-radius: 4px;
+        vertical-align: baseline;
+        margin: 0 0.25em;
+        padding: 0.1em 0.4em;
+        line-height: normal;
 
         pre {
-            padding: 0 5px;
-            line-height: 1.5;
+            padding: 0;
+            margin: 0;
+            background: none;
+        }
+
+        code {
+            font-size: 0.875em;
+            line-height: inherit;
+            white-space: pre-wrap;
+            word-break: break-word;
         }
     }
 
@@ -183,5 +195,12 @@
 
     to {
         opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .code_view__container.type--inline {
+        display: inline-block;
+        margin: 0.25em 0;
     }
 }
