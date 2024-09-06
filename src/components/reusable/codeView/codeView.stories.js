@@ -53,11 +53,11 @@ export default {
       ],
       control: { type: 'select' },
     },
-    type: {
+    snippetType: {
       options: createSelectOptions(CODE_VIEW_TYPES),
-      control: { type: 'select', labels: { null: CODE_VIEW_TYPES.INLINE } },
+      control: { type: 'select', labels: { null: CODE_VIEW_TYPES.BLOCK } },
       table: {
-        defaultValue: { summary: CODE_VIEW_TYPES.INLINE },
+        defaultValue: { summary: CODE_VIEW_TYPES.BLOCK },
       },
     },
     copyOptionVisible: {
@@ -69,53 +69,72 @@ export default {
 const args = {
   title: 'Code View Title Here',
   language: 'javascript',
-  snippetType: CODE_VIEW_TYPES.INLINE,
+  snippetType: CODE_VIEW_TYPES.BLOCK,
   copyOptionVisible: true,
   copyButtonText: '',
   code: 'console.log("Hello, World!");',
 };
 
-const InlineTemplate = (args) => {
-  return html`
-    <kyn-code-view
-      title=${args.title}
-      snippetType=${args.snippetType}
-      language=${args.language}
-      ?copyOptionVisible=${false}
-      copyButtonText=${''}
-      @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
-    >
-      <span slot="inline-example">${args.exampleInlinetext}</span>
-      <pre><code>${removeLeadingWhitespace(args.code)}</code></pre>
-    </kyn-code-view>
-  `;
+const Template = (args) => {
+  if (args.snippetType === CODE_VIEW_TYPES.INLINE) {
+    return html`
+      <kyn-code-view
+        title=${args.title}
+        snippetType=${args.snippetType}
+        language=${args.language}
+        ?copyOptionVisible=${false}
+        copyButtonText=${''}
+        @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
+      >
+        <span slot="inline-example">${args.exampleInlinetext}</span>
+        <pre><code>${removeLeadingWhitespace(args.code)}</code></pre>
+      </kyn-code-view>
+    `;
+  } else {
+    return html`
+      <kyn-code-view
+        size=${args.size}
+        title=${args.title}
+        snippetType=${args.snippetType}
+        language=${args.language}
+        ?copyOptionVisible=${args.copyOptionVisible}
+        copyButtonText=${args.copyButtonText}
+        @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
+      >
+        <pre><code>${removeLeadingWhitespace(args.code)}</code></pre>
+      </kyn-code-view>
+    `;
+  }
 };
 
-const BlockTemplate = (args) => {
-  return html`
-    <kyn-code-view
-      size=${args.size}
-      title=${args.title}
-      snippetType=${args.snippetType}
-      language=${args.language}
-      ?copyOptionVisible=${args.copyOptionVisible}
-      copyButtonText=${args.copyButtonText}
-      @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
-    >
-      <pre><code>${removeLeadingWhitespace(args.code)}</code></pre>
-    </kyn-code-view>
-  `;
+export const CodeView = Template.bind({});
+CodeView.args = {
+  snippetType: 'block',
+  size: 'md',
+  title: 'Example Code View',
+  language: 'javascript',
+  copyOptionVisible: true,
+  copyButtonText: '',
+  code: `console.log("Hello, World!");`,
+  exampleInlinetext: 'Inline example text',
 };
 
-export const InlineCodeView = InlineTemplate.bind({});
-InlineCodeView.args = {
-  ...args,
-  title: 'Inline Code Snippet',
-  exampleInlinetext: 'Example inline text:',
-  snippetType: CODE_VIEW_TYPES.INLINE,
+CodeView.argTypes = {
+  snippetType: {
+    control: { type: 'select', options: ['inline', 'block'] },
+  },
+  size: {
+    control: { type: 'select', options: ['small', 'medium', 'large'] },
+  },
+  language: {
+    control: { type: 'select', options: ['javascript', 'html', 'css'] },
+  },
+  copyOptionVisible: {
+    control: 'boolean',
+  },
 };
 
-export const BlockCodeView = BlockTemplate.bind({});
+export const BlockCodeView = Template.bind({});
 BlockCodeView.args = {
   size: 'md',
   ...args,
@@ -131,7 +150,15 @@ BlockCodeView.args = {
   `,
 };
 
-export const SingleLineView = BlockTemplate.bind({});
+export const InlineCodeView = Template.bind({});
+InlineCodeView.args = {
+  ...args,
+  title: 'Inline Code Snippet',
+  exampleInlinetext: 'Example inline text:',
+  snippetType: CODE_VIEW_TYPES.INLINE,
+};
+
+export const SingleLineView = Template.bind({});
 SingleLineView.args = {
   size: 'md',
   ...args,
@@ -141,7 +168,7 @@ SingleLineView.args = {
   code: `console.log("Hello, World!");`,
 };
 
-export const JavascriptExample = BlockTemplate.bind({});
+export const JavascriptExample = Template.bind({});
 JavascriptExample.args = {
   size: 'md',
   ...args,
@@ -192,7 +219,7 @@ JavascriptExample.args = {
   `,
 };
 
-export const HTMLExample = BlockTemplate.bind({});
+export const HTMLExample = Template.bind({});
 HTMLExample.args = {
   size: 'md',
   ...args,
@@ -209,7 +236,7 @@ HTMLExample.args = {
   `,
 };
 
-export const CSSExample = BlockTemplate.bind({});
+export const CSSExample = Template.bind({});
 CSSExample.args = {
   size: 'md',
   ...args,

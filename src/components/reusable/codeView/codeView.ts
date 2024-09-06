@@ -29,7 +29,7 @@ export class CodeView extends LitElement {
   @property({ type: String })
   snippetType = 'block';
 
-  /** *For block snippetType only* -- size: `auto`, `sm`, `md`, or `lg`. */
+  /** For `block` snippetType only -- size: `auto`, `sm`, `md`, or `lg`. */
   @property({ type: String })
   size = 'md';
 
@@ -98,15 +98,19 @@ export class CodeView extends LitElement {
           'multi-line': !this._isSingleLine,
         })}"
       >
-        <pre
-          tabindex="0"
-          @keydown="${this.handleKeyDown}"
-          aria-label=${this._isSingleLine
-            ? 'Code block'
-            : 'Code block, use arrow keys to scroll'}
-        ><code class="language-${this.language}">${unsafeHTML(
-          this._highlightedCode
-        )}</code></pre>
+        ${this.snippetType === 'inline'
+          ? html`<code class="language-${this.language}"
+              >${this._codeContent}</code
+            >`
+          : html`<pre
+              tabindex="0"
+              @keydown="${this.handleKeyDown}"
+              aria-label=${this._isSingleLine
+                ? 'Code block'
+                : 'Code block, use arrow keys to scroll'}
+            ><code class="language-${this.language}">${unsafeHTML(
+              this._highlightedCode
+            )}</code></pre>`}
         <slot @slotchange=${this.highlightCode} style="display: none;"></slot>
 
         ${this.copyOptionVisible
