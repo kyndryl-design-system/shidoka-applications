@@ -121,14 +121,12 @@
         }
 
         &.single-line {
-            width: fit-content;
 
             pre {
                 padding: 1px 100px 1px 16px;
                 display: flex;
                 align-items: center;
                 line-height: 1.5;
-                max-width: calc(100% - 100px);
                 min-height: 40px;
                 width: fit-content;
             }
@@ -147,8 +145,29 @@
                 border-bottom-right-radius: 2px;
             }
 
-            &.size--sm pre code {
-                font-size: 12px;
+            &.size--sm {
+                width: fit-content;
+
+                pre code {
+                    font-size: 12px;
+                }
+            }
+
+            &.size--md {
+                width: fit-content;
+                max-width: 560px;
+            }
+
+            &.size--lg {
+                max-width: 640px;
+            }
+
+            &.size--auto {
+                max-width: 95%;
+
+                pre {
+                    width: 95%;
+                }
             }
         }
 
