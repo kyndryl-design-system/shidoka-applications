@@ -15,8 +15,8 @@ import CodeViewStyles from './codeView.scss';
 import PrismStyles from './prismSyntaxStyles.scss';
 
 /**
- * `<kyn-code-view>` component to display `<code>` snippets either inline surrounded by other text or inside a single-/multi-line block element.
- * @fires copy - Emits when the copy button is clicked.
+ * `<kyn-code-view>` component to display `<code>` snippets, either inline within HTML content or as standalone single-/multi-line block elements.
+ * @fires on-custom-copy - Emits when the copy button is clicked.
  * @slot unnamed - inline text slot from story book.
  * @slot inline-example - Slot for non-code example text to preceed inline code snippet.
  * @slot copy-slot - Slot for copy button.
