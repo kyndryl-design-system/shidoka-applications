@@ -9,8 +9,6 @@ const CODE_VIEW_TYPES = {
   BLOCK: 'block',
 };
 
-const createSelectOptions = (defs) => [null, ...Object.values(defs)];
-
 const removeLeadingWhitespace = (code) => {
   if (!code) return '';
   const lines = code.split('\n');
@@ -53,26 +51,10 @@ export default {
       ],
       control: { type: 'select' },
     },
-    snippetType: {
-      options: createSelectOptions(CODE_VIEW_TYPES),
-      control: { type: 'select', labels: { null: CODE_VIEW_TYPES.BLOCK } },
-      table: {
-        defaultValue: { summary: CODE_VIEW_TYPES.BLOCK },
-      },
-    },
     copyOptionVisible: {
       control: { type: 'boolean' },
     },
   },
-};
-
-const args = {
-  title: 'Code View Title Here',
-  language: 'javascript',
-  snippetType: CODE_VIEW_TYPES.BLOCK,
-  copyOptionVisible: true,
-  copyButtonText: '',
-  code: 'console.log("Hello, World!");',
 };
 
 const Template = (args) => {
@@ -107,19 +89,25 @@ const Template = (args) => {
   }
 };
 
-export const CodeView = Template.bind({});
-CodeView.args = {
+export const BlockCodeView = Template.bind({});
+BlockCodeView.args = {
   snippetType: 'block',
   size: 'md',
-  title: 'Example Code View',
+  title: 'Block Code View',
   language: 'javascript',
   copyOptionVisible: true,
-  copyButtonText: '',
-  code: `console.log("Hello, World!");`,
+  copyButtonText: 'Copy',
+  code: `
+    const greetUser = (name) => {
+      console.log(\`Hello, \${name}!\`);
+    }
+
+    greetUser('World');
+  `,
   exampleInlinetext: 'Inline example text',
 };
 
-CodeView.argTypes = {
+BlockCodeView.argTypes = {
   snippetType: {
     control: { type: 'select', options: ['inline', 'block'] },
   },
@@ -134,36 +122,22 @@ CodeView.argTypes = {
   },
 };
 
-export const BlockCodeView = Template.bind({});
-BlockCodeView.args = {
-  size: 'md',
-  ...args,
-  snippetType: CODE_VIEW_TYPES.BLOCK,
-  title: 'Block Code Snippet',
-  copyButtonText: 'Copy',
-  code: `
-    const greetUser = (name) => {
-      console.log(\`Hello, \${name}!\`);
-    }
-
-    greetUser('World');
-  `,
-};
-
 export const InlineCodeView = Template.bind({});
 InlineCodeView.args = {
-  ...args,
-  title: 'Inline Code Snippet',
-  exampleInlinetext: 'Example inline text:',
   snippetType: CODE_VIEW_TYPES.INLINE,
+  title: 'Inline Code Snippet',
+  language: 'javascript',
+  exampleInlinetext: 'Example inline text:',
+  code: `console.log("Hello, World!");`,
 };
 
 export const SingleLineView = Template.bind({});
 SingleLineView.args = {
   size: 'md',
-  ...args,
   snippetType: CODE_VIEW_TYPES.BLOCK,
   title: 'Single Line Code Snippet',
+  language: 'javascript',
+  copyOptionVisible: true,
   copyButtonText: '',
   code: `console.log("Hello, World!");`,
 };
@@ -171,10 +145,10 @@ SingleLineView.args = {
 export const JavascriptExample = Template.bind({});
 JavascriptExample.args = {
   size: 'md',
-  ...args,
+  snippetType: CODE_VIEW_TYPES.BLOCK,
   language: 'javascript',
   title: 'Javascript Code Snippet',
-  snippetType: CODE_VIEW_TYPES.BLOCK,
+  copyOptionVisible: true,
   copyButtonText: 'Copy',
   code: `
     const addNumbers = (a, b) => {
@@ -222,10 +196,10 @@ JavascriptExample.args = {
 export const HTMLExample = Template.bind({});
 HTMLExample.args = {
   size: 'md',
-  ...args,
+  snippetType: CODE_VIEW_TYPES.BLOCK,
   language: 'html',
   title: 'HTML Code Snippet',
-  snippetType: CODE_VIEW_TYPES.BLOCK,
+  copyOptionVisible: true,
   copyButtonText: 'Copy',
   code: `
     <div class="container">
@@ -239,10 +213,10 @@ HTMLExample.args = {
 export const CSSExample = Template.bind({});
 CSSExample.args = {
   size: 'md',
-  ...args,
+  snippetType: CODE_VIEW_TYPES.BLOCK,
   language: 'css',
   title: 'CSS Code Snippet',
-  snippetType: CODE_VIEW_TYPES.BLOCK,
+  copyOptionVisible: true,
   copyButtonText: 'Copy',
   code: `
     .container {
