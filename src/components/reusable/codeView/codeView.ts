@@ -105,6 +105,7 @@ export class CodeView extends LitElement {
           : html`<pre
               tabindex="0"
               @keydown="${this.handleKeyDown}"
+              role="region"
               aria-label=${this._isSingleLine
                 ? 'Code block'
                 : 'Code block, use arrow keys to scroll'}
