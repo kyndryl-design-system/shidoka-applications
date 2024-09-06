@@ -15,7 +15,7 @@ import CodeViewStyles from './codeView.scss';
 import PrismStyles from './prismSyntaxStyles.scss';
 
 /**
- * Code view component.
+ * Code View component to display <code> snippets either inline with other text or inside a single-/multi-line block element.
  * @fires copy - Emits when the copy button is clicked.
  * @slot unnamed - inline text slot from story book.
  * @slot inline-example - Slot for non-code example text to preceed inline code snippet.
@@ -25,7 +25,10 @@ import PrismStyles from './prismSyntaxStyles.scss';
 export class CodeView extends LitElement {
   static override styles = [CodeViewStyles, PrismStyles];
 
-  /** Code View (block only) size: `auto`, `sm`, `md`, or `lg`. */
+  /** Code snippet type: `inline`, `block` */
+  @property({ type: String }) type = 'block';
+
+  /** *For block type only* -- size: `auto`, `sm`, `md`, or `lg`. */
   @property({ type: String }) size = 'md';
 
   /** Code language (ex: `javascript`, `css`, `markdown`, `xml`). */
@@ -34,21 +37,30 @@ export class CodeView extends LitElement {
   /** Optional title to be displayed above code snippet. */
   @property({ type: String }) override title = '';
 
-  /** Code View type: `inline`, `block` */
-  @property({ type: String }) type = 'block';
-
-  /** Code View copy code option available */
+  /** Copy code option available */
   @property({ type: Boolean }) copyOptionVisible = false;
 
-  /** Code View copy button text (optional) */
+  /** Copy button text (optional) */
   @property({ type: String }) copyButtonText = '';
 
-  /** Detected whether code snippet is single line (boolean) -- styled accordingly */
+  /** Auto-detect whether code snippet is single line (boolean) -- styled accordingly */
   @property({ type: Boolean }) isSingleLine = false;
 
-  @state() private _highlightedCode = '';
-  @state() private codeCopied = false;
+  /** Formatted code (prism.js) to be displayed.
+   * @internal
+   */
+  @state()
+  private _highlightedCode = '';
 
+  /** 3s timeout where code has been copied to clipboard and button is temporarily disabled.
+   * @internal
+   */
+  @state()
+  private codeCopied = false;
+
+  /** Copied code content displayed in storybook action printout.
+   * @internal
+   */
   @state()
   private _codeContent = '';
 
