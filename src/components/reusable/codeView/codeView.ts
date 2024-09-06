@@ -137,10 +137,16 @@ export class CodeView extends LitElement {
     `;
   }
 
+  /** Function to detect whether code should have single line styles.
+   * @internal
+   */
   private isSingleLineCode(code: string): boolean {
     return (this._isSingleLine = code.trim().split('\n').length === 1);
   }
 
+  /** Function to set @action fullSnippet key-value to display copied code.
+   * @internal
+   */
   private formatExampleCode = (code: string) => {
     return {
       fullSnippet: code,
