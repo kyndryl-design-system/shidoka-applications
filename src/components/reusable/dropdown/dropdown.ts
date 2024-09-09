@@ -16,6 +16,13 @@ import downIcon from '@carbon/icons/es/chevron--down/24';
 import errorIcon from '@carbon/icons/es/warning--filled/24';
 import clearIcon from '@carbon/icons/es/close/24';
 import clearIcon16 from '@carbon/icons/es/close/16';
+import { deepmerge } from 'deepmerge-ts';
+
+const _defaultTextStrings = {
+  selectedOptions: 'List of selected options',
+  required: 'Required',
+  error: 'Error',
+};
 
 /**
  * Dropdown, single select.
@@ -100,6 +107,16 @@ export class Dropdown extends FormMixin(LitElement) {
    */
   @property({ type: Boolean })
   selectAllIndeterminate = false;
+
+  /** Text string customization. */
+  @property({ type: Object })
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
 
   /**
    * Selected option text, automatically derived.
@@ -204,6 +221,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 'size--lg': this.size === 'lg',
                 inline: this.inline,
               })}"
+              aria-required=${this.required ? 'true' : null}
               aria-labelledby="label-${this.name}"
               aria-expanded=${this.open}
               aria-controls="options"
@@ -227,7 +245,8 @@ export class Dropdown extends FormMixin(LitElement) {
                 ? html`
                     <button
                       class="clear-multiple"
-                      aria-label="Clear selections"
+                      aria-label="${this.value
+                        .length} items selected. Clear selections"
                       ?disabled=${this.disabled}
                       @click=${(e: Event) => this.handleClearMultiple(e)}
                     >
@@ -323,9 +342,12 @@ export class Dropdown extends FormMixin(LitElement) {
         ${this.multiple && !this.hideTags && this._tags.length
           ? html`
               <kyn-tag-group filter>
-                ${this._tags.map((tag: any) => {
+                ${this._tags.map((tag: any, index) => {
                   return html`
                     <kyn-tag
+                      aria-label=${index === 0
+                        ? this._textStrings.selectedOptions
+                        : null}
                       label=${tag.text}
                       ?disabled=${this.disabled}
                       @on-close=${() => this.handleTagClear(tag.value)}
@@ -341,6 +363,11 @@ export class Dropdown extends FormMixin(LitElement) {
         ${this._isInvalid
           ? html`
               <div class="error">
+                <kd-icon
+                  class="error-info-icon"
+                  aria-label=${this._textStrings.error}
+                  .icon=${errorIcon}
+                ></kd-icon>
                 ${this.invalidText || this._internalValidationMsg}
               </div>
             `
@@ -872,6 +899,12 @@ export class Dropdown extends FormMixin(LitElement) {
       },
     });
     this.dispatchEvent(event);
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
   }
 
   override updated(changedProps: any) {
