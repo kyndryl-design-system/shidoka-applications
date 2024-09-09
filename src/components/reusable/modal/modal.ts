@@ -119,6 +119,7 @@ export class Modal extends LitElement {
         <form method="dialog">
           <button
             class="close"
+            aria-label="close"
             @click=${(e: Event) => this._closeModal(e, 'cancel')}
           >
             <kd-icon .icon=${closeIcon}></kd-icon>
