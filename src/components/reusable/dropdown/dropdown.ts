@@ -202,7 +202,17 @@ export class Dropdown extends FormMixin(LitElement) {
           class="label-text"
           @click=${this._handleLabelClick}
         >
-          ${this.required ? html`<span class="required">*</span>` : null}
+          ${this.required
+            ? html`
+                <abbr
+                  class="required"
+                  title=${this._textStrings.required}
+                  aria-label=${this._textStrings.required}
+                >
+                  *
+                </abbr>
+              `
+            : null}
           <slot name="label"></slot>
         </label>
 
@@ -221,7 +231,6 @@ export class Dropdown extends FormMixin(LitElement) {
                 'size--lg': this.size === 'lg',
                 inline: this.inline,
               })}"
-              aria-required=${this.required ? 'true' : null}
               aria-labelledby="label-${this.name}"
               aria-expanded=${this.open}
               aria-controls="options"
@@ -341,13 +350,13 @@ export class Dropdown extends FormMixin(LitElement) {
 
         ${this.multiple && !this.hideTags && this._tags.length
           ? html`
-              <kyn-tag-group filter>
-                ${this._tags.map((tag: any, index) => {
+              <kyn-tag-group
+                filter
+                aria-label=${this._textStrings.selectedOptions}
+              >
+                ${this._tags.map((tag: any) => {
                   return html`
                     <kyn-tag
-                      aria-label=${index === 0
-                        ? this._textStrings.selectedOptions
-                        : null}
                       label=${tag.text}
                       ?disabled=${this.disabled}
                       @on-close=${() => this.handleTagClear(tag.value)}
