@@ -4,11 +4,6 @@ import './index';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 
-const CODE_VIEW_TYPES = {
-  INLINE: 'inline',
-  BLOCK: 'block',
-};
-
 const removeLeadingWhitespace = (code) => {
   if (!code) return '';
   const lines = code.split('\n');
@@ -23,8 +18,8 @@ const removeLeadingWhitespace = (code) => {
 };
 
 export default {
-  title: 'Components/CodeView',
-  component: 'kyn-code-view',
+  title: 'Components/Code View - Block',
+  component: 'kyn-block-code-view',
   parameters: {
     design: {
       type: 'figma',
@@ -36,68 +31,21 @@ export default {
       options: ['sm', 'md', 'lg', 'auto'],
       control: { type: 'select' },
     },
-    language: {
-      options: [
-        'javascript',
-        'html',
-        'css',
-        'scss',
-        'json',
-        'xml',
-        'markdown',
-        'svg',
-        'yaml',
-        'bash',
-      ],
-      control: { type: 'select' },
-    },
     copyOptionVisible: {
       control: { type: 'boolean' },
     },
   },
 };
 
-const Template = (args) => {
-  if (args.snippetType === CODE_VIEW_TYPES.INLINE) {
-    return html`
-      <kyn-code-view
-        title=${args.title}
-        snippetType=${args.snippetType}
-        language=${args.language}
-        ?copyOptionVisible=${false}
-        copyButtonText=${''}
-        @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
-      >
-        <span slot="inline-example">${args.exampleInlinetext}</span>
-        <pre><code>${removeLeadingWhitespace(args.code)}</code></pre>
-      </kyn-code-view>
-    `;
-  } else {
-    return html`
-      <kyn-code-view
-        size=${args.size}
-        title=${args.title}
-        snippetType=${args.snippetType}
-        language=${args.language}
-        ?copyOptionVisible=${args.copyOptionVisible}
-        copyButtonText=${args.copyButtonText}
-        @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
-      >
-        <pre><code>${removeLeadingWhitespace(args.code)}</code></pre>
-      </kyn-code-view>
-    `;
-  }
-};
-
-export const BlockCodeView = Template.bind({});
-BlockCodeView.args = {
-  snippetType: 'block',
+const args = {
   size: 'md',
-  title: 'Block Code View',
+  codeViewLabel: 'Block Code View',
   language: 'javascript',
   copyOptionVisible: true,
   copyButtonText: 'Copy',
-  code: `
+  copyButtonDescriptionAttr: 'copy code button',
+  copyButtonTitleAttr: 'Copy code',
+  unnamed: `
     const greetUser = (name) => {
       console.log(\`Hello, \${name}!\`);
     }
@@ -107,50 +55,59 @@ BlockCodeView.args = {
   exampleInlinetext: 'Inline example text',
 };
 
-BlockCodeView.argTypes = {
+const Template = (args) => {
+  return html`
+    <kyn-block-code-view
+      size=${args.size}
+      codeViewLabel=${args.codeViewLabel}
+      copyButtonDescriptionAttr=${args.copyButtonDescriptionAttr}
+      copyButtonTitleAttr=${args.copyButtonTitleAttr}
+      nameAttr=${args.nameAttr}
+      language=${args.language}
+      ?copyOptionVisible=${args.copyOptionVisible}
+      copyButtonText=${args.copyButtonText}
+      @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
+    >
+      ${removeLeadingWhitespace(args.unnamed)}
+    </kyn-block-code-view>
+  `;
+};
+
+export const DefaultView = Template.bind({});
+DefaultView.args = {
+  ...args,
+};
+
+DefaultView.argTypes = {
   snippetType: {
     control: { type: 'select', options: ['inline', 'block'] },
   },
   size: {
     control: { type: 'select', options: ['small', 'medium', 'large'] },
   },
-  language: {
-    control: { type: 'select', options: ['javascript', 'html', 'css'] },
-  },
   copyOptionVisible: {
     control: 'boolean',
   },
 };
 
-export const InlineCodeView = Template.bind({});
-InlineCodeView.args = {
-  snippetType: CODE_VIEW_TYPES.INLINE,
-  title: 'Inline Code Snippet',
-  language: 'javascript',
-  exampleInlinetext: 'Example inline text:',
-  code: `console.log("Hello, World!");`,
-};
-
 export const SingleLineView = Template.bind({});
 SingleLineView.args = {
-  size: 'md',
-  snippetType: CODE_VIEW_TYPES.BLOCK,
-  title: 'Single Line Code Snippet',
+  ...args,
+  codeViewLabel: 'Single Line Code Snippet',
   language: 'javascript',
   copyOptionVisible: true,
   copyButtonText: '',
-  code: `console.log("Hello, World!");`,
+  unnamed: `console.log("Hello, World!");`,
 };
 
 export const JavascriptExample = Template.bind({});
 JavascriptExample.args = {
-  size: 'md',
-  snippetType: CODE_VIEW_TYPES.BLOCK,
+  ...args,
   language: 'javascript',
-  title: 'Javascript Code Snippet',
+  codeViewLabel: 'Javascript Code Snippet',
   copyOptionVisible: true,
   copyButtonText: 'Copy',
-  code: `
+  unnamed: `
     const addNumbers = (a, b) => {
       return a + b;
     };
@@ -195,13 +152,12 @@ JavascriptExample.args = {
 
 export const HTMLExample = Template.bind({});
 HTMLExample.args = {
-  size: 'md',
-  snippetType: CODE_VIEW_TYPES.BLOCK,
+  ...args,
   language: 'html',
-  title: 'HTML Code Snippet',
+  codeViewLabel: 'HTML Code Snippet',
   copyOptionVisible: true,
   copyButtonText: 'Copy',
-  code: `
+  unnamed: `
     <div class="container">
       <h1>Welcome to my website</h1>
       <p>This is a paragraph of text.</p>
@@ -212,13 +168,12 @@ HTMLExample.args = {
 
 export const CSSExample = Template.bind({});
 CSSExample.args = {
-  size: 'md',
-  snippetType: CODE_VIEW_TYPES.BLOCK,
+  ...args,
   language: 'css',
-  title: 'CSS Code Snippet',
+  codeViewLabel: 'CSS Code Snippet',
   copyOptionVisible: true,
   copyButtonText: 'Copy',
-  code: `
+  unnamed: `
     .container {
       max-width: 1200px;
       margin: 0 auto;

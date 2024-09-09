@@ -3648,6 +3648,275 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/blockCodeView/blockCodeView.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-block-code-view>` component to display `<code>` snippets, either inline within HTML content or as standalone single-/multi-line block elements.",
+          "name": "BlockCodeView",
+          "slots": [
+            {
+              "description": "inline text slot from story book.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Code snippet size: `auto`, `sm`, `md`, or `lg`.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "language",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Code language (ex: `javascript`, `css`, `markdown`, `xml`).",
+              "attribute": "language"
+            },
+            {
+              "kind": "field",
+              "name": "codeViewLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional code view label, visible to the user above the block code snippet.",
+              "attribute": "codeViewLabel"
+            },
+            {
+              "kind": "field",
+              "name": "copyButtonTitleAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional title to be displayed above code snippet.",
+              "attribute": "copyButtonTitleAttr"
+            },
+            {
+              "kind": "field",
+              "name": "copyButtonDescriptionAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional descrition to be displayed above code snippet.",
+              "attribute": "copyButtonDescriptionAttr"
+            },
+            {
+              "kind": "field",
+              "name": "copyOptionVisible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Copy code option available",
+              "attribute": "copyOptionVisible"
+            },
+            {
+              "kind": "field",
+              "name": "copyButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Copy button text (optional)",
+              "attribute": "copyButtonText"
+            },
+            {
+              "kind": "method",
+              "name": "isSingleLineCode",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "code",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "formatExampleCode",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_copyCode",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyDown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "highlightCode",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "on-custom-copy",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the copy button is clicked."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Code snippet size: `auto`, `sm`, `md`, or `lg`.",
+              "fieldName": "size"
+            },
+            {
+              "name": "language",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Code language (ex: `javascript`, `css`, `markdown`, `xml`).",
+              "fieldName": "language"
+            },
+            {
+              "name": "codeViewLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional code view label, visible to the user above the block code snippet.",
+              "fieldName": "codeViewLabel"
+            },
+            {
+              "name": "copyButtonTitleAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional title to be displayed above code snippet.",
+              "fieldName": "copyButtonTitleAttr"
+            },
+            {
+              "name": "copyButtonDescriptionAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional descrition to be displayed above code snippet.",
+              "fieldName": "copyButtonDescriptionAttr"
+            },
+            {
+              "name": "copyOptionVisible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Copy code option available",
+              "fieldName": "copyOptionVisible"
+            },
+            {
+              "name": "copyButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Copy button text (optional)",
+              "fieldName": "copyButtonText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-block-code-view",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BlockCodeView",
+          "declaration": {
+            "name": "BlockCodeView",
+            "module": "src/components/reusable/blockCodeView/blockCodeView.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-block-code-view",
+          "declaration": {
+            "name": "BlockCodeView",
+            "module": "src/components/reusable/blockCodeView/blockCodeView.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/blockCodeView/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BlockCodeView",
+          "declaration": {
+            "name": "BlockCodeView",
+            "module": "./blockCodeView"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/breadcrumbs/breadcrumbItem.ts",
       "declarations": [
         {
@@ -4751,246 +5020,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/codeView/codeView.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-code-view>` component to display `<code>` snippets, either inline within HTML content or as standalone single-/multi-line block elements.",
-          "name": "CodeView",
-          "slots": [
-            {
-              "description": "inline text slot from story book.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for non-code example text to preceed inline code snippet.",
-              "name": "inline-example"
-            },
-            {
-              "description": "Slot for copy button.",
-              "name": "copy-slot"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "snippetType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'block'",
-              "description": "Code snippet type: `inline`, `block`",
-              "attribute": "snippetType"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "For `block` snippetType only -- size: `auto`, `sm`, `md`, or `lg`.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "language",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Code language (ex: `javascript`, `css`, `markdown`, `xml`).",
-              "attribute": "language"
-            },
-            {
-              "kind": "field",
-              "name": "title",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional title to be displayed above code snippet.",
-              "attribute": "title"
-            },
-            {
-              "kind": "field",
-              "name": "copyOptionVisible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Copy code option available",
-              "attribute": "copyOptionVisible"
-            },
-            {
-              "kind": "field",
-              "name": "copyButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Copy button text (optional)",
-              "attribute": "copyButtonText"
-            },
-            {
-              "kind": "method",
-              "name": "_copyCode",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_sizeMap",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "snippetType",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleKeyDown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "KeyboardEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "highlightCode",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "name": "on-custom-copy",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits when the copy button is clicked."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "snippetType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'block'",
-              "description": "Code snippet type: `inline`, `block`",
-              "fieldName": "snippetType"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "For `block` snippetType only -- size: `auto`, `sm`, `md`, or `lg`.",
-              "fieldName": "size"
-            },
-            {
-              "name": "language",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Code language (ex: `javascript`, `css`, `markdown`, `xml`).",
-              "fieldName": "language"
-            },
-            {
-              "name": "title",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional title to be displayed above code snippet.",
-              "fieldName": "title"
-            },
-            {
-              "name": "copyOptionVisible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Copy code option available",
-              "fieldName": "copyOptionVisible"
-            },
-            {
-              "name": "copyButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Copy button text (optional)",
-              "fieldName": "copyButtonText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-code-view",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "CodeView",
-          "declaration": {
-            "name": "CodeView",
-            "module": "src/components/reusable/codeView/codeView.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-code-view",
-          "declaration": {
-            "name": "CodeView",
-            "module": "src/components/reusable/codeView/codeView.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/codeView/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "CodeView",
-          "declaration": {
-            "name": "CodeView",
-            "module": "./codeView"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/datePicker/datepicker.ts",
       "declarations": [
         {
@@ -5441,479 +5470,6 @@
           "declaration": {
             "name": "DatePicker",
             "module": "./datepicker"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Date-Range picker",
-          "name": "DateRangePicker",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "startDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "attribute": "startDate"
-            },
-            {
-              "kind": "field",
-              "name": "endDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "attribute": "endDate"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the date required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Date disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "datePickerType",
-              "type": {
-                "text": "DATE_PICKER_TYPES"
-              },
-              "description": "Date range picker types. Default 'single'",
-              "attribute": "datePickerType"
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Date warning text",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "maxDate",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
-              "attribute": "maxDate"
-            },
-            {
-              "kind": "field",
-              "name": "minDate",
-              "type": {
-                "text": "string"
-              },
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
-              "attribute": "minDate"
-            },
-            {
-              "kind": "field",
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
-              "attribute": "step"
-            },
-            {
-              "kind": "method",
-              "name": "handleStartDate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleEndDate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ],
-              "description": "Component _validate function reference.",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "attribute": "value",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "attribute": "name",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input invalid text.",
-              "attribute": "invalidText",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onUpdated",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "changedProps",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ],
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "updated",
-              "parameters": [
-                {
-                  "name": "changedProps",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ],
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onConnected",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onDisconnected",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "startDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "fieldName": "startDate"
-            },
-            {
-              "name": "endDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "fieldName": "endDate"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the date required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Date disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "datePickerType",
-              "type": {
-                "text": "DATE_PICKER_TYPES"
-              },
-              "description": "Date range picker types. Default 'single'",
-              "fieldName": "datePickerType"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Date warning text",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "maxDate",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
-              "fieldName": "maxDate"
-            },
-            {
-              "name": "minDate",
-              "type": {
-                "text": "string"
-              },
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
-              "fieldName": "minDate"
-            },
-            {
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
-              "fieldName": "step"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "fieldName": "value",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "fieldName": "name",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input invalid text.",
-              "fieldName": "invalidText",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-date-range-picker",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-date-range-picker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "\"./daterangepicker\""
           }
         }
       ]
@@ -6970,6 +6526,479 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Date-Range picker",
+          "name": "DateRangePicker",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "startDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker Start date in YYYY-MM-DD format.",
+              "attribute": "startDate"
+            },
+            {
+              "kind": "field",
+              "name": "endDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker End date in YYYY-MM-DD format.",
+              "attribute": "endDate"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the date required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Date disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "datePickerType",
+              "type": {
+                "text": "DATE_PICKER_TYPES"
+              },
+              "description": "Date range picker types. Default 'single'",
+              "attribute": "datePickerType"
+            },
+            {
+              "kind": "field",
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Date warning text",
+              "attribute": "warnText"
+            },
+            {
+              "kind": "field",
+              "name": "maxDate",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
+              "attribute": "maxDate"
+            },
+            {
+              "kind": "field",
+              "name": "minDate",
+              "type": {
+                "text": "string"
+              },
+              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "attribute": "minDate"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
+              "attribute": "step"
+            },
+            {
+              "kind": "method",
+              "name": "handleStartDate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleEndDate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ],
+              "description": "Component _validate function reference.",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "attribute": "value",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "attribute": "name",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input invalid text.",
+              "attribute": "invalidText",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_onUpdated",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "changedProps",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updated",
+              "parameters": [
+                {
+                  "name": "changedProps",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_onConnected",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_onDisconnected",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "startDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker Start date in YYYY-MM-DD format.",
+              "fieldName": "startDate"
+            },
+            {
+              "name": "endDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Datepicker End date in YYYY-MM-DD format.",
+              "fieldName": "endDate"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the date required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Date disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "datePickerType",
+              "type": {
+                "text": "DATE_PICKER_TYPES"
+              },
+              "description": "Date range picker types. Default 'single'",
+              "fieldName": "datePickerType"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Date warning text",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "maxDate",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
+              "fieldName": "maxDate"
+            },
+            {
+              "name": "minDate",
+              "type": {
+                "text": "string"
+              },
+              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "fieldName": "minDate"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
+              "fieldName": "step"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "fieldName": "value",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "fieldName": "name",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input invalid text.",
+              "fieldName": "invalidText",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-date-range-picker",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-date-range-picker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "\"./daterangepicker\""
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts",
       "declarations": [
         {
@@ -7631,6 +7660,98 @@
           "declaration": {
             "name": "GlobalFilter",
             "module": "./globalFilter"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineCodeView/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineCodeView",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "./inlineCodeView"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineCodeView/inlineCodeView.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
+          "name": "InlineCodeView",
+          "slots": [
+            {
+              "description": "inline code snippet slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "ariaLabelAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "`aria-label` attribute value for accessibility purposes.",
+              "attribute": "ariaLabelAttr"
+            },
+            {
+              "kind": "field",
+              "name": "slotElement",
+              "type": {
+                "text": "HTMLSlotElement"
+              },
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "ariaLabelAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "`aria-label` attribute value for accessibility purposes.",
+              "fieldName": "ariaLabelAttr"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-inline-code-view",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineCodeView",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-inline-code-view",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
           }
         }
       ]
@@ -8612,6 +8733,460 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/pagetitle/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageTitle",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "./pageTitle"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagetitle/pageTitle.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Page Title",
+          "name": "PageTitle",
+          "slots": [
+            {
+              "description": "Slot for icon. Use size 56 * 56 as per UX guidelines.",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "headLine",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Headline text.",
+              "attribute": "headLine"
+            },
+            {
+              "kind": "field",
+              "name": "pageTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page title text (required).",
+              "attribute": "pageTitle"
+            },
+            {
+              "kind": "field",
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page subtitle text.",
+              "attribute": "subTitle"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'primary'",
+              "description": "Type of page title `'primary'` & `'secondary'`.",
+              "attribute": "type"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "headLine",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Headline text.",
+              "fieldName": "headLine"
+            },
+            {
+              "name": "pageTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page title text (required).",
+              "fieldName": "pageTitle"
+            },
+            {
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page subtitle text.",
+              "fieldName": "subTitle"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'primary'",
+              "description": "Type of page title `'primary'` & `'secondary'`.",
+              "fieldName": "type"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-page-title",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageTitle",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "src/components/reusable/pagetitle/pageTitle.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-page-title",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "src/components/reusable/pagetitle/pageTitle.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/overflowMenu/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OverflowMenu",
+          "declaration": {
+            "name": "OverflowMenu",
+            "module": "./overflowMenu"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "OverflowMenuItem",
+          "declaration": {
+            "name": "OverflowMenuItem",
+            "module": "./overflowMenuItem"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/overflowMenu/overflowMenu.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Overflow Menu.",
+          "name": "OverflowMenu",
+          "slots": [
+            {
+              "description": "Slot for overflow menu items.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Menu open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "anchorRight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Anchors the menu to the right of the button.",
+              "attribute": "anchorRight"
+            },
+            {
+              "kind": "field",
+              "name": "verticalDots",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "3 dots vertical orientation.",
+              "attribute": "verticalDots"
+            },
+            {
+              "kind": "field",
+              "name": "fixed",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Use fixed instead of absolute position. Useful when placed within elements with overflow scroll.",
+              "attribute": "fixed"
+            },
+            {
+              "kind": "field",
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Toggle Menu'",
+              "description": "Button assistive text..",
+              "attribute": "assistiveText"
+            },
+            {
+              "kind": "method",
+              "name": "_emitToggleEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "toggleMenu",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_positionMenu",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Capture the open/close event and emits the new state.",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Menu open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "anchorRight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Anchors the menu to the right of the button.",
+              "fieldName": "anchorRight"
+            },
+            {
+              "name": "verticalDots",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "3 dots vertical orientation.",
+              "fieldName": "verticalDots"
+            },
+            {
+              "name": "fixed",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Use fixed instead of absolute position. Useful when placed within elements with overflow scroll.",
+              "fieldName": "fixed"
+            },
+            {
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Toggle Menu'",
+              "description": "Button assistive text..",
+              "fieldName": "assistiveText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-overflow-menu",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OverflowMenu",
+          "declaration": {
+            "name": "OverflowMenu",
+            "module": "src/components/reusable/overflowMenu/overflowMenu.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-overflow-menu",
+          "declaration": {
+            "name": "OverflowMenu",
+            "module": "src/components/reusable/overflowMenu/overflowMenu.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/overflowMenu/overflowMenuItem.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Overflow Menu.",
+          "name": "OverflowMenuItem",
+          "slots": [
+            {
+              "description": "Slot for item text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Makes the item a link.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds destructive styles.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Item disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event details.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Makes the item a link.",
+              "fieldName": "href"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds destructive styles.",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Item disabled state.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-overflow-menu-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OverflowMenuItem",
+          "declaration": {
+            "name": "OverflowMenuItem",
+            "module": "src/components/reusable/overflowMenu/overflowMenuItem.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-overflow-menu-item",
+          "declaration": {
+            "name": "OverflowMenuItem",
+            "module": "src/components/reusable/overflowMenu/overflowMenuItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/numberInput/index.ts",
       "declarations": [],
       "exports": [
@@ -9075,460 +9650,6 @@
           "declaration": {
             "name": "NumberInput",
             "module": "src/components/reusable/numberInput/numberInput.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/overflowMenu/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "OverflowMenu",
-          "declaration": {
-            "name": "OverflowMenu",
-            "module": "./overflowMenu"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "OverflowMenuItem",
-          "declaration": {
-            "name": "OverflowMenuItem",
-            "module": "./overflowMenuItem"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/overflowMenu/overflowMenu.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Overflow Menu.",
-          "name": "OverflowMenu",
-          "slots": [
-            {
-              "description": "Slot for overflow menu items.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Menu open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "anchorRight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Anchors the menu to the right of the button.",
-              "attribute": "anchorRight"
-            },
-            {
-              "kind": "field",
-              "name": "verticalDots",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "3 dots vertical orientation.",
-              "attribute": "verticalDots"
-            },
-            {
-              "kind": "field",
-              "name": "fixed",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Use fixed instead of absolute position. Useful when placed within elements with overflow scroll.",
-              "attribute": "fixed"
-            },
-            {
-              "kind": "field",
-              "name": "assistiveText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Toggle Menu'",
-              "description": "Button assistive text..",
-              "attribute": "assistiveText"
-            },
-            {
-              "kind": "method",
-              "name": "_emitToggleEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "toggleMenu",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_positionMenu",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Capture the open/close event and emits the new state.",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Menu open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "anchorRight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Anchors the menu to the right of the button.",
-              "fieldName": "anchorRight"
-            },
-            {
-              "name": "verticalDots",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "3 dots vertical orientation.",
-              "fieldName": "verticalDots"
-            },
-            {
-              "name": "fixed",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Use fixed instead of absolute position. Useful when placed within elements with overflow scroll.",
-              "fieldName": "fixed"
-            },
-            {
-              "name": "assistiveText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Toggle Menu'",
-              "description": "Button assistive text..",
-              "fieldName": "assistiveText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-overflow-menu",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "OverflowMenu",
-          "declaration": {
-            "name": "OverflowMenu",
-            "module": "src/components/reusable/overflowMenu/overflowMenu.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-overflow-menu",
-          "declaration": {
-            "name": "OverflowMenu",
-            "module": "src/components/reusable/overflowMenu/overflowMenu.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/overflowMenu/overflowMenuItem.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Overflow Menu.",
-          "name": "OverflowMenuItem",
-          "slots": [
-            {
-              "description": "Slot for item text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Makes the item a link.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds destructive styles.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Item disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event details.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Makes the item a link.",
-              "fieldName": "href"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds destructive styles.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Item disabled state.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-overflow-menu-item",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "OverflowMenuItem",
-          "declaration": {
-            "name": "OverflowMenuItem",
-            "module": "src/components/reusable/overflowMenu/overflowMenuItem.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-overflow-menu-item",
-          "declaration": {
-            "name": "OverflowMenuItem",
-            "module": "src/components/reusable/overflowMenu/overflowMenuItem.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/pagetitle/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PageTitle",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "./pageTitle"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/pagetitle/pageTitle.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Page Title",
-          "name": "PageTitle",
-          "slots": [
-            {
-              "description": "Slot for icon. Use size 56 * 56 as per UX guidelines.",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "headLine",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Headline text.",
-              "attribute": "headLine"
-            },
-            {
-              "kind": "field",
-              "name": "pageTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page title text (required).",
-              "attribute": "pageTitle"
-            },
-            {
-              "kind": "field",
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page subtitle text.",
-              "attribute": "subTitle"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'primary'",
-              "description": "Type of page title `'primary'` & `'secondary'`.",
-              "attribute": "type"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "headLine",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Headline text.",
-              "fieldName": "headLine"
-            },
-            {
-              "name": "pageTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page title text (required).",
-              "fieldName": "pageTitle"
-            },
-            {
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page subtitle text.",
-              "fieldName": "subTitle"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'primary'",
-              "description": "Type of page title `'primary'` & `'secondary'`.",
-              "fieldName": "type"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-page-title",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PageTitle",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "src/components/reusable/pagetitle/pageTitle.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-page-title",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "src/components/reusable/pagetitle/pageTitle.ts"
           }
         }
       ]
@@ -11310,533 +11431,6 @@
           "declaration": {
             "name": "SideDrawer",
             "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "./stepper"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "StepperItem",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "./stepperItem"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "StepperItemChild",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "./stepperItemChild"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepper.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper",
-          "name": "Stepper",
-          "slots": [
-            {
-              "description": "Slot for step items.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "stepperType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
-              "attribute": "stepperType"
-            },
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Wheter the stepper is in vertical type.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "stepperSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "attribute": "stepperSize"
-            },
-            {
-              "kind": "field",
-              "name": "currentIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
-              "attribute": "currentIndex"
-            },
-            {
-              "kind": "method",
-              "name": "_handleStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the event and emits the active step and original event details when click on any step title. This is only for procedure type stepper. Status stepper doesn't emit this event.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "stepperType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
-              "fieldName": "stepperType"
-            },
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Wheter the stepper is in vertical type.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "stepperSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "fieldName": "stepperSize"
-            },
-            {
-              "name": "currentIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
-              "fieldName": "currentIndex"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "src/components/reusable/stepper/stepper.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "src/components/reusable/stepper/stepper.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepperItem.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper Item.",
-          "name": "StepperItem",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            },
-            {
-              "description": "Children slot. Used for nested children in vertical stepper. Visible only when step state is active. Do not use inside stepperType `'status'`.",
-              "name": "child"
-            },
-            {
-              "description": "Optional slot for content in vertical stepper. Visible only when step state is active.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the stepper is in vertical type.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "stepSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "attribute": "stepSize"
-            },
-            {
-              "kind": "field",
-              "name": "stepName",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step name.",
-              "attribute": "stepName"
-            },
-            {
-              "kind": "field",
-              "name": "stepTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step title. Required for actions.",
-              "attribute": "stepTitle"
-            },
-            {
-              "kind": "field",
-              "name": "stepState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
-              "attribute": "stepState"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disable step.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "showCounter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
-              "attribute": "showCounter"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChildToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getProgressValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the step details to the parent stepper component when click on step title.",
-              "name": "on-step-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the stepper is in vertical type.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "stepSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "fieldName": "stepSize"
-            },
-            {
-              "name": "stepName",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step name.",
-              "fieldName": "stepName"
-            },
-            {
-              "name": "stepTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step title. Required for actions.",
-              "fieldName": "stepTitle"
-            },
-            {
-              "name": "stepState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
-              "fieldName": "stepState"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disable step.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "showCounter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
-              "fieldName": "showCounter"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper-item",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StepperItem",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "src/components/reusable/stepper/stepperItem.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper-item",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "src/components/reusable/stepper/stepperItem.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepperItemChild.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper Item child.",
-          "name": "StepperItemChild",
-          "slots": [
-            {
-              "description": "Slot for other elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "childTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child Title. Required for nested child inside step.",
-              "attribute": "childTitle"
-            },
-            {
-              "kind": "field",
-              "name": "childSubTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional Child Subtitle.",
-              "attribute": "childSubTitle"
-            },
-            {
-              "kind": "field",
-              "name": "childState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
-              "attribute": "childState"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChildStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getProgressValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits event on child click. Only for vertical mode.",
-              "name": "on-child-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "childTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child Title. Required for nested child inside step.",
-              "fieldName": "childTitle"
-            },
-            {
-              "name": "childSubTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional Child Subtitle.",
-              "fieldName": "childSubTitle"
-            },
-            {
-              "name": "childState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
-              "fieldName": "childState"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper-item-child",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StepperItemChild",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "src/components/reusable/stepper/stepperItemChild.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper-item-child",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "src/components/reusable/stepper/stepperItemChild.ts"
           }
         }
       ]
@@ -14436,6 +14030,533 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "./stepper"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StepperItem",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "./stepperItem"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StepperItemChild",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "./stepperItemChild"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepper.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper",
+          "name": "Stepper",
+          "slots": [
+            {
+              "description": "Slot for step items.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "stepperType",
+              "type": {
+                "text": "string"
+              },
+              "default": "'procedure'",
+              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
+              "attribute": "stepperType"
+            },
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Wheter the stepper is in vertical type.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "stepperSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "attribute": "stepperSize"
+            },
+            {
+              "kind": "field",
+              "name": "currentIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
+              "attribute": "currentIndex"
+            },
+            {
+              "kind": "method",
+              "name": "_handleStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the event and emits the active step and original event details when click on any step title. This is only for procedure type stepper. Status stepper doesn't emit this event.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "stepperType",
+              "type": {
+                "text": "string"
+              },
+              "default": "'procedure'",
+              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
+              "fieldName": "stepperType"
+            },
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Wheter the stepper is in vertical type.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "stepperSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "fieldName": "stepperSize"
+            },
+            {
+              "name": "currentIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
+              "fieldName": "currentIndex"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "src/components/reusable/stepper/stepper.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "src/components/reusable/stepper/stepper.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepperItem.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper Item.",
+          "name": "StepperItem",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            },
+            {
+              "description": "Children slot. Used for nested children in vertical stepper. Visible only when step state is active. Do not use inside stepperType `'status'`.",
+              "name": "child"
+            },
+            {
+              "description": "Optional slot for content in vertical stepper. Visible only when step state is active.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the stepper is in vertical type.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "stepSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "attribute": "stepSize"
+            },
+            {
+              "kind": "field",
+              "name": "stepName",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step name.",
+              "attribute": "stepName"
+            },
+            {
+              "kind": "field",
+              "name": "stepTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step title. Required for actions.",
+              "attribute": "stepTitle"
+            },
+            {
+              "kind": "field",
+              "name": "stepState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
+              "attribute": "stepState"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disable step.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "showCounter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
+              "attribute": "showCounter"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChildToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getProgressValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the step details to the parent stepper component when click on step title.",
+              "name": "on-step-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the stepper is in vertical type.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "stepSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "fieldName": "stepSize"
+            },
+            {
+              "name": "stepName",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step name.",
+              "fieldName": "stepName"
+            },
+            {
+              "name": "stepTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step title. Required for actions.",
+              "fieldName": "stepTitle"
+            },
+            {
+              "name": "stepState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
+              "fieldName": "stepState"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disable step.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "showCounter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
+              "fieldName": "showCounter"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "StepperItem",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "src/components/reusable/stepper/stepperItem.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper-item",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "src/components/reusable/stepper/stepperItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepperItemChild.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper Item child.",
+          "name": "StepperItemChild",
+          "slots": [
+            {
+              "description": "Slot for other elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "childTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Child Title. Required for nested child inside step.",
+              "attribute": "childTitle"
+            },
+            {
+              "kind": "field",
+              "name": "childSubTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional Child Subtitle.",
+              "attribute": "childSubTitle"
+            },
+            {
+              "kind": "field",
+              "name": "childState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
+              "attribute": "childState"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChildStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getProgressValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits event on child click. Only for vertical mode.",
+              "name": "on-child-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "childTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Child Title. Required for nested child inside step.",
+              "fieldName": "childTitle"
+            },
+            {
+              "name": "childSubTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional Child Subtitle.",
+              "fieldName": "childSubTitle"
+            },
+            {
+              "name": "childState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
+              "fieldName": "childState"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper-item-child",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "StepperItemChild",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "src/components/reusable/stepper/stepperItemChild.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper-item-child",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "src/components/reusable/stepper/stepperItemChild.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/tabs/index.ts",
       "declarations": [],
       "exports": [
@@ -16116,6 +16237,385 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/toggleButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ToggleButton",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "./toggleButton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/toggleButton/toggleButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Toggle Button.",
+          "name": "ToggleButton",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox checked state.",
+              "attribute": "checked"
+            },
+            {
+              "kind": "field",
+              "name": "checkedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'On'",
+              "description": "Checked state text.",
+              "attribute": "checkedText"
+            },
+            {
+              "kind": "field",
+              "name": "uncheckedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Off'",
+              "description": "Unchecked state text.",
+              "attribute": "uncheckedText"
+            },
+            {
+              "kind": "field",
+              "name": "small",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to use small size.",
+              "attribute": "small"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "reverse",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Reverse UI element order, label on the left.",
+              "attribute": "reverse"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the label visually.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "method",
+              "name": "handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ],
+              "description": "Component _validate function reference.",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "attribute": "value",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "attribute": "name",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input invalid text.",
+              "attribute": "invalidText",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_onUpdated",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "changedProps",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updated",
+              "parameters": [
+                {
+                  "name": "changedProps",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_onConnected",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_onDisconnected",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the change event and emits the selected value and original event details.",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox checked state.",
+              "fieldName": "checked"
+            },
+            {
+              "name": "checkedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'On'",
+              "description": "Checked state text.",
+              "fieldName": "checkedText"
+            },
+            {
+              "name": "uncheckedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Off'",
+              "description": "Unchecked state text.",
+              "fieldName": "uncheckedText"
+            },
+            {
+              "name": "small",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to use small size.",
+              "fieldName": "small"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "reverse",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Reverse UI element order, label on the left.",
+              "fieldName": "reverse"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the label visually.",
+              "fieldName": "hideLabel"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "fieldName": "value",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "fieldName": "name",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input invalid text.",
+              "fieldName": "invalidText",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-toggle-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ToggleButton",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "src/components/reusable/toggleButton/toggleButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-toggle-button",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "src/components/reusable/toggleButton/toggleButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/timepicker/index.ts",
       "declarations": [],
       "exports": [
@@ -16508,512 +17008,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/toggleButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ToggleButton",
-          "declaration": {
-            "name": "ToggleButton",
-            "module": "./toggleButton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/toggleButton/toggleButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Toggle Button.",
-          "name": "ToggleButton",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "checked",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox checked state.",
-              "attribute": "checked"
-            },
-            {
-              "kind": "field",
-              "name": "checkedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'On'",
-              "description": "Checked state text.",
-              "attribute": "checkedText"
-            },
-            {
-              "kind": "field",
-              "name": "uncheckedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Off'",
-              "description": "Unchecked state text.",
-              "attribute": "uncheckedText"
-            },
-            {
-              "kind": "field",
-              "name": "small",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to use small size.",
-              "attribute": "small"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "reverse",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Reverse UI element order, label on the left.",
-              "attribute": "reverse"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the label visually.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "method",
-              "name": "handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ],
-              "description": "Component _validate function reference.",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "attribute": "value",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "attribute": "name",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input invalid text.",
-              "attribute": "invalidText",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onUpdated",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "changedProps",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ],
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "updated",
-              "parameters": [
-                {
-                  "name": "changedProps",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ],
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onConnected",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onDisconnected",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the change event and emits the selected value and original event details.",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "checked",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox checked state.",
-              "fieldName": "checked"
-            },
-            {
-              "name": "checkedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'On'",
-              "description": "Checked state text.",
-              "fieldName": "checkedText"
-            },
-            {
-              "name": "uncheckedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Off'",
-              "description": "Unchecked state text.",
-              "fieldName": "uncheckedText"
-            },
-            {
-              "name": "small",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to use small size.",
-              "fieldName": "small"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "reverse",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Reverse UI element order, label on the left.",
-              "fieldName": "reverse"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the label visually.",
-              "fieldName": "hideLabel"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "fieldName": "value",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "fieldName": "name",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input invalid text.",
-              "fieldName": "invalidText",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-toggle-button",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ToggleButton",
-          "declaration": {
-            "name": "ToggleButton",
-            "module": "src/components/reusable/toggleButton/toggleButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-toggle-button",
-          "declaration": {
-            "name": "ToggleButton",
-            "module": "src/components/reusable/toggleButton/toggleButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tooltip/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tooltip",
-          "declaration": {
-            "name": "Tooltip",
-            "module": "./tooltip"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tooltip/tooltip.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tooltip.",
-          "name": "Tooltip",
-          "slots": [
-            {
-              "description": "Slot for tooltip content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for custom anchor button content.",
-              "name": "anchor"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "assistiveText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Toggle Tooltip'",
-              "description": "Assistive text for anchor button.",
-              "attribute": "assistiveText"
-            },
-            {
-              "kind": "method",
-              "name": "_positionTooltip",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleOpen",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClose",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleMouseLeave",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleEsc",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "KeyboardEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitToggle",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the open state of the tooltip on open/close.",
-              "name": "on-tooltip-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "assistiveText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Toggle Tooltip'",
-              "description": "Assistive text for anchor button.",
-              "fieldName": "assistiveText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tooltip",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tooltip",
-          "declaration": {
-            "name": "Tooltip",
-            "module": "src/components/reusable/tooltip/tooltip.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tooltip",
-          "declaration": {
-            "name": "Tooltip",
-            "module": "src/components/reusable/tooltip/tooltip.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/widget/index.ts",
       "declarations": [],
       "exports": [
@@ -17380,6 +17374,133 @@
           "declaration": {
             "name": "WidgetGridstack",
             "module": "src/components/reusable/widget/widgetGridstack.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tooltip/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tooltip",
+          "declaration": {
+            "name": "Tooltip",
+            "module": "./tooltip"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tooltip/tooltip.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tooltip.",
+          "name": "Tooltip",
+          "slots": [
+            {
+              "description": "Slot for tooltip content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for custom anchor button content.",
+              "name": "anchor"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Toggle Tooltip'",
+              "description": "Assistive text for anchor button.",
+              "attribute": "assistiveText"
+            },
+            {
+              "kind": "method",
+              "name": "_positionTooltip",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleOpen",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleMouseLeave",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleEsc",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitToggle",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the open state of the tooltip on open/close.",
+              "name": "on-tooltip-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Toggle Tooltip'",
+              "description": "Assistive text for anchor button.",
+              "fieldName": "assistiveText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tooltip",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tooltip",
+          "declaration": {
+            "name": "Tooltip",
+            "module": "src/components/reusable/tooltip/tooltip.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tooltip",
+          "declaration": {
+            "name": "Tooltip",
+            "module": "src/components/reusable/tooltip/tooltip.ts"
           }
         }
       ]
