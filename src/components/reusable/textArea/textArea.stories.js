@@ -29,6 +29,10 @@ export const TextArea = {
     minLength: undefined,
     maxLength: undefined,
     rows: undefined,
+    textStrings: {
+      requiredText: 'Required',
+      errorText: 'Error',
+    },
   },
   render: (args) => {
     return html`
@@ -43,6 +47,7 @@ export const TextArea = {
         minLength=${ifDefined(args.minLength)}
         maxLength=${ifDefined(args.maxLength)}
         rows=${args.rows}
+        .textStrings=${args.textStrings}
         @on-input=${(e) => action(e.type)(e)}
         @keydown=${(e) => e.stopPropagation()}
       >

@@ -45,6 +45,13 @@ export class TextArea extends FormMixin(LitElement) {
   @property({ type: Number })
   rows!: number;
 
+  /** Customizable text strings. */
+  @property({ type: Object })
+  textStrings = {
+    requiredText: 'Required',
+    errorText: 'Error',
+  };
+
   /**
    * Queries the <textarea> DOM element.
    * @ignore
@@ -57,7 +64,11 @@ export class TextArea extends FormMixin(LitElement) {
       <div class="text-area" ?disabled=${this.disabled}>
         <label class="label-text" for=${this.name}>
           ${this.required
-            ? html`<span class="required" aria-label="Required">*</span>`
+            ? html`<span
+                class="required"
+                aria-label=${this.textStrings.requiredText}
+                >*</span
+              >`
             : null}
           <slot></slot>
         </label>
@@ -85,7 +96,7 @@ ${this.value}</textarea
                 <kd-icon
                   class="error-icon"
                   role="img"
-                  aria-label="Error"
+                  aria-label=${this.textStrings.errorText}
                   .icon=${errorIcon}
                 ></kd-icon>
               `
