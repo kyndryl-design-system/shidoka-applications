@@ -78,6 +78,11 @@ export class BlockCodeView extends LitElement {
   @state()
   private _codeContent = '';
 
+  /** Initialize
+   * @internal
+   */
+  private _boundInitCodeFormatting!: () => void;
+
   /** Slot element query
    * @internal
    */
@@ -130,17 +135,24 @@ export class BlockCodeView extends LitElement {
             </kd-button>`
           : null}
       </div>
-      <slot @slotchange=${this.handleSlotChange} style="display: none;"></slot>
+      <slot @slotchange=${this.handleCodeUpdate} style="display: none;"></slot>
     `;
   }
 
   override firstUpdated() {
     this._copyState = { copied: false, text: this.copyButtonText };
-    this.slotElement.addEventListener('slotchange', () => this.processCode());
-    this.processSlotContent();
+    this._boundInitCodeFormatting = this.initCodeFormatting.bind(this);
+    this.slotElement.addEventListener(
+      'slotchange',
+      this._boundInitCodeFormatting
+    );
+
+    // trigger initial code formatting
+    this._boundInitCodeFormatting();
   }
 
-  private processCode() {
+  // initialize ande set code formatting based on detected code properties
+  private initCodeFormatting() {
     const slottedNodes = this.slotElement.assignedNodes();
     const code = slottedNodes.map((node) => node.textContent).join('');
     const processedCode = this.removeLeadingWhitespace(code);
@@ -153,14 +165,26 @@ export class BlockCodeView extends LitElement {
     this.requestUpdate();
   }
 
+  // remove listener on disconnect
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.slotElement?.removeEventListener(
+      'slotchange',
+      this._boundInitCodeFormatting
+    );
+  }
+
+  // detect single vs multi-line block code snippet for custom default styling
   private isSingleLineCode(code: string): boolean {
     return code.trim().split('\n').length === 1;
   }
 
+  // for @action printout
   private formatExampleCode(code: string) {
     return { code };
   }
 
+  // copy code button click lyric
   private copyCode(e: Event) {
     const originalText = this._copyState.text;
     navigator.clipboard
@@ -187,6 +211,7 @@ export class BlockCodeView extends LitElement {
       .catch((err) => console.error('Failed to copy code:', err));
   }
 
+  // accessibility -- detection on scrollable code blocks
   private handleKeyDown(e: KeyboardEvent) {
     const pre = e.currentTarget as HTMLPreElement;
     if (e.key === 'ArrowDown') {
@@ -198,6 +223,7 @@ export class BlockCodeView extends LitElement {
     }
   }
 
+  // ensures <pre> code snippet has correct indentation and formatting
   private removeLeadingWhitespace(code: string): string {
     if (!code) return '';
     const lines = code.split('\n');
@@ -212,11 +238,7 @@ export class BlockCodeView extends LitElement {
       .trim();
   }
 
-  private handleSlotChange() {
-    this.processSlotContent();
-  }
-
-  private processSlotContent() {
+  private handleCodeUpdate() {
     if (!this.slotElement) return;
 
     const nodes = this.slotElement.assignedNodes();
@@ -233,21 +255,13 @@ export class BlockCodeView extends LitElement {
       .trim();
 
     this._codeContent = this.removeLeadingWhitespace(rawContent);
-    this.highlightCode();
-  }
-
-  private highlightCode() {
-    if (this._codeContent) {
-      this._isSingleLine = this.isSingleLineCode(this._codeContent);
-      this._highlightedCode = Prism.highlight(
-        this._codeContent,
-        Prism.languages[this.language] || Prism.languages.plaintext,
-        this.language
-      );
-      this.requestUpdate();
-    } else {
-      this._highlightedCode = '';
-    }
+    this._isSingleLine = this.isSingleLineCode(this._codeContent);
+    this._highlightedCode = Prism.highlight(
+      this._codeContent,
+      Prism.languages[this.language] || Prism.languages.plaintext,
+      this.language
+    );
+    this.requestUpdate();
   }
 }
 
