@@ -20,45 +20,22 @@ export default {
   },
 };
 
+const args = {
+  ariaLabelAttr: 'Inline Code View Snippet',
+  unnamed: `console.log("Hello, World!");`,
+  inlineSnippetFontSize: '14px',
+};
+
 export const InlineCodeView = {
-  args: {
-    ariaLabelAttr: 'Inline Code View Snippet',
-    unnamed: `console.log("Hello, World!");`,
-    inlineSnippetFontSize: '14px',
-  },
+  args,
   render: (args) => {
     return html`
       <kyn-inline-code-view
         ariaLabelAttr=${args.ariaLabelAttr}
         style="--inline-snippet-font-size: ${args.inlineSnippetFontSize};"
       >
-        <code>${args.unnamed}</code>
+        ${args.unnamed}
       </kyn-inline-code-view>
     `;
   },
 };
-
-// potential multi-line variation for the future:
-// export const MultiLineExample = {
-//   args: {
-//     ariaLabelAttr: 'Multi-line Inline Code View',
-//     unnamed: `
-//       function greet(name) {
-//         console.log(\`Hello, \${name}!\`);
-//       }
-
-//       greet('World');
-//     `,
-//      inlineSnippetFontSize: '14px',
-//   },
-//   render: (args) => {
-//     return html`
-//       <kyn-inline-code-view
-//        ariaLabelAttr=${args.ariaLabelAttr}
-//        style="--inline-snippet-font-size: ${args.inlineSnippetFontSize};"
-//        >
-//         <code>${removeLeadingWhitespace(args.unnamed)}</code>
-//       </kyn-inline-code-view>
-//     `;
-//   },
-// };

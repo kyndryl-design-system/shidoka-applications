@@ -4,19 +4,6 @@ import './index';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 
-const removeLeadingWhitespace = (code) => {
-  if (!code) return '';
-  const lines = code.split('\n');
-  const minIndent = lines.reduce((min, line) => {
-    const indent = line.match(/^\s*/)[0].length;
-    return line.trim().length ? Math.min(min, indent) : min;
-  }, Infinity);
-  return lines
-    .map((line) => line.slice(minIndent))
-    .join('\n')
-    .trim();
-};
-
 export default {
   title: 'Components/Code View - Block',
   component: 'kyn-block-code-view',
@@ -34,6 +21,9 @@ export default {
     copyOptionVisible: {
       control: { type: 'boolean' },
     },
+    unnamed: {
+      control: 'text',
+    },
   },
 };
 
@@ -41,6 +31,7 @@ const args = {
   size: 'md',
   codeViewLabel: 'Block Code View',
   language: 'javascript',
+  ariaLabelAttr: '',
   copyOptionVisible: true,
   copyButtonText: 'Copy',
   copyButtonDescriptionAttr: 'copy code button',
@@ -52,10 +43,12 @@ const args = {
 
     greetUser('World');
   `,
-  exampleInlinetext: 'Inline example text',
 };
 
 const Template = (args) => {
+  const ariaLabelAttr =
+    args.ariaLabelAttr || `Block ${args.language} code snippet`;
+
   return html`
     <kyn-block-code-view
       size=${args.size}
@@ -63,31 +56,20 @@ const Template = (args) => {
       copyButtonDescriptionAttr=${args.copyButtonDescriptionAttr}
       copyButtonTitleAttr=${args.copyButtonTitleAttr}
       nameAttr=${args.nameAttr}
+      ariaLabelAttr=${ariaLabelAttr}
       language=${args.language}
       ?copyOptionVisible=${args.copyOptionVisible}
       copyButtonText=${args.copyButtonText}
       @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
     >
-      ${removeLeadingWhitespace(args.unnamed)}
+      ${args.unnamed}
     </kyn-block-code-view>
   `;
 };
 
-export const DefaultView = Template.bind({});
-DefaultView.args = {
+export const DefaultBlockView = Template.bind({});
+DefaultBlockView.args = {
   ...args,
-};
-
-DefaultView.argTypes = {
-  snippetType: {
-    control: { type: 'select', options: ['inline', 'block'] },
-  },
-  size: {
-    control: { type: 'select', options: ['small', 'medium', 'large'] },
-  },
-  copyOptionVisible: {
-    control: 'boolean',
-  },
 };
 
 export const SingleLineView = Template.bind({});

@@ -1,18 +1,21 @@
-@use '../../../common/scss/global.scss';
-@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+/**
+ * prism.js tomorrow night eighties for JavaScript, CoffeeScript, CSS and HTML
+ * Based on https://github.com/chriskempson/tomorrow-theme
+ * @author Rose Pritchard
+ */
 
 code[class*="language-"],
 pre[class*="language-"] {
+    color: #ccc;
+    background-color: var(--kd-color-background-ui-strong);
+    font-family: monospace;
+    font-size: 16px;
     text-align: left;
     white-space: pre;
     word-spacing: normal;
     word-break: normal;
     word-wrap: normal;
-    color: var(--kd-color-text-primary);
-    background-color: var(--kd-color-background-ui-soft);
-    font-family: Roboto Mono, monospace;
-    font-size: 14px;
-    line-height: 1.5em;
+    line-height: 1.5;
 
     -moz-tab-size: 4;
     -o-tab-size: 4;
@@ -22,189 +25,103 @@ pre[class*="language-"] {
     -moz-hyphens: none;
     -ms-hyphens: none;
     hyphens: none;
+
 }
 
-code[class*="language-"]::-moz-selection,
-pre[class*="language-"]::-moz-selection,
-code[class*="language-"] ::-moz-selection,
-pre[class*="language-"] ::-moz-selection {
-    background: #75b3b0;
-    color: #000000;
-}
-
-code[class*="language-"]::selection,
-pre[class*="language-"]::selection,
-code[class*="language-"] ::selection,
-pre[class*="language-"] ::selection {
-    background: #75b3b0;
-    color: #000000;
-}
-
-:not(pre)>code[class*="language-"] {
-    white-space: normal;
-    border-radius: 0.2em;
-    padding: 0.1em;
-}
-
+/* Code blocks */
 pre[class*="language-"] {
+    margin: 0;
+    padding-bottom: 6px;
     overflow: auto;
-    position: relative;
-    margin: 0.5em 0;
-    padding: 1.25em 1em;
 }
 
-.language-css>code,
-.language-sass>code,
-.language-scss>code {
-    color: #a31a00;
+:not(pre)>code[class*="language-"],
+pre[class*="language-"] {
+    background-color: var(--kd-color-background-ui-strong);
 }
 
-[class*="language-"] .namespace {
-    opacity: 0.7;
+.toolbar-item {
+    display: none;
 }
 
-.token.atrule {
-    color: #4a0e91;
+/* Inline code */
+:not(pre)>code[class*="language-"] {
+    padding: 1.6px;
+    border-radius: 4.8px;
+    white-space: normal;
 }
 
-.token.attr-name {
-    color: var(--kd-color-text-tertiary);
-}
-
-.token.attr-value {
-    color: #8c4600;
-}
-
-.token.attribute {
-    color: #8c4600;
-}
-
-.token.boolean {
-    color: #4a0e91;
-}
-
-.token.builtin {
-    color: var(--kd-color-text-tertiary);
-}
-
+.token.comment,
+.token.block-comment,
+.token.prolog,
+.token.doctype,
 .token.cdata {
-    color: var(--kd-color-text-tertiary);
-}
-
-.token.char {
-    color: var(--kd-color-text-tertiary);
-}
-
-.token.class {
-    color: var(--kd-color-text-tertiary);
-}
-
-.token.class-name {
-    color: #0d3366;
-}
-
-.token.comment {
-    color: #545454;
-}
-
-.token.constant {
-    color: #4a0e91;
-}
-
-.token.deleted {
-    color: #870000;
-}
-
-.token.doctype {
-    color: #545454;
-}
-
-.token.entity {
-    color: #870000;
-}
-
-.token.function {
-    color: #4a0e91;
-}
-
-.token.hexcode {
-    color: #a31a00;
-}
-
-.token.id {
-    color: #4a0e91;
-    font-weight: bold;
-}
-
-.token.important {
-    color: #4a0e91;
-    font-weight: bold;
-}
-
-.token.inserted {
-    color: var(--kd-color-text-tertiary);
-}
-
-.token.keyword {
-    color: #4a0e91;
-}
-
-.token.number {
-    color: #a31a00;
-}
-
-.token.operator {
-    color: var(--kd-color-text-tertiary);
-}
-
-.token.prolog {
-    color: #545454;
-}
-
-.token.property {
-    color: var(--kd-color-text-tertiary);
-}
-
-.token.pseudo-class {
-    color: #8c4600;
-}
-
-.token.pseudo-element {
-    color: #8c4600;
+    color: #999;
 }
 
 .token.punctuation {
-    color: var(--kd-color-text-tertiary);
+    color: #ccc;
 }
 
-.token.regex {
-    color: #0d3366;
+.token.tag,
+.token.attr-name,
+.token.namespace,
+.token.deleted {
+    color: #cc99cd;
 }
 
-.token.selector {
-    color: #870000;
+.token.function-name {
+    color: #6196cc;
 }
 
-.token.string {
-    color: #8c4600;
+.token.boolean,
+.token.number,
+.token.function {
+    color: #f08d49;
 }
 
+.token.property,
+.token.class-name,
+.token.constant,
 .token.symbol {
-    color: #4a0e91;
+    color: #f8c555;
 }
 
-.token.tag {
-    color: #870000;
+.token.selector,
+.token.important,
+.token.atrule,
+.token.keyword,
+.token.builtin {
+    color: #cc99cd;
 }
 
-.token.unit {
-    color: #a31a00;
-}
-
-.token.url {
-    color: #870000;
-}
-
+.token.string,
+.token.char,
+.token.attr-value,
+.token.regex,
 .token.variable {
-    color: #870000;
+    color: #7ec699;
+}
+
+.token.operator,
+.token.entity,
+.token.url {
+    color: #67cdcc;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+
+.token.italic {
+    font-style: italic;
+}
+
+.token.entity {
+    cursor: help;
+}
+
+.token.inserted {
+    color: green;
 }

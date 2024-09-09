@@ -22,7 +22,9 @@ export class InlineCodeView extends LitElement {
   private slotElement!: HTMLSlotElement;
 
   override render() {
-    return html`<slot @slotchange=${this.handleSlotChange}></slot>`;
+    return html`<code
+      ><slot @slotchange=${this.handleSlotChange}></slot
+    ></code>`;
   }
 
   private handleSlotChange() {

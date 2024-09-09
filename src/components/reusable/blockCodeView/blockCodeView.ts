@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, state, query } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { classMap } from 'lit/directives/class-map.js';
 
@@ -15,9 +15,9 @@ import BlockCodeViewStyles from './blockCodeView.scss';
 import PrismStyles from './prismSyntaxStyles.scss';
 
 /**
- * `<kyn-block-code-view>` component to display `<code>` snippets, either inline within HTML content or as standalone single-/multi-line block elements.
+ * `<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements.
  * @fires on-custom-copy - Emits when the copy button is clicked.
- * @slot unnamed - inline text slot from story book.
+ * @slot unnamed - Code content slot.
  */
 @customElement('kyn-block-code-view')
 export class BlockCodeView extends LitElement {
@@ -31,15 +31,19 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   language = '';
 
-  /** Optional code view label, visible to the user above the block code snippet. */
+  /** `aria-label` attribute value for accessibility purposes.*/
+  @property({ type: String })
+  ariaLabelAttr = '';
+
+  /** Optional label value to be displayed above code snippet. */
   @property({ type: String })
   codeViewLabel = '';
 
-  /** Optional title to be displayed above code snippet. */
+  /** Optional title attr value. */
   @property({ type: String })
   copyButtonTitleAttr = '';
 
-  /** Optional descrition to be displayed above code snippet. */
+  /** Optional description attr value. */
   @property({ type: String })
   copyButtonDescriptionAttr = '';
 
@@ -55,7 +59,7 @@ export class BlockCodeView extends LitElement {
    *  * @internal
    */
   @state()
-  _isSingleLine = false;
+  private _isSingleLine = false;
 
   /** Formatted code (prism.js) to be displayed.
    * @internal
@@ -63,38 +67,33 @@ export class BlockCodeView extends LitElement {
   @state()
   private _highlightedCode = '';
 
-  /** 3s timeout where code has been copied to clipboard and button is temporarily disabled.
+  /** Copy key-values to communicate copy button styling and state.
    * @internal
    */
-  @state()
-  private _codeCopied = false;
+  @state() private _copyState = { copied: false, text: '' };
 
-  /** Copied code content displayed in storybook action printout.
+  /** Raw code content
    * @internal
    */
   @state()
   private _codeContent = '';
 
-  /** Slotted code content displayed in storybook action printout.
+  /** Slot element query
    * @internal
    */
-  @state()
-  private _slotContent = '';
+  @query('slot') private slotElement!: HTMLSlotElement;
 
   override render() {
     return html`
-      <div class="code-view__label">
-        <label>${this.codeViewLabel}</label>
-      </div>
-
+      ${this.codeViewLabel
+        ? html`<div class="code-view__label">
+            <label>${this.codeViewLabel}</label>
+          </div>`
+        : null}
       <div
         class="${classMap({
           code_view__container: true,
-          'snippetType--block': true,
-          'size--auto': this.size === 'auto',
-          'size--sm': this.size === 'sm',
-          'size--md': this.size === 'md',
-          'size--lg': this.size === 'lg',
+          [`size--${this.size}`]: true,
           'single-line': this._isSingleLine,
           'multi-line': !this._isSingleLine,
         })}"
@@ -103,82 +102,93 @@ export class BlockCodeView extends LitElement {
           tabindex="0"
           @keydown="${this.handleKeyDown}"
           role="region"
-          aria-label=${this._isSingleLine
-            ? 'Code block'
-            : 'Code block, use arrow keys to scroll'}
+          aria-label=${this.ariaLabelAttr}
         ><code class="language-${this.language}">${unsafeHTML(
           this._highlightedCode
         )}</code></pre>
-
-        <div style="display: none;">
-          <slot @slotchange=${this.handleSlotChange}></slot>
-        </div>
 
         ${this.copyOptionVisible
           ? html`<kd-button
               class="code-view__copy-button"
               kind="primary-web"
+              size="small"
+              iconPosition="left"
+              ?disabled=${this._copyState.copied}
               title=${this.copyButtonTitleAttr}
               name=${this.copyButtonDescriptionAttr}
               description=${this.copyButtonDescriptionAttr}
-              size="small"
-              iconPosition="left"
-              ?disabled=${this._codeCopied}
-              @click=${(e: Event) => this._copyCode(e)}
+              @click=${this.copyCode}
             >
               <kd-icon
                 slot="icon"
                 class="copy-icon"
-                .icon=${this._codeCopied ? checkmarkIcon : copyIcon}
+                .icon=${this._copyState.copied ? checkmarkIcon : copyIcon}
               ></kd-icon>
-              ${this.copyButtonText
-                ? html`<span class="copy-text">${this.copyButtonText}</span>`
+              ${this._copyState.text
+                ? html`<span class="copy-text">${this._copyState.text}</span>`
                 : null}
             </kd-button>`
           : null}
       </div>
+      <slot @slotchange=${this.handleSlotChange} style="display: none;"></slot>
     `;
   }
 
-  private isSingleLineCode(code: string): boolean {
-    return (this._isSingleLine = code.trim().split('\n').length === 1);
+  override firstUpdated() {
+    this._copyState = { copied: false, text: this.copyButtonText };
+    this.slotElement.addEventListener('slotchange', () => this.processCode());
+    this.processSlotContent();
   }
 
-  private formatExampleCode = (code: string) => {
-    return {
-      fullSnippet: code,
-    };
-  };
+  private processCode() {
+    const slottedNodes = this.slotElement.assignedNodes();
+    const code = slottedNodes.map((node) => node.textContent).join('');
+    const processedCode = this.removeLeadingWhitespace(code);
+    this._isSingleLine = this.isSingleLineCode(processedCode);
+    this._highlightedCode = Prism.highlight(
+      processedCode,
+      Prism.languages[this.language] || Prism.languages.plaintext,
+      this.language
+    );
+    this.requestUpdate();
+  }
 
-  private _copyCode(e: Event) {
-    const originalText = this.copyButtonText;
+  private isSingleLineCode(code: string): boolean {
+    return code.trim().split('\n').length === 1;
+  }
+
+  private formatExampleCode(code: string) {
+    return { code };
+  }
+
+  private copyCode(e: Event) {
+    const originalText = this._copyState.text;
     navigator.clipboard
       .writeText(this._codeContent)
       .then(() => {
-        this._codeCopied = true;
-        this.copyButtonText = originalText.length > 1 ? 'Copied!' : '';
+        this._copyState = {
+          copied: true,
+          text: originalText.length > 1 ? 'Copied!' : '',
+        };
+        this.requestUpdate();
         this.dispatchEvent(
           new CustomEvent('on-custom-copy', {
             detail: {
               origEvent: e,
-              code: this.formatExampleCode(this._codeContent),
+              fullSnipet: this.formatExampleCode(this._codeContent),
             },
           })
         );
         setTimeout(() => {
-          this._codeCopied = false;
-          this.copyButtonText = originalText;
+          this._copyState = { copied: false, text: originalText };
+          this.requestUpdate();
         }, 3000);
       })
       .catch((err) => console.error('Failed to copy code:', err));
   }
 
-  override firstUpdated() {
-    this.highlightCode();
-  }
-
   private handleKeyDown(e: KeyboardEvent) {
-    const pre = e.target as HTMLPreElement;
+    const pre = e.currentTarget as HTMLPreElement;
     if (e.key === 'ArrowDown') {
       pre.scrollTop += 10;
       e.preventDefault();
@@ -188,29 +198,56 @@ export class BlockCodeView extends LitElement {
     }
   }
 
-  private handleSlotChange(e: Event) {
-    const slot = e.target as HTMLSlotElement;
-    this._slotContent = slot
-      .assignedNodes()
-      .map((node) => node.textContent?.trim())
-      .join('');
+  private removeLeadingWhitespace(code: string): string {
+    if (!code) return '';
+    const lines = code.split('\n');
+    const minIndent = lines.reduce((min, line) => {
+      const match = line.match(/^[ \t]*/);
+      const indent = match ? match[0].length : 0;
+      return line.trim().length ? Math.min(min, indent) : min;
+    }, Infinity);
+    return lines
+      .map((line) => line.slice(minIndent))
+      .join('\n')
+      .trim();
+  }
+
+  private handleSlotChange() {
+    this.processSlotContent();
+  }
+
+  private processSlotContent() {
+    if (!this.slotElement) return;
+
+    const nodes = this.slotElement.assignedNodes();
+    const rawContent = nodes
+      .map((node) => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          return node.textContent;
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          return (node as Element).outerHTML;
+        }
+        return '';
+      })
+      .join('')
+      .trim();
+
+    this._codeContent = this.removeLeadingWhitespace(rawContent);
     this.highlightCode();
   }
 
   private highlightCode() {
-    if (this._slotContent) {
-      this._codeContent = this._slotContent;
-      this.isSingleLineCode(this._codeContent);
+    if (this._codeContent) {
+      this._isSingleLine = this.isSingleLineCode(this._codeContent);
       this._highlightedCode = Prism.highlight(
         this._codeContent,
-        Prism.languages[this.language],
+        Prism.languages[this.language] || Prism.languages.plaintext,
         this.language
       );
+      this.requestUpdate();
     } else {
       this._highlightedCode = '';
     }
-
-    this.requestUpdate();
   }
 }
 
