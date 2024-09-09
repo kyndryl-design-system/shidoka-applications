@@ -56,7 +56,9 @@ export class TextArea extends FormMixin(LitElement) {
     return html`
       <div class="text-area" ?disabled=${this.disabled}>
         <label class="label-text" for=${this.name}>
-          ${this.required ? html`<span class="required">*</span>` : null}
+          ${this.required
+            ? html`<span class="required" aria-label="Required">*</span>`
+            : null}
           <slot></slot>
         </label>
 
@@ -68,6 +70,8 @@ export class TextArea extends FormMixin(LitElement) {
             ?required=${this.required}
             ?disabled=${this.disabled}
             ?invalid=${this._isInvalid}
+            aria-invalid=${this._isInvalid}
+            aria-describedby=${this._isInvalid ? 'error' : ''}
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             rows=${this.rows}
@@ -77,7 +81,14 @@ ${this.value}</textarea
           >
 
           ${this._isInvalid
-            ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
+            ? html`
+                <kd-icon
+                  class="error-icon"
+                  role="img"
+                  aria-label="Error"
+                  .icon=${errorIcon}
+                ></kd-icon>
+              `
             : null}
           ${this.maxLength
             ? html`
@@ -91,7 +102,7 @@ ${this.value}</textarea
           : null}
         ${this._isInvalid
           ? html`
-              <div class="error">
+              <div id="error" class="error">
                 ${this.invalidText || this._internalValidationMsg}
               </div>
             `
