@@ -92,6 +92,10 @@ export class Modal extends LitElement {
   @property({ attribute: false })
   beforeClose!: Function;
 
+  /** Close button text. */
+  @property({ type: String })
+  closeText = 'Close';
+
   /** The dialog element
    * @internal
    */
@@ -119,7 +123,8 @@ export class Modal extends LitElement {
         <form method="dialog">
           <button
             class="close"
-            aria-label="close"
+            title=${this.closeText}
+            aria-label=${this.closeText}
             @click=${(e: Event) => this._closeModal(e, 'cancel')}
           >
             <kd-icon .icon=${closeIcon}></kd-icon>
