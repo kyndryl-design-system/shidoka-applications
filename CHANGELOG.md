@@ -1,3 +1,11 @@
+## [1.34.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.5...v1.34.6) (2024-09-10)
+
+
+### Bug Fixes
+
+* **modal:** close button accessibility label ([#228](https://github.com/kyndryl-design-system/shidoka-applications/issues/228)) ([64af29c](https://github.com/kyndryl-design-system/shidoka-applications/commit/64af29cde26ab260a2b20b556a6d2e5b3ed9f42e))
+* remove unnecessary bounding contexts created by transforms ([#231](https://github.com/kyndryl-design-system/shidoka-applications/issues/231)) ([d05adea](https://github.com/kyndryl-design-system/shidoka-applications/commit/d05adeaf2b097e4077e2ca4bc53ba2722787d231))
+
 ## [1.34.5](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.4...v1.34.5) (2024-09-04)
 
 
