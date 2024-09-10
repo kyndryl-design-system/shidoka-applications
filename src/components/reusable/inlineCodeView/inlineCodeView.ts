@@ -1,5 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
@@ -18,12 +19,22 @@ export class InlineCodeView extends LitElement {
   @property({ type: String, attribute: 'aria-label' })
   ariaLabelAttr = '';
 
+  /** Optional dark theme boolean to toggle theme between light/dark */
+  @property({ type: Boolean })
+  darkTheme = false;
+
   @query('slot')
   private slotElement!: HTMLSlotElement;
 
   override render() {
     return html`
-      <code>
+      <code
+        class="${classMap({
+          'inline-code-view': true,
+          'shidoka-dark-syntax-theme': this.darkTheme,
+          'shidoka-light-syntax-theme': !this.darkTheme,
+        })}"
+      >
         <slot @slotchange=${this.handleSlotChange}></slot>
       </code>
     `;

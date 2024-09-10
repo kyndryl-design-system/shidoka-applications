@@ -108,16 +108,16 @@ export default {
 };
 
 const args = {
+  codeSnippet: defaultTemplateCodes.DEFAULT,
+  darkTheme: true,
+  copyOptionVisible: true,
   size: 'md',
   codeViewLabel: 'Block Code View',
   language: 'javascript',
   ariaLabelAttr: '',
-  darkTheme: true,
-  copyOptionVisible: true,
   copyButtonText: 'Copy',
   copyButtonDescriptionAttr: 'copy code button',
   copyButtonTitleAttr: 'Copy code',
-  unnamed: defaultTemplateCodes.DEFAULT,
 };
 
 const Template = (args) => {
@@ -136,9 +136,9 @@ const Template = (args) => {
       language=${args.language}
       ?copyOptionVisible=${args.copyOptionVisible}
       copyButtonText=${args.copyButtonText}
+      codeSnippet=${args.codeSnippet}
       @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
     >
-      ${args.unnamed}
     </kyn-block-code-view>
   `;
 };
@@ -155,7 +155,7 @@ SingleLineView.args = {
   language: 'javascript',
   copyOptionVisible: true,
   copyButtonText: '',
-  unnamed: defaultTemplateCodes.SINGLE_LINE,
+  codeSnippet: defaultTemplateCodes.SINGLE_LINE,
 };
 
 export const JavascriptExample = Template.bind({});
@@ -165,7 +165,7 @@ JavascriptExample.args = {
   codeViewLabel: 'Javascript Code Snippet',
   copyOptionVisible: true,
   copyButtonText: 'Copy',
-  unnamed: defaultTemplateCodes.JAVASCRIPT,
+  codeSnippet: defaultTemplateCodes.JAVASCRIPT,
 };
 
 export const HTMLExample = Template.bind({});
@@ -175,7 +175,7 @@ HTMLExample.args = {
   codeViewLabel: 'HTML Code Snippet',
   copyOptionVisible: true,
   copyButtonText: 'Copy',
-  unnamed: defaultTemplateCodes.HTML,
+  codeSnippet: defaultTemplateCodes.HTML,
 };
 
 export const CSSExample = Template.bind({});
@@ -185,5 +185,5 @@ CSSExample.args = {
   codeViewLabel: 'CSS Code Snippet',
   copyOptionVisible: true,
   copyButtonText: 'Copy',
-  unnamed: defaultTemplateCodes.CSS,
+  codeSnippet: defaultTemplateCodes.CSS,
 };

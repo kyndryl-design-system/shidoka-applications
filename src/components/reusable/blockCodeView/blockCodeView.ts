@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { customElement, property, state, query } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { classMap } from 'lit/directives/class-map.js';
 
@@ -12,16 +12,24 @@ import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import BlockCodeViewStyles from './blockCodeView.scss';
-import PrismStyles from './prismSyntaxStyles.scss';
+import ShidokaLightTheme from './shidokaLightSyntaxStyles.scss';
+import ShidokaDarkTheme from './shidokaDarkSyntaxStyles.scss';
 
 /**
  * `<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements.
  * @fires on-custom-copy - Emits when the copy button is clicked.
- * @slot unnamed - Code content slot.
  */
 @customElement('kyn-block-code-view')
 export class BlockCodeView extends LitElement {
-  static override styles = [BlockCodeViewStyles, PrismStyles];
+  static override styles = [
+    BlockCodeViewStyles,
+    ShidokaLightTheme,
+    ShidokaDarkTheme,
+  ];
+
+  /** Code snippet to be formatted and displayed within the html `<code>` element. */
+  @property({ type: String })
+  codeSnippet = '';
 
   /** Code snippet size: `auto`, `sm`, `md`, or `lg`. */
   @property({ type: String })
@@ -55,7 +63,7 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   copyButtonText = '';
 
-  /** Dark theme boolean to toggle theme between light/dark */
+  /** Optional dark theme boolean to toggle theme between light/dark */
   @property({ type: Boolean })
   darkTheme = false;
 
@@ -76,22 +84,6 @@ export class BlockCodeView extends LitElement {
    */
   @state() private _copyState = { copied: false, text: '' };
 
-  /** Raw code content
-   * @internal
-   */
-  @state()
-  private _codeContent = '';
-
-  /** Initialize
-   * @internal
-   */
-  private _boundInitCodeFormatting!: () => void;
-
-  /** Slot element query
-   * @internal
-   */
-  @query('slot') private slotElement!: HTMLSlotElement;
-
   override render() {
     return html`
       ${this.codeViewLabel
@@ -105,7 +97,8 @@ export class BlockCodeView extends LitElement {
           [`size--${this.size}`]: true,
           'single-line': this._isSingleLine,
           'multi-line': !this._isSingleLine,
-          [`dark-theme-${this.darkTheme}`]: true,
+          'shidoka-dark-syntax-theme': this.darkTheme,
+          'shidoka-light-syntax-theme': !this.darkTheme,
         })}"
       >
         <pre
@@ -140,44 +133,30 @@ export class BlockCodeView extends LitElement {
             </kd-button>`
           : null}
       </div>
-      <slot @slotchange=${this.handleSlotChange} style="display: none;"></slot>
     `;
   }
 
-  override firstUpdated() {
-    this._copyState = { copied: false, text: this.copyButtonText };
-    this._boundInitCodeFormatting = this.initCodeFormatting.bind(this);
-    this.slotElement.addEventListener(
-      'slotchange',
-      this._boundInitCodeFormatting
-    );
-
-    // trigger initial code formatting
-    this._boundInitCodeFormatting();
+  override updated(changedProperties: Map<string, unknown>) {
+    if (
+      changedProperties.has('codeSnippet') ||
+      changedProperties.has('language')
+    ) {
+      this.processCodeSnippet();
+    }
+    if (changedProperties.has('copyButtonText')) {
+      this._copyState = { ...this._copyState, text: this.copyButtonText };
+    }
   }
 
-  // initialize ande set code formatting based on detected code properties
-  private initCodeFormatting() {
-    const slottedNodes = this.slotElement.assignedNodes();
-    const code = slottedNodes.map((node) => node.textContent).join('');
-    const processedCode = this.removeLeadingWhitespace(code);
+  private processCodeSnippet() {
+    const processedCode = this.removeLeadingWhitespace(this.codeSnippet);
     this._isSingleLine = this.isSingleLineCode(processedCode);
     this._highlightedCode = Prism.highlight(
       processedCode,
       Prism.languages[this.language] || Prism.languages.plaintext,
       this.language
     );
-
     this.requestUpdate();
-  }
-
-  // remove listener on disconnect
-  override disconnectedCallback() {
-    super.disconnectedCallback();
-    this.slotElement?.removeEventListener(
-      'slotchange',
-      this._boundInitCodeFormatting
-    );
   }
 
   // detect single vs multi-line block code snippet for custom default styling
@@ -194,7 +173,7 @@ export class BlockCodeView extends LitElement {
   private copyCode(e: Event) {
     const originalText = this._copyState.text;
     navigator.clipboard
-      .writeText(this._codeContent)
+      .writeText(this.codeSnippet)
       .then(() => {
         this._copyState = {
           copied: true,
@@ -205,7 +184,7 @@ export class BlockCodeView extends LitElement {
           new CustomEvent('on-custom-copy', {
             detail: {
               origEvent: e,
-              fullSnippet: this.formatExampleCode(this._codeContent),
+              fullSnippet: this.formatExampleCode(this.codeSnippet),
             },
           })
         );
@@ -242,32 +221,6 @@ export class BlockCodeView extends LitElement {
       .map((line) => line.slice(minIndent))
       .join('\n')
       .trim();
-  }
-
-  private handleSlotChange() {
-    if (!this.slotElement) return;
-
-    const nodes = this.slotElement.assignedNodes();
-    const rawContent = nodes
-      .map((node) => {
-        if (node.nodeType === Node.TEXT_NODE) {
-          return node.textContent;
-        } else if (node.nodeType === Node.ELEMENT_NODE) {
-          return (node as Element).outerHTML;
-        }
-        return '';
-      })
-      .join('')
-      .trim();
-
-    this._codeContent = this.removeLeadingWhitespace(rawContent);
-    this._isSingleLine = this.isSingleLineCode(this._codeContent);
-    this._highlightedCode = Prism.highlight(
-      this._codeContent,
-      Prism.languages[this.language] || Prism.languages.plaintext,
-      this.language
-    );
-    this.requestUpdate();
   }
 }
 
