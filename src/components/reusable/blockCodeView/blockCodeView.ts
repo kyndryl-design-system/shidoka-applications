@@ -92,6 +92,7 @@ export class BlockCodeView extends LitElement {
           </div>`
         : null}
       <div
+        aria-label=${this.ariaLabelAttr}
         class="${classMap({
           code_view__container: true,
           [`size--${this.size}`]: true,
@@ -105,7 +106,6 @@ export class BlockCodeView extends LitElement {
           tabindex="0"
           @keydown="${this.handleKeyDown}"
           role="region"
-          aria-label=${this.ariaLabelAttr}
         ><code class="language-${this.language}">${unsafeHTML(
           this._highlightedCode
         )}</code></pre>

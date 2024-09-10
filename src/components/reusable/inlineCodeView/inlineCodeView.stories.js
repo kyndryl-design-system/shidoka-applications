@@ -29,7 +29,7 @@ export const InlineCodeView = {
   render: (args) => {
     return html`
       <kyn-inline-code-view
-        ariaLabelAttr=${args.ariaLabelAttr}
+        aria-label=${args.ariaLabelAttr}
         ?darkTheme=${args.darkTheme}
         style="--inline-snippet-font-size: ${args.inlineSnippetFontSize};"
       >
