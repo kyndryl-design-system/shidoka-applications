@@ -1,10 +1,16 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import TextAreaScss from './textArea.scss';
 import { FormMixin } from '../../../common/mixins/form-input';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@carbon/icons/es/warning--filled/24';
+import { deepmerge } from 'deepmerge-ts';
+
+const _defaultTextStrings = {
+  requiredText: 'Required',
+  errorText: 'Error',
+};
 
 /**
  * Text area.
@@ -45,6 +51,16 @@ export class TextArea extends FormMixin(LitElement) {
   @property({ type: Number })
   rows!: number;
 
+  /** Customizable text strings. */
+  @property({ type: Object })
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
+
   /**
    * Queries the <textarea> DOM element.
    * @ignore
@@ -56,7 +72,14 @@ export class TextArea extends FormMixin(LitElement) {
     return html`
       <div class="text-area" ?disabled=${this.disabled}>
         <label class="label-text" for=${this.name}>
-          ${this.required ? html`<span class="required">*</span>` : null}
+          ${this.required
+            ? html`<abbr
+                class="required"
+                title=${this._textStrings.requiredText}
+                aria-label=${this._textStrings.requiredText}
+                >*</abbr
+              >`
+            : null}
           <slot></slot>
         </label>
 
@@ -68,6 +91,8 @@ export class TextArea extends FormMixin(LitElement) {
             ?required=${this.required}
             ?disabled=${this.disabled}
             ?invalid=${this._isInvalid}
+            aria-invalid=${this._isInvalid}
+            aria-describedby=${this._isInvalid ? 'error' : ''}
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             rows=${this.rows}
@@ -77,7 +102,14 @@ ${this.value}</textarea
           >
 
           ${this._isInvalid
-            ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
+            ? html`
+                <kd-icon
+                  class="error-icon"
+                  role="img"
+                  aria-label=${this._textStrings.errorText}
+                  .icon=${errorIcon}
+                ></kd-icon>
+              `
             : null}
           ${this.maxLength
             ? html`
@@ -91,13 +123,19 @@ ${this.value}</textarea
           : null}
         ${this._isInvalid
           ? html`
-              <div class="error">
+              <div id="error" class="error">
                 ${this.invalidText || this._internalValidationMsg}
               </div>
             `
           : null}
       </div>
     `;
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
   }
 
   private handleInput(e: any) {
