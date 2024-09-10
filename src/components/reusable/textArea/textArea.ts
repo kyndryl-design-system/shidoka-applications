@@ -1,10 +1,16 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import TextAreaScss from './textArea.scss';
 import { FormMixin } from '../../../common/mixins/form-input';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@carbon/icons/es/warning--filled/24';
+import { deepmerge } from 'deepmerge-ts';
+
+const _defaultTextStrings = {
+  requiredText: 'Required',
+  errorText: 'Error',
+};
 
 /**
  * Text area.
@@ -47,10 +53,13 @@ export class TextArea extends FormMixin(LitElement) {
 
   /** Customizable text strings. */
   @property({ type: Object })
-  textStrings = {
-    requiredText: 'Required',
-    errorText: 'Error',
-  };
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
 
   /**
    * Queries the <textarea> DOM element.
@@ -64,10 +73,11 @@ export class TextArea extends FormMixin(LitElement) {
       <div class="text-area" ?disabled=${this.disabled}>
         <label class="label-text" for=${this.name}>
           ${this.required
-            ? html`<span
+            ? html`<abbr
                 class="required"
-                aria-label=${this.textStrings.requiredText}
-                >*</span
+                title=${this._textStrings.requiredText}
+                aria-label=${this._textStrings.requiredText}
+                >*</abbr
               >`
             : null}
           <slot></slot>
@@ -96,7 +106,7 @@ ${this.value}</textarea
                 <kd-icon
                   class="error-icon"
                   role="img"
-                  aria-label=${this.textStrings.errorText}
+                  aria-label=${this._textStrings.errorText}
                   .icon=${errorIcon}
                 ></kd-icon>
               `
@@ -143,6 +153,12 @@ ${this.value}</textarea
 
     if (changedProps.has('value')) {
       this.textareaEl.value = this.value;
+    }
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
   }
 
