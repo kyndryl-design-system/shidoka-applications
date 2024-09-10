@@ -140,7 +140,7 @@ export class BlockCodeView extends LitElement {
             </kd-button>`
           : null}
       </div>
-      <slot @slotchange=${this.handleSlotUpdate} style="display: none;"></slot>
+      <slot @slotchange=${this.handleSlotChange} style="display: none;"></slot>
     `;
   }
 
@@ -244,7 +244,7 @@ export class BlockCodeView extends LitElement {
       .trim();
   }
 
-  private handleSlotUpdate() {
+  private handleSlotChange() {
     if (!this.slotElement) return;
 
     const nodes = this.slotElement.assignedNodes();
