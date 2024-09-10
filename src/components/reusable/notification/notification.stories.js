@@ -42,6 +42,7 @@ export const Notification = {
     notificationSubtitle: '',
     assistiveTitleText: "This is the notification title",
     assistiveSubtitleText: "This is the notification subtitle",
+    assistiveNotificationTypeText: "Normal notification",
     timeStamp: '2 mins ago',
     assistiveTimestampText: "Duration",
     href: '#',
@@ -55,6 +56,7 @@ export const Notification = {
       notificationSubtitle=${args.notificationSubtitle}
       assistiveTitleText=${args.assistiveTitleText}
       assistiveSubtitleText=${args.assistiveSubtitleText}
+      assistiveNotificationTypeText=${args.assistiveNotificationTypeText}
       timeStamp=${args.timeStamp}
       assistiveTimestampText=${args.assistiveTimestampText}
       href=${args.href}
@@ -88,6 +90,7 @@ export const Inline = {
   args: {
     notificationTitle: 'Notification Title',
     assistiveTitleText: "This is the inline notification title",
+    assistiveNotificationTypeText: "Inline info notification",
     type: 'inline',
     tagStatus: 'info',
     hideCloseButton: false,
@@ -96,6 +99,7 @@ export const Inline = {
     return html`<kyn-notification
         notificationTitle=${args.notificationTitle}
         assistiveTitleText=${args.assistiveTitleText}
+        assistiveNotificationTypeText=${args.assistiveNotificationTypeText}
         type=${args.type}
         tagStatus=${args.tagStatus}
         ?hideCloseButton=${args.hideCloseButton}
@@ -109,6 +113,7 @@ export const Inline = {
       <kyn-notification
         notificationTitle=${args.notificationTitle}
         assistiveTitleText=${args.assistiveTitleText}
+        assistiveNotificationTypeText=${args.assistiveNotificationTypeText}
         type=${args.type}
         tagStatus=${args.tagStatus}
         ?hideCloseButton=${args.hideCloseButton}
@@ -121,6 +126,7 @@ export const Inline = {
       <kyn-notification
         notificationTitle=${args.notificationTitle}
         assistiveTitleText=${args.assistiveTitleText}
+        assistiveNotificationTypeText=${args.assistiveNotificationTypeText}
         type=${args.type}
         tagStatus=${args.tagStatus}
         ?hideCloseButton=${args.hideCloseButton}
@@ -152,6 +158,7 @@ export const Toast = {
   args: {
     notificationTitle: 'Notification Title',
     assistiveTitleText: "This is the toast notification title",
+    assistiveNotificationTypeText: "Information toast",
     tagStatus: 'info',
     hideCloseButton: false,
     timeout: 6,
@@ -168,6 +175,7 @@ export const Toast = {
         <kyn-notification
           notificationTitle=${args.notificationTitle}
           assistiveTitleText=${args.assistiveTitleText}
+          assistiveNotificationTypeText=${args.assistiveNotificationTypeText}
           type="toast"
           tagStatus=${args.tagStatus}
           timeout=${args.timeout}
@@ -183,6 +191,7 @@ export const Toast = {
         <kyn-notification
           notificationTitle=${args.notificationTitle}
           assistiveTitleText=${args.assistiveTitleText}
+          assistiveNotificationTypeText="Default toast"
           type="toast"
           tagStatus="default"
           timeout=${8}
@@ -195,6 +204,7 @@ export const Toast = {
         <kyn-notification
           notificationTitle=${args.notificationTitle}
           assistiveTitleText=${args.assistiveTitleText}
+          assistiveNotificationTypeText="Warning toast"
           type="toast"
           tagStatus="warning"
           ?hideCloseButton=${args.hideCloseButton}
@@ -208,6 +218,7 @@ export const Toast = {
         <kyn-notification
           notificationTitle=${args.notificationTitle}
           assistiveTitleText=${args.assistiveTitleText}
+          assistiveNotificationTypeText="Error toast"
           type="toast"
           tagStatus="error"
           ?hideCloseButton=${args.hideCloseButton}
