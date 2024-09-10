@@ -101,6 +101,9 @@ export default {
     copyOptionVisible: {
       control: { type: 'boolean' },
     },
+    darkTheme: {
+      control: { type: 'boolean' },
+    },
   },
 };
 
@@ -109,6 +112,7 @@ const args = {
   codeViewLabel: 'Block Code View',
   language: 'javascript',
   ariaLabelAttr: '',
+  darkTheme: true,
   copyOptionVisible: true,
   copyButtonText: 'Copy',
   copyButtonDescriptionAttr: 'copy code button',
@@ -128,6 +132,7 @@ const Template = (args) => {
       copyButtonTitleAttr=${args.copyButtonTitleAttr}
       nameAttr=${args.nameAttr}
       ariaLabelAttr=${ariaLabelAttr}
+      ?darkTheme=${args.darkTheme}
       language=${args.language}
       ?copyOptionVisible=${args.copyOptionVisible}
       copyButtonText=${args.copyButtonText}

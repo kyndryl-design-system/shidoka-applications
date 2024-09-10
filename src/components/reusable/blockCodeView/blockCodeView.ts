@@ -55,6 +55,10 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   copyButtonText = '';
 
+  /** Dark theme boolean to toggle theme between light/dark */
+  @property({ type: Boolean })
+  darkTheme = false;
+
   /** Auto-detect whether code snippet is single line (boolean) -- styled accordingly
    * @internal
    */
@@ -101,6 +105,7 @@ export class BlockCodeView extends LitElement {
           [`size--${this.size}`]: true,
           'single-line': this._isSingleLine,
           'multi-line': !this._isSingleLine,
+          [`dark-theme-${this.darkTheme}`]: true,
         })}"
       >
         <pre
@@ -162,6 +167,7 @@ export class BlockCodeView extends LitElement {
       Prism.languages[this.language] || Prism.languages.plaintext,
       this.language
     );
+
     this.requestUpdate();
   }
 

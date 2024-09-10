@@ -4,10 +4,80 @@
  * @author Rose Pritchard
  */
 
+.code_view__container {
+    &.dark-theme-true {
+
+        code[class*="language-"],
+        pre[class*="language-"] {
+            color: #ccc;
+            background-color: var(--kd-color-background-ui-strong);
+        }
+
+        :not(pre)>code[class*="language-"],
+        pre[class*="language-"] {
+            background-color: var(--kd-color-background-ui-strong);
+        }
+    }
+
+    &.dark-theme-false {
+
+        code[class*="language-"],
+        pre[class*="language-"] {
+            color: var(--kd-color-text-secondary);
+            background-color: var(--kd-color-background-ui-soft);
+        }
+
+        :not(pre)>code[class*="language-"],
+        pre[class*="language-"] {
+            background-color: var(--kd-color-background-ui-soft);
+        }
+
+        .token.punctuation {
+            color: var(--kd-color-text-secondary);
+        }
+
+        .token.selector,
+        .token.important,
+        .token.atrule,
+        .token.keyword,
+        .token.builtin {
+            color: var(--kd-color-text-destructive);
+        }
+
+        .token.boolean,
+        .token.number,
+        .token.function {
+            color: var(--kd-color-text-brand);
+        }
+
+        .token.string,
+        .token.char,
+        .token.attr-value,
+        .token.regex,
+        .token.variable {
+            color: var(--kd-color-text-primary-hover);
+        }
+
+
+        .token.tag,
+        .token.attr-name,
+        .token.namespace,
+        .token.deleted {
+            color: var(--kd-color-text-tertiary);
+        }
+
+        .token.property,
+        .token.class-name,
+        .token.constant,
+        .token.symbol {
+            color: var(--kd-color-text-link);
+        }
+    }
+}
+
+
 code[class*="language-"],
 pre[class*="language-"] {
-    color: #ccc;
-    background-color: var(--kd-color-background-ui-strong);
     font-family: monospace;
     font-size: 16px;
     text-align: left;
