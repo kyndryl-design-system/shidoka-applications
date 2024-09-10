@@ -71,6 +71,10 @@ export class Notification extends LitElement {
   @property({ type: String })
   assistiveSubtitleText = 'Notification subtitle';
 
+  /** Assistive text for timestamp (Required to support accessibility). */
+  @property({ type: String })
+  assistiveTimestampText = 'Duration';
+
   /** Set tagColor based on provided tagStatus.
    * @internal
    */
@@ -216,7 +220,7 @@ export class Notification extends LitElement {
             : null}
         </div>
         <div class="timestamp-wrapper">
-          <div aria-label="Duration" class="timestamp-text">${this.timeStamp}</div>
+          <div aria-label=${this.assistiveTimestampText} class="timestamp-text">${this.timeStamp}</div>
         </div>
       </div>
     </div>`;

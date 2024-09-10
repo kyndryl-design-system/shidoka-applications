@@ -43,6 +43,7 @@ export const Notification = {
     assistiveTitleText: "This is the notification title",
     assistiveSubtitleText: "This is the notification subtitle",
     timeStamp: '2 mins ago',
+    assistiveTimestampText: "Duration",
     href: '#',
     type: 'normal',
     tagStatus: 'default',
@@ -55,6 +56,7 @@ export const Notification = {
       assistiveTitleText=${args.assistiveTitleText}
       assistiveSubtitleText=${args.assistiveSubtitleText}
       timeStamp=${args.timeStamp}
+      assistiveTimestampText=${args.assistiveTimestampText}
       href=${args.href}
       type=${args.type}
       tagStatus=${args.tagStatus}
