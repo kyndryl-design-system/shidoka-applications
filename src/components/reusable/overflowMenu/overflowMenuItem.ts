@@ -36,7 +36,8 @@ export class OverflowMenuItem extends LitElement {
           class=${classMap(classes)}
           href=${this.href}
           ?disabled=${this.disabled}
-          @click=${(e: Event) => this.handleClick(e)}
+          @keydown=${(e: Event) => this.handleMenuItemInteraction(e)}
+          @pointerdown=${(e: Event) => this.handleMenuItemInteraction(e)}
         >
           <slot></slot>
         </a>
@@ -46,11 +47,25 @@ export class OverflowMenuItem extends LitElement {
         <button
           class=${classMap(classes)}
           ?disabled=${this.disabled}
-          @click=${(e: Event) => this.handleClick(e)}
+          @keydown=${(e: Event) => this.handleMenuItemInteraction(e)}
+          @pointerdown=${(e: Event) => this.handleMenuItemInteraction(e)}
         >
           <slot></slot>
         </button>
       `;
+    }
+  }
+
+  private handleMenuItemInteraction(e: any) {
+    const ENTER_KEY_CODE = 13;
+    const SPACE_KEY_CODE = 32;
+
+    if(e.type === 'keydown') {
+      if (e.keyCode === ENTER_KEY_CODE || e.keyCode === SPACE_KEY_CODE) {
+        this.handleClick(e);
+      }
+    } else {
+      this.handleClick(e);
     }
   }
 

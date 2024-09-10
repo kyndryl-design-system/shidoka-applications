@@ -150,14 +150,25 @@ export class OverflowMenu extends LitElement {
     }
   }
 
+  private handleEscapePress(e: any) {
+    const ESCAPE_KEY_CODE = 27;
+    if (e.keyCode === ESCAPE_KEY_CODE) {
+      this.open = false;
+      this._emitToggleEvent();
+      this._btnEl.focus();
+    }
+  }
+
   override connectedCallback() {
     super.connectedCallback();
 
     document.addEventListener('click', (e) => this.handleClickOut(e));
+    document.addEventListener('keydown', (e) => {this.handleEscapePress(e)});
   }
 
   override disconnectedCallback() {
     document.removeEventListener('click', (e) => this.handleClickOut(e));
+    document.removeEventListener('keydown', (e) => {this.handleEscapePress(e)});
 
     super.disconnectedCallback();
   }

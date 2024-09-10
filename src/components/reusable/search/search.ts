@@ -43,6 +43,10 @@ export class Search extends LitElement {
   @property({ type: Array })
   suggestions: Array<string> = [];
 
+  /** Expandable style search button description. */
+  @property({ type: String })
+  expandableSearchBtnDescription = 'Expandable search button';
+
   /** Input focused state.
    * @internal
    */
@@ -69,6 +73,7 @@ export class Search extends LitElement {
         <kd-button
           kind="secondary"
           size=${this._buttonSizeMap()}
+          description=${this.expandableSearchBtnDescription}
           ?disabled=${this.disabled}
           @on-click=${this._handleButtonClick}
         >
@@ -101,7 +106,9 @@ export class Search extends LitElement {
               html`
                 <div
                   class="suggestion"
-                  @click=${() => this._handleSuggestionClick(suggestion)}
+                  @click=${(e: any) => this._handleSuggestionClick(e, suggestion)}
+                  @mouseup=${() => this._handleSuggestionWithMouseUp(suggestion)}
+                  @mousedown=${(e: any) => this._handleSuggestionWithMouseDown(e)}
                 >
                   ${suggestion}
                 </div>
@@ -148,6 +155,7 @@ export class Search extends LitElement {
 
   private _handleInput(e: CustomEvent) {
     this.value = e.detail.value;
+    this._focused = true;
 
     const Detail: any = {
       value: e.detail.value,
@@ -163,8 +171,17 @@ export class Search extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private _handleSuggestionClick(suggestion: string) {
+  private _handleSuggestionClick(e: any, suggestion: string) {
+    if(e.type !== 'click') this.value = suggestion;
+  }
+
+  private _handleSuggestionWithMouseUp(suggestion: string) {
     this.value = suggestion;
+    this._focused = false;
+  }
+
+  private _handleSuggestionWithMouseDown(e: any) {
+    e.preventDefault();
   }
 
   private handleSearchKeydown(e: any) {

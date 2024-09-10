@@ -28,6 +28,7 @@ export const Search = {
     label: 'Search',
     size: 'md',
     suggestions: ['Strings', 'Matching', 'Value', 'Here'],
+    expandableSearchBtnDescription: 'This is an expandable search button',
   },
   render: (args) => {
     return html`
@@ -39,6 +40,7 @@ export const Search = {
         ?disabled=${args.disabled}
         size=${args.size}
         .suggestions=${args.suggestions}
+        expandableSearchBtnDescription=${args.expandableSearchBtnDescription}
         @on-input=${(e) => action(e.type)(e)}
       ></kyn-search>
     `;

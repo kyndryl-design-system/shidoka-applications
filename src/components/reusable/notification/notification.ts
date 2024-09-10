@@ -59,6 +59,18 @@ export class Notification extends LitElement {
     error: 'Error',
   };
 
+  /** Close button description */
+  @property({ type: String })
+  closeBtnDescription = 'Close button';
+
+  /** Assistive text for notification title (Required to support accessibility). */
+  @property({ type: String })
+  assistiveTitleText = 'Notification title';
+
+  /** Assistive text for notification subtitle (Required to support accessibility). */
+  @property({ type: String })
+  assistiveSubtitleText = 'Notification subtitle';
+
   /** Set tagColor based on provided tagStatus.
    * @internal
    */
@@ -148,15 +160,16 @@ export class Notification extends LitElement {
                 slot="icon"
                 fill=${notificationIconFillColor[this.tagStatus]}
                 .icon=${notificationIcon[this.tagStatus]}
+                iconDescription=${`${this.textStrings[this.tagStatus]} icon`}
               ></kd-icon>`
             : null}
 
-          <div class="notification-title">${this.notificationTitle}</div>
+          <div aria-label=${this.assistiveTitleText} class="notification-title">${this.notificationTitle}</div>
 
           ${this.notificationSubtitle !== '' &&
           (this.type === 'normal' || this.type === 'clickable')
             ? html`
-                <div class="notification-subtitle">
+                <div aria-label=${this.assistiveSubtitleText} class="notification-subtitle">
                   ${this.notificationSubtitle}
                 </div>
               `
@@ -170,7 +183,7 @@ export class Notification extends LitElement {
                 class="notification-toast-close-btn"
                 kind="tertiary"
                 size="small"
-                description="close-btn"
+                description="${this.closeBtnDescription}"
                 iconPosition="left"
                 @on-click="${() => this._handleClose()}"
               >
@@ -198,11 +211,12 @@ export class Notification extends LitElement {
                 label=${this.textStrings[this.tagStatus]}
                 tagColor=${this._tagColor[this.tagStatus]}
                 shade="dark"
+                ?isnotification=${true}
               ></kyn-tag>`
             : null}
         </div>
         <div class="timestamp-wrapper">
-          <div class="timestamp-text">${this.timeStamp}</div>
+          <div aria-label="Duration" class="timestamp-text">${this.timeStamp}</div>
         </div>
       </div>
     </div>`;
