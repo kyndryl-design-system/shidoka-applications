@@ -1013,8 +1013,8 @@ export class Dropdown extends FormMixin(LitElement) {
       if (this.open && !this.searchable) {
         // focus listbox if not searchable
         this.listboxEl.focus({ preventScroll: true });
-        // this.assistiveText =
-        //   'Selecting items. Use up and down arrow keys to navigate.';
+        this.assistiveText =
+          'Selecting items. Use up and down arrow keys to navigate.';
       }
 
       if (this.open) {
