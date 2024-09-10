@@ -14,29 +14,32 @@ import InlineCodeViewStyles from './inlineCodeView.scss';
 export class InlineCodeView extends LitElement {
   static override styles = InlineCodeViewStyles;
 
-  /** `aria-label` attribute value for accessibility purposes.*/
-  @property({ type: String })
+  /** `aria-label` attribute value for accessibility purposes. */
+  @property({ type: String, attribute: 'aria-label' })
   ariaLabelAttr = '';
 
   @query('slot')
   private slotElement!: HTMLSlotElement;
 
   override render() {
-    return html`<code
-      ><slot @slotchange=${this.handleSlotChange}></slot
-    ></code>`;
+    return html`
+      <code>
+        <slot @slotchange=${this.handleSlotChange}></slot>
+      </code>
+    `;
   }
 
   private handleSlotChange() {
     const slottedElements = this.slotElement.assignedElements();
     slottedElements.forEach((element) => {
-      if (element.tagName.toLowerCase() === 'code') {
+      if (element instanceof HTMLElement) {
         element.setAttribute('aria-label', this.ariaLabelAttr);
       }
     });
   }
 
-  override updated(changedProperties: Map<string, unknown>) {
+  protected override updated(changedProperties: Map<string, unknown>) {
+    super.updated(changedProperties);
     if (changedProperties.has('ariaLabelAttr')) {
       this.handleSlotChange();
     }

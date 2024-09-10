@@ -56,7 +56,7 @@ export class BlockCodeView extends LitElement {
   copyButtonText = '';
 
   /** Auto-detect whether code snippet is single line (boolean) -- styled accordingly
-   *  * @internal
+   * @internal
    */
   @state()
   private _isSingleLine = false;
@@ -135,7 +135,7 @@ export class BlockCodeView extends LitElement {
             </kd-button>`
           : null}
       </div>
-      <slot @slotchange=${this.handleCodeUpdate} style="display: none;"></slot>
+      <slot @slotchange=${this.handleSlotUpdate} style="display: none;"></slot>
     `;
   }
 
@@ -238,7 +238,7 @@ export class BlockCodeView extends LitElement {
       .trim();
   }
 
-  private handleCodeUpdate() {
+  private handleSlotUpdate() {
     if (!this.slotElement) return;
 
     const nodes = this.slotElement.assignedNodes();
