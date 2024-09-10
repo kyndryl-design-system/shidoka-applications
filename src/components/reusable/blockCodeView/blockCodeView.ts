@@ -205,7 +205,7 @@ export class BlockCodeView extends LitElement {
           new CustomEvent('on-custom-copy', {
             detail: {
               origEvent: e,
-              fullSnipet: this.formatExampleCode(this._codeContent),
+              fullSnippet: this.formatExampleCode(this._codeContent),
             },
           })
         );
