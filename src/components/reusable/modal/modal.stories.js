@@ -30,6 +30,7 @@ const args = {
   labelText: '',
   okText: 'OK',
   cancelText: 'Cancel',
+  closeText: 'Close',
   destructive: false,
   okDisabled: false,
   hideFooter: false,
@@ -50,6 +51,7 @@ export const Modal = {
         labelText=${args.labelText}
         okText=${args.okText}
         cancelText=${args.cancelText}
+        closeText=${args.closeText}
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
         ?hideFooter=${args.hideFooter}
@@ -74,6 +76,7 @@ export const ActionButtons = {
         labelText=${args.labelText}
         okText=${args.okText}
         cancelText=${args.cancelText}
+        closeText=${args.closeText}
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
         ?hideFooter=${args.hideFooter}
@@ -140,6 +143,7 @@ export const BeforeClose = {
         titleText=${args.titleText}
         labelText=${args.labelText}
         okText=${args.okText}
+        closeText=${args.closeText}
         cancelText=${args.cancelText}
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
@@ -173,6 +177,7 @@ export const WithForm = {
         labelText=${args.labelText}
         okText=${args.okText}
         cancelText=${args.cancelText}
+        closeText=${args.closeText}
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
         ?hideFooter=${args.hideFooter}
