@@ -56,12 +56,6 @@ export class Tag extends LitElement {
   @property({ type: String })
   tagColor = 'spruce';
 
-  /**
-   * Determines if the tag is used in the notification component.
-   */
-  @property({ type: Boolean })
-  isNotification = false;
-
   override render() {
     const baseColorClass = `tag-${this.tagColor}`;
     const shadeClass = this.shade === 'dark' ? '-dark' : '';
@@ -99,7 +93,6 @@ export class Tag extends LitElement {
         tagColor=${this.tagColor}
         shade=${this.shade}
         title="${this.label}"
-        aria-label="${this.isNotification ? `Status ${this.label}` : ''}"
       >
         <span class="${classMap(labelClasses)}">${this.label}</span>
         ${this.filter

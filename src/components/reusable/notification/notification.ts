@@ -63,14 +63,6 @@ export class Notification extends LitElement {
   @property({ type: String })
   closeBtnDescription = '';
 
-  /** Assistive text for notification title (Required to support accessibility). */
-  @property({ type: String })
-  assistiveTitleText = '';
-
-  /** Assistive text for notification subtitle (Required to support accessibility). */
-  @property({ type: String })
-  assistiveSubtitleText = '';
-
   /** Assistive text for timestamp (Required to support accessibility). */
   @property({ type: String })
   assistiveTimestampText = '';
@@ -170,16 +162,17 @@ export class Notification extends LitElement {
                 slot="icon"
                 fill=${notificationIconFillColor[this.tagStatus]}
                 .icon=${notificationIcon[this.tagStatus]}
-                iconDescription=${`${this.textStrings[this.tagStatus]} icon`}
+                role="img"
+                aria-label=${`${this.textStrings[this.tagStatus]} icon`}
               ></kd-icon>`
             : null}
 
-          <div aria-label=${this.assistiveTitleText} class="notification-title">${this.notificationTitle}</div>
+          <div class="notification-title">${this.notificationTitle}</div>
 
           ${this.notificationSubtitle !== '' &&
           (this.type === 'normal' || this.type === 'clickable')
             ? html`
-                <div aria-label=${this.assistiveSubtitleText} class="notification-subtitle">
+                <div class="notification-subtitle">
                   ${this.notificationSubtitle}
                 </div>
               `
@@ -201,6 +194,8 @@ export class Notification extends LitElement {
                   slot="icon"
                   fill="#3D3C3C"
                   .icon=${closeIcon}
+                  role="img"
+                  aria-label="Close icon"
                 ></kd-icon>
               </kd-button>`
             : null}
@@ -221,7 +216,7 @@ export class Notification extends LitElement {
                 label=${this.textStrings[this.tagStatus]}
                 tagColor=${this._tagColor[this.tagStatus]}
                 shade="dark"
-                ?isnotification=${true}
+                aria-label="Status"
               ></kyn-tag>`
             : null}
         </div>
