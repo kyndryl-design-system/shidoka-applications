@@ -1,3 +1,10 @@
+## [1.34.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.6...v1.34.7) (2024-09-11)
+
+
+### Bug Fixes
+
+* **textarea:** accessibility enhancements ([#233](https://github.com/kyndryl-design-system/shidoka-applications/issues/233)) ([3595bbe](https://github.com/kyndryl-design-system/shidoka-applications/commit/3595bbef409bde9d77a8a35eddaf59e901a43826))
+
 ## [1.34.6](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.5...v1.34.6) (2024-09-10)
 
 
