@@ -376,6 +376,7 @@ export class Dropdown extends FormMixin(LitElement) {
                     <kyn-tag
                       label=${tag.text}
                       ?disabled=${this.disabled}
+                      clearTagText="Clear Tag ${tag.text}"
                       @on-close=${() => this.handleTagClear(tag.value)}
                     ></kyn-tag>
                   `;
