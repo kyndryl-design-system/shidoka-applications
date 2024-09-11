@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
@@ -128,10 +129,10 @@ export class Notification extends LitElement {
             @on-card-click=${(e: any) => this._handleCardClick(e)}
             hideBorder
             cardRole="alertdialog"
-            cardDescription=${this.assistiveNotificationTypeText}
+            cardDescription=${ifDefined(this.assistiveNotificationTypeText)}
             >${this.renderInnerUI()}</kd-card
           >`
-        : html`<kd-card type=${this.type} cardRole="alertdialog" cardDescription=${this.assistiveNotificationTypeText} class="${classMap(cardBgClasses)}"
+        : html`<kd-card type=${this.type} cardRole="alertdialog" cardDescription=${ifDefined(this.assistiveNotificationTypeText)} class="${classMap(cardBgClasses)}"
             >${this.renderInnerUI()}</kd-card
           >`}
     `;
@@ -186,7 +187,7 @@ export class Notification extends LitElement {
                 class="notification-toast-close-btn"
                 kind="tertiary"
                 size="small"
-                description="${this.closeBtnDescription}"
+                description="${ifDefined(this.closeBtnDescription)}"
                 iconPosition="left"
                 @on-click="${() => this._handleClose()}"
               >
@@ -221,7 +222,7 @@ export class Notification extends LitElement {
             : null}
         </div>
         <div class="timestamp-wrapper">
-          <div aria-label=${this.assistiveTimestampText} class="timestamp-text">${this.timeStamp}</div>
+          <div aria-label=${ifDefined(this.assistiveTimestampText)} class="timestamp-text">${this.timeStamp}</div>
         </div>
       </div>
     </div>`;

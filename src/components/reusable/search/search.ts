@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import Styles from './search.scss';
 import '../textInput';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
@@ -43,9 +44,9 @@ export class Search extends LitElement {
   @property({ type: Array })
   suggestions: Array<string> = [];
 
-  /** Expandable style search button description. */
+  /** Expandable style search button description (Required to support accessibility). */
   @property({ type: String })
-  expandableSearchBtnDescription = 'Expandable search button';
+  expandableSearchBtnDescription = '';
 
   /** Input focused state.
    * @internal
@@ -73,7 +74,7 @@ export class Search extends LitElement {
         <kd-button
           kind="secondary"
           size=${this._buttonSizeMap()}
-          description=${this.expandableSearchBtnDescription}
+          description=${ifDefined(this.expandableSearchBtnDescription)}
           ?disabled=${this.disabled}
           @on-click=${this._handleButtonClick}
         >

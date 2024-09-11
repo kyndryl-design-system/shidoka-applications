@@ -28,7 +28,7 @@ export const Search = {
     label: 'Search',
     size: 'md',
     suggestions: ['Strings', 'Matching', 'Value', 'Here'],
-    expandableSearchBtnDescription: 'This is an expandable search button',
+    expandableSearchBtnDescription: 'Expandable search button',
   },
   render: (args) => {
     return html`
