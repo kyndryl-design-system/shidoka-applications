@@ -227,19 +227,34 @@ export class BlockCodeView extends LitElement {
     this.checkOverflow();
   }
 
-  detectLanguage(code: string, languagesToCheck?: string[]): string {
-    const languages =
-      languagesToCheck ||
-      Object.keys(Prism.languages).filter(
-        (lang) => typeof Prism.languages[lang] === 'object'
-      );
+  detectLanguage(code: string): string {
+    if (!code.trim()) {
+      return 'plaintext';
+    }
+
+    const languages = [
+      'markup',
+      'html',
+      'xml',
+      'svg',
+      'mathml',
+      'css',
+      'javascript',
+      'typescript',
+      'python',
+      'java',
+      'c',
+      'cpp',
+    ];
 
     let bestMatch: LanguageMatch = { language: 'plaintext', relevance: 0 };
 
     for (const lang of languages) {
       if (Prism.languages[lang]) {
         const tokens = Prism.tokenize(code, Prism.languages[lang]);
-        const relevance = this.processTokens(tokens);
+        const relevance = this.calculateRelevance(tokens, lang);
+
+        console.log(`Language: ${lang}, Relevance: ${relevance}`);
 
         if (relevance > bestMatch.relevance) {
           bestMatch = { language: lang, relevance };
@@ -247,20 +262,81 @@ export class BlockCodeView extends LitElement {
       }
     }
 
+    if (bestMatch.language === 'markup') {
+      bestMatch.language = this.determineMarkupLanguage(code);
+    }
+
     return bestMatch.language;
   }
 
-  private processTokens(tokens: (string | Prism.Token)[]): number {
+  private calculateRelevance(
+    tokens: (string | Prism.Token)[],
+    language: string
+  ): number {
     let relevance = 0;
     for (const token of tokens) {
       if (typeof token !== 'string') {
-        relevance += 1;
-        if (token.alias) {
-          relevance += Array.isArray(token.alias) ? token.alias.length : 1;
-        }
+        relevance += this.getTokenRelevance(token, language);
       }
     }
     return relevance;
+  }
+
+  private getTokenRelevance(token: Prism.Token, language: string): number {
+    let relevance = 1;
+    if (token.alias) {
+      relevance += Array.isArray(token.alias) ? token.alias.length : 1;
+    }
+    if (this.isLanguageSpecificToken(token, language)) {
+      relevance += 2;
+    }
+    if (token.content) {
+      if (Array.isArray(token.content)) {
+        relevance += token.content.reduce(
+          (acc, t) =>
+            acc +
+            (typeof t === 'string' ? 0 : this.getTokenRelevance(t, language)),
+          0
+        );
+      } else if (typeof token.content !== 'string') {
+        relevance += this.getTokenRelevance(token.content, language);
+      }
+    }
+    return relevance;
+  }
+
+  private isLanguageSpecificToken(
+    token: Prism.Token,
+    language: string
+  ): boolean {
+    const languageSpecificTokens: { [key: string]: string[] } = {
+      markup: ['<', '>', '/', 'div', 'span', 'class', 'id'],
+      html: ['<', '>', '/', 'div', 'span', 'class', 'id'],
+      css: ['{', '}', ':', ';', '#', '.'],
+      javascript: ['function', 'const', 'let', 'var', '=>'],
+      typescript: ['interface', 'type', ':', 'as'],
+      python: ['def', 'import', 'from', 'class'],
+      java: ['public', 'private', 'class', 'void'],
+    };
+
+    const specificTokens = languageSpecificTokens[language] || [];
+    return specificTokens.some((t) => token.content.toString().includes(t));
+  }
+
+  private determineMarkupLanguage(code: string): string {
+    if (/<\/?[a-z][\s\S]*>/i.test(code)) {
+      return 'html';
+    }
+    if (/<\?xml/i.test(code)) {
+      return 'xml';
+    }
+    if (/<svg/i.test(code)) {
+      return 'svg';
+    }
+    if (/<math/i.test(code)) {
+      return 'mathml';
+    }
+    return 'markup';
   }
 
   private checkOverflow() {

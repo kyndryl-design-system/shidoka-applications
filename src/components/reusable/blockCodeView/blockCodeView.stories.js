@@ -123,7 +123,7 @@ export default {
 
 const args = {
   codeSnippet: defaultTemplateCodes.DEFAULT,
-  language: 'javascript',
+  language: '',
   size: 'md',
   darkTheme: true,
   codeViewLabel: 'Block Code View',
@@ -167,7 +167,7 @@ export const SingleLineView = Template.bind({});
 SingleLineView.args = {
   ...args,
   codeSnippet: defaultTemplateCodes.SINGLE_LINE,
-  language: 'javascript',
+  language: '',
   codeViewLabel: 'Single Line Code Snippet',
   copyOptionVisible: true,
   copyButtonText: '',
@@ -177,7 +177,7 @@ export const JavascriptExample = Template.bind({});
 JavascriptExample.args = {
   ...args,
   codeSnippet: defaultTemplateCodes.JAVASCRIPT,
-  language: 'javascript',
+  language: '',
   codeViewLabel: 'Javascript Code Snippet',
   copyOptionVisible: true,
   codeViewExpandable: true,
@@ -188,7 +188,7 @@ export const HTMLExample = Template.bind({});
 HTMLExample.args = {
   ...args,
   codeSnippet: defaultTemplateCodes.HTML,
-  language: 'html',
+  language: '',
   codeViewLabel: 'HTML Code Snippet',
   copyOptionVisible: true,
   copyButtonText: '',
@@ -198,7 +198,7 @@ export const CSSExample = Template.bind({});
 CSSExample.args = {
   ...args,
   codeSnippet: defaultTemplateCodes.CSS,
-  language: 'css',
+  language: '',
   codeViewLabel: 'CSS Code Snippet',
   copyOptionVisible: true,
   copyButtonText: 'Copy',
@@ -209,7 +209,7 @@ SwiftExample.args = {
   ...args,
   codeSnippet: defaultTemplateCodes.SWIFT,
   language: 'swift',
-  codeViewLabel: 'Swift Code Snippet (not expressly supported)',
+  codeViewLabel: 'Swift Code Snippet (manually passed language name)',
   copyOptionVisible: true,
   copyButtonText: '',
 };
