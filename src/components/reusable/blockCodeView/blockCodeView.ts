@@ -2,11 +2,13 @@ import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import Prism from 'prismjs';
 
 import copyIcon from '@carbon/icons/es/copy/20';
 import checkmarkIcon from '@carbon/icons/es/checkmark--outline/20';
+import chevronDown from '@carbon/icons/es/chevron--down/20';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
@@ -31,50 +33,69 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   codeSnippet = '';
 
+  /** Code snippet language (ex: `javascript`, `css`, `markdown`, `xml`). */
+  @property({ type: String })
+  language = '';
+
   /** Code snippet size: `auto`, `sm`, `md`, or `lg`. */
   @property({ type: String })
   size = 'md';
 
-  /** Code language (ex: `javascript`, `css`, `markdown`, `xml`). */
-  @property({ type: String })
-  language = '';
-
-  /** `aria-label` attribute value for accessibility purposes.*/
-  @property({ type: String })
-  ariaLabelAttr = '';
-
-  /** Optional label value to be displayed above code snippet. */
-  @property({ type: String })
-  codeViewLabel = '';
-
-  /** Optional title attr value. */
-  @property({ type: String })
-  copyButtonTitleAttr = '';
-
-  /** Optional description attr value. */
-  @property({ type: String })
-  copyButtonDescriptionAttr = '';
-
-  /** Copy code option available */
-  @property({ type: Boolean })
-  copyOptionVisible = false;
-
-  /** Copy button text (optional) */
-  @property({ type: String })
-  copyButtonText = '';
-
-  /** Optional dark theme boolean to toggle theme between light/dark */
+  /** Dark theme boolean to display theming differences -- light/dark background and contrasting text -- (TEMPORARY: until global dark mode is available) */
   @property({ type: Boolean })
   darkTheme = false;
 
-  @state()
-  commandLineLangs = ['bash', 'shell', 'powershell'];
+  /** Optionally display label value above code snippet. */
+  @property({ type: String })
+  codeViewLabel = '';
 
-  /** Auto-detect whether code snippet is single line (boolean) -- styled accordingly
+  /** Optionally display copy code button. */
+  @property({ type: Boolean })
+  copyOptionVisible = false;
+
+  /** Optionally display button to expand code snippet container. */
+  @property({ type: Boolean })
+  codeViewExpandable = false;
+
+  /** Set copy code button text (optional). */
+  @property({ type: String })
+  copyButtonText = '';
+
+  /** Component `aria-label` attribute value for accessibility purposes.*/
+  @property({ type: String })
+  ariaLabelAttr = '';
+
+  /** Copy button description attr value. */
+  @property({ type: String })
+  copyButtonDescriptionAttr = '';
+
+  /** Copy button title attr value. */
+  @property({ type: String })
+  copyButtonTitleAttr = '';
+
+  /** Array to detect pre-defined command line languages for custom styling.
+   * @internal
+   */
+  @state()
+  private _commandLineLangs = ['bash', 'shell', 'powershell'];
+
+  /** Auto-detect whether code snippet is single line (boolean) -- styled accordingly (boolean).
    * @internal
    */
   @state()
   private _isSingleLine = false;
+
+  /** Auto-detect whether code snippet exceeds the max-height allowance (boolean).
+   * @internal
+   */
+  @state()
+  private hasOverflow = false;
+
+  /** Value indicating whether overflow code sample is expanded (boolean).
+   * @internal
+   */
+  @state()
+  private codeExpanded = false;
 
   /** Formatted code (prism.js) to be displayed.
    * @internal
@@ -85,7 +106,8 @@ export class BlockCodeView extends LitElement {
   /** Copy key-values to communicate copy button styling and state.
    * @internal
    */
-  @state() private _copyState = { copied: false, text: '' };
+  @state()
+  private _copyState = { copied: false, text: '' };
 
   override render() {
     return html`
@@ -95,22 +117,24 @@ export class BlockCodeView extends LitElement {
           </div>`
         : null}
       <div
-        aria-label=${this.ariaLabelAttr}
+        aria-label=${ifDefined(this.ariaLabelAttr)}
         class="${classMap({
-          code_view__container: true,
+          'code-view__container': true,
           [`size--${this.size}`]: true,
           'single-line': this._isSingleLine,
           'multi-line': !this._isSingleLine,
           'shidoka-dark-syntax-theme': this.darkTheme,
           'shidoka-light-syntax-theme': !this.darkTheme,
+          'expanded-code-view': this.codeExpanded,
+          'has-overflow': this.hasOverflow,
         })}"
       >
         <pre
           @keydown=${this.handleKeypress}
           role="region"
-          class=${this.commandLineLangs.includes(this.language)
-            ? `command-line`
-            : ''}
+          class="${classMap({
+            'command-line': this._commandLineLangs.includes(this.language),
+          })}"
         ><code tabindex="0" class="language-${this.language}">${unsafeHTML(
           this._highlightedCode
         )}</code></pre>
@@ -122,9 +146,9 @@ export class BlockCodeView extends LitElement {
               size="small"
               iconPosition="left"
               ?disabled=${this._copyState.copied}
-              title=${this.copyButtonTitleAttr}
-              name=${this.copyButtonDescriptionAttr}
-              description=${this.copyButtonDescriptionAttr}
+              title=${ifDefined(this.copyButtonTitleAttr)}
+              name=${ifDefined(this.copyButtonDescriptionAttr)}
+              description=${ifDefined(this.copyButtonDescriptionAttr)}
               @click=${this.copyCode}
             >
               <kd-icon
@@ -135,6 +159,26 @@ export class BlockCodeView extends LitElement {
               ${this._copyState.text
                 ? html`<span class="copy-text">${this._copyState.text}</span>`
                 : null}
+            </kd-button>`
+          : null}
+        ${this.codeViewExpandable && this.hasOverflow
+          ? html`<kd-button
+              class="code-view__expand-button"
+              kind="primary-web"
+              size="small"
+              iconPosition="left"
+              title="Expand/Collapse code snippet"
+              name="toggle-code-expanded"
+              description="Click to ${this.codeExpanded
+                ? 'collapse'
+                : 'expand'} the full code snippet"
+              @click=${this.expandCodeView}
+            >
+              <kd-icon
+                slot="icon"
+                class="expand-icon"
+                .icon=${chevronDown}
+              ></kd-icon>
             </kd-button>`
           : null}
       </div>
@@ -150,6 +194,7 @@ export class BlockCodeView extends LitElement {
     }
     if (changedProperties.has('copyButtonText')) {
       this._copyState = { ...this._copyState, text: this.copyButtonText };
+      this.checkOverflow();
     }
   }
 
@@ -166,6 +211,23 @@ export class BlockCodeView extends LitElement {
       Prism.languages[this.language] || Prism.languages.plaintext,
       this.language
     );
+  }
+
+  private checkOverflow() {
+    requestAnimationFrame(() => {
+      const container = this.shadowRoot?.querySelector(
+        '.code-view__container'
+      ) as HTMLElement;
+      const pre = container.querySelector('pre') as HTMLElement;
+      if (pre && container) {
+        this.hasOverflow = pre.scrollHeight > container.clientHeight;
+      }
+    });
+  }
+
+  private expandCodeView() {
+    this.codeExpanded = !this.codeExpanded;
+    this.requestUpdate();
   }
 
   // detect single vs multi-line block code snippet for custom default styling

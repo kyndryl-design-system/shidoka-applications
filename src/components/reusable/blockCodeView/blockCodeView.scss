@@ -1,90 +1,39 @@
 @use '../../../common/scss/global.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
+$transition-duration: 0.3s;
+$border-radius: 4px;
+
 :host {
     display: block;
     font-family: var(--kd-font-family);
-}
-
-:host(kyn-block-code-view) {
     position: relative;
     margin-bottom: 0;
 }
 
-::slotted([slot="inline-example"]) {
-    display: inline;
-    margin-right: 4px;
-    vertical-align: baseline;
-}
+.code-view {
+    &__label {
+        margin-bottom: var(--kd-spacing-12);
 
-.code-container {
-    position: relative;
-    overflow: hidden;
-}
-
-.code_view__container {
-    &.dark-theme-true {
-        background-color: var(--kd-color-background-ui-strong);
-
-        pre,
-        code {
-            background-color: var(--kd-color-background-ui-strong);
+        label {
+            @include typography.type-ui-02;
+            color: var(--kd-color-text-secondary);
+            font-weight: bold;
         }
     }
 
-    &.dark-theme-false {
-        background-color: var(--kd-color-background-ui-soft);
-
-        pre,
-        code {
-            background-color: var(--kd-color-background-ui-soft);
-        }
-    }
-}
-
-.code-view__label {
-    margin-bottom: var(--kd-spacing-12);
-
-    label {
-        @include typography.type-ui-02;
-        color: var(--kd-color-text-secondary);
-        font-weight: bold;
-    }
-}
-
-.code_view__container {
-    position: relative;
-    overflow: hidden;
-    border-radius: 4px;
-
-    pre {
-        padding: 0px 16px;
-        tab-size: 4;
-        white-space: pre;
-        min-width: 350px;
-        margin: 0;
-        overflow-x: auto;
-        white-space: pre;
-        tab-size: 2;
-
-        code {
-            display: block;
-            padding: 10px;
-            white-space: inherit;
-            font-family: monospace;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-    }
-
-    .code-view__copy-button {
+    &__copy-button,
+    &__expand-button {
         position: absolute;
-        bottom: 0;
+        z-index: 1;
+        cursor: pointer;
+    }
+
+    &__copy-button {
+        top: 0;
         right: 0;
         width: auto;
         padding: 10px 8px;
-        z-index: 1;
-        cursor: pointer;
 
         .copy-text {
             margin-left: 4px;
@@ -105,103 +54,123 @@
         }
     }
 
-    &.single-line {
-        max-width: 1082px;
-        width: 95%;
-
-        pre {
-            padding: 1px 16px;
-            display: flex;
-            align-items: center;
-            line-height: 1.5;
-            min-height: 40px;
-            width: 100%;
-
-            code {
-                overflow-x: auto;
-                padding-left: 0;
-                padding-right: 50px;
-            }
-        }
-
-        .code-view__copy-button {
-            top: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 6px;
-            border-top-right-radius: 2px;
-            border-bottom-right-radius: 2px;
-        }
-
-        &.size--sm {
-            width: fit-content;
-            max-width: 650px;
-
-            pre code {
-                font-size: 12px;
-            }
-        }
-
-        &.size--md {
-            width: fit-content;
-            max-width: 650px;
-        }
-
-        &.size--lg {
-            max-width: 991px;
-        }
+    &__expand-button {
+        bottom: 12px;
+        right: 13px;
+        transition: transform $transition-duration ease-in-out;
     }
 
-    &.multi-line {
-        padding: 3px 0 6px;
+    &__container {
+        position: relative;
+        overflow: hidden;
+        border-radius: $border-radius;
 
-        .code-view__copy-button {
-            bottom: 0;
-            right: 1px;
-        }
+        pre {
+            padding: 0 16px;
+            tab-size: 2;
+            white-space: pre;
+            min-width: 350px;
+            margin: 0;
+            overflow-x: auto;
 
-        &.size--auto {
-            max-width: 95%;
-
-            pre {
-                max-height: 90vh;
+            code {
+                display: block;
+                padding: 10px;
+                white-space: inherit;
+                font-family: monospace;
+                font-size: 14px;
+                line-height: 1.5;
             }
         }
 
-        &.size--sm {
-            max-width: 480px;
+        &.single-line {
+            max-width: 1082px;
+            width: 95%;
 
             pre {
-                max-height: 240px;
+                padding: 1px 16px;
+                display: flex;
+                align-items: center;
+                line-height: 1.5;
+                min-height: 40px;
+                width: 100%;
 
                 code {
-                    font-size: 12px;
+                    overflow-x: auto;
+                    padding: 0 50px 0 0;
                 }
             }
-        }
 
-        &.size--md {
-            max-width: 560px;
+            &.size--sm,
+            &.size--md {
+                width: fit-content;
+                max-width: 650px;
+            }
 
-            pre {
-                max-height: 320px;
+            &.size--sm pre code {
+                font-size: 12px;
+            }
+
+            &.size--lg {
+                max-width: 991px;
+            }
+
+            .code-view__copy-button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 6px;
+                border-top-right-radius: $border-radius;
+                border-bottom-right-radius: $border-radius;
             }
         }
 
-        &.size--lg {
-            max-width: 640px;
+        &.multi-line {
+            padding: 3px 0 6px;
 
             pre {
-                max-height: 400px;
+                transition: max-height $transition-duration ease-in-out;
+                overflow-y: auto;
             }
+
+            @mixin size-variant($max-width, $max-height) {
+                max-width: $max-width;
+
+                pre {
+                    max-height: $max-height;
+                }
+            }
+
+            &.size--auto {
+                @include size-variant(95%, 90vh);
+            }
+
+            &.size--sm {
+                @include size-variant(480px, 240px);
+            }
+
+            &.size--md {
+                @include size-variant(560px, 320px);
+            }
+
+            &.size--lg {
+                @include size-variant(640px, 400px);
+            }
+
+            &.expanded-code-view pre {
+                max-height: 2000px;
+            }
+        }
+
+        &.expanded-code-view .code-view__expand-button {
+            transform: rotate(180deg);
         }
     }
 }
 
 .command-line>code.language-bash:before {
     content: '$';
-    opacity: .7;
+    opacity: 0.7;
     display: inline-block;
     padding-right: 15px;
 }
