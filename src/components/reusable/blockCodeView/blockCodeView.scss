@@ -17,6 +17,11 @@
     vertical-align: baseline;
 }
 
+.code-container {
+    position: relative;
+    overflow: hidden;
+}
+
 .code_view__container {
     &.dark-theme-true {
         background-color: var(--kd-color-background-ui-strong);
@@ -115,7 +120,7 @@
             code {
                 overflow-x: auto;
                 padding-left: 0;
-                padding-right: 40px;
+                padding-right: 50px;
             }
         }
 
@@ -131,6 +136,7 @@
 
         &.size--sm {
             width: fit-content;
+            max-width: 650px;
 
             pre code {
                 font-size: 12px;
@@ -138,6 +144,7 @@
         }
 
         &.size--md {
+            width: fit-content;
             max-width: 650px;
         }
 
@@ -190,6 +197,13 @@
             }
         }
     }
+}
+
+.command-line>code.language-bash:before {
+    content: '$';
+    opacity: .7;
+    display: inline-block;
+    padding-right: 15px;
 }
 
 @keyframes fadeIn {

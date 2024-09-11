@@ -10,6 +10,8 @@ const defaultTemplateCodes = {
       console.log(\`Hello, \${name}!\`);
     }
 
+    /* NOTE: Comment here */ 
+
     greetUser('World');
   `,
   SINGLE_LINE: `console.log("Hello, World!");`,
@@ -82,6 +84,7 @@ const defaultTemplateCodes = {
       border: 1px solid white;
     }
   `,
+  BASH: `npm install @kyndryl-design-system/shidoka-applications @kyndryl-design-system/shidoka-foundation -S`,
 };
 
 export default {
@@ -186,4 +189,14 @@ CSSExample.args = {
   copyOptionVisible: true,
   copyButtonText: 'Copy',
   codeSnippet: defaultTemplateCodes.CSS,
+};
+
+export const BashExample = Template.bind({});
+BashExample.args = {
+  ...args,
+  codeViewLabel: 'Bash Code Snippet',
+  language: 'bash',
+  copyOptionVisible: true,
+  copyButtonText: '',
+  codeSnippet: defaultTemplateCodes.BASH,
 };

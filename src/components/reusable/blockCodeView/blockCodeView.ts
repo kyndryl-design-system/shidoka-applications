@@ -67,6 +67,9 @@ export class BlockCodeView extends LitElement {
   @property({ type: Boolean })
   darkTheme = false;
 
+  @state()
+  commandLineLangs = ['bash', 'shell', 'powershell'];
+
   /** Auto-detect whether code snippet is single line (boolean) -- styled accordingly
    * @internal
    */
@@ -103,10 +106,12 @@ export class BlockCodeView extends LitElement {
         })}"
       >
         <pre
-          tabindex="0"
-          @keydown="${this.handleKeyDown}"
+          @keydown=${this.handleKeypress}
           role="region"
-        ><code class="language-${this.language}">${unsafeHTML(
+          class=${this.commandLineLangs.includes(this.language)
+            ? `command-line`
+            : ''}
+        ><code tabindex="0" class="language-${this.language}">${unsafeHTML(
           this._highlightedCode
         )}</code></pre>
 
@@ -151,12 +156,16 @@ export class BlockCodeView extends LitElement {
   private processCodeSnippet() {
     const processedCode = this.removeLeadingWhitespace(this.codeSnippet);
     this._isSingleLine = this.isSingleLineCode(processedCode);
-    this._highlightedCode = Prism.highlight(
-      processedCode,
+    this._highlightedCode = this.highlightCode(processedCode);
+    this.requestUpdate();
+  }
+
+  private highlightCode(code: string): string {
+    return Prism.highlight(
+      code,
       Prism.languages[this.language] || Prism.languages.plaintext,
       this.language
     );
-    this.requestUpdate();
   }
 
   // detect single vs multi-line block code snippet for custom default styling
@@ -174,37 +183,56 @@ export class BlockCodeView extends LitElement {
     const originalText = this._copyState.text;
     navigator.clipboard
       .writeText(this.codeSnippet)
-      .then(() => {
-        this._copyState = {
-          copied: true,
-          text: originalText.length > 1 ? 'Copied!' : '',
-        };
-        this.requestUpdate();
-        this.dispatchEvent(
-          new CustomEvent('on-custom-copy', {
-            detail: {
-              origEvent: e,
-              fullSnippet: this.formatExampleCode(this.codeSnippet),
-            },
-          })
-        );
-        setTimeout(() => {
-          this._copyState = { copied: false, text: originalText };
-          this.requestUpdate();
-        }, 3000);
-      })
+      .then(() => this.handleSuccessfulCopy(e, originalText))
       .catch((err) => console.error('Failed to copy code:', err));
   }
 
-  // accessibility -- detection on scrollable code blocks
-  private handleKeyDown(e: KeyboardEvent) {
+  private handleSuccessfulCopy(e: Event, originalText: string) {
+    this._copyState = {
+      copied: true,
+      text: originalText.length > 1 ? 'Copied!' : '',
+    };
+    this.requestUpdate();
+    this.dispatchCopyEvent(e);
+    this.resetCopyStateAfterDelay(originalText);
+  }
+
+  private dispatchCopyEvent(e: Event) {
+    this.dispatchEvent(
+      new CustomEvent('on-custom-copy', {
+        detail: {
+          origEvent: e,
+          fullSnippet: this.formatExampleCode(this.codeSnippet),
+        },
+      })
+    );
+  }
+
+  private resetCopyStateAfterDelay(originalText: string) {
+    setTimeout(() => {
+      this._copyState = { copied: false, text: originalText };
+      this.requestUpdate();
+    }, 3000);
+  }
+
+  // accessibility -- handling for scrollable code blocks
+  private handleKeypress(e: KeyboardEvent) {
     const pre = e.currentTarget as HTMLPreElement;
-    if (e.key === 'ArrowDown') {
-      pre.scrollTop += 10;
-      e.preventDefault();
-    } else if (e.key === 'ArrowUp') {
-      pre.scrollTop -= 10;
-      e.preventDefault();
+    const scrollAmount = 40;
+
+    const isVerticallyScrollable = pre.scrollHeight > pre.clientHeight;
+    const isHorizontallyScrollable = pre.scrollWidth > pre.clientWidth;
+
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      if (isVerticallyScrollable) {
+        pre.scrollTop += e.key === 'ArrowDown' ? scrollAmount : -scrollAmount;
+        e.preventDefault();
+      }
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      if (isHorizontallyScrollable) {
+        pre.scrollLeft += e.key === 'ArrowRight' ? scrollAmount : -scrollAmount;
+        e.preventDefault();
+      }
     }
   }
 
@@ -212,15 +240,19 @@ export class BlockCodeView extends LitElement {
   private removeLeadingWhitespace(code: string): string {
     if (!code) return '';
     const lines = code.split('\n');
-    const minIndent = lines.reduce((min, line) => {
-      const match = line.match(/^[ \t]*/);
-      const indent = match ? match[0].length : 0;
-      return line.trim().length ? Math.min(min, indent) : min;
-    }, Infinity);
+    const minIndent = this.findMinimumIndent(lines);
     return lines
       .map((line) => line.slice(minIndent))
       .join('\n')
       .trim();
+  }
+
+  private findMinimumIndent(lines: string[]): number {
+    return lines.reduce((min, line) => {
+      const match = line.match(/^[ \t]*/);
+      const indent = match ? match[0].length : 0;
+      return line.trim().length ? Math.min(min, indent) : min;
+    }, Infinity);
   }
 }
 
