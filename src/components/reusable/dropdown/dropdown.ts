@@ -13,7 +13,7 @@ import '../tag';
 import { FormMixin } from '../../../common/mixins/form-input';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import downIcon from '@carbon/icons/es/chevron--down/24';
-import errorIcon from '@carbon/icons/es/warning--filled/24';
+import errorIcon from '@carbon/icons/es/warning--filled/16';
 import clearIcon from '@carbon/icons/es/close/24';
 import clearIcon16 from '@carbon/icons/es/close/16';
 import { deepmerge } from 'deepmerge-ts';
@@ -198,6 +198,11 @@ export class Dropdown extends FormMixin(LitElement) {
    * @internal
    */
   searchTextEntered: any = false;
+
+  /** Toggles on clicking enter key in the search input.
+   * @internal
+   */
+  prevSearchKeydownIndex = -1;
 
   override render() {
     return html`
@@ -386,6 +391,7 @@ export class Dropdown extends FormMixin(LitElement) {
               <div class="error">
                 <kd-icon
                   class="error-info-icon"
+                  title=${this._textStrings.error}
                   aria-label=${this._textStrings.error}
                   .icon=${errorIcon}
                 ></kd-icon>
@@ -514,6 +520,7 @@ export class Dropdown extends FormMixin(LitElement) {
       e.preventDefault();
     }
 
+    const isListboxElOpened = this.open;
     // open the listbox
     if (target === 'button') {
       let openDropdown =
@@ -528,11 +535,11 @@ export class Dropdown extends FormMixin(LitElement) {
         visibleOptions[highlightedIndex].selected =
           !visibleOptions[highlightedIndex].selected;
         highlightedIndex = 0;
+        if (keyCode !== ENTER_KEY_CODE) return;
       }
 
       if (openDropdown) {
         this.open = true;
-        visibleOptions[highlightedIndex].highlighted = true;
 
         // scroll to highlighted option
         if (!this.multiple && this.value !== '') {
@@ -545,16 +552,28 @@ export class Dropdown extends FormMixin(LitElement) {
       case 32:
       case ENTER_KEY_CODE: {
         // select highlighted option
-        this.updateValue(
-          visibleOptions[highlightedIndex].value,
-          !visibleOptions[highlightedIndex].selected
-        );
-        if (this.multiple) {
-          visibleOptions[highlightedIndex].selected =
-            !visibleOptions[highlightedIndex].selected;
+        if (isListboxElOpened) {
+          if (this.multiple) {
+            visibleOptions[highlightedIndex].selected =
+              !visibleOptions[highlightedIndex].selected;
+            if (visibleOptions[highlightedIndex].selected) {
+              this.assistiveText = `Selected ${visibleOptions[highlightedIndex].innerHTML}`;
+            } else {
+              this.assistiveText = `Deselected ${visibleOptions[highlightedIndex].innerHTML}`;
+            }
+          } else {
+            visibleOptions.forEach((e) => (e.selected = false));
+            visibleOptions[highlightedIndex].selected = true;
+            this.open = false;
+            this.assistiveText = `Selected ${visibleOptions[highlightedIndex].innerHTML}`;
+          }
         }
+        if (highlightedEl && isListboxElOpened)
+          this.updateValue(
+            visibleOptions[highlightedIndex].value,
+            visibleOptions[highlightedIndex].selected
+          );
 
-        this.assistiveText = `Selected ${visibleOptions[highlightedIndex].innerHTML}`;
         this.emitValue();
         return;
       }
@@ -711,15 +730,31 @@ export class Dropdown extends FormMixin(LitElement) {
     const ENTER_KEY_CODE = 13;
     const ESCAPE_KEY_CODE = 27;
     const option = this.options.find((option) => option.highlighted);
+    const highlightedIndex = this.options.findIndex(
+      (option) => option.highlighted
+    );
     this.searchTextEntered = false;
-
     // select option
     if (e.keyCode === ENTER_KEY_CODE) {
       this.searchTextEntered = true;
       if (option) {
-        if (this.multiple) option.selected = !option.selected;
-        this.updateValue(option.value, option.selected);
-        this.assistiveText = `Selected ${option.innerHTML}`;
+        if (this.prevSearchKeydownIndex !== highlightedIndex) {
+          if (this.multiple) {
+            option.selected = !option.selected;
+          } else {
+            this.options.forEach((e) => (e.selected = false));
+            option.selected = true;
+            this.open = false;
+          }
+          this.updateValue(option.value, option.selected);
+        }
+
+        if (option.selected) {
+          this.assistiveText = `Selected ${option.innerHTML}`;
+          this.prevSearchKeydownIndex = highlightedIndex;
+        } else {
+          this.assistiveText = `Deselected ${option.innerHTML}`;
+        }
       } else {
         this.assistiveText = 'No item matched.';
       }
