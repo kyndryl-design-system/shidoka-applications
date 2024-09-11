@@ -77,6 +77,7 @@ export class OverflowMenu extends LitElement {
           aria-expanded=${this.open}
           title=${this.assistiveText}
           aria-label=${this.assistiveText}
+          @keydown=${(e: any) => this.handleKeyDown(e)}
         >
           <kd-icon .icon=${overflowIcon}></kd-icon>
         </button>
@@ -157,6 +158,38 @@ export class OverflowMenu extends LitElement {
       this._emitToggleEvent();
       this._btnEl.focus();
     }
+  }
+
+  private handleKeyDown(e: any) {
+    const TAB_KEY_CODE = 9;
+    const ENTER_KEY_CODE = 13;
+    const SPACEBAR_KEY_CODE = 32;
+    const DOWN_ARROW_KEY_CODE = 40;
+
+    if (e.keyCode !== TAB_KEY_CODE) {
+      e.preventDefault();
+    }
+
+    if(e.keyCode === ENTER_KEY_CODE || e.keyCode === SPACEBAR_KEY_CODE) {
+      this.toggleMenu();
+    }
+
+    const menuItems: any = this.getMenuItems();
+
+    if(menuItems.length > 0 && e.keyCode === DOWN_ARROW_KEY_CODE) {
+      const firstItemIndex = menuItems.findIndex((item: any) => !item.hasAttribute('disabled'));
+      menuItems[firstItemIndex].shadowRoot?.querySelector('button') 
+      ? menuItems[firstItemIndex].shadowRoot?.querySelector('button')?.focus() 
+      : menuItems[firstItemIndex].shadowRoot?.querySelector('a')?.focus();
+    }
+  }
+
+  getMenuItems() {
+    return Array.from(this.querySelectorAll('kyn-overflow-menu-item') || []).filter((item: any) => !item.hasAttribute('disabled'));
+  }
+
+  getMenu() {
+    return this.shadowRoot?.querySelector('.overflow-menu');
   }
 
   override connectedCallback() {
