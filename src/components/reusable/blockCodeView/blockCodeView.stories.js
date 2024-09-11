@@ -133,7 +133,6 @@ const args = {
   ariaLabelAttr: '',
   copyButtonDescriptionAttr: 'copy code button',
   copyButtonTitleAttr: 'Copy code',
-  extendedLangs: [],
 };
 
 const Template = (args) => {
@@ -153,7 +152,6 @@ const Template = (args) => {
       ariaLabelAttr=${ariaLabelAttr}
       copyButtonDescriptionAttr=${args.copyButtonDescriptionAttr}
       copyButtonTitleAttr=${args.copyButtonTitleAttr}
-      .extendedLangs=${args.extendedLangs}
       @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
     >
     </kyn-block-code-view>

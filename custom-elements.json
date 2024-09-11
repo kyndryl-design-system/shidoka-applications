@@ -8568,6 +8568,349 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/notification/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "./notification"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NotificationContainer",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "./notificationContainer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/notification/notification.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Notification component.",
+          "name": "Notification",
+          "slots": [
+            {
+              "description": "Slot for notification message body.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for menu.",
+              "name": "actions"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "notificationTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification Title (Required).",
+              "attribute": "notificationTitle"
+            },
+            {
+              "kind": "field",
+              "name": "notificationSubtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification subtitle.(optional)",
+              "attribute": "notificationSubtitle"
+            },
+            {
+              "kind": "field",
+              "name": "timeStamp",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Timestamp of notification.",
+              "attribute": "timeStamp"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card href link",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "tagStatus",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default'",
+              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
+              "attribute": "tagStatus"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'normal'",
+              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
+              "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "any"
+              },
+              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Info',\n    error: 'Error',\n  }",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "field",
+              "name": "unRead",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
+              "attribute": "unRead",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "hideCloseButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
+              "attribute": "hideCloseButton"
+            },
+            {
+              "kind": "field",
+              "name": "timeout",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
+              "attribute": "timeout"
+            },
+            {
+              "kind": "method",
+              "name": "renderInnerUI",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_close",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleCardClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emit event for clickable notification.",
+              "name": "on-notification-click"
+            },
+            {
+              "description": "Emits when an inline/toast notification closes.",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "notificationTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification Title (Required).",
+              "fieldName": "notificationTitle"
+            },
+            {
+              "name": "notificationSubtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification subtitle.(optional)",
+              "fieldName": "notificationSubtitle"
+            },
+            {
+              "name": "timeStamp",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Timestamp of notification.",
+              "fieldName": "timeStamp"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card href link",
+              "fieldName": "href"
+            },
+            {
+              "name": "tagStatus",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default'",
+              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
+              "fieldName": "tagStatus"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'normal'",
+              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
+              "fieldName": "type"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "any"
+              },
+              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Info',\n    error: 'Error',\n  }",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "unRead",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
+              "fieldName": "unRead"
+            },
+            {
+              "name": "hideCloseButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
+              "fieldName": "hideCloseButton"
+            },
+            {
+              "name": "timeout",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
+              "fieldName": "timeout"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-notification",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "src/components/reusable/notification/notification.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "src/components/reusable/notification/notification.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/notification/notificationContainer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Notification container component for Toast notification.\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
+          "name": "NotificationContainer",
+          "slots": [
+            {
+              "description": "Slot for <kyn-notification type=\"toast\"> component.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-notification-container",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NotificationContainer",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "src/components/reusable/notification/notificationContainer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-notification-container",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "src/components/reusable/notification/notificationContainer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/numberInput/index.ts",
       "declarations": [],
       "exports": [
@@ -9349,349 +9692,6 @@
           "declaration": {
             "name": "OverflowMenuItem",
             "module": "src/components/reusable/overflowMenu/overflowMenuItem.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/notification/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "./notification"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "NotificationContainer",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "./notificationContainer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/notification/notification.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Notification component.",
-          "name": "Notification",
-          "slots": [
-            {
-              "description": "Slot for notification message body.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for menu.",
-              "name": "actions"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "notificationTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification Title (Required).",
-              "attribute": "notificationTitle"
-            },
-            {
-              "kind": "field",
-              "name": "notificationSubtitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification subtitle.(optional)",
-              "attribute": "notificationSubtitle"
-            },
-            {
-              "kind": "field",
-              "name": "timeStamp",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Timestamp of notification.",
-              "attribute": "timeStamp"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card href link",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "tagStatus",
-              "type": {
-                "text": "string"
-              },
-              "default": "'default'",
-              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
-              "attribute": "tagStatus"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'normal'",
-              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "any"
-              },
-              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Info',\n    error: 'Error',\n  }",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "field",
-              "name": "unRead",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
-              "attribute": "unRead",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "hideCloseButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
-              "attribute": "hideCloseButton"
-            },
-            {
-              "kind": "field",
-              "name": "timeout",
-              "type": {
-                "text": "number"
-              },
-              "default": "8",
-              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
-              "attribute": "timeout"
-            },
-            {
-              "kind": "method",
-              "name": "renderInnerUI",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_close",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClose",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleCardClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emit event for clickable notification.",
-              "name": "on-notification-click"
-            },
-            {
-              "description": "Emits when an inline/toast notification closes.",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "notificationTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification Title (Required).",
-              "fieldName": "notificationTitle"
-            },
-            {
-              "name": "notificationSubtitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification subtitle.(optional)",
-              "fieldName": "notificationSubtitle"
-            },
-            {
-              "name": "timeStamp",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Timestamp of notification.",
-              "fieldName": "timeStamp"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card href link",
-              "fieldName": "href"
-            },
-            {
-              "name": "tagStatus",
-              "type": {
-                "text": "string"
-              },
-              "default": "'default'",
-              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
-              "fieldName": "tagStatus"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'normal'",
-              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
-              "fieldName": "type"
-            },
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "any"
-              },
-              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Info',\n    error: 'Error',\n  }",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "unRead",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
-              "fieldName": "unRead"
-            },
-            {
-              "name": "hideCloseButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
-              "fieldName": "hideCloseButton"
-            },
-            {
-              "name": "timeout",
-              "type": {
-                "text": "number"
-              },
-              "default": "8",
-              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
-              "fieldName": "timeout"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-notification",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "src/components/reusable/notification/notification.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "src/components/reusable/notification/notification.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/notification/notificationContainer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Notification container component for Toast notification.\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
-          "name": "NotificationContainer",
-          "slots": [
-            {
-              "description": "Slot for <kyn-notification type=\"toast\"> component.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-notification-container",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "NotificationContainer",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "src/components/reusable/notification/notificationContainer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-notification-container",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "src/components/reusable/notification/notificationContainer.ts"
           }
         }
       ]
