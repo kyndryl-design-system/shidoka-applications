@@ -109,13 +109,13 @@ export default {
 
 const args = {
   codeSnippet: defaultTemplateCodes.DEFAULT,
+  language: 'javascript',
   darkTheme: true,
-  copyOptionVisible: true,
   size: 'md',
   codeViewLabel: 'Block Code View',
-  language: 'javascript',
-  ariaLabelAttr: '',
+  copyOptionVisible: true,
   copyButtonText: 'Copy',
+  ariaLabelAttr: '',
   copyButtonDescriptionAttr: 'copy code button',
   copyButtonTitleAttr: 'Copy code',
 };
@@ -174,7 +174,7 @@ HTMLExample.args = {
   language: 'html',
   codeViewLabel: 'HTML Code Snippet',
   copyOptionVisible: true,
-  copyButtonText: 'Copy',
+  copyButtonText: '',
   codeSnippet: defaultTemplateCodes.HTML,
 };
 

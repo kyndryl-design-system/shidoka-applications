@@ -18,10 +18,9 @@ export default {
 };
 
 const args = {
-  ariaLabelAttr: 'Inline Code View Snippet',
-  unnamed: `console.log("Hello, World!");`,
-  inlineSnippetFontSize: '14px',
+  snippetFontSize: 14,
   darkTheme: true,
+  unnamed: `console.log("Hello, World!");`,
 };
 
 export const InlineCodeView = {
@@ -29,9 +28,8 @@ export const InlineCodeView = {
   render: (args) => {
     return html`
       <kyn-inline-code-view
-        aria-label=${args.ariaLabelAttr}
         ?darkTheme=${args.darkTheme}
-        style="--inline-snippet-font-size: ${args.inlineSnippetFontSize};"
+        snippetFontSize=${args.snippetFontSize}
       >
         ${args.unnamed}
       </kyn-inline-code-view>
