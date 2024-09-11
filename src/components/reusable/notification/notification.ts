@@ -66,11 +66,15 @@ export class Notification extends LitElement {
 
   /** Assistive text for timestamp (Required to support accessibility). */
   @property({ type: String })
-  assistiveTimestampText = '';
+  assistiveTimestampText = 'Duration';
 
   /** Assistive text for notification type (Required to support accessibility). */
   @property({ type: String })
   assistiveNotificationTypeText = '';
+
+  /** Notification role (Required to support accessibility). */
+  @property({ type: String }) 
+  notificationRole?: 'alert' | 'log' | 'status';
 
   /** Set tagColor based on provided tagStatus.
    * @internal
@@ -128,11 +132,11 @@ export class Notification extends LitElement {
             rel="noopener"
             @on-card-click=${(e: any) => this._handleCardClick(e)}
             hideBorder
-            cardRole="alertdialog"
+            cardRole=${ifDefined(this.notificationRole)}
             cardDescription=${ifDefined(this.assistiveNotificationTypeText)}
             >${this.renderInnerUI()}</kd-card
           >`
-        : html`<kd-card type=${this.type} cardRole="alertdialog" cardDescription=${ifDefined(this.assistiveNotificationTypeText)} class="${classMap(cardBgClasses)}"
+        : html`<kd-card type=${this.type} cardRole=${ifDefined(this.notificationRole)} cardDescription=${ifDefined(this.assistiveNotificationTypeText)} class="${classMap(cardBgClasses)}"
             >${this.renderInnerUI()}</kd-card
           >`}
     `;
