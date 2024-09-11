@@ -1,10 +1,13 @@
 import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import Prism from 'prismjs';
+import 'prismjs/plugins/autoloader/prism-autoloader';
+import 'prismjs-components-importer';
+Prism.plugins.autoloader.languages_path = 'node_modules/prismjs/components/';
 
 import copyIcon from '@carbon/icons/es/copy/20';
 import checkmarkIcon from '@carbon/icons/es/checkmark--outline/20';
@@ -16,6 +19,11 @@ import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import BlockCodeViewStyles from './blockCodeView.scss';
 import ShidokaLightTheme from './shidokaLightSyntaxStyles.scss';
 import ShidokaDarkTheme from './shidokaDarkSyntaxStyles.scss';
+
+interface LanguageMatch {
+  language: string;
+  relevance: number;
+}
 
 /**
  * `<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements.
@@ -33,7 +41,7 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   codeSnippet = '';
 
-  /** Code snippet language (ex: `javascript`, `css`, `markdown`, `xml`). */
+  /** If provided, syntax highlighting will default to this value, otherwise it will attempt to auto-detect language. */
   @property({ type: String })
   language = '';
 
@@ -73,12 +81,6 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   copyButtonTitleAttr = '';
 
-  /** Array to detect pre-defined command line languages for custom styling.
-   * @internal
-   */
-  @state()
-  private _commandLineLangs = ['bash', 'shell', 'powershell'];
-
   /** Auto-detect whether code snippet is single line (boolean) -- styled accordingly (boolean).
    * @internal
    */
@@ -97,17 +99,23 @@ export class BlockCodeView extends LitElement {
   @state()
   private codeExpanded = false;
 
-  /** Formatted code (prism.js) to be displayed.
-   * @internal
-   */
-  @state()
-  private _highlightedCode = '';
-
   /** Copy key-values to communicate copy button styling and state.
    * @internal
    */
   @state()
   private _copyState = { copied: false, text: '' };
+
+  /** Detected language for the code snippet.
+   * @internal
+   */
+  @state()
+  private _effectiveLanguage = '';
+
+  /** Highlighted code to be displayed.
+   * @internal
+   */
+  @state()
+  private _highlightedCode = '';
 
   override render() {
     return html`
@@ -132,10 +140,8 @@ export class BlockCodeView extends LitElement {
         <pre
           @keydown=${this.handleKeypress}
           role="region"
-          class="${classMap({
-            'command-line': this._commandLineLangs.includes(this.language),
-          })}"
-        ><code tabindex="0" class="language-${this.language}">${unsafeHTML(
+        ><code tabindex="0" class="language-${this
+          ._effectiveLanguage}">${unsafeHTML(
           this._highlightedCode
         )}</code></pre>
 
@@ -190,27 +196,71 @@ export class BlockCodeView extends LitElement {
       changedProperties.has('codeSnippet') ||
       changedProperties.has('language')
     ) {
-      this.processCodeSnippet();
+      this.highlightCode();
     }
-    if (changedProperties.has('copyButtonText')) {
-      this._copyState = { ...this._copyState, text: this.copyButtonText };
-      this.checkOverflow();
-    }
+    super.updated(changedProperties);
   }
 
-  private processCodeSnippet() {
+  //
+  // CODE DETECTION & SYNTAX HIGHLIGHTING
+  private highlightCode() {
     const processedCode = this.removeLeadingWhitespace(this.codeSnippet);
     this._isSingleLine = this.isSingleLineCode(processedCode);
-    this._highlightedCode = this.highlightCode(processedCode);
+
+    this._effectiveLanguage =
+      this.language || this.detectLanguage(processedCode);
+
+    if (!Prism.languages[this._effectiveLanguage]) {
+      console.warn(
+        `Language '${this._effectiveLanguage}' not loaded. Falling back to plaintext.`
+      );
+      this._effectiveLanguage = 'plaintext';
+    }
+
+    this._highlightedCode = Prism.highlight(
+      processedCode,
+      Prism.languages[this._effectiveLanguage],
+      this._effectiveLanguage
+    );
+
     this.requestUpdate();
+    this.checkOverflow();
   }
 
-  private highlightCode(code: string): string {
-    return Prism.highlight(
-      code,
-      Prism.languages[this.language] || Prism.languages.plaintext,
-      this.language
-    );
+  detectLanguage(code: string, languagesToCheck?: string[]): string {
+    const languages =
+      languagesToCheck ||
+      Object.keys(Prism.languages).filter(
+        (lang) => typeof Prism.languages[lang] === 'object'
+      );
+
+    let bestMatch: LanguageMatch = { language: 'plaintext', relevance: 0 };
+
+    for (const lang of languages) {
+      if (Prism.languages[lang]) {
+        const tokens = Prism.tokenize(code, Prism.languages[lang]);
+        const relevance = this.processTokens(tokens);
+
+        if (relevance > bestMatch.relevance) {
+          bestMatch = { language: lang, relevance };
+        }
+      }
+    }
+
+    return bestMatch.language;
+  }
+
+  private processTokens(tokens: (string | Prism.Token)[]): number {
+    let relevance = 0;
+    for (const token of tokens) {
+      if (typeof token !== 'string') {
+        relevance += 1;
+        if (token.alias) {
+          relevance += Array.isArray(token.alias) ? token.alias.length : 1;
+        }
+      }
+    }
+    return relevance;
   }
 
   private checkOverflow() {
@@ -225,11 +275,6 @@ export class BlockCodeView extends LitElement {
     });
   }
 
-  private expandCodeView() {
-    this.codeExpanded = !this.codeExpanded;
-    this.requestUpdate();
-  }
-
   // detect single vs multi-line block code snippet for custom default styling
   private isSingleLineCode(code: string): boolean {
     return code.trim().split('\n').length === 1;
@@ -239,45 +284,45 @@ export class BlockCodeView extends LitElement {
   private formatExampleCode(code: string) {
     return { code };
   }
+  //////*
 
+  //
+  // BUTTON CLICK ACTIONS
   // copy code button click lyric
   private copyCode(e: Event) {
     const originalText = this._copyState.text;
     navigator.clipboard
       .writeText(this.codeSnippet)
-      .then(() => this.handleSuccessfulCopy(e, originalText))
+      .then(() => {
+        this._copyState = {
+          copied: true,
+          text: originalText.length > 1 ? 'Copied!' : '',
+        };
+        this.requestUpdate();
+        this.dispatchEvent(
+          new CustomEvent('on-custom-copy', {
+            detail: {
+              origEvent: e,
+              fullSnippet: this.formatExampleCode(this.codeSnippet),
+            },
+          })
+        );
+        setTimeout(() => {
+          this._copyState = { copied: false, text: originalText };
+          this.requestUpdate();
+        }, 3000);
+      })
       .catch((err) => console.error('Failed to copy code:', err));
   }
 
-  private handleSuccessfulCopy(e: Event, originalText: string) {
-    this._copyState = {
-      copied: true,
-      text: originalText.length > 1 ? 'Copied!' : '',
-    };
+  private expandCodeView() {
+    this.codeExpanded = !this.codeExpanded;
     this.requestUpdate();
-    this.dispatchCopyEvent(e);
-    this.resetCopyStateAfterDelay(originalText);
   }
+  //////*
 
-  private dispatchCopyEvent(e: Event) {
-    this.dispatchEvent(
-      new CustomEvent('on-custom-copy', {
-        detail: {
-          origEvent: e,
-          fullSnippet: this.formatExampleCode(this.codeSnippet),
-        },
-      })
-    );
-  }
-
-  private resetCopyStateAfterDelay(originalText: string) {
-    setTimeout(() => {
-      this._copyState = { copied: false, text: originalText };
-      this.requestUpdate();
-    }, 3000);
-  }
-
-  // accessibility -- handling for scrollable code blocks
+  //
+  // ACCESSIBILITY -- handling for scrollable code blocks
   private handleKeypress(e: KeyboardEvent) {
     const pre = e.currentTarget as HTMLPreElement;
     const scrollAmount = 40;
@@ -316,6 +361,7 @@ export class BlockCodeView extends LitElement {
       return line.trim().length ? Math.min(min, indent) : min;
     }, Infinity);
   }
+  //////*
 }
 
 declare global {

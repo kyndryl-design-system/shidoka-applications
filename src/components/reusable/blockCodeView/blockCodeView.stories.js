@@ -85,6 +85,17 @@ const defaultTemplateCodes = {
     }
   `,
   BASH: `npm install @kyndryl-design-system/shidoka-applications @kyndryl-design-system/shidoka-foundation -S`,
+  SWIFT: `struct Person {
+    let name: String
+    var age: Int
+    
+    func introduce() -> String {
+        return "Hello, I'm (name) and I'm (age) years old."
+    }
+}
+
+let john = Person(name: "John Doe", age: 30)
+print(john.introduce())`,
 };
 
 export default {
@@ -122,6 +133,7 @@ const args = {
   ariaLabelAttr: '',
   copyButtonDescriptionAttr: 'copy code button',
   copyButtonTitleAttr: 'Copy code',
+  extendedLangs: [],
 };
 
 const Template = (args) => {
@@ -141,6 +153,7 @@ const Template = (args) => {
       ariaLabelAttr=${ariaLabelAttr}
       copyButtonDescriptionAttr=${args.copyButtonDescriptionAttr}
       copyButtonTitleAttr=${args.copyButtonTitleAttr}
+      .extendedLangs=${args.extendedLangs}
       @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
     >
     </kyn-block-code-view>
@@ -191,6 +204,16 @@ CSSExample.args = {
   codeViewLabel: 'CSS Code Snippet',
   copyOptionVisible: true,
   copyButtonText: 'Copy',
+};
+
+export const SwiftExample = Template.bind({});
+SwiftExample.args = {
+  ...args,
+  codeSnippet: defaultTemplateCodes.SWIFT,
+  language: 'swift',
+  codeViewLabel: 'Swift Code Snippet (not expressly supported)',
+  copyOptionVisible: true,
+  copyButtonText: '',
 };
 
 export const BashExample = Template.bind({});
