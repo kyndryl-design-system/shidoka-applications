@@ -29,6 +29,10 @@ export const TextArea = {
     minLength: undefined,
     maxLength: undefined,
     rows: undefined,
+    textStrings: {
+      requiredText: 'Required',
+      errorText: 'Error',
+    },
   },
   render: (args) => {
     return html`
@@ -40,6 +44,7 @@ export const TextArea = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
+        .textStrings=${args.textStrings}
         minLength=${ifDefined(args.minLength)}
         maxLength=${ifDefined(args.maxLength)}
         rows=${args.rows}
