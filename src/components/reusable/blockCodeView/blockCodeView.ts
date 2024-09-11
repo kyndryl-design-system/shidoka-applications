@@ -198,6 +198,10 @@ export class BlockCodeView extends LitElement {
     ) {
       this.highlightCode();
     }
+
+    if (changedProperties.has('copyButtonText')) {
+      this._copyState = { ...this._copyState, text: this.copyButtonText };
+    }
     super.updated(changedProperties);
   }
 

@@ -211,7 +211,7 @@ SwiftExample.args = {
   language: 'swift',
   codeViewLabel: 'Swift Code Snippet (manually passed language name)',
   copyOptionVisible: true,
-  copyButtonText: '',
+  copyButtonText: 'Copy',
 };
 
 export const BashExample = Template.bind({});
@@ -221,5 +221,5 @@ BashExample.args = {
   language: 'bash',
   codeViewLabel: 'Bash Code Snippet',
   copyOptionVisible: true,
-  copyButtonText: '',
+  copyButtonText: 'Copy',
 };
