@@ -115,6 +115,12 @@ export default {
     copyOptionVisible: {
       control: { type: 'boolean' },
     },
+    maxHeight: {
+      control: {
+        type: 'number',
+        min: 250,
+      },
+    },
     darkTheme: {
       options: ['light', 'dark', 'darker'],
       control: { type: 'select' },
@@ -126,7 +132,7 @@ const args = {
   darkTheme: 'darker',
   language: '',
   size: 'md',
-  maxHeight: 0,
+  maxHeight: null,
   codeViewLabel: 'Block Code View',
   copyOptionVisible: true,
   codeViewExpandable: true,
@@ -140,13 +146,14 @@ const args = {
 const Template = (args) => {
   const ariaLabelAttr =
     args.ariaLabelAttr || `Block ${args.language} code snippet`;
+  const maxHeight = args.maxHeight === null ? null : Number(args.maxHeight);
 
   return html`
     <kyn-block-code-view
       darkTheme=${args.darkTheme}
       language=${args.language}
       size=${args.size}
-      maxHeight=${args.maxHeight}
+      .maxHeight=${maxHeight}
       codeViewLabel=${args.codeViewLabel}
       ?copyOptionVisible=${args.copyOptionVisible}
       ?codeViewExpandable=${args.codeViewExpandable}

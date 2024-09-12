@@ -49,6 +49,7 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   size: 'auto' | 'sm' | 'md' | 'lg' = 'md';
 
+  /** Dev modifiable code snippet max-height. */
   @property({ type: Number })
   maxHeight: number | null = null;
 
@@ -120,10 +121,20 @@ export class BlockCodeView extends LitElement {
   @state()
   private _highlightedCode = '';
 
+  /** Code snippet fits into the height of the container -- no expansion needed.
+   * @internal
+   */
+  @state()
+  private _codeFitsContainerOnLoad = true;
+
+  /** If expandable -- height of the container when fully expanded.
+   * @internal
+   */
+  @state()
+  private _expandedHeight: number | null = null;
+
   override render() {
-    const containerStyle = this.maxHeight
-      ? `max-height: ${this.maxHeight}px;`
-      : '';
+    const containerStyle = this.getContainerStyle();
 
     return html`
       ${
@@ -186,7 +197,8 @@ export class BlockCodeView extends LitElement {
               : null
           }
           ${
-            this.codeViewExpandable && this.hasOverflow
+            this.codeViewExpandable &&
+            (this.hasOverflow || !this._codeFitsContainerOnLoad)
               ? html`<kd-button
                   class="code-view__expand-button"
                   kind="tertiary"
@@ -370,9 +382,18 @@ export class BlockCodeView extends LitElement {
         const container = this.shadowRoot?.querySelector(
           '.code-snippet-wrapper'
         ) as HTMLElement;
-        const pre = container.querySelector('pre') as HTMLElement;
+        const pre = container?.querySelector('pre') as HTMLElement;
         if (pre && container) {
-          this.hasOverflow = pre.scrollHeight > container.clientHeight;
+          const naturalHeight = pre.scrollHeight;
+          const calcHeight = this.codeExpanded
+            ? this._expandedHeight || container.clientHeight
+            : this.maxHeight !== null
+            ? this.maxHeight
+            : container.clientHeight;
+
+          this.hasOverflow = naturalHeight > calcHeight;
+          this._codeFitsContainerOnLoad =
+            naturalHeight <= (this.maxHeight || container.clientHeight);
         }
       });
     }, 100);
@@ -418,9 +439,30 @@ export class BlockCodeView extends LitElement {
       .catch((err) => console.error('Failed to copy code:', err));
   }
 
+  private getContainerStyle(): string {
+    if (this.codeExpanded) {
+      return this._expandedHeight
+        ? `max-height: ${this._expandedHeight}px;`
+        : '';
+    }
+    return this.maxHeight !== null ? `max-height: ${this.maxHeight}px;` : '';
+  }
+
   private expandCodeView() {
     this.codeExpanded = !this.codeExpanded;
+
+    if (this.codeExpanded) {
+      // When expanding, set the expanded height to the full scroll height
+      const pre = this.shadowRoot?.querySelector('pre') as HTMLElement;
+      this._expandedHeight = pre?.scrollHeight || null;
+    } else {
+      // When collapsing, reset the expanded height
+      this._expandedHeight = null;
+    }
+
     this.requestUpdate();
+    // Re-check overflow after expansion
+    setTimeout(() => this.checkOverflow(), 0);
   }
   //////*
 
