@@ -79,7 +79,6 @@ $border-radius: 4px;
 
             code {
                 display: block;
-                padding: 10px;
                 white-space: inherit;
                 font-family: monospace;
                 font-size: 14px;
@@ -111,7 +110,6 @@ $border-radius: 4px;
             }
 
             pre {
-                padding: 12px 16px;
                 display: flex;
                 align-items: center;
                 line-height: 1.5;
@@ -137,7 +135,8 @@ $border-radius: 4px;
                 overflow: -moz-scrollbars-horizontal;
 
                 code {
-                    padding: 0 50px 0 0;
+                    padding: 12px 16px 12px 16px;
+
                 }
             }
 
@@ -152,7 +151,6 @@ $border-radius: 4px;
             }
 
             &.size--sm {
-                width: fit-content;
                 max-width: 450px;
             }
 
@@ -172,19 +170,12 @@ $border-radius: 4px;
         }
 
         &.multi-line {
-            padding: 3px 0;
             width: 95%;
             position: relative;
 
             .code-view__copy-button {
                 top: 10px;
                 right: 10px;
-            }
-
-            &.has-overflow {
-                pre {
-                    padding-bottom: 8px;
-                }
             }
 
             .code-snippet-wrapper {
@@ -194,24 +185,29 @@ $border-radius: 4px;
                 transition: max-height $transition-duration ease-in-out;
             }
 
+            &.has-overflow {
+                .code-snippet-wrapper {
+                    pre code {
+                        padding-bottom: 20px;
+                    }
+                }
+            }
+
             pre {
                 margin: 0;
-                padding: 0 16px;
                 overflow-x: auto;
                 overflow-y: auto;
                 max-height: inherit;
                 padding-right: 110px;
                 box-sizing: border-box;
                 width: 100%;
-                min-height: 150px;
                 transition: max-height $transition-duration ease-in-out;
             }
 
             code {
+                padding: 16px;
                 display: inline-block;
                 min-width: 100%;
-                min-height: 150px;
-                padding: 10px;
                 box-sizing: border-box;
                 white-space: pre-wrap;
                 word-wrap: break-word;
@@ -294,6 +290,6 @@ code.language-bash:before {
 
     .code-view__container.single-line.size--lg,
     .code-view__container.multi-line.size--lg {
-        max-width: 70%;
+        max-width: 75%;
     }
 }

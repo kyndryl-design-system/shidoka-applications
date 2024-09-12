@@ -149,9 +149,8 @@ export class BlockCodeView extends LitElement {
           'expanded-code-view': this.codeExpanded,
           'has-overflow': this.hasOverflow,
         })}"
-        style=${containerStyle}
       >
-          <div class="code-snippet-wrapper">
+          <div class="code-snippet-wrapper" style=${containerStyle}>
               <pre
               @keydown=${this.handleKeypress}
               role="region"
@@ -369,7 +368,7 @@ export class BlockCodeView extends LitElement {
     setTimeout(() => {
       requestAnimationFrame(() => {
         const container = this.shadowRoot?.querySelector(
-          '.code-view__container'
+          '.code-snippet-wrapper'
         ) as HTMLElement;
         const pre = container.querySelector('pre') as HTMLElement;
         if (pre && container) {
