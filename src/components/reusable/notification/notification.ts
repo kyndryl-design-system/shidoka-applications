@@ -60,9 +60,9 @@ export class Notification extends LitElement {
     error: 'Error',
   };
 
-  /** Close button description */
+  /** Close button description (Required to support accessibility). */
   @property({ type: String })
-  closeBtnDescription = '';
+  closeBtnDescription = 'Close';
 
   /** Assistive text for timestamp (Required to support accessibility). */
   @property({ type: String })
@@ -191,7 +191,8 @@ export class Notification extends LitElement {
                 class="notification-toast-close-btn"
                 kind="tertiary"
                 size="small"
-                description="${ifDefined(this.closeBtnDescription)}"
+                description=${ifDefined(this.closeBtnDescription)}
+                title=${ifDefined(this.closeBtnDescription)}
                 iconPosition="left"
                 @on-click="${() => this._handleClose()}"
               >
@@ -200,7 +201,7 @@ export class Notification extends LitElement {
                   fill="#3D3C3C"
                   .icon=${closeIcon}
                   role="img"
-                  aria-label="Close icon"
+                  aria-label=${ifDefined(this.closeBtnDescription)}
                 ></kd-icon>
               </kd-button>`
             : null}

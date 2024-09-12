@@ -91,6 +91,7 @@ export const Inline = {
     notificationRole: 'status',
     type: 'inline',
     tagStatus: 'info',
+    closeBtnDescription: "Close",
     hideCloseButton: false,
   },
   render: (args) => {
@@ -100,6 +101,7 @@ export const Inline = {
         notificationRole=${args.notificationRole}
         type=${args.type}
         tagStatus=${args.tagStatus}
+        closeBtnDescription=${args.closeBtnDescription}
         ?hideCloseButton=${args.hideCloseButton}
         @on-close=${(e) => action(e.type)(e)}
       >
@@ -114,6 +116,7 @@ export const Inline = {
         notificationRole=${args.notificationRole}
         type=${args.type}
         tagStatus=${args.tagStatus}
+        closeBtnDescription=${args.closeBtnDescription}
         ?hideCloseButton=${args.hideCloseButton}
         @on-close=${(e) => action(e.type)(e)}
       >
@@ -125,6 +128,7 @@ export const Inline = {
         notificationTitle=${args.notificationTitle}
         assistiveNotificationTypeText=${args.assistiveNotificationTypeText}
         notificationRole=${args.notificationRole}
+        closeBtnDescription=${args.closeBtnDescription}
         type=${args.type}
         tagStatus=${args.tagStatus}
         ?hideCloseButton=${args.hideCloseButton}
