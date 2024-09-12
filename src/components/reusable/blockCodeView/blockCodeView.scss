@@ -117,10 +117,6 @@ $border-radius: 4px;
                 font-size: 12px;
             }
 
-            &.size--lg {
-                max-width: 75%;
-            }
-
             .code-view__copy-button {
                 display: flex;
                 align-items: center;
@@ -133,6 +129,7 @@ $border-radius: 4px;
 
         &.multi-line {
             padding: 3px 0 6px;
+            width: 95%;
 
             pre {
                 transition: max-height $transition-duration ease-in-out;
@@ -160,7 +157,7 @@ $border-radius: 4px;
             }
 
             &.size--lg {
-                @include size-variant(75%, 400px);
+                @include size-variant(95%, 400px);
             }
 
             &.size--auto {
@@ -192,5 +189,13 @@ code.language-bash:before {
 
     to {
         opacity: 1;
+    }
+}
+
+@media (min-width: 768px) {
+
+    .code-view__container.single-line.size--lg,
+    .code-view__container.multi-line.size--lg {
+        max-width: 70%;
     }
 }

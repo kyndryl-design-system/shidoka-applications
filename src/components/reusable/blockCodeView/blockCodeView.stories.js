@@ -209,7 +209,7 @@ SwiftExample.args = {
   ...args,
   codeSnippet: defaultTemplateCodes.SWIFT,
   language: 'swift',
-  codeViewLabel: 'Swift Code Snippet (manually passed language name)',
+  codeViewLabel: 'Swift Code Snippet (manually configured language name)',
   copyOptionVisible: true,
   copyButtonText: 'Copy',
 };
@@ -219,7 +219,7 @@ BashExample.args = {
   ...args,
   codeSnippet: defaultTemplateCodes.BASH,
   language: 'bash',
-  codeViewLabel: 'Bash Code Snippet',
+  codeViewLabel: 'Bash Code Snippet (manually configured language name)',
   copyOptionVisible: true,
   copyButtonText: 'Copy',
 };
