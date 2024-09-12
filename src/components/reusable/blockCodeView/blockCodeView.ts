@@ -148,7 +148,7 @@ export class BlockCodeView extends LitElement {
         ${this.copyOptionVisible
           ? html`<kd-button
               class="code-view__copy-button"
-              kind="primary-web"
+              kind="tertiary"
               size="small"
               iconPosition="left"
               ?disabled=${this._copyState.copied}
@@ -170,7 +170,7 @@ export class BlockCodeView extends LitElement {
         ${this.codeViewExpandable && this.hasOverflow
           ? html`<kd-button
               class="code-view__expand-button"
-              kind="primary-web"
+              kind="tertiary"
               size="small"
               iconPosition="left"
               title="Expand/Collapse code snippet"
@@ -390,7 +390,7 @@ export class BlockCodeView extends LitElement {
         setTimeout(() => {
           this._copyState = { copied: false, text: originalText };
           this.requestUpdate();
-        }, 3000);
+        }, 5000);
       })
       .catch((err) => console.error('Failed to copy code:', err));
   }
