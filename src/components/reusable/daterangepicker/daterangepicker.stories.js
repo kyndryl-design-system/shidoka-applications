@@ -61,6 +61,9 @@ const args = {
   minDate: undefined,
   maxDate: undefined,
   step: undefined,
+  textStrings: {
+    requiredText: 'Required',
+  },
 };
 
 export const DateRangePicker = {
@@ -76,6 +79,7 @@ export const DateRangePicker = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
+        .textStrings=${args.textStrings}
         startDate=${args.startDate}
         endDate=${args.endDate}
         minDate=${ifDefined(args.minDate)}

@@ -60,6 +60,12 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   step!: string;
 
+  /** Customizable text strings. */
+  @property({ type: Object })
+  textStrings = {
+    requiredText: 'Required',
+  };
+
   /**
    * Queries the <input> DOM element.
    * @ignore
@@ -71,7 +77,14 @@ export class TimePicker extends FormMixin(LitElement) {
     return html`
       <div class="time-picker" ?disabled=${this.disabled}>
         <label class="label-text" for=${this.name}>
-          ${this.required ? html`<span class="required">*</span>` : null}
+          ${this.required
+            ? html`<abbr
+                class="required"
+                title=${this.textStrings.requiredText}
+                aria-label=${this.textStrings.requiredText}
+                >*</abbr
+              >`
+            : null}
           <slot></slot>
         </label>
 
@@ -93,6 +106,12 @@ export class TimePicker extends FormMixin(LitElement) {
             ?required=${this.required}
             ?disabled=${this.disabled}
             ?invalid=${this._isInvalid}
+            aria-invalid=${this._isInvalid}
+            aria-describedby=${this._isInvalid
+              ? 'error'
+              : this.warnText !== '' && !this._isInvalid
+              ? 'warning'
+              : ''}
             min=${ifDefined(this.minTime)}
             max=${ifDefined(this.maxTime)}
             @input=${(e: any) => this.handleInput(e)}
@@ -104,13 +123,13 @@ export class TimePicker extends FormMixin(LitElement) {
           : null}
         ${this._isInvalid
           ? html`
-              <div class="error">
+              <div id="error" class="error">
                 ${this.invalidText || this._internalValidationMsg}
               </div>
             `
           : null}
         ${this.warnText !== '' && !this._isInvalid
-          ? html`<div class="warn">${this.warnText}</div>`
+          ? html`<div id="warning" class="warn">${this.warnText}</div>`
           : null}
       </div>
     `;
