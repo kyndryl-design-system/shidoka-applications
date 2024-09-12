@@ -4,12 +4,15 @@
  * @author Hsu Ka An
  */
 
+$default-light-font-color: #3D3C3C;
+
+
 .shidoka-light-syntax-theme {
     background: var(--kd-color-background-ui-soft);
 
     code[class*="language-"],
     pre[class*="language-"] {
-        color: #3D3C3C;
+        color: $default-light-font-color;
         background: var(--kd-color-background-ui-soft);
         font-family: var(--kd-font-family-code-view);
 
@@ -37,6 +40,12 @@
     code[class*="language-"] ::selection {
         text-shadow: none;
         background: var(--kd-color-background-ui-soft);
+    }
+
+    .code-view__copy-button:disabled .copy-text,
+    .code-view__copy-button:disabled .copy-icon {
+        fill: $default-light-font-color;
+        color: $default-light-font-color;
     }
 
     @media print {

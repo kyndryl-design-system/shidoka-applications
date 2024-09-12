@@ -116,7 +116,8 @@ export default {
       control: { type: 'boolean' },
     },
     darkTheme: {
-      control: { type: 'boolean' },
+      options: ['light', 'dark', 'darker'],
+      control: { type: 'select' },
     },
   },
 };
@@ -125,7 +126,8 @@ const args = {
   codeSnippet: defaultTemplateCodes.DEFAULT,
   language: '',
   size: 'md',
-  darkTheme: true,
+  maxHeight: 0,
+  darkTheme: 'darker',
   codeViewLabel: 'Block Code View',
   copyOptionVisible: true,
   codeViewExpandable: true,
@@ -144,7 +146,8 @@ const Template = (args) => {
       codeSnippet=${args.codeSnippet}
       language=${args.language}
       size=${args.size}
-      ?darkTheme=${args.darkTheme}
+      maxHeight=${args.maxHeight}
+      darkTheme=${args.darkTheme}
       codeViewLabel=${args.codeViewLabel}
       ?copyOptionVisible=${args.copyOptionVisible}
       ?codeViewExpandable=${args.codeViewExpandable}

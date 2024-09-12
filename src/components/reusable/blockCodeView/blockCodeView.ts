@@ -49,9 +49,12 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   size = 'md';
 
-  /** Dark theme boolean to display theming differences -- light/dark background and contrasting text -- (TEMPORARY: until global dark mode is available) */
-  @property({ type: Boolean })
-  darkTheme = false;
+  @property({ type: Number })
+  maxHeight: number | null = null;
+
+  /** Dark theme to display theming differences -- light/dark background and contrasting text -- `light`, `dark`, `darker` */
+  @property({ type: String })
+  darkTheme: 'light' | 'dark' | 'darker' = 'darker';
 
   /** Optionally display label value above code snippet. */
   @property({ type: String })
@@ -118,6 +121,10 @@ export class BlockCodeView extends LitElement {
   private _highlightedCode = '';
 
   override render() {
+    const containerStyle = this.maxHeight
+      ? `max-height: ${this.maxHeight}px;`
+      : '';
+
     return html`
       ${this.codeViewLabel
         ? html`<div class="code-view__label">
@@ -131,11 +138,16 @@ export class BlockCodeView extends LitElement {
           [`size--${this.size}`]: true,
           'single-line': this._isSingleLine,
           'multi-line': !this._isSingleLine,
-          'shidoka-dark-syntax-theme': this.darkTheme,
-          'shidoka-light-syntax-theme': !this.darkTheme,
+          'copy-button-text-true':
+            this.copyButtonText && this.copyButtonText.length > 0,
+          'copy-button-text-false': !this.copyButtonText,
+          'shidoka-darker-syntax-theme': this.darkTheme === 'darker',
+          'shidoka-dark-syntax-theme': this.darkTheme === 'dark',
+          'shidoka-light-syntax-theme': this.darkTheme === 'light',
           'expanded-code-view': this.codeExpanded,
           'has-overflow': this.hasOverflow,
         })}"
+        style=${containerStyle}
       >
         <pre
           @keydown=${this.handleKeypress}
@@ -194,9 +206,11 @@ export class BlockCodeView extends LitElement {
   override updated(changedProperties: Map<string, unknown>) {
     if (
       changedProperties.has('codeSnippet') ||
-      changedProperties.has('language')
+      changedProperties.has('language') ||
+      changedProperties.has('maxHeight')
     ) {
       this.highlightCode();
+      this.checkOverflow();
     }
 
     if (changedProperties.has('copyButtonText')) {
@@ -257,8 +271,6 @@ export class BlockCodeView extends LitElement {
       if (Prism.languages[lang]) {
         const tokens = Prism.tokenize(code, Prism.languages[lang]);
         const relevance = this.calculateRelevance(tokens, lang);
-
-        console.log(`Language: ${lang}, Relevance: ${relevance}`);
 
         if (relevance > bestMatch.relevance) {
           bestMatch = { language: lang, relevance };
@@ -344,15 +356,17 @@ export class BlockCodeView extends LitElement {
   }
 
   private checkOverflow() {
-    requestAnimationFrame(() => {
-      const container = this.shadowRoot?.querySelector(
-        '.code-view__container'
-      ) as HTMLElement;
-      const pre = container.querySelector('pre') as HTMLElement;
-      if (pre && container) {
-        this.hasOverflow = pre.scrollHeight > container.clientHeight;
-      }
-    });
+    setTimeout(() => {
+      requestAnimationFrame(() => {
+        const container = this.shadowRoot?.querySelector(
+          '.code-view__container'
+        ) as HTMLElement;
+        const pre = container.querySelector('pre') as HTMLElement;
+        if (pre && container) {
+          this.hasOverflow = pre.scrollHeight > container.clientHeight;
+        }
+      });
+    }, 100);
   }
 
   // detect single vs multi-line block code snippet for custom default styling

@@ -88,6 +88,14 @@ $border-radius: 4px;
             max-width: 1082px;
             width: 95%;
 
+            &.copy-button-text-true {
+                padding-right: 110px;
+            }
+
+            &.copy-button-text-false {
+                padding-right: 50px;
+            }
+
             pre {
                 padding: 12px 16px;
                 display: flex;
@@ -108,10 +116,6 @@ $border-radius: 4px;
                 max-width: 650px;
             }
 
-            &.size--sm pre code {
-                font-size: 12px;
-            }
-
             .code-view__copy-button {
                 display: flex;
                 align-items: center;
@@ -129,22 +133,36 @@ $border-radius: 4px;
             pre {
                 transition: max-height $transition-duration ease-in-out;
                 overflow-y: auto;
+                overflow-x: hidden;
+                width: 82%;
+            }
+
+            code {
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                word-break: break-all;
+                overflow-x: hidden;
+                max-height: inherit;
+                display: inline-block;
+                width: 100%;
             }
 
             @mixin size-variant($max-width, $max-height) {
                 max-width: $max-width;
 
-                pre {
-                    max-height: $max-height;
+                &:not(.expanded-code-view) {
+                    &:not([style*="max-height"]) {
+                        max-height: $max-height;
+                    }
+
+                    pre {
+                        max-height: inherit;
+                    }
                 }
             }
 
             &.size--sm {
                 @include size-variant(480px, 240px);
-
-                code {
-                    font-size: 12px;
-                }
             }
 
             &.size--md {

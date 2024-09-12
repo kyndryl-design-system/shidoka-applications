@@ -4,13 +4,47 @@
  * @author Hsu Ka An
  */
 
+$default-dark-bg: #272727;
+$default-dark-font-color: #FFFFFF;
+
 .shidoka-dark-syntax-theme {
     background: var(--kd-color-background-ui-strong);
 
     code[class*="language-"],
     pre[class*="language-"] {
-        color: #FFFFFF;
         background: var(--kd-color-background-ui-strong);
+    }
+
+    pre[class*="language-"]::selection,
+    pre[class*="language-"] ::selection,
+    code[class*="language-"]::selection,
+    code[class*="language-"] ::selection {
+        background: var(--kd-color-background-ui-strong);
+    }
+}
+
+.shidoka-darker-syntax-theme {
+    background: $default-dark-bg;
+
+    code[class*="language-"],
+    pre[class*="language-"] {
+        background: $default-dark-bg;
+    }
+
+    pre[class*="language-"]::selection,
+    pre[class*="language-"] ::selection,
+    code[class*="language-"]::selection,
+    code[class*="language-"] ::selection {
+        background: $default-dark-bg;
+    }
+}
+
+.shidoka-dark-syntax-theme,
+.shidoka-darker-syntax-theme {
+
+    code[class*="language-"],
+    pre[class*="language-"] {
+        color: $default-dark-font-color;
         font-family: var(--kd-font-family-code-view);
 
         -moz-tab-size: 4;
@@ -34,8 +68,8 @@
     .code-view__copy-button .copy-text,
     .code-view__copy-button .copy-icon,
     .code-view__expand-button .expand-icon {
-        fill: white;
-        color: white;
+        fill: $default-dark-font-color;
+        color: $default-dark-font-color;
     }
 
     .code-view__copy-button:hover .copy-text,
@@ -47,8 +81,8 @@
 
     .code-view__copy-button:disabled:hover .copy-text,
     .code-view__copy-button:disabled:hover .copy-icon {
-        fill: white;
-        color: white;
+        fill: $default-dark-font-color;
+        color: $default-dark-font-color;
     }
 
 
@@ -58,7 +92,6 @@
     code[class*="language-"]::selection,
     code[class*="language-"] ::selection {
         text-shadow: none;
-        background: var(--kd-color-background-ui-strong);
     }
 
     @media print {
