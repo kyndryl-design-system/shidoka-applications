@@ -37,9 +37,9 @@ export class BlockCodeView extends LitElement {
     ShidokaDarkTheme,
   ];
 
-  /** Code snippet to be formatted and displayed within the html `<code>` element. */
+  /** Dark theme -- sets background and text contrast */
   @property({ type: String })
-  codeSnippet = '';
+  darkTheme: 'light' | 'dark' | 'darker' = 'darker';
 
   /** If provided, syntax highlighting will default to this value, otherwise it will attempt to auto-detect language. */
   @property({ type: String })
@@ -52,10 +52,6 @@ export class BlockCodeView extends LitElement {
   /** Dev modifiable code snippet max-height. */
   @property({ type: Number })
   maxHeight: number | null = null;
-
-  /** Dark theme -- changes background and text contrast */
-  @property({ type: String })
-  darkTheme: 'light' | 'dark' | 'darker' = 'darker';
 
   /** Optionally display label value above code snippet. */
   @property({ type: String })
@@ -84,6 +80,10 @@ export class BlockCodeView extends LitElement {
   /** Copy button title attr value. */
   @property({ type: String })
   copyButtonTitleAttr = '';
+
+  /** Code snippet to be formatted and displayed within the html `<code>` element. */
+  @property({ type: String })
+  codeSnippet = '';
 
   /** Auto-detect whether code snippet is single line (boolean) -- styled accordingly (boolean).
    * @internal
@@ -399,20 +399,39 @@ export class BlockCodeView extends LitElement {
     }, 100);
   }
 
+  // ensures <pre> code snippet has correct indentation and formatting
+  private removeLeadingWhitespace(code: string): string {
+    if (!code) return '';
+    const lines = code.split('\n');
+    const minIndent = this.findMinimumIndent(lines);
+    return lines
+      .map((line) => line.slice(minIndent))
+      .join('\n')
+      .trim();
+  }
+
+  private findMinimumIndent(lines: string[]): number {
+    return lines.reduce((min, line) => {
+      const match = line.match(/^[ \t]*/);
+      const indent = match ? match[0].length : 0;
+      return line.trim().length ? Math.min(min, indent) : min;
+    }, Infinity);
+  }
+
   // detect single vs multi-line block code snippet for custom default styling
   private isSingleLineCode(code: string): boolean {
     return code.trim().split('\n').length === 1;
   }
+  //////*
 
   // for @action printout
   private formatExampleCode(code: string) {
     return { code };
   }
-  //////*
 
   //
-  // BUTTON CLICK ACTIONS
-  // copy code button click lyric
+  // BUTTON CLICK ACTION
+  // copy code button click logic
   private copyCode(e: Event) {
     const originalText = this._copyState.text;
     navigator.clipboard
@@ -439,6 +458,7 @@ export class BlockCodeView extends LitElement {
       .catch((err) => console.error('Failed to copy code:', err));
   }
 
+  // expand code snippet container logic
   private getContainerStyle(): string {
     if (this.codeExpanded) {
       return this._expandedHeight
@@ -486,25 +506,6 @@ export class BlockCodeView extends LitElement {
         e.preventDefault();
       }
     }
-  }
-
-  // ensures <pre> code snippet has correct indentation and formatting
-  private removeLeadingWhitespace(code: string): string {
-    if (!code) return '';
-    const lines = code.split('\n');
-    const minIndent = this.findMinimumIndent(lines);
-    return lines
-      .map((line) => line.slice(minIndent))
-      .join('\n')
-      .trim();
-  }
-
-  private findMinimumIndent(lines: string[]): number {
-    return lines.reduce((min, line) => {
-      const match = line.match(/^[ \t]*/);
-      const indent = match ? match[0].length : 0;
-      return line.trim().length ? Math.min(min, indent) : min;
-    }, Infinity);
   }
   //////*
 }

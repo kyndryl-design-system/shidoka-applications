@@ -10,7 +10,7 @@ import InlineCodeViewStyles from './inlineCodeView.scss';
 export class InlineCodeView extends LitElement {
   static override styles = InlineCodeViewStyles;
 
-  /** Dark theme -- changes background and text contrast */
+  /** Dark theme -- sets background and text contrast */
   @property({ type: String })
   darkTheme: 'light' | 'dark' | 'darker' = 'darker';
 

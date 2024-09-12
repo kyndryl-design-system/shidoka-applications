@@ -19,8 +19,8 @@ export default {
 };
 
 const args = {
-  snippetFontSize: 14,
   darkTheme: 'darker',
+  snippetFontSize: 14,
   unnamed: `console.log("Hello, World!");`,
 };
 

@@ -11,14 +11,6 @@ $border-radius: 4px;
     margin-bottom: 0;
 }
 
-.code-view__container {
-    &.animating-expansion {
-        .code-snippet-wrapper {
-            transition: max-height $transition-duration ease-in-out;
-        }
-    }
-}
-
 .code-view {
     &__label {
         margin-bottom: var(--kd-spacing-12);
@@ -63,14 +55,21 @@ $border-radius: 4px;
         right: 13px;
         transition: transform $transition-duration ease-in-out;
     }
+}
 
+.code-view {
     &__container {
+        &.animating-expansion {
+            .code-snippet-wrapper {
+                transition: max-height $transition-duration ease-in-out;
+            }
+        }
+
         position: relative;
         overflow: hidden;
         border-radius: $border-radius;
 
         pre {
-            padding: 0 16px;
             tab-size: 2;
             white-space: pre;
             min-width: 350px;
@@ -135,7 +134,7 @@ $border-radius: 4px;
                 overflow: -moz-scrollbars-horizontal;
 
                 code {
-                    padding: 12px 16px 12px 16px;
+                    padding: 12px 16px;
 
                 }
             }
@@ -172,6 +171,8 @@ $border-radius: 4px;
         &.multi-line {
             width: 95%;
             position: relative;
+            scrollbar-width: thin;
+            overflow: -moz-scrollbars-vertical;
 
             .code-view__copy-button {
                 top: 10px;
@@ -185,60 +186,51 @@ $border-radius: 4px;
                 transition: max-height $transition-duration ease-in-out;
             }
 
-            &.has-overflow {
-                .code-snippet-wrapper {
-                    pre code {
-                        padding-bottom: 20px;
-                    }
-                }
+            pre,
+            .code-snippet-wrapper {
+                transition: max-height $transition-duration ease-in-out;
             }
 
             pre {
                 margin: 0;
-                overflow-x: auto;
-                overflow-y: auto;
+                padding: 0 110px 0 16px;
+                overflow: auto;
                 max-height: inherit;
-                padding-right: 110px;
                 box-sizing: border-box;
                 width: 100%;
-                transition: max-height $transition-duration ease-in-out;
             }
 
             code {
-                padding: 16px;
                 display: inline-block;
+                padding: 16px 16px 22px;
                 min-width: 100%;
+                max-width: 75%;
                 box-sizing: border-box;
                 white-space: pre-wrap;
                 word-wrap: break-word;
                 word-break: normal;
-                max-width: 75%;
+            }
+
+            &.has-overflow .code-snippet-wrapper pre code {
+                padding-bottom: 20px;
             }
 
             &::-webkit-scrollbar {
                 -webkit-appearance: none;
-                width: auto;
-                height: 8px;
-            }
+                width: 6px;
+                height: auto;
 
-            &::-webkit-scrollbar-track {
-                border-radius: 4px;
+                &-track,
+                &-thumb {
+                    border-radius: 4px;
+                }
             }
-
-            &::-webkit-scrollbar-thumb {
-                border-radius: 4px;
-            }
-
-            scrollbar-width: thin;
-            overflow: -moz-scrollbars-vertical;
 
             @mixin size-variant($max-width, $max-height) {
                 max-width: $max-width;
 
-                &:not(.expanded-code-view) {
-                    .code-snippet-wrapper {
-                        max-height: $max-height;
-                    }
+                &:not(.expanded-code-view) .code-snippet-wrapper {
+                    max-height: $max-height;
                 }
             }
 
@@ -269,12 +261,46 @@ $border-radius: 4px;
     }
 }
 
-code.language-bash:before {
-    content: '$';
+@media (min-width: 768px) {
+
+    .code-view__container.single-line.size--lg,
+    .code-view__container.multi-line.size--lg {
+        max-width: 75%;
+    }
+}
+
+// PREPENDED NON-COPYABLE COMMANDLINE SYMBOLS
+
+$prefixes: (
+    'bash': '$',
+    'powershell': 'PS>',
+    'cmd': 'C:\\>',
+    'batch': 'C:\\>',
+    'python-repl': '>>>',
+    'ruby-repl': 'irb>',
+    'sql': 'sql>',
+    'mongodb': 'mongo>',
+    'r': '>',
+    'matlab': '>>',
+    'node': '>',
+    'dockerfile': 'docker$',
+    'git': 'git$'
+);
+
+@mixin prefix-style {
     opacity: 0.7;
     display: inline-block;
     padding-right: 15px;
 }
+
+@each $lang, $symbol in $prefixes {
+    code.language-#{$lang}:before {
+        content: '#{$symbol}';
+        @include prefix-style;
+    }
+}
+
+///////
 
 @keyframes fadeIn {
     from {
@@ -283,13 +309,5 @@ code.language-bash:before {
 
     to {
         opacity: 1;
-    }
-}
-
-@media (min-width: 768px) {
-
-    .code-view__container.single-line.size--lg,
-    .code-view__container.multi-line.size--lg {
-        max-width: 75%;
     }
 }
