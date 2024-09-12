@@ -76,6 +76,13 @@ export class Notification extends LitElement {
   @property({ type: String }) 
   notificationRole?: 'alert' | 'log' | 'status';
 
+  /** 
+   * Status label (Required to support accessibility). 
+   * Assign the localized string value for the word **Status**.
+   * */
+  @property({ type: String })
+  statusLabel = 'Status';
+
   /** Set tagColor based on provided tagStatus.
    * @internal
    */
@@ -222,7 +229,7 @@ export class Notification extends LitElement {
                 label=${this.textStrings[this.tagStatus]}
                 tagColor=${this._tagColor[this.tagStatus]}
                 shade="dark"
-                aria-label="Status"
+                aria-label=${this.statusLabel}
               ></kyn-tag>`
             : null}
         </div>
