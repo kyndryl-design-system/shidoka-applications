@@ -4,26 +4,11 @@
  * @author Hsu Ka An
  */
 
-$default-dark-bg: #272727;
+$default-dark-bg: var(--kd-color-background-ui-strong);
+$default-darker-bg: #272727;
 $default-dark-font-color: #FFFFFF;
 
 .shidoka-dark-syntax-theme {
-    background: var(--kd-color-background-ui-strong);
-
-    code[class*="language-"],
-    pre[class*="language-"] {
-        background: var(--kd-color-background-ui-strong);
-    }
-
-    pre[class*="language-"]::selection,
-    pre[class*="language-"] ::selection,
-    code[class*="language-"]::selection,
-    code[class*="language-"] ::selection {
-        background: var(--kd-color-background-ui-strong);
-    }
-}
-
-.shidoka-darker-syntax-theme {
     background: $default-dark-bg;
 
     code[class*="language-"],
@@ -36,6 +21,22 @@ $default-dark-font-color: #FFFFFF;
     code[class*="language-"]::selection,
     code[class*="language-"] ::selection {
         background: $default-dark-bg;
+    }
+}
+
+.shidoka-darker-syntax-theme {
+    background: $default-darker-bg;
+
+    code[class*="language-"],
+    pre[class*="language-"] {
+        background: $default-darker-bg;
+    }
+
+    pre[class*="language-"]::selection,
+    pre[class*="language-"] ::selection,
+    code[class*="language-"]::selection,
+    code[class*="language-"] ::selection {
+        background: $default-darker-bg;
     }
 }
 
@@ -173,4 +174,43 @@ $default-dark-font-color: #FFFFFF;
     .token.entity {
         cursor: help;
     }
+
+    /// dark-mode scrollbar styles
+    pre {
+        &::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        scrollbar-color: rgba(255, 255, 255, 0.5) rgba(255, 255, 255, 0.1);
+    }
+
+    &.multi-line .code-snippet-wrapper {
+        pre {
+            &::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.5);
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: rgba(255, 255, 255, 0.7);
+            }
+
+            scrollbar-color: rgba(255, 255, 255, 0.5) rgba(255, 255, 255, 0.1);
+        }
+    }
+
+    ///
 }

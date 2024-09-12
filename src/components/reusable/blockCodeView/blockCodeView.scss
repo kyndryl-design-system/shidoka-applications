@@ -11,6 +11,14 @@ $border-radius: 4px;
     margin-bottom: 0;
 }
 
+.code-view__container {
+    &.animating-expansion {
+        .code-snippet-wrapper {
+            transition: max-height $transition-duration ease-in-out;
+        }
+    }
+}
+
 .code-view {
     &__label {
         margin-bottom: var(--kd-spacing-12);
@@ -30,10 +38,11 @@ $border-radius: 4px;
     }
 
     &__copy-button {
-        top: 1px;
-        right: 3px;
         width: auto;
-        padding: 10px 8px;
+
+        button {
+            padding: 4px;
+        }
 
         .copy-text {
             margin-left: 4px;
@@ -96,6 +105,11 @@ $border-radius: 4px;
                 padding-right: 50px;
             }
 
+            .code-view__copy-button {
+                top: 0;
+                right: 0;
+            }
+
             pre {
                 padding: 12px 16px;
                 display: flex;
@@ -103,14 +117,45 @@ $border-radius: 4px;
                 line-height: 1.5;
                 min-height: 40px;
                 width: 100%;
+                overflow-x: auto;
+                overflow-y: hidden;
+
+                &::-webkit-scrollbar {
+                    width: auto;
+                    height: 8px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    border-radius: 4px;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    border-radius: 4px;
+                }
+
+                scrollbar-width: thin;
+                overflow: -moz-scrollbars-horizontal;
 
                 code {
-                    overflow-x: auto;
                     padding: 0 50px 0 0;
                 }
             }
 
-            &.size--sm,
+            pre {
+                -ms-overflow-style: -ms-autohiding-scrollbar;
+            }
+
+            @supports not (overflow-x: overlay) {
+                pre {
+                    padding-bottom: 20px;
+                }
+            }
+
+            &.size--sm {
+                width: fit-content;
+                max-width: 450px;
+            }
+
             &.size--md {
                 width: fit-content;
                 max-width: 650px;
@@ -127,36 +172,76 @@ $border-radius: 4px;
         }
 
         &.multi-line {
-            padding: 3px 0 6px;
+            padding: 3px 0;
             width: 95%;
+            position: relative;
+
+            .code-view__copy-button {
+                top: 10px;
+                right: 10px;
+            }
+
+            &.has-overflow {
+                pre {
+                    padding-bottom: 8px;
+                }
+            }
+
+            .code-snippet-wrapper {
+                position: relative;
+                overflow: hidden;
+                max-height: inherit;
+                transition: max-height $transition-duration ease-in-out;
+            }
 
             pre {
-                transition: max-height $transition-duration ease-in-out;
+                margin: 0;
+                padding: 0 16px;
+                overflow-x: auto;
                 overflow-y: auto;
-                overflow-x: hidden;
-                width: 82%;
+                max-height: inherit;
+                padding-right: 110px;
+                box-sizing: border-box;
+                width: 100%;
+                min-height: 150px;
+                transition: max-height $transition-duration ease-in-out;
             }
 
             code {
+                display: inline-block;
+                min-width: 100%;
+                min-height: 150px;
+                padding: 10px;
+                box-sizing: border-box;
                 white-space: pre-wrap;
                 word-wrap: break-word;
-                word-break: break-all;
-                overflow-x: hidden;
-                max-height: inherit;
-                display: inline-block;
-                width: 100%;
+                word-break: normal;
+                max-width: 75%;
             }
+
+            &::-webkit-scrollbar {
+                -webkit-appearance: none;
+                width: auto;
+                height: 8px;
+            }
+
+            &::-webkit-scrollbar-track {
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                border-radius: 4px;
+            }
+
+            scrollbar-width: thin;
+            overflow: -moz-scrollbars-vertical;
 
             @mixin size-variant($max-width, $max-height) {
                 max-width: $max-width;
 
                 &:not(.expanded-code-view) {
-                    &:not([style*="max-height"]) {
+                    .code-snippet-wrapper {
                         max-height: $max-height;
-                    }
-
-                    pre {
-                        max-height: inherit;
                     }
                 }
             }
@@ -177,7 +262,7 @@ $border-radius: 4px;
                 @include size-variant(95%, 2000px);
             }
 
-            &.expanded-code-view pre {
+            &.expanded-code-view .code-snippet-wrapper {
                 max-height: 2000px;
             }
         }

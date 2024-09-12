@@ -10,9 +10,9 @@ import InlineCodeViewStyles from './inlineCodeView.scss';
 export class InlineCodeView extends LitElement {
   static override styles = InlineCodeViewStyles;
 
-  /** Dark theme boolean to display theming differences -- light/dark background and contrasting text -- (TEMPORARY: until global dark mode is available) */
-  @property({ type: Boolean })
-  darkTheme = false;
+  /** Dark theme -- changes background and text contrast */
+  @property({ type: String })
+  darkTheme: 'light' | 'dark' | 'darker' = 'darker';
 
   /** Font size value (px) to match code snippet font-size with surrounding text */
   @property({ type: Number })
@@ -23,8 +23,9 @@ export class InlineCodeView extends LitElement {
       <code
         class="${classMap({
           'inline-code-view': true,
-          'shidoka-dark-syntax-theme': this.darkTheme,
-          'shidoka-light-syntax-theme': !this.darkTheme,
+          'shidoka-darker-syntax-theme': this.darkTheme === 'darker',
+          'shidoka-dark-syntax-theme': this.darkTheme === 'dark',
+          'shidoka-light-syntax-theme': this.darkTheme === 'light',
         })}"
         style="--inline-snippet-font-size: ${this.snippetFontSize};"
       >

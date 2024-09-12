@@ -1,13 +1,17 @@
 @use '../../../common/scss/global.scss';
 
+$default-dark-bg: var(--kd-color-background-ui-strong);
+$default-darker-bg: #272727;
+$default-dark-font-color: #FFFFFF;
+$default-light-bg: #F9F9F9;
+$default-light-font-color: #3D3C3C;
+
 :host {
     display: inline-block;
 }
 
 code {
     font-family: monospace;
-    color: var(--kd-color-text-inversed);
-    background-color: var(--kd-color-background-ui-strong);
     line-height: 1.5;
     word-break: break-word;
     vertical-align: text-bottom;
@@ -17,14 +21,18 @@ code {
     font-size: max(calc(var(--inline-snippet-font-size, 14) * 1px), 14px);
     border-radius: 1px;
 
-    &.shidoka-dark-syntax-theme {
-        color: #FFFFFF;
-        background: var(--kd-color-background-ui-strong);
+    &.shidoka-darker-syntax-theme {
+        background: $default-darker-bg;
+        color: $default-dark-font-color;
+    }
 
+    &.shidoka-dark-syntax-theme {
+        background: $default-dark-bg;
+        color: $default-dark-font-color;
     }
 
     &.shidoka-light-syntax-theme {
-        color: #3D3C3C;
-        background: var(--kd-color-background-ui-soft);
+        background: $default-light-bg;
+        color: $default-light-font-color;
     }
 }

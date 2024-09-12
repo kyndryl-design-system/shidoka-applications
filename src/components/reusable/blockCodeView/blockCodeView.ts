@@ -45,14 +45,14 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   language = '';
 
-  /** Code snippet size: `auto`, `sm`, `md`, or `lg`. */
+  /** Code snippet size. */
   @property({ type: String })
-  size = 'md';
+  size: 'auto' | 'sm' | 'md' | 'lg' = 'md';
 
   @property({ type: Number })
   maxHeight: number | null = null;
 
-  /** Dark theme to display theming differences -- light/dark background and contrasting text -- `light`, `dark`, `darker` */
+  /** Dark theme -- changes background and text contrast */
   @property({ type: String })
   darkTheme: 'light' | 'dark' | 'darker' = 'darker';
 
@@ -126,11 +126,13 @@ export class BlockCodeView extends LitElement {
       : '';
 
     return html`
-      ${this.codeViewLabel
-        ? html`<div class="code-view__label">
-            <label>${this.codeViewLabel}</label>
-          </div>`
-        : null}
+      ${
+        this.codeViewLabel
+          ? html`<div class="code-view__label">
+              <label>${this.codeViewLabel}</label>
+            </div>`
+          : null
+      }
       <div
         aria-label=${ifDefined(this.ariaLabelAttr)}
         class="${classMap({
@@ -149,56 +151,64 @@ export class BlockCodeView extends LitElement {
         })}"
         style=${containerStyle}
       >
-        <pre
-          @keydown=${this.handleKeypress}
-          role="region"
-        ><code tabindex="0" class="language-${this
-          ._effectiveLanguage}">${unsafeHTML(
-          this._highlightedCode
-        )}</code></pre>
+          <div class="code-snippet-wrapper">
+              <pre
+              @keydown=${this.handleKeypress}
+              role="region"
+            ><code tabindex="0" class="language-${
+              this._effectiveLanguage
+            }">${unsafeHTML(this._highlightedCode)}</code></pre>
+          </div>
 
-        ${this.copyOptionVisible
-          ? html`<kd-button
-              class="code-view__copy-button"
-              kind="tertiary"
-              size="small"
-              iconPosition="left"
-              ?disabled=${this._copyState.copied}
-              title=${ifDefined(this.copyButtonTitleAttr)}
-              name=${ifDefined(this.copyButtonDescriptionAttr)}
-              description=${ifDefined(this.copyButtonDescriptionAttr)}
-              @click=${this.copyCode}
-            >
-              <kd-icon
-                slot="icon"
-                class="copy-icon"
-                .icon=${this._copyState.copied ? checkmarkIcon : copyIcon}
-              ></kd-icon>
-              ${this._copyState.text
-                ? html`<span class="copy-text">${this._copyState.text}</span>`
-                : null}
-            </kd-button>`
-          : null}
-        ${this.codeViewExpandable && this.hasOverflow
-          ? html`<kd-button
-              class="code-view__expand-button"
-              kind="tertiary"
-              size="small"
-              iconPosition="left"
-              title="Expand/Collapse code snippet"
-              name="toggle-code-expanded"
-              description="Click to ${this.codeExpanded
-                ? 'collapse'
-                : 'expand'} the full code snippet"
-              @click=${this.expandCodeView}
-            >
-              <kd-icon
-                slot="icon"
-                class="expand-icon"
-                .icon=${chevronDown}
-              ></kd-icon>
-            </kd-button>`
-          : null}
+          ${
+            this.copyOptionVisible
+              ? html`<kd-button
+                  class="code-view__copy-button"
+                  kind="tertiary"
+                  size="small"
+                  iconPosition="left"
+                  ?disabled=${this._copyState.copied}
+                  title=${ifDefined(this.copyButtonTitleAttr)}
+                  name=${ifDefined(this.copyButtonDescriptionAttr)}
+                  description=${ifDefined(this.copyButtonDescriptionAttr)}
+                  @click=${this.copyCode}
+                >
+                  <kd-icon
+                    slot="icon"
+                    class="copy-icon"
+                    .icon=${this._copyState.copied ? checkmarkIcon : copyIcon}
+                  ></kd-icon>
+                  ${this._copyState.text
+                    ? html`<span class="copy-text"
+                        >${this._copyState.text}</span
+                      >`
+                    : null}
+                </kd-button>`
+              : null
+          }
+          ${
+            this.codeViewExpandable && this.hasOverflow
+              ? html`<kd-button
+                  class="code-view__expand-button"
+                  kind="tertiary"
+                  size="small"
+                  iconPosition="left"
+                  title="Expand/Collapse code snippet"
+                  name="toggle-code-expanded"
+                  description="Click to ${this.codeExpanded
+                    ? 'collapse'
+                    : 'expand'} the full code snippet"
+                  @click=${this.expandCodeView}
+                >
+                  <kd-icon
+                    slot="icon"
+                    class="expand-icon"
+                    .icon=${chevronDown}
+                  ></kd-icon>
+                </kd-button>`
+              : null
+          }
+        </div>
       </div>
     `;
   }

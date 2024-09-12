@@ -123,11 +123,10 @@ export default {
 };
 
 const args = {
-  codeSnippet: defaultTemplateCodes.DEFAULT,
+  darkTheme: 'darker',
   language: '',
   size: 'md',
   maxHeight: 0,
-  darkTheme: 'darker',
   codeViewLabel: 'Block Code View',
   copyOptionVisible: true,
   codeViewExpandable: true,
@@ -135,6 +134,7 @@ const args = {
   ariaLabelAttr: '',
   copyButtonDescriptionAttr: 'copy code button',
   copyButtonTitleAttr: 'Copy code',
+  codeSnippet: defaultTemplateCodes.DEFAULT,
 };
 
 const Template = (args) => {
@@ -143,11 +143,10 @@ const Template = (args) => {
 
   return html`
     <kyn-block-code-view
-      codeSnippet=${args.codeSnippet}
+      darkTheme=${args.darkTheme}
       language=${args.language}
       size=${args.size}
       maxHeight=${args.maxHeight}
-      darkTheme=${args.darkTheme}
       codeViewLabel=${args.codeViewLabel}
       ?copyOptionVisible=${args.copyOptionVisible}
       ?codeViewExpandable=${args.codeViewExpandable}
@@ -155,6 +154,7 @@ const Template = (args) => {
       ariaLabelAttr=${ariaLabelAttr}
       copyButtonDescriptionAttr=${args.copyButtonDescriptionAttr}
       copyButtonTitleAttr=${args.copyButtonTitleAttr}
+      codeSnippet=${args.codeSnippet}
       @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
     >
     </kyn-block-code-view>
@@ -169,60 +169,60 @@ DefaultBlockView.args = {
 export const SingleLineView = Template.bind({});
 SingleLineView.args = {
   ...args,
-  codeSnippet: defaultTemplateCodes.SINGLE_LINE,
   language: '',
   codeViewLabel: 'Single Line Code Snippet',
   copyOptionVisible: true,
   copyButtonText: '',
+  codeSnippet: defaultTemplateCodes.SINGLE_LINE,
 };
 
 export const JavascriptExample = Template.bind({});
 JavascriptExample.args = {
   ...args,
-  codeSnippet: defaultTemplateCodes.JAVASCRIPT,
   language: '',
   codeViewLabel: 'Javascript Code Snippet',
   copyOptionVisible: true,
   codeViewExpandable: true,
   copyButtonText: 'Copy',
+  codeSnippet: defaultTemplateCodes.JAVASCRIPT,
 };
 
 export const HTMLExample = Template.bind({});
 HTMLExample.args = {
   ...args,
-  codeSnippet: defaultTemplateCodes.HTML,
   language: '',
   codeViewLabel: 'HTML Code Snippet',
   copyOptionVisible: true,
   copyButtonText: '',
+  codeSnippet: defaultTemplateCodes.HTML,
 };
 
 export const CSSExample = Template.bind({});
 CSSExample.args = {
   ...args,
-  codeSnippet: defaultTemplateCodes.CSS,
   language: '',
   codeViewLabel: 'CSS Code Snippet',
   copyOptionVisible: true,
   copyButtonText: 'Copy',
+  codeSnippet: defaultTemplateCodes.CSS,
 };
 
 export const SwiftExample = Template.bind({});
 SwiftExample.args = {
   ...args,
-  codeSnippet: defaultTemplateCodes.SWIFT,
   language: 'swift',
   codeViewLabel: 'Swift Code Snippet (manually configured language name)',
   copyOptionVisible: true,
-  copyButtonText: 'Copy',
+  copyButtonText: '',
+  codeSnippet: defaultTemplateCodes.SWIFT,
 };
 
 export const BashExample = Template.bind({});
 BashExample.args = {
   ...args,
-  codeSnippet: defaultTemplateCodes.BASH,
   language: 'bash',
   codeViewLabel: 'Bash Code Snippet (manually configured language name)',
   copyOptionVisible: true,
-  copyButtonText: 'Copy',
+  copyButtonText: '',
+  codeSnippet: defaultTemplateCodes.BASH,
 };

@@ -4,16 +4,17 @@
  * @author Hsu Ka An
  */
 
+$default-light-bg: #F9F9F9;
 $default-light-font-color: #3D3C3C;
 
 
 .shidoka-light-syntax-theme {
-    background: var(--kd-color-background-ui-soft);
+    background: $default-light-bg;
 
     code[class*="language-"],
     pre[class*="language-"] {
         color: $default-light-font-color;
-        background: var(--kd-color-background-ui-soft);
+        background: $default-light-bg;
         font-family: var(--kd-font-family-code-view);
 
         -moz-tab-size: 4;
@@ -39,7 +40,7 @@ $default-light-font-color: #3D3C3C;
     code[class*="language-"]::selection,
     code[class*="language-"] ::selection {
         text-shadow: none;
-        background: var(--kd-color-background-ui-soft);
+        background: $default-light-bg;
     }
 
     .code-view__copy-button:disabled .copy-text,
@@ -128,4 +129,42 @@ $default-light-font-color: #3D3C3C;
     .token.entity {
         cursor: help;
     }
+
+
+    /// light-mode scrollbar styles
+    &.single-line .code-snippet-wrapper {
+        pre {
+            &::-webkit-scrollbar-thumb {
+                background: rgba(0, 0, 0, 0.3);
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: rgba(0, 0, 0, 0.5);
+            }
+
+            scrollbar-color: rgba(0, 0, 0, 0.3) rgba(255, 255, 255, 0.1);
+        }
+    }
+
+    &.multi-line .code-snippet-wrapper {
+        pre {
+            &::-webkit-scrollbar-track {
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: rgba(0, 0, 0, 0.3);
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: rgba(0, 0, 0, 0.5);
+            }
+
+            scrollbar-color: rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    ///
 }

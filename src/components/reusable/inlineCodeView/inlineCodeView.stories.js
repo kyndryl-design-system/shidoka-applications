@@ -12,14 +12,15 @@ export default {
   },
   argTypes: {
     darkTheme: {
-      control: 'boolean',
+      options: ['light', 'dark', 'darker'],
+      control: { type: 'select' },
     },
   },
 };
 
 const args = {
   snippetFontSize: 14,
-  darkTheme: true,
+  darkTheme: 'darker',
   unnamed: `console.log("Hello, World!");`,
 };
 
@@ -28,7 +29,7 @@ export const InlineCodeView = {
   render: (args) => {
     return html`
       <kyn-inline-code-view
-        ?darkTheme=${args.darkTheme}
+        darkTheme=${args.darkTheme}
         snippetFontSize=${args.snippetFontSize}
       >
         ${args.unnamed}
