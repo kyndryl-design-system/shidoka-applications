@@ -553,6 +553,7 @@ export class Dropdown extends FormMixin(LitElement) {
       case 32:
       case ENTER_KEY_CODE: {
         // select highlighted option
+        visibleOptions[highlightedIndex].highlighted = true;
         if (isListboxElOpened) {
           if (this.multiple) {
             visibleOptions[highlightedIndex].selected =
