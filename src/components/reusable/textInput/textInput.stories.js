@@ -46,7 +46,9 @@ const args = {
   minLength: undefined,
   maxLength: undefined,
   textStrings: {
+    requiredText: 'Required',
     clearAll: 'Clear all',
+    errorText: 'Error',
   },
 };
 

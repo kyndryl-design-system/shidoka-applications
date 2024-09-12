@@ -14,6 +14,13 @@ import TextInputScss from './textInput.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import clearIcon from '@carbon/icons/es/close/24';
 import errorIcon from '@carbon/icons/es/warning--filled/24';
+import { deepmerge } from 'deepmerge-ts';
+
+const _defaultTextStrings = {
+  requiredText: 'Required',
+  clearAll: 'Clear all',
+  errorText: 'Error',
+};
 
 /**
  * Text input.
@@ -74,9 +81,13 @@ export class TextInput extends FormMixin(LitElement) {
 
   /** Customizable text strings. */
   @property({ type: Object })
-  textStrings = {
-    clearAll: 'Clear all',
-  };
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
 
   /**
    * Queries the <input> DOM element.
@@ -106,7 +117,14 @@ export class TextInput extends FormMixin(LitElement) {
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
           for=${this.name}
         >
-          ${this.required ? html`<span class="required">*</span>` : null}
+          ${this.required
+            ? html`<abbr
+                class="required"
+                title=${this._textStrings.requiredText}
+                aria-label=${this._textStrings.requiredText}
+                >*</abbr
+              >`
+            : null}
           <slot></slot>
         </label>
 
@@ -143,15 +161,22 @@ export class TextInput extends FormMixin(LitElement) {
           />
 
           ${this._isInvalid
-            ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
+            ? html`
+                <kd-icon
+                  class="error-icon"
+                  role="img"
+                  aria-label=${this._textStrings.errorText}
+                  .icon=${errorIcon}
+                ></kd-icon>
+              `
             : null}
           ${this.value !== ''
             ? html`
                 <button
                   ?disabled=${this.disabled}
                   class="clear"
-                  aria-label=${this.textStrings.clearAll}
-                  title=${this.textStrings.clearAll}
+                  aria-label=${this._textStrings.clearAll}
+                  title=${this._textStrings.clearAll}
                   @click=${() => this._handleClear()}
                 >
                   <kd-icon .icon=${clearIcon}></kd-icon>
@@ -245,6 +270,12 @@ export class TextInput extends FormMixin(LitElement) {
 
   private determineIfSlotted() {
     this.iconSlotted = this.iconSlot.length ? true : false;
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
   }
 }
 
