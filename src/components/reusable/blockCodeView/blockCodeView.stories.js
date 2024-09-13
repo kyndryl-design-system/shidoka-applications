@@ -2,8 +2,6 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import './index';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-
 const defaultTemplateCodes = {
   DEFAULT: `
     const greetUser = (name) => {
@@ -130,7 +128,7 @@ export default {
 
 const args = {
   darkTheme: 'darker',
-  language: '',
+  languages: [],
   size: 'md',
   maxHeight: null,
   codeViewLabel: 'Block Code View',
@@ -151,7 +149,7 @@ const Template = (args) => {
   return html`
     <kyn-block-code-view
       darkTheme=${args.darkTheme}
-      language=${args.language}
+      .languages=${args.languages}
       size=${args.size}
       .maxHeight=${maxHeight}
       codeViewLabel=${args.codeViewLabel}
@@ -176,7 +174,6 @@ DefaultBlockView.args = {
 export const SingleLineView = Template.bind({});
 SingleLineView.args = {
   ...args,
-  language: '',
   codeViewLabel: 'Single Line Code Snippet',
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.SINGLE_LINE,
@@ -185,7 +182,6 @@ SingleLineView.args = {
 export const JavascriptExample = Template.bind({});
 JavascriptExample.args = {
   ...args,
-  language: '',
   codeViewLabel: 'Javascript Code Snippet',
   codeViewExpandable: true,
   copyButtonText: 'Copy',
@@ -195,7 +191,6 @@ JavascriptExample.args = {
 export const HTMLExample = Template.bind({});
 HTMLExample.args = {
   ...args,
-  language: '',
   codeViewLabel: 'HTML Code Snippet',
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.HTML,
@@ -204,7 +199,6 @@ HTMLExample.args = {
 export const CSSExample = Template.bind({});
 CSSExample.args = {
   ...args,
-  language: '',
   codeViewLabel: 'CSS Code Snippet',
   copyButtonText: 'Copy',
   codeSnippet: defaultTemplateCodes.CSS,
@@ -213,8 +207,7 @@ CSSExample.args = {
 export const SwiftExample = Template.bind({});
 SwiftExample.args = {
   ...args,
-  language: 'swift',
-  codeViewLabel: 'Swift Code Snippet (manually configured language name)',
+  codeViewLabel: 'Swift Code Snippet',
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.SWIFT,
 };
@@ -222,7 +215,7 @@ SwiftExample.args = {
 export const BashExample = Template.bind({});
 BashExample.args = {
   ...args,
-  language: 'bash',
+  languages: ['bash'],
   codeViewLabel: 'Bash Code Snippet (manually configured language name)',
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.BASH,

@@ -4,10 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
-import Prism from 'prismjs';
-import 'prismjs/plugins/autoloader/prism-autoloader';
-import 'prismjs-components-importer';
-Prism.plugins.autoloader.languages_path = 'node_modules/prismjs/components/';
+import hljs from 'highlight.js/lib/common';
 
 import copyIcon from '@carbon/icons/es/copy/20';
 import checkmarkIcon from '@carbon/icons/es/checkmark--outline/20';
@@ -19,11 +16,6 @@ import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import BlockCodeViewStyles from './blockCodeView.scss';
 import ShidokaLightTheme from './shidokaLightSyntaxStyles.scss';
 import ShidokaDarkTheme from './shidokaDarkSyntaxStyles.scss';
-
-interface LanguageMatch {
-  language: string;
-  relevance: number;
-}
 
 /**
  * `<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements.
@@ -41,13 +33,13 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   darkTheme: 'light' | 'dark' | 'darker' = 'darker';
 
-  /** If `''`, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language. */
-  @property({ type: String })
-  language = '';
+  /** List of languages to register and use for highlighting */
+  @property({ type: Array })
+  languages: string[] = [];
 
   /** Sets code snippet size. */
   @property({ type: String })
-  size: 'auto' | 'sm' | 'md' | 'lg' = 'md';
+  size: 'auto' | 'sm' | 'md' = 'md';
 
   /** Customizable max-height setting for code snippet container. */
   @property({ type: Number })
@@ -137,76 +129,68 @@ export class BlockCodeView extends LitElement {
     const containerStyle = this.getContainerStyle();
 
     return html`
-      ${
-        this.codeViewLabel
-          ? html`<div class="code-view__label">
-              <label>${this.codeViewLabel}</label>
-            </div>`
-          : null
-      }
+      ${this.codeViewLabel
+        ? html`<div class="code-view__label">
+            <label>${this.codeViewLabel}</label>
+          </div>`
+        : null}
       <div
         aria-label=${ifDefined(this.ariaLabelAttr)}
         class="${this.getContainerClasses()}"
       >
-          <div class="code-snippet-wrapper" style=${containerStyle}>
-              <pre
-              @keydown=${this.handleKeypress}
-              role="region"
-            ><code tabindex="0" class="language-${
-              this._effectiveLanguage
-            }">${unsafeHTML(this._highlightedCode)}</code></pre>
-          </div>
-
-          ${
-            this.copyOptionVisible
-              ? html`<kd-button
-                  class="code-view__copy-button"
-                  kind="tertiary"
-                  size="small"
-                  iconPosition="left"
-                  ?disabled=${this._copyState.copied}
-                  title=${ifDefined(this.copyButtonTitleAttr)}
-                  name=${ifDefined(this.copyButtonDescriptionAttr)}
-                  description=${ifDefined(this.copyButtonDescriptionAttr)}
-                  @click=${this.copyCode}
-                >
-                  <kd-icon
-                    slot="icon"
-                    class="copy-icon"
-                    .icon=${this._copyState.copied ? checkmarkIcon : copyIcon}
-                  ></kd-icon>
-                  ${this._copyState.text
-                    ? html`<span class="copy-text"
-                        >${this._copyState.text}</span
-                      >`
-                    : null}
-                </kd-button>`
-              : null
-          }
-          ${
-            this.codeViewExpandable &&
-            (this.hasOverflow || !this._codeFitsContainerOnLoad)
-              ? html`<kd-button
-                  class="code-view__expand-button"
-                  kind="tertiary"
-                  size="small"
-                  iconPosition="left"
-                  title="Expand/Collapse code snippet"
-                  name="toggle-code-expanded"
-                  description="Click to ${this.codeExpanded
-                    ? 'collapse'
-                    : 'expand'} the full code snippet"
-                  @click=${this.expandCodeView}
-                >
-                  <kd-icon
-                    slot="icon"
-                    class="expand-icon"
-                    .icon=${chevronDown}
-                  ></kd-icon>
-                </kd-button>`
-              : null
-          }
+        <div class="code-snippet-wrapper" style=${containerStyle}>
+          <pre
+            @keydown=${this.handleKeypress}
+            role="region"
+          ><code tabindex="0" class="language-${this
+            ._effectiveLanguage}">${unsafeHTML(
+            this._highlightedCode
+          )}</code></pre>
         </div>
+
+        ${this.copyOptionVisible
+          ? html`<kd-button
+              class="code-view__copy-button"
+              kind="tertiary"
+              size="small"
+              iconPosition="left"
+              ?disabled=${this._copyState.copied}
+              title=${ifDefined(this.copyButtonTitleAttr)}
+              name=${ifDefined(this.copyButtonDescriptionAttr)}
+              description=${ifDefined(this.copyButtonDescriptionAttr)}
+              @click=${this.copyCode}
+            >
+              <kd-icon
+                slot="icon"
+                class="copy-icon"
+                .icon=${this._copyState.copied ? checkmarkIcon : copyIcon}
+              ></kd-icon>
+              ${this._copyState.text
+                ? html`<span class="copy-text">${this._copyState.text}</span>`
+                : null}
+            </kd-button>`
+          : null}
+        ${this.codeViewExpandable &&
+        (this.hasOverflow || !this._codeFitsContainerOnLoad)
+          ? html`<kd-button
+              class="code-view__expand-button"
+              kind="tertiary"
+              size="small"
+              iconPosition="left"
+              title="Expand/Collapse code snippet"
+              name="toggle-code-expanded"
+              description="Click to ${this.codeExpanded
+                ? 'collapse'
+                : 'expand'} the full code snippet"
+              @click=${this.expandCodeView}
+            >
+              <kd-icon
+                slot="icon"
+                class="expand-icon"
+                .icon=${chevronDown}
+              ></kd-icon>
+            </kd-button>`
+          : null}
       </div>
     `;
   }
@@ -228,13 +212,13 @@ export class BlockCodeView extends LitElement {
     });
   }
 
-  override updated(changedProperties: Map<string, unknown>) {
+  override async updated(changedProperties: Map<string, unknown>) {
     if (
       changedProperties.has('codeSnippet') ||
-      changedProperties.has('language') ||
+      changedProperties.has('languages') ||
       changedProperties.has('maxHeight')
     ) {
-      this.highlightCode();
+      await this.highlightCode();
       this.checkOverflow();
     }
 
@@ -246,139 +230,51 @@ export class BlockCodeView extends LitElement {
 
   //
   // CODE DETECTION & SYNTAX HIGHLIGHTING
-  private highlightCode() {
-    const processedCode = this.removeLeadingWhitespace(this.codeSnippet);
-    this._isSingleLine = this.isSingleLineCode(processedCode);
-
-    this._effectiveLanguage =
-      this.language || this.detectLanguage(processedCode);
-
-    if (!Prism.languages[this._effectiveLanguage]) {
-      console.warn(
-        `Language '${this._effectiveLanguage}' not loaded. Falling back to plaintext.`
-      );
-      this._effectiveLanguage = 'plaintext';
-    }
-
-    this._highlightedCode = Prism.highlight(
-      processedCode,
-      Prism.languages[this._effectiveLanguage],
-      this._effectiveLanguage
-    );
-
-    this.requestUpdate();
-    this.checkOverflow();
-  }
-
-  detectLanguage(code: string): string {
-    if (!code.trim()) {
-      return 'plaintext';
-    }
-
-    // base list of lanugages to evaluate relevance
-    const languages = [
-      'markup',
-      'html',
-      'xml',
-      'svg',
-      'mathml',
-      'css',
-      'javascript',
-      'typescript',
-      'python',
-      'java',
-      'c',
-      'cpp',
-    ];
-
-    let bestMatch: LanguageMatch = { language: 'plaintext', relevance: 0 };
-
-    for (const lang of languages) {
-      if (Prism.languages[lang]) {
-        const tokens = Prism.tokenize(code, Prism.languages[lang]);
-        const relevance = this.calculateRelevance(tokens, lang);
-
-        if (relevance > bestMatch.relevance) {
-          bestMatch = { language: lang, relevance };
+  private async registerLanguages() {
+    if (this.languages && this.languages.length > 0) {
+      for (const langName of this.languages) {
+        try {
+          const langModule = await import(
+            /* webpackChunkName: "hljs-language-[request]" */
+            `highlight.js/lib/languages/${langName}`
+          );
+          hljs.registerLanguage(langName, langModule.default);
+        } catch (err) {
+          console.warn(
+            `Language module for ${langName} could not be loaded`,
+            err
+          );
         }
       }
     }
-
-    if (bestMatch.language === 'markup') {
-      bestMatch.language = this.determineMarkupLanguage(code);
-    }
-
-    return bestMatch.language;
   }
 
-  private calculateRelevance(
-    tokens: (string | Prism.Token)[],
-    language: string
-  ): number {
-    let relevance = 0;
-    for (const token of tokens) {
-      if (typeof token !== 'string') {
-        relevance += this.getTokenRelevance(token, language);
+  private async highlightCode() {
+    await this.registerLanguages();
+
+    const codeElement = this.shadowRoot?.querySelector('code');
+    if (codeElement) {
+      codeElement.textContent = this.codeSnippet;
+      this._isSingleLine = this.isSingleLineCode(this.codeSnippet);
+
+      if (this.languages.length === 1) {
+        // use the specified language
+        const language = this.languages[0];
+        const result = hljs.highlight(this.codeSnippet, {
+          language: language,
+          ignoreIllegals: true,
+        });
+        codeElement.innerHTML = result.value;
+        this._effectiveLanguage = language;
+      } else {
+        const result = hljs.highlightAuto(this.codeSnippet);
+        codeElement.innerHTML = result.value;
+        this._effectiveLanguage = result.language || '';
       }
     }
-    return relevance;
-  }
 
-  private getTokenRelevance(token: Prism.Token, language: string): number {
-    let relevance = 1;
-    if (token.alias) {
-      relevance += Array.isArray(token.alias) ? token.alias.length : 1;
-    }
-    if (this.isLanguageSpecificToken(token, language)) {
-      relevance += 2;
-    }
-    if (token.content) {
-      if (Array.isArray(token.content)) {
-        relevance += token.content.reduce(
-          (acc, t) =>
-            acc +
-            (typeof t === 'string' ? 0 : this.getTokenRelevance(t, language)),
-          0
-        );
-      } else if (typeof token.content !== 'string') {
-        relevance += this.getTokenRelevance(token.content, language);
-      }
-    }
-    return relevance;
-  }
-
-  private isLanguageSpecificToken(
-    token: Prism.Token,
-    language: string
-  ): boolean {
-    const languageSpecificTokens: { [key: string]: string[] } = {
-      markup: ['<', '>', '/', 'div', 'span', 'class', 'id'],
-      html: ['<', '>', '/', 'div', 'span', 'class', 'id'],
-      css: ['{', '}', ':', ';', '#', '.'],
-      javascript: ['function', 'const', 'let', 'var', '=>'],
-      typescript: ['interface', 'type', ':', 'as'],
-      python: ['def', 'import', 'from', 'class'],
-      java: ['public', 'private', 'class', 'void'],
-    };
-
-    const specificTokens = languageSpecificTokens[language] || [];
-    return specificTokens.some((t) => token.content.toString().includes(t));
-  }
-
-  private determineMarkupLanguage(code: string): string {
-    if (/<\/?[a-z][\s\S]*>/i.test(code)) {
-      return 'html';
-    }
-    if (/<\?xml/i.test(code)) {
-      return 'xml';
-    }
-    if (/<svg/i.test(code)) {
-      return 'svg';
-    }
-    if (/<math/i.test(code)) {
-      return 'mathml';
-    }
-    return 'markup';
+    this.requestUpdate();
+    this.checkOverflow();
   }
 
   // evaluate whether height of code snippet exceeds container height
@@ -405,30 +301,10 @@ export class BlockCodeView extends LitElement {
     }, 100);
   }
 
-  // ensures <pre> code snippet has correct indentation and formatting
-  private removeLeadingWhitespace(code: string): string {
-    if (!code) return '';
-    const lines = code.split('\n');
-    const minIndent = this.findMinimumIndent(lines);
-    return lines
-      .map((line) => line.slice(minIndent))
-      .join('\n')
-      .trim();
-  }
-
-  private findMinimumIndent(lines: string[]): number {
-    return lines.reduce((min, line) => {
-      const match = line.match(/^[ \t]*/);
-      const indent = match ? match[0].length : 0;
-      return line.trim().length ? Math.min(min, indent) : min;
-    }, Infinity);
-  }
-
   // detect single vs multi-line block code snippet for custom default styling
   private isSingleLineCode(code: string): boolean {
     return code.trim().split('\n').length === 1;
   }
-  //////*
 
   // for @action printout
   private formatExampleCode(code: string) {
@@ -487,7 +363,6 @@ export class BlockCodeView extends LitElement {
     this.requestUpdate();
     setTimeout(() => this.checkOverflow(), 0);
   }
-  //////*
 
   //
   // ACCESSIBILITY -- handling for scrollable code blocks
@@ -510,7 +385,6 @@ export class BlockCodeView extends LitElement {
       }
     }
   }
-  //////*
 }
 
 declare global {

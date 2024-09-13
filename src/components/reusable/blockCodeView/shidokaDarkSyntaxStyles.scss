@@ -2,11 +2,27 @@
  * Shidoka Dark Theme -- syntax highlighting for JavaScript, CSS and HTML
  * Based on dabblet (http://dabblet.com)
  * @author Hsu Ka An
- */
+
+base:    #272727
+mono-1:  #E0E0E0
+mono-2:  #BBBBBB
+mono-3:  #999999
+mono-4:  #708090
+hue-1:   #990055
+hue-2:   #DD4A68
+hue-3:   #9A6E3A
+hue-4:   #EE9900
+hue-5:   #F1AD26
+hue-6:   #669900
+hue-7:   #7FAB14
+hue-8:   #39A1CF
+hue-9    #0077AA
+*/
 
 $default-dark-bg: var(--kd-color-background-ui-strong);
 $default-darker-bg: #272727;
 $default-dark-font-color: #FFFFFF;
+
 
 .shidoka-dark-syntax-theme {
     background: $default-dark-bg;
@@ -43,29 +59,6 @@ $default-dark-font-color: #FFFFFF;
 .shidoka-dark-syntax-theme,
 .shidoka-darker-syntax-theme {
 
-    code[class*="language-"],
-    pre[class*="language-"] {
-        color: $default-dark-font-color;
-        font-family: var(--kd-font-family-code-view);
-
-        -moz-tab-size: 4;
-        -o-tab-size: 4;
-        tab-size: 4;
-
-        -webkit-hyphens: none;
-        -moz-hyphens: none;
-        -ms-hyphens: none;
-        hyphens: none;
-    }
-
-    pre[class*="language-"]::-moz-selection,
-    pre[class*="language-"] ::-moz-selection,
-    code[class*="language-"]::-moz-selection,
-    code[class*="language-"] ::-moz-selection {
-        text-shadow: none;
-        background: inherit;
-    }
-
     .code-view__copy-button .copy-text,
     .code-view__copy-button .copy-icon,
     .code-view__expand-button .expand-icon {
@@ -86,93 +79,101 @@ $default-dark-font-color: #FFFFFF;
         color: $default-dark-font-color;
     }
 
+    color: $default-dark-font-color;
 
-
-    pre[class*="language-"]::selection,
-    pre[class*="language-"] ::selection,
-    code[class*="language-"]::selection,
-    code[class*="language-"] ::selection {
-        text-shadow: none;
+    pre code.hljs {
+        display: block;
+        overflow-x: auto;
+        padding: 16px;
     }
 
-    @media print {
-
-        code[class*="language-"],
-        pre[class*="language-"] {
-            text-shadow: none;
-        }
+    code.hljs {
+        padding: 3px 5px;
     }
 
-    .token.comment,
-    .token.prolog,
-    .token.doctype,
-    .token.cdata {
+    .hljs,
+    .hljs-variable,
+    .hljs-subst,
+    .hljs-params,
+    .language_ {
+        color: $default-dark-font-color;
+    }
+
+    .hljs-comment,
+    .hljs-doctag,
+    .hljs-quote {
         color: #C1BEBE;
     }
 
-    .token.punctuation {
-        color: #D9D7D7;
-    }
-
-    .token.namespace {
-        opacity: .7;
-    }
-
-    .token.boolean,
-    .token.constant,
-    .token.symbol,
-    .token.tag,
-    .token.deleted,
-    .token.number,
-    .token.property {
-        color: #FEDEDA;
-    }
-
-    .token.selector,
-    .token.attr-name,
-    .token.string,
-    .token.char,
-    .token.builtin,
-    .token.inserted,
-    .token.entity,
-    .language-css .token.string,
-    .style .token.string {
-        color: #81E1B5;
-    }
-
-    .token.url,
-    .token.operator {
-        color: #FFBC48;
-    }
-
-    .token.atrule,
-    .token.attr-value,
-    .token.keyword {
+    .hljs-keyword,
+    .hljs-formula {
         color: #ACE1F8;
     }
 
-    .token.function,
-    .token.class-name {
-        color: #F3ACD6;
+    .hljs-section,
+    .hljs-name,
+    .hljs-selector-tag,
+    .hljs-deletion {
+        color: #FEDEDA;
     }
 
-    .token.regex,
-    .token.important,
-    .token.variable {
+    .hljs-literal {
+        color: #56b6c2;
+    }
+
+    .hljs-string,
+    .hljs-selector-class,
+    .hljs-meta .hljs-string {
+        color: #81E1B5;
+    }
+
+    .hljs-regexp,
+    .hljs-addition {
         color: #FFD46A;
     }
 
-    .token.important,
-    .token.bold {
-        font-weight: bold;
+    .hljs-number {
+        color: $default-dark-font-color;
     }
 
-    .token.italic {
+    .hljs-attr,
+    .hljs-attribute,
+    .hljs-type,
+    .hljs-selector-attr,
+    .hljs-selector-pseudo {
+        color: #FEDEDA;
+    }
+
+    .hljs-symbol,
+    .hljs-bullet,
+    .hljs-link,
+    .hljs-meta,
+    .hljs-selector-id {
+        color: #FFBC48;
+    }
+
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-title {
+        color: #F3ACD6;
+    }
+
+    .hljs-built_in,
+    .hljs-title.class_,
+    .hljs-class .hljs-title {
+        color: #81E1B5
+    }
+
+    .hljs-emphasis {
         font-style: italic;
     }
 
-    .token.entity {
-        cursor: help;
+    .hljs-strong {
+        font-weight: bold;
+    }
+
+    .hljs-link {
+        text-decoration: underline;
     }
 
     /// dark-mode scrollbar styles
@@ -211,6 +212,4 @@ $default-dark-font-color: #FFFFFF;
             scrollbar-color: rgba(255, 255, 255, 0.5) rgba(255, 255, 255, 0.1);
         }
     }
-
-    ///
 }
