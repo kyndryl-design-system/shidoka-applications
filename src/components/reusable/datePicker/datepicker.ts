@@ -1,10 +1,15 @@
 import { LitElement, html, PropertyValues } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { DATE_PICKER_TYPES } from './defs';
 import { FormMixin } from '../../../common/mixins/form-input';
 import DatePickerScss from './datepicker.scss';
+import { deepmerge } from 'deepmerge-ts';
+
+const _defaultTextStrings = {
+  requiredText: 'Required',
+};
 
 /**
  * Datepicker.
@@ -66,9 +71,13 @@ export class DatePicker extends FormMixin(LitElement) {
 
   /** Customizable text strings. */
   @property({ type: Object })
-  textStrings = {
-    requiredText: 'Required',
-  };
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
 
   /**
    * Queries the <input> DOM element.
@@ -84,8 +93,8 @@ export class DatePicker extends FormMixin(LitElement) {
           ${this.required
             ? html`<abbr
                 class="required"
-                title=${this.textStrings.requiredText}
-                aria-label=${this.textStrings.requiredText}
+                title=${this._textStrings.requiredText}
+                aria-label=${this._textStrings.requiredText}
                 >*</abbr
               >`
             : null}
@@ -190,6 +199,12 @@ export class DatePicker extends FormMixin(LitElement) {
     // focus the form field to show validity
     if (report) {
       this._internals.reportValidity();
+    }
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
   }
 }
