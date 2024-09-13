@@ -369,11 +369,13 @@ export class Dropdown extends FormMixin(LitElement) {
           ? html`
               <kyn-tag-group
                 filter
+                role="list"
                 aria-label=${this._textStrings.selectedOptions}
               >
                 ${this._tags.map((tag: any) => {
                   return html`
                     <kyn-tag
+                      role="listitem"
                       label=${tag.text}
                       ?disabled=${this.disabled}
                       clearTagText="Clear Tag ${tag.text}"
