@@ -138,8 +138,8 @@ const args = {
   codeViewExpandable: true,
   copyButtonText: 'Copy',
   ariaLabelAttr: '',
-  copyButtonDescriptionAttr: 'copy code button',
-  copyButtonTitleAttr: 'Copy code',
+  copyButtonDescriptionAttr: 'Copy code button',
+  copyButtonTitleAttr: 'copy-code-button',
   codeSnippet: defaultTemplateCodes.DEFAULT,
 };
 
@@ -178,7 +178,6 @@ SingleLineView.args = {
   ...args,
   language: '',
   codeViewLabel: 'Single Line Code Snippet',
-  copyOptionVisible: true,
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.SINGLE_LINE,
 };
@@ -188,7 +187,6 @@ JavascriptExample.args = {
   ...args,
   language: '',
   codeViewLabel: 'Javascript Code Snippet',
-  copyOptionVisible: true,
   codeViewExpandable: true,
   copyButtonText: 'Copy',
   codeSnippet: defaultTemplateCodes.JAVASCRIPT,
@@ -199,7 +197,6 @@ HTMLExample.args = {
   ...args,
   language: '',
   codeViewLabel: 'HTML Code Snippet',
-  copyOptionVisible: true,
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.HTML,
 };
@@ -209,7 +206,6 @@ CSSExample.args = {
   ...args,
   language: '',
   codeViewLabel: 'CSS Code Snippet',
-  copyOptionVisible: true,
   copyButtonText: 'Copy',
   codeSnippet: defaultTemplateCodes.CSS,
 };
@@ -219,7 +215,6 @@ SwiftExample.args = {
   ...args,
   language: 'swift',
   codeViewLabel: 'Swift Code Snippet (manually configured language name)',
-  copyOptionVisible: true,
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.SWIFT,
 };
@@ -229,7 +224,6 @@ BashExample.args = {
   ...args,
   language: 'bash',
   codeViewLabel: 'Bash Code Snippet (manually configured language name)',
-  copyOptionVisible: true,
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.BASH,
 };

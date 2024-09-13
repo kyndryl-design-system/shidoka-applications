@@ -37,27 +37,27 @@ export class BlockCodeView extends LitElement {
     ShidokaDarkTheme,
   ];
 
-  /** Dark theme -- sets background and text contrast */
+  /** Sets background and text theming. */
   @property({ type: String })
   darkTheme: 'light' | 'dark' | 'darker' = 'darker';
 
-  /** If provided, syntax highlighting will default to this value, otherwise it will attempt to auto-detect language. */
+  /** If `''`, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language. */
   @property({ type: String })
   language = '';
 
-  /** Code snippet size. */
+  /** Sets code snippet size. */
   @property({ type: String })
   size: 'auto' | 'sm' | 'md' | 'lg' = 'md';
 
-  /** Dev modifiable code snippet max-height. */
+  /** Customizable max-height setting for code snippet container. */
   @property({ type: Number })
   maxHeight: number | null = null;
 
-  /** Optionally display label value above code snippet. */
+  /** Optionally displayed label above code snippet container. */
   @property({ type: String })
   codeViewLabel = '';
 
-  /** Optionally display copy code button. */
+  /** Optionally display button to copy code snippet. */
   @property({ type: Boolean })
   copyOptionVisible = false;
 
@@ -65,7 +65,7 @@ export class BlockCodeView extends LitElement {
   @property({ type: Boolean })
   codeViewExpandable = false;
 
-  /** Set copy code button text (optional). */
+  /** Sets copy code button text (optional). */
   @property({ type: String })
   copyButtonText = '';
 
@@ -73,15 +73,15 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   ariaLabelAttr = '';
 
-  /** Copy button description attr value. */
+  /** Sets copy button description attr value. */
   @property({ type: String })
   copyButtonDescriptionAttr = '';
 
-  /** Copy button title attr value. */
+  /** Sets copy button title attr value. */
   @property({ type: String })
   copyButtonTitleAttr = '';
 
-  /** Code snippet to be formatted and displayed within the html `<code>` element. */
+  /** Sets code snippet for display -- NOTE: original formatting is preserved. */
   @property({ type: String })
   codeSnippet = '';
 
@@ -146,20 +146,7 @@ export class BlockCodeView extends LitElement {
       }
       <div
         aria-label=${ifDefined(this.ariaLabelAttr)}
-        class="${classMap({
-          'code-view__container': true,
-          [`size--${this.size}`]: true,
-          'single-line': this._isSingleLine,
-          'multi-line': !this._isSingleLine,
-          'copy-button-text-true':
-            this.copyButtonText && this.copyButtonText.length > 0,
-          'copy-button-text-false': !this.copyButtonText,
-          'shidoka-darker-syntax-theme': this.darkTheme === 'darker',
-          'shidoka-dark-syntax-theme': this.darkTheme === 'dark',
-          'shidoka-light-syntax-theme': this.darkTheme === 'light',
-          'expanded-code-view': this.codeExpanded,
-          'has-overflow': this.hasOverflow,
-        })}"
+        class="${this.getContainerClasses()}"
       >
           <div class="code-snippet-wrapper" style=${containerStyle}>
               <pre
@@ -224,6 +211,23 @@ export class BlockCodeView extends LitElement {
     `;
   }
 
+  private getContainerClasses() {
+    return classMap({
+      'code-view__container': true,
+      [`size--${this.size}`]: true,
+      'single-line': this._isSingleLine,
+      'multi-line': !this._isSingleLine,
+      'copy-button-text-true':
+        this.copyButtonText && this.copyButtonText.length > 0,
+      'copy-button-text-false': !this.copyButtonText,
+      'shidoka-darker-syntax-theme': this.darkTheme === 'darker',
+      'shidoka-dark-syntax-theme': this.darkTheme === 'dark',
+      'shidoka-light-syntax-theme': this.darkTheme === 'light',
+      'expanded-code-view': this.codeExpanded,
+      'has-overflow': this.hasOverflow,
+    });
+  }
+
   override updated(changedProperties: Map<string, unknown>) {
     if (
       changedProperties.has('codeSnippet') ||
@@ -271,6 +275,7 @@ export class BlockCodeView extends LitElement {
       return 'plaintext';
     }
 
+    // base list of lanugages to evaluate relevance
     const languages = [
       'markup',
       'html',
@@ -376,6 +381,7 @@ export class BlockCodeView extends LitElement {
     return 'markup';
   }
 
+  // evaluate whether height of code snippet exceeds container height
   private checkOverflow() {
     setTimeout(() => {
       requestAnimationFrame(() => {
@@ -472,16 +478,13 @@ export class BlockCodeView extends LitElement {
     this.codeExpanded = !this.codeExpanded;
 
     if (this.codeExpanded) {
-      // When expanding, set the expanded height to the full scroll height
       const pre = this.shadowRoot?.querySelector('pre') as HTMLElement;
       this._expandedHeight = pre?.scrollHeight || null;
     } else {
-      // When collapsing, reset the expanded height
       this._expandedHeight = null;
     }
 
     this.requestUpdate();
-    // Re-check overflow after expansion
     setTimeout(() => this.checkOverflow(), 0);
   }
   //////*

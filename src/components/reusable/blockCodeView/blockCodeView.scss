@@ -202,8 +202,9 @@ $border-radius: 4px;
 
             code {
                 display: inline-block;
-                padding: 16px 16px 22px;
+                padding: 16px 16px 18px;
                 min-width: 100%;
+                line-height: 1.6;
                 max-width: 75%;
                 box-sizing: border-box;
                 white-space: pre-wrap;
@@ -211,8 +212,13 @@ $border-radius: 4px;
                 word-break: normal;
             }
 
-            &.has-overflow .code-snippet-wrapper pre code {
-                padding-bottom: 20px;
+            &.has-overflow .code-snippet-wrapper pre code,
+            &.expanded-code-view .code-snippet-wrapper pre code {
+                padding-bottom: 25px;
+            }
+
+            &.expanded-code-view .code-snippet-wrapper pre code {
+                padding-bottom: 25px;
             }
 
             &::-webkit-scrollbar {

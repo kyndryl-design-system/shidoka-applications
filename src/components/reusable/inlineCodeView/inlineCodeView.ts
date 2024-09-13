@@ -10,11 +10,11 @@ import InlineCodeViewStyles from './inlineCodeView.scss';
 export class InlineCodeView extends LitElement {
   static override styles = InlineCodeViewStyles;
 
-  /** Dark theme -- sets background and text contrast */
+  /** Sets background and text theming. */
   @property({ type: String })
   darkTheme: 'light' | 'dark' | 'darker' = 'darker';
 
-  /** Font size value (px) to match code snippet font-size with surrounding text */
+  /** Font size value (px) to match code snippet font-size with surrounding text (min, default 14px). */
   @property({ type: Number })
   snippetFontSize = 14;
 
