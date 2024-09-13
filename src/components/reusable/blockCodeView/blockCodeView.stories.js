@@ -108,10 +108,6 @@ export default {
     },
   },
   argTypes: {
-    size: {
-      options: ['sm', 'md', 'lg', 'auto'],
-      control: { type: 'select' },
-    },
     copyOptionVisible: {
       control: { type: 'boolean' },
     },
@@ -131,38 +127,35 @@ export default {
 const args = {
   darkTheme: 'darker',
   language: '',
-  size: 'md',
   maxHeight: null,
   codeViewLabel: 'Block Code View',
   copyOptionVisible: true,
   codeViewExpandable: true,
   copyButtonText: 'Copy',
-  ariaLabelAttr: '',
   copyButtonDescriptionAttr: 'Copy code button',
-  copyButtonTitleAttr: 'copy-code-button',
+  textStrings: {
+    collapsed: 'Collapsed',
+    expanded: 'Expanded',
+  },
   codeSnippet: defaultTemplateCodes.DEFAULT,
 };
 
 const Template = (args) => {
-  const ariaLabelAttr =
-    args.ariaLabelAttr || `Block ${args.language} code snippet`;
   const maxHeight = args.maxHeight === null ? null : Number(args.maxHeight);
 
   return html`
     <kyn-block-code-view
       darkTheme=${args.darkTheme}
       language=${args.language}
-      size=${args.size}
       .maxHeight=${maxHeight}
       codeViewLabel=${args.codeViewLabel}
       ?copyOptionVisible=${args.copyOptionVisible}
       ?codeViewExpandable=${args.codeViewExpandable}
       copyButtonText=${args.copyButtonText}
-      ariaLabelAttr=${ariaLabelAttr}
       copyButtonDescriptionAttr=${args.copyButtonDescriptionAttr}
-      copyButtonTitleAttr=${args.copyButtonTitleAttr}
+      .textStrings=${args.textStrings}
       codeSnippet=${args.codeSnippet}
-      @on-custom-copy=${(e) => action('on-custom-copy')(e.detail)}
+      @on-copy=${(e) => action('on-copy')(e.detail)}
     >
     </kyn-block-code-view>
   `;

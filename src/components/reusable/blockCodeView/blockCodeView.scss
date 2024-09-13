@@ -16,9 +16,9 @@ $border-radius: 4px;
         margin-bottom: var(--kd-spacing-12);
 
         label {
-            @include typography.type-ui-02;
+            @include typography.type-ui-01;
             color: var(--kd-color-text-secondary);
-            font-weight: bold;
+            font-weight: 500;
         }
     }
 
@@ -93,7 +93,7 @@ $border-radius: 4px;
 
         &.single-line {
             max-width: 1082px;
-            width: 95%;
+            width: 100%;
 
             &.copy-button-text-true {
                 padding-right: 110px;
@@ -149,15 +149,6 @@ $border-radius: 4px;
                 }
             }
 
-            &.size--sm {
-                max-width: 450px;
-            }
-
-            &.size--md {
-                width: fit-content;
-                max-width: 650px;
-            }
-
             .code-view__copy-button {
                 display: flex;
                 align-items: center;
@@ -169,7 +160,7 @@ $border-radius: 4px;
         }
 
         &.multi-line {
-            width: 95%;
+            width: 100%;
             position: relative;
             scrollbar-width: thin;
             overflow: -moz-scrollbars-vertical;
@@ -183,7 +174,6 @@ $border-radius: 4px;
                 position: relative;
                 overflow: hidden;
                 max-height: inherit;
-                transition: max-height $transition-duration ease-in-out;
             }
 
             pre,
@@ -239,39 +229,11 @@ $border-radius: 4px;
                     max-height: $max-height;
                 }
             }
-
-            &.size--sm {
-                @include size-variant(480px, 240px);
-            }
-
-            &.size--md {
-                @include size-variant(560px, 320px);
-            }
-
-            &.size--lg {
-                @include size-variant(95%, 400px);
-            }
-
-            &.size--auto {
-                @include size-variant(95%, 2000px);
-            }
-
-            &.expanded-code-view .code-snippet-wrapper {
-                max-height: 2000px;
-            }
         }
 
         &.expanded-code-view .code-view__expand-button {
             transform: rotate(180deg);
         }
-    }
-}
-
-@media (min-width: 768px) {
-
-    .code-view__container.single-line.size--lg,
-    .code-view__container.multi-line.size--lg {
-        max-width: 75%;
     }
 }
 

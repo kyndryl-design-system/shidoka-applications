@@ -3677,16 +3677,6 @@
             },
             {
               "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "'auto' | 'sm' | 'md' | 'lg'"
-              },
-              "default": "'md'",
-              "description": "Sets code snippet size.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
               "name": "maxHeight",
               "type": {
                 "text": "number | null"
@@ -3732,7 +3722,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Set copy code button text (optional).",
+              "description": "Sets copy code button text (optional).",
               "attribute": "copyButtonText"
             },
             {
@@ -3774,6 +3764,16 @@
               "default": "''",
               "description": "Sets code snippet for display -- NOTE: original formatting is preserved.",
               "attribute": "codeSnippet"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  collapsed: 'Collapsed',\n  expanded: 'Expanded',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
             },
             {
               "kind": "method",
@@ -4008,7 +4008,7 @@
           ],
           "events": [
             {
-              "name": "on-custom-copy",
+              "name": "on-copy",
               "type": {
                 "text": "CustomEvent"
               },
@@ -4033,15 +4033,6 @@
               "default": "''",
               "description": "If `''`, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language.",
               "fieldName": "language"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "'auto' | 'sm' | 'md' | 'lg'"
-              },
-              "default": "'md'",
-              "description": "Sets code snippet size.",
-              "fieldName": "size"
             },
             {
               "name": "maxHeight",
@@ -4085,7 +4076,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Set copy code button text (optional).",
+              "description": "Sets copy code button text (optional).",
               "fieldName": "copyButtonText"
             },
             {
@@ -4123,6 +4114,12 @@
               "default": "''",
               "description": "Sets code snippet for display -- NOTE: original formatting is preserved.",
               "fieldName": "codeSnippet"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
             }
           ],
           "superclass": {
@@ -7251,104 +7248,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/inlineCodeView/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineCodeView",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "./inlineCodeView"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/inlineCodeView/inlineCodeView.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
-          "name": "InlineCodeView",
-          "slots": [
-            {
-              "description": "inline code snippet slot.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark' | 'darker'"
-              },
-              "default": "'darker'",
-              "description": "Sets background and text theming.",
-              "attribute": "darkTheme"
-            },
-            {
-              "kind": "field",
-              "name": "snippetFontSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "14",
-              "description": "Font size value (px) to match code snippet font-size with surrounding text (min, default 14px).",
-              "attribute": "snippetFontSize"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark' | 'darker'"
-              },
-              "default": "'darker'",
-              "description": "Sets background and text theming.",
-              "fieldName": "darkTheme"
-            },
-            {
-              "name": "snippetFontSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "14",
-              "description": "Font size value (px) to match code snippet font-size with surrounding text (min, default 14px).",
-              "fieldName": "snippetFontSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-inline-code-view",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineCodeView",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-inline-code-view",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts",
       "declarations": [
         {
@@ -8010,6 +7909,104 @@
           "declaration": {
             "name": "GlobalFilter",
             "module": "./globalFilter"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineCodeView/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineCodeView",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "./inlineCodeView"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineCodeView/inlineCodeView.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
+          "name": "InlineCodeView",
+          "slots": [
+            {
+              "description": "inline code snippet slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark' | 'darker'"
+              },
+              "default": "'darker'",
+              "description": "Sets background and text theming.",
+              "attribute": "darkTheme"
+            },
+            {
+              "kind": "field",
+              "name": "snippetFontSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Font size value (px) to match code snippet font-size with surrounding text (min, default 14px).",
+              "attribute": "snippetFontSize"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark' | 'darker'"
+              },
+              "default": "'darker'",
+              "description": "Sets background and text theming.",
+              "fieldName": "darkTheme"
+            },
+            {
+              "name": "snippetFontSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Font size value (px) to match code snippet font-size with surrounding text (min, default 14px).",
+              "fieldName": "snippetFontSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-inline-code-view",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineCodeView",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-inline-code-view",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
           }
         }
       ]
@@ -9010,6 +9007,324 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/overflowMenu/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OverflowMenu",
+          "declaration": {
+            "name": "OverflowMenu",
+            "module": "./overflowMenu"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "OverflowMenuItem",
+          "declaration": {
+            "name": "OverflowMenuItem",
+            "module": "./overflowMenuItem"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/overflowMenu/overflowMenu.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Overflow Menu.",
+          "name": "OverflowMenu",
+          "slots": [
+            {
+              "description": "Slot for overflow menu items.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Menu open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "anchorRight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Anchors the menu to the right of the button.",
+              "attribute": "anchorRight"
+            },
+            {
+              "kind": "field",
+              "name": "verticalDots",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "3 dots vertical orientation.",
+              "attribute": "verticalDots"
+            },
+            {
+              "kind": "field",
+              "name": "fixed",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Use fixed instead of absolute position. Useful when placed within elements with overflow scroll.",
+              "attribute": "fixed"
+            },
+            {
+              "kind": "field",
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Toggle Menu'",
+              "description": "Button assistive text..",
+              "attribute": "assistiveText"
+            },
+            {
+              "kind": "method",
+              "name": "_emitToggleEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "toggleMenu",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_positionMenu",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Capture the open/close event and emits the new state.",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Menu open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "anchorRight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Anchors the menu to the right of the button.",
+              "fieldName": "anchorRight"
+            },
+            {
+              "name": "verticalDots",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "3 dots vertical orientation.",
+              "fieldName": "verticalDots"
+            },
+            {
+              "name": "fixed",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Use fixed instead of absolute position. Useful when placed within elements with overflow scroll.",
+              "fieldName": "fixed"
+            },
+            {
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Toggle Menu'",
+              "description": "Button assistive text..",
+              "fieldName": "assistiveText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-overflow-menu",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OverflowMenu",
+          "declaration": {
+            "name": "OverflowMenu",
+            "module": "src/components/reusable/overflowMenu/overflowMenu.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-overflow-menu",
+          "declaration": {
+            "name": "OverflowMenu",
+            "module": "src/components/reusable/overflowMenu/overflowMenu.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/overflowMenu/overflowMenuItem.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Overflow Menu.",
+          "name": "OverflowMenuItem",
+          "slots": [
+            {
+              "description": "Slot for item text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Makes the item a link.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds destructive styles.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Item disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event details.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Makes the item a link.",
+              "fieldName": "href"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds destructive styles.",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Item disabled state.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-overflow-menu-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OverflowMenuItem",
+          "declaration": {
+            "name": "OverflowMenuItem",
+            "module": "src/components/reusable/overflowMenu/overflowMenuItem.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-overflow-menu-item",
+          "declaration": {
+            "name": "OverflowMenuItem",
+            "module": "src/components/reusable/overflowMenu/overflowMenuItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/numberInput/index.ts",
       "declarations": [],
       "exports": [
@@ -9473,324 +9788,6 @@
           "declaration": {
             "name": "NumberInput",
             "module": "src/components/reusable/numberInput/numberInput.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/overflowMenu/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "OverflowMenu",
-          "declaration": {
-            "name": "OverflowMenu",
-            "module": "./overflowMenu"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "OverflowMenuItem",
-          "declaration": {
-            "name": "OverflowMenuItem",
-            "module": "./overflowMenuItem"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/overflowMenu/overflowMenu.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Overflow Menu.",
-          "name": "OverflowMenu",
-          "slots": [
-            {
-              "description": "Slot for overflow menu items.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Menu open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "anchorRight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Anchors the menu to the right of the button.",
-              "attribute": "anchorRight"
-            },
-            {
-              "kind": "field",
-              "name": "verticalDots",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "3 dots vertical orientation.",
-              "attribute": "verticalDots"
-            },
-            {
-              "kind": "field",
-              "name": "fixed",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Use fixed instead of absolute position. Useful when placed within elements with overflow scroll.",
-              "attribute": "fixed"
-            },
-            {
-              "kind": "field",
-              "name": "assistiveText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Toggle Menu'",
-              "description": "Button assistive text..",
-              "attribute": "assistiveText"
-            },
-            {
-              "kind": "method",
-              "name": "_emitToggleEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "toggleMenu",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_positionMenu",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Capture the open/close event and emits the new state.",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Menu open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "anchorRight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Anchors the menu to the right of the button.",
-              "fieldName": "anchorRight"
-            },
-            {
-              "name": "verticalDots",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "3 dots vertical orientation.",
-              "fieldName": "verticalDots"
-            },
-            {
-              "name": "fixed",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Use fixed instead of absolute position. Useful when placed within elements with overflow scroll.",
-              "fieldName": "fixed"
-            },
-            {
-              "name": "assistiveText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Toggle Menu'",
-              "description": "Button assistive text..",
-              "fieldName": "assistiveText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-overflow-menu",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "OverflowMenu",
-          "declaration": {
-            "name": "OverflowMenu",
-            "module": "src/components/reusable/overflowMenu/overflowMenu.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-overflow-menu",
-          "declaration": {
-            "name": "OverflowMenu",
-            "module": "src/components/reusable/overflowMenu/overflowMenu.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/overflowMenu/overflowMenuItem.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Overflow Menu.",
-          "name": "OverflowMenuItem",
-          "slots": [
-            {
-              "description": "Slot for item text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Makes the item a link.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds destructive styles.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Item disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event details.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Makes the item a link.",
-              "fieldName": "href"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds destructive styles.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Item disabled state.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-overflow-menu-item",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "OverflowMenuItem",
-          "declaration": {
-            "name": "OverflowMenuItem",
-            "module": "src/components/reusable/overflowMenu/overflowMenuItem.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-overflow-menu-item",
-          "declaration": {
-            "name": "OverflowMenuItem",
-            "module": "src/components/reusable/overflowMenu/overflowMenuItem.ts"
           }
         }
       ]
@@ -11093,6 +11090,284 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/search/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Search",
+          "declaration": {
+            "name": "Search",
+            "module": "./search"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/search/search.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Search",
+          "name": "Search",
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Search'",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "expandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expandable style search.",
+              "attribute": "expandable"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input & button size.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "suggestions",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
+              "attribute": "suggestions"
+            },
+            {
+              "kind": "method",
+              "name": "_buttonSizeMap",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFocus",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBlur",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleButtonClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSuggestionClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "suggestion",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleSearchKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleListKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyboard",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "keyCode",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the value on text input/clear.",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Search'",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "expandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expandable style search.",
+              "fieldName": "expandable"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input & button size.",
+              "fieldName": "size"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "suggestions",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
+              "fieldName": "suggestions"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-search",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Search",
+          "declaration": {
+            "name": "Search",
+            "module": "src/components/reusable/search/search.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-search",
+          "declaration": {
+            "name": "Search",
+            "module": "src/components/reusable/search/search.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/sideDrawer/index.ts",
       "declarations": [],
       "exports": [
@@ -11436,57 +11711,963 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/search/index.ts",
+      "path": "src/components/reusable/tabs/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "Search",
+          "name": "Tabs",
           "declaration": {
-            "name": "Search",
-            "module": "./search"
+            "name": "Tabs",
+            "module": "./tabs"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "./tab"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TabPanel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "./tabPanel"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/search/search.ts",
+      "path": "src/components/reusable/tabs/tab.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Search",
-          "name": "Search",
+          "description": "Tabs.",
+          "name": "Tab",
+          "slots": [
+            {
+              "description": "Slot for tab button text.",
+              "name": "unnamed"
+            }
+          ],
           "members": [
             {
               "kind": "field",
-              "name": "name",
+              "name": "id",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Input name.",
-              "attribute": "name"
+              "description": "Tab ID, required.",
+              "attribute": "id",
+              "reflects": true
             },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab selected state. Must match Tab Panel visible state.",
+              "attribute": "selected",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The parameter \"e\" is an event object that represents the event that triggered the\nclick event handler."
+                }
+              ],
+              "description": "Dispatches a custom event called 'tab-activated' with the original event and tabId as details,\nif the tab is not selected."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "id",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Tab ID, required.",
+              "fieldName": "id"
+            },
+            {
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab selected state. Must match Tab Panel visible state.",
+              "fieldName": "selected"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab disabled state.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tab",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "src/components/reusable/tabs/tab.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "src/components/reusable/tabs/tab.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/tabPanel.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tabs.",
+          "name": "TabPanel",
+          "slots": [
+            {
+              "description": "Slot for tab content.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "tabId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Matching Tab ID, required.",
+              "attribute": "tabId"
+            },
+            {
+              "kind": "field",
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab Panel visible state.  Must match Tab selected state.",
+              "attribute": "visible",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "noPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Remove side padding (left/right) on tab panel.",
+              "attribute": "noPadding"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "tabId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Matching Tab ID, required.",
+              "fieldName": "tabId"
+            },
+            {
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab Panel visible state.  Must match Tab selected state.",
+              "fieldName": "visible"
+            },
+            {
+              "name": "noPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Remove side padding (left/right) on tab panel.",
+              "fieldName": "noPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tab-panel",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TabPanel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "src/components/reusable/tabs/tabPanel.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tab-panel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "src/components/reusable/tabs/tabPanel.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/tabs.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tabs.",
+          "name": "Tabs",
+          "slots": [
+            {
+              "description": "Slot for kyn-tab-panel components.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for kyn-tab components.",
+              "name": "tabs"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "tabStyle",
+              "type": {
+                "text": "string"
+              },
+              "default": "'contained'",
+              "description": "Tab style. `'contained'` or `'line'`.",
+              "attribute": "tabStyle"
+            },
+            {
+              "kind": "field",
+              "name": "tabSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
+              "attribute": "tabSize"
+            },
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Vertical orientation.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChangeTabs",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The parameter \"e\" is an event object that contains information about the event\nthat triggered the handleChange function."
+                }
+              ],
+              "description": "Updates children and emits a change event based on the provided\nevent details when a child kyn-tab is clicked."
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildrenSelection",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "selectedTabId",
+                  "type": {
+                    "text": "string"
+                  },
+                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe tab that is currently selected."
+                }
+              ],
+              "description": "Updates the selected property of tabs and the visible property of tab panels based on\nthe selected tab ID."
+            },
+            {
+              "kind": "method",
+              "name": "_emitChangeEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "origEvent",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The origEvent parameter is the original event object that triggered the\nchange event. It could be any type of event object, such as a click event or a keydown event."
+                },
+                {
+                  "name": "selectedTabId",
+                  "type": {
+                    "text": "string"
+                  },
+                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe selected tab."
+                }
+              ],
+              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\nselected tab ID as details."
+            },
+            {
+              "kind": "method",
+              "name": "_handleKeyboard",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The parameter `e` is an event object that represents the keyboard event. It\ncontains information about the keyboard event, such as the key code of the pressed key."
+                }
+              ],
+              "description": "Handles keyboard events for navigating between tabs.",
+              "return": {
+                "type": {
+                  "text": ""
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the new selected Tab ID when switching tabs.",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "tabStyle",
+              "type": {
+                "text": "string"
+              },
+              "default": "'contained'",
+              "description": "Tab style. `'contained'` or `'line'`.",
+              "fieldName": "tabStyle"
+            },
+            {
+              "name": "tabSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
+              "fieldName": "tabSize"
+            },
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Vertical orientation.",
+              "fieldName": "vertical"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tabs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tabs",
+          "declaration": {
+            "name": "Tabs",
+            "module": "src/components/reusable/tabs/tabs.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tabs",
+          "declaration": {
+            "name": "Tabs",
+            "module": "src/components/reusable/tabs/tabs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "./tag"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TagGroup",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "./tagGroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/tag.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tag.",
+          "name": "Tag",
+          "members": [
             {
               "kind": "field",
               "name": "label",
               "type": {
                 "text": "string"
               },
-              "default": "'Search'",
-              "description": "Label text.",
+              "default": "''",
+              "description": "Tag name (Required).",
               "attribute": "label"
             },
             {
               "kind": "field",
-              "name": "expandable",
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "attribute": "tagSize"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Expandable style search.",
-              "attribute": "expandable"
+              "description": "Specify if the Tag is disabled.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag state is filter.",
+              "attribute": "filter"
+            },
+            {
+              "kind": "field",
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "attribute": "noTruncation"
+            },
+            {
+              "kind": "field",
+              "name": "shade",
+              "type": {
+                "text": "string"
+              },
+              "default": "'light'",
+              "description": "Shade `'light'` (default) and `'dark'` for tag",
+              "attribute": "shade"
+            },
+            {
+              "kind": "field",
+              "name": "tagColor",
+              "type": {
+                "text": "string"
+              },
+              "default": "'spruce'",
+              "description": "Color variants. Default spruce",
+              "attribute": "tagColor"
+            },
+            {
+              "kind": "method",
+              "name": "handleTagClear",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the close event and emits the Tag value. Works with filterable tags.",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Tag name (Required).",
+              "fieldName": "label"
+            },
+            {
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "fieldName": "tagSize"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify if the Tag is disabled.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag state is filter.",
+              "fieldName": "filter"
+            },
+            {
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "fieldName": "noTruncation"
+            },
+            {
+              "name": "shade",
+              "type": {
+                "text": "string"
+              },
+              "default": "'light'",
+              "description": "Shade `'light'` (default) and `'dark'` for tag",
+              "fieldName": "shade"
+            },
+            {
+              "name": "tagColor",
+              "type": {
+                "text": "string"
+              },
+              "default": "'spruce'",
+              "description": "Color variants. Default spruce",
+              "fieldName": "tagColor"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tag",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "src/components/reusable/tag/tag.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "src/components/reusable/tag/tag.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/tagGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tag & Tag Group",
+          "name": "TagGroup",
+          "slots": [
+            {
+              "description": "Slot for individual tags.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "description": "Text string customization.",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "field",
+              "name": "limitTags",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
+              "attribute": "limitTags"
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tag group filter",
+              "attribute": "filter"
+            },
+            {
+              "kind": "field",
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "attribute": "tagSize"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_toggleRevealed",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "revealed",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "limitTags",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
+              "fieldName": "limitTags"
+            },
+            {
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tag group filter",
+              "fieldName": "filter"
+            },
+            {
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "fieldName": "tagSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tag-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TagGroup",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "src/components/reusable/tag/tagGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tag-group",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "src/components/reusable/tag/tagGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "./textArea"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/textArea.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Text area.",
+          "name": "TextArea",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "attribute": "maxLength"
+            },
+            {
+              "kind": "field",
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "attribute": "minLength"
+            },
+            {
+              "kind": "field",
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "textarea rows attribute. The number of visible text lines.",
+              "attribute": "rows"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  requiredText: 'Required',\n  errorText: 'Error',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ],
+              "description": "Component _validate function reference.",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
             },
             {
               "kind": "field",
@@ -11496,17 +12677,481 @@
               },
               "default": "''",
               "description": "Input value.",
-              "attribute": "value"
+              "attribute": "value",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
             },
             {
               "kind": "field",
-              "name": "size",
+              "name": "name",
               "type": {
                 "text": "string"
               },
-              "default": "'md'",
-              "description": "Input & button size.",
-              "attribute": "size"
+              "default": "''",
+              "description": "Input name.",
+              "attribute": "name",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input invalid text.",
+              "attribute": "invalidText",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_onUpdated",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "changedProps",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updated",
+              "parameters": [
+                {
+                  "name": "changedProps",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_onConnected",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_onDisconnected",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "fieldName": "maxLength"
+            },
+            {
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "fieldName": "minLength"
+            },
+            {
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "textarea rows attribute. The number of visible text lines.",
+              "fieldName": "rows"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "fieldName": "value",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "fieldName": "name",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input invalid text.",
+              "fieldName": "invalidText",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-text-area",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-text-area",
+          "declaration": {
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "./stepper"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StepperItem",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "./stepperItem"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StepperItemChild",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "./stepperItemChild"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepper.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper",
+          "name": "Stepper",
+          "slots": [
+            {
+              "description": "Slot for step items.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "stepperType",
+              "type": {
+                "text": "string"
+              },
+              "default": "'procedure'",
+              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
+              "attribute": "stepperType"
+            },
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Wheter the stepper is in vertical type.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "stepperSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "attribute": "stepperSize"
+            },
+            {
+              "kind": "field",
+              "name": "currentIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
+              "attribute": "currentIndex"
+            },
+            {
+              "kind": "method",
+              "name": "_handleStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the event and emits the active step and original event details when click on any step title. This is only for procedure type stepper. Status stepper doesn't emit this event.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "stepperType",
+              "type": {
+                "text": "string"
+              },
+              "default": "'procedure'",
+              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
+              "fieldName": "stepperType"
+            },
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Wheter the stepper is in vertical type.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "stepperSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "fieldName": "stepperSize"
+            },
+            {
+              "name": "currentIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
+              "fieldName": "currentIndex"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "src/components/reusable/stepper/stepper.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "src/components/reusable/stepper/stepper.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepperItem.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper Item.",
+          "name": "StepperItem",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            },
+            {
+              "description": "Children slot. Used for nested children in vertical stepper. Visible only when step state is active. Do not use inside stepperType `'status'`.",
+              "name": "child"
+            },
+            {
+              "description": "Optional slot for content in vertical stepper. Visible only when step state is active.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the stepper is in vertical type.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "stepSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "attribute": "stepSize"
+            },
+            {
+              "kind": "field",
+              "name": "stepName",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step name.",
+              "attribute": "stepName"
+            },
+            {
+              "kind": "field",
+              "name": "stepTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step title. Required for actions.",
+              "attribute": "stepTitle"
+            },
+            {
+              "kind": "field",
+              "name": "stepState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
+              "attribute": "stepState"
             },
             {
               "kind": "field",
@@ -11515,38 +13160,432 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Disabled state.",
+              "description": "Disable step.",
               "attribute": "disabled"
             },
             {
               "kind": "field",
-              "name": "suggestions",
+              "name": "showCounter",
               "type": {
-                "text": "Array<string>"
+                "text": "boolean"
               },
-              "default": "[]",
-              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
-              "attribute": "suggestions"
+              "default": "false",
+              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
+              "attribute": "showCounter"
             },
             {
               "kind": "method",
-              "name": "_buttonSizeMap",
+              "name": "_handleChildToggle",
               "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "_handleFocus",
+              "name": "_handleStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
               "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "_handleBlur",
-              "privacy": "private"
+              "name": "getProgressValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the step details to the parent stepper component when click on step title.",
+              "name": "on-step-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the stepper is in vertical type.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "stepSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "fieldName": "stepSize"
+            },
+            {
+              "name": "stepName",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step name.",
+              "fieldName": "stepName"
+            },
+            {
+              "name": "stepTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step title. Required for actions.",
+              "fieldName": "stepTitle"
+            },
+            {
+              "name": "stepState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
+              "fieldName": "stepState"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disable step.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "showCounter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
+              "fieldName": "showCounter"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "StepperItem",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "src/components/reusable/stepper/stepperItem.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper-item",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "src/components/reusable/stepper/stepperItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepperItemChild.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper Item child.",
+          "name": "StepperItemChild",
+          "slots": [
+            {
+              "description": "Slot for other elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "childTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Child Title. Required for nested child inside step.",
+              "attribute": "childTitle"
+            },
+            {
+              "kind": "field",
+              "name": "childSubTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional Child Subtitle.",
+              "attribute": "childSubTitle"
+            },
+            {
+              "kind": "field",
+              "name": "childState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
+              "attribute": "childState"
             },
             {
               "kind": "method",
-              "name": "_handleButtonClick",
-              "privacy": "private"
+              "name": "_handleChildStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getProgressValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits event on child click. Only for vertical mode.",
+              "name": "on-child-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "childTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Child Title. Required for nested child inside step.",
+              "fieldName": "childTitle"
+            },
+            {
+              "name": "childSubTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional Child Subtitle.",
+              "fieldName": "childSubTitle"
+            },
+            {
+              "name": "childState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
+              "fieldName": "childState"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper-item-child",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "StepperItemChild",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "src/components/reusable/stepper/stepperItemChild.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper-item-child",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "src/components/reusable/stepper/stepperItemChild.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textInput/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextInput",
+          "declaration": {
+            "name": "TextInput",
+            "module": "./textInput"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textInput/textInput.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Text input.",
+          "name": "TextInput",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for contextual icon.",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'text'",
+              "description": "Input type, limited to options that are \"text like\".",
+              "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "description": "RegEx pattern to validate.",
+              "attribute": "pattern"
+            },
+            {
+              "kind": "field",
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "attribute": "maxLength"
+            },
+            {
+              "kind": "field",
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "attribute": "minLength"
+            },
+            {
+              "kind": "field",
+              "name": "iconRight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Place icon on the right.",
+              "attribute": "iconRight"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    clearAll: 'Clear all',\n  }",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings"
             },
             {
               "kind": "method",
@@ -11556,31 +13595,24 @@
                 {
                   "name": "e",
                   "type": {
-                    "text": "CustomEvent"
+                    "text": "any"
                   }
                 }
               ]
             },
             {
               "kind": "method",
-              "name": "_handleSuggestionClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "suggestion",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
+              "name": "_handleClear",
+              "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "handleSearchKeydown",
+              "name": "_emitValue",
               "privacy": "private",
               "parameters": [
                 {
                   "name": "e",
+                  "optional": true,
                   "type": {
                     "text": "any"
                   }
@@ -11589,64 +13621,243 @@
             },
             {
               "kind": "method",
-              "name": "handleListKeydown",
-              "privacy": "private",
+              "name": "_validate",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
               "parameters": [
                 {
-                  "name": "e",
+                  "name": "interacted",
                   "type": {
-                    "text": "any"
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
                   }
                 }
-              ]
+              ],
+              "description": "Component _validate function reference.",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
             },
             {
               "kind": "method",
-              "name": "handleKeyboard",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "keyCode",
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
+              "name": "determineIfSlotted",
+              "privacy": "private"
+            },
             {
-              "description": "Emits the value on text input/clear.",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "attribute": "value",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
             {
+              "kind": "field",
               "name": "name",
               "type": {
                 "text": "string"
               },
               "default": "''",
               "description": "Input name.",
-              "fieldName": "name"
+              "attribute": "name",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
             },
             {
-              "name": "label",
+              "kind": "field",
+              "name": "invalidText",
               "type": {
                 "text": "string"
               },
-              "default": "'Search'",
-              "description": "Label text.",
-              "fieldName": "label"
+              "default": "''",
+              "description": "Input invalid text.",
+              "attribute": "invalidText",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
             },
             {
-              "name": "expandable",
+              "kind": "method",
+              "name": "_onUpdated",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "changedProps",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updated",
+              "parameters": [
+                {
+                  "name": "changedProps",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_onConnected",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_onDisconnected",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'text'",
+              "description": "Input type, limited to options that are \"text like\".",
+              "fieldName": "type"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Expandable style search.",
-              "fieldName": "expandable"
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "description": "RegEx pattern to validate.",
+              "fieldName": "pattern"
+            },
+            {
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "fieldName": "maxLength"
+            },
+            {
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "fieldName": "minLength"
+            },
+            {
+              "name": "iconRight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Place icon on the right.",
+              "fieldName": "iconRight"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    clearAll: 'Clear all',\n  }",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
             },
             {
               "name": "value",
@@ -11655,59 +13866,68 @@
               },
               "default": "''",
               "description": "Input value.",
-              "fieldName": "value"
+              "fieldName": "value",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
             },
             {
-              "name": "size",
+              "name": "name",
               "type": {
                 "text": "string"
               },
-              "default": "'md'",
-              "description": "Input & button size.",
-              "fieldName": "size"
+              "default": "''",
+              "description": "Input name.",
+              "fieldName": "name",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
             },
             {
-              "name": "disabled",
+              "name": "invalidText",
               "type": {
-                "text": "boolean"
+                "text": "string"
               },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
+              "default": "''",
+              "description": "Input invalid text.",
+              "fieldName": "invalidText",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            }
+          ],
+          "mixins": [
             {
-              "name": "suggestions",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
-              "fieldName": "suggestions"
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-search",
+          "tagName": "kyn-text-input",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "Search",
+          "name": "TextInput",
           "declaration": {
-            "name": "Search",
-            "module": "src/components/reusable/search/search.ts"
+            "name": "TextInput",
+            "module": "src/components/reusable/textInput/textInput.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-search",
+          "name": "kyn-text-input",
           "declaration": {
-            "name": "Search",
-            "module": "src/components/reusable/search/search.ts"
+            "name": "TextInput",
+            "module": "src/components/reusable/textInput/textInput.ts"
           }
         }
       ]
@@ -14301,2229 +16521,6 @@
           "declaration": {
             "name": "Table",
             "module": "src/components/reusable/table/table.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "./tabs"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "./tab"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "TabPanel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "./tabPanel"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tab.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tabs.",
-          "name": "Tab",
-          "slots": [
-            {
-              "description": "Slot for tab button text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "id",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tab ID, required.",
-              "attribute": "id",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab selected state. Must match Tab Panel visible state.",
-              "attribute": "selected",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The parameter \"e\" is an event object that represents the event that triggered the\nclick event handler."
-                }
-              ],
-              "description": "Dispatches a custom event called 'tab-activated' with the original event and tabId as details,\nif the tab is not selected."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "id",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tab ID, required.",
-              "fieldName": "id"
-            },
-            {
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab selected state. Must match Tab Panel visible state.",
-              "fieldName": "selected"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab disabled state.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tab",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "src/components/reusable/tabs/tab.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "src/components/reusable/tabs/tab.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tabPanel.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tabs.",
-          "name": "TabPanel",
-          "slots": [
-            {
-              "description": "Slot for tab content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "tabId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Matching Tab ID, required.",
-              "attribute": "tabId"
-            },
-            {
-              "kind": "field",
-              "name": "visible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab Panel visible state.  Must match Tab selected state.",
-              "attribute": "visible",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "noPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Remove side padding (left/right) on tab panel.",
-              "attribute": "noPadding"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "tabId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Matching Tab ID, required.",
-              "fieldName": "tabId"
-            },
-            {
-              "name": "visible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab Panel visible state.  Must match Tab selected state.",
-              "fieldName": "visible"
-            },
-            {
-              "name": "noPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Remove side padding (left/right) on tab panel.",
-              "fieldName": "noPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tab-panel",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TabPanel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "src/components/reusable/tabs/tabPanel.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tab-panel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "src/components/reusable/tabs/tabPanel.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tabs.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tabs.",
-          "name": "Tabs",
-          "slots": [
-            {
-              "description": "Slot for kyn-tab-panel components.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for kyn-tab components.",
-              "name": "tabs"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "tabStyle",
-              "type": {
-                "text": "string"
-              },
-              "default": "'contained'",
-              "description": "Tab style. `'contained'` or `'line'`.",
-              "attribute": "tabStyle"
-            },
-            {
-              "kind": "field",
-              "name": "tabSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
-              "attribute": "tabSize"
-            },
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Vertical orientation.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChangeTabs",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The parameter \"e\" is an event object that contains information about the event\nthat triggered the handleChange function."
-                }
-              ],
-              "description": "Updates children and emits a change event based on the provided\nevent details when a child kyn-tab is clicked."
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildrenSelection",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "selectedTabId",
-                  "type": {
-                    "text": "string"
-                  },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe tab that is currently selected."
-                }
-              ],
-              "description": "Updates the selected property of tabs and the visible property of tab panels based on\nthe selected tab ID."
-            },
-            {
-              "kind": "method",
-              "name": "_emitChangeEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "origEvent",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The origEvent parameter is the original event object that triggered the\nchange event. It could be any type of event object, such as a click event or a keydown event."
-                },
-                {
-                  "name": "selectedTabId",
-                  "type": {
-                    "text": "string"
-                  },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe selected tab."
-                }
-              ],
-              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\nselected tab ID as details."
-            },
-            {
-              "kind": "method",
-              "name": "_handleKeyboard",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The parameter `e` is an event object that represents the keyboard event. It\ncontains information about the keyboard event, such as the key code of the pressed key."
-                }
-              ],
-              "description": "Handles keyboard events for navigating between tabs.",
-              "return": {
-                "type": {
-                  "text": ""
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the new selected Tab ID when switching tabs.",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "tabStyle",
-              "type": {
-                "text": "string"
-              },
-              "default": "'contained'",
-              "description": "Tab style. `'contained'` or `'line'`.",
-              "fieldName": "tabStyle"
-            },
-            {
-              "name": "tabSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
-              "fieldName": "tabSize"
-            },
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Vertical orientation.",
-              "fieldName": "vertical"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tabs",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "src/components/reusable/tabs/tabs.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "src/components/reusable/tabs/tabs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "./stepper"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "StepperItem",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "./stepperItem"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "StepperItemChild",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "./stepperItemChild"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepper.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper",
-          "name": "Stepper",
-          "slots": [
-            {
-              "description": "Slot for step items.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "stepperType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
-              "attribute": "stepperType"
-            },
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Wheter the stepper is in vertical type.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "stepperSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "attribute": "stepperSize"
-            },
-            {
-              "kind": "field",
-              "name": "currentIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
-              "attribute": "currentIndex"
-            },
-            {
-              "kind": "method",
-              "name": "_handleStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the event and emits the active step and original event details when click on any step title. This is only for procedure type stepper. Status stepper doesn't emit this event.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "stepperType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
-              "fieldName": "stepperType"
-            },
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Wheter the stepper is in vertical type.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "stepperSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "fieldName": "stepperSize"
-            },
-            {
-              "name": "currentIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
-              "fieldName": "currentIndex"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "src/components/reusable/stepper/stepper.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "src/components/reusable/stepper/stepper.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepperItem.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper Item.",
-          "name": "StepperItem",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            },
-            {
-              "description": "Children slot. Used for nested children in vertical stepper. Visible only when step state is active. Do not use inside stepperType `'status'`.",
-              "name": "child"
-            },
-            {
-              "description": "Optional slot for content in vertical stepper. Visible only when step state is active.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the stepper is in vertical type.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "stepSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "attribute": "stepSize"
-            },
-            {
-              "kind": "field",
-              "name": "stepName",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step name.",
-              "attribute": "stepName"
-            },
-            {
-              "kind": "field",
-              "name": "stepTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step title. Required for actions.",
-              "attribute": "stepTitle"
-            },
-            {
-              "kind": "field",
-              "name": "stepState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
-              "attribute": "stepState"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disable step.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "showCounter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
-              "attribute": "showCounter"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChildToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getProgressValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the step details to the parent stepper component when click on step title.",
-              "name": "on-step-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the stepper is in vertical type.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "stepSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "fieldName": "stepSize"
-            },
-            {
-              "name": "stepName",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step name.",
-              "fieldName": "stepName"
-            },
-            {
-              "name": "stepTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step title. Required for actions.",
-              "fieldName": "stepTitle"
-            },
-            {
-              "name": "stepState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
-              "fieldName": "stepState"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disable step.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "showCounter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
-              "fieldName": "showCounter"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper-item",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StepperItem",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "src/components/reusable/stepper/stepperItem.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper-item",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "src/components/reusable/stepper/stepperItem.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepperItemChild.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper Item child.",
-          "name": "StepperItemChild",
-          "slots": [
-            {
-              "description": "Slot for other elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "childTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child Title. Required for nested child inside step.",
-              "attribute": "childTitle"
-            },
-            {
-              "kind": "field",
-              "name": "childSubTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional Child Subtitle.",
-              "attribute": "childSubTitle"
-            },
-            {
-              "kind": "field",
-              "name": "childState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
-              "attribute": "childState"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChildStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getProgressValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits event on child click. Only for vertical mode.",
-              "name": "on-child-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "childTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child Title. Required for nested child inside step.",
-              "fieldName": "childTitle"
-            },
-            {
-              "name": "childSubTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional Child Subtitle.",
-              "fieldName": "childSubTitle"
-            },
-            {
-              "name": "childState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
-              "fieldName": "childState"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper-item-child",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StepperItemChild",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "src/components/reusable/stepper/stepperItemChild.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper-item-child",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "src/components/reusable/stepper/stepperItemChild.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "./tag"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "TagGroup",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "./tagGroup"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/tag.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tag.",
-          "name": "Tag",
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tag name (Required).",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "attribute": "tagSize"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify if the Tag is disabled.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine if Tag state is filter.",
-              "attribute": "filter"
-            },
-            {
-              "kind": "field",
-              "name": "noTruncation",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Removes label text truncation.",
-              "attribute": "noTruncation"
-            },
-            {
-              "kind": "field",
-              "name": "shade",
-              "type": {
-                "text": "string"
-              },
-              "default": "'light'",
-              "description": "Shade `'light'` (default) and `'dark'` for tag",
-              "attribute": "shade"
-            },
-            {
-              "kind": "field",
-              "name": "tagColor",
-              "type": {
-                "text": "string"
-              },
-              "default": "'spruce'",
-              "description": "Color variants. Default spruce",
-              "attribute": "tagColor"
-            },
-            {
-              "kind": "method",
-              "name": "handleTagClear",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the close event and emits the Tag value. Works with filterable tags.",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tag name (Required).",
-              "fieldName": "label"
-            },
-            {
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "fieldName": "tagSize"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify if the Tag is disabled.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine if Tag state is filter.",
-              "fieldName": "filter"
-            },
-            {
-              "name": "noTruncation",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Removes label text truncation.",
-              "fieldName": "noTruncation"
-            },
-            {
-              "name": "shade",
-              "type": {
-                "text": "string"
-              },
-              "default": "'light'",
-              "description": "Shade `'light'` (default) and `'dark'` for tag",
-              "fieldName": "shade"
-            },
-            {
-              "name": "tagColor",
-              "type": {
-                "text": "string"
-              },
-              "default": "'spruce'",
-              "description": "Color variants. Default spruce",
-              "fieldName": "tagColor"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tag",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "src/components/reusable/tag/tag.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "src/components/reusable/tag/tag.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/tagGroup.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tag & Tag Group",
-          "name": "TagGroup",
-          "slots": [
-            {
-              "description": "Slot for individual tags.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
-              "description": "Text string customization.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "field",
-              "name": "limitTags",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
-              "attribute": "limitTags"
-            },
-            {
-              "kind": "field",
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tag group filter",
-              "attribute": "filter"
-            },
-            {
-              "kind": "field",
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "attribute": "tagSize"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_toggleRevealed",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "revealed",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "limitTags",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
-              "fieldName": "limitTags"
-            },
-            {
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tag group filter",
-              "fieldName": "filter"
-            },
-            {
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "fieldName": "tagSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tag-group",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TagGroup",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "src/components/reusable/tag/tagGroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tag-group",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "src/components/reusable/tag/tagGroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "./textArea"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/textArea.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Text area.",
-          "name": "TextArea",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "attribute": "placeholder"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "attribute": "maxLength"
-            },
-            {
-              "kind": "field",
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "attribute": "minLength"
-            },
-            {
-              "kind": "field",
-              "name": "rows",
-              "type": {
-                "text": "number"
-              },
-              "description": "textarea rows attribute. The number of visible text lines.",
-              "attribute": "rows"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  errorText: 'Error',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ],
-              "description": "Component _validate function reference.",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "attribute": "value",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "attribute": "name",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input invalid text.",
-              "attribute": "invalidText",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onUpdated",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "changedProps",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ],
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "updated",
-              "parameters": [
-                {
-                  "name": "changedProps",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ],
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onConnected",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onDisconnected",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "fieldName": "placeholder"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "fieldName": "maxLength"
-            },
-            {
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "fieldName": "minLength"
-            },
-            {
-              "name": "rows",
-              "type": {
-                "text": "number"
-              },
-              "description": "textarea rows attribute. The number of visible text lines.",
-              "fieldName": "rows"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "fieldName": "value",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "fieldName": "name",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input invalid text.",
-              "fieldName": "invalidText",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-text-area",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-text-area",
-          "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textInput/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextInput",
-          "declaration": {
-            "name": "TextInput",
-            "module": "./textInput"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textInput/textInput.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Text input.",
-          "name": "TextInput",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for contextual icon.",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'text'",
-              "description": "Input type, limited to options that are \"text like\".",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "attribute": "placeholder"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "pattern",
-              "type": {
-                "text": "string"
-              },
-              "description": "RegEx pattern to validate.",
-              "attribute": "pattern"
-            },
-            {
-              "kind": "field",
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "attribute": "maxLength"
-            },
-            {
-              "kind": "field",
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "attribute": "minLength"
-            },
-            {
-              "kind": "field",
-              "name": "iconRight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Place icon on the right.",
-              "attribute": "iconRight"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    clearAll: 'Clear all',\n  }",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "method",
-              "name": "_handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClear",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "optional": true,
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ],
-              "description": "Component _validate function reference.",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "determineIfSlotted",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "attribute": "value",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "attribute": "name",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input invalid text.",
-              "attribute": "invalidText",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onUpdated",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "changedProps",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ],
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "updated",
-              "parameters": [
-                {
-                  "name": "changedProps",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ],
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onConnected",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onDisconnected",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'text'",
-              "description": "Input type, limited to options that are \"text like\".",
-              "fieldName": "type"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "fieldName": "placeholder"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "pattern",
-              "type": {
-                "text": "string"
-              },
-              "description": "RegEx pattern to validate.",
-              "fieldName": "pattern"
-            },
-            {
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "fieldName": "maxLength"
-            },
-            {
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "fieldName": "minLength"
-            },
-            {
-              "name": "iconRight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Place icon on the right.",
-              "fieldName": "iconRight"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            },
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    clearAll: 'Clear all',\n  }",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "fieldName": "value",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "fieldName": "name",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input invalid text.",
-              "fieldName": "invalidText",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-text-input",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextInput",
-          "declaration": {
-            "name": "TextInput",
-            "module": "src/components/reusable/textInput/textInput.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-text-input",
-          "declaration": {
-            "name": "TextInput",
-            "module": "src/components/reusable/textInput/textInput.ts"
           }
         }
       ]

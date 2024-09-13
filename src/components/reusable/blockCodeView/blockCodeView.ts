@@ -3,6 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { deepmerge } from 'deepmerge-ts';
 
 import Prism from 'prismjs';
 import 'prismjs/plugins/autoloader/prism-autoloader';
@@ -25,9 +26,14 @@ interface LanguageMatch {
   relevance: number;
 }
 
+const _defaultTextStrings = {
+  collapsed: 'Collapsed',
+  expanded: 'Expanded',
+};
+
 /**
  * `<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements.
- * @fires on-custom-copy - Emits when the copy button is clicked.
+ * @fires on-copy - Emits when the copy button is clicked.
  */
 @customElement('kyn-block-code-view')
 export class BlockCodeView extends LitElement {
@@ -44,10 +50,6 @@ export class BlockCodeView extends LitElement {
   /** If `''`, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language. */
   @property({ type: String })
   language = '';
-
-  /** Sets code snippet size. */
-  @property({ type: String })
-  size: 'auto' | 'sm' | 'md' | 'lg' = 'md';
 
   /** Customizable max-height setting for code snippet container. */
   @property({ type: Number })
@@ -84,6 +86,16 @@ export class BlockCodeView extends LitElement {
   /** Sets code snippet for display -- NOTE: original formatting is preserved. */
   @property({ type: String })
   codeSnippet = '';
+
+  /** Text string customization. */
+  @property({ type: Object })
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
 
   /** Auto-detect whether code snippet is single line (boolean) -- styled accordingly (boolean).
    * @internal
@@ -165,8 +177,6 @@ export class BlockCodeView extends LitElement {
                   size="small"
                   iconPosition="left"
                   ?disabled=${this._copyState.copied}
-                  title=${ifDefined(this.copyButtonTitleAttr)}
-                  name=${ifDefined(this.copyButtonDescriptionAttr)}
                   description=${ifDefined(this.copyButtonDescriptionAttr)}
                   @click=${this.copyCode}
                 >
@@ -191,11 +201,9 @@ export class BlockCodeView extends LitElement {
                   kind="tertiary"
                   size="small"
                   iconPosition="left"
-                  title="Expand/Collapse code snippet"
-                  name="toggle-code-expanded"
-                  description="Click to ${this.codeExpanded
-                    ? 'collapse'
-                    : 'expand'} the full code snippet"
+                  description=${this.codeExpanded
+                    ? this._textStrings.expanded
+                    : this._textStrings.collapsed}
                   @click=${this.expandCodeView}
                 >
                   <kd-icon
@@ -214,7 +222,6 @@ export class BlockCodeView extends LitElement {
   private getContainerClasses() {
     return classMap({
       'code-view__container': true,
-      [`size--${this.size}`]: true,
       'single-line': this._isSingleLine,
       'multi-line': !this._isSingleLine,
       'copy-button-text-true':
@@ -226,6 +233,12 @@ export class BlockCodeView extends LitElement {
       'expanded-code-view': this.codeExpanded,
       'has-overflow': this.hasOverflow,
     });
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('codeExpanded')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
   }
 
   override updated(changedProperties: Map<string, unknown>) {
@@ -275,7 +288,7 @@ export class BlockCodeView extends LitElement {
       return 'plaintext';
     }
 
-    // base list of lanugages to evaluate relevance
+    // base list of language to evaluate relevance
     const languages = [
       'markup',
       'html',
@@ -449,7 +462,7 @@ export class BlockCodeView extends LitElement {
         };
         this.requestUpdate();
         this.dispatchEvent(
-          new CustomEvent('on-custom-copy', {
+          new CustomEvent('on-copy', {
             detail: {
               origEvent: e,
               fullSnippet: this.formatExampleCode(this.codeSnippet),
