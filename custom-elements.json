@@ -5680,673 +5680,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Sample Lit component to show global filter pattern applied to a Chart.",
-          "name": "SampleFilterChartComponent",
-          "members": [
-            {
-              "kind": "field",
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\n    {\n      value: 'Red',\n      text: 'Red',\n    },\n    {\n      value: 'Blue',\n      text: 'Blue',\n    },\n    {\n      value: 'Yellow',\n      text: 'Yellow',\n    },\n    {\n      value: 'Green',\n      text: 'Green',\n    },\n    {\n      value: 'Purple',\n      text: 'Purple',\n    },\n    {\n      value: 'Orange',\n      text: 'Orange',\n    },\n  ]",
-              "description": "Array of sample checkbox filter options.",
-              "attribute": "checkboxOptions"
-            },
-            {
-              "kind": "field",
-              "name": "chartLabels",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[\n    'Red',\n    'Blue',\n    'Yellow',\n    'Green',\n    'Purple',\n    'Orange',\n  ]",
-              "attribute": "chartLabels"
-            },
-            {
-              "kind": "field",
-              "name": "filteredChartLabels",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "attribute": "filteredChartLabels"
-            },
-            {
-              "kind": "field",
-              "name": "chartDatasets",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\n    {\n      label: 'Dataset 1',\n      data: [12, 19, 3, 5, 2, 3],\n    },\n    {\n      label: 'Dataset 2',\n      data: [8, 15, 7, 9, 6, 13],\n    },\n  ]",
-              "attribute": "chartDatasets"
-            },
-            {
-              "kind": "field",
-              "name": "chartOptions",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    scales: {\n      x: {\n        title: {\n          text: 'Color',\n        },\n      },\n      y: {\n        title: {\n          text: 'Votes',\n        },\n      },\n    },\n  }",
-              "attribute": "chartOptions"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSearch",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCheckboxes",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleModalClose",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleTagClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "option",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClearTags",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_filter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "query",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\n    {\n      value: 'Red',\n      text: 'Red',\n    },\n    {\n      value: 'Blue',\n      text: 'Blue',\n    },\n    {\n      value: 'Yellow',\n      text: 'Yellow',\n    },\n    {\n      value: 'Green',\n      text: 'Green',\n    },\n    {\n      value: 'Purple',\n      text: 'Purple',\n    },\n    {\n      value: 'Orange',\n      text: 'Orange',\n    },\n  ]",
-              "description": "Array of sample checkbox filter options.",
-              "fieldName": "checkboxOptions"
-            },
-            {
-              "name": "chartLabels",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[\n    'Red',\n    'Blue',\n    'Yellow',\n    'Green',\n    'Purple',\n    'Orange',\n  ]",
-              "fieldName": "chartLabels"
-            },
-            {
-              "name": "filteredChartLabels",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "fieldName": "filteredChartLabels"
-            },
-            {
-              "name": "chartDatasets",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\n    {\n      label: 'Dataset 1',\n      data: [12, 19, 3, 5, 2, 3],\n    },\n    {\n      label: 'Dataset 2',\n      data: [8, 15, 7, 9, 6, 13],\n    },\n  ]",
-              "fieldName": "chartDatasets"
-            },
-            {
-              "name": "chartOptions",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    scales: {\n      x: {\n        title: {\n          text: 'Color',\n        },\n      },\n      y: {\n        title: {\n          text: 'Votes',\n        },\n      },\n    },\n  }",
-              "fieldName": "chartOptions"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "sample-filter-chart-component",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SampleFilterChartComponent",
-          "declaration": {
-            "name": "SampleFilterChartComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "sample-filter-chart-component",
-          "declaration": {
-            "name": "SampleFilterChartComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.sample.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Sample Lit component to show global filter pattern.",
-          "name": "SampleFilterComponent",
-          "members": [
-            {
-              "kind": "field",
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\n    {\n      value: '1',\n      text: 'Option 1',\n    },\n    {\n      value: '2',\n      text: 'Option 2',\n    },\n    {\n      value: '3',\n      text: 'Option 3',\n    },\n    {\n      value: '4',\n      text: 'Option 4',\n    },\n    {\n      value: '5',\n      text: 'Option 5',\n    },\n    {\n      value: '6',\n      text: 'Option 6',\n    },\n  ]",
-              "description": "Array of sample checkbox filter options.",
-              "attribute": "checkboxOptions"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSearch",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCheckboxes",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleModalClose",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleTagClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "option",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClearTags",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCustomAction",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleOverflowClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\n    {\n      value: '1',\n      text: 'Option 1',\n    },\n    {\n      value: '2',\n      text: 'Option 2',\n    },\n    {\n      value: '3',\n      text: 'Option 3',\n    },\n    {\n      value: '4',\n      text: 'Option 4',\n    },\n    {\n      value: '5',\n      text: 'Option 5',\n    },\n    {\n      value: '6',\n      text: 'Option 6',\n    },\n  ]",
-              "description": "Array of sample checkbox filter options.",
-              "fieldName": "checkboxOptions"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "sample-filter-component",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SampleFilterComponent",
-          "declaration": {
-            "name": "SampleFilterComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.sample.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "sample-filter-component",
-          "declaration": {
-            "name": "SampleFilterComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.sample.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.table.sample.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Sample Lit component to show global filter pattern applied to a Chart.",
-          "name": "SampleFilterTableComponent",
-          "members": [
-            {
-              "kind": "field",
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\n    {\n      value: 'Stark',\n      text: 'Stark',\n    },\n    {\n      value: 'Lannister',\n      text: 'Lannister',\n    },\n    {\n      value: 'Targaryen',\n      text: 'Targaryen',\n    },\n  ]",
-              "description": "Array of sample checkbox filter options."
-            },
-            {
-              "kind": "field",
-              "name": "houses",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "['Stark', 'Lannister', 'Targaryen']"
-            },
-            {
-              "kind": "field",
-              "name": "filteredHouses",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]"
-            },
-            {
-              "kind": "field",
-              "name": "characters",
-              "type": {
-                "text": "array"
-              },
-              "privacy": "private",
-              "default": "[\n    { name: 'Jon Snow', age: 23, house: 'Stark' },\n    { name: 'Daenerys Targaryen', age: 22, house: 'Targaryen' },\n    { name: 'Tyrion Lannister', age: 39, house: 'Lannister' },\n    { name: 'Cersei Lannister', age: 42, house: 'Lannister' },\n    { name: 'Arya Stark', age: 18, house: 'Stark' },\n    { name: 'Sansa Stark', age: 20, house: 'Stark' },\n    { name: 'Bran Stark', age: 17, house: 'Stark' },\n    { name: 'Jaime Lannister', age: 44, house: 'Lannister' },\n  ]"
-            },
-            {
-              "kind": "field",
-              "name": "characters_backup",
-              "type": {
-                "text": "array"
-              },
-              "privacy": "private",
-              "default": "[\n    { name: 'Jon Snow', age: 23, house: 'Stark' },\n    { name: 'Daenerys Targaryen', age: 22, house: 'Targaryen' },\n    { name: 'Tyrion Lannister', age: 39, house: 'Lannister' },\n    { name: 'Cersei Lannister', age: 42, house: 'Lannister' },\n    { name: 'Arya Stark', age: 18, house: 'Stark' },\n    { name: 'Sansa Stark', age: 20, house: 'Stark' },\n    { name: 'Bran Stark', age: 17, house: 'Stark' },\n    { name: 'Jaime Lannister', age: 44, house: 'Lannister' },\n  ]"
-            },
-            {
-              "kind": "field",
-              "name": "selectedRows",
-              "type": {
-                "text": "array"
-              },
-              "default": "[]"
-            },
-            {
-              "kind": "field",
-              "name": "opened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false"
-            },
-            {
-              "kind": "method",
-              "name": "toggleMenu",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "textInput",
-              "type": {
-                "text": "any"
-              },
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSearch",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCheckboxes",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleModalClose",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleTagClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "option",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClearTags",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_filter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "query",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleOverflowClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_deleteSelectedRows",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSelectedRowsChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCustomAction",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "sample-filter-table-component",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SampleFilterTableComponent",
-          "declaration": {
-            "name": "SampleFilterTableComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.table.sample.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "sample-filter-table-component",
-          "declaration": {
-            "name": "SampleFilterTableComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.table.sample.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Global Filter bar.",
-          "name": "GlobalFilter",
-          "slots": [
-            {
-              "description": "Left slot, intended for search input and modal.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Right slot, intended for action buttons and overflow menu.",
-              "name": "actions"
-            },
-            {
-              "description": "Slot below the filter bar, for tag group.",
-              "name": "tags"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-global-filter",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-global-filter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "./globalFilter"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/dropdown/dropdown.ts",
       "declarations": [
         {
@@ -7397,6 +6730,673 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Sample Lit component to show global filter pattern applied to a Chart.",
+          "name": "SampleFilterChartComponent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\n    {\n      value: 'Red',\n      text: 'Red',\n    },\n    {\n      value: 'Blue',\n      text: 'Blue',\n    },\n    {\n      value: 'Yellow',\n      text: 'Yellow',\n    },\n    {\n      value: 'Green',\n      text: 'Green',\n    },\n    {\n      value: 'Purple',\n      text: 'Purple',\n    },\n    {\n      value: 'Orange',\n      text: 'Orange',\n    },\n  ]",
+              "description": "Array of sample checkbox filter options.",
+              "attribute": "checkboxOptions"
+            },
+            {
+              "kind": "field",
+              "name": "chartLabels",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[\n    'Red',\n    'Blue',\n    'Yellow',\n    'Green',\n    'Purple',\n    'Orange',\n  ]",
+              "attribute": "chartLabels"
+            },
+            {
+              "kind": "field",
+              "name": "filteredChartLabels",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "attribute": "filteredChartLabels"
+            },
+            {
+              "kind": "field",
+              "name": "chartDatasets",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\n    {\n      label: 'Dataset 1',\n      data: [12, 19, 3, 5, 2, 3],\n    },\n    {\n      label: 'Dataset 2',\n      data: [8, 15, 7, 9, 6, 13],\n    },\n  ]",
+              "attribute": "chartDatasets"
+            },
+            {
+              "kind": "field",
+              "name": "chartOptions",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    scales: {\n      x: {\n        title: {\n          text: 'Color',\n        },\n      },\n      y: {\n        title: {\n          text: 'Votes',\n        },\n      },\n    },\n  }",
+              "attribute": "chartOptions"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSearch",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCheckboxes",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleModalClose",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleTagClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "option",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClearTags",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_filter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "query",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\n    {\n      value: 'Red',\n      text: 'Red',\n    },\n    {\n      value: 'Blue',\n      text: 'Blue',\n    },\n    {\n      value: 'Yellow',\n      text: 'Yellow',\n    },\n    {\n      value: 'Green',\n      text: 'Green',\n    },\n    {\n      value: 'Purple',\n      text: 'Purple',\n    },\n    {\n      value: 'Orange',\n      text: 'Orange',\n    },\n  ]",
+              "description": "Array of sample checkbox filter options.",
+              "fieldName": "checkboxOptions"
+            },
+            {
+              "name": "chartLabels",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[\n    'Red',\n    'Blue',\n    'Yellow',\n    'Green',\n    'Purple',\n    'Orange',\n  ]",
+              "fieldName": "chartLabels"
+            },
+            {
+              "name": "filteredChartLabels",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "fieldName": "filteredChartLabels"
+            },
+            {
+              "name": "chartDatasets",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\n    {\n      label: 'Dataset 1',\n      data: [12, 19, 3, 5, 2, 3],\n    },\n    {\n      label: 'Dataset 2',\n      data: [8, 15, 7, 9, 6, 13],\n    },\n  ]",
+              "fieldName": "chartDatasets"
+            },
+            {
+              "name": "chartOptions",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    scales: {\n      x: {\n        title: {\n          text: 'Color',\n        },\n      },\n      y: {\n        title: {\n          text: 'Votes',\n        },\n      },\n    },\n  }",
+              "fieldName": "chartOptions"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "sample-filter-chart-component",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SampleFilterChartComponent",
+          "declaration": {
+            "name": "SampleFilterChartComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "sample-filter-chart-component",
+          "declaration": {
+            "name": "SampleFilterChartComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.sample.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Sample Lit component to show global filter pattern.",
+          "name": "SampleFilterComponent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\n    {\n      value: '1',\n      text: 'Option 1',\n    },\n    {\n      value: '2',\n      text: 'Option 2',\n    },\n    {\n      value: '3',\n      text: 'Option 3',\n    },\n    {\n      value: '4',\n      text: 'Option 4',\n    },\n    {\n      value: '5',\n      text: 'Option 5',\n    },\n    {\n      value: '6',\n      text: 'Option 6',\n    },\n  ]",
+              "description": "Array of sample checkbox filter options.",
+              "attribute": "checkboxOptions"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSearch",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCheckboxes",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleModalClose",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleTagClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "option",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClearTags",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCustomAction",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleOverflowClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\n    {\n      value: '1',\n      text: 'Option 1',\n    },\n    {\n      value: '2',\n      text: 'Option 2',\n    },\n    {\n      value: '3',\n      text: 'Option 3',\n    },\n    {\n      value: '4',\n      text: 'Option 4',\n    },\n    {\n      value: '5',\n      text: 'Option 5',\n    },\n    {\n      value: '6',\n      text: 'Option 6',\n    },\n  ]",
+              "description": "Array of sample checkbox filter options.",
+              "fieldName": "checkboxOptions"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "sample-filter-component",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SampleFilterComponent",
+          "declaration": {
+            "name": "SampleFilterComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.sample.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "sample-filter-component",
+          "declaration": {
+            "name": "SampleFilterComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.sample.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.table.sample.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Sample Lit component to show global filter pattern applied to a Chart.",
+          "name": "SampleFilterTableComponent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\n    {\n      value: 'Stark',\n      text: 'Stark',\n    },\n    {\n      value: 'Lannister',\n      text: 'Lannister',\n    },\n    {\n      value: 'Targaryen',\n      text: 'Targaryen',\n    },\n  ]",
+              "description": "Array of sample checkbox filter options."
+            },
+            {
+              "kind": "field",
+              "name": "houses",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "['Stark', 'Lannister', 'Targaryen']"
+            },
+            {
+              "kind": "field",
+              "name": "filteredHouses",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "characters",
+              "type": {
+                "text": "array"
+              },
+              "privacy": "private",
+              "default": "[\n    { name: 'Jon Snow', age: 23, house: 'Stark' },\n    { name: 'Daenerys Targaryen', age: 22, house: 'Targaryen' },\n    { name: 'Tyrion Lannister', age: 39, house: 'Lannister' },\n    { name: 'Cersei Lannister', age: 42, house: 'Lannister' },\n    { name: 'Arya Stark', age: 18, house: 'Stark' },\n    { name: 'Sansa Stark', age: 20, house: 'Stark' },\n    { name: 'Bran Stark', age: 17, house: 'Stark' },\n    { name: 'Jaime Lannister', age: 44, house: 'Lannister' },\n  ]"
+            },
+            {
+              "kind": "field",
+              "name": "characters_backup",
+              "type": {
+                "text": "array"
+              },
+              "privacy": "private",
+              "default": "[\n    { name: 'Jon Snow', age: 23, house: 'Stark' },\n    { name: 'Daenerys Targaryen', age: 22, house: 'Targaryen' },\n    { name: 'Tyrion Lannister', age: 39, house: 'Lannister' },\n    { name: 'Cersei Lannister', age: 42, house: 'Lannister' },\n    { name: 'Arya Stark', age: 18, house: 'Stark' },\n    { name: 'Sansa Stark', age: 20, house: 'Stark' },\n    { name: 'Bran Stark', age: 17, house: 'Stark' },\n    { name: 'Jaime Lannister', age: 44, house: 'Lannister' },\n  ]"
+            },
+            {
+              "kind": "field",
+              "name": "selectedRows",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "opened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "method",
+              "name": "toggleMenu",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "textInput",
+              "type": {
+                "text": "any"
+              },
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSearch",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCheckboxes",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleModalClose",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleTagClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "option",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClearTags",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_filter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "query",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleOverflowClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_deleteSelectedRows",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSelectedRowsChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCustomAction",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "sample-filter-table-component",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SampleFilterTableComponent",
+          "declaration": {
+            "name": "SampleFilterTableComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.table.sample.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "sample-filter-table-component",
+          "declaration": {
+            "name": "SampleFilterTableComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.table.sample.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Global Filter bar.",
+          "name": "GlobalFilter",
+          "slots": [
+            {
+              "description": "Left slot, intended for search input and modal.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Right slot, intended for action buttons and overflow menu.",
+              "name": "actions"
+            },
+            {
+              "description": "Slot below the filter bar, for tag group.",
+              "name": "tags"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-global-filter",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-global-filter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "./globalFilter"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/loaders/index.ts",
       "declarations": [],
       "exports": [
@@ -7661,6 +7661,349 @@
           "declaration": {
             "name": "Skeleton",
             "module": "src/components/reusable/loaders/skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/notification/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "./notification"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NotificationContainer",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "./notificationContainer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/notification/notification.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Notification component.",
+          "name": "Notification",
+          "slots": [
+            {
+              "description": "Slot for notification message body.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for menu.",
+              "name": "actions"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "notificationTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification Title (Required).",
+              "attribute": "notificationTitle"
+            },
+            {
+              "kind": "field",
+              "name": "notificationSubtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification subtitle.(optional)",
+              "attribute": "notificationSubtitle"
+            },
+            {
+              "kind": "field",
+              "name": "timeStamp",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Timestamp of notification.",
+              "attribute": "timeStamp"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card href link",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "tagStatus",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default'",
+              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
+              "attribute": "tagStatus"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'normal'",
+              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
+              "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "any"
+              },
+              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Info',\n    error: 'Error',\n  }",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "field",
+              "name": "unRead",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
+              "attribute": "unRead",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "hideCloseButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
+              "attribute": "hideCloseButton"
+            },
+            {
+              "kind": "field",
+              "name": "timeout",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
+              "attribute": "timeout"
+            },
+            {
+              "kind": "method",
+              "name": "renderInnerUI",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_close",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleCardClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emit event for clickable notification.",
+              "name": "on-notification-click"
+            },
+            {
+              "description": "Emits when an inline/toast notification closes.",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "notificationTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification Title (Required).",
+              "fieldName": "notificationTitle"
+            },
+            {
+              "name": "notificationSubtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification subtitle.(optional)",
+              "fieldName": "notificationSubtitle"
+            },
+            {
+              "name": "timeStamp",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Timestamp of notification.",
+              "fieldName": "timeStamp"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card href link",
+              "fieldName": "href"
+            },
+            {
+              "name": "tagStatus",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default'",
+              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
+              "fieldName": "tagStatus"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'normal'",
+              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
+              "fieldName": "type"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "any"
+              },
+              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Info',\n    error: 'Error',\n  }",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "unRead",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
+              "fieldName": "unRead"
+            },
+            {
+              "name": "hideCloseButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
+              "fieldName": "hideCloseButton"
+            },
+            {
+              "name": "timeout",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
+              "fieldName": "timeout"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-notification",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "src/components/reusable/notification/notification.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "src/components/reusable/notification/notification.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/notification/notificationContainer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Notification container component for Toast notification.\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
+          "name": "NotificationContainer",
+          "slots": [
+            {
+              "description": "Slot for <kyn-notification type=\"toast\"> component.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-notification-container",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NotificationContainer",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "src/components/reusable/notification/notificationContainer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-notification-container",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "src/components/reusable/notification/notificationContainer.ts"
           }
         }
       ]
@@ -8042,349 +8385,6 @@
           "declaration": {
             "name": "Modal",
             "module": "src/components/reusable/modal/modal.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/notification/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "./notification"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "NotificationContainer",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "./notificationContainer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/notification/notification.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Notification component.",
-          "name": "Notification",
-          "slots": [
-            {
-              "description": "Slot for notification message body.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for menu.",
-              "name": "actions"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "notificationTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification Title (Required).",
-              "attribute": "notificationTitle"
-            },
-            {
-              "kind": "field",
-              "name": "notificationSubtitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification subtitle.(optional)",
-              "attribute": "notificationSubtitle"
-            },
-            {
-              "kind": "field",
-              "name": "timeStamp",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Timestamp of notification.",
-              "attribute": "timeStamp"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card href link",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "tagStatus",
-              "type": {
-                "text": "string"
-              },
-              "default": "'default'",
-              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
-              "attribute": "tagStatus"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'normal'",
-              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "any"
-              },
-              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Info',\n    error: 'Error',\n  }",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "field",
-              "name": "unRead",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
-              "attribute": "unRead",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "hideCloseButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
-              "attribute": "hideCloseButton"
-            },
-            {
-              "kind": "field",
-              "name": "timeout",
-              "type": {
-                "text": "number"
-              },
-              "default": "8",
-              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
-              "attribute": "timeout"
-            },
-            {
-              "kind": "method",
-              "name": "renderInnerUI",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_close",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClose",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleCardClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emit event for clickable notification.",
-              "name": "on-notification-click"
-            },
-            {
-              "description": "Emits when an inline/toast notification closes.",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "notificationTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification Title (Required).",
-              "fieldName": "notificationTitle"
-            },
-            {
-              "name": "notificationSubtitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification subtitle.(optional)",
-              "fieldName": "notificationSubtitle"
-            },
-            {
-              "name": "timeStamp",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Timestamp of notification.",
-              "fieldName": "timeStamp"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card href link",
-              "fieldName": "href"
-            },
-            {
-              "name": "tagStatus",
-              "type": {
-                "text": "string"
-              },
-              "default": "'default'",
-              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
-              "fieldName": "tagStatus"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'normal'",
-              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
-              "fieldName": "type"
-            },
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "any"
-              },
-              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Info',\n    error: 'Error',\n  }",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "unRead",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
-              "fieldName": "unRead"
-            },
-            {
-              "name": "hideCloseButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
-              "fieldName": "hideCloseButton"
-            },
-            {
-              "name": "timeout",
-              "type": {
-                "text": "number"
-              },
-              "default": "8",
-              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
-              "fieldName": "timeout"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-notification",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "src/components/reusable/notification/notification.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "src/components/reusable/notification/notification.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/notification/notificationContainer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Notification container component for Toast notification.\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
-          "name": "NotificationContainer",
-          "slots": [
-            {
-              "description": "Slot for <kyn-notification type=\"toast\"> component.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-notification-container",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "NotificationContainer",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "src/components/reusable/notification/notificationContainer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-notification-container",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "src/components/reusable/notification/notificationContainer.ts"
           }
         }
       ]
@@ -10041,6 +10041,349 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/sideDrawer/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SideDrawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "./sideDrawer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/sideDrawer/sideDrawer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Side Drawer.",
+          "name": "SideDrawer",
+          "slots": [
+            {
+              "description": "Slot for drawer body content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the anchor button content.",
+              "name": "anchor"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Drawer open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Drawer size. `'md'`, or `'sm'`.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title / Heading text, required.",
+              "attribute": "titleText"
+            },
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "submitBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Ok'",
+              "description": "Submit button text.",
+              "attribute": "submitBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "attribute": "cancelBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "submitBtnDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "attribute": "submitBtnDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine whether needs footer",
+              "attribute": "hideFooter"
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "secondaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Secondary'",
+              "description": "Secondary button text.",
+              "attribute": "secondaryButtonText"
+            },
+            {
+              "kind": "field",
+              "name": "showSecondaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the secondary button.",
+              "attribute": "showSecondaryButton"
+            },
+            {
+              "kind": "field",
+              "name": "hideCancelButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the cancel button.",
+              "attribute": "hideCancelButton"
+            },
+            {
+              "kind": "field",
+              "name": "beforeClose",
+              "type": {
+                "text": "Function"
+              },
+              "description": "Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
+            },
+            {
+              "kind": "method",
+              "name": "_openDrawer",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_closeDrawer",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "returnValue",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitCloseEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Drawer open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Drawer size. `'md'`, or `'sm'`.",
+              "fieldName": "size"
+            },
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title / Heading text, required.",
+              "fieldName": "titleText"
+            },
+            {
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "fieldName": "labelText"
+            },
+            {
+              "name": "submitBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Ok'",
+              "description": "Submit button text.",
+              "fieldName": "submitBtnText"
+            },
+            {
+              "name": "cancelBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "fieldName": "cancelBtnText"
+            },
+            {
+              "name": "submitBtnDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "fieldName": "submitBtnDisabled"
+            },
+            {
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine whether needs footer",
+              "fieldName": "hideFooter"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "secondaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Secondary'",
+              "description": "Secondary button text.",
+              "fieldName": "secondaryButtonText"
+            },
+            {
+              "name": "showSecondaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the secondary button.",
+              "fieldName": "showSecondaryButton"
+            },
+            {
+              "name": "hideCancelButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the cancel button.",
+              "fieldName": "hideCancelButton"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-side-drawer",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SideDrawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-side-drawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/radioButton/index.ts",
       "declarations": [],
       "exports": [
@@ -10468,349 +10811,6 @@
           "declaration": {
             "name": "RadioButtonGroup",
             "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/sideDrawer/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SideDrawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "./sideDrawer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/sideDrawer/sideDrawer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Side Drawer.",
-          "name": "SideDrawer",
-          "slots": [
-            {
-              "description": "Slot for drawer body content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the anchor button content.",
-              "name": "anchor"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Drawer open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Drawer size. `'md'`, or `'sm'`.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title / Heading text, required.",
-              "attribute": "titleText"
-            },
-            {
-              "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "submitBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Ok'",
-              "description": "Submit button text.",
-              "attribute": "submitBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "submitBtnDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "attribute": "submitBtnDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine whether needs footer",
-              "attribute": "hideFooter"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text.",
-              "attribute": "secondaryButtonText"
-            },
-            {
-              "kind": "field",
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the secondary button.",
-              "attribute": "showSecondaryButton"
-            },
-            {
-              "kind": "field",
-              "name": "hideCancelButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the cancel button.",
-              "attribute": "hideCancelButton"
-            },
-            {
-              "kind": "field",
-              "name": "beforeClose",
-              "type": {
-                "text": "Function"
-              },
-              "description": "Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
-            },
-            {
-              "kind": "method",
-              "name": "_openDrawer",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_closeDrawer",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "returnValue",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitCloseEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Drawer open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Drawer size. `'md'`, or `'sm'`.",
-              "fieldName": "size"
-            },
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title / Heading text, required.",
-              "fieldName": "titleText"
-            },
-            {
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "fieldName": "labelText"
-            },
-            {
-              "name": "submitBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Ok'",
-              "description": "Submit button text.",
-              "fieldName": "submitBtnText"
-            },
-            {
-              "name": "cancelBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "fieldName": "cancelBtnText"
-            },
-            {
-              "name": "submitBtnDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "fieldName": "submitBtnDisabled"
-            },
-            {
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine whether needs footer",
-              "fieldName": "hideFooter"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text.",
-              "fieldName": "secondaryButtonText"
-            },
-            {
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the secondary button.",
-              "fieldName": "showSecondaryButton"
-            },
-            {
-              "name": "hideCancelButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the cancel button.",
-              "fieldName": "hideCancelButton"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-side-drawer",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SideDrawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-side-drawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
           }
         }
       ]
@@ -14215,370 +14215,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/tag/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "./tag"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "TagGroup",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "./tagGroup"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/tag.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tag.",
-          "name": "Tag",
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tag name (Required).",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "attribute": "tagSize"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify if the Tag is disabled.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine if Tag state is filter.",
-              "attribute": "filter"
-            },
-            {
-              "kind": "field",
-              "name": "noTruncation",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Removes label text truncation.",
-              "attribute": "noTruncation"
-            },
-            {
-              "kind": "field",
-              "name": "shade",
-              "type": {
-                "text": "string"
-              },
-              "default": "'light'",
-              "description": "Shade `'light'` (default) and `'dark'` for tag",
-              "attribute": "shade"
-            },
-            {
-              "kind": "field",
-              "name": "tagColor",
-              "type": {
-                "text": "string"
-              },
-              "default": "'spruce'",
-              "description": "Color variants. Default spruce",
-              "attribute": "tagColor"
-            },
-            {
-              "kind": "method",
-              "name": "handleTagClear",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the close event and emits the Tag value. Works with filterable tags.",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tag name (Required).",
-              "fieldName": "label"
-            },
-            {
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "fieldName": "tagSize"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify if the Tag is disabled.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine if Tag state is filter.",
-              "fieldName": "filter"
-            },
-            {
-              "name": "noTruncation",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Removes label text truncation.",
-              "fieldName": "noTruncation"
-            },
-            {
-              "name": "shade",
-              "type": {
-                "text": "string"
-              },
-              "default": "'light'",
-              "description": "Shade `'light'` (default) and `'dark'` for tag",
-              "fieldName": "shade"
-            },
-            {
-              "name": "tagColor",
-              "type": {
-                "text": "string"
-              },
-              "default": "'spruce'",
-              "description": "Color variants. Default spruce",
-              "fieldName": "tagColor"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tag",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "src/components/reusable/tag/tag.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "src/components/reusable/tag/tag.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/tagGroup.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tag & Tag Group",
-          "name": "TagGroup",
-          "slots": [
-            {
-              "description": "Slot for individual tags.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
-              "description": "Text string customization.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "field",
-              "name": "limitTags",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
-              "attribute": "limitTags"
-            },
-            {
-              "kind": "field",
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tag group filter",
-              "attribute": "filter"
-            },
-            {
-              "kind": "field",
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "attribute": "tagSize"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_toggleRevealed",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "revealed",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "limitTags",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
-              "fieldName": "limitTags"
-            },
-            {
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tag group filter",
-              "fieldName": "filter"
-            },
-            {
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "fieldName": "tagSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tag-group",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TagGroup",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "src/components/reusable/tag/tagGroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tag-group",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "src/components/reusable/tag/tagGroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/tabs/index.ts",
       "declarations": [],
       "exports": [
@@ -15409,6 +15045,370 @@
           "declaration": {
             "name": "TextArea",
             "module": "src/components/reusable/textArea/textArea.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "./tag"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TagGroup",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "./tagGroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/tag.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tag.",
+          "name": "Tag",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Tag name (Required).",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "attribute": "tagSize"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify if the Tag is disabled.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag state is filter.",
+              "attribute": "filter"
+            },
+            {
+              "kind": "field",
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "attribute": "noTruncation"
+            },
+            {
+              "kind": "field",
+              "name": "shade",
+              "type": {
+                "text": "string"
+              },
+              "default": "'light'",
+              "description": "Shade `'light'` (default) and `'dark'` for tag",
+              "attribute": "shade"
+            },
+            {
+              "kind": "field",
+              "name": "tagColor",
+              "type": {
+                "text": "string"
+              },
+              "default": "'spruce'",
+              "description": "Color variants. Default spruce",
+              "attribute": "tagColor"
+            },
+            {
+              "kind": "method",
+              "name": "handleTagClear",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the close event and emits the Tag value. Works with filterable tags.",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Tag name (Required).",
+              "fieldName": "label"
+            },
+            {
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "fieldName": "tagSize"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify if the Tag is disabled.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag state is filter.",
+              "fieldName": "filter"
+            },
+            {
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "fieldName": "noTruncation"
+            },
+            {
+              "name": "shade",
+              "type": {
+                "text": "string"
+              },
+              "default": "'light'",
+              "description": "Shade `'light'` (default) and `'dark'` for tag",
+              "fieldName": "shade"
+            },
+            {
+              "name": "tagColor",
+              "type": {
+                "text": "string"
+              },
+              "default": "'spruce'",
+              "description": "Color variants. Default spruce",
+              "fieldName": "tagColor"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tag",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "src/components/reusable/tag/tag.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "src/components/reusable/tag/tag.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/tagGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tag & Tag Group",
+          "name": "TagGroup",
+          "slots": [
+            {
+              "description": "Slot for individual tags.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "description": "Text string customization.",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "field",
+              "name": "limitTags",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
+              "attribute": "limitTags"
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tag group filter",
+              "attribute": "filter"
+            },
+            {
+              "kind": "field",
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "attribute": "tagSize"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_toggleRevealed",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "revealed",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "limitTags",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
+              "fieldName": "limitTags"
+            },
+            {
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tag group filter",
+              "fieldName": "filter"
+            },
+            {
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "fieldName": "tagSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tag-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TagGroup",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "src/components/reusable/tag/tagGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tag-group",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "src/components/reusable/tag/tagGroup.ts"
           }
         }
       ]
@@ -16290,133 +16290,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/tooltip/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tooltip",
-          "declaration": {
-            "name": "Tooltip",
-            "module": "./tooltip"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tooltip/tooltip.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tooltip.",
-          "name": "Tooltip",
-          "slots": [
-            {
-              "description": "Slot for tooltip content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for custom anchor button content.",
-              "name": "anchor"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "assistiveText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Toggle Tooltip'",
-              "description": "Assistive text for anchor button.",
-              "attribute": "assistiveText"
-            },
-            {
-              "kind": "method",
-              "name": "_positionTooltip",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleOpen",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClose",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleMouseLeave",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleEsc",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "KeyboardEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitToggle",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the open state of the tooltip on open/close.",
-              "name": "on-tooltip-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "assistiveText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Toggle Tooltip'",
-              "description": "Assistive text for anchor button.",
-              "fieldName": "assistiveText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tooltip",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tooltip",
-          "declaration": {
-            "name": "Tooltip",
-            "module": "src/components/reusable/tooltip/tooltip.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tooltip",
-          "declaration": {
-            "name": "Tooltip",
-            "module": "src/components/reusable/tooltip/tooltip.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/timepicker/index.ts",
       "declarations": [],
       "exports": [
@@ -16809,6 +16682,505 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/tooltip/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tooltip",
+          "declaration": {
+            "name": "Tooltip",
+            "module": "./tooltip"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tooltip/tooltip.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tooltip.",
+          "name": "Tooltip",
+          "slots": [
+            {
+              "description": "Slot for tooltip content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for custom anchor button content.",
+              "name": "anchor"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Toggle Tooltip'",
+              "description": "Assistive text for anchor button.",
+              "attribute": "assistiveText"
+            },
+            {
+              "kind": "method",
+              "name": "_positionTooltip",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleOpen",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleMouseLeave",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleEsc",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitToggle",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the open state of the tooltip on open/close.",
+              "name": "on-tooltip-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Toggle Tooltip'",
+              "description": "Assistive text for anchor button.",
+              "fieldName": "assistiveText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tooltip",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tooltip",
+          "declaration": {
+            "name": "Tooltip",
+            "module": "src/components/reusable/tooltip/tooltip.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tooltip",
+          "declaration": {
+            "name": "Tooltip",
+            "module": "src/components/reusable/tooltip/tooltip.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Widget",
+          "declaration": {
+            "name": "Widget",
+            "module": "./widget"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "WidgetDragHandle",
+          "declaration": {
+            "name": "WidgetDragHandle",
+            "module": "./widgetDragHandle"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "WidgetGridstack",
+          "declaration": {
+            "name": "WidgetGridstack",
+            "module": "./widgetGridstack"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/sample-layout.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/reusable/widget/sample-layout.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/widget.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Widget.",
+          "name": "Widget",
+          "slots": [
+            {
+              "description": "Slot for widget content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for action buttons.",
+              "name": "action"
+            },
+            {
+              "description": "Slot for tooltip in header.",
+              "name": "tooltip"
+            },
+            {
+              "description": "Slot for drag handle.",
+              "name": "draghandle"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "widgetTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget title.",
+              "attribute": "widgetTitle"
+            },
+            {
+              "kind": "field",
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget sub-title.",
+              "attribute": "subTitle"
+            },
+            {
+              "kind": "field",
+              "name": "dragActive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget drag active state.",
+              "attribute": "dragActive"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "widgetTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget title.",
+              "fieldName": "widgetTitle"
+            },
+            {
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget sub-title.",
+              "fieldName": "subTitle"
+            },
+            {
+              "name": "dragActive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget drag active state.",
+              "fieldName": "dragActive"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget disabled state.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-widget",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Widget",
+          "declaration": {
+            "name": "Widget",
+            "module": "src/components/reusable/widget/widget.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-widget",
+          "declaration": {
+            "name": "Widget",
+            "module": "src/components/reusable/widget/widget.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/widgetDragHandle.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Widget drag handle.",
+          "name": "WidgetDragHandle",
+          "members": [
+            {
+              "kind": "field",
+              "name": "slot",
+              "type": {
+                "text": "string"
+              },
+              "default": "'draghandle'",
+              "description": "Force widget slot",
+              "attribute": "slot",
+              "reflects": true
+            }
+          ],
+          "attributes": [
+            {
+              "name": "slot",
+              "type": {
+                "text": "string"
+              },
+              "default": "'draghandle'",
+              "description": "Force widget slot",
+              "fieldName": "slot"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-widget-drag-handle",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "WidgetDragHandle",
+          "declaration": {
+            "name": "WidgetDragHandle",
+            "module": "src/components/reusable/widget/widgetDragHandle.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-widget-drag-handle",
+          "declaration": {
+            "name": "WidgetDragHandle",
+            "module": "src/components/reusable/widget/widgetDragHandle.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/widgetGridstack.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "GridStack wrapper that includes Shidoka default config and styles.",
+          "name": "WidgetGridstack",
+          "slots": [
+            {
+              "description": "Slot for .grid-stack container element.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "layout",
+              "type": {
+                "text": "any"
+              },
+              "default": "{}",
+              "description": "GridStack layout/widget size/position definitions for each breakpoint.",
+              "attribute": "layout"
+            },
+            {
+              "kind": "field",
+              "name": "gridstackConfig",
+              "type": {
+                "text": "any"
+              },
+              "default": "Config",
+              "description": "GridStack config.",
+              "attribute": "gridstackConfig"
+            },
+            {
+              "kind": "field",
+              "name": "gridStack",
+              "type": {
+                "text": "any"
+              },
+              "default": "GridStack",
+              "description": "GridStack instance."
+            },
+            {
+              "kind": "field",
+              "name": "grid",
+              "type": {
+                "text": "any"
+              },
+              "description": "GridStack grid instance."
+            },
+            {
+              "kind": "method",
+              "name": "_saveLayout",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateLayout",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_setBreakpoint",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits after GridStack initializes.",
+              "name": "on-grid-init"
+            },
+            {
+              "description": "Emits the GridStack save() method results (new layout) on dragstop and resizestop.",
+              "name": "on-grid-save"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "layout",
+              "type": {
+                "text": "any"
+              },
+              "default": "{}",
+              "description": "GridStack layout/widget size/position definitions for each breakpoint.",
+              "fieldName": "layout"
+            },
+            {
+              "name": "gridstackConfig",
+              "type": {
+                "text": "any"
+              },
+              "default": "Config",
+              "description": "GridStack config.",
+              "fieldName": "gridstackConfig"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-widget-gridstack",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "WidgetGridstack",
+          "declaration": {
+            "name": "WidgetGridstack",
+            "module": "src/components/reusable/widget/widgetGridstack.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-widget-gridstack",
+          "declaration": {
+            "name": "WidgetGridstack",
+            "module": "src/components/reusable/widget/widgetGridstack.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/codeView/blockCodeView/blockCodeView.ts",
       "declarations": [
         {
@@ -17189,378 +17561,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/widget/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Widget",
-          "declaration": {
-            "name": "Widget",
-            "module": "./widget"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "WidgetDragHandle",
-          "declaration": {
-            "name": "WidgetDragHandle",
-            "module": "./widgetDragHandle"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "WidgetGridstack",
-          "declaration": {
-            "name": "WidgetGridstack",
-            "module": "./widgetGridstack"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/sample-layout.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "module": "src/components/reusable/widget/sample-layout.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/widget.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Widget.",
-          "name": "Widget",
-          "slots": [
-            {
-              "description": "Slot for widget content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for action buttons.",
-              "name": "action"
-            },
-            {
-              "description": "Slot for tooltip in header.",
-              "name": "tooltip"
-            },
-            {
-              "description": "Slot for drag handle.",
-              "name": "draghandle"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "widgetTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Widget title.",
-              "attribute": "widgetTitle"
-            },
-            {
-              "kind": "field",
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Widget sub-title.",
-              "attribute": "subTitle"
-            },
-            {
-              "kind": "field",
-              "name": "dragActive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Widget drag active state.",
-              "attribute": "dragActive"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Widget disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "widgetTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Widget title.",
-              "fieldName": "widgetTitle"
-            },
-            {
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Widget sub-title.",
-              "fieldName": "subTitle"
-            },
-            {
-              "name": "dragActive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Widget drag active state.",
-              "fieldName": "dragActive"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Widget disabled state.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-widget",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Widget",
-          "declaration": {
-            "name": "Widget",
-            "module": "src/components/reusable/widget/widget.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-widget",
-          "declaration": {
-            "name": "Widget",
-            "module": "src/components/reusable/widget/widget.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/widgetDragHandle.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Widget drag handle.",
-          "name": "WidgetDragHandle",
-          "members": [
-            {
-              "kind": "field",
-              "name": "slot",
-              "type": {
-                "text": "string"
-              },
-              "default": "'draghandle'",
-              "description": "Force widget slot",
-              "attribute": "slot",
-              "reflects": true
-            }
-          ],
-          "attributes": [
-            {
-              "name": "slot",
-              "type": {
-                "text": "string"
-              },
-              "default": "'draghandle'",
-              "description": "Force widget slot",
-              "fieldName": "slot"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-widget-drag-handle",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "WidgetDragHandle",
-          "declaration": {
-            "name": "WidgetDragHandle",
-            "module": "src/components/reusable/widget/widgetDragHandle.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-widget-drag-handle",
-          "declaration": {
-            "name": "WidgetDragHandle",
-            "module": "src/components/reusable/widget/widgetDragHandle.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/widgetGridstack.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "GridStack wrapper that includes Shidoka default config and styles.",
-          "name": "WidgetGridstack",
-          "slots": [
-            {
-              "description": "Slot for .grid-stack container element.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "layout",
-              "type": {
-                "text": "any"
-              },
-              "default": "{}",
-              "description": "GridStack layout/widget size/position definitions for each breakpoint.",
-              "attribute": "layout"
-            },
-            {
-              "kind": "field",
-              "name": "gridstackConfig",
-              "type": {
-                "text": "any"
-              },
-              "default": "Config",
-              "description": "GridStack config.",
-              "attribute": "gridstackConfig"
-            },
-            {
-              "kind": "field",
-              "name": "gridStack",
-              "type": {
-                "text": "any"
-              },
-              "default": "GridStack",
-              "description": "GridStack instance."
-            },
-            {
-              "kind": "field",
-              "name": "grid",
-              "type": {
-                "text": "any"
-              },
-              "description": "GridStack grid instance."
-            },
-            {
-              "kind": "method",
-              "name": "_saveLayout",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateLayout",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_setBreakpoint",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits after GridStack initializes.",
-              "name": "on-grid-init"
-            },
-            {
-              "description": "Emits the GridStack save() method results (new layout) on dragstop and resizestop.",
-              "name": "on-grid-save"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "layout",
-              "type": {
-                "text": "any"
-              },
-              "default": "{}",
-              "description": "GridStack layout/widget size/position definitions for each breakpoint.",
-              "fieldName": "layout"
-            },
-            {
-              "name": "gridstackConfig",
-              "type": {
-                "text": "any"
-              },
-              "default": "Config",
-              "description": "GridStack config.",
-              "fieldName": "gridstackConfig"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-widget-gridstack",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "WidgetGridstack",
-          "declaration": {
-            "name": "WidgetGridstack",
-            "module": "src/components/reusable/widget/widgetGridstack.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-widget-gridstack",
-          "declaration": {
-            "name": "WidgetGridstack",
-            "module": "src/components/reusable/widget/widgetGridstack.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/codeView/inlineCodeView/index.ts",
       "declarations": [],
       "exports": [
@@ -17653,6 +17653,56 @@
           "declaration": {
             "name": "InlineCodeView",
             "module": "src/components/reusable/codeView/inlineCodeView/inlineCodeView.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/sample/gridstack.newWidget.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "New Widget sample.",
+          "name": "NewWidgetSample",
+          "members": [
+            {
+              "kind": "method",
+              "name": "_handleInit",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "new-widget-sample",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NewWidgetSample",
+          "declaration": {
+            "name": "NewWidgetSample",
+            "module": "src/components/reusable/widget/sample/gridstack.newWidget.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "new-widget-sample",
+          "declaration": {
+            "name": "NewWidgetSample",
+            "module": "src/components/reusable/widget/sample/gridstack.newWidget.ts"
           }
         }
       ]
@@ -18772,56 +18822,6 @@
           "declaration": {
             "name": "dataForColumns",
             "module": "src/components/reusable/table/story-helpers/ultils.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/sample/gridstack.newWidget.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "New Widget sample.",
-          "name": "NewWidgetSample",
-          "members": [
-            {
-              "kind": "method",
-              "name": "_handleInit",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "new-widget-sample",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "NewWidgetSample",
-          "declaration": {
-            "name": "NewWidgetSample",
-            "module": "src/components/reusable/widget/sample/gridstack.newWidget.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "new-widget-sample",
-          "declaration": {
-            "name": "NewWidgetSample",
-            "module": "src/components/reusable/widget/sample/gridstack.newWidget.ts"
           }
         }
       ]
