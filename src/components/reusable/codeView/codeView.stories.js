@@ -97,15 +97,44 @@ const defaultTemplateCodes = {
 
 let john = Person(name: "John Doe", age: 30)
 print(john.introduce())`,
+  C: `#include <stdio.h>
+
+int main() {
+    printf("Hello, World!\n");
+    int a = 5;
+    int b = 10;
+    int sum = a + b;
+    printf("Sum is %d\n", sum);
+    return 0;
+}
+`,
 };
 
 export default {
   title: 'Components/Code View',
+  component: 'kyn-block-code-view',
   parameters: {
     docs: {
       description: {
         component:
           'The following documentation combines both `Block` and `Inline` code view components. Inline Code View displays code snippets inline within HTML content. Block Code View displays `<code>` snippets as standalone single-/multi-line block elements, utilizing highlight.js (`https://highlightjs.org/`) for syntax highlighting.',
+      },
+      source: {
+        code: `
+<!-- HTML Example for Block Code View -->
+<kyn-block-code-view
+  darkTheme="dark"
+  codeViewLabel="Block Code View"
+  copyOptionVisible
+  codeSnippet="const greetUser = (name) => { console.log(\`Hello, \${name}!\`); }"
+></kyn-block-code-view>
+
+<!-- HTML Example for Inline Code View -->
+<kyn-inline-code-view darkTheme="dark">
+  console.log("Hello, World!");
+</kyn-inline-code-view>
+        `,
+        language: 'html',
       },
     },
     design: {
@@ -115,8 +144,9 @@ export default {
   },
 };
 
+// Block Code View - Default
 export const BlockCodeView = {
-  title: 'Components/Code View/Block',
+  title: 'Components/Code View/Block Code View/Default',
   component: 'kyn-block-code-view',
   argTypes: {
     copyOptionVisible: {
@@ -148,6 +178,14 @@ export const BlockCodeView = {
     },
     codeSnippet: defaultTemplateCodes.DEFAULT,
   },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Displays a block of code using the `kyn-block-code-view` component.',
+      },
+    },
+  },
   render: (args) => {
     const maxHeight = args.maxHeight === null ? null : Number(args.maxHeight);
 
@@ -170,8 +208,9 @@ export const BlockCodeView = {
   },
 };
 
+// Inline Code View - Default
 export const InlineCodeView = {
-  title: 'Components/Code View/Inline',
+  title: 'Components/Code View/Inline Code View/Default',
   component: 'kyn-inline-code-view',
   argTypes: {
     darkTheme: {
@@ -183,6 +222,14 @@ export const InlineCodeView = {
     darkTheme: 'dark',
     snippetFontSize: 14,
     unnamed: `console.log("Hello, World!");`,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Displays an inline code snippet using the `kyn-inline-code-view` component.',
+      },
+    },
   },
   render: (args) => {
     return html`
@@ -196,8 +243,10 @@ export const InlineCodeView = {
   },
 };
 
+// Additional Block Code View examples
 export const BlockSingleLineView = {
-  ...BlockCodeView,
+  title: 'Components/Code View/Block Code View/Single Line View',
+  component: 'kyn-block-code-view',
   args: {
     ...BlockCodeView.args,
     languages: [],
@@ -208,7 +257,8 @@ export const BlockSingleLineView = {
 };
 
 export const BlockJavascriptExample = {
-  ...BlockCodeView,
+  title: 'Components/Code View/Block Code View/JavaScript Example',
+  component: 'kyn-block-code-view',
   args: {
     ...BlockCodeView.args,
     languages: [],
@@ -220,7 +270,8 @@ export const BlockJavascriptExample = {
 };
 
 export const BlockHTMLExample = {
-  ...BlockCodeView,
+  title: 'Components/Code View/Block Code View/HTML Example',
+  component: 'kyn-block-code-view',
   args: {
     ...BlockCodeView.args,
     languages: [],
@@ -231,7 +282,8 @@ export const BlockHTMLExample = {
 };
 
 export const BlockCSSExample = {
-  ...BlockCodeView,
+  title: 'Components/Code View/Block Code View/CSS Example',
+  component: 'kyn-block-code-view',
   args: {
     ...BlockCodeView.args,
     languages: [],
@@ -242,23 +294,37 @@ export const BlockCSSExample = {
 };
 
 export const BlockSwiftExample = {
-  ...BlockCodeView,
+  title: 'Components/Code View/Block Code View/Swift Example',
+  component: 'kyn-block-code-view',
   args: {
     ...BlockCodeView.args,
     languages: ['swift'],
-    codeViewLabel: 'Swift Code Snippet (manually configured language name)',
+    codeViewLabel: 'Swift Code Snippet',
     copyButtonText: '',
     codeSnippet: defaultTemplateCodes.SWIFT,
   },
 };
 
 export const BlockBashExample = {
-  ...BlockCodeView,
+  title: 'Components/Code View/Block Code View/Bash Example',
+  component: 'kyn-block-code-view',
   args: {
     ...BlockCodeView.args,
     languages: ['bash'],
     codeViewLabel: 'Bash Code Snippet (manually configured language name)',
     copyButtonText: '',
     codeSnippet: defaultTemplateCodes.BASH,
+  },
+};
+
+export const CExample = {
+  title: 'Components/Code View/Block Code View/C Example',
+  component: 'kyn-block-code-view',
+  args: {
+    ...BlockCodeView.args,
+    languages: ['c'],
+    codeViewLabel: 'C Code Snippet',
+    copyButtonText: '',
+    codeSnippet: defaultTemplateCodes.C,
   },
 };

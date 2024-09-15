@@ -107,6 +107,12 @@ export class BlockCodeView extends LitElement {
   @state()
   private codeExpanded = false;
 
+  /** User manually toggled the expand/collapse state (visibility of expand button should persist).
+   * @internal
+   */
+  @state()
+  private userToggled = false;
+
   /** Copy key-values to communicate copy button styling and state.
    * @internal
    */
@@ -149,7 +155,8 @@ export class BlockCodeView extends LitElement {
             @keydown=${this.handleKeypress}
             role="region"
           ><code tabindex="0" class="language-${this
-            ._effectiveLanguage}">${unsafeHTML(
+            ._effectiveLanguage} manually-set-lanuguage-${this.languages &&
+          this.languages.length > 0}">${unsafeHTML(
             this._highlightedCode
           )}</code></pre>
         </div>
@@ -228,6 +235,15 @@ export class BlockCodeView extends LitElement {
       changedProperties.has('maxHeight')
     ) {
       await this.highlightCode();
+
+      if (
+        changedProperties.has('codeSnippet') ||
+        changedProperties.has('languages') ||
+        changedProperties.has('maxHeight')
+      ) {
+        this.userToggled = false;
+        this.codeExpanded = false;
+      }
     }
 
     if (changedProperties.has('copyButtonText')) {
@@ -259,34 +275,31 @@ export class BlockCodeView extends LitElement {
   private async highlightCode() {
     await this.registerLanguages();
 
-    const codeElement = this.shadowRoot?.querySelector('code');
-    if (codeElement) {
-      codeElement.textContent = this.codeSnippet;
-      this._isSingleLine = this.isSingleLineCode(this.codeSnippet);
+    this._isSingleLine = this.isSingleLineCode(this.codeSnippet);
 
-      let result;
-      if (this.languages && this.languages.length > 0) {
-        const language = this.languages[0];
-        try {
-          result = hljs.highlight(this.codeSnippet, {
-            language: language,
-            ignoreIllegals: true,
-          });
-          this._effectiveLanguage = language;
-        } catch (e) {
-          console.warn(
-            `Highlighting with language "${language}" failed. Falling back to auto-detection.`,
-            e
-          );
-          result = hljs.highlightAuto(this.codeSnippet);
-          this._effectiveLanguage = result.language || '';
-        }
-      } else {
+    let result;
+    if (this.languages && this.languages.length > 0) {
+      const language = this.languages[0];
+      try {
+        result = hljs.highlight(this.codeSnippet, {
+          language: language,
+          ignoreIllegals: true,
+        });
+        this._effectiveLanguage = language;
+      } catch (e) {
+        console.warn(
+          `Highlighting with language "${language}" failed. Falling back to auto-detection.`,
+          e
+        );
         result = hljs.highlightAuto(this.codeSnippet);
         this._effectiveLanguage = result.language || '';
       }
-      codeElement.innerHTML = result.value;
+    } else {
+      result = hljs.highlightAuto(this.codeSnippet);
+      this._effectiveLanguage = result.language || '';
     }
+
+    this._highlightedCode = result.value;
 
     await this.updateComplete;
     this.checkOverflow();
@@ -300,13 +313,24 @@ export class BlockCodeView extends LitElement {
     const pre = container?.querySelector('pre') as HTMLElement;
     if (pre && container) {
       const naturalHeight = pre.scrollHeight;
-      const calcHeight = this.codeExpanded
-        ? this._expandedHeight || container.clientHeight
-        : this.maxHeight !== null
-        ? this.maxHeight
-        : container.clientHeight;
+      const containerHeight =
+        this.maxHeight !== null ? this.maxHeight : container.clientHeight;
 
-      this.hasOverflow = naturalHeight > calcHeight;
+      const calcHeight = this.codeExpanded
+        ? this._expandedHeight || containerHeight
+        : containerHeight;
+
+      const isOverflowing = naturalHeight > calcHeight;
+
+      if (this.userToggled) {
+        this.hasOverflow = true;
+      } else {
+        this.hasOverflow = isOverflowing;
+      }
+
+      this.codeViewExpandable = this.hasOverflow;
+
+      this.requestUpdate();
     }
   }
 
@@ -365,8 +389,10 @@ export class BlockCodeView extends LitElement {
     if (this.codeExpanded) {
       const pre = this.shadowRoot?.querySelector('pre') as HTMLElement;
       this._expandedHeight = pre?.scrollHeight || null;
+      this.userToggled = true;
     } else {
       this._expandedHeight = null;
+      this.userToggled = true;
     }
 
     this.requestUpdate();

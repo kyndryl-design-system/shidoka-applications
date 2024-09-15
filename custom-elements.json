@@ -1424,468 +1424,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/localNav/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "./localNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "./localNavLink"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Side Navigation component.",
-          "name": "LocalNav",
-          "slots": [
-            {
-              "description": "The default slot, for local nav links.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "attribute": "pinned"
-            },
-            {
-              "kind": "field",
-              "name": "pinText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Pin'",
-              "description": "Pin open button assistive text.",
-              "attribute": "pinText"
-            },
-            {
-              "kind": "field",
-              "name": "unpinText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Unpin'",
-              "description": "Unpin button assistive text.",
-              "attribute": "unpinText"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    toggleMenu: 'Toggle Menu',\n    collapse: 'Collapse',\n    menu: 'Menu',\n  }",
-              "description": "Menu toggle button assistive text.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "method",
-              "name": "_handleNavToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleMobileNavToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinkActive",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the open state and original event details.",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "fieldName": "pinned"
-            },
-            {
-              "name": "pinText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Pin'",
-              "description": "Pin open button assistive text.",
-              "fieldName": "pinText"
-            },
-            {
-              "name": "unpinText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Unpin'",
-              "description": "Unpin button assistive text.",
-              "fieldName": "unpinText"
-            },
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    toggleMenu: 'Toggle Menu',\n    collapse: 'Collapse',\n    menu: 'Menu',\n  }",
-              "description": "Menu toggle button assistive text.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Link component for use in the global Side Navigation component.",
-          "name": "LocalNavLink",
-          "slots": [
-            {
-              "description": "The default slot, for the link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon. Use 16px size.",
-              "name": "icon"
-            },
-            {
-              "description": "Slot for the next level of links, supports three levels.",
-              "name": "links"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "_expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state."
-            },
-            {
-              "kind": "field",
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "attribute": "active",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "method",
-              "name": "_handleTextSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_getSlotText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinksSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "determineLevel",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_positionMenu",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event, level, and if default was prevented.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "fieldName": "active"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-link",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/header/header.ts",
       "declarations": [
         {
@@ -3579,6 +3117,468 @@
           "declaration": {
             "name": "HeaderNotificationPanel",
             "module": "./headerNotificationPanel"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "./localNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "./localNavLink"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Side Navigation component.",
+          "name": "LocalNav",
+          "slots": [
+            {
+              "description": "The default slot, for local nav links.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "attribute": "pinned"
+            },
+            {
+              "kind": "field",
+              "name": "pinText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Pin'",
+              "description": "Pin open button assistive text.",
+              "attribute": "pinText"
+            },
+            {
+              "kind": "field",
+              "name": "unpinText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Unpin'",
+              "description": "Unpin button assistive text.",
+              "attribute": "unpinText"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    toggleMenu: 'Toggle Menu',\n    collapse: 'Collapse',\n    menu: 'Menu',\n  }",
+              "description": "Menu toggle button assistive text.",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleMobileNavToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinkActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the open state and original event details.",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "fieldName": "pinned"
+            },
+            {
+              "name": "pinText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Pin'",
+              "description": "Pin open button assistive text.",
+              "fieldName": "pinText"
+            },
+            {
+              "name": "unpinText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Unpin'",
+              "description": "Unpin button assistive text.",
+              "fieldName": "unpinText"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    toggleMenu: 'Toggle Menu',\n    collapse: 'Collapse',\n    menu: 'Menu',\n  }",
+              "description": "Menu toggle button assistive text.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Link component for use in the global Side Navigation component.",
+          "name": "LocalNavLink",
+          "slots": [
+            {
+              "description": "The default slot, for the link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon. Use 16px size.",
+              "name": "icon"
+            },
+            {
+              "description": "Slot for the next level of links, supports three levels.",
+              "name": "links"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "_expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state."
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "attribute": "active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "method",
+              "name": "_handleTextSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getSlotText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinksSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "determineLevel",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_positionMenu",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event, level, and if default was prevented.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "fieldName": "active"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-link",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
           }
         }
       ]
@@ -5680,6 +5680,673 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Sample Lit component to show global filter pattern applied to a Chart.",
+          "name": "SampleFilterChartComponent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\n    {\n      value: 'Red',\n      text: 'Red',\n    },\n    {\n      value: 'Blue',\n      text: 'Blue',\n    },\n    {\n      value: 'Yellow',\n      text: 'Yellow',\n    },\n    {\n      value: 'Green',\n      text: 'Green',\n    },\n    {\n      value: 'Purple',\n      text: 'Purple',\n    },\n    {\n      value: 'Orange',\n      text: 'Orange',\n    },\n  ]",
+              "description": "Array of sample checkbox filter options.",
+              "attribute": "checkboxOptions"
+            },
+            {
+              "kind": "field",
+              "name": "chartLabels",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[\n    'Red',\n    'Blue',\n    'Yellow',\n    'Green',\n    'Purple',\n    'Orange',\n  ]",
+              "attribute": "chartLabels"
+            },
+            {
+              "kind": "field",
+              "name": "filteredChartLabels",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "attribute": "filteredChartLabels"
+            },
+            {
+              "kind": "field",
+              "name": "chartDatasets",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\n    {\n      label: 'Dataset 1',\n      data: [12, 19, 3, 5, 2, 3],\n    },\n    {\n      label: 'Dataset 2',\n      data: [8, 15, 7, 9, 6, 13],\n    },\n  ]",
+              "attribute": "chartDatasets"
+            },
+            {
+              "kind": "field",
+              "name": "chartOptions",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    scales: {\n      x: {\n        title: {\n          text: 'Color',\n        },\n      },\n      y: {\n        title: {\n          text: 'Votes',\n        },\n      },\n    },\n  }",
+              "attribute": "chartOptions"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSearch",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCheckboxes",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleModalClose",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleTagClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "option",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClearTags",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_filter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "query",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\n    {\n      value: 'Red',\n      text: 'Red',\n    },\n    {\n      value: 'Blue',\n      text: 'Blue',\n    },\n    {\n      value: 'Yellow',\n      text: 'Yellow',\n    },\n    {\n      value: 'Green',\n      text: 'Green',\n    },\n    {\n      value: 'Purple',\n      text: 'Purple',\n    },\n    {\n      value: 'Orange',\n      text: 'Orange',\n    },\n  ]",
+              "description": "Array of sample checkbox filter options.",
+              "fieldName": "checkboxOptions"
+            },
+            {
+              "name": "chartLabels",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[\n    'Red',\n    'Blue',\n    'Yellow',\n    'Green',\n    'Purple',\n    'Orange',\n  ]",
+              "fieldName": "chartLabels"
+            },
+            {
+              "name": "filteredChartLabels",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "fieldName": "filteredChartLabels"
+            },
+            {
+              "name": "chartDatasets",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\n    {\n      label: 'Dataset 1',\n      data: [12, 19, 3, 5, 2, 3],\n    },\n    {\n      label: 'Dataset 2',\n      data: [8, 15, 7, 9, 6, 13],\n    },\n  ]",
+              "fieldName": "chartDatasets"
+            },
+            {
+              "name": "chartOptions",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    scales: {\n      x: {\n        title: {\n          text: 'Color',\n        },\n      },\n      y: {\n        title: {\n          text: 'Votes',\n        },\n      },\n    },\n  }",
+              "fieldName": "chartOptions"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "sample-filter-chart-component",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SampleFilterChartComponent",
+          "declaration": {
+            "name": "SampleFilterChartComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "sample-filter-chart-component",
+          "declaration": {
+            "name": "SampleFilterChartComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.sample.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Sample Lit component to show global filter pattern.",
+          "name": "SampleFilterComponent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\n    {\n      value: '1',\n      text: 'Option 1',\n    },\n    {\n      value: '2',\n      text: 'Option 2',\n    },\n    {\n      value: '3',\n      text: 'Option 3',\n    },\n    {\n      value: '4',\n      text: 'Option 4',\n    },\n    {\n      value: '5',\n      text: 'Option 5',\n    },\n    {\n      value: '6',\n      text: 'Option 6',\n    },\n  ]",
+              "description": "Array of sample checkbox filter options.",
+              "attribute": "checkboxOptions"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSearch",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCheckboxes",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleModalClose",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleTagClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "option",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClearTags",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCustomAction",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleOverflowClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\n    {\n      value: '1',\n      text: 'Option 1',\n    },\n    {\n      value: '2',\n      text: 'Option 2',\n    },\n    {\n      value: '3',\n      text: 'Option 3',\n    },\n    {\n      value: '4',\n      text: 'Option 4',\n    },\n    {\n      value: '5',\n      text: 'Option 5',\n    },\n    {\n      value: '6',\n      text: 'Option 6',\n    },\n  ]",
+              "description": "Array of sample checkbox filter options.",
+              "fieldName": "checkboxOptions"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "sample-filter-component",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SampleFilterComponent",
+          "declaration": {
+            "name": "SampleFilterComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.sample.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "sample-filter-component",
+          "declaration": {
+            "name": "SampleFilterComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.sample.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.table.sample.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Sample Lit component to show global filter pattern applied to a Chart.",
+          "name": "SampleFilterTableComponent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "checkboxOptions",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[\n    {\n      value: 'Stark',\n      text: 'Stark',\n    },\n    {\n      value: 'Lannister',\n      text: 'Lannister',\n    },\n    {\n      value: 'Targaryen',\n      text: 'Targaryen',\n    },\n  ]",
+              "description": "Array of sample checkbox filter options."
+            },
+            {
+              "kind": "field",
+              "name": "houses",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "['Stark', 'Lannister', 'Targaryen']"
+            },
+            {
+              "kind": "field",
+              "name": "filteredHouses",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "characters",
+              "type": {
+                "text": "array"
+              },
+              "privacy": "private",
+              "default": "[\n    { name: 'Jon Snow', age: 23, house: 'Stark' },\n    { name: 'Daenerys Targaryen', age: 22, house: 'Targaryen' },\n    { name: 'Tyrion Lannister', age: 39, house: 'Lannister' },\n    { name: 'Cersei Lannister', age: 42, house: 'Lannister' },\n    { name: 'Arya Stark', age: 18, house: 'Stark' },\n    { name: 'Sansa Stark', age: 20, house: 'Stark' },\n    { name: 'Bran Stark', age: 17, house: 'Stark' },\n    { name: 'Jaime Lannister', age: 44, house: 'Lannister' },\n  ]"
+            },
+            {
+              "kind": "field",
+              "name": "characters_backup",
+              "type": {
+                "text": "array"
+              },
+              "privacy": "private",
+              "default": "[\n    { name: 'Jon Snow', age: 23, house: 'Stark' },\n    { name: 'Daenerys Targaryen', age: 22, house: 'Targaryen' },\n    { name: 'Tyrion Lannister', age: 39, house: 'Lannister' },\n    { name: 'Cersei Lannister', age: 42, house: 'Lannister' },\n    { name: 'Arya Stark', age: 18, house: 'Stark' },\n    { name: 'Sansa Stark', age: 20, house: 'Stark' },\n    { name: 'Bran Stark', age: 17, house: 'Stark' },\n    { name: 'Jaime Lannister', age: 44, house: 'Lannister' },\n  ]"
+            },
+            {
+              "kind": "field",
+              "name": "selectedRows",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "opened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "method",
+              "name": "toggleMenu",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "textInput",
+              "type": {
+                "text": "any"
+              },
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSearch",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCheckboxes",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleModalClose",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleTagClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "option",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClearTags",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_filter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "query",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleOverflowClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_deleteSelectedRows",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSelectedRowsChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCustomAction",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "sample-filter-table-component",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SampleFilterTableComponent",
+          "declaration": {
+            "name": "SampleFilterTableComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.table.sample.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "sample-filter-table-component",
+          "declaration": {
+            "name": "SampleFilterTableComponent",
+            "module": "src/components/reusable/globalFilter/globalFilter.table.sample.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Global Filter bar.",
+          "name": "GlobalFilter",
+          "slots": [
+            {
+              "description": "Left slot, intended for search input and modal.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Right slot, intended for action buttons and overflow menu.",
+              "name": "actions"
+            },
+            {
+              "description": "Slot below the filter bar, for tag group.",
+              "name": "tags"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-global-filter",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-global-filter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "./globalFilter"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/dropdown/dropdown.ts",
       "declarations": [
         {
@@ -6724,673 +7391,6 @@
           "declaration": {
             "name": "DropdownCategory",
             "module": "./dropdownCategory"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Sample Lit component to show global filter pattern applied to a Chart.",
-          "name": "SampleFilterChartComponent",
-          "members": [
-            {
-              "kind": "field",
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\n    {\n      value: 'Red',\n      text: 'Red',\n    },\n    {\n      value: 'Blue',\n      text: 'Blue',\n    },\n    {\n      value: 'Yellow',\n      text: 'Yellow',\n    },\n    {\n      value: 'Green',\n      text: 'Green',\n    },\n    {\n      value: 'Purple',\n      text: 'Purple',\n    },\n    {\n      value: 'Orange',\n      text: 'Orange',\n    },\n  ]",
-              "description": "Array of sample checkbox filter options.",
-              "attribute": "checkboxOptions"
-            },
-            {
-              "kind": "field",
-              "name": "chartLabels",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[\n    'Red',\n    'Blue',\n    'Yellow',\n    'Green',\n    'Purple',\n    'Orange',\n  ]",
-              "attribute": "chartLabels"
-            },
-            {
-              "kind": "field",
-              "name": "filteredChartLabels",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "attribute": "filteredChartLabels"
-            },
-            {
-              "kind": "field",
-              "name": "chartDatasets",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\n    {\n      label: 'Dataset 1',\n      data: [12, 19, 3, 5, 2, 3],\n    },\n    {\n      label: 'Dataset 2',\n      data: [8, 15, 7, 9, 6, 13],\n    },\n  ]",
-              "attribute": "chartDatasets"
-            },
-            {
-              "kind": "field",
-              "name": "chartOptions",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    scales: {\n      x: {\n        title: {\n          text: 'Color',\n        },\n      },\n      y: {\n        title: {\n          text: 'Votes',\n        },\n      },\n    },\n  }",
-              "attribute": "chartOptions"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSearch",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCheckboxes",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleModalClose",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleTagClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "option",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClearTags",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_filter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "query",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\n    {\n      value: 'Red',\n      text: 'Red',\n    },\n    {\n      value: 'Blue',\n      text: 'Blue',\n    },\n    {\n      value: 'Yellow',\n      text: 'Yellow',\n    },\n    {\n      value: 'Green',\n      text: 'Green',\n    },\n    {\n      value: 'Purple',\n      text: 'Purple',\n    },\n    {\n      value: 'Orange',\n      text: 'Orange',\n    },\n  ]",
-              "description": "Array of sample checkbox filter options.",
-              "fieldName": "checkboxOptions"
-            },
-            {
-              "name": "chartLabels",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[\n    'Red',\n    'Blue',\n    'Yellow',\n    'Green',\n    'Purple',\n    'Orange',\n  ]",
-              "fieldName": "chartLabels"
-            },
-            {
-              "name": "filteredChartLabels",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "fieldName": "filteredChartLabels"
-            },
-            {
-              "name": "chartDatasets",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\n    {\n      label: 'Dataset 1',\n      data: [12, 19, 3, 5, 2, 3],\n    },\n    {\n      label: 'Dataset 2',\n      data: [8, 15, 7, 9, 6, 13],\n    },\n  ]",
-              "fieldName": "chartDatasets"
-            },
-            {
-              "name": "chartOptions",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    scales: {\n      x: {\n        title: {\n          text: 'Color',\n        },\n      },\n      y: {\n        title: {\n          text: 'Votes',\n        },\n      },\n    },\n  }",
-              "fieldName": "chartOptions"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "sample-filter-chart-component",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SampleFilterChartComponent",
-          "declaration": {
-            "name": "SampleFilterChartComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "sample-filter-chart-component",
-          "declaration": {
-            "name": "SampleFilterChartComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.chart.sample.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.sample.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Sample Lit component to show global filter pattern.",
-          "name": "SampleFilterComponent",
-          "members": [
-            {
-              "kind": "field",
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\n    {\n      value: '1',\n      text: 'Option 1',\n    },\n    {\n      value: '2',\n      text: 'Option 2',\n    },\n    {\n      value: '3',\n      text: 'Option 3',\n    },\n    {\n      value: '4',\n      text: 'Option 4',\n    },\n    {\n      value: '5',\n      text: 'Option 5',\n    },\n    {\n      value: '6',\n      text: 'Option 6',\n    },\n  ]",
-              "description": "Array of sample checkbox filter options.",
-              "attribute": "checkboxOptions"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSearch",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCheckboxes",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleModalClose",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleTagClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "option",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClearTags",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCustomAction",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleOverflowClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\n    {\n      value: '1',\n      text: 'Option 1',\n    },\n    {\n      value: '2',\n      text: 'Option 2',\n    },\n    {\n      value: '3',\n      text: 'Option 3',\n    },\n    {\n      value: '4',\n      text: 'Option 4',\n    },\n    {\n      value: '5',\n      text: 'Option 5',\n    },\n    {\n      value: '6',\n      text: 'Option 6',\n    },\n  ]",
-              "description": "Array of sample checkbox filter options.",
-              "fieldName": "checkboxOptions"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "sample-filter-component",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SampleFilterComponent",
-          "declaration": {
-            "name": "SampleFilterComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.sample.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "sample-filter-component",
-          "declaration": {
-            "name": "SampleFilterComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.sample.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.table.sample.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Sample Lit component to show global filter pattern applied to a Chart.",
-          "name": "SampleFilterTableComponent",
-          "members": [
-            {
-              "kind": "field",
-              "name": "checkboxOptions",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[\n    {\n      value: 'Stark',\n      text: 'Stark',\n    },\n    {\n      value: 'Lannister',\n      text: 'Lannister',\n    },\n    {\n      value: 'Targaryen',\n      text: 'Targaryen',\n    },\n  ]",
-              "description": "Array of sample checkbox filter options."
-            },
-            {
-              "kind": "field",
-              "name": "houses",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "['Stark', 'Lannister', 'Targaryen']"
-            },
-            {
-              "kind": "field",
-              "name": "filteredHouses",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]"
-            },
-            {
-              "kind": "field",
-              "name": "characters",
-              "type": {
-                "text": "array"
-              },
-              "privacy": "private",
-              "default": "[\n    { name: 'Jon Snow', age: 23, house: 'Stark' },\n    { name: 'Daenerys Targaryen', age: 22, house: 'Targaryen' },\n    { name: 'Tyrion Lannister', age: 39, house: 'Lannister' },\n    { name: 'Cersei Lannister', age: 42, house: 'Lannister' },\n    { name: 'Arya Stark', age: 18, house: 'Stark' },\n    { name: 'Sansa Stark', age: 20, house: 'Stark' },\n    { name: 'Bran Stark', age: 17, house: 'Stark' },\n    { name: 'Jaime Lannister', age: 44, house: 'Lannister' },\n  ]"
-            },
-            {
-              "kind": "field",
-              "name": "characters_backup",
-              "type": {
-                "text": "array"
-              },
-              "privacy": "private",
-              "default": "[\n    { name: 'Jon Snow', age: 23, house: 'Stark' },\n    { name: 'Daenerys Targaryen', age: 22, house: 'Targaryen' },\n    { name: 'Tyrion Lannister', age: 39, house: 'Lannister' },\n    { name: 'Cersei Lannister', age: 42, house: 'Lannister' },\n    { name: 'Arya Stark', age: 18, house: 'Stark' },\n    { name: 'Sansa Stark', age: 20, house: 'Stark' },\n    { name: 'Bran Stark', age: 17, house: 'Stark' },\n    { name: 'Jaime Lannister', age: 44, house: 'Lannister' },\n  ]"
-            },
-            {
-              "kind": "field",
-              "name": "selectedRows",
-              "type": {
-                "text": "array"
-              },
-              "default": "[]"
-            },
-            {
-              "kind": "field",
-              "name": "opened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false"
-            },
-            {
-              "kind": "method",
-              "name": "toggleMenu",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "textInput",
-              "type": {
-                "text": "any"
-              },
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSearch",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCheckboxes",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleModalClose",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleTagClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "option",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClearTags",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_filter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "query",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleOverflowClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_deleteSelectedRows",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSelectedRowsChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCustomAction",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "sample-filter-table-component",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SampleFilterTableComponent",
-          "declaration": {
-            "name": "SampleFilterTableComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.table.sample.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "sample-filter-table-component",
-          "declaration": {
-            "name": "SampleFilterTableComponent",
-            "module": "src/components/reusable/globalFilter/globalFilter.table.sample.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Global Filter bar.",
-          "name": "GlobalFilter",
-          "slots": [
-            {
-              "description": "Left slot, intended for search input and modal.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Right slot, intended for action buttons and overflow menu.",
-              "name": "actions"
-            },
-            {
-              "description": "Slot below the filter bar, for tag group.",
-              "name": "tags"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-global-filter",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-global-filter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "./globalFilter"
           }
         }
       ]
@@ -9178,6 +9178,142 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/pagetitle/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageTitle",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "./pageTitle"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagetitle/pageTitle.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Page Title",
+          "name": "PageTitle",
+          "slots": [
+            {
+              "description": "Slot for icon. Use size 56 * 56 as per UX guidelines.",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "headLine",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Headline text.",
+              "attribute": "headLine"
+            },
+            {
+              "kind": "field",
+              "name": "pageTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page title text (required).",
+              "attribute": "pageTitle"
+            },
+            {
+              "kind": "field",
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page subtitle text.",
+              "attribute": "subTitle"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'primary'",
+              "description": "Type of page title `'primary'` & `'secondary'`.",
+              "attribute": "type"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "headLine",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Headline text.",
+              "fieldName": "headLine"
+            },
+            {
+              "name": "pageTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page title text (required).",
+              "fieldName": "pageTitle"
+            },
+            {
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page subtitle text.",
+              "fieldName": "subTitle"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'primary'",
+              "description": "Type of page title `'primary'` & `'secondary'`.",
+              "fieldName": "type"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-page-title",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageTitle",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "src/components/reusable/pagetitle/pageTitle.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-page-title",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "src/components/reusable/pagetitle/pageTitle.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/pagination/Pagination.ts",
       "declarations": [
         {
@@ -9905,142 +10041,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/pagetitle/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PageTitle",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "./pageTitle"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/pagetitle/pageTitle.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Page Title",
-          "name": "PageTitle",
-          "slots": [
-            {
-              "description": "Slot for icon. Use size 56 * 56 as per UX guidelines.",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "headLine",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Headline text.",
-              "attribute": "headLine"
-            },
-            {
-              "kind": "field",
-              "name": "pageTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page title text (required).",
-              "attribute": "pageTitle"
-            },
-            {
-              "kind": "field",
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page subtitle text.",
-              "attribute": "subTitle"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'primary'",
-              "description": "Type of page title `'primary'` & `'secondary'`.",
-              "attribute": "type"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "headLine",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Headline text.",
-              "fieldName": "headLine"
-            },
-            {
-              "name": "pageTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page title text (required).",
-              "fieldName": "pageTitle"
-            },
-            {
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page subtitle text.",
-              "fieldName": "subTitle"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'primary'",
-              "description": "Type of page title `'primary'` & `'secondary'`.",
-              "fieldName": "type"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-page-title",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PageTitle",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "src/components/reusable/pagetitle/pageTitle.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-page-title",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "src/components/reusable/pagetitle/pageTitle.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/radioButton/index.ts",
       "declarations": [],
       "exports": [
@@ -10474,284 +10474,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/search/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Search",
-          "declaration": {
-            "name": "Search",
-            "module": "./search"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/search/search.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Search",
-          "name": "Search",
-          "members": [
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Search'",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "expandable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expandable style search.",
-              "attribute": "expandable"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input & button size.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "suggestions",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
-              "attribute": "suggestions"
-            },
-            {
-              "kind": "method",
-              "name": "_buttonSizeMap",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFocus",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBlur",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleButtonClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSuggestionClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "suggestion",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleSearchKeydown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleListKeydown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleKeyboard",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "keyCode",
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the value on text input/clear.",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "fieldName": "name"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Search'",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "expandable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expandable style search.",
-              "fieldName": "expandable"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input & button size.",
-              "fieldName": "size"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "suggestions",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
-              "fieldName": "suggestions"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-search",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Search",
-          "declaration": {
-            "name": "Search",
-            "module": "src/components/reusable/search/search.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-search",
-          "declaration": {
-            "name": "Search",
-            "module": "src/components/reusable/search/search.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/sideDrawer/index.ts",
       "declarations": [],
       "exports": [
@@ -11089,6 +10811,811 @@
           "declaration": {
             "name": "SideDrawer",
             "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "./stepper"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StepperItem",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "./stepperItem"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StepperItemChild",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "./stepperItemChild"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepper.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper",
+          "name": "Stepper",
+          "slots": [
+            {
+              "description": "Slot for step items.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "stepperType",
+              "type": {
+                "text": "string"
+              },
+              "default": "'procedure'",
+              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
+              "attribute": "stepperType"
+            },
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Wheter the stepper is in vertical type.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "stepperSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "attribute": "stepperSize"
+            },
+            {
+              "kind": "field",
+              "name": "currentIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
+              "attribute": "currentIndex"
+            },
+            {
+              "kind": "method",
+              "name": "_handleStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the event and emits the active step and original event details when click on any step title. This is only for procedure type stepper. Status stepper doesn't emit this event.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "stepperType",
+              "type": {
+                "text": "string"
+              },
+              "default": "'procedure'",
+              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
+              "fieldName": "stepperType"
+            },
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Wheter the stepper is in vertical type.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "stepperSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "fieldName": "stepperSize"
+            },
+            {
+              "name": "currentIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
+              "fieldName": "currentIndex"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "src/components/reusable/stepper/stepper.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "src/components/reusable/stepper/stepper.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepperItem.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper Item.",
+          "name": "StepperItem",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            },
+            {
+              "description": "Children slot. Used for nested children in vertical stepper. Visible only when step state is active. Do not use inside stepperType `'status'`.",
+              "name": "child"
+            },
+            {
+              "description": "Optional slot for content in vertical stepper. Visible only when step state is active.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the stepper is in vertical type.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "stepSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "attribute": "stepSize"
+            },
+            {
+              "kind": "field",
+              "name": "stepName",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step name.",
+              "attribute": "stepName"
+            },
+            {
+              "kind": "field",
+              "name": "stepTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step title. Required for actions.",
+              "attribute": "stepTitle"
+            },
+            {
+              "kind": "field",
+              "name": "stepState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
+              "attribute": "stepState"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disable step.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "showCounter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
+              "attribute": "showCounter"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChildToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getProgressValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the step details to the parent stepper component when click on step title.",
+              "name": "on-step-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the stepper is in vertical type.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "stepSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "fieldName": "stepSize"
+            },
+            {
+              "name": "stepName",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step name.",
+              "fieldName": "stepName"
+            },
+            {
+              "name": "stepTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step title. Required for actions.",
+              "fieldName": "stepTitle"
+            },
+            {
+              "name": "stepState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
+              "fieldName": "stepState"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disable step.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "showCounter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
+              "fieldName": "showCounter"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "StepperItem",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "src/components/reusable/stepper/stepperItem.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper-item",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "src/components/reusable/stepper/stepperItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepperItemChild.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper Item child.",
+          "name": "StepperItemChild",
+          "slots": [
+            {
+              "description": "Slot for other elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "childTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Child Title. Required for nested child inside step.",
+              "attribute": "childTitle"
+            },
+            {
+              "kind": "field",
+              "name": "childSubTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional Child Subtitle.",
+              "attribute": "childSubTitle"
+            },
+            {
+              "kind": "field",
+              "name": "childState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
+              "attribute": "childState"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChildStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getProgressValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits event on child click. Only for vertical mode.",
+              "name": "on-child-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "childTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Child Title. Required for nested child inside step.",
+              "fieldName": "childTitle"
+            },
+            {
+              "name": "childSubTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional Child Subtitle.",
+              "fieldName": "childSubTitle"
+            },
+            {
+              "name": "childState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
+              "fieldName": "childState"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper-item-child",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "StepperItemChild",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "src/components/reusable/stepper/stepperItemChild.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper-item-child",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "src/components/reusable/stepper/stepperItemChild.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/search/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Search",
+          "declaration": {
+            "name": "Search",
+            "module": "./search"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/search/search.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Search",
+          "name": "Search",
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Search'",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "expandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expandable style search.",
+              "attribute": "expandable"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input & button size.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "suggestions",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
+              "attribute": "suggestions"
+            },
+            {
+              "kind": "method",
+              "name": "_buttonSizeMap",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFocus",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBlur",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleButtonClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSuggestionClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "suggestion",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleSearchKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleListKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyboard",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "keyCode",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the value on text input/clear.",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Search'",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "expandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expandable style search.",
+              "fieldName": "expandable"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input & button size.",
+              "fieldName": "size"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "suggestions",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
+              "fieldName": "suggestions"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-search",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Search",
+          "declaration": {
+            "name": "Search",
+            "module": "src/components/reusable/search/search.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-search",
+          "declaration": {
+            "name": "Search",
+            "module": "src/components/reusable/search/search.ts"
           }
         }
       ]
@@ -13688,6 +14215,370 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/tag/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "./tag"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TagGroup",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "./tagGroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/tag.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tag.",
+          "name": "Tag",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Tag name (Required).",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "attribute": "tagSize"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify if the Tag is disabled.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag state is filter.",
+              "attribute": "filter"
+            },
+            {
+              "kind": "field",
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "attribute": "noTruncation"
+            },
+            {
+              "kind": "field",
+              "name": "shade",
+              "type": {
+                "text": "string"
+              },
+              "default": "'light'",
+              "description": "Shade `'light'` (default) and `'dark'` for tag",
+              "attribute": "shade"
+            },
+            {
+              "kind": "field",
+              "name": "tagColor",
+              "type": {
+                "text": "string"
+              },
+              "default": "'spruce'",
+              "description": "Color variants. Default spruce",
+              "attribute": "tagColor"
+            },
+            {
+              "kind": "method",
+              "name": "handleTagClear",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the close event and emits the Tag value. Works with filterable tags.",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Tag name (Required).",
+              "fieldName": "label"
+            },
+            {
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "fieldName": "tagSize"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify if the Tag is disabled.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag state is filter.",
+              "fieldName": "filter"
+            },
+            {
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "fieldName": "noTruncation"
+            },
+            {
+              "name": "shade",
+              "type": {
+                "text": "string"
+              },
+              "default": "'light'",
+              "description": "Shade `'light'` (default) and `'dark'` for tag",
+              "fieldName": "shade"
+            },
+            {
+              "name": "tagColor",
+              "type": {
+                "text": "string"
+              },
+              "default": "'spruce'",
+              "description": "Color variants. Default spruce",
+              "fieldName": "tagColor"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tag",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "src/components/reusable/tag/tag.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "src/components/reusable/tag/tag.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/tagGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tag & Tag Group",
+          "name": "TagGroup",
+          "slots": [
+            {
+              "description": "Slot for individual tags.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "description": "Text string customization.",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "field",
+              "name": "limitTags",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
+              "attribute": "limitTags"
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tag group filter",
+              "attribute": "filter"
+            },
+            {
+              "kind": "field",
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "attribute": "tagSize"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_toggleRevealed",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "revealed",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "limitTags",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
+              "fieldName": "limitTags"
+            },
+            {
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tag group filter",
+              "fieldName": "filter"
+            },
+            {
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "fieldName": "tagSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tag-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TagGroup",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "src/components/reusable/tag/tagGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tag-group",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "src/components/reusable/tag/tagGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/tabs/index.ts",
       "declarations": [],
       "exports": [
@@ -14135,897 +15026,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "./stepper"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "StepperItem",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "./stepperItem"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "StepperItemChild",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "./stepperItemChild"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepper.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper",
-          "name": "Stepper",
-          "slots": [
-            {
-              "description": "Slot for step items.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "stepperType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
-              "attribute": "stepperType"
-            },
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Wheter the stepper is in vertical type.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "stepperSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "attribute": "stepperSize"
-            },
-            {
-              "kind": "field",
-              "name": "currentIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
-              "attribute": "currentIndex"
-            },
-            {
-              "kind": "method",
-              "name": "_handleStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the event and emits the active step and original event details when click on any step title. This is only for procedure type stepper. Status stepper doesn't emit this event.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "stepperType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
-              "fieldName": "stepperType"
-            },
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Wheter the stepper is in vertical type.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "stepperSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "fieldName": "stepperSize"
-            },
-            {
-              "name": "currentIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
-              "fieldName": "currentIndex"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "src/components/reusable/stepper/stepper.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "src/components/reusable/stepper/stepper.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepperItem.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper Item.",
-          "name": "StepperItem",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            },
-            {
-              "description": "Children slot. Used for nested children in vertical stepper. Visible only when step state is active. Do not use inside stepperType `'status'`.",
-              "name": "child"
-            },
-            {
-              "description": "Optional slot for content in vertical stepper. Visible only when step state is active.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the stepper is in vertical type.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "stepSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "attribute": "stepSize"
-            },
-            {
-              "kind": "field",
-              "name": "stepName",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step name.",
-              "attribute": "stepName"
-            },
-            {
-              "kind": "field",
-              "name": "stepTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step title. Required for actions.",
-              "attribute": "stepTitle"
-            },
-            {
-              "kind": "field",
-              "name": "stepState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
-              "attribute": "stepState"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disable step.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "showCounter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
-              "attribute": "showCounter"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChildToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getProgressValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the step details to the parent stepper component when click on step title.",
-              "name": "on-step-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the stepper is in vertical type.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "stepSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "fieldName": "stepSize"
-            },
-            {
-              "name": "stepName",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step name.",
-              "fieldName": "stepName"
-            },
-            {
-              "name": "stepTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step title. Required for actions.",
-              "fieldName": "stepTitle"
-            },
-            {
-              "name": "stepState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
-              "fieldName": "stepState"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disable step.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "showCounter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
-              "fieldName": "showCounter"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper-item",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StepperItem",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "src/components/reusable/stepper/stepperItem.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper-item",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "src/components/reusable/stepper/stepperItem.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepperItemChild.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper Item child.",
-          "name": "StepperItemChild",
-          "slots": [
-            {
-              "description": "Slot for other elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "childTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child Title. Required for nested child inside step.",
-              "attribute": "childTitle"
-            },
-            {
-              "kind": "field",
-              "name": "childSubTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional Child Subtitle.",
-              "attribute": "childSubTitle"
-            },
-            {
-              "kind": "field",
-              "name": "childState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
-              "attribute": "childState"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChildStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getProgressValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits event on child click. Only for vertical mode.",
-              "name": "on-child-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "childTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child Title. Required for nested child inside step.",
-              "fieldName": "childTitle"
-            },
-            {
-              "name": "childSubTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional Child Subtitle.",
-              "fieldName": "childSubTitle"
-            },
-            {
-              "name": "childState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
-              "fieldName": "childState"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper-item-child",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StepperItemChild",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "src/components/reusable/stepper/stepperItemChild.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper-item-child",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "src/components/reusable/stepper/stepperItemChild.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "./tag"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "TagGroup",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "./tagGroup"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/tag.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tag.",
-          "name": "Tag",
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tag name (Required).",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "attribute": "tagSize"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify if the Tag is disabled.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine if Tag state is filter.",
-              "attribute": "filter"
-            },
-            {
-              "kind": "field",
-              "name": "noTruncation",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Removes label text truncation.",
-              "attribute": "noTruncation"
-            },
-            {
-              "kind": "field",
-              "name": "shade",
-              "type": {
-                "text": "string"
-              },
-              "default": "'light'",
-              "description": "Shade `'light'` (default) and `'dark'` for tag",
-              "attribute": "shade"
-            },
-            {
-              "kind": "field",
-              "name": "tagColor",
-              "type": {
-                "text": "string"
-              },
-              "default": "'spruce'",
-              "description": "Color variants. Default spruce",
-              "attribute": "tagColor"
-            },
-            {
-              "kind": "method",
-              "name": "handleTagClear",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the close event and emits the Tag value. Works with filterable tags.",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tag name (Required).",
-              "fieldName": "label"
-            },
-            {
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "fieldName": "tagSize"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify if the Tag is disabled.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine if Tag state is filter.",
-              "fieldName": "filter"
-            },
-            {
-              "name": "noTruncation",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Removes label text truncation.",
-              "fieldName": "noTruncation"
-            },
-            {
-              "name": "shade",
-              "type": {
-                "text": "string"
-              },
-              "default": "'light'",
-              "description": "Shade `'light'` (default) and `'dark'` for tag",
-              "fieldName": "shade"
-            },
-            {
-              "name": "tagColor",
-              "type": {
-                "text": "string"
-              },
-              "default": "'spruce'",
-              "description": "Color variants. Default spruce",
-              "fieldName": "tagColor"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tag",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "src/components/reusable/tag/tag.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "src/components/reusable/tag/tag.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/tagGroup.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tag & Tag Group",
-          "name": "TagGroup",
-          "slots": [
-            {
-              "description": "Slot for individual tags.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
-              "description": "Text string customization.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "field",
-              "name": "limitTags",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
-              "attribute": "limitTags"
-            },
-            {
-              "kind": "field",
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tag group filter",
-              "attribute": "filter"
-            },
-            {
-              "kind": "field",
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "attribute": "tagSize"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_toggleRevealed",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "revealed",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "limitTags",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
-              "fieldName": "limitTags"
-            },
-            {
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tag group filter",
-              "fieldName": "filter"
-            },
-            {
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "fieldName": "tagSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tag-group",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TagGroup",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "src/components/reusable/tag/tagGroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tag-group",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "src/components/reusable/tag/tagGroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/textArea/index.ts",
       "declarations": [],
       "exports": [
@@ -15409,398 +15409,6 @@
           "declaration": {
             "name": "TextArea",
             "module": "src/components/reusable/textArea/textArea.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/timepicker/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TimePicker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "./timepicker"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/timepicker/timepicker.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Time picker.",
-          "name": "TimePicker",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
-              "attribute": "value",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input warn text.",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "maxTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum Time hh:mm format.",
-              "attribute": "maxTime"
-            },
-            {
-              "kind": "field",
-              "name": "minTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Minimum Time in hh:mm format.",
-              "attribute": "minTime"
-            },
-            {
-              "kind": "field",
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nIt takes value that equates to the number of seconds you want to increment by;\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
-              "attribute": "step"
-            },
-            {
-              "kind": "method",
-              "name": "handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ],
-              "description": "Component _validate function reference.",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "attribute": "name",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input invalid text.",
-              "attribute": "invalidText",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onUpdated",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "changedProps",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ],
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "updated",
-              "parameters": [
-                {
-                  "name": "changedProps",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ],
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onConnected",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_onDisconnected",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
-              "fieldName": "value",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input warn text.",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "maxTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum Time hh:mm format.",
-              "fieldName": "maxTime"
-            },
-            {
-              "name": "minTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Minimum Time in hh:mm format.",
-              "fieldName": "minTime"
-            },
-            {
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nIt takes value that equates to the number of seconds you want to increment by;\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
-              "fieldName": "step"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "fieldName": "name",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input invalid text.",
-              "fieldName": "invalidText",
-              "inheritedFrom": {
-                "name": "FormMixin",
-                "module": "src/common/mixins/form-input.ts"
-              }
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-time-picker",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TimePicker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "src/components/reusable/timepicker/timepicker.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-time-picker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "src/components/reusable/timepicker/timepicker.ts"
           }
         }
       ]
@@ -16809,105 +16417,77 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/widget/index.ts",
+      "path": "src/components/reusable/timepicker/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "Widget",
+          "name": "TimePicker",
           "declaration": {
-            "name": "Widget",
-            "module": "./widget"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "WidgetDragHandle",
-          "declaration": {
-            "name": "WidgetDragHandle",
-            "module": "./widgetDragHandle"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "WidgetGridstack",
-          "declaration": {
-            "name": "WidgetGridstack",
-            "module": "./widgetGridstack"
+            "name": "TimePicker",
+            "module": "./timepicker"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/widget/sample-layout.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "module": "src/components/reusable/widget/sample-layout.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/widget.ts",
+      "path": "src/components/reusable/timepicker/timepicker.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Widget.",
-          "name": "Widget",
+          "description": "Time picker.",
+          "name": "TimePicker",
           "slots": [
             {
-              "description": "Slot for widget content.",
+              "description": "Slot for label text.",
               "name": "unnamed"
-            },
-            {
-              "description": "Slot for action buttons.",
-              "name": "action"
-            },
-            {
-              "description": "Slot for tooltip in header.",
-              "name": "tooltip"
-            },
-            {
-              "description": "Slot for drag handle.",
-              "name": "draghandle"
             }
           ],
           "members": [
             {
               "kind": "field",
-              "name": "widgetTitle",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Widget title.",
-              "attribute": "widgetTitle"
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
             },
             {
               "kind": "field",
-              "name": "subTitle",
+              "name": "value",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Widget sub-title.",
-              "attribute": "subTitle"
+              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
+              "attribute": "value",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
             },
             {
               "kind": "field",
-              "name": "dragActive",
+              "name": "required",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Widget drag active state.",
-              "attribute": "dragActive"
+              "description": "Makes the input required.",
+              "attribute": "required"
             },
             {
               "kind": "field",
@@ -16916,265 +16496,313 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Widget disabled state.",
+              "description": "Input disabled state.",
               "attribute": "disabled"
             },
             {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "widgetTitle",
+              "kind": "field",
+              "name": "warnText",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Widget title.",
-              "fieldName": "widgetTitle"
+              "description": "Time input warn text.",
+              "attribute": "warnText"
             },
             {
-              "name": "subTitle",
+              "kind": "field",
+              "name": "maxTime",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum Time hh:mm format.",
+              "attribute": "maxTime"
+            },
+            {
+              "kind": "field",
+              "name": "minTime",
+              "type": {
+                "text": "string"
+              },
+              "description": "Minimum Time in hh:mm format.",
+              "attribute": "minTime"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nIt takes value that equates to the number of seconds you want to increment by;\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
+              "attribute": "step"
+            },
+            {
+              "kind": "method",
+              "name": "handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ],
+              "description": "Component _validate function reference.",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "name",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Widget sub-title.",
-              "fieldName": "subTitle"
+              "description": "Input name.",
+              "attribute": "name",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
             },
-            {
-              "name": "dragActive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Widget drag active state.",
-              "fieldName": "dragActive"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Widget disabled state.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-widget",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Widget",
-          "declaration": {
-            "name": "Widget",
-            "module": "src/components/reusable/widget/widget.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-widget",
-          "declaration": {
-            "name": "Widget",
-            "module": "src/components/reusable/widget/widget.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/widgetDragHandle.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Widget drag handle.",
-          "name": "WidgetDragHandle",
-          "members": [
             {
               "kind": "field",
-              "name": "slot",
+              "name": "invalidText",
               "type": {
                 "text": "string"
               },
-              "default": "'draghandle'",
-              "description": "Force widget slot",
-              "attribute": "slot",
-              "reflects": true
-            }
-          ],
-          "attributes": [
-            {
-              "name": "slot",
-              "type": {
-                "text": "string"
-              },
-              "default": "'draghandle'",
-              "description": "Force widget slot",
-              "fieldName": "slot"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-widget-drag-handle",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "WidgetDragHandle",
-          "declaration": {
-            "name": "WidgetDragHandle",
-            "module": "src/components/reusable/widget/widgetDragHandle.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-widget-drag-handle",
-          "declaration": {
-            "name": "WidgetDragHandle",
-            "module": "src/components/reusable/widget/widgetDragHandle.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/widget/widgetGridstack.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "GridStack wrapper that includes Shidoka default config and styles.",
-          "name": "WidgetGridstack",
-          "slots": [
-            {
-              "description": "Slot for .grid-stack container element.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "layout",
-              "type": {
-                "text": "any"
-              },
-              "default": "{}",
-              "description": "GridStack layout/widget size/position definitions for each breakpoint.",
-              "attribute": "layout"
-            },
-            {
-              "kind": "field",
-              "name": "gridstackConfig",
-              "type": {
-                "text": "any"
-              },
-              "default": "Config",
-              "description": "GridStack config.",
-              "attribute": "gridstackConfig"
-            },
-            {
-              "kind": "field",
-              "name": "gridStack",
-              "type": {
-                "text": "any"
-              },
-              "default": "GridStack",
-              "description": "GridStack instance."
-            },
-            {
-              "kind": "field",
-              "name": "grid",
-              "type": {
-                "text": "any"
-              },
-              "description": "GridStack grid instance."
+              "default": "''",
+              "description": "Input invalid text.",
+              "attribute": "invalidText",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
             },
             {
               "kind": "method",
-              "name": "_saveLayout",
-              "privacy": "private"
+              "name": "_onUpdated",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "changedProps",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
             },
             {
               "kind": "method",
-              "name": "_updateLayout",
-              "privacy": "private"
+              "name": "updated",
+              "parameters": [
+                {
+                  "name": "changedProps",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
             },
             {
               "kind": "method",
-              "name": "_setBreakpoint",
-              "privacy": "private"
+              "name": "_onConnected",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_onDisconnected",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
             }
           ],
           "events": [
             {
-              "description": "Emits after GridStack initializes.",
-              "name": "on-grid-init"
-            },
-            {
-              "description": "Emits the GridStack save() method results (new layout) on dragstop and resizestop.",
-              "name": "on-grid-save"
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-input"
             }
           ],
           "attributes": [
             {
-              "name": "layout",
+              "name": "size",
               "type": {
-                "text": "any"
+                "text": "string"
               },
-              "default": "{}",
-              "description": "GridStack layout/widget size/position definitions for each breakpoint.",
-              "fieldName": "layout"
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
             },
             {
-              "name": "gridstackConfig",
+              "name": "caption",
               "type": {
-                "text": "any"
+                "text": "string"
               },
-              "default": "Config",
-              "description": "GridStack config.",
-              "fieldName": "gridstackConfig"
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
+              "fieldName": "value",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Time input warn text.",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "maxTime",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum Time hh:mm format.",
+              "fieldName": "maxTime"
+            },
+            {
+              "name": "minTime",
+              "type": {
+                "text": "string"
+              },
+              "description": "Minimum Time in hh:mm format.",
+              "fieldName": "minTime"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nIt takes value that equates to the number of seconds you want to increment by;\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
+              "fieldName": "step"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "fieldName": "name",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            },
+            {
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input invalid text.",
+              "fieldName": "invalidText",
+              "inheritedFrom": {
+                "name": "FormMixin",
+                "module": "src/common/mixins/form-input.ts"
+              }
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-widget-gridstack",
+          "tagName": "kyn-time-picker",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "WidgetGridstack",
+          "name": "TimePicker",
           "declaration": {
-            "name": "WidgetGridstack",
-            "module": "src/components/reusable/widget/widgetGridstack.ts"
+            "name": "TimePicker",
+            "module": "src/components/reusable/timepicker/timepicker.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-widget-gridstack",
+          "name": "kyn-time-picker",
           "declaration": {
-            "name": "WidgetGridstack",
-            "module": "src/components/reusable/widget/widgetGridstack.ts"
+            "name": "TimePicker",
+            "module": "src/components/reusable/timepicker/timepicker.ts"
           }
         }
       ]
@@ -17555,6 +17183,378 @@
           "declaration": {
             "name": "BlockCodeView",
             "module": "./blockCodeView"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Widget",
+          "declaration": {
+            "name": "Widget",
+            "module": "./widget"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "WidgetDragHandle",
+          "declaration": {
+            "name": "WidgetDragHandle",
+            "module": "./widgetDragHandle"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "WidgetGridstack",
+          "declaration": {
+            "name": "WidgetGridstack",
+            "module": "./widgetGridstack"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/sample-layout.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/reusable/widget/sample-layout.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/widget.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Widget.",
+          "name": "Widget",
+          "slots": [
+            {
+              "description": "Slot for widget content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for action buttons.",
+              "name": "action"
+            },
+            {
+              "description": "Slot for tooltip in header.",
+              "name": "tooltip"
+            },
+            {
+              "description": "Slot for drag handle.",
+              "name": "draghandle"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "widgetTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget title.",
+              "attribute": "widgetTitle"
+            },
+            {
+              "kind": "field",
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget sub-title.",
+              "attribute": "subTitle"
+            },
+            {
+              "kind": "field",
+              "name": "dragActive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget drag active state.",
+              "attribute": "dragActive"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "widgetTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget title.",
+              "fieldName": "widgetTitle"
+            },
+            {
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Widget sub-title.",
+              "fieldName": "subTitle"
+            },
+            {
+              "name": "dragActive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget drag active state.",
+              "fieldName": "dragActive"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget disabled state.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-widget",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Widget",
+          "declaration": {
+            "name": "Widget",
+            "module": "src/components/reusable/widget/widget.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-widget",
+          "declaration": {
+            "name": "Widget",
+            "module": "src/components/reusable/widget/widget.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/widgetDragHandle.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Widget drag handle.",
+          "name": "WidgetDragHandle",
+          "members": [
+            {
+              "kind": "field",
+              "name": "slot",
+              "type": {
+                "text": "string"
+              },
+              "default": "'draghandle'",
+              "description": "Force widget slot",
+              "attribute": "slot",
+              "reflects": true
+            }
+          ],
+          "attributes": [
+            {
+              "name": "slot",
+              "type": {
+                "text": "string"
+              },
+              "default": "'draghandle'",
+              "description": "Force widget slot",
+              "fieldName": "slot"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-widget-drag-handle",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "WidgetDragHandle",
+          "declaration": {
+            "name": "WidgetDragHandle",
+            "module": "src/components/reusable/widget/widgetDragHandle.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-widget-drag-handle",
+          "declaration": {
+            "name": "WidgetDragHandle",
+            "module": "src/components/reusable/widget/widgetDragHandle.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/widgetGridstack.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "GridStack wrapper that includes Shidoka default config and styles.",
+          "name": "WidgetGridstack",
+          "slots": [
+            {
+              "description": "Slot for .grid-stack container element.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "layout",
+              "type": {
+                "text": "any"
+              },
+              "default": "{}",
+              "description": "GridStack layout/widget size/position definitions for each breakpoint.",
+              "attribute": "layout"
+            },
+            {
+              "kind": "field",
+              "name": "gridstackConfig",
+              "type": {
+                "text": "any"
+              },
+              "default": "Config",
+              "description": "GridStack config.",
+              "attribute": "gridstackConfig"
+            },
+            {
+              "kind": "field",
+              "name": "gridStack",
+              "type": {
+                "text": "any"
+              },
+              "default": "GridStack",
+              "description": "GridStack instance."
+            },
+            {
+              "kind": "field",
+              "name": "grid",
+              "type": {
+                "text": "any"
+              },
+              "description": "GridStack grid instance."
+            },
+            {
+              "kind": "method",
+              "name": "_saveLayout",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateLayout",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_setBreakpoint",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits after GridStack initializes.",
+              "name": "on-grid-init"
+            },
+            {
+              "description": "Emits the GridStack save() method results (new layout) on dragstop and resizestop.",
+              "name": "on-grid-save"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "layout",
+              "type": {
+                "text": "any"
+              },
+              "default": "{}",
+              "description": "GridStack layout/widget size/position definitions for each breakpoint.",
+              "fieldName": "layout"
+            },
+            {
+              "name": "gridstackConfig",
+              "type": {
+                "text": "any"
+              },
+              "default": "Config",
+              "description": "GridStack config.",
+              "fieldName": "gridstackConfig"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-widget-gridstack",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "WidgetGridstack",
+          "declaration": {
+            "name": "WidgetGridstack",
+            "module": "src/components/reusable/widget/widgetGridstack.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-widget-gridstack",
+          "declaration": {
+            "name": "WidgetGridstack",
+            "module": "src/components/reusable/widget/widgetGridstack.ts"
           }
         }
       ]

@@ -6,9 +6,8 @@ $border-radius: 4px;
 
 :host {
     display: block;
-    font-family: var(--kd-font-family);
     position: relative;
-    margin-bottom: 0;
+    box-sizing: border-box;
 }
 
 .code-view {
@@ -59,6 +58,7 @@ $border-radius: 4px;
 
 .code-view {
     &__container {
+
         &.animating-expansion {
             .code-snippet-wrapper {
                 transition: max-height $transition-duration ease-in-out;
@@ -134,8 +134,7 @@ $border-radius: 4px;
                 overflow: -moz-scrollbars-horizontal;
 
                 code {
-                    padding: 12px 16px;
-
+                    padding: 16px 32px;
                 }
             }
 
@@ -165,10 +164,6 @@ $border-radius: 4px;
             scrollbar-width: thin;
             overflow: -moz-scrollbars-vertical;
 
-            .hljs {
-                padding: 0 !important;
-            }
-
             .code-view__copy-button {
                 top: 10px;
                 right: 10px;
@@ -187,7 +182,7 @@ $border-radius: 4px;
 
             pre {
                 margin: 0;
-                padding: 0 110px 0 16px;
+                padding-right: 110px;
                 overflow: auto;
                 max-height: inherit;
                 box-sizing: border-box;
@@ -204,8 +199,8 @@ $border-radius: 4px;
                 word-wrap: break-word;
                 word-break: normal;
 
-                &.language-swift {
-                    padding: 16px 16px 18px;
+                &.manually-set-lanuguage-true {
+                    padding: 16px 32px;
                 }
             }
 
