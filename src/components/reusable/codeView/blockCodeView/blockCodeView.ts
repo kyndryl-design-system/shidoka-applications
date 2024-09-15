@@ -3,6 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { deepmerge } from 'deepmerge-ts';
 
 import hljs from 'highlight.js/lib/common';
 
@@ -17,9 +18,14 @@ import BlockCodeViewStyles from './blockCodeView.scss';
 import ShidokaLightTheme from './shidokaLightSyntaxStyles.scss';
 import ShidokaDarkTheme from './shidokaDarkSyntaxStyles.scss';
 
+const _defaultTextStrings = {
+  collapsed: 'Collapsed',
+  expanded: 'Expanded',
+};
+
 /**
  * `<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements.
- * @fires on-custom-copy - Emits when the copy button is clicked.
+ * @fires on-copy - Emits when the copy button is clicked.
  */
 @customElement('kyn-block-code-view')
 export class BlockCodeView extends LitElement {
@@ -31,15 +37,11 @@ export class BlockCodeView extends LitElement {
 
   /** Sets background and text theming. */
   @property({ type: String })
-  darkTheme: 'light' | 'dark' | 'darker' = 'darker';
+  darkTheme: 'light' | 'dark' = 'dark';
 
   /** List of languages to register and use for highlighting */
   @property({ type: Array })
   languages: string[] = [];
-
-  /** Sets code snippet size. */
-  @property({ type: String })
-  size: 'auto' | 'sm' | 'md' = 'md';
 
   /** Customizable max-height setting for code snippet container. */
   @property({ type: Number })
@@ -76,6 +78,16 @@ export class BlockCodeView extends LitElement {
   /** Sets code snippet for display -- NOTE: original formatting is preserved. */
   @property({ type: String })
   codeSnippet = '';
+
+  /** Text string customization. */
+  @property({ type: Object })
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
 
   /** Auto-detect whether code snippet is single line (boolean) -- styled accordingly (boolean).
    * @internal
@@ -198,13 +210,11 @@ export class BlockCodeView extends LitElement {
   private getContainerClasses() {
     return classMap({
       'code-view__container': true,
-      [`size--${this.size}`]: true,
       'single-line': this._isSingleLine,
       'multi-line': !this._isSingleLine,
       'copy-button-text-true':
         this.copyButtonText && this.copyButtonText.length > 0,
       'copy-button-text-false': !this.copyButtonText,
-      'shidoka-darker-syntax-theme': this.darkTheme === 'darker',
       'shidoka-dark-syntax-theme': this.darkTheme === 'dark',
       'shidoka-light-syntax-theme': this.darkTheme === 'light',
       'expanded-code-view': this.codeExpanded,
@@ -212,7 +222,13 @@ export class BlockCodeView extends LitElement {
     });
   }
 
-  override async updated(changedProperties: Map<string, unknown>) {
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('codeExpanded')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
+  }
+
+  override updated(changedProperties: Map<string, unknown>) {
     if (
       changedProperties.has('codeSnippet') ||
       changedProperties.has('languages') ||
@@ -325,7 +341,7 @@ export class BlockCodeView extends LitElement {
         };
         this.requestUpdate();
         this.dispatchEvent(
-          new CustomEvent('on-custom-copy', {
+          new CustomEvent('on-copy', {
             detail: {
               origEvent: e,
               fullSnippet: this.formatExampleCode(this.codeSnippet),
