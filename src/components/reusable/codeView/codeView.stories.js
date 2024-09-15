@@ -101,6 +101,7 @@ print(john.introduce())`,
 
 export default {
   title: 'Components/Code View',
+  component: 'kyn-block-code-view',
   parameters: {
     docs: {
       description: {
@@ -196,8 +197,9 @@ export const InlineCodeView = {
   },
 };
 
-export const BlockSingleLineView = {
-  ...BlockCodeView,
+export const BlockSingleLineExample = {
+  title: 'Components/Code View/Block/Single Line Example',
+  component: 'kyn-block-code-view',
   args: {
     ...BlockCodeView.args,
     language: '',
@@ -208,7 +210,8 @@ export const BlockSingleLineView = {
 };
 
 export const BlockJavascriptExample = {
-  ...BlockCodeView,
+  title: 'Components/Code View/Block/JavaScript Example',
+  component: 'kyn-block-code-view',
   args: {
     ...BlockCodeView.args,
     language: '',
@@ -220,7 +223,8 @@ export const BlockJavascriptExample = {
 };
 
 export const BlockHTMLExample = {
-  ...BlockCodeView,
+  title: 'Components/Code View/Block/HTML Example',
+  component: 'kyn-block-code-view',
   args: {
     ...BlockCodeView.args,
     language: '',
@@ -231,7 +235,8 @@ export const BlockHTMLExample = {
 };
 
 export const BlockCSSExample = {
-  ...BlockCodeView,
+  title: 'Components/Code View/Block/CSS Example',
+  component: 'kyn-block-code-view',
   args: {
     ...BlockCodeView.args,
     language: '',
@@ -242,7 +247,8 @@ export const BlockCSSExample = {
 };
 
 export const BlockSwiftExample = {
-  ...BlockCodeView,
+  title: 'Components/Code View/Block/Swift Example',
+  component: 'kyn-block-code-view',
   args: {
     ...BlockCodeView.args,
     language: 'swift',
@@ -253,7 +259,8 @@ export const BlockSwiftExample = {
 };
 
 export const BlockBashExample = {
-  ...BlockCodeView,
+  title: 'Components/Code View/Block/C Example',
+  component: 'kyn-block-code-view',
   args: {
     ...BlockCodeView.args,
     language: 'bash',
