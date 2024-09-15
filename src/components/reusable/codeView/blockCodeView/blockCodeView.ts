@@ -45,7 +45,7 @@ export class BlockCodeView extends LitElement {
 
   /** Sets background and text theming. */
   @property({ type: String })
-  darkTheme: 'light' | 'dark' | 'darker' = 'darker';
+  darkTheme: 'light' | 'dark' = 'dark';
 
   /** If `''`, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language. */
   @property({ type: String })
@@ -227,7 +227,6 @@ export class BlockCodeView extends LitElement {
       'copy-button-text-true':
         this.copyButtonText && this.copyButtonText.length > 0,
       'copy-button-text-false': !this.copyButtonText,
-      'shidoka-darker-syntax-theme': this.darkTheme === 'darker',
       'shidoka-dark-syntax-theme': this.darkTheme === 'dark',
       'shidoka-light-syntax-theme': this.darkTheme === 'light',
       'expanded-code-view': this.codeExpanded,
