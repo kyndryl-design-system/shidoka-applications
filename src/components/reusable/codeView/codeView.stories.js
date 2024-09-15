@@ -102,6 +102,12 @@ print(john.introduce())`,
 export default {
   title: 'Components/Code View',
   parameters: {
+    docs: {
+      description: {
+        component:
+          'The following documentation combines both `Block` and `Inline` code view components. Inline Code View displays code snippets inline within HTML content. Block Code View displays `<code>` snippets as standalone single-/multi-line block elements, utilizing highlight.js (`https://highlightjs.org/`) for syntax highlighting.',
+      },
+    },
     design: {
       type: 'figma',
       url: '',
