@@ -24,7 +24,7 @@ const _defaultTextStrings = {
 };
 
 /**
- * `<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements.
+ * `<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements. Utilizes highlight.js (`https://highlightjs.org/`) for syntax highlighting.
  * @fires on-copy - Emits when the copy button is clicked.
  */
 @customElement('kyn-block-code-view')
@@ -39,7 +39,7 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   darkTheme: 'light' | 'dark' = 'dark';
 
-  /** List of languages to register and use for highlighting */
+  /** Array of hard-coded languages to register and use for highlighting */
   @property({ type: Array })
   languages: string[] = [];
 
@@ -125,12 +125,6 @@ export class BlockCodeView extends LitElement {
   @state()
   private _highlightedCode = '';
 
-  /** Code snippet fits into the height of the container -- no expansion needed.
-   * @internal
-   */
-  @state()
-  private _codeFitsContainerOnLoad = true;
-
   /** If expandable -- height of the container when fully expanded.
    * @internal
    */
@@ -182,8 +176,7 @@ export class BlockCodeView extends LitElement {
                 : null}
             </kd-button>`
           : null}
-        ${this.codeViewExpandable &&
-        (this.hasOverflow || !this._codeFitsContainerOnLoad)
+        ${this.codeViewExpandable && this.hasOverflow
           ? html`<kd-button
               class="code-view__expand-button"
               kind="tertiary"
@@ -191,9 +184,9 @@ export class BlockCodeView extends LitElement {
               iconPosition="left"
               title="Expand/Collapse code snippet"
               name="toggle-code-expanded"
-              description="Click to ${this.codeExpanded
-                ? 'collapse'
-                : 'expand'} the full code snippet"
+              description=${this.codeExpanded
+                ? this._textStrings.expanded
+                : this._textStrings.collapsed}
               @click=${this.expandCodeView}
             >
               <kd-icon
@@ -228,14 +221,13 @@ export class BlockCodeView extends LitElement {
     }
   }
 
-  override updated(changedProperties: Map<string, unknown>) {
+  override async updated(changedProperties: Map<string, unknown>) {
     if (
       changedProperties.has('codeSnippet') ||
       changedProperties.has('languages') ||
       changedProperties.has('maxHeight')
     ) {
       await this.highlightCode();
-      this.checkOverflow();
     }
 
     if (changedProperties.has('copyButtonText')) {
@@ -251,13 +243,12 @@ export class BlockCodeView extends LitElement {
       for (const langName of this.languages) {
         try {
           const langModule = await import(
-            /* webpackChunkName: "hljs-language-[request]" */
             `highlight.js/lib/languages/${langName}`
           );
           hljs.registerLanguage(langName, langModule.default);
         } catch (err) {
           console.warn(
-            `Language module for ${langName} could not be loaded`,
+            `Language module for "${langName}" could not be loaded.`,
             err
           );
         }
@@ -273,48 +264,50 @@ export class BlockCodeView extends LitElement {
       codeElement.textContent = this.codeSnippet;
       this._isSingleLine = this.isSingleLineCode(this.codeSnippet);
 
-      if (this.languages.length === 1) {
-        // use the specified language
+      let result;
+      if (this.languages && this.languages.length > 0) {
         const language = this.languages[0];
-        const result = hljs.highlight(this.codeSnippet, {
-          language: language,
-          ignoreIllegals: true,
-        });
-        codeElement.innerHTML = result.value;
-        this._effectiveLanguage = language;
+        try {
+          result = hljs.highlight(this.codeSnippet, {
+            language: language,
+            ignoreIllegals: true,
+          });
+          this._effectiveLanguage = language;
+        } catch (e) {
+          console.warn(
+            `Highlighting with language "${language}" failed. Falling back to auto-detection.`,
+            e
+          );
+          result = hljs.highlightAuto(this.codeSnippet);
+          this._effectiveLanguage = result.language || '';
+        }
       } else {
-        const result = hljs.highlightAuto(this.codeSnippet);
-        codeElement.innerHTML = result.value;
+        result = hljs.highlightAuto(this.codeSnippet);
         this._effectiveLanguage = result.language || '';
       }
+      codeElement.innerHTML = result.value;
     }
 
-    this.requestUpdate();
+    await this.updateComplete;
     this.checkOverflow();
   }
 
   // evaluate whether height of code snippet exceeds container height
   private checkOverflow() {
-    setTimeout(() => {
-      requestAnimationFrame(() => {
-        const container = this.shadowRoot?.querySelector(
-          '.code-snippet-wrapper'
-        ) as HTMLElement;
-        const pre = container?.querySelector('pre') as HTMLElement;
-        if (pre && container) {
-          const naturalHeight = pre.scrollHeight;
-          const calcHeight = this.codeExpanded
-            ? this._expandedHeight || container.clientHeight
-            : this.maxHeight !== null
-            ? this.maxHeight
-            : container.clientHeight;
+    const container = this.shadowRoot?.querySelector(
+      '.code-snippet-wrapper'
+    ) as HTMLElement;
+    const pre = container?.querySelector('pre') as HTMLElement;
+    if (pre && container) {
+      const naturalHeight = pre.scrollHeight;
+      const calcHeight = this.codeExpanded
+        ? this._expandedHeight || container.clientHeight
+        : this.maxHeight !== null
+        ? this.maxHeight
+        : container.clientHeight;
 
-          this.hasOverflow = naturalHeight > calcHeight;
-          this._codeFitsContainerOnLoad =
-            naturalHeight <= (this.maxHeight || container.clientHeight);
-        }
-      });
-    }, 100);
+      this.hasOverflow = naturalHeight > calcHeight;
+    }
   }
 
   // detect single vs multi-line block code snippet for custom default styling
@@ -377,7 +370,7 @@ export class BlockCodeView extends LitElement {
     }
 
     this.requestUpdate();
-    setTimeout(() => this.checkOverflow(), 0);
+    this.checkOverflow();
   }
 
   //

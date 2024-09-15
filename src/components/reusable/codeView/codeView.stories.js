@@ -102,6 +102,12 @@ print(john.introduce())`,
 export default {
   title: 'Components/Code View',
   parameters: {
+    docs: {
+      description: {
+        component:
+          'The following documentation combines both `Block` and `Inline` code view components. Inline Code View displays code snippets inline within HTML content. Block Code View displays `<code>` snippets as standalone single-/multi-line block elements, utilizing highlight.js (`https://highlightjs.org/`) for syntax highlighting.',
+      },
+    },
     design: {
       type: 'figma',
       url: '',
@@ -129,7 +135,7 @@ export const BlockCodeView = {
   },
   args: {
     darkTheme: 'dark',
-    language: '',
+    languages: [],
     maxHeight: null,
     codeViewLabel: 'Block Code View',
     copyOptionVisible: true,
@@ -148,7 +154,7 @@ export const BlockCodeView = {
     return html`
       <kyn-block-code-view
         darkTheme=${args.darkTheme}
-        language=${args.language}
+        .languages=${args.languages}
         .maxHeight=${maxHeight}
         codeViewLabel=${args.codeViewLabel}
         ?copyOptionVisible=${args.copyOptionVisible}
@@ -194,7 +200,7 @@ export const BlockSingleLineView = {
   ...BlockCodeView,
   args: {
     ...BlockCodeView.args,
-    language: '',
+    languages: [],
     codeViewLabel: 'Single Line Code Snippet',
     copyButtonText: '',
     codeSnippet: defaultTemplateCodes.SINGLE_LINE,
@@ -205,7 +211,7 @@ export const BlockJavascriptExample = {
   ...BlockCodeView,
   args: {
     ...BlockCodeView.args,
-    language: '',
+    languages: [],
     codeViewLabel: 'Javascript Code Snippet',
     codeViewExpandable: true,
     copyButtonText: 'Copy',
@@ -217,7 +223,7 @@ export const BlockHTMLExample = {
   ...BlockCodeView,
   args: {
     ...BlockCodeView.args,
-    language: '',
+    languages: [],
     codeViewLabel: 'HTML Code Snippet',
     copyButtonText: '',
     codeSnippet: defaultTemplateCodes.HTML,
@@ -228,7 +234,7 @@ export const BlockCSSExample = {
   ...BlockCodeView,
   args: {
     ...BlockCodeView.args,
-    language: '',
+    languages: [],
     codeViewLabel: 'CSS Code Snippet',
     copyButtonText: 'Copy',
     codeSnippet: defaultTemplateCodes.CSS,
@@ -239,7 +245,7 @@ export const BlockSwiftExample = {
   ...BlockCodeView,
   args: {
     ...BlockCodeView.args,
-    language: 'swift',
+    languages: ['swift'],
     codeViewLabel: 'Swift Code Snippet (manually configured language name)',
     copyButtonText: '',
     codeSnippet: defaultTemplateCodes.SWIFT,
@@ -250,7 +256,7 @@ export const BlockBashExample = {
   ...BlockCodeView,
   args: {
     ...BlockCodeView.args,
-    language: 'bash',
+    languages: ['bash'],
     codeViewLabel: 'Bash Code Snippet (manually configured language name)',
     copyButtonText: '',
     codeSnippet: defaultTemplateCodes.BASH,
