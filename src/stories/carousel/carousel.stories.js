@@ -24,10 +24,7 @@ const SwiperConfig = {
   pagination: {
     el: '.swiper-pagination',
     clickable: true,
-    // type: 'fraction',
-    renderBullet: function (index, className) {
-      return '<span class="' + className + '">Tab ' + (index + 1) + '</span>';
-    },
+    type: 'fraction',
   },
 };
 
@@ -85,12 +82,15 @@ export const MiniCards = {
           <div class="swiper-slide">Slide 6</div>
         </div>
 
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
+
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+
         <!-- If we need navigation buttons -->
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
-
-        <!-- If we need scrollbar -->
-        <div class="swiper-scrollbar"></div>
       </div>
     `;
   },
@@ -116,12 +116,15 @@ export const LargeCards = {
           <div class="swiper-slide">Slide 6</div>
         </div>
 
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
+
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+
         <!-- If we need navigation buttons -->
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
-
-        <!-- If we need scrollbar -->
-        <div class="swiper-scrollbar"></div>
       </div>
     `;
   },
@@ -147,12 +150,15 @@ export const FullBleed = {
           <div class="swiper-slide">Slide 6</div>
         </div>
 
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
+
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+
         <!-- If we need navigation buttons -->
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
-
-        <!-- If we need scrollbar -->
-        <div class="swiper-scrollbar"></div>
       </div>
     `;
   },
@@ -161,7 +167,7 @@ export const FullBleed = {
   },
 };
 
-export const PaginationDots = {
+export const PaginationBullets = {
   args: {},
   render: (args) => {
     return html`
@@ -177,6 +183,7 @@ export const PaginationDots = {
           <div class="swiper-slide">Slide 5</div>
           <div class="swiper-slide">Slide 6</div>
         </div>
+
         <!-- If we need pagination -->
         <div class="swiper-pagination"></div>
 
@@ -187,7 +194,11 @@ export const PaginationDots = {
     `;
   },
   play: async () => {
-    new Swiper('.swiper', SwiperConfig);
+    const Config = JSON.parse(JSON.stringify(SwiperConfig));
+
+    Config.pagination.type = 'bullets';
+
+    new Swiper('.swiper', Config);
   },
 };
 
@@ -207,6 +218,7 @@ export const PaginationTabs = {
           <div class="swiper-slide">Slide 5</div>
           <div class="swiper-slide">Slide 6</div>
         </div>
+
         <!-- If we need pagination -->
         <div class="swiper-pagination tabs"></div>
 
@@ -217,6 +229,14 @@ export const PaginationTabs = {
     `;
   },
   play: async () => {
-    new Swiper('.swiper', SwiperConfig);
+    const Config = JSON.parse(JSON.stringify(SwiperConfig));
+    const Tabs = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6'];
+
+    Config.pagination.type = 'bullets';
+    Config.pagination.renderBullet = function (index, className) {
+      return '<span class="' + className + '">' + Tabs[index] + '</span>';
+    };
+
+    new Swiper('.swiper', Config);
   },
 };

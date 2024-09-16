@@ -1,4 +1,5 @@
 @use '../../../../node_modules/swiper/swiper-bundle.min.css';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :root {
@@ -12,13 +13,7 @@
 }
 
 .swiper-full-bleed {
-  margin: 0 -16px;
-}
-
-@media (min-width: 42rem) {
-  .swiper-full-bleed {
-    margin: 0 -32px;
-  }
+  margin: 0 calc(var(--kd-page-gutter) * -1);
 }
 
 .swiper-slide {
@@ -70,6 +65,17 @@
 .swiper-pagination-horizontal.swiper-pagination-bullets
   .swiper-pagination-bullet {
   margin: 0;
+}
+
+.swiper-pagination-fraction {
+  @include typography.type-ui-02;
+  justify-content: end;
+  gap: 2px;
+  color: var(--kd-color-text-secondary);
+
+  .swiper-full-bleed & {
+    padding-right: var(--kd-page-gutter);
+  }
 }
 
 .swiper-button-prev,
@@ -133,12 +139,7 @@
   width: 100%;
 
   .swiper-full-bleed & {
-    width: calc(100% - 32px);
-    margin-left: 16px;
-
-    @media (min-width: 42rem) {
-      width: calc(100% - 64px);
-      margin-left: 32px;
-    }
+    width: calc(100% - var(--kd-page-gutter) * 2);
+    margin-left: var(--kd-page-gutter);
   }
 }
