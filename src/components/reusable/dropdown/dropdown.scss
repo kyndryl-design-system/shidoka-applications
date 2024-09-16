@@ -2,6 +2,7 @@
 @use '../../../common/scss/mixins.scss';
 @use '../../../common/scss/form-input.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 
 :host {
   display: inline-block;
@@ -121,7 +122,7 @@
 
   &.open {
     visibility: visible;
-    transform: scaleY(1);
+    transform: none;
     opacity: 1;
     z-index: 11;
   }
@@ -211,4 +212,8 @@
 
 kyn-tag-group {
   margin-top: 8px;
+}
+
+.kd-visibility--sr-only {
+  @include visibility.sr-only;
 }
