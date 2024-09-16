@@ -54,11 +54,8 @@ $border-radius: 4px;
         right: 13px;
         transition: transform $transition-duration ease-in-out;
     }
-}
 
-.code-view {
     &__container {
-
         &.animating-expansion {
             .code-snippet-wrapper {
                 transition: max-height $transition-duration ease-in-out;
@@ -79,7 +76,6 @@ $border-radius: 4px;
                 white-space: inherit;
                 font-family: var(--kd-font-family-code-view);
                 font-size: 14px;
-                line-height: 1.5;
                 text-align: left;
                 word-spacing: normal;
                 word-break: normal;
@@ -185,18 +181,16 @@ $border-radius: 4px;
                 box-sizing: border-box;
                 overflow: auto;
                 width: 100%;
+                white-space: pre;
             }
 
             code {
-                display: inline-block;
+                padding: 16px 0;
                 min-width: 100%;
                 line-height: 1.6;
                 max-width: 75%;
-                box-sizing: border-box;
-                word-wrap: break-word;
-                word-break: normal;
 
-                &.manually-set-lanuguage-true {
+                &.manually-set-language-true {
                     padding: 16px 32px;
                 }
             }
@@ -227,8 +221,6 @@ $border-radius: 4px;
     }
 }
 
-// PREPENDED NON-COPYABLE COMMANDLINE SYMBOLS
-
 $prefixes: (
     'bash': '$',
     'powershell': 'PS>',
@@ -257,8 +249,6 @@ $prefixes: (
         @include prefix-style;
     }
 }
-
-///////
 
 @keyframes fadeIn {
     from {

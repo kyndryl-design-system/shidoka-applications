@@ -3,18 +3,15 @@ import { action } from '@storybook/addon-actions';
 import './blockCodeView/index';
 
 const defaultTemplateCodes = {
-  DEFAULT: `
-    const greetUser = (name) => {
+  DEFAULT: `const greetUser = (name) => {
       console.log(\`Hello, \${name}!\`);
     }
 
     /* NOTE: Comment here */ 
 
-    greetUser('World');
-  `,
+    greetUser('World');`,
   SINGLE_LINE: `console.log("Hello, World!");`,
-  JAVASCRIPT: `
-    const addNumbers = (a, b) => {
+  JAVASCRIPT: `const addNumbers = (a, b) => {
       return a + b;
     };
 
@@ -52,17 +49,13 @@ const defaultTemplateCodes = {
 
     const generateRandomNumber = () => {
       return Math.random();
-    };
-  `,
-  HTML: `
-    <div class="container">
+    };`,
+  HTML: `<div class="container">
       <h1>Welcome to my website</h1>
       <p>This is a paragraph of text.</p>
       <button class="btn">Click me!</button>
-    </div>
-  `,
-  CSS: `
-    .container {
+    </div>`,
+  CSS: `.container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
@@ -80,20 +73,30 @@ const defaultTemplateCodes = {
     .btn:hover {
       background-color: #003d7a;
       border: 1px solid white;
-    }
-  `,
+    }`,
   BASH: `npm install @kyndryl-design-system/shidoka-applications @kyndryl-design-system/shidoka-foundation -S`,
   SWIFT: `struct Person {
     let name: String
     var age: Int
     
     func introduce() -> String {
-        return "Hello, I'm (name) and I'm (age) years old."
+      return "Hello, I'm (name) and I'm (age) years old."
     }
 }
 
 let john = Person(name: "John Doe", age: 30)
 print(john.introduce())`,
+  C: `#include <stdio.h>
+
+  int addNumbers(int a, int b) {
+      return a + b;
+  }
+
+  int main() {
+      int result = addNumbers(5, 3);
+      printf("The sum is: %d\n", result);
+      return 0;
+  }`,
 };
 
 export default {
@@ -124,7 +127,7 @@ export default {
 
 const args = {
   darkTheme: 'dark',
-  languages: [],
+  language: '',
   maxHeight: null,
   codeViewLabel: 'Block Code View',
   copyOptionVisible: true,
@@ -144,7 +147,7 @@ const Template = (args) => {
   return html`
     <kyn-block-code-view
       darkTheme=${args.darkTheme}
-      .languages=${args.languages}
+      .language=${args.language}
       .maxHeight=${maxHeight}
       codeViewLabel=${args.codeViewLabel}
       ?copyOptionVisible=${args.copyOptionVisible}
@@ -167,7 +170,6 @@ DefaultBlockView.args = {
 export const SingleLineView = Template.bind({});
 SingleLineView.args = {
   ...args,
-  languages: [],
   codeViewLabel: 'Single Line Code Snippet',
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.SINGLE_LINE,
@@ -176,7 +178,6 @@ SingleLineView.args = {
 export const JavascriptExample = Template.bind({});
 JavascriptExample.args = {
   ...args,
-  languages: [],
   codeViewLabel: 'Javascript Code Snippet',
   codeViewExpandable: true,
   copyButtonText: 'Copy',
@@ -186,7 +187,6 @@ JavascriptExample.args = {
 export const HTMLExample = Template.bind({});
 HTMLExample.args = {
   ...args,
-  languages: [],
   codeViewLabel: 'HTML Code Snippet',
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.HTML,
@@ -195,7 +195,6 @@ HTMLExample.args = {
 export const CSSExample = Template.bind({});
 CSSExample.args = {
   ...args,
-  languages: [],
   codeViewLabel: 'CSS Code Snippet',
   copyButtonText: 'Copy',
   codeSnippet: defaultTemplateCodes.CSS,
@@ -204,7 +203,7 @@ CSSExample.args = {
 export const SwiftExample = Template.bind({});
 SwiftExample.args = {
   ...args,
-  languages: ['swift'],
+  language: 'swift',
   codeViewLabel: 'Swift Code Snippet (manually configured language name)',
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.SWIFT,
@@ -213,8 +212,17 @@ SwiftExample.args = {
 export const BashExample = Template.bind({});
 BashExample.args = {
   ...args,
-  languages: ['bash'],
+  language: 'bash',
   codeViewLabel: 'Bash Code Snippet (manually configured language name)',
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.BASH,
+};
+
+export const CExample = Template.bind({});
+CExample.args = {
+  ...args,
+  language: 'c',
+  codeViewLabel: 'C Code Snippet (manually configured language name)',
+  copyButtonText: '',
+  codeSnippet: defaultTemplateCodes.C,
 };

@@ -40,8 +40,8 @@ export class BlockCodeView extends LitElement {
   darkTheme: 'light' | 'dark' = 'dark';
 
   /** Array of hard-coded languages to register and use for highlighting */
-  @property({ type: Array })
-  languages: string[] = [];
+  @property({ type: String })
+  language = '';
 
   /** Customizable max-height setting for code snippet container. */
   @property({ type: Number })
@@ -155,10 +155,8 @@ export class BlockCodeView extends LitElement {
             @keydown=${this.handleKeypress}
             role="region"
           ><code tabindex="0" class="language-${this
-            ._effectiveLanguage} manually-set-lanuguage-${this.languages &&
-          this.languages.length > 0}">${unsafeHTML(
-            this._highlightedCode
-          )}</code></pre>
+            ._effectiveLanguage} manually-set-language-${!!this
+            .language}">${unsafeHTML(this._highlightedCode)}</code></pre>
         </div>
 
         ${this.copyOptionVisible
@@ -231,14 +229,14 @@ export class BlockCodeView extends LitElement {
   override async updated(changedProperties: Map<string, unknown>) {
     if (
       changedProperties.has('codeSnippet') ||
-      changedProperties.has('languages') ||
+      changedProperties.has('language') ||
       changedProperties.has('maxHeight')
     ) {
       await this.highlightCode();
 
       if (
         changedProperties.has('codeSnippet') ||
-        changedProperties.has('languages') ||
+        changedProperties.has('language') ||
         changedProperties.has('maxHeight')
       ) {
         this.userToggled = false;
@@ -255,8 +253,8 @@ export class BlockCodeView extends LitElement {
   //
   // CODE DETECTION & SYNTAX HIGHLIGHTING
   private async registerLanguages() {
-    if (this.languages && this.languages.length > 0) {
-      for (const langName of this.languages) {
+    if (this.language) {
+      for (const langName of this.language) {
         try {
           const langModule = await import(
             `highlight.js/lib/languages/${langName}`
@@ -277,35 +275,56 @@ export class BlockCodeView extends LitElement {
 
     this._isSingleLine = this.isSingleLineCode(this.codeSnippet);
 
-    let result;
-    if (this.languages && this.languages.length > 0) {
-      const language = this.languages[0];
-      try {
-        result = hljs.highlight(this.codeSnippet, {
-          language: language,
-          ignoreIllegals: true,
-        });
-        this._effectiveLanguage = language;
-      } catch (e) {
-        console.warn(
-          `Highlighting with language "${language}" failed. Falling back to auto-detection.`,
-          e
-        );
-        result = hljs.highlightAuto(this.codeSnippet);
-        this._effectiveLanguage = result.language || '';
-      }
-    } else {
-      result = hljs.highlightAuto(this.codeSnippet);
-      this._effectiveLanguage = result.language || '';
+    let processedCode = this.language
+      ? this.codeSnippet
+      : this.normalizeCodeSnippet(this.codeSnippet);
+
+    // prepend four spaces to the first line if it meets criteria
+    if (!this._isSingleLine && !this.language) {
+      const lines = processedCode.split('\n');
+      lines[0] = `    ${lines[0]}`; // prepend four spaces to the first line
+      processedCode = lines.join('\n');
     }
 
-    this._highlightedCode = result.value;
+    let result;
+    try {
+      if (this.language) {
+        result = hljs.highlight(processedCode, {
+          language: this.language,
+          ignoreIllegals: true,
+        });
+        this._effectiveLanguage = this.language;
+      } else {
+        result = hljs.highlightAuto(processedCode);
+        this._effectiveLanguage = result.language || '';
+      }
+
+      this._highlightedCode = result.value;
+    } catch (e) {
+      console.warn(`Highlighting failed. Falling back to auto-detection.`, e);
+      result = hljs.highlightAuto(processedCode);
+      this._highlightedCode = result.value;
+      this._effectiveLanguage = result.language || '';
+    }
 
     await this.updateComplete;
     this.checkOverflow();
   }
 
-  // evaluate whether height of code snippet exceeds container height
+  private normalizeCodeSnippet(code: string): string {
+    const lines = code.split('\n');
+    const nonEmptyLines = lines.filter((line) => line.trim().length > 0);
+    const minIndent = Math.min(
+      ...nonEmptyLines.map((line) => line.match(/^\s*/)?.[0].length || 0)
+    );
+    const normalizedLines = lines.map((line) => {
+      if (line.trim().length === 0) return '';
+      return line.slice(minIndent);
+    });
+
+    return normalizedLines.join('\n');
+  }
+
   private checkOverflow() {
     const container = this.shadowRoot?.querySelector(
       '.code-snippet-wrapper'
