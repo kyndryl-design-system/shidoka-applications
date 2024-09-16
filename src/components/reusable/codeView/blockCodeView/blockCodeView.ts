@@ -347,7 +347,7 @@ export class BlockCodeView extends LitElement {
     if (token.content) {
       if (Array.isArray(token.content)) {
         relevance += token.content.reduce(
-          (acc, t) =>
+          (acc: number, t: string | Prism.Token) =>
             acc +
             (typeof t === 'string' ? 0 : this.getTokenRelevance(t, language)),
           0
