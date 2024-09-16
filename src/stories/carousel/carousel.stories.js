@@ -48,6 +48,9 @@ export const MiniCards = {
   ],
   render: (args) => {
     return html`
+      This example sets a width on each slide.
+      <br /><br />
+
       <!-- Slider main container -->
       <div class="swiper">
         <!-- Additional required wrapper -->
@@ -82,6 +85,9 @@ export const LargeCards = {
   args: {},
   render: (args) => {
     return html`
+      This example is unmodified, so each slide takes a full page.
+      <br /><br />
+
       <!-- Slider main container -->
       <div class="swiper">
         <!-- Additional required wrapper -->
@@ -116,6 +122,10 @@ export const FullBleed = {
   args: {},
   render: (args) => {
     return html`
+      This example adds the "swiper-full-bleed" class to extend beyond the page
+      gutter to the edge of the screen.
+      <br /><br />
+
       <!-- Slider main container -->
       <div class="swiper swiper-full-bleed">
         <!-- Additional required wrapper -->
@@ -150,6 +160,10 @@ export const PaginationBullets = {
   args: {},
   render: (args) => {
     return html`
+      This example extends the Shidoka default Swiper config to use the
+      "bullets" style of pagination instead of "fractional".
+      <br /><br />
+
       <!-- Slider main container -->
       <div class="swiper">
         <!-- Additional required wrapper -->
@@ -188,6 +202,11 @@ export const PaginationTabs = {
   args: {},
   render: (args) => {
     return html`
+      This example extends the Shidoka default Swiper config to modify the
+      "bullets" style of pagination to convert them to Tabs on larger screen
+      sizes. The class "tabs" is also added to the "swiper-pagination" div.
+      <br /><br />
+
       <!-- Slider main container -->
       <div class="swiper">
         <!-- Additional required wrapper -->

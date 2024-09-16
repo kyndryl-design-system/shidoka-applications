@@ -13,3 +13,75 @@ import Swiper from 'swiper/bundle';
 <Meta of={CarouselStories} name="Docs" />
 
 <Title />
+
+Shidoka uses [Swiper](https://swiperjs.com/), and provides a default configuration and stylesheet.
+
+## Usage
+
+### Import Swiper and the Shidoka config
+
+```js
+// import Swiper bundle with all modules installed
+import Swiper from 'swiper/bundle';
+
+// import Shidoka's Swiper config
+import { SwiperConfig } from '@kyndryl-design-system/shdioka-applications/common/helpers/swiper';
+```
+
+### Import the Shidoka styles for Swiper
+
+#### SCSS
+
+```css
+@use '@kyndryl-design-system/shidoka-applications/common/scss/utility/swiper-shidoka.scss';
+```
+
+#### CSS
+
+```css
+@import '@kyndryl-design-system/shidoka-applications/common/css/swiper-shidoka.css';
+```
+
+### Add Swiper HTML to your page
+
+Reference the Stories for more example HTML.
+
+```html
+<!-- Slider main container -->
+<div class="swiper">
+  <!-- Additional required wrapper -->
+  <div class="swiper-wrapper">
+    <!-- Slides -->
+    <div class="swiper-slide">Slide 1</div>
+    <div class="swiper-slide">Slide 2</div>
+    <div class="swiper-slide">Slide 3</div>
+    <div class="swiper-slide">Slide 4</div>
+    <div class="swiper-slide">Slide 5</div>
+    <div class="swiper-slide">Slide 6</div>
+  </div>
+
+  <!-- If we need scrollbar -->
+  <div class="swiper-scrollbar"></div>
+
+  <!-- If we need pagination -->
+  <div class="swiper-pagination"></div>
+
+  <!-- If we need navigation buttons -->
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+</div>
+```
+
+### Extend the Shidoka default Swiper config (if needed)
+
+We use [deepmerge-ts](https://www.npmjs.com/package/deepmerge-ts) for this in our example Stories.
+
+```js
+SwiperConfig.pagination.type = 'bullets';
+```
+
+### Initialize Swiper (after DOM ready)
+
+```js
+new Swiper('.swiper', SwiperConfig);
+```
