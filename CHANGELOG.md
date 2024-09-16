@@ -1,3 +1,10 @@
+# [1.35.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.7...v1.35.0) (2024-09-16)
+
+
+### Features
+
+* **dropdown:** accessibility enhancements ([#230](https://github.com/kyndryl-design-system/shidoka-applications/issues/230)) ([62fff5f](https://github.com/kyndryl-design-system/shidoka-applications/commit/62fff5f386230916107db3b2b6477faf57940bd8))
+
 ## [1.34.7](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.6...v1.34.7) (2024-09-11)
 
 

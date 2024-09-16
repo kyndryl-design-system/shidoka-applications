@@ -56,6 +56,12 @@ export class Tag extends LitElement {
   @property({ type: String })
   tagColor = 'spruce';
 
+  /**
+   * Clear Tag Text to improve accessibility
+   */
+  @property({ type: String })
+  clearTagText = 'Clear Tag';
+
   override render() {
     const baseColorClass = `tag-${this.tagColor}`;
     const shadeClass = this.shade === 'dark' ? '-dark' : '';
@@ -101,8 +107,8 @@ export class Tag extends LitElement {
                 class="${classMap(iconClasses)}"
                 shade=${this.shade}
                 ?disabled="${this.disabled}"
-                title="Clear Tag"
-                aria-label="Clear Tag"
+                title=${this.clearTagText}
+                aria-label=${this.clearTagText}
                 @click=${(e: any) => this.handleTagClear(e, this.label)}
               >
                 <kd-icon .icon=${clearIcon16}></kd-icon>
