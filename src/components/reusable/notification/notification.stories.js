@@ -40,9 +40,7 @@ export const Notification = {
   args: {
     notificationTitle: 'Notification Title',
     notificationSubtitle: '',
-    assistiveNotificationTypeText: "Normal notification",
-    timeStamp: '2 mins ago',
-    assistiveTimestampText: "Duration",
+    timeStamp: 'Updated 2 mins ago',
     notificationRole: 'status',
     href: '#',
     type: 'normal',
@@ -53,9 +51,7 @@ export const Notification = {
     return html`<kyn-notification
       notificationTitle=${args.notificationTitle}
       notificationSubtitle=${args.notificationSubtitle}
-      assistiveNotificationTypeText=${args.assistiveNotificationTypeText}
       timeStamp=${args.timeStamp}
-      assistiveTimestampText=${args.assistiveTimestampText}
       notificationRole=${args.notificationRole}
       href=${args.href}
       type=${args.type}

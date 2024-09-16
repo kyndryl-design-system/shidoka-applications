@@ -35,7 +35,10 @@ export class Notification extends LitElement {
   @property({ type: String })
   notificationSubtitle = '';
 
-  /** Timestamp of notification. */
+  /** 
+   * Timestamp of notification.
+   * It is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.
+   */
   @property({ type: String })
   timeStamp = '';
 
@@ -64,11 +67,10 @@ export class Notification extends LitElement {
   @property({ type: String })
   closeBtnDescription = 'Close';
 
-  /** Assistive text for timestamp (Required to support accessibility). */
-  @property({ type: String })
-  assistiveTimestampText = 'Duration';
-
-  /** Assistive text for notification type (Required to support accessibility). */
+  /** 
+   * Assistive text for notification type. 
+   * Required for `'clickable'`, `'inline'` and `'toast'` notification types.
+   * */
   @property({ type: String })
   assistiveNotificationTypeText = '';
 
@@ -143,9 +145,12 @@ export class Notification extends LitElement {
             aria-label=${ifDefined(this.assistiveNotificationTypeText)}
             >${this.renderInnerUI()}</kd-card
           >`
-        : html`<kd-card type=${this.type} role=${ifDefined(this.notificationRole)} aria-label=${ifDefined(this.assistiveNotificationTypeText)} class="${classMap(cardBgClasses)}"
-            >${this.renderInnerUI()}</kd-card
-          >`}
+        : html`
+        <kd-card type=${this.type} role=${ifDefined(this.notificationRole)} class="${classMap(cardBgClasses)}">
+          ${this.type === 'inline' || this.type === 'toast' ? html `<span id="notificationType">${this.assistiveNotificationTypeText}</span>` : null}
+          ${this.renderInnerUI()}
+        </kd-card>`
+      }
     `;
   }
 
@@ -199,7 +204,6 @@ export class Notification extends LitElement {
                 kind="tertiary"
                 size="small"
                 description=${ifDefined(this.closeBtnDescription)}
-                title=${ifDefined(this.closeBtnDescription)}
                 iconPosition="left"
                 @on-click="${() => this._handleClose()}"
               >
@@ -225,16 +229,17 @@ export class Notification extends LitElement {
         <div class="status-tag">
           ${this.tagStatus !== 'default' &&
           (this.type === 'normal' || this.type === 'clickable')
-            ? html` <kyn-tag
+            ? html` 
+            <span id="statusLabel">${this.statusLabel}</span>
+            <kyn-tag
                 label=${this.textStrings[this.tagStatus]}
                 tagColor=${this._tagColor[this.tagStatus]}
                 shade="dark"
-                aria-label=${this.statusLabel}
               ></kyn-tag>`
             : null}
         </div>
         <div class="timestamp-wrapper">
-          <div aria-label=${ifDefined(this.assistiveTimestampText)} class="timestamp-text">${this.timeStamp}</div>
+          <div class="timestamp-text">${this.timeStamp}</div>
         </div>
       </div>
     </div>`;
