@@ -1,32 +1,11 @@
 import { html } from 'lit';
+import { deepmerge } from 'deepmerge-ts';
 
 // import Swiper bundle with all modules installed
 import Swiper from 'swiper/bundle';
 
-const SwiperConfig = {
-  slidesPerView: 1.25,
-  centeredSlides: true,
-  spaceBetween: 16,
-  breakpoints: {
-    672: {
-      slidesPerView: 'auto',
-      spaceBetween: 24,
-    },
-  },
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
-  scrollbar: {
-    el: '.swiper-scrollbar',
-    draggable: true,
-  },
-  pagination: {
-    el: '.swiper-pagination',
-    clickable: true,
-    type: 'fraction',
-  },
-};
+// import Shidoka's Swiper config
+import { SwiperConfig } from '../../common/helpers/swiper';
 
 export default {
   title: 'Patterns/Carousel',
@@ -194,11 +173,14 @@ export const PaginationBullets = {
     `;
   },
   play: async () => {
-    const Config = JSON.parse(JSON.stringify(SwiperConfig));
+    const CustomConfig = {
+      pagination: {
+        type: 'bullets',
+      },
+    };
+    const FinalConfig = deepmerge(SwiperConfig, CustomConfig);
 
-    Config.pagination.type = 'bullets';
-
-    new Swiper('.swiper', Config);
+    new Swiper('.swiper', FinalConfig);
   },
 };
 
@@ -229,14 +211,23 @@ export const PaginationTabs = {
     `;
   },
   play: async () => {
-    const Config = JSON.parse(JSON.stringify(SwiperConfig));
-    const Tabs = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6'];
+    const TabTextArr = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6'];
 
-    Config.pagination.type = 'bullets';
-    Config.pagination.renderBullet = function (index, className) {
-      return '<span class="' + className + '">' + Tabs[index] + '</span>';
+    const CustomConfig = {
+      pagination: {
+        type: 'bullets',
+        renderBullet: function (index, className) {
+          return `
+            <span class="${className}">
+              <span class="tab-text">${TabTextArr[index]}</span>
+            </span>
+          `;
+        },
+      },
     };
 
-    new Swiper('.swiper', Config);
+    const FinalConfig = deepmerge(SwiperConfig, CustomConfig);
+
+    new Swiper('.swiper', FinalConfig);
   },
 };

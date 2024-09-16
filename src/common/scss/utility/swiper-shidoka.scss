@@ -17,8 +17,15 @@
 }
 
 .swiper-slide {
+  transition: opacity 250ms ease-in-out;
+
   @media (min-width: 42rem) {
     max-width: calc(100% - var(--swiper-navigation-size) * 2 - 42px * 2);
+  }
+
+  &.off-screen {
+    opacity: 0.5;
+    pointer-events: none;
   }
 }
 
@@ -29,8 +36,10 @@
   gap: 16px;
 
   &.tabs {
-    order: -1;
-    display: block;
+    @media (min-width: 42rem) {
+      order: -1;
+      display: block;
+    }
   }
 }
 
@@ -46,17 +55,27 @@
   }
 
   .tabs & {
-    width: auto;
-    height: auto;
-    border-radius: initial;
-    border: none;
-    background: none;
-    padding: 12px 14px;
-    white-space: nowrap;
+    @media (min-width: 42rem) {
+      width: auto;
+      height: auto;
+      border-radius: initial;
+      border: none;
+      background: none;
+      padding: 12px 14px;
+      white-space: nowrap;
 
-    &-active {
-      color: var(--kd-color-text-link);
-      border-bottom: 2px solid var(--kd-color-border-tertiary);
+      &-active {
+        color: var(--kd-color-text-link);
+        border-bottom: 2px solid var(--kd-color-border-tertiary);
+      }
+    }
+
+    .tab-text {
+      display: none;
+
+      @media (min-width: 42rem) {
+        display: inline;
+      }
     }
   }
 }

@@ -88,6 +88,7 @@ export {
   WidgetSizes,
   WidgetConstraints,
 } from './common/helpers/gridstack';
+export { SwiperConfig } from './common/helpers/swiper';
 
 export {
   Stepper,
