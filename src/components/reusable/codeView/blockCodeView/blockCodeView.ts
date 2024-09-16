@@ -57,7 +57,7 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   darkTheme: 'light' | 'dark' = 'dark';
 
-  /** If `''`, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language. */
+  /** If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language. */
   @property({ type: String })
   language = '';
 
@@ -81,17 +81,9 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   copyButtonText = '';
 
-  /** Component `aria-label` attribute value for accessibility purposes.*/
-  @property({ type: String })
-  ariaLabelAttr = '';
-
   /** Sets copy button description attr value. */
   @property({ type: String })
   copyButtonDescriptionAttr = '';
-
-  /** Sets copy button title attr value. */
-  @property({ type: String })
-  copyButtonTitleAttr = '';
 
   /** Sets code snippet for display -- NOTE: original formatting is preserved. */
   @property({ type: String })
@@ -162,10 +154,7 @@ export class BlockCodeView extends LitElement {
             <label>${this.codeViewLabel}</label>
           </div>`
         : null}
-      <div
-        aria-label=${ifDefined(this.ariaLabelAttr)}
-        class="${this.getContainerClasses()}"
-      >
+      <div class="${this.getContainerClasses()}">
         <div class="code-snippet-wrapper" style=${this.getContainerStyle()}>
           <pre
             @keydown=${this.handleKeypress}

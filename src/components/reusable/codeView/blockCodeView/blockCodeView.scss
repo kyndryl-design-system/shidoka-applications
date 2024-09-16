@@ -3,11 +3,25 @@
 
 $transition-duration: 0.3s;
 $border-radius: 4px;
+$shidoka-dark-syntax-theme-background : #272727;
+$shidoka-light-syntax-theme-background: #F9F9F9;
 
 :host {
     display: block;
     position: relative;
     margin-bottom: 0;
+}
+
+.shidoka-dark-syntax-theme {
+    .code-view__copy-button {
+        background: $shidoka-dark-syntax-theme-background;
+    }
+}
+
+.shidoka-light-syntax-theme {
+    .code-view__copy-button {
+        background: $shidoka-light-syntax-theme-background;
+    }
 }
 
 .code-view {
@@ -58,12 +72,6 @@ $border-radius: 4px;
 
 .code-view {
     &__container {
-        &.animating-expansion {
-            .code-snippet-wrapper {
-                transition: max-height $transition-duration ease-in-out;
-            }
-        }
-
         position: relative;
         overflow: hidden;
         border-radius: $border-radius;
@@ -71,7 +79,6 @@ $border-radius: 4px;
         pre {
             tab-size: 2;
             white-space: pre;
-            min-width: 350px;
             margin: 0;
             overflow-x: auto;
 
@@ -91,28 +98,27 @@ $border-radius: 4px;
         }
 
         &.single-line {
-            max-width: 1082px;
             width: 100%;
-
-            &.copy-button-text-true {
-                padding-right: 110px;
-            }
-
-            &.copy-button-text-false {
-                padding-right: 50px;
-            }
+            position: relative;
 
             .code-view__copy-button {
-                top: 0;
+                position: absolute;
                 right: 0;
+                top: 0;
+                bottom: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1;
             }
 
             pre {
                 display: flex;
+                padding: 16px 32px;
                 align-items: center;
                 line-height: 1.5;
                 min-height: 40px;
-                width: 100%;
+                width: inherit;
                 overflow-x: auto;
                 overflow-y: hidden;
 
@@ -133,8 +139,9 @@ $border-radius: 4px;
                 overflow: -moz-scrollbars-horizontal;
 
                 code {
-                    padding: 12px 32px;
-
+                    width: max-content;
+                    // ensure that information is fully visible from behind opaque button on horizontal scroll
+                    padding-right: 90px;
                 }
             }
 
@@ -165,7 +172,7 @@ $border-radius: 4px;
             overflow: -moz-scrollbars-vertical;
 
             .code-view__copy-button {
-                top: 10px;
+                top: 16px;
                 right: 10px;
             }
 
@@ -182,7 +189,7 @@ $border-radius: 4px;
 
             pre {
                 margin: 0;
-                padding: 0 110px 0 16px;
+                padding: 16px 32px;
                 overflow: auto;
                 max-height: inherit;
                 box-sizing: border-box;
@@ -190,23 +197,12 @@ $border-radius: 4px;
             }
 
             code {
-                display: block;
-                padding: 16px 16px 18px;
+                padding: 0;
+                width: max-content;
                 min-width: 100%;
+                display: inline-block;
                 line-height: 1.6;
-                max-width: 75%;
-                box-sizing: border-box;
-                overflow-x: auto;
                 word-break: normal;
-            }
-
-            &.has-overflow .code-snippet-wrapper pre code,
-            &.expanded-code-view .code-snippet-wrapper pre code {
-                padding-bottom: 25px;
-            }
-
-            &.expanded-code-view .code-snippet-wrapper pre code {
-                padding-bottom: 25px;
             }
 
             &::-webkit-scrollbar {
