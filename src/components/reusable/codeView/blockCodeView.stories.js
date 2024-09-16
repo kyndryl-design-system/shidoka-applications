@@ -114,7 +114,7 @@ export default {
     maxHeight: {
       control: {
         type: 'number',
-        min: 250,
+        min: 150,
       },
     },
     darkTheme: {
@@ -169,7 +169,6 @@ DefaultBlockView.args = {
 export const SingleLineView = Template.bind({});
 SingleLineView.args = {
   ...args,
-  language: '',
   codeViewLabel: 'Single Line Code Snippet',
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.SINGLE_LINE,
@@ -178,7 +177,6 @@ SingleLineView.args = {
 export const JavascriptExample = Template.bind({});
 JavascriptExample.args = {
   ...args,
-  language: '',
   codeViewLabel: 'Javascript Code Snippet',
   codeViewExpandable: true,
   copyButtonText: 'Copy',
@@ -188,7 +186,6 @@ JavascriptExample.args = {
 export const HTMLExample = Template.bind({});
 HTMLExample.args = {
   ...args,
-  language: '',
   codeViewLabel: 'HTML Code Snippet',
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.HTML,
@@ -197,7 +194,6 @@ HTMLExample.args = {
 export const CSSExample = Template.bind({});
 CSSExample.args = {
   ...args,
-  language: '',
   codeViewLabel: 'CSS Code Snippet',
   copyButtonText: 'Copy',
   codeSnippet: defaultTemplateCodes.CSS,

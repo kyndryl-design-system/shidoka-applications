@@ -14,7 +14,7 @@ export class InlineCodeView extends LitElement {
   @property({ type: String })
   darkTheme: 'light' | 'dark' = 'dark';
 
-  /** Font size value (px) to match code snippet font-size with surrounding text (min, default 14px). */
+  /** Font size value (px) to match code snippet font-size of surrounding text (min, default 14px). */
   @property({ type: Number })
   snippetFontSize = 14;
 

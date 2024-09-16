@@ -31,6 +31,16 @@ const _defaultTextStrings = {
   expanded: 'Expanded',
 };
 
+const LANGUAGE_SPECIFIC_TOKENS: Record<string, string[]> = {
+  markup: ['<', '>', '/', 'div', 'span', 'class', 'id'],
+  html: ['<', '>', '/', 'div', 'span', 'class', 'id'],
+  css: ['{', '}', ':', ';', '#', '.'],
+  javascript: ['function', 'const', 'let', 'var', '=>'],
+  typescript: ['interface', 'type', ':', 'as'],
+  python: ['def', 'import', 'from', 'class'],
+  java: ['public', 'private', 'class', 'void'],
+};
+
 /**
  * `<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements.
  * @fires on-copy - Emits when the copy button is clicked.
@@ -95,7 +105,7 @@ export class BlockCodeView extends LitElement {
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  private _textStrings = _defaultTextStrings;
 
   /** Auto-detect whether code snippet is single line (boolean) -- styled accordingly (boolean).
    * @internal
@@ -146,75 +156,26 @@ export class BlockCodeView extends LitElement {
   private _expandedHeight: number | null = null;
 
   override render() {
-    const containerStyle = this.getContainerStyle();
-
     return html`
-      ${
-        this.codeViewLabel
-          ? html`<div class="code-view__label">
-              <label>${this.codeViewLabel}</label>
-            </div>`
-          : null
-      }
+      ${this.codeViewLabel
+        ? html`<div class="code-view__label">
+            <label>${this.codeViewLabel}</label>
+          </div>`
+        : null}
       <div
         aria-label=${ifDefined(this.ariaLabelAttr)}
         class="${this.getContainerClasses()}"
       >
-          <div class="code-snippet-wrapper" style=${containerStyle}>
-              <pre
-              @keydown=${this.handleKeypress}
-              role="region"
-            ><code tabindex="0" class="language-${
-              this._effectiveLanguage
-            }">${unsafeHTML(this._highlightedCode)}</code></pre>
-          </div>
-
-          ${
-            this.copyOptionVisible
-              ? html`<kd-button
-                  class="code-view__copy-button"
-                  kind="tertiary"
-                  size="small"
-                  iconPosition="left"
-                  ?disabled=${this._copyState.copied}
-                  description=${ifDefined(this.copyButtonDescriptionAttr)}
-                  @click=${this.copyCode}
-                >
-                  <kd-icon
-                    slot="icon"
-                    class="copy-icon"
-                    .icon=${this._copyState.copied ? checkmarkIcon : copyIcon}
-                  ></kd-icon>
-                  ${this._copyState.text
-                    ? html`<span class="copy-text"
-                        >${this._copyState.text}</span
-                      >`
-                    : null}
-                </kd-button>`
-              : null
-          }
-          ${
-            this.codeViewExpandable &&
-            (this.hasOverflow || !this._codeFitsContainerOnLoad)
-              ? html`<kd-button
-                  class="code-view__expand-button"
-                  kind="tertiary"
-                  size="small"
-                  iconPosition="left"
-                  description=${this.codeExpanded
-                    ? this._textStrings.expanded
-                    : this._textStrings.collapsed}
-                  @click=${this.expandCodeView}
-                >
-                  <kd-icon
-                    slot="icon"
-                    class="expand-icon"
-                    .icon=${chevronDown}
-                  ></kd-icon>
-                </kd-button>`
-              : null
-          }
+        <div class="code-snippet-wrapper" style=${this.getContainerStyle()}>
+          <pre
+            @keydown=${this.handleKeypress}
+            role="region"
+          ><code tabindex="0" class="language-${this
+            ._effectiveLanguage}">${unsafeHTML(
+            this._highlightedCode
+          )}</code></pre>
         </div>
+        ${this.renderCopyButton()} ${this.renderExpandButton()}
       </div>
     `;
   }
@@ -234,7 +195,53 @@ export class BlockCodeView extends LitElement {
     });
   }
 
-  override willUpdate(changedProps: any) {
+  private renderCopyButton() {
+    if (!this.copyOptionVisible) return null;
+    return html`
+      <kd-button
+        class="code-view__copy-button"
+        kind="tertiary"
+        size="small"
+        iconPosition="left"
+        ?disabled=${this._copyState.copied}
+        description=${ifDefined(this.copyButtonDescriptionAttr)}
+        @click=${this.copyCode}
+      >
+        <kd-icon
+          slot="icon"
+          class="copy-icon"
+          .icon=${this._copyState.copied ? checkmarkIcon : copyIcon}
+        ></kd-icon>
+        ${this._copyState.text
+          ? html`<span class="copy-text">${this._copyState.text}</span>`
+          : null}
+      </kd-button>
+    `;
+  }
+
+  private renderExpandButton() {
+    if (
+      !this.codeViewExpandable ||
+      (!this.hasOverflow && this._codeFitsContainerOnLoad)
+    )
+      return null;
+    return html`
+      <kd-button
+        class="code-view__expand-button"
+        kind="tertiary"
+        size="small"
+        iconPosition="left"
+        description=${this.codeExpanded
+          ? this._textStrings.expanded
+          : this._textStrings.collapsed}
+        @click=${this.expandCodeView}
+      >
+        <kd-icon slot="icon" class="expand-icon" .icon=${chevronDown}></kd-icon>
+      </kd-button>
+    `;
+  }
+
+  override willUpdate(changedProps: Map<string, unknown>) {
     if (changedProps.has('codeExpanded')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
@@ -256,12 +263,9 @@ export class BlockCodeView extends LitElement {
     super.updated(changedProperties);
   }
 
-  //
-  // CODE DETECTION & SYNTAX HIGHLIGHTING
   private highlightCode() {
     const processedCode = this.removeLeadingWhitespace(this.codeSnippet);
-    this._isSingleLine = this.isSingleLineCode(processedCode);
-
+    this._isSingleLine = processedCode.trim().split('\n').length === 1;
     this._effectiveLanguage =
       this.language || this.detectLanguage(processedCode);
 
@@ -277,17 +281,13 @@ export class BlockCodeView extends LitElement {
       Prism.languages[this._effectiveLanguage],
       this._effectiveLanguage
     );
-
     this.requestUpdate();
     this.checkOverflow();
   }
 
-  detectLanguage(code: string): string {
-    if (!code.trim()) {
-      return 'plaintext';
-    }
+  private detectLanguage(code: string): string {
+    if (!code.trim()) return 'plaintext';
 
-    // base list of language to evaluate relevance
     const languages = [
       'markup',
       'html',
@@ -302,52 +302,44 @@ export class BlockCodeView extends LitElement {
       'c',
       'cpp',
     ];
-
     let bestMatch: LanguageMatch = { language: 'plaintext', relevance: 0 };
 
     for (const lang of languages) {
       if (Prism.languages[lang]) {
         const tokens = Prism.tokenize(code, Prism.languages[lang]);
         const relevance = this.calculateRelevance(tokens, lang);
-
         if (relevance > bestMatch.relevance) {
           bestMatch = { language: lang, relevance };
         }
       }
     }
 
-    if (bestMatch.language === 'markup') {
-      bestMatch.language = this.determineMarkupLanguage(code);
-    }
-
-    return bestMatch.language;
+    return bestMatch.language === 'markup'
+      ? this.determineMarkupLanguage(code)
+      : bestMatch.language;
   }
 
   private calculateRelevance(
     tokens: (string | Prism.Token)[],
     language: string
   ): number {
-    let relevance = 0;
-    for (const token of tokens) {
+    return tokens.reduce((relevance, token) => {
       if (typeof token !== 'string') {
         relevance += this.getTokenRelevance(token, language);
       }
-    }
-    return relevance;
+      return relevance;
+    }, 0);
   }
 
   private getTokenRelevance(token: Prism.Token, language: string): number {
-    let relevance = 1;
-    if (token.alias) {
-      relevance += Array.isArray(token.alias) ? token.alias.length : 1;
-    }
-    if (this.isLanguageSpecificToken(token, language)) {
-      relevance += 2;
-    }
+    let relevance =
+      1 +
+      (token.alias ? (Array.isArray(token.alias) ? token.alias.length : 1) : 0);
+    if (this.isLanguageSpecificToken(token, language)) relevance += 2;
     if (token.content) {
       if (Array.isArray(token.content)) {
         relevance += token.content.reduce(
-          (acc: number, t: string | Prism.Token) =>
+          (acc, t) =>
             acc +
             (typeof t === 'string' ? 0 : this.getTokenRelevance(t, language)),
           0
@@ -363,37 +355,18 @@ export class BlockCodeView extends LitElement {
     token: Prism.Token,
     language: string
   ): boolean {
-    const languageSpecificTokens: { [key: string]: string[] } = {
-      markup: ['<', '>', '/', 'div', 'span', 'class', 'id'],
-      html: ['<', '>', '/', 'div', 'span', 'class', 'id'],
-      css: ['{', '}', ':', ';', '#', '.'],
-      javascript: ['function', 'const', 'let', 'var', '=>'],
-      typescript: ['interface', 'type', ':', 'as'],
-      python: ['def', 'import', 'from', 'class'],
-      java: ['public', 'private', 'class', 'void'],
-    };
-
-    const specificTokens = languageSpecificTokens[language] || [];
+    const specificTokens = LANGUAGE_SPECIFIC_TOKENS[language] || [];
     return specificTokens.some((t) => token.content.toString().includes(t));
   }
 
   private determineMarkupLanguage(code: string): string {
-    if (/<\/?[a-z][\s\S]*>/i.test(code)) {
-      return 'html';
-    }
-    if (/<\?xml/i.test(code)) {
-      return 'xml';
-    }
-    if (/<svg/i.test(code)) {
-      return 'svg';
-    }
-    if (/<math/i.test(code)) {
-      return 'mathml';
-    }
+    if (/<\/?[a-z][\s\S]*>/i.test(code)) return 'html';
+    if (/<\?xml/i.test(code)) return 'xml';
+    if (/<svg/i.test(code)) return 'svg';
+    if (/<math/i.test(code)) return 'mathml';
     return 'markup';
   }
 
-  // evaluate whether height of code snippet exceeds container height
   private checkOverflow() {
     setTimeout(() => {
       requestAnimationFrame(() => {
@@ -417,39 +390,25 @@ export class BlockCodeView extends LitElement {
     }, 100);
   }
 
-  // ensures <pre> code snippet has correct indentation and formatting
   private removeLeadingWhitespace(code: string): string {
     if (!code) return '';
     const lines = code.split('\n');
-    const minIndent = this.findMinimumIndent(lines);
+    const minIndent = lines.reduce((min, line) => {
+      const match = line.match(/^[ \t]*/);
+      const indent = match ? match[0].length : 0;
+      return line.trim().length ? Math.min(min, indent) : min;
+    }, Infinity);
     return lines
       .map((line) => line.slice(minIndent))
       .join('\n')
       .trim();
   }
 
-  private findMinimumIndent(lines: string[]): number {
-    return lines.reduce((min, line) => {
-      const match = line.match(/^[ \t]*/);
-      const indent = match ? match[0].length : 0;
-      return line.trim().length ? Math.min(min, indent) : min;
-    }, Infinity);
-  }
-
-  // detect single vs multi-line block code snippet for custom default styling
-  private isSingleLineCode(code: string): boolean {
-    return code.trim().split('\n').length === 1;
-  }
-  //////*
-
   // for @action printout
   private formatExampleCode(code: string) {
     return { code };
   }
 
-  //
-  // BUTTON CLICK ACTION
-  // copy code button click logic
   private copyCode(e: Event) {
     const originalText = this._copyState.text;
     navigator.clipboard
@@ -476,7 +435,6 @@ export class BlockCodeView extends LitElement {
       .catch((err) => console.error('Failed to copy code:', err));
   }
 
-  // expand code snippet container logic
   private getContainerStyle(): string {
     if (this.codeExpanded) {
       return this._expandedHeight
@@ -499,10 +457,7 @@ export class BlockCodeView extends LitElement {
     this.requestUpdate();
     setTimeout(() => this.checkOverflow(), 0);
   }
-  //////*
 
-  //
-  // ACCESSIBILITY -- handling for scrollable code blocks
   private handleKeypress(e: KeyboardEvent) {
     const pre = e.currentTarget as HTMLPreElement;
     const scrollAmount = 40;
@@ -522,7 +477,6 @@ export class BlockCodeView extends LitElement {
       }
     }
   }
-  //////*
 }
 
 declare global {
