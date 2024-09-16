@@ -9,7 +9,6 @@ $shidoka-light-syntax-theme-background: #F9F9F9;
 :host {
     display: block;
     position: relative;
-    margin-bottom: 0;
 }
 
 .shidoka-dark-syntax-theme {
@@ -65,7 +64,7 @@ $shidoka-light-syntax-theme-background: #F9F9F9;
 
     &__expand-button {
         bottom: 12px;
-        right: 13px;
+        right: 12px;
         transition: transform $transition-duration ease-in-out;
     }
 }
@@ -114,13 +113,11 @@ $shidoka-light-syntax-theme-background: #F9F9F9;
 
             pre {
                 display: flex;
-                padding: 16px 32px;
+                padding: 16px;
                 align-items: center;
                 line-height: 1.5;
                 min-height: 40px;
                 width: inherit;
-                overflow-x: auto;
-                overflow-y: hidden;
 
                 &::-webkit-scrollbar {
                     width: auto;
@@ -189,7 +186,8 @@ $shidoka-light-syntax-theme-background: #F9F9F9;
 
             pre {
                 margin: 0;
-                padding: 16px 32px;
+                padding: 16px;
+                line-height: 16px;
                 overflow: auto;
                 max-height: inherit;
                 box-sizing: border-box;
@@ -213,14 +211,6 @@ $shidoka-light-syntax-theme-background: #F9F9F9;
                 &-track,
                 &-thumb {
                     border-radius: 4px;
-                }
-            }
-
-            @mixin size-variant($max-width, $max-height) {
-                max-width: $max-width;
-
-                &:not(.expanded-code-view) .code-snippet-wrapper {
-                    max-height: $max-height;
                 }
             }
         }
