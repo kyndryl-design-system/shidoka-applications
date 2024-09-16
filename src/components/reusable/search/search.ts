@@ -281,6 +281,7 @@ export class Search extends LitElement {
 
         // scroll to option
         suggestionEls[nextIndex].scrollIntoView({ block: 'nearest' });
+        this._assistiveText = `${this.suggestions[nextIndex]}`;
         return;
       }
       case UP_ARROW_KEY_CODE: {
@@ -295,6 +296,7 @@ export class Search extends LitElement {
 
         // scroll to option
         suggestionEls[nextIndex].scrollIntoView({ block: 'nearest' });
+        this._assistiveText = `${this.suggestions[nextIndex]}`;
         return;
       }
       default: {
