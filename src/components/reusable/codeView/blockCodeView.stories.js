@@ -102,7 +102,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: '',
+      url: 'https://www.figma.com/design/AIX4LLzoDHnFCXzQCiPHJk/Vienna?node-id=4001-43433&node-type=canvas&t=s5gOlFYjWDtlW9CH-0',
     },
   },
   argTypes: {
@@ -144,7 +144,7 @@ const Template = (args) => {
   return html`
     <kyn-block-code-view
       darkTheme=${args.darkTheme}
-      .languages=${args.language}
+      .languages=${args.languages}
       .maxHeight=${maxHeight}
       codeViewLabel=${args.codeViewLabel}
       ?copyOptionVisible=${args.copyOptionVisible}
