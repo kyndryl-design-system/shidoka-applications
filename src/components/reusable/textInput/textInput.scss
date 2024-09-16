@@ -1,5 +1,6 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/form-input.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
   display: inline-block;
@@ -87,5 +88,17 @@ input[type='search']::-webkit-search-results-decoration {
 
   kd-icon {
     display: block;
+  }
+}
+
+.caption-error-count {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  .count {
+    @include typography.type-ui-03;
+    margin-top: 13px;
+    margin-left: auto;
+    background: var(--kd-color-background-inverse);
   }
 }
