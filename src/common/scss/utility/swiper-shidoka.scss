@@ -40,13 +40,13 @@
 .swiper-pagination {
   position: static;
   display: flex;
-  justify-content: center;
   gap: 16px;
 
   &.tabs {
     @media (min-width: 42rem) {
       order: -1;
       gap: 2px;
+      overflow-x: auto;
     }
   }
 
@@ -120,6 +120,14 @@
 .swiper-pagination-horizontal.swiper-pagination-bullets
   .swiper-pagination-bullet {
   margin: 0;
+
+  &:first-child {
+    margin-left: auto;
+  }
+
+  &:last-child {
+    margin-right: auto;
+  }
 }
 
 .swiper-pagination-fraction {
