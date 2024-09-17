@@ -41,8 +41,10 @@ const DetectOffScreen = (swiper: any) => {
 
     if (SlideBounds.left < 0 || SlideBounds.right > SwiperWidth) {
       slide.classList.add('off-screen');
+      slide.setAttribute('aria-disabled', 'true');
     } else {
       slide.classList.remove('off-screen');
+      slide.setAttribute('aria-disabled', 'false');
     }
   });
 };
