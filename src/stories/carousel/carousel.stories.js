@@ -205,7 +205,8 @@ export const PaginationTabs = {
     return html`
       This example extends the Shidoka default Swiper config to modify the
       "bullets" style of pagination to convert them to Tabs on larger screen
-      sizes. The class "tabs" is also added to the "swiper-pagination" div.
+      sizes. The class "tabs" is also added to the "swiper-pagination" div. Tabs
+      should be limited to 5.
       <br /><br />
 
       <!-- Slider main container -->
@@ -218,7 +219,6 @@ export const PaginationTabs = {
           <div class="swiper-slide">Slide 3</div>
           <div class="swiper-slide">Slide 4</div>
           <div class="swiper-slide">Slide 5</div>
-          <div class="swiper-slide">Slide 6</div>
         </div>
 
         <!-- If we need pagination -->
@@ -231,7 +231,7 @@ export const PaginationTabs = {
     `;
   },
   play: async () => {
-    const TabTextArr = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6'];
+    const TabTextArr = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5'];
 
     const CustomConfig = {
       pagination: {
