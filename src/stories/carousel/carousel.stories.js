@@ -21,6 +21,7 @@ export default {
     (story) =>
       html`
         <style>
+          /* example styles, not to be used */
           .swiper-slide {
             height: 200px;
             padding: 16px;
