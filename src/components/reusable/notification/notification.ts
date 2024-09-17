@@ -141,9 +141,10 @@ export class Notification extends LitElement {
             rel="noopener"
             @on-card-click=${(e: any) => this._handleCardClick(e)}
             hideBorder
-            role=${ifDefined(this.notificationRole)}
-            aria-label=${ifDefined(this.assistiveNotificationTypeText)}
-            >${this.renderInnerUI()}</kd-card
+            role=${ifDefined(this.notificationRole)}>
+              <span id="notificationType">${this.assistiveNotificationTypeText}</span>
+              ${this.renderInnerUI()}
+            </kd-card
           >`
         : html`
         <kd-card type=${this.type} role=${ifDefined(this.notificationRole)} class="${classMap(cardBgClasses)}">
