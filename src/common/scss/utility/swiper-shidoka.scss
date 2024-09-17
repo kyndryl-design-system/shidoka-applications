@@ -4,6 +4,9 @@
 
 :root {
   --swiper-navigation-size: 72px;
+  --swiper-fractional-height: 54px;
+  --swiper-bullets-height: 32px;
+  --swiper-tabs-height: 64px;
 }
 
 .swiper {
@@ -17,6 +20,7 @@
 }
 
 .swiper-slide {
+  box-sizing: border-box;
   transition: opacity 250ms ease-in-out;
 
   @media (min-width: 42rem) {
@@ -61,7 +65,7 @@
       border-radius: initial;
       border: none;
       background: none;
-      padding: 12px 14px;
+      padding: 12px 14px 10px;
       white-space: nowrap;
 
       &-active {
@@ -104,9 +108,25 @@
   border-radius: 50%;
   width: 72px;
   height: 72px;
+  margin-top: calc(
+    0px - var(--swiper-navigation-size) / 2 - var(--swiper-fractional-height) /
+      2
+  );
   background: var(--kd-color-background-ui-default);
   outline: 2px solid transparent;
   transition: outline-color 150ms ease-out;
+
+  .swiper-pagination-bullets ~ & {
+    margin-top: calc(
+      0px - var(--swiper-navigation-size) / 2 - var(--swiper-bullets-height) / 2
+    );
+  }
+
+  .swiper-pagination-bullets.tabs ~ & {
+    margin-top: calc(
+      0px - var(--swiper-navigation-size) / 2 + var(--swiper-tabs-height) / 2
+    );
+  }
 
   @media (min-width: 42rem) {
     display: flex;

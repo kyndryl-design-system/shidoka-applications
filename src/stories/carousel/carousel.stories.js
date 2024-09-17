@@ -23,8 +23,8 @@ export default {
           .swiper-slide {
             height: 200px;
             padding: 16px;
-            background-color: var(--kd-color-background-ui-default);
-            border: 1px solid var(--kd-color-border-light);
+            background-color: var(--kd-color-background-ui-soft);
+            /* border: 1px solid var(--kd-color-border-light); */
             border-radius: 8px;
           }
         </style>
@@ -33,22 +33,11 @@ export default {
   ],
 };
 
-export const MiniCards = {
+export const LargeCards = {
   args: {},
-  decorators: [
-    (story) =>
-      html`
-        <style>
-          .swiper-slide {
-            width: 264px;
-          }
-        </style>
-        ${story()}
-      `,
-  ],
   render: (args) => {
     return html`
-      This example sets a width on each slide.
+      This example is unmodified, so each slide takes a full page.
       <br /><br />
 
       <!-- Slider main container -->
@@ -81,11 +70,22 @@ export const MiniCards = {
   },
 };
 
-export const LargeCards = {
+export const MiniCards = {
   args: {},
+  decorators: [
+    (story) =>
+      html`
+        <style>
+          .swiper-slide {
+            width: 264px;
+          }
+        </style>
+        ${story()}
+      `,
+  ],
   render: (args) => {
     return html`
-      This example is unmodified, so each slide takes a full page.
+      This example sets a fixed width on each slide.
       <br /><br />
 
       <!-- Slider main container -->

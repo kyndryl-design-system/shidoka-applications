@@ -1,8 +1,6 @@
 export const SwiperConfig = {
   slidesPerView: 1.25,
   centeredSlides: true,
-  // slidesPerGroupSkip: 1,
-  // slidesPerGroup: 2,
   spaceBetween: 16,
   breakpoints: {
     672: {
@@ -34,12 +32,15 @@ export const SwiperConfig = {
 };
 
 const DetectOffScreen = (swiper: any) => {
-  const SwiperWidth = swiper.el.getBoundingClientRect().width;
+  const SwiperBounds = swiper.el.getBoundingClientRect();
 
   swiper.slides.forEach((slide: any) => {
     const SlideBounds = slide.getBoundingClientRect();
 
-    if (SlideBounds.left < 0 || SlideBounds.right > SwiperWidth) {
+    if (
+      SlideBounds.left < 0 ||
+      SlideBounds.right > SwiperBounds.width + SwiperBounds.left
+    ) {
       slide.classList.add('off-screen');
       slide.setAttribute('aria-disabled', 'true');
     } else {
