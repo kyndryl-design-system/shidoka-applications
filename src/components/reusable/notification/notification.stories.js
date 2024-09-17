@@ -45,6 +45,7 @@ export const Notification = {
     href: '#',
     type: 'normal',
     tagStatus: 'default',
+    assistiveNotificationTypeText: "Clickable notification",
     unRead: false,
   },
   render: (args) => {
@@ -53,6 +54,7 @@ export const Notification = {
       notificationSubtitle=${args.notificationSubtitle}
       timeStamp=${args.timeStamp}
       notificationRole=${args.notificationRole}
+      assistiveNotificationTypeText=${args.assistiveNotificationTypeText}
       href=${args.href}
       type=${args.type}
       tagStatus=${args.tagStatus}
