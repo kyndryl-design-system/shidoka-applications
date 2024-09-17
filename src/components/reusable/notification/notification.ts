@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
@@ -34,7 +35,10 @@ export class Notification extends LitElement {
   @property({ type: String })
   notificationSubtitle = '';
 
-  /** Timestamp of notification. */
+  /** 
+   * Timestamp of notification.
+   * It is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.
+   */
   @property({ type: String })
   timeStamp = '';
 
@@ -58,6 +62,28 @@ export class Notification extends LitElement {
     info: 'Info',
     error: 'Error',
   };
+
+  /** Close button description (Required to support accessibility). */
+  @property({ type: String })
+  closeBtnDescription = 'Close';
+
+  /** 
+   * Assistive text for notification type. 
+   * Required for `'clickable'`, `'inline'` and `'toast'` notification types.
+   * */
+  @property({ type: String })
+  assistiveNotificationTypeText = '';
+
+  /** Notification role (Required to support accessibility). */
+  @property({ type: String }) 
+  notificationRole?: 'alert' | 'log' | 'status';
+
+  /** 
+   * Status label (Required to support accessibility). 
+   * Assign the localized string value for the word **Status**.
+   * */
+  @property({ type: String })
+  statusLabel = 'Status';
 
   /** Set tagColor based on provided tagStatus.
    * @internal
@@ -115,11 +141,17 @@ export class Notification extends LitElement {
             rel="noopener"
             @on-card-click=${(e: any) => this._handleCardClick(e)}
             hideBorder
-            >${this.renderInnerUI()}</kd-card
+            role=${ifDefined(this.notificationRole)}>
+              <span id="notificationType">${this.assistiveNotificationTypeText}</span>
+              ${this.renderInnerUI()}
+            </kd-card
           >`
-        : html`<kd-card type=${this.type} class="${classMap(cardBgClasses)}"
-            >${this.renderInnerUI()}</kd-card
-          >`}
+        : html`
+        <kd-card type=${this.type} role=${ifDefined(this.notificationRole)} class="${classMap(cardBgClasses)}">
+          ${this.type === 'inline' || this.type === 'toast' ? html `<span id="notificationType">${this.assistiveNotificationTypeText}</span>` : null}
+          ${this.renderInnerUI()}
+        </kd-card>`
+      }
     `;
   }
 
@@ -148,6 +180,8 @@ export class Notification extends LitElement {
                 slot="icon"
                 fill=${notificationIconFillColor[this.tagStatus]}
                 .icon=${notificationIcon[this.tagStatus]}
+                role="img"
+                aria-label=${`${this.textStrings[this.tagStatus]} icon`}
               ></kd-icon>`
             : null}
 
@@ -170,7 +204,7 @@ export class Notification extends LitElement {
                 class="notification-toast-close-btn"
                 kind="tertiary"
                 size="small"
-                description="close-btn"
+                description=${ifDefined(this.closeBtnDescription)}
                 iconPosition="left"
                 @on-click="${() => this._handleClose()}"
               >
@@ -178,6 +212,8 @@ export class Notification extends LitElement {
                   slot="icon"
                   fill="#3D3C3C"
                   .icon=${closeIcon}
+                  role="img"
+                  aria-label=${ifDefined(this.closeBtnDescription)}
                 ></kd-icon>
               </kd-button>`
             : null}
@@ -194,7 +230,9 @@ export class Notification extends LitElement {
         <div class="status-tag">
           ${this.tagStatus !== 'default' &&
           (this.type === 'normal' || this.type === 'clickable')
-            ? html` <kyn-tag
+            ? html` 
+            <span id="statusLabel">${this.statusLabel}</span>
+            <kyn-tag
                 label=${this.textStrings[this.tagStatus]}
                 tagColor=${this._tagColor[this.tagStatus]}
                 shade="dark"

@@ -1,3 +1,17 @@
+# [1.36.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.35.1...v1.36.0) (2024-09-17)
+
+
+### Features
+
+* **code-view:** add code view component [Prismjs] ([#227](https://github.com/kyndryl-design-system/shidoka-applications/issues/227)) ([faa1b72](https://github.com/kyndryl-design-system/shidoka-applications/commit/faa1b72d87fe59cafaae90396b89587afd20c86f))
+
+## [1.35.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.35.0...v1.35.1) (2024-09-17)
+
+
+### Bug Fixes
+
+* **wcag:** notification, overflowMenu & search accessibility enhancements ([#232](https://github.com/kyndryl-design-system/shidoka-applications/issues/232)) ([c0de645](https://github.com/kyndryl-design-system/shidoka-applications/commit/c0de645e5f4d03c9f2fd2ed8747a6f8a64f11c48))
+
 # [1.35.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.34.7...v1.35.0) (2024-09-16)
 
 
