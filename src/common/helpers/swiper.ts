@@ -8,6 +8,9 @@ export const SwiperConfig = {
       spaceBetween: 24,
     },
   },
+  keyboard: {
+    enabled: true,
+  },
   navigation: {
     nextEl: '.swiper-button-next',
     prevEl: '.swiper-button-prev',
