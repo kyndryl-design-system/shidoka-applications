@@ -38,7 +38,7 @@ const DetectOffScreen = (swiper: any) => {
     const SlideBounds = slide.getBoundingClientRect();
 
     if (
-      SlideBounds.left < 0 ||
+      SlideBounds.left < SwiperBounds.left ||
       SlideBounds.right > SwiperBounds.width + SwiperBounds.left
     ) {
       slide.classList.add('off-screen');
