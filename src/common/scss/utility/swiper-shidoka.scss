@@ -3,10 +3,14 @@
 @use '../../../../node_modules/@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :root {
-  --swiper-navigation-size: 72px;
+  --swiper-navigation-size: 56px;
   --swiper-fractional-height: 54px;
   --swiper-bullets-height: 32px;
   --swiper-tabs-height: 64px;
+
+  @media (min-width: 82rem) {
+    --swiper-navigation-size: 64px;
+  }
 }
 
 .swiper {
@@ -44,6 +48,12 @@
       order: -1;
       display: block;
     }
+  }
+
+  kd-link,
+  a {
+    margin-left: 40px;
+    margin-right: 4px;
   }
 }
 
@@ -106,8 +116,8 @@
   @include elevation.shadow(2);
   display: none;
   border-radius: 50%;
-  width: 72px;
-  height: 72px;
+  width: var(--swiper-navigation-size);
+  height: var(--swiper-navigation-size);
   margin-top: calc(
     0px - var(--swiper-navigation-size) / 2 - var(--swiper-fractional-height) /
       2

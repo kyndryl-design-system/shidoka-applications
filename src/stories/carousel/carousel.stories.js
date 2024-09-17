@@ -1,5 +1,7 @@
 import { html } from 'lit';
 import { deepmerge } from 'deepmerge-ts';
+import '@kyndryl-design-system/shidoka-foundation/components/link';
+import arrowRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-right.svg';
 
 // import Swiper bundle with all modules installed
 import Swiper from 'swiper/bundle';
@@ -9,7 +11,6 @@ import { SwiperConfig } from '../../common/helpers/swiper';
 
 export default {
   title: 'Patterns/Carousel',
-  // component: 'kyn-carousel',
   parameters: {
     design: {
       type: 'figma',
@@ -24,7 +25,6 @@ export default {
             height: 200px;
             padding: 16px;
             background-color: var(--kd-color-background-ui-soft);
-            /* border: 1px solid var(--kd-color-border-light); */
             border-radius: 8px;
           }
         </style>
@@ -105,7 +105,7 @@ export const MiniCards = {
         <div class="swiper-scrollbar"></div>
 
         <!-- If we need pagination -->
-        <div class="swiper-pagination"></div>
+        <div class="swiper-pagination"><a>test</a></div>
 
         <!-- If we need navigation buttons -->
         <div class="swiper-button-prev"></div>
@@ -240,6 +240,59 @@ export const PaginationTabs = {
             <span class="${className}">
               <span class="tab-text">${TabTextArr[index]}</span>
             </span>
+          `;
+        },
+      },
+    };
+
+    const FinalConfig = deepmerge(SwiperConfig, CustomConfig);
+
+    new Swiper('.swiper', FinalConfig);
+  },
+};
+
+export const WithLink = {
+  args: {},
+  render: (args) => {
+    return html`
+      This example injects a link into the fractional pagination.
+      <br /><br />
+
+      <!-- Slider main container -->
+      <div class="swiper">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+          <!-- Slides -->
+          <div class="swiper-slide">Slide 1</div>
+          <div class="swiper-slide">Slide 2</div>
+          <div class="swiper-slide">Slide 3</div>
+          <div class="swiper-slide">Slide 4</div>
+          <div class="swiper-slide">Slide 5</div>
+          <div class="swiper-slide">Slide 6</div>
+        </div>
+
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
+
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+    `;
+  },
+  play: async () => {
+    const CustomConfig = {
+      pagination: {
+        renderFraction: function (currentClass, totalClass) {
+          return `
+          <span class="${currentClass}"></span> / <span class="${totalClass}"></span>
+          <kd-link standalone href="javascript:void(0);">
+            View All
+            <span slot="icon">${arrowRightIcon}</span>
+          </kd-link>
           `;
         },
       },
