@@ -14,7 +14,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: '',
+      url: 'https://www.figma.com/file/CQuDZEeLiuGiALvCWjAKlu/Applications---Component-Library?node-id=16511-29991&node-type=frame&m=dev',
     },
   },
   decorators: [
