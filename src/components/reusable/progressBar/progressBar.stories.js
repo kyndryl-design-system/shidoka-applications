@@ -61,10 +61,9 @@ Indeterminate.args = {
 
 export const Simulated = Template.bind({});
 Simulated.args = {
-  title: 'Components/Progress Bar/Simulated (MB)',
   status: 'active',
   max: 728,
-  label: 'Simulated Progress Bar (MB)',
+  label: 'Simulated Progress Bar (units -- MB)',
   animationSpeed: 'normal',
   simulate: true,
   unit: 'MB',
