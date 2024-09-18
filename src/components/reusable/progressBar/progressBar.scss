@@ -1,0 +1,164 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+$default-value: var(--kd-color-background-primary);
+$success-value: var(--kd-color-background-success);
+$error-value: var(--kd-color-background-error);
+
+$progress-bar-height: 8px;
+$progress-bar-background: var(--kd-color-background-ui-soft);
+
+.progress-bar {
+    &__upper-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: var(--kd-spacing-8);
+    }
+
+    &__label {
+        margin: 0;
+        color: var(--kd-color-text-secondary);
+        @include typography.type-ui-01;
+        font-weight: 500;
+    }
+
+    &__status-icon {
+        padding-right: 4px;
+        line-height: 1;
+
+        kd-icon {
+            display: block;
+        }
+
+        &.success kd-icon {
+            color: $success-value;
+        }
+
+        &.error kd-icon {
+            color: $error-value;
+        }
+    }
+
+    &__item {
+        width: 100%;
+        height: $progress-bar-height;
+        -webkit-appearance: none;
+        appearance: none;
+        border: none;
+        border-radius: 2px;
+        overflow: hidden;
+        background-color: $progress-bar-background;
+
+        &::-webkit-progress-bar {
+            background-color: $progress-bar-background;
+            border-radius: 2px;
+        }
+
+        &::-webkit-progress-value {
+            background-color: $default-value;
+            border-radius: 0 2px 0 2px;
+            transition: width 0.3s ease-in-out;
+        }
+
+        &::-moz-progress-bar {
+            background-color: $default-value;
+            border-radius: 2px;
+            transition: width 0.3s ease-in-out;
+        }
+
+        &::-ms-fill {
+            background-color: $default-value;
+            border: 0;
+        }
+
+        &:indeterminate {
+            background-image: linear-gradient(to right, $default-value 30%, $progress-bar-background 30%);
+            background-size: 200% 100%;
+            animation: indeterminate 1.5s linear infinite;
+
+            &::-webkit-progress-bar {
+                background-color: transparent;
+            }
+
+            &::-moz-progress-bar {
+                background-image: linear-gradient(to right, $default-value 30%, $progress-bar-background 30%);
+                background-size: 200% 100%;
+                animation: indeterminate 1.5s linear infinite;
+            }
+        }
+    }
+
+    &__success {
+        &::-webkit-progress-value {
+            background-color: $success-value;
+        }
+
+        &::-moz-progress-bar {
+            background-color: $success-value;
+        }
+
+        &::-ms-fill {
+            background-color: $success-value;
+        }
+    }
+
+    &__error {
+        &::-webkit-progress-value {
+            background-color: $error-value;
+        }
+
+        &::-moz-progress-bar {
+            background-color: $error-value;
+        }
+
+        &::-ms-fill {
+            background-color: $error-value;
+        }
+    }
+
+    &__helper-text {
+        margin-top: 12px;
+        color: var(--kd-color-text-primary);
+        @include typography.type-ui-04;
+        font-weight: 300;
+
+        &.error {
+            color: $error-value;
+        }
+    }
+
+    &__speed-slow {
+
+        &::-webkit-progress-value,
+        &::-moz-progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+    }
+
+    &__speed-normal {
+
+        &::-webkit-progress-value,
+        &::-moz-progress-bar {
+            transition: width 0.3s ease-in-out;
+        }
+    }
+
+    &__speed-fast {
+
+        &::-webkit-progress-value,
+        &::-moz-progress-bar {
+            transition: width 0.1s ease-in-out;
+        }
+    }
+}
+
+@keyframes indeterminate {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
