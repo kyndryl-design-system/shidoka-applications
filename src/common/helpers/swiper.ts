@@ -11,6 +11,10 @@ export const SwiperConfig = {
   keyboard: {
     enabled: true,
   },
+  mousewheel: {
+    enabled: true,
+    forceToAxis: true,
+  },
   navigation: {
     nextEl: '.swiper-button-next',
     prevEl: '.swiper-button-prev',
