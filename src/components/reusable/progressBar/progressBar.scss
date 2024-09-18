@@ -31,8 +31,7 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
             display: block;
         }
 
-        &.success kd-icon,
-        &.finished kd-icon {
+        &.success kd-icon {
             color: $success-value;
         }
 
@@ -73,8 +72,8 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
             border: 0;
         }
 
-        &:indeterminate,
-        &__active {
+
+        &:indeterminate {
             background-image: linear-gradient(to right,
                     $progress-bar-background 0%,
                     $progress-bar-background 42.5%,
@@ -103,8 +102,7 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
         }
     }
 
-    &__success,
-    &__finished {
+    &__success {
         &::-webkit-progress-value {
             background-color: $success-value;
         }
@@ -143,40 +141,58 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
         }
     }
 
-    &__speed-slow:indeterminate {
-        animation: indeterminate 6s linear infinite;
+    &__speed-slow {
+        &.progress-bar__active {
 
-        &::-webkit-progress-value,
-        &::-moz-progress-bar {
+            &::-webkit-progress-value,
+            &::-moz-progress-bar {
+                animation: active-slide 6s linear infinite;
+            }
+        }
+
+        &:indeterminate {
             animation: indeterminate 6s linear infinite;
 
+            &::-webkit-progress-value,
             &::-moz-progress-bar {
                 animation: indeterminate 6s linear infinite;
             }
         }
     }
 
-    &__speed-normal:indeterminate {
-        animation: indeterminate 4s linear infinite;
+    &__speed-normal {
+        &.progress-bar__active {
 
-        &::-webkit-progress-value,
-        &::-moz-progress-bar {
+            &::-webkit-progress-value,
+            &::-moz-progress-bar {
+                animation: active-slide 4s linear infinite;
+            }
+        }
+
+        &:indeterminate {
             animation: indeterminate 4s linear infinite;
 
+            &::-webkit-progress-value,
             &::-moz-progress-bar {
                 animation: indeterminate 4s linear infinite;
             }
         }
     }
 
-    &__speed-fast:indeterminate {
+    &__speed-fast {
+        &.progress-bar__active {
 
-        animation: indeterminate 3s linear infinite;
+            &::-webkit-progress-value,
+            &::-moz-progress-bar {
+                animation: active-slide 3s linear infinite;
+            }
+        }
 
-        &::-webkit-progress-value,
-        &::-moz-progress-bar {
+        &:indeterminate {
+
             animation: indeterminate 3s linear infinite;
 
+            &::-webkit-progress-value,
             &::-moz-progress-bar {
                 animation: indeterminate 3s linear infinite;
             }
@@ -195,5 +211,15 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
 
     100% {
         background-position: 100% 0;
+    }
+}
+
+@keyframes active-slide {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 40px 0;
     }
 }

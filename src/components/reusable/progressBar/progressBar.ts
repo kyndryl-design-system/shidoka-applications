@@ -18,7 +18,7 @@ export class ProgressBar extends LitElement {
 
   /** Sets progress bar status mode. */
   @property({ type: String })
-  status: 'active' | 'finished' | 'success' | 'error' = 'active';
+  status: 'active' | 'success' | 'error' = 'active';
 
   /** Initial progress bar value (optionally hard-coded). */
   @property({ type: Number })
@@ -44,6 +44,10 @@ export class ProgressBar extends LitElement {
   @property({ type: Boolean })
   simulate = false;
 
+  /** Sets the unit for progress measurement (ex: 'MB', 'GB', '%') */
+  @property({ type: String })
+  unit = '';
+
   @state()
   private _progress = 0;
 
@@ -53,65 +57,82 @@ export class ProgressBar extends LitElement {
   private _intervalId: number | null = null;
 
   override render() {
-    const effectiveValue = this.simulate ? this._progress : this.value;
-    const effectiveStatus = this.simulate
-      ? this._progress >= this.max
-        ? 'finished'
-        : 'active'
-      : this.status;
+    const currentValue =
+      this.simulate || (this.status === 'active' && this.value !== null)
+        ? this._progress
+        : this.value;
+    const currentStatus = this.getEffectiveStatus(currentValue);
 
-    const helperText = this.simulate
-      ? this._running
-        ? `${this._progress.toFixed(1)}MB of ${this.max}MB`
-        : 'Fetching assets...'
-      : this.helperText;
+    const formattedProgress = ['GB', 'MB', 'KB', 'B'].includes(this.unit)
+      ? this._progress.toFixed(1)
+      : this._progress.toFixed(0);
+
+    const formattedMax = ['GB', 'MB', 'KB', 'B'].includes(this.unit)
+      ? this.max.toFixed(1)
+      : this.max.toFixed(0);
+
+    const helperText =
+      this.simulate || (this.status === 'active' && this.value !== null)
+        ? this._running
+          ? `${formattedProgress}${this.unit} of ${formattedMax}${this.unit}`
+          : 'Fetching assets...'
+        : this.helperText;
 
     return html`
       <div class="progress-bar__upper-container">
         ${this.label
           ? html`<h2 class="progress-bar__label">${this.label}</h2>`
           : null}
-        <div class=${`progress-bar__status-icon ${effectiveStatus}`}>
-          ${effectiveStatus === 'success' || effectiveStatus === 'finished'
+        <div class=${`progress-bar__status-icon ${currentStatus}`}>
+          ${currentStatus === 'success'
             ? html`<kd-icon .icon=${checkmarkIcon}></kd-icon>`
-            : effectiveStatus === 'error'
+            : currentStatus === 'error'
             ? html`<kd-icon .icon=${errorIcon}></kd-icon>`
             : null}
         </div>
       </div>
       <progress
-        class="${this.getProgressBarClasses(effectiveStatus)}"
+        class="${this.getProgressBarClasses(currentStatus)}"
         max=${this.max}
-        value=${ifDefined(effectiveValue !== null ? effectiveValue : undefined)}
+        value=${ifDefined(currentValue !== null ? currentValue : undefined)}
         aria-valuenow=${ifDefined(
-          effectiveValue !== null ? effectiveValue : undefined
+          currentValue !== null ? currentValue : undefined
         )}
         aria-valuemin=${0}
         aria-valuemax=${this.max}
         aria-label=${this.label}
       ></progress>
       ${helperText
-        ? html`<h2 class=${`progress-bar__helper-text ${effectiveStatus}`}>
+        ? html`<h2 class=${`progress-bar__helper-text ${currentStatus}`}>
             ${helperText}
           </h2>`
         : null}
     `;
   }
 
+  private getEffectiveStatus(
+    currentValue: number | null
+  ): 'active' | 'success' | 'error' {
+    if (this.status === 'error') return 'error';
+    if (
+      this.status === 'success' ||
+      (currentValue !== null && currentValue >= this.max)
+    )
+      return 'success';
+    return 'active';
+  }
+
   private getProgressBarClasses(status: string) {
     return classMap({
       'progress-bar__item': true,
-      'progress-bar__active': status === 'active',
-      'progress-bar__finished': status === 'finished',
-      'progress-bar__success': status === 'success',
-      'progress-bar__error': status === 'error',
+      [`progress-bar__${status}`]: true,
       [`progress-bar__speed-${this.animationSpeed}`]: true,
     });
   }
 
   override connectedCallback() {
     super.connectedCallback();
-    if (this.simulate) {
+    if (this.simulate || (this.status === 'active' && this.value !== null)) {
       setTimeout(() => {
         this._running = true;
         this.startProgress();
@@ -128,17 +149,32 @@ export class ProgressBar extends LitElement {
 
   private startProgress() {
     this._intervalId = window.setInterval(() => {
+      const targetValue = this.simulate ? this.max : this.value ?? this.max;
       const advancement = Math.random() * 8;
-      if (this._progress + advancement < this.max) {
+      if (this._progress + advancement < targetValue) {
         this._progress += advancement;
       } else {
         if (this._intervalId) {
           clearInterval(this._intervalId);
         }
-        this._progress = this.max;
+        this._progress = targetValue;
       }
       this.requestUpdate();
     }, 50);
+  }
+
+  override updated(changedProperties: Map<string, any>) {
+    if (changedProperties.has('status') || changedProperties.has('value')) {
+      if (this.status === 'active' && this.value !== null && !this._running) {
+        this._running = true;
+        this.startProgress();
+      } else if (this.status !== 'active' || this.value === null) {
+        if (this._intervalId) {
+          clearInterval(this._intervalId);
+          this._running = false;
+        }
+      }
+    }
   }
 }
 

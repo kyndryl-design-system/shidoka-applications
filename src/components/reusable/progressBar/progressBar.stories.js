@@ -16,7 +16,7 @@ export default {
     label: { control: 'text' },
     status: {
       control: 'select',
-      options: ['active', 'finished', 'success', 'error'],
+      options: ['active', 'success', 'error'],
     },
     animationSpeed: {
       control: 'select',
@@ -35,18 +35,20 @@ const Template = (args) => html`
     .status=${args.status}
     .animationSpeed=${args.animationSpeed}
     .simulate=${args.simulate}
+    .unit=${args.unit}
   ></kyn-progress-bar>
 `;
 
 export const Default = Template.bind({});
 Default.args = {
   status: 'active',
-  value: 50,
+  value: 65,
   max: 100,
   label: 'Default Progress Bar',
   helperText: '',
   animationSpeed: 'normal',
   simulate: false,
+  unit: '%',
 };
 
 export const Indeterminate = Template.bind({});
@@ -59,20 +61,13 @@ Indeterminate.args = {
 
 export const Simulated = Template.bind({});
 Simulated.args = {
+  title: 'Components/Progress Bar/Simulated (MB)',
   status: 'active',
   max: 728,
-  label: 'Simulated Progress Bar',
+  label: 'Simulated Progress Bar (MB)',
   animationSpeed: 'normal',
   simulate: true,
-};
-
-export const Success = Template.bind({});
-Success.args = {
-  ...Default.args,
-  label: 'Success Progress Bar',
-  helperText: 'Operation completed successfully.',
-  value: 100,
-  status: 'success',
+  unit: 'MB',
 };
 
 export const Error = Template.bind({});
@@ -80,6 +75,6 @@ Error.args = {
   ...Default.args,
   label: 'Error Progress Bar',
   helperText: 'Error: Operation failed.',
-  value: 75,
+  value: 100,
   status: 'error',
 };
