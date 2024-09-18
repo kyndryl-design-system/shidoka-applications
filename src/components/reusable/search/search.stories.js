@@ -28,6 +28,13 @@ export const Search = {
     label: 'Search',
     size: 'md',
     suggestions: ['Strings', 'Matching', 'Value', 'Here'],
+    expandableSearchBtnDescription: 'Expandable search button',
+    assistiveTextStrings: {
+      searchSuggestions: 'Search suggestions',
+      noMatches: 'No matches found for',
+      selected: 'Selected',
+      found: 'Found',
+    }
   },
   render: (args) => {
     return html`
@@ -39,6 +46,8 @@ export const Search = {
         ?disabled=${args.disabled}
         size=${args.size}
         .suggestions=${args.suggestions}
+        expandableSearchBtnDescription=${args.expandableSearchBtnDescription}
+        .assistiveTextStrings=${args.assistiveTextStrings}
         @on-input=${(e) => action(e.type)(e)}
       ></kyn-search>
     `;

@@ -1,11 +1,20 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import Styles from './search.scss';
 import '../textInput';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import searchIcon from '@carbon/icons/es/search/24';
+import { deepmerge } from 'deepmerge-ts';
+
+const _defaultTextStrings = {
+  searchSuggestions: 'Search suggestions.',
+  noMatches: 'No matches found for',
+  selected: 'Selected',
+  found: 'Found',
+};
 
 /**
  * Search
@@ -43,6 +52,29 @@ export class Search extends LitElement {
   @property({ type: Array })
   suggestions: Array<string> = [];
 
+  /** Expandable style search button description (Required to support accessibility). */
+  @property({ type: String })
+  expandableSearchBtnDescription = '';
+
+
+  /** Assistive text strings. */
+  @property({ type: Object })
+  assistiveTextStrings = _defaultTextStrings;
+
+  /**
+   * Internal assistive text strings.
+   * @internal
+   * */
+  @state()
+  _assistiveTextStrings = _defaultTextStrings;
+
+  /**
+   * Assistive text for screen readers.
+   * @internal
+   */
+  @state()
+  _assistiveText = 'Search suggestions.';
+
   /** Input focused state.
    * @internal
    */
@@ -69,6 +101,7 @@ export class Search extends LitElement {
         <kd-button
           kind="secondary"
           size=${this._buttonSizeMap()}
+          description=${ifDefined(this.expandableSearchBtnDescription)}
           ?disabled=${this.disabled}
           @on-click=${this._handleButtonClick}
         >
@@ -101,12 +134,20 @@ export class Search extends LitElement {
               html`
                 <div
                   class="suggestion"
-                  @click=${() => this._handleSuggestionClick(suggestion)}
+                  @click=${(e: any) => this._handleSuggestionClick(e, suggestion)}
+                  @mouseup=${() => this._handleSuggestionWithMouseUp(suggestion)}
+                  @mousedown=${(e: any) => this._handleSuggestionWithMouseDown(e)}
                 >
                   ${suggestion}
                 </div>
               `
           )}
+        </div>
+        <div class="assistive-text"
+          role="status"
+          aria-live="assertive"
+          aria-relevant="additions text">
+          ${this._assistiveText}
         </div>
       </div>
     `;
@@ -148,6 +189,9 @@ export class Search extends LitElement {
 
   private _handleInput(e: CustomEvent) {
     this.value = e.detail.value;
+    this._focused = true;
+
+    this._checkForMatchingSuggestions();
 
     const Detail: any = {
       value: e.detail.value,
@@ -163,14 +207,27 @@ export class Search extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private _handleSuggestionClick(suggestion: string) {
+  private _handleSuggestionClick(e: any, suggestion: string) {
+    if(e.type !== 'click') {
+      this.value = suggestion;
+      this._assistiveText = `${this._assistiveTextStrings.selected} ${this.value}`;
+    }
+  }
+
+  private _handleSuggestionWithMouseUp(suggestion: string) {
     this.value = suggestion;
+    this._assistiveText = `${this._assistiveTextStrings.selected} ${this.value}`;
+    this._focused = false;
+  }
+
+  private _handleSuggestionWithMouseDown(e: any) {
+    e.preventDefault();
   }
 
   private handleSearchKeydown(e: any) {
     e.stopPropagation();
 
-    this.handleKeyboard(e.keyCode);
+    this.handleKeyboard(e.keyCode, 'input');
   }
 
   private handleListKeydown(e: any) {
@@ -180,10 +237,10 @@ export class Search extends LitElement {
       e.preventDefault();
     }
 
-    this.handleKeyboard(e.keyCode);
+    this.handleKeyboard(e.keyCode, 'list');
   }
 
-  private handleKeyboard(keyCode: number) {
+  private handleKeyboard(keyCode: number, target: string) {
     // const SPACEBAR_KEY_CODE = [0, 32];
     const ENTER_KEY_CODE = 13;
     const DOWN_ARROW_KEY_CODE = 40;
@@ -208,6 +265,7 @@ export class Search extends LitElement {
       case ENTER_KEY_CODE: {
         // select highlighted option
         this.value = suggestionEls[highlightedIndex].innerText;
+        if(target === 'input') this._assistiveText = `${this._assistiveTextStrings.selected} ${this.value}`;
         return;
       }
       case DOWN_ARROW_KEY_CODE: {
@@ -223,6 +281,7 @@ export class Search extends LitElement {
 
         // scroll to option
         suggestionEls[nextIndex].scrollIntoView({ block: 'nearest' });
+        this._assistiveText = `${this.suggestions[nextIndex]}`;
         return;
       }
       case UP_ARROW_KEY_CODE: {
@@ -237,11 +296,43 @@ export class Search extends LitElement {
 
         // scroll to option
         suggestionEls[nextIndex].scrollIntoView({ block: 'nearest' });
+        this._assistiveText = `${this.suggestions[nextIndex]}`;
         return;
       }
       default: {
         return;
       }
+    }
+  }
+
+  private _checkForMatchingSuggestions() {
+    if(this.value === '') {
+      this._assistiveText = this._assistiveTextStrings.searchSuggestions;
+      return;
+    }
+    const Els: any = this.shadowRoot?.querySelectorAll('.suggestion');
+    const suggestionEls: any = [...Els];
+
+    console.log('suggestions', this.suggestions)
+    const matchedOptionIndex = this.suggestions.findIndex((option) => {
+      return option.toLowerCase().includes(this.value.toLowerCase());
+    });
+    suggestionEls.forEach((option: any) => {
+      option.removeAttribute('highlighted');
+    });
+    if (matchedOptionIndex === -1) {
+      this._assistiveText = `${this._assistiveTextStrings.noMatches} ${this.value}`;
+      return;
+    }
+    suggestionEls[matchedOptionIndex].setAttribute('highlighted', true);
+    suggestionEls[matchedOptionIndex].scrollIntoView({ block: 'nearest' });
+    this._assistiveText = `${this._assistiveTextStrings.found} ${this.suggestions[matchedOptionIndex]}`;
+
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('assistiveTextStrings')) {
+      this._assistiveTextStrings = deepmerge(_defaultTextStrings, this.assistiveTextStrings);
     }
   }
 }

@@ -2,6 +2,7 @@
 @use '../../../common/scss/mixins.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 
 :host {
   display: block;
@@ -145,4 +146,14 @@ kd-card.notification-mark-read::part(card-wrapper) {
   to {
     transform: none;
   }
+}
+
+.status-tag {
+  #statusLabel {
+    @include visibility.sr-only;
+  }
+}
+
+#notificationType {
+  @include visibility.sr-only;
 }
