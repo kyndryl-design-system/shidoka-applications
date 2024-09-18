@@ -34,36 +34,52 @@ export default {
   ],
 };
 
+/**
+ * The SwiperTemplate function generates HTML code for a slider with specified number of slides.
+ * @param [slides=6] - The `slides` parameter in the `SwiperTemplate` function represents the number of
+ * slides you want to generate for the swiper component. By default, it is set to 6, but you can pass a
+ * different number to customize the number of slides in the swiper component.
+ * @returns The SwiperTemplate function returns an HTML template for a swiper slider with a specified
+ * number of slides. The template includes the main swiper container, wrapper, slides, scrollbar,
+ * pagination, and navigation buttons. Each slide is labeled with "Slide" followed by its index number.
+ */
+const SwiperTemplate = (slides = 6) => {
+  const Slides = [];
+  for (let i = 0; i < slides; i++) {
+    Slides.push(i);
+  }
+
+  return html`
+    <!-- Slider main container -->
+    <div class="swiper">
+      <!-- Additional required wrapper -->
+      <div class="swiper-wrapper">
+        <!-- Slides -->
+        ${Slides.map((slide) => {
+          return html`<div class="swiper-slide">Slide ${slide + 1}</div>`;
+        })}
+      </div>
+
+      <!-- If we need scrollbar -->
+      <div class="swiper-scrollbar"></div>
+
+      <!-- If we need pagination -->
+      <div class="swiper-pagination"></div>
+
+      <!-- If we need navigation buttons -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  `;
+};
+
 export const LargeCards = {
-  args: {},
-  render: (args) => {
+  render: () => {
     return html`
       This example is unmodified, so each slide takes a full page.
       <br /><br />
 
-      <!-- Slider main container -->
-      <div class="swiper">
-        <!-- Additional required wrapper -->
-        <div class="swiper-wrapper">
-          <!-- Slides -->
-          <div class="swiper-slide">Slide 1</div>
-          <div class="swiper-slide">Slide 2</div>
-          <div class="swiper-slide">Slide 3</div>
-          <div class="swiper-slide">Slide 4</div>
-          <div class="swiper-slide">Slide 5</div>
-          <div class="swiper-slide">Slide 6</div>
-        </div>
-
-        <!-- If we need scrollbar -->
-        <div class="swiper-scrollbar"></div>
-
-        <!-- If we need pagination -->
-        <div class="swiper-pagination"></div>
-
-        <!-- If we need navigation buttons -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-      </div>
+      ${SwiperTemplate()}
     `;
   },
   play: async () => {
@@ -72,7 +88,6 @@ export const LargeCards = {
 };
 
 export const MiniCards = {
-  args: {},
   decorators: [
     (story) =>
       html`
@@ -84,34 +99,12 @@ export const MiniCards = {
         ${story()}
       `,
   ],
-  render: (args) => {
+  render: () => {
     return html`
       This example sets a fixed width on each slide.
       <br /><br />
 
-      <!-- Slider main container -->
-      <div class="swiper">
-        <!-- Additional required wrapper -->
-        <div class="swiper-wrapper">
-          <!-- Slides -->
-          <div class="swiper-slide">Slide 1</div>
-          <div class="swiper-slide">Slide 2</div>
-          <div class="swiper-slide">Slide 3</div>
-          <div class="swiper-slide">Slide 4</div>
-          <div class="swiper-slide">Slide 5</div>
-          <div class="swiper-slide">Slide 6</div>
-        </div>
-
-        <!-- If we need scrollbar -->
-        <div class="swiper-scrollbar"></div>
-
-        <!-- If we need pagination -->
-        <div class="swiper-pagination"><a>test</a></div>
-
-        <!-- If we need navigation buttons -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-      </div>
+      ${SwiperTemplate()}
     `;
   },
   play: async () => {
@@ -120,71 +113,30 @@ export const MiniCards = {
 };
 
 export const FullBleed = {
-  args: {},
-  render: (args) => {
+  render: () => {
     return html`
       This example adds the "swiper-full-bleed" class to extend beyond the page
       gutter to the edge of the screen.
       <br /><br />
 
-      <!-- Slider main container -->
-      <div class="swiper swiper-full-bleed">
-        <!-- Additional required wrapper -->
-        <div class="swiper-wrapper">
-          <!-- Slides -->
-          <div class="swiper-slide">Slide 1</div>
-          <div class="swiper-slide">Slide 2</div>
-          <div class="swiper-slide">Slide 3</div>
-          <div class="swiper-slide">Slide 4</div>
-          <div class="swiper-slide">Slide 5</div>
-          <div class="swiper-slide">Slide 6</div>
-        </div>
-
-        <!-- If we need scrollbar -->
-        <div class="swiper-scrollbar"></div>
-
-        <!-- If we need pagination -->
-        <div class="swiper-pagination"></div>
-
-        <!-- If we need navigation buttons -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-      </div>
+      ${SwiperTemplate()}
     `;
   },
   play: async () => {
+    document.querySelector('.swiper').classList.add('swiper-full-bleed');
+
     new Swiper('.swiper', SwiperConfig);
   },
 };
 
 export const PaginationBullets = {
-  args: {},
-  render: (args) => {
+  render: () => {
     return html`
       This example extends the Shidoka default Swiper config to use the
       "bullets" style of pagination instead of "fractional".
       <br /><br />
 
-      <!-- Slider main container -->
-      <div class="swiper">
-        <!-- Additional required wrapper -->
-        <div class="swiper-wrapper">
-          <!-- Slides -->
-          <div class="swiper-slide">Slide 1</div>
-          <div class="swiper-slide">Slide 2</div>
-          <div class="swiper-slide">Slide 3</div>
-          <div class="swiper-slide">Slide 4</div>
-          <div class="swiper-slide">Slide 5</div>
-          <div class="swiper-slide">Slide 6</div>
-        </div>
-
-        <!-- If we need pagination -->
-        <div class="swiper-pagination"></div>
-
-        <!-- If we need navigation buttons -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-      </div>
+      ${SwiperTemplate()}
     `;
   },
   play: async () => {
@@ -200,8 +152,7 @@ export const PaginationBullets = {
 };
 
 export const PaginationTabs = {
-  args: {},
-  render: (args) => {
+  render: () => {
     return html`
       This example extends the Shidoka default Swiper config to modify the
       "bullets" style of pagination to convert them to Tabs on larger screen
@@ -209,28 +160,12 @@ export const PaginationTabs = {
       should be limited to 5.
       <br /><br />
 
-      <!-- Slider main container -->
-      <div class="swiper">
-        <!-- Additional required wrapper -->
-        <div class="swiper-wrapper">
-          <!-- Slides -->
-          <div class="swiper-slide">Slide 1</div>
-          <div class="swiper-slide">Slide 2</div>
-          <div class="swiper-slide">Slide 3</div>
-          <div class="swiper-slide">Slide 4</div>
-          <div class="swiper-slide">Slide 5</div>
-        </div>
-
-        <!-- If we need pagination -->
-        <div class="swiper-pagination tabs"></div>
-
-        <!-- If we need navigation buttons -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-      </div>
+      ${SwiperTemplate(5)}
     `;
   },
   play: async () => {
+    document.querySelector('.swiper-pagination').classList.add('tabs');
+
     const TabTextArr = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5'];
 
     const CustomConfig = {
@@ -253,35 +188,12 @@ export const PaginationTabs = {
 };
 
 export const WithLink = {
-  args: {},
-  render: (args) => {
+  render: () => {
     return html`
       This example injects a link into the fractional pagination.
       <br /><br />
 
-      <!-- Slider main container -->
-      <div class="swiper">
-        <!-- Additional required wrapper -->
-        <div class="swiper-wrapper">
-          <!-- Slides -->
-          <div class="swiper-slide">Slide 1</div>
-          <div class="swiper-slide">Slide 2</div>
-          <div class="swiper-slide">Slide 3</div>
-          <div class="swiper-slide">Slide 4</div>
-          <div class="swiper-slide">Slide 5</div>
-          <div class="swiper-slide">Slide 6</div>
-        </div>
-
-        <!-- If we need scrollbar -->
-        <div class="swiper-scrollbar"></div>
-
-        <!-- If we need pagination -->
-        <div class="swiper-pagination"></div>
-
-        <!-- If we need navigation buttons -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-      </div>
+      ${SwiperTemplate()}
     `;
   },
   play: async () => {
