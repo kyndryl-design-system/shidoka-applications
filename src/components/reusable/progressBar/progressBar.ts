@@ -84,20 +84,16 @@ export class ProgressBar extends LitElement {
         : this.value;
     const currentStatus = this.getCurrentStatus(currentValue);
 
-    const formattedProgress = ['GB', 'MB', 'KB', 'B'].includes(this.unit)
+    const decimalUnits = ['GB', 'MB', 'KB', 'B'].includes(this.unit);
+    const formattedProgress = decimalUnits
       ? this._progress.toFixed(1)
       : this._progress.toFixed(0);
 
-    const formattedMax = ['GB', 'MB', 'KB', 'B'].includes(this.unit)
+    const formattedMax = decimalUnits
       ? this.max.toFixed(1)
       : this.max.toFixed(0);
 
-    const helperText =
-      this.simulate || (this.status === 'active' && this.value !== null)
-        ? this._running
-          ? `${formattedProgress}${this.unit} of ${formattedMax}${this.unit}`
-          : 'Fetching assets...'
-        : this.helperText;
+    const helperText = this.getHelperText(formattedMax, formattedProgress);
 
     return html`
       ${this.renderProgressBarLabel(currentStatus)}
@@ -131,12 +127,21 @@ export class ProgressBar extends LitElement {
   }
 
   /// RENDER LOGIC
-  private getProgressBarClasses(status: string) {
-    return classMap({
-      'progress-bar__item': true,
-      [`progress-bar__${status}`]: true,
-      [`progress-bar__speed-${this.animationSpeed}`]: true,
-    });
+  private renderProgressBar(
+    currentStatus: string,
+    currentValue: number | null
+  ) {
+    return html` <progress
+      class="${this.getProgressBarClasses(currentStatus)}"
+      max=${this.max}
+      value=${ifDefined(currentValue !== null ? currentValue : undefined)}
+      aria-valuenow=${ifDefined(
+        currentValue !== null ? currentValue : undefined
+      )}
+      aria-valuemin=${0}
+      aria-valuemax=${this.max}
+      aria-label=${this.label}
+    ></progress>`;
   }
 
   private renderProgressBarLabel(currentStatus: string) {
@@ -154,21 +159,28 @@ export class ProgressBar extends LitElement {
     </div>`;
   }
 
-  private renderProgressBar(
-    currentStatus: string,
-    currentValue: number | null
-  ) {
-    return html` <progress
-      class="${this.getProgressBarClasses(currentStatus)}"
-      max=${this.max}
-      value=${ifDefined(currentValue !== null ? currentValue : undefined)}
-      aria-valuenow=${ifDefined(
-        currentValue !== null ? currentValue : undefined
-      )}
-      aria-valuemin=${0}
-      aria-valuemax=${this.max}
-      aria-label=${this.label}
-    ></progress>`;
+  private getHelperText(formattedMax: string, formattedProgress: string) {
+    if (this.helperText && typeof this.helperText === 'string') {
+      return this.helperText;
+    }
+
+    if (this.simulate || (this.status === 'active' && this.value !== null)) {
+      if (this._running) {
+        return `${formattedProgress}${this.unit} of ${formattedMax}${this.unit}`;
+      } else {
+        return 'Fetching assets...';
+      }
+    }
+
+    return this.helperText;
+  }
+
+  private getProgressBarClasses(status: string) {
+    return classMap({
+      'progress-bar__item': true,
+      [`progress-bar__${status}`]: true,
+      [`progress-bar__speed-${this.animationSpeed}`]: true,
+    });
   }
   ///
 
