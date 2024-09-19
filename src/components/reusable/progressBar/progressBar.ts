@@ -111,19 +111,21 @@ export class ProgressBar extends LitElement {
   }
 
   override updated(changedProperties: Map<string, any>) {
-    if (changedProperties.has('status') || changedProperties.has('value')) {
+    if (
+      changedProperties.has('status') ||
+      changedProperties.has('value') ||
+      changedProperties.has('animationSpeed')
+    ) {
+      this.cancelAnimation();
+      this._progress = 0;
+      this._running = false;
+
       if (
         this.status === ProgressStatus.ACTIVE &&
-        this.value !== null &&
-        !this._running
+        (this.value !== null || this.simulate)
       ) {
         this._running = true;
         this.startProgress();
-      } else if (this.status !== ProgressStatus.ACTIVE || this.value === null) {
-        if (this._animationFrameId) {
-          clearInterval(this._animationFrameId);
-          this._running = false;
-        }
       }
     }
   }
@@ -213,15 +215,19 @@ export class ProgressBar extends LitElement {
 
   private startProgress() {
     if (this._animationFrameId !== null) {
-      return;
+      cancelAnimationFrame(this._animationFrameId);
+      this._animationFrameId = null;
     }
 
     const step = () => {
       const targetValue = this.simulate ? this.max : this.value ?? this.max;
       const advancement = this.getAdvancement();
+      const difference = targetValue - this._progress;
+      const direction = Math.sign(difference);
+      const delta = Math.min(Math.abs(difference), advancement) * direction;
 
-      if (this._progress + advancement < targetValue) {
-        this._progress += advancement;
+      if (delta !== 0) {
+        this._progress += delta;
         this.requestUpdate();
         this._animationFrameId = requestAnimationFrame(step);
       } else {

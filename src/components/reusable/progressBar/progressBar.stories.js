@@ -13,7 +13,6 @@ export default {
   argTypes: {
     value: { control: 'number' },
     max: { control: 'number' },
-    label: { control: 'text' },
     status: {
       control: 'select',
       options: ['active', 'success', 'error'],
