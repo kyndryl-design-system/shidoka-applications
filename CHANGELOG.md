@@ -1,3 +1,10 @@
+## [1.37.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.37.0...v1.37.1) (2024-09-19)
+
+
+### Bug Fixes
+
+* accessibility enhancements for Number & Text Input, Time, Date & DateRange Picker ([#234](https://github.com/kyndryl-design-system/shidoka-applications/issues/234)) ([dba3ce0](https://github.com/kyndryl-design-system/shidoka-applications/commit/dba3ce06a41b98fe282e29d6c7d5f97daa8d948e))
+
 # [1.37.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.36.0...v1.37.0) (2024-09-19)
 
 
