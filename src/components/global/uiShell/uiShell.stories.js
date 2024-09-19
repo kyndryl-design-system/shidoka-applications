@@ -263,14 +263,7 @@ export const WithEverything = {
               </kyn-thead>
               <kyn-tbody>
                 ${data.map(
-                  ({
-                    id,
-                    firstName,
-                    lastName,
-                    birthday,
-                    age,
-                    gender,
-                  }) => html`<kyn-tr>
+                  ({ id, firstName, lastName, birthday, age }) => html`<kyn-tr>
                     <kyn-td>${id}</kyn-td>
                     <kyn-td>${firstName}</kyn-td>
                     <kyn-td>${lastName}</kyn-td>

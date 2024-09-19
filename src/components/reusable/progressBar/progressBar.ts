@@ -28,11 +28,11 @@ export class ProgressBar extends LitElement {
   @property({ type: Number })
   max = 100;
 
-  /** Sets progress bar label (optional). */
+  /** Sets optional progress bar label. */
   @property({ type: String })
   label = '';
 
-  /** Sets helper text that appears underneath `<progress>` element (optional). */
+  /** Sets optional helper text that appears underneath `<progress>` element. */
   @property({ type: String })
   helperText = '';
 
@@ -48,12 +48,21 @@ export class ProgressBar extends LitElement {
   @property({ type: String })
   unit = '';
 
+  /** Increments animated movement in progress bar.
+   * @internal
+   */
   @state()
   private _progress = 0;
 
+  /** Value indicates whether or not the bar is in animated motion, dynamic helper text values are proportionally incrementing.
+   * @internal
+   */
   @state()
   private _running = false;
 
+  /** Controls timeout interval for incremented bar animation.
+   * @internal
+   */
   private _intervalId: number | null = null;
 
   override render() {
@@ -61,7 +70,7 @@ export class ProgressBar extends LitElement {
       this.simulate || (this.status === 'active' && this.value !== null)
         ? this._progress
         : this.value;
-    const currentStatus = this.getEffectiveStatus(currentValue);
+    const currentStatus = this.getCurrentStatus(currentValue);
 
     const formattedProgress = ['GB', 'MB', 'KB', 'B'].includes(this.unit)
       ? this._progress.toFixed(1)
@@ -91,17 +100,7 @@ export class ProgressBar extends LitElement {
             : null}
         </div>
       </div>
-      <progress
-        class="${this.getProgressBarClasses(currentStatus)}"
-        max=${this.max}
-        value=${ifDefined(currentValue !== null ? currentValue : undefined)}
-        aria-valuenow=${ifDefined(
-          currentValue !== null ? currentValue : undefined
-        )}
-        aria-valuemin=${0}
-        aria-valuemax=${this.max}
-        aria-label=${this.label}
-      ></progress>
+      ${this.renderProgressBar(currentStatus, currentValue)}
       ${helperText
         ? html`<h2 class=${`progress-bar__helper-text ${currentStatus}`}>
             ${helperText}
@@ -110,7 +109,46 @@ export class ProgressBar extends LitElement {
     `;
   }
 
-  private getEffectiveStatus(
+  private getProgressBarClasses(status: string) {
+    return classMap({
+      'progress-bar__item': true,
+      [`progress-bar__${status}`]: true,
+      [`progress-bar__speed-${this.animationSpeed}`]: true,
+    });
+  }
+
+  private renderProgressBar(
+    currentStatus: string,
+    currentValue: number | null
+  ) {
+    return html` <progress
+      class="${this.getProgressBarClasses(currentStatus)}"
+      max=${this.max}
+      value=${ifDefined(currentValue !== null ? currentValue : undefined)}
+      aria-valuenow=${ifDefined(
+        currentValue !== null ? currentValue : undefined
+      )}
+      aria-valuemin=${0}
+      aria-valuemax=${this.max}
+      aria-label=${this.label}
+    ></progress>`;
+  }
+
+  override updated(changedProperties: Map<string, any>) {
+    if (changedProperties.has('status') || changedProperties.has('value')) {
+      if (this.status === 'active' && this.value !== null && !this._running) {
+        this._running = true;
+        this.startProgress();
+      } else if (this.status !== 'active' || this.value === null) {
+        if (this._intervalId) {
+          clearInterval(this._intervalId);
+          this._running = false;
+        }
+      }
+    }
+  }
+
+  private getCurrentStatus(
     currentValue: number | null
   ): 'active' | 'success' | 'error' {
     if (this.status === 'error') return 'error';
@@ -120,14 +158,6 @@ export class ProgressBar extends LitElement {
     )
       return 'success';
     return 'active';
-  }
-
-  private getProgressBarClasses(status: string) {
-    return classMap({
-      'progress-bar__item': true,
-      [`progress-bar__${status}`]: true,
-      [`progress-bar__speed-${this.animationSpeed}`]: true,
-    });
   }
 
   override connectedCallback() {
@@ -161,20 +191,6 @@ export class ProgressBar extends LitElement {
       }
       this.requestUpdate();
     }, 50);
-  }
-
-  override updated(changedProperties: Map<string, any>) {
-    if (changedProperties.has('status') || changedProperties.has('value')) {
-      if (this.status === 'active' && this.value !== null && !this._running) {
-        this._running = true;
-        this.startProgress();
-      } else if (this.status !== 'active' || this.value === null) {
-        if (this._intervalId) {
-          clearInterval(this._intervalId);
-          this._running = false;
-        }
-      }
-    }
   }
 }
 

@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import './index';
-import { action } from '@storybook/addon-actions';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
