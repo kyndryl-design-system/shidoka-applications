@@ -43,7 +43,7 @@ export default {
  * number of slides. The template includes the main swiper container, wrapper, slides, scrollbar,
  * pagination, and navigation buttons. Each slide is labeled with "Slide" followed by its index number.
  */
-const SwiperTemplate = (slides = 6) => {
+const SwiperTemplate = (slides = 6, noScrollbar = false) => {
   const Slides = [];
   for (let i = 0; i < slides; i++) {
     Slides.push(i);
@@ -61,7 +61,7 @@ const SwiperTemplate = (slides = 6) => {
       </div>
 
       <!-- If we need scrollbar -->
-      <div class="swiper-scrollbar"></div>
+      ${!noScrollbar ? html` <div class="swiper-scrollbar"></div> ` : null}
 
       <!-- If we need pagination -->
       <div class="swiper-pagination"></div>
@@ -136,7 +136,7 @@ export const PaginationBullets = {
       "bullets" style of pagination instead of "fractional".
       <br /><br />
 
-      ${SwiperTemplate()}
+      ${SwiperTemplate(6, true)}
     `;
   },
   play: async () => {
@@ -160,7 +160,7 @@ export const PaginationTabs = {
       should be limited to 5.
       <br /><br />
 
-      ${SwiperTemplate(5)}
+      ${SwiperTemplate(5, true)}
     `;
   },
   play: async () => {
