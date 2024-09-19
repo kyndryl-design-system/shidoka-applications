@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import Styles from './numberInput.scss';
@@ -8,6 +8,13 @@ import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import addIcon from '@carbon/icons/es/add/20';
 import subtractIcon from '@carbon/icons/es/subtract/20';
+import { deepmerge } from 'deepmerge-ts';
+
+const _defaultTextStrings = {
+  requiredText: 'Required',
+  subtract: 'Subtract',
+  add: 'Add',
+};
 
 /**
  * Number input.
@@ -60,10 +67,13 @@ export class NumberInput extends FormMixin(LitElement) {
 
   /** Customizable text strings. */
   @property({ type: Object })
-  textStrings = {
-    subtract: 'Subtract',
-    add: 'Add',
-  };
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
 
   /**
    * Queries the <input> DOM element.
@@ -79,7 +89,14 @@ export class NumberInput extends FormMixin(LitElement) {
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
           for=${this.name}
         >
-          ${this.required ? html`<span class="required">*</span>` : null}
+          ${this.required
+            ? html`<abbr
+                class="required"
+                title=${this._textStrings.requiredText}
+                aria-label=${this._textStrings.requiredText}
+                >*</abbr
+              >`
+            : null}
           <slot></slot>
         </label>
 
@@ -92,7 +109,7 @@ export class NumberInput extends FormMixin(LitElement) {
             kind="secondary"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value <= this.min}
-            description=${this.textStrings.subtract}
+            description=${this._textStrings.subtract}
             @on-click=${this._handleSubtract}
           >
             <kd-icon slot="icon" .icon=${subtractIcon}></kd-icon>
@@ -124,7 +141,7 @@ export class NumberInput extends FormMixin(LitElement) {
             kind="secondary"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value >= this.max}
-            description=${this.textStrings.add}
+            description=${this._textStrings.add}
             @on-click=${this._handleAdd}
           >
             <kd-icon slot="icon" .icon=${addIcon}></kd-icon>
@@ -234,6 +251,12 @@ export class NumberInput extends FormMixin(LitElement) {
 
     if (changedProps.has('value')) {
       this._inputEl.value = this.value.toString();
+    }
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
   }
 }

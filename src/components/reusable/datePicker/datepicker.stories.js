@@ -55,6 +55,9 @@ const args = {
   minDate: undefined,
   maxDate: undefined,
   step: undefined,
+  textStrings: {
+    requiredText: 'Required',
+  },
 };
 
 export const DatePicker = {
@@ -69,6 +72,7 @@ export const DatePicker = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
+        .textStrings=${args.textStrings}
         warnText=${args.warnText}
         value=${args.value}
         minDate=${ifDefined(args.minDate)}
@@ -95,6 +99,7 @@ export const DateWithTime = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
+        .textStrings=${args.textStrings}
         warnText=${args.warnText}
         minDate=${ifDefined(args.minDate)}
         maxDate=${ifDefined(args.maxDate)}
