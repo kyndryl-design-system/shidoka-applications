@@ -1,10 +1,15 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import TimePickerScss from './timepicker.scss';
+import { deepmerge } from 'deepmerge-ts';
+
+const _defaultTextStrings = {
+  requiredText: 'Required',
+};
 
 /**
  * Time picker.
@@ -60,6 +65,16 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   step!: string;
 
+  /** Customizable text strings. */
+  @property({ type: Object })
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
+
   /**
    * Queries the <input> DOM element.
    * @ignore
@@ -71,7 +86,14 @@ export class TimePicker extends FormMixin(LitElement) {
     return html`
       <div class="time-picker" ?disabled=${this.disabled}>
         <label class="label-text" for=${this.name}>
-          ${this.required ? html`<span class="required">*</span>` : null}
+          ${this.required
+            ? html`<abbr
+                class="required"
+                title=${this._textStrings.requiredText}
+                aria-label=${this._textStrings.requiredText}
+                >*</abbr
+              >`
+            : null}
           <slot></slot>
         </label>
 
@@ -93,6 +115,12 @@ export class TimePicker extends FormMixin(LitElement) {
             ?required=${this.required}
             ?disabled=${this.disabled}
             ?invalid=${this._isInvalid}
+            aria-invalid=${this._isInvalid}
+            aria-describedby=${this._isInvalid
+              ? 'error'
+              : this.warnText !== '' && !this._isInvalid
+              ? 'warning'
+              : ''}
             min=${ifDefined(this.minTime)}
             max=${ifDefined(this.maxTime)}
             @input=${(e: any) => this.handleInput(e)}
@@ -104,13 +132,13 @@ export class TimePicker extends FormMixin(LitElement) {
           : null}
         ${this._isInvalid
           ? html`
-              <div class="error">
+              <div id="error" class="error">
                 ${this.invalidText || this._internalValidationMsg}
               </div>
             `
           : null}
         ${this.warnText !== '' && !this._isInvalid
-          ? html`<div class="warn">${this.warnText}</div>`
+          ? html`<div id="warning" class="warn">${this.warnText}</div>`
           : null}
       </div>
     `;
@@ -164,6 +192,12 @@ export class TimePicker extends FormMixin(LitElement) {
     // focus the form field to show validity
     if (report) {
       this._internals.reportValidity();
+    }
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
   }
 }

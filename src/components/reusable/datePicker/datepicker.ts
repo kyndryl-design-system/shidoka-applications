@@ -1,10 +1,15 @@
 import { LitElement, html, PropertyValues } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { DATE_PICKER_TYPES } from './defs';
 import { FormMixin } from '../../../common/mixins/form-input';
 import DatePickerScss from './datepicker.scss';
+import { deepmerge } from 'deepmerge-ts';
+
+const _defaultTextStrings = {
+  requiredText: 'Required',
+};
 
 /**
  * Datepicker.
@@ -64,6 +69,16 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   datePickerType: DATE_PICKER_TYPES = DATE_PICKER_TYPES.SINGLE;
 
+  /** Customizable text strings. */
+  @property({ type: Object })
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
+
   /**
    * Queries the <input> DOM element.
    * @ignore
@@ -75,7 +90,14 @@ export class DatePicker extends FormMixin(LitElement) {
     return html`
       <div class="date-picker" ?disabled=${this.disabled}>
         <label class="label-text" for=${this.name} ?disabled=${this.disabled}>
-          ${this.required ? html`<span class="required">*</span>` : null}
+          ${this.required
+            ? html`<abbr
+                class="required"
+                title=${this._textStrings.requiredText}
+                aria-label=${this._textStrings.requiredText}
+                >*</abbr
+              >`
+            : null}
           <slot></slot>
         </label>
 
@@ -99,6 +121,12 @@ export class DatePicker extends FormMixin(LitElement) {
             ?required=${this.required}
             ?disabled=${this.disabled}
             ?invalid=${this._isInvalid}
+            aria-invalid=${this._isInvalid}
+            aria-describedby=${this._isInvalid
+              ? 'error'
+              : this.warnText !== '' && !this._isInvalid
+              ? 'warning'
+              : ''}
             min=${ifDefined(this.minDate)}
             max=${ifDefined(this.maxDate)}
             step=${ifDefined(this.step)}
@@ -110,13 +138,13 @@ export class DatePicker extends FormMixin(LitElement) {
           : null}
         ${this._isInvalid
           ? html`
-              <div class="error">
+              <div id="error" class="error">
                 ${this.invalidText || this._internalValidationMsg}
               </div>
             `
           : null}
         ${this.warnText !== '' && !this._isInvalid
-          ? html`<div class="warn">${this.warnText}</div>`
+          ? html`<div id="warning" class="warn">${this.warnText}</div>`
           : null}
       </div>
     `;
@@ -171,6 +199,12 @@ export class DatePicker extends FormMixin(LitElement) {
     // focus the form field to show validity
     if (report) {
       this._internals.reportValidity();
+    }
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
   }
 }

@@ -47,6 +47,7 @@ const args = {
   min: undefined,
   max: undefined,
   textStrings: {
+    requiredText: 'Required',
     subtract: 'Subtract',
     add: 'Add',
   },
