@@ -111,23 +111,27 @@ ${this.value}</textarea
                 ></kd-icon>
               `
             : null}
+        </div>
+
+        <div class="caption-error-count">
+          <div>
+            ${this.caption !== ''
+              ? html` <div class="caption">${this.caption}</div> `
+              : null}
+            ${this._isInvalid
+              ? html`
+                  <div id="error" class="error">
+                    ${this.invalidText || this._internalValidationMsg}
+                  </div>
+                `
+              : null}
+          </div>
           ${this.maxLength
             ? html`
                 <div class="count">${this.value.length}/${this.maxLength}</div>
               `
             : null}
         </div>
-
-        ${this.caption !== ''
-          ? html` <div class="caption">${this.caption}</div> `
-          : null}
-        ${this._isInvalid
-          ? html`
-              <div id="error" class="error">
-                ${this.invalidText || this._internalValidationMsg}
-              </div>
-            `
-          : null}
       </div>
     `;
   }

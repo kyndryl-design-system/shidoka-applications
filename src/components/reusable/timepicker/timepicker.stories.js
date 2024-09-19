@@ -37,6 +37,9 @@ const args = {
   minTime: undefined,
   maxTime: undefined,
   step: undefined,
+  textStrings: {
+    requiredText: 'Required',
+  },
 };
 
 export const TimePicker = {
@@ -52,6 +55,7 @@ export const TimePicker = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
+        .textStrings=${args.textStrings}
         minTime=${ifDefined(args.minTime)}
         maxTime=${ifDefined(args.maxTime)}
         step=${ifDefined(args.step)}
