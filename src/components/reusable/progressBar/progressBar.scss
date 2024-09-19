@@ -1,9 +1,11 @@
 @use '../../../common/scss/global.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
-$default-value: var(--kd-color-background-primary);
-$success-value: var(--kd-color-background-success);
-$error-value: var(--kd-color-background-error);
+$progress-bar-status-colors: (
+    default: var(--kd-color-background-primary),
+    success:var(--kd-color-background-success),
+    error: var(--kd-color-background-error)
+);
 
 $progress-bar-height: 8px;
 $progress-bar-background: var(--kd-color-background-ui-soft);
@@ -26,17 +28,18 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
     &__status-icon {
         padding-right: 4px;
         line-height: 1;
+        animation: fadeIn 600ms ease-in-out forwards;
 
         kd-icon {
             display: block;
         }
 
         &.success kd-icon {
-            color: $success-value;
+            color: map-get($progress-bar-status-colors, success);
         }
 
         &.error kd-icon {
-            color: $error-value;
+            color: map-get($progress-bar-status-colors, error);
         }
     }
 
@@ -56,19 +59,19 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
         }
 
         &::-webkit-progress-value {
-            background-color: $default-value;
+            background-color: map-get($progress-bar-status-colors, default);
             border-radius: 0 2px 0 2px;
             transition: width 0.3s ease-in-out;
         }
 
         &::-moz-progress-bar {
-            background-color: $default-value;
+            background-color: map-get($progress-bar-status-colors, default);
             border-radius: 2px;
             transition: width 0.3s ease-in-out;
         }
 
         &::-ms-fill {
-            background-color: $default-value;
+            background-color: map-get($progress-bar-status-colors, default);
             border: 0;
         }
 
@@ -77,8 +80,8 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
             background-image: linear-gradient(to right,
                     $progress-bar-background 0%,
                     $progress-bar-background 42.5%,
-                    $default-value 42.5%,
-                    $default-value 57.5%,
+                    map-get($progress-bar-status-colors, default) 42.5%,
+                    map-get($progress-bar-status-colors, default) 57.5%,
                     $progress-bar-background 57.5%,
                     $progress-bar-background 100%);
             background-size: 300% 100%;
@@ -92,8 +95,8 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
                 background-image: linear-gradient(to right,
                         $progress-bar-background 0%,
                         $progress-bar-background 42.5%,
-                        $default-value 42.5%,
-                        $default-value 57.5%,
+                        map-get($progress-bar-status-colors, default) 42.5%,
+                        map-get($progress-bar-status-colors, default) 57.5%,
                         $progress-bar-background 57.5%,
                         $progress-bar-background 100%);
                 background-size: 300% 100%;
@@ -104,29 +107,29 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
 
     &__success {
         &::-webkit-progress-value {
-            background-color: $success-value;
+            background-color: map-get($progress-bar-status-colors, success);
         }
 
         &::-moz-progress-bar {
-            background-color: $success-value;
+            background-color: map-get($progress-bar-status-colors, success);
         }
 
         &::-ms-fill {
-            background-color: $success-value;
+            background-color: map-get($progress-bar-status-colors, success);
         }
     }
 
     &__error {
         &::-webkit-progress-value {
-            background-color: $error-value;
+            background-color: map-get($progress-bar-status-colors, error);
         }
 
         &::-moz-progress-bar {
-            background-color: $error-value;
+            background-color: map-get($progress-bar-status-colors, error);
         }
 
         &::-ms-fill {
-            background-color: $error-value;
+            background-color: map-get($progress-bar-status-colors, error);
         }
     }
 
@@ -137,7 +140,7 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
         font-weight: 300;
 
         &.error {
-            color: $error-value;
+            color: map-get($progress-bar-status-colors, error);
         }
     }
 
@@ -221,5 +224,15 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
 
     100% {
         background-position: 40px 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
     }
 }

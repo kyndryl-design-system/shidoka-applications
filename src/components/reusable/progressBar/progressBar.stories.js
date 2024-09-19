@@ -63,8 +63,8 @@ export const Simulated = Template.bind({});
 Simulated.args = {
   status: 'active',
   max: 728,
-  label: 'Simulated Progress Bar (units -- MB)',
-  animationSpeed: 'normal',
+  label: 'Simulated Progress Bar (MB)',
+  animationSpeed: 'fast',
   simulate: true,
   unit: 'MB',
 };

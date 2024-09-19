@@ -9,6 +9,18 @@ import errorIcon from '@carbon/icons/es/error--filled/20';
 
 import ProgressBarStyles from './progressBar.scss';
 
+enum ProgressStatus {
+  ACTIVE = 'active',
+  SUCCESS = 'success',
+  ERROR = 'error',
+}
+
+enum AnimationSpeed {
+  SLOW = 'slow',
+  NORMAL = 'normal',
+  FAST = 'fast',
+}
+
 /**
  * `<kyn-progress-bar>` -- progress bar status indicator component.
  */
@@ -63,7 +75,7 @@ export class ProgressBar extends LitElement {
   /** Controls timeout interval for incremented bar animation.
    * @internal
    */
-  private _intervalId: number | null = null;
+  private _animationFrameId: number | null = null;
 
   override render() {
     const currentValue =
@@ -88,18 +100,7 @@ export class ProgressBar extends LitElement {
         : this.helperText;
 
     return html`
-      <div class="progress-bar__upper-container">
-        ${this.label
-          ? html`<h2 class="progress-bar__label">${this.label}</h2>`
-          : null}
-        <div class=${`progress-bar__status-icon ${currentStatus}`}>
-          ${currentStatus === 'success'
-            ? html`<kd-icon .icon=${checkmarkIcon}></kd-icon>`
-            : currentStatus === 'error'
-            ? html`<kd-icon .icon=${errorIcon}></kd-icon>`
-            : null}
-        </div>
-      </div>
+      ${this.renderProgressBarLabel(currentStatus)}
       ${this.renderProgressBar(currentStatus, currentValue)}
       ${helperText
         ? html`<h2 class=${`progress-bar__helper-text ${currentStatus}`}>
@@ -109,12 +110,46 @@ export class ProgressBar extends LitElement {
     `;
   }
 
+  override updated(changedProperties: Map<string, any>) {
+    if (changedProperties.has('status') || changedProperties.has('value')) {
+      if (
+        this.status === ProgressStatus.ACTIVE &&
+        this.value !== null &&
+        !this._running
+      ) {
+        this._running = true;
+        this.startProgress();
+      } else if (this.status !== ProgressStatus.ACTIVE || this.value === null) {
+        if (this._animationFrameId) {
+          clearInterval(this._animationFrameId);
+          this._running = false;
+        }
+      }
+    }
+  }
+
+  /// RENDER LOGIC
   private getProgressBarClasses(status: string) {
     return classMap({
       'progress-bar__item': true,
       [`progress-bar__${status}`]: true,
       [`progress-bar__speed-${this.animationSpeed}`]: true,
     });
+  }
+
+  private renderProgressBarLabel(currentStatus: string) {
+    return html`<div class="progress-bar__upper-container">
+      ${this.label
+        ? html`<h2 class="progress-bar__label">${this.label}</h2>`
+        : null}
+      <div class=${`progress-bar__status-icon ${currentStatus}`}>
+        ${currentStatus === ProgressStatus.SUCCESS
+          ? html`<kd-icon .icon=${checkmarkIcon}></kd-icon>`
+          : currentStatus === ProgressStatus.ERROR
+          ? html`<kd-icon .icon=${errorIcon}></kd-icon>`
+          : null}
+      </div>
+    </div>`;
   }
 
   private renderProgressBar(
@@ -133,36 +168,15 @@ export class ProgressBar extends LitElement {
       aria-label=${this.label}
     ></progress>`;
   }
+  ///
 
-  override updated(changedProperties: Map<string, any>) {
-    if (changedProperties.has('status') || changedProperties.has('value')) {
-      if (this.status === 'active' && this.value !== null && !this._running) {
-        this._running = true;
-        this.startProgress();
-      } else if (this.status !== 'active' || this.value === null) {
-        if (this._intervalId) {
-          clearInterval(this._intervalId);
-          this._running = false;
-        }
-      }
-    }
-  }
-
-  private getCurrentStatus(
-    currentValue: number | null
-  ): 'active' | 'success' | 'error' {
-    if (this.status === 'error') return 'error';
-    if (
-      this.status === 'success' ||
-      (currentValue !== null && currentValue >= this.max)
-    )
-      return 'success';
-    return 'active';
-  }
-
+  /// ANIMATED PROGRESS LOGIC
   override connectedCallback() {
     super.connectedCallback();
-    if (this.simulate || (this.status === 'active' && this.value !== null)) {
+    if (
+      this.simulate ||
+      (this.status === ProgressStatus.ACTIVE && this.value !== null)
+    ) {
       setTimeout(() => {
         this._running = true;
         this.startProgress();
@@ -172,26 +186,75 @@ export class ProgressBar extends LitElement {
 
   override disconnectedCallback() {
     super.disconnectedCallback();
-    if (this._intervalId) {
-      clearInterval(this._intervalId);
+    if (this._animationFrameId !== null) {
+      cancelAnimationFrame(this._animationFrameId);
+      this._animationFrameId = null;
+    }
+    if (this._animationFrameId !== null) {
+      clearTimeout(this._animationFrameId);
+      this._animationFrameId = null;
     }
   }
 
+  private getCurrentStatus(currentValue: number | null): ProgressStatus {
+    if (this.status === ProgressStatus.ERROR) {
+      return ProgressStatus.ERROR;
+    }
+
+    if (
+      this.status === ProgressStatus.SUCCESS ||
+      (currentValue !== null && currentValue >= this.max)
+    ) {
+      return ProgressStatus.SUCCESS;
+    }
+
+    return ProgressStatus.ACTIVE;
+  }
+
   private startProgress() {
-    this._intervalId = window.setInterval(() => {
+    if (this._animationFrameId !== null) {
+      return;
+    }
+
+    const step = () => {
       const targetValue = this.simulate ? this.max : this.value ?? this.max;
-      const advancement = Math.random() * 8;
+      const advancement = this.getAdvancement();
+
       if (this._progress + advancement < targetValue) {
         this._progress += advancement;
+        this.requestUpdate();
+        this._animationFrameId = requestAnimationFrame(step);
       } else {
-        if (this._intervalId) {
-          clearInterval(this._intervalId);
-        }
         this._progress = targetValue;
+        this.requestUpdate();
+        this._animationFrameId = null;
+        this.cancelAnimation();
       }
-      this.requestUpdate();
-    }, 50);
+    };
+
+    this._animationFrameId = requestAnimationFrame(step);
   }
+
+  private cancelAnimation() {
+    if (this._animationFrameId !== null) {
+      cancelAnimationFrame(this._animationFrameId);
+      this._animationFrameId = null;
+    }
+  }
+
+  private getAdvancement(): number {
+    switch (this.animationSpeed) {
+      case AnimationSpeed.SLOW:
+        return 0.5;
+      case AnimationSpeed.NORMAL:
+        return 1;
+      case AnimationSpeed.FAST:
+        return 2;
+      default:
+        return 1;
+    }
+  }
+  ///
 }
 
 declare global {
