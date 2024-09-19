@@ -194,10 +194,6 @@ export const WithLink = {
       This example places a link inline with the fractional pagination.
       <br /><br />
 
-      <!--
-      ${SwiperTemplate()}
-      -->
-
       <!-- Slider main container -->
       <div class="swiper">
         <!-- Additional required wrapper -->
@@ -214,7 +210,7 @@ export const WithLink = {
         <!-- If we need scrollbar -->
         <div class="swiper-scrollbar"></div>
 
-        <!-- If we need pagination -->
+        <!-- If we need a link next to pagination -->
         <div class="pagination-with-link">
           <div class="swiper-pagination"></div>
 
