@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { deepmerge } from 'deepmerge-ts';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import '@kyndryl-design-system/shidoka-foundation/components/link';
 import arrowRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-right.svg';
 
@@ -190,29 +191,46 @@ export const PaginationTabs = {
 export const WithLink = {
   render: () => {
     return html`
-      This example injects a link into the fractional pagination.
+      This example places a link inline with the fractional pagination.
       <br /><br />
 
+      <!--
       ${SwiperTemplate()}
+      -->
+
+      <!-- Slider main container -->
+      <div class="swiper">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+          <!-- Slides -->
+          <div class="swiper-slide">Slide 1</div>
+          <div class="swiper-slide">Slide 2</div>
+          <div class="swiper-slide">Slide 3</div>
+          <div class="swiper-slide">Slide 4</div>
+          <div class="swiper-slide">Slide 5</div>
+          <div class="swiper-slide">Slide 6</div>
+        </div>
+
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
+
+        <!-- If we need pagination -->
+        <div class="pagination-with-link">
+          <div class="swiper-pagination"></div>
+
+          <kd-link standalone href="javascript:void(0);">
+            Link
+            <span slot="icon">${unsafeSVG(arrowRightIcon)}</span>
+          </kd-link>
+        </div>
+
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
     `;
   },
   play: async () => {
-    const CustomConfig = {
-      pagination: {
-        renderFraction: function (currentClass, totalClass) {
-          return `
-          <span class="${currentClass}"></span> / <span class="${totalClass}"></span>
-          <kd-link standalone href="javascript:void(0);">
-            View All
-            <span slot="icon">${arrowRightIcon}</span>
-          </kd-link>
-          `;
-        },
-      },
-    };
-
-    const FinalConfig = deepmerge(SwiperConfig, CustomConfig);
-
-    new Swiper('.swiper', FinalConfig);
+    new Swiper('.swiper', SwiperConfig);
   },
 };
