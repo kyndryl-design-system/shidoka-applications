@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import './index';
+import { action } from '@storybook/addon-actions';
 // import { action } from '@storybook/addon-actions';
 
 export default {
@@ -41,13 +42,13 @@ export const OverflowMenu = {
         ?fixed=${args.fixed}
         assistiveText=${args.assistiveText}
       >
-        <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
-        <kyn-overflow-menu-item href="javascript:void(0);">
+        <kyn-overflow-menu-item @on-click=${(e) => {action(e.type)(e)}}>Option 1</kyn-overflow-menu-item>
+        <kyn-overflow-menu-item href="javascript:void(0);" @on-click=${(e) => {action(e.type)(e)}}>
           Option 2
         </kyn-overflow-menu-item>
         <kyn-overflow-menu-item disabled>Option 3</kyn-overflow-menu-item>
-        <kyn-overflow-menu-item> Option 4 </kyn-overflow-menu-item>
-        <kyn-overflow-menu-item destructive>Option 5</kyn-overflow-menu-item>
+        <kyn-overflow-menu-item @on-click=${(e) => {action(e.type)(e)}}> Option 4 </kyn-overflow-menu-item>
+        <kyn-overflow-menu-item destructive @on-click=${(e) => {action(e.type)(e)}}>Option 5</kyn-overflow-menu-item>
       </kyn-overflow-menu>
     `;
   },

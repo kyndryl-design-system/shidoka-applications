@@ -1,0 +1,31 @@
+@use '../../../../common/scss/global.scss';
+
+$default-dark-bg: #272727;
+$default-dark-font-color: #FFFFFF;
+$default-light-bg: #F9F9F9;
+$default-light-font-color: #3D3C3C;
+
+:host {
+    display: inline-block;
+}
+
+code {
+    line-height: 1.5;
+    word-break: break-word;
+    vertical-align: text-bottom;
+    margin: 0 4px;
+    padding: 4px 8px;
+    font-family: var(--kd-font-family-code-view);
+    font-size: max(calc(var(--inline-snippet-font-size, 14) * 1px), 14px);
+    border-radius: 2px;
+
+    &.shidoka-dark-syntax-theme {
+        background: $default-dark-bg;
+        color: $default-dark-font-color;
+    }
+
+    &.shidoka-light-syntax-theme {
+        background: $default-light-bg;
+        color: $default-light-font-color;
+    }
+}
