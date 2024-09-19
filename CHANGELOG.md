@@ -1,3 +1,10 @@
+# [1.37.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.36.0...v1.37.0) (2024-09-19)
+
+
+### Features
+
+* counter for textArea and textInput ([#236](https://github.com/kyndryl-design-system/shidoka-applications/issues/236)) ([b0ed0e5](https://github.com/kyndryl-design-system/shidoka-applications/commit/b0ed0e55a9d8861e390e2df5fc0b175b93838593))
+
 # [1.36.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.35.1...v1.36.0) (2024-09-17)
 
 
