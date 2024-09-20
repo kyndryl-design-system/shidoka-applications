@@ -3,12 +3,45 @@
 
 $progress-bar-status-colors: (
     default: var(--kd-color-background-primary),
-    success:var(--kd-color-background-success),
+    success: var(--kd-color-background-success),
     error: var(--kd-color-background-error)
 );
 
 $progress-bar-height: 8px;
 $progress-bar-background: var(--kd-color-background-ui-soft);
+
+@mixin progress-bar-color($color) {
+    &::-webkit-progress-value {
+        background-color: $color;
+    }
+
+    &::-moz-progress-bar {
+        background-color: $color;
+    }
+
+    &::-ms-fill {
+        background-color: $color;
+    }
+}
+
+@mixin animation-speed($duration) {
+    &.progress-bar__active {
+
+        &::-webkit-progress-value,
+        &::-moz-progress-bar {
+            animation: active-slide $duration linear infinite;
+        }
+    }
+
+    &:indeterminate {
+        animation: indeterminate $duration linear infinite;
+
+        &::-webkit-progress-value,
+        &::-moz-progress-bar {
+            animation: indeterminate $duration linear infinite;
+        }
+    }
+}
 
 .progress-bar {
     &__upper-container {
@@ -46,7 +79,6 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
     &__item {
         width: 100%;
         height: $progress-bar-height;
-        -webkit-appearance: none;
         appearance: none;
         border: none;
         border-radius: 2px;
@@ -58,32 +90,24 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
             border-radius: 2px;
         }
 
-        &::-webkit-progress-value {
-            background-color: map-get($progress-bar-status-colors, default);
+        @include progress-bar-color(map-get($progress-bar-status-colors, default));
+
+        &::-webkit-progress-value,
+        &::-moz-progress-bar {
             border-radius: 0 2px 0 2px;
             transition: width 0.3s ease-in-out;
         }
 
-        &::-moz-progress-bar {
-            background-color: map-get($progress-bar-status-colors, default);
-            border-radius: 2px;
-            transition: width 0.3s ease-in-out;
-        }
-
-        &::-ms-fill {
-            background-color: map-get($progress-bar-status-colors, default);
-            border: 0;
-        }
-
-
         &:indeterminate {
-            background-image: linear-gradient(to right,
+            $gradient: linear-gradient(to right,
                     $progress-bar-background 0%,
                     $progress-bar-background 42.5%,
                     map-get($progress-bar-status-colors, default) 42.5%,
                     map-get($progress-bar-status-colors, default) 57.5%,
                     $progress-bar-background 57.5%,
                     $progress-bar-background 100%);
+
+            background-image: $gradient;
             background-size: 300% 100%;
             animation: indeterminate 5s linear infinite;
 
@@ -92,13 +116,7 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
             }
 
             &::-moz-progress-bar {
-                background-image: linear-gradient(to right,
-                        $progress-bar-background 0%,
-                        $progress-bar-background 42.5%,
-                        map-get($progress-bar-status-colors, default) 42.5%,
-                        map-get($progress-bar-status-colors, default) 57.5%,
-                        $progress-bar-background 57.5%,
-                        $progress-bar-background 100%);
+                background-image: $gradient;
                 background-size: 300% 100%;
                 animation: indeterminate 5s linear infinite;
             }
@@ -106,31 +124,11 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
     }
 
     &__success {
-        &::-webkit-progress-value {
-            background-color: map-get($progress-bar-status-colors, success);
-        }
-
-        &::-moz-progress-bar {
-            background-color: map-get($progress-bar-status-colors, success);
-        }
-
-        &::-ms-fill {
-            background-color: map-get($progress-bar-status-colors, success);
-        }
+        @include progress-bar-color(map-get($progress-bar-status-colors, success));
     }
 
     &__error {
-        &::-webkit-progress-value {
-            background-color: map-get($progress-bar-status-colors, error);
-        }
-
-        &::-moz-progress-bar {
-            background-color: map-get($progress-bar-status-colors, error);
-        }
-
-        &::-ms-fill {
-            background-color: map-get($progress-bar-status-colors, error);
-        }
+        @include progress-bar-color(map-get($progress-bar-status-colors, error));
     }
 
     &__helper-text {
@@ -145,61 +143,15 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
     }
 
     &__speed-slow {
-        &.progress-bar__active {
-
-            &::-webkit-progress-value,
-            &::-moz-progress-bar {
-                animation: active-slide 8s linear infinite;
-            }
-        }
-
-        &:indeterminate {
-            animation: indeterminate 6s linear infinite;
-
-            &::-webkit-progress-value,
-            &::-moz-progress-bar {
-                animation: indeterminate 6s linear infinite;
-            }
-        }
+        @include animation-speed(10s);
     }
 
     &__speed-normal {
-        &.progress-bar__active {
-
-            &::-webkit-progress-value,
-            &::-moz-progress-bar {
-                animation: active-slide 6s linear infinite;
-            }
-        }
-
-        &:indeterminate {
-            animation: indeterminate 4s linear infinite;
-
-            &::-webkit-progress-value,
-            &::-moz-progress-bar {
-                animation: indeterminate 4s linear infinite;
-            }
-        }
+        @include animation-speed(8s);
     }
 
     &__speed-fast {
-        &.progress-bar__active {
-
-            &::-webkit-progress-value,
-            &::-moz-progress-bar {
-                animation: active-slide 4s linear infinite;
-            }
-        }
-
-        &:indeterminate {
-
-            animation: indeterminate 3s linear infinite;
-
-            &::-webkit-progress-value,
-            &::-moz-progress-bar {
-                animation: indeterminate 3s linear infinite;
-            }
-        }
+        @include animation-speed(6s);
     }
 }
 

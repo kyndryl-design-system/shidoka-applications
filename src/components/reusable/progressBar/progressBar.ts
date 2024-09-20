@@ -106,27 +106,6 @@ export class ProgressBar extends LitElement {
     `;
   }
 
-  override updated(changedProperties: Map<string, any>) {
-    if (
-      changedProperties.has('status') ||
-      changedProperties.has('value') ||
-      changedProperties.has('animationSpeed')
-    ) {
-      this.cancelAnimation();
-      this._progress = 0;
-      this._running = false;
-
-      if (
-        this.status === ProgressStatus.ACTIVE &&
-        (this.value !== null || this.simulate)
-      ) {
-        this._running = true;
-        this.startProgress();
-      }
-    }
-  }
-
-  /// RENDER LOGIC
   private renderProgressBar(
     currentStatus: string,
     currentValue: number | null
@@ -159,6 +138,25 @@ export class ProgressBar extends LitElement {
     </div>`;
   }
 
+  override updated(changedProperties: Map<string, any>) {
+    if (
+      changedProperties.has('status') ||
+      changedProperties.has('value') ||
+      changedProperties.has('animationSpeed')
+    ) {
+      this.cancelAnimation();
+      this._running = false;
+
+      if (
+        this.status === ProgressStatus.ACTIVE &&
+        (this.value !== null || this.simulate)
+      ) {
+        this._running = true;
+        this.startProgress();
+      }
+    }
+  }
+
   private getHelperText(formattedMax: string, formattedProgress: string) {
     if (this.helperText && typeof this.helperText === 'string') {
       return this.helperText;
@@ -182,9 +180,7 @@ export class ProgressBar extends LitElement {
       [`progress-bar__speed-${this.animationSpeed}`]: true,
     });
   }
-  ///
 
-  /// ANIMATED PROGRESS LOGIC
   override connectedCallback() {
     super.connectedCallback();
     if (
@@ -238,7 +234,7 @@ export class ProgressBar extends LitElement {
       const direction = Math.sign(difference);
       const delta = Math.min(Math.abs(difference), advancement) * direction;
 
-      if (delta !== 0) {
+      if (Math.abs(difference) > 0.1) {
         this._progress += delta;
         this.requestUpdate();
         this._animationFrameId = requestAnimationFrame(step);
@@ -272,7 +268,6 @@ export class ProgressBar extends LitElement {
         return 1;
     }
   }
-  ///
 }
 
 declare global {
