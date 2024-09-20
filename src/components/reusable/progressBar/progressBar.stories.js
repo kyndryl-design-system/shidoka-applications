@@ -54,6 +54,7 @@ export const Indeterminate = Template.bind({});
 Indeterminate.args = {
   ...Default.args,
   status: 'active',
+  animationSpeed: 'slow',
   label: 'Indeterminate Progress Bar',
   value: null,
 };
