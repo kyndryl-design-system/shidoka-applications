@@ -1,4 +1,4 @@
-import * as multiInput from 'rollup-plugin-multi-input';
+import multiInput from 'rollup-plugin-multi-input';
 import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 import del from 'rollup-plugin-delete';
@@ -25,7 +25,8 @@ export default {
   external: [/shidoka-foundation\/components/],
   plugins: [
     del({ targets: 'dist/*' }),
-    multiInput.default(),
+    multiInput(),
+    typescript(),
     resolve(),
     renameNodeModules(),
     // peerDepsExternal(),
