@@ -44,6 +44,7 @@ Default.args = {
   value: 65,
   max: 100,
   label: 'Default Progress Bar',
+  animationSpeed: 'normal',
   helperText: '',
   simulate: false,
   unit: '%',
