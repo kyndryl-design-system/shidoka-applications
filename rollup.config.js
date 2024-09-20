@@ -2,7 +2,6 @@ import multiInput from 'rollup-plugin-multi-input';
 import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 import del from 'rollup-plugin-delete';
-// import typescript from 'rollup-plugin-typescript2';
 import typescript from '@rollup/plugin-typescript';
 import renameNodeModules from 'rollup-plugin-rename-node-modules';
 import postcss from 'rollup-plugin-postcss';
@@ -26,7 +25,6 @@ export default {
   plugins: [
     del({ targets: 'dist/*' }),
     multiInput(),
-    typescript(),
     resolve(),
     renameNodeModules(),
     // peerDepsExternal(),
