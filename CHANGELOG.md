@@ -1,3 +1,10 @@
+# [1.38.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.37.1...v1.38.0) (2024-09-20)
+
+
+### Features
+
+* **carousel:** add shidoka swiper config, styles, examples ([#237](https://github.com/kyndryl-design-system/shidoka-applications/issues/237)) ([4b494f9](https://github.com/kyndryl-design-system/shidoka-applications/commit/4b494f9e803150d8ce030b3066de304449a13251))
+
 ## [1.37.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.37.0...v1.37.1) (2024-09-19)
 
 
