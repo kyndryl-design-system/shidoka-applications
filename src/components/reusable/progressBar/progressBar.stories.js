@@ -45,7 +45,6 @@ Default.args = {
   max: 100,
   label: 'Default Progress Bar',
   helperText: '',
-  animationSpeed: 'normal',
   simulate: false,
   unit: '%',
 };
@@ -54,7 +53,6 @@ export const Indeterminate = Template.bind({});
 Indeterminate.args = {
   ...Default.args,
   status: 'active',
-  animationSpeed: 'slow',
   label: 'Indeterminate Progress Bar',
   value: null,
 };
