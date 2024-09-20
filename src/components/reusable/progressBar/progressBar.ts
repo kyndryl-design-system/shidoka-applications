@@ -123,12 +123,17 @@ export class ProgressBar extends LitElement {
     ></progress>`;
   }
 
-  private renderProgressBarLabel(currentStatus: string) {
+  private renderProgressBarLabel(currentStatus: ProgressStatus) {
     return html`<div class="progress-bar__upper-container">
       ${this.label
         ? html`<h2 class="progress-bar__label">${this.label}</h2>`
         : null}
-      <div class=${`progress-bar__status-icon ${currentStatus}`}>
+      <div
+        class=${`progress-bar__status-icon ${currentStatus}`}
+        ?hidden=${![ProgressStatus.SUCCESS, ProgressStatus.ERROR].includes(
+          currentStatus
+        )}
+      >
         ${currentStatus === ProgressStatus.SUCCESS
           ? html`<kd-icon .icon=${checkmarkIcon}></kd-icon>`
           : currentStatus === ProgressStatus.ERROR
