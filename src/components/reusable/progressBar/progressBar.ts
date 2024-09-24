@@ -8,6 +8,7 @@ import '../loaders';
 import '../tooltip';
 import checkmarkIcon from '@carbon/icons/es/checkmark--filled/20';
 import errorIcon from '@carbon/icons/es/error--filled/20';
+import informationIcon from '@carbon/icons/es/information/16';
 
 import ProgressBarStyles from './progressBar.scss';
 
@@ -130,7 +131,11 @@ export class ProgressBar extends LitElement {
       <h2 class="progress-bar__label">
         <span>${this.label}</span>
         ${this.informationalTooltipText
-          ? html`<kyn-tooltip>${this.informationalTooltipText}</kyn-tooltip>`
+          ? html`<kyn-tooltip
+              ><span slot="anchor"
+                ><kd-icon .icon=${informationIcon}></kd-icon></span
+              >${this.informationalTooltipText}</kyn-tooltip
+            >`
           : null}
       </h2>
       ${currentStatus !== ProgressStatus.INDETERMINATE

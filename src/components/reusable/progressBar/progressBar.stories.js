@@ -53,15 +53,15 @@ Indeterminate.args = {
   value: null,
 };
 
-export const Simulated = Template.bind({});
-Simulated.args = {
+export const SimulatedSuccess = Template.bind({});
+SimulatedSuccess.args = {
   ...Default.args,
   status: 'active',
   inlineLoadStatusVisible: true,
   informationalTooltipText: '',
   helperText: '',
   max: 728,
-  label: 'Simulated Full Progression (MB)',
+  label: 'Simulated Successful Progression (MB)',
   unit: 'MB',
   value: null,
 };
