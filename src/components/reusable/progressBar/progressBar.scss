@@ -2,13 +2,14 @@
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 $progress-bar-status-colors: (
-    default: var(--kd-color-background-primary),
+    default: var(--kd-color-background-primary-hover),
     success: var(--kd-color-background-success),
     error: var(--kd-color-background-error)
 );
 
-$progress-bar-height: 8px;
-$progress-bar-background: var(--kd-color-background-ui-soft);
+$progress-bar-height: 4px;
+$progress-bar-radius: 4px;
+$progress-bar-background: var(--kd-color-background-inverse-hover);
 
 @mixin progress-bar-color($color) {
     &::-webkit-progress-value {
@@ -24,23 +25,9 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
     }
 }
 
-@mixin animation-speed($duration) {
-    &.progress-bar__active {
-
-        &::-webkit-progress-value,
-        &::-moz-progress-bar {
-            animation: active-slide $duration linear infinite;
-        }
-    }
-
-    &:indeterminate {
-        animation: indeterminate $duration linear infinite;
-
-        &::-webkit-progress-value,
-        &::-moz-progress-bar {
-            animation: indeterminate $duration linear infinite;
-        }
-    }
+:host {
+    display: block;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
 }
 
 .progress-bar {
@@ -48,53 +35,90 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        margin-bottom: var(--kd-spacing-8);
+        padding: 0;
+        margin: 0 0 3px;
+        line-height: 1;
+        height: 20px;
     }
 
     &__label {
         margin: 0;
+        display: flex;
+        align-items: flex-end;
         color: var(--kd-color-text-primary);
-        @include typography.type-ui-01;
-        font-weight: 400;
+        font-size: 14px;
+        font-weight: 500;
+
+        kyn-tooltip {
+            margin-left: 8px;
+            margin-bottom: -2px;
+        }
     }
 
     &__status-icon {
+        display: flex;
+        align-items: center;
         padding-right: 4px;
         line-height: 1;
-        animation: fadeInRotate 600ms ease-in-out forwards;
+
+        p {
+            color: var(--kd-color-text-secondary);
+            padding: 0;
+            margin: 0;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+
+            span {
+                margin: 0 8px;
+                font-weight: 400;
+                vertical-align: middle;
+            }
+        }
 
         kd-icon {
             display: block;
         }
 
         &.success kd-icon {
+            display: block;
             color: map-get($progress-bar-status-colors, success);
         }
 
         &.error kd-icon {
+            display: block;
             color: map-get($progress-bar-status-colors, error);
         }
     }
 
-    &__item {
+    &__active {
+
+        &::-webkit-progress-value,
+        &::-moz-progress-bar {
+            animation: active-slide 400ms linear infinite;
+        }
+    }
+
+    &__main {
         width: 100%;
         height: $progress-bar-height;
-        appearance: none;
         border: none;
-        border-radius: 2px;
+        padding: 0;
+        margin: 8px 0 8px;
+        border-radius: $progress-bar-radius;
         overflow: hidden;
         background-color: $progress-bar-background;
 
         &::-webkit-progress-bar {
             background-color: $progress-bar-background;
-            border-radius: 2px;
+            border-radius: $progress-bar-radius;
         }
 
         @include progress-bar-color(map-get($progress-bar-status-colors, default));
 
         &::-webkit-progress-value,
         &::-moz-progress-bar {
-            border-radius: 0 2px 0 2px;
+            border-radius: 0 $progress-bar-radius 0 $progress-bar-radius;
             transition: width 0.3s ease-in-out;
         }
 
@@ -103,8 +127,8 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
                     $progress-bar-background 0%,
                     $progress-bar-background 42.5%,
                     map-get($progress-bar-status-colors, default) 42.5%,
-                    map-get($progress-bar-status-colors, default) 57.5%,
-                    $progress-bar-background 57.5%,
+                    map-get($progress-bar-status-colors, default) 60%,
+                    $progress-bar-background 60%,
                     $progress-bar-background 100%);
 
             background-image: $gradient;
@@ -117,7 +141,7 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
 
             &::-moz-progress-bar {
                 background-image: $gradient;
-                background-size: 200% 100%;
+                background-size: 200% 55px;
                 animation: indeterminate 3s linear infinite;
             }
         }
@@ -132,26 +156,21 @@ $progress-bar-background: var(--kd-color-background-ui-soft);
     }
 
     &__helper-text {
-        margin-top: 12px;
-        color: var(--kd-color-text-primary);
-        @include typography.type-ui-04;
-        font-weight: 300;
+        margin: 0;
+
+        h2 {
+            color: var(--kd-color-text-secondary);
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1;
+            margin: 0;
+        }
 
         &.error {
-            color: map-get($progress-bar-status-colors, error);
+            h2 {
+                color: map-get($progress-bar-status-colors, error);
+            }
         }
-    }
-
-    &__speed-slow {
-        @include animation-speed(8s);
-    }
-
-    &__speed-normal {
-        @include animation-speed(5s);
-    }
-
-    &__speed-fast {
-        @include animation-speed(3s);
     }
 }
 

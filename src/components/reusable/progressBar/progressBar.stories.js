@@ -7,7 +7,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: '',
+      url: 'https://www.figma.com/design/AIX4LLzoDHnFCXzQCiPHJk/Vienna?node-id=4308-129&node-type=canvas&t=NIQViMjgDrgdLGdi-0',
     },
   },
   argTypes: {
@@ -15,13 +15,8 @@ export default {
     max: { control: 'number' },
     status: {
       control: 'select',
-      options: ['active', 'success', 'error'],
+      options: ['indeterminate', 'active', 'success', 'error'],
     },
-    animationSpeed: {
-      control: 'select',
-      options: ['slow', 'normal', 'fast'],
-    },
-    simulate: { control: 'boolean' },
   },
 };
 
@@ -30,10 +25,10 @@ const Template = (args) => html`
     .value=${args.value}
     .max=${args.max}
     .label=${args.label}
+    .informationalTooltipText=${args.informationalTooltipText}
     .helperText=${args.helperText}
+    .inlineLoadStatusVisible=${args.inlineLoadStatusVisible}
     .status=${args.status}
-    .animationSpeed=${args.animationSpeed}
-    .simulate=${args.simulate}
     .unit=${args.unit}
   ></kyn-progress-bar>
 `;
@@ -43,36 +38,39 @@ Default.args = {
   status: 'active',
   value: 65,
   max: 100,
-  label: 'Default Progress Bar',
-  animationSpeed: 'normal',
-  helperText: '',
-  simulate: false,
-  unit: '%',
+  label: 'Default Progress Bar (Fixed % Value)',
+  informationalTooltipText: 'Example tooltip text.',
+  helperText: 'Optional helper text.',
+  inlineLoadStatusVisible: true,
+  unit: '',
 };
 
 export const Indeterminate = Template.bind({});
 Indeterminate.args = {
   ...Default.args,
-  status: 'active',
+  status: 'indeterminate',
   label: 'Indeterminate Progress Bar',
   value: null,
 };
 
 export const Simulated = Template.bind({});
 Simulated.args = {
+  ...Default.args,
   status: 'active',
+  inlineLoadStatusVisible: true,
+  informationalTooltipText: '',
+  helperText: '',
   max: 728,
-  label: 'Simulated Progress Bar (MB)',
-  animationSpeed: 'fast',
-  simulate: true,
+  label: 'Simulated Full Progression (MB)',
   unit: 'MB',
+  value: null,
 };
 
 export const Error = Template.bind({});
 Error.args = {
   ...Default.args,
+  status: 'error',
   label: 'Error Progress Bar',
   helperText: 'Error: Operation failed.',
   value: 100,
-  status: 'error',
 };
