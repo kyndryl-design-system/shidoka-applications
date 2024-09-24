@@ -154,6 +154,10 @@ export class ProgressBar extends LitElement {
       ></kd-icon>`;
     }
 
+    if (this.value && this._progress >= this.value) {
+      return;
+    }
+
     if (this.showInlineLoadStatus) {
       return html`<p>
         <span>${this._percentage}%</span
@@ -229,13 +233,14 @@ export class ProgressBar extends LitElement {
     }
 
     const step = () => {
-      const targetValue = this.value ?? this.max;
+      const targetValue =
+        this.value !== null && this.value !== undefined ? this.value : this.max;
       const advancement = 1;
       const difference = targetValue - this._progress;
       const delta =
         Math.min(Math.abs(difference), advancement) * Math.sign(difference);
 
-      if (Math.abs(difference) > 0.1) {
+      if (this._progress < targetValue && Math.abs(difference) > 0.1) {
         this._progress += delta;
         this._animationFrameId = requestAnimationFrame(step);
       } else {
@@ -244,7 +249,7 @@ export class ProgressBar extends LitElement {
       }
     };
 
-    this._animationFrameId = requestAnimationFrame(step);
+    step();
   }
 
   private cancelAnimation() {
