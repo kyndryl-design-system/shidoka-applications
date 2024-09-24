@@ -11,6 +11,7 @@ export default {
     },
   },
   argTypes: {
+    showInlineLoadStatus: { control: 'boolean' },
     value: { control: 'number' },
     max: { control: 'number' },
     status: {
@@ -22,26 +23,26 @@ export default {
 
 const Template = (args) => html`
   <kyn-progress-bar
+    .showInlineLoadStatus=${args.showInlineLoadStatus}
+    .status=${args.status}
     .value=${args.value}
     .max=${args.max}
     .label=${args.label}
     .informationalTooltipText=${args.informationalTooltipText}
     .helperText=${args.helperText}
-    .inlineLoadStatusVisible=${args.inlineLoadStatusVisible}
-    .status=${args.status}
     .unit=${args.unit}
   ></kyn-progress-bar>
 `;
 
 export const Default = Template.bind({});
 Default.args = {
+  showInlineLoadStatus: true,
   status: 'active',
   value: 65,
   max: 100,
   label: 'Default Progress Bar (Fixed % Value)',
   informationalTooltipText: 'Example tooltip text.',
   helperText: 'Optional helper text.',
-  inlineLoadStatusVisible: true,
   unit: '',
 };
 
@@ -57,7 +58,6 @@ export const SimulatedSuccess = Template.bind({});
 SimulatedSuccess.args = {
   ...Default.args,
   status: 'active',
-  inlineLoadStatusVisible: true,
   informationalTooltipText: '',
   helperText: '',
   max: 728,
