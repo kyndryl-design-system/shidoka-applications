@@ -18,6 +18,7 @@ export default {
     showInlineLoadStatus: { control: 'boolean' },
     value: { control: 'number' },
     max: { control: 'number' },
+    showActiveHelperText: { control: 'boolean' },
     status: {
       control: 'select',
       options: ['active', 'success', 'error'],
@@ -28,6 +29,7 @@ export default {
 const Template = (args) => html`
   <kyn-progress-bar
     .showInlineLoadStatus=${args.showInlineLoadStatus}
+    .showActiveHelperText=${args.showActiveHelperText}
     .status=${args.status}
     .value=${args.value}
     .max=${args.max}
@@ -36,12 +38,12 @@ const Template = (args) => html`
     .helperText=${args.helperText}
     .unit=${args.unit}
   >
-    ${args.tooltipContent
-      ? html`<kyn-tooltip slot="tooltip">
+    ${args.unnamed
+      ? html`<kyn-tooltip slot="unnamed">
           <span slot="anchor"
             ><kd-icon .icon=${informationIcon}></kd-icon
           ></span>
-          ${args.tooltipContent}
+          ${args.unnamed}
         </kyn-tooltip>`
       : ''}
   </kyn-progress-bar>
@@ -50,6 +52,7 @@ const Template = (args) => html`
 export const Default = Template.bind({});
 Default.args = {
   showInlineLoadStatus: false,
+  showActiveHelperText: true,
   status: 'active',
   value: 65,
   max: 100,
@@ -57,7 +60,7 @@ Default.args = {
   helperText: '',
   progressBarId: 'example-progress-bar',
   unit: '%',
-  tooltipContent: 'Example tooltip content.',
+  unnamed: 'Example tooltip content.',
 };
 
 export const Indeterminate = Template.bind({});
@@ -65,7 +68,7 @@ Indeterminate.args = {
   ...Default.args,
   value: null,
   max: null,
-  tooltipContent: '',
+  helperText: '',
   label: 'Indeterminate Progress Bar',
 };
 
@@ -77,7 +80,6 @@ SimulatedSuccess.args = {
   value: null,
   max: 650,
   label: 'Simulated Successful Progression (MB)',
-  tooltipContent: '',
   helperText: '',
   unit: 'MB',
 };
@@ -90,5 +92,4 @@ Error.args = {
   label: 'Error Progress Bar',
   helperText: 'Error: Operation failed.',
   value: 100,
-  tooltipContent: 'Error tooltip content.',
 };

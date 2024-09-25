@@ -19,7 +19,7 @@ enum ProgressStatus {
 
 /**
  * `<kyn-progress-bar>` -- progress bar status indicator component.
- * @slot tooltip - Slot for tooltip.
+ * @slot unnamed - Slot for tooltip.
  */
 @customElement('kyn-progress-bar')
 export class ProgressBar extends LitElement {
@@ -52,6 +52,10 @@ export class ProgressBar extends LitElement {
   /** Sets optional helper text that appears underneath `<progress>` element. */
   @property({ type: String })
   helperText = '';
+
+  /** Controls whether to show default helper text for active state. */
+  @property({ type: Boolean })
+  showActiveHelperText = true;
 
   /** Sets the unit for progress measurement (ex: 'MB', 'GB', '%') */
   @property({ type: String })
@@ -143,7 +147,7 @@ export class ProgressBar extends LitElement {
     return html`<div class="progress-bar__upper-container">
       <label class="progress-bar__label label-text" for=${this.progressBarId}>
         <span>${this.label}</span>
-        <slot name="tooltip"></slot>
+        <slot name="unnamed"></slot>
       </label>
       ${currentValue != null
         ? html`<div class=${`progress-bar__status-icon`}>
@@ -199,19 +203,18 @@ export class ProgressBar extends LitElement {
   }
 
   private getHelperText() {
-    const inferredIndeterminate = !this.value && !this.max;
-    if (inferredIndeterminate) {
-      return '';
-    }
-
     if (this.helperText) {
       return this.helperText;
     }
 
-    if (this.status === ProgressStatus.ACTIVE) {
+    if (this._isIndeterminate && !this.helperText) {
+      return '';
+    }
+
+    if (this.status === ProgressStatus.ACTIVE && this.showActiveHelperText) {
       return this._running
         ? `${this._progress}${this.unit} of ${this.max}${this.unit}`
-        : 'Fetching assets...';
+        : '';
     }
 
     return '';
