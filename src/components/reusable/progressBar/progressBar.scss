@@ -27,6 +27,23 @@ $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default)
     }
 }
 
+@keyframes progress-loading {
+    50% {
+        background-position-x: -115%;
+    }
+}
+
+.progress-bar__main:indeterminate::-moz-progress-bar {
+    background-image: repeating-linear-gradient(90deg,
+            var(--progress-color) -1%,
+            var(--progress-color) 10%,
+            transparent 10%,
+            transparent 90%);
+    background-size: 200%;
+    background-position-x: 15%;
+    animation: progress-loading 3s ease-in-out infinite;
+}
+
 :host {
     display: inline-block;
     width: 100%;
@@ -35,6 +52,8 @@ $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default)
 ::slotted([slot="unnamed"]) {
     display: inline-block;
     line-height: 8px;
+    margin-left: 0;
+    margin-top: 1px;
 }
 
 .progress-bar {
@@ -51,10 +70,6 @@ $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default)
         display: flex;
         align-items: center;
         margin: 0;
-
-        span {
-            margin-right: 8px;
-        }
     }
 
     &__helper-text {
@@ -109,7 +124,7 @@ $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default)
 
         &::-webkit-progress-value,
         &::-moz-progress-bar {
-            transition: width 0.3s ease-in-out;
+            animation: indeterminate 3s ease-in-out infinite;
         }
 
         &:indeterminate {

@@ -70,6 +70,7 @@ Indeterminate.args = {
   max: null,
   helperText: '',
   label: 'Indeterminate Progress Bar',
+  unnamed: '',
 };
 
 export const SimulatedSuccess = Template.bind({});
@@ -82,6 +83,7 @@ SimulatedSuccess.args = {
   label: 'Simulated Successful Progression (MB)',
   helperText: '',
   unit: 'MB',
+  unnamed: '',
 };
 
 export const Error = Template.bind({});
