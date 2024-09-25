@@ -1,3 +1,10 @@
+## [1.38.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.38.0...v1.38.1) (2024-09-25)
+
+
+### Bug Fixes
+
+* **tags,notificaiton:** Minor accessiblity updates for tags and notificaiton components ([#240](https://github.com/kyndryl-design-system/shidoka-applications/issues/240)) ([f239b8e](https://github.com/kyndryl-design-system/shidoka-applications/commit/f239b8ece7a998c1774bf0f3dedb9cbc98a983c8))
+
 # [1.38.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.37.1...v1.38.0) (2024-09-20)
 
 
