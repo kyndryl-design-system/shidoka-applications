@@ -36,39 +36,40 @@ const Template = (args) => html`
 
 export const Default = Template.bind({});
 Default.args = {
-  showInlineLoadStatus: true,
+  showInlineLoadStatus: false,
   status: 'active',
   value: 65,
   max: 100,
   label: 'Default Progress Bar (Fixed % Value)',
   informationalTooltipText: 'Example tooltip text.',
-  helperText: 'Optional helper text.',
-  unit: '',
+  helperText: '',
+  unit: '%',
 };
 
 export const Indeterminate = Template.bind({});
 Indeterminate.args = {
   ...Default.args,
   status: 'indeterminate',
-  label: 'Indeterminate Progress Bar',
   value: null,
+  label: 'Indeterminate Progress Bar',
 };
 
 export const SimulatedSuccess = Template.bind({});
 SimulatedSuccess.args = {
-  ...Default.args,
+  showInlineLoadStatus: true,
   status: 'active',
-  informationalTooltipText: '',
-  helperText: '',
+  value: null,
   max: 728,
   label: 'Simulated Successful Progression (MB)',
+  informationalTooltipText: '',
+  helperText: '',
   unit: 'MB',
-  value: null,
 };
 
 export const Error = Template.bind({});
 Error.args = {
   ...Default.args,
+  showInlineLoadStatus: true,
   status: 'error',
   label: 'Error Progress Bar',
   helperText: 'Error: Operation failed.',

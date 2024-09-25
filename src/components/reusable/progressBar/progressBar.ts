@@ -100,24 +100,25 @@ export class ProgressBar extends LitElement {
   }
 
   private renderProgressBar(
-    currentStatus: string,
+    currentStatus: ProgressStatus,
     currentValue: number | null
   ) {
     const isIndeterminate = this.status === ProgressStatus.INDETERMINATE;
-    const resolvedValue =
-      currentStatus === ProgressStatus.SUCCESS ||
-      currentStatus === ProgressStatus.ERROR
-        ? this.max
-        : currentValue;
+    const resolvedValue = [
+      ProgressStatus.SUCCESS,
+      ProgressStatus.ERROR,
+    ].includes(currentStatus as ProgressStatus)
+      ? this.max
+      : currentValue;
 
     return html`<progress
       class="${this.getProgressBarClasses(currentStatus)}"
       max=${this.max}
       value=${ifDefined(
-        !isIndeterminate && resolvedValue !== null ? resolvedValue : undefined
+        !isIndeterminate && resolvedValue != null ? resolvedValue : undefined
       )}
       aria-valuenow=${ifDefined(
-        !isIndeterminate && resolvedValue !== null ? resolvedValue : undefined
+        !isIndeterminate && resolvedValue != null ? resolvedValue : undefined
       )}
       aria-valuemin="0"
       aria-valuemax=${this.max}
@@ -154,10 +155,6 @@ export class ProgressBar extends LitElement {
       ></kd-icon>`;
     }
 
-    if (this.value && this._progress >= this.value) {
-      return;
-    }
-
     if (this.showInlineLoadStatus) {
       return html`<p>
         <span>${this._percentage}%</span
@@ -166,29 +163,6 @@ export class ProgressBar extends LitElement {
     }
 
     return null;
-  }
-
-  private getHelperText() {
-    if (this.helperText) {
-      return this.helperText;
-    }
-
-    if (this.status === ProgressStatus.ACTIVE) {
-      return this._running
-        ? `${this._progress.toFixed(1)}${this.unit} of ${this.max.toFixed(1)}${
-            this.unit
-          }`
-        : 'Fetching assets...';
-    }
-
-    return '';
-  }
-
-  private getProgressBarClasses(status: string) {
-    return classMap({
-      'progress-bar__main': true,
-      [`progress-bar__${status}`]: true,
-    });
   }
 
   override firstUpdated() {
@@ -207,6 +181,33 @@ export class ProgressBar extends LitElement {
         this.startProgress();
       }
     }
+  }
+
+  private getProgressBarClasses(status: string) {
+    return classMap({
+      'progress-bar__main': true,
+      [`progress-bar__${status}`]: true,
+    });
+  }
+
+  private getHelperText() {
+    if (this.helperText) {
+      return this.helperText;
+    }
+
+    if (this.status === ProgressStatus.ACTIVE) {
+      const formattedProgress =
+        this.unit === '%'
+          ? this._progress.toFixed(0)
+          : this._progress.toFixed(1);
+      const formattedMax =
+        this.unit === '%' ? this.max.toFixed(0) : this.max.toFixed(1);
+      return this._running
+        ? `${formattedProgress}${this.unit} of ${formattedMax}${this.unit}`
+        : 'Fetching assets...';
+    }
+
+    return '';
   }
 
   private getCurrentStatus(currentValue: number | null): ProgressStatus {
