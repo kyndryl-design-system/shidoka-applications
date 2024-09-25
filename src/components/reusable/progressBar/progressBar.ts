@@ -8,12 +8,10 @@ import '../loaders';
 import '../tooltip';
 import checkmarkIcon from '@carbon/icons/es/checkmark--filled/16';
 import errorIcon from '@carbon/icons/es/error--filled/16';
-import informationIcon from '@carbon/icons/es/information/16';
 
 import ProgressBarStyles from './progressBar.scss';
 
 enum ProgressStatus {
-  INDETERMINATE = 'indeterminate',
   ACTIVE = 'active',
   SUCCESS = 'success',
   ERROR = 'error',
@@ -21,6 +19,7 @@ enum ProgressStatus {
 
 /**
  * `<kyn-progress-bar>` -- progress bar status indicator component.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-progress-bar')
 export class ProgressBar extends LitElement {
@@ -30,9 +29,13 @@ export class ProgressBar extends LitElement {
   @property({ type: Boolean })
   showInlineLoadStatus = true;
 
+  /** Sets progress bar html id property for accessibility (ex: `example-progress-bar`). */
+  @property({ type: String })
+  progressBarId = '';
+
   /** Sets progress bar status mode. */
   @property({ type: String })
-  status: 'indeterminate' | 'active' | 'success' | 'error' = 'indeterminate';
+  status: 'active' | 'success' | 'error' = 'active';
 
   /** Sets initial progress bar value (optionally hard-coded). */
   @property({ type: Number })
@@ -45,10 +48,6 @@ export class ProgressBar extends LitElement {
   /** Sets optional progress bar label. */
   @property({ type: String })
   label = '';
-
-  /** Sets optionally displayed information icon and tooltip content. */
-  @property({ type: String })
-  informationalTooltipText = '';
 
   /** Sets optional helper text that appears underneath `<progress>` element. */
   @property({ type: String })
@@ -76,6 +75,12 @@ export class ProgressBar extends LitElement {
   @state()
   private _running = false;
 
+  /** Value set to indicate absence of value and max to identify indeterminate state.
+   * @internal
+   */
+  @state()
+  private _isIndeterminate = false;
+
   /** Controls timeout interval for incremented bar animation.
    * @internal
    */
@@ -85,15 +90,18 @@ export class ProgressBar extends LitElement {
     const currentValue = this.status === 'active' ? this._progress : this.value;
     const currentStatus = this.getCurrentStatus(currentValue);
     const helperText = this.getHelperText();
+    this._isIndeterminate = !currentValue && !this.max;
 
     this._percentage = Math.round((this._progress / this.max) * 100);
 
     return html`
-      ${this.renderProgressBarLabel(currentStatus)}
+      ${this.renderProgressBarLabel(currentStatus, currentValue)}
       ${this.renderProgressBar(currentStatus, currentValue)}
       ${helperText
-        ? html`<div class=${`progress-bar__helper-text ${currentStatus}`}>
-            <h2>${helperText}</h2>
+        ? html`<div
+            class=${`progress-bar__helper-text helper-text ${currentStatus}`}
+          >
+            <span>${helperText}</span>
           </div>`
         : null}
     `;
@@ -103,22 +111,24 @@ export class ProgressBar extends LitElement {
     currentStatus: ProgressStatus,
     currentValue: number | null
   ) {
-    const isIndeterminate = this.status === ProgressStatus.INDETERMINATE;
     const resolvedValue = [
       ProgressStatus.SUCCESS,
       ProgressStatus.ERROR,
-    ].includes(currentStatus as ProgressStatus)
+    ].includes(currentStatus)
       ? this.max
       : currentValue;
 
     return html`<progress
+      id=${this.progressBarId}
       class="${this.getProgressBarClasses(currentStatus)}"
       max=${this.max}
       value=${ifDefined(
-        !isIndeterminate && resolvedValue != null ? resolvedValue : undefined
+        this._isIndeterminate ? this.value ?? undefined : Number(resolvedValue)
       )}
       aria-valuenow=${ifDefined(
-        !isIndeterminate && resolvedValue != null ? resolvedValue : undefined
+        !this._isIndeterminate && typeof resolvedValue === 'number'
+          ? resolvedValue
+          : undefined
       )}
       aria-valuemin="0"
       aria-valuemax=${this.max}
@@ -126,20 +136,17 @@ export class ProgressBar extends LitElement {
     ></progress>`;
   }
 
-  private renderProgressBarLabel(currentStatus: ProgressStatus) {
+  private renderProgressBarLabel(
+    currentStatus: ProgressStatus,
+    currentValue: number | null
+  ) {
     return html`<div class="progress-bar__upper-container">
-      <h2 class="progress-bar__label">
+      <label class="progress-bar__label label-text" for=${this.progressBarId}>
         <span>${this.label}</span>
-        ${this.informationalTooltipText
-          ? html`<kyn-tooltip
-              ><span slot="anchor"
-                ><kd-icon .icon=${informationIcon}></kd-icon></span
-              >${this.informationalTooltipText}</kyn-tooltip
-            >`
-          : null}
-      </h2>
-      ${currentStatus !== ProgressStatus.INDETERMINATE
-        ? html`<div class=${`progress-bar__status-icon ${currentStatus}`}>
+        <slot name="tooltip"></slot>
+      </label>
+      ${currentValue != null
+        ? html`<div class=${`progress-bar__status-icon`}>
             ${this.renderStatusIconOrLoader(currentStatus)}
           </div>`
         : null}
@@ -149,6 +156,7 @@ export class ProgressBar extends LitElement {
   private renderStatusIconOrLoader(currentStatus: ProgressStatus) {
     if (currentStatus !== ProgressStatus.ACTIVE) {
       return html`<kd-icon
+        class=${`${currentStatus}-icon`}
         .icon=${currentStatus === ProgressStatus.SUCCESS
           ? checkmarkIcon
           : errorIcon}
@@ -191,19 +199,18 @@ export class ProgressBar extends LitElement {
   }
 
   private getHelperText() {
+    const inferredIndeterminate = !this.value && !this.max;
+    if (inferredIndeterminate) {
+      return '';
+    }
+
     if (this.helperText) {
       return this.helperText;
     }
 
     if (this.status === ProgressStatus.ACTIVE) {
-      const formattedProgress =
-        this.unit === '%'
-          ? this._progress.toFixed(0)
-          : this._progress.toFixed(1);
-      const formattedMax =
-        this.unit === '%' ? this.max.toFixed(0) : this.max.toFixed(1);
       return this._running
-        ? `${formattedProgress}${this.unit} of ${formattedMax}${this.unit}`
+        ? `${this._progress}${this.unit} of ${this.max}${this.unit}`
         : 'Fetching assets...';
     }
 
@@ -215,17 +222,15 @@ export class ProgressBar extends LitElement {
       return ProgressStatus.ERROR;
     }
 
-    if (this.status === ProgressStatus.SUCCESS) {
+    if (this.status === ProgressStatus.SUCCESS || currentValue === this.max) {
       return ProgressStatus.SUCCESS;
     }
 
     if (this.status === ProgressStatus.ACTIVE) {
-      return currentValue !== null && currentValue < this.max
-        ? ProgressStatus.ACTIVE
-        : ProgressStatus.SUCCESS;
+      return ProgressStatus.ACTIVE;
     }
 
-    return ProgressStatus.INDETERMINATE;
+    return ProgressStatus.SUCCESS;
   }
 
   private startProgress() {
@@ -238,11 +243,11 @@ export class ProgressBar extends LitElement {
         this.value !== null && this.value !== undefined ? this.value : this.max;
       const advancement = 1;
       const difference = targetValue - this._progress;
-      const delta =
+      const progressStep =
         Math.min(Math.abs(difference), advancement) * Math.sign(difference);
 
       if (this._progress < targetValue && Math.abs(difference) > 0.1) {
-        this._progress += delta;
+        this._progress += progressStep;
         this._animationFrameId = requestAnimationFrame(step);
       } else {
         this._progress = targetValue;

@@ -1,5 +1,9 @@
 import { html } from 'lit';
+
 import './index';
+import '../tooltip';
+
+import informationIcon from '@carbon/icons/es/information/16';
 
 export default {
   title: 'Components/Progress Bar',
@@ -16,7 +20,7 @@ export default {
     max: { control: 'number' },
     status: {
       control: 'select',
-      options: ['indeterminate', 'active', 'success', 'error'],
+      options: ['active', 'success', 'error'],
     },
   },
 };
@@ -28,10 +32,19 @@ const Template = (args) => html`
     .value=${args.value}
     .max=${args.max}
     .label=${args.label}
-    .informationalTooltipText=${args.informationalTooltipText}
+    .progressBarId=${args.progressBarId}
     .helperText=${args.helperText}
     .unit=${args.unit}
-  ></kyn-progress-bar>
+  >
+    ${args.tooltipContent
+      ? html`<kyn-tooltip slot="tooltip">
+          <span slot="anchor"
+            ><kd-icon .icon=${informationIcon}></kd-icon
+          ></span>
+          ${args.tooltipContent}
+        </kyn-tooltip>`
+      : ''}
+  </kyn-progress-bar>
 `;
 
 export const Default = Template.bind({});
@@ -41,27 +54,30 @@ Default.args = {
   value: 65,
   max: 100,
   label: 'Default Progress Bar (Fixed % Value)',
-  informationalTooltipText: 'Example tooltip text.',
   helperText: '',
+  progressBarId: 'example-progress-bar',
   unit: '%',
+  tooltipContent: 'Example tooltip content.',
 };
 
 export const Indeterminate = Template.bind({});
 Indeterminate.args = {
   ...Default.args,
-  status: 'indeterminate',
   value: null,
+  max: null,
+  tooltipContent: '',
   label: 'Indeterminate Progress Bar',
 };
 
 export const SimulatedSuccess = Template.bind({});
 SimulatedSuccess.args = {
+  ...Default.args,
   showInlineLoadStatus: true,
   status: 'active',
   value: null,
-  max: 728,
+  max: 650,
   label: 'Simulated Successful Progression (MB)',
-  informationalTooltipText: '',
+  tooltipContent: '',
   helperText: '',
   unit: 'MB',
 };
@@ -74,4 +90,5 @@ Error.args = {
   label: 'Error Progress Bar',
   helperText: 'Error: Operation failed.',
   value: 100,
+  tooltipContent: 'Error tooltip content.',
 };

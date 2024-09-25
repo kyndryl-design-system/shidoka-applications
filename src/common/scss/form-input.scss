@@ -33,6 +33,22 @@
   display: flex;
 }
 
+.helper-text {
+  margin: 0;
+
+  span {
+    color: var(--kd-color-text-secondary);
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  &.error {
+    span {
+      color: var(--kd-color-text-error);
+    }
+  }
+}
+
 input,
 .input-custom,
 textarea {
@@ -85,6 +101,14 @@ textarea {
 
 .error-icon {
   color: var(--kd-color-text-error);
+
+  [disabled] & {
+    color: var(--kd-color-text-disabled);
+  }
+}
+
+.success-icon {
+  color: var(--kd-color-background-success);
 
   [disabled] & {
     color: var(--kd-color-text-disabled);
