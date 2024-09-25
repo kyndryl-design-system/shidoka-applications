@@ -53,7 +53,7 @@ export class ProgressBar extends LitElement {
   @property({ type: String })
   label = '';
 
-  /** Sets optional helper text that appears underneath `<progress>` element. */
+  /** Sets optional helper text that appears underneath progress bar element. */
   @property({ type: String })
   helperText = '';
 
@@ -122,45 +122,53 @@ export class ProgressBar extends LitElement {
       ? this.max
       : currentValue;
 
-    return html`<progress
-      id=${this.progressBarId}
-      class="${this.getProgressBarClasses(currentStatus)}"
-      max=${this.max}
-      value=${ifDefined(
-        this._isIndeterminate ? this.value ?? undefined : Number(resolvedValue)
-      )}
-      aria-valuenow=${ifDefined(
-        !this._isIndeterminate && typeof resolvedValue === 'number'
-          ? resolvedValue
-          : undefined
-      )}
-      aria-valuemin="0"
-      aria-valuemax=${this.max}
-      aria-label=${this.label}
-    ></progress>`;
+    return html`
+      <div
+        class="progress-bar__container"
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuenow=${ifDefined(
+          resolvedValue !== null ? resolvedValue : undefined
+        )}
+        aria-label=${this.label}
+      >
+        <div class="progress-bar__background">
+          <div
+            class=${classMap(this.getProgressBarClasses(currentStatus))}
+            style=${this._isIndeterminate
+              ? 'width: 55px;'
+              : currentStatus === 'error'
+              ? 'width: 100%;'
+              : `width: ${this._percentage}%;`}
+          ></div>
+        </div>
+      </div>
+    `;
   }
 
   private renderProgressBarLabel(
     currentStatus: ProgressStatus,
     currentValue: number | null
   ) {
-    return html`<div class="progress-bar__upper-container">
-      <label class="progress-bar__label label-text" for=${this.progressBarId}>
-        <span>${this.label}</span>
-        <slot name="unnamed"></slot>
-      </label>
-      ${currentValue != null
-        ? html`<div class=${`progress-bar__status-icon`}>
-            ${this.renderStatusIconOrLoader(currentStatus)}
-          </div>`
-        : null}
-    </div>`;
+    return html`
+      <div class="progress-bar__upper-container">
+        <label class="progress-bar__label label-text" for=${this.progressBarId}>
+          <span>${this.label}</span>
+          <slot name="unnamed"></slot>
+        </label>
+        ${currentValue != null
+          ? html`<div class="progress-bar__status-icon">
+              ${this.renderStatusIconOrLoader(currentStatus)}
+            </div>`
+          : null}
+      </div>
+    `;
   }
 
   private renderStatusIconOrLoader(currentStatus: ProgressStatus) {
     if (currentStatus !== ProgressStatus.ACTIVE) {
       return html`<kd-icon
-        class=${`${currentStatus}-icon`}
+        class="${currentStatus}-icon"
         .icon=${currentStatus === ProgressStatus.SUCCESS
           ? checkmarkIcon
           : errorIcon}
@@ -169,8 +177,8 @@ export class ProgressBar extends LitElement {
 
     if (this.showInlineLoadStatus) {
       return html`<p>
-        <span>${this._percentage}%</span
-        ><kyn-loader-inline status="active"></kyn-loader-inline>
+        <span>${this._percentage}%</span>
+        <kyn-loader-inline status="active"></kyn-loader-inline>
       </p>`;
     }
 
@@ -196,10 +204,11 @@ export class ProgressBar extends LitElement {
   }
 
   private getProgressBarClasses(status: string) {
-    return classMap({
+    return {
       'progress-bar__main': true,
+      'is-indeterminate': this._isIndeterminate,
       [`progress-bar__${status}`]: true,
-    });
+    };
   }
 
   private getHelperText() {

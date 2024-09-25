@@ -14,34 +14,7 @@ $progress-bar-background: var(--kd-color-background-inverse-hover);
 $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default);
 
 @mixin progress-bar-color($color) {
-    &::-webkit-progress-value {
-        background-color: $color;
-    }
-
-    &::-moz-progress-bar {
-        background-color: $color;
-    }
-
-    &::-ms-fill {
-        background-color: $color;
-    }
-}
-
-@keyframes progress-loading {
-    50% {
-        background-position-x: -115%;
-    }
-}
-
-.progress-bar__main:indeterminate::-moz-progress-bar {
-    background-image: repeating-linear-gradient(90deg,
-            var(--progress-color) -1%,
-            var(--progress-color) 10%,
-            transparent 10%,
-            transparent 90%);
-    background-size: 200%;
-    background-position-x: 15%;
-    animation: progress-loading 3s ease-in-out infinite;
+    background-color: $color;
 }
 
 :host {
@@ -104,74 +77,40 @@ $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default)
     }
 
     &__active {
-
-        &::-webkit-progress-value,
-        &::-moz-progress-bar {
-            animation: active-slide 400ms linear infinite;
-        }
+        animation: active-slide 400ms linear infinite;
     }
 
-    &__main {
+    &__container {
         width: 100%;
-        padding: 0;
-        border: none;
-        height: 4px;
-        margin: 8px 0;
-        overflow: hidden;
+        margin: 8px 0 10px;
+        height: $progress-bar-height;
         background-color: $progress-bar-background;
         border-radius: $progress-bar-radius;
         position: relative;
+        overflow: hidden;
+    }
 
-        &::-webkit-progress-value,
-        &::-moz-progress-bar {
-            animation: indeterminate 3s ease-in-out infinite;
-        }
+    &__background {
+        width: 100%;
+        height: 100%;
+        background-color: $progress-bar-background;
+        border-radius: $progress-bar-radius;
+        overflow: hidden;
+        position: relative;
+    }
 
-        &:indeterminate {
-            background-color: $progress-bar-background;
-            border-radius: $progress-bar-radius;
-            overflow: hidden;
+    &__main {
+        height: 100%;
+        background-color: map-get($progress-bar-status-colors, default);
+        border-radius: 0 $progress-bar-radius $progress-bar-radius 0;
+        transition: width 0.3s ease-in-out;
 
-            &::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: -55px;
-                width: 55px;
-                background: $progress-bar-indeterminate-color;
-                animation: indeterminate 3s ease-in-out infinite;
-            }
-
-            &::-moz-progress-bar {
-                width: 55px;
-                background-color: $progress-bar-indeterminate-color;
-                animation: indeterminate 3s ease-in-out infinite;
-            }
-
-            &::-webkit-progress-value {
-                background-color: $progress-bar-indeterminate-color;
-                animation: indeterminate 3s ease-in-out infinite;
-            }
-        }
-
-        @keyframes indeterminate {
-            0% {
-                left: -55px;
-            }
-
-            50% {
-                left: calc(100% - 55px);
-            }
-
-            100% {
-                left: -55px;
-            }
-        }
-
-        &::-webkit-progress-bar {
-            background-color: $progress-bar-background;
-            border-radius: $progress-bar-radius;
+        &.is-indeterminate {
+            width: 55px;
+            position: absolute;
+            left: -55px;
+            @include progress-bar-color(map-get($progress-bar-status-colors, default));
+            animation: indeterminate 3s linear infinite;
         }
 
         @include progress-bar-color(map-get($progress-bar-status-colors, default));
@@ -183,6 +122,20 @@ $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default)
 
     &__error {
         @include progress-bar-color(map-get($progress-bar-status-colors, error));
+    }
+}
+
+@keyframes indeterminate {
+    0% {
+        left: -55px;
+    }
+
+    50% {
+        left: calc(100% - 55px);
+    }
+
+    100% {
+        left: -55px;
     }
 }
 
