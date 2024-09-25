@@ -29,6 +29,10 @@ export class ProgressBar extends LitElement {
   @property({ type: Boolean })
   showInlineLoadStatus = true;
 
+  /** Controls whether to show default helper text for active state. */
+  @property({ type: Boolean })
+  showActiveHelperText = true;
+
   /** Sets progress bar html id property for accessibility (ex: `example-progress-bar`). */
   @property({ type: String })
   progressBarId = '';
@@ -52,10 +56,6 @@ export class ProgressBar extends LitElement {
   /** Sets optional helper text that appears underneath `<progress>` element. */
   @property({ type: String })
   helperText = '';
-
-  /** Controls whether to show default helper text for active state. */
-  @property({ type: Boolean })
-  showActiveHelperText = true;
 
   /** Sets the unit for progress measurement (ex: 'MB', 'GB', '%') */
   @property({ type: String })

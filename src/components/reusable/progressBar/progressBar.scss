@@ -32,7 +32,7 @@ $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default)
     width: 100%;
 }
 
-::slotted([slot="tooltip"]) {
+::slotted([slot="unnamed"]) {
     display: inline-block;
     line-height: 8px;
 }
@@ -99,7 +99,7 @@ $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default)
     &__main {
         width: 100%;
         padding: 0;
-        border: revert;
+        border: none;
         height: 4px;
         margin: 8px 0;
         overflow: hidden;
@@ -109,7 +109,6 @@ $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default)
 
         &::-webkit-progress-value,
         &::-moz-progress-bar {
-            border-radius: 0 $progress-bar-radius 0 $progress-bar-radius;
             transition: width 0.3s ease-in-out;
         }
 
@@ -124,7 +123,6 @@ $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default)
                 top: 0;
                 bottom: 0;
                 left: -55px;
-                border-radius: 4px;
                 width: 55px;
                 background: $progress-bar-indeterminate-color;
                 animation: indeterminate 3s ease-in-out infinite;
@@ -132,6 +130,11 @@ $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default)
 
             &::-moz-progress-bar {
                 width: 55px;
+                background-color: $progress-bar-indeterminate-color;
+                animation: indeterminate 3s ease-in-out infinite;
+            }
+
+            &::-webkit-progress-value {
                 background-color: $progress-bar-indeterminate-color;
                 animation: indeterminate 3s ease-in-out infinite;
             }
