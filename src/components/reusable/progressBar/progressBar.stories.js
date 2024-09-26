@@ -58,7 +58,7 @@ Default.args = {
   value: 65,
   max: 100,
   label: 'Default Progress Bar (Fixed % Value)',
-  helperText: '',
+  helperText: 'Optional helper text.',
   progressBarId: 'example-progress-bar',
   unit: '%',
   unnamed: 'Example tooltip content.',
