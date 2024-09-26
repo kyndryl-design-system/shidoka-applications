@@ -128,10 +128,10 @@ export class ProgressBar extends LitElement {
       <div
         class="progress-bar__container"
         role="progressbar"
-        aria-valuemin="0"
-        aria-valuenow=${ifDefined(
-          resolvedValue !== null ? resolvedValue : undefined
-        )}
+        aria-valuemin=${ifDefined(this.value ?? 0)}
+        aria-valuemax=${ifDefined(this.max ?? 100)}
+        aria-valuenow=${ifDefined(Number(resolvedValue))}
+        aria-valuetext=${`${resolvedValue}% complete`}
         aria-label=${this.label}
       >
         <div class="progress-bar__background">
