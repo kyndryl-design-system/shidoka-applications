@@ -126,6 +126,7 @@ export class ProgressBar extends LitElement {
 
     return html`
       <div
+        id=${this.progressBarId}
         class="progress-bar__container"
         role="progressbar"
         aria-valuemin=${ifDefined(this.value ?? 0)}
