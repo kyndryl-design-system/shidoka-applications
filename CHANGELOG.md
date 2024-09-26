@@ -1,3 +1,10 @@
+## [1.38.3-beta.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.38.3-beta.1...v1.38.3-beta.2) (2024-09-26)
+
+
+### Bug Fixes
+
+* **rollup:** test rollup-plugin-node-externals ([186ed17](https://github.com/kyndryl-design-system/shidoka-applications/commit/186ed17aab743a7c2774fed193eaf54145c2ece5))
+
 ## [1.38.3-beta.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.38.2...v1.38.3-beta.1) (2024-09-26)
 
 
