@@ -22,6 +22,13 @@ $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default)
     width: 100%;
 }
 
+::slotted(kyn-tooltip) {
+    display: inline-block;
+    line-height: 8px;
+    margin-left: 0;
+    margin-top: 1px;
+}
+
 .progress-bar {
     &__upper-container {
         display: flex;
@@ -104,7 +111,7 @@ $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default)
             position: absolute;
             left: 0;
             @include progress-bar-color(map-get($progress-bar-status-colors, default));
-            animation: indeterminate 2s ease-in-out infinite;
+            animation: indeterminate 3s ease-in-out infinite;
         }
 
         @include progress-bar-color(map-get($progress-bar-status-colors, default));
