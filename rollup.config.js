@@ -5,6 +5,7 @@ import del from 'rollup-plugin-delete';
 // import typescript from 'rollup-plugin-typescript2';
 import typescript from '@rollup/plugin-typescript';
 import renameNodeModules from 'rollup-plugin-rename-node-modules';
+import { nodeExternals } from 'rollup-plugin-node-externals';
 import postcss from 'rollup-plugin-postcss';
 import litcss from 'rollup-plugin-postcss-lit';
 import InlineSvg from 'rollup-plugin-inline-svg';
@@ -30,12 +31,13 @@ export default {
     // },
   },
   // external: [/shidoka-foundation\/components/],
-  external: [/node_modules/],
+  // external: [/node_modules/],
   plugins: [
     del({ targets: 'dist/*' }),
     multiInput(),
     resolve(),
-    // renameNodeModules(),
+    nodeExternals(),
+    renameNodeModules(),
     // peerDepsExternal(),
     copy({
       targets: [
