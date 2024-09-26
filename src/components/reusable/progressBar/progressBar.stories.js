@@ -41,8 +41,8 @@ const Template = (args) => html`
   >
     ${args.unnamed
       ? html`<kyn-tooltip slot="unnamed">
-          <span slot="anchor"
-            ><kd-icon .icon=${informationIcon}></kd-icon
+          <span slot="anchor" style="display:inline-block;margin-top:4px;"
+            ><kd-icon .icon=${informationIcon} part="info-icon"></kd-icon
           ></span>
           ${args.unnamed}
         </kyn-tooltip>`

@@ -27,11 +27,11 @@ export class ProgressBar extends LitElement {
 
   /** Sets visibility of optional inline load status spinner. */
   @property({ type: Boolean })
-  showInlineLoadStatus = true;
+  showInlineLoadStatus = false;
 
   /** Controls whether to show default helper text for active state. */
   @property({ type: Boolean })
-  showActiveHelperText = true;
+  showActiveHelperText = false;
 
   /** Sets progress bar html id property for accessibility (ex: `example-progress-bar`). */
   @property({ type: String })
@@ -103,9 +103,9 @@ export class ProgressBar extends LitElement {
       ${this.renderProgressBar(currentStatus, currentValue)}
       ${helperText
         ? html`<div
-            class=${`progress-bar__helper-text helper-text ${currentStatus}`}
+            class=${`progress-bar__helper-text options-text ${currentStatus}`}
           >
-            <span>${helperText}</span>
+            ${helperText}
           </div>`
         : null}
     `;
