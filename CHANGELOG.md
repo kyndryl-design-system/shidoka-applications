@@ -1,3 +1,10 @@
+## [1.38.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.38.1...v1.38.2) (2024-09-26)
+
+
+### Bug Fixes
+
+* **tags:** updated hex value to color token ([#239](https://github.com/kyndryl-design-system/shidoka-applications/issues/239)) ([2edcd8f](https://github.com/kyndryl-design-system/shidoka-applications/commit/2edcd8f2c4ed60e2f6bebf8e700b83104597b4d2))
+
 ## [1.38.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.38.0...v1.38.1) (2024-09-25)
 
 
