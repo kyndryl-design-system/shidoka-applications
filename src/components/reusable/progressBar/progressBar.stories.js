@@ -37,6 +37,7 @@ const Template = (args) => html`
     .progressBarId=${args.progressBarId}
     .helperText=${args.helperText}
     .unit=${args.unit}
+    unnamed=${args.unnamed}
   >
     ${args.unnamed
       ? html`<kyn-tooltip slot="unnamed">
@@ -51,7 +52,7 @@ const Template = (args) => html`
 
 export const Default = Template.bind({});
 Default.args = {
-  showInlineLoadStatus: false,
+  showInlineLoadStatus: true,
   showActiveHelperText: true,
   status: 'active',
   value: 65,
@@ -66,6 +67,7 @@ Default.args = {
 export const Indeterminate = Template.bind({});
 Indeterminate.args = {
   ...Default.args,
+  showActiveHelperText: false,
   value: null,
   max: null,
   helperText: '',
@@ -89,9 +91,8 @@ SimulatedSuccess.args = {
 export const Error = Template.bind({});
 Error.args = {
   ...Default.args,
-  showInlineLoadStatus: true,
   status: 'error',
   label: 'Error Progress Bar',
   helperText: 'Error: Operation failed.',
-  value: 100,
+  value: 22,
 };

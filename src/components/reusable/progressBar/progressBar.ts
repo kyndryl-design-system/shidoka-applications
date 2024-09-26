@@ -19,7 +19,7 @@ enum ProgressStatus {
 
 /**
  * `<kyn-progress-bar>` -- progress bar status indicator component.
- * @slot unnamed - Slot for tooltip.
+ * @slot unnamed - Slot for tooltip text content.
  */
 @customElement('kyn-progress-bar')
 export class ProgressBar extends LitElement {
@@ -73,12 +73,6 @@ export class ProgressBar extends LitElement {
   @state()
   private _progress = 0;
 
-  /** Value indicates whether or not the bar is in animated motion, dynamic helper text values are proportionally incrementing.
-   * @internal
-   */
-  @state()
-  private _running = false;
-
   /** Value set to indicate absence of value and max to identify indeterminate state.
    * @internal
    */
@@ -94,9 +88,14 @@ export class ProgressBar extends LitElement {
     const currentValue = this.status === 'active' ? this._progress : this.value;
     const currentStatus = this.getCurrentStatus(currentValue);
     const helperText = this.getHelperText();
-    this._isIndeterminate = !currentValue && !this.max;
 
-    this._percentage = Math.round((this._progress / this.max) * 100);
+    this._isIndeterminate =
+      (currentValue === null || currentValue === undefined) &&
+      (this.max === null || this.max === undefined);
+
+    this._percentage = this.max
+      ? Math.round((this._progress / this.max) * 100)
+      : 0;
 
     return html`
       ${this.renderProgressBarLabel(currentStatus, currentValue)}
@@ -115,12 +114,14 @@ export class ProgressBar extends LitElement {
     currentStatus: ProgressStatus,
     currentValue: number | null
   ) {
-    const resolvedValue = [
-      ProgressStatus.SUCCESS,
-      ProgressStatus.ERROR,
-    ].includes(currentStatus)
-      ? this.max
-      : currentValue;
+    const resolvedValue =
+      currentStatus === ProgressStatus.ACTIVE ? currentValue : this.max;
+
+    const widthStyle = this._isIndeterminate
+      ? 'width: 55px;'
+      : currentStatus === ProgressStatus.ERROR && currentValue != null
+      ? `width: ${currentValue}%`
+      : `width: ${this._percentage}%`;
 
     return html`
       <div
@@ -135,11 +136,7 @@ export class ProgressBar extends LitElement {
         <div class="progress-bar__background">
           <div
             class=${classMap(this.getProgressBarClasses(currentStatus))}
-            style=${this._isIndeterminate
-              ? 'width: 55px;'
-              : currentStatus === 'error'
-              ? 'width: 100%;'
-              : `width: ${this._percentage}%;`}
+            style=${widthStyle}
           ></div>
         </div>
       </div>
@@ -156,16 +153,19 @@ export class ProgressBar extends LitElement {
           <span>${this.label}</span>
           <slot name="unnamed"></slot>
         </label>
-        ${currentValue != null
+        ${!this._isIndeterminate
           ? html`<div class="progress-bar__status-icon">
-              ${this.renderStatusIconOrLoader(currentStatus)}
+              ${this.renderStatusIconOrLoader(currentStatus, currentValue)}
             </div>`
           : null}
       </div>
     `;
   }
 
-  private renderStatusIconOrLoader(currentStatus: ProgressStatus) {
+  private renderStatusIconOrLoader(
+    currentStatus: ProgressStatus,
+    currentValue: number | null
+  ) {
     if (currentStatus !== ProgressStatus.ACTIVE) {
       return html`<kd-icon
         class="${currentStatus}-icon"
@@ -175,7 +175,10 @@ export class ProgressBar extends LitElement {
       ></kd-icon>`;
     }
 
-    if (this.showInlineLoadStatus) {
+    const hardcodedProgressReached =
+      currentValue != null && this.value != null && currentValue >= this.value;
+
+    if (this.showInlineLoadStatus && !hardcodedProgressReached) {
       return html`<p>
         <span>${this._percentage}%</span>
         <kyn-loader-inline status="active"></kyn-loader-inline>
@@ -194,16 +197,14 @@ export class ProgressBar extends LitElement {
   override updated(changedProperties: Map<string, any>) {
     if (changedProperties.has('status') || changedProperties.has('value')) {
       this.cancelAnimation();
-      this._running = false;
 
       if (this.status === ProgressStatus.ACTIVE) {
-        this._running = true;
         this.startProgress();
       }
     }
   }
 
-  private getProgressBarClasses(status: string) {
+  private getProgressBarClasses(status: ProgressStatus) {
     return {
       'progress-bar__main': true,
       'is-indeterminate': this._isIndeterminate,
@@ -216,14 +217,12 @@ export class ProgressBar extends LitElement {
       return this.helperText;
     }
 
-    if (this._isIndeterminate && !this.helperText) {
+    if (this._isIndeterminate) {
       return '';
     }
 
-    if (this.status === ProgressStatus.ACTIVE && this.showActiveHelperText) {
-      return this._running
-        ? `${this._progress}${this.unit} of ${this.max}${this.unit}`
-        : '';
+    if (this.showActiveHelperText) {
+      return `${this._progress}${this.unit} of ${this.max}${this.unit}`;
     }
 
     return '';
@@ -238,27 +237,21 @@ export class ProgressBar extends LitElement {
       return ProgressStatus.SUCCESS;
     }
 
-    if (this.status === ProgressStatus.ACTIVE) {
-      return ProgressStatus.ACTIVE;
-    }
-
-    return ProgressStatus.SUCCESS;
+    return ProgressStatus.ACTIVE;
   }
 
   private startProgress() {
-    if (this._animationFrameId !== null) {
-      cancelAnimationFrame(this._animationFrameId);
-    }
+    this.cancelAnimation();
+
+    const targetValue = this.value ?? this.max;
+    const advancement = 1;
 
     const step = () => {
-      const targetValue =
-        this.value !== null && this.value !== undefined ? this.value : this.max;
-      const advancement = 1;
       const difference = targetValue - this._progress;
       const progressStep =
-        Math.min(Math.abs(difference), advancement) * Math.sign(difference);
+        Math.sign(difference) * Math.min(Math.abs(difference), advancement);
 
-      if (this._progress < targetValue && Math.abs(difference) > 0.1) {
+      if (Math.abs(difference) > 0.1) {
         this._progress += progressStep;
         this._animationFrameId = requestAnimationFrame(step);
       } else {
