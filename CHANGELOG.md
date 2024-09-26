@@ -1,3 +1,10 @@
+## [1.38.3-beta.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.38.2...v1.38.3-beta.1) (2024-09-26)
+
+
+### Bug Fixes
+
+* **rollup:** test external node_modules ([aff9d5d](https://github.com/kyndryl-design-system/shidoka-applications/commit/aff9d5d57a343202d458013d831dffcf5dbdd8be))
+
 ## [1.38.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.38.1...v1.38.2) (2024-09-26)
 
 
