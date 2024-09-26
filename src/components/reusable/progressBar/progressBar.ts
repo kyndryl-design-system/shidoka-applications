@@ -85,7 +85,8 @@ export class ProgressBar extends LitElement {
   private _animationFrameId: number | null = null;
 
   override render() {
-    const currentValue = this.status === 'active' ? this._progress : this.value;
+    const currentValue =
+      this.status === ProgressStatus.ACTIVE ? this._progress : this.value;
     const currentStatus = this.getCurrentStatus(currentValue);
     const helperText = this.getHelperText();
 
