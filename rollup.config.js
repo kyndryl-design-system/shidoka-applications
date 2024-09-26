@@ -21,13 +21,21 @@ export default {
     sourcemap: true,
     preserveModules: true,
     preserveModulesRoot: 'src',
+    // entryFileNames: (chunkInfo) => {
+    //   if (chunkInfo.name.includes('node_modules')) {
+    //     return chunkInfo.name.replace('node_modules', 'external') + '.js';
+    //   }
+
+    //   return '[name].js';
+    // },
   },
-  external: [/shidoka-foundation\/components/],
+  // external: [/shidoka-foundation\/components/],
+  external: [/node_modules/],
   plugins: [
     del({ targets: 'dist/*' }),
     multiInput(),
     resolve(),
-    renameNodeModules(),
+    // renameNodeModules(),
     // peerDepsExternal(),
     copy({
       targets: [
