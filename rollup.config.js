@@ -25,7 +25,7 @@ export default {
   external: [/shidoka-foundation\/components/],
   plugins: [
     del({ targets: 'dist/*' }),
-    multiInput.default(),
+    multiInput(),
     resolve(),
     renameNodeModules(),
     // peerDepsExternal(),
