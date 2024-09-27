@@ -1,3 +1,12 @@
+## [1.39.1-beta.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.39.0...v1.39.1-beta.1) (2024-09-27)
+
+
+### Bug Fixes
+
+* **rollup:** disable preserveModules test ([0c390f3](https://github.com/kyndryl-design-system/shidoka-applications/commit/0c390f39326e4ccf2d94b4d9fa350e4838450919))
+* **rollup:** test external node_modules ([aff9d5d](https://github.com/kyndryl-design-system/shidoka-applications/commit/aff9d5d57a343202d458013d831dffcf5dbdd8be))
+* **rollup:** test rollup-plugin-node-externals ([186ed17](https://github.com/kyndryl-design-system/shidoka-applications/commit/186ed17aab743a7c2774fed193eaf54145c2ece5))
+
 # [1.39.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.38.2...v1.39.0) (2024-09-27)
 
 ### Features
