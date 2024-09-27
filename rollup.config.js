@@ -2,43 +2,35 @@ import multiInput from 'rollup-plugin-multi-input';
 import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 import del from 'rollup-plugin-delete';
-// import typescript from 'rollup-plugin-typescript2';
 import typescript from '@rollup/plugin-typescript';
-import renameNodeModules from 'rollup-plugin-rename-node-modules';
-import { nodeExternals } from 'rollup-plugin-node-externals';
 import postcss from 'rollup-plugin-postcss';
 import litcss from 'rollup-plugin-postcss-lit';
 import InlineSvg from 'rollup-plugin-inline-svg';
 import copy from 'rollup-plugin-copy';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-// import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 
 export default {
-  input: ['./src/**/index.ts'],
+  input: [
+    './src/index.ts',
+    './src/common/**/*.ts',
+    './src/components/**/!(*.stories|*.sample).ts',
+  ],
   output: {
     dir: 'dist',
     format: 'es',
     sourcemap: true,
-    preserveModules: true,
-    preserveModulesRoot: 'src',
-    // entryFileNames: (chunkInfo) => {
-    //   if (chunkInfo.name.includes('node_modules')) {
-    //     return chunkInfo.name.replace('node_modules', 'external') + '.js';
-    //   }
-
-    //   return '[name].js';
-    // },
+    manualChunks(id) {
+      if (id.includes('node_modules')) {
+        return 'vendor';
+      }
+    },
   },
-  // external: [/shidoka-foundation\/components/],
-  // external: [/node_modules/],
+  external: [/shidoka-foundation\/components/],
   plugins: [
     del({ targets: 'dist/*' }),
     multiInput(),
     resolve(),
-    nodeExternals(),
-    renameNodeModules(),
-    // peerDepsExternal(),
     copy({
       targets: [
         { src: 'package.json', dest: 'dist' },
