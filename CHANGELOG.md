@@ -1,3 +1,10 @@
+# [1.39.0](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.38.2...v1.39.0) (2024-09-27)
+
+
+### Features
+
+* **progress-bar:** component constructed with nested divs, instead of <progress> element ([#241](https://github.com/kyndryl-design-system/shidoka-applications/issues/241)) ([9906eca](https://github.com/kyndryl-design-system/shidoka-applications/commit/9906eca8150d45ef14be8bbef8a18bff7e34312a))
+
 ## [1.38.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.38.1...v1.38.2) (2024-09-26)
 
 
