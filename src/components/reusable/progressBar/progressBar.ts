@@ -91,8 +91,10 @@ export class ProgressBar extends LitElement {
     const helperText = this.getHelperText();
 
     this._isIndeterminate =
-      (currentValue === null || currentValue === undefined) &&
-      (this.max === null || this.max === undefined);
+      currentValue === null ||
+      currentValue === undefined ||
+      this.max === null ||
+      this.max === undefined;
 
     this._percentage = this.max
       ? Math.round((this._progress / this.max) * 100)
