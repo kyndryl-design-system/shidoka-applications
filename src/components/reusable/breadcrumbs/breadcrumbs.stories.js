@@ -3,7 +3,6 @@ import '@kyndryl-design-system/shidoka-foundation/components/link';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '../overflowMenu';
 import './';
-import backIcon from '@carbon/icons/es/arrow--left/16';
 
 export default {
   title: 'Components/Breadcrumbs',

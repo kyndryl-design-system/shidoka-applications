@@ -5,8 +5,6 @@ import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/link';
 
-import closeIcon from '@carbon/icons/es/close/16';
-
 import '../overflowMenu';
 
 const notificationBodyMsg =
@@ -45,7 +43,7 @@ export const Notification = {
     href: '#',
     type: 'normal',
     tagStatus: 'default',
-    assistiveNotificationTypeText: "Clickable notification",
+    assistiveNotificationTypeText: 'Clickable notification',
     unRead: false,
   },
   render: (args) => {
@@ -85,11 +83,11 @@ export const Notification = {
 export const Inline = {
   args: {
     notificationTitle: 'Notification Title',
-    assistiveNotificationTypeText: "Inline info notification",
+    assistiveNotificationTypeText: 'Inline info notification',
     notificationRole: 'status',
     type: 'inline',
     tagStatus: 'info',
-    closeBtnDescription: "Close",
+    closeBtnDescription: 'Close',
     hideCloseButton: false,
   },
   render: (args) => {
@@ -157,7 +155,7 @@ export const Toast = {
   ],
   args: {
     notificationTitle: 'Notification Title',
-    assistiveNotificationTypeText: "Information toast",
+    assistiveNotificationTypeText: 'Information toast',
     notificationRole: 'alert',
     tagStatus: 'info',
     hideCloseButton: false,
