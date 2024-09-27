@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { PAGE_SIZE_LABEL } from './constants';
+import { PAGE_SIZE_LABEL } from './constants.sample';
 import styles from './pagination.scss';
 
 import './pagination-items-range';

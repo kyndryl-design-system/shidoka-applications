@@ -8,10 +8,10 @@ import searchIcon from '@carbon/icons/es/search/24';
 
 import settingsIcon from '@carbon/icons/es/settings/16';
 import '../index';
-import './column-setting';
+import './column-setting.sample';
 import '../../sideDrawer';
 import '../../textInput';
-import { dataForColumns as rows } from './ultils';
+import { dataForColumns as rows } from './ultils.sample';
 
 @customElement('story-table-settings')
 class StoryTableSettings extends LitElement {

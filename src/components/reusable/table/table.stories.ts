@@ -10,10 +10,10 @@ import { action } from '@storybook/addon-actions';
 
 // Kyndryl Design System Components and Icons
 import './index';
-import './story-helpers/action-menu';
-import './story-helpers/table-story';
-import './story-helpers/table.settings';
-import { characters, dataForColumns } from './story-helpers/ultils';
+import './story-helpers/action-menu.sample';
+import './story-helpers/table-story.sample';
+import './story-helpers/table.settings.sample';
+import { characters, dataForColumns } from './story-helpers/ultils.sample';
 import allData from './story-helpers/table-data.json';
 import maleIcon from '@carbon/icons/es/gender--male/16';
 import femaleIcon from '@carbon/icons/es/gender--female/16';
@@ -54,7 +54,7 @@ const parameters = {
       code: `
       // For guidance on how to construct this code, please refer to the 'table-story.ts' file.
       // You can find it at the following path:
-      // https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/table/story-helpers/table-story.ts
+      // https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/table/story-helpers/table-story.sample.ts
       `,
     },
   },

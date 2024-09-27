@@ -1,8 +1,8 @@
 import { html } from 'lit';
 import './index';
-import './sample/gridstack.newWidget';
+import './sample/gridstack.newWidget.sample';
 import { Config } from '../../../common/helpers/gridstack';
-import sampleLayout from './sample-layout';
+import sampleLayout from './layout.sample';
 import { action } from '@storybook/addon-actions';
 
 import '@kyndryl-design-system/shidoka-charts/components/chart';

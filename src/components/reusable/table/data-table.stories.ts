@@ -14,8 +14,8 @@ import maleIcon from '@carbon/icons/es/gender--male/16';
 import femaleIcon from '@carbon/icons/es/gender--female/16';
 import './index';
 import './data-table';
-import './story-helpers/action-menu';
-import './story-helpers/batch-actions';
+import './story-helpers/action-menu.sample';
+import './story-helpers/batch-actions.sample';
 import { SORT_DIRECTION } from './defs';
 import allData from './story-helpers/table-data.json';
 

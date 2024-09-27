@@ -10,7 +10,7 @@ import femaleIcon from '@carbon/icons/es/gender--female/16';
 import successIcon from '@carbon/icons/es/checkmark--filled/20';
 import warningIcon from '@carbon/icons/es/warning--filled/20';
 import failedIcon from '@carbon/icons/es/misuse/20';
-import './action-menu';
+import './action-menu.sample';
 import '../../pagination';
 
 import {
@@ -20,7 +20,7 @@ import {
   sortByFName,
   sortByLName,
   extractData,
-} from './ultils';
+} from './ultils.sample';
 
 import '../index';
 import { Table } from '../table';

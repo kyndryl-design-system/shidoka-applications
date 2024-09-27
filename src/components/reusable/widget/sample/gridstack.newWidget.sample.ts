@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { Config } from '../../../../common/helpers/gridstack';
-import sampleLayout from '../sample-layout';
+import sampleLayout from '../layout.sample';
 import { action } from '@storybook/addon-actions';
 import '../index';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
