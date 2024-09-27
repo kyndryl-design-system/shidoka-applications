@@ -1,3 +1,10 @@
+## [1.39.1-beta.2](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.39.1-beta.1...v1.39.1-beta.2) (2024-09-27)
+
+
+### Bug Fixes
+
+* **rollup:** remove sample code from build ([6fc8490](https://github.com/kyndryl-design-system/shidoka-applications/commit/6fc84906eb2a0d4ff032c863c044280277da2656))
+
 ## [1.39.1-beta.1](https://github.com/kyndryl-design-system/shidoka-applications/compare/v1.39.0...v1.39.1-beta.1) (2024-09-27)
 
 
