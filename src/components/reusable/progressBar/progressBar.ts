@@ -224,7 +224,11 @@ export class ProgressBar extends LitElement {
     }
 
     if (this.showActiveHelperText) {
-      return `${this._progress}${this.unit} of ${this.max}${this.unit}`;
+      const progressValue = this._progress ?? 0;
+      const maxValue = this.max ?? 0;
+      const unit = this.unit || '';
+
+      return `${progressValue}${unit} of ${maxValue}${unit}`;
     }
 
     return '';
