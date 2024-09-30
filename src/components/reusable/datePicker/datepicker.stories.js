@@ -16,6 +16,14 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    mode: {
+      options: ['single', 'multiple', 'range', 'time'],
+      control: { type: 'select' },
+    },
+    datePickerType: {
+      options: ['default', 'date-time'],
+      control: { type: 'select' },
+    },
     minDate: {
       control: { type: 'text' },
     },
@@ -29,35 +37,48 @@ export default {
 };
 
 const args = {
-  name: '',
-  invalidText: '',
+  nameAttr: 'Date',
+  dateFormat: 'Y-m-d H:i',
   size: 'md',
-  value: '',
+  value: null,
   datePickerType: 'date-time',
+  warnText: '',
+  invalidText: '',
+  altFormat: 'F j, Y',
+  disable: [],
+  enable: false,
+  mode: 'single',
   caption: '',
   required: false,
-  disabled: false,
+  datePickerDisabled: false,
   minDate: '',
   maxDate: '',
   step: '',
-  unnamed: '',
+  unnamed: 'Date Picker',
 };
 
 export const DatePicker = {
   args,
   render: (args) => {
     return html`<kyn-date-picker
-      name="${args.name}"
-      invalid-text="${args.invalidText}"
-      size="${args.size}"
-      value="${args.value}"
-      date-picker-type="${args.datePickerType}"
-      caption="${args.caption}"
+      .nameAttr="${args.nameAttr}"
+      .dateFormat="${args.dateFormat}"
+      .size="${args.size}"
+      .value="${args.value}"
+      .datePickerType="${args.datePickerType}"
+      .warnText="${args.warnText}"
+      .invalidText="${args.invalidText}"
+      .altFormat=${args.altFormat}
+      .disable="${args.disable}"
+      .enable="${args.enable}"
+      .mode="${args.mode}"
+      .caption="${args.caption}"
       ?required="${args.required}"
-      ?disabled="${args.disabled}"
-      min-date="${args.minDate}"
-      max-date="${args.maxDate}"
-      step="${args.step}"
-    ></kyn-date-picker>`;
+      ?datePickerDisabled="${args.datePickerDisabled}"
+      .minDate="${args.minDate}"
+      .maxDate="${args.maxDate}"
+      .step="${args.step}"
+      >${args.unnamed}</kyn-date-picker
+    >`;
   },
 };
