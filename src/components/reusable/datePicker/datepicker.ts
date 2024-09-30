@@ -181,7 +181,7 @@ export class DatePicker extends FormMixin(LitElement) {
     if (this.inputEl) {
       this.initializeFlatpickr();
     } else {
-      console.error('Input element not found for flatpickr initialization.');
+      console.error('Input element not found.');
     }
   }
 
@@ -194,7 +194,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
   initializeFlatpickr(): void {
     if (!this.inputEl) {
-      console.error('Input element not found for Flatpickr initialization.');
+      console.error('Input element not found.');
       return;
     }
 
@@ -253,8 +253,6 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   handleFlatpickrChange(selectedDates: Date[], dateStr: string): void {
-    console.log('Flatpickr onChange triggered:', { selectedDates, dateStr });
-
     let selectedDate: number | null = null;
 
     if (this.datePickerType === 'date-time') {
@@ -280,7 +278,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
   handleChange(e: Event): void {
     const target = e.target as HTMLInputElement;
-    console.log('Input change event triggered:', target.value);
 
     const parsedDate = Date.parse(target.value);
     if (!isNaN(parsedDate)) {
