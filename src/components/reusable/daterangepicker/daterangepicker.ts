@@ -2,7 +2,7 @@ import { html, LitElement } from 'lit';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { customElement, query } from 'lit/decorators.js';
 
-@customElement('kyn-time-picker')
+@customElement('kyn-date-range-picker')
 export class DateRangePicker extends FormMixin(LitElement) {
   /**
    * Queries the <input> DOM element.
