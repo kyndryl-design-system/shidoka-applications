@@ -1,12 +1,20 @@
 import { html } from 'lit';
 import './index';
-import { action } from '@storybook/addon-actions';
+
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { action } from '@storybook/addon-actions';
+
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 export default {
   title: 'Components/Timepicker',
   component: 'kyn-time-picker',
+  parameters: {
+    design: {
+      type: 'figma',
+      url: '',
+    },
+  },
   argTypes: {
     size: {
       options: ['sm', 'md', 'lg'],
@@ -65,12 +73,5 @@ export const TimePicker = {
         ${args.unnamed}
       </kyn-time-picker>
     `;
-  },
-};
-
-TimePicker.parameters = {
-  design: {
-    type: 'figma',
-    url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=508%3A142377&mode=dev',
   },
 };

@@ -1,11 +1,8 @@
 import { html } from 'lit';
 import './index';
-import { action } from '@storybook/addon-actions';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { createOptionsArray } from '../../../common/helpers/helpers';
-
-import { DATE_PICKER_TYPES } from '../datePicker/defs';
-const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
+import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'Components/Date Range Picker',
@@ -13,7 +10,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=508%3A142381&mode=dev',
+      url: '',
     },
   },
   argTypes: {
@@ -36,27 +33,19 @@ export default {
     endDate: {
       control: { type: 'text' },
     },
-    datePickerType: {
-      options: createSelectOptions(DATE_PICKER_TYPES),
-      control: { type: 'select', labels: { null: DATE_PICKER_TYPES.SINGLE } },
-      table: {
-        defaultValue: { summary: DATE_PICKER_TYPES.SINGLE },
-      },
-    },
   },
 };
 
 const args = {
-  unnamed: 'Date',
+  name: '',
+  invalidText: '',
   size: 'md',
-  name: 'dateRangePicker',
   startDate: '',
   endDate: '',
   caption: '',
   required: false,
   disabled: false,
   datePickerType: 'single',
-  invalidText: '',
   warnText: '',
   minDate: undefined,
   maxDate: undefined,
@@ -64,59 +53,31 @@ const args = {
   textStrings: {
     requiredText: 'Required',
   },
+  unnamed: '',
 };
 
-export const DateRangePicker = {
+export const DateRange = {
   args,
   render: (args) => {
-    return html`
-      <kyn-date-range-picker
-        size=${args.size}
-        name=${args.name}
-        datePickerType=${args.datePickerType}
-        caption=${args.caption}
-        ?required=${args.required}
-        ?disabled=${args.disabled}
-        invalidText=${args.invalidText}
-        warnText=${args.warnText}
-        .textStrings=${args.textStrings}
-        startDate=${args.startDate}
-        endDate=${args.endDate}
-        minDate=${ifDefined(args.minDate)}
-        maxDate=${ifDefined(args.maxDate)}
-        step=${ifDefined(args.step)}
-        @on-input=${(e) => action(e.type)(e)}
-        @keydown=${(e) => e.stopPropagation()}
-      >
-        ${args.unnamed}
-      </kyn-date-range-picker>
-    `;
-  },
-};
-
-export const DateTimeRangePicker = {
-  args: { ...args, datePickerType: 'date-time' },
-  render: (args) => {
-    return html`
-      <kyn-date-range-picker
-        size=${args.size}
-        name=${args.name}
-        datePickerType=${args.datePickerType}
-        caption=${args.caption}
-        ?required=${args.required}
-        ?disabled=${args.disabled}
-        invalidText=${args.invalidText}
-        warnText=${args.warnText}
-        startDate=${args.startDate}
-        endDate=${args.endDate}
-        minDate=${ifDefined(args.minDate)}
-        maxDate=${ifDefined(args.maxDate)}
-        step=${ifDefined(args.step)}
-        @on-input=${(e) => action(e.type)(e)}
-        @keydown=${(e) => e.stopPropagation()}
-      >
-        ${args.unnamed}
-      </kyn-date-range-picker>
-    `;
+    return html` <kyn-date-range-picker
+      size=${args.size}
+      name=${args.name}
+      datePickerType=${args.datePickerType}
+      caption=${args.caption}
+      ?required=${args.required}
+      ?disabled=${args.disabled}
+      invalidText=${args.invalidText}
+      warnText=${args.warnText}
+      .textStrings=${args.textStrings}
+      startDate=${args.startDate}
+      endDate=${args.endDate}
+      minDate=${ifDefined(args.minDate)}
+      maxDate=${ifDefined(args.maxDate)}
+      step=${ifDefined(args.step)}
+      @on-input=${(e) => action(e.type)(e)}
+      @keydown=${(e) => e.stopPropagation()}
+    >
+      ${args.unnamed}
+    </kyn-date-range-picker>`;
   },
 };
