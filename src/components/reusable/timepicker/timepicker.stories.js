@@ -1,10 +1,7 @@
 import { html } from 'lit';
 import './index';
-
-import { ifDefined } from 'lit/directives/if-defined.js';
-import { action } from '@storybook/addon-actions';
-
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'Components/Timepicker',
@@ -26,52 +23,44 @@ export default {
     maxTime: {
       control: { type: 'text' },
     },
-    step: {
+    defaultDate: {
       control: { type: 'text' },
     },
   },
 };
 
-const args = {
-  unnamed: 'Time',
-  size: 'md',
-  name: 'timepicker',
-  value: '',
-  caption: '',
-  required: false,
-  disabled: false,
-  invalidText: '',
-  warnText: '',
-  minTime: undefined,
-  maxTime: undefined,
-  step: undefined,
-  textStrings: {
-    requiredText: 'Required',
-  },
+const Template = (args) => {
+  return html`<kyn-time-picker
+    .nameAttr="${args.nameAttr}"
+    .size="${args.size}"
+    .value="${args.value}"
+    .warnText="${args.warnText}"
+    .invalidText="${args.invalidText}"
+    .caption="${args.caption}"
+    .defaultDate="${args.defaultDate}"
+    .minTime="${args.minTime}"
+    .maxTime="${args.maxTime}"
+    ?required="${args.required}"
+    ?timepickerDisabled="${args.timepickerDisabled}"
+    ?twentyFourHourFormat="${args.twentyFourHourFormat}"
+    @on-change=${(e) => action(e.type)(e)}
+    >${args.unnamed}</kyn-time-picker
+  >`;
 };
 
-export const TimePicker = {
-  args,
-  render: (args) => {
-    return html`
-      <kyn-time-picker
-        size=${args.size}
-        name=${args.name}
-        value=${args.value}
-        caption=${args.caption}
-        ?required=${args.required}
-        ?disabled=${args.disabled}
-        invalidText=${args.invalidText}
-        warnText=${args.warnText}
-        .textStrings=${args.textStrings}
-        minTime=${ifDefined(args.minTime)}
-        maxTime=${ifDefined(args.maxTime)}
-        step=${ifDefined(args.step)}
-        @on-input=${(e) => action(e.type)(e)}
-        @keydown=${(e) => e.stopPropagation()}
-      >
-        ${args.unnamed}
-      </kyn-time-picker>
-    `;
-  },
+export const Default = Template.bind({});
+Default.args = {
+  nameAttr: 'default-timepicker',
+  size: 'md',
+  value: null,
+  warnText: '',
+  invalidText: '',
+  caption: '',
+  defaultDate: '',
+  minTime: '',
+  maxTime: '',
+  required: false,
+  timepickerDisabled: false,
+  twentyFourHourFormat: false,
+  unnamed: 'Timepicker',
 };

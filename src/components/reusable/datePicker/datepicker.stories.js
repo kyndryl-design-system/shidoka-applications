@@ -17,8 +17,20 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    dateFormat: {
+      options: [
+        'Y-m-d',
+        'm-d-Y',
+        'd-m-Y',
+        'Y-m-d H:i',
+        'Y-m-d H:i:s',
+        'm-d-Y H:i:s',
+        'd-m-Y H:i:s',
+      ],
+      control: { type: 'select' },
+    },
     mode: {
-      options: ['single', 'multiple', 'range', 'time'],
+      options: ['single', 'multiple'],
       control: { type: 'select' },
     },
     minDate: {
@@ -45,9 +57,9 @@ const Template = (args) => {
     .caption="${args.caption}"
     ?required="${args.required}"
     ?datePickerDisabled="${args.datePickerDisabled}"
+    ?twentyFourHourFormat="${args.twentyFourHourFormat}"
     .minDate="${args.minDate}"
     .maxDate="${args.maxDate}"
-    .step="${args.step}"
     @on-change=${(e) => action(e.type)(e)}
     >${args.unnamed}</kyn-date-picker
   >`;
@@ -63,11 +75,12 @@ Default.args = {
   invalidText: '',
   altFormat: 'F j, Y',
   disable: [],
-  enable: false,
+  enable: [],
   mode: 'single',
   caption: '',
   required: false,
   datePickerDisabled: false,
+  twentyFourHourFormat: false,
   minDate: '',
   maxDate: '',
   unnamed: 'Date Only Picker',

@@ -52,7 +52,7 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: Number })
   override value: number | null = null;
 
-  /** Sets date warning text */
+  /** Sets date warning text. */
   @property({ type: String })
   warnText = '';
 
@@ -64,17 +64,17 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   altFormat = '';
 
-  /** Sets flatpcikr options setting to disable specific dates */
+  /** Sets flatpcikr options setting to disable specific dates. */
   @property({ type: Array })
   disable: (string | number | Date)[] = [];
 
-  /** Sets flatpcikr options setting to enable specific dates */
+  /** Sets flatpcikr options setting to enable specific dates. */
   @property({ type: Array })
   enable: (string | number | Date)[] = [];
 
-  /** Sets flatpickr mode to select single(default), multiple dates. */
+  /** Sets flatpickr mode to select single (default), multiple dates. */
   @property({ type: String })
-  mode: 'single' | 'multiple' | 'range' = 'single';
+  mode: 'single' | 'multiple' = 'single';
 
   /** Sets caption to be displayed under primary date picker elements. */
   @property({ type: String })
@@ -87,6 +87,9 @@ export class DatePicker extends FormMixin(LitElement) {
   /** Sets entire datepicker form element to enabled/disabled. */
   @property({ type: Boolean })
   datePickerDisabled = false;
+
+  /** Sets 24 hour formatting true/false. */
+  twentyFourHourFormat = false;
 
   /** Sets lower boundary of datepicker date selection. */
   @property({ type: String })
@@ -196,8 +199,12 @@ export class DatePicker extends FormMixin(LitElement) {
 
   override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
-    if (this.flatpickrInstance) {
-      this.updateFlatpickrOptions();
+    if (changedProperties.has('dateFormat')) {
+      if (this.flatpickrInstance) {
+        this.updateFlatpickrOptions();
+      } else {
+        this.initializeFlatpickr();
+      }
     }
   }
 
@@ -222,7 +229,7 @@ export class DatePicker extends FormMixin(LitElement) {
         );
       }
     } else {
-      console.error('Flatpickr instance was not created.');
+      console.error('Unable to create flatpickr instance');
     }
   }
 
@@ -233,21 +240,57 @@ export class DatePicker extends FormMixin(LitElement) {
       enableTime: this.dateFormat.includes('H:'),
       allowInput: false,
       clickOpens: true,
-      time_24hr: false,
+      time_24hr: this.twentyFourHourFormat,
       weekNumbers: false,
       wrap: false,
       locale: English,
       altFormat: this.altFormat,
-      minDate: this.minDate,
-      maxDate: this.maxDate,
     };
+
+    if (this.minDate) {
+      options.minDate = this.minDate;
+    }
+
+    if (this.maxDate) {
+      options.maxDate = this.maxDate;
+    }
+
+    if (this.enable.length > 0) {
+      options.enable = this.enable;
+    }
+
+    if (this.disable.length > 0) {
+      options.disable = this.disable;
+    }
 
     return options;
   }
 
   updateFlatpickrOptions(): void {
     if (this.flatpickrInstance) {
-      this.flatpickrInstance.set(this.getFlatpickrOptions());
+      const currentDate = this.flatpickrInstance.selectedDates[0];
+
+      this.flatpickrInstance.destroy();
+
+      const newOptions = this.getFlatpickrOptions();
+      this.flatpickrInstance = flatpickr(this.inputEl, newOptions) as Instance;
+
+      if (currentDate) {
+        this.flatpickrInstance.setDate(currentDate);
+      }
+
+      if (this.flatpickrInstance.calendarContainer) {
+        this.flatpickrInstance.calendarContainer.setAttribute(
+          'role',
+          'application'
+        );
+        this.flatpickrInstance.calendarContainer.setAttribute(
+          'aria-label',
+          'calendar-container'
+        );
+      }
+
+      this.requestUpdate();
     }
   }
 
