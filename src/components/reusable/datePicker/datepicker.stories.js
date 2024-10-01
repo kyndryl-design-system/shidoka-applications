@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import './index';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'Components/DatePicker',
@@ -26,9 +27,6 @@ export default {
     maxDate: {
       control: { type: 'text' },
     },
-    step: {
-      control: { type: 'text' },
-    },
   },
 };
 
@@ -50,6 +48,7 @@ const Template = (args) => {
     .minDate="${args.minDate}"
     .maxDate="${args.maxDate}"
     .step="${args.step}"
+    @on-change=${(e) => action(e.type)(e)}
     >${args.unnamed}</kyn-date-picker
   >`;
 };
@@ -71,7 +70,6 @@ Default.args = {
   datePickerDisabled: false,
   minDate: '',
   maxDate: '',
-  step: null,
   unnamed: 'Date Only Picker',
 };
 

@@ -9,9 +9,9 @@ import { BaseOptions } from 'flatpickr/dist/types/options';
 import type { Instance } from 'flatpickr/dist/types/instance';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 import l10n from 'flatpickr/dist/l10n/index';
-
 // * temporary: will remove to replace with 100% shidoka theme styles once available
 import 'flatpickr/dist/themes/light.css';
+
 import DatePickerStyles from './datepicker.scss';
 
 const _defaultTextStrings = {
@@ -30,6 +30,7 @@ l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
 
 /**
  * Datepicker: uses flatpickr datetime picker library -- `https://flatpickr.js.org`
+ * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot unnamed - Slot for label text.
  */
 @customElement('kyn-date-picker')
@@ -95,10 +96,6 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   maxDate: string | number | Date = '';
 
-  /** Sets granular step incrementing value. */
-  @property({ type: Number })
-  step: number | null = null;
-
   /** Customizable text strings. */
   @property({ type: Object })
   textStrings = _defaultTextStrings;
@@ -154,7 +151,6 @@ export class DatePicker extends FormMixin(LitElement) {
             : 'Select date'}
           ?disabled=${this.datePickerDisabled}
           .value=${this.value ? new Date(this.value).toLocaleString() : ''}
-          @change=${this.handleChange}
           aria-required=${this.required ? 'true' : 'false'}
           aria-invalid=${this._isInvalid ? 'true' : 'false'}
           aria-describedby=${this._isInvalid
@@ -162,6 +158,7 @@ export class DatePicker extends FormMixin(LitElement) {
             : this.warnText
             ? warningId
             : descriptionId}
+          @change=${this.handleDateChange}
         />
 
         ${this.caption
@@ -183,8 +180,8 @@ export class DatePicker extends FormMixin(LitElement) {
   getDatepickerClasses() {
     return {
       'date-picker': true,
-      [`date-picker--${this.size}`]: true,
-      'date-picker--disabled': this.datePickerDisabled,
+      [`date-picker__size--${this.size}`]: true,
+      'date-picker__disabled': this.datePickerDisabled,
     };
   }
 
@@ -243,8 +240,6 @@ export class DatePicker extends FormMixin(LitElement) {
       altFormat: this.altFormat,
       minDate: this.minDate,
       maxDate: this.maxDate,
-      onChange: this.handleFlatpickrChange.bind(this),
-      // onClose: ... -- do we want to allow for customizable behavior on close?
     };
 
     return options;
@@ -256,42 +251,41 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  handleFlatpickrChange(selectedDates: Date[], dateStr: string): void {
+  handleDateChange(selectedDates: Date[] | Event, dateStr?: string): void {
     let selectedDate: number | null = null;
 
-    if (this.dateFormat.includes('H:')) {
-      selectedDate = selectedDates[0] ? selectedDates[0].getTime() : null;
+    if (Array.isArray(selectedDates)) {
+      if (selectedDates[0]) {
+        if (this.dateFormat.includes('H:')) {
+          selectedDate = selectedDates[0].getTime();
+        } else {
+          selectedDate = new Date(
+            selectedDates[0].setHours(0, 0, 0, 0)
+          ).getTime();
+        }
+      }
+      this.emitValue(selectedDates, dateStr || '');
     } else {
-      selectedDate = selectedDates[0]
-        ? new Date(selectedDates[0].setHours(0, 0, 0, 0)).getTime()
-        : null;
+      const target = selectedDates.target as HTMLInputElement;
+      const parsedDate = Date.parse(target.value);
+      if (!isNaN(parsedDate)) {
+        selectedDate = parsedDate;
+      }
+      this.emitValue([new Date(selectedDate || 0)], target.value);
     }
 
     this.value = selectedDate;
     this.requestUpdate('value', '');
     this._validate();
-
-    this.dispatchEvent(
-      new CustomEvent('date-changed', {
-        detail: { dates: selectedDates, dateString: dateStr },
-        bubbles: true,
-        composed: true,
-      })
-    );
   }
 
-  handleChange(e: Event): void {
-    const target = e.target as HTMLInputElement;
-
-    const parsedDate = Date.parse(target.value);
-    if (!isNaN(parsedDate)) {
-      this.value = parsedDate;
-    } else {
-      this.value = null;
-    }
-
-    this.requestUpdate('value', '');
-    this._validate();
+  private emitValue(selectedDates: Date[], dateStr: string): void {
+    const event = new CustomEvent('on-change', {
+      detail: { dates: selectedDates, dateString: dateStr },
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(event);
   }
 
   _validate(): boolean {
