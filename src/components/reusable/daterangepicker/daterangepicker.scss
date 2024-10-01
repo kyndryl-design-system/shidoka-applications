@@ -10,17 +10,35 @@
 .date-range-picker {
     width: inherit;
 
+    .date-inputs {
+        display: flex;
+        gap: 16px;
+
+        .date-input {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+
+            label.label-text {
+                margin-bottom: 4px;
+                font-weight: 500;
+            }
+
+            input {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    }
+
     input {
         -webkit-appearance: none;
         appearance: none;
-        display: inline-block;
-        width: inherit;
         border: 1px solid var(--kd-color-border-ui);
         border-radius: 4px;
         height: 48px;
         padding: 10px 16px;
         min-width: 250px;
-        margin-right: 16px;
 
         &[disabled] {
             opacity: 1;
@@ -32,10 +50,30 @@
     &__size--sm {
         height: 32px;
         padding: 2px 16px;
+
+        .date-inputs {
+            .date-input {
+                input {
+                    height: 32px;
+                    padding: 6px 12px;
+                    min-width: 150px;
+                }
+            }
+        }
     }
 
     &__size--lg {
         height: 56px;
         padding: 14px 16px;
+
+        .date-inputs {
+            .date-input {
+                input {
+                    height: 56px;
+                    padding: 14px 16px;
+                    min-width: 300px;
+                }
+            }
+        }
     }
 }

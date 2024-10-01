@@ -57,8 +57,10 @@ const Template = (args) => {
     .minDate="${args.minDate}"
     .maxDate="${args.maxDate}"
     @on-change=${(e) => action(e.type)(e)}
-    >${args.unnamed}</kyn-date-range-picker
-  >`;
+  >
+    <span slot="start-label">Start Label</span>
+    <span slot="end-label">End Label</span>
+  </kyn-date-range-picker>`;
 };
 
 export const Default = Template.bind({});
@@ -78,7 +80,6 @@ Default.args = {
   mode: 'range',
   minDate: '',
   maxDate: '',
-  unnamed: 'Date Only Picker',
 };
 
 export const DateTime = Template.bind({});
@@ -86,5 +87,4 @@ DateTime.args = {
   ...Default.args,
   nameAttr: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
-  unnamed: 'Date & Time Picker',
 };

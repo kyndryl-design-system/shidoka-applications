@@ -30,9 +30,10 @@ l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
 });
 
 /**
- * Date Range Picker: uses flatpickr datetime picker library -- `https://flatpickr.js.org`
+ * Date Range Picker: uses flatpickr datetime picker library -- `https://flatpickr.js.org/examples/#range-calendar`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
- * @slot unnamed - Slot for label text.
+ * @slot start-label - Slot for start date label text.
+ * @slot end-label - Slot for end date label text.
  */
 @customElement('kyn-date-range-picker')
 export class DateRangePicker extends FormMixin(LitElement) {
@@ -43,7 +44,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   /** Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`). */
   @property({ type: String })
-  dateFormat = '';
+  dateFormat:
+    | ''
+    | 'Y-m-d'
+    | 'm-d-Y'
+    | 'd-m-Y'
+    | 'Y-m-d H:i'
+    | 'Y-m-d H:i:s'
+    | 'm-d-Y H:i:s'
+    | 'd-m-Y H:i:s' = '';
 
   /** Sets date range picker container size. */
   @property({ type: String })
@@ -90,6 +99,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   dateRangePickerDisabled = false;
 
   /** Sets 24 hour formatting true/false. */
+  @property({ type: Boolean })
   twentyFourHourFormat = false;
 
   /** Sets lower boundary of date range picker date selection. */
@@ -145,25 +155,47 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     return html`
       <div class=${classMap(this.getDateRangePickerClasses())}>
-        <label
-          class="label-text"
-          for=${startInputId}
-          ?disabled=${this.dateRangePickerDisabled}
-        >
-          ${this.required
-            ? html`<abbr
-                class="required"
-                title=${this._textStrings.requiredText}
-                aria-label=${this._textStrings.requiredText}
-                >*</abbr
-              >`
-            : null}
-          <slot></slot>
-        </label>
-
         <div class="date-inputs">
-          ${this.renderInput(startInputId, 'start-date', false)}
-          ${this.renderInput(endInputId, 'end-date', true)}
+          <!-- Changed from multiple .date-input to a container -->
+          <div class="date-input">
+            <label
+              class="label-text"
+              for=${startInputId}
+              ?disabled=${this.dateRangePickerDisabled}
+            >
+              ${this.required
+                ? html`<abbr
+                    class="required"
+                    title=${this._textStrings.requiredText}
+                    aria-label=${this._textStrings.requiredText}
+                    >*</abbr
+                  >`
+                : null}
+              <slot name="start-label">Start Date Label</slot>
+            </label>
+
+            ${this.renderInput(startInputId, 'start-date', false)}
+          </div>
+
+          <div class="date-input">
+            <label
+              class="label-text"
+              for=${endInputId}
+              ?disabled=${this.dateRangePickerDisabled}
+            >
+              ${this.required
+                ? html`<abbr
+                    class="required"
+                    title=${this._textStrings.requiredText}
+                    aria-label=${this._textStrings.requiredText}
+                    >*</abbr
+                  >`
+                : null}
+              <slot name="end-label">End Date Label</slot>
+            </label>
+
+            ${this.renderInput(endInputId, 'end-date', true)}
+          </div>
         </div>
 
         ${this.caption

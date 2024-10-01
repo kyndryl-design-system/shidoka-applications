@@ -89,6 +89,7 @@ export class DatePicker extends FormMixin(LitElement) {
   datePickerDisabled = false;
 
   /** Sets 24 hour formatting true/false. */
+  @property({ type: Boolean })
   twentyFourHourFormat = false;
 
   /** Sets lower boundary of datepicker date selection. */
