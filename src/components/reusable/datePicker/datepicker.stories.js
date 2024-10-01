@@ -20,10 +20,6 @@ export default {
       options: ['single', 'multiple', 'range', 'time'],
       control: { type: 'select' },
     },
-    datePickerType: {
-      options: ['default', 'date-time'],
-      control: { type: 'select' },
-    },
     minDate: {
       control: { type: 'text' },
     },
@@ -36,12 +32,34 @@ export default {
   },
 };
 
-const args = {
-  nameAttr: 'Date',
-  dateFormat: 'Y-m-d H:i',
+const Template = (args) => {
+  return html`<kyn-date-picker
+    .nameAttr="${args.nameAttr}"
+    .dateFormat="${args.dateFormat}"
+    .size="${args.size}"
+    .value="${args.value}"
+    .warnText="${args.warnText}"
+    .invalidText="${args.invalidText}"
+    .altFormat=${args.altFormat}
+    .disable="${args.disable}"
+    .enable="${args.enable}"
+    .mode="${args.mode}"
+    .caption="${args.caption}"
+    ?required="${args.required}"
+    ?datePickerDisabled="${args.datePickerDisabled}"
+    .minDate="${args.minDate}"
+    .maxDate="${args.maxDate}"
+    .step="${args.step}"
+    >${args.unnamed}</kyn-date-picker
+  >`;
+};
+
+export const Default = Template.bind({});
+Default.args = {
+  nameAttr: 'default-date-picker',
+  dateFormat: 'Y-m-d',
   size: 'md',
   value: null,
-  datePickerType: 'date-time',
   warnText: '',
   invalidText: '',
   altFormat: 'F j, Y',
@@ -53,32 +71,14 @@ const args = {
   datePickerDisabled: false,
   minDate: '',
   maxDate: '',
-  step: '',
-  unnamed: 'Date Picker',
+  step: null,
+  unnamed: 'Date Only Picker',
 };
 
-export const DatePicker = {
-  args,
-  render: (args) => {
-    return html`<kyn-date-picker
-      .nameAttr="${args.nameAttr}"
-      .dateFormat="${args.dateFormat}"
-      .size="${args.size}"
-      .value="${args.value}"
-      .datePickerType="${args.datePickerType}"
-      .warnText="${args.warnText}"
-      .invalidText="${args.invalidText}"
-      .altFormat=${args.altFormat}
-      .disable="${args.disable}"
-      .enable="${args.enable}"
-      .mode="${args.mode}"
-      .caption="${args.caption}"
-      ?required="${args.required}"
-      ?datePickerDisabled="${args.datePickerDisabled}"
-      .minDate="${args.minDate}"
-      .maxDate="${args.maxDate}"
-      .step="${args.step}"
-      >${args.unnamed}</kyn-date-picker
-    >`;
-  },
+export const DateTime = Template.bind({});
+DateTime.args = {
+  ...Default.args,
+  nameAttr: 'date-time-picker',
+  dateFormat: 'Y-m-d H:i',
+  unnamed: 'Date & Time Picker',
 };

@@ -10,7 +10,7 @@ import type { Instance } from 'flatpickr/dist/types/instance';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 import l10n from 'flatpickr/dist/l10n/index';
 
-// temporary: will remove to replace with 100% shidoka theme styles once available
+// * temporary: will remove to replace with 100% shidoka theme styles once available
 import 'flatpickr/dist/themes/light.css';
 import DatePickerStyles from './datepicker.scss';
 
@@ -18,7 +18,7 @@ const _defaultTextStrings = {
   requiredText: 'Required',
 };
 
-// temporary: from carbon locale implementation
+// * temporary: from carbon locale implementation
 l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
   const currentDay = l10n.en.weekdays.shorthand;
   if (currentDay[index] === 'Thu' || currentDay[index] === 'Th') {
@@ -29,13 +29,13 @@ l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
 });
 
 /**
- * Datepicker -- uses flatpickr datetime picker library ()`https://flatpickr.js.org/`)
+ * Datepicker: uses flatpickr datetime picker library -- `https://flatpickr.js.org`
  * @slot unnamed - Slot for label text.
  */
 @customElement('kyn-date-picker')
 export class DatePicker extends FormMixin(LitElement) {
   static override styles = [DatePickerStyles];
-  /** Sets datepicker attribute name. */
+  /** Sets datepicker attribute name (ex: `contact-form-date-picker`). */
   @property({ type: String })
   nameAttr = '';
 
@@ -51,10 +51,6 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: Number })
   override value: number | null = null;
 
-  /** Sets flatpickr datepicker options */
-  @property({ type: String })
-  datePickerType: 'default' | 'date-time' = 'default';
-
   /** Sets date warning text */
   @property({ type: String })
   warnText = '';
@@ -69,11 +65,11 @@ export class DatePicker extends FormMixin(LitElement) {
 
   /** Sets flatpcikr options setting to disable specific dates */
   @property({ type: Array })
-  disable: any[] = [];
+  disable: (string | number | Date)[] = [];
 
   /** Sets flatpcikr options setting to enable specific dates */
   @property({ type: Array })
-  enable: any[] = [];
+  enable: (string | number | Date)[] = [];
 
   /** Sets flatpickr mode to select single(default), multiple dates. */
   @property({ type: String })
@@ -93,15 +89,15 @@ export class DatePicker extends FormMixin(LitElement) {
 
   /** Sets lower boundary of datepicker date selection. */
   @property({ type: String })
-  minDate = '';
+  minDate: string | number | Date = '';
 
   /** Sets upper boundary of datepicker date selection. */
   @property({ type: String })
-  maxDate = '';
+  maxDate: string | number | Date = '';
 
   /** Sets granular step incrementing value. */
   @property({ type: Number })
-  step = 1;
+  step: number | null = null;
 
   /** Customizable text strings. */
   @property({ type: Object })
@@ -127,11 +123,16 @@ export class DatePicker extends FormMixin(LitElement) {
   private inputEl!: HTMLInputElement;
 
   override render() {
+    const inputId = this.nameAttr || 'date-picker-input';
+    const errorId = 'error-message';
+    const warningId = 'warning-message';
+    const descriptionId = 'date-picker-description';
+
     return html`
       <div class=${classMap(this.getDatepickerClasses())}>
         <label
           class="label-text"
-          for=${this.name}
+          for=${inputId}
           ?disabled=${this.datePickerDisabled}
         >
           ${this.required
@@ -147,21 +148,33 @@ export class DatePicker extends FormMixin(LitElement) {
 
         <input
           type="text"
-          placeholder=${this.datePickerType === 'date-time'
+          id=${inputId}
+          placeholder=${this.dateFormat.includes('H:')
             ? 'Select date and time'
             : 'Select date'}
           ?disabled=${this.datePickerDisabled}
           .value=${this.value ? new Date(this.value).toLocaleString() : ''}
           @change=${this.handleChange}
+          aria-required=${this.required ? 'true' : 'false'}
+          aria-invalid=${this._isInvalid ? 'true' : 'false'}
+          aria-describedby=${this._isInvalid
+            ? errorId
+            : this.warnText
+            ? warningId
+            : descriptionId}
         />
 
-        ${this.caption ? html`<div class="caption">${this.caption}</div>` : ''}
+        ${this.caption
+          ? html`<div id=${descriptionId} class="caption">${this.caption}</div>`
+          : ''}
         ${this._isInvalid
-          ? html`<div id="error" class="error">
+          ? html`<div id=${errorId} class="error" role="alert">
               ${this.invalidText || this._internalValidationMsg}
             </div>`
           : this.warnText
-          ? html`<div id="warning" class="warn">${this.warnText}</div>`
+          ? html`<div id=${warningId} class="warn" role="alert">
+              ${this.warnText}
+            </div>`
           : ''}
       </div>
     `;
@@ -170,7 +183,6 @@ export class DatePicker extends FormMixin(LitElement) {
   getDatepickerClasses() {
     return {
       'date-picker': true,
-      [`date-picker--${this.datePickerType}`]: true,
       [`date-picker--${this.size}`]: true,
       'date-picker--disabled': this.datePickerDisabled,
     };
@@ -221,27 +233,19 @@ export class DatePicker extends FormMixin(LitElement) {
     const options: Partial<BaseOptions> = {
       dateFormat: this.dateFormat,
       mode: this.mode,
-      enableTime: this.datePickerType === 'date-time',
-      onChange: this.handleFlatpickrChange.bind(this),
+      enableTime: this.dateFormat.includes('H:'),
       allowInput: false,
       clickOpens: true,
       time_24hr: false,
       weekNumbers: false,
       wrap: false,
       locale: English,
+      altFormat: this.altFormat,
+      minDate: this.minDate,
+      maxDate: this.maxDate,
+      onChange: this.handleFlatpickrChange.bind(this),
+      // onClose: ... -- do we want to allow for customizable behavior on close?
     };
-
-    if (this.altFormat) {
-      options.altFormat = this.altFormat;
-    }
-
-    if (this.minDate) {
-      options.minDate = this.minDate;
-    }
-
-    if (this.maxDate) {
-      options.maxDate = this.maxDate;
-    }
 
     return options;
   }
@@ -255,9 +259,9 @@ export class DatePicker extends FormMixin(LitElement) {
   handleFlatpickrChange(selectedDates: Date[], dateStr: string): void {
     let selectedDate: number | null = null;
 
-    if (this.datePickerType === 'date-time') {
+    if (this.dateFormat.includes('H:')) {
       selectedDate = selectedDates[0] ? selectedDates[0].getTime() : null;
-    } else if (this.datePickerType === 'default') {
+    } else {
       selectedDate = selectedDates[0]
         ? new Date(selectedDates[0].setHours(0, 0, 0, 0)).getTime()
         : null;
