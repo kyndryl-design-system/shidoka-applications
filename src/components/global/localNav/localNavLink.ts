@@ -9,8 +9,9 @@ import { classMap } from 'lit/directives/class-map.js';
 import LocalNavLinkScss from './localNavLink.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import arrowIcon from '@carbon/icons/es/chevron--right/16';
 import backIcon from '@carbon/icons/es/arrow--left/16';
+import addIcon from '@carbon/icons/es/add/16';
+import subtractIcon from '@carbon/icons/es/subtract/16';
 
 /**
  * Link component for use in the global Side Navigation component.
@@ -28,8 +29,8 @@ export class LocalNavLink extends LitElement {
   href = '';
 
   /** Expanded state. */
-  @state()
-  _expanded = false;
+  @property({ type: Boolean })
+  expanded = false;
 
   /** Active state. */
   @property({ type: Boolean, reflect: true })
@@ -96,39 +97,33 @@ export class LocalNavLink extends LitElement {
       'level--1': this._level == 1,
       'level--2': this._level == 2,
       'level--3': this._level == 3,
+      'sub-level': this._level > 1,
       'nav-expanded': this._navExpanded || this._navExpandedMobile,
-      'link-expanded': this._expanded,
+      'link-expanded': this.expanded,
       'link-active': this.active,
       'link-disabled': this.disabled,
     };
 
     return html`
-      <div
-        class=${classMap(classes)}
-        @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
-        @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
-      >
+      <div class=${classMap(classes)}>
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
+          ${this.navLinks.length
+            ? html`
+                <span class="expand-icon">
+                  <kd-icon
+                    .icon=${this.expanded ? subtractIcon : addIcon}
+                  ></kd-icon>
+                </span>
+              `
+            : null}
+
           <slot name="icon"></slot>
           <span class="text">
             <slot @slotchange=${this._handleTextSlotChange}></slot>
           </span>
-
-          ${this.navLinks.length
-            ? html`
-                <span class="arrow-icon">
-                  <kd-icon .icon=${arrowIcon}></kd-icon>
-                </span>
-              `
-            : null}
         </a>
 
-        <div
-          class="sub-menu ${this.navLinks.length ? 'has-links' : ''}"
-          style=${this.navLinks.length
-            ? `top: ${this.menuPosition.top}px; left: ${this.menuPosition.left}px;`
-            : ''}
-        >
+        <div class="sub-menu ${this.navLinks.length ? 'has-links' : ''}">
           ${this.navLinks.length
             ? html`
                 <button class="go-back" @click=${() => this._handleBack()}>
@@ -146,22 +141,22 @@ export class LocalNavLink extends LitElement {
     `;
   }
 
-  override firstUpdated() {
-    this.determineLevel();
-  }
+  // override firstUpdated() {
+  //   this.determineLevel();
+  // }
 
   override willUpdate(changedProps: any) {
     if (changedProps.has('_navExpanded')) {
       this.updateChildren();
     }
 
-    if (
-      changedProps.has('_expanded') &&
-      this._expanded &&
-      this.navLinks.length
-    ) {
-      this._positionMenu();
-    }
+    // if (
+    //   changedProps.has('_expanded') &&
+    //   this._expanded &&
+    //   this.navLinks.length
+    // ) {
+    //   this._positionMenu();
+    // }
   }
 
   override updated(changedProps: any) {
@@ -206,71 +201,72 @@ export class LocalNavLink extends LitElement {
 
   private updateChildren() {
     this.navLinks.forEach((link: any) => {
+      link._level = this._level + 1;
       link._navExpanded = this._navExpanded;
     });
   }
 
-  private determineLevel() {
-    const parentNode = this.shadowRoot!.host.parentNode;
-    if (parentNode!.nodeName === 'KYN-LOCAL-NAV') {
-      this._level = 1;
-    } else if (parentNode!.parentNode!.nodeName === 'KYN-LOCAL-NAV') {
-      this._level = 2;
-    } else {
-      this._level = 3;
-    }
-  }
+  // private determineLevel() {
+  //   const parentNode = this.shadowRoot!.host.parentNode;
+  //   if (parentNode!.nodeName === 'KYN-LOCAL-NAV') {
+  //     this._level = 1;
+  //   } else if (parentNode!.parentNode!.nodeName === 'KYN-LOCAL-NAV') {
+  //     this._level = 2;
+  //   } else {
+  //     this._level = 3;
+  //   }
+  // }
 
-  private handlePointerEnter(e: PointerEvent) {
-    if (e.pointerType === 'mouse' && this.navLinks.length) {
-      clearTimeout(this._leaveTimer);
+  // private handlePointerEnter(e: PointerEvent) {
+  //   if (e.pointerType === 'mouse' && this.navLinks.length) {
+  //     clearTimeout(this._leaveTimer);
 
-      this._enterTimer = setTimeout(() => {
-        this._expanded = true;
-      }, 150);
-    }
-  }
+  //     this._enterTimer = setTimeout(() => {
+  //       this._expanded = true;
+  //     }, 150);
+  //   }
+  // }
 
-  private handlePointerLeave(e: PointerEvent) {
-    if (
-      e.pointerType === 'mouse' &&
-      document.activeElement !== this &&
-      this.navLinks.length
-    ) {
-      clearTimeout(this._enterTimer);
+  // private handlePointerLeave(e: PointerEvent) {
+  //   if (
+  //     e.pointerType === 'mouse' &&
+  //     document.activeElement !== this &&
+  //     this.navLinks.length
+  //   ) {
+  //     clearTimeout(this._enterTimer);
 
-      this._leaveTimer = setTimeout(() => {
-        this._expanded = false;
-      }, 150);
-    }
-  }
+  //     this._leaveTimer = setTimeout(() => {
+  //       this._expanded = false;
+  //     }, 150);
+  //   }
+  // }
 
-  private _positionMenu() {
-    // determine submenu positioning
-    const LinkBounds: any = this.getBoundingClientRect();
-    const MenuBounds: any = this.shadowRoot
-      ?.querySelector('.sub-menu')
-      ?.getBoundingClientRect();
-    const Padding = 8;
-    const HeaderHeight = 56;
+  // private _positionMenu() {
+  //   // determine submenu positioning
+  //   const LinkBounds: any = this.getBoundingClientRect();
+  //   const MenuBounds: any = this.shadowRoot
+  //     ?.querySelector('.sub-menu')
+  //     ?.getBoundingClientRect();
+  //   const Padding = 8;
+  //   const HeaderHeight = 56;
 
-    const LinkHalf = LinkBounds.top + LinkBounds.height / 2;
-    const MenuHalf = MenuBounds.height / 2;
+  //   const LinkHalf = LinkBounds.top + LinkBounds.height / 2;
+  //   const MenuHalf = MenuBounds.height / 2;
 
-    const Top =
-      LinkHalf + MenuHalf > window.innerHeight
-        ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight)
-        : LinkHalf - MenuHalf;
-    const Left = LinkBounds.right + Padding;
+  //   const Top =
+  //     LinkHalf + MenuHalf > window.innerHeight
+  //       ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight)
+  //       : LinkHalf - MenuHalf;
+  //   const Left = LinkBounds.right + Padding;
 
-    this.menuPosition = {
-      top: Top < HeaderHeight ? HeaderHeight : Top,
-      left: Left < 320 ? 320 : Left,
-    };
-  }
+  //   this.menuPosition = {
+  //     top: Top < HeaderHeight ? HeaderHeight : Top,
+  //     left: Left < 320 ? 320 : Left,
+  //   };
+  // }
 
   private _handleBack() {
-    this._expanded = false;
+    this.expanded = false;
   }
 
   private handleClick(e: Event) {
@@ -282,7 +278,7 @@ export class LocalNavLink extends LitElement {
 
     if (this.navLinks.length) {
       preventDefault = true;
-      this._expanded = !this._expanded;
+      this.expanded = !this.expanded;
     }
 
     if (preventDefault) {
@@ -303,21 +299,21 @@ export class LocalNavLink extends LitElement {
 
   private _handleClickOut(e: Event) {
     if (!e.composedPath().includes(this)) {
-      this._expanded = false;
+      this.expanded = false;
     }
   }
 
-  override connectedCallback() {
-    super.connectedCallback();
+  // override connectedCallback() {
+  //   super.connectedCallback();
 
-    document.addEventListener('click', (e) => this._handleClickOut(e));
-  }
+  //   document.addEventListener('click', (e) => this._handleClickOut(e));
+  // }
 
-  override disconnectedCallback() {
-    document.removeEventListener('click', (e) => this._handleClickOut(e));
+  // override disconnectedCallback() {
+  //   document.removeEventListener('click', (e) => this._handleClickOut(e));
 
-    super.disconnectedCallback();
-  }
+  //   super.disconnectedCallback();
+  // }
 }
 
 declare global {

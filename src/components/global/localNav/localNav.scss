@@ -21,6 +21,7 @@ nav {
   left: 0;
   width: 100%;
   background: var(--kd-color-background-ui-soft);
+  overflow: hidden;
 
   @media (min-width: 42rem) {
     @include elevation.shadow(2);
@@ -73,6 +74,44 @@ nav {
   }
 }
 
+.search {
+  display: none;
+  margin: 2px 0;
+
+  .nav--expanded &,
+  .nav--expanded-mobile & {
+    display: block;
+  }
+}
+
+slot[name='search'] {
+  &::slotted(kyn-text-input),
+  &::slotted(kyn-search) {
+    display: block;
+  }
+}
+
+// slot[name='search'] {
+//   &::slotted(kyn-text-input),
+//   &::slotted(kyn-search) {
+//     display: block;
+//     transition: transform 300ms ease-out, height 300ms ease-out,
+//       visibility 300ms ease-out;
+//     visibility: hidden;
+//     transform: scale(0);
+//     transform-origin: top left;
+//     height: 0;
+
+//     .nav--expanded & {
+//       display: block;
+//       visibility: visible;
+//       transform: scale(1);
+//       height: 34px;
+//       padding-bottom: 2px;
+//     }
+//   }
+// }
+
 .links {
   visibility: hidden;
   flex-direction: column;
@@ -87,7 +126,7 @@ nav {
   left: 0;
   width: 100%;
   background: var(--kd-color-background-ui-soft);
-
+  padding-top: 4px;
   transition: height 250ms ease-out, visibility 250ms ease-out;
   height: 0;
 

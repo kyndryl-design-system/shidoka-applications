@@ -15,7 +15,8 @@ import pinIcon from '@carbon/icons/es/side-panel--open/24';
 /**
  * The global Side Navigation component.
  * @slot unnamed - The default slot, for local nav links.
- * @fires on-toggle - Captures the click event and emits the open state and original event details.
+ * @slot search - Slot for a search input
+ * @fires on-toggle - Captures the click event and emits the pinned state and original event details.
  */
 @customElement('kyn-local-nav')
 export class LocalNav extends LitElement {
@@ -98,6 +99,10 @@ export class LocalNav extends LitElement {
             : this._activeLinkText || this.textStrings.menu}
           <kd-icon .icon=${arrowIcon}></kd-icon>
         </button>
+
+        <div class="search">
+          <slot name="search"></slot>
+        </div>
 
         <div class="links">
           <slot @slotchange=${this.handleSlotChange}></slot>
