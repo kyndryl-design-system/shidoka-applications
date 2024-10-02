@@ -252,7 +252,7 @@ export const WithSearch = {
           >included the filter function used in this story as a helper
           function</a
         >
-        that can be used to sort a nested array of links:
+        that can potentially be used to filter a nested array of links:
 
         <kyn-block-code-view
           language="javascript"
