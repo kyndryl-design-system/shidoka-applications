@@ -70,7 +70,7 @@ DatePicker.args = {
   nameAttr: 'default-date-picker',
   dateFormat: 'Y-m-d',
   size: 'md',
-  value: null,
+  value: '',
   warnText: '',
   invalidText: '',
   altFormat: 'F j, Y',

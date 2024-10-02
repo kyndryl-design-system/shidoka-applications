@@ -138,7 +138,7 @@ export class TimePicker extends FormMixin(LitElement) {
         <input
           type="text"
           id=${inputId}
-          placeholder=${'Select time'}
+          placeholder=${this.getPlaceholder()}
           ?disabled=${this.timepickerDisabled}
           .value=${this.value ? new Date(this.value).toLocaleString() : ''}
           aria-required=${this.required ? 'true' : 'false'}
@@ -174,6 +174,10 @@ export class TimePicker extends FormMixin(LitElement) {
       [`time-picker__size--${this.size}`]: true,
       'time-picker__disabled': this.timepickerDisabled,
     };
+  }
+
+  getPlaceholder(): string {
+    return this.twentyFourHourFormat ? '--:--' : '--:-- --';
   }
 
   override firstUpdated(changedProperties: PropertyValues): void {

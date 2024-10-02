@@ -23,6 +23,18 @@ const _defaultTextStrings = {
   requiredText: 'Required',
 };
 
+const DATE_FORMAT_OPTIONS = {
+  'Y-m-d': 'yyyy-mm-dd',
+  'm-d-Y': 'mm-dd-yyyy',
+  'd-m-Y': 'dd-mm-yyyy',
+  'Y-m-d H:i': 'yyyy-mm-dd hh:mm',
+  'Y-m-d H:i:s': 'yyyy-mm-dd hh:mm:ss',
+  'm-d-Y H:i:s': 'mm-dd-yyyy hh:mm:ss',
+  'd-m-Y H:i:s': 'dd-mm-yyyy hh:mm:ss',
+} as const;
+
+type DateFormatOption = keyof typeof DATE_FORMAT_OPTIONS;
+
 // * temporary: from carbon locale implementation
 l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
   const currentDay = l10n.en.weekdays.shorthand;
@@ -149,6 +161,17 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
+  private isValidDateFormat(format: string): format is DateFormatOption {
+    return format in DATE_FORMAT_OPTIONS;
+  }
+
+  getPlaceholder(): string {
+    if (this.isValidDateFormat(this.dateFormat)) {
+      return `${DATE_FORMAT_OPTIONS[this.dateFormat]}`;
+    }
+    return `date`;
+  }
+
   override render() {
     const startInputId = 'date-range-picker-start';
     const endInputId = 'date-range-picker-end';
@@ -225,9 +248,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
           type="text"
           id=${id}
           class=${className}
-          placeholder=${this.dateFormat.includes('H:')
-            ? `${isEndDate ? 'End' : 'Start'} date and time`
-            : `${isEndDate ? 'End' : 'Start'} date`}
+          placeholder=${this.getPlaceholder()}
           ?disabled=${this.dateRangePickerDisabled || isEndDate}
           .value=${this.getInputValue(isEndDate ? 1 : 0)}
           aria-required=${this.required ? 'true' : 'false'}
@@ -358,11 +379,32 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }
 
+  setAccessibilityAttributes(): void {
+    if (this.flatpickrInstance?.calendarContainer) {
+      this.flatpickrInstance.calendarContainer.setAttribute(
+        'role',
+        'application'
+      );
+      this.flatpickrInstance.calendarContainer.setAttribute(
+        'aria-label',
+        'Date range calendar'
+      );
+
+      const startDateInput = this.startDateInputEl;
+      const endDateInput = this.endDateInputEl;
+
+      startDateInput.setAttribute('aria-label', 'Start date');
+      endDateInput.setAttribute('aria-label', 'End date');
+    }
+  }
+
   updateFlatpickrOptions(): void {
     if (!this.flatpickrInstance) return;
 
     const currentDates = this.flatpickrInstance.selectedDates;
+
     this.flatpickrInstance.destroy();
+
     this.flatpickrInstance = flatpickr(
       this.startDateInputEl,
       this.getFlatpickrOptions()
@@ -372,7 +414,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.flatpickrInstance.setDate(currentDates, false);
     }
 
-    this.setCalendarAttributes();
+    this.setAccessibilityAttributes();
+
     this.requestUpdate();
   }
 
@@ -386,7 +429,26 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.emitValue(selectedDates, dateStr);
       this.requestUpdate('value');
       this._validate();
+
+      this.updateSelectedDateRangeAria(selectedDates);
     }, 100);
+  }
+
+  updateSelectedDateRangeAria(selectedDates: Date[]): void {
+    if (selectedDates.length === 2) {
+      const [startDate, endDate] = selectedDates;
+      this.startDateInputEl.setAttribute(
+        'aria-label',
+        `Selected start date: ${startDate.toLocaleDateString()}`
+      );
+      this.endDateInputEl.setAttribute(
+        'aria-label',
+        `Selected end date: ${endDate.toLocaleDateString()}`
+      );
+    } else {
+      this.startDateInputEl.setAttribute('aria-label', 'Start date');
+      this.endDateInputEl.setAttribute('aria-label', 'End date');
+    }
   }
 
   private emitValue(selectedDates: Date[], dateStr: string): void {
@@ -413,7 +475,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   override willUpdate(changedProps: PropertyValues) {
-    if (changedProps.has('textStrings') && !this._textStrings) {
+    if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
   }

@@ -68,7 +68,7 @@ DateRangePicker.args = {
   nameAttr: 'default-date-range-picker',
   dateFormat: 'Y-m-d',
   size: 'md',
-  value: null,
+  value: [null, null],
   warnText: '',
   invalidText: '',
   altFormat: 'F j, Y',
