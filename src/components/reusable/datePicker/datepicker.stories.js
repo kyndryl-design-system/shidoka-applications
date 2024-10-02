@@ -17,6 +17,9 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    locale: {
+      control: { type: 'text' },
+    },
     dateFormat: {
       options: [
         'Y-m-d',
@@ -45,6 +48,7 @@ export default {
 const Template = (args) => {
   return html`<kyn-date-picker
     .nameAttr="${args.nameAttr}"
+    .locale="${args.locale}"
     .dateFormat="${args.dateFormat}"
     .size="${args.size}"
     .value="${args.value}"
@@ -68,6 +72,7 @@ const Template = (args) => {
 export const DatePicker = Template.bind({});
 DatePicker.args = {
   nameAttr: 'default-date-picker',
+  locale: 'en',
   dateFormat: 'Y-m-d',
   size: 'md',
   value: '',
@@ -88,7 +93,9 @@ DatePicker.args = {
 export const DateWithTime = Template.bind({});
 DateWithTime.args = {
   ...DatePicker.args,
+  locale: 'es',
   nameAttr: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
   unnamed: 'Date & Time Picker',
 };
+DateWithTime.storyName = 'Date With Time (Español)';

@@ -4,12 +4,13 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import { langsArray } from '../datePicker/defs';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
+import { Locale } from 'flatpickr/dist/types/locale';
 import type { Instance } from 'flatpickr/dist/types/instance';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
-import l10n from 'flatpickr/dist/l10n/index';
 // * temporary: will remove to replace with 100% shidoka theme styles once available
 import 'flatpickr/dist/themes/light.css';
 
@@ -22,15 +23,7 @@ const _defaultTextStrings = {
   requiredText: 'Required',
 };
 
-// * temporary: from carbon locale implementation
-l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
-  const currentDay = l10n.en.weekdays.shorthand;
-  if (currentDay[index] === 'Thu' || currentDay[index] === 'Th') {
-    currentDay[index] = 'Th';
-  } else {
-    currentDay[index] = currentDay[index].charAt(0);
-  }
-});
+type SupportedLocale = (typeof langsArray)[number];
 
 /**
  * Timepicker: uses flatpickr datetime picker library, timepicker implementation -- `https://flatpickr.js.org/examples/#time-picker`
@@ -40,9 +33,14 @@ l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
 @customElement('kyn-time-picker')
 export class TimePicker extends FormMixin(LitElement) {
   static override styles = [TimepickerStyles];
+
   /** Sets timepicker attribute name (ex: `contact-form-time-picker`). */
   @property({ type: String })
   nameAttr = '';
+
+  /* Sets desired locale and, if supported, dynamically loads language lib */
+  @property({ type: String })
+  locale: SupportedLocale = 'en';
 
   /** Sets datepicker container size. */
   @property({ type: String })
@@ -180,10 +178,12 @@ export class TimePicker extends FormMixin(LitElement) {
     return this.twentyFourHourFormat ? '--:--' : '--:-- --';
   }
 
-  override firstUpdated(changedProperties: PropertyValues): void {
+  override async firstUpdated(
+    changedProperties: PropertyValues
+  ): Promise<void> {
     super.firstUpdated(changedProperties);
     if (this.inputEl) {
-      this.initializeFlatpickr();
+      await this.initializeFlatpickr();
     } else {
       console.error('Input element not found.');
     }
@@ -196,7 +196,8 @@ export class TimePicker extends FormMixin(LitElement) {
       changedProperties.has('defaultDate') ||
       changedProperties.has('maxTime') ||
       changedProperties.has('minTime') ||
-      changedProperties.has('twentyFourHourFormat')
+      changedProperties.has('twentyFourHourFormat') ||
+      changedProperties.has('locale')
     ) {
       if (this.flatpickrInstance) {
         this.updateFlatpickrOptions();
@@ -206,32 +207,35 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  initializeFlatpickr(): void {
-    if (!this.inputEl) {
-      console.error('Input element not found.');
-      return;
+  async loadLocale(locale: string): Promise<Partial<Locale>> {
+    if (locale === 'en') return English;
+
+    if (!this.isSupportedLocale(locale)) {
+      console.warn(`Unsupported locale: ${locale}. Falling back to English.`);
+      return English;
     }
 
-    const options = this.getFlatpickrOptions();
-    this.flatpickrInstance = flatpickr(this.inputEl, options) as Instance;
+    try {
+      const module = await import(`flatpickr/dist/l10n/${locale}.js`);
+      const localeConfig =
+        module[locale] || module.default[locale] || module.default;
 
-    if (this.flatpickrInstance) {
-      if (this.flatpickrInstance.calendarContainer) {
-        this.flatpickrInstance.calendarContainer.setAttribute(
-          'role',
-          'application'
-        );
-        this.flatpickrInstance.calendarContainer.setAttribute(
-          'aria-label',
-          'calendar-container'
-        );
-      }
-    } else {
-      console.error('Unable to create flatpickr instance');
+      const { amPM, hourAriaLabel, minuteAriaLabel } = localeConfig;
+      return { amPM, hourAriaLabel, minuteAriaLabel };
+    } catch (error) {
+      console.warn(
+        `Failed to load locale ${locale}. Falling back to English.`,
+        error
+      );
+      return English;
     }
   }
 
-  getFlatpickrOptions(): Partial<BaseOptions> {
+  isSupportedLocale(locale: string): locale is SupportedLocale {
+    return langsArray.includes(locale as SupportedLocale);
+  }
+
+  async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     const options: Partial<BaseOptions> = {
       noCalendar: true,
       dateFormat: 'H:i',
@@ -242,6 +246,10 @@ export class TimePicker extends FormMixin(LitElement) {
       wrap: false,
       locale: English,
     };
+
+    if (this.locale) {
+      options.locale = await this.loadLocale(this.locale);
+    }
 
     if (this.minTime) {
       options.minTime = this.minTime;
@@ -258,42 +266,75 @@ export class TimePicker extends FormMixin(LitElement) {
     return options;
   }
 
-  updateFlatpickrOptions(): void {
+  async initializeFlatpickr(): Promise<void> {
+    if (!this.inputEl) {
+      console.error('Input element not found.');
+      return;
+    }
+
+    try {
+      const options = await this.getFlatpickrOptions();
+      this.flatpickrInstance = flatpickr(this.inputEl, options) as Instance;
+
+      if (this.flatpickrInstance) {
+        if (this.flatpickrInstance.calendarContainer) {
+          this.flatpickrInstance.calendarContainer.setAttribute(
+            'role',
+            'application'
+          );
+          this.flatpickrInstance.calendarContainer.setAttribute(
+            'aria-label',
+            'time-picker-container'
+          );
+        }
+      } else {
+        console.error('Unable to create flatpickr instance');
+      }
+    } catch (error) {
+      console.error('Error initializing Flatpickr:', error);
+    }
+  }
+
+  async updateFlatpickrOptions(): Promise<void> {
     if (this.flatpickrInstance) {
       const currentDate = this.flatpickrInstance.selectedDates[0];
 
-      const newOptions = this.getFlatpickrOptions();
+      try {
+        const newOptions = await this.getFlatpickrOptions();
 
-      Object.keys(newOptions).forEach((key) => {
-        if (key in this.flatpickrInstance!.config) {
-          this.flatpickrInstance!.set(
-            key as keyof BaseOptions,
-            newOptions[key as keyof BaseOptions]
+        Object.keys(newOptions).forEach((key) => {
+          if (key in this.flatpickrInstance!.config) {
+            this.flatpickrInstance!.set(
+              key as keyof BaseOptions,
+              newOptions[key as keyof BaseOptions]
+            );
+          }
+        });
+
+        if (this.defaultDate) {
+          const defaultDateObj = new Date(this.defaultDate);
+          if (!isNaN(defaultDateObj.getTime())) {
+            this.flatpickrInstance.setDate(defaultDateObj, false);
+          }
+        } else if (currentDate) {
+          this.flatpickrInstance.setDate(currentDate, false);
+        }
+
+        if (this.flatpickrInstance.calendarContainer) {
+          this.flatpickrInstance.calendarContainer.setAttribute(
+            'role',
+            'application'
+          );
+          this.flatpickrInstance.calendarContainer.setAttribute(
+            'aria-label',
+            'time-picker-container'
           );
         }
-      });
 
-      if (this.defaultDate) {
-        const defaultDateObj = new Date(this.defaultDate);
-        if (!isNaN(defaultDateObj.getTime())) {
-          this.flatpickrInstance.setDate(defaultDateObj, false);
-        }
-      } else if (currentDate) {
-        this.flatpickrInstance.setDate(currentDate, false);
+        this.requestUpdate();
+      } catch (error) {
+        console.error('Error updating Flatpickr options:', error);
       }
-
-      if (this.flatpickrInstance.calendarContainer) {
-        this.flatpickrInstance.calendarContainer.setAttribute(
-          'role',
-          'application'
-        );
-        this.flatpickrInstance.calendarContainer.setAttribute(
-          'aria-label',
-          'calendar-container'
-        );
-      }
-
-      this.requestUpdate();
     }
   }
 

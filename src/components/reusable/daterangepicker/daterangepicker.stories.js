@@ -18,6 +18,9 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    locale: {
+      control: { type: 'text' },
+    },
     dateFormat: {
       options: [
         'Y-m-d',
@@ -42,6 +45,7 @@ export default {
 const Template = (args) => {
   return html`<kyn-date-range-picker
     .nameAttr="${args.nameAttr}"
+    .locale="${args.locale}"
     .dateFormat="${args.dateFormat}"
     .size="${args.size}"
     .value="${args.value}"
@@ -66,6 +70,7 @@ const Template = (args) => {
 export const DateRangePicker = Template.bind({});
 DateRangePicker.args = {
   nameAttr: 'default-date-range-picker',
+  locale: 'en',
   dateFormat: 'Y-m-d',
   size: 'md',
   value: [null, null],
@@ -85,6 +90,8 @@ DateRangePicker.args = {
 export const DateTimeRangePicker = Template.bind({});
 DateTimeRangePicker.args = {
   ...DateRangePicker.args,
+  locale: 'es',
   nameAttr: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
 };
+DateTimeRangePicker.storyName = 'Date Time Range Picker (Español)';

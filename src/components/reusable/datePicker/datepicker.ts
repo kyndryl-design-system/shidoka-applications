@@ -4,10 +4,12 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import { langsArray } from './defs';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
 import type { Instance } from 'flatpickr/dist/types/instance';
+import { Locale } from 'flatpickr/dist/types/locale';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 import l10n from 'flatpickr/dist/l10n/index';
 // * temporary: will remove to replace with 100% shidoka theme styles once available
@@ -34,15 +36,7 @@ const DATE_FORMAT_OPTIONS = {
 
 type DateFormatOption = keyof typeof DATE_FORMAT_OPTIONS;
 
-// * temporary: from carbon locale implementation
-l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
-  const currentDay = l10n.en.weekdays.shorthand;
-  if (currentDay[index] === 'Thu' || currentDay[index] === 'Th') {
-    currentDay[index] = 'Th';
-  } else {
-    currentDay[index] = currentDay[index].charAt(0);
-  }
-});
+type SupportedLocale = (typeof langsArray)[number];
 
 /**
  * Datepicker: uses flatpickr datetime picker library -- `https://flatpickr.js.org`
@@ -52,9 +46,14 @@ l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
 @customElement('kyn-date-picker')
 export class DatePicker extends FormMixin(LitElement) {
   static override styles = [DatePickerStyles];
+
   /** Sets datepicker attribute name (ex: `contact-form-date-picker`). */
   @property({ type: String })
   nameAttr = '';
+
+  /* Sets desired locale and, if supported, dynamically loads language lib */
+  @property({ type: String })
+  locale: SupportedLocale = 'en';
 
   /** Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`). */
   @property({ type: String })
@@ -232,29 +231,51 @@ export class DatePicker extends FormMixin(LitElement) {
 
   override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
-    if (changedProperties.has('dateFormat') || changedProperties.has('value')) {
+    if (
+      changedProperties.has('dateFormat') ||
+      changedProperties.has('value') ||
+      changedProperties.has('locale')
+    ) {
       this._enableTime = this.dateFormat.includes('H:');
       this.updateFlatpickrOptions();
     }
   }
 
-  updateFlatpickrOptions(): void {
-    if (this.flatpickrInstance) {
-      const currentDate = this.flatpickrInstance.selectedDates[0];
+  async loadLocale(locale: string): Promise<Locale> {
+    if (locale === 'en') return English;
 
-      this.flatpickrInstance.destroy();
+    if (!this.isSupportedLocale(locale)) {
+      console.error(`Unable to load ${locale} -- falling back to English.`);
+      return English;
+    }
 
-      const newOptions = this.getFlatpickrOptions();
-      this.flatpickrInstance = flatpickr(this.inputEl, newOptions) as Instance;
+    try {
+      const module = await import(`flatpickr/dist/l10n/${locale}.js`);
 
-      if (currentDate) {
-        this.flatpickrInstance.setDate(currentDate, true);
+      let localeConfig: Locale;
+
+      if (module[locale]) {
+        localeConfig = module[locale];
+      } else if (module.default && module.default[locale]) {
+        localeConfig = module.default[locale];
+      } else if (module.default && typeof module.default === 'object') {
+        localeConfig = module.default;
+      } else {
+        throw new Error('Unable to find locale configuration');
       }
 
-      this.setAccessibilityAttributes();
-
-      this.requestUpdate();
+      return localeConfig;
+    } catch (error) {
+      console.error(
+        `Unable to load ${locale} -- falling back to English.`,
+        error
+      );
+      return English;
     }
+  }
+
+  isSupportedLocale(locale: string): locale is SupportedLocale {
+    return langsArray.includes(locale as SupportedLocale);
   }
 
   setAccessibilityAttributes(): void {
@@ -270,13 +291,13 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  initializeFlatpickr(): void {
+  async initializeFlatpickr(): Promise<void> {
     if (!this.inputEl) {
       console.error('Input element not found.');
       return;
     }
 
-    const options = this.getFlatpickrOptions();
+    const options = await this.getFlatpickrOptions();
     this.flatpickrInstance = flatpickr(this.inputEl, options) as Instance;
 
     this.setAccessibilityAttributes();
@@ -284,9 +305,47 @@ export class DatePicker extends FormMixin(LitElement) {
     if (this.value) {
       this.flatpickrInstance.setDate(this.value, true);
     }
+
+    if (this.locale === 'en') {
+      this.modifyEngDayShorthands();
+    }
   }
 
-  getFlatpickrOptions(): Partial<BaseOptions> {
+  async updateFlatpickrOptions(): Promise<void> {
+    if (this.flatpickrInstance) {
+      const currentDate = this.flatpickrInstance.selectedDates[0];
+
+      this.flatpickrInstance.destroy();
+
+      const newOptions = await this.getFlatpickrOptions();
+      this.flatpickrInstance = flatpickr(this.inputEl, newOptions) as Instance;
+
+      if (currentDate) {
+        this.flatpickrInstance.setDate(currentDate, true);
+      }
+
+      this.setAccessibilityAttributes();
+
+      if (this.locale === 'en') {
+        this.modifyEngDayShorthands();
+      }
+
+      this.requestUpdate();
+    }
+  }
+
+  modifyEngDayShorthands(): void {
+    l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
+      const currentDay = l10n.en.weekdays.shorthand;
+      if (currentDay[index] === 'Thu' || currentDay[index] === 'Th') {
+        currentDay[index] = 'Th';
+      } else {
+        currentDay[index] = currentDay[index].charAt(0);
+      }
+    });
+  }
+
+  async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     this._enableTime = this.dateFormat.includes('H:');
 
     const options: Partial<BaseOptions> = {
@@ -298,9 +357,12 @@ export class DatePicker extends FormMixin(LitElement) {
       time_24hr: this.twentyFourHourFormat,
       weekNumbers: false,
       wrap: false,
-      locale: English,
       altFormat: this.altFormat,
     };
+
+    if (this.locale) {
+      options.locale = await this.loadLocale(this.locale);
+    }
 
     if (this.minDate) {
       options.minDate = this.minDate;

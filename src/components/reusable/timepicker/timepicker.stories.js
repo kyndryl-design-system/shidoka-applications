@@ -17,6 +17,9 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    locale: {
+      control: { type: 'text' },
+    },
     minTime: {
       control: { type: 'text' },
     },
@@ -32,6 +35,7 @@ export default {
 const Template = (args) => {
   return html`<kyn-time-picker
     .nameAttr="${args.nameAttr}"
+    .locale="${args.locale}"
     .size="${args.size}"
     .value="${args.value}"
     .warnText="${args.warnText}"
@@ -51,6 +55,7 @@ const Template = (args) => {
 export const TimePicker = Template.bind({});
 TimePicker.args = {
   nameAttr: 'default-timepicker',
+  locale: 'en',
   size: 'md',
   value: null,
   warnText: '',
@@ -64,3 +69,10 @@ TimePicker.args = {
   twentyFourHourFormat: false,
   unnamed: 'Timepicker',
 };
+
+export const TimePickerAltLanguage = Template.bind({});
+TimePickerAltLanguage.args = {
+  ...TimePicker.args,
+  locale: 'ja',
+};
+TimePickerAltLanguage.storyName = 'Time Picker (Japanese)';

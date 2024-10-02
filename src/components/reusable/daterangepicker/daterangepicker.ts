@@ -4,10 +4,12 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import { langsArray } from '../datePicker/defs';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
 import type { Instance } from 'flatpickr/dist/types/instance';
+import { Locale } from 'flatpickr/dist/types/locale';
 import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 import l10n from 'flatpickr/dist/l10n/index';
@@ -35,15 +37,7 @@ const DATE_FORMAT_OPTIONS = {
 
 type DateFormatOption = keyof typeof DATE_FORMAT_OPTIONS;
 
-// * temporary: from carbon locale implementation
-l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
-  const currentDay = l10n.en.weekdays.shorthand;
-  if (currentDay[index] === 'Thu' || currentDay[index] === 'Th') {
-    currentDay[index] = 'Th';
-  } else {
-    currentDay[index] = currentDay[index].charAt(0);
-  }
-});
+type SupportedLocale = (typeof langsArray)[number];
 
 /**
  * Date Range Picker: uses flatpickr datetime picker library -- `https://flatpickr.js.org/examples/#range-calendar`
@@ -54,9 +48,14 @@ l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
 @customElement('kyn-date-range-picker')
 export class DateRangePicker extends FormMixin(LitElement) {
   static override styles = [DateRangePickerStyles];
+
   /** Sets date range picker attribute name (ex: `contact-form-date-range-picker`). */
   @property({ type: String })
   nameAttr = '';
+
+  /* Sets desired locale and, if supported, dynamically loads language lib */
+  @property({ type: String })
+  locale: SupportedLocale = 'en';
 
   /** Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`). */
   @property({ type: String })
@@ -279,9 +278,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
       : '';
   }
 
-  override firstUpdated(changedProperties: PropertyValues): void {
+  override async firstUpdated(
+    changedProperties: PropertyValues
+  ): Promise<void> {
     super.firstUpdated(changedProperties);
-    this.initializeFlatpickr();
+    await this.initializeFlatpickr();
   }
 
   override updated(changedProperties: PropertyValues): void {
@@ -289,13 +290,51 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (
       changedProperties.has('dateFormat') ||
       changedProperties.has('minDate') ||
-      changedProperties.has('maxDate')
+      changedProperties.has('maxDate') ||
+      changedProperties.has('locale')
     ) {
       this.updateFlatpickrOptions();
     }
   }
 
-  getFlatpickrOptions(): Partial<BaseOptions> {
+  async loadLocale(locale: string): Promise<Locale> {
+    if (locale === 'en') return English;
+
+    if (!this.isSupportedLocale(locale)) {
+      console.error(`Unable to load ${locale} -- falling back to English.`);
+      return English;
+    }
+
+    try {
+      const module = await import(`flatpickr/dist/l10n/${locale}.js`);
+
+      let localeConfig: Locale;
+
+      if (module[locale]) {
+        localeConfig = module[locale];
+      } else if (module.default && module.default[locale]) {
+        localeConfig = module.default[locale];
+      } else if (module.default && typeof module.default === 'object') {
+        localeConfig = module.default;
+      } else {
+        throw new Error('Unable to find locale configuration');
+      }
+
+      return localeConfig;
+    } catch (error) {
+      console.error(
+        `Unable to load ${locale} -- falling back to English.`,
+        error
+      );
+      return English;
+    }
+  }
+
+  isSupportedLocale(locale: string): locale is SupportedLocale {
+    return langsArray.includes(locale as SupportedLocale);
+  }
+
+  async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     const options: Partial<BaseOptions> = {
       dateFormat: this.dateFormat,
       mode: 'range',
@@ -309,6 +348,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
       altFormat: this.altFormat,
       plugins: [rangePlugin({ input: this.endDateInputEl })],
     };
+
+    if (this.locale) {
+      options.locale = await this.loadLocale(this.locale);
+    }
 
     if (this.minDate) {
       options.minDate = this.minDate;
@@ -329,16 +372,17 @@ export class DateRangePicker extends FormMixin(LitElement) {
     return options;
   }
 
-  initializeFlatpickr(): void {
+  async initializeFlatpickr(): Promise<void> {
     if (!this.startDateInputEl) {
       console.error('Start date input not found.');
       return;
     }
 
     try {
+      const options = await this.getFlatpickrOptions();
       this.flatpickrInstance = flatpickr(
         this.startDateInputEl,
-        this.getFlatpickrOptions()
+        options
       ) as Instance;
 
       if (this.flatpickrInstance) {
@@ -396,18 +440,23 @@ export class DateRangePicker extends FormMixin(LitElement) {
       startDateInput.setAttribute('aria-label', 'Start date');
       endDateInput.setAttribute('aria-label', 'End date');
     }
+
+    if (this.locale === 'en') {
+      this.modifyEngDayShorthands();
+    }
   }
 
-  updateFlatpickrOptions(): void {
+  async updateFlatpickrOptions(): Promise<void> {
     if (!this.flatpickrInstance) return;
 
     const currentDates = this.flatpickrInstance.selectedDates;
 
     this.flatpickrInstance.destroy();
 
+    const options = await this.getFlatpickrOptions();
     this.flatpickrInstance = flatpickr(
       this.startDateInputEl,
-      this.getFlatpickrOptions()
+      options
     ) as Instance;
 
     if (currentDates && currentDates.length === 2) {
@@ -416,7 +465,22 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     this.setAccessibilityAttributes();
 
+    if (this.locale === 'en') {
+      this.modifyEngDayShorthands();
+    }
+
     this.requestUpdate();
+  }
+
+  modifyEngDayShorthands(): void {
+    l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
+      const currentDay = l10n.en.weekdays.shorthand;
+      if (currentDay[index] === 'Thu' || currentDay[index] === 'Th') {
+        currentDay[index] = 'Th';
+      } else {
+        currentDay[index] = currentDay[index].charAt(0);
+      }
+    });
   }
 
   handleDateChange(selectedDates: Date[], dateStr: string): void {
