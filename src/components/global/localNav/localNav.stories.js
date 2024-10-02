@@ -256,6 +256,7 @@ export const WithSearch = {
 
         <kyn-block-code-view
           language="javascript"
+          copyButtonDescriptionAttr="Copy"
           codeSnippet="import { filterLocalNavLinks } from '@kyndryl-design-system/shidoka-applications/common/helpers/helpers'"
           copyOptionVisible
         ></kyn-block-code-view>
