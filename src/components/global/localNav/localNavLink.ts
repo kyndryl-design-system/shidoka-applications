@@ -73,7 +73,14 @@ export class LocalNavLink extends LitElement {
    * @ignore
    */
   @queryAssignedElements({ slot: 'links', selector: 'kyn-local-nav-link' })
-  navLinks!: Array<any>;
+  _navLinks!: Array<any>;
+
+  /**
+   * Queries slotted dividers.
+   * @ignore
+   */
+  @queryAssignedElements({ slot: 'links', selector: 'kyn-local-nav-divider' })
+  _dividers!: Array<any>;
 
   /** Timeout function to delay flyout open.
    * @internal
@@ -85,12 +92,6 @@ export class LocalNavLink extends LitElement {
    */
   @state()
   _leaveTimer: any;
-
-  /** Menu positioning
-   * @internal
-   */
-  @state()
-  menuPosition: any = {};
 
   override render() {
     const classes = {
@@ -107,7 +108,7 @@ export class LocalNavLink extends LitElement {
     return html`
       <div class=${classMap(classes)}>
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
-          ${this.navLinks.length
+          ${this._navLinks.length
             ? html`
                 <span class="expand-icon">
                   <kd-icon
@@ -123,8 +124,8 @@ export class LocalNavLink extends LitElement {
           </span>
         </a>
 
-        <div class="sub-menu ${this.navLinks.length ? 'has-links' : ''}">
-          ${this.navLinks.length
+        <div class="sub-menu ${this._navLinks.length ? 'has-links' : ''}">
+          ${this._navLinks.length
             ? html`
                 <button class="go-back" @click=${() => this._handleBack()}>
                   <kd-icon .icon=${backIcon}></kd-icon>
@@ -141,22 +142,10 @@ export class LocalNavLink extends LitElement {
     `;
   }
 
-  // override firstUpdated() {
-  //   this.determineLevel();
-  // }
-
   override willUpdate(changedProps: any) {
     if (changedProps.has('_navExpanded')) {
       this.updateChildren();
     }
-
-    // if (
-    //   changedProps.has('_expanded') &&
-    //   this._expanded &&
-    //   this.navLinks.length
-    // ) {
-    //   this._positionMenu();
-    // }
   }
 
   override updated(changedProps: any) {
@@ -200,70 +189,15 @@ export class LocalNavLink extends LitElement {
   }
 
   private updateChildren() {
-    this.navLinks.forEach((link: any) => {
+    this._navLinks.forEach((link: any) => {
       link._level = this._level + 1;
       link._navExpanded = this._navExpanded;
     });
+
+    this._dividers.forEach((divider: any) => {
+      divider._navExpanded = this._navExpanded;
+    });
   }
-
-  // private determineLevel() {
-  //   const parentNode = this.shadowRoot!.host.parentNode;
-  //   if (parentNode!.nodeName === 'KYN-LOCAL-NAV') {
-  //     this._level = 1;
-  //   } else if (parentNode!.parentNode!.nodeName === 'KYN-LOCAL-NAV') {
-  //     this._level = 2;
-  //   } else {
-  //     this._level = 3;
-  //   }
-  // }
-
-  // private handlePointerEnter(e: PointerEvent) {
-  //   if (e.pointerType === 'mouse' && this.navLinks.length) {
-  //     clearTimeout(this._leaveTimer);
-
-  //     this._enterTimer = setTimeout(() => {
-  //       this._expanded = true;
-  //     }, 150);
-  //   }
-  // }
-
-  // private handlePointerLeave(e: PointerEvent) {
-  //   if (
-  //     e.pointerType === 'mouse' &&
-  //     document.activeElement !== this &&
-  //     this.navLinks.length
-  //   ) {
-  //     clearTimeout(this._enterTimer);
-
-  //     this._leaveTimer = setTimeout(() => {
-  //       this._expanded = false;
-  //     }, 150);
-  //   }
-  // }
-
-  // private _positionMenu() {
-  //   // determine submenu positioning
-  //   const LinkBounds: any = this.getBoundingClientRect();
-  //   const MenuBounds: any = this.shadowRoot
-  //     ?.querySelector('.sub-menu')
-  //     ?.getBoundingClientRect();
-  //   const Padding = 8;
-  //   const HeaderHeight = 56;
-
-  //   const LinkHalf = LinkBounds.top + LinkBounds.height / 2;
-  //   const MenuHalf = MenuBounds.height / 2;
-
-  //   const Top =
-  //     LinkHalf + MenuHalf > window.innerHeight
-  //       ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight)
-  //       : LinkHalf - MenuHalf;
-  //   const Left = LinkBounds.right + Padding;
-
-  //   this.menuPosition = {
-  //     top: Top < HeaderHeight ? HeaderHeight : Top,
-  //     left: Left < 320 ? 320 : Left,
-  //   };
-  // }
 
   private _handleBack() {
     this.expanded = false;
@@ -276,7 +210,7 @@ export class LocalNavLink extends LitElement {
       preventDefault = true;
     }
 
-    if (this.navLinks.length) {
+    if (this._navLinks.length) {
       preventDefault = true;
       this.expanded = !this.expanded;
     }
@@ -296,24 +230,6 @@ export class LocalNavLink extends LitElement {
     });
     this.dispatchEvent(event);
   }
-
-  private _handleClickOut(e: Event) {
-    if (!e.composedPath().includes(this)) {
-      this.expanded = false;
-    }
-  }
-
-  // override connectedCallback() {
-  //   super.connectedCallback();
-
-  //   document.addEventListener('click', (e) => this._handleClickOut(e));
-  // }
-
-  // override disconnectedCallback() {
-  //   document.removeEventListener('click', (e) => this._handleClickOut(e));
-
-  //   super.disconnectedCallback();
-  // }
 }
 
 declare global {

@@ -66,6 +66,12 @@ export class LocalNav extends LitElement {
   @queryAssignedElements({ selector: 'kyn-local-nav-link' })
   _navLinks!: any;
 
+  /** Queries top-level slotted dividers.
+   * @internal
+   */
+  @queryAssignedElements({ selector: 'kyn-local-nav-divider' })
+  _dividers!: any;
+
   /** Timeout function to delay flyout open.
    * @internal
    */
@@ -161,6 +167,10 @@ export class LocalNav extends LitElement {
     this._navLinks.forEach((link: any) => {
       link._navExpanded = this._expanded || this.pinned;
       link._navExpandedMobile = this._mobileExpanded;
+    });
+
+    this._dividers.forEach((divider: any) => {
+      divider._navExpanded = this._expanded || this.pinned;
     });
   }
 

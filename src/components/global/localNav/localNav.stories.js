@@ -16,6 +16,7 @@ export default {
   component: 'kyn-local-nav',
   subcomponents: {
     'kyn-local-nav-link': 'kyn-local-nav-link',
+    'kyn-local-nav-divider': 'kyn-local-nav-divider',
   },
   decorators: [
     (story) =>
@@ -71,7 +72,7 @@ export const LocalNav = {
           </kyn-local-nav-link>
         </kyn-local-nav-link>
 
-        <kyn-local-nav-link href="javascript:void(0)" expanded>
+        <kyn-local-nav-link href="javascript:void(0)">
           <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
           Link 3
 
@@ -88,6 +89,50 @@ export const LocalNav = {
               L3 Link 2
             </kyn-local-nav-link>
           </kyn-local-nav-link>
+        </kyn-local-nav-link>
+      </kyn-local-nav>
+    `;
+  },
+};
+
+export const WithDivider = {
+  args: {
+    pinned: false,
+    pinText: 'Pin',
+    unpinText: 'Unpin',
+    textStrings: {
+      toggleMenu: 'Toggle Menu',
+      collapse: 'Collapse',
+      menu: 'Menu',
+    },
+  },
+  render: (args) => {
+    return html`
+      <kyn-local-nav
+        ?pinned=${args.pinned}
+        pinText=${args.pinText}
+        unpinText=${args.unpinText}
+        .textStrings=${args.textStrings}
+      >
+        <kyn-local-nav-link href="javascript:void(0)" active>
+          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+          Link 1
+        </kyn-local-nav-link>
+
+        <kyn-local-nav-divider></kyn-local-nav-divider>
+
+        <kyn-local-nav-link href="javascript:void(0)">
+          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+          Link 2
+        </kyn-local-nav-link>
+
+        <kyn-local-nav-divider
+          heading="Divider with Heading"
+        ></kyn-local-nav-divider>
+
+        <kyn-local-nav-link href="javascript:void(0)">
+          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+          Link 3
         </kyn-local-nav-link>
       </kyn-local-nav>
     `;

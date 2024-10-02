@@ -76,7 +76,6 @@ nav {
 
 .search {
   display: none;
-  margin: 2px 0;
 
   .nav--expanded &,
   .nav--expanded-mobile & {
@@ -85,15 +84,14 @@ nav {
 }
 
 slot[name='search'] {
-  &::slotted(kyn-text-input),
-  &::slotted(kyn-search) {
+  &::slotted(*) {
     display: block;
+    margin: 2px 0;
   }
 }
 
 // slot[name='search'] {
-//   &::slotted(kyn-text-input),
-//   &::slotted(kyn-search) {
+//   &::slotted(*) {
 //     display: block;
 //     transition: transform 300ms ease-out, height 300ms ease-out,
 //       visibility 300ms ease-out;

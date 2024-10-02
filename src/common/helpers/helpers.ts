@@ -60,7 +60,13 @@ export const filterLocalNavLinks = (
   textAttr = 'text'
 ) => {
   return linksArr.reduce((result: Array<any>, link) => {
-    const links = filterLocalNavLinks(link[sublinksAttr] || [], searchTerm);
+    const links = filterLocalNavLinks(
+      link[sublinksAttr] || [],
+      searchTerm,
+      expandedAttr,
+      sublinksAttr,
+      textAttr
+    );
 
     if (
       link[textAttr].toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -69,6 +75,7 @@ export const filterLocalNavLinks = (
       const linkObj = Object.assign({}, link, links.length && { links });
 
       if (
+        window.innerWidth >= 672 &&
         linkObj[sublinksAttr] &&
         linkObj[sublinksAttr].length &&
         searchTerm !== ''

@@ -12,7 +12,11 @@ export {
   HeaderPanelLink,
   HeaderNotificationPanel,
 } from './components/global/header';
-export { LocalNav, LocalNavLink } from './components/global/localNav';
+export {
+  LocalNav,
+  LocalNavLink,
+  LocalNavDivider,
+} from './components/global/localNav';
 export { Footer, FooterNav, FooterNavLink } from './components/global/footer';
 export { UiShell } from './components/global/uiShell';
 export {
