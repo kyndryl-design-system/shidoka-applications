@@ -61,12 +61,12 @@ const Template = (args) => {
     .minDate="${args.minDate}"
     .maxDate="${args.maxDate}"
     @on-change=${(e) => action(e.type)(e)}
-    >${args.unnamed}</kyn-date-picker
+    >Date</kyn-date-picker
   >`;
 };
 
-export const Default = Template.bind({});
-Default.args = {
+export const DatePicker = Template.bind({});
+DatePicker.args = {
   nameAttr: 'default-date-picker',
   dateFormat: 'Y-m-d',
   size: 'md',
@@ -83,12 +83,11 @@ Default.args = {
   twentyFourHourFormat: false,
   minDate: '',
   maxDate: '',
-  unnamed: 'Date Only Picker',
 };
 
-export const DateTime = Template.bind({});
-DateTime.args = {
-  ...Default.args,
+export const DateWithTime = Template.bind({});
+DateWithTime.args = {
+  ...DatePicker.args,
   nameAttr: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
   unnamed: 'Date & Time Picker',

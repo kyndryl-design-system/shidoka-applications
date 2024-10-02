@@ -48,8 +48,8 @@ const Template = (args) => {
   >`;
 };
 
-export const Default = Template.bind({});
-Default.args = {
+export const TimePicker = Template.bind({});
+TimePicker.args = {
   nameAttr: 'default-timepicker',
   size: 'md',
   value: null,

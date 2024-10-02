@@ -3,6 +3,7 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -13,6 +14,9 @@ import l10n from 'flatpickr/dist/l10n/index';
 import 'flatpickr/dist/themes/light.css';
 
 import TimepickerStyles from './timepicker.scss';
+
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/time.svg';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -130,21 +134,24 @@ export class TimePicker extends FormMixin(LitElement) {
         <slot></slot>
       </label>
 
-      <input
-        type="text"
-        id=${inputId}
-        placeholder=${'Select time'}
-        ?disabled=${this.timepickerDisabled}
-        .value=${this.value ? new Date(this.value).toLocaleString() : ''}
-        aria-required=${this.required ? 'true' : 'false'}
-        aria-invalid=${this._isInvalid ? 'true' : 'false'}
-        aria-describedby=${this._isInvalid
-          ? errorId
-          : this.warnText
-          ? warningId
-          : descriptionId}
-        @change=${this.handeTimeInputChange}
-      />
+      <div class="input-container">
+        <input
+          type="text"
+          id=${inputId}
+          placeholder=${'Select time'}
+          ?disabled=${this.timepickerDisabled}
+          .value=${this.value ? new Date(this.value).toLocaleString() : ''}
+          aria-required=${this.required ? 'true' : 'false'}
+          aria-invalid=${this._isInvalid ? 'true' : 'false'}
+          aria-describedby=${this._isInvalid
+            ? errorId
+            : this.warnText
+            ? warningId
+            : descriptionId}
+          @change=${this.handeTimeInputChange}
+        />
+        <span class="icon">${unsafeSVG(clockIcon)}</span>
+      </div>
 
       ${this.caption
         ? html`<div id=${descriptionId} class="caption">${this.caption}</div>`

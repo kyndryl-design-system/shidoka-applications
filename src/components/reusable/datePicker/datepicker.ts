@@ -3,6 +3,7 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -13,6 +14,9 @@ import l10n from 'flatpickr/dist/l10n/index';
 import 'flatpickr/dist/themes/light.css';
 
 import DatePickerStyles from './datepicker.scss';
+
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -110,6 +114,12 @@ export class DatePicker extends FormMixin(LitElement) {
   @state()
   _textStrings = _defaultTextStrings;
 
+  /** Detects whether time format includes time values.
+   * @internal
+   */
+  @state()
+  _enableTime = false;
+
   /** Flatpickr instantiation.
    * @internal
    */
@@ -147,23 +157,26 @@ export class DatePicker extends FormMixin(LitElement) {
           <slot></slot>
         </label>
 
-        <input
-          type="text"
-          id=${inputId}
-          placeholder=${this.dateFormat.includes('H:')
-            ? 'Select date and time'
-            : 'Select date'}
-          ?disabled=${this.datePickerDisabled}
-          .value=${this.value ? new Date(this.value).toLocaleString() : ''}
-          aria-required=${this.required ? 'true' : 'false'}
-          aria-invalid=${this._isInvalid ? 'true' : 'false'}
-          aria-describedby=${this._isInvalid
-            ? errorId
-            : this.warnText
-            ? warningId
-            : descriptionId}
-          @change=${this.handleDateChange}
-        />
+        <div class="input-container">
+          <input
+            type="text"
+            id=${inputId}
+            placeholder=${this._enableTime
+              ? 'Select date and time'
+              : 'Select date'}
+            ?disabled=${this.datePickerDisabled}
+            .value=${this.value ? new Date(this.value).toLocaleString() : ''}
+            aria-required=${this.required ? 'true' : 'false'}
+            aria-invalid=${this._isInvalid ? 'true' : 'false'}
+            aria-describedby=${this._isInvalid
+              ? errorId
+              : this.warnText
+              ? warningId
+              : descriptionId}
+            @change=${this.handleDateChange}
+          />
+          <span class="icon">${unsafeSVG(calendarIcon)}</span>
+        </div>
 
         ${this.caption
           ? html`<div id=${descriptionId} class="caption">${this.caption}</div>`
@@ -184,6 +197,7 @@ export class DatePicker extends FormMixin(LitElement) {
   getDatepickerClasses() {
     return {
       'date-picker': true,
+      'date-time-picker': this.dateFormat.includes('H:'),
       [`date-picker__size--${this.size}`]: true,
       'date-picker__disabled': this.datePickerDisabled,
     };
@@ -235,10 +249,12 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   getFlatpickrOptions(): Partial<BaseOptions> {
+    this._enableTime = this.dateFormat.includes('H:');
+
     const options: Partial<BaseOptions> = {
       dateFormat: this.dateFormat,
       mode: this.mode,
-      enableTime: this.dateFormat.includes('H:'),
+      enableTime: this._enableTime,
       allowInput: false,
       clickOpens: true,
       time_24hr: this.twentyFourHourFormat,
@@ -300,7 +316,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
     if (Array.isArray(selectedDates)) {
       if (selectedDates[0]) {
-        if (this.dateFormat.includes('H:')) {
+        if (this._enableTime) {
           selectedDate = selectedDates[0].getTime();
         } else {
           selectedDate = new Date(

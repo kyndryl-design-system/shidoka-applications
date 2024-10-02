@@ -4,7 +4,18 @@
 :host {
     display: inline-block;
     width: 100%;
-    min-width: 20rem;
+    max-width: 500px;
+}
+
+.date-range-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 14px 8px;
+    font-weight: 300;
+    font-size: 25px;
+    height: 48px;
+    color: var(--kd-color-text-secondary);
 }
 
 .date-range-picker {
@@ -12,7 +23,7 @@
 
     .date-inputs {
         display: flex;
-        gap: 16px;
+        gap: 8px;
 
         .date-input {
             display: flex;
@@ -24,26 +35,35 @@
                 font-weight: 500;
             }
 
-            input {
-                width: 100%;
-                box-sizing: border-box;
+            .input-container {
+                position: relative;
+
+                input {
+                    width: 100%;
+                    box-sizing: border-box;
+                    -webkit-appearance: none;
+                    appearance: none;
+                    border: 1px solid var(--kd-color-border-ui);
+                    border-radius: 4px;
+                    height: 48px;
+                    padding: 10px 32px 10px 16px;
+                    min-width: 180px;
+
+                    &[disabled] {
+                        opacity: 1;
+                        border: 1px solid var(--kd-color-border-ui);
+                        color: var(--kd-color-text-primary);
+                    }
+                }
+
+                .icon {
+                    position: absolute;
+                    right: 20px;
+                    top: 55%;
+                    transform: translateY(-50%);
+                    pointer-events: none;
+                }
             }
-        }
-    }
-
-    input {
-        -webkit-appearance: none;
-        appearance: none;
-        border: 1px solid var(--kd-color-border-ui);
-        border-radius: 4px;
-        height: 48px;
-        padding: 10px 16px;
-        min-width: 250px;
-
-        &[disabled] {
-            opacity: 1;
-            border: 1px solid var(--kd-color-border-ui);
-            color: var(--kd-color-text-primary);
         }
     }
 
