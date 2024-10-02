@@ -145,7 +145,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
    * Queries the start date <input> DOM element.
    * @internal
    */
-  @query('#date-range-picker-start')
+  @query('input.start-date')
   private startDateInputEl!: HTMLInputElement;
 
   /**
@@ -249,7 +249,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
           id=${id}
           class=${className}
           placeholder=${this.getPlaceholder()}
-          ?disabled=${this.dateRangePickerDisabled || isEndDate}
+          ?disabled=${this.dateRangePickerDisabled}
           .value=${this.getInputValue(isEndDate ? 1 : 0)}
           aria-required=${this.required ? 'true' : 'false'}
           aria-invalid=${this._isInvalid ? 'true' : 'false'}
