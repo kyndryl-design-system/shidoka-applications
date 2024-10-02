@@ -95,9 +95,7 @@ export class LocalNavLink extends LitElement {
 
   override render() {
     const classes = {
-      'level--1': this._level == 1,
-      'level--2': this._level == 2,
-      'level--3': this._level == 3,
+      'top-level': this._level === 1,
       'sub-level': this._level > 1,
       'nav-expanded': this._navExpanded || this._navExpandedMobile,
       'link-expanded': this.expanded,
