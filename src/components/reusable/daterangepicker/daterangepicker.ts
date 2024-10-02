@@ -134,6 +134,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @state()
   _textStrings = _defaultTextStrings;
 
+  /** Detects whether time format includes time values.
+   * @internal
+   */
+  @state()
+  _enableTime = false;
+
   /** Flatpickr instantiation.
    * @internal
    */
@@ -267,6 +273,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   getDateRangePickerClasses() {
     return {
       'date-range-picker': true,
+      'date-time-range-picker': this._enableTime,
       [`date-range-picker__size--${this.size}`]: true,
       'date-range-picker__disabled': this.dateRangePickerDisabled,
     };
@@ -335,10 +342,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+    this._enableTime = this.dateFormat.includes('H:');
+
     const options: Partial<BaseOptions> = {
       dateFormat: this.dateFormat,
       mode: 'range',
-      enableTime: this.dateFormat.includes('H:'),
+      enableTime: this._enableTime,
       allowInput: false,
       clickOpens: true,
       time_24hr: this.twentyFourHourFormat,

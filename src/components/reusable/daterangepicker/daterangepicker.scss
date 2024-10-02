@@ -4,11 +4,15 @@
 :host {
     display: inline-block;
     width: 100%;
-    max-width: 500px;
 }
 
 .date-range-picker {
     width: inherit;
+    max-width: 425px;
+
+    &.date-time-range-picker {
+        max-width: 500px;
+    }
 
     .date-inputs {
         display: flex;
@@ -95,43 +99,49 @@
         color: var(--kd-color-text-warning);
     }
 
+    &__disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
     &__size--sm {
+        max-width: 375px;
+
         .date-inputs {
-            .date-input {
-                input {
-                    height: 32px;
-                    line-height: 32px;
-                    padding: 0 40px 0 12px;
-                    min-width: 150px;
-                }
+            .date-input .input-container input {
+                min-width: 125px;
+                height: 32px;
+                line-height: 32px;
             }
 
             .date-range-separator {
-                height: 32px;
+                height: 30px;
             }
+        }
+
+        &.date-time-range-picker {
+            max-width: 450px;
         }
     }
 
     &__size--lg {
+        max-width: 600px;
+
         .date-inputs {
-            .date-input {
-                input {
-                    height: 56px;
-                    line-height: 56px;
-                    padding: 0 40px 0 16px;
-                    min-width: 300px;
-                }
+            .date-input .input-container input {
+                min-width: 350px;
+                height: 60px;
+                line-height: 60px;
             }
 
             .date-range-separator {
-                height: 56px;
+                height: 55px;
             }
         }
-    }
 
-    &__disabled {
-        opacity: 0.5;
-        pointer-events: none;
+        &.date-time-range-picker {
+            max-width: 650px;
+        }
     }
 }
 
