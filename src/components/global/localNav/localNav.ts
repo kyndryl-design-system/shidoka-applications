@@ -6,11 +6,20 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { deepmerge } from 'deepmerge-ts';
 import LocalNavScss from './localNav.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import arrowIcon from '@carbon/icons/es/chevron--down/16';
 import pinIcon from '@carbon/icons/es/side-panel--open/24';
+
+const _defaultTextStrings = {
+  pin: 'Pin',
+  unpin: 'Unpin',
+  toggleMenu: 'Toggle Menu',
+  collapse: 'Collapse',
+  menu: 'Menu',
+};
 
 /**
  * The global Side Navigation component.
@@ -26,21 +35,15 @@ export class LocalNav extends LitElement {
   @property({ type: Boolean })
   pinned = false;
 
-  /** Pin open button assistive text. */
-  @property({ type: String })
-  pinText = 'Pin';
-
-  /** Unpin button assistive text. */
-  @property({ type: String })
-  unpinText = 'Unpin';
-
-  /** Menu toggle button assistive text. */
+  /** Text string customization. */
   @property({ type: Object })
-  textStrings = {
-    toggleMenu: 'Toggle Menu',
-    collapse: 'Collapse',
-    menu: 'Menu',
-  };
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
 
   /** Local nav desktop expanded state.
    * @internal
@@ -96,13 +99,13 @@ export class LocalNav extends LitElement {
       >
         <button
           class="mobile-toggle"
-          title=${this.textStrings.toggleMenu}
-          aria-label=${this.textStrings.toggleMenu}
+          title=${this._textStrings.toggleMenu}
+          aria-label=${this._textStrings.toggleMenu}
           @click=${this._handleMobileNavToggle}
         >
           ${this._mobileExpanded
-            ? this.textStrings.collapse
-            : this._activeLinkText || this.textStrings.menu}
+            ? this._textStrings.collapse
+            : this._activeLinkText || this._textStrings.menu}
           <kd-icon .icon=${arrowIcon}></kd-icon>
         </button>
 
@@ -118,8 +121,12 @@ export class LocalNav extends LitElement {
           <button
             class="nav-toggle"
             @click=${(e: Event) => this._handleNavToggle(e)}
-            title="${this.pinned ? this.unpinText : this.pinText}"
-            aria-label="${this.pinned ? this.unpinText : this.pinText}"
+            title="${this.pinned
+              ? this._textStrings.unpin
+              : this._textStrings.pin}"
+            aria-label="${this.pinned
+              ? this._textStrings.unpin
+              : this._textStrings.pin}"
           >
             <kd-icon class="pin-icon" .icon=${pinIcon}></kd-icon>
           </button>
@@ -190,6 +197,10 @@ export class LocalNav extends LitElement {
       changedProps.has('_mobileExpanded')
     ) {
       this._updateChildren();
+    }
+
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
   }
 

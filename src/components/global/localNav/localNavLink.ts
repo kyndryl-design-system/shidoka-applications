@@ -82,17 +82,6 @@ export class LocalNavLink extends LitElement {
   @queryAssignedElements({ slot: 'links', selector: 'kyn-local-nav-divider' })
   _dividers!: Array<any>;
 
-  /** Timeout function to delay flyout open.
-   * @internal
-   */
-  _enterTimer: any;
-
-  /** Timeout function to delay flyout close.
-   * @internal
-   */
-  @state()
-  _leaveTimer: any;
-
   override render() {
     const classes = {
       'top-level': this._level === 1,
