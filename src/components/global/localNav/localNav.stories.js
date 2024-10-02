@@ -5,6 +5,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import './localNav';
 import './localNavLink';
 import '../../reusable/textInput';
+import '../../reusable/codeView/blockCodeView';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import { filterLocalNavLinks } from '../../../common/helpers/helpers';
 
@@ -242,6 +243,36 @@ export const WithSearch = {
           return renderLink(link);
         })}
       </kyn-local-nav>
+
+      <div class="extra-docs">
+        Search/filter functionality must be implemented at the application
+        level. We've
+        <a
+          href="https://github.com/kyndryl-design-system/shidoka-applications/blob/e328e500799e8db4fdc4441ec1f7c2504c98bc01/src/common/helpers/helpers.ts#L55"
+          >included the filter function used in this story as a helper
+          function</a
+        >
+        that can be used to sort a nested array of links:
+
+        <kyn-block-code-view
+          language="javascript"
+          codeSnippet="import { filterLocalNavLinks } from '@kyndryl-design-system/shdioka-applications/common/helpers/helpers'"
+          copyOptionVisible
+        ></kyn-block-code-view>
+
+        <style>
+          .extra-docs {
+            margin: 16px;
+          }
+
+          @media (min-width: 42rem) {
+            .extra-docs {
+              margin: 32px;
+              margin-left: 88px;
+            }
+          }
+        </style>
+      </div>
     `;
   },
 };
