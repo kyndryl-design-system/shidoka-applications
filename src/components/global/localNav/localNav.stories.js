@@ -35,25 +35,22 @@ export default {
   },
 };
 
-export const LocalNav = {
-  args: {
-    pinned: false,
-    pinText: 'Pin',
-    unpinText: 'Unpin',
-    textStrings: {
-      toggleMenu: 'Toggle Menu',
-      collapse: 'Collapse',
-      menu: 'Menu',
-    },
+const args = {
+  pinned: false,
+  textStrings: {
+    pin: 'Pin',
+    unpin: 'Unpin',
+    toggleMenu: 'Toggle Menu',
+    collapse: 'Collapse',
+    menu: 'Menu',
   },
+};
+
+export const LocalNav = {
+  args,
   render: (args) => {
     return html`
-      <kyn-local-nav
-        ?pinned=${args.pinned}
-        pinText=${args.pinText}
-        unpinText=${args.unpinText}
-        .textStrings=${args.textStrings}
-      >
+      <kyn-local-nav ?pinned=${args.pinned} .textStrings=${args.textStrings}>
         <kyn-local-nav-link href="javascript:void(0)" active>
           <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
           Link 1
@@ -97,16 +94,7 @@ export const LocalNav = {
 };
 
 export const WithDivider = {
-  args: {
-    pinned: false,
-    pinText: 'Pin',
-    unpinText: 'Unpin',
-    textStrings: {
-      toggleMenu: 'Toggle Menu',
-      collapse: 'Collapse',
-      menu: 'Menu',
-    },
-  },
+  args,
   render: (args) => {
     return html`
       <kyn-local-nav
@@ -180,14 +168,7 @@ const SampleLinks = [
 
 export const WithSearch = {
   args: {
-    pinned: false,
-    pinText: 'Pin',
-    unpinText: 'Unpin',
-    textStrings: {
-      toggleMenu: 'Toggle Menu',
-      collapse: 'Collapse',
-      menu: 'Menu',
-    },
+    ...args,
     links: SampleLinks,
     filteredLinks: SampleLinks,
   },
