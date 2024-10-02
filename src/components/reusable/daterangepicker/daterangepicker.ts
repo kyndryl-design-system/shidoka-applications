@@ -202,7 +202,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             ${this.renderInput(startInputId, 'start-date', false)}
           </div>
 
-          <div class="date-range-separator">_</div>
+          <div class="date-range-separator">—</div>
 
           <div class="date-input">
             <label

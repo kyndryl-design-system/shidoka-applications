@@ -10,6 +10,8 @@
 .time-picker {
     .input-container {
         position: relative;
+        display: flex;
+        align-items: center;
 
         input {
             -webkit-appearance: none;
@@ -19,26 +21,38 @@
             border: 1px solid var(--kd-color-border-ui);
             border-radius: 4px;
             height: 48px;
-            padding: 10px 16px;
+            padding: 0 40px 0 16px;
+            flex: 1;
+            line-height: 48px;
         }
 
         .icon {
             position: absolute;
             right: 15px;
-            top: 55%;
-            vertical-align: middle;
+            top: 50%;
             transform: translateY(-50%);
             pointer-events: none;
+            display: flex;
+            align-items: center;
+            height: 24px;
         }
     }
 
     &__size--sm {
-        height: 32px;
-        padding: 2px 16px;
+        .input-container {
+            input {
+                height: 32px;
+                line-height: 32px;
+            }
+        }
     }
 
     &__size--lg {
-        height: 56px;
-        padding: 14px 16px;
+        .input-container {
+            input {
+                height: 56px;
+                line-height: 56px;
+            }
+        }
     }
 }
