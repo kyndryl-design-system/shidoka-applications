@@ -124,7 +124,7 @@ DateTimeRangePickerSingle.args = {
   multipleInputs: false,
   caption: '',
 };
-DateTimeRangePickerSingle.storyName = 'Date /Time Range Single Input';
+DateTimeRangePickerSingle.storyName = 'Date / Time Range Single Input';
 
 export const DateRangePickerMulti = MultiInputTemplate.bind({});
 DateRangePickerMulti.args = {
