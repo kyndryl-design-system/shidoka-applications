@@ -115,17 +115,6 @@ DateRangePicker.args = {
 };
 DateRangePicker.storyName = 'Date Range Single Input (Default)';
 
-export const DateTimeRangePickerSingle = SingleInput.bind({});
-DateTimeRangePickerSingle.args = {
-  ...DateRangePicker.args,
-  locale: 'en',
-  nameAttr: 'date-time-picker',
-  dateFormat: 'Y-m-d H:i',
-  multipleInputs: false,
-  caption: '',
-};
-DateTimeRangePickerSingle.storyName = 'Date / Time Range Single Input';
-
 export const DateRangePickerMulti = MultiInputTemplate.bind({});
 DateRangePickerMulti.args = {
   ...DateRangePicker.args,
@@ -137,6 +126,17 @@ DateRangePickerMulti.args = {
 };
 DateRangePickerMulti.storyName = 'Date Range Multi Input';
 
+export const DateTimeRangePickerSingle = SingleInput.bind({});
+DateTimeRangePickerSingle.args = {
+  ...DateRangePicker.args,
+  locale: 'en',
+  nameAttr: 'date-time-picker',
+  dateFormat: 'Y-m-d H:i',
+  multipleInputs: false,
+  caption: '',
+};
+DateTimeRangePickerSingle.storyName = 'Date / Time Range Single Input';
+
 export const DateTimeRangePickerMulti = MultiInputTemplate.bind({});
 DateTimeRangePickerMulti.args = {
   ...DateRangePicker.args,
@@ -146,4 +146,5 @@ DateTimeRangePickerMulti.args = {
   multipleInputs: true,
   caption: "Example of spanish ('es') calendar locale.",
 };
-DateTimeRangePickerMulti.storyName = 'Date / Time Range Multi Input (Español)';
+DateTimeRangePickerMulti.storyName =
+  'Date / Time Range Multi Input (Spanish Locale)';

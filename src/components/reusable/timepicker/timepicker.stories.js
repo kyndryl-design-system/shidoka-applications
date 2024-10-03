@@ -75,4 +75,4 @@ TimePickerAltLanguage.args = {
   ...TimePicker.args,
   locale: 'ja',
 };
-TimePickerAltLanguage.storyName = 'Time Picker (Japanese)';
+TimePickerAltLanguage.storyName = 'Time Picker (Japanese Locale)';

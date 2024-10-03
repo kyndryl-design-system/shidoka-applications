@@ -93,10 +93,10 @@ DatePicker.args = {
 export const DateWithTime = Template.bind({});
 DateWithTime.args = {
   ...DatePicker.args,
-  locale: 'es',
+  locale: 'hi',
   nameAttr: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
   caption: '',
   unnamed: 'Date & Time Picker',
 };
-DateWithTime.storyName = 'Date With Time (Español)';
+DateWithTime.storyName = 'Date With Time (Hindi Locale)';
