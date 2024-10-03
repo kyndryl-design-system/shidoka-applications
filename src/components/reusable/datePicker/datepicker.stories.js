@@ -82,7 +82,7 @@ DatePicker.args = {
   disable: [],
   enable: [],
   mode: 'single',
-  caption: '',
+  caption: 'Example datepicker caption.',
   required: false,
   datePickerDisabled: false,
   twentyFourHourFormat: false,
@@ -96,6 +96,7 @@ DateWithTime.args = {
   locale: 'es',
   nameAttr: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
+  caption: '',
   unnamed: 'Date & Time Picker',
 };
 DateWithTime.storyName = 'Date With Time (Español)';

@@ -8,16 +8,12 @@
 
 .date-range-picker {
     width: inherit;
-    max-width: 425px;
-
-    &.date-time-range-picker {
-        max-width: 500px;
-    }
 
     .date-inputs {
         display: flex;
         align-items: flex-end;
         gap: 8px;
+        max-width: 425px;
 
         .date-input {
             display: flex;
@@ -37,8 +33,6 @@
                 input {
                     width: 100%;
                     box-sizing: border-box;
-                    -webkit-appearance: none;
-                    appearance: none;
                     border: 1px solid var(--kd-color-border-ui);
                     border-radius: 4px;
                     height: 48px;
@@ -46,6 +40,8 @@
                     flex: 1;
                     min-width: 180px;
                     line-height: 48px;
+                    -webkit-appearance: none;
+                    appearance: none;
 
                     &[disabled] {
                         opacity: 1;
@@ -79,35 +75,19 @@
         }
     }
 
-    .caption {
-        margin-top: 4px;
-        font-size: 12px;
-        color: var(--kd-color-text-secondary);
-    }
-
-    .error,
-    .warn {
-        margin-top: 4px;
-        font-size: 12px;
-    }
-
-    .error {
-        color: var(--kd-color-text-error);
-    }
-
-    .warn {
-        color: var(--kd-color-text-warning);
-    }
-
     &__disabled {
         opacity: 0.5;
         pointer-events: none;
     }
 
-    &__size--sm {
-        max-width: 375px;
+    &.date-time-range-picker .input-container {
+        max-width: 500px;
+    }
 
+    &__size--sm {
         .date-inputs {
+            max-width: 375px;
+
             .date-input .input-container input {
                 min-width: 125px;
                 height: 32px;
@@ -119,15 +99,15 @@
             }
         }
 
-        &.date-time-range-picker {
+        &.date-time-range-picker .date-inputs {
             max-width: 450px;
         }
     }
 
     &__size--lg {
-        max-width: 600px;
-
         .date-inputs {
+            max-width: 600px;
+
             .date-input .input-container input {
                 min-width: 350px;
                 height: 60px;
@@ -139,14 +119,8 @@
             }
         }
 
-        &.date-time-range-picker {
+        &.date-time-range-picker .date-inputs {
             max-width: 650px;
         }
     }
-}
-
-.required {
-    color: var(--kd-color-text-error);
-    text-decoration: none;
-    margin-right: 4px;
 }

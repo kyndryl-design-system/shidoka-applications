@@ -152,14 +152,16 @@ export class TimePicker extends FormMixin(LitElement) {
       </div>
 
       ${this.caption
-        ? html`<div id=${descriptionId} class="caption">${this.caption}</div>`
+        ? html`<div id=${descriptionId} class="caption options-text">
+            ${this.caption}
+          </div>`
         : ''}
       ${this._isInvalid
-        ? html`<div id=${errorId} class="error" role="alert">
+        ? html`<div id=${errorId} class="error error-text" role="alert">
             ${this.invalidText || this._internalValidationMsg}
           </div>`
         : this.warnText
-        ? html`<div id=${warningId} class="warn" role="alert">
+        ? html`<div id=${warningId} class="warn warn-text" role="alert">
             ${this.warnText}
           </div>`
         : ''}

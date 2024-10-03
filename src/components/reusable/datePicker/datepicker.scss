@@ -7,20 +7,14 @@
 }
 
 .date-picker {
-    max-width: 175px;
-
-    &.date-time-picker {
-        max-width: 252px;
-    }
 
     .input-container {
+        max-width: 175px;
         position: relative;
         display: flex;
         align-items: center;
 
         input {
-            -webkit-appearance: none;
-            appearance: none;
             display: block;
             width: 100%;
             border: 1px solid var(--kd-color-border-ui);
@@ -30,6 +24,8 @@
             flex: 1;
             min-width: 167px;
             line-height: 48px;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .icon {
@@ -42,6 +38,15 @@
             align-items: center;
             height: 24px;
         }
+    }
+
+    &__disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    &.date-time-picker .input-container {
+        max-width: 252px;
     }
 
     &__size--sm {
@@ -60,21 +65,17 @@
     }
 
     &__size--lg {
-        max-width: 250px;
-
         .input-container {
+            max-width: 250px;
+
             input {
                 height: 60px;
                 line-height: 60px;
             }
         }
 
-        &.date-time-picker {
+        &.date-time-picker .input-container {
             max-width: 305px;
-        }
-
-        &.date-time-picker {
-            max-width: 350px;
         }
     }
 }
