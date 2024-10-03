@@ -60,7 +60,8 @@ export const filterLocalNavLinks = (
   textAttr = 'text'
 ) => {
   return linksArr.reduce((result: Array<any>, link) => {
-    const links = filterLocalNavLinks(
+    // rescurse through links array subtree
+    const Links = filterLocalNavLinks(
       link[sublinksAttr] || [],
       searchTerm,
       expandedAttr,
@@ -68,22 +69,31 @@ export const filterLocalNavLinks = (
       textAttr
     );
 
+    // check for links that match searchTerm
     if (
       link[textAttr].toLowerCase().includes(searchTerm.toLowerCase()) ||
-      links.length
+      Links.length
     ) {
-      const linkObj = Object.assign({}, link, links.length && { links });
+      // generate new link object
+      const LinkObj = Object.assign({}, link);
 
-      if (
-        window.innerWidth >= 672 &&
-        linkObj[sublinksAttr] &&
-        linkObj[sublinksAttr].length &&
-        searchTerm !== ''
-      ) {
-        linkObj[expandedAttr] = true;
+      // add sublinks to link object if present
+      if (Links.length) {
+        LinkObj[sublinksAttr] = Links;
       }
 
-      result.push(linkObj);
+      // expand sub-menus on larger screens if present
+      if (
+        window.innerWidth >= 672 &&
+        LinkObj[sublinksAttr] &&
+        LinkObj[sublinksAttr].length &&
+        searchTerm !== ''
+      ) {
+        LinkObj[expandedAttr] = true;
+      }
+
+      // add link object to final result
+      result.push(LinkObj);
     }
 
     return result;
