@@ -7,12 +7,13 @@
 }
 
 .date-picker {
+    width: inherit;
 
     .input-container {
-        max-width: 175px;
         position: relative;
         display: flex;
         align-items: center;
+        max-width: 200px;
 
         input {
             display: block;
@@ -45,37 +46,41 @@
         pointer-events: none;
     }
 
-    &.date-time-picker .input-container {
-        max-width: 252px;
+    &__time-variation-true {
+        .input-container {
+            max-width: 250px;
+        }
     }
 
-    &__size--sm {
-        .input-container {
-            input {
+    &__size {
+        &--sm {
+            .input-container input {
                 height: 32px;
                 line-height: 32px;
             }
         }
 
-        max-width: 175px;
-
-        &.date-time-picker {
-            max-width: 215px;
-        }
-    }
-
-    &__size--lg {
-        .input-container {
-            max-width: 250px;
-
-            input {
+        &--lg {
+            .input-container input {
                 height: 60px;
                 line-height: 60px;
             }
         }
+    }
 
-        &.date-time-picker .input-container {
-            max-width: 305px;
-        }
+    &__time-variation-false#{&}__size--sm .input-container {
+        max-width: 175px;
+    }
+
+    &__time-variation-false#{&}__size--lg .input-container {
+        max-width: 225px;
+    }
+
+    &__time-variation-true#{&}__size--sm .input-container {
+        max-width: 225px;
+    }
+
+    &__time-variation-true#{&}__size--lg .input-container {
+        max-width: 300px;
     }
 }

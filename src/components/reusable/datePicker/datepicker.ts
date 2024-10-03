@@ -210,7 +210,7 @@ export class DatePicker extends FormMixin(LitElement) {
   getDatepickerClasses() {
     return {
       'date-picker': true,
-      'date-time-picker': this._enableTime,
+      [`date-picker__time-variation-${this._enableTime}`]: true,
       [`date-picker__size--${this.size}`]: true,
       'date-picker__disabled': this.datePickerDisabled,
     };
