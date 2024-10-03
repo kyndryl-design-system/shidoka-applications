@@ -1,4 +1,4 @@
-import { html, css, LitElement, PropertyValues } from 'lit';
+import { html, LitElement, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
@@ -46,12 +46,7 @@ type SupportedLocale = (typeof langsArray)[number];
  */
 @customElement('kyn-date-picker')
 export class DatePicker extends FormMixin(LitElement) {
-  static override styles = [
-    DatePickerStyles,
-    css`
-      ${ShidokaDatePickerTheme}
-    `,
-  ];
+  static override styles = [DatePickerStyles, ShidokaDatePickerTheme];
 
   /** Sets datepicker attribute name (ex: `contact-form-date-picker`). */
   @property({ type: String })

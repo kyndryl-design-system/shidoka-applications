@@ -33,12 +33,7 @@ type SupportedLocale = (typeof langsArray)[number];
  */
 @customElement('kyn-time-picker')
 export class TimePicker extends FormMixin(LitElement) {
-  static override styles = [
-    TimepickerStyles,
-    css`
-      ${ShidokaDatePickerTheme}
-    `,
-  ];
+  static override styles = [TimepickerStyles, ShidokaDatePickerTheme];
 
   /** Sets timepicker attribute name (ex: `contact-form-time-picker`). */
   @property({ type: String })
