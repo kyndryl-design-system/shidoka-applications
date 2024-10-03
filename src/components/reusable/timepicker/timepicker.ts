@@ -1,23 +1,24 @@
-import { html, LitElement, PropertyValues } from 'lit';
+import { html, css, LitElement, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { langsArray } from '../datePicker/defs';
+import { injectFlatpickrStyles } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
 import { Locale } from 'flatpickr/dist/types/locale';
 import type { Instance } from 'flatpickr/dist/types/instance';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
-// * temporary: will remove to replace with 100% shidoka theme styles once available
-import 'flatpickr/dist/themes/light.css';
 
 import TimepickerStyles from './timepicker.scss';
+import ShidokaDatePickerTheme from '../../../common/scss/shidoka-date-picker-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/time.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -32,7 +33,12 @@ type SupportedLocale = (typeof langsArray)[number];
  */
 @customElement('kyn-time-picker')
 export class TimePicker extends FormMixin(LitElement) {
-  static override styles = [TimepickerStyles];
+  static override styles = [
+    TimepickerStyles,
+    css`
+      ${ShidokaDatePickerTheme}
+    `,
+  ];
 
   /** Sets timepicker attribute name (ex: `contact-form-time-picker`). */
   @property({ type: String })
@@ -50,15 +56,15 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: Number })
   override value: number | null = null;
 
-  /** Sets date warning text. */
-  @property({ type: String })
-  warnText = '';
-
   /** Sets default time value. */
   @property({ type: String })
   defaultDate = '';
 
-  /** Sets validation messaging. */
+  /** Sets validation warning messaging. */
+  @property({ type: String })
+  warnText = '';
+
+  /** Sets validation error messaging. */
   @property({ type: String })
   override invalidText = '';
 
@@ -156,9 +162,10 @@ export class TimePicker extends FormMixin(LitElement) {
             ${this.caption}
           </div>`
         : ''}
-      ${this._isInvalid
+      ${this._isInvalid || this.invalidText
         ? html`<div id=${errorId} class="error error-text" role="alert">
-            ${this.invalidText || this._internalValidationMsg}
+            <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
+              .invalidText || this._internalValidationMsg}
           </div>`
         : this.warnText
         ? html`<div id=${warningId} class="warn warn-text" role="alert">
@@ -185,6 +192,8 @@ export class TimePicker extends FormMixin(LitElement) {
   ): Promise<void> {
     super.firstUpdated(changedProperties);
     if (this.inputEl) {
+      // allows for custom styles to be applied to flatpickr's appended calendar overlay
+      injectFlatpickrStyles(ShidokaDatePickerTheme.toString());
       await this.initializeFlatpickr();
     } else {
       console.error('Input element not found.');
@@ -193,6 +202,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
   override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
+
     if (
       changedProperties.has('dateFormat') ||
       changedProperties.has('defaultDate') ||
@@ -276,6 +286,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
     try {
       const options = await this.getFlatpickrOptions();
+
       this.flatpickrInstance = flatpickr(this.inputEl, options) as Instance;
 
       if (this.flatpickrInstance) {
@@ -385,7 +396,16 @@ export class TimePicker extends FormMixin(LitElement) {
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.flatpickrInstance?.destroy();
+
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.destroy();
+      this.flatpickrInstance = undefined;
+    }
+
+    const calendarElements = document.querySelectorAll('.flatpickr-calendar');
+    calendarElements.forEach((calendar) => {
+      calendar.remove();
+    });
   }
 
   override willUpdate(changedProps: any) {

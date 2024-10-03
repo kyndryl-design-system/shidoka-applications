@@ -1,10 +1,11 @@
-import { html, LitElement, PropertyValues } from 'lit';
+import { html, css, LitElement, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { langsArray } from '../datePicker/defs';
+import { injectFlatpickrStyles } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -13,13 +14,13 @@ import { Locale } from 'flatpickr/dist/types/locale';
 import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 import l10n from 'flatpickr/dist/l10n/index';
-// * temporary: will remove to replace with 100% shidoka theme styles once available
-import 'flatpickr/dist/themes/light.css';
 
 import DateRangePickerStyles from './daterangepicker.scss';
+import ShidokaDatePickerTheme from '../../../common/scss/shidoka-date-picker-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -47,7 +48,12 @@ type SupportedLocale = (typeof langsArray)[number];
  */
 @customElement('kyn-date-range-picker')
 export class DateRangePicker extends FormMixin(LitElement) {
-  static override styles = [DateRangePickerStyles];
+  static override styles = [
+    DateRangePickerStyles,
+    css`
+      ${ShidokaDatePickerTheme}
+    `,
+  ];
 
   /** Sets date range picker attribute name (ex: `contact-form-date-range-picker`). */
   @property({ type: String })
@@ -76,11 +82,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: Array })
   override value: [number | null, number | null] = [null, null];
 
-  /** Sets date warning text. */
+  /** Sets validation warning messaging. */
   @property({ type: String })
   warnText = '';
 
-  /** Sets validation messaging. */
+  /** Sets validation error messaging. */
   @property({ type: String })
   override invalidText = '';
 
@@ -161,7 +167,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   private endDateInputEl!: HTMLInputElement;
 
   /**
-   * Sets delay to facilitate dle smooth date value changes.
+   * Sets delay to facilitate smooth date value changes.
    * @internal
    */
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -182,7 +188,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     const endInputId = 'date-range-picker-end';
     const errorId = 'error-message';
     const warningId = 'warning-message';
-    const descriptionId = 'date-range-picker-description';
+    const captionId = 'date-range-picker-caption';
 
     return html`
       <div class=${classMap(this.getDateRangePickerClasses())}>
@@ -231,13 +237,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
         </div>
 
         ${this.caption
-          ? html`<div id=${descriptionId} class="caption options-text">
+          ? html`<div id=${captionId} class="caption options-text">
               ${this.caption}
             </div>`
           : ''}
-        ${this._isInvalid
+        ${this._isInvalid || this.invalidText
           ? html`<div id=${errorId} class="error error-text" role="alert">
-              ${this.invalidText || this._internalValidationMsg}
+              <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
+                .invalidText || this._internalValidationMsg}
             </div>`
           : this.warnText
           ? html`<div id=${warningId} class="warn warn-text" role="alert">
@@ -249,6 +256,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   private renderInput(id: string, className: string, isEndDate: boolean) {
+    const descriptionId = isEndDate
+      ? 'date-range-picker-end-date-description'
+      : 'date-range-picker-start-date-description';
+
     return html`
       <div class="input-container">
         <input
@@ -264,7 +275,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             ? 'error-message'
             : this.warnText
             ? 'warning-message'
-            : 'date-range-picker-description'}
+            : descriptionId}
           tabindex=${isEndDate ? '-1' : '0'}
         />
         <span class="icon">${unsafeSVG(calendarIcon)}</span>
@@ -291,6 +302,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
     changedProperties: PropertyValues
   ): Promise<void> {
     super.firstUpdated(changedProperties);
+
+    // allows for custom styles to be applied to flatpickr's appended calendar overlay
+    injectFlatpickrStyles(ShidokaDatePickerTheme.toString());
+
     await this.initializeFlatpickr();
   }
 
@@ -546,7 +561,16 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    if (this.flatpickrInstance) this.flatpickrInstance.destroy();
+
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.destroy();
+      this.flatpickrInstance = undefined;
+    }
+
+    const calendarElements = document.querySelectorAll('.flatpickr-calendar');
+    calendarElements.forEach((calendar) => {
+      calendar.remove();
+    });
   }
 
   override willUpdate(changedProps: PropertyValues) {

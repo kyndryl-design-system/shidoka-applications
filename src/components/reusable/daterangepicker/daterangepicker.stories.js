@@ -93,6 +93,6 @@ DateTimeRangePicker.args = {
   locale: 'es',
   nameAttr: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
-  caption: 'Ejemplo de rango de fechas y horas.',
+  caption: 'Example of spanish (es) calendar locale.',
 };
 DateTimeRangePicker.storyName = 'Date Time Range Picker (Español)';

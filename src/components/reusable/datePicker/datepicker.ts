@@ -1,10 +1,11 @@
-import { html, LitElement, PropertyValues } from 'lit';
+import { html, css, LitElement, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { langsArray } from './defs';
+import { injectFlatpickrStyles } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -12,13 +13,13 @@ import type { Instance } from 'flatpickr/dist/types/instance';
 import { Locale } from 'flatpickr/dist/types/locale';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 import l10n from 'flatpickr/dist/l10n/index';
-// * temporary: will remove to replace with 100% shidoka theme styles once available
-import 'flatpickr/dist/themes/light.css';
 
 import DatePickerStyles from './datepicker.scss';
+import ShidokaDatePickerTheme from '../../../common/scss/shidoka-date-picker-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -45,7 +46,12 @@ type SupportedLocale = (typeof langsArray)[number];
  */
 @customElement('kyn-date-picker')
 export class DatePicker extends FormMixin(LitElement) {
-  static override styles = [DatePickerStyles];
+  static override styles = [
+    DatePickerStyles,
+    css`
+      ${ShidokaDatePickerTheme}
+    `,
+  ];
 
   /** Sets datepicker attribute name (ex: `contact-form-date-picker`). */
   @property({ type: String })
@@ -67,11 +73,11 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   override value: string | number | Date = '';
 
-  /** Sets date warning text. */
+  /** Sets validation warning messaging. */
   @property({ type: String })
   warnText = '';
 
-  /** Sets validation messaging. */
+  /** Sets validation error messaging. */
   @property({ type: String })
   override invalidText = '';
 
@@ -192,9 +198,10 @@ export class DatePicker extends FormMixin(LitElement) {
               ${this.caption}
             </div>`
           : ''}
-        ${this._isInvalid
+        ${this._isInvalid || this.invalidText
           ? html`<div id=${errorId} class="error error-text" role="alert">
-              ${this.invalidText || this._internalValidationMsg}
+              <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
+                .invalidText || this._internalValidationMsg}
             </div>`
           : this.warnText
           ? html`<div id=${warningId} class="warn warn-text" role="alert">
@@ -228,6 +235,10 @@ export class DatePicker extends FormMixin(LitElement) {
   override firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
     this._enableTime = this.dateFormat.includes('H:');
+
+    // allows for custom styles to be applied to flatpickr's appended calendar overlay
+    injectFlatpickrStyles(ShidokaDatePickerTheme.toString());
+
     this.initializeFlatpickr();
   }
 
@@ -411,7 +422,16 @@ export class DatePicker extends FormMixin(LitElement) {
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.flatpickrInstance?.destroy();
+
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.destroy();
+      this.flatpickrInstance = undefined;
+    }
+
+    const calendarElements = document.querySelectorAll('.flatpickr-calendar');
+    calendarElements.forEach((calendar) => {
+      calendar.remove();
+    });
   }
 
   override willUpdate(changedProps: PropertyValues) {
