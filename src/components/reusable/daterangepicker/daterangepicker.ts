@@ -69,6 +69,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
     | 'm-d-Y H:i:s'
     | 'd-m-Y H:i:s' = 'Y-m-d';
 
+  /** Sets date range to have start and end date inputs. */
+  @property({ type: Boolean })
+  multipleInputs = false;
+
   /** Sets date range picker container size. */
   @property({ type: String })
   size: 'sm' | 'md' | 'lg' = 'md';
@@ -172,6 +176,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   getPlaceholder(): string {
+    if (this.isValidDateFormat(this.dateFormat) && !this.multipleInputs) {
+      return `${DATE_FORMAT_OPTIONS[this.dateFormat]} to ${
+        DATE_FORMAT_OPTIONS[this.dateFormat]
+      }`;
+    }
+
     if (this.isValidDateFormat(this.dateFormat)) {
       return `${DATE_FORMAT_OPTIONS[this.dateFormat]}`;
     }
@@ -208,27 +218,29 @@ export class DateRangePicker extends FormMixin(LitElement) {
             ${this.renderInput(startInputId, 'start-date', false)}
           </div>
 
-          <div class="date-range-separator">—</div>
+          ${this.multipleInputs
+            ? html`<div class="date-range-separator">—</div>
 
-          <div class="date-input">
-            <label
-              class="label-text"
-              for=${endInputId}
-              ?disabled=${this.dateRangePickerDisabled}
-            >
-              ${this.required
-                ? html`<abbr
-                    class="required"
-                    title=${this._textStrings.requiredText}
-                    aria-label=${this._textStrings.requiredText}
-                    >*</abbr
-                  >`
-                : null}
-              <slot name="end-label">End Date Label</slot>
-            </label>
+                <div class="date-input">
+                  <label
+                    class="label-text"
+                    for=${endInputId}
+                    ?disabled=${this.dateRangePickerDisabled}
+                  >
+                    ${this.required
+                      ? html`<abbr
+                          class="required"
+                          title=${this._textStrings.requiredText}
+                          aria-label=${this._textStrings.requiredText}
+                          >*</abbr
+                        >`
+                      : null}
+                    <slot name="end-label">End Date Label</slot>
+                  </label>
 
-            ${this.renderInput(endInputId, 'end-date', true)}
-          </div>
+                  ${this.renderInput(endInputId, 'end-date', true)}
+                </div>`
+            : null}
         </div>
 
         ${this.caption
@@ -281,8 +293,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
   getDateRangePickerClasses() {
     return {
       'date-range-picker': true,
-      'date-time-range-picker': this._enableTime,
+      [`date-range-picker__time-variation-${this._enableTime}`]: true,
       [`date-range-picker__size--${this.size}`]: true,
+      [`date-range-picker__multi-input-${this.multipleInputs}`]: true,
       'date-range-picker__disabled': this.dateRangePickerDisabled,
     };
   }
@@ -367,8 +380,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
       wrap: false,
       locale: English,
       altFormat: this.altFormat,
-      plugins: [rangePlugin({ input: this.endDateInputEl })],
     };
+
+    if (this.multipleInputs) {
+      options.plugins = [rangePlugin({ input: this.endDateInputEl })];
+    }
 
     if (this.locale) {
       options.locale = await this.loadLocale(this.locale);

@@ -42,7 +42,7 @@ export default {
   },
 };
 
-const Template = (args) => {
+const SingleInput = (args) => {
   return html`<kyn-date-range-picker
     .nameAttr="${args.nameAttr}"
     .locale="${args.locale}"
@@ -54,6 +54,32 @@ const Template = (args) => {
     .altFormat=${args.altFormat}
     .disable="${args.disable}"
     .enable="${args.enable}"
+    .multipleInputs="${args.multipleInputs}"
+    .mode=${args.mode}
+    .caption="${args.caption}"
+    ?required="${args.required}"
+    ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
+    .minDate="${args.minDate}"
+    .maxDate="${args.maxDate}"
+    @on-change=${(e) => action(e.type)(e)}
+  >
+    <span slot="start-label">Date</span>
+  </kyn-date-range-picker>`;
+};
+
+const MultiInputTemplate = (args) => {
+  return html`<kyn-date-range-picker
+    .nameAttr="${args.nameAttr}"
+    .locale="${args.locale}"
+    .dateFormat="${args.dateFormat}"
+    .size="${args.size}"
+    .value="${args.value}"
+    .warnText="${args.warnText}"
+    .invalidText="${args.invalidText}"
+    .altFormat=${args.altFormat}
+    .disable="${args.disable}"
+    .enable="${args.enable}"
+    .multipleInputs="${args.multipleInputs}"
     .mode=${args.mode}
     .caption="${args.caption}"
     ?required="${args.required}"
@@ -67,11 +93,12 @@ const Template = (args) => {
   </kyn-date-range-picker>`;
 };
 
-export const DateRangePicker = Template.bind({});
+export const DateRangePicker = SingleInput.bind({});
 DateRangePicker.args = {
   nameAttr: 'default-date-range-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
+  multipleInputs: false,
   size: 'md',
   value: [null, null],
   warnText: '',
@@ -79,20 +106,44 @@ DateRangePicker.args = {
   altFormat: 'F j, Y',
   disable: [],
   enable: [],
-  caption: '',
+  caption: 'Click the input above to select a date range.',
   required: false,
   dateRangePickerDisabled: false,
   mode: 'range',
   minDate: '',
   maxDate: '',
 };
+DateRangePicker.storyName = 'Date Range Single Input (Default)';
 
-export const DateTimeRangePicker = Template.bind({});
-DateTimeRangePicker.args = {
+export const DateTimeRangePickerSingle = SingleInput.bind({});
+DateTimeRangePickerSingle.args = {
+  ...DateRangePicker.args,
+  locale: 'en',
+  nameAttr: 'date-time-picker',
+  dateFormat: 'Y-m-d H:i',
+  multipleInputs: false,
+  caption: '',
+};
+DateTimeRangePickerSingle.storyName = 'Date /Time Range Single Input';
+
+export const DateRangePickerMulti = MultiInputTemplate.bind({});
+DateRangePickerMulti.args = {
+  ...DateRangePicker.args,
+  locale: 'en',
+  nameAttr: 'date-range-picker',
+  dateFormat: 'Y-m-d',
+  multipleInputs: true,
+  caption: '',
+};
+DateRangePickerMulti.storyName = 'Date Range Multi Input';
+
+export const DateTimeRangePickerMulti = MultiInputTemplate.bind({});
+DateTimeRangePickerMulti.args = {
   ...DateRangePicker.args,
   locale: 'es',
   nameAttr: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
-  caption: 'Example of spanish (es) calendar locale.',
+  multipleInputs: true,
+  caption: "Example of spanish ('es') calendar locale.",
 };
-DateTimeRangePicker.storyName = 'Date Time Range Picker (Español)';
+DateTimeRangePickerMulti.storyName = 'Date / Time Range Multi Input (Español)';
