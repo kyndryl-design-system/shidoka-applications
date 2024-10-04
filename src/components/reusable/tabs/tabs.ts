@@ -32,7 +32,7 @@ export class Tabs extends LitElement {
 
   /** Enables tab content change on focus with keyboard navigation/assistive technologies. */
   @property({ type: Boolean })
-  autoFocusUpdate = true;
+  disableAutoFocusUpdate = false;
 
   /** Queries for slotted tabs.
    * @internal
@@ -179,7 +179,7 @@ export class Tabs extends LitElement {
       case SPACE_KEY_CODE: {
         this._updateChildrenSelection(
           this._tabs[SelectedTabIndex].id,
-          !this.autoFocusUpdate
+          this.disableAutoFocusUpdate
         );
         return;
       }
@@ -197,7 +197,7 @@ export class Tabs extends LitElement {
 
         prevTab.focus();
 
-        this._updateChildrenSelection(prevTab.id, this.autoFocusUpdate);
+        this._updateChildrenSelection(prevTab.id, !this.disableAutoFocusUpdate);
         this._emitChangeEvent(e, prevTab.id);
         return;
       }
@@ -215,7 +215,7 @@ export class Tabs extends LitElement {
 
         nextTab.focus();
 
-        this._updateChildrenSelection(nextTab.id, this.autoFocusUpdate);
+        this._updateChildrenSelection(nextTab.id, !this.disableAutoFocusUpdate);
         this._emitChangeEvent(e, nextTab.id);
         return;
       }
