@@ -34,6 +34,7 @@ const args = {
   tabSize: 'md',
   tabStyle: 'contained',
   vertical: false,
+  autoFocusUpdate: false,
 };
 
 export const Tabs = {
@@ -44,6 +45,7 @@ export const Tabs = {
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
+        ?autoFocusUpdate=${args.autoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
@@ -69,15 +71,30 @@ export const WithIcons = {
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>
-          <kd-icon .icon=${userAvatarIcon}></kd-icon>
+          <kd-icon
+            .icon=${userAvatarIcon}
+            role="img"
+            aria-label="UserAvatar"
+            title="UserAvatar"
+          ></kd-icon>
           Tab 1
         </kyn-tab>
         <kyn-tab slot="tabs" id="tab2">
-          <kd-icon .icon=${helpIcon}></kd-icon>
+          <kd-icon
+            .icon=${helpIcon}
+            role="img"
+            aria-label="Help"
+            title="Help"
+          ></kd-icon>
           Tab 2
         </kyn-tab>
         <kyn-tab slot="tabs" id="tab3">
-          <kd-icon .icon=${settingsIcon}></kd-icon>
+          <kd-icon
+            .icon=${settingsIcon}
+            role="img"
+            aria-label="Settings"
+            title="Settings"
+          ></kd-icon>
           Tab 3
         </kyn-tab>
 

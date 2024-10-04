@@ -3,6 +3,7 @@ import {
   customElement,
   property,
   queryAssignedElements,
+  state,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import TabsScss from './tabs.scss';
@@ -28,6 +29,16 @@ export class Tabs extends LitElement {
   /** Vertical orientation. */
   @property({ type: Boolean })
   vertical = false;
+
+  /** Enables tab content change on focus with keyboard navigation/assistive technologies. . */
+  @property({ type: Boolean })
+  autoFocusUpdate = false;
+
+  /** Changes tab content.
+   * @internal
+   */
+  @state()
+  changeTabContent = false;
 
   /** Queries for slotted tabs.
    * @internal
@@ -131,9 +142,11 @@ export class Tabs extends LitElement {
     });
 
     // update tab-panels visible prop
-    this._tabPanels.forEach((tabPanel: any) => {
-      tabPanel.visible = tabPanel.tabId === selectedTabId;
-    });
+    if (this.changeTabContent) {
+      this._tabPanels.forEach((tabPanel: any) => {
+        tabPanel.visible = tabPanel.tabId === selectedTabId;
+      });
+    }
   }
 
   /**
@@ -163,10 +176,20 @@ export class Tabs extends LitElement {
     const UP_ARROW_KEY_CODE = 38;
     const RIGHT_ARROW_KEY_CODE = 39;
     const DOWN_ARROW_KEY_CODE = 40;
+    const ENTER_KEY_CODE = 13;
+    const SPACE_KEY_CODE = 32;
     const TabCount = this._tabs.length;
     const SelectedTabIndex = this._tabs.findIndex((tab: any) => tab.selected);
 
     switch (e.keyCode) {
+      case ENTER_KEY_CODE:
+      case SPACE_KEY_CODE: {
+        if (!this.autoFocusUpdate) {
+          this.changeTabContent = true;
+          this._updateChildrenSelection(this._tabs[SelectedTabIndex].id);
+        }
+        return;
+      }
       case LEFT_ARROW_KEY_CODE:
       case UP_ARROW_KEY_CODE: {
         // activate previous tab
@@ -181,6 +204,7 @@ export class Tabs extends LitElement {
 
         prevTab.focus();
 
+        this.changeTabContent = this.autoFocusUpdate;
         this._updateChildrenSelection(prevTab.id);
         this._emitChangeEvent(e, prevTab.id);
 
@@ -200,6 +224,7 @@ export class Tabs extends LitElement {
 
         nextTab.focus();
 
+        this.changeTabContent = this.autoFocusUpdate;
         this._updateChildrenSelection(nextTab.id);
         this._emitChangeEvent(e, nextTab.id);
 
