@@ -1,4 +1,4 @@
-import { html, css, LitElement, PropertyValues } from 'lit';
+import { html, LitElement, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
@@ -108,6 +108,19 @@ export class TimePicker extends FormMixin(LitElement) {
   private flatpickrInstance?: flatpickr.Instance;
 
   /**
+   * Assists in handling rapid clicks/changes to time input.
+   * @internal
+   */
+  private _debounceTimer: number | null = null;
+
+  /**
+   * Ensure correct displayed time format.
+   * @internal
+   */
+  @state()
+  private _displayValue = '';
+
+  /**
    * Queries the <input> DOM element.
    * @ignore
    */
@@ -143,7 +156,7 @@ export class TimePicker extends FormMixin(LitElement) {
           id=${inputId}
           placeholder=${this.getPlaceholder()}
           ?disabled=${this.timepickerDisabled}
-          .value=${this.value ? new Date(this.value).toLocaleString() : ''}
+          .value=${this._displayValue}
           aria-required=${this.required ? 'true' : 'false'}
           aria-invalid=${this._isInvalid ? 'true' : 'false'}
           aria-describedby=${this._isInvalid
@@ -197,29 +210,9 @@ export class TimePicker extends FormMixin(LitElement) {
         startDateInputEl: this.inputEl,
         getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
         setCalendarAttributes: this.setCalendarAttributes.bind(this),
-        setInitialDates: this.setInitialDates.bind(this),
       });
     } else {
       console.error('Input element not found.');
-    }
-  }
-
-  setCalendarAttributes(): void {
-    if (this.flatpickrInstance?.calendarContainer) {
-      this.flatpickrInstance.calendarContainer.setAttribute(
-        'role',
-        'application'
-      );
-      this.flatpickrInstance.calendarContainer.setAttribute(
-        'aria-label',
-        'time-picker-container'
-      );
-    }
-  }
-
-  setInitialDates(): void {
-    if (this.value !== null) {
-      this.flatpickrInstance!.setDate(new Date(this.value), false);
     }
   }
 
@@ -241,11 +234,24 @@ export class TimePicker extends FormMixin(LitElement) {
           startDateInputEl: this.inputEl,
           getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
           setCalendarAttributes: this.setCalendarAttributes.bind(this),
-          setInitialDates: this.setInitialDates.bind(this),
         });
       }
     }
   }
+
+  setCalendarAttributes(): void {
+    if (this.flatpickrInstance?.calendarContainer) {
+      this.flatpickrInstance.calendarContainer.setAttribute(
+        'role',
+        'application'
+      );
+      this.flatpickrInstance.calendarContainer.setAttribute(
+        'aria-label',
+        'time-picker-container'
+      );
+    }
+  }
+
   async loadLocale(locale: string): Promise<Partial<Locale>> {
     if (locale === 'en') return English;
 
@@ -280,7 +286,7 @@ export class TimePicker extends FormMixin(LitElement) {
       time_24hr: this.twentyFourHourFormat,
       wrap: false,
       locale: English,
-      onChange: this.handeTimeInputChange.bind(this),
+      onChange: this.handleTimeInputChange.bind(this),
     };
 
     if (this.locale) {
@@ -375,31 +381,26 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  handeTimeInputChange(selectedDates: Date[] | Event, dateStr?: string): void {
-    let selectedDate: number | null = null;
+  handleTimeInputChange(_selectedDates: Date[], dateStr: string): void {
+    const [hours, minutes] = dateStr.split(':').map(Number);
 
-    if (Array.isArray(selectedDates)) {
-      if (selectedDates[0]) {
-        selectedDate = selectedDates[0].getTime();
-      }
-      this.emitValue(selectedDates, dateStr || '');
-    } else {
-      const target = selectedDates.target as HTMLInputElement;
-      const parsedDate = Date.parse(target.value);
-      if (!isNaN(parsedDate)) {
-        selectedDate = parsedDate;
-      }
-      this.emitValue([new Date(selectedDate || 0)], target.value);
-    }
+    const today = new Date();
+    today.setHours(hours, minutes, 0, 0);
 
-    this.value = selectedDate;
+    const selectedTime = today.getTime();
+
+    this.value = selectedTime;
+
+    this._displayValue = dateStr;
+
+    this.emitValue(dateStr);
     this.requestUpdate('value', '');
     this._validate();
   }
 
-  private emitValue(selectedDates: Date[], dateStr: string): void {
+  private emitValue(timeStr: string): void {
     const event = new CustomEvent('on-change', {
-      detail: { dates: selectedDates, dateString: dateStr },
+      detail: { time: timeStr },
       bubbles: true,
       composed: true,
     });

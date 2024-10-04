@@ -35,7 +35,7 @@ export async function initializeFlatpickr(context: {
   startDateInputEl: HTMLElement | null;
   getFlatpickrOptions: () => Promise<object>;
   setCalendarAttributes: () => void;
-  setInitialDates: () => void;
+  setInitialDates?: () => void;
 }): Promise<Instance | undefined> {
   if (!context.startDateInputEl) {
     console.error('Start date input not found.');
@@ -51,7 +51,9 @@ export async function initializeFlatpickr(context: {
 
     if (flatpickrInstance) {
       context.setCalendarAttributes();
-      context.setInitialDates();
+      if (context.setInitialDates) {
+        context.setInitialDates();
+      }
       return flatpickrInstance;
     } else {
       console.error('Unable to create flatpickr instance.');

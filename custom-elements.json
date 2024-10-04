@@ -4,468 +4,6 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "src/components/global/localNav/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "./localNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "./localNavLink"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Side Navigation component.",
-          "name": "LocalNav",
-          "slots": [
-            {
-              "description": "The default slot, for local nav links.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "attribute": "pinned"
-            },
-            {
-              "kind": "field",
-              "name": "pinText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Pin'",
-              "description": "Pin open button assistive text.",
-              "attribute": "pinText"
-            },
-            {
-              "kind": "field",
-              "name": "unpinText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Unpin'",
-              "description": "Unpin button assistive text.",
-              "attribute": "unpinText"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    toggleMenu: 'Toggle Menu',\n    collapse: 'Collapse',\n    menu: 'Menu',\n  }",
-              "description": "Menu toggle button assistive text.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "method",
-              "name": "_handleNavToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleMobileNavToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinkActive",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the open state and original event details.",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "fieldName": "pinned"
-            },
-            {
-              "name": "pinText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Pin'",
-              "description": "Pin open button assistive text.",
-              "fieldName": "pinText"
-            },
-            {
-              "name": "unpinText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Unpin'",
-              "description": "Unpin button assistive text.",
-              "fieldName": "unpinText"
-            },
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    toggleMenu: 'Toggle Menu',\n    collapse: 'Collapse',\n    menu: 'Menu',\n  }",
-              "description": "Menu toggle button assistive text.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Link component for use in the global Side Navigation component.",
-          "name": "LocalNavLink",
-          "slots": [
-            {
-              "description": "The default slot, for the link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon. Use 16px size.",
-              "name": "icon"
-            },
-            {
-              "description": "Slot for the next level of links, supports three levels.",
-              "name": "links"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "_expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state."
-            },
-            {
-              "kind": "field",
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "attribute": "active",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "method",
-              "name": "_handleTextSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_getSlotText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinksSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "determineLevel",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_positionMenu",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event, level, and if default was prevented.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "fieldName": "active"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-link",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/footer/footer.ts",
       "declarations": [
         {
@@ -2507,6 +2045,468 @@
           "declaration": {
             "name": "HeaderNotificationPanel",
             "module": "./headerNotificationPanel"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "./localNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "./localNavLink"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Side Navigation component.",
+          "name": "LocalNav",
+          "slots": [
+            {
+              "description": "The default slot, for local nav links.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "attribute": "pinned"
+            },
+            {
+              "kind": "field",
+              "name": "pinText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Pin'",
+              "description": "Pin open button assistive text.",
+              "attribute": "pinText"
+            },
+            {
+              "kind": "field",
+              "name": "unpinText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Unpin'",
+              "description": "Unpin button assistive text.",
+              "attribute": "unpinText"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    toggleMenu: 'Toggle Menu',\n    collapse: 'Collapse',\n    menu: 'Menu',\n  }",
+              "description": "Menu toggle button assistive text.",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleMobileNavToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinkActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the open state and original event details.",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "fieldName": "pinned"
+            },
+            {
+              "name": "pinText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Pin'",
+              "description": "Pin open button assistive text.",
+              "fieldName": "pinText"
+            },
+            {
+              "name": "unpinText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Unpin'",
+              "description": "Unpin button assistive text.",
+              "fieldName": "unpinText"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    toggleMenu: 'Toggle Menu',\n    collapse: 'Collapse',\n    menu: 'Menu',\n  }",
+              "description": "Menu toggle button assistive text.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Link component for use in the global Side Navigation component.",
+          "name": "LocalNavLink",
+          "slots": [
+            {
+              "description": "The default slot, for the link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon. Use 16px size.",
+              "name": "icon"
+            },
+            {
+              "description": "Slot for the next level of links, supports three levels.",
+              "name": "links"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "_expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state."
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "attribute": "active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "method",
+              "name": "_handleTextSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getSlotText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinksSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "determineLevel",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_positionMenu",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event, level, and if default was prevented.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "fieldName": "active"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-link",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
           }
         }
       ]
@@ -5794,387 +5794,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/modal/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Modal",
-          "declaration": {
-            "name": "Modal",
-            "module": "./modal"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/modal/modal.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Modal.",
-          "name": "Modal",
-          "slots": [
-            {
-              "description": "Slot for modal body content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the anchor button content.",
-              "name": "anchor"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Modal open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'auto'",
-              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title/heading text, required.",
-              "attribute": "titleText"
-            },
-            {
-              "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "okText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'OK'",
-              "description": "OK button text.",
-              "attribute": "okText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelText"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "okDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "attribute": "okDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "secondaryDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the secondary button.",
-              "attribute": "secondaryDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the footer/action buttons to create a passive modal.",
-              "attribute": "hideFooter"
-            },
-            {
-              "kind": "field",
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text.",
-              "attribute": "secondaryButtonText"
-            },
-            {
-              "kind": "field",
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the secondary button.",
-              "attribute": "showSecondaryButton"
-            },
-            {
-              "kind": "field",
-              "name": "hideCancelButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the cancel button.",
-              "attribute": "hideCancelButton"
-            },
-            {
-              "kind": "field",
-              "name": "beforeClose",
-              "type": {
-                "text": "Function"
-              },
-              "description": "Function to execute before the modal can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
-            },
-            {
-              "kind": "field",
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button text.",
-              "attribute": "closeText"
-            },
-            {
-              "kind": "method",
-              "name": "_openModal",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_closeModal",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "returnValue",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitCloseEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Modal open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'auto'",
-              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
-              "fieldName": "size"
-            },
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title/heading text, required.",
-              "fieldName": "titleText"
-            },
-            {
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "fieldName": "labelText"
-            },
-            {
-              "name": "okText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'OK'",
-              "description": "OK button text.",
-              "fieldName": "okText"
-            },
-            {
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "fieldName": "cancelText"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "okDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "fieldName": "okDisabled"
-            },
-            {
-              "name": "secondaryDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the secondary button.",
-              "fieldName": "secondaryDisabled"
-            },
-            {
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the footer/action buttons to create a passive modal.",
-              "fieldName": "hideFooter"
-            },
-            {
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text.",
-              "fieldName": "secondaryButtonText"
-            },
-            {
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the secondary button.",
-              "fieldName": "showSecondaryButton"
-            },
-            {
-              "name": "hideCancelButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the cancel button.",
-              "fieldName": "hideCancelButton"
-            },
-            {
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button text.",
-              "fieldName": "closeText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-modal",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Modal",
-          "declaration": {
-            "name": "Modal",
-            "module": "src/components/reusable/modal/modal.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-modal",
-          "declaration": {
-            "name": "Modal",
-            "module": "src/components/reusable/modal/modal.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/notification/index.ts",
       "declarations": [],
       "exports": [
@@ -6586,6 +6205,387 @@
           "declaration": {
             "name": "NotificationContainer",
             "module": "src/components/reusable/notification/notificationContainer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/modal/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Modal",
+          "declaration": {
+            "name": "Modal",
+            "module": "./modal"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/modal/modal.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Modal.",
+          "name": "Modal",
+          "slots": [
+            {
+              "description": "Slot for modal body content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the anchor button content.",
+              "name": "anchor"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Modal open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'auto'",
+              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title/heading text, required.",
+              "attribute": "titleText"
+            },
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "okText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'OK'",
+              "description": "OK button text.",
+              "attribute": "okText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "attribute": "cancelText"
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "okDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "attribute": "okDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "secondaryDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the secondary button.",
+              "attribute": "secondaryDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the footer/action buttons to create a passive modal.",
+              "attribute": "hideFooter"
+            },
+            {
+              "kind": "field",
+              "name": "secondaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Secondary'",
+              "description": "Secondary button text.",
+              "attribute": "secondaryButtonText"
+            },
+            {
+              "kind": "field",
+              "name": "showSecondaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the secondary button.",
+              "attribute": "showSecondaryButton"
+            },
+            {
+              "kind": "field",
+              "name": "hideCancelButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the cancel button.",
+              "attribute": "hideCancelButton"
+            },
+            {
+              "kind": "field",
+              "name": "beforeClose",
+              "type": {
+                "text": "Function"
+              },
+              "description": "Function to execute before the modal can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
+            },
+            {
+              "kind": "field",
+              "name": "closeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button text.",
+              "attribute": "closeText"
+            },
+            {
+              "kind": "method",
+              "name": "_openModal",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_closeModal",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "returnValue",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitCloseEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Modal open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'auto'",
+              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
+              "fieldName": "size"
+            },
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title/heading text, required.",
+              "fieldName": "titleText"
+            },
+            {
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "fieldName": "labelText"
+            },
+            {
+              "name": "okText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'OK'",
+              "description": "OK button text.",
+              "fieldName": "okText"
+            },
+            {
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "fieldName": "cancelText"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "okDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "fieldName": "okDisabled"
+            },
+            {
+              "name": "secondaryDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the secondary button.",
+              "fieldName": "secondaryDisabled"
+            },
+            {
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the footer/action buttons to create a passive modal.",
+              "fieldName": "hideFooter"
+            },
+            {
+              "name": "secondaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Secondary'",
+              "description": "Secondary button text.",
+              "fieldName": "secondaryButtonText"
+            },
+            {
+              "name": "showSecondaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the secondary button.",
+              "fieldName": "showSecondaryButton"
+            },
+            {
+              "name": "hideCancelButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the cancel button.",
+              "fieldName": "hideCancelButton"
+            },
+            {
+              "name": "closeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button text.",
+              "fieldName": "closeText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-modal",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Modal",
+          "declaration": {
+            "name": "Modal",
+            "module": "src/components/reusable/modal/modal.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-modal",
+          "declaration": {
+            "name": "Modal",
+            "module": "src/components/reusable/modal/modal.ts"
           }
         }
       ]
@@ -13602,6 +13602,455 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/timepicker/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TimePicker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "./timepicker"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/timepicker/timepicker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Timepicker: uses flatpickr datetime picker library, timepicker implementation -- `https://flatpickr.js.org/examples/#time-picker`",
+          "name": "TimePicker",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "nameAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets timepicker attribute name (ex: `contact-form-time-picker`).",
+              "attribute": "nameAttr"
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale"
+              },
+              "default": "'en'",
+              "attribute": "locale"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "default": "'md'",
+              "description": "Sets datepicker container size.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets pre-selected date/time value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default time value.",
+              "attribute": "defaultDate"
+            },
+            {
+              "kind": "field",
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "attribute": "warnText"
+            },
+            {
+              "kind": "field",
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation error messaging.",
+              "attribute": "invalidText"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets datepicker form input value to required/required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "timepickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire datepicker form element to enabled/disabled.",
+              "attribute": "timepickerDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets 24 hour formatting true/false.",
+              "attribute": "twentyFourHourFormat"
+            },
+            {
+              "kind": "field",
+              "name": "minTime",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of datepicker date selection.",
+              "attribute": "minTime"
+            },
+            {
+              "kind": "field",
+              "name": "maxTime",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of datepicker date selection.",
+              "attribute": "maxTime"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  requiredText: 'Required',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "getTimepickerClasses"
+            },
+            {
+              "kind": "method",
+              "name": "getPlaceholder",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "setCalendarAttributes",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "loadLocale",
+              "return": {
+                "type": {
+                  "text": "Promise<Partial<Locale>>"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "locale",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getFlatpickrOptions",
+              "return": {
+                "type": {
+                  "text": "Promise<Partial<BaseOptions>>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "initializeFlatpickr",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updateFlatpickrOptions",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handeTimeInputChange",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "_selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                },
+                {
+                  "name": "dateStr",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "emitValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "timeStr",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "nameAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets timepicker attribute name (ex: `contact-form-time-picker`).",
+              "fieldName": "nameAttr"
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale"
+              },
+              "default": "'en'",
+              "fieldName": "locale"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "default": "'md'",
+              "description": "Sets datepicker container size.",
+              "fieldName": "size"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets pre-selected date/time value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "defaultDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default time value.",
+              "fieldName": "defaultDate"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation error messaging.",
+              "fieldName": "invalidText"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets datepicker form input value to required/required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "timepickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire datepicker form element to enabled/disabled.",
+              "fieldName": "timepickerDisabled"
+            },
+            {
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets 24 hour formatting true/false.",
+              "fieldName": "twentyFourHourFormat"
+            },
+            {
+              "name": "minTime",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of datepicker date selection.",
+              "fieldName": "minTime"
+            },
+            {
+              "name": "maxTime",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of datepicker date selection.",
+              "fieldName": "maxTime"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-time-picker",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TimePicker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "src/components/reusable/timepicker/timepicker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-time-picker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "src/components/reusable/timepicker/timepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/toggleButton/index.ts",
       "declarations": [],
       "exports": [
@@ -13833,471 +14282,6 @@
           "declaration": {
             "name": "ToggleButton",
             "module": "src/components/reusable/toggleButton/toggleButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/timepicker/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TimePicker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "./timepicker"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/timepicker/timepicker.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Timepicker: uses flatpickr datetime picker library, timepicker implementation -- `https://flatpickr.js.org/examples/#time-picker`",
-          "name": "TimePicker",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "nameAttr",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets timepicker attribute name (ex: `contact-form-time-picker`).",
-              "attribute": "nameAttr"
-            },
-            {
-              "kind": "field",
-              "name": "locale",
-              "type": {
-                "text": "SupportedLocale"
-              },
-              "default": "'en'",
-              "attribute": "locale"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "'sm' | 'md' | 'lg'"
-              },
-              "default": "'md'",
-              "description": "Sets datepicker container size.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets pre-selected date/time value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "defaultDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets default time value.",
-              "attribute": "defaultDate"
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation warning messaging.",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation error messaging.",
-              "attribute": "invalidText"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets datepicker form input value to required/required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "timepickerDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire datepicker form element to enabled/disabled.",
-              "attribute": "timepickerDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "twentyFourHourFormat",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets 24 hour formatting true/false.",
-              "attribute": "twentyFourHourFormat"
-            },
-            {
-              "kind": "field",
-              "name": "minTime",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets lower boundary of datepicker date selection.",
-              "attribute": "minTime"
-            },
-            {
-              "kind": "field",
-              "name": "maxTime",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets upper boundary of datepicker date selection.",
-              "attribute": "maxTime"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "getTimepickerClasses"
-            },
-            {
-              "kind": "method",
-              "name": "getPlaceholder",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "setCalendarAttributes",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "setInitialDates",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "loadLocale",
-              "return": {
-                "type": {
-                  "text": "Promise<Partial<Locale>>"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "locale",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getFlatpickrOptions",
-              "return": {
-                "type": {
-                  "text": "Promise<Partial<BaseOptions>>"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "initializeFlatpickr",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "updateFlatpickrOptions",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "handeTimeInputChange",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "selectedDates",
-                  "type": {
-                    "text": "Date[] | Event"
-                  }
-                },
-                {
-                  "name": "dateStr",
-                  "optional": true,
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "emitValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "selectedDates",
-                  "type": {
-                    "text": "Date[]"
-                  }
-                },
-                {
-                  "name": "dateStr",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "return": {
-                "type": {
-                  "text": "boolean"
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "nameAttr",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets timepicker attribute name (ex: `contact-form-time-picker`).",
-              "fieldName": "nameAttr"
-            },
-            {
-              "name": "locale",
-              "type": {
-                "text": "SupportedLocale"
-              },
-              "default": "'en'",
-              "fieldName": "locale"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "'sm' | 'md' | 'lg'"
-              },
-              "default": "'md'",
-              "description": "Sets datepicker container size.",
-              "fieldName": "size"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets pre-selected date/time value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "defaultDate",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets default time value.",
-              "fieldName": "defaultDate"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation warning messaging.",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation error messaging.",
-              "fieldName": "invalidText"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets datepicker form input value to required/required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "timepickerDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire datepicker form element to enabled/disabled.",
-              "fieldName": "timepickerDisabled"
-            },
-            {
-              "name": "twentyFourHourFormat",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets 24 hour formatting true/false.",
-              "fieldName": "twentyFourHourFormat"
-            },
-            {
-              "name": "minTime",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets lower boundary of datepicker date selection.",
-              "fieldName": "minTime"
-            },
-            {
-              "name": "maxTime",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets upper boundary of datepicker date selection.",
-              "fieldName": "maxTime"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-time-picker",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TimePicker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "src/components/reusable/timepicker/timepicker.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-time-picker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "src/components/reusable/timepicker/timepicker.ts"
           }
         }
       ]
