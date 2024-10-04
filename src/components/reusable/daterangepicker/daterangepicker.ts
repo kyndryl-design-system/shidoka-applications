@@ -4,8 +4,13 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { langsArray } from '../datePicker/defs';
-import { injectFlatpickrStyles } from '../../../common/helpers/flatpickr';
+import {
+  isSupportedLocale,
+  langsArray,
+  modifyEngDayShorthands,
+  injectFlatpickrStyles,
+  initializeFlatpickr,
+} from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -13,7 +18,6 @@ import type { Instance } from 'flatpickr/dist/types/instance';
 import { Locale } from 'flatpickr/dist/types/locale';
 import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
-import l10n from 'flatpickr/dist/l10n/index';
 
 import DateRangePickerStyles from './daterangepicker.scss';
 import ShidokaDatePickerTheme from '../../../common/scss/shidoka-date-picker-theme.scss';
@@ -310,7 +314,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
     // allows for custom styles to be applied to flatpickr's appended calendar overlay
     injectFlatpickrStyles(ShidokaDatePickerTheme.toString());
 
-    await this.initializeFlatpickr();
+    this.flatpickrInstance = await initializeFlatpickr({
+      startDateInputEl: this.startDateInputEl,
+      getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
+      setCalendarAttributes: this.setCalendarAttributes.bind(this),
+      setInitialDates: this.setInitialDates.bind(this),
+    });
   }
 
   override updated(changedProperties: PropertyValues): void {
@@ -328,7 +337,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   async loadLocale(locale: string): Promise<Locale> {
     if (locale === 'en') return English;
 
-    if (!this.isSupportedLocale(locale)) {
+    if (!isSupportedLocale(locale)) {
       console.error(`Unable to load ${locale} -- falling back to English.`);
       return English;
     }
@@ -356,10 +365,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       );
       return English;
     }
-  }
-
-  isSupportedLocale(locale: string): locale is SupportedLocale {
-    return langsArray.includes(locale as SupportedLocale);
   }
 
   async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
@@ -404,30 +409,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     return options;
-  }
-
-  async initializeFlatpickr(): Promise<void> {
-    if (!this.startDateInputEl) {
-      console.error('Start date input not found.');
-      return;
-    }
-
-    try {
-      const options = await this.getFlatpickrOptions();
-      this.flatpickrInstance = flatpickr(
-        this.startDateInputEl,
-        options
-      ) as Instance;
-
-      if (this.flatpickrInstance) {
-        this.setCalendarAttributes();
-        this.setInitialDates();
-      } else {
-        console.error('Unable to create flatpickr instance.');
-      }
-    } catch (error) {
-      console.error('Error initializing Flatpickr:', error);
-    }
   }
 
   setCalendarAttributes(): void {
@@ -476,7 +457,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     if (this.locale === 'en') {
-      this.modifyEngDayShorthands();
+      modifyEngDayShorthands();
     }
   }
 
@@ -500,21 +481,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.setAccessibilityAttributes();
 
     if (this.locale === 'en') {
-      this.modifyEngDayShorthands();
+      modifyEngDayShorthands();
     }
 
     this.requestUpdate();
-  }
-
-  modifyEngDayShorthands(): void {
-    l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
-      const currentDay = l10n.en.weekdays.shorthand;
-      if (currentDay[index] === 'Thu' || currentDay[index] === 'Th') {
-        currentDay[index] = 'Th';
-      } else {
-        currentDay[index] = currentDay[index].charAt(0);
-      }
-    });
   }
 
   handleDateChange = (selectedDates: Date[], dateStr: string): void => {

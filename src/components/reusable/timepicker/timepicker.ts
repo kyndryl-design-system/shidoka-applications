@@ -4,8 +4,12 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { langsArray } from '../datePicker/defs';
-import { injectFlatpickrStyles } from '../../../common/helpers/flatpickr';
+import {
+  langsArray,
+  isSupportedLocale,
+  injectFlatpickrStyles,
+  initializeFlatpickr,
+} from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -188,14 +192,39 @@ export class TimePicker extends FormMixin(LitElement) {
     if (this.inputEl) {
       // allows for custom styles to be applied to flatpickr's appended calendar overlay
       injectFlatpickrStyles(ShidokaDatePickerTheme.toString());
-      await this.initializeFlatpickr();
+
+      this.flatpickrInstance = await initializeFlatpickr({
+        startDateInputEl: this.inputEl,
+        getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
+        setCalendarAttributes: this.setCalendarAttributes.bind(this),
+        setInitialDates: this.setInitialDates.bind(this),
+      });
     } else {
       console.error('Input element not found.');
     }
   }
 
-  override updated(changedProperties: PropertyValues): void {
-    super.updated(changedProperties);
+  setCalendarAttributes(): void {
+    if (this.flatpickrInstance?.calendarContainer) {
+      this.flatpickrInstance.calendarContainer.setAttribute(
+        'role',
+        'application'
+      );
+      this.flatpickrInstance.calendarContainer.setAttribute(
+        'aria-label',
+        'time-picker-container'
+      );
+    }
+  }
+
+  setInitialDates(): void {
+    if (this.value !== null) {
+      this.flatpickrInstance!.setDate(new Date(this.value), false);
+    }
+  }
+
+  override async updated(changedProperties: PropertyValues): Promise<void> {
+    await super.updated(changedProperties);
 
     if (
       changedProperties.has('dateFormat') ||
@@ -206,17 +235,21 @@ export class TimePicker extends FormMixin(LitElement) {
       changedProperties.has('locale')
     ) {
       if (this.flatpickrInstance) {
-        this.updateFlatpickrOptions();
+        await this.updateFlatpickrOptions();
       } else {
-        this.initializeFlatpickr();
+        this.flatpickrInstance = await initializeFlatpickr({
+          startDateInputEl: this.inputEl,
+          getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
+          setCalendarAttributes: this.setCalendarAttributes.bind(this),
+          setInitialDates: this.setInitialDates.bind(this),
+        });
       }
     }
   }
-
   async loadLocale(locale: string): Promise<Partial<Locale>> {
     if (locale === 'en') return English;
 
-    if (!this.isSupportedLocale(locale)) {
+    if (!isSupportedLocale(locale)) {
       console.warn(`Unsupported locale: ${locale}. Falling back to English.`);
       return English;
     }
@@ -235,10 +268,6 @@ export class TimePicker extends FormMixin(LitElement) {
       );
       return English;
     }
-  }
-
-  isSupportedLocale(locale: string): locale is SupportedLocale {
-    return langsArray.includes(locale as SupportedLocale);
   }
 
   async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {

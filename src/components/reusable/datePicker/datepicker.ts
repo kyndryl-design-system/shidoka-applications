@@ -4,15 +4,18 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { langsArray } from './defs';
-import { injectFlatpickrStyles } from '../../../common/helpers/flatpickr';
+import {
+  isSupportedLocale,
+  modifyEngDayShorthands,
+  injectFlatpickrStyles,
+  initializeFlatpickr,
+  langsArray,
+} from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
-import type { Instance } from 'flatpickr/dist/types/instance';
 import { Locale } from 'flatpickr/dist/types/locale';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
-import l10n from 'flatpickr/dist/l10n/index';
 
 import DatePickerStyles from './datepicker.scss';
 import ShidokaDatePickerTheme from '../../../common/scss/shidoka-date-picker-theme.scss';
@@ -223,13 +226,43 @@ export class DatePicker extends FormMixin(LitElement) {
     return 'Select date';
   }
 
-  override firstUpdated(changedProperties: PropertyValues): void {
+  override async firstUpdated(
+    changedProperties: PropertyValues
+  ): Promise<void> {
     super.firstUpdated(changedProperties);
     this._enableTime = this.dateFormat.includes('H:');
 
     injectFlatpickrStyles(ShidokaDatePickerTheme.toString());
 
-    this.initializeFlatpickr();
+    this.flatpickrInstance = await initializeFlatpickr({
+      startDateInputEl: this.inputEl,
+      getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
+      setCalendarAttributes: this.setCalendarAttributes.bind(this),
+      setInitialDates: this.setInitialDates.bind(this),
+    });
+
+    if (this.locale === 'en') {
+      modifyEngDayShorthands();
+    }
+  }
+
+  setCalendarAttributes(): void {
+    if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
+      this.flatpickrInstance.calendarContainer.setAttribute(
+        'role',
+        'application'
+      );
+      this.flatpickrInstance.calendarContainer.setAttribute(
+        'aria-label',
+        'Calendar'
+      );
+    }
+  }
+
+  setInitialDates(): void {
+    if (this.value && this.flatpickrInstance) {
+      this.flatpickrInstance.setDate(this.value, true);
+    }
   }
 
   override updated(changedProperties: PropertyValues): void {
@@ -247,10 +280,6 @@ export class DatePicker extends FormMixin(LitElement) {
     return format in DATE_FORMAT_OPTIONS;
   }
 
-  isSupportedLocale(locale: string): locale is SupportedLocale {
-    return langsArray.includes(locale as SupportedLocale);
-  }
-
   setAccessibilityAttributes(): void {
     if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
       this.flatpickrInstance.calendarContainer.setAttribute(
@@ -264,43 +293,25 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  async initializeFlatpickr(): Promise<void> {
-    if (!this.inputEl) {
-      console.error('Input element not found.');
-      return;
-    }
-
-    const options = await this.getFlatpickrOptions();
-    this.flatpickrInstance = flatpickr(this.inputEl, options) as Instance;
-
-    this.setAccessibilityAttributes();
-
-    if (this.value) {
-      this.flatpickrInstance.setDate(this.value, true);
-    }
-
-    if (this.locale === 'en') {
-      this.modifyEngDayShorthands();
-    }
-  }
-
   async updateFlatpickrOptions(): Promise<void> {
     if (this.flatpickrInstance) {
       const currentDates = [...this.flatpickrInstance.selectedDates];
 
       this.flatpickrInstance.destroy();
 
-      const newOptions = await this.getFlatpickrOptions();
-      this.flatpickrInstance = flatpickr(this.inputEl, newOptions) as Instance;
+      this.flatpickrInstance = await initializeFlatpickr({
+        startDateInputEl: this.inputEl,
+        getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
+        setCalendarAttributes: this.setCalendarAttributes.bind(this),
+        setInitialDates: this.setInitialDates.bind(this),
+      });
 
       if (currentDates.length > 0) {
-        this.flatpickrInstance.setDate(currentDates, true);
+        this.flatpickrInstance?.setDate(currentDates, true);
       }
 
-      this.setAccessibilityAttributes();
-
       if (this.locale === 'en') {
-        this.modifyEngDayShorthands();
+        modifyEngDayShorthands();
       }
     }
   }
@@ -308,7 +319,7 @@ export class DatePicker extends FormMixin(LitElement) {
   async loadLocale(locale: string): Promise<Locale> {
     if (locale === 'en') return English;
 
-    if (!this.isSupportedLocale(locale)) {
+    if (!isSupportedLocale(locale)) {
       console.error(`Unable to load ${locale} -- falling back to English.`);
       return English;
     }
@@ -338,17 +349,6 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  modifyEngDayShorthands(): void {
-    l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
-      const currentDay = l10n.en.weekdays.shorthand;
-      if (currentDay[index] === 'Thu' || currentDay[index] === 'Th') {
-        currentDay[index] = 'Th';
-      } else {
-        currentDay[index] = currentDay[index].charAt(0);
-      }
-    });
-  }
-
   async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     this._enableTime = this.dateFormat.includes('H:');
 
@@ -366,25 +366,15 @@ export class DatePicker extends FormMixin(LitElement) {
       closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
     };
 
-    if (this.locale) {
-      options.locale = await this.loadLocale(this.locale);
-    }
+    if (this.locale) options.locale = await this.loadLocale(this.locale);
 
-    if (this.minDate) {
-      options.minDate = this.minDate;
-    }
+    if (this.minDate) options.minDate = this.minDate;
 
-    if (this.maxDate) {
-      options.maxDate = this.maxDate;
-    }
+    if (this.maxDate) options.maxDate = this.maxDate;
 
-    if (this.enable.length > 0) {
-      options.enable = this.enable;
-    }
+    if (this.enable.length > 0) options.enable = this.enable;
 
-    if (this.disable.length > 0) {
-      options.disable = this.disable;
-    }
+    if (this.disable.length > 0) options.disable = this.disable;
 
     return options;
   }
