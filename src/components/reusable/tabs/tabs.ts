@@ -32,7 +32,7 @@ export class Tabs extends LitElement {
 
   /** Enables tab content change on focus with keyboard navigation/assistive technologies. */
   @property({ type: Boolean })
-  autoFocusUpdate = false;
+  autoFocusUpdate = true;
 
   /** Queries for slotted tabs.
    * @internal

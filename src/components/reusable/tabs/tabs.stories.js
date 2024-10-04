@@ -34,7 +34,7 @@ const args = {
   tabSize: 'md',
   tabStyle: 'contained',
   vertical: false,
-  autoFocusUpdate: false,
+  autoFocusUpdate: true,
 };
 
 export const Tabs = {
@@ -68,33 +68,19 @@ export const WithIcons = {
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
+        ?autoFocusUpdate=${args.autoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>
-          <kd-icon
-            .icon=${userAvatarIcon}
-            role="img"
-            aria-label="UserAvatar"
-            title="UserAvatar"
-          ></kd-icon>
+          <kd-icon .icon=${userAvatarIcon}></kd-icon>
           Tab 1
         </kyn-tab>
         <kyn-tab slot="tabs" id="tab2">
-          <kd-icon
-            .icon=${helpIcon}
-            role="img"
-            aria-label="Help"
-            title="Help"
-          ></kd-icon>
+          <kd-icon .icon=${helpIcon}></kd-icon>
           Tab 2
         </kyn-tab>
         <kyn-tab slot="tabs" id="tab3">
-          <kd-icon
-            .icon=${settingsIcon}
-            role="img"
-            aria-label="Settings"
-            title="Settings"
-          ></kd-icon>
+          <kd-icon .icon=${settingsIcon}></kd-icon>
           Tab 3
         </kyn-tab>
 
@@ -113,6 +99,7 @@ export const Nested = {
       <kyn-tabs
         tabSize=${args.tabSize}
         ?vertical=${args.vertical}
+        ?autoFocusUpdate=${args.autoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
@@ -153,6 +140,7 @@ export const DisabledTab = {
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
+        ?autoFocusUpdate=${args.autoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
