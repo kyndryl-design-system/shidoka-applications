@@ -66,7 +66,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
   /** Sets pre-selected date/time value. */
   @property({ type: String })
-  override value: string | number | Date = '';
+  override value: string | Date | Date[] = '';
 
   /** Sets validation warning messaging. */
   @property({ type: String })
@@ -183,7 +183,6 @@ export class DatePicker extends FormMixin(LitElement) {
               : this.warnText
               ? warningId
               : descriptionId}
-            @change=${this.handleDateChange}
           />
           <span class="icon">${unsafeSVG(calendarIcon)}</span>
         </div>
@@ -212,12 +211,9 @@ export class DatePicker extends FormMixin(LitElement) {
       'date-picker': true,
       [`date-picker__time-variation-${this._enableTime}`]: true,
       [`date-picker__size--${this.size}`]: true,
+      [`date-picker__multiple-select-${this.mode === 'multiple'}`]: true,
       'date-picker__disabled': this.datePickerDisabled,
     };
-  }
-
-  private isValidDateFormat(format: string): format is DateFormatOption {
-    return format in DATE_FORMAT_OPTIONS;
   }
 
   getPlaceholder(): string {
@@ -231,7 +227,6 @@ export class DatePicker extends FormMixin(LitElement) {
     super.firstUpdated(changedProperties);
     this._enableTime = this.dateFormat.includes('H:');
 
-    // allows for custom styles to be applied to flatpickr's appended calendar overlay
     injectFlatpickrStyles(ShidokaDatePickerTheme.toString());
 
     this.initializeFlatpickr();
@@ -241,7 +236,6 @@ export class DatePicker extends FormMixin(LitElement) {
     super.updated(changedProperties);
     if (
       changedProperties.has('dateFormat') ||
-      changedProperties.has('value') ||
       changedProperties.has('locale')
     ) {
       this._enableTime = this.dateFormat.includes('H:');
@@ -249,37 +243,8 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  async loadLocale(locale: string): Promise<Locale> {
-    if (locale === 'en') return English;
-
-    if (!this.isSupportedLocale(locale)) {
-      console.error(`Unable to load ${locale} -- falling back to English.`);
-      return English;
-    }
-
-    try {
-      const module = await import(`flatpickr/dist/l10n/${locale}.js`);
-
-      let localeConfig: Locale;
-
-      if (module[locale]) {
-        localeConfig = module[locale];
-      } else if (module.default && module.default[locale]) {
-        localeConfig = module.default[locale];
-      } else if (module.default && typeof module.default === 'object') {
-        localeConfig = module.default;
-      } else {
-        throw new Error('Unable to find locale configuration');
-      }
-
-      return localeConfig;
-    } catch (error) {
-      console.error(
-        `Unable to load ${locale} -- falling back to English.`,
-        error
-      );
-      return English;
-    }
+  private isValidDateFormat(format: string): format is DateFormatOption {
+    return format in DATE_FORMAT_OPTIONS;
   }
 
   isSupportedLocale(locale: string): locale is SupportedLocale {
@@ -321,15 +286,15 @@ export class DatePicker extends FormMixin(LitElement) {
 
   async updateFlatpickrOptions(): Promise<void> {
     if (this.flatpickrInstance) {
-      const currentDate = this.flatpickrInstance.selectedDates[0];
+      const currentDates = [...this.flatpickrInstance.selectedDates];
 
       this.flatpickrInstance.destroy();
 
       const newOptions = await this.getFlatpickrOptions();
       this.flatpickrInstance = flatpickr(this.inputEl, newOptions) as Instance;
 
-      if (currentDate) {
-        this.flatpickrInstance.setDate(currentDate, true);
+      if (currentDates.length > 0) {
+        this.flatpickrInstance.setDate(currentDates, true);
       }
 
       this.setAccessibilityAttributes();
@@ -337,8 +302,39 @@ export class DatePicker extends FormMixin(LitElement) {
       if (this.locale === 'en') {
         this.modifyEngDayShorthands();
       }
+    }
+  }
 
-      this.requestUpdate();
+  async loadLocale(locale: string): Promise<Locale> {
+    if (locale === 'en') return English;
+
+    if (!this.isSupportedLocale(locale)) {
+      console.error(`Unable to load ${locale} -- falling back to English.`);
+      return English;
+    }
+
+    try {
+      const module = await import(`flatpickr/dist/l10n/${locale}.js`);
+
+      let localeConfig: Locale;
+
+      if (module[locale]) {
+        localeConfig = module[locale];
+      } else if (module.default && module.default[locale]) {
+        localeConfig = module.default[locale];
+      } else if (module.default && typeof module.default === 'object') {
+        localeConfig = module.default;
+      } else {
+        throw new Error('Unable to find locale configuration');
+      }
+
+      return localeConfig;
+    } catch (error) {
+      console.error(
+        `Unable to load ${locale} -- falling back to English.`,
+        error
+      );
+      return English;
     }
   }
 
@@ -366,6 +362,8 @@ export class DatePicker extends FormMixin(LitElement) {
       weekNumbers: false,
       wrap: false,
       altFormat: this.altFormat,
+      onChange: this.handleDateChange.bind(this),
+      closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
     };
 
     if (this.locale) {
@@ -392,27 +390,35 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   handleDateChange(selectedDates: Date[], dateStr: string): void {
-    this.value = dateStr;
-    this._validate();
+    if (this.mode === 'multiple') {
+      this.value = [...selectedDates];
+    } else {
+      this.value = dateStr;
+    }
+
+    const formattedDates = Array.isArray(this.value)
+      ? this.value.map((date) => date.toISOString())
+      : this.value;
 
     const customEvent = new CustomEvent('on-change', {
-      detail: { dates: selectedDates, dateString: dateStr },
+      detail: {
+        dates: formattedDates,
+        dateString: this.inputEl?.value || dateStr,
+      },
       bubbles: true,
       composed: true,
     });
+
     this.dispatchEvent(customEvent);
   }
 
   _validate(): boolean {
-    if (this.required && !this.value) {
-      this._isInvalid = true;
-      this._internalValidationMsg = 'This field is required';
-      return false;
+    if (this.mode === 'multiple' && Array.isArray(this.value)) {
+      return this.value.every((date) => date instanceof Date);
+    } else if (this.mode === 'single' && typeof this.value === 'string') {
+      return Boolean(this.value);
     }
-
-    this._isInvalid = false;
-    this._internalValidationMsg = '';
-    return true;
+    return false;
   }
 
   override disconnectedCallback(): void {

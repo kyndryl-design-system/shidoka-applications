@@ -147,7 +147,6 @@ export class TimePicker extends FormMixin(LitElement) {
             : this.warnText
             ? warningId
             : descriptionId}
-          @change=${this.handeTimeInputChange}
         />
         <span class="icon">${unsafeSVG(clockIcon)}</span>
       </div>
@@ -252,6 +251,7 @@ export class TimePicker extends FormMixin(LitElement) {
       time_24hr: this.twentyFourHourFormat,
       wrap: false,
       locale: English,
+      onChange: this.handeTimeInputChange.bind(this),
     };
 
     if (this.locale) {

@@ -55,7 +55,6 @@ const SingleInput = (args) => {
     .disable="${args.disable}"
     .enable="${args.enable}"
     .multipleInputs="${args.multipleInputs}"
-    .mode=${args.mode}
     .caption="${args.caption}"
     ?required="${args.required}"
     ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
@@ -80,7 +79,6 @@ const MultiInputTemplate = (args) => {
     .disable="${args.disable}"
     .enable="${args.enable}"
     .multipleInputs="${args.multipleInputs}"
-    .mode=${args.mode}
     .caption="${args.caption}"
     ?required="${args.required}"
     ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
@@ -109,7 +107,6 @@ DateRangePicker.args = {
   caption: 'Click the input above to select a date range.',
   required: false,
   dateRangePickerDisabled: false,
-  mode: 'range',
   minDate: '',
   maxDate: '',
 };

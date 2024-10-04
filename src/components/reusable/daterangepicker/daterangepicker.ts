@@ -54,7 +54,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: String })
   nameAttr = '';
 
-  /* Sets desired locale and, if supported, dynamically loads language lib */
+  /** Sets and dynamically imports specific l10n calendar localization. */
   @property({ type: String })
   locale: SupportedLocale = 'en';
 
@@ -92,10 +92,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
   /** Sets flatpickr alternative formatting value (ex: `F j, Y`). */
   @property({ type: String })
   altFormat = '';
-
-  /** Sets mode to range. */
-  @property({ type: String })
-  mode = 'range';
 
   /** Sets flatpcikr options setting to disable specific dates. */
   @property({ type: Array })
@@ -380,6 +376,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       wrap: false,
       locale: English,
       altFormat: this.altFormat,
+      onChange: this.handleDateChange.bind(this),
     };
 
     if (this.multipleInputs) {
@@ -520,20 +517,27 @@ export class DateRangePicker extends FormMixin(LitElement) {
     });
   }
 
-  handleDateChange(selectedDates: Date[], dateStr: string): void {
+  handleDateChange = (selectedDates: Date[], dateStr: string): void => {
     if (this.debounceTimer) clearTimeout(this.debounceTimer);
     this.debounceTimer = setTimeout(() => {
       this.value =
         selectedDates.length === 2
           ? [selectedDates[0].getTime(), selectedDates[1].getTime()]
           : [null, null];
-      this.emitValue(selectedDates, dateStr);
       this.requestUpdate('value');
       this._validate();
 
+      const customEvent = new CustomEvent('on-change', {
+        detail: { dates: selectedDates, dateString: dateStr },
+        bubbles: true,
+        composed: true,
+      });
+
+      this.dispatchEvent(customEvent);
+
       this.updateSelectedDateRangeAria(selectedDates);
     }, 100);
-  }
+  };
 
   updateSelectedDateRangeAria(selectedDates: Date[]): void {
     if (selectedDates.length === 2) {
@@ -550,16 +554,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.startDateInputEl.setAttribute('aria-label', 'Start date');
       this.endDateInputEl.setAttribute('aria-label', 'End date');
     }
-  }
-
-  private emitValue(selectedDates: Date[], dateStr: string): void {
-    this.dispatchEvent(
-      new CustomEvent('on-change', {
-        detail: { dates: selectedDates, dateString: dateStr },
-        bubbles: true,
-        composed: true,
-      })
-    );
   }
 
   _validate(): boolean {

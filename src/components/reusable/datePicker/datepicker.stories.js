@@ -99,4 +99,15 @@ DateWithTime.args = {
   caption: '',
   unnamed: 'Date & Time Picker',
 };
-DateWithTime.storyName = 'Date With Time (Hindi Locale)';
+DateWithTime.storyName = 'Date w/ Time (Hindi Locale Example)';
+
+export const DatePickerMultiple = Template.bind({});
+DatePickerMultiple.args = {
+  ...DatePicker.args,
+  locale: 'en',
+  nameAttr: 'date-multiple-picker',
+  dateFormat: 'Y-m-d',
+  caption: '',
+  mode: 'multiple',
+};
+DatePickerMultiple.storyName = 'Date Picker w/ Multiple Selection';
