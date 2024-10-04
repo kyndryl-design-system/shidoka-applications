@@ -400,6 +400,7 @@ export class DatePicker extends FormMixin(LitElement) {
     });
 
     this.dispatchEvent(customEvent);
+    this._validate();
   }
 
   _validate(): boolean {

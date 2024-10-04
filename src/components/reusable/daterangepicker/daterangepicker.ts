@@ -495,7 +495,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
           ? [selectedDates[0].getTime(), selectedDates[1].getTime()]
           : [null, null];
       this.requestUpdate('value');
-      this._validate();
 
       const customEvent = new CustomEvent('on-change', {
         detail: { dates: selectedDates, dateString: dateStr },
@@ -504,6 +503,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
       });
 
       this.dispatchEvent(customEvent);
+
+      this._validate();
 
       this.updateSelectedDateRangeAria(selectedDates);
     }, 100);
