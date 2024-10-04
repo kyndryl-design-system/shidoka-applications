@@ -10,7 +10,7 @@
 a {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   height: 40px;
   padding: 8px;
   border-radius: 4px;
@@ -21,14 +21,13 @@ a {
   transition: background-color 150ms ease-out, color 150ms ease-out,
     outline-color 150ms ease-out;
 
-  ::slotted(kd-icon),
-  ::slotted(svg) {
+  ::slotted(*) {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     width: 24px;
     height: 24px;
-    margin-right: 8px;
   }
 
   .link-active & {
@@ -39,10 +38,6 @@ a {
   .link-expanded & {
     color: var(--kd-color-text-tertiary);
     font-weight: 500;
-  }
-
-  @media (min-width: 42rem) {
-    padding: 4px;
   }
 
   &:hover {
@@ -94,12 +89,14 @@ a {
     background: none;
   }
 
-  &.has-links {
+  .has-links & {
     padding: 4px 8px 8px;
 
     @media (min-width: 42rem) {
-      padding-left: 32px;
+      padding-left: 28px;
       padding-top: 2px;
+      padding-right: 0;
+      padding-bottom: 0;
     }
   }
 
@@ -126,6 +123,52 @@ a {
 
     @media (min-width: 42rem) {
       display: flex;
+    }
+  }
+}
+
+@media (min-width: 42rem) {
+  .link-expanded {
+    position: relative;
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 42px;
+      bottom: 19px;
+      left: 20px;
+      width: 1px;
+      background: var(--kd-color-border-light);
+    }
+  }
+
+  .sub-level a {
+    position: relative;
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: -7px;
+      width: 10px;
+      height: 1px;
+      background: var(--kd-color-border-light);
+      z-index: -1;
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: calc(50% - 2px);
+      left: 0px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--kd-color-border-light);
+      z-index: -1;
     }
   }
 }
@@ -176,7 +219,7 @@ a {
   font-weight: 500;
   color: var(--kd-color-text-tertiary-bold);
   text-transform: uppercase;
-  padding: 8px 16px 8px 8px;
+  padding: 8px;
   border-bottom: 1px solid var(--kd-color-border-light);
 
   @media (min-width: 42rem) {
@@ -186,7 +229,14 @@ a {
 
 .text {
   min-width: 120px;
-  margin-left: 4px;
+
+  @media (min-width: 42rem) {
+    margin-left: 4px;
+
+    // .link:not(.has-icon):not(.has-links) & {
+    //   margin-left: 8px;
+    // }
+  }
 
   .nav-expanded & {
     display: block;
@@ -199,37 +249,17 @@ a {
 
 .expand-icon {
   display: none;
-  margin-left: 4px;
-
-  @media (min-width: 42rem) {
-    margin-left: 8px;
-  }
 
   .nav-expanded & {
-    display: block;
-  }
-
-  kd-icon {
-    display: block;
-  }
-}
-
-.arrow-icon {
-  display: none;
-  margin-left: auto;
-
-  .nav-expanded & {
-    display: block;
-  }
-
-  kd-icon {
-    display: block;
-  }
-}
-
-@media (min-width: 42rem) {
-  slot[name='icon']::slotted(*) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
-    margin: 0 0 0 4px;
+    width: 24px;
+    height: 24px;
+  }
+
+  kd-icon {
+    display: block;
   }
 }

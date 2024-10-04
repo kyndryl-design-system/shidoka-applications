@@ -76,6 +76,13 @@ export class LocalNavLink extends LitElement {
   _navLinks!: Array<any>;
 
   /**
+   * Queries slotted icon.
+   * @ignore
+   */
+  @queryAssignedElements({ slot: 'icon' })
+  _icon!: Array<any>;
+
+  /**
    * Queries slotted dividers.
    * @ignore
    */
@@ -84,12 +91,15 @@ export class LocalNavLink extends LitElement {
 
   override render() {
     const classes = {
+      link: true,
       'top-level': this._level === 1,
       'sub-level': this._level > 1,
       'nav-expanded': this._navExpanded || this._navExpandedMobile,
       'link-expanded': this.expanded,
       'link-active': this.active,
       'link-disabled': this.disabled,
+      'has-links': this._navLinks.length,
+      'has-icon': this._icon.length,
     };
 
     return html`
@@ -106,12 +116,13 @@ export class LocalNavLink extends LitElement {
             : null}
 
           <slot name="icon"></slot>
+
           <span class="text">
             <slot @slotchange=${this._handleTextSlotChange}></slot>
           </span>
         </a>
 
-        <div class="sub-menu ${this._navLinks.length ? 'has-links' : ''}">
+        <div class="sub-menu">
           ${this._navLinks.length
             ? html`
                 <button class="go-back" @click=${() => this._handleBack()}>
