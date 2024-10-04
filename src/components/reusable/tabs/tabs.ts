@@ -30,15 +30,9 @@ export class Tabs extends LitElement {
   @property({ type: Boolean })
   vertical = false;
 
-  /** Enables tab content change on focus with keyboard navigation/assistive technologies. . */
+  /** Enables tab content change on focus with keyboard navigation/assistive technologies. */
   @property({ type: Boolean })
   autoFocusUpdate = false;
-
-  /** Changes tab content.
-   * @internal
-   */
-  @state()
-  changeTabContent = false;
 
   /** Queries for slotted tabs.
    * @internal
@@ -135,18 +129,17 @@ export class Tabs extends LitElement {
    * @param {string} selectedTabId - The selectedTabId parameter is a string that represents the ID of
    * the tab that is currently selected.
    */
-  private _updateChildrenSelection(selectedTabId: string) {
+  private _updateChildrenSelection(selectedTabId: string, updatePanel = true) {
     // update tabs selected prop
     this._tabs.forEach((tab: any) => {
       tab.selected = tab.id === selectedTabId;
     });
 
     // update tab-panels visible prop
-    if (this.changeTabContent) {
-      this._tabPanels.forEach((tabPanel: any) => {
-        tabPanel.visible = tabPanel.tabId === selectedTabId;
-      });
-    }
+    if (!updatePanel) return;
+    this._tabPanels.forEach((tabPanel: any) => {
+      tabPanel.visible = tabPanel.tabId === selectedTabId;
+    });
   }
 
   /**
@@ -184,10 +177,10 @@ export class Tabs extends LitElement {
     switch (e.keyCode) {
       case ENTER_KEY_CODE:
       case SPACE_KEY_CODE: {
-        if (!this.autoFocusUpdate) {
-          this.changeTabContent = true;
-          this._updateChildrenSelection(this._tabs[SelectedTabIndex].id);
-        }
+        this._updateChildrenSelection(
+          this._tabs[SelectedTabIndex].id,
+          !this.autoFocusUpdate
+        );
         return;
       }
       case LEFT_ARROW_KEY_CODE:
@@ -204,10 +197,8 @@ export class Tabs extends LitElement {
 
         prevTab.focus();
 
-        this.changeTabContent = this.autoFocusUpdate;
-        this._updateChildrenSelection(prevTab.id);
+        this._updateChildrenSelection(prevTab.id, this.autoFocusUpdate);
         this._emitChangeEvent(e, prevTab.id);
-
         return;
       }
       case RIGHT_ARROW_KEY_CODE:
@@ -224,10 +215,8 @@ export class Tabs extends LitElement {
 
         nextTab.focus();
 
-        this.changeTabContent = this.autoFocusUpdate;
-        this._updateChildrenSelection(nextTab.id);
+        this._updateChildrenSelection(nextTab.id, this.autoFocusUpdate);
         this._emitChangeEvent(e, nextTab.id);
-
         return;
       }
       default: {
