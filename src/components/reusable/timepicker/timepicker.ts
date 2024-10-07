@@ -159,11 +159,6 @@ export class TimePicker extends FormMixin(LitElement) {
           .value=${this._displayValue}
           aria-required=${this.required ? 'true' : 'false'}
           aria-invalid=${this._isInvalid ? 'true' : 'false'}
-          aria-describedby=${this._isInvalid
-            ? errorId
-            : this.warnText
-            ? warningId
-            : descriptionId}
         />
         <span class="icon">${unsafeSVG(clockIcon)}</span>
       </div>

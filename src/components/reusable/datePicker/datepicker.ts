@@ -181,11 +181,6 @@ export class DatePicker extends FormMixin(LitElement) {
             ?disabled=${this.datePickerDisabled}
             ?required=${this.required}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
-            aria-describedby=${this._isInvalid
-              ? errorId
-              : this.warnText
-              ? warningId
-              : descriptionId}
           />
           <span class="icon">${unsafeSVG(calendarIcon)}</span>
         </div>
