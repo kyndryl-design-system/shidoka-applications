@@ -20,7 +20,7 @@ import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 
 import DateRangePickerStyles from './daterangepicker.scss';
-import ShidokaDatePickerTheme from '../../../common/scss/shidoka-date-picker-theme.scss';
+import ShidokaDatePickerTheme from '../../../common/scss/date-picker-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';

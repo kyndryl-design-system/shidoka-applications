@@ -9,7 +9,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: '',
+      url: 'https://www.figma.com/file/PDrJbUpubptqYdtRxih328/Kyndryl-Bridge-Styleguide?type=design&node-id=453%3A5461&mode=design&t=IlM5BJosU7XtIXHl-1',
     },
   },
   argTypes: {

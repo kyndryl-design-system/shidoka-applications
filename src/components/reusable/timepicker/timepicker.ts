@@ -18,7 +18,7 @@ import type { Instance } from 'flatpickr/dist/types/instance';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 
 import TimepickerStyles from './timepicker.scss';
-import ShidokaDatePickerTheme from '../../../common/scss/shidoka-date-picker-theme.scss';
+import ShidokaDatePickerTheme from '../../../common/scss/date-picker-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/time.svg';
