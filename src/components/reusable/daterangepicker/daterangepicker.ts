@@ -278,11 +278,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
           .value=${this.getInputValue(isEndDate ? 1 : 0)}
           aria-required=${this.required ? 'true' : 'false'}
           aria-invalid=${this._isInvalid ? 'true' : 'false'}
-          aria-describedby=${this._isInvalid
-            ? 'error-message'
-            : this.warnText
-            ? 'warning-message'
-            : descriptionId}
           tabindex=${isEndDate ? '-1' : '0'}
         />
         <span class="icon">${unsafeSVG(calendarIcon)}</span>
@@ -379,6 +374,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       time_24hr: this.twentyFourHourFormat,
       weekNumbers: false,
       wrap: false,
+      monthSelectorType: 'static',
       locale: English,
       altFormat: this.altFormat,
       onChange: this.handleDateChange.bind(this),

@@ -361,6 +361,7 @@ export class DatePicker extends FormMixin(LitElement) {
       time_24hr: this.twentyFourHourFormat,
       weekNumbers: false,
       wrap: false,
+      monthSelectorType: 'static',
       altFormat: this.altFormat,
       onChange: this.handleDateChange.bind(this),
       closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
