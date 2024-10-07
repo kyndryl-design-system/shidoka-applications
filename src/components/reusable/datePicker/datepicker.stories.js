@@ -2,6 +2,7 @@ import { html } from 'lit';
 import './index';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import { action } from '@storybook/addon-actions';
+import { useEffect } from '@storybook/addons';
 
 export default {
   title: 'Components/DatePicker',
@@ -45,7 +46,18 @@ export default {
   },
 };
 
+const disconnectFlatpickr = () => {
+  const calendarElements = document.querySelectorAll('.flatpickr-calendar');
+  calendarElements.forEach((calendar) => calendar.remove());
+};
+
 const Template = (args) => {
+  useEffect(() => {
+    return () => {
+      disconnectFlatpickr();
+    };
+  }, []);
+
   return html`<kyn-date-picker
     .nameAttr="${args.nameAttr}"
     .locale="${args.locale}"

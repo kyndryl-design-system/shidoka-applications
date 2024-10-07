@@ -531,6 +531,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
     return !this._isInvalid;
   }
 
+  override willUpdate(changedProps: PropertyValues) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
+  }
+
   override disconnectedCallback(): void {
     super.disconnectedCallback();
 
@@ -539,16 +545,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.flatpickrInstance = undefined;
     }
 
+    // prevents flatpickr calendar overlay from persisting on view change
     const calendarElements = document.querySelectorAll('.flatpickr-calendar');
     calendarElements.forEach((calendar) => {
       calendar.remove();
     });
-  }
-
-  override willUpdate(changedProps: PropertyValues) {
-    if (changedProps.has('textStrings')) {
-      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
-    }
   }
 }
 

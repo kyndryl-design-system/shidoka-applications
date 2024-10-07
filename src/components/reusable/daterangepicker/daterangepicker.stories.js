@@ -3,6 +3,7 @@ import './index';
 import './daterangepicker.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import { action } from '@storybook/addon-actions';
+import { useEffect } from '@storybook/addons';
 
 export default {
   title: 'Components/Date Range Picker',
@@ -42,7 +43,18 @@ export default {
   },
 };
 
+const disconnectFlatpickr = () => {
+  const calendarElements = document.querySelectorAll('.flatpickr-calendar');
+  calendarElements.forEach((calendar) => calendar.remove());
+};
+
 const SingleInput = (args) => {
+  useEffect(() => {
+    return () => {
+      disconnectFlatpickr();
+    };
+  }, []);
+
   return html`<kyn-date-range-picker
     .nameAttr="${args.nameAttr}"
     .locale="${args.locale}"
@@ -67,6 +79,12 @@ const SingleInput = (args) => {
 };
 
 const MultiInputTemplate = (args) => {
+  useEffect(() => {
+    return () => {
+      disconnectFlatpickr();
+    };
+  }, []);
+
   return html`<kyn-date-range-picker
     .nameAttr="${args.nameAttr}"
     .locale="${args.locale}"

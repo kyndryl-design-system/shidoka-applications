@@ -414,6 +414,12 @@ export class TimePicker extends FormMixin(LitElement) {
     return true;
   }
 
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
+  }
+
   override disconnectedCallback(): void {
     super.disconnectedCallback();
 
@@ -422,16 +428,11 @@ export class TimePicker extends FormMixin(LitElement) {
       this.flatpickrInstance = undefined;
     }
 
+    // prevents flatpickr calendar overlay from persisting on view change
     const calendarElements = document.querySelectorAll('.flatpickr-calendar');
     calendarElements.forEach((calendar) => {
       calendar.remove();
     });
-  }
-
-  override willUpdate(changedProps: any) {
-    if (changedProps.has('textStrings')) {
-      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
-    }
   }
 }
 
