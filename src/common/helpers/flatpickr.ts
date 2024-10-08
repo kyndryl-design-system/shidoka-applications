@@ -11,13 +11,10 @@ export function isSupportedLocale(locale: string): boolean {
 }
 
 export function modifyEngDayShorthands(): void {
+  console.log('this is being called');
   l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
     const currentDay = l10n.en.weekdays.shorthand;
-    if (currentDay[index] === 'Thu' || currentDay[index] === 'Th') {
-      currentDay[index] = 'Th';
-    } else {
-      currentDay[index] = currentDay[index].charAt(0);
-    }
+    currentDay[index] = currentDay[index].charAt(0);
   });
 }
 

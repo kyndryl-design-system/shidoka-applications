@@ -365,6 +365,27 @@ export class DateRangePicker extends FormMixin(LitElement) {
   async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     this._enableTime = this.dateFormat.includes('H:');
 
+    let localeOptions: Partial<Locale>;
+
+    if (this.locale === 'en') {
+      localeOptions = {
+        weekdays: {
+          shorthand: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+          longhand: [
+            'Sunday',
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+          ],
+        },
+      };
+    } else {
+      localeOptions = await this.loadLocale(this.locale);
+    }
+
     const options: Partial<BaseOptions> = {
       dateFormat: this.dateFormat,
       mode: 'range',
@@ -375,7 +396,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       weekNumbers: false,
       wrap: false,
       monthSelectorType: 'static',
-      locale: English,
+      locale: localeOptions,
       altFormat: this.altFormat,
       onChange: this.handleDateChange.bind(this),
     };
@@ -384,25 +405,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
       options.plugins = [rangePlugin({ input: this.endDateInputEl })];
     }
 
-    if (this.locale) {
-      options.locale = await this.loadLocale(this.locale);
-    }
-
-    if (this.minDate) {
-      options.minDate = this.minDate;
-    }
-
-    if (this.maxDate) {
-      options.maxDate = this.maxDate;
-    }
-
-    if (this.enable.length > 0) {
-      options.enable = this.enable;
-    }
-
-    if (this.disable.length > 0) {
-      options.disable = this.disable;
-    }
+    if (this.minDate) options.minDate = this.minDate;
+    if (this.maxDate) options.maxDate = this.maxDate;
+    if (this.enable.length > 0) options.enable = this.enable;
+    if (this.disable.length > 0) options.disable = this.disable;
 
     return options;
   }
@@ -451,10 +457,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       startDateInput.setAttribute('aria-label', 'Start date');
       endDateInput.setAttribute('aria-label', 'End date');
     }
-
-    if (this.locale === 'en') {
-      modifyEngDayShorthands();
-    }
   }
 
   async updateFlatpickrOptions(): Promise<void> {
@@ -462,23 +464,22 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     const currentDates = this.flatpickrInstance.selectedDates;
 
-    this.flatpickrInstance.destroy();
+    const newOptions = await this.getFlatpickrOptions();
 
-    const options = await this.getFlatpickrOptions();
-    this.flatpickrInstance = flatpickr(
-      this.startDateInputEl,
-      options
-    ) as Instance;
+    Object.keys(newOptions).forEach((key) => {
+      this.flatpickrInstance!.set(
+        key as keyof BaseOptions,
+        newOptions[key as keyof BaseOptions]
+      );
+    });
+
+    this.flatpickrInstance.redraw();
 
     if (currentDates && currentDates.length === 2) {
       this.flatpickrInstance.setDate(currentDates, false);
     }
 
     this.setAccessibilityAttributes();
-
-    if (this.locale === 'en') {
-      modifyEngDayShorthands();
-    }
 
     this.requestUpdate();
   }

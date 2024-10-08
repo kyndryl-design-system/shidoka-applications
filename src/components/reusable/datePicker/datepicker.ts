@@ -235,10 +235,6 @@ export class DatePicker extends FormMixin(LitElement) {
       setCalendarAttributes: this.setCalendarAttributes.bind(this),
       setInitialDates: this.setInitialDates.bind(this),
     });
-
-    if (this.locale === 'en') {
-      modifyEngDayShorthands();
-    }
   }
 
   setCalendarAttributes(): void {
@@ -291,22 +287,19 @@ export class DatePicker extends FormMixin(LitElement) {
   async updateFlatpickrOptions(): Promise<void> {
     if (this.flatpickrInstance) {
       const currentDates = [...this.flatpickrInstance.selectedDates];
+      const newOptions = await this.getFlatpickrOptions();
 
-      this.flatpickrInstance.destroy();
-
-      this.flatpickrInstance = await initializeFlatpickr({
-        startDateInputEl: this.inputEl,
-        getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
-        setCalendarAttributes: this.setCalendarAttributes.bind(this),
-        setInitialDates: this.setInitialDates.bind(this),
+      Object.keys(newOptions).forEach((key) => {
+        this.flatpickrInstance!.set(
+          key as keyof BaseOptions,
+          newOptions[key as keyof BaseOptions]
+        );
       });
 
-      if (currentDates.length > 0) {
-        this.flatpickrInstance?.setDate(currentDates, true);
-      }
+      this.flatpickrInstance.redraw();
 
-      if (this.locale === 'en') {
-        modifyEngDayShorthands();
+      if (currentDates.length > 0) {
+        this.flatpickrInstance.setDate(currentDates, false);
       }
     }
   }
@@ -346,6 +339,26 @@ export class DatePicker extends FormMixin(LitElement) {
 
   async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     this._enableTime = this.dateFormat.includes('H:');
+    let localeOptions: Partial<Locale>;
+
+    if (this.locale === 'en') {
+      localeOptions = {
+        weekdays: {
+          shorthand: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+          longhand: [
+            'Sunday',
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+          ],
+        },
+      };
+    } else {
+      localeOptions = await this.loadLocale(this.locale);
+    }
 
     const options: Partial<BaseOptions> = {
       dateFormat: this.dateFormat,
@@ -360,16 +373,12 @@ export class DatePicker extends FormMixin(LitElement) {
       altFormat: this.altFormat,
       onChange: this.handleDateChange.bind(this),
       closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
+      locale: localeOptions,
     };
 
-    if (this.locale) options.locale = await this.loadLocale(this.locale);
-
     if (this.minDate) options.minDate = this.minDate;
-
     if (this.maxDate) options.maxDate = this.maxDate;
-
     if (this.enable.length > 0) options.enable = this.enable;
-
     if (this.disable.length > 0) options.disable = this.disable;
 
     return options;
