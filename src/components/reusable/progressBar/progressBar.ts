@@ -152,7 +152,9 @@ export class ProgressBar extends LitElement {
     currentValue: number | null
   ) {
     return html`
-      <div class="progress-bar__upper-container">
+      <div
+        class="progress-bar__upper-container${!this.label ? '__hidden' : ''}"
+      >
         <label class="progress-bar__label label-text" for=${this.progressBarId}>
           <span>${this.label}</span>
           <slot name="unnamed"></slot>
