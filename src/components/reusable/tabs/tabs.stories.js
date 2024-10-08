@@ -34,6 +34,7 @@ const args = {
   tabSize: 'md',
   tabStyle: 'contained',
   vertical: false,
+  disableAutoFocusUpdate: false,
 };
 
 export const Tabs = {
@@ -44,6 +45,7 @@ export const Tabs = {
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
+        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
@@ -66,6 +68,7 @@ export const WithIcons = {
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
+        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>
@@ -96,6 +99,7 @@ export const Nested = {
       <kyn-tabs
         tabSize=${args.tabSize}
         ?vertical=${args.vertical}
+        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
@@ -108,6 +112,7 @@ export const Nested = {
           <kyn-tabs
             tabStyle="line"
             tabSize=${args.tabSize}
+            ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
             @on-change=${(e) => action(e.type)(e)}
           >
             <kyn-tab slot="tabs" id="tab1-subtab1" selected>Subtab 1</kyn-tab>
@@ -136,6 +141,7 @@ export const DisabledTab = {
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
+        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
