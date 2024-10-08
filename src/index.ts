@@ -27,7 +27,6 @@ export {
 export { TextInput } from './components/reusable/textInput';
 export { TextArea } from './components/reusable/textArea';
 export { ToggleButton } from './components/reusable/toggleButton';
-export { TimePicker } from './components/reusable/timepicker';
 export {
   Dropdown,
   DropdownOption,
@@ -35,6 +34,10 @@ export {
 } from './components/reusable/dropdown';
 export { DatePicker } from './components/reusable/datePicker';
 export { DateRangePicker } from './components/reusable/daterangepicker';
+export { TimePicker } from './components/reusable/timepicker';
+export { ProgressBar } from './components/reusable/progressBar';
+export { BlockCodeView } from './components/reusable/blockCodeView';
+export { InlineCodeView } from './components/reusable/inlineCodeView';
 export { Breadcrumbs, BreadcrumbItem } from './components/reusable/breadcrumbs';
 export {
   Table,
