@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import './blockCodeView/index';
+import './index';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 

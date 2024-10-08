@@ -99,3 +99,7 @@ export {
   StepperItem,
   StepperItemChild,
 } from './components/reusable/stepper';
+
+export { ProgressBar } from './components/reusable/progressBar';
+export { BlockCodeView } from './components/reusable/blockCodeView';
+export { InlineCodeView } from './components/reusable/inlineCodeView';
