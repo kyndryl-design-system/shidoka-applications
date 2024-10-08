@@ -18,7 +18,7 @@ export default {
 export const Breadcrumbs = {
   render: () => {
     return html`
-      <kyn-breadcrumbs>
+      <kyn-breadcrumbs aria-label="Breadcrumb">
         <kd-link standalone href="/path">Level 1</kd-link>
         <kd-link standalone href="/path">Level 2</kd-link>
         <strong aria-current="page">Current page</strong>
@@ -30,7 +30,7 @@ export const Breadcrumbs = {
 export const WithOverflow = {
   render: () => {
     return html`
-      <kyn-breadcrumbs>
+      <kyn-breadcrumbs aria-label="Breadcrumb">
         <kd-link standalone href="/path">Level 1</kd-link>
         <kd-link standalone href="/path">Level 2</kd-link>
 

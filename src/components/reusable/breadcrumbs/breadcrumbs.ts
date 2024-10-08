@@ -15,7 +15,7 @@ export class Breadcrumbs extends LitElement {
 
   override render() {
     return html`
-      <nav aria-label="Breadcrumb" class="breadcrumbs">
+      <nav class="breadcrumbs">
         <slot></slot>
       </nav>
     `;
