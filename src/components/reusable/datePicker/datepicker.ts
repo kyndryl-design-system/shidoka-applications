@@ -6,7 +6,6 @@ import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import {
   isSupportedLocale,
-  modifyEngDayShorthands,
   injectFlatpickrStyles,
   initializeFlatpickr,
   langsArray,
@@ -28,24 +27,13 @@ const _defaultTextStrings = {
   requiredText: 'Required',
 };
 
-const DATE_FORMAT_OPTIONS = {
-  'Y-m-d': 'yyyy-mm-dd',
-  'm-d-Y': 'mm-dd-yyyy',
-  'd-m-Y': 'dd-mm-yyyy',
-  'Y-m-d H:i': 'yyyy-mm-dd hh:mm',
-  'Y-m-d H:i:s': 'yyyy-mm-dd hh:mm:ss',
-  'm-d-Y H:i:s': 'mm-dd-yyyy hh:mm:ss',
-  'd-m-Y H:i:s': 'dd-mm-yyyy hh:mm:ss',
-} as const;
-
-type DateFormatOption = keyof typeof DATE_FORMAT_OPTIONS;
-
 type SupportedLocale = (typeof langsArray)[number];
 
 /**
  * Datepicker: uses flatpickr datetime picker library -- `https://flatpickr.js.org`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
- * @slot unnamed - Slot for label text.
+ * @slot unnamed - Slotted anchor.
+ * @slot label - Slotted input label.
  */
 @customElement('kyn-date-picker')
 export class DatePicker extends FormMixin(LitElement) {
@@ -145,43 +133,26 @@ export class DatePicker extends FormMixin(LitElement) {
    * Queries the <input> DOM element.
    * @ignore
    */
-  @query('input')
-  private inputEl!: HTMLInputElement;
+  @state()
+  private inputEl?: HTMLInputElement;
+
+  /**
+   * Queries the <input> slotted element.
+   * @ignore
+   */
+  @query('slot[name="input"]')
+  private inputSlot!: HTMLSlotElement;
 
   override render() {
-    const inputId = this.nameAttr || 'date-picker-input';
     const errorId = 'error-message';
     const warningId = 'warning-message';
     const descriptionId = 'date-picker-description';
 
     return html`
       <div class=${classMap(this.getDatepickerClasses())}>
-        <label
-          class="label-text"
-          for=${inputId}
-          ?disabled=${this.datePickerDisabled}
-        >
-          ${this.required
-            ? html`<abbr
-                class="required"
-                title=${this._textStrings.requiredText}
-                aria-label=${this._textStrings.requiredText}
-                >*</abbr
-              >`
-            : null}
-          <slot></slot>
-        </label>
-
-        <div class="input-container">
-          <input
-            type="text"
-            id=${inputId}
-            name=${this.nameAttr}
-            placeholder=${this.getPlaceholder()}
-            ?disabled=${this.datePickerDisabled}
-            ?required=${this.required}
-            aria-invalid=${this._isInvalid ? 'true' : 'false'}
-          />
+        <slot name="label"></slot>
+        <div class="input-wrapper">
+          <slot name="input"></slot>
           <span class="icon">${unsafeSVG(calendarIcon)}</span>
         </div>
 
@@ -214,13 +185,6 @@ export class DatePicker extends FormMixin(LitElement) {
     };
   }
 
-  getPlaceholder(): string {
-    if (this.isValidDateFormat(this.dateFormat)) {
-      return DATE_FORMAT_OPTIONS[this.dateFormat];
-    }
-    return 'Select date';
-  }
-
   override async firstUpdated(
     changedProperties: PropertyValues
   ): Promise<void> {
@@ -229,12 +193,49 @@ export class DatePicker extends FormMixin(LitElement) {
 
     injectFlatpickrStyles(ShidokaDatePickerTheme.toString());
 
-    this.flatpickrInstance = await initializeFlatpickr({
-      startDateInputEl: this.inputEl,
-      getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
-      setCalendarAttributes: this.setCalendarAttributes.bind(this),
-      setInitialDates: this.setInitialDates.bind(this),
-    });
+    await this.updateComplete;
+    this.setupInput();
+  }
+
+  private setupInput() {
+    const assignedNodes = this.inputSlot.assignedNodes();
+    this.inputEl = assignedNodes.find(
+      (node): node is HTMLInputElement => node instanceof HTMLInputElement
+    );
+
+    if (this.inputEl) {
+      this.initializeFlatpickr();
+    } else {
+      console.error('Input element not found in the slotted content');
+    }
+  }
+
+  override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
+    if (
+      changedProperties.has('dateFormat') ||
+      changedProperties.has('locale') ||
+      changedProperties.has('mode') ||
+      changedProperties.has('minDate') ||
+      changedProperties.has('maxDate')
+    ) {
+      this._enableTime = this.dateFormat.includes('H:');
+      this.initializeFlatpickr();
+    }
+  }
+
+  async initializeFlatpickr(): Promise<void> {
+    if (this.inputEl) {
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.destroy();
+      }
+      this.flatpickrInstance = await initializeFlatpickr({
+        startDateInputEl: this.inputEl,
+        getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
+        setCalendarAttributes: this.setCalendarAttributes.bind(this),
+        setInitialDates: this.setInitialDates.bind(this),
+      });
+    }
   }
 
   setCalendarAttributes(): void {
@@ -254,21 +255,6 @@ export class DatePicker extends FormMixin(LitElement) {
     if (this.value && this.flatpickrInstance) {
       this.flatpickrInstance.setDate(this.value, true);
     }
-  }
-
-  override updated(changedProperties: PropertyValues): void {
-    super.updated(changedProperties);
-    if (
-      changedProperties.has('dateFormat') ||
-      changedProperties.has('locale')
-    ) {
-      this._enableTime = this.dateFormat.includes('H:');
-      this.updateFlatpickrOptions();
-    }
-  }
-
-  private isValidDateFormat(format: string): format is DateFormatOption {
-    return format in DATE_FORMAT_OPTIONS;
   }
 
   setAccessibilityAttributes(): void {

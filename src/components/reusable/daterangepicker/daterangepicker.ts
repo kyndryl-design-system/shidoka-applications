@@ -7,12 +7,10 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import {
   isSupportedLocale,
   langsArray,
-  modifyEngDayShorthands,
   injectFlatpickrStyles,
   initializeFlatpickr,
 } from '../../../common/helpers/flatpickr';
 
-import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
 import type { Instance } from 'flatpickr/dist/types/instance';
 import { Locale } from 'flatpickr/dist/types/locale';
@@ -23,30 +21,19 @@ import DateRangePickerStyles from './daterangepicker.scss';
 import ShidokaDatePickerTheme from '../../../common/scss/date-picker-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
+
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
 };
 
-const DATE_FORMAT_OPTIONS = {
-  'Y-m-d': 'yyyy-mm-dd',
-  'm-d-Y': 'mm-dd-yyyy',
-  'd-m-Y': 'dd-mm-yyyy',
-  'Y-m-d H:i': 'yyyy-mm-dd hh:mm',
-  'Y-m-d H:i:s': 'yyyy-mm-dd hh:mm:ss',
-  'm-d-Y H:i:s': 'mm-dd-yyyy hh:mm:ss',
-  'd-m-Y H:i:s': 'dd-mm-yyyy hh:mm:ss',
-} as const;
-
-type DateFormatOption = keyof typeof DATE_FORMAT_OPTIONS;
-
 type SupportedLocale = (typeof langsArray)[number];
 
 /**
  * Date Range Picker: uses flatpickr datetime picker library -- `https://flatpickr.js.org/examples/#range-calendar`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
+ * @slot unnamed - Slotted anchor.
  * @slot start-label - Slot for start date label text.
  * @slot end-label - Slot for end date label text.
  */
@@ -155,15 +142,21 @@ export class DateRangePicker extends FormMixin(LitElement) {
    * Queries the start date <input> DOM element.
    * @internal
    */
-  @query('input.start-date')
-  private startDateInputEl!: HTMLInputElement;
+  @state()
+  private startDateInputEl?: HTMLInputElement;
 
   /**
    * Queries the end date <input> DOM element.
    * @internal
    */
-  @query('input.end-date')
-  private endDateInputEl!: HTMLInputElement;
+  @state()
+  private endDateInputEl?: HTMLInputElement;
+
+  @query('slot[name="start-input"]')
+  private startInputSlot!: HTMLSlotElement;
+
+  @query('slot[name="end-input"]')
+  private endInputSlot!: HTMLSlotElement;
 
   /**
    * Sets delay to facilitate smooth date value changes.
@@ -171,26 +164,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
-  private isValidDateFormat(format: string): format is DateFormatOption {
-    return format in DATE_FORMAT_OPTIONS;
-  }
-
-  getPlaceholder(): string {
-    if (this.isValidDateFormat(this.dateFormat) && !this.multipleInputs) {
-      return `${DATE_FORMAT_OPTIONS[this.dateFormat]} to ${
-        DATE_FORMAT_OPTIONS[this.dateFormat]
-      }`;
-    }
-
-    if (this.isValidDateFormat(this.dateFormat)) {
-      return `${DATE_FORMAT_OPTIONS[this.dateFormat]}`;
-    }
-    return `date`;
-  }
-
   override render() {
-    const startInputId = 'date-range-picker-start';
-    const endInputId = 'date-range-picker-end';
     const errorId = 'error-message';
     const warningId = 'warning-message';
     const captionId = 'date-range-picker-caption';
@@ -199,50 +173,23 @@ export class DateRangePicker extends FormMixin(LitElement) {
       <div class=${classMap(this.getDateRangePickerClasses())}>
         <div class="date-inputs">
           <div class="date-input">
-            <label
-              class="label-text"
-              for=${startInputId}
-              ?disabled=${this.dateRangePickerDisabled}
-            >
-              ${this.required
-                ? html`<abbr
-                    class="required"
-                    title=${this._textStrings.requiredText}
-                    aria-label=${this._textStrings.requiredText}
-                    >*</abbr
-                  >`
-                : null}
-              <slot name="start-label">Start Date Label</slot>
-            </label>
-
-            ${this.renderInput(startInputId, 'start-date', false)}
+            <slot name="start-label"></slot>
+            <div class="input-wrapper">
+              <slot name="start-input"></slot>
+            </div>
           </div>
-
           ${this.multipleInputs
-            ? html`<div class="date-range-separator">—</div>
-
+            ? html`
+                <div class="date-range-separator">—</div>
                 <div class="date-input">
-                  <label
-                    class="label-text"
-                    for=${endInputId}
-                    ?disabled=${this.dateRangePickerDisabled}
-                  >
-                    ${this.required
-                      ? html`<abbr
-                          class="required"
-                          title=${this._textStrings.requiredText}
-                          aria-label=${this._textStrings.requiredText}
-                          >*</abbr
-                        >`
-                      : null}
-                    <slot name="end-label">End Date Label</slot>
-                  </label>
-
-                  ${this.renderInput(endInputId, 'end-date', true)}
-                </div>`
-            : null}
+                  <slot name="end-label"></slot>
+                  <div class="input-wrapper">
+                    <slot name="end-input"></slot>
+                  </div>
+                </div>
+              `
+            : ''}
         </div>
-
         ${this.caption
           ? html`<div id=${captionId} class="caption options-text">
               ${this.caption}
@@ -258,29 +205,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
               ${this.warnText}
             </div>`
           : ''}
-      </div>
-    `;
-  }
-
-  private renderInput(id: string, className: string, isEndDate: boolean) {
-    const descriptionId = isEndDate
-      ? 'date-range-picker-end-date-description'
-      : 'date-range-picker-start-date-description';
-
-    return html`
-      <div class="input-container">
-        <input
-          type="text"
-          id=${id}
-          class=${className}
-          placeholder=${this.getPlaceholder()}
-          ?disabled=${this.dateRangePickerDisabled}
-          .value=${this.getInputValue(isEndDate ? 1 : 0)}
-          aria-required=${this.required ? 'true' : 'false'}
-          aria-invalid=${this._isInvalid ? 'true' : 'false'}
-          tabindex=${isEndDate ? '-1' : '0'}
-        />
-        <span class="icon">${unsafeSVG(calendarIcon)}</span>
       </div>
     `;
   }
@@ -305,18 +229,63 @@ export class DateRangePicker extends FormMixin(LitElement) {
     changedProperties: PropertyValues
   ): Promise<void> {
     super.firstUpdated(changedProperties);
-
-    // allows for custom styles to be applied to flatpickr's appended calendar overlay
     injectFlatpickrStyles(ShidokaDatePickerTheme.toString());
-
-    this.flatpickrInstance = await initializeFlatpickr({
-      startDateInputEl: this.startDateInputEl,
-      getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
-      setCalendarAttributes: this.setCalendarAttributes.bind(this),
-      setInitialDates: this.setInitialDates.bind(this),
-    });
+    await this.updateComplete;
+    this.setupInputs();
   }
 
+  private setupInputs() {
+    const startAssignedNodes = this.startInputSlot.assignedNodes();
+
+    this.startDateInputEl = this.findInputElement(startAssignedNodes);
+
+    if (this.multipleInputs) {
+      const endAssignedNodes = this.endInputSlot.assignedNodes();
+      this.endDateInputEl = this.findInputElement(endAssignedNodes);
+    }
+
+    if (this.startDateInputEl) {
+      this.initializeFlatpickr();
+    } else {
+      console.error(
+        'Start date input element not found in the slotted content'
+      );
+      throw new Error(
+        'Start date input element not found in the slotted content'
+      );
+    }
+  }
+  private findInputElement(nodes: Node[]): HTMLInputElement | undefined {
+    for (const node of nodes) {
+      if (node instanceof HTMLElement) {
+        const input = node.querySelector('input');
+        if (input) return input;
+      } else if (node instanceof HTMLInputElement) {
+        return node;
+      }
+    }
+    return undefined;
+  }
+
+  async initializeFlatpickr(): Promise<void> {
+    if (!this.startDateInputEl) {
+      console.error(
+        'Cannot initialize Flatpickr: startDateInputEl is undefined'
+      );
+      return;
+    }
+
+    try {
+      this.flatpickrInstance = await initializeFlatpickr({
+        startDateInputEl: this.startDateInputEl,
+        getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
+        setCalendarAttributes: this.setCalendarAttributes.bind(this),
+        setInitialDates: this.setInitialDates.bind(this),
+      });
+    } catch (error) {
+      console.error('Error initializing Flatpickr:', error);
+    }
+  }
   override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
     if (
@@ -454,8 +423,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
       const startDateInput = this.startDateInputEl;
       const endDateInput = this.endDateInputEl;
 
-      startDateInput.setAttribute('aria-label', 'Start date');
-      endDateInput.setAttribute('aria-label', 'End date');
+      startDateInput?.setAttribute('aria-label', 'Start date');
+      endDateInput?.setAttribute('aria-label', 'End date');
     }
   }
 
@@ -510,17 +479,17 @@ export class DateRangePicker extends FormMixin(LitElement) {
   updateSelectedDateRangeAria(selectedDates: Date[]): void {
     if (selectedDates.length === 2) {
       const [startDate, endDate] = selectedDates;
-      this.startDateInputEl.setAttribute(
+      this.startDateInputEl?.setAttribute(
         'aria-label',
         `Selected start date: ${startDate.toLocaleDateString()}`
       );
-      this.endDateInputEl.setAttribute(
+      this.endDateInputEl?.setAttribute(
         'aria-label',
         `Selected end date: ${endDate.toLocaleDateString()}`
       );
     } else {
-      this.startDateInputEl.setAttribute('aria-label', 'Start date');
-      this.endDateInputEl.setAttribute('aria-label', 'End date');
+      this.startDateInputEl?.setAttribute('aria-label', 'Start date');
+      this.endDateInputEl?.setAttribute('aria-label', 'End date');
     }
   }
 
@@ -540,17 +509,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-
     if (this.flatpickrInstance) {
       this.flatpickrInstance.destroy();
       this.flatpickrInstance = undefined;
     }
-
-    // prevents flatpickr calendar overlay from persisting on view change
     const calendarElements = document.querySelectorAll('.flatpickr-calendar');
-    calendarElements.forEach((calendar) => {
-      calendar.remove();
-    });
+    calendarElements.forEach((calendar) => calendar.remove());
   }
 }
 

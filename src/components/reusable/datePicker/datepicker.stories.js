@@ -1,8 +1,12 @@
 import { html } from 'lit';
 import './index';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/addons';
+import { getPlaceholder } from '../../../common/helpers/flatpickr';
+
+import './datepicker.scss';
+
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 export default {
   title: 'Components/DatePicker',
@@ -51,12 +55,18 @@ const disconnectFlatpickr = () => {
   calendarElements.forEach((calendar) => calendar.remove());
 };
 
-const Template = (args) => {
+const InputTemplate = (args) => {
   useEffect(() => {
     return () => {
       disconnectFlatpickr();
     };
   }, []);
+
+  const inputId =
+    args.nameAttr ||
+    `date-picker-input-${Math.random().toString(36).slice(2, 11)}`;
+
+  const placeholder = getPlaceholder(args.dateFormat);
 
   return html`<kyn-date-picker
     .nameAttr="${args.nameAttr}"
@@ -77,11 +87,37 @@ const Template = (args) => {
     .minDate="${args.minDate}"
     .maxDate="${args.maxDate}"
     @on-change=${(e) => action(e.type)(e)}
-    >Date</kyn-date-picker
-  >`;
+  >
+    <label
+      slot="label"
+      class="label-text"
+      for=${inputId}
+      ?disabled=${args.datePickerDisabled}
+    >
+      ${args.required
+        ? html`<abbr
+            class="required"
+            title=${args._textStrings?.requiredText || 'Required'}
+            aria-label=${args._textStrings?.requiredText || 'Required'}
+            >*</abbr
+          >`
+        : null}
+      ${args.unnamed}
+    </label>
+    <input
+      slot="input"
+      type="text"
+      id=${inputId}
+      name=${args.nameAttr}
+      placeholder=${placeholder}
+      ?disabled=${args.datePickerDisabled}
+      ?required=${args.required}
+      aria-invalid=${args._isInvalid ? 'true' : 'false'}
+    />
+  </kyn-date-picker>`;
 };
 
-export const DatePicker = Template.bind({});
+export const DatePicker = InputTemplate.bind({});
 DatePicker.args = {
   nameAttr: 'default-date-picker',
   locale: 'en',
@@ -100,9 +136,10 @@ DatePicker.args = {
   twentyFourHourFormat: false,
   minDate: '',
   maxDate: '',
+  unnamed: 'Date',
 };
 
-export const DateWithTime = Template.bind({});
+export const DateWithTime = InputTemplate.bind({});
 DateWithTime.args = {
   ...DatePicker.args,
   locale: 'hi',
@@ -111,9 +148,9 @@ DateWithTime.args = {
   caption: '',
   unnamed: 'Date & Time Picker',
 };
-DateWithTime.storyName = 'Date w/ Time (Hindi Locale Example)';
+DateWithTime.storyName = 'Date / Time (w/ Hindi Locale)';
 
-export const DatePickerMultiple = Template.bind({});
+export const DatePickerMultiple = InputTemplate.bind({});
 DatePickerMultiple.args = {
   ...DatePicker.args,
   locale: 'en',
@@ -121,5 +158,6 @@ DatePickerMultiple.args = {
   dateFormat: 'Y-m-d',
   caption: '',
   mode: 'multiple',
+  unnamed: 'Date Picker (w/ Multiselect)',
 };
 DatePickerMultiple.storyName = 'Date Picker w/ Multiple Selection';

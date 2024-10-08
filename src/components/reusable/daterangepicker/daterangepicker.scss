@@ -1,5 +1,7 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/form-input.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
     display: inline-block;
@@ -14,159 +16,159 @@
         pointer-events: none;
     }
 
-    .date-inputs {
-        display: flex;
-        align-items: flex-end;
-        gap: 8px;
-
-        .date-input {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-
-            .label-text {
-                margin-bottom: 4px;
-                font-weight: 500;
-            }
-
-            .input-container {
-                position: relative;
-                display: flex;
-                align-items: center;
-
-                input {
-                    width: 100%;
-                    box-sizing: border-box;
-                    border: 1px solid var(--kd-color-border-ui);
-                    border-radius: 4px;
-                    height: 48px;
-                    padding: 0 40px 0 16px;
-                    flex: 1;
-                    min-width: 180px;
-                    line-height: 48px;
-                    -webkit-appearance: none;
-                    appearance: none;
-                    outline: none;
-
-                    &[disabled] {
-                        opacity: 1;
-                        border: 1px solid var(--kd-color-border-ui);
-                        color: var(--kd-color-text-primary);
-                    }
-                }
-
-                .icon {
-                    position: absolute;
-                    right: 15px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    pointer-events: none;
-                    display: flex;
-                    align-items: center;
-                    height: 24px;
-                }
-            }
-        }
-
-        .date-range-separator {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 300;
-            font-size: 25px;
-            height: 48px;
-            color: var(--kd-color-text-secondary);
-            align-self: flex-end;
-        }
-    }
-
-    &__multi-input {
-        &-false {
-            &.date-range-picker {
-                .date-inputs {
-                    max-width: 300px;
-                }
-
-                &__time-variation-true .date-inputs {
-                    max-width: 425px;
-                }
-
-                &__size {
-                    &--sm .date-inputs {
-                        max-width: 275px;
-                    }
-
-                    &--lg .date-inputs {
-                        max-width: 325px;
-                    }
-                }
-
-                &__size--sm#{&}__time-variation-true .date-inputs {
-                    max-width: 400px;
-                }
-
-                &__size--lg#{&}__time-variation-true .date-inputs {
-                    max-width: 525px;
-                }
-            }
-        }
-
-        &-true {
-            &.date-range-picker {
-                .date-inputs {
-                    max-width: 525px;
-                }
-
-                &__time-variation-true .date-inputs {
-                    max-width: 550px;
-                }
-
-                &__size {
-                    &--sm .date-inputs {
-                        max-width: 525px;
-                    }
-
-                    &--lg .date-inputs {
-                        max-width: 575px;
-                    }
-                }
-
-                &__size--sm#{&}__time-variation-true .date-inputs {
-                    max-width: 475px;
-                }
-
-                &__size--lg#{&}__time-variation-true .date-inputs {
-                    max-width: 550px;
-                }
-            }
-        }
-    }
-
     &__size {
         &--sm {
-            .date-inputs {
-                .date-input .input-container input {
-                    height: 32px;
-                    line-height: 32px;
-                }
 
-                .date-range-separator {
-                    height: 32px;
-                }
+            .input-wrapper,
+            .date-range-separator {
+                height: 32px;
             }
         }
 
         &--lg {
-            .date-inputs {
-                .date-input .input-container input {
-                    height: 60px;
-                    line-height: 60px;
-                }
 
-                .date-range-separator {
-                    height: 60px;
-                }
+            .input-wrapper,
+            .date-range-separator {
+                height: 60px;
             }
         }
     }
+}
+
+.date-inputs {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.date-input {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.date-range-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 300;
+    font-size: 25px;
+    height: 48px;
+    color: var(--kd-color-text-secondary);
+    align-self: flex-end;
+    margin-bottom: 0;
+}
+
+::slotted(.label-text) {
+    @include typography.type-ui-02;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    margin-bottom: 8px;
+
+    &.sr-only {
+        @include visibility.sr-only;
+    }
+
+    [disabled] & {
+        color: var(--kd-color-text-disabled);
+    }
+}
+
+::slotted(.icon) {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    height: 24px;
+}
+
+::slotted(.input-container) {
+    display: block;
+    width: 100%;
+    position: relative;
+    border: 1px solid var(--kd-color-border-ui);
+    border-radius: 4px;
+    height: 48px;
+    padding: 0 40px 0 16px;
+    line-height: 48px;
+    -webkit-appearance: none;
+    appearance: none;
+    @include typography.type-body-02;
+    color: var(--kd-color-text-primary);
+    transition: background-color 150ms ease-out, border-color 150ms ease-out,
+        outline-color 150ms ease-out;
+    background: var(--kd-color-background-inverse);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+
+    &:hover {
+        border-color: var(--kd-color-border-ui-hover);
+    }
+
+    &:focus-within {
+        outline-color: var(--kd-color-border-focus);
+    }
+
+    &[disabled] {
+        color: var(--kd-color-text-disabled);
+        border-color: var(--kd-color-border-ui-disabled);
+    }
+
+    &[invalid] {
+        border-color: var(--kd-color-border-error);
+    }
+}
+
+::slotted(.input-container input) {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--kd-color-border-ui);
+    border-radius: 4px;
+    height: 48px;
+    padding: 0 40px 0 16px;
+    flex: 1;
+    min-width: 167px;
+    line-height: 48px;
+    -webkit-appearance: none;
+    appearance: none;
+    @include typography.type-body-02;
+    border-color: var(--kd-color-border-ui);
+    color: var(--kd-color-text-primary);
+    transition: background-color 150ms ease-out, border-color 150ms ease-out,
+        outline-color 150ms ease-out;
+    background: var(--kd-color-background-inverse);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+
+    &::placeholder {
+        color: var(--kd-color-text-placeholder);
+    }
+
+    &[disabled] {
+        color: var(--kd-color-text-disabled);
+    }
+}
+
+.icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    height: 24px;
 }
