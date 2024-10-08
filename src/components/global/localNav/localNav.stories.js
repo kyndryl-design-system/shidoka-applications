@@ -5,7 +5,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import './localNav';
 import './localNavLink';
 import '../../reusable/textInput';
-import '../../reusable/codeView/blockCodeView';
+import '../../reusable/blockCodeView';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import { filterLocalNavLinks } from '../../../common/helpers/helpers';
 
