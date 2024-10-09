@@ -23,7 +23,6 @@ export function isSupportedLocale(locale: string): boolean {
 }
 
 export function modifyEngDayShorthands(): void {
-  console.log('this is being called');
   l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
     const currentDay = l10n.en.weekdays.shorthand;
     currentDay[index] = currentDay[index].charAt(0);

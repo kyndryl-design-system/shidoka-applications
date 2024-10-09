@@ -20,6 +20,7 @@ import TimepickerStyles from './timepicker.scss';
 import ShidokaDatePickerTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/button';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 
 const _defaultTextStrings = {
@@ -103,23 +104,18 @@ export class TimePicker extends FormMixin(LitElement) {
   private flatpickrInstance?: flatpickr.Instance;
 
   /**
-   * Assists in handling rapid clicks/changes to time input.
-   * @internal
+   * Queries the anchor DOM element.
+   * @ignore
    */
-  private _debounceTimer: number | null = null;
-
-  /**
-   * Ensure correct displayed time format.
-   * @internal
-   */
-  @state()
-  private _displayValue = '';
-
-  @query('slot[name="anchor"]')
-  private anchorSlot!: HTMLSlotElement;
-
   @state()
   private _anchorEl?: HTMLElement;
+
+  /**
+   * Queries the anchor slotted DOM element.
+   * @internal
+   */
+  @query('slot[name="anchor"]')
+  private anchorSlot!: HTMLSlotElement;
 
   override render() {
     const errorId = 'error-message';
@@ -165,13 +161,26 @@ export class TimePicker extends FormMixin(LitElement) {
 
   private setupAnchor() {
     const assignedNodes = this.anchorSlot.assignedNodes({ flatten: true });
-    const anchorEl = assignedNodes.find(
+    this._anchorEl = assignedNodes.find(
       (node): node is HTMLElement => node instanceof HTMLElement
     );
 
-    if (anchorEl) {
-      this._anchorEl = anchorEl;
+    if (this._anchorEl) {
       this.initializeFlatpickr();
+
+      const iconSlot = this.shadowRoot?.querySelector(
+        'slot[name="icon"]'
+      ) as HTMLSlotElement | null;
+      if (iconSlot) {
+        iconSlot.addEventListener('slotchange', () => {
+          const iconElements = iconSlot.assignedElements();
+          iconElements.forEach((icon) => {
+            icon.addEventListener('click', () => {
+              this.flatpickrInstance?.open();
+            });
+          });
+        });
+      }
     } else {
       console.error('Anchor element not found in the slotted content');
     }
@@ -179,21 +188,37 @@ export class TimePicker extends FormMixin(LitElement) {
 
   async initializeFlatpickr(): Promise<void> {
     if (!this._anchorEl) {
-      console.error('Anchor element not found.');
       return;
     }
 
-    try {
-      const options = await this.getFlatpickrOptions();
-      this.flatpickrInstance = flatpickr(this._anchorEl, options) as Instance;
+    const options = await this.getFlatpickrOptions();
 
-      if (this.flatpickrInstance) {
-        this.setCalendarAttributes();
-      } else {
-        console.error('Unable to create flatpickr instance');
-      }
-    } catch (error) {
-      console.error('Error initializing Flatpickr:', error);
+    if (this._anchorEl instanceof HTMLButtonElement) {
+      const hiddenInput = document.createElement('input');
+      hiddenInput.type = 'text';
+      hiddenInput.style.display = 'none';
+      this._anchorEl.parentNode?.insertBefore(
+        hiddenInput,
+        this._anchorEl.nextSibling
+      );
+
+      this.flatpickrInstance = flatpickr(hiddenInput, {
+        ...options,
+        wrap: true,
+        clickOpens: false,
+      }) as Instance;
+
+      this._anchorEl.addEventListener('click', () => {
+        this.flatpickrInstance?.open();
+      });
+    } else {
+      this.flatpickrInstance = flatpickr(this._anchorEl, options) as Instance;
+    }
+
+    if (this.flatpickrInstance) {
+      this.setCalendarAttributes();
+    } else {
+      console.error('Failed to initialize Flatpickr');
     }
   }
 
@@ -325,7 +350,6 @@ export class TimePicker extends FormMixin(LitElement) {
     const selectedTime = today.getTime();
 
     this.value = selectedTime;
-    this._displayValue = dateStr;
 
     this.emitValue(dateStr);
     this.requestUpdate('value', '');

@@ -133,8 +133,6 @@ const ButtonIconAnchorTemplate = (args) => {
     };
   }, []);
 
-  const startAnchorId = 'date-range-picker-start';
-
   return html`
     <kyn-date-range-picker
       .nameAttr="${args.nameAttr}"

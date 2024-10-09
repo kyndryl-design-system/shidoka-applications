@@ -20,6 +20,7 @@ import DateRangePickerStyles from './daterangepicker.scss';
 import ShidokaDatePickerTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import '@kyndryl-design-system/shidoka-foundation/components/button';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import flatpickr from 'flatpickr';
 
@@ -182,6 +183,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             <slot name="start-label"></slot>
             <div class="anchor-wrapper">
               <slot name="start-anchor"></slot>
+              <slot name="start-icon" class="icon"></slot>
             </div>
           </div>
           ${this.multipleInputs
@@ -191,6 +193,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
                   <slot name="end-label"></slot>
                   <div class="anchor-wrapper">
                     <slot name="end-anchor"></slot>
+                    <slot name="end-icon" class="icon"></slot>
                   </div>
                 </div>
               `
