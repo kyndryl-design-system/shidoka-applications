@@ -21,6 +21,7 @@ nav {
   left: 0;
   width: 100%;
   background: var(--kd-color-background-ui-soft);
+  overflow: hidden;
 
   @media (min-width: 42rem) {
     @include elevation.shadow(2);
@@ -28,7 +29,6 @@ nav {
     z-index: var(--kd-z-local-nav);
     height: 100%;
     padding-top: calc(var(--kd-header-height) + 8px);
-    // border-bottom: 4px solid transparent;
     transition: width 300ms ease-in-out, border-color 300ms ease-out;
     width: var(--kd-local-nav-width);
 
@@ -44,7 +44,6 @@ nav {
   &.nav--expanded {
     @media (min-width: 42rem) {
       width: var(--kd-local-nav-width-expanded);
-      // border-bottom-color: var(--kd-color-border-accent-spruce-light);
     }
   }
 }
@@ -73,6 +72,22 @@ nav {
   }
 }
 
+.search {
+  display: none;
+
+  .nav--expanded &,
+  .nav--expanded-mobile & {
+    display: block;
+  }
+}
+
+slot[name='search'] {
+  &::slotted(*) {
+    display: block;
+    margin: 2px 2px 4px;
+  }
+}
+
 .links {
   visibility: hidden;
   flex-direction: column;
@@ -87,7 +102,7 @@ nav {
   left: 0;
   width: 100%;
   background: var(--kd-color-background-ui-soft);
-
+  padding-top: 4px;
   transition: height 250ms ease-out, visibility 250ms ease-out;
   height: 0;
 
