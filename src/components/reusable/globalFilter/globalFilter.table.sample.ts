@@ -237,23 +237,24 @@ export class SampleFilterTableComponent extends LitElement {
       </kyn-global-filter>
 
       <kyn-table
+        role="table"
         checkboxSelection
         @on-row-selection-change=${this._handleSelectedRowsChange}
         @on-all-rows-selection-change=${this._handleSelectedRowsChange}
       >
-        <kyn-thead>
-          <kyn-header-tr>
+        <kyn-thead role="rowgroup">
+          <kyn-header-tr role="row">
             <kyn-th>Character</kyn-th>
             <kyn-th>Age</kyn-th>
             <kyn-th>House</kyn-th>
           </kyn-header-tr>
         </kyn-thead>
-        <kyn-tbody>
+        <kyn-tbody role="rowgroup">
           ${repeat(
             this.characters,
             (row: any) => row.name,
             (row: any) => html`
-              <kyn-tr .rowId=${row.name} checkboxSelection>
+              <kyn-tr role="row" .rowId=${row.name} checkboxSelection>
                 <kyn-td>${row.name}</kyn-td>
                 <kyn-td>${row.age}</kyn-td>
                 <kyn-td>${row.house}</kyn-td>
