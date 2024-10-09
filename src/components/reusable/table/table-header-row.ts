@@ -78,7 +78,9 @@ export class TableHeaderRow extends TableRow {
         ? html`<kyn-th
             .align="${'center'}"
             .width=${this.expandableColumnWidth}
-          ></kyn-th>`
+            visiblyHidden
+            >Expandable Header Column
+          </kyn-th>`
         : null}
       ${this.checkboxSelection
         ? html` <kyn-th

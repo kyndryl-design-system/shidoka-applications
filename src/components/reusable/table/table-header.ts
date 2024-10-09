@@ -257,13 +257,13 @@ export class TableHeader extends LitElement {
       <div
         class="container"
         @click=${this.sortable ? () => this.toggleSortDirection() : undefined}
-        role=${ifDefined(role)}
         arial-label=${ifDefined(ariaLabel)}
         arial-sort=${ifDefined(arialSort)}
         tabindex=${ifDefined(tabIndex)}
+        role="columnheader"
         @keydown=${onKeyDown}
       >
-        <div class=${classMap(slotClasses)} role="columnheader">
+        <div class=${classMap(slotClasses)} role=${ifDefined(role)}>
           <slot></slot>
         </div>
         ${this.sortable

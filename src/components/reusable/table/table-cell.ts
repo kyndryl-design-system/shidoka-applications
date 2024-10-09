@@ -111,7 +111,7 @@ export class TableCell extends LitElement {
 
   override render() {
     return html`
-      <div class="slot-wrapper" aria-disabled=${this.disabled}>
+      <div class="slot-wrapper" role="cell" aria-disabled=${this.disabled}>
         <slot></slot>
       </div>
     `;

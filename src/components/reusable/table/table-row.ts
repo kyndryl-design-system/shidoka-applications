@@ -232,6 +232,15 @@ export class TableRow extends LitElement {
                   <kd-icon slot="icon" .icon=${chevronDownIcon}></kd-icon>
                 </kd-button>
               </div>
+
+              <div
+                class="assistive-text"
+                role="status"
+                aria-live="assertive"
+                aria-relevant="additions text"
+              >
+                ${this.assistiveText}
+              </div>
             </kyn-td>
           `
         : null}
@@ -250,15 +259,6 @@ export class TableRow extends LitElement {
           `
         : null}
       <slot></slot>
-
-      <div
-        class="assistive-text"
-        role="status"
-        aria-live="assertive"
-        aria-relevant="additions text"
-      >
-        ${this.assistiveText}
-      </div>
     `;
   }
 }
