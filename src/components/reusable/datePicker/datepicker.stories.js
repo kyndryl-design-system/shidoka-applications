@@ -199,7 +199,7 @@ DateWithTime.args = {
   caption: '',
   unnamed: 'दिनांक एवं समय चयनकर्ता',
 };
-DateWithTime.storyName = 'Date / Time (w/ Hindi Locale)';
+DateWithTime.storyName = 'Date / Time (Hindi Locale)';
 
 export const DateWithButtonIcon = ButtonTemplate.bind({});
 DateWithButtonIcon.args = {
@@ -222,7 +222,7 @@ DateWithButtonIcon.args = {
   maxDate: '',
   unnamed: 'Date',
 };
-DateWithButtonIcon.storyName = 'Date Time w/ Button Anchor';
+DateWithButtonIcon.storyName = 'Date Time (Button Anchor)';
 
 export const DatePickerMultiple = InputTemplate.bind({});
 DatePickerMultiple.args = {
@@ -234,4 +234,4 @@ DatePickerMultiple.args = {
   mode: 'multiple',
   unnamed: 'Date Picker (w/ Multiselect)',
 };
-DatePickerMultiple.storyName = 'Date Picker w/ Multiple Selection';
+DatePickerMultiple.storyName = 'Date Picker (Multiple Selection)';

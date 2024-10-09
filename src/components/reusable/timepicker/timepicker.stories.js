@@ -162,9 +162,9 @@ export const TimePickerButtonAnchor = ButtonTemplate.bind({});
 TimePickerButtonAnchor.args = {
   ...TimePicker.args,
   locale: 'en',
-  unnamed: 'Time Picker with Button Anchor',
+  unnamed: 'Timepicker with Button Anchor',
 };
-TimePickerButtonAnchor.storyName = 'Time Picker (w/ Button Anchor)';
+TimePickerButtonAnchor.storyName = 'Timepicker (Button Anchor)';
 
 export const TimePickerAltLanguage = Template.bind({});
 TimePickerAltLanguage.args = {
@@ -172,4 +172,4 @@ TimePickerAltLanguage.args = {
   locale: 'ja',
   unnamed: 'タイムピッカー',
 };
-TimePickerAltLanguage.storyName = 'Time Picker (Japanese Locale)';
+TimePickerAltLanguage.storyName = 'Timepicker (Japanese Locale)';

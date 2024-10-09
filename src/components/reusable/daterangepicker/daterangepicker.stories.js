@@ -381,7 +381,7 @@ DateRangeIconPicker.args = {
   startDateLabel: 'Button w/ Icon Date Range Picker Launcher',
   endDateLabel: '',
 };
-DateRangeIconPicker.storyName = 'Date Range (Button w/ Icon)';
+DateRangeIconPicker.storyName = 'Date Range (Button Anchor w/ Icon)';
 
 export const DateRangeIconTextAnchor = ButtonIconTextAnchorTemplate.bind({});
 DateRangeIconTextAnchor.args = {
@@ -403,7 +403,8 @@ DateRangeIconTextAnchor.args = {
   startDateLabel: 'Button w/ Icon + Text Date Range Picker Launcher',
   endDateLabel: '',
 };
-DateRangeIconTextAnchor.storyName = 'Date Range (Button w/ Icon and Text)';
+DateRangeIconTextAnchor.storyName =
+  'Date Range (Button Anchor w/ Icon and Text)';
 
 export const DateRangePickerMulti = MultiInputTemplate.bind({});
 DateRangePickerMulti.args = {
@@ -414,7 +415,7 @@ DateRangePickerMulti.args = {
   multipleInputs: true,
   caption: '',
 };
-DateRangePickerMulti.storyName = 'Date Range Multi Input';
+DateRangePickerMulti.storyName = 'Date Range (Multi Input)';
 
 export const DateTimeRangePickerSingle = SingleInput.bind({});
 DateTimeRangePickerSingle.args = {
@@ -427,7 +428,7 @@ DateTimeRangePickerSingle.args = {
   startDateLabel: 'Start + End Date / Time',
   endDateLabel: '',
 };
-DateTimeRangePickerSingle.storyName = 'Date / Time Range Single Input';
+DateTimeRangePickerSingle.storyName = 'Date / Time Range';
 
 export const DateTimeRangePickerMulti = MultiInputTemplate.bind({});
 DateTimeRangePickerMulti.args = {
@@ -442,4 +443,4 @@ DateTimeRangePickerMulti.args = {
   endDateLabel: 'Fecha de finalización',
 };
 DateTimeRangePickerMulti.storyName =
-  'Date / Time Range Multi Input (Spanish Locale)';
+  'Date / Time Range (Multi Input, Spanish Locale)';

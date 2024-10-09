@@ -1,10 +1,28 @@
 import flatpickr from 'flatpickr';
 import l10n from 'flatpickr/dist/l10n';
+import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import { Instance } from 'flatpickr/dist/types/instance';
+import { BaseOptions } from 'flatpickr/dist/types/options';
 
 let flatpickrStylesInjected = false;
 
 type SupportedLocale = (typeof langsArray)[number];
+
+interface BaseFlatpickrContext {
+  getFlatpickrOptions: () => Promise<Partial<BaseOptions>>;
+  setCalendarAttributes: (instance: Instance) => void;
+  setInitialDates?: (instance: Instance) => void;
+  appendToBody?: boolean;
+}
+
+interface SingleFlatpickrContext extends BaseFlatpickrContext {
+  anchorEl: HTMLElement;
+}
+
+interface RangeFlatpickrContext extends BaseFlatpickrContext {
+  startAnchorEl: HTMLElement;
+  endAnchorEl?: HTMLElement;
+}
 
 const DATE_FORMAT_OPTIONS = {
   'Y-m-d': 'yyyy-mm-dd',
@@ -39,32 +57,132 @@ export function injectFlatpickrStyles(customStyle: string): void {
   }
 }
 
-export async function initializeFlatpickr(context: {
-  startDateInputEl: HTMLElement | null;
-  getFlatpickrOptions: () => Promise<object>;
-  setCalendarAttributes: () => void;
-  setInitialDates?: () => void;
-}): Promise<Instance | undefined> {
-  if (!context.startDateInputEl) {
-    console.error('Cannot initialize Flatpickr: startDateInputEl is undefined');
+export async function initializeRangeFlatpickr(
+  context: RangeFlatpickrContext
+): Promise<Instance | undefined> {
+  const {
+    startAnchorEl,
+    endAnchorEl,
+    getFlatpickrOptions,
+    setCalendarAttributes,
+    setInitialDates,
+  } = context;
+
+  if (!startAnchorEl) {
+    console.error('Cannot initialize Flatpickr: startAnchorEl is undefined');
     return undefined;
   }
 
   try {
-    const options = await context.getFlatpickrOptions();
-    const flatpickrInstance = flatpickr(
-      context.startDateInputEl,
-      options
-    ) as Instance;
+    const options = await getFlatpickrOptions();
+
+    // Function to create or find input element
+    const getInputElement = (anchorEl: HTMLElement): HTMLInputElement => {
+      if (anchorEl instanceof HTMLInputElement) {
+        return anchorEl;
+      } else {
+        let input = anchorEl.querySelector('input');
+        if (!input) {
+          input = document.createElement('input');
+          input.type = 'text';
+          input.style.display = 'none';
+          anchorEl.appendChild(input);
+        }
+        return input as HTMLInputElement;
+      }
+    };
+
+    const startInputElement = getInputElement(startAnchorEl);
+    if (endAnchorEl) {
+      const endInputElement = getInputElement(endAnchorEl);
+      options.plugins = [
+        ...(options.plugins || []),
+        rangePlugin({ input: endInputElement }),
+      ];
+    }
+
+    const flatpickrInstance = flatpickr(startInputElement, options) as Instance;
 
     if (flatpickrInstance) {
-      context.setCalendarAttributes();
-      if (context.setInitialDates) {
-        context.setInitialDates();
+      setCalendarAttributes(flatpickrInstance);
+      if (setInitialDates) {
+        setInitialDates(flatpickrInstance);
       }
+
+      if (!(startAnchorEl instanceof HTMLInputElement)) {
+        startAnchorEl.addEventListener('click', () => {
+          flatpickrInstance.open();
+        });
+      }
+
+      if (endAnchorEl && !(endAnchorEl instanceof HTMLInputElement)) {
+        endAnchorEl.addEventListener('click', () => {
+          flatpickrInstance.open();
+        });
+      }
+
       return flatpickrInstance;
     } else {
-      console.error('Unable to create flatpickr instance.');
+      console.error('Failed to initialize Flatpickr');
+      return undefined;
+    }
+  } catch (error) {
+    console.error('Error initializing Flatpickr:', error);
+    return undefined;
+  }
+}
+
+export async function initializeSingleFlatpickr(
+  context: SingleFlatpickrContext
+): Promise<Instance | undefined> {
+  const {
+    anchorEl,
+    getFlatpickrOptions,
+    setCalendarAttributes,
+    setInitialDates,
+    appendToBody,
+  } = context;
+
+  if (!anchorEl) {
+    console.error('Cannot initialize Flatpickr: anchorEl is undefined');
+    return undefined;
+  }
+
+  try {
+    const options = await getFlatpickrOptions();
+    let inputElement: HTMLInputElement;
+
+    if (anchorEl instanceof HTMLInputElement) {
+      inputElement = anchorEl;
+    } else {
+      inputElement = document.createElement('input');
+      inputElement.type = 'text';
+      inputElement.style.display = 'none';
+
+      if (appendToBody) {
+        document.body.appendChild(inputElement);
+      } else {
+        anchorEl.appendChild(inputElement);
+      }
+    }
+
+    const flatpickrInstance = flatpickr(inputElement, options) as Instance;
+
+    if (flatpickrInstance) {
+      setCalendarAttributes(flatpickrInstance);
+      if (setInitialDates) {
+        setInitialDates(flatpickrInstance);
+      }
+
+      if (!(anchorEl instanceof HTMLInputElement)) {
+        anchorEl.addEventListener('click', () => {
+          flatpickrInstance.open();
+        });
+      }
+
+      return flatpickrInstance;
+    } else {
+      console.error('Failed to initialize Flatpickr');
       return undefined;
     }
   } catch (error) {

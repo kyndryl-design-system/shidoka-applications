@@ -8,58 +8,16 @@
     width: 100%;
 }
 
-.date-inputs {
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-}
-
-.date-input {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
-.anchor-wrapper {
+.input-wrapper {
     position: relative;
     display: inline-block;
     width: 100%;
+    max-width: 200px;
 }
 
-.date-range-picker {
-    &__disabled ::slotted(*) {
-        opacity: 0.5;
-        pointer-events: none;
-    }
-}
-
-::slotted([slot="start-label"]),
-::slotted([slot="end-label"]) {
-    @include typography.type-ui-02;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 0;
-    margin-bottom: 8px;
-
-    &.sr-only {
-        @include visibility.sr-only;
-    }
-
-    [disabled] & {
-        color: var(--kd-color-text-disabled);
-    }
-}
-
-::slotted([slot="start-anchor"]),
-::slotted([slot="end-anchor"]) {
+::slotted(input) {
     display: block;
     width: 100%;
-}
-
-::slotted(input[slot="start-anchor"]),
-::slotted(input[slot="end-anchor"]) {
     border: 1px solid var(--kd-color-border-ui);
     border-radius: 4px;
     height: 48px;
@@ -69,6 +27,8 @@
     appearance: none;
     @include typography.type-body-02;
     color: var(--kd-color-text-primary);
+    transition: background-color 150ms ease-out, border-color 150ms ease-out,
+        outline-color 150ms ease-out;
     background: var(--kd-color-background-inverse);
     outline: 2px solid transparent;
     outline-offset: 2px;
@@ -95,6 +55,24 @@
     }
 }
 
+::slotted(label) {
+    @include typography.type-ui-02;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    margin-bottom: 8px;
+
+    &.sr-only {
+        @include visibility.sr-only;
+    }
+
+    [disabled] & {
+        color: var(--kd-color-text-disabled);
+    }
+}
+
 .icon {
     position: absolute;
     right: 15px;
@@ -108,24 +86,31 @@
     color: var(--kd-color-text-secondary);
 }
 
-.date-range-separator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 300;
-    font-size: 25px;
-    height: 48px;
-    color: var(--kd-color-text-secondary);
-    align-self: flex-end;
-    margin-bottom: 0;
-}
+.date-picker {
+    width: inherit;
 
-::slotted(kd-button[slot="start-anchor"]) {
-    width: fit-content;
-    height: 48px;
-
-    &[disabled] {
+    &__disabled ::slotted(*) {
         opacity: 0.5;
-        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    &__time-variation-true .input-wrapper {
+        max-width: 250px;
+    }
+
+    &__multiple-select-true .input-wrapper {
+        max-width: 350px;
+    }
+
+    &__size {
+        &--sm ::slotted(input) {
+            height: 32px;
+            line-height: 32px;
+        }
+
+        &--lg ::slotted(input) {
+            height: 60px;
+            line-height: 60px;
+        }
     }
 }

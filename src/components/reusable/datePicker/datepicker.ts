@@ -8,6 +8,7 @@ import {
   isSupportedLocale,
   injectFlatpickrStyles,
   langsArray,
+  initializeSingleFlatpickr,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
@@ -21,7 +22,6 @@ import ShidokaDatePickerTheme from '../../../common/scss/shidoka-flatpickr-theme
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
-import { Instance } from 'flatpickr/dist/types/instance';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -222,43 +222,16 @@ export class DatePicker extends FormMixin(LitElement) {
 
   async initializeFlatpickr(): Promise<void> {
     if (!this._anchorEl) {
-      console.error('Cannot initialize Flatpickr: _anchorEl is undefined');
       return;
     }
 
-    const options = await this.getFlatpickrOptions();
-
-    let hiddenInputElement: HTMLInputElement;
-
-    if (this._anchorEl instanceof HTMLInputElement) {
-      hiddenInputElement = this._anchorEl;
-    } else {
-      hiddenInputElement = document.createElement('input');
-      hiddenInputElement.type = 'text';
-
-      hiddenInputElement.style.visibility = 'hidden';
-      hiddenInputElement.style.position = 'absolute';
-      hiddenInputElement.style.left = '-9999px';
-      hiddenInputElement.style.width = '0';
-      hiddenInputElement.style.height = '0';
-
-      this.appendChild(hiddenInputElement);
-    }
-
-    this.flatpickrInstance = flatpickr(hiddenInputElement, options) as Instance;
-
-    if (this.flatpickrInstance) {
-      this.setCalendarAttributes();
-      this.setInitialDates();
-
-      if (!(this._anchorEl instanceof HTMLInputElement)) {
-        this._anchorEl.addEventListener('click', () => {
-          this.flatpickrInstance?.open();
-        });
-      }
-    } else {
-      console.error('Failed to initialize Flatpickr');
-    }
+    this.flatpickrInstance = await initializeSingleFlatpickr({
+      anchorEl: this._anchorEl,
+      getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
+      setCalendarAttributes: this.setCalendarAttributes.bind(this),
+      setInitialDates: this.setInitialDates.bind(this),
+      appendToBody: false,
+    });
   }
 
   setCalendarAttributes(): void {

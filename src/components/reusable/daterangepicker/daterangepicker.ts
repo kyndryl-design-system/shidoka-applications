@@ -8,6 +8,7 @@ import {
   isSupportedLocale,
   langsArray,
   injectFlatpickrStyles,
+  initializeRangeFlatpickr,
 } from '../../../common/helpers/flatpickr';
 
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -22,7 +23,6 @@ import ShidokaDatePickerTheme from '../../../common/scss/shidoka-flatpickr-theme
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
-import flatpickr from 'flatpickr';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -241,51 +241,17 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   async initializeFlatpickr(): Promise<void> {
     if (!this._startAnchorEl) {
-      console.error('Cannot initialize Flatpickr: _startAnchorEl is undefined');
       return;
     }
 
-    const options = await this.getFlatpickrOptions();
-
-    let hiddenInputElement: HTMLInputElement | null = null;
-
-    if (this._startAnchorEl instanceof HTMLInputElement) {
-      hiddenInputElement = this._startAnchorEl;
-    } else {
-      hiddenInputElement = this._startAnchorEl.querySelector('input');
-      if (!hiddenInputElement) {
-        hiddenInputElement = document.createElement('input');
-        hiddenInputElement.type = 'text';
-
-        hiddenInputElement.style.visibility = 'hidden';
-        hiddenInputElement.style.position = 'absolute';
-        hiddenInputElement.style.left = '-9999px';
-        hiddenInputElement.style.width = '0';
-        hiddenInputElement.style.height = '0';
-
-        this.appendChild(hiddenInputElement);
-      }
-    }
-
-    if (!hiddenInputElement) {
-      console.error('Failed to find or create input element for Flatpickr');
-      return;
-    }
-
-    this.flatpickrInstance = flatpickr(hiddenInputElement, options) as Instance;
-
-    if (this.flatpickrInstance) {
-      this.setCalendarAttributes();
-      this.setInitialDates();
-
-      if (!(this._startAnchorEl instanceof HTMLInputElement)) {
-        this._startAnchorEl.addEventListener('click', () => {
-          this.flatpickrInstance?.open();
-        });
-      }
-    } else {
-      console.error('Failed to initialize Flatpickr');
-    }
+    this.flatpickrInstance = await initializeRangeFlatpickr({
+      startAnchorEl: this._startAnchorEl,
+      endAnchorEl: this._endAnchorEl,
+      getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
+      setCalendarAttributes: this.setCalendarAttributes.bind(this),
+      setInitialDates: this.setInitialDates.bind(this),
+      appendToBody: false,
+    });
   }
 
   getDateRangePickerClasses() {
@@ -489,21 +455,20 @@ export class DateRangePicker extends FormMixin(LitElement) {
           : [null, null];
       this.requestUpdate('value');
 
-      if (
-        this._startAnchorEl &&
-        !(this._startAnchorEl instanceof HTMLInputElement)
-      ) {
-        this._startAnchorEl.textContent =
-          selectedDates[0]?.toLocaleDateString() || '';
-      }
-      if (
-        this.multipleInputs &&
-        this._endAnchorEl &&
-        !(this._endAnchorEl instanceof HTMLInputElement)
-      ) {
-        this._endAnchorEl.textContent =
-          selectedDates[1]?.toLocaleDateString() || '';
-      }
+      const updateInputValue = (
+        anchorEl: HTMLElement | undefined,
+        date: Date | undefined
+      ) => {
+        if (anchorEl) {
+          const input = anchorEl.querySelector('input');
+          if (input) {
+            input.value = date ? date.toLocaleDateString() : '';
+          }
+        }
+      };
+
+      updateInputValue(this._startAnchorEl, selectedDates[0]);
+      updateInputValue(this._endAnchorEl, selectedDates[1]);
 
       const customEvent = new CustomEvent('on-change', {
         detail: { dates: selectedDates, dateString: dateStr },
