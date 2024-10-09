@@ -38,6 +38,7 @@ const Template = (args) => html`
     .helperText=${args.helperText}
     .unit=${args.unit}
     unnamed=${args.unnamed}
+    .hideLabel=${args.hideLabel}
   >
     ${args.unnamed
       ? html`<kyn-tooltip slot="unnamed">
@@ -62,6 +63,7 @@ Default.args = {
   progressBarId: 'example-progress-bar',
   unit: '%',
   unnamed: 'Example tooltip content.',
+  hideLabel: false,
 };
 
 export const Indeterminate = Template.bind({});
@@ -73,6 +75,7 @@ Indeterminate.args = {
   helperText: '',
   label: 'Indeterminate Progress Bar',
   unnamed: '',
+  hideLabel: false,
 };
 
 export const SimulatedSuccess = Template.bind({});
@@ -86,6 +89,7 @@ SimulatedSuccess.args = {
   helperText: '',
   unit: 'MB',
   unnamed: '',
+  hideLabel: false,
 };
 
 export const Error = Template.bind({});
@@ -95,4 +99,5 @@ Error.args = {
   label: 'Error Progress Bar',
   helperText: 'Error: Operation failed.',
   value: 22,
+  hideLabel: false,
 };
