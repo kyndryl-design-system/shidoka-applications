@@ -157,6 +157,7 @@ TimePicker.args = {
   unnamed: 'Timepicker',
   textStrings: { requiredText: 'Required' },
 };
+TimePicker.storyName = 'Timepicker (Default)';
 
 export const TimePickerButtonAnchor = ButtonTemplate.bind({});
 TimePickerButtonAnchor.args = {

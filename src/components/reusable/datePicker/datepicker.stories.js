@@ -189,6 +189,30 @@ DatePicker.args = {
   maxDate: '',
   unnamed: 'Date',
 };
+DatePicker.storyName = 'Date Picker (Default)';
+
+export const DateWithButtonIcon = ButtonTemplate.bind({});
+DateWithButtonIcon.args = {
+  nameAttr: 'date-picker-w-button',
+  locale: 'en',
+  dateFormat: 'Y-m-d H:i',
+  size: 'md',
+  value: '',
+  warnText: '',
+  invalidText: '',
+  altFormat: 'F j, Y',
+  disable: [],
+  enable: [],
+  mode: 'single',
+  caption: '',
+  required: false,
+  datePickerDisabled: false,
+  twentyFourHourFormat: false,
+  minDate: '',
+  maxDate: '',
+  unnamed: 'Date Picker with Button Anchor',
+};
+DateWithButtonIcon.storyName = 'Date / Time (Button Anchor)';
 
 export const DateWithTime = InputTemplate.bind({});
 DateWithTime.args = {
@@ -200,29 +224,6 @@ DateWithTime.args = {
   unnamed: 'दिनांक एवं समय चयनकर्ता',
 };
 DateWithTime.storyName = 'Date / Time (Hindi Locale)';
-
-export const DateWithButtonIcon = ButtonTemplate.bind({});
-DateWithButtonIcon.args = {
-  nameAttr: 'date-picker-w-button',
-  locale: 'en',
-  dateFormat: 'Y-m-d',
-  size: 'md',
-  value: '',
-  warnText: '',
-  invalidText: '',
-  altFormat: 'F j, Y',
-  disable: [],
-  enable: [],
-  mode: 'single',
-  caption: 'Example datepicker caption.',
-  required: false,
-  datePickerDisabled: false,
-  twentyFourHourFormat: false,
-  minDate: '',
-  maxDate: '',
-  unnamed: 'Date',
-};
-DateWithButtonIcon.storyName = 'Date Time (Button Anchor)';
 
 export const DatePickerMultiple = InputTemplate.bind({});
 DatePickerMultiple.args = {
