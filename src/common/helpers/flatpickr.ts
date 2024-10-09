@@ -47,7 +47,7 @@ export async function initializeFlatpickr(context: {
   setInitialDates?: () => void;
 }): Promise<Instance | undefined> {
   if (!context.startDateInputEl) {
-    console.error('Start date input not found.');
+    console.error('Cannot initialize Flatpickr: startDateInputEl is undefined');
     return undefined;
   }
 

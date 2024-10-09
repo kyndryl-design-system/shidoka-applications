@@ -4,13 +4,9 @@ import './daterangepicker.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/addons';
-import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { getPlaceholder } from '../../../common/helpers/flatpickr';
 
 import './daterangepicker.scss';
-
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
 
 export default {
   title: 'Components/Date Range Picker',
@@ -55,7 +51,14 @@ const disconnectFlatpickr = () => {
   calendarElements.forEach((calendar) => calendar.remove());
 };
 
+function getInputsValue(index, value) {
+  return Array.isArray(value) && value[index] != null
+    ? new Date(value[index]).toLocaleString()
+    : '';
+}
+
 const SingleInput = (args) => {
+  // prevents flatpickr calendar overlay from persisting on view change
   useEffect(() => {
     return () => {
       disconnectFlatpickr();
@@ -89,40 +92,31 @@ const SingleInput = (args) => {
         slot="start-label"
         class="label-text"
         for=${startInputId}
-        ?disabled=${args.dateRangePickerDisabled}
+        ?disabled=${args.datePickerDisabled}
       >
         ${args.required
           ? html`<abbr
               class="required"
-              title=${args._textStrings.requiredText}
-              aria-label=${args._textStrings.requiredText}
+              title=${args._textStrings?.requiredText || 'Required'}
+              aria-label=${args._textStrings?.requiredText || 'Required'}
               >*</abbr
             >`
           : null}
         Start Date Label
       </label>
-      <div slot="start-input" class="input-container">
-        <input
-          type="text"
-          id=${startInputId}
-          class="start-date"
-          placeholder=${placeholder}
-          ?disabled=${args.dateRangePickerDisabled}
-          .value=${getInputsValue(0, args.value)}
-          aria-required=${args.required ? 'true' : 'false'}
-          aria-invalid=${args._isInvalid ? 'true' : 'false'}
-        />
-        <span class="icon">${unsafeSVG(calendarIcon)}</span>
-      </div>
+      <input
+        slot="start-input"
+        type="text"
+        id=${startInputId}
+        name=${args.nameAttr}
+        placeholder=${placeholder}
+        ?disabled=${args.datePickerDisabled}
+        ?required=${args.required}
+        aria-invalid=${args._isInvalid ? 'true' : 'false'}
+      />
     </kyn-date-range-picker>
   `;
 };
-
-function getInputsValue(index, value) {
-  return Array.isArray(value) && value[index] != null
-    ? new Date(value[index]).toLocaleString()
-    : '';
-}
 
 const MultiInputTemplate = (args) => {
   useEffect(() => {
@@ -164,26 +158,24 @@ const MultiInputTemplate = (args) => {
         ${args.required
           ? html`<abbr
               class="required"
-              title=${args._textStrings.requiredText}
-              aria-label=${args._textStrings.requiredText}
+              title=${args._textStrings?.requiredText || 'Required'}
+              aria-label=${args._textStrings?.requiredText || 'Required'}
               >*</abbr
             >`
           : null}
         Start Date Label
       </label>
-      <div slot="start-input" class="input-container">
-        <input
-          type="text"
-          id=${startInputId}
-          class="start-date"
-          placeholder=${placeholder}
-          ?disabled=${args.dateRangePickerDisabled}
-          .value=${getInputsValue(0, args.value)}
-          aria-required=${args.required ? 'true' : 'false'}
-          aria-invalid=${args._isInvalid ? 'true' : 'false'}
-        />
-        <span class="icon">${unsafeSVG(calendarIcon)}</span>
-      </div>
+      <input
+        slot="start-input"
+        type="text"
+        id=${startInputId}
+        name="${args.nameAttr}-start"
+        placeholder=${placeholder}
+        ?disabled=${args.dateRangePickerDisabled}
+        ?required=${args.required}
+        .value=${getInputsValue(0, args.value)}
+        aria-invalid=${args._isInvalid ? 'true' : 'false'}
+      />
 
       <label
         slot="end-label"
@@ -194,26 +186,24 @@ const MultiInputTemplate = (args) => {
         ${args.required
           ? html`<abbr
               class="required"
-              title=${args._textStrings.requiredText}
-              aria-label=${args._textStrings.requiredText}
+              title=${args._textStrings?.requiredText || 'Required'}
+              aria-label=${args._textStrings?.requiredText || 'Required'}
               >*</abbr
             >`
           : null}
         End Date Label
       </label>
-      <div slot="end-input" class="input-container">
-        <input
-          type="text"
-          id=${endInputId}
-          class="end-date"
-          placeholder=${placeholder}
-          ?disabled=${args.dateRangePickerDisabled}
-          .value=${getInputsValue(1, args.value)}
-          aria-required=${args.required ? 'true' : 'false'}
-          aria-invalid=${args._isInvalid ? 'true' : 'false'}
-        />
-        <span class="icon">${unsafeSVG(calendarIcon)}</span>
-      </div>
+      <input
+        slot="end-input"
+        type="text"
+        id=${endInputId}
+        name="${args.nameAttr}-end"
+        placeholder=${placeholder}
+        ?disabled=${args.dateRangePickerDisabled}
+        ?required=${args.required}
+        .value=${getInputsValue(1, args.value)}
+        aria-invalid=${args._isInvalid ? 'true' : 'false'}
+      />
     </kyn-date-range-picker>
   `;
 };

@@ -56,6 +56,7 @@ const disconnectFlatpickr = () => {
 };
 
 const InputTemplate = (args) => {
+  // prevents flatpickr calendar overlay from persisting on view change
   useEffect(() => {
     return () => {
       disconnectFlatpickr();

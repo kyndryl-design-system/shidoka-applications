@@ -15,24 +15,6 @@
         opacity: 0.5;
         pointer-events: none;
     }
-
-    &__size {
-        &--sm {
-
-            .input-wrapper,
-            .date-range-separator {
-                height: 32px;
-            }
-        }
-
-        &--lg {
-
-            .input-wrapper,
-            .date-range-separator {
-                height: 60px;
-            }
-        }
-    }
 }
 
 .date-inputs {
@@ -47,23 +29,47 @@
     flex: 1;
 }
 
-.input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
+::slotted(input) {
+    display: block;
     width: 100%;
-}
-
-.date-range-separator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 300;
-    font-size: 25px;
+    border: 1px solid var(--kd-color-border-ui);
+    border-radius: 4px;
     height: 48px;
-    color: var(--kd-color-text-secondary);
-    align-self: flex-end;
-    margin-bottom: 0;
+    padding: 0 40px 0 16px;
+    flex: 1;
+    min-width: 167px;
+    line-height: 48px;
+    -webkit-appearance: none;
+    appearance: none;
+    @include typography.type-body-02;
+    border-color: var(--kd-color-border-ui);
+    color: var(--kd-color-text-primary);
+    transition: background-color 150ms ease-out, border-color 150ms ease-out,
+        outline-color 150ms ease-out;
+    background: var(--kd-color-background-inverse);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+
+    &[invalid] {
+        border-color: var(--kd-color-border-error);
+    }
+
+    &[disabled] {
+        color: var(--kd-color-text-disabled);
+        border-color: var(--kd-color-border-ui-disabled);
+    }
+
+    &:hover {
+        border-color: var(--kd-color-border-ui-hover);
+    }
+
+    &:focus {
+        outline-color: var(--kd-color-border-focus);
+    }
+
+    &::placeholder {
+        color: var(--kd-color-text-placeholder);
+    }
 }
 
 ::slotted(.label-text) {
@@ -95,73 +101,6 @@
     height: 24px;
 }
 
-::slotted(.input-container) {
-    display: block;
-    width: 100%;
-    position: relative;
-    border: 1px solid var(--kd-color-border-ui);
-    border-radius: 4px;
-    height: 48px;
-    padding: 0 40px 0 16px;
-    line-height: 48px;
-    -webkit-appearance: none;
-    appearance: none;
-    @include typography.type-body-02;
-    color: var(--kd-color-text-primary);
-    transition: background-color 150ms ease-out, border-color 150ms ease-out,
-        outline-color 150ms ease-out;
-    background: var(--kd-color-background-inverse);
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-
-    &:hover {
-        border-color: var(--kd-color-border-ui-hover);
-    }
-
-    &:focus-within {
-        outline-color: var(--kd-color-border-focus);
-    }
-
-    &[disabled] {
-        color: var(--kd-color-text-disabled);
-        border-color: var(--kd-color-border-ui-disabled);
-    }
-
-    &[invalid] {
-        border-color: var(--kd-color-border-error);
-    }
-}
-
-::slotted(.input-container input) {
-    display: block;
-    width: 100%;
-    border: 1px solid var(--kd-color-border-ui);
-    border-radius: 4px;
-    height: 48px;
-    padding: 0 40px 0 16px;
-    flex: 1;
-    min-width: 167px;
-    line-height: 48px;
-    -webkit-appearance: none;
-    appearance: none;
-    @include typography.type-body-02;
-    border-color: var(--kd-color-border-ui);
-    color: var(--kd-color-text-primary);
-    transition: background-color 150ms ease-out, border-color 150ms ease-out,
-        outline-color 150ms ease-out;
-    background: var(--kd-color-background-inverse);
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-
-    &::placeholder {
-        color: var(--kd-color-text-placeholder);
-    }
-
-    &[disabled] {
-        color: var(--kd-color-text-disabled);
-    }
-}
-
 .icon {
     position: absolute;
     right: 15px;
@@ -171,4 +110,16 @@
     display: flex;
     align-items: center;
     height: 24px;
+}
+
+.date-range-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 300;
+    font-size: 25px;
+    height: 48px;
+    color: var(--kd-color-text-secondary);
+    align-self: flex-end;
+    margin-bottom: 0;
 }

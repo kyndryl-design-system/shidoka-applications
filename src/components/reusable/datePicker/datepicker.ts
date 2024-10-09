@@ -257,39 +257,6 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  setAccessibilityAttributes(): void {
-    if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
-      this.flatpickrInstance.calendarContainer.setAttribute(
-        'role',
-        'application'
-      );
-      this.flatpickrInstance.calendarContainer.setAttribute(
-        'aria-label',
-        'Calendar'
-      );
-    }
-  }
-
-  async updateFlatpickrOptions(): Promise<void> {
-    if (this.flatpickrInstance) {
-      const currentDates = [...this.flatpickrInstance.selectedDates];
-      const newOptions = await this.getFlatpickrOptions();
-
-      Object.keys(newOptions).forEach((key) => {
-        this.flatpickrInstance!.set(
-          key as keyof BaseOptions,
-          newOptions[key as keyof BaseOptions]
-        );
-      });
-
-      this.flatpickrInstance.redraw();
-
-      if (currentDates.length > 0) {
-        this.flatpickrInstance.setDate(currentDates, false);
-      }
-    }
-  }
-
   async loadLocale(locale: string): Promise<Locale> {
     if (locale === 'en') return English;
 
@@ -417,7 +384,6 @@ export class DatePicker extends FormMixin(LitElement) {
       this.flatpickrInstance = undefined;
     }
 
-    // prevents flatpickr calendar overlay from persisting on view change
     const calendarElements = document.querySelectorAll('.flatpickr-calendar');
     calendarElements.forEach((calendar) => {
       calendar.remove();
