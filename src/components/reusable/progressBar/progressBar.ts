@@ -61,6 +61,10 @@ export class ProgressBar extends LitElement {
   @property({ type: String })
   unit = '';
 
+  /** Visually hide the label. */
+  @property({ type: Boolean })
+  hideLabel = false;
+
   /** Incrementing percentage count value.
    * @internal
    */
@@ -153,7 +157,7 @@ export class ProgressBar extends LitElement {
   ) {
     return html`
       <div
-        class="progress-bar__upper-container${!this.label ? ' sr-only' : ''}"
+        class="progress-bar__upper-container${this.hideLabel ? ' sr-only' : ''}"
       >
         <label class="progress-bar__label label-text" for=${this.progressBarId}>
           <span>${this.label}</span>
