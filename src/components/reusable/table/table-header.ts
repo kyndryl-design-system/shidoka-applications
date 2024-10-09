@@ -152,6 +152,13 @@ export class TableHeader extends LitElement {
   }
 
   /**
+   * Assistive text for screen readers.
+   * @ignore
+   */
+  @state()
+  assistiveText = '';
+
+  /**
    * Toggles the sort direction between ascending, descending, and default states.
    * It also dispatches an event to notify parent components of the sorting change.
    */
@@ -165,9 +172,11 @@ export class TableHeader extends LitElement {
       case SORT_DIRECTION.DEFAULT:
       case SORT_DIRECTION.DESC:
         this.sortDirection = SORT_DIRECTION.ASC;
+        this.assistiveText = `Column header ${this.sortKey} sorted in ascending order`;
         break;
       case SORT_DIRECTION.ASC:
         this.sortDirection = SORT_DIRECTION.DESC;
+        this.assistiveText = `Column header ${this.sortKey} sorted in descending order`;
         break;
     }
 
@@ -254,7 +263,7 @@ export class TableHeader extends LitElement {
         tabindex=${ifDefined(tabIndex)}
         @keydown=${onKeyDown}
       >
-        <div class=${classMap(slotClasses)}>
+        <div class=${classMap(slotClasses)} role="columnheader">
           <slot></slot>
         </div>
         ${this.sortable
@@ -263,6 +272,15 @@ export class TableHeader extends LitElement {
               .icon=${arrowUpIcon}
             ></kd-icon>`
           : null}
+
+        <div
+          class="assistive-text"
+          role="status"
+          aria-live="assertive"
+          aria-relevant="additions text"
+        >
+          ${this.assistiveText}
+        </div>
       </div>
     `;
   }

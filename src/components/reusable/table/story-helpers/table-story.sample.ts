@@ -248,6 +248,7 @@ class MyStoryTable extends LitElement {
 
       <kyn-table-container>
         <kyn-table
+          role="table"
           ?striped=${striped}
           ?dense=${dense}
           ?ellipsis=${ellipsis}
@@ -257,8 +258,11 @@ class MyStoryTable extends LitElement {
           @on-row-selection-change=${this.handleSelectedRowsChange}
           @on-all-rows-selection-change=${this.handleSelectedRowsChange}
         >
-          <kyn-thead>
-            <kyn-header-tr .multiSelectColumnWidth=${multiSelectColumnWidth}>
+          <kyn-thead role="rowgroup">
+            <kyn-header-tr
+              .multiSelectColumnWidth=${multiSelectColumnWidth}
+              role="row"
+            >
               <kyn-th
                 .align=${'center'}
                 .sortable=${this.sortable}
@@ -298,12 +302,13 @@ class MyStoryTable extends LitElement {
               ${showTableActions ? html`<kyn-th>Action</kyn-th>` : html``}
             </kyn-header-tr>
           </kyn-thead>
-          <kyn-tbody>
+          <kyn-tbody role="rowgroup">
             ${repeat(
               currentRows,
               (row: any) => row.id,
               (row: any) => html`
                 <kyn-tr
+                  role="row"
                   .rowId=${row.id}
                   key="row-${row.id}"
                   ?unread=${row.unread}

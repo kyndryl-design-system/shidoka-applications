@@ -125,11 +125,12 @@ export const NestedTable: Story = {
       </style>
       <kyn-table-toolbar tableTitle=${'Nesting Table'}> </kyn-table-toolbar>
       <kyn-table
+        role="table"
         @on-row-selection-change=${(e: Event) => action(e.type)(e)}
         @on-all-rows-selection-change=${(e: Event) => action(e.type)(e)}
       >
-        <kyn-thead>
-          <kyn-header-tr expandable checkboxSelection>
+        <kyn-thead role="rowgroup">
+          <kyn-header-tr expandable checkboxSelection role="row">
             <kyn-th .align=${'center'}>ID</kyn-th>
             <kyn-th>First Name</kyn-th>
             <kyn-th>Last Name</kyn-th>
@@ -139,12 +140,13 @@ export const NestedTable: Story = {
             <kyn-th .align=${'center'}>Gender</kyn-th>
           </kyn-header-tr>
         </kyn-thead>
-        <kyn-tbody>
+        <kyn-tbody role="rowgroup">
           ${repeat(
             rows,
             (row: any) => row.id,
             (row: any) => html`
               <kyn-tr
+                role="row"
                 .rowId=${row.id}
                 key="row-${row.id}"
                 expandable
@@ -190,9 +192,9 @@ export const ExpandableRows: Story = {
         }
       </style>
       <kyn-table-toolbar tableTitle=${'Expanded Rows'}> </kyn-table-toolbar>
-      <kyn-table>
-        <kyn-thead>
-          <kyn-header-tr expandable .expandableColumnWidth=${'64px'}>
+      <kyn-table role="table">
+        <kyn-thead role="rowgroup">
+          <kyn-header-tr role="row" expandable .expandableColumnWidth=${'64px'}>
             <kyn-th .align=${'center'}>ID</kyn-th>
             <kyn-th>First Name</kyn-th>
             <kyn-th>Last Name</kyn-th>
@@ -202,12 +204,17 @@ export const ExpandableRows: Story = {
             <kyn-th .align=${'center'}>Gender</kyn-th>
           </kyn-header-tr>
         </kyn-thead>
-        <kyn-tbody>
+        <kyn-tbody role="rowgroup">
           ${repeat(
             characters,
             (row: any) => row.id,
             (row: any) => html`
-              <kyn-tr .rowId=${row.id} key="row-${row.id}" expandable>
+              <kyn-tr
+                role="row"
+                .rowId=${row.id}
+                key="row-${row.id}"
+                expandable
+              >
                 <kyn-td .align=${'center'}>${row.id}</kyn-td>
                 <kyn-td>${row.firstName}</kyn-td>
                 <kyn-td>${row.lastName}</kyn-td>
@@ -223,7 +230,9 @@ export const ExpandableRows: Story = {
               <kyn-expanded-tr .colSpan=${8}>
                 <div class="center-content">
                   <!-- Put your expanded table content here -->
-                  <h4>Expanded content goes here</h4>
+                  <kd-button>
+                    <h4>Expanded content goes here</h4>
+                  </kd-button>
                 </div>
               </kyn-expanded-tr>
             `
@@ -395,9 +404,9 @@ export const DisabledRows: Story = {
   render: () => {
     return html` <kyn-table-toolbar tableTitle=${'Disabled Rows'}>
       </kyn-table-toolbar>
-      <kyn-table checkboxSelection>
-        <kyn-thead>
-          <kyn-header-tr>
+      <kyn-table checkboxSelection role="table">
+        <kyn-thead role="rowgroup">
+          <kyn-header-tr role="row">
             <kyn-th .align=${'center'}>ID</kyn-th>
             <kyn-th>First Name</kyn-th>
             <kyn-th>Last Name</kyn-th>
@@ -407,12 +416,13 @@ export const DisabledRows: Story = {
             <kyn-th .align=${'center'}>Action</kyn-th>
           </kyn-header-tr>
         </kyn-thead>
-        <kyn-tbody>
+        <kyn-tbody role="rowgroup">
           ${repeat(
             characters,
             (row: any) => row.id,
             (row: any) => html`
               <kyn-tr
+                role="row"
                 .rowId=${row.id}
                 key="row-${row.id}"
                 ?disabled=${row.id == 1 || row.id == 3 ? true : false}

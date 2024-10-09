@@ -127,6 +127,13 @@ export class TableRow extends LitElement {
   );
 
   /**
+   * Assistive text for screen readers.
+   * @ignore
+   */
+  @state()
+  assistiveText = '';
+
+  /**
    * Updates the cell's dense and ellipsis properties when the context changes.
    * @param {TableContextType} context - The updated context.
    */
@@ -197,6 +204,7 @@ export class TableRow extends LitElement {
       )
     ) {
       this.expanded = expanded;
+      this.assistiveText = `${expanded ? 'Expanded' : 'Collapsed'}`;
       this.dispatchEvent(new CustomEvent('table-row-expando-toggled', init));
     }
   }
@@ -242,6 +250,15 @@ export class TableRow extends LitElement {
           `
         : null}
       <slot></slot>
+
+      <div
+        class="assistive-text"
+        role="status"
+        aria-live="assertive"
+        aria-relevant="additions text"
+      >
+        ${this.assistiveText}
+      </div>
     `;
   }
 }
