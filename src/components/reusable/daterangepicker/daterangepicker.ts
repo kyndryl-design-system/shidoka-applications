@@ -8,7 +8,7 @@ import {
   isSupportedLocale,
   langsArray,
   injectFlatpickrStyles,
-  initializeRangeFlatpickr,
+  initializeMultiAnchorFlatpickr,
 } from '../../../common/helpers/flatpickr';
 
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -18,7 +18,7 @@ import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 
 import DateRangePickerStyles from './daterangepicker.scss';
-import ShidokaDatePickerTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
+import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
@@ -42,7 +42,7 @@ type SupportedLocale = (typeof langsArray)[number];
  */
 @customElement('kyn-date-range-picker')
 export class DateRangePicker extends FormMixin(LitElement) {
-  static override styles = [DateRangePickerStyles, ShidokaDatePickerTheme];
+  static override styles = [DateRangePickerStyles, ShidokaFlatpickrTheme];
 
   /** Sets date range picker attribute name (ex: `contact-form-date-range-picker`). */
   @property({ type: String })
@@ -218,11 +218,20 @@ export class DateRangePicker extends FormMixin(LitElement) {
     `;
   }
 
+  getDateRangePickerClasses() {
+    return {
+      'date-range-picker': true,
+      [`date-range-picker__time-variation-${this._enableTime}`]: true,
+      [`date-range-picker__multi-input-${this.multipleInputs}`]: true,
+      'date-range-picker__disabled': this.dateRangePickerDisabled,
+    };
+  }
+
   override async firstUpdated(
     changedProperties: PropertyValues
   ): Promise<void> {
     super.firstUpdated(changedProperties);
-    injectFlatpickrStyles(ShidokaDatePickerTheme.toString());
+    injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
     await this.updateComplete;
     this.setupAnchors();
   }
@@ -244,7 +253,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       return;
     }
 
-    this.flatpickrInstance = await initializeRangeFlatpickr({
+    this.flatpickrInstance = await initializeMultiAnchorFlatpickr({
       startAnchorEl: this._startAnchorEl,
       endAnchorEl: this._endAnchorEl,
       getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
@@ -252,15 +261,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       setInitialDates: this.setInitialDates.bind(this),
       appendToBody: false,
     });
-  }
-
-  getDateRangePickerClasses() {
-    return {
-      'date-range-picker': true,
-      [`date-range-picker__time-variation-${this._enableTime}`]: true,
-      [`date-range-picker__multi-input-${this.multipleInputs}`]: true,
-      'date-range-picker__disabled': this.dateRangePickerDisabled,
-    };
   }
 
   getInputValue(index: number): string {

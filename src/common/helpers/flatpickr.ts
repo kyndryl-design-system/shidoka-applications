@@ -57,7 +57,7 @@ export function injectFlatpickrStyles(customStyle: string): void {
   }
 }
 
-export async function initializeRangeFlatpickr(
+export async function initializeMultiAnchorFlatpickr(
   context: RangeFlatpickrContext
 ): Promise<Instance | undefined> {
   const {
@@ -76,7 +76,6 @@ export async function initializeRangeFlatpickr(
   try {
     const options = await getFlatpickrOptions();
 
-    // Function to create or find input element
     const getInputElement = (anchorEl: HTMLElement): HTMLInputElement => {
       if (anchorEl instanceof HTMLInputElement) {
         return anchorEl;
@@ -132,7 +131,7 @@ export async function initializeRangeFlatpickr(
   }
 }
 
-export async function initializeSingleFlatpickr(
+export async function initializeSingleAnchorFlatpickr(
   context: SingleFlatpickrContext
 ): Promise<Instance | undefined> {
   const {
@@ -154,6 +153,7 @@ export async function initializeSingleFlatpickr(
 
     if (anchorEl instanceof HTMLInputElement) {
       inputElement = anchorEl;
+      options.clickOpens = true;
     } else {
       inputElement = document.createElement('input');
       inputElement.type = 'text';
@@ -164,6 +164,9 @@ export async function initializeSingleFlatpickr(
       } else {
         anchorEl.appendChild(inputElement);
       }
+
+      options.clickOpens = false;
+      options.positionElement = anchorEl;
     }
 
     const flatpickrInstance = flatpickr(inputElement, options) as Instance;

@@ -8,7 +8,7 @@ import {
   isSupportedLocale,
   injectFlatpickrStyles,
   langsArray,
-  initializeSingleFlatpickr,
+  initializeSingleAnchorFlatpickr,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
@@ -17,7 +17,7 @@ import { Locale } from 'flatpickr/dist/types/locale';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 
 import DatePickerStyles from './datepicker.scss';
-import ShidokaDatePickerTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
+import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
@@ -38,7 +38,7 @@ type SupportedLocale = (typeof langsArray)[number];
  */
 @customElement('kyn-date-picker')
 export class DatePicker extends FormMixin(LitElement) {
-  static override styles = [DatePickerStyles, ShidokaDatePickerTheme];
+  static override styles = [DatePickerStyles, ShidokaFlatpickrTheme];
 
   /** Sets datepicker attribute name (ex: `contact-form-date-picker`). */
   @property({ type: String })
@@ -187,23 +187,10 @@ export class DatePicker extends FormMixin(LitElement) {
     super.firstUpdated(changedProperties);
     this._enableTime = this.dateFormat.includes('H:');
 
-    injectFlatpickrStyles(ShidokaDatePickerTheme.toString());
+    injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
 
     await this.updateComplete;
     this.setupAnchor();
-  }
-
-  private setupAnchor() {
-    const assignedNodes = this.anchorSlot.assignedNodes({ flatten: true });
-    this._anchorEl = assignedNodes.find(
-      (node): node is HTMLElement => node instanceof HTMLElement
-    );
-
-    if (this._anchorEl) {
-      this.initializeFlatpickr();
-    } else {
-      console.error('Anchor element not found in the slotted content');
-    }
   }
 
   override updated(changedProperties: PropertyValues): void {
@@ -220,12 +207,25 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
+  private setupAnchor() {
+    const assignedNodes = this.anchorSlot.assignedNodes({ flatten: true });
+    this._anchorEl = assignedNodes.find(
+      (node): node is HTMLElement => node instanceof HTMLElement
+    );
+
+    if (this._anchorEl) {
+      this.initializeFlatpickr();
+    } else {
+      console.error('Anchor element not found in the slotted content');
+    }
+  }
+
   async initializeFlatpickr(): Promise<void> {
     if (!this._anchorEl) {
       return;
     }
 
-    this.flatpickrInstance = await initializeSingleFlatpickr({
+    this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
       anchorEl: this._anchorEl,
       getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
       setCalendarAttributes: this.setCalendarAttributes.bind(this),

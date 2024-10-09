@@ -8,16 +8,16 @@ import {
   langsArray,
   isSupportedLocale,
   injectFlatpickrStyles,
+  initializeSingleAnchorFlatpickr,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
 import { Locale } from 'flatpickr/dist/types/locale';
-import type { Instance } from 'flatpickr/dist/types/instance';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 
 import TimepickerStyles from './timepicker.scss';
-import ShidokaDatePickerTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
+import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
@@ -37,7 +37,7 @@ type SupportedLocale = (typeof langsArray)[number];
  */
 @customElement('kyn-time-picker')
 export class TimePicker extends FormMixin(LitElement) {
-  static override styles = [TimepickerStyles, ShidokaDatePickerTheme];
+  static override styles = [TimepickerStyles, ShidokaFlatpickrTheme];
 
   /** Sets timepicker attribute name (ex: `contact-form-time-picker`). */
   @property({ type: String })
@@ -149,14 +149,53 @@ export class TimePicker extends FormMixin(LitElement) {
     `;
   }
 
+  getTimepickerClasses() {
+    return {
+      'time-picker': true,
+      'time-picker__disabled': this.timepickerDisabled,
+    };
+  }
+
   override async firstUpdated(
     changedProperties: PropertyValues
   ): Promise<void> {
     super.firstUpdated(changedProperties);
-    injectFlatpickrStyles(ShidokaDatePickerTheme.toString());
+    injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
 
     await this.updateComplete;
     this.setupAnchor();
+  }
+
+  override async updated(changedProperties: PropertyValues): Promise<void> {
+    await super.updated(changedProperties);
+
+    if (
+      changedProperties.has('defaultDate') ||
+      changedProperties.has('maxTime') ||
+      changedProperties.has('minTime') ||
+      changedProperties.has('twentyFourHourFormat') ||
+      changedProperties.has('locale')
+    ) {
+      if (this.flatpickrInstance) {
+        await this.updateFlatpickrOptions();
+      } else {
+        this.initializeFlatpickr();
+      }
+    }
+  }
+
+  async initializeFlatpickr(): Promise<void> {
+    if (!this._anchorEl) {
+      return;
+    }
+
+    this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
+      anchorEl: this._anchorEl,
+      getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
+      setCalendarAttributes: this.setCalendarAttributes.bind(this),
+      setInitialDates: undefined,
+      appendToBody: false,
+    });
   }
 
   private setupAnchor() {
@@ -183,67 +222,6 @@ export class TimePicker extends FormMixin(LitElement) {
       }
     } else {
       console.error('Anchor element not found in the slotted content');
-    }
-  }
-
-  async initializeFlatpickr(): Promise<void> {
-    if (!this._anchorEl) {
-      return;
-    }
-
-    const options = await this.getFlatpickrOptions();
-
-    if (this._anchorEl instanceof HTMLButtonElement) {
-      const hiddenInput = document.createElement('input');
-      hiddenInput.type = 'text';
-      hiddenInput.style.display = 'none';
-      this._anchorEl.parentNode?.insertBefore(
-        hiddenInput,
-        this._anchorEl.nextSibling
-      );
-
-      this.flatpickrInstance = flatpickr(hiddenInput, {
-        ...options,
-        wrap: true,
-        clickOpens: false,
-      }) as Instance;
-
-      this._anchorEl.addEventListener('click', () => {
-        this.flatpickrInstance?.open();
-      });
-    } else {
-      this.flatpickrInstance = flatpickr(this._anchorEl, options) as Instance;
-    }
-
-    if (this.flatpickrInstance) {
-      this.setCalendarAttributes();
-    } else {
-      console.error('Failed to initialize Flatpickr');
-    }
-  }
-
-  getTimepickerClasses() {
-    return {
-      'time-picker': true,
-      'time-picker__disabled': this.timepickerDisabled,
-    };
-  }
-
-  override async updated(changedProperties: PropertyValues): Promise<void> {
-    await super.updated(changedProperties);
-
-    if (
-      changedProperties.has('defaultDate') ||
-      changedProperties.has('maxTime') ||
-      changedProperties.has('minTime') ||
-      changedProperties.has('twentyFourHourFormat') ||
-      changedProperties.has('locale')
-    ) {
-      if (this.flatpickrInstance) {
-        await this.updateFlatpickrOptions();
-      } else {
-        this.initializeFlatpickr();
-      }
     }
   }
 
