@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './inlineCodeView/index';
+import './index';
 
 export default {
   title: 'Components/Code View/Inline',

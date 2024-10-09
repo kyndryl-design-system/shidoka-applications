@@ -2513,6 +2513,461 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/blockCodeView/blockCodeView.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements.",
+          "name": "BlockCodeView",
+          "members": [
+            {
+              "kind": "field",
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark'"
+              },
+              "default": "'dark'",
+              "description": "Sets background and text theming.",
+              "attribute": "darkTheme"
+            },
+            {
+              "kind": "field",
+              "name": "language",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language.",
+              "attribute": "language"
+            },
+            {
+              "kind": "field",
+              "name": "maxHeight",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Customizable max-height setting for code snippet container.",
+              "attribute": "maxHeight"
+            },
+            {
+              "kind": "field",
+              "name": "codeViewLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optionally displayed label above code snippet container.",
+              "attribute": "codeViewLabel"
+            },
+            {
+              "kind": "field",
+              "name": "copyOptionVisible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display button to copy code snippet.",
+              "attribute": "copyOptionVisible"
+            },
+            {
+              "kind": "field",
+              "name": "codeViewExpandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display button to expand code snippet container.",
+              "attribute": "codeViewExpandable"
+            },
+            {
+              "kind": "field",
+              "name": "copyButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets copy code button text (optional).",
+              "attribute": "copyButtonText"
+            },
+            {
+              "kind": "field",
+              "name": "copyButtonDescriptionAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets copy button description attr value.",
+              "attribute": "copyButtonDescriptionAttr"
+            },
+            {
+              "kind": "field",
+              "name": "codeSnippet",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets code snippet for display -- NOTE: original formatting is preserved.",
+              "attribute": "codeSnippet"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  collapsed: 'Collapsed',\n  expanded: 'Expanded',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "getContainerClasses",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "renderCopyButton",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "renderExpandButton",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "highlightCode",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "detectLanguage",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "code",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "calculateRelevance",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "tokens",
+                  "type": {
+                    "text": "(string | Prism.Token)[]"
+                  }
+                },
+                {
+                  "name": "language",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getTokenRelevance",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "token",
+                  "type": {
+                    "text": "Prism.Token"
+                  }
+                },
+                {
+                  "name": "language",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "isLanguageSpecificToken",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "token",
+                  "type": {
+                    "text": "Prism.Token"
+                  }
+                },
+                {
+                  "name": "language",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "determineMarkupLanguage",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "code",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "checkOverflow",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "removeLeadingWhitespace",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "code",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "formatExampleCode",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "code",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "copyCode",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getContainerStyle",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "expandCodeView",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleKeypress",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-copy",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the copy button is clicked."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark'"
+              },
+              "default": "'dark'",
+              "description": "Sets background and text theming.",
+              "fieldName": "darkTheme"
+            },
+            {
+              "name": "language",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language.",
+              "fieldName": "language"
+            },
+            {
+              "name": "maxHeight",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Customizable max-height setting for code snippet container.",
+              "fieldName": "maxHeight"
+            },
+            {
+              "name": "codeViewLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optionally displayed label above code snippet container.",
+              "fieldName": "codeViewLabel"
+            },
+            {
+              "name": "copyOptionVisible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display button to copy code snippet.",
+              "fieldName": "copyOptionVisible"
+            },
+            {
+              "name": "codeViewExpandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display button to expand code snippet container.",
+              "fieldName": "codeViewExpandable"
+            },
+            {
+              "name": "copyButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets copy code button text (optional).",
+              "fieldName": "copyButtonText"
+            },
+            {
+              "name": "copyButtonDescriptionAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets copy button description attr value.",
+              "fieldName": "copyButtonDescriptionAttr"
+            },
+            {
+              "name": "codeSnippet",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets code snippet for display -- NOTE: original formatting is preserved.",
+              "fieldName": "codeSnippet"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-block-code-view",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BlockCodeView",
+          "declaration": {
+            "name": "BlockCodeView",
+            "module": "src/components/reusable/blockCodeView/blockCodeView.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-block-code-view",
+          "declaration": {
+            "name": "BlockCodeView",
+            "module": "src/components/reusable/blockCodeView/blockCodeView.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/blockCodeView/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BlockCodeView",
+          "declaration": {
+            "name": "BlockCodeView",
+            "module": "./blockCodeView"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/breadcrumbs/breadcrumbItem.ts",
       "declarations": [
         {
@@ -5100,6 +5555,104 @@
           "declaration": {
             "name": "GlobalFilter",
             "module": "./globalFilter"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineCodeView/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineCodeView",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "./inlineCodeView"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineCodeView/inlineCodeView.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
+          "name": "InlineCodeView",
+          "slots": [
+            {
+              "description": "inline code snippet slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark'"
+              },
+              "default": "'dark'",
+              "description": "Sets background and text theming.",
+              "attribute": "darkTheme"
+            },
+            {
+              "kind": "field",
+              "name": "snippetFontSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
+              "attribute": "snippetFontSize"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark'"
+              },
+              "default": "'dark'",
+              "description": "Sets background and text theming.",
+              "fieldName": "darkTheme"
+            },
+            {
+              "name": "snippetFontSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
+              "fieldName": "snippetFontSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-inline-code-view",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineCodeView",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-inline-code-view",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
           }
         }
       ]
@@ -12405,6 +12958,16 @@
               "attribute": "vertical"
             },
             {
+              "kind": "field",
+              "name": "disableAutoFocusUpdate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
+              "attribute": "disableAutoFocusUpdate"
+            },
+            {
               "kind": "method",
               "name": "_handleSlotChangeTabs",
               "privacy": "private"
@@ -12440,6 +13003,10 @@
                     "text": "string"
                   },
                   "description": "The selectedTabId parameter is a string that represents the ID of\nthe tab that is currently selected."
+                },
+                {
+                  "name": "updatePanel",
+                  "default": "true"
                 }
               ],
               "description": "Updates the selected property of tabs and the visible property of tab panels based on\nthe selected tab ID."
@@ -12520,6 +13087,15 @@
               "default": "false",
               "description": "Vertical orientation.",
               "fieldName": "vertical"
+            },
+            {
+              "name": "disableAutoFocusUpdate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
+              "fieldName": "disableAutoFocusUpdate"
             }
           ],
           "superclass": {
@@ -14533,559 +15109,6 @@
           "declaration": {
             "name": "WidgetGridstack",
             "module": "src/components/reusable/widget/widgetGridstack.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/codeView/blockCodeView/blockCodeView.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements.",
-          "name": "BlockCodeView",
-          "members": [
-            {
-              "kind": "field",
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark'"
-              },
-              "default": "'dark'",
-              "description": "Sets background and text theming.",
-              "attribute": "darkTheme"
-            },
-            {
-              "kind": "field",
-              "name": "language",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language.",
-              "attribute": "language"
-            },
-            {
-              "kind": "field",
-              "name": "maxHeight",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Customizable max-height setting for code snippet container.",
-              "attribute": "maxHeight"
-            },
-            {
-              "kind": "field",
-              "name": "codeViewLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optionally displayed label above code snippet container.",
-              "attribute": "codeViewLabel"
-            },
-            {
-              "kind": "field",
-              "name": "copyOptionVisible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optionally display button to copy code snippet.",
-              "attribute": "copyOptionVisible"
-            },
-            {
-              "kind": "field",
-              "name": "codeViewExpandable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optionally display button to expand code snippet container.",
-              "attribute": "codeViewExpandable"
-            },
-            {
-              "kind": "field",
-              "name": "copyButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets copy code button text (optional).",
-              "attribute": "copyButtonText"
-            },
-            {
-              "kind": "field",
-              "name": "copyButtonDescriptionAttr",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets copy button description attr value.",
-              "attribute": "copyButtonDescriptionAttr"
-            },
-            {
-              "kind": "field",
-              "name": "codeSnippet",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets code snippet for display -- NOTE: original formatting is preserved.",
-              "attribute": "codeSnippet"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  collapsed: 'Collapsed',\n  expanded: 'Expanded',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "getContainerClasses",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "renderCopyButton",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "renderExpandButton",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "highlightCode",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "detectLanguage",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "code",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "calculateRelevance",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "tokens",
-                  "type": {
-                    "text": "(string | Prism.Token)[]"
-                  }
-                },
-                {
-                  "name": "language",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getTokenRelevance",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "token",
-                  "type": {
-                    "text": "Prism.Token"
-                  }
-                },
-                {
-                  "name": "language",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "isLanguageSpecificToken",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "boolean"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "token",
-                  "type": {
-                    "text": "Prism.Token"
-                  }
-                },
-                {
-                  "name": "language",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "determineMarkupLanguage",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "code",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "checkOverflow",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "removeLeadingWhitespace",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "code",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "formatExampleCode",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "code",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "copyCode",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getContainerStyle",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "expandCodeView",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleKeypress",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "KeyboardEvent"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "on-copy",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits when the copy button is clicked."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark'"
-              },
-              "default": "'dark'",
-              "description": "Sets background and text theming.",
-              "fieldName": "darkTheme"
-            },
-            {
-              "name": "language",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language.",
-              "fieldName": "language"
-            },
-            {
-              "name": "maxHeight",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Customizable max-height setting for code snippet container.",
-              "fieldName": "maxHeight"
-            },
-            {
-              "name": "codeViewLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optionally displayed label above code snippet container.",
-              "fieldName": "codeViewLabel"
-            },
-            {
-              "name": "copyOptionVisible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optionally display button to copy code snippet.",
-              "fieldName": "copyOptionVisible"
-            },
-            {
-              "name": "codeViewExpandable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optionally display button to expand code snippet container.",
-              "fieldName": "codeViewExpandable"
-            },
-            {
-              "name": "copyButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets copy code button text (optional).",
-              "fieldName": "copyButtonText"
-            },
-            {
-              "name": "copyButtonDescriptionAttr",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets copy button description attr value.",
-              "fieldName": "copyButtonDescriptionAttr"
-            },
-            {
-              "name": "codeSnippet",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets code snippet for display -- NOTE: original formatting is preserved.",
-              "fieldName": "codeSnippet"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-block-code-view",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "BlockCodeView",
-          "declaration": {
-            "name": "BlockCodeView",
-            "module": "src/components/reusable/codeView/blockCodeView/blockCodeView.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-block-code-view",
-          "declaration": {
-            "name": "BlockCodeView",
-            "module": "src/components/reusable/codeView/blockCodeView/blockCodeView.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/codeView/blockCodeView/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "BlockCodeView",
-          "declaration": {
-            "name": "BlockCodeView",
-            "module": "./blockCodeView"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/codeView/inlineCodeView/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineCodeView",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "./inlineCodeView"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/codeView/inlineCodeView/inlineCodeView.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
-          "name": "InlineCodeView",
-          "slots": [
-            {
-              "description": "inline code snippet slot.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark'"
-              },
-              "default": "'dark'",
-              "description": "Sets background and text theming.",
-              "attribute": "darkTheme"
-            },
-            {
-              "kind": "field",
-              "name": "snippetFontSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "14",
-              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
-              "attribute": "snippetFontSize"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark'"
-              },
-              "default": "'dark'",
-              "description": "Sets background and text theming.",
-              "fieldName": "darkTheme"
-            },
-            {
-              "name": "snippetFontSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "14",
-              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
-              "fieldName": "snippetFontSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-inline-code-view",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineCodeView",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "src/components/reusable/codeView/inlineCodeView/inlineCodeView.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-inline-code-view",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "src/components/reusable/codeView/inlineCodeView/inlineCodeView.ts"
           }
         }
       ]
