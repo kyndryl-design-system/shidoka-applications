@@ -22,6 +22,7 @@ export default {
     minTime: { control: { type: 'text' } },
     maxTime: { control: { type: 'text' } },
     defaultDate: { control: { type: 'text' } },
+    twentyFourHourFormat: { control: { type: 'boolean' } },
   },
 };
 
@@ -140,8 +141,8 @@ const ButtonTemplate = (args) => {
   `;
 };
 
-export const TimePicker = Template.bind({});
-TimePicker.args = {
+export const DefaultTimePicker = Template.bind({});
+DefaultTimePicker.args = {
   nameAttr: 'default-timepicker',
   locale: 'en',
   value: null,
@@ -157,11 +158,11 @@ TimePicker.args = {
   unnamed: 'Timepicker',
   textStrings: { requiredText: 'Required' },
 };
-TimePicker.storyName = 'Timepicker (Default)';
+DefaultTimePicker.storyName = 'Timepicker (Default)';
 
 export const TimePickerButtonAnchor = ButtonTemplate.bind({});
 TimePickerButtonAnchor.args = {
-  ...TimePicker.args,
+  ...DefaultTimePicker.args,
   locale: 'en',
   unnamed: 'Timepicker with Button Anchor',
 };
@@ -169,7 +170,7 @@ TimePickerButtonAnchor.storyName = 'Timepicker (Button Anchor)';
 
 export const TimePickerAltLanguage = Template.bind({});
 TimePickerAltLanguage.args = {
-  ...TimePicker.args,
+  ...DefaultTimePicker.args,
   locale: 'ja',
   unnamed: 'タイムピッカー',
 };

@@ -2,7 +2,6 @@ import { html, LitElement, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
-import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import {
   isSupportedLocale,
@@ -24,14 +23,10 @@ import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 
-const _defaultTextStrings = {
-  requiredText: 'Required',
-};
-
 type SupportedLocale = (typeof langsArray)[number];
 
 /**
- * Date Range Picker conponent: uses flatpickr datetime picker library -- `https://flatpickr.js.org/examples/#range-calendar`
+ * Date Range Picker component: uses flatpickr datetime picker library -- `https://flatpickr.js.org/examples/#range-calendar`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot start-label - Slot for start date label text.
  * @slot end-label - Slot for end date label text.
@@ -54,14 +49,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   /** Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`). */
   @property({ type: String })
-  dateFormat:
-    | 'Y-m-d'
-    | 'm-d-Y'
-    | 'd-m-Y'
-    | 'Y-m-d H:i'
-    | 'Y-m-d H:i:s'
-    | 'm-d-Y H:i:s'
-    | 'd-m-Y H:i:s' = 'Y-m-d';
+  dateFormat = 'Y-m-d';
 
   /** Sets date range to have start and end date inputs. */
   @property({ type: Boolean })
@@ -83,11 +71,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: String })
   altFormat = '';
 
-  /** Sets flatpcikr options setting to disable specific dates. */
+  /** Sets flatpickr options setting to disable specific dates. */
   @property({ type: Array })
   disable: (string | number | Date)[] = [];
 
-  /** Sets flatpcikr options setting to enable specific dates. */
+  /** Sets flatpickr options setting to enable specific dates. */
   @property({ type: Array })
   enable: (string | number | Date)[] = [];
 
@@ -115,33 +103,19 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: String })
   maxDate: string | number | Date = '';
 
-  /** Customizable text strings. */
-  @property({ type: Object })
-  textStrings = _defaultTextStrings;
-
-  /** Internal text strings.
-   * @internal
-   */
-  @state()
-  _textStrings = _defaultTextStrings;
-
   /** Detects whether time format includes time values.
    * @internal
    */
   @state()
-  _enableTime = false;
+  get _enableTime() {
+    return this.dateFormat.includes('H:');
+  }
 
   /** Flatpickr instantiation.
    * @internal
    */
   @state()
   private flatpickrInstance?: Instance;
-
-  /**
-   * Sets delay to facilitate smooth date value changes.
-   * @internal
-   */
-  private debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
   /**
    * Queries the start date (default) anchor DOM element.
@@ -221,8 +195,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
   getDateRangePickerClasses() {
     return {
       'date-range-picker': true,
-      [`date-range-picker__time-variation-${this._enableTime}`]: true,
-      [`date-range-picker__multi-input-${this.multipleInputs}`]: true,
+      'date-range-picker__enable-time': this._enableTime,
+      'date-range-picker__multi-input': this.multipleInputs,
       'date-range-picker__disabled': this.dateRangePickerDisabled,
     };
   }
@@ -253,6 +227,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
       return;
     }
 
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.destroy();
+    }
+
     this.flatpickrInstance = await initializeMultiAnchorFlatpickr({
       startAnchorEl: this._startAnchorEl,
       endAnchorEl: this._endAnchorEl,
@@ -261,12 +239,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       setInitialDates: this.setInitialDates.bind(this),
       appendToBody: false,
     });
-  }
-
-  getInputValue(index: number): string {
-    return Array.isArray(this.value) && this.value[index] != null
-      ? new Date(this.value[index]!).toLocaleString()
-      : '';
   }
 
   private setupAnchors() {
@@ -288,33 +260,28 @@ export class DateRangePicker extends FormMixin(LitElement) {
       console.error('Start anchor element not found in the slotted content');
     }
   }
+
   async loadLocale(locale: string): Promise<Locale> {
     if (locale === 'en') return English;
 
     if (!isSupportedLocale(locale)) {
-      console.error(`Unable to load ${locale} -- falling back to English.`);
+      console.error(`Locale ${locale} not supported. Falling back to English.`);
       return English;
     }
 
     try {
       const module = await import(`flatpickr/dist/l10n/${locale}.js`);
+      const localeConfig =
+        module[locale] || module.default[locale] || module.default;
 
-      let localeConfig: Locale;
-
-      if (module[locale]) {
-        localeConfig = module[locale];
-      } else if (module.default && module.default[locale]) {
-        localeConfig = module.default[locale];
-      } else if (module.default && typeof module.default === 'object') {
-        localeConfig = module.default;
-      } else {
-        throw new Error('Unable to find locale configuration');
+      if (!localeConfig) {
+        throw new Error('Locale configuration not found');
       }
 
       return localeConfig;
     } catch (error) {
       console.error(
-        `Unable to load ${locale} -- falling back to English.`,
+        `Failed to load locale ${locale}. Falling back to English.`,
         error
       );
       return English;
@@ -322,8 +289,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
-    this._enableTime = this.dateFormat.includes('H:');
-
     let localeOptions: Partial<Locale>;
 
     if (this.locale === 'en') {
@@ -385,10 +350,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   setCalendarAttributes(): void {
-    if (!(this._startAnchorEl instanceof HTMLInputElement)) {
-      return;
-    }
-
     if (this.flatpickrInstance?.calendarContainer) {
       this.flatpickrInstance.calendarContainer.setAttribute(
         'role',
@@ -446,48 +407,41 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.requestUpdate();
   }
 
-  handleDateChange = (selectedDates: Date[], dateStr: string): void => {
-    if (this.debounceTimer) clearTimeout(this.debounceTimer);
-    this.debounceTimer = setTimeout(() => {
-      this.value =
-        selectedDates.length === 2
-          ? [selectedDates[0].getTime(), selectedDates[1].getTime()]
-          : [null, null];
-      this.requestUpdate('value');
+  handleDateChange(selectedDates: Date[], dateStr: string): void {
+    this.value =
+      selectedDates.length === 2
+        ? [selectedDates[0].getTime(), selectedDates[1].getTime()]
+        : [null, null];
+    this.requestUpdate('value');
 
-      const updateInputValue = (
-        anchorEl: HTMLElement | undefined,
-        date: Date | undefined
-      ) => {
-        if (anchorEl) {
-          const input = anchorEl.querySelector('input');
-          if (input) {
-            input.value = date ? date.toLocaleDateString() : '';
-          }
+    const updateInputValue = (
+      anchorEl: HTMLElement | undefined,
+      date: Date | undefined
+    ) => {
+      if (anchorEl) {
+        const input = anchorEl.querySelector('input');
+        if (input) {
+          input.value = date ? date.toLocaleDateString() : '';
         }
-      };
+      }
+    };
 
-      updateInputValue(this._startAnchorEl, selectedDates[0]);
-      updateInputValue(this._endAnchorEl, selectedDates[1]);
+    updateInputValue(this._startAnchorEl, selectedDates[0]);
+    updateInputValue(this._endAnchorEl, selectedDates[1]);
 
-      const customEvent = new CustomEvent('on-change', {
-        detail: { dates: selectedDates, dateString: dateStr },
-        bubbles: true,
-        composed: true,
-      });
+    const customEvent = new CustomEvent('on-change', {
+      detail: { dates: selectedDates, dateString: dateStr },
+      bubbles: true,
+      composed: true,
+    });
 
-      this.dispatchEvent(customEvent);
+    this.dispatchEvent(customEvent);
 
-      this._validate();
-      this.updateSelectedDateRangeAria(selectedDates);
-    }, 100);
-  };
+    this._validate();
+    this.updateSelectedDateRangeAria(selectedDates);
+  }
 
   updateSelectedDateRangeAria(selectedDates: Date[]): void {
-    if (!(this._startAnchorEl instanceof HTMLInputElement)) {
-      return;
-    }
-
     if (selectedDates.length === 2) {
       const [startDate, endDate] = selectedDates;
       this._startAnchorEl?.setAttribute(
@@ -512,20 +466,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
     return !this._isInvalid;
   }
 
-  override willUpdate(changedProps: PropertyValues) {
-    if (changedProps.has('textStrings')) {
-      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
-    }
-  }
-
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     if (this.flatpickrInstance) {
       this.flatpickrInstance.destroy();
       this.flatpickrInstance = undefined;
     }
-    const calendarElements = document.querySelectorAll('.flatpickr-calendar');
-    calendarElements.forEach((calendar) => calendar.remove());
   }
 }
 

@@ -5,8 +5,6 @@ import { useEffect } from '@storybook/addons';
 import { getPlaceholder } from '../../../common/helpers/flatpickr';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
-import './datepicker.scss';
-
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
 import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/overflow.svg';
@@ -21,9 +19,7 @@ export default {
     },
   },
   argTypes: {
-    locale: {
-      control: { type: 'text' },
-    },
+    locale: { control: { type: 'text' } },
     dateFormat: {
       options: [
         'Y-m-d',
@@ -40,12 +36,8 @@ export default {
       options: ['single', 'multiple'],
       control: { type: 'select' },
     },
-    minDate: {
-      control: { type: 'text' },
-    },
-    maxDate: {
-      control: { type: 'text' },
-    },
+    minDate: { control: { type: 'text' } },
+    maxDate: { control: { type: 'text' } },
   },
 };
 
@@ -168,8 +160,8 @@ const ButtonTemplate = (args) => {
   </kyn-date-picker>`;
 };
 
-export const DatePicker = InputTemplate.bind({});
-DatePicker.args = {
+export const DatePickerDefault = InputTemplate.bind({});
+DatePickerDefault.args = {
   nameAttr: 'default-date-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
@@ -189,34 +181,21 @@ DatePicker.args = {
   maxDate: '',
   unnamed: 'Date',
 };
-DatePicker.storyName = 'Date Picker (Default)';
+DatePickerDefault.storyName = 'Date Picker (Default)';
 
 export const DateWithButtonIcon = ButtonTemplate.bind({});
 DateWithButtonIcon.args = {
+  ...DatePickerDefault.args,
   nameAttr: 'date-picker-w-button',
-  locale: 'en',
   dateFormat: 'Y-m-d H:i',
-  size: 'md',
-  value: '',
-  warnText: '',
-  invalidText: '',
-  altFormat: 'F j, Y',
-  disable: [],
-  enable: [],
-  mode: 'single',
   caption: '',
-  required: false,
-  datePickerDisabled: false,
-  twentyFourHourFormat: false,
-  minDate: '',
-  maxDate: '',
   unnamed: 'Date Picker with Button Anchor',
 };
 DateWithButtonIcon.storyName = 'Date / Time (Button Anchor)';
 
 export const DateWithTime = InputTemplate.bind({});
 DateWithTime.args = {
-  ...DatePicker.args,
+  ...DatePickerDefault.args,
   locale: 'hi',
   nameAttr: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
@@ -227,7 +206,7 @@ DateWithTime.storyName = 'Date / Time (Hindi Locale)';
 
 export const DatePickerMultiple = InputTemplate.bind({});
 DatePickerMultiple.args = {
-  ...DatePicker.args,
+  ...DatePickerDefault.args,
   locale: 'en',
   nameAttr: 'date-multiple-picker',
   dateFormat: 'Y-m-d',

@@ -2,7 +2,6 @@ import { html, LitElement, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
-import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import {
   langsArray,
@@ -23,10 +22,6 @@ import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 
-const _defaultTextStrings = {
-  requiredText: 'Required',
-};
-
 type SupportedLocale = (typeof langsArray)[number];
 
 /**
@@ -43,7 +38,7 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   nameAttr = '';
 
-  /* Sets desired locale and, if supported, dynamically loads language lib */
+  /** Sets desired locale and, if supported, dynamically loads language lib */
   @property({ type: String })
   locale: SupportedLocale = 'en';
 
@@ -86,16 +81,6 @@ export class TimePicker extends FormMixin(LitElement) {
   /** Sets upper boundary of datepicker date selection. */
   @property({ type: String })
   maxTime: string | number | Date = '';
-
-  /** Customizable text strings. */
-  @property({ type: Object })
-  textStrings = _defaultTextStrings;
-
-  /** Internal text strings.
-   * @internal
-   */
-  @state()
-  _textStrings = _defaultTextStrings;
 
   /** Flatpickr instantiation.
    * @internal
@@ -189,6 +174,10 @@ export class TimePicker extends FormMixin(LitElement) {
       return;
     }
 
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.destroy();
+    }
+
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
       anchorEl: this._anchorEl,
       getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
@@ -210,16 +199,9 @@ export class TimePicker extends FormMixin(LitElement) {
       const iconSlot = this.shadowRoot?.querySelector(
         'slot[name="icon"]'
       ) as HTMLSlotElement | null;
-      if (iconSlot) {
-        iconSlot.addEventListener('slotchange', () => {
-          const iconElements = iconSlot.assignedElements();
-          iconElements.forEach((icon) => {
-            icon.addEventListener('click', () => {
-              this.flatpickrInstance?.open();
-            });
-          });
-        });
-      }
+      iconSlot?.addEventListener('click', () => {
+        this.flatpickrInstance?.open();
+      });
     } else {
       console.error('Anchor element not found in the slotted content');
     }
@@ -284,6 +266,10 @@ export class TimePicker extends FormMixin(LitElement) {
       const localeConfig =
         module[locale] || module.default[locale] || module.default;
 
+      if (!localeConfig) {
+        throw new Error('Locale configuration not found');
+      }
+
       const { amPM, hourAriaLabel, minuteAriaLabel } = localeConfig;
       return { amPM, hourAriaLabel, minuteAriaLabel };
     } catch (error) {
@@ -304,13 +290,10 @@ export class TimePicker extends FormMixin(LitElement) {
       clickOpens: true,
       time_24hr: this.twentyFourHourFormat,
       wrap: false,
-      locale: English,
       onChange: this.handleTimeInputChange.bind(this),
     };
 
-    if (this.locale) {
-      options.locale = await this.loadLocale(this.locale);
-    }
+    options.locale = await this.loadLocale(this.locale);
 
     if (this.minTime) options.minTime = this.minTime;
     if (this.maxTime) options.maxTime = this.maxTime;
@@ -355,12 +338,6 @@ export class TimePicker extends FormMixin(LitElement) {
     return true;
   }
 
-  override willUpdate(changedProps: PropertyValues) {
-    if (changedProps.has('textStrings')) {
-      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
-    }
-  }
-
   override disconnectedCallback(): void {
     super.disconnectedCallback();
 
@@ -368,11 +345,6 @@ export class TimePicker extends FormMixin(LitElement) {
       this.flatpickrInstance.destroy();
       this.flatpickrInstance = undefined;
     }
-
-    const calendarElements = document.querySelectorAll('.flatpickr-calendar');
-    calendarElements.forEach((calendar) => {
-      calendar.remove();
-    });
   }
 }
 

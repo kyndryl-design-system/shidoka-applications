@@ -1,12 +1,9 @@
 import { html } from 'lit';
 import './index';
-import './daterangepicker.scss';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/addons';
 import { getPlaceholder } from '../../../common/helpers/flatpickr';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-
-import './daterangepicker.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overflow.svg';
@@ -22,15 +19,10 @@ export default {
     },
   },
   argTypes: {
-    locale: {
-      control: { type: 'text' },
-    },
-    startDateLabel: {
-      control: { type: 'text' },
-    },
-    endDateLabel: {
-      control: { type: 'text' },
-    },
+    locale: { control: { type: 'text' } },
+    startDateLabel: { control: { type: 'text' } },
+    endDateLabel: { control: { type: 'text' } },
+    twentyFourHourFormat: { control: { type: 'boolean' } },
     dateFormat: {
       options: [
         'Y-m-d',
@@ -43,12 +35,8 @@ export default {
       ],
       control: { type: 'select' },
     },
-    minDate: {
-      control: { type: 'text' },
-    },
-    maxDate: {
-      control: { type: 'text' },
-    },
+    minDate: { control: { type: 'text' } },
+    maxDate: { control: { type: 'text' } },
   },
 };
 
@@ -89,6 +77,7 @@ const SingleInput = (args) => {
       .caption="${args.caption}"
       ?required="${args.required}"
       ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
+      ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       .minDate="${args.minDate}"
       .maxDate="${args.maxDate}"
       .startDateLabel="${args.startDateLabel}"
@@ -148,6 +137,7 @@ const ButtonIconAnchorTemplate = (args) => {
       .caption="${args.caption}"
       ?required="${args.required}"
       ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
+      ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       .minDate="${args.minDate}"
       .maxDate="${args.maxDate}"
       .startDateLabel="${args.startDateLabel}"
@@ -207,6 +197,7 @@ const ButtonIconTextAnchorTemplate = (args) => {
       .caption="${args.caption}"
       ?required="${args.required}"
       ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
+      ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       .minDate="${args.minDate}"
       .maxDate="${args.maxDate}"
       .startDateLabel="${args.startDateLabel}"
@@ -272,6 +263,7 @@ const MultiInputTemplate = (args) => {
       .caption="${args.caption}"
       ?required="${args.required}"
       ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
+      ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       .minDate="${args.minDate}"
       .maxDate="${args.maxDate}"
       .startDateLabel="${args.startDateLabel}"
@@ -339,8 +331,8 @@ const MultiInputTemplate = (args) => {
   `;
 };
 
-export const DateRangePicker = SingleInput.bind({});
-DateRangePicker.args = {
+export const DefaultDateRangePicker = SingleInput.bind({});
+DefaultDateRangePicker.args = {
   nameAttr: 'default-date-range-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
@@ -354,30 +346,19 @@ DateRangePicker.args = {
   caption: 'Click the input above to select a date range.',
   required: false,
   dateRangePickerDisabled: false,
+  twentyFourHourFormat: false,
   minDate: '',
   maxDate: '',
   startDateLabel: 'Start Date',
   endDateLabel: 'End Date',
 };
-DateRangePicker.storyName = 'Date Range (Single Input, Default)';
+DefaultDateRangePicker.storyName = 'Date Range (Single Input, Default)';
 
 export const DateRangeIconPicker = ButtonIconAnchorTemplate.bind({});
 DateRangeIconPicker.args = {
-  nameAttr: 'default-date-range-picker',
-  locale: 'en',
-  dateFormat: 'Y-m-d',
-  multipleInputs: false,
-  value: [null, null],
-  warnText: '',
-  invalidText: '',
-  altFormat: 'F j, Y',
-  disable: [],
-  enable: [],
+  ...DefaultDateRangePicker.args,
+  nameAttr: 'date-range-icon-button-picker',
   caption: 'Click the button above to launch the date range picker.',
-  required: false,
-  dateRangePickerDisabled: false,
-  minDate: '',
-  maxDate: '',
   startDateLabel: 'Button w/ Icon Date Range Picker Launcher',
   endDateLabel: '',
 };
@@ -385,21 +366,9 @@ DateRangeIconPicker.storyName = 'Date Range (Button Anchor w/ Icon)';
 
 export const DateRangeIconTextAnchor = ButtonIconTextAnchorTemplate.bind({});
 DateRangeIconTextAnchor.args = {
+  ...DefaultDateRangePicker.args,
   nameAttr: 'default-date-range-picker',
-  locale: 'en',
-  dateFormat: 'Y-m-d',
-  multipleInputs: false,
-  value: [null, null],
-  warnText: '',
-  invalidText: '',
-  altFormat: 'F j, Y',
-  disable: [],
-  enable: [],
   caption: 'Click the button above to launch the date range picker.',
-  required: false,
-  dateRangePickerDisabled: false,
-  minDate: '',
-  maxDate: '',
   startDateLabel: 'Button w/ Icon + Text Date Range Picker Launcher',
   endDateLabel: '',
 };
@@ -407,10 +376,8 @@ DateRangeIconTextAnchor.storyName = 'Date Range (Button Anchor w/ Icon + Text)';
 
 export const DateRangePickerMulti = MultiInputTemplate.bind({});
 DateRangePickerMulti.args = {
-  ...DateRangePicker.args,
-  locale: 'en',
-  nameAttr: 'date-range-picker',
-  dateFormat: 'Y-m-d',
+  ...DefaultDateRangePicker.args,
+  nameAttr: 'date-range-multi-input-picker',
   multipleInputs: true,
   caption: '',
 };
@@ -418,11 +385,9 @@ DateRangePickerMulti.storyName = 'Date Range (Multi Input)';
 
 export const DateTimeRangePickerSingle = SingleInput.bind({});
 DateTimeRangePickerSingle.args = {
-  ...DateRangePicker.args,
-  locale: 'en',
-  nameAttr: 'date-time-picker',
+  ...DefaultDateRangePicker.args,
+  nameAttr: 'date-time-range-picker',
   dateFormat: 'Y-m-d H:i',
-  multipleInputs: false,
   caption: '',
   startDateLabel: 'Start + End Date / Time',
   endDateLabel: '',
@@ -431,9 +396,9 @@ DateTimeRangePickerSingle.storyName = 'Date / Time Range (Single Input)';
 
 export const DateTimeRangePickerMulti = MultiInputTemplate.bind({});
 DateTimeRangePickerMulti.args = {
-  ...DateRangePicker.args,
+  ...DefaultDateRangePicker.args,
   locale: 'es',
-  nameAttr: 'date-time-picker',
+  nameAttr: 'date-time-range-multi-picker',
   dateFormat: 'Y-m-d H:i',
   multipleInputs: true,
   caption:
