@@ -1,12 +1,16 @@
 import { html } from 'lit';
 import './index';
 import './daterangepicker.scss';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/addons';
 import { getPlaceholder } from '../../../common/helpers/flatpickr';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 import './daterangepicker.scss';
+
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overflow.svg';
+import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
 
 export default {
   title: 'Components/Date Range Picker',
@@ -18,11 +22,13 @@ export default {
     },
   },
   argTypes: {
-    size: {
-      options: ['sm', 'md', 'lg'],
-      control: { type: 'select' },
-    },
     locale: {
+      control: { type: 'text' },
+    },
+    startDateLabel: {
+      control: { type: 'text' },
+    },
+    endDateLabel: {
       control: { type: 'text' },
     },
     dateFormat: {
@@ -66,14 +72,13 @@ const SingleInput = (args) => {
   }, []);
 
   const placeholder = getPlaceholder(args.dateFormat);
-  const startInputId = 'date-range-picker-start';
+  const startAnchorId = 'date-range-picker-start';
 
   return html`
     <kyn-date-range-picker
       .nameAttr="${args.nameAttr}"
       .locale="${args.locale}"
       .dateFormat="${args.dateFormat}"
-      .size="${args.size}"
       .value="${args.value}"
       .warnText="${args.warnText}"
       .invalidText="${args.invalidText}"
@@ -86,12 +91,14 @@ const SingleInput = (args) => {
       ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
       .minDate="${args.minDate}"
       .maxDate="${args.maxDate}"
+      .startDateLabel="${args.startDateLabel}"
+      .endDateLabel="${args.endDateLabel}"
       @on-change=${(e) => action(e.type)(e)}
     >
       <label
         slot="start-label"
         class="label-text"
-        for=${startInputId}
+        for=${startAnchorId}
         ?disabled=${args.datePickerDisabled}
       >
         ${args.required
@@ -102,18 +109,141 @@ const SingleInput = (args) => {
               >*</abbr
             >`
           : null}
-        Start Date Label
+        ${args.startDateLabel}
       </label>
       <input
-        slot="start-input"
+        slot="start-anchor"
         type="text"
-        id=${startInputId}
+        id=${startAnchorId}
         name=${args.nameAttr}
         placeholder=${placeholder}
         ?disabled=${args.datePickerDisabled}
         ?required=${args.required}
         aria-invalid=${args._isInvalid ? 'true' : 'false'}
       />
+      <span slot="start-icon">${unsafeSVG(calendarIcon)}</span>
+    </kyn-date-range-picker>
+  `;
+};
+
+const ButtonIconAnchorTemplate = (args) => {
+  useEffect(() => {
+    return () => {
+      disconnectFlatpickr();
+    };
+  }, []);
+
+  const startAnchorId = 'date-range-picker-start';
+
+  return html`
+    <kyn-date-range-picker
+      .nameAttr="${args.nameAttr}"
+      .locale="${args.locale}"
+      .dateFormat="${args.dateFormat}"
+      .value="${args.value}"
+      .warnText="${args.warnText}"
+      .invalidText="${args.invalidText}"
+      .altFormat=${args.altFormat}
+      .disable="${args.disable}"
+      .enable="${args.enable}"
+      .multipleInputs="${args.multipleInputs}"
+      .caption="${args.caption}"
+      ?required="${args.required}"
+      ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
+      .minDate="${args.minDate}"
+      .maxDate="${args.maxDate}"
+      .startDateLabel="${args.startDateLabel}"
+      .endDateLabel="${args.endDateLabel}"
+      @on-change=${(e) => action(e.type)(e)}
+    >
+      <label
+        slot="start-label"
+        class="label-text"
+        ?disabled=${args.dateRangePickerDisabled}
+      >
+        ${args.required
+          ? html`<abbr
+              class="required"
+              title=${args._textStrings?.requiredText || 'Required'}
+              aria-label=${args._textStrings?.requiredText || 'Required'}
+              >*</abbr
+            >`
+          : null}
+        ${args.startDateLabel}
+      </label>
+      <kd-button
+        slot="start-anchor"
+        value="Primary"
+        kind=${'primary-app'}
+        class="btn interactive"
+        ?disabled=${args.dateRangePickerDisabled}
+        description="Date range picker button containing icon"
+      >
+        ${unsafeSVG(overflowIcon)}
+      </kd-button>
+    </kyn-date-range-picker>
+  `;
+};
+
+const ButtonIconTextAnchorTemplate = (args) => {
+  useEffect(() => {
+    return () => {
+      disconnectFlatpickr();
+    };
+  }, []);
+
+  const startAnchorId = 'date-range-picker-start';
+
+  return html`
+    <kyn-date-range-picker
+      .nameAttr="${args.nameAttr}"
+      .locale="${args.locale}"
+      .dateFormat="${args.dateFormat}"
+      .value="${args.value}"
+      .warnText="${args.warnText}"
+      .invalidText="${args.invalidText}"
+      .altFormat=${args.altFormat}
+      .disable="${args.disable}"
+      .enable="${args.enable}"
+      .multipleInputs="${args.multipleInputs}"
+      .caption="${args.caption}"
+      ?required="${args.required}"
+      ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
+      .minDate="${args.minDate}"
+      .maxDate="${args.maxDate}"
+      .startDateLabel="${args.startDateLabel}"
+      .endDateLabel="${args.endDateLabel}"
+      @on-change=${(e) => action(e.type)(e)}
+    >
+      <label
+        slot="start-label"
+        class="label-text"
+        for=${startAnchorId}
+        ?disabled=${args.dateRangePickerDisabled}
+      >
+        ${args.required
+          ? html`<abbr
+              class="required"
+              title=${args._textStrings?.requiredText || 'Required'}
+              aria-label=${args._textStrings?.requiredText || 'Required'}
+              >*</abbr
+            >`
+          : null}
+        ${args.startDateLabel}
+      </label>
+      <kd-button
+        slot="start-anchor"
+        value="Primary"
+        kind=${'primary-app'}
+        id=${startAnchorId}
+        class="btn interactive"
+        ?disabled=${args.dateRangePickerDisabled}
+      >
+        <span part="icon" style="margin: 3px 10px 0 0;"
+          >${unsafeSVG(calendarIcon)}</span
+        >
+        Start Date
+      </kd-button>
     </kyn-date-range-picker>
   `;
 };
@@ -126,15 +256,14 @@ const MultiInputTemplate = (args) => {
   }, []);
 
   const placeholder = getPlaceholder(args.dateFormat);
-  const startInputId = 'date-range-picker-start';
-  const endInputId = 'date-range-picker-end';
+  const startAnchorId = 'date-range-picker-start';
+  const endAnchorId = 'date-range-picker-end';
 
   return html`
     <kyn-date-range-picker
       .nameAttr="${args.nameAttr}"
       .locale="${args.locale}"
       .dateFormat="${args.dateFormat}"
-      .size="${args.size}"
       .value="${args.value}"
       .warnText="${args.warnText}"
       .invalidText="${args.invalidText}"
@@ -147,12 +276,14 @@ const MultiInputTemplate = (args) => {
       ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
       .minDate="${args.minDate}"
       .maxDate="${args.maxDate}"
+      .startDateLabel="${args.startDateLabel}"
+      .endDateLabel="${args.endDateLabel}"
       @on-change=${(e) => action(e.type)(e)}
     >
       <label
         slot="start-label"
         class="label-text"
-        for=${startInputId}
+        for=${startAnchorId}
         ?disabled=${args.dateRangePickerDisabled}
       >
         ${args.required
@@ -163,12 +294,12 @@ const MultiInputTemplate = (args) => {
               >*</abbr
             >`
           : null}
-        Start Date Label
+        ${args.startDateLabel}
       </label>
       <input
-        slot="start-input"
+        slot="start-anchor"
         type="text"
-        id=${startInputId}
+        id=${startAnchorId}
         name="${args.nameAttr}-start"
         placeholder=${placeholder}
         ?disabled=${args.dateRangePickerDisabled}
@@ -176,11 +307,12 @@ const MultiInputTemplate = (args) => {
         .value=${getInputsValue(0, args.value)}
         aria-invalid=${args._isInvalid ? 'true' : 'false'}
       />
+      <span slot="start-icon">${unsafeSVG(calendarIcon)}</span>
 
       <label
         slot="end-label"
         class="label-text"
-        for=${endInputId}
+        for=${endAnchorId}
         ?disabled=${args.dateRangePickerDisabled}
       >
         ${args.required
@@ -191,12 +323,12 @@ const MultiInputTemplate = (args) => {
               >*</abbr
             >`
           : null}
-        End Date Label
+        ${args.endDateLabel}
       </label>
       <input
-        slot="end-input"
+        slot="end-anchor"
         type="text"
-        id=${endInputId}
+        id=${endAnchorId}
         name="${args.nameAttr}-end"
         placeholder=${placeholder}
         ?disabled=${args.dateRangePickerDisabled}
@@ -204,6 +336,7 @@ const MultiInputTemplate = (args) => {
         .value=${getInputsValue(1, args.value)}
         aria-invalid=${args._isInvalid ? 'true' : 'false'}
       />
+      <span slot="end-icon">${unsafeSVG(calendarIcon)}</span>
     </kyn-date-range-picker>
   `;
 };
@@ -214,7 +347,6 @@ DateRangePicker.args = {
   locale: 'en',
   dateFormat: 'Y-m-d',
   multipleInputs: false,
-  size: 'md',
   value: [null, null],
   warnText: '',
   invalidText: '',
@@ -226,8 +358,54 @@ DateRangePicker.args = {
   dateRangePickerDisabled: false,
   minDate: '',
   maxDate: '',
+  startDateLabel: 'Start Date',
+  endDateLabel: 'End Date',
 };
 DateRangePicker.storyName = 'Date Range Single Input (Default)';
+
+export const DateRangeIconPicker = ButtonIconAnchorTemplate.bind({});
+DateRangeIconPicker.args = {
+  nameAttr: 'default-date-range-picker',
+  locale: 'en',
+  dateFormat: 'Y-m-d',
+  multipleInputs: false,
+  value: [null, null],
+  warnText: '',
+  invalidText: '',
+  altFormat: 'F j, Y',
+  disable: [],
+  enable: [],
+  caption: 'Click the button above to launch the date range picker.',
+  required: false,
+  dateRangePickerDisabled: false,
+  minDate: '',
+  maxDate: '',
+  startDateLabel: 'Button w/ Icon Date Range Picker Launcher',
+  endDateLabel: '',
+};
+DateRangeIconPicker.storyName = 'Date Range (Button w/ Icon)';
+
+export const DateRangeIconTextAnchor = ButtonIconTextAnchorTemplate.bind({});
+DateRangeIconTextAnchor.args = {
+  nameAttr: 'default-date-range-picker',
+  locale: 'en',
+  dateFormat: 'Y-m-d',
+  multipleInputs: false,
+  value: [null, null],
+  warnText: '',
+  invalidText: '',
+  altFormat: 'F j, Y',
+  disable: [],
+  enable: [],
+  caption: 'Click the button above to launch the date range picker.',
+  required: false,
+  dateRangePickerDisabled: false,
+  minDate: '',
+  maxDate: '',
+  startDateLabel: 'Button w/ Icon + Text Date Range Picker Launcher',
+  endDateLabel: '',
+};
+DateRangeIconTextAnchor.storyName = 'Date Range (Button w/ Icon and Text)';
 
 export const DateRangePickerMulti = MultiInputTemplate.bind({});
 DateRangePickerMulti.args = {
@@ -248,6 +426,8 @@ DateTimeRangePickerSingle.args = {
   dateFormat: 'Y-m-d H:i',
   multipleInputs: false,
   caption: '',
+  startDateLabel: 'Start + End Date / Time',
+  endDateLabel: '',
 };
 DateTimeRangePickerSingle.storyName = 'Date / Time Range Single Input';
 
@@ -258,7 +438,10 @@ DateTimeRangePickerMulti.args = {
   nameAttr: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
   multipleInputs: true,
-  caption: "Example of spanish ('es') calendar locale.",
+  caption:
+    "Ejemplo de configuración regional del calendario en español ('es').",
+  startDateLabel: 'Fecha de inicio',
+  endDateLabel: 'Fecha de finalización',
 };
 DateTimeRangePickerMulti.storyName =
   'Date / Time Range Multi Input (Spanish Locale)';

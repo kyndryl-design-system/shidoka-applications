@@ -1,65 +1,95 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/form-input.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
     display: inline-block;
     width: 100%;
 }
 
-.time-picker {
-    max-width: 167px;
+.anchor-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
 
-    .input-container {
-        position: relative;
-        display: flex;
-        align-items: center;
+::slotted(input) {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--kd-color-border-ui);
+    border-radius: 4px;
+    height: 48px;
+    padding: 0 40px 0 16px;
+    line-height: 48px;
+    -webkit-appearance: none;
+    appearance: none;
+    @include typography.type-body-02;
+    color: var(--kd-color-text-primary);
+    transition: background-color 150ms ease-out, border-color 150ms ease-out,
+        outline-color 150ms ease-out;
+    background: var(--kd-color-background-inverse);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
 
-        input {
-            display: block;
-            width: 100%;
-            border: 1px solid var(--kd-color-border-ui);
-            border-radius: 4px;
-            height: 48px;
-            padding: 0 40px 0 16px;
-            flex: 1;
-            line-height: 48px;
-            -webkit-appearance: none;
-            appearance: none;
-            outline: none;
-        }
-
-        .icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            height: 24px;
-        }
+    &[invalid] {
+        border-color: var(--kd-color-border-error);
     }
 
-    &__disabled {
+    &[disabled] {
+        color: var(--kd-color-text-disabled);
+        border-color: var(--kd-color-border-ui-disabled);
+    }
+
+    &:hover {
+        border-color: var(--kd-color-border-ui-hover);
+    }
+
+    &:focus {
+        outline-color: var(--kd-color-border-focus);
+    }
+
+    &::placeholder {
+        color: var(--kd-color-text-placeholder);
+    }
+}
+
+::slotted(label) {
+    @include typography.type-ui-02;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    margin-bottom: 8px;
+
+    &.sr-only {
+        @include visibility.sr-only;
+    }
+
+    [disabled] & {
+        color: var(--kd-color-text-disabled);
+    }
+}
+
+.icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    height: 24px;
+    width: 24px;
+    color: var(--kd-color-text-secondary);
+}
+
+.time-picker {
+    width: inherit;
+
+    &__disabled ::slotted(*) {
         opacity: 0.5;
         pointer-events: none;
-    }
-
-    &__size {
-        &--sm {
-            .input-container input {
-                height: 32px;
-                line-height: 32px;
-            }
-        }
-
-        &--lg {
-            min-width: 250px;
-
-            .input-container input {
-                height: 60px;
-                line-height: 60px;
-            }
-        }
     }
 }

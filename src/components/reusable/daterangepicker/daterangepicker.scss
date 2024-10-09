@@ -8,15 +8,6 @@
     width: 100%;
 }
 
-.date-range-picker {
-    width: inherit;
-
-    &__disabled {
-        opacity: 0.5;
-        pointer-events: none;
-    }
-}
-
 .date-inputs {
     display: flex;
     align-items: flex-end;
@@ -29,23 +20,55 @@
     flex: 1;
 }
 
-::slotted(input) {
+.anchor-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.date-range-picker {
+    &__disabled ::slotted(*) {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}
+
+::slotted([slot="start-label"]),
+::slotted([slot="end-label"]) {
+    @include typography.type-ui-02;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    margin-bottom: 8px;
+
+    &.sr-only {
+        @include visibility.sr-only;
+    }
+
+    [disabled] & {
+        color: var(--kd-color-text-disabled);
+    }
+}
+
+::slotted([slot="start-anchor"]),
+::slotted([slot="end-anchor"]) {
     display: block;
     width: 100%;
+}
+
+::slotted(input[slot="start-anchor"]),
+::slotted(input[slot="end-anchor"]) {
     border: 1px solid var(--kd-color-border-ui);
     border-radius: 4px;
     height: 48px;
     padding: 0 40px 0 16px;
-    flex: 1;
-    min-width: 167px;
     line-height: 48px;
     -webkit-appearance: none;
     appearance: none;
     @include typography.type-body-02;
-    border-color: var(--kd-color-border-ui);
     color: var(--kd-color-text-primary);
-    transition: background-color 150ms ease-out, border-color 150ms ease-out,
-        outline-color 150ms ease-out;
     background: var(--kd-color-background-inverse);
     outline: 2px solid transparent;
     outline-offset: 2px;
@@ -72,46 +95,6 @@
     }
 }
 
-::slotted(.label-text) {
-    @include typography.type-ui-02;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 0;
-    margin-bottom: 8px;
-
-    &.sr-only {
-        @include visibility.sr-only;
-    }
-
-    [disabled] & {
-        color: var(--kd-color-text-disabled);
-    }
-}
-
-::slotted(.icon) {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    height: 24px;
-}
-
-.icon {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    height: 24px;
-}
-
 .date-range-separator {
     display: flex;
     align-items: center;
@@ -122,4 +105,14 @@
     color: var(--kd-color-text-secondary);
     align-self: flex-end;
     margin-bottom: 0;
+}
+
+::slotted(kd-button[slot="start-anchor"]) {
+    width: fit-content;
+    height: 48px;
+
+    &[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 }

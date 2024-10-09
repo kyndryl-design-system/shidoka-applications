@@ -3,10 +3,13 @@ import './index';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/addons';
 import { getPlaceholder } from '../../../common/helpers/flatpickr';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 import './datepicker.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
+import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/overflow.svg';
 
 export default {
   title: 'Components/DatePicker',
@@ -18,10 +21,6 @@ export default {
     },
   },
   argTypes: {
-    size: {
-      options: ['sm', 'md', 'lg'],
-      control: { type: 'select' },
-    },
     locale: {
       control: { type: 'text' },
     },
@@ -63,9 +62,9 @@ const InputTemplate = (args) => {
     };
   }, []);
 
-  const inputId =
+  const anchorId =
     args.nameAttr ||
-    `date-picker-input-${Math.random().toString(36).slice(2, 11)}`;
+    `date-picker-button-${Math.random().toString(36).slice(2, 11)}`;
 
   const placeholder = getPlaceholder(args.dateFormat);
 
@@ -73,7 +72,6 @@ const InputTemplate = (args) => {
     .nameAttr="${args.nameAttr}"
     .locale="${args.locale}"
     .dateFormat="${args.dateFormat}"
-    .size="${args.size}"
     .value="${args.value}"
     .warnText="${args.warnText}"
     .invalidText="${args.invalidText}"
@@ -92,7 +90,7 @@ const InputTemplate = (args) => {
     <label
       slot="label"
       class="label-text"
-      for=${inputId}
+      for=${anchorId}
       ?disabled=${args.datePickerDisabled}
     >
       ${args.required
@@ -106,15 +104,67 @@ const InputTemplate = (args) => {
       ${args.unnamed}
     </label>
     <input
-      slot="input"
+      slot="anchor"
       type="text"
-      id=${inputId}
+      id=${anchorId}
       name=${args.nameAttr}
       placeholder=${placeholder}
       ?disabled=${args.datePickerDisabled}
       ?required=${args.required}
       aria-invalid=${args._isInvalid ? 'true' : 'false'}
     />
+    <span slot="icon">${unsafeSVG(calendarIcon)}</span>
+  </kyn-date-picker>`;
+};
+
+const ButtonTemplate = (args) => {
+  // prevents flatpickr calendar overlay from persisting on view change
+  useEffect(() => {
+    return () => {
+      disconnectFlatpickr();
+    };
+  }, []);
+
+  return html`<kyn-date-picker
+    .nameAttr="${args.nameAttr}"
+    .locale="${args.locale}"
+    .dateFormat="${args.dateFormat}"
+    .value="${args.value}"
+    .warnText="${args.warnText}"
+    .invalidText="${args.invalidText}"
+    .altFormat=${args.altFormat}
+    .disable="${args.disable}"
+    .enable="${args.enable}"
+    .mode="${args.mode}"
+    .caption="${args.caption}"
+    ?required="${args.required}"
+    ?datePickerDisabled="${args.datePickerDisabled}"
+    ?twentyFourHourFormat="${args.twentyFourHourFormat}"
+    .minDate="${args.minDate}"
+    .maxDate="${args.maxDate}"
+    @on-change=${(e) => action(e.type)(e)}
+  >
+    <label slot="label" class="label-text" ?disabled=${args.datePickerDisabled}>
+      ${args.required
+        ? html`<abbr
+            class="required"
+            title=${args._textStrings?.requiredText || 'Required'}
+            aria-label=${args._textStrings?.requiredText || 'Required'}
+            >*</abbr
+          >`
+        : null}
+      ${args.unnamed}
+    </label>
+    <kd-button
+      slot="anchor"
+      value="Primary"
+      kind=${'primary-app'}
+      class="btn interactive"
+      description="Date picker button containing icon"
+      ?disabled=${args.datePickerDisabled}
+    >
+      ${unsafeSVG(overflowIcon)}
+    </kd-button>
   </kyn-date-picker>`;
 };
 
@@ -147,9 +197,32 @@ DateWithTime.args = {
   nameAttr: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
   caption: '',
-  unnamed: 'Date & Time Picker',
+  unnamed: 'दिनांक एवं समय चयनकर्ता',
 };
 DateWithTime.storyName = 'Date / Time (w/ Hindi Locale)';
+
+export const DateWithButtonIcon = ButtonTemplate.bind({});
+DateWithButtonIcon.args = {
+  nameAttr: 'date-picker-w-button',
+  locale: 'en',
+  dateFormat: 'Y-m-d',
+  size: 'md',
+  value: '',
+  warnText: '',
+  invalidText: '',
+  altFormat: 'F j, Y',
+  disable: [],
+  enable: [],
+  mode: 'single',
+  caption: 'Example datepicker caption.',
+  required: false,
+  datePickerDisabled: false,
+  twentyFourHourFormat: false,
+  minDate: '',
+  maxDate: '',
+  unnamed: 'Date',
+};
+DateWithButtonIcon.storyName = 'Date Time w/ Button Anchor';
 
 export const DatePickerMultiple = InputTemplate.bind({});
 DatePickerMultiple.args = {

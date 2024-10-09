@@ -1,8 +1,11 @@
 import { html } from 'lit';
 import './index';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/addons';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/time.svg';
 
 export default {
   title: 'Components/Timepicker',
@@ -14,10 +17,6 @@ export default {
     },
   },
   argTypes: {
-    size: {
-      options: ['sm', 'md', 'lg'],
-      control: { type: 'select' },
-    },
     locale: {
       control: { type: 'text' },
     },
@@ -38,7 +37,13 @@ const disconnectFlatpickr = () => {
   calendarElements.forEach((calendar) => calendar.remove());
 };
 
+const getPlaceholder = (args) => {
+  return args.twentyFourHourFormat ? '--:--' : '--:-- --';
+};
+
 const Template = (args) => {
+  const anchorId = args.nameAttr || 'time-picker-input';
+
   useEffect(() => {
     return () => {
       disconnectFlatpickr();
@@ -48,7 +53,6 @@ const Template = (args) => {
   return html`<kyn-time-picker
     .nameAttr="${args.nameAttr}"
     .locale="${args.locale}"
-    .size="${args.size}"
     .value="${args.value}"
     .warnText="${args.warnText}"
     .invalidText="${args.invalidText}"
@@ -60,15 +64,40 @@ const Template = (args) => {
     ?timepickerDisabled="${args.timepickerDisabled}"
     ?twentyFourHourFormat="${args.twentyFourHourFormat}"
     @on-change=${(e) => action(e.type)(e)}
-    >${args.unnamed}</kyn-time-picker
-  >`;
+  >
+    <label
+      slot="label"
+      class="label-text"
+      for=${anchorId}
+      ?disabled=${args.timepickerDisabled}
+    >
+      ${args.required
+        ? html`<abbr
+            class="required"
+            title=${args._textStrings?.requiredText || 'Required'}
+            aria-label=${args._textStrings?.requiredText || 'Required'}
+            >*</abbr
+          >`
+        : null}
+      ${args.unnamed}
+    </label>
+    <input
+      slot="anchor"
+      type="text"
+      id=${anchorId}
+      placeholder=${getPlaceholder(args)}
+      ?disabled=${args.timepickerDisabled}
+      aria-required=${args.required ? 'true' : 'false'}
+      aria-invalid=${args._isInvalid ? 'true' : 'false'}
+    />
+    <span slot="icon" class="icon">${unsafeSVG(clockIcon)}</span>
+  </kyn-time-picker>`;
 };
 
 export const TimePicker = Template.bind({});
 TimePicker.args = {
   nameAttr: 'default-timepicker',
   locale: 'en',
-  size: 'md',
   value: null,
   warnText: '',
   invalidText: '',
@@ -86,5 +115,6 @@ export const TimePickerAltLanguage = Template.bind({});
 TimePickerAltLanguage.args = {
   ...TimePicker.args,
   locale: 'ja',
+  unnamed: 'タイムピッカー',
 };
 TimePickerAltLanguage.storyName = 'Time Picker (Japanese Locale)';

@@ -8,15 +8,10 @@
     width: 100%;
 }
 
-::slotted(.date-picker-wrapper) {
+.input-wrapper {
+    position: relative;
     display: inline-block;
     width: 100%;
-}
-
-::slotted(.input-container) {
-    position: relative;
-    display: flex;
-    align-items: center;
     max-width: 200px;
 }
 
@@ -27,13 +22,10 @@
     border-radius: 4px;
     height: 48px;
     padding: 0 40px 0 16px;
-    flex: 1;
-    min-width: 167px;
     line-height: 48px;
     -webkit-appearance: none;
     appearance: none;
     @include typography.type-body-02;
-    border-color: var(--kd-color-border-ui);
     color: var(--kd-color-text-primary);
     transition: background-color 150ms ease-out, border-color 150ms ease-out,
         outline-color 150ms ease-out;
@@ -63,7 +55,7 @@
     }
 }
 
-::slotted(.label-text) {
+::slotted(label) {
     @include typography.type-ui-02;
     font-weight: 500;
     display: flex;
@@ -81,7 +73,7 @@
     }
 }
 
-::slotted(.icon) {
+.icon {
     position: absolute;
     right: 15px;
     top: 50%;
@@ -90,6 +82,8 @@
     display: flex;
     align-items: center;
     height: 24px;
+    width: 24px;
+    color: var(--kd-color-text-secondary);
 }
 
 .date-picker {
@@ -100,8 +94,12 @@
         pointer-events: none;
     }
 
-    &__time-variation-true ::slotted(.input-container) {
+    &__time-variation-true .input-wrapper {
         max-width: 250px;
+    }
+
+    &__multiple-select-true .input-wrapper {
+        max-width: 350px;
     }
 
     &__size {
@@ -115,35 +113,4 @@
             line-height: 60px;
         }
     }
-
-    &__multiple-select-true ::slotted(.input-container) {
-        max-width: 350px;
-    }
-
-    &__time-variation-false#{&}__size--sm ::slotted(.input-container) {
-        max-width: 175px;
-    }
-
-    &__time-variation-false#{&}__size--lg ::slotted(.input-container) {
-        max-width: 225px;
-    }
-
-    &__time-variation-true#{&}__size--sm ::slotted(.input-container) {
-        max-width: 225px;
-    }
-
-    &__time-variation-true#{&}__size--lg ::slotted(.input-container) {
-        max-width: 300px;
-    }
-}
-
-.icon {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    height: 24px;
 }

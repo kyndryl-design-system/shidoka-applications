@@ -8,7 +8,6 @@ import {
   langsArray,
   isSupportedLocale,
   injectFlatpickrStyles,
-  initializeFlatpickr,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
@@ -18,10 +17,9 @@ import type { Instance } from 'flatpickr/dist/types/instance';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 
 import TimepickerStyles from './timepicker.scss';
-import ShidokaDatePickerTheme from '../../../common/scss/date-picker-theme.scss';
+import ShidokaDatePickerTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/time.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 
 const _defaultTextStrings = {
@@ -34,6 +32,7 @@ type SupportedLocale = (typeof langsArray)[number];
  * Timepicker: uses flatpickr datetime picker library, timepicker implementation -- `https://flatpickr.js.org/examples/#time-picker`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot unnamed - Slot for label text.
+ * @slot anchor - Slot for anchor element.
  */
 @customElement('kyn-time-picker')
 export class TimePicker extends FormMixin(LitElement) {
@@ -46,10 +45,6 @@ export class TimePicker extends FormMixin(LitElement) {
   /* Sets desired locale and, if supported, dynamically loads language lib */
   @property({ type: String })
   locale: SupportedLocale = 'en';
-
-  /** Sets datepicker container size. */
-  @property({ type: String })
-  size: 'sm' | 'md' | 'lg' = 'md';
 
   /** Sets pre-selected date/time value. */
   @property({ type: Number })
@@ -120,102 +115,99 @@ export class TimePicker extends FormMixin(LitElement) {
   @state()
   private _displayValue = '';
 
-  /**
-   * Queries the <input> DOM element.
-   * @ignore
-   */
-  @query('input')
-  private inputEl!: HTMLInputElement;
+  @query('slot[name="anchor"]')
+  private anchorSlot!: HTMLSlotElement;
+
+  @state()
+  private _anchorEl?: HTMLElement;
 
   override render() {
-    const inputId = this.nameAttr || 'time-picker-input';
     const errorId = 'error-message';
     const warningId = 'warning-message';
     const descriptionId = 'time-picker-description';
 
-    return html`<div class=${classMap(this.getTimepickerClasses())}>
-      <label
-        class="label-text"
-        for=${inputId}
-        ?disabled=${this.timepickerDisabled}
-      >
-        ${this.required
-          ? html`<abbr
-              class="required"
-              title=${this._textStrings.requiredText}
-              aria-label=${this._textStrings.requiredText}
-              >*</abbr
-            >`
-          : null}
-        <slot></slot>
-      </label>
+    return html`
+      <div class=${classMap(this.getTimepickerClasses())}>
+        <slot name="label"></slot>
+        <div class="anchor-wrapper">
+          <slot name="anchor"></slot>
+          <slot name="icon" class="icon"></slot>
+        </div>
 
-      <div class="input-container">
-        <input
-          type="text"
-          id=${inputId}
-          placeholder=${this.getPlaceholder()}
-          ?disabled=${this.timepickerDisabled}
-          .value=${this._displayValue}
-          aria-required=${this.required ? 'true' : 'false'}
-          aria-invalid=${this._isInvalid ? 'true' : 'false'}
-        />
-        <span class="icon">${unsafeSVG(clockIcon)}</span>
+        ${this.caption
+          ? html`<div id=${descriptionId} class="caption options-text">
+              ${this.caption}
+            </div>`
+          : ''}
+        ${this._isInvalid || this.invalidText
+          ? html`<div id=${errorId} class="error error-text" role="alert">
+              <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
+                .invalidText || this._internalValidationMsg}
+            </div>`
+          : this.warnText
+          ? html`<div id=${warningId} class="warn warn-text" role="alert">
+              ${this.warnText}
+            </div>`
+          : ''}
       </div>
-
-      ${this.caption
-        ? html`<div id=${descriptionId} class="caption options-text">
-            ${this.caption}
-          </div>`
-        : ''}
-      ${this._isInvalid || this.invalidText
-        ? html`<div id=${errorId} class="error error-text" role="alert">
-            <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-              .invalidText || this._internalValidationMsg}
-          </div>`
-        : this.warnText
-        ? html`<div id=${warningId} class="warn warn-text" role="alert">
-            ${this.warnText}
-          </div>`
-        : ''}
-    </div>`;
-  }
-
-  getTimepickerClasses() {
-    return {
-      'time-picker': true,
-      [`time-picker__size--${this.size}`]: true,
-      'time-picker__disabled': this.timepickerDisabled,
-    };
-  }
-
-  getPlaceholder(): string {
-    return this.twentyFourHourFormat ? '--:--' : '--:-- --';
+    `;
   }
 
   override async firstUpdated(
     changedProperties: PropertyValues
   ): Promise<void> {
     super.firstUpdated(changedProperties);
-    if (this.inputEl) {
-      // allows for custom styles to be applied to flatpickr's appended calendar overlay
-      injectFlatpickrStyles(ShidokaDatePickerTheme.toString());
+    injectFlatpickrStyles(ShidokaDatePickerTheme.toString());
 
-      this.flatpickrInstance = await initializeFlatpickr({
-        startDateInputEl: this.inputEl,
-        getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
-        setCalendarAttributes: this.setCalendarAttributes.bind(this),
-      });
+    await this.updateComplete;
+    this.setupAnchor();
+  }
+
+  private setupAnchor() {
+    const assignedNodes = this.anchorSlot.assignedNodes({ flatten: true });
+    const anchorEl = assignedNodes.find(
+      (node): node is HTMLElement => node instanceof HTMLElement
+    );
+
+    if (anchorEl) {
+      this._anchorEl = anchorEl;
+      this.initializeFlatpickr();
     } else {
-      console.error('Input element not found.');
+      console.error('Anchor element not found in the slotted content');
     }
+  }
+
+  async initializeFlatpickr(): Promise<void> {
+    if (!this._anchorEl) {
+      console.error('Anchor element not found.');
+      return;
+    }
+
+    try {
+      const options = await this.getFlatpickrOptions();
+      this.flatpickrInstance = flatpickr(this._anchorEl, options) as Instance;
+
+      if (this.flatpickrInstance) {
+        this.setCalendarAttributes();
+      } else {
+        console.error('Unable to create flatpickr instance');
+      }
+    } catch (error) {
+      console.error('Error initializing Flatpickr:', error);
+    }
+  }
+
+  getTimepickerClasses() {
+    return {
+      'time-picker': true,
+      'time-picker__disabled': this.timepickerDisabled,
+    };
   }
 
   override async updated(changedProperties: PropertyValues): Promise<void> {
     await super.updated(changedProperties);
 
     if (
-      changedProperties.has('dateFormat') ||
       changedProperties.has('defaultDate') ||
       changedProperties.has('maxTime') ||
       changedProperties.has('minTime') ||
@@ -225,11 +217,40 @@ export class TimePicker extends FormMixin(LitElement) {
       if (this.flatpickrInstance) {
         await this.updateFlatpickrOptions();
       } else {
-        this.flatpickrInstance = await initializeFlatpickr({
-          startDateInputEl: this.inputEl,
-          getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
-          setCalendarAttributes: this.setCalendarAttributes.bind(this),
+        this.initializeFlatpickr();
+      }
+    }
+  }
+
+  async updateFlatpickrOptions(): Promise<void> {
+    if (this.flatpickrInstance) {
+      const currentDate = this.flatpickrInstance.selectedDates[0];
+
+      try {
+        const newOptions = await this.getFlatpickrOptions();
+
+        Object.keys(newOptions).forEach((key) => {
+          if (key in this.flatpickrInstance!.config) {
+            this.flatpickrInstance!.set(
+              key as keyof BaseOptions,
+              newOptions[key as keyof BaseOptions]
+            );
+          }
         });
+
+        if (this.defaultDate) {
+          const defaultDateObj = new Date(this.defaultDate);
+          if (!isNaN(defaultDateObj.getTime())) {
+            this.flatpickrInstance.setDate(defaultDateObj, false);
+          }
+        } else if (currentDate) {
+          this.flatpickrInstance.setDate(currentDate, false);
+        }
+
+        this.setCalendarAttributes();
+        this.requestUpdate();
+      } catch (error) {
+        console.error('Error updating Flatpickr options:', error);
       }
     }
   }
@@ -288,92 +309,11 @@ export class TimePicker extends FormMixin(LitElement) {
       options.locale = await this.loadLocale(this.locale);
     }
 
-    if (this.minTime) {
-      options.minTime = this.minTime;
-    }
-
-    if (this.maxTime) {
-      options.maxTime = this.maxTime;
-    }
-
-    if (this.defaultDate) {
-      options.defaultDate = this.defaultDate;
-    }
+    if (this.minTime) options.minTime = this.minTime;
+    if (this.maxTime) options.maxTime = this.maxTime;
+    if (this.defaultDate) options.defaultDate = this.defaultDate;
 
     return options;
-  }
-
-  async initializeFlatpickr(): Promise<void> {
-    if (!this.inputEl) {
-      console.error('Input element not found.');
-      return;
-    }
-
-    try {
-      const options = await this.getFlatpickrOptions();
-
-      this.flatpickrInstance = flatpickr(this.inputEl, options) as Instance;
-
-      if (this.flatpickrInstance) {
-        if (this.flatpickrInstance.calendarContainer) {
-          this.flatpickrInstance.calendarContainer.setAttribute(
-            'role',
-            'application'
-          );
-          this.flatpickrInstance.calendarContainer.setAttribute(
-            'aria-label',
-            'time-picker-container'
-          );
-        }
-      } else {
-        console.error('Unable to create flatpickr instance');
-      }
-    } catch (error) {
-      console.error('Error initializing Flatpickr:', error);
-    }
-  }
-
-  async updateFlatpickrOptions(): Promise<void> {
-    if (this.flatpickrInstance) {
-      const currentDate = this.flatpickrInstance.selectedDates[0];
-
-      try {
-        const newOptions = await this.getFlatpickrOptions();
-
-        Object.keys(newOptions).forEach((key) => {
-          if (key in this.flatpickrInstance!.config) {
-            this.flatpickrInstance!.set(
-              key as keyof BaseOptions,
-              newOptions[key as keyof BaseOptions]
-            );
-          }
-        });
-
-        if (this.defaultDate) {
-          const defaultDateObj = new Date(this.defaultDate);
-          if (!isNaN(defaultDateObj.getTime())) {
-            this.flatpickrInstance.setDate(defaultDateObj, false);
-          }
-        } else if (currentDate) {
-          this.flatpickrInstance.setDate(currentDate, false);
-        }
-
-        if (this.flatpickrInstance.calendarContainer) {
-          this.flatpickrInstance.calendarContainer.setAttribute(
-            'role',
-            'application'
-          );
-          this.flatpickrInstance.calendarContainer.setAttribute(
-            'aria-label',
-            'time-picker-container'
-          );
-        }
-
-        this.requestUpdate();
-      } catch (error) {
-        console.error('Error updating Flatpickr options:', error);
-      }
-    }
   }
 
   handleTimeInputChange(_selectedDates: Date[], dateStr: string): void {
@@ -385,7 +325,6 @@ export class TimePicker extends FormMixin(LitElement) {
     const selectedTime = today.getTime();
 
     this.value = selectedTime;
-
     this._displayValue = dateStr;
 
     this.emitValue(dateStr);
@@ -414,7 +353,7 @@ export class TimePicker extends FormMixin(LitElement) {
     return true;
   }
 
-  override willUpdate(changedProps: any) {
+  override willUpdate(changedProps: PropertyValues) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
@@ -428,7 +367,6 @@ export class TimePicker extends FormMixin(LitElement) {
       this.flatpickrInstance = undefined;
     }
 
-    // prevents flatpickr calendar overlay from persisting on view change
     const calendarElements = document.querySelectorAll('.flatpickr-calendar');
     calendarElements.forEach((calendar) => {
       calendar.remove();
