@@ -15,6 +15,12 @@ import '../checkbox/checkbox';
 
 import { TableExpandedRow } from './table-expanded-row';
 import { TableCell } from './table-cell';
+import { deepmerge } from 'deepmerge-ts';
+
+const _defaultTextStrings = {
+  expanded: 'Expanded',
+  collapsed: 'Collapsed',
+};
 
 /**
  * `kyn-tr` Web Component.
@@ -38,7 +44,7 @@ export class TableRow extends LitElement {
    * @internal
    */
   @property({ type: String, reflect: true })
-  'aria-disabled' = 'true';
+  'aria-disabled' = 'false';
 
   /**
    * rowId: String - Unique identifier for the row.
@@ -114,6 +120,16 @@ export class TableRow extends LitElement {
   @property({ type: Boolean, reflect: true })
   dimmed = false;
 
+  /** Text string customization. */
+  @property({ type: Object })
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
+
   /**
    * @ignore
    */
@@ -170,6 +186,12 @@ export class TableRow extends LitElement {
     );
   }
 
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
+  }
+
   override updated(changedProperties: PropertyValues) {
     // Reflect the expanded state to the next sibling expanded row
     if (changedProperties.has('expanded')) {
@@ -218,7 +240,9 @@ export class TableRow extends LitElement {
       )
     ) {
       this.expanded = expanded;
-      this.assistiveText = `${expanded ? 'Expanded' : 'Collapsed'}`;
+      this.assistiveText = expanded
+        ? this._textStrings.expanded
+        : this._textStrings.collapsed;
       this.dispatchEvent(new CustomEvent('table-row-expando-toggled', init));
     }
   }
