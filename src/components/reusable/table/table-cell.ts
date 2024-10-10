@@ -100,31 +100,6 @@ export class TableCell extends LitElement {
     }
   };
 
-  /**
-   * Updates the 'aria-controls' and 'aria-selected' attributes based on changes to the
-   * 'id' and 'selected' properties, respectively.
-   * @param {any} changedProps - The `changedProps` parameter is an object that contains the properties
-   * that have changed in the component. It is used to determine which properties have been updated and
-   * perform specific actions based on those changes.
-   */
-  override willUpdate(changedProps: any) {
-    // if (changedProps.has('disabled') && !this.isCheckbox) {
-    //   this['aria-disabled'] = this.disabled.toString();
-    // }
-    // if (this.isCheckbox) {
-    //   this.removeAttribute('aria-disabled');
-    // }
-    // if (changedProps.has('disabled')) {
-    //   if (!this.isCheckbox) {
-    //     console.log('LOOP 1');
-    //     this.setAttribute('aria-disabled', this.disabled.toString());
-    //   } else {
-    //     console.log('LOOP 2');
-    //     this.removeAttribute('aria-disabled');
-    //   }
-    // }
-  }
-
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
     if (this.maxWidth && changedProperties.has('maxWidth')) {
