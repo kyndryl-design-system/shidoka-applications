@@ -246,7 +246,7 @@ export class TableRow extends LitElement {
         : null}
       ${this.checkboxSelection
         ? html`
-            <kyn-td .align=${'center'} ?dense=${this.dense}>
+            <kyn-td ?isCheckbox=${true} .align=${'center'} ?dense=${this.dense}>
               <kyn-checkbox
                 ?disabled=${this.disabled || this.locked}
                 .checked=${this.selected}

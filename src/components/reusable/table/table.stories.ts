@@ -152,13 +152,13 @@ export const NestedTable: Story = {
                 expandable
                 checkboxSelection
               >
-                <kyn-td .align=${'center'}>${row.id}</kyn-td>
-                <kyn-td>${row.firstName}</kyn-td>
-                <kyn-td>${row.lastName}</kyn-td>
-                <kyn-td>${row.birthday}</kyn-td>
-                <kyn-td .align=${'right'}>${row.age}</kyn-td>
-                <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
-                <kyn-td .align=${'center'}>
+                <kyn-td role="cell" .align=${'center'}>${row.id}</kyn-td>
+                <kyn-td role="cell">${row.firstName}</kyn-td>
+                <kyn-td role="cell">${row.lastName}</kyn-td>
+                <kyn-td role="cell">${row.birthday}</kyn-td>
+                <kyn-td role="cell" .align=${'right'}>${row.age}</kyn-td>
+                <kyn-td role="cell">${row.firstName} ${row.lastName}</kyn-td>
+                <kyn-td role="cell" .align=${'center'}>
                   ${row.gender === 'male'
                     ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
                     : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
@@ -215,13 +215,13 @@ export const ExpandableRows: Story = {
                 key="row-${row.id}"
                 expandable
               >
-                <kyn-td .align=${'center'}>${row.id}</kyn-td>
-                <kyn-td>${row.firstName}</kyn-td>
-                <kyn-td>${row.lastName}</kyn-td>
-                <kyn-td>${row.birthday}</kyn-td>
-                <kyn-td .align=${'right'}>${row.age}</kyn-td>
-                <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
-                <kyn-td .align=${'center'}>
+                <kyn-td role="cell" .align=${'center'}>${row.id}</kyn-td>
+                <kyn-td role="cell">${row.firstName}</kyn-td>
+                <kyn-td role="cell">${row.lastName}</kyn-td>
+                <kyn-td role="cell">${row.birthday}</kyn-td>
+                <kyn-td role="cell" .align=${'right'}>${row.age}</kyn-td>
+                <kyn-td role="cell">${row.firstName} ${row.lastName}</kyn-td>
+                <kyn-td role="cell" .align=${'center'}>
                   ${row.gender === 'male'
                     ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
                     : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
@@ -428,13 +428,13 @@ export const DisabledRows: Story = {
                 ?disabled=${row.id == 1 || row.id == 3 ? true : false}
                 ?selected=${row.id == 3 ? true : false}
               >
-                <kyn-td .align=${'center'}>${row.id}</kyn-td>
-                <kyn-td>${row.firstName}</kyn-td>
-                <kyn-td>${row.lastName}</kyn-td>
-                <kyn-td>${row.birthday}</kyn-td>
-                <kyn-td .align=${'right'}>${row.age}</kyn-td>
-                <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
-                <kyn-td .align=${'center'}>
+                <kyn-td role="cell" .align=${'center'}>${row.id}</kyn-td>
+                <kyn-td role="cell">${row.firstName}</kyn-td>
+                <kyn-td role="cell">${row.lastName}</kyn-td>
+                <kyn-td role="cell">${row.birthday}</kyn-td>
+                <kyn-td role="cell" .align=${'right'}>${row.age}</kyn-td>
+                <kyn-td role="cell">${row.firstName} ${row.lastName}</kyn-td>
+                <kyn-td role="cell" .align=${'center'}>
                   <action-menu
                     ?disabled=${row.id == 1 || row.id == 3 ? true : false}
                   ></action-menu>

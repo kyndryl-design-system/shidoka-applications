@@ -313,21 +313,27 @@ class MyStoryTable extends LitElement {
                   key="row-${row.id}"
                   ?unread=${row.unread}
                 >
-                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
-                  <kyn-td .maxWidth=${fNameMaxWidth} title=${row.firstName}>
+                  <kyn-td role="cell" .align=${'center'}>${row.id}</kyn-td>
+                  <kyn-td
+                    role="cell"
+                    .maxWidth=${fNameMaxWidth}
+                    title=${row.firstName}
+                  >
                     ${row.firstName}
                   </kyn-td>
-                  <kyn-td class="min-max-width-100">${row.lastName}</kyn-td>
-                  <kyn-td>${row.birthday}</kyn-td>
-                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
-                  <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
-                  <kyn-td .align=${'center'}>
+                  <kyn-td role="cell" class="min-max-width-100"
+                    >${row.lastName}</kyn-td
+                  >
+                  <kyn-td role="cell">${row.birthday}</kyn-td>
+                  <kyn-td role="cell" .align=${'right'}>${row.age}</kyn-td>
+                  <kyn-td role="cell">${row.firstName} ${row.lastName}</kyn-td>
+                  <kyn-td role="cell" .align=${'center'}>
                     ${row.gender === 'male'
                       ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
                       : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
                   </kyn-td>
                   ${showTableActions
-                    ? html` <kyn-td>
+                    ? html` <kyn-td role="cell">
                         <action-menu
                           @on-delete=${() => this.deleteAction(row.id)}
                         ></action-menu>
