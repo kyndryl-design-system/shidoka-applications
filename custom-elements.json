@@ -4,6 +4,743 @@
   "modules": [
     {
       "kind": "javascript-module",
+      "path": "src/components/global/footer/footer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Footer component.",
+          "name": "Footer",
+          "slots": [
+            {
+              "description": "Default slot, for links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the logo, will overwrite the default logo.",
+              "name": "logo"
+            },
+            {
+              "description": "Slot for the copyright text.",
+              "name": "copyright"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the footer logo link. Should target the application home page.",
+              "attribute": "rootUrl"
+            },
+            {
+              "kind": "method",
+              "name": "handleRootLinkClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the logo link click event and emits the original event.",
+              "name": "on-root-link-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the footer logo link. Should target the application home page.",
+              "fieldName": "rootUrl"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-footer",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "src/components/global/footer/footer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "src/components/global/footer/footer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/footer/footerLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "DEPRECATED. Component for navigation links within the Footer.",
+          "name": "FooterNavLink",
+          "slots": [
+            {
+              "description": "Slot for link text/content.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "target",
+              "default": "'_self'",
+              "type": {
+                "text": "'_self'"
+              },
+              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
+              "attribute": "target"
+            },
+            {
+              "kind": "field",
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
+              "attribute": "rel"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event details.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "target",
+              "default": "'_self'",
+              "type": {
+                "text": "'_self'"
+              },
+              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
+              "fieldName": "target"
+            },
+            {
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
+              "fieldName": "rel"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-footer-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FooterNavLink",
+          "declaration": {
+            "name": "FooterNavLink",
+            "module": "src/components/global/footer/footerLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-footer-link",
+          "declaration": {
+            "name": "FooterNavLink",
+            "module": "src/components/global/footer/footerLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/footer/footerNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "DEPRECATED. Container for footer navigation links.",
+          "name": "FooterNav",
+          "slots": [
+            {
+              "description": "Slot for footer links.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-footer-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FooterNav",
+          "declaration": {
+            "name": "FooterNav",
+            "module": "src/components/global/footer/footerNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-footer-nav",
+          "declaration": {
+            "name": "FooterNav",
+            "module": "src/components/global/footer/footerNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/footer/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "./footer"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FooterNav",
+          "declaration": {
+            "name": "FooterNav",
+            "module": "./footerNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FooterNavLink",
+          "declaration": {
+            "name": "FooterNavLink",
+            "module": "./footerLink"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "./localNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "./localNavLink"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "./localNavDivider"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Side Navigation component.",
+          "name": "LocalNav",
+          "slots": [
+            {
+              "description": "The default slot, for local nav links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for a search input",
+              "name": "search"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "attribute": "pinned"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleMobileNavToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinkActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the pinned state and original event details.",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "fieldName": "pinned"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavDivider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Local Nav divider",
+          "name": "LocalNavDivider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "attribute": "heading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "fieldName": "heading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-divider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-divider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Link component for use in the global Side Navigation component.",
+          "name": "LocalNavLink",
+          "slots": [
+            {
+              "description": "The default slot, for the link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon. Use 16px size.",
+              "name": "icon"
+            },
+            {
+              "description": "Slot for the next level of links, supports three levels.",
+              "name": "links"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "attribute": "expanded"
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "attribute": "active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "method",
+              "name": "_handleTextSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getSlotText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinksSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event, level, and if default was prevented.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "fieldName": "expanded"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "fieldName": "active"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-link",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/uiShell/index.ts",
       "declarations": [],
       "exports": [
@@ -1760,743 +2497,6 @@
           "declaration": {
             "name": "HeaderNotificationPanel",
             "module": "./headerNotificationPanel"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/footer/footer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Footer component.",
-          "name": "Footer",
-          "slots": [
-            {
-              "description": "Default slot, for links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the logo, will overwrite the default logo.",
-              "name": "logo"
-            },
-            {
-              "description": "Slot for the copyright text.",
-              "name": "copyright"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "description": "URL for the footer logo link. Should target the application home page.",
-              "attribute": "rootUrl"
-            },
-            {
-              "kind": "method",
-              "name": "handleRootLinkClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the logo link click event and emits the original event.",
-              "name": "on-root-link-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "description": "URL for the footer logo link. Should target the application home page.",
-              "fieldName": "rootUrl"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-footer",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "src/components/global/footer/footer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "src/components/global/footer/footer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/footer/footerLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "DEPRECATED. Component for navigation links within the Footer.",
-          "name": "FooterNavLink",
-          "slots": [
-            {
-              "description": "Slot for link text/content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "target",
-              "default": "'_self'",
-              "type": {
-                "text": "'_self'"
-              },
-              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
-              "attribute": "target"
-            },
-            {
-              "kind": "field",
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
-              "attribute": "rel"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event details.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "target",
-              "default": "'_self'",
-              "type": {
-                "text": "'_self'"
-              },
-              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
-              "fieldName": "target"
-            },
-            {
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
-              "fieldName": "rel"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-footer-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "FooterNavLink",
-          "declaration": {
-            "name": "FooterNavLink",
-            "module": "src/components/global/footer/footerLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-footer-link",
-          "declaration": {
-            "name": "FooterNavLink",
-            "module": "src/components/global/footer/footerLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/footer/footerNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "DEPRECATED. Container for footer navigation links.",
-          "name": "FooterNav",
-          "slots": [
-            {
-              "description": "Slot for footer links.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-footer-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "FooterNav",
-          "declaration": {
-            "name": "FooterNav",
-            "module": "src/components/global/footer/footerNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-footer-nav",
-          "declaration": {
-            "name": "FooterNav",
-            "module": "src/components/global/footer/footerNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/footer/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "./footer"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "FooterNav",
-          "declaration": {
-            "name": "FooterNav",
-            "module": "./footerNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "FooterNavLink",
-          "declaration": {
-            "name": "FooterNavLink",
-            "module": "./footerLink"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "./localNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "./localNavLink"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "./localNavDivider"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Side Navigation component.",
-          "name": "LocalNav",
-          "slots": [
-            {
-              "description": "The default slot, for local nav links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for a search input",
-              "name": "search"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "attribute": "pinned"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_handleNavToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleMobileNavToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinkActive",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the pinned state and original event details.",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "fieldName": "pinned"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavDivider.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Local Nav divider",
-          "name": "LocalNavDivider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "attribute": "heading"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "fieldName": "heading"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-divider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-divider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Link component for use in the global Side Navigation component.",
-          "name": "LocalNavLink",
-          "slots": [
-            {
-              "description": "The default slot, for the link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon. Use 16px size.",
-              "name": "icon"
-            },
-            {
-              "description": "Slot for the next level of links, supports three levels.",
-              "name": "links"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "attribute": "expanded"
-            },
-            {
-              "kind": "field",
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "attribute": "active",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "method",
-              "name": "_handleTextSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_getSlotText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinksSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event, level, and if default was prevented.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "fieldName": "expanded"
-            },
-            {
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "fieldName": "active"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-link",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
           }
         }
       ]
@@ -5782,71 +5782,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Global Filter bar.",
-          "name": "GlobalFilter",
-          "slots": [
-            {
-              "description": "Left slot, intended for search input and modal.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Right slot, intended for action buttons and overflow menu.",
-              "name": "actions"
-            },
-            {
-              "description": "Slot below the filter bar, for tag group.",
-              "name": "tags"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-global-filter",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-global-filter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "./globalFilter"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/inlineCodeView/index.ts",
       "declarations": [],
       "exports": [
@@ -5939,6 +5874,71 @@
           "declaration": {
             "name": "InlineCodeView",
             "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Global Filter bar.",
+          "name": "GlobalFilter",
+          "slots": [
+            {
+              "description": "Left slot, intended for search input and modal.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Right slot, intended for action buttons and overflow menu.",
+              "name": "actions"
+            },
+            {
+              "description": "Slot below the filter bar, for tag group.",
+              "name": "tags"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-global-filter",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-global-filter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "./globalFilter"
           }
         }
       ]
@@ -9480,876 +9480,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/sideDrawer/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SideDrawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "./sideDrawer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/sideDrawer/sideDrawer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Side Drawer.",
-          "name": "SideDrawer",
-          "slots": [
-            {
-              "description": "Slot for drawer body content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the anchor button content.",
-              "name": "anchor"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Drawer open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Drawer size. `'md'`, or `'sm'`.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title / Heading text, required.",
-              "attribute": "titleText"
-            },
-            {
-              "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "submitBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Ok'",
-              "description": "Submit button text.",
-              "attribute": "submitBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "submitBtnDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "attribute": "submitBtnDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine whether needs footer",
-              "attribute": "hideFooter"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text.",
-              "attribute": "secondaryButtonText"
-            },
-            {
-              "kind": "field",
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the secondary button.",
-              "attribute": "showSecondaryButton"
-            },
-            {
-              "kind": "field",
-              "name": "hideCancelButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the cancel button.",
-              "attribute": "hideCancelButton"
-            },
-            {
-              "kind": "field",
-              "name": "beforeClose",
-              "type": {
-                "text": "Function"
-              },
-              "description": "Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
-            },
-            {
-              "kind": "method",
-              "name": "_openDrawer",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_closeDrawer",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "returnValue",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitCloseEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Drawer open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Drawer size. `'md'`, or `'sm'`.",
-              "fieldName": "size"
-            },
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title / Heading text, required.",
-              "fieldName": "titleText"
-            },
-            {
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "fieldName": "labelText"
-            },
-            {
-              "name": "submitBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Ok'",
-              "description": "Submit button text.",
-              "fieldName": "submitBtnText"
-            },
-            {
-              "name": "cancelBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "fieldName": "cancelBtnText"
-            },
-            {
-              "name": "submitBtnDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "fieldName": "submitBtnDisabled"
-            },
-            {
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine whether needs footer",
-              "fieldName": "hideFooter"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text.",
-              "fieldName": "secondaryButtonText"
-            },
-            {
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the secondary button.",
-              "fieldName": "showSecondaryButton"
-            },
-            {
-              "name": "hideCancelButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the cancel button.",
-              "fieldName": "hideCancelButton"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-side-drawer",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SideDrawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-side-drawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "./stepper"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "StepperItem",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "./stepperItem"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "StepperItemChild",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "./stepperItemChild"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepper.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper",
-          "name": "Stepper",
-          "slots": [
-            {
-              "description": "Slot for step items.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "stepperType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
-              "attribute": "stepperType"
-            },
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Wheter the stepper is in vertical type.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "stepperSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "attribute": "stepperSize"
-            },
-            {
-              "kind": "field",
-              "name": "currentIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
-              "attribute": "currentIndex"
-            },
-            {
-              "kind": "method",
-              "name": "_handleStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the event and emits the active step and original event details when click on any step title. This is only for procedure type stepper. Status stepper doesn't emit this event.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "stepperType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
-              "fieldName": "stepperType"
-            },
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Wheter the stepper is in vertical type.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "stepperSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "fieldName": "stepperSize"
-            },
-            {
-              "name": "currentIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
-              "fieldName": "currentIndex"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "src/components/reusable/stepper/stepper.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "src/components/reusable/stepper/stepper.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepperItem.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper Item.",
-          "name": "StepperItem",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            },
-            {
-              "description": "Children slot. Used for nested children in vertical stepper. Visible only when step state is active. Do not use inside stepperType `'status'`.",
-              "name": "child"
-            },
-            {
-              "description": "Optional slot for content in vertical stepper. Visible only when step state is active.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the stepper is in vertical type.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "stepSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "attribute": "stepSize"
-            },
-            {
-              "kind": "field",
-              "name": "stepName",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step name.",
-              "attribute": "stepName"
-            },
-            {
-              "kind": "field",
-              "name": "stepTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step title. Required for actions.",
-              "attribute": "stepTitle"
-            },
-            {
-              "kind": "field",
-              "name": "stepState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
-              "attribute": "stepState"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disable step.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "showCounter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
-              "attribute": "showCounter"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChildToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getProgressValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the step details to the parent stepper component when click on step title.",
-              "name": "on-step-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the stepper is in vertical type.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "stepSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "fieldName": "stepSize"
-            },
-            {
-              "name": "stepName",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step name.",
-              "fieldName": "stepName"
-            },
-            {
-              "name": "stepTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step title. Required for actions.",
-              "fieldName": "stepTitle"
-            },
-            {
-              "name": "stepState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
-              "fieldName": "stepState"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disable step.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "showCounter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
-              "fieldName": "showCounter"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper-item",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StepperItem",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "src/components/reusable/stepper/stepperItem.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper-item",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "src/components/reusable/stepper/stepperItem.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepperItemChild.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper Item child.",
-          "name": "StepperItemChild",
-          "slots": [
-            {
-              "description": "Slot for other elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "childTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child Title. Required for nested child inside step.",
-              "attribute": "childTitle"
-            },
-            {
-              "kind": "field",
-              "name": "childSubTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional Child Subtitle.",
-              "attribute": "childSubTitle"
-            },
-            {
-              "kind": "field",
-              "name": "childState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
-              "attribute": "childState"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChildStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getProgressValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits event on child click. Only for vertical mode.",
-              "name": "on-child-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "childTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child Title. Required for nested child inside step.",
-              "fieldName": "childTitle"
-            },
-            {
-              "name": "childSubTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional Child Subtitle.",
-              "fieldName": "childSubTitle"
-            },
-            {
-              "name": "childState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
-              "fieldName": "childState"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper-item-child",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StepperItemChild",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "src/components/reusable/stepper/stepperItemChild.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper-item-child",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "src/components/reusable/stepper/stepperItemChild.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/table/defs.ts",
       "declarations": [],
       "exports": []
@@ -12614,131 +11744,199 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/tag/index.ts",
+      "path": "src/components/reusable/sideDrawer/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "Tag",
+          "name": "SideDrawer",
           "declaration": {
-            "name": "Tag",
-            "module": "./tag"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "TagGroup",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "./tagGroup"
+            "name": "SideDrawer",
+            "module": "./sideDrawer"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/tag/tag.ts",
+      "path": "src/components/reusable/sideDrawer/sideDrawer.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Tag.",
-          "name": "Tag",
+          "description": "Side Drawer.",
+          "name": "SideDrawer",
+          "slots": [
+            {
+              "description": "Slot for drawer body content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the anchor button content.",
+              "name": "anchor"
+            }
+          ],
           "members": [
             {
               "kind": "field",
-              "name": "label",
+              "name": "open",
               "type": {
-                "text": "string"
+                "text": "boolean"
               },
-              "default": "''",
-              "description": "Tag name (Required).",
-              "attribute": "label"
+              "default": "false",
+              "description": "Drawer open state.",
+              "attribute": "open"
             },
             {
               "kind": "field",
-              "name": "tagSize",
+              "name": "size",
               "type": {
                 "text": "string"
               },
               "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "attribute": "tagSize"
+              "description": "Drawer size. `'md'`, or `'sm'`.",
+              "attribute": "size"
             },
             {
               "kind": "field",
-              "name": "disabled",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title / Heading text, required.",
+              "attribute": "titleText"
+            },
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "submitBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Ok'",
+              "description": "Submit button text.",
+              "attribute": "submitBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "attribute": "cancelBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "submitBtnDisabled",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Specify if the Tag is disabled.",
-              "attribute": "disabled"
+              "description": "Disables the primary button.",
+              "attribute": "submitBtnDisabled"
             },
             {
               "kind": "field",
-              "name": "filter",
+              "name": "hideFooter",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determine if Tag state is filter.",
-              "attribute": "filter"
+              "description": "Determine whether needs footer",
+              "attribute": "hideFooter"
             },
             {
               "kind": "field",
-              "name": "noTruncation",
+              "name": "destructive",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Removes label text truncation.",
-              "attribute": "noTruncation"
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "attribute": "destructive"
             },
             {
               "kind": "field",
-              "name": "shade",
+              "name": "secondaryButtonText",
               "type": {
                 "text": "string"
               },
-              "default": "'light'",
-              "description": "Shade `'light'` (default) and `'dark'` for tag",
-              "attribute": "shade"
+              "default": "'Secondary'",
+              "description": "Secondary button text.",
+              "attribute": "secondaryButtonText"
             },
             {
               "kind": "field",
-              "name": "tagColor",
+              "name": "showSecondaryButton",
               "type": {
-                "text": "string"
+                "text": "boolean"
               },
-              "default": "'spruce'",
-              "description": "Color variants. Default spruce",
-              "attribute": "tagColor"
+              "default": "false",
+              "description": "Hides the secondary button.",
+              "attribute": "showSecondaryButton"
             },
             {
               "kind": "field",
-              "name": "clearTagText",
+              "name": "hideCancelButton",
               "type": {
-                "text": "string"
+                "text": "boolean"
               },
-              "default": "'Clear Tag'",
-              "description": "Clear Tag Text to improve accessibility",
-              "attribute": "clearTagText"
+              "default": "false",
+              "description": "Hides the cancel button.",
+              "attribute": "hideCancelButton"
+            },
+            {
+              "kind": "field",
+              "name": "beforeClose",
+              "type": {
+                "text": "Function"
+              },
+              "description": "Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
             },
             {
               "kind": "method",
-              "name": "handleTagClear",
+              "name": "_openDrawer",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_closeDrawer",
               "privacy": "private",
               "parameters": [
                 {
                   "name": "e",
                   "type": {
-                    "text": "any"
+                    "text": "Event"
                   }
                 },
                 {
-                  "name": "value",
+                  "name": "returnValue",
                   "type": {
                     "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitCloseEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
                   }
                 }
               ]
@@ -12746,251 +11944,143 @@
           ],
           "events": [
             {
-              "description": "Captures the close event and emits the Tag value. Works with filterable tags.",
+              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
               "name": "on-close"
             }
           ],
           "attributes": [
             {
-              "name": "label",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Drawer open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Drawer size. `'md'`, or `'sm'`.",
+              "fieldName": "size"
+            },
+            {
+              "name": "titleText",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Tag name (Required).",
-              "fieldName": "label"
+              "description": "Title / Heading text, required.",
+              "fieldName": "titleText"
             },
             {
-              "name": "tagSize",
+              "name": "labelText",
               "type": {
                 "text": "string"
               },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "fieldName": "tagSize"
+              "default": "''",
+              "description": "Label text, optional.",
+              "fieldName": "labelText"
             },
             {
-              "name": "disabled",
+              "name": "submitBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Ok'",
+              "description": "Submit button text.",
+              "fieldName": "submitBtnText"
+            },
+            {
+              "name": "cancelBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "fieldName": "cancelBtnText"
+            },
+            {
+              "name": "submitBtnDisabled",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Specify if the Tag is disabled.",
-              "fieldName": "disabled"
+              "description": "Disables the primary button.",
+              "fieldName": "submitBtnDisabled"
             },
             {
-              "name": "filter",
+              "name": "hideFooter",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determine if Tag state is filter.",
-              "fieldName": "filter"
+              "description": "Determine whether needs footer",
+              "fieldName": "hideFooter"
             },
             {
-              "name": "noTruncation",
+              "name": "destructive",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Removes label text truncation.",
-              "fieldName": "noTruncation"
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "fieldName": "destructive"
             },
             {
-              "name": "shade",
+              "name": "secondaryButtonText",
               "type": {
                 "text": "string"
               },
-              "default": "'light'",
-              "description": "Shade `'light'` (default) and `'dark'` for tag",
-              "fieldName": "shade"
+              "default": "'Secondary'",
+              "description": "Secondary button text.",
+              "fieldName": "secondaryButtonText"
             },
             {
-              "name": "tagColor",
+              "name": "showSecondaryButton",
               "type": {
-                "text": "string"
+                "text": "boolean"
               },
-              "default": "'spruce'",
-              "description": "Color variants. Default spruce",
-              "fieldName": "tagColor"
+              "default": "false",
+              "description": "Hides the secondary button.",
+              "fieldName": "showSecondaryButton"
             },
             {
-              "name": "clearTagText",
+              "name": "hideCancelButton",
               "type": {
-                "text": "string"
+                "text": "boolean"
               },
-              "default": "'Clear Tag'",
-              "description": "Clear Tag Text to improve accessibility",
-              "fieldName": "clearTagText"
+              "default": "false",
+              "description": "Hides the cancel button.",
+              "fieldName": "hideCancelButton"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-tag",
+          "tagName": "kyn-side-drawer",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "Tag",
+          "name": "SideDrawer",
           "declaration": {
-            "name": "Tag",
-            "module": "src/components/reusable/tag/tag.ts"
+            "name": "SideDrawer",
+            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-tag",
+          "name": "kyn-side-drawer",
           "declaration": {
-            "name": "Tag",
-            "module": "src/components/reusable/tag/tag.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/tagGroup.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tag & Tag Group",
-          "name": "TagGroup",
-          "slots": [
-            {
-              "description": "Slot for individual tags.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
-              "description": "Text string customization.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "field",
-              "name": "limitTags",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
-              "attribute": "limitTags"
-            },
-            {
-              "kind": "field",
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tag group filter",
-              "attribute": "filter"
-            },
-            {
-              "kind": "field",
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "attribute": "tagSize"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_toggleRevealed",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "revealed",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "limitTags",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
-              "fieldName": "limitTags"
-            },
-            {
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tag group filter",
-              "fieldName": "filter"
-            },
-            {
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "fieldName": "tagSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tag-group",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TagGroup",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "src/components/reusable/tag/tagGroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tag-group",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "src/components/reusable/tag/tagGroup.ts"
+            "name": "SideDrawer",
+            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
           }
         }
       ]
@@ -13467,6 +12557,916 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "./stepper"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StepperItem",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "./stepperItem"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StepperItemChild",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "./stepperItemChild"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepper.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper",
+          "name": "Stepper",
+          "slots": [
+            {
+              "description": "Slot for step items.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "stepperType",
+              "type": {
+                "text": "string"
+              },
+              "default": "'procedure'",
+              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
+              "attribute": "stepperType"
+            },
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Wheter the stepper is in vertical type.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "stepperSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "attribute": "stepperSize"
+            },
+            {
+              "kind": "field",
+              "name": "currentIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
+              "attribute": "currentIndex"
+            },
+            {
+              "kind": "method",
+              "name": "_handleStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the event and emits the active step and original event details when click on any step title. This is only for procedure type stepper. Status stepper doesn't emit this event.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "stepperType",
+              "type": {
+                "text": "string"
+              },
+              "default": "'procedure'",
+              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
+              "fieldName": "stepperType"
+            },
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Wheter the stepper is in vertical type.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "stepperSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "fieldName": "stepperSize"
+            },
+            {
+              "name": "currentIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
+              "fieldName": "currentIndex"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "src/components/reusable/stepper/stepper.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "src/components/reusable/stepper/stepper.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepperItem.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper Item.",
+          "name": "StepperItem",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            },
+            {
+              "description": "Children slot. Used for nested children in vertical stepper. Visible only when step state is active. Do not use inside stepperType `'status'`.",
+              "name": "child"
+            },
+            {
+              "description": "Optional slot for content in vertical stepper. Visible only when step state is active.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the stepper is in vertical type.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "stepSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "attribute": "stepSize"
+            },
+            {
+              "kind": "field",
+              "name": "stepName",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step name.",
+              "attribute": "stepName"
+            },
+            {
+              "kind": "field",
+              "name": "stepTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step title. Required for actions.",
+              "attribute": "stepTitle"
+            },
+            {
+              "kind": "field",
+              "name": "stepState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
+              "attribute": "stepState"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disable step.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "showCounter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
+              "attribute": "showCounter"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChildToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getProgressValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the step details to the parent stepper component when click on step title.",
+              "name": "on-step-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the stepper is in vertical type.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "stepSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "fieldName": "stepSize"
+            },
+            {
+              "name": "stepName",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step name.",
+              "fieldName": "stepName"
+            },
+            {
+              "name": "stepTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step title. Required for actions.",
+              "fieldName": "stepTitle"
+            },
+            {
+              "name": "stepState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
+              "fieldName": "stepState"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disable step.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "showCounter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
+              "fieldName": "showCounter"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "StepperItem",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "src/components/reusable/stepper/stepperItem.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper-item",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "src/components/reusable/stepper/stepperItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepperItemChild.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper Item child.",
+          "name": "StepperItemChild",
+          "slots": [
+            {
+              "description": "Slot for other elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "childTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Child Title. Required for nested child inside step.",
+              "attribute": "childTitle"
+            },
+            {
+              "kind": "field",
+              "name": "childSubTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional Child Subtitle.",
+              "attribute": "childSubTitle"
+            },
+            {
+              "kind": "field",
+              "name": "childState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
+              "attribute": "childState"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChildStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getProgressValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits event on child click. Only for vertical mode.",
+              "name": "on-child-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "childTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Child Title. Required for nested child inside step.",
+              "fieldName": "childTitle"
+            },
+            {
+              "name": "childSubTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional Child Subtitle.",
+              "fieldName": "childSubTitle"
+            },
+            {
+              "name": "childState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
+              "fieldName": "childState"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper-item-child",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "StepperItemChild",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "src/components/reusable/stepper/stepperItemChild.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper-item-child",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "src/components/reusable/stepper/stepperItemChild.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "./tag"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TagGroup",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "./tagGroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/tag.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tag.",
+          "name": "Tag",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Tag name (Required).",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "attribute": "tagSize"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify if the Tag is disabled.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag state is filter.",
+              "attribute": "filter"
+            },
+            {
+              "kind": "field",
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "attribute": "noTruncation"
+            },
+            {
+              "kind": "field",
+              "name": "shade",
+              "type": {
+                "text": "string"
+              },
+              "default": "'light'",
+              "description": "Shade `'light'` (default) and `'dark'` for tag",
+              "attribute": "shade"
+            },
+            {
+              "kind": "field",
+              "name": "tagColor",
+              "type": {
+                "text": "string"
+              },
+              "default": "'spruce'",
+              "description": "Color variants. Default spruce",
+              "attribute": "tagColor"
+            },
+            {
+              "kind": "field",
+              "name": "clearTagText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Clear Tag'",
+              "description": "Clear Tag Text to improve accessibility",
+              "attribute": "clearTagText"
+            },
+            {
+              "kind": "method",
+              "name": "handleTagClear",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the close event and emits the Tag value. Works with filterable tags.",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Tag name (Required).",
+              "fieldName": "label"
+            },
+            {
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "fieldName": "tagSize"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify if the Tag is disabled.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag state is filter.",
+              "fieldName": "filter"
+            },
+            {
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "fieldName": "noTruncation"
+            },
+            {
+              "name": "shade",
+              "type": {
+                "text": "string"
+              },
+              "default": "'light'",
+              "description": "Shade `'light'` (default) and `'dark'` for tag",
+              "fieldName": "shade"
+            },
+            {
+              "name": "tagColor",
+              "type": {
+                "text": "string"
+              },
+              "default": "'spruce'",
+              "description": "Color variants. Default spruce",
+              "fieldName": "tagColor"
+            },
+            {
+              "name": "clearTagText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Clear Tag'",
+              "description": "Clear Tag Text to improve accessibility",
+              "fieldName": "clearTagText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tag",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "src/components/reusable/tag/tag.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "src/components/reusable/tag/tag.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/tagGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tag & Tag Group",
+          "name": "TagGroup",
+          "slots": [
+            {
+              "description": "Slot for individual tags.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "description": "Text string customization.",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "field",
+              "name": "limitTags",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
+              "attribute": "limitTags"
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tag group filter",
+              "attribute": "filter"
+            },
+            {
+              "kind": "field",
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "attribute": "tagSize"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_toggleRevealed",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "revealed",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "limitTags",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
+              "fieldName": "limitTags"
+            },
+            {
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tag group filter",
+              "fieldName": "filter"
+            },
+            {
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "fieldName": "tagSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tag-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TagGroup",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "src/components/reusable/tag/tagGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tag-group",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "src/components/reusable/tag/tagGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/textInput/index.ts",
       "declarations": [],
       "exports": [
@@ -13812,6 +13812,253 @@
           "declaration": {
             "name": "TextInput",
             "module": "src/components/reusable/textInput/textInput.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "./textArea"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/textArea.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Text area.",
+          "name": "TextArea",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "attribute": "maxLength"
+            },
+            {
+              "kind": "field",
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "attribute": "minLength"
+            },
+            {
+              "kind": "field",
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "textarea rows attribute. The number of visible text lines.",
+              "attribute": "rows"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  requiredText: 'Required',\n  errorText: 'Error',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "fieldName": "maxLength"
+            },
+            {
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "fieldName": "minLength"
+            },
+            {
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "textarea rows attribute. The number of visible text lines.",
+              "fieldName": "rows"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-text-area",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-text-area",
+          "declaration": {
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
           }
         }
       ]
@@ -14228,253 +14475,6 @@
           "declaration": {
             "name": "TimePicker",
             "module": "src/components/reusable/timepicker/timepicker.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "./textArea"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/textArea.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Text area.",
-          "name": "TextArea",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "attribute": "placeholder"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "attribute": "maxLength"
-            },
-            {
-              "kind": "field",
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "attribute": "minLength"
-            },
-            {
-              "kind": "field",
-              "name": "rows",
-              "type": {
-                "text": "number"
-              },
-              "description": "textarea rows attribute. The number of visible text lines.",
-              "attribute": "rows"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  errorText: 'Error',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "fieldName": "placeholder"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "fieldName": "maxLength"
-            },
-            {
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "fieldName": "minLength"
-            },
-            {
-              "name": "rows",
-              "type": {
-                "text": "number"
-              },
-              "description": "textarea rows attribute. The number of visible text lines.",
-              "fieldName": "rows"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-text-area",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-text-area",
-          "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
           }
         }
       ]

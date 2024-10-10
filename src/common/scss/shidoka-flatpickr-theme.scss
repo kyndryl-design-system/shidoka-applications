@@ -1,14 +1,16 @@
-$date-picker-background: var(--kd-color-coolgray-10); // ?
+$date-picker-background: var(--kd-background-ui-default);
+$caret-color: var(--kd-color-border-inverse);
 $current-month-year: var(--kd-color-text-eyebrow);
 $range-dates: var(--kd-color-background-inverse-hover);
 $selected-date: var(--kd-color-border-accent-spruce-light);
 $today: var(--kd-color-border-accent-springgreen);
-$cal-divider: var(--kd-color-border-light);
+$cal-divider: var(--kd-color-coolgray-10);
 $weekday: var(--kd-color-text-placeholder);
 $calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
 
 .flatpickr-calendar {
     background: $date-picker-background;
+    padding: 8px 0 10px;
     opacity: 0;
     display: none;
     text-align: center;
@@ -29,7 +31,6 @@ $calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
     -webkit-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
     box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
-    padding: 0 0 8px;
 
     &.hasTime.noCalendar {
         padding: 0;
@@ -151,11 +152,11 @@ $calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
 }
 
 .flatpickr-calendar.arrowTop:before {
-    border-bottom-color: #eceef1;
+    border-bottom-color: $caret-color;
 }
 
 .flatpickr-calendar.arrowTop:after {
-    border-bottom-color: #eceef1;
+    border-bottom-color: $caret-color;
 }
 
 .flatpickr-calendar.arrowBottom:before,
@@ -164,11 +165,11 @@ $calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
 }
 
 .flatpickr-calendar.arrowBottom:before {
-    border-top-color: #eceef1;
+    border-top-color: $caret-color;
 }
 
 .flatpickr-calendar.arrowBottom:after {
-    border-top-color: #eceef1;
+    border-top-color: $caret-color;
 }
 
 .flatpickr-calendar:focus {
@@ -185,7 +186,8 @@ $calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    padding: 8px 8px 0;
+    height: 32px;
+    padding: 0 8px 4px;
 }
 
 .flatpickr-months .flatpickr-month {
@@ -193,7 +195,7 @@ $calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
     background: transparent;
     color: #5a6171;
     fill: #5a6171;
-    height: 34px;
+    height: 32px;
     line-height: 1;
     text-align: center;
     position: relative;
@@ -206,10 +208,6 @@ $calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
     -webkit-flex: 1;
     -ms-flex: 1;
     flex: 1;
-
-    &:nth-of-type(2) {
-        border-left: 1px solid $cal-divider;
-    }
 }
 
 .flatpickr-months .flatpickr-prev-month,
@@ -509,9 +507,11 @@ $calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
 }
 
 .flatpickr-weekdays {
+    padding: 28px 0 24px;
     background: transparent;
     text-align: center;
     overflow: hidden;
+    height: 34px;
     width: 100%;
     display: -webkit-box;
     display: -webkit-flex;
@@ -526,6 +526,7 @@ $calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
 .flatpickr-weekdays .flatpickr-weekdaycontainer {
     padding: 0;
     height: 32px;
+    padding: 12px 0 12px;
     align-items: center;
     display: -webkit-box;
     display: -webkit-flex;
@@ -535,10 +536,6 @@ $calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
     -webkit-flex: 1;
     -ms-flex: 1;
     flex: 1;
-
-    &:nth-of-type(2) {
-        border-left: 1px solid $cal-divider;
-    }
 }
 
 span.flatpickr-weekday {
@@ -560,12 +557,6 @@ span.flatpickr-weekday {
 .dayContainer,
 .flatpickr-weeks {
     padding: 1px 0 0;
-
-    &:nth-of-type(2) {
-        border-left: 1px solid $cal-divider;
-        margin-left: 0.5px;
-        padding-bottom: 30px;
-    }
 }
 
 .flatpickr-days {
@@ -671,8 +662,7 @@ span.flatpickr-weekday {
 
 .flatpickr-day.today:hover,
 .flatpickr-day.today:focus {
-    border-color: #bbb;
-    color: #fff;
+    border-color: $selected-date;
 }
 
 .flatpickr-day.selected:focus,
@@ -812,6 +802,16 @@ span.flatpickr-weekday {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     overflow: hidden;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+        background-color: $cal-divider;
+    }
 }
 
 .flatpickr-rContainer {
