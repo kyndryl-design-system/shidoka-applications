@@ -423,16 +423,6 @@ export class StepperItem extends LitElement {
     this.dispatchEvent(event);
   }
 
-  override async firstUpdated() {
-    if (
-      this.vertical &&
-      this.stepState === 'active' &&
-      this.childSteps?.length > 0
-    ) {
-      this.openChildren = true; // default open toggle when state is active
-    }
-  }
-
   override updated(changedProps: any) {
     if (changedProps.has('stepState')) {
       this.progress = this.getProgressValue();
@@ -448,6 +438,14 @@ export class StepperItem extends LitElement {
   }
 
   private _handleChildSlotChange() {
+    if (
+      this.vertical &&
+      this.stepState === 'active' &&
+      this.childSteps?.length > 0
+    ) {
+      this.openChildren = true; // default open toggle when state is active
+    }
+
     this._updateChildren();
   }
 
