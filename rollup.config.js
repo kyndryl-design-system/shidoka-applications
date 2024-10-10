@@ -21,15 +21,17 @@ export default {
     format: 'es',
     sourcemap: true,
     manualChunks(id) {
-      console.log(id);
       if (id.includes('node_modules')) {
-        // let moduleName = id.split('node_modules\\')[1];
-        let moduleName = id.split(/node_modules\\/)[1];
+        let splitChar = id.includes('\\') ? '\\' : '/';
+        let moduleName = id.split(`node_modules${splitChar}`)[1];
+
         if (moduleName.includes('@')) {
           moduleName =
-            moduleName.split(/\\/)[0] + '/' + moduleName.split(/\\/)[1];
+            moduleName.split(splitChar)[0] +
+            '/' +
+            moduleName.split(splitChar)[1];
         } else {
-          moduleName = moduleName.split('\\')[0];
+          moduleName = moduleName.split(splitChar)[0];
         }
         return 'vendor/' + moduleName;
       }
