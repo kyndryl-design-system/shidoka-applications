@@ -55,13 +55,26 @@ export class Stepper extends LitElement {
           ? 'vertical-stepper-wrapper'
           : 'horizontal-stepper-wrapper'}
       >
-        <slot></slot>
+        <slot @slotchange=${this._handleSlotChange}></slot>
       </div>
     `;
   }
 
-  // when firstmost load component
-  override firstUpdated(): void {
+  private _handleSlotChange() {
+    this._updateChildren();
+  }
+
+  private _updateChildren() {
+    this._determineFirstLastSteps();
+
+    this.steps?.forEach((step: any) => {
+      step.stepSize = this.stepperSize;
+      step.vertical = this.vertical;
+      step.stepperType = this.stepperType;
+    });
+  }
+
+  private _determineFirstLastSteps() {
     // this._updateContainerWidth();
     if (this.steps?.length > 0) {
       this.steps[0].isFirstStep = true;
@@ -79,24 +92,12 @@ export class Stepper extends LitElement {
   }
 
   override updated(changedProperties: any) {
-    if (changedProperties.has('stepperSize')) {
-      this.steps?.forEach((step: any) => {
-        this.stepperSize === 'large'
-          ? (step.stepSize = 'large')
-          : (step.stepSize = 'small');
-      });
-    }
-
-    if (changedProperties.has('vertical')) {
-      this.steps?.forEach((step) => {
-        step.vertical = this.vertical;
-      });
-    }
-
-    if (changedProperties.has('stepperType')) {
-      this.steps?.forEach((step: any) => {
-        step.stepperType = this.stepperType;
-      });
+    if (
+      changedProperties.has('stepperType') ||
+      changedProperties.has('stepperSize') ||
+      changedProperties.has('vertical')
+    ) {
+      this._updateChildren();
     }
   }
 
