@@ -312,9 +312,9 @@ class StoryTableSettings extends LitElement {
         </div>
       </kyn-global-filter>
       <div class="table-container" tabindex="0">
-        <kyn-table role="table" class=${lockedCol ? 'first-col-locked' : ''}>
-          <kyn-thead role="rowgroup">
-            <kyn-header-tr role="row">
+        <kyn-table class=${lockedCol ? 'first-col-locked' : ''}>
+          <kyn-thead>
+            <kyn-header-tr>
               ${repeat(
                 this.columns,
                 (col: any) => col.id,
@@ -327,12 +327,12 @@ class StoryTableSettings extends LitElement {
               )}
             </kyn-header-tr>
           </kyn-thead>
-          <kyn-tbody role="rowgroup">
+          <kyn-tbody>
             ${repeat(
               rows,
               (row: any) => row.id,
               (row: any) => html`
-                <kyn-tr role="row" .rowId=${row.id} key="row-${row.id}">
+                <kyn-tr .rowId=${row.id} key="row-${row.id}">
                   ${repeat(
                     this.columns,
                     (col: any) => `${row.id}-${col.id}`,

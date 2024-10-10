@@ -211,13 +211,9 @@ class StoryColumSetting extends LitElement {
       </kyn-global-filter>
       <div class="seperator-div"></div>
       <div>
-        <kyn-table
-          role="table"
-          stickyHeader
-          class="${lockedRow ? 'first-row-locked' : ''}"
-        >
-          <kyn-thead role="rowgroup" class="t-head">
-            <kyn-header-tr role="row">
+        <kyn-table stickyHeader class="${lockedRow ? 'first-row-locked' : ''}">
+          <kyn-thead class="t-head">
+            <kyn-header-tr>
               <kyn-th .align=${'center'} class="min-max-width-th-100">
                 VISIBLE
               </kyn-th>
@@ -225,13 +221,12 @@ class StoryColumSetting extends LitElement {
               <kyn-th .align=${'center'}>FREEZE</kyn-th>
             </kyn-header-tr>
           </kyn-thead>
-          <kyn-tbody role="rowgroup">
+          <kyn-tbody>
             ${repeat(
               showingRows,
               (row: any) => row.id,
               (row: any) => html`
                 <kyn-tr
-                  role="row"
                   class="${row.locked ? 'lockedRow' : 'unlockedRow'}"
                   @on-row-select=${(e: CustomEvent) =>
                     this.handleRowSelectionChange(e, row.id)}
