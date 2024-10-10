@@ -248,7 +248,6 @@ class MyStoryTable extends LitElement {
 
       <kyn-table-container>
         <kyn-table
-          role="table"
           ?striped=${striped}
           ?dense=${dense}
           ?ellipsis=${ellipsis}
@@ -258,11 +257,8 @@ class MyStoryTable extends LitElement {
           @on-row-selection-change=${this.handleSelectedRowsChange}
           @on-all-rows-selection-change=${this.handleSelectedRowsChange}
         >
-          <kyn-thead role="rowgroup">
-            <kyn-header-tr
-              .multiSelectColumnWidth=${multiSelectColumnWidth}
-              role="row"
-            >
+          <kyn-thead>
+            <kyn-header-tr .multiSelectColumnWidth=${multiSelectColumnWidth}>
               <kyn-th
                 .align=${'center'}
                 .sortable=${this.sortable}
@@ -302,38 +298,31 @@ class MyStoryTable extends LitElement {
               ${showTableActions ? html`<kyn-th>Action</kyn-th>` : html``}
             </kyn-header-tr>
           </kyn-thead>
-          <kyn-tbody role="rowgroup">
+          <kyn-tbody>
             ${repeat(
               currentRows,
               (row: any) => row.id,
               (row: any) => html`
                 <kyn-tr
-                  role="row"
                   .rowId=${row.id}
                   key="row-${row.id}"
                   ?unread=${row.unread}
                 >
-                  <kyn-td role="cell" .align=${'center'}>${row.id}</kyn-td>
-                  <kyn-td
-                    role="cell"
-                    .maxWidth=${fNameMaxWidth}
-                    title=${row.firstName}
-                  >
+                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                  <kyn-td .maxWidth=${fNameMaxWidth} title=${row.firstName}>
                     ${row.firstName}
                   </kyn-td>
-                  <kyn-td role="cell" class="min-max-width-100"
-                    >${row.lastName}</kyn-td
-                  >
-                  <kyn-td role="cell">${row.birthday}</kyn-td>
-                  <kyn-td role="cell" .align=${'right'}>${row.age}</kyn-td>
-                  <kyn-td role="cell">${row.firstName} ${row.lastName}</kyn-td>
-                  <kyn-td role="cell" .align=${'center'}>
+                  <kyn-td class="min-max-width-100">${row.lastName}</kyn-td>
+                  <kyn-td>${row.birthday}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                  <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
+                  <kyn-td .align=${'center'}>
                     ${row.gender === 'male'
                       ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
                       : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
                   </kyn-td>
                   ${showTableActions
-                    ? html` <kyn-td role="cell">
+                    ? html` <kyn-td>
                         <action-menu
                           @on-delete=${() => this.deleteAction(row.id)}
                         ></action-menu>

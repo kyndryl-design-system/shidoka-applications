@@ -28,6 +28,18 @@ import { TableCell } from './table-cell';
 export class TableRow extends LitElement {
   static override styles = [styles];
 
+  /** aria role.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  override role = 'row';
+
+  /** aria-disabled.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  'aria-disabled' = 'true';
+
   /**
    * rowId: String - Unique identifier for the row.
    */
@@ -169,6 +181,8 @@ export class TableRow extends LitElement {
 
     // Reflect the disabled state to the tabindex attribute
     if (changedProperties.has('disabled')) {
+      this['aria-disabled'] = this.disabled.toString();
+
       if (this.disabled) {
         this.setAttribute('tabindex', '-1');
       } else {
@@ -246,7 +260,7 @@ export class TableRow extends LitElement {
         : null}
       ${this.checkboxSelection
         ? html`
-            <kyn-td ?isCheckbox=${true} .align=${'center'} ?dense=${this.dense}>
+            <kyn-td .align=${'center'} ?dense=${this.dense}>
               <kyn-checkbox
                 ?disabled=${this.disabled || this.locked}
                 .checked=${this.selected}

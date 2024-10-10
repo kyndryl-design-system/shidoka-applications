@@ -30,6 +30,12 @@ import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
 export class TableHeader extends LitElement {
   static override styles = [styles];
 
+  /** aria role.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  override role = 'columnheader';
+
   /** Determines if the cell should have a denser layout. */
   @property({ type: Boolean, reflect: true })
   dense = false;
@@ -260,7 +266,6 @@ export class TableHeader extends LitElement {
         arial-label=${ifDefined(ariaLabel)}
         arial-sort=${ifDefined(arialSort)}
         tabindex=${ifDefined(tabIndex)}
-        role="columnheader"
         @keydown=${onKeyDown}
       >
         <div class=${classMap(slotClasses)} role=${ifDefined(role)}>

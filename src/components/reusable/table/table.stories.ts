@@ -125,12 +125,11 @@ export const NestedTable: Story = {
       </style>
       <kyn-table-toolbar tableTitle=${'Nesting Table'}> </kyn-table-toolbar>
       <kyn-table
-        role="table"
         @on-row-selection-change=${(e: Event) => action(e.type)(e)}
         @on-all-rows-selection-change=${(e: Event) => action(e.type)(e)}
       >
-        <kyn-thead role="rowgroup">
-          <kyn-header-tr expandable checkboxSelection role="row">
+        <kyn-thead>
+          <kyn-header-tr expandable checkboxSelection>
             <kyn-th .align=${'center'}>ID</kyn-th>
             <kyn-th>First Name</kyn-th>
             <kyn-th>Last Name</kyn-th>
@@ -140,25 +139,24 @@ export const NestedTable: Story = {
             <kyn-th .align=${'center'}>Gender</kyn-th>
           </kyn-header-tr>
         </kyn-thead>
-        <kyn-tbody role="rowgroup">
+        <kyn-tbody>
           ${repeat(
             rows,
             (row: any) => row.id,
             (row: any) => html`
               <kyn-tr
-                role="row"
                 .rowId=${row.id}
                 key="row-${row.id}"
                 expandable
                 checkboxSelection
               >
-                <kyn-td role="cell" .align=${'center'}>${row.id}</kyn-td>
-                <kyn-td role="cell">${row.firstName}</kyn-td>
-                <kyn-td role="cell">${row.lastName}</kyn-td>
-                <kyn-td role="cell">${row.birthday}</kyn-td>
-                <kyn-td role="cell" .align=${'right'}>${row.age}</kyn-td>
-                <kyn-td role="cell">${row.firstName} ${row.lastName}</kyn-td>
-                <kyn-td role="cell" .align=${'center'}>
+                <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                <kyn-td>${row.firstName}</kyn-td>
+                <kyn-td>${row.lastName}</kyn-td>
+                <kyn-td>${row.birthday}</kyn-td>
+                <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
+                <kyn-td .align=${'center'}>
                   ${row.gender === 'male'
                     ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
                     : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
@@ -192,9 +190,9 @@ export const ExpandableRows: Story = {
         }
       </style>
       <kyn-table-toolbar tableTitle=${'Expanded Rows'}> </kyn-table-toolbar>
-      <kyn-table role="table">
-        <kyn-thead role="rowgroup">
-          <kyn-header-tr role="row" expandable .expandableColumnWidth=${'64px'}>
+      <kyn-table>
+        <kyn-thead>
+          <kyn-header-tr expandable .expandableColumnWidth=${'64px'}>
             <kyn-th .align=${'center'}>ID</kyn-th>
             <kyn-th>First Name</kyn-th>
             <kyn-th>Last Name</kyn-th>
@@ -204,24 +202,19 @@ export const ExpandableRows: Story = {
             <kyn-th .align=${'center'}>Gender</kyn-th>
           </kyn-header-tr>
         </kyn-thead>
-        <kyn-tbody role="rowgroup">
+        <kyn-tbody>
           ${repeat(
             characters,
             (row: any) => row.id,
             (row: any) => html`
-              <kyn-tr
-                role="row"
-                .rowId=${row.id}
-                key="row-${row.id}"
-                expandable
-              >
-                <kyn-td role="cell" .align=${'center'}>${row.id}</kyn-td>
-                <kyn-td role="cell">${row.firstName}</kyn-td>
-                <kyn-td role="cell">${row.lastName}</kyn-td>
-                <kyn-td role="cell">${row.birthday}</kyn-td>
-                <kyn-td role="cell" .align=${'right'}>${row.age}</kyn-td>
-                <kyn-td role="cell">${row.firstName} ${row.lastName}</kyn-td>
-                <kyn-td role="cell" .align=${'center'}>
+              <kyn-tr .rowId=${row.id} key="row-${row.id}" expandable>
+                <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                <kyn-td>${row.firstName}</kyn-td>
+                <kyn-td>${row.lastName}</kyn-td>
+                <kyn-td>${row.birthday}</kyn-td>
+                <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
+                <kyn-td .align=${'center'}>
                   ${row.gender === 'male'
                     ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
                     : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
@@ -404,9 +397,9 @@ export const DisabledRows: Story = {
   render: () => {
     return html` <kyn-table-toolbar tableTitle=${'Disabled Rows'}>
       </kyn-table-toolbar>
-      <kyn-table checkboxSelection role="table">
-        <kyn-thead role="rowgroup">
-          <kyn-header-tr role="row">
+      <kyn-table checkboxSelection>
+        <kyn-thead>
+          <kyn-header-tr>
             <kyn-th .align=${'center'}>ID</kyn-th>
             <kyn-th>First Name</kyn-th>
             <kyn-th>Last Name</kyn-th>
@@ -416,25 +409,24 @@ export const DisabledRows: Story = {
             <kyn-th .align=${'center'}>Action</kyn-th>
           </kyn-header-tr>
         </kyn-thead>
-        <kyn-tbody role="rowgroup">
+        <kyn-tbody>
           ${repeat(
             characters,
             (row: any) => row.id,
             (row: any) => html`
               <kyn-tr
-                role="row"
                 .rowId=${row.id}
                 key="row-${row.id}"
                 ?disabled=${row.id == 1 || row.id == 3 ? true : false}
                 ?selected=${row.id == 3 ? true : false}
               >
-                <kyn-td role="cell" .align=${'center'}>${row.id}</kyn-td>
-                <kyn-td role="cell">${row.firstName}</kyn-td>
-                <kyn-td role="cell">${row.lastName}</kyn-td>
-                <kyn-td role="cell">${row.birthday}</kyn-td>
-                <kyn-td role="cell" .align=${'right'}>${row.age}</kyn-td>
-                <kyn-td role="cell">${row.firstName} ${row.lastName}</kyn-td>
-                <kyn-td role="cell" .align=${'center'}>
+                <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                <kyn-td>${row.firstName}</kyn-td>
+                <kyn-td>${row.lastName}</kyn-td>
+                <kyn-td>${row.birthday}</kyn-td>
+                <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
+                <kyn-td .align=${'center'}>
                   <action-menu
                     ?disabled=${row.id == 1 || row.id == 3 ? true : false}
                   ></action-menu>

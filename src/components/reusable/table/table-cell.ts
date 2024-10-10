@@ -23,6 +23,12 @@ export class TableCell extends LitElement {
   @property({ type: Boolean, reflect: true })
   dense = false;
 
+  /** aria role.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  override role = 'cell';
+
   /** Determines the text alignment of the table cell's content. */
   @property({ type: String, reflect: true })
   align: TABLE_CELL_ALIGN = TABLE_CELL_ALIGN.LEFT;
@@ -62,16 +68,6 @@ export class TableCell extends LitElement {
   /** Dim the cell. */
   @property({ type: Boolean, reflect: true })
   dimmed = false;
-
-  /** Dim the cell. */
-  @property({ type: Boolean, reflect: true })
-  isCheckbox = false;
-
-  // /** aria-disabled.
-  //  * @internal
-  //  */
-  // @property({ type: String, reflect: true })
-  // 'aria-disabled' = 'false';
 
   /**
    * Context consumer for the table context.
@@ -118,16 +114,15 @@ export class TableCell extends LitElement {
     // if (this.isCheckbox) {
     //   this.removeAttribute('aria-disabled');
     // }
-
-    if (changedProps.has('disabled')) {
-      if (!this.isCheckbox) {
-        console.log('LOOP 1');
-        this.setAttribute('aria-disabled', this.disabled.toString());
-      } else {
-        console.log('LOOP 2');
-        this.removeAttribute('aria-disabled');
-      }
-    }
+    // if (changedProps.has('disabled')) {
+    //   if (!this.isCheckbox) {
+    //     console.log('LOOP 1');
+    //     this.setAttribute('aria-disabled', this.disabled.toString());
+    //   } else {
+    //     console.log('LOOP 2');
+    //     this.removeAttribute('aria-disabled');
+    //   }
+    // }
   }
 
   override updated(changedProperties: PropertyValues) {
