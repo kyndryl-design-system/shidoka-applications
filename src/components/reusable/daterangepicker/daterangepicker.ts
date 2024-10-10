@@ -22,6 +22,7 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
+import flatpickr from 'flatpickr';
 
 type SupportedLocale = (typeof langsArray)[number];
 
@@ -223,9 +224,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   async initializeFlatpickr(): Promise<void> {
-    if (!this._startAnchorEl) {
-      return;
-    }
+    if (!this._startAnchorEl) return;
 
     if (this.flatpickrInstance) {
       this.flatpickrInstance.destroy();
@@ -289,26 +288,23 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
-    let localeOptions: Partial<Locale>;
-
-    if (this.locale === 'en') {
-      localeOptions = {
-        weekdays: {
-          shorthand: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-          longhand: [
-            'Sunday',
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-            'Saturday',
-          ],
-        },
-      };
-    } else {
-      localeOptions = await this.loadLocale(this.locale);
-    }
+    const localeOptions: Partial<Locale> =
+      this.locale === 'en'
+        ? {
+            weekdays: {
+              shorthand: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+              longhand: [
+                'Sunday',
+                'Monday',
+                'Tuesday',
+                'Wednesday',
+                'Thursday',
+                'Friday',
+                'Saturday',
+              ],
+            },
+          }
+        : await this.loadLocale(this.locale);
 
     const options: Partial<BaseOptions> = {
       dateFormat: this.dateFormat,
@@ -322,16 +318,55 @@ export class DateRangePicker extends FormMixin(LitElement) {
       monthSelectorType: 'static',
       locale: localeOptions,
       altFormat: this.altFormat,
-      onChange: this.handleDateChange.bind(this),
+      onClose: (selectedDates, _, instance) => {
+        const timeContainer =
+          instance.calendarContainer.querySelector('.flatpickr-time');
+        if (selectedDates.length === 0) {
+          timeContainer?.classList.add('default-time-select');
+          timeContainer?.classList.remove('start-date', 'end-date');
+        }
+      },
+      onReady: (_, __, instance) => {
+        const timeContainer =
+          instance.calendarContainer.querySelector('.flatpickr-time');
+        timeContainer?.classList.add('default-time-select');
+      },
+      onChange: (selectedDates, dateStr, instance) => {
+        const timeContainer =
+          instance.calendarContainer.querySelector('.flatpickr-time');
+
+        if (!timeContainer) return;
+
+        timeContainer.classList.remove(
+          'start-date',
+          'end-date',
+          'default-time-select'
+        );
+
+        if (selectedDates.length === 0) {
+          timeContainer.classList.add('default-time-select');
+        } else if (selectedDates.length === 1) {
+          timeContainer.classList.add('start-date');
+        } else if (selectedDates.length === 2) {
+          const startDateStr = selectedDates[0].toISOString().split('T')[0];
+          const endDateStr = selectedDates[1].toISOString().split('T')[0];
+
+          if (startDateStr === endDateStr) {
+            timeContainer.classList.add('start-date');
+          } else {
+            timeContainer.classList.add('end-date');
+          }
+        }
+
+        this.handleDateChange(selectedDates, dateStr);
+      },
     };
 
     if (this.multipleInputs && this._endAnchorEl) {
-      let endInput: HTMLInputElement | undefined;
-      if (this._endAnchorEl instanceof HTMLInputElement) {
-        endInput = this._endAnchorEl;
-      } else {
-        endInput = this._endAnchorEl.querySelector('input') || undefined;
-      }
+      const endInput =
+        this._endAnchorEl instanceof HTMLInputElement
+          ? this._endAnchorEl
+          : this._endAnchorEl.querySelector('input') || undefined;
 
       if (endInput) {
         options.plugins = [rangePlugin({ input: endInput })];
@@ -361,11 +396,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
         'Date range calendar'
       );
 
-      const startDateInput = this._startAnchorEl;
-      const endDateInput = this._endAnchorEl;
-
-      startDateInput?.setAttribute('aria-label', 'Start date');
-      endDateInput?.setAttribute('aria-label', 'End date');
+      this._startAnchorEl?.setAttribute('aria-label', 'Start date');
+      this._endAnchorEl?.setAttribute('aria-label', 'End date');
     }
   }
 
@@ -387,7 +419,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (!this.flatpickrInstance) return;
 
     const currentDates = this.flatpickrInstance.selectedDates;
-
     const newOptions = await this.getFlatpickrOptions();
 
     Object.keys(newOptions).forEach((key) => {
@@ -404,7 +435,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     this.setCalendarAttributes();
-
     this.requestUpdate();
   }
 
@@ -430,13 +460,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
     updateInputValue(this._startAnchorEl, selectedDates[0]);
     updateInputValue(this._endAnchorEl, selectedDates[1]);
 
-    const customEvent = new CustomEvent('on-change', {
-      detail: { dates: selectedDates, dateString: dateStr },
-      bubbles: true,
-      composed: true,
-    });
-
-    this.dispatchEvent(customEvent);
+    this.dispatchEvent(
+      new CustomEvent('on-change', {
+        detail: { dates: selectedDates, dateString: dateStr },
+        bubbles: true,
+        composed: true,
+      })
+    );
 
     this._validate();
     this.updateSelectedDateRangeAria(selectedDates);

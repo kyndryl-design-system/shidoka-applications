@@ -1,4 +1,4 @@
-$date-picker-background: var(--kd-background-ui-default);
+$date-picker-background: var(--kd-color-background-ui-default);
 $caret-color: var(--kd-color-border-inverse);
 $current-month-year: var(--kd-color-text-eyebrow);
 $range-dates: var(--kd-color-background-inverse-hover);
@@ -6,11 +6,12 @@ $selected-date: var(--kd-color-border-accent-spruce-light);
 $today: var(--kd-color-border-accent-springgreen);
 $cal-divider: var(--kd-color-coolgray-10);
 $weekday: var(--kd-color-text-placeholder);
-$calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
+$calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
+    0px 1px 2px 0px rgba(0, 0, 0, 0.12);
 
 .flatpickr-calendar {
     background: $date-picker-background;
-    padding: 8px 0 10px;
+    padding: 8px 0;
     opacity: 0;
     display: none;
     text-align: center;
@@ -28,8 +29,8 @@ $calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
     box-sizing: border-box;
     -ms-touch-action: manipulation;
     touch-action: manipulation;
-    -webkit-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
-    box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
+    -webkit-box-shadow: $calendar-box-shadow;
+    box-shadow: $calendar-box-shadow;
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
 
     &.hasTime.noCalendar {
@@ -37,8 +38,41 @@ $calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
     }
 
     &.hasTime:not(.noCalendar) .flatpickr-time {
-        margin: 10px auto 0;
         max-width: 200px;
+    }
+
+    &:not(.rangeMode):not(.noCalendar) .flatpickr-time {
+        margin: 10px auto 5px;
+    }
+
+    &.rangeMode {
+        .flatpickr-innerContainer {
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 50%;
+                width: 1px;
+                background-color: $cal-divider;
+            }
+        }
+
+        &.hasTime .flatpickr-time {
+            margin: 8px 0;
+
+            &.default-time-select {
+                display: none;
+            }
+
+            &.start-date {
+                left: 8%;
+            }
+
+            &.end-date {
+                left: 58%;
+            }
+        }
     }
 }
 
@@ -99,7 +133,6 @@ $calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
 .flatpickr-calendar.hasTime .flatpickr-time {
     height: 40px;
     max-width: 100%;
-    margin: 0 auto;
 }
 
 .flatpickr-calendar.hasTime .flatpickr-innerContainer {
@@ -188,6 +221,7 @@ $calendar-box-shadow: 0 3px 13px rgba(0, 0, 0, 0.08);
     display: flex;
     height: 32px;
     padding: 0 8px 4px;
+    background: $date-picker-background;
 }
 
 .flatpickr-months .flatpickr-month {
@@ -802,16 +836,6 @@ span.flatpickr-weekday {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     overflow: hidden;
-
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        width: 1px;
-        background-color: $cal-divider;
-    }
 }
 
 .flatpickr-rContainer {
@@ -835,8 +859,10 @@ span.flatpickr-weekday {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    background: transparent;
-    border-radius: 0 0 5px 5px;
+    border-radius: 5px;
+    background: var(--kd-color-background-ui-soft);
+    position: relative;
+    z-index: 2;
 }
 
 .flatpickr-time:after {
