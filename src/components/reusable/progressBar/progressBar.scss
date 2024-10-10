@@ -1,6 +1,7 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/form-input.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 
 $progress-bar-status-colors: (
     default: var(--kd-color-background-primary-hover),
@@ -37,6 +38,9 @@ $progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default)
         padding: 0;
         margin: 0;
         height: 18px;
+        &.sr-only{
+            @include visibility.sr-only;
+        }
     }
 
     &__label {
