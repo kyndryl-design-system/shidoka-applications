@@ -392,7 +392,10 @@ export class StepperItem extends LitElement {
                 open: this.openChildren,
               })}
             >
-              <slot name="child"></slot>
+              <slot
+                name="child"
+                @slotchange=${this._handleChildSlotChange}
+              ></slot>
             </div>`
           : null}
       `;
@@ -420,7 +423,6 @@ export class StepperItem extends LitElement {
     this.dispatchEvent(event);
   }
 
-  // when firstmost load component
   override async firstUpdated() {
     if (
       this.vertical &&
@@ -428,43 +430,39 @@ export class StepperItem extends LitElement {
       this.childSteps?.length > 0
     ) {
       this.openChildren = true; // default open toggle when state is active
-      await this.updateComplete;
-      this.updateChildren();
     }
   }
 
   override updated(changedProps: any) {
     if (changedProps.has('stepState')) {
       this.progress = this.getProgressValue();
-      if (this.stepState === 'active') {
-        this.updateChildren();
-      }
     }
 
-    if (changedProps.has('stepSize') && this.childSteps?.length > 0) {
-      this.childSteps.forEach((child) => {
-        child.childSize = this.stepSize;
-      });
-    }
-
-    if (changedProps.has('disabled') && this.childSteps?.length > 0) {
-      this.childSteps.forEach((child) => {
-        child.disabled = this.disabled;
-      });
+    if (
+      changedProps.has('stepState') ||
+      changedProps.has('stepSize') ||
+      changedProps.has('disabled')
+    ) {
+      this._updateChildren();
     }
   }
 
-  private updateChildren() {
-    if (this.childSteps?.length > 0) {
-      this.childSteps?.forEach((child, index) => {
-        // First child is active bydefault when step is active
-        if (index === 0) child.childState = 'active';
-        this.openChildren = true;
-        // update children props / states
-        child.childSize = this.stepSize;
-        child.childIndex = index;
-      });
-    }
+  private _handleChildSlotChange() {
+    this._updateChildren();
+  }
+
+  private _updateChildren() {
+    this.childSteps?.forEach((child, index) => {
+      // First child is active by default when step is active
+      if (index === 0 && child.childState !== 'completed') {
+        child.childState = 'active';
+      }
+
+      // update children props / states
+      child.childSize = this.stepSize;
+      child.childIndex = index;
+      child.disabled = this.disabled;
+    });
   }
 
   private getProgressValue(): number {
