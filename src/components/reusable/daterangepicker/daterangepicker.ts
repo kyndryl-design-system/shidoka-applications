@@ -318,6 +318,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       clickOpens: true,
       time_24hr: this.twentyFourHourFormat,
       weekNumbers: false,
+      showMonths: 2,
       monthSelectorType: 'static',
       locale: localeOptions,
       altFormat: this.altFormat,
