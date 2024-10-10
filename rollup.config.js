@@ -21,11 +21,13 @@ export default {
     format: 'es',
     sourcemap: true,
     manualChunks(id) {
+      console.log(id);
       if (id.includes('node_modules')) {
-        let moduleName = id.split('node_modules\\')[1];
+        // let moduleName = id.split('node_modules\\')[1];
+        let moduleName = id.split(/node_modules\\/)[1];
         if (moduleName.includes('@')) {
           moduleName =
-            moduleName.split('\\')[0] + '\\' + moduleName.split('\\')[1];
+            moduleName.split(/\\/)[0] + '/' + moduleName.split(/\\/)[1];
         } else {
           moduleName = moduleName.split('\\')[0];
         }
