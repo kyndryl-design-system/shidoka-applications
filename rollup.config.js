@@ -22,7 +22,18 @@ export default {
     sourcemap: true,
     manualChunks(id) {
       if (id.includes('node_modules')) {
-        return 'vendor';
+        let splitChar = id.includes('\\') ? '\\' : '/';
+        let moduleName = id.split(`node_modules${splitChar}`)[1];
+
+        if (moduleName.includes('@')) {
+          moduleName =
+            moduleName.split(splitChar)[0] +
+            '/' +
+            moduleName.split(splitChar)[1];
+        } else {
+          moduleName = moduleName.split(splitChar)[0];
+        }
+        return 'vendor/' + moduleName;
       }
     },
   },
