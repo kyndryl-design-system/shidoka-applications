@@ -165,7 +165,6 @@ DatePickerDefault.args = {
   nameAttr: 'default-date-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
-  size: 'md',
   value: '',
   warnText: '',
   invalidText: '',
