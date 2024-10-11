@@ -8,6 +8,7 @@ import {
   injectFlatpickrStyles,
   langsArray,
   initializeSingleAnchorFlatpickr,
+  getFlatpickrOptions,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
@@ -99,13 +100,11 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   maxDate: string | number | Date = '';
 
-  /** Detects whether time format includes time values.
+  /** Sets flatpickr enableTime value based on detected dateFormat.
    * @internal
    */
   @state()
-  get _enableTime() {
-    return this.dateFormat.includes('H:');
-  }
+  private _enableTime = false;
 
   /** Flatpickr instantiation.
    * @internal
@@ -188,21 +187,20 @@ export class DatePicker extends FormMixin(LitElement) {
       changedProperties.has('minDate') ||
       changedProperties.has('maxDate')
     ) {
-      this.initializeFlatpickr();
+      this.updateEnableTime();
+      this.reinitializeFlatpickr();
     }
   }
 
-  private setupAnchor() {
-    const assignedNodes = this.anchorSlot.assignedNodes({ flatten: true });
-    this._anchorEl = assignedNodes.find(
-      (node): node is HTMLElement => node instanceof HTMLElement
-    );
+  private updateEnableTime() {
+    this._enableTime = this.dateFormat.includes('H:');
+  }
 
-    if (this._anchorEl) {
-      this.initializeFlatpickr();
-    } else {
-      console.error('Anchor element not found in the slotted content');
+  private async reinitializeFlatpickr() {
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.destroy();
     }
+    await this.initializeFlatpickr();
   }
 
   async initializeFlatpickr(): Promise<void> {
@@ -221,6 +219,21 @@ export class DatePicker extends FormMixin(LitElement) {
       setInitialDates: this.setInitialDates.bind(this),
       appendToBody: false,
     });
+
+    this.requestUpdate();
+  }
+
+  private setupAnchor() {
+    const assignedNodes = this.anchorSlot.assignedNodes({ flatten: true });
+    this._anchorEl = assignedNodes.find(
+      (node): node is HTMLElement => node instanceof HTMLElement
+    );
+
+    if (this._anchorEl) {
+      this.initializeFlatpickr();
+    } else {
+      console.error('Anchor element not found in the slotted content');
+    }
   }
 
   setCalendarAttributes(): void {
@@ -274,53 +287,23 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
-    let localeOptions: Partial<Locale>;
-
-    if (this.locale === 'en') {
-      localeOptions = {
-        weekdays: {
-          shorthand: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-          longhand: [
-            'Sunday',
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-            'Saturday',
-          ],
-        },
-      };
-    } else {
-      localeOptions = await this.loadLocale(this.locale);
-    }
-
-    const options: Partial<BaseOptions> = {
+    return getFlatpickrOptions({
+      locale: this.locale,
       dateFormat: this.dateFormat,
-      mode: this.mode,
       enableTime: this._enableTime,
-      allowInput: false,
-      clickOpens: true,
-      time_24hr: this.twentyFourHourFormat,
-      weekNumbers: false,
-      wrap: false,
-      monthSelectorType: 'static',
+      twentyFourHourFormat: this.twentyFourHourFormat,
       altFormat: this.altFormat,
-      onChange: this.handleDateChange.bind(this),
+      startAnchorEl: this._anchorEl!,
+      minDate: this.minDate,
+      maxDate: this.maxDate,
+      enable: this.enable,
+      disable: this.disable,
+      handleDateChange: this.handleDateChange.bind(this),
+      loadLocale: this.loadLocale.bind(this),
+      mode: this.mode,
       closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
-      locale: localeOptions,
-    };
-
-    if (!(this._anchorEl instanceof HTMLInputElement)) {
-      options.positionElement = this._anchorEl;
-    }
-
-    if (this.minDate) options.minDate = this.minDate;
-    if (this.maxDate) options.maxDate = this.maxDate;
-    if (this.enable.length > 0) options.enable = this.enable;
-    if (this.disable.length > 0) options.disable = this.disable;
-
-    return options;
+      wrap: false,
+    });
   }
 
   handleDateChange(selectedDates: Date[], dateStr: string): void {

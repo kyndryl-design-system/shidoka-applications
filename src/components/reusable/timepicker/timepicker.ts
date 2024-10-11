@@ -8,6 +8,7 @@ import {
   isSupportedLocale,
   injectFlatpickrStyles,
   initializeSingleAnchorFlatpickr,
+  getFlatpickrOptions,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
@@ -282,41 +283,51 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
-    const options: Partial<BaseOptions> = {
-      noCalendar: true,
-      dateFormat: 'H:i',
+    return getFlatpickrOptions({
+      locale: this.locale,
       enableTime: true,
-      allowInput: false,
-      clickOpens: true,
-      time_24hr: this.twentyFourHourFormat,
+      twentyFourHourFormat: this.twentyFourHourFormat,
+      startAnchorEl: this._anchorEl!,
+      minTime: this.minTime,
+      maxTime: this.maxTime,
+      defaultDate: this.defaultDate,
+      handleTimeChange: this.handleTimeInputChange.bind(this),
+      loadLocale: this.loadLocale.bind(this),
+      mode: 'time',
       wrap: false,
-      onChange: this.handleTimeInputChange.bind(this),
-    };
-
-    options.locale = await this.loadLocale(this.locale);
-
-    if (this.minTime) options.minTime = this.minTime;
-    if (this.maxTime) options.maxTime = this.maxTime;
-    if (this.defaultDate) options.defaultDate = this.defaultDate;
-
-    return options;
+      noCalendar: true,
+    });
   }
 
-  handleTimeInputChange(_selectedDates: Date[], dateStr: string): void {
-    const [hours, minutes] = dateStr.split(':').map(Number);
+  handleTimeInputChange(selectedDates: Date[], dateStr: string): void {
+    if (selectedDates.length > 0) {
+      const selectedDate = selectedDates[0];
+      const hours = selectedDate.getHours();
+      const minutes = selectedDate.getMinutes();
 
-    const today = new Date();
-    today.setHours(hours, minutes, 0, 0);
+      const today = new Date();
+      today.setHours(hours, minutes, 0, 0);
 
-    const selectedTime = today.getTime();
+      const selectedTime = today.getTime();
 
-    this.value = selectedTime;
+      this.value = selectedTime;
 
-    this.emitValue(dateStr);
-    this.requestUpdate('value', '');
-    this._validate();
+      const timeStr = this.twentyFourHourFormat
+        ? `${hours.toString().padStart(2, '0')}:${minutes
+            .toString()
+            .padStart(2, '0')}`
+        : dateStr;
+
+      this.emitValue(timeStr);
+      this.requestUpdate('value', '');
+      this._validate();
+    } else {
+      this.value = null;
+      this.emitValue('');
+      this.requestUpdate('value', '');
+      this._validate();
+    }
   }
-
   private emitValue(timeStr: string): void {
     const event = new CustomEvent('on-change', {
       detail: { time: timeStr },

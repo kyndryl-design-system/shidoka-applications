@@ -8,12 +8,12 @@ import {
   langsArray,
   injectFlatpickrStyles,
   initializeMultiAnchorFlatpickr,
+  getFlatpickrOptions,
 } from '../../../common/helpers/flatpickr';
 
 import { BaseOptions } from 'flatpickr/dist/types/options';
 import type { Instance } from 'flatpickr/dist/types/instance';
 import { Locale } from 'flatpickr/dist/types/locale';
-import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 
 import DateRangePickerStyles from './daterangepicker.scss';
@@ -22,7 +22,6 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme-
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
-import flatpickr from 'flatpickr';
 
 type SupportedLocale = (typeof langsArray)[number];
 
@@ -104,7 +103,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: String })
   maxDate: string | number | Date = '';
 
-  /** Detects whether time format includes time values.
+  /** Sets flatpickr enableTime value based on detected dateFormat.
    * @internal
    */
   @state()
@@ -208,7 +207,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     await this.updateComplete;
     this.setupAnchors();
     this.updateShowMonths();
-    window.addEventListener('resize', this.handleResize.bind(this));
+    window.addEventListener('resize', this.handleResize);
   }
 
   override updated(changedProperties: PropertyValues): void {
@@ -229,19 +228,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   private async reinitializeFlatpickr() {
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.destroy();
-    }
+    this.flatpickrInstance?.destroy();
     await this.initializeFlatpickr();
   }
 
   async initializeFlatpickr(): Promise<void> {
     if (!this._startAnchorEl) return;
 
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.destroy();
-    }
-
+    this.flatpickrInstance?.destroy();
     this.flatpickrInstance = await initializeMultiAnchorFlatpickr({
       startAnchorEl: this._startAnchorEl,
       endAnchorEl: this._endAnchorEl,
@@ -255,16 +249,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   private setupAnchors() {
-    const startAssignedNodes = this.startAnchorSlot.assignedNodes();
-    this._startAnchorEl = startAssignedNodes.find(
-      (node): node is HTMLElement => node instanceof HTMLElement
-    );
+    this._startAnchorEl = this.startAnchorSlot
+      .assignedNodes()
+      .find((node): node is HTMLElement => node instanceof HTMLElement);
 
     if (this.multipleInputs) {
-      const endAssignedNodes = this.endAnchorSlot.assignedNodes();
-      this._endAnchorEl = endAssignedNodes.find(
-        (node): node is HTMLElement => node instanceof HTMLElement
-      );
+      this._endAnchorEl = this.endAnchorSlot
+        .assignedNodes()
+        .find((node): node is HTMLElement => node instanceof HTMLElement);
     }
 
     if (this._startAnchorEl) {
@@ -302,118 +294,46 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
-    const localeOptions: Partial<Locale> =
-      this.locale === 'en'
-        ? {
-            weekdays: {
-              shorthand: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-              longhand: [
-                'Sunday',
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thursday',
-                'Friday',
-                'Saturday',
-              ],
-            },
-          }
-        : await this.loadLocale(this.locale);
-
-    const isWideScreen = window.innerWidth > 767;
-
-    const options: Partial<BaseOptions> = {
+    return getFlatpickrOptions({
+      locale: this.locale,
       dateFormat: this.dateFormat,
-      mode: 'range',
       enableTime: this._enableTime,
-      allowInput: false,
-      clickOpens: true,
-      time_24hr: this.twentyFourHourFormat,
-      weekNumbers: false,
-      showMonths: isWideScreen ? 2 : 1,
-      monthSelectorType: 'static',
-      locale: localeOptions,
+      twentyFourHourFormat: this.twentyFourHourFormat,
       altFormat: this.altFormat,
-      onClose: (selectedDates, _, instance) => {
-        const timeContainer =
-          instance.calendarContainer.querySelector('.flatpickr-time');
-        if (selectedDates.length === 0) {
-          timeContainer?.classList.add('default-time-select');
-          timeContainer?.classList.remove('start-date', 'end-date');
-        }
-      },
-      onReady: (_, __, instance) => {
-        const timeContainer =
-          instance.calendarContainer.querySelector('.flatpickr-time');
-        timeContainer?.classList.add('default-time-select');
-      },
-      onChange: (selectedDates, dateStr, instance) => {
-        const timeContainer =
-          instance.calendarContainer.querySelector('.flatpickr-time');
-
-        if (!timeContainer) return;
-
-        timeContainer.classList.remove(
-          'start-date',
-          'end-date',
-          'default-time-select'
-        );
-
-        if (selectedDates.length === 0) {
-          timeContainer.classList.add('default-time-select');
-        } else if (selectedDates.length === 1) {
-          timeContainer.classList.add('start-date');
-        } else if (selectedDates.length === 2) {
-          const startDateStr = selectedDates[0].toISOString().split('T')[0];
-          const endDateStr = selectedDates[1].toISOString().split('T')[0];
-
-          if (startDateStr === endDateStr) {
-            timeContainer.classList.add('start-date');
-          } else {
-            timeContainer.classList.add('end-date');
-          }
-        }
-
-        this.handleDateChange(selectedDates, dateStr);
-      },
-    };
-
-    if (this.multipleInputs && this._endAnchorEl) {
-      const endInput =
-        this._endAnchorEl instanceof HTMLInputElement
-          ? this._endAnchorEl
-          : this._endAnchorEl.querySelector('input') || undefined;
-
-      if (endInput) {
-        options.plugins = [rangePlugin({ input: endInput })];
-      }
-    }
-
-    if (!(this._startAnchorEl instanceof HTMLInputElement)) {
-      options.positionElement = this._startAnchorEl;
-    }
-
-    if (this.minDate) options.minDate = this.minDate;
-    if (this.maxDate) options.maxDate = this.maxDate;
-    if (this.enable.length > 0) options.enable = this.enable;
-    if (this.disable.length > 0) options.disable = this.disable;
-
-    return options;
+      multipleInputs: this.multipleInputs,
+      endAnchorEl: this._endAnchorEl,
+      startAnchorEl: this._startAnchorEl!,
+      minDate: this.minDate,
+      maxDate: this.maxDate,
+      enable: this.enable,
+      disable: this.disable,
+      handleDateChange: this.handleDateChange.bind(this),
+      loadLocale: this.loadLocale.bind(this),
+      mode: 'range',
+    });
   }
 
-  private handleResize() {
-    this.updateShowMonths();
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.destroy();
-      this.initializeFlatpickr();
-    }
-  }
+  async updateFlatpickrOptions(): Promise<void> {
+    if (!this.flatpickrInstance) return;
 
-  private updateShowMonths() {
-    const isWideScreen = window.innerWidth >= 767;
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.set('showMonths', isWideScreen ? 2 : 1);
+    const currentDates = this.flatpickrInstance.selectedDates;
+    const newOptions = await this.getFlatpickrOptions();
+
+    Object.keys(newOptions).forEach((key) => {
+      this.flatpickrInstance!.set(
+        key as keyof BaseOptions,
+        newOptions[key as keyof BaseOptions]
+      );
+    });
+
+    this.flatpickrInstance.redraw();
+
+    if (currentDates && currentDates.length === 2) {
+      this.flatpickrInstance.setDate(currentDates, false);
     }
+
+    this.setCalendarAttributes();
+    this.requestUpdate();
   }
 
   setCalendarAttributes(): void {
@@ -446,27 +366,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }
 
-  async updateFlatpickrOptions(): Promise<void> {
-    if (!this.flatpickrInstance) return;
+  private handleResize = () => {
+    this.updateShowMonths();
+    this.flatpickrInstance?.destroy();
+    this.initializeFlatpickr();
+  };
 
-    const currentDates = this.flatpickrInstance.selectedDates;
-    const newOptions = await this.getFlatpickrOptions();
-
-    Object.keys(newOptions).forEach((key) => {
-      this.flatpickrInstance!.set(
-        key as keyof BaseOptions,
-        newOptions[key as keyof BaseOptions]
-      );
-    });
-
-    this.flatpickrInstance.redraw();
-
-    if (currentDates && currentDates.length === 2) {
-      this.flatpickrInstance.setDate(currentDates, false);
-    }
-
-    this.setCalendarAttributes();
-    this.requestUpdate();
+  private updateShowMonths() {
+    const isWideScreen = window.innerWidth >= 767;
+    this.flatpickrInstance?.set('showMonths', isWideScreen ? 2 : 1);
   }
 
   handleDateChange(selectedDates: Date[], dateStr: string): void {
@@ -530,11 +438,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.destroy();
-      this.flatpickrInstance = undefined;
-    }
-    window.removeEventListener('resize', this.updateShowMonths.bind(this));
+    this.flatpickrInstance?.destroy();
+    window.removeEventListener('resize', this.handleResize);
   }
 }
 

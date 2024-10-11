@@ -3,6 +3,7 @@ import l10n from 'flatpickr/dist/l10n';
 import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import { Instance } from 'flatpickr/dist/types/instance';
 import { BaseOptions } from 'flatpickr/dist/types/options';
+import { Locale } from 'flatpickr/dist/types/locale';
 
 let flatpickrStylesInjected = false;
 
@@ -35,6 +36,35 @@ const DATE_FORMAT_OPTIONS = {
 } as const;
 
 type DateFormatOption = keyof typeof DATE_FORMAT_OPTIONS;
+
+interface FlatpickrOptionsContext {
+  locale: string;
+  dateFormat?: string;
+  enableTime: boolean;
+  twentyFourHourFormat: boolean;
+  altFormat?: string;
+  multipleInputs?: boolean;
+  endAnchorEl?: HTMLElement;
+  startAnchorEl: HTMLElement;
+  minDate?: string | number | Date;
+  maxDate?: string | number | Date;
+  minTime?: string | number | Date;
+  maxTime?: string | number | Date;
+  defaultDate?: string | number | Date;
+  enable?: (string | number | Date)[];
+  disable?: (string | number | Date)[];
+  handleDateChange?: (
+    selectedDates: Date[],
+    dateStr: string,
+    instance: any
+  ) => void;
+  handleTimeChange?: (selectedDates: Date[], dateStr: string) => void;
+  loadLocale: (locale: string) => Promise<Partial<Locale>>;
+  mode?: 'single' | 'multiple' | 'range' | 'time';
+  closeOnSelect?: boolean;
+  wrap?: boolean;
+  noCalendar?: boolean;
+}
 
 export function isSupportedLocale(locale: string): boolean {
   return langsArray.includes(locale as SupportedLocale);
@@ -203,6 +233,102 @@ export function getPlaceholder(dateFormat: string): string {
     return DATE_FORMAT_OPTIONS[dateFormat];
   }
   return 'Select date';
+}
+
+export async function getFlatpickrOptions(
+  context: FlatpickrOptionsContext
+): Promise<Partial<BaseOptions>> {
+  const {
+    locale,
+    dateFormat,
+    enableTime,
+    twentyFourHourFormat,
+    altFormat,
+    multipleInputs,
+    endAnchorEl,
+    startAnchorEl,
+    minDate,
+    maxDate,
+    minTime,
+    maxTime,
+    defaultDate,
+    enable,
+    disable,
+    handleDateChange,
+    handleTimeChange,
+    loadLocale,
+    mode = 'single',
+    closeOnSelect,
+    wrap = false,
+    noCalendar = false,
+  } = context;
+
+  const localeOptions = await loadLocale(locale);
+
+  const isWideScreen = window.innerWidth > 767;
+
+  const options: Partial<BaseOptions> = {
+    dateFormat: dateFormat || (mode === 'time' ? 'H:i' : 'Y-m-d'),
+    mode: mode === 'time' ? 'single' : mode,
+    enableTime: mode === 'time' ? true : enableTime,
+    noCalendar: mode === 'time' ? true : noCalendar,
+    allowInput: false,
+    clickOpens: true,
+    time_24hr: twentyFourHourFormat,
+    weekNumbers: false,
+    wrap: wrap,
+    showMonths: isWideScreen && mode === 'range' ? 2 : 1,
+    monthSelectorType: 'static',
+    locale: localeOptions,
+    altFormat: altFormat,
+    onChange: mode === 'time' ? handleTimeChange : handleDateChange,
+    closeOnSelect: closeOnSelect ?? !(mode === 'multiple' || enableTime),
+  };
+
+  if (mode === 'range') {
+    options.onClose = (selectedDates, _, instance) => {
+      const timeContainer =
+        instance.calendarContainer.querySelector('.flatpickr-time');
+      if (selectedDates.length === 0) {
+        timeContainer?.classList.add('default-time-select');
+        timeContainer?.classList.remove('start-date', 'end-date');
+      }
+    };
+
+    options.onReady = (_, __, instance) => {
+      const timeContainer =
+        instance.calendarContainer.querySelector('.flatpickr-time');
+      timeContainer?.classList.add('default-time-select');
+    };
+  }
+
+  if (multipleInputs && endAnchorEl) {
+    const endInput =
+      endAnchorEl instanceof HTMLInputElement
+        ? endAnchorEl
+        : endAnchorEl.querySelector('input') || undefined;
+
+    if (endInput) {
+      options.plugins = [
+        ...(options.plugins || []),
+        rangePlugin({ input: endInput }),
+      ];
+    }
+  }
+
+  if (!(startAnchorEl instanceof HTMLInputElement)) {
+    options.positionElement = startAnchorEl;
+  }
+
+  if (minDate) options.minDate = minDate;
+  if (maxDate) options.maxDate = maxDate;
+  if (minTime) options.minTime = minTime;
+  if (maxTime) options.maxTime = maxTime;
+  if (defaultDate) options.defaultDate = defaultDate;
+  if (enable && enable.length > 0) options.enable = enable;
+  if (disable && disable.length > 0) options.disable = disable;
+
+  return options;
 }
 
 export const langsArray = [
