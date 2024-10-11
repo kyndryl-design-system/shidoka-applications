@@ -17,7 +17,7 @@ import { Locale } from 'flatpickr/dist/types/locale';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 
 import DateRangePickerStyles from './daterangepicker.scss';
-import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme-2.scss';
+import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';

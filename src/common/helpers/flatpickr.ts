@@ -70,11 +70,12 @@ export function isSupportedLocale(locale: string): boolean {
   return langsArray.includes(locale as SupportedLocale);
 }
 
-export function modifyEngDayShorthands(): void {
-  l10n.en.weekdays.shorthand.forEach((_day: string, index: number) => {
-    const currentDay = l10n.en.weekdays.shorthand;
-    currentDay[index] = currentDay[index].charAt(0);
-  });
+export function modifyWeekdayShorthands(localeOptions: Partial<Locale>): void {
+  if (localeOptions.weekdays && localeOptions.weekdays.shorthand) {
+    localeOptions.weekdays.shorthand = localeOptions.weekdays.shorthand.map(
+      (day) => day.charAt(0)
+    ) as [string, string, string, string, string, string, string];
+  }
 }
 
 export function injectFlatpickrStyles(customStyle: string): void {
@@ -264,6 +265,7 @@ export async function getFlatpickrOptions(
   } = context;
 
   const localeOptions = await loadLocale(locale);
+  modifyWeekdayShorthands(localeOptions);
 
   const isWideScreen = window.innerWidth > 767;
 
