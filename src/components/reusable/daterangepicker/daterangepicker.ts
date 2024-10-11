@@ -17,7 +17,7 @@ import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 
 import DateRangePickerStyles from './daterangepicker.scss';
-import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
+import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme-2.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
@@ -209,6 +209,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
     injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
     await this.updateComplete;
     this.setupAnchors();
+    this.updateShowMonths();
+    window.addEventListener('resize', this.handleResize.bind(this));
   }
 
   override updated(changedProperties: PropertyValues): void {
@@ -306,6 +308,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
           }
         : await this.loadLocale(this.locale);
 
+    const isWideScreen = window.innerWidth > 767;
+
     const options: Partial<BaseOptions> = {
       dateFormat: this.dateFormat,
       mode: 'range',
@@ -314,7 +318,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       clickOpens: true,
       time_24hr: this.twentyFourHourFormat,
       weekNumbers: false,
-      showMonths: 2,
+      showMonths: isWideScreen ? 2 : 1,
       monthSelectorType: 'static',
       locale: localeOptions,
       altFormat: this.altFormat,
@@ -383,6 +387,21 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (this.disable.length > 0) options.disable = this.disable;
 
     return options;
+  }
+
+  private handleResize() {
+    this.updateShowMonths();
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.destroy();
+      this.initializeFlatpickr();
+    }
+  }
+
+  private updateShowMonths() {
+    const isWideScreen = window.innerWidth >= 767;
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.set('showMonths', isWideScreen ? 2 : 1);
+    }
   }
 
   setCalendarAttributes(): void {
@@ -503,6 +522,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.flatpickrInstance.destroy();
       this.flatpickrInstance = undefined;
     }
+    window.removeEventListener('resize', this.updateShowMonths.bind(this));
   }
 }
 
