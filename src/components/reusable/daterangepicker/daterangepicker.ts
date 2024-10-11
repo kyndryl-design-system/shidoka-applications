@@ -108,9 +108,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
    * @internal
    */
   @state()
-  get _enableTime() {
-    return this.dateFormat.includes('H:');
-  }
+  private _enableTime = false;
 
   /** Flatpickr instantiation.
    * @internal
@@ -221,8 +219,20 @@ export class DateRangePicker extends FormMixin(LitElement) {
       changedProperties.has('maxDate') ||
       changedProperties.has('locale')
     ) {
-      this.updateFlatpickrOptions();
+      this.updateEnableTime();
+      this.reinitializeFlatpickr();
     }
+  }
+
+  private updateEnableTime() {
+    this._enableTime = this.dateFormat.includes('H:');
+  }
+
+  private async reinitializeFlatpickr() {
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.destroy();
+    }
+    await this.initializeFlatpickr();
   }
 
   async initializeFlatpickr(): Promise<void> {
@@ -240,6 +250,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
       setInitialDates: this.setInitialDates.bind(this),
       appendToBody: false,
     });
+
+    this.requestUpdate();
   }
 
   private setupAnchors() {
