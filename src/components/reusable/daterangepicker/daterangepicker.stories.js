@@ -23,6 +23,7 @@ export default {
     startDateLabel: { control: { type: 'text' } },
     endDateLabel: { control: { type: 'text' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
+    dateRangePickerDisabled: { control: { type: 'boolean' } },
     dateFormat: {
       options: [
         'Y-m-d',
@@ -231,7 +232,7 @@ const ButtonIconTextAnchorTemplate = (args) => {
         <span part="icon" style="margin: 3px 10px 0 0;"
           >${unsafeSVG(calendarIcon)}</span
         >
-        Start Date
+        Choose Date Range
       </kd-button>
     </kyn-date-range-picker>
   `;
@@ -349,8 +350,8 @@ DefaultDateRangePicker.args = {
   twentyFourHourFormat: false,
   minDate: '',
   maxDate: '',
-  startDateLabel: 'Start Date',
-  endDateLabel: 'End Date',
+  startDateLabel: 'Date Range',
+  endDateLabel: '',
 };
 DefaultDateRangePicker.storyName = 'Date Range (Single Input, Default)';
 
@@ -359,7 +360,7 @@ DateRangeIconPicker.args = {
   ...DefaultDateRangePicker.args,
   nameAttr: 'date-range-icon-button-picker',
   caption: 'Click the button above to launch the date range picker.',
-  startDateLabel: 'Button w/ Icon Date Range Picker Launcher',
+  startDateLabel: 'Range Picker Button w/ Icon',
   endDateLabel: '',
 };
 DateRangeIconPicker.storyName = 'Date Range (Button Anchor w/ Icon)';
@@ -369,7 +370,7 @@ DateRangeIconTextAnchor.args = {
   ...DefaultDateRangePicker.args,
   nameAttr: 'default-date-range-picker',
   caption: 'Click the button above to launch the date range picker.',
-  startDateLabel: 'Button w/ Icon + Text Date Range Picker Launcher',
+  startDateLabel: 'Range Picker Button w/ Icon + Text',
   endDateLabel: '',
 };
 DateRangeIconTextAnchor.storyName = 'Date Range (Button Anchor w/ Icon + Text)';
@@ -380,6 +381,8 @@ DateRangePickerMulti.args = {
   nameAttr: 'date-range-multi-input-picker',
   multipleInputs: true,
   caption: '',
+  startDateLabel: 'Start Date',
+  endDateLabel: 'End Date',
 };
 DateRangePickerMulti.storyName = 'Date Range (Multi Input)';
 
