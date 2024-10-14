@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import './index';
 import '../tooltip';
@@ -34,24 +35,28 @@ const steps = [
     stepName: 'Step 1',
     stepTitle: 'Completed',
     stepState: 'completed',
+    stepLink: 'javascript:void(0)',
     disabled: false,
   },
   {
     stepName: 'Step 2',
     stepTitle: 'Excluded',
     stepState: 'excluded',
+    stepLink: 'javascript:void(0)',
     disabled: false,
   },
   {
     stepName: 'Step 3',
     stepTitle: 'Destructive',
     stepState: 'destructive',
+    stepLink: 'javascript:void(0)',
     disabled: false,
   },
   {
     stepName: 'Step 4',
     stepTitle: 'Active',
     stepState: 'active',
+    stepLink: 'javascript:void(0)',
     disabled: false,
   },
   {
@@ -138,6 +143,7 @@ export const Horizontal = {
             stepName=${step.stepName}
             stepTitle=${step.stepTitle}
             stepState=${step.stepState}
+            stepLink=${ifDefined(step.stepLink)}
             ?disabled=${step.disabled}
           >
           </kyn-stepper-item>
@@ -160,17 +166,20 @@ export const Vertical = {
         <kyn-stepper-item
           stepName="Step 1"
           stepTitle="Completed"
+          stepLink="javascript:void(0)"
           stepState="completed"
         ></kyn-stepper-item>
         <kyn-stepper-item
           stepName="Step 2"
           stepTitle="Excluded"
+          stepLink="javascript:void(0)"
           stepState="excluded"
         >
         </kyn-stepper-item>
         <kyn-stepper-item
           stepName="Step 3"
           stepTitle="Destructive"
+          stepLink="javascript:void(0)"
           stepState="destructive"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start" direction="top">
@@ -180,6 +189,7 @@ export const Vertical = {
         <kyn-stepper-item
           stepName="Step 4"
           stepTitle="Active"
+          stepLink="javascript:void(0)"
           stepState="active"
         >
         </kyn-stepper-item>
@@ -220,20 +230,24 @@ export const NestedSteps = {
           stepName="Step 1"
           stepTitle="Completed"
           stepState="completed"
+          stepLink="javascript:void(0)"
         ></kyn-stepper-item>
         <kyn-stepper-item
           stepName="Step 2"
           stepTitle="Completed"
           stepState="completed"
+          stepLink="javascript:void(0)"
         ></kyn-stepper-item>
         <kyn-stepper-item
           stepName="Step 3"
           stepTitle="Active"
           stepState="active"
+          stepLink="javascript:void(0)"
         >
           <kyn-stepper-item-child
             slot="child"
             childTitle="Nested Step Title"
+            childLink="javascript:void(0)"
             childSubTitle="Optional subtitle"
             @on-child-click=${(e) => action(e.type)(e)}
           >
