@@ -49,12 +49,6 @@ export class TableCell extends LitElement {
   @property({ type: String, reflect: true })
   minWidth = '';
 
-  /** Truncates the cell's contents with ellipsis.
-   * @ignore
-   */
-  @property({ type: Boolean, reflect: true })
-  ellipsis = false;
-
   /** Disables the cell. */
   @property({ type: Boolean, reflect: true })
   disabled = false;
@@ -65,7 +59,7 @@ export class TableCell extends LitElement {
 
   /**
    * Context consumer for the table context.
-   * Updates the cell's dense and ellipsis properties when the context changes.
+   * Updates the cell's dense properties when the context changes.
    * @private
    * @ignore
    * @type {ContextConsumer<TableContextType, TableCell>}
@@ -82,15 +76,12 @@ export class TableCell extends LitElement {
   );
 
   /**
-   * Updates the cell's dense and ellipsis properties when the context changes.
+   * Updates the cell's dense properties when the context changes.
    * @param {TableContextType} context - The updated context.
    */
-  handleContextChange = ({ dense, ellipsis }: TableContextType) => {
+  handleContextChange = ({ dense }: TableContextType) => {
     if (typeof dense == 'boolean') {
       this.dense = dense;
-    }
-    if (typeof ellipsis == 'boolean') {
-      this.ellipsis = ellipsis;
     }
   };
 

@@ -110,7 +110,7 @@ export class TableRow extends LitElement {
 
   /**
    * Context consumer for the table context.
-   * Updates the cell's dense and ellipsis properties when the context changes.
+   * Updates the cell's dense properties when the context changes.
    * @private
    * @ignore
    * @type {ContextConsumer<TableContextType, TableHeader>}
@@ -127,7 +127,7 @@ export class TableRow extends LitElement {
   );
 
   /**
-   * Updates the cell's dense and ellipsis properties when the context changes.
+   * Updates the cell's dense properties when the context changes.
    * @param {TableContextType} context - The updated context.
    */
   handleContextChange = ({ checkboxSelection }: TableContextType) => {

@@ -60,10 +60,6 @@ class MyStoryTable extends LitElement {
   @property({ type: Boolean, reflect: true })
   dense = false;
 
-  /** @ignore */
-  @property({ type: Boolean, reflect: true })
-  ellipsis = false;
-
   @property({ type: Boolean, reflect: true })
   fixedLayout = false;
 
@@ -212,7 +208,6 @@ class MyStoryTable extends LitElement {
       showTableActions,
       dense,
       striped,
-      ellipsis,
       fixedLayout,
       stickyHeader,
       checkboxSelection,
@@ -226,7 +221,7 @@ class MyStoryTable extends LitElement {
       ? extractData(rows, pageNumber, pageSize)
       : rows;
 
-    const fNameMaxWidth = this.ellipsis ? '100px' : 'auto';
+    const fNameMaxWidth = 'auto';
     const tableTitle =
       selectedRows.length > 0
         ? selectedRows.length === 1
@@ -250,7 +245,6 @@ class MyStoryTable extends LitElement {
         <kyn-table
           ?striped=${striped}
           ?dense=${dense}
-          ?ellipsis=${ellipsis}
           ?fixedLayout=${fixedLayout}
           ?stickyHeader=${stickyHeader}
           ?checkboxSelection=${checkboxSelection}
