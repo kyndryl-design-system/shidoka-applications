@@ -5,7 +5,7 @@ import ErrorScss from './errorBlock.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 
 /**
- * Error.
+ * Error block.
  * @slot unnamed - Slot for the error description.
  * @slot image - Slot for the error image.
  * @slot actions - Slot for the action buttons.
