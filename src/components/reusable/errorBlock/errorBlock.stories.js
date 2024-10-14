@@ -1,12 +1,12 @@
 import { html } from 'lit';
 import './index';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import alertImg from './redfords/Alert_Redford.svg';
-import notFoundImg from './redfords/NotFound_Redford.svg';
-import stopImg from './redfords/Stop_Redford.svg';
-import timeoutImg from './redfords/Timeout_Redford.svg';
+import alertImg from '../../../common/assets/redfords/Alert_Redford.svg';
+import notFoundImg from '../../../common/assets/redfords/NotFound_Redford.svg';
+import stopImg from '../../../common/assets/redfords/Stop_Redford.svg';
+import timeoutImg from '../../../common/assets/redfords/Timeout_Redford.svg';
 
 export default {
   title: 'Components/Error Block',
@@ -47,10 +47,10 @@ export const ErrorBlock = {
   render: (args) => {
     return html`
       <kyn-error-block titleText=${args.titleText}>
-        <!-- <div slot="image">${unsafeHTML(alertImg)}</div> -->
-        <!-- <div slot="image">${unsafeHTML(notFoundImg)}</div> -->
-        <!-- <div slot="image">${unsafeHTML(stopImg)}</div> -->
-        <div slot="image">${unsafeHTML(timeoutImg)}</div>
+        <!-- <div slot="image">${unsafeSVG(alertImg)}</div> -->
+        <!-- <div slot="image">${unsafeSVG(notFoundImg)}</div> -->
+        <!-- <div slot="image">${unsafeSVG(stopImg)}</div> -->
+        <div slot="image">${unsafeSVG(timeoutImg)}</div>
         <p>Your description for the error message goes here.</p>
         <div slot="actions" class="actions-container">
           <kd-button
@@ -68,7 +68,7 @@ export const ErrorBlock = {
             Secondary action
           </kd-button>
         </div>
-      </kyn-erro-blockr>
+      </kyn-error-block>
     `;
   },
 };

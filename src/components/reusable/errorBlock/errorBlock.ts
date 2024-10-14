@@ -26,7 +26,7 @@ export class ErrorBlock extends LitElement {
           <slot name="image"></slot>
         </div>
         <div class="error-title">
-          <h1>${this.titleText}</h1>
+          <p>${this.titleText}</p>
         </div>
         <div class="error-description">
           <slot></slot>
