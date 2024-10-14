@@ -25,25 +25,6 @@ const args = {
 
 export const ErrorBlock = {
   args,
-  decorators: [
-    (story) => html`
-      <style>
-        /* Example styles. Added to make the action buttons responsive. */
-        .actions-container {
-          display: flex;
-          gap: 16px;
-          flex-wrap: wrap;
-          @media (max-width: 42rem) {
-            kd-button {
-              width: 100%;
-              flex-grow: 1;
-            }
-          }
-        }
-      </style>
-      ${story()}
-    `,
-  ],
   render: (args) => {
     return html`
       <kyn-error-block titleText=${args.titleText}>
@@ -52,22 +33,22 @@ export const ErrorBlock = {
         <!-- <div slot="image">${unsafeSVG(stopImg)}</div> -->
         <div slot="image">${unsafeSVG(timeoutImg)}</div>
         <p>Your description for the error message goes here.</p>
-        <div slot="actions" class="actions-container">
-          <kd-button
-            size="medium"
-            kind="primary-app"
-            description="Primary action"
-          >
-            Primary action
-          </kd-button>
-          <kd-button
-            size="medium"
-            kind="secondary"
-            description="Secondary action"
-          >
-            Secondary action
-          </kd-button>
-        </div>
+        <kd-button
+          slot="actions"
+          size="medium"
+          kind="primary-app"
+          description="Primary action"
+        >
+          Primary action
+        </kd-button>
+        <kd-button
+          slot="actions"
+          size="medium"
+          kind="secondary"
+          description="Secondary action"
+        >
+          Secondary action
+        </kd-button>
       </kyn-error-block>
     `;
   },
