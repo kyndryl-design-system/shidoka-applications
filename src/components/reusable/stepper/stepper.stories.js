@@ -240,6 +240,29 @@ export const NestedSteps = {
         ></kyn-stepper-item>
         <kyn-stepper-item
           stepName="Step 3"
+          stepTitle="Completed"
+          stepState="completed"
+          stepLink="javascript:void(0)"
+        >
+          <kyn-stepper-item-child
+            slot="child"
+            childTitle="Nested Step Title"
+            childState="completed"
+            childLink="javascript:void(0)"
+            childSubTitle="Optional subtitle"
+            @on-child-click=${(e) => action(e.type)(e)}
+          >
+          </kyn-stepper-item-child>
+          <kyn-stepper-item-child
+            slot="child"
+            childTitle="Nested Step Title"
+            childState="completed"
+            childLink="javascript:void(0)"
+            @on-child-click=${(e) => action(e.type)(e)}
+          ></kyn-stepper-item-child>
+        </kyn-stepper-item>
+        <kyn-stepper-item
+          stepName="Step 4"
           stepTitle="Active"
           stepState="active"
           stepLink="javascript:void(0)"
@@ -247,6 +270,7 @@ export const NestedSteps = {
           <kyn-stepper-item-child
             slot="child"
             childTitle="Nested Step Title"
+            childState="active"
             childLink="javascript:void(0)"
             childSubTitle="Optional subtitle"
             @on-child-click=${(e) => action(e.type)(e)}
@@ -259,13 +283,12 @@ export const NestedSteps = {
           ></kyn-stepper-item-child>
         </kyn-stepper-item>
         <kyn-stepper-item
-          stepName="Step 4"
+          stepName="Step 5"
           stepTitle="Pending"
           stepState="pending"
-        >
-        </kyn-stepper-item>
+        ></kyn-stepper-item>
         <kyn-stepper-item
-          stepName="Step 5"
+          stepName="Step 6"
           stepTitle="Pending"
           stepState="pending"
         ></kyn-stepper-item>

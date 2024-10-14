@@ -361,9 +361,7 @@ export class StepperItem extends LitElement {
               <slot name="tooltip"></slot>
 
               <!-- Toggle children stuff -->
-              ${this.stepState === 'active' &&
-              this.childSteps?.length > 0 &&
-              this.stepperType === 'procedure'
+              ${this.childSteps?.length > 0 && this.stepperType === 'procedure'
                 ? html`
                     <button
                       class="toggle-icon-button"
@@ -385,24 +383,19 @@ export class StepperItem extends LitElement {
                   `
                 : null}
             </div>
-            <!-- Optional slot : when active -->
-            ${this.stepState === 'active' ? html` <slot></slot>` : null}
+
+            <slot></slot>
           </div>
         </div>
-        <!-- Child slot : when active -->
-        ${this.stepState === 'active'
-          ? html`<div
-              class=${classMap({
-                children: true,
-                open: this.openChildren,
-              })}
-            >
-              <slot
-                name="child"
-                @slotchange=${this._handleChildSlotChange}
-              ></slot>
-            </div>`
-          : null}
+
+        <div
+          class=${classMap({
+            children: true,
+            open: this.openChildren,
+          })}
+        >
+          <slot name="child" @slotchange=${this._handleChildSlotChange}></slot>
+        </div>
       `;
     };
 
@@ -453,6 +446,7 @@ export class StepperItem extends LitElement {
     }
 
     this._updateChildren();
+    this.requestUpdate();
   }
 
   private _updateChildren() {
