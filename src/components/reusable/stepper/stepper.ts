@@ -107,6 +107,7 @@ export class Stepper extends LitElement {
       detail: {
         origEvent: e.detail.origEvent,
         step: e.detail.step,
+        href: e.detail.href,
         stepIndex: e.detail.stepIndex,
       },
     });

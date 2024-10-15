@@ -18,6 +18,10 @@ export class StepperItemChild extends LitElement {
   @property({ type: String })
   childTitle = '';
 
+  /** Child link. */
+  @property({ type: String })
+  childLink = '';
+
   /** Optional Child Subtitle. */
   @property({ type: String })
   childSubTitle = '';
@@ -81,13 +85,18 @@ export class StepperItemChild extends LitElement {
         </div>
         <div class="child-step-content">
           <!-- Child Title & Optional Subtitle -->
-          <kd-link
-            standalone
-            kind="primary"
-            ?disabled=${this.disabled}
-            @on-click=${(e: any) => this._handleChildStepClick(e)}
-            >${this.childTitle}</kd-link
-          >
+          ${this.childLink !== ''
+            ? html`
+                <kd-link
+                  href=${this.childLink}
+                  kind="primary"
+                  ?disabled=${this.disabled}
+                  @on-click=${(e: any) => this._handleChildStepClick(e)}
+                >
+                  ${this.childTitle}
+                </kd-link>
+              `
+            : html`<p class="title-text">${this.childTitle}</p>`}
           ${this.childSubTitle !== ''
             ? html` <p class="child-step-subtitle">${this.childSubTitle}</p>`
             : null}
@@ -109,6 +118,7 @@ export class StepperItemChild extends LitElement {
     const event = new CustomEvent('on-child-click', {
       detail: {
         child: this,
+        href: this.childLink,
         childIndex: this.childIndex,
         origEvent: e,
       },
