@@ -13,7 +13,7 @@ import TextInputScss from './textInput.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import clearIcon from '@carbon/icons/es/close/24';
-import errorIcon from '@carbon/icons/es/warning--filled/24';
+import errorIcon from '@carbon/icons/es/warning--filled/16';
 import { deepmerge } from 'deepmerge-ts';
 
 const _defaultTextStrings = {
@@ -28,12 +28,15 @@ const _defaultTextStrings = {
  * @prop {string} pattern - RegEx pattern to validate.
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
- * @slot unnamed - Slot for label text.
  * @slot icon - Slot for contextual icon.
  */
 @customElement('kyn-text-input')
 export class TextInput extends FormMixin(LitElement) {
   static override styles = TextInputScss;
+
+  /** Lable text. */
+  @property({ type: String })
+  label = '';
 
   /** Input type, limited to options that are "text like". */
   @property({ type: String })
@@ -125,7 +128,8 @@ export class TextInput extends FormMixin(LitElement) {
                 >*</abbr
               >`
             : null}
-          <slot></slot>
+          <!-- <slot></slot> -->
+          ${this.label}
         </label>
 
         <div
@@ -160,7 +164,7 @@ export class TextInput extends FormMixin(LitElement) {
             @input=${(e: any) => this._handleInput(e)}
           />
 
-          ${this._isInvalid
+          <!-- ${this._isInvalid
             ? html`
                 <kd-icon
                   class="error-icon"
@@ -169,7 +173,7 @@ export class TextInput extends FormMixin(LitElement) {
                   .icon=${errorIcon}
                 ></kd-icon>
               `
-            : null}
+            : null} -->
           ${this.value !== ''
             ? html`
                 <button
@@ -193,6 +197,12 @@ export class TextInput extends FormMixin(LitElement) {
             ${this._isInvalid
               ? html`
                   <div id="error" class="error">
+                    <kd-icon
+                      role="img"
+                      title=${this._textStrings.errorText}
+                      aria-label=${this._textStrings.errorText}
+                      .icon=${errorIcon}
+                    ></kd-icon>
                     ${this.invalidText || this._internalValidationMsg}
                   </div>
                 `

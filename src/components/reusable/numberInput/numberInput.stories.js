@@ -33,7 +33,7 @@ export default {
 };
 
 const args = {
-  unnamed: 'Label',
+  label: 'Label',
   size: 'md',
   name: 'numberInput',
   value: 0,
@@ -71,9 +71,9 @@ export const NumberInput = {
         min=${ifDefined(args.min)}
         max=${ifDefined(args.max)}
         .textStrings=${args.textStrings}
+        label=${args.label}
         @on-input=${(e) => action(e.type)(e)}
       >
-        ${args.unnamed}
       </kyn-number-input>
     `;
   },

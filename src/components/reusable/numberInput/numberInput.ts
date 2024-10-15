@@ -19,11 +19,14 @@ const _defaultTextStrings = {
 /**
  * Number input.
  * @fires on-input - Captures the input event and emits the value and original event details.
- * @slot unnamed - Slot for label text.
  */
 @customElement('kyn-number-input')
 export class NumberInput extends FormMixin(LitElement) {
   static override styles = Styles;
+
+  /** Lable text. */
+  @property({ type: String })
+  label = '';
 
   /** Input size. "sm", "md", or "lg". */
   @property({ type: String })
@@ -97,7 +100,7 @@ export class NumberInput extends FormMixin(LitElement) {
                 >*</abbr
               >`
             : null}
-          <slot></slot>
+          ${this.label}
         </label>
 
         <div

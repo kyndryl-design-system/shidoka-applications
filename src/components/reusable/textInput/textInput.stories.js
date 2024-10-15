@@ -30,13 +30,13 @@ export default {
 };
 
 const args = {
-  unnamed: 'Label',
   size: 'md',
   type: 'text',
   name: 'textInput',
   value: '',
   placeholder: '',
   caption: '',
+  label: 'Label',
   required: false,
   disabled: false,
   invalidText: '',
@@ -71,9 +71,9 @@ export const TextInput = {
         minLength=${ifDefined(args.minLength)}
         maxLength=${ifDefined(args.maxLength)}
         .textStrings=${args.textStrings}
+        label=${args.label}
         @on-input=${(e) => action(e.type)(e)}
       >
-        ${args.unnamed}
       </kyn-text-input>
     `;
   },
@@ -106,9 +106,9 @@ export const WithIcon = {
         minLength=${ifDefined(args.minLength)}
         maxLength=${ifDefined(args.maxLength)}
         .textStrings=${args.textStrings}
+        label=${args.label}
         @on-input=${(e) => action(e.type)(e)}
       >
-        ${args.unnamed}
         <kd-icon
           slot="icon"
           .icon=${currencyIcon}
