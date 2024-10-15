@@ -168,6 +168,15 @@ TimePickerButtonAnchor.args = {
 };
 TimePickerButtonAnchor.storyName = 'Timepicker (Button Anchor)';
 
+export const TimePickerTwentyFourHour = Template.bind({});
+TimePickerTwentyFourHour.args = {
+  ...DefaultTimePicker.args,
+  locale: 'en',
+  twentyFourHourFormat: true,
+  unnamed: 'Timepicker with Button Anchor',
+};
+TimePickerTwentyFourHour.storyName = 'Timepicker (Twenty Four Hour Format)';
+
 export const TimePickerAltLanguage = Template.bind({});
 TimePickerAltLanguage.args = {
   ...DefaultTimePicker.args,
