@@ -75,9 +75,6 @@ export default {
   core: {
     disableTelemetry: true,
   },
-  docs: {
-    autodocs: true,
-  },
   staticDirs: ['./static'],
   async babel(options) {
     options.presets = ['@babel/preset-react'];
