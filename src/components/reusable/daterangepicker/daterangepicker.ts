@@ -26,7 +26,7 @@ import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cl
 type SupportedLocale = (typeof langsArray)[number];
 
 /**
- * Date Range Picker component: uses flatpickr datetime picker library -- `https://flatpickr.js.org/examples/#range-calendar`
+ * Date Range Picker component: uses flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot start-label - Slot for start date label text.
  * @slot end-label - Slot for end date label text.
@@ -239,7 +239,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.flatpickrInstance = await initializeMultiAnchorFlatpickr({
       startAnchorEl: this._startAnchorEl,
       endAnchorEl: this._endAnchorEl,
-      getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
+      getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
       setCalendarAttributes: this.setCalendarAttributes.bind(this),
       setInitialDates: this.setInitialDates.bind(this),
       appendToBody: false,
@@ -293,7 +293,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }
 
-  async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+  async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     return getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
@@ -317,7 +317,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (!this.flatpickrInstance) return;
 
     const currentDates = this.flatpickrInstance.selectedDates;
-    const newOptions = await this.getFlatpickrOptions();
+    const newOptions = await this.getComponentFlatpickrOptions();
 
     Object.keys(newOptions).forEach((key) => {
       this.flatpickrInstance!.set(

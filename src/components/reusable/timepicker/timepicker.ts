@@ -181,7 +181,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
       anchorEl: this._anchorEl,
-      getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
+      getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
       setCalendarAttributes: this.setCalendarAttributes.bind(this),
       setInitialDates: undefined,
       appendToBody: false,
@@ -213,7 +213,7 @@ export class TimePicker extends FormMixin(LitElement) {
       const currentDate = this.flatpickrInstance.selectedDates[0];
 
       try {
-        const newOptions = await this.getFlatpickrOptions();
+        const newOptions = await this.getComponentFlatpickrOptions();
 
         Object.keys(newOptions).forEach((key) => {
           if (key in this.flatpickrInstance!.config) {
@@ -282,7 +282,7 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+  async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     return getFlatpickrOptions({
       locale: this.locale,
       enableTime: true,

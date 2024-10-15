@@ -214,7 +214,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
       anchorEl: this._anchorEl,
-      getFlatpickrOptions: this.getFlatpickrOptions.bind(this),
+      getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
       setCalendarAttributes: this.setCalendarAttributes.bind(this),
       setInitialDates: this.setInitialDates.bind(this),
       appendToBody: false,
@@ -286,7 +286,7 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  async getFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+  async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     return getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,

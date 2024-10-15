@@ -1,5 +1,5 @@
-import { html } from 'lit';
 import './index';
+import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/addons';
 import { getPlaceholder } from '../../../common/helpers/flatpickr';
@@ -110,7 +110,6 @@ const InputTemplate = (args) => {
 };
 
 const ButtonTemplate = (args) => {
-  // prevents flatpickr calendar overlay from persisting on view change
   useEffect(() => {
     return () => {
       disconnectFlatpickr();
@@ -180,7 +179,7 @@ DatePickerDefault.args = {
   maxDate: '',
   unnamed: 'Date',
 };
-DatePickerDefault.storyName = 'Date Picker (Default)';
+DatePickerDefault.storyName = 'Single Date Selection (Default)';
 
 export const DateWithButtonIcon = ButtonTemplate.bind({});
 DateWithButtonIcon.args = {
@@ -213,4 +212,4 @@ DatePickerMultiple.args = {
   mode: 'multiple',
   unnamed: 'Date Picker (w/ Multiselect)',
 };
-DatePickerMultiple.storyName = 'Date Picker (Multiple Selection)';
+DatePickerMultiple.storyName = 'Multiple Date Selection';

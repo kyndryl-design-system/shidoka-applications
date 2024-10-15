@@ -158,7 +158,7 @@ DefaultTimePicker.args = {
   unnamed: 'Timepicker',
   textStrings: { requiredText: 'Required' },
 };
-DefaultTimePicker.storyName = 'Timepicker (Default)';
+DefaultTimePicker.storyName = 'Default';
 
 export const TimePickerButtonAnchor = ButtonTemplate.bind({});
 TimePickerButtonAnchor.args = {
@@ -166,7 +166,7 @@ TimePickerButtonAnchor.args = {
   locale: 'en',
   unnamed: 'Timepicker with Button Anchor',
 };
-TimePickerButtonAnchor.storyName = 'Timepicker (Button Anchor)';
+TimePickerButtonAnchor.storyName = 'Button Anchor';
 
 export const TimePickerTwentyFourHour = Template.bind({});
 TimePickerTwentyFourHour.args = {
@@ -175,7 +175,7 @@ TimePickerTwentyFourHour.args = {
   twentyFourHourFormat: true,
   unnamed: 'Timepicker with Button Anchor',
 };
-TimePickerTwentyFourHour.storyName = 'Timepicker (Twenty Four Hour Format)';
+TimePickerTwentyFourHour.storyName = 'Twenty-Four-Hour Format';
 
 export const TimePickerAltLanguage = Template.bind({});
 TimePickerAltLanguage.args = {
@@ -183,4 +183,4 @@ TimePickerAltLanguage.args = {
   locale: 'ja',
   unnamed: 'タイムピッカー',
 };
-TimePickerAltLanguage.storyName = 'Timepicker (Japanese Locale)';
+TimePickerAltLanguage.storyName = 'Japanese Locale Example';

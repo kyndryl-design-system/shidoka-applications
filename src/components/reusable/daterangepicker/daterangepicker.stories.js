@@ -1,5 +1,5 @@
-import { html } from 'lit';
 import './index';
+import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/addons';
 import { getPlaceholder } from '../../../common/helpers/flatpickr';
@@ -353,7 +353,7 @@ DefaultDateRangePicker.args = {
   startDateLabel: 'Date Range',
   endDateLabel: '',
 };
-DefaultDateRangePicker.storyName = 'Date Range (Single Input, Default)';
+DefaultDateRangePicker.storyName = 'Single-Input (Default)';
 
 export const DateRangeIconPicker = ButtonIconAnchorTemplate.bind({});
 DateRangeIconPicker.args = {
@@ -363,7 +363,7 @@ DateRangeIconPicker.args = {
   startDateLabel: 'Range Picker Button w/ Icon',
   endDateLabel: '',
 };
-DateRangeIconPicker.storyName = 'Date Range (Button Anchor w/ Icon)';
+DateRangeIconPicker.storyName = 'Button Anchor w/ Icon';
 
 export const DateRangeIconTextAnchor = ButtonIconTextAnchorTemplate.bind({});
 DateRangeIconTextAnchor.args = {
@@ -373,7 +373,7 @@ DateRangeIconTextAnchor.args = {
   startDateLabel: 'Range Picker Button w/ Icon + Text',
   endDateLabel: '',
 };
-DateRangeIconTextAnchor.storyName = 'Date Range (Button Anchor w/ Icon + Text)';
+DateRangeIconTextAnchor.storyName = 'Button Anchor w/ Icon + Text';
 
 export const DateRangePickerMulti = MultiInputTemplate.bind({});
 DateRangePickerMulti.args = {
@@ -384,7 +384,7 @@ DateRangePickerMulti.args = {
   startDateLabel: 'Start Date',
   endDateLabel: 'End Date',
 };
-DateRangePickerMulti.storyName = 'Date Range (Multi Input)';
+DateRangePickerMulti.storyName = 'Multi-Input';
 
 export const DateTimeRangePickerSingle = SingleInput.bind({});
 DateTimeRangePickerSingle.args = {
@@ -395,7 +395,7 @@ DateTimeRangePickerSingle.args = {
   startDateLabel: 'Start + End Date / Time',
   endDateLabel: '',
 };
-DateTimeRangePickerSingle.storyName = 'Date / Time Range (Single Input)';
+DateTimeRangePickerSingle.storyName = 'Single-Input, Date / Time';
 
 export const DateTimeRangePickerMulti = MultiInputTemplate.bind({});
 DateTimeRangePickerMulti.args = {
@@ -409,5 +409,4 @@ DateTimeRangePickerMulti.args = {
   startDateLabel: 'Fecha de inicio',
   endDateLabel: 'Fecha de finalización',
 };
-DateTimeRangePickerMulti.storyName =
-  'Date / Time Range (Multi Input, Spanish Locale)';
+DateTimeRangePickerMulti.storyName = 'Multi-Input, Date /Time (Spanish)';
