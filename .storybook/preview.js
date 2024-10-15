@@ -24,6 +24,8 @@ export default {
     },
     backgrounds: { disable: true },
   },
+
+  tags: ['autodocs']
 };
 
 setCustomElementsManifest(customElements);

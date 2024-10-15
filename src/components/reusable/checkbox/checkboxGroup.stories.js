@@ -29,6 +29,7 @@ const args = {
   filterable: false,
   limitCheckboxes: false,
   invalidText: '',
+  description: 'Description',
   textStrings: {
     selectAll: 'Select all',
     showMore: 'Show more',
@@ -60,6 +61,7 @@ export const CheckboxGroup = {
         @on-limit-toggle=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
+        <div slot="description">${args.description}</div>
         <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
         <kyn-checkbox value="2"> Option 2 </kyn-checkbox>
         <kyn-checkbox value="3"> Option 3 </kyn-checkbox>
@@ -92,6 +94,7 @@ export const CheckboxSubgroups = {
         @on-limit-toggle=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
+        <div slot="description">${args.description}</div>
         <kyn-checkbox-subgroup>
           <kyn-checkbox slot="parent" value="parent1">
             Parent option 1
