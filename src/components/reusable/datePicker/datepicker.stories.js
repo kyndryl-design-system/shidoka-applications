@@ -7,7 +7,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
-import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/overflow.svg';
+import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overflow.svg';
 
 export default {
   title: 'Components/DatePicker',
@@ -105,7 +105,7 @@ const InputTemplate = (args) => {
       ?required=${args.required}
       aria-invalid=${args._isInvalid ? 'true' : 'false'}
     />
-    <span slot="icon">${unsafeSVG(calendarIcon)}</span>
+    <span slot="icon" style="line-height: 1;">${unsafeSVG(overflowIcon)}</span>
   </kyn-date-picker>`;
 };
 
@@ -154,7 +154,9 @@ const ButtonTemplate = (args) => {
       description="Date picker button containing icon"
       ?disabled=${args.datePickerDisabled}
     >
-      ${unsafeSVG(overflowIcon)}
+      <span slot="icon" style="line-height: 1;"
+        >${unsafeSVG(overflowIcon)}</span
+      >
     </kd-button>
   </kyn-date-picker>`;
 };

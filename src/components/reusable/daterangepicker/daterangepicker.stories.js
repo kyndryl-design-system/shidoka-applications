@@ -162,13 +162,18 @@ const ButtonIconAnchorTemplate = (args) => {
       </label>
       <kd-button
         slot="start-anchor"
-        value="Primary"
-        kind=${'primary-app'}
-        class="btn interactive"
+        size="medium"
+        value=""
+        iconPosition="center"
+        kind="primary-app"
+        type="button"
+        size="medium"
         ?disabled=${args.dateRangePickerDisabled}
         description="Date range picker button containing icon"
       >
-        ${unsafeSVG(overflowIcon)}
+        <span slot="icon" style="line-height: 1;"
+          >${unsafeSVG(overflowIcon)}</span
+        >
       </kd-button>
     </kyn-date-range-picker>
   `;
@@ -229,7 +234,7 @@ const ButtonIconTextAnchorTemplate = (args) => {
         class="btn interactive"
         ?disabled=${args.dateRangePickerDisabled}
       >
-        <span part="icon" style="margin: 3px 10px 0 0;"
+        <span part="icon" style="margin: 3px 12px 0 0;"
           >${unsafeSVG(calendarIcon)}</span
         >
         Choose Date Range

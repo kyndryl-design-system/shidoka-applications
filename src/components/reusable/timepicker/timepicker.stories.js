@@ -135,7 +135,9 @@ const ButtonTemplate = (args) => {
         description="Date picker button containing icon"
         ?disabled=${args.timepickerDisabled}
       >
-        ${unsafeSVG(overflowIcon)}
+        <span slot="icon" style="line-height: 1;"
+          >${unsafeSVG(overflowIcon)}</span
+        >
       </kd-button>
     </kyn-time-picker>
   `;
