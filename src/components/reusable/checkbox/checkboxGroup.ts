@@ -25,6 +25,7 @@ const _defaultTextStrings = {
  * @fires on-limit-toggle - Captures the show more/less click and emits the expanded state.
  * @slot unnamed - Slot for individual checkboxes.
  * @slot label - Slot for label text.
+ * @slot description - Slot for description text.
  */
 @customElement('kyn-checkbox-group')
 export class CheckboxGroup extends FormMixin(LitElement) {
@@ -150,7 +151,9 @@ export class CheckboxGroup extends FormMixin(LitElement) {
               : null}
             <slot name="label"></slot>
           </legend>
-
+          <div class="description-text">
+            <slot name="description"></slot>
+          </div>
           ${this._isInvalid
             ? html`
                 <div class="error">
