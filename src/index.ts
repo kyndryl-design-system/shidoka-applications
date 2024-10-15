@@ -7,8 +7,6 @@ export {
   HeaderFlyouts,
   HeaderFlyout,
   HeaderUserProfile,
-  HeaderAvatar,
-  HeaderPanel,
   HeaderPanelLink,
   HeaderNotificationPanel,
 } from './components/global/header';
