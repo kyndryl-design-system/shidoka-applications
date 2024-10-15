@@ -53,9 +53,13 @@ export class StepperItem extends LitElement {
   @property({ type: String })
   stepName = '';
 
-  /** Step title. Required for actions.*/
+  /** Step title.*/
   @property({ type: String })
   stepTitle = '';
+
+  /** Step link. */
+  @property({ type: String })
+  stepLink = '';
 
   /** Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.
    *
@@ -256,21 +260,22 @@ export class StepperItem extends LitElement {
             <p class="${classMap(horizontalStepTextClass)}">${this.stepName}</p>
             <!-- Step Title -->
             <div class="step-title-wrapper">
-              ${this.stepTitle === ''
-                ? null
-                : this.stepperType === 'procedure'
-                ? html`<kd-link
-                    standalone
-                    href=""
-                    target="_self"
-                    kind="primary"
-                    ?disabled=${this.disabled}
-                    @on-click=${(e: Event) => this._handleStepClick(e)}
-                    >${this.stepTitle}</kd-link
-                  >`
-                : this.stepperType === 'status'
-                ? html`<p class="step-title-text">${this.stepTitle}</p>`
-                : null}
+              ${this.stepperType === 'procedure' && this.stepLink !== ''
+                ? html`
+                    <kd-link
+                      href=${this.stepLink}
+                      kind="primary"
+                      ?disabled=${this.disabled}
+                      @on-click=${(e: Event) => this._handleStepClick(e)}
+                    >
+                      ${this.stepTitle}
+                    </kd-link>
+                  `
+                : html`
+                    <p class="step-title-text type--${this.stepperType}">
+                      ${this.stepTitle}
+                    </p>
+                  `}
 
               <!-- Tooltip slot --->
               <slot name="tooltip"></slot>
@@ -336,29 +341,27 @@ export class StepperItem extends LitElement {
             <p class="${classMap(verticalStepNameClasses)}">${this.stepName}</p>
             <!-- Step title -->
             <div class="vertical-title-wrapper">
-              ${this.stepTitle === ''
-                ? null
-                : this.stepperType === 'procedure'
-                ? html`<kd-link
-                    standalone
-                    href=""
-                    target="_self"
-                    kind="primary"
-                    ?disabled=${this.disabled}
-                    @on-click=${(e: Event) => this._handleStepClick(e)}
-                    >${this.stepTitle}</kd-link
-                  >`
-                : this.stepperType === 'status'
-                ? html`<p class="step-title-text">${this.stepTitle}</p>`
-                : null}
+              ${this.stepperType === 'procedure' && this.stepLink !== ''
+                ? html`
+                    <kd-link
+                      href=${this.stepLink}
+                      kind="primary"
+                      ?disabled=${this.disabled}
+                      @on-click=${(e: Event) => this._handleStepClick(e)}
+                    >
+                      ${this.stepTitle}
+                    </kd-link>
+                  `
+                : html`
+                    <p class="step-title-text type--${this.stepperType}">
+                      ${this.stepTitle}
+                    </p>
+                  `}
               <!-- Tooltip slot --->
               <slot name="tooltip"></slot>
 
               <!-- Toggle children stuff -->
-              ${this.stepTitle !== '' &&
-              this.stepState === 'active' &&
-              this.childSteps?.length > 0 &&
-              this.stepperType === 'procedure'
+              ${this.childSteps?.length > 0 && this.stepperType === 'procedure'
                 ? html`
                     <button
                       class="toggle-icon-button"
@@ -380,24 +383,19 @@ export class StepperItem extends LitElement {
                   `
                 : null}
             </div>
-            <!-- Optional slot : when active -->
-            ${this.stepState === 'active' ? html` <slot></slot>` : null}
+
+            <slot></slot>
           </div>
         </div>
-        <!-- Child slot : when active -->
-        ${this.stepState === 'active'
-          ? html`<div
-              class=${classMap({
-                children: true,
-                open: this.openChildren,
-              })}
-            >
-              <slot
-                name="child"
-                @slotchange=${this._handleChildSlotChange}
-              ></slot>
-            </div>`
-          : null}
+
+        <div
+          class=${classMap({
+            children: true,
+            open: this.openChildren,
+          })}
+        >
+          <slot name="child" @slotchange=${this._handleChildSlotChange}></slot>
+        </div>
       `;
     };
 
@@ -416,6 +414,7 @@ export class StepperItem extends LitElement {
       composed: true,
       detail: {
         step: this,
+        href: this.stepLink,
         stepIndex: this.stepIndex,
         origEvent: e.detail.origEvent,
       },
@@ -447,6 +446,7 @@ export class StepperItem extends LitElement {
     }
 
     this._updateChildren();
+    this.requestUpdate();
   }
 
   private _updateChildren() {
