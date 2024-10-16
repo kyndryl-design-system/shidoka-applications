@@ -48,6 +48,7 @@ const Template = (args) => {
     <kyn-time-picker
       .nameAttr="${args.nameAttr}"
       .locale="${args.locale}"
+      ?required="${args.required}"
       .value="${args.value}"
       .warnText="${args.warnText}"
       .invalidText="${args.invalidText}"
@@ -55,7 +56,6 @@ const Template = (args) => {
       .defaultDate="${args.defaultDate}"
       .minTime="${args.minTime}"
       .maxTime="${args.maxTime}"
-      ?required="${args.required}"
       ?timepickerDisabled="${args.timepickerDisabled}"
       ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       @on-change=${(e) => action(e.type)(e)}
@@ -147,6 +147,7 @@ export const DefaultTimePicker = Template.bind({});
 DefaultTimePicker.args = {
   nameAttr: 'default-timepicker',
   locale: 'en',
+  required: false,
   value: null,
   warnText: '',
   invalidText: '',
@@ -154,7 +155,6 @@ DefaultTimePicker.args = {
   defaultDate: '',
   minTime: '',
   maxTime: '',
-  required: false,
   timepickerDisabled: false,
   twentyFourHourFormat: false,
   unnamed: 'Timepicker',

@@ -160,7 +160,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   override render() {
     const errorId = 'error-message';
     const warningId = 'warning-message';
-    const captionId = 'date-range-picker-caption';
+    const captionId = this.nameAttr ?? '';
 
     return html`
       <div class=${classMap(this.getDateRangePickerClasses())}>

@@ -64,6 +64,7 @@ const InputTemplate = (args) => {
     .nameAttr="${args.nameAttr}"
     .locale="${args.locale}"
     .dateFormat="${args.dateFormat}"
+    ?required="${args.required}"
     .value="${args.value}"
     .warnText="${args.warnText}"
     .invalidText="${args.invalidText}"
@@ -72,7 +73,6 @@ const InputTemplate = (args) => {
     .enable="${args.enable}"
     .mode="${args.mode}"
     .caption="${args.caption}"
-    ?required="${args.required}"
     ?datePickerDisabled="${args.datePickerDisabled}"
     ?twentyFourHourFormat="${args.twentyFourHourFormat}"
     .minDate="${args.minDate}"
@@ -120,6 +120,7 @@ const ButtonTemplate = (args) => {
     .nameAttr="${args.nameAttr}"
     .locale="${args.locale}"
     .dateFormat="${args.dateFormat}"
+    ?required="${args.required}"
     .value="${args.value}"
     .warnText="${args.warnText}"
     .invalidText="${args.invalidText}"
@@ -128,7 +129,6 @@ const ButtonTemplate = (args) => {
     .enable="${args.enable}"
     .mode="${args.mode}"
     .caption="${args.caption}"
-    ?required="${args.required}"
     ?datePickerDisabled="${args.datePickerDisabled}"
     ?twentyFourHourFormat="${args.twentyFourHourFormat}"
     .minDate="${args.minDate}"
@@ -166,6 +166,7 @@ DatePickerDefault.args = {
   nameAttr: 'default-date-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
+  required: false,
   value: '',
   warnText: '',
   invalidText: '',
@@ -174,7 +175,6 @@ DatePickerDefault.args = {
   enable: [],
   mode: 'single',
   caption: 'Example datepicker caption.',
-  required: false,
   datePickerDisabled: false,
   twentyFourHourFormat: false,
   minDate: '',

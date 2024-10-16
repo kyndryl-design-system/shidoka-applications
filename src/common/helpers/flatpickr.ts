@@ -1,5 +1,4 @@
 import flatpickr from 'flatpickr';
-import l10n from 'flatpickr/dist/l10n';
 import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import { Instance } from 'flatpickr/dist/types/instance';
 import { BaseOptions, Hook } from 'flatpickr/dist/types/options';

@@ -193,6 +193,7 @@ const ButtonIconTextAnchorTemplate = (args) => {
       .nameAttr="${args.nameAttr}"
       .locale="${args.locale}"
       .dateFormat="${args.dateFormat}"
+      ?required="${args.required}"
       .value="${args.value}"
       .warnText="${args.warnText}"
       .invalidText="${args.invalidText}"
@@ -201,7 +202,6 @@ const ButtonIconTextAnchorTemplate = (args) => {
       .enable="${args.enable}"
       .multipleInputs="${args.multipleInputs}"
       .caption="${args.caption}"
-      ?required="${args.required}"
       ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
       ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       .minDate="${args.minDate}"
@@ -259,6 +259,7 @@ const MultiInputTemplate = (args) => {
       .nameAttr="${args.nameAttr}"
       .locale="${args.locale}"
       .dateFormat="${args.dateFormat}"
+      ?required="${args.required}"
       .value="${args.value}"
       .warnText="${args.warnText}"
       .invalidText="${args.invalidText}"
@@ -267,7 +268,6 @@ const MultiInputTemplate = (args) => {
       .enable="${args.enable}"
       .multipleInputs="${args.multipleInputs}"
       .caption="${args.caption}"
-      ?required="${args.required}"
       ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
       ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       .minDate="${args.minDate}"
@@ -342,6 +342,7 @@ DefaultDateRangePicker.args = {
   nameAttr: 'default-date-range-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
+  required: false,
   multipleInputs: false,
   value: [null, null],
   warnText: '',
@@ -350,7 +351,6 @@ DefaultDateRangePicker.args = {
   disable: [],
   enable: [],
   caption: 'Click the input above to select a date range.',
-  required: false,
   dateRangePickerDisabled: false,
   twentyFourHourFormat: false,
   minDate: '',
@@ -363,6 +363,7 @@ DefaultDateRangePicker.storyName = 'Single-Input (Default)';
 export const DateRangeIconPicker = ButtonIconAnchorTemplate.bind({});
 DateRangeIconPicker.args = {
   ...DefaultDateRangePicker.args,
+  required: true,
   nameAttr: 'date-range-icon-button-picker',
   caption: 'Click the button above to launch the date range picker.',
   startDateLabel: 'Range Picker Button w/ Icon',
@@ -396,6 +397,7 @@ DateTimeRangePickerSingle.args = {
   ...DefaultDateRangePicker.args,
   nameAttr: 'date-time-range-picker',
   dateFormat: 'Y-m-d H:i',
+  required: true,
   caption: '',
   startDateLabel: 'Start + End Date / Time',
   endDateLabel: '',
@@ -408,6 +410,7 @@ DateTimeRangePickerMulti.args = {
   locale: 'es',
   nameAttr: 'date-time-range-multi-picker',
   dateFormat: 'Y-m-d H:i',
+  required: true,
   multipleInputs: true,
   caption:
     "Ejemplo de configuración regional del calendario en español ('es').",

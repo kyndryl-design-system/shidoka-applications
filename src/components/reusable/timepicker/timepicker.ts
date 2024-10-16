@@ -84,13 +84,6 @@ export class TimePicker extends FormMixin(LitElement) {
   maxTime: string | number | Date = '';
 
   /**
-   * Detects flatpickrs default default time value set onClose when nothing has been selected by user.
-   * @internal
-   */
-  @state()
-  private _isDefaultValueSet = false;
-
-  /**
    * Sets whether user has interacted with timepicker for error handling.
    * @internal
    */
@@ -127,7 +120,7 @@ export class TimePicker extends FormMixin(LitElement) {
   override render() {
     const errorId = 'error-message';
     const warningId = 'warning-message';
-    const descriptionId = 'time-picker-description';
+    const descriptionId = this.nameAttr ?? '';
 
     return html`
       <div class=${classMap(this.getTimepickerClasses())}>
@@ -142,13 +135,10 @@ export class TimePicker extends FormMixin(LitElement) {
               ${this.caption}
             </div>`
           : ''}
-        ${this._hasInteracted &&
-        this._showValidationMessage &&
-        !this._isDefaultValueSet &&
-        (this._isInvalid || this.invalidText)
+        ${this._hasInteracted && this._showValidationMessage && this._isInvalid
           ? html`<div id=${errorId} class="error error-text" role="alert">
               <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-                .invalidText || this._internalValidationMsg}
+                .invalidText}
             </div>`
           : this._hasInteracted && this.warnText
           ? html`<div id=${warningId} class="warn warn-text" role="alert">
@@ -325,27 +315,22 @@ export class TimePicker extends FormMixin(LitElement) {
     });
   }
 
-  handleOpen(): void {
+  async handleOpen(): Promise<void> {
     this._hasInteracted = true;
     this._showValidationMessage = false;
-    this.requestUpdate();
+    await this.updateComplete;
   }
 
-  handleClose(): void {
-    setTimeout(() => {
-      if (this.flatpickrInstance && this.flatpickrInstance.selectedDates) {
-        this._isDefaultValueSet =
-          this.flatpickrInstance.selectedDates.length > 0;
-      } else {
-        this._isDefaultValueSet = false;
-      }
-      this._showValidationMessage = true;
-      this._validate();
-      this.requestUpdate();
-    }, 50);
+  async handleClose(): Promise<void> {
+    this._showValidationMessage = true;
+    this._validate();
+    await this.updateComplete;
   }
 
-  handleTimeChange(selectedDates: Date[], dateStr: string): void {
+  async handleTimeChange(
+    selectedDates: Date[],
+    dateStr: string
+  ): Promise<void> {
     this._hasInteracted = true;
 
     if (selectedDates.length > 0) {
@@ -359,7 +344,6 @@ export class TimePicker extends FormMixin(LitElement) {
       const selectedTime = today.getTime();
 
       this.value = selectedTime;
-      this._isDefaultValueSet = true;
 
       const timeStr = this.twentyFourHourFormat
         ? `${hours.toString().padStart(2, '0')}:${minutes
@@ -370,13 +354,12 @@ export class TimePicker extends FormMixin(LitElement) {
       this.emitValue(timeStr);
     } else {
       this.value = null;
-      this._isDefaultValueSet = false;
       this.emitValue('');
     }
 
     this._showValidationMessage = false;
-    this.requestUpdate('value');
     this._validate();
+    await this.updateComplete;
   }
 
   private emitValue(timeStr: string): void {
@@ -388,22 +371,21 @@ export class TimePicker extends FormMixin(LitElement) {
     this.dispatchEvent(event);
   }
 
-  _validate(): boolean {
+  private _validate(): void {
     const wasInvalid = this._isInvalid;
 
     if (this.required && !this.value) {
       this._isInvalid = true;
-      this._internalValidationMsg = 'This field is required';
+      if (!this.invalidText) {
+        this.invalidText = 'This field is required';
+      }
     } else {
       this._isInvalid = false;
-      this._internalValidationMsg = '';
     }
 
     if (wasInvalid !== this._isInvalid) {
       this.requestUpdate();
     }
-
-    return !this._isInvalid;
   }
 
   override disconnectedCallback(): void {

@@ -48,6 +48,10 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   dateFormat = '';
 
+  /** Sets datepicker form input value to required/required. */
+  @property({ type: Boolean })
+  required = false;
+
   /** Sets pre-selected date/time value. */
   @property({ type: String })
   override value: string | Date | Date[] = '';
@@ -79,10 +83,6 @@ export class DatePicker extends FormMixin(LitElement) {
   /** Sets caption to be displayed under primary date picker elements. */
   @property({ type: String })
   caption = '';
-
-  /** Sets datepicker form input value to required/required. */
-  @property({ type: Boolean })
-  required = false;
 
   /** Sets entire datepicker form element to enabled/disabled. */
   @property({ type: Boolean })
@@ -143,7 +143,7 @@ export class DatePicker extends FormMixin(LitElement) {
   override render() {
     const errorId = 'error-message';
     const warningId = 'warning-message';
-    const descriptionId = 'date-picker-description';
+    const descriptionId = this.nameAttr ?? '';
 
     return html`
       <div class=${classMap(this.getDatepickerClasses())}>
@@ -158,12 +158,10 @@ export class DatePicker extends FormMixin(LitElement) {
               ${this.caption}
             </div>`
           : ''}
-        ${this._showValidationMessage &&
-        this._hasInteracted &&
-        (this._isInvalid || this.invalidText)
+        ${this._showValidationMessage && this._hasInteracted && this._isInvalid
           ? html`<div id=${errorId} class="error error-text" role="alert">
               <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-                .invalidText || this._internalValidationMsg}
+                .invalidText}
             </div>`
           : this.warnText
           ? html`<div id=${warningId} class="warn warn-text" role="alert">
@@ -324,19 +322,22 @@ export class DatePicker extends FormMixin(LitElement) {
     });
   }
 
-  handleOpen(): void {
+  async handleOpen(): Promise<void> {
     this._hasInteracted = true;
     this._showValidationMessage = false;
-    this.requestUpdate();
+    await this.updateComplete;
   }
 
-  handleClose(): void {
+  async handleClose(): Promise<void> {
     this._showValidationMessage = true;
     this._validate();
-    this.requestUpdate();
+    await this.updateComplete;
   }
 
-  handleDateChange(selectedDates: Date[], dateStr: string): void {
+  async handleDateChange(
+    selectedDates: Date[],
+    dateStr: string
+  ): Promise<void> {
     if (this.mode === 'multiple') {
       this.value = [...selectedDates];
     } else {
@@ -360,10 +361,10 @@ export class DatePicker extends FormMixin(LitElement) {
 
     this._showValidationMessage = false;
     this._validate();
-    this.requestUpdate();
+    await this.updateComplete;
   }
 
-  _validate(): boolean {
+  private _validate(): void {
     const wasInvalid = this._isInvalid;
 
     if (this.mode === 'multiple' && Array.isArray(this.value)) {
@@ -374,24 +375,16 @@ export class DatePicker extends FormMixin(LitElement) {
       this._isInvalid = this.required;
     }
 
-    if (this._isInvalid) {
-      if (!this.invalidText) {
-        this.invalidText =
-          this.mode === 'multiple'
-            ? 'Please select at least one date'
-            : 'Please select a date';
-      }
-      this._internalValidationMsg = this.invalidText;
-    } else {
-      this.invalidText = '';
-      this._internalValidationMsg = '';
+    if (this._isInvalid && !this.invalidText) {
+      this.invalidText =
+        this.mode === 'multiple'
+          ? 'Please select at least one date'
+          : 'Please select a date';
     }
 
     if (wasInvalid !== this._isInvalid) {
       this.requestUpdate();
     }
-
-    return !this._isInvalid;
   }
 
   override disconnectedCallback(): void {
