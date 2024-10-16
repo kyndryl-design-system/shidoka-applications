@@ -210,6 +210,7 @@ DatePickerMultiple.args = {
   locale: 'en',
   nameAttr: 'date-multiple-picker',
   dateFormat: 'Y-m-d',
+  required: true,
   caption: '',
   mode: 'multiple',
   unnamed: 'Date Picker (w/ Multiselect)',
