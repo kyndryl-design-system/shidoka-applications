@@ -83,6 +83,27 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   maxTime: string | number | Date = '';
 
+  /**
+   * Detects flatpickrs default default time value set onClose when nothing has been selected by user.
+   * @internal
+   */
+  @state()
+  private _isDefaultValueSet = false;
+
+  /**
+   * Sets whether user has interacted with timepicker for error handling.
+   * @internal
+   */
+  @state()
+  private _hasInteracted = false;
+
+  /**
+   * Sets validation message to visible.
+   * @internal
+   */
+  @state()
+  private _showValidationMessage = false;
+
   /** Flatpickr instantiation.
    * @internal
    */
@@ -121,12 +142,15 @@ export class TimePicker extends FormMixin(LitElement) {
               ${this.caption}
             </div>`
           : ''}
-        ${this._isInvalid || this.invalidText
+        ${this._hasInteracted &&
+        this._showValidationMessage &&
+        !this._isDefaultValueSet &&
+        (this._isInvalid || this.invalidText)
           ? html`<div id=${errorId} class="error error-text" role="alert">
               <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
                 .invalidText || this._internalValidationMsg}
             </div>`
-          : this.warnText
+          : this._hasInteracted && this.warnText
           ? html`<div id=${warningId} class="warn warn-text" role="alert">
               ${this.warnText}
             </div>`
@@ -291,15 +315,39 @@ export class TimePicker extends FormMixin(LitElement) {
       minTime: this.minTime,
       maxTime: this.maxTime,
       defaultDate: this.defaultDate,
-      handleTimeChange: this.handleTimeInputChange.bind(this),
       loadLocale: this.loadLocale.bind(this),
       mode: 'time',
       wrap: false,
       noCalendar: true,
+      onChange: this.handleTimeChange.bind(this),
+      onClose: this.handleClose.bind(this),
+      onOpen: this.handleOpen.bind(this),
     });
   }
 
-  handleTimeInputChange(selectedDates: Date[], dateStr: string): void {
+  handleOpen(): void {
+    this._hasInteracted = true;
+    this._showValidationMessage = false;
+    this.requestUpdate();
+  }
+
+  handleClose(): void {
+    setTimeout(() => {
+      if (this.flatpickrInstance && this.flatpickrInstance.selectedDates) {
+        this._isDefaultValueSet =
+          this.flatpickrInstance.selectedDates.length > 0;
+      } else {
+        this._isDefaultValueSet = false;
+      }
+      this._showValidationMessage = true;
+      this._validate();
+      this.requestUpdate();
+    }, 50);
+  }
+
+  handleTimeChange(selectedDates: Date[], dateStr: string): void {
+    this._hasInteracted = true;
+
     if (selectedDates.length > 0) {
       const selectedDate = selectedDates[0];
       const hours = selectedDate.getHours();
@@ -311,6 +359,7 @@ export class TimePicker extends FormMixin(LitElement) {
       const selectedTime = today.getTime();
 
       this.value = selectedTime;
+      this._isDefaultValueSet = true;
 
       const timeStr = this.twentyFourHourFormat
         ? `${hours.toString().padStart(2, '0')}:${minutes
@@ -319,15 +368,17 @@ export class TimePicker extends FormMixin(LitElement) {
         : dateStr;
 
       this.emitValue(timeStr);
-      this.requestUpdate('value', '');
-      this._validate();
     } else {
       this.value = null;
+      this._isDefaultValueSet = false;
       this.emitValue('');
-      this.requestUpdate('value', '');
-      this._validate();
     }
+
+    this._showValidationMessage = false;
+    this.requestUpdate('value');
+    this._validate();
   }
+
   private emitValue(timeStr: string): void {
     const event = new CustomEvent('on-change', {
       detail: { time: timeStr },
@@ -338,15 +389,21 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   _validate(): boolean {
+    const wasInvalid = this._isInvalid;
+
     if (this.required && !this.value) {
       this._isInvalid = true;
       this._internalValidationMsg = 'This field is required';
-      return false;
+    } else {
+      this._isInvalid = false;
+      this._internalValidationMsg = '';
     }
 
-    this._isInvalid = false;
-    this._internalValidationMsg = '';
-    return true;
+    if (wasInvalid !== this._isInvalid) {
+      this.requestUpdate();
+    }
+
+    return !this._isInvalid;
   }
 
   override disconnectedCallback(): void {

@@ -2,7 +2,7 @@ import flatpickr from 'flatpickr';
 import l10n from 'flatpickr/dist/l10n';
 import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import { Instance } from 'flatpickr/dist/types/instance';
-import { BaseOptions } from 'flatpickr/dist/types/options';
+import { BaseOptions, Hook } from 'flatpickr/dist/types/options';
 import { Locale } from 'flatpickr/dist/types/locale';
 
 let flatpickrStylesInjected = false;
@@ -53,12 +53,9 @@ interface FlatpickrOptionsContext {
   defaultDate?: string | number | Date;
   enable?: (string | number | Date)[];
   disable?: (string | number | Date)[];
-  handleDateChange?: (
-    selectedDates: Date[],
-    dateStr: string,
-    instance: any
-  ) => void;
-  handleTimeChange?: (selectedDates: Date[], dateStr: string) => void;
+  onChange?: Hook;
+  onClose?: Hook;
+  onOpen?: Hook;
   loadLocale: (locale: string) => Promise<Partial<Locale>>;
   mode?: 'single' | 'multiple' | 'range' | 'time';
   closeOnSelect?: boolean;
@@ -255,13 +252,14 @@ export async function getFlatpickrOptions(
     defaultDate,
     enable,
     disable,
-    handleDateChange,
-    handleTimeChange,
-    loadLocale,
     mode = 'single',
     closeOnSelect,
     wrap = false,
     noCalendar = false,
+    onChange,
+    onClose,
+    onOpen,
+    loadLocale,
   } = context;
 
   const localeOptions = await loadLocale(locale);
@@ -283,20 +281,33 @@ export async function getFlatpickrOptions(
     monthSelectorType: 'static',
     locale: localeOptions,
     altFormat: altFormat,
-    onChange: mode === 'time' ? handleTimeChange : handleDateChange,
     closeOnSelect: closeOnSelect ?? !(mode === 'multiple' || enableTime),
+    onChange: (selectedDates, dateStr, instance) => {
+      if (onChange) {
+        onChange(selectedDates, dateStr, instance);
+      }
+    },
+    onClose: (selectedDates, dateStr, instance) => {
+      if (mode === 'range') {
+        const timeContainer =
+          instance.calendarContainer.querySelector('.flatpickr-time');
+        if (selectedDates.length === 0) {
+          timeContainer?.classList.add('default-time-select');
+          timeContainer?.classList.remove('start-date', 'end-date');
+        }
+      }
+      if (onClose) {
+        onClose(selectedDates, dateStr, instance);
+      }
+    },
+    onOpen: (selectedDates, dateStr, instance) => {
+      if (onOpen) {
+        onOpen(selectedDates, dateStr, instance);
+      }
+    },
   };
 
   if (mode === 'range') {
-    options.onClose = (selectedDates, _, instance) => {
-      const timeContainer =
-        instance.calendarContainer.querySelector('.flatpickr-time');
-      if (selectedDates.length === 0) {
-        timeContainer?.classList.add('default-time-select');
-        timeContainer?.classList.remove('start-date', 'end-date');
-      }
-    };
-
     options.onReady = (_, __, instance) => {
       const timeContainer =
         instance.calendarContainer.querySelector('.flatpickr-time');

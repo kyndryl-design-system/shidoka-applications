@@ -130,6 +130,20 @@ export class DateRangePicker extends FormMixin(LitElement) {
   private _endAnchorEl?: HTMLElement;
 
   /**
+   * Sets whether user has interacted with datepicker for error handling.
+   * @internal
+   */
+  @state()
+  private _hasInteracted = false;
+
+  /**
+   * Sets validation message to visible.
+   * @internal
+   */
+  @state()
+  private _showValidationMessage = false;
+
+  /**
    * Queries the start-anchor slotted DOM element.
    * @internal
    */
@@ -176,7 +190,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
               ${this.caption}
             </div>`
           : ''}
-        ${this._isInvalid || this.invalidText
+        ${this._hasInteracted &&
+        this._showValidationMessage &&
+        (this._isInvalid || this.invalidText)
           ? html`<div id=${errorId} class="error error-text" role="alert">
               <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
                 .invalidText || this._internalValidationMsg}
@@ -307,9 +323,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
       maxDate: this.maxDate,
       enable: this.enable,
       disable: this.disable,
-      handleDateChange: this.handleDateChange.bind(this),
-      loadLocale: this.loadLocale.bind(this),
       mode: 'range',
+      loadLocale: this.loadLocale.bind(this),
+      onChange: this.handleDateChange.bind(this),
+      onClose: this.handleClose.bind(this),
+      onOpen: this.handleOpen.bind(this),
     });
   }
 
@@ -377,11 +395,21 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.flatpickrInstance?.set('showMonths', isWideScreen ? 2 : 1);
   }
 
+  handleOpen(): void {
+    this._hasInteracted = true;
+    this._showValidationMessage = false;
+    this.requestUpdate();
+  }
+
   handleDateChange(selectedDates: Date[], dateStr: string): void {
+    this._hasInteracted = true;
+    this._showValidationMessage = false;
+
     this.value =
       selectedDates.length === 2
         ? [selectedDates[0].getTime(), selectedDates[1].getTime()]
-        : [null, null];
+        : [selectedDates[0]?.getTime() || null, null];
+
     this.requestUpdate('value');
 
     const updateInputValue = (
@@ -411,6 +439,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.updateSelectedDateRangeAria(selectedDates);
   }
 
+  handleClose(): void {
+    setTimeout(() => {
+      this._showValidationMessage = true;
+      this._validate();
+      this.requestUpdate();
+    }, 100);
+  }
+
   updateSelectedDateRangeAria(selectedDates: Date[]): void {
     if (selectedDates.length === 2) {
       const [startDate, endDate] = selectedDates;
@@ -429,10 +465,20 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   _validate(): boolean {
+    const wasInvalid = this._isInvalid;
     this._isInvalid = this.required && (!this.value[0] || !this.value[1]);
-    this._internalValidationMsg = this._isInvalid
-      ? 'Both start and end dates are required'
-      : '';
+
+    if (this._isInvalid) {
+      this._internalValidationMsg =
+        this.invalidText || 'Both start and end dates are required';
+    } else {
+      this._internalValidationMsg = '';
+    }
+
+    if (wasInvalid !== this._isInvalid) {
+      this.requestUpdate();
+    }
+
     return !this._isInvalid;
   }
 

@@ -106,6 +106,20 @@ export class DatePicker extends FormMixin(LitElement) {
   @state()
   private _enableTime = false;
 
+  /**
+   * Sets whether user has interacted with datepicker for error handling.
+   * @internal
+   */
+  @state()
+  private _hasInteracted = false;
+
+  /**
+   * Sets validation message to visible.
+   * @internal
+   */
+  @state()
+  private _showValidationMessage = false;
+
   /** Flatpickr instantiation.
    * @internal
    */
@@ -144,7 +158,9 @@ export class DatePicker extends FormMixin(LitElement) {
               ${this.caption}
             </div>`
           : ''}
-        ${this._isInvalid || this.invalidText
+        ${this._showValidationMessage &&
+        this._hasInteracted &&
+        (this._isInvalid || this.invalidText)
           ? html`<div id=${errorId} class="error error-text" role="alert">
               <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
                 .invalidText || this._internalValidationMsg}
@@ -298,12 +314,26 @@ export class DatePicker extends FormMixin(LitElement) {
       maxDate: this.maxDate,
       enable: this.enable,
       disable: this.disable,
-      handleDateChange: this.handleDateChange.bind(this),
-      loadLocale: this.loadLocale.bind(this),
+      wrap: false,
       mode: this.mode,
       closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
-      wrap: false,
+      onOpen: this.handleOpen.bind(this),
+      onClose: this.handleClose.bind(this),
+      onChange: this.handleDateChange.bind(this),
+      loadLocale: this.loadLocale.bind(this),
     });
+  }
+
+  handleOpen(): void {
+    this._hasInteracted = true;
+    this._showValidationMessage = false;
+    this.requestUpdate();
+  }
+
+  handleClose(): void {
+    this._showValidationMessage = true;
+    this._validate();
+    this.requestUpdate();
   }
 
   handleDateChange(selectedDates: Date[], dateStr: string): void {
@@ -327,16 +357,41 @@ export class DatePicker extends FormMixin(LitElement) {
     });
 
     this.dispatchEvent(customEvent);
+
+    this._showValidationMessage = false;
     this._validate();
+    this.requestUpdate();
   }
 
   _validate(): boolean {
+    const wasInvalid = this._isInvalid;
+
     if (this.mode === 'multiple' && Array.isArray(this.value)) {
-      return this.value.every((date) => date instanceof Date);
+      this._isInvalid = this.required && this.value.length === 0;
     } else if (this.mode === 'single' && typeof this.value === 'string') {
-      return Boolean(this.value);
+      this._isInvalid = this.required && !this.value;
+    } else {
+      this._isInvalid = this.required;
     }
-    return false;
+
+    if (this._isInvalid) {
+      if (!this.invalidText) {
+        this.invalidText =
+          this.mode === 'multiple'
+            ? 'Please select at least one date'
+            : 'Please select a date';
+      }
+      this._internalValidationMsg = this.invalidText;
+    } else {
+      this.invalidText = '';
+      this._internalValidationMsg = '';
+    }
+
+    if (wasInvalid !== this._isInvalid) {
+      this.requestUpdate();
+    }
+
+    return !this._isInvalid;
   }
 
   override disconnectedCallback(): void {
