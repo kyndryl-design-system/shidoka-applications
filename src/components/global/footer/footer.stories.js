@@ -5,10 +5,6 @@ import '@kyndryl-design-system/shidoka-foundation/components/link';
 export default {
   title: 'Global Components/Footer',
   component: 'kyn-footer',
-  // subcomponents: {
-  //   FooterNav: 'kyn-footer-nav',
-  //   FooterNavLink: 'kyn-footer-link',
-  // },
   parameters: {
     design: {
       type: 'figma',
