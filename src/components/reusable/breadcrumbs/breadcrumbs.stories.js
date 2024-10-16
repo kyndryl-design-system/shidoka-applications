@@ -45,16 +45,3 @@ export const WithOverflow = {
     `;
   },
 };
-
-// export const BreadcrumbsOld = {
-//   render: () => {
-//     return html`
-//       <kyn-breadcrumbs>
-//         <kyn-breadcrumb-item href="/">Home</kyn-breadcrumb-item>
-//         <kyn-breadcrumb-item href="/level1">Level 1</kyn-breadcrumb-item>
-//         <kyn-breadcrumb-item href="/level2">Level 2</kyn-breadcrumb-item>
-//         <kyn-breadcrumb-item>Destination</kyn-breadcrumb-item>
-//       </kyn-breadcrumbs>
-//     `;
-//   },
-// };

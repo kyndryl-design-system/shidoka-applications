@@ -34,15 +34,9 @@ export class TableHeader extends LitElement {
   @property({ type: Boolean, reflect: true })
   dense = false;
 
-  /** Truncates the cell's contents with ellipsis.
-   * @ignore
-   */
-  @property({ type: Boolean, reflect: true })
-  ellipsis = false;
-
   /**
    * Context consumer for the table context.
-   * Updates the cell's dense and ellipsis properties when the context changes.
+   * Updates the cell's dense properties when the context changes.
    * @private
    * @ignore
    * @type {ContextConsumer<TableContextType, TableHeader>}
@@ -59,15 +53,12 @@ export class TableHeader extends LitElement {
   );
 
   /**
-   * Updates the cell's dense and ellipsis properties when the context changes.
+   * Updates the cell's dense properties when the context changes.
    * @param {TableContextType} context - The updated context.
    */
-  handleContextChange = ({ dense, ellipsis }: TableContextType) => {
+  handleContextChange = ({ dense }: TableContextType) => {
     if (typeof dense == 'boolean') {
       this.dense = dense;
-    }
-    if (typeof ellipsis == 'boolean') {
-      this.ellipsis = ellipsis;
     }
   };
 
