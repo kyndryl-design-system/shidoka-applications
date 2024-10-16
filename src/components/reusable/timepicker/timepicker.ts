@@ -22,8 +22,13 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
+import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/time.svg';
 
 type SupportedLocale = (typeof langsArray)[number];
+
+const _defaultTextStrings = {
+  requiredText: 'Required',
+};
 
 /**
  * Timepicker: uses flatpickr datetime picker library, timepicker implementation -- `https://flatpickr.js.org/examples/#time-picker`
@@ -110,37 +115,62 @@ export class TimePicker extends FormMixin(LitElement) {
   @state()
   private _anchorEl?: HTMLElement;
 
-  /**
-   * Queries the anchor slotted DOM element.
+  /** Customizable text strings. */
+  @property({ type: Object })
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
    * @internal
    */
-  @query('slot[name="anchor"]')
-  private anchorSlot!: HTMLSlotElement;
+  @state()
+  _textStrings = _defaultTextStrings;
 
   override render() {
     const errorId = 'error-message';
     const warningId = 'warning-message';
+    const anchorId =
+      this.nameAttr ||
+      `time-picker-button-${Math.random().toString(36).slice(2, 11)}`;
     const descriptionId = this.nameAttr ?? '';
 
     return html`
       <div class=${classMap(this.getTimepickerClasses())}>
-        <slot name="label"></slot>
-        <div class="anchor-wrapper">
-          <slot name="anchor"></slot>
-          <slot name="icon" class="icon"></slot>
+        <label for=${anchorId} class="label-text">
+          ${this.required
+            ? html`<abbr
+                class="required"
+                title=${'Required'}
+                aria-label=${'Required'}
+                >*</abbr
+              >`
+            : null}
+          <slot></slot>
+        </label>
+        <div class="input-wrapper">
+          <input
+            class="input-custom"
+            type="text"
+            id=${anchorId}
+            name=${this.nameAttr}
+            placeholder="Select time"
+            ?disabled=${this.timepickerDisabled}
+            ?required=${this.required}
+          />
+          <span class="icon" @click=${() => this.flatpickrInstance?.open()}
+            >${unsafeSVG(clockIcon)}</span
+          >
         </div>
-
         ${this.caption
           ? html`<div id=${descriptionId} class="caption options-text">
               ${this.caption}
             </div>`
           : ''}
-        ${this._hasInteracted && this._showValidationMessage && this._isInvalid
+        ${this._showValidationMessage && this._hasInteracted && this._isInvalid
           ? html`<div id=${errorId} class="error error-text" role="alert">
               <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
                 .invalidText}
             </div>`
-          : this._hasInteracted && this.warnText
+          : this.warnText
           ? html`<div id=${warningId} class="warn warn-text" role="alert">
               ${this.warnText}
             </div>`
@@ -156,9 +186,7 @@ export class TimePicker extends FormMixin(LitElement) {
     };
   }
 
-  override async firstUpdated(
-    changedProperties: PropertyValues
-  ): Promise<void> {
+  override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
     injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
 
@@ -166,15 +194,12 @@ export class TimePicker extends FormMixin(LitElement) {
     this.setupAnchor();
   }
 
-  override async updated(changedProperties: PropertyValues): Promise<void> {
+  override async updated(changedProperties: PropertyValues) {
     await super.updated(changedProperties);
-
     if (
       changedProperties.has('defaultDate') ||
-      changedProperties.has('maxTime') ||
       changedProperties.has('minTime') ||
-      changedProperties.has('twentyFourHourFormat') ||
-      changedProperties.has('locale')
+      changedProperties.has('maxTime')
     ) {
       if (this.flatpickrInstance) {
         await this.updateFlatpickrOptions();
@@ -184,10 +209,19 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  async initializeFlatpickr(): Promise<void> {
-    if (!this._anchorEl) {
-      return;
+  private setupAnchor() {
+    const inputEl =
+      this.shadowRoot?.querySelector<HTMLInputElement>('.input-custom');
+    if (inputEl) {
+      this._anchorEl = inputEl;
+      this.initializeFlatpickr();
+    } else {
+      console.error('Internal input element not found');
     }
+  }
+
+  async initializeFlatpickr(): Promise<void> {
+    if (!this._anchorEl) return;
 
     if (this.flatpickrInstance) {
       this.flatpickrInstance.destroy();
@@ -202,56 +236,19 @@ export class TimePicker extends FormMixin(LitElement) {
     });
   }
 
-  private setupAnchor() {
-    const assignedNodes = this.anchorSlot.assignedNodes({ flatten: true });
-    this._anchorEl = assignedNodes.find(
-      (node): node is HTMLElement => node instanceof HTMLElement
-    );
-
-    if (this._anchorEl) {
-      this.initializeFlatpickr();
-
-      const iconSlot = this.shadowRoot?.querySelector(
-        'slot[name="icon"]'
-      ) as HTMLSlotElement | null;
-      iconSlot?.addEventListener('click', () => {
-        this.flatpickrInstance?.open();
-      });
-    } else {
-      console.error('Anchor element not found in the slotted content');
-    }
-  }
-
   async updateFlatpickrOptions(): Promise<void> {
     if (this.flatpickrInstance) {
-      const currentDate = this.flatpickrInstance.selectedDates[0];
-
-      try {
-        const newOptions = await this.getComponentFlatpickrOptions();
-
-        Object.keys(newOptions).forEach((key) => {
-          if (key in this.flatpickrInstance!.config) {
-            this.flatpickrInstance!.set(
-              key as keyof BaseOptions,
-              newOptions[key as keyof BaseOptions]
-            );
-          }
-        });
-
-        if (this.defaultDate) {
-          const defaultDateObj = new Date(this.defaultDate);
-          if (!isNaN(defaultDateObj.getTime())) {
-            this.flatpickrInstance.setDate(defaultDateObj, false);
-          }
-        } else if (currentDate) {
-          this.flatpickrInstance.setDate(currentDate, false);
+      const newOptions = await this.getComponentFlatpickrOptions();
+      Object.keys(newOptions).forEach((key) => {
+        if (key in this.flatpickrInstance!.config) {
+          this.flatpickrInstance!.set(
+            key as keyof BaseOptions,
+            newOptions[key as keyof BaseOptions]
+          );
         }
-
-        this.setCalendarAttributes();
-        this.requestUpdate();
-      } catch (error) {
-        console.error('Error updating Flatpickr options:', error);
-      }
+      });
+      this.setCalendarAttributes();
+      this.requestUpdate();
     }
   }
 
@@ -332,65 +329,38 @@ export class TimePicker extends FormMixin(LitElement) {
     dateStr: string
   ): Promise<void> {
     this._hasInteracted = true;
-
     if (selectedDates.length > 0) {
-      const selectedDate = selectedDates[0];
-      const hours = selectedDate.getHours();
-      const minutes = selectedDate.getMinutes();
-
-      const today = new Date();
-      today.setHours(hours, minutes, 0, 0);
-
-      const selectedTime = today.getTime();
-
-      this.value = selectedTime;
-
-      const timeStr = this.twentyFourHourFormat
-        ? `${hours.toString().padStart(2, '0')}:${minutes
-            .toString()
-            .padStart(2, '0')}`
-        : dateStr;
-
-      this.emitValue(timeStr);
+      this.value = selectedDates[0].getTime();
+      this.emitValue(dateStr);
     } else {
       this.value = null;
       this.emitValue('');
     }
-
     this._showValidationMessage = false;
     this._validate();
     await this.updateComplete;
   }
 
   private emitValue(timeStr: string): void {
-    const event = new CustomEvent('on-change', {
-      detail: { time: timeStr },
-      bubbles: true,
-      composed: true,
-    });
-    this.dispatchEvent(event);
+    this.dispatchEvent(
+      new CustomEvent('on-change', {
+        detail: { time: timeStr },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   private _validate(): void {
-    const wasInvalid = this._isInvalid;
-
-    if (this.required && !this.value) {
-      this._isInvalid = true;
-      if (!this.invalidText) {
-        this.invalidText = 'This field is required';
-      }
-    } else {
-      this._isInvalid = false;
+    this._isInvalid = this.required && !this.value;
+    if (this._isInvalid && !this.invalidText) {
+      this.invalidText = 'This field is required';
     }
-
-    if (wasInvalid !== this._isInvalid) {
-      this.requestUpdate();
-    }
+    this.requestUpdate();
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-
     if (this.flatpickrInstance) {
       this.flatpickrInstance.destroy();
       this.flatpickrInstance = undefined;

@@ -9,6 +9,7 @@ import {
   langsArray,
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
+  getPlaceholder,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
@@ -22,8 +23,13 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
+import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
 
 type SupportedLocale = (typeof langsArray)[number];
+
+const _defaultTextStrings = {
+  requiredText: 'Required',
+};
 
 /**
  * Datepicker: uses flatpickr datetime picker library -- `https://flatpickr.js.org`
@@ -133,24 +139,55 @@ export class DatePicker extends FormMixin(LitElement) {
   @state()
   private _anchorEl?: HTMLElement;
 
-  /**
-   * Queries the anchor slotted DOM element.
+  /** Customizable text strings. */
+  @property({ type: Object })
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
    * @internal
    */
-  @query('slot[name="anchor"]')
-  private anchorSlot!: HTMLSlotElement;
+  @state()
+  _textStrings = _defaultTextStrings;
 
   override render() {
     const errorId = 'error-message';
     const warningId = 'warning-message';
+    const anchorId =
+      this.nameAttr || `date-picker-${Math.random().toString(36).slice(2, 11)}`;
     const descriptionId = this.nameAttr ?? '';
+
+    const placeholder = getPlaceholder(this.dateFormat);
 
     return html`
       <div class=${classMap(this.getDatepickerClasses())}>
-        <slot name="label"></slot>
-        <div class="anchor-wrapper">
-          <slot name="anchor"></slot>
-          <slot name="icon" class="icon"></slot>
+        <label
+          slot="label"
+          class="label-text"
+          for=${anchorId}
+          ?disabled=${this.datePickerDisabled}
+        >
+          ${this.required
+            ? html`<abbr
+                class="required"
+                title=${this._textStrings?.requiredText || 'Required'}
+                aria-label=${this._textStrings?.requiredText || 'Required'}
+                >*</abbr
+              >`
+            : null}
+          <slot></slot>
+        </label>
+        <div class="input-wrapper">
+          <input
+            class="input-custom"
+            type="text"
+            id=${anchorId}
+            name=${this.nameAttr}
+            placeholder=${placeholder}
+            ?disabled=${this.datePickerDisabled}
+            ?required=${this.required}
+            aria-invalid=${this._isInvalid ? 'true' : 'false'}
+          />
+          <span class="icon">${unsafeSVG(calendarIcon)}</span>
         </div>
 
         ${this.caption
@@ -218,9 +255,7 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async initializeFlatpickr(): Promise<void> {
-    if (!this._anchorEl) {
-      return;
-    }
+    if (!this._anchorEl) return;
 
     if (this.flatpickrInstance) {
       this.flatpickrInstance.destroy();
@@ -238,15 +273,13 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private setupAnchor() {
-    const assignedNodes = this.anchorSlot.assignedNodes({ flatten: true });
-    this._anchorEl = assignedNodes.find(
-      (node): node is HTMLElement => node instanceof HTMLElement
-    );
-
-    if (this._anchorEl) {
+    const inputEl =
+      this.shadowRoot?.querySelector<HTMLInputElement>('.input-custom');
+    if (inputEl) {
+      this._anchorEl = inputEl;
       this.initializeFlatpickr();
     } else {
-      console.error('Anchor element not found in the slotted content');
+      console.error('Internal input element not found');
     }
   }
 

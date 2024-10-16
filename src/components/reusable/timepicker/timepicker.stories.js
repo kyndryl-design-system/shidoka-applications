@@ -1,12 +1,6 @@
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
-import { useEffect } from '@storybook/addons';
-import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/time.svg';
-import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/overflow.svg';
 
 export default {
   title: 'Components/Timepicker',
@@ -26,24 +20,7 @@ export default {
   },
 };
 
-const disconnectFlatpickr = () => {
-  const calendarElements = document.querySelectorAll('.flatpickr-calendar');
-  calendarElements.forEach((calendar) => calendar.remove());
-};
-
-const getPlaceholder = (args) => {
-  return args.twentyFourHourFormat ? '--:--' : '--:-- --';
-};
-
 const Template = (args) => {
-  const anchorId = args.nameAttr || 'time-picker-input';
-
-  useEffect(() => {
-    return () => {
-      disconnectFlatpickr();
-    };
-  }, []);
-
   return html`
     <kyn-time-picker
       .nameAttr="${args.nameAttr}"
@@ -60,85 +37,7 @@ const Template = (args) => {
       ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       @on-change=${(e) => action(e.type)(e)}
     >
-      <label
-        slot="label"
-        class="label-text"
-        for=${anchorId}
-        ?disabled=${args.timepickerDisabled}
-      >
-        ${args.required
-          ? html`<abbr
-              class="required"
-              title=${args.textStrings?.requiredText || 'Required'}
-              aria-label=${args.textStrings?.requiredText || 'Required'}
-              >*</abbr
-            >`
-          : null}
-        ${args.unnamed}
-      </label>
-      <input
-        slot="anchor"
-        type="text"
-        id=${anchorId}
-        placeholder=${getPlaceholder(args)}
-        ?disabled=${args.timepickerDisabled}
-        aria-required=${args.required ? 'true' : 'false'}
-      />
-      <span slot="icon" class="icon">${unsafeSVG(clockIcon)}</span>
-    </kyn-time-picker>
-  `;
-};
-
-const ButtonTemplate = (args) => {
-  useEffect(() => {
-    return () => {
-      disconnectFlatpickr();
-    };
-  }, []);
-
-  return html`
-    <kyn-time-picker
-      .nameAttr="${args.nameAttr}"
-      .locale="${args.locale}"
-      .value="${args.value}"
-      .warnText="${args.warnText}"
-      .invalidText="${args.invalidText}"
-      .caption="${args.caption}"
-      .defaultDate="${args.defaultDate}"
-      .minTime="${args.minTime}"
-      .maxTime="${args.maxTime}"
-      ?required="${args.required}"
-      ?timepickerDisabled="${args.timepickerDisabled}"
-      ?twentyFourHourFormat="${args.twentyFourHourFormat}"
-      @on-change=${(e) => action(e.type)(e)}
-    >
-      <label
-        slot="label"
-        class="label-text"
-        ?disabled=${args.timepickerDisabled}
-      >
-        ${args.required
-          ? html`<abbr
-              class="required"
-              title=${args.textStrings?.requiredText || 'Required'}
-              aria-label=${args.textStrings?.requiredText || 'Required'}
-              >*</abbr
-            >`
-          : null}
-        ${args.unnamed}
-      </label>
-      <kd-button
-        slot="anchor"
-        value="Primary"
-        kind=${'primary-app'}
-        class="btn interactive"
-        description="Date picker button containing icon"
-        ?disabled=${args.timepickerDisabled}
-      >
-        <span slot="icon" style="line-height: 1;"
-          >${unsafeSVG(overflowIcon)}</span
-        >
-      </kd-button>
+      ${args.unnamed}
     </kyn-time-picker>
   `;
 };
@@ -161,15 +60,6 @@ DefaultTimePicker.args = {
   textStrings: { requiredText: 'Required' },
 };
 DefaultTimePicker.storyName = 'Default';
-
-export const TimePickerButtonAnchor = ButtonTemplate.bind({});
-TimePickerButtonAnchor.args = {
-  ...DefaultTimePicker.args,
-  locale: 'en',
-  required: true,
-  unnamed: 'Timepicker with Button Anchor',
-};
-TimePickerButtonAnchor.storyName = 'Button Anchor';
 
 export const TimePickerTwentyFourHour = Template.bind({});
 TimePickerTwentyFourHour.args = {

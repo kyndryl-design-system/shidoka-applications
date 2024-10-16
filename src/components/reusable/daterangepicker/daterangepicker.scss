@@ -8,62 +8,9 @@
     width: 100%;
 }
 
-:host {
-    --calendar-width: 600px;
-}
-
-.date-inputs {
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-}
-
-.date-input {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
-.anchor-wrapper {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-}
-
-.date-range-picker {
-    &__disabled ::slotted(*) {
-        opacity: 0.5;
-        pointer-events: none;
-    }
-}
-
-::slotted([slot="start-label"]),
-::slotted([slot="end-label"]) {
-    @include typography.type-ui-02;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 0;
-    margin-bottom: 8px;
-
-    &.sr-only {
-        @include visibility.sr-only;
-    }
-
-    [disabled] & {
-        color: var(--kd-color-text-disabled);
-    }
-}
-
-::slotted([slot="start-anchor"]),
-::slotted([slot="end-anchor"]) {
+.input-custom {
     display: block;
     width: 100%;
-}
-
-::slotted(input[slot="start-anchor"]),
-::slotted(input[slot="end-anchor"]) {
     border: 1px solid var(--kd-color-border-ui);
     border-radius: 4px;
     height: 48px;
@@ -73,6 +20,8 @@
     appearance: none;
     @include typography.type-body-02;
     color: var(--kd-color-text-primary);
+    transition: background-color 150ms ease-out, border-color 150ms ease-out,
+        outline-color 150ms ease-out;
     background: var(--kd-color-background-inverse);
     outline: 2px solid transparent;
     outline-offset: 2px;
@@ -99,41 +48,88 @@
     }
 }
 
-::slotted([slot="start-icon"]),
-::slotted([slot="end-icon"]) {
+.input-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+::slotted(input) {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--kd-color-border-ui);
+    border-radius: 4px;
+    height: 48px;
+    padding: 0 40px 0 16px;
+    line-height: 48px;
+    -webkit-appearance: none;
+    appearance: none;
+    @include typography.type-body-02;
+    color: var(--kd-color-text-primary);
+    transition: background-color 150ms ease-out, border-color 150ms ease-out,
+        outline-color 150ms ease-out;
+    background: var(--kd-color-background-inverse);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+
+    &[invalid] {
+        border-color: var(--kd-color-border-error);
+    }
+
+    &[disabled] {
+        color: var(--kd-color-text-disabled);
+        border-color: var(--kd-color-border-ui-disabled);
+    }
+
+    &:hover {
+        border-color: var(--kd-color-border-ui-hover);
+    }
+
+    &:focus {
+        outline-color: var(--kd-color-border-focus);
+    }
+
+    &::placeholder {
+        color: var(--kd-color-text-placeholder);
+    }
+}
+
+::slotted(label) {
+    @include typography.type-ui-02;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    margin-bottom: 8px;
+
+    &.sr-only {
+        @include visibility.sr-only;
+    }
+
+    [disabled] & {
+        color: var(--kd-color-text-disabled);
+    }
+}
+
+.icon {
     position: absolute;
-    right: 16px;
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
-    color: var(--kd-color-text-secondary);
-}
-
-::slotted([slot="start-icon"]) svg,
-::slotted([slot="end-icon"]) svg {
-    width: 16px;
-    height: 16px;
-    display: block;
-}
-
-.date-range-separator {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-weight: 300;
-    font-size: 25px;
-    height: 48px;
+    height: 24px;
+    width: 24px;
     color: var(--kd-color-text-secondary);
-    align-self: flex-end;
-    margin-bottom: 0;
 }
 
-::slotted(kd-button[slot="start-anchor"]) {
-    width: fit-content;
-    height: 48px;
+.date-range-picker {
+    width: inherit;
 
-    &[disabled] {
+    &__disabled ::slotted(*) {
         opacity: 0.5;
-        cursor: not-allowed;
+        pointer-events: none;
     }
 }

@@ -225,9 +225,19 @@ export function isValidDateFormat(format: string): format is DateFormatOption {
   return format in DATE_FORMAT_OPTIONS;
 }
 
-export function getPlaceholder(dateFormat: string): string {
+export function getPlaceholder(
+  dateFormat: string,
+  isDateRange?: boolean
+): string {
+  let placeholderFormat;
+
   if (isValidDateFormat(dateFormat)) {
-    return DATE_FORMAT_OPTIONS[dateFormat];
+    if (isDateRange) {
+      placeholderFormat = `${DATE_FORMAT_OPTIONS[dateFormat]} to ${DATE_FORMAT_OPTIONS[dateFormat]}`;
+    } else {
+      placeholderFormat = DATE_FORMAT_OPTIONS[dateFormat];
+    }
+    return placeholderFormat;
   }
   return 'Select date';
 }
