@@ -9,11 +9,13 @@ import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import addIcon from '@carbon/icons/es/add/20';
 import subtractIcon from '@carbon/icons/es/subtract/20';
 import { deepmerge } from 'deepmerge-ts';
+import errorIcon from '@carbon/icons/es/warning--filled/16';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
   subtract: 'Subtract',
   add: 'Add',
+  error: 'Error',
 };
 
 /**
@@ -157,6 +159,11 @@ export class NumberInput extends FormMixin(LitElement) {
         ${this._isInvalid
           ? html`
               <div id="error" class="error">
+                <kd-icon
+                  .icon="${errorIcon}"
+                  title=${this._textStrings.error}
+                  aria-label=${this._textStrings.error}
+                ></kd-icon>
                 ${this.invalidText || this._internalValidationMsg}
               </div>
             `

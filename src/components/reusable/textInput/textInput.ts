@@ -163,17 +163,6 @@ export class TextInput extends FormMixin(LitElement) {
             maxlength=${ifDefined(this.maxLength)}
             @input=${(e: any) => this._handleInput(e)}
           />
-
-          <!-- ${this._isInvalid
-            ? html`
-                <kd-icon
-                  class="error-icon"
-                  role="img"
-                  aria-label=${this._textStrings.errorText}
-                  .icon=${errorIcon}
-                ></kd-icon>
-              `
-            : null} -->
           ${this.value !== ''
             ? html`
                 <button

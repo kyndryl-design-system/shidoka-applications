@@ -50,6 +50,7 @@ const args = {
     requiredText: 'Required',
     subtract: 'Subtract',
     add: 'Add',
+    error: 'Error',
   },
 };
 
