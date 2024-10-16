@@ -38,8 +38,8 @@ export const Default = {
         <kyn-radio-button-group
           name="radio"
           @on-radio-group-change=${(e) => action(e.type)(e)}
+          label="Radio buttons"
         >
-          <span slot="label">Radio buttons</span>
           <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
           <kyn-radio-button value="2"> Option 2 </kyn-radio-button>
           <kyn-radio-button value="3"> Option 3 </kyn-radio-button>
@@ -119,9 +119,9 @@ export const Default = {
           name="textInput"
           placeholder="Placeholder text"
           caption="Text input example"
+          label="Text input"
           @on-input=${(e) => action(e.type)(e)}
         >
-          Text input
         </kyn-text-input>
 
         <br /><br />
@@ -130,10 +130,10 @@ export const Default = {
           name="textArea"
           placeholder="Placeholder text"
           caption="Text area example"
+          label="Text area"
           @on-input=${(e) => action(e.type)(e)}
           @keydown=${(e) => e.stopPropagation()}
         >
-          Text area
         </kyn-text-area>
 
         <br /><br />
@@ -141,9 +141,9 @@ export const Default = {
         <kyn-number-input
           name="numberInput"
           caption="Number input example"
+          label="Number input"
           @on-input=${(e) => action(e.type)(e)}
         >
-          Number input
         </kyn-number-input>
 
         <br /><br />
