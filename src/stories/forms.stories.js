@@ -40,6 +40,10 @@ export const Default = {
           @on-radio-group-change=${(e) => action(e.type)(e)}
           label="Radio buttons"
         >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
           <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
           <kyn-radio-button value="2"> Option 2 </kyn-radio-button>
           <kyn-radio-button value="3"> Option 3 </kyn-radio-button>
@@ -122,8 +126,11 @@ export const Default = {
           label="Text input"
           @on-input=${(e) => action(e.type)(e)}
         >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-text-input>
-
         <br /><br />
 
         <kyn-text-area
@@ -134,8 +141,11 @@ export const Default = {
           @on-input=${(e) => action(e.type)(e)}
           @keydown=${(e) => e.stopPropagation()}
         >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-text-area>
-
         <br /><br />
 
         <kyn-number-input
@@ -144,8 +154,11 @@ export const Default = {
           label="Number input"
           @on-input=${(e) => action(e.type)(e)}
         >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-number-input>
-
         <br /><br />
 
         <kyn-time-picker

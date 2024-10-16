@@ -21,6 +21,7 @@ const _defaultTextStrings = {
  * @fires on-radio-group-change - Captures the change event and emits the selected value.
  * @slot unnamed - Slot for individual radio buttons.
  * @slot description - Slot for description text.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-radio-button-group')
 export class RadioButtonGroup extends FormMixin(LitElement) {
@@ -76,6 +77,7 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
             : null}
 
           <span>${this.label}</span>
+          <slot name="tooltip"></slot>
         </legend>
         <div class="description-text">
           <slot name="description"></slot>

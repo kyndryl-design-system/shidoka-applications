@@ -29,6 +29,8 @@ const _defaultTextStrings = {
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
  * @slot icon - Slot for contextual icon.
+ * @slot tooltip - Slot for tooltip.
+ *
  */
 @customElement('kyn-text-input')
 export class TextInput extends FormMixin(LitElement) {
@@ -128,8 +130,8 @@ export class TextInput extends FormMixin(LitElement) {
                 >*</abbr
               >`
             : null}
-          <!-- <slot></slot> -->
           ${this.label}
+          <slot name="tooltip"></slot>
         </label>
 
         <div

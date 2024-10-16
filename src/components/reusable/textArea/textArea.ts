@@ -17,6 +17,7 @@ const _defaultTextStrings = {
  * @fires on-input - Captures the input event and emits the selected value and original event details.
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-text-area')
 export class TextArea extends FormMixin(LitElement) {
@@ -84,6 +85,7 @@ export class TextArea extends FormMixin(LitElement) {
               >`
             : null}
           ${this.label}
+          <slot name="tooltip"></slot>
         </label>
 
         <div class="input-wrapper">

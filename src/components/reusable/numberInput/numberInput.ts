@@ -21,6 +21,7 @@ const _defaultTextStrings = {
 /**
  * Number input.
  * @fires on-input - Captures the input event and emits the value and original event details.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-number-input')
 export class NumberInput extends FormMixin(LitElement) {
@@ -103,6 +104,7 @@ export class NumberInput extends FormMixin(LitElement) {
               >`
             : null}
           ${this.label}
+          <slot name="tooltip"></slot>
         </label>
 
         <div
