@@ -6,6 +6,10 @@ Brief summary describing the changes here.
 
 Link here (if applicable).
 
+## Figma Link
+
+Link here (if applicable).
+
 ## Notes
 
 - Detailed change notes
