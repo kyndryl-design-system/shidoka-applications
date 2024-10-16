@@ -35,8 +35,6 @@ const _defaultTextStrings = {
  * Datepicker: uses flatpickr datetime picker library -- `https://flatpickr.js.org`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot unnamed - Slotted anchor.
- * @slot label - Slotted input label.
- * @slot icon - Slotted anchor helper icon.
  */
 @customElement('kyn-date-picker')
 export class DatePicker extends FormMixin(LitElement) {

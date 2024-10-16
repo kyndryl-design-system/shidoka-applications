@@ -34,7 +34,6 @@ const _defaultTextStrings = {
  * Timepicker: uses flatpickr datetime picker library, timepicker implementation -- `https://flatpickr.js.org/examples/#time-picker`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot unnamed - Slot for label text.
- * @slot anchor - Slot for anchor element.
  */
 @customElement('kyn-time-picker')
 export class TimePicker extends FormMixin(LitElement) {
