@@ -398,10 +398,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
   handleOpen(): void {
     this._hasInteracted = true;
     this._showValidationMessage = false;
-    this.requestUpdate();
   }
 
-  handleDateChange(selectedDates: Date[], dateStr: string): void {
+  async handleDateChange(
+    selectedDates: Date[],
+    dateStr: string
+  ): Promise<void> {
     this._hasInteracted = true;
     this._showValidationMessage = false;
 
@@ -409,8 +411,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       selectedDates.length === 2
         ? [selectedDates[0].getTime(), selectedDates[1].getTime()]
         : [selectedDates[0]?.getTime() || null, null];
-
-    this.requestUpdate('value');
 
     const updateInputValue = (
       anchorEl: HTMLElement | undefined,
@@ -437,14 +437,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     this._validate();
     this.updateSelectedDateRangeAria(selectedDates);
+
+    await this.updateComplete;
   }
 
-  handleClose(): void {
-    setTimeout(() => {
-      this._showValidationMessage = true;
-      this._validate();
-      this.requestUpdate();
-    }, 100);
+  async handleClose(): Promise<void> {
+    this._showValidationMessage = true;
+    this._validate();
+    await this.updateComplete;
   }
 
   updateSelectedDateRangeAria(selectedDates: Date[]): void {
