@@ -7,8 +7,6 @@ export {
   HeaderFlyouts,
   HeaderFlyout,
   HeaderUserProfile,
-  HeaderAvatar,
-  HeaderPanel,
   HeaderPanelLink,
   HeaderNotificationPanel,
 } from './components/global/header';
@@ -39,7 +37,7 @@ export {
 } from './components/reusable/dropdown';
 export { DatePicker } from './components/reusable/datePicker';
 export { DateRangePicker } from './components/reusable/daterangepicker';
-export { Breadcrumbs, BreadcrumbItem } from './components/reusable/breadcrumbs';
+export { Breadcrumbs } from './components/reusable/breadcrumbs';
 export {
   Table,
   TableCell,
