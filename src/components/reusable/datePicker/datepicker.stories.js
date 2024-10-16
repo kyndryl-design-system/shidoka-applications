@@ -6,7 +6,6 @@ import { getPlaceholder } from '../../../common/helpers/flatpickr';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
 import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overflow.svg';
 
 export default {
