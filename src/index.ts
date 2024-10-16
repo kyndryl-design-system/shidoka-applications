@@ -7,8 +7,6 @@ export {
   HeaderFlyouts,
   HeaderFlyout,
   HeaderUserProfile,
-  HeaderAvatar,
-  HeaderPanel,
   HeaderPanelLink,
   HeaderNotificationPanel,
 } from './components/global/header';
@@ -17,7 +15,7 @@ export {
   LocalNavLink,
   LocalNavDivider,
 } from './components/global/localNav';
-export { Footer, FooterNav, FooterNavLink } from './components/global/footer';
+export { Footer } from './components/global/footer';
 export { UiShell } from './components/global/uiShell';
 export {
   RadioButton,
@@ -39,7 +37,7 @@ export {
 } from './components/reusable/dropdown';
 export { DatePicker } from './components/reusable/datePicker';
 export { DateRangePicker } from './components/reusable/daterangepicker';
-export { Breadcrumbs, BreadcrumbItem } from './components/reusable/breadcrumbs';
+export { Breadcrumbs } from './components/reusable/breadcrumbs';
 export {
   Table,
   TableCell,
@@ -68,7 +66,6 @@ export { Tag, TagGroup } from './components/reusable/tag';
 export { GlobalFilter } from './components/reusable/globalFilter';
 export { SideDrawer } from './components/reusable/sideDrawer';
 export { PageTitle } from './components/reusable/pagetitle';
-export { Card } from './components/reusable/card';
 export {
   Notification,
   NotificationContainer,
