@@ -27,7 +27,7 @@ const _defaultTextStrings = {
 export class NumberInput extends FormMixin(LitElement) {
   static override styles = Styles;
 
-  /** Lable text. */
+  /** Label text. */
   @property({ type: String })
   label = '';
 

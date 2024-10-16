@@ -36,7 +36,7 @@ const _defaultTextStrings = {
 export class TextInput extends FormMixin(LitElement) {
   static override styles = TextInputScss;
 
-  /** Lable text. */
+  /** Label text. */
   @property({ type: String })
   label = '';
 
