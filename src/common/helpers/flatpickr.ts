@@ -289,7 +289,7 @@ export async function getFlatpickrOptions(
     clickOpens: true,
     time_24hr: twentyFourHourFormat,
     weekNumbers: false,
-    wrap: wrap,
+    wrap,
     showMonths: isWideScreen && mode === 'range' ? 2 : 1,
     monthSelectorType: 'static',
     locale: localeOptions,

@@ -34,6 +34,7 @@ export default {
       control: { type: 'select' },
     },
     label: { control: { type: 'text' } },
+    defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
     maxDate: { control: { type: 'text' } },
     invalidText: { control: { type: 'text' } },
@@ -59,6 +60,7 @@ const SingleInput = (args) => {
       .label="${args.label}"
       .locale="${args.locale}"
       .dateFormat="${args.dateFormat}"
+      .defaultErrorMessage="${args.defaultErrorMessage}"
       .value="${args.value}"
       .warnText="${args.warnText}"
       .invalidText="${args.invalidText}"
@@ -90,6 +92,7 @@ DefaultDateRangePicker.args = {
   locale: 'en',
   dateFormat: 'Y-m-d',
   required: false,
+  defaultErrorMessage: 'Both start and end dates are required',
   multipleInputs: false,
   value: [null, null],
   warnText: '',

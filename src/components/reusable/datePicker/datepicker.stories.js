@@ -35,6 +35,7 @@ export default {
       options: ['single', 'multiple'],
       control: { type: 'select' },
     },
+    defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
     maxDate: { control: { type: 'text' } },
     label: { control: { type: 'text' } },
@@ -60,6 +61,7 @@ const Template = (args) => {
       .locale="${args.locale}"
       .label="${args.label}"
       .dateFormat="${args.dateFormat}"
+      .defaultErrorMessage="${args.defaultErrorMessage}"
       ?required="${args.required}"
       .value="${args.value}"
       .warnText="${args.warnText}"
@@ -88,6 +90,7 @@ DatePickerDefault.args = {
   nameAttr: 'default-date-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
+  defaultErrorMessage: 'A date value is required',
   required: false,
   value: '',
   warnText: '',

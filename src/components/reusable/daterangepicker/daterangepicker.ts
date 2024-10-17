@@ -57,6 +57,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: String })
   dateFormat = 'Y-m-d';
 
+  /** Sets default error message. */
+  @property({ type: String })
+  defaultErrorMessage = '';
+
   /** Sets date range to have start and end date inputs. */
   @property({ type: Boolean })
   multipleInputs = false;
@@ -208,7 +212,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (this._isInvalid) {
       return html`<div id=${errorId} class="error error-text" role="alert">
         <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-          .invalidText || 'Both start and end dates are required'}
+          .invalidText || this.defaultErrorMessage}
       </div>`;
     }
 

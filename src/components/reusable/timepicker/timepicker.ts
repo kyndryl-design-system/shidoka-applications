@@ -58,6 +58,10 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   defaultDate = '';
 
+  /** Sets default error message. */
+  @property({ type: String })
+  defaultErrorMessage = '';
+
   /** Sets validation warning messaging. */
   @property({ type: String })
   warnText = '';
@@ -175,7 +179,7 @@ export class TimePicker extends FormMixin(LitElement) {
     if (this._isInvalid) {
       return html`<div id=${errorId} class="error error-text" role="alert">
         <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-          .invalidText || 'A time value is required'}
+          .invalidText || this.defaultErrorMessage}
       </div>`;
     }
 
@@ -310,7 +314,6 @@ export class TimePicker extends FormMixin(LitElement) {
       defaultDate: this.defaultDate,
       loadLocale: this.loadLocale.bind(this),
       mode: 'time',
-      wrap: false,
       noCalendar: true,
       onChange: this.handleTimeChange.bind(this),
       onClose: this.handleClose.bind(this),

@@ -24,6 +24,7 @@ export default {
     maxTime: { control: { type: 'text' } },
     defaultDate: { control: { type: 'text' } },
     invalidText: { control: { type: 'text' } },
+    defaultErrorMessage: { control: { type: 'text' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
   },
 };
@@ -51,6 +52,7 @@ const Template = (args) => {
       .invalidText="${args.invalidText}"
       .caption="${args.caption}"
       .defaultDate="${args.defaultDate}"
+      .defaultErrorMessage="${args.defaultErrorMessage}"
       .minTime="${args.minTime}"
       .maxTime="${args.maxTime}"
       ?timepickerDisabled="${args.timepickerDisabled}"
@@ -75,6 +77,7 @@ DefaultTimePicker.args = {
   invalidText: '',
   caption: '',
   defaultDate: '',
+  defaultErrorMessage: 'A time value is required',
   minTime: '',
   maxTime: '',
   timepickerDisabled: false,

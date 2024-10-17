@@ -166,6 +166,7 @@ export const Default = {
           label="Time Picker"
           required
           caption="Time picker example"
+          defaultErrorMessage="A time value is required"
           @on-input=${(e) => action(e.type)(e)}
         >
           Time
@@ -179,6 +180,7 @@ export const Default = {
           label="Date Picker"
           dateFormat="Y-m-d"
           caption="Date picker example"
+          defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)(e)}
         >
           Date
@@ -192,6 +194,7 @@ export const Default = {
           label="Date / Time Picker"
           dateFormat="Y-m-d H:i"
           caption="Date time picker example"
+          defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)(e)}
         >
           Date time
@@ -205,6 +208,7 @@ export const Default = {
           name="date-range"
           dateFormat="Y-m-d"
           caption="Date range picker example"
+          defaultErrorMessage="Both start and end dates are required"
           @on-input=${(e) => action(e.type)(e)}
           style="min-width: 375px;"
         >
@@ -219,6 +223,7 @@ export const Default = {
           label="Date / Time Range Picker"
           dateFormat="Y-m-d H:i"
           caption="Date time range picker example"
+          defaultErrorMessage="Both start and end dates are required"
           @on-input=${(e) => action(e.type)(e)}
           style="min-width: 375px;"
         >

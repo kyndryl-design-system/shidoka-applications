@@ -53,7 +53,11 @@ export class DatePicker extends FormMixin(LitElement) {
 
   /** Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`). */
   @property({ type: String })
-  dateFormat = '';
+  dateFormat = 'Y-m-d';
+
+  /** Sets default error message. */
+  @property({ type: String })
+  defaultErrorMessage = '';
 
   /** Sets datepicker form input value to required/required. */
   @property({ type: Boolean })
@@ -203,7 +207,7 @@ export class DatePicker extends FormMixin(LitElement) {
         @click=${(e: Event) => e.stopPropagation()}
       >
         <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-          .invalidText || 'A date value is required'}
+          .invalidText || this.defaultErrorMessage}
       </div>`;
     }
 
@@ -348,7 +352,7 @@ export class DatePicker extends FormMixin(LitElement) {
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     return getFlatpickrOptions({
       locale: this.locale,
-      dateFormat: this.dateFormat || 'Y-m-d',
+      dateFormat: this.dateFormat,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat,
       altFormat: this.altFormat,
@@ -357,7 +361,6 @@ export class DatePicker extends FormMixin(LitElement) {
       maxDate: this.maxDate,
       enable: this.enable,
       disable: this.disable,
-      wrap: false,
       mode: this.mode,
       closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
       onOpen: this.handleOpen.bind(this),
