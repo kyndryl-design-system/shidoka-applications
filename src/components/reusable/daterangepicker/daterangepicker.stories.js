@@ -1,6 +1,7 @@
 import './index';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+import { useEffect } from '@storybook/addons';
 
 export default {
   title: 'Components/Date Range Picker',
@@ -32,7 +33,19 @@ export default {
   },
 };
 
+const disconnectFlatpickr = () => {
+  const calendarElements = document.querySelectorAll('.flatpickr-calendar');
+  calendarElements.forEach((calendar) => calendar.remove());
+};
+
 const SingleInput = (args) => {
+  // prevents flatpickr calendar overlay from persisting on view change
+  useEffect(() => {
+    return () => {
+      disconnectFlatpickr();
+    };
+  }, []);
+
   return html`
     <kyn-date-range-picker
       .nameAttr="${args.nameAttr}"
@@ -65,7 +78,7 @@ DefaultDateRangePicker.args = {
   nameAttr: 'default-date-range-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
-  required: false,
+  required: true,
   multipleInputs: false,
   value: [null, null],
   warnText: '',
@@ -87,7 +100,6 @@ DateTimeRangePickerSingle.args = {
   ...DefaultDateRangePicker.args,
   nameAttr: 'date-time-range-picker',
   dateFormat: 'Y-m-d H:i',
-  required: true,
   caption:
     'Here is an example caption for the Date Range Picker with Time Input',
   unnamed: 'Start + End Date / Time',

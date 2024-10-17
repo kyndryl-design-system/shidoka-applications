@@ -1,5 +1,5 @@
 import { html, LitElement, PropertyValues } from 'lit';
-import { customElement, property, query, state } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
@@ -203,6 +203,10 @@ export class DatePicker extends FormMixin(LitElement) {
               ${this.warnText}
             </div>`
           : ''}
+        ${this.warnText &&
+        html`<div id=${warningId} class="warn warn-text" role="alert">
+          ${this.warnText}
+        </div>`}
       </div>
     `;
   }
@@ -354,12 +358,14 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async handleOpen(): Promise<void> {
+    console.log('called handleOpen');
     this._hasInteracted = true;
     this._showValidationMessage = false;
     await this.updateComplete;
   }
 
   async handleClose(): Promise<void> {
+    console.log('called handleClose');
     this._showValidationMessage = true;
     this._validate();
     await this.updateComplete;
@@ -369,6 +375,7 @@ export class DatePicker extends FormMixin(LitElement) {
     selectedDates: Date[],
     dateStr: string
   ): Promise<void> {
+    console.log('called handleDateChange');
     if (this.mode === 'multiple') {
       this.value = [...selectedDates];
     } else {

@@ -1,6 +1,7 @@
 import './index';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+import { useEffect } from '@storybook/addons';
 
 export default {
   title: 'Components/DatePicker',
@@ -34,7 +35,18 @@ export default {
   },
 };
 
+const disconnectFlatpickr = () => {
+  const calendarElements = document.querySelectorAll('.flatpickr-calendar');
+  calendarElements.forEach((calendar) => calendar.remove());
+};
+
 const InputTemplate = (args) => {
+  useEffect(() => {
+    return () => {
+      disconnectFlatpickr();
+    };
+  }, []);
+
   return html`<kyn-date-picker
     .nameAttr="${args.nameAttr}"
     .locale="${args.locale}"
@@ -63,7 +75,7 @@ DatePickerDefault.args = {
   nameAttr: 'default-date-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
-  required: false,
+  required: true,
   value: '',
   warnText: '',
   invalidText: '',
@@ -97,7 +109,6 @@ DatePickerMultiple.args = {
   locale: 'en',
   nameAttr: 'date-multiple-picker',
   dateFormat: 'Y-m-d',
-  required: true,
   caption: '',
   mode: 'multiple',
   unnamed: 'Date Picker (w/ Multiselect)',

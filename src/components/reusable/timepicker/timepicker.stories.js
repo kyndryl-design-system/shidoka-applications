@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
+import { useEffect } from '@storybook/addons';
 
 export default {
   title: 'Components/Timepicker',
@@ -20,7 +21,18 @@ export default {
   },
 };
 
+const disconnectFlatpickr = () => {
+  const calendarElements = document.querySelectorAll('.flatpickr-calendar');
+  calendarElements.forEach((calendar) => calendar.remove());
+};
+
 const Template = (args) => {
+  useEffect(() => {
+    return () => {
+      disconnectFlatpickr();
+    };
+  }, []);
+
   return html`
     <kyn-time-picker
       .nameAttr="${args.nameAttr}"
@@ -46,7 +58,7 @@ export const DefaultTimePicker = Template.bind({});
 DefaultTimePicker.args = {
   nameAttr: 'default-timepicker',
   locale: 'en',
-  required: false,
+  required: true,
   value: null,
   warnText: '',
   invalidText: '',
@@ -65,7 +77,6 @@ export const TimePickerTwentyFourHour = Template.bind({});
 TimePickerTwentyFourHour.args = {
   ...DefaultTimePicker.args,
   locale: 'en',
-  required: true,
   twentyFourHourFormat: true,
   unnamed: 'Timepicker with Button Anchor',
 };
