@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
+import '../tooltip';
 
 export default {
   title: 'Components/Checkbox',
@@ -46,6 +47,7 @@ export const CheckboxGroup = {
     return html`
       <kyn-checkbox-group
         name=${args.name}
+        label=${args.label}
         .value=${args.value}
         ?required=${args.required}
         ?disabled=${args.disabled}
@@ -60,7 +62,7 @@ export const CheckboxGroup = {
         @on-search=${(e) => action(e.type)(e)}
         @on-limit-toggle=${(e) => action(e.type)(e)}
       >
-        <span slot="label">${args.label}</span>
+        <kyn-tooltip slot="tooltip"> tooltip </kyn-tooltip>
         <div slot="description">${args.description}</div>
         <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
         <kyn-checkbox value="2"> Option 2 </kyn-checkbox>
@@ -79,6 +81,7 @@ export const CheckboxSubgroups = {
     return html`
       <kyn-checkbox-group
         name=${args.name}
+        label=${args.label}
         .value=${args.value}
         ?required=${args.required}
         ?disabled=${args.disabled}
@@ -93,7 +96,7 @@ export const CheckboxSubgroups = {
         @on-search=${(e) => action(e.type)(e)}
         @on-limit-toggle=${(e) => action(e.type)(e)}
       >
-        <span slot="label">${args.label}</span>
+        <kyn-tooltip slot="tooltip"> tooltip </kyn-tooltip>
         <div slot="description">${args.description}</div>
         <kyn-checkbox-subgroup>
           <kyn-checkbox slot="parent" value="parent1">
