@@ -46,7 +46,6 @@ const args = {
   caption: '',
   searchText: '',
   menuMinWidth: 'initial',
-  // updateByValue: false,
   textStrings: {
     required: 'Required',
     error: 'Error',
