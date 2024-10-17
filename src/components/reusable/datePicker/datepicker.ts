@@ -61,7 +61,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
   /** Sets pre-selected date/time value. */
   @property({ type: String })
-  override value: string | Date | Date[] = '';
+  override value: string | Date | Date[] | null = null;
 
   /** Sets validation warning messaging. */
   @property({ type: String })
@@ -119,13 +119,6 @@ export class DatePicker extends FormMixin(LitElement) {
    */
   @state()
   private _hasInteracted = false;
-
-  /**
-   * Sets validation message to visible.
-   * @internal
-   */
-  @state()
-  private _showValidationMessage = false;
 
   /** Flatpickr instantiation.
    * @internal
@@ -202,13 +195,20 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
-    const shouldShowError =
-      (this._showValidationMessage && this._hasInteracted) || this.invalidText;
+    const hasValidDate = this.value !== null && this.value !== '';
 
-    if (shouldShowError) {
-      return html`<div id=${errorId} class="error error-text" role="alert">
+    if (
+      this.invalidText ||
+      (this.required && this._hasInteracted && !hasValidDate)
+    ) {
+      return html`<div
+        id=${errorId}
+        class="error error-text"
+        role="alert"
+        @click=${(e: Event) => e.stopPropagation()}
+      >
         <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-          .invalidText}
+          .invalidText || 'A date value is required'}
       </div>`;
     }
 
@@ -253,6 +253,11 @@ export class DatePicker extends FormMixin(LitElement) {
     ) {
       this.updateEnableTime();
       this.reinitializeFlatpickr();
+    }
+
+    if (changedProperties.has('invalidText')) {
+      this._validate();
+      this.requestUpdate();
     }
   }
 
@@ -349,7 +354,7 @@ export class DatePicker extends FormMixin(LitElement) {
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     return getFlatpickrOptions({
       locale: this.locale,
-      dateFormat: this.dateFormat,
+      dateFormat: this.dateFormat || 'Y-m-d',
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat,
       altFormat: this.altFormat,
@@ -368,14 +373,12 @@ export class DatePicker extends FormMixin(LitElement) {
     });
   }
 
-  async handleOpen(): Promise<void> {
-    this._hasInteracted = true;
-    this._showValidationMessage = false;
-    await this.updateComplete;
+  handleOpen(): void {
+    /// future: custom logic of onOpen
   }
 
   async handleClose(): Promise<void> {
-    this._showValidationMessage = true;
+    this._hasInteracted = true;
     this._validate();
     await this.updateComplete;
   }
@@ -405,22 +408,11 @@ export class DatePicker extends FormMixin(LitElement) {
 
     this.dispatchEvent(customEvent);
 
-    this._showValidationMessage = false;
     this._validate();
     await this.updateComplete;
   }
 
   private _validate(): void {
-    this._isInvalid = this.required && !this.value;
-
-    if (this._isInvalid && (this._showValidationMessage || this.invalidText)) {
-      if (!this.invalidText) {
-        this.invalidText = 'This field is required';
-      }
-    } else {
-      this.invalidText = '';
-    }
-
     this.requestUpdate();
   }
 

@@ -81,7 +81,7 @@ DefaultDateRangePicker.args = {
   nameAttr: 'default-date-range-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
-  required: true,
+  required: false,
   multipleInputs: false,
   value: [null, null],
   warnText: '',

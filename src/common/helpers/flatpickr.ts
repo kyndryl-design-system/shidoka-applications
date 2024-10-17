@@ -177,6 +177,8 @@ export async function initializeSingleAnchorFlatpickr(
 
   try {
     const options = await getFlatpickrOptions();
+    options.dateFormat = options.dateFormat || 'Y-m-d';
+
     let inputElement: HTMLInputElement;
 
     if (anchorEl instanceof HTMLInputElement) {

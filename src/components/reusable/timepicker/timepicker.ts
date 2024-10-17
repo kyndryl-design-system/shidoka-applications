@@ -97,13 +97,6 @@ export class TimePicker extends FormMixin(LitElement) {
   @state()
   private _hasInteracted = false;
 
-  /**
-   * Sets validation message to visible.
-   * @internal
-   */
-  @state()
-  private _showValidationMessage = false;
-
   /** Flatpickr instantiation.
    * @internal
    */
@@ -179,13 +172,15 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
-    const shouldShowError =
-      (this._showValidationMessage && this._hasInteracted) || this.invalidText;
+    const hasValidTime = this.value !== null;
 
-    if (shouldShowError) {
+    if (
+      this.invalidText ||
+      (this.required && this._hasInteracted && !hasValidTime)
+    ) {
       return html`<div id=${errorId} class="error error-text" role="alert">
         <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-          .invalidText}
+          .invalidText || 'A time value is required'}
       </div>`;
     }
 
@@ -208,7 +203,6 @@ export class TimePicker extends FormMixin(LitElement) {
   override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
     injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
-
     await this.updateComplete;
     this.setupAnchor();
   }
@@ -227,6 +221,11 @@ export class TimePicker extends FormMixin(LitElement) {
         this.initializeFlatpickr();
       }
     }
+
+    if (changedProperties.has('invalidText')) {
+      this._validate();
+      this.requestUpdate();
+    }
   }
 
   private setupAnchor() {
@@ -242,10 +241,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
   async initializeFlatpickr(): Promise<void> {
     if (!this._anchorEl) return;
-
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.destroy();
-    }
+    if (this.flatpickrInstance) this.flatpickrInstance.destroy();
 
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
       anchorEl: this._anchorEl,
@@ -257,19 +253,19 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   async updateFlatpickrOptions(): Promise<void> {
-    if (this.flatpickrInstance) {
-      const newOptions = await this.getComponentFlatpickrOptions();
-      Object.keys(newOptions).forEach((key) => {
-        if (key in this.flatpickrInstance!.config) {
-          this.flatpickrInstance!.set(
-            key as keyof BaseOptions,
-            newOptions[key as keyof BaseOptions]
-          );
-        }
-      });
-      this.setCalendarAttributes();
-      this.requestUpdate();
-    }
+    if (!this.flatpickrInstance) return;
+
+    const newOptions = await this.getComponentFlatpickrOptions();
+    Object.keys(newOptions).forEach((key) => {
+      if (key in this.flatpickrInstance!.config) {
+        this.flatpickrInstance!.set(
+          key as keyof BaseOptions,
+          newOptions[key as keyof BaseOptions]
+        );
+      }
+    });
+    this.setCalendarAttributes();
+    this.requestUpdate();
   }
 
   setCalendarAttributes(): void {
@@ -287,7 +283,6 @@ export class TimePicker extends FormMixin(LitElement) {
 
   async loadLocale(locale: string): Promise<Partial<Locale>> {
     if (locale === 'en') return English;
-
     if (!isSupportedLocale(locale)) {
       console.warn(`Unsupported locale: ${locale}. Falling back to English.`);
       return English;
@@ -297,13 +292,8 @@ export class TimePicker extends FormMixin(LitElement) {
       const module = await import(`flatpickr/dist/l10n/${locale}.js`);
       const localeConfig =
         module[locale] || module.default[locale] || module.default;
-
-      if (!localeConfig) {
-        throw new Error('Locale configuration not found');
-      }
-
-      const { amPM, hourAriaLabel, minuteAriaLabel } = localeConfig;
-      return { amPM, hourAriaLabel, minuteAriaLabel };
+      if (!localeConfig) throw new Error('Locale configuration not found');
+      return localeConfig;
     } catch (error) {
       console.warn(
         `Failed to load locale ${locale}. Falling back to English.`,
@@ -320,6 +310,7 @@ export class TimePicker extends FormMixin(LitElement) {
       twentyFourHourFormat: this.twentyFourHourFormat,
       startAnchorEl: this._anchorEl!,
       allowInput: true,
+      dateFormat: this.twentyFourHourFormat ? 'H:i' : 'h:i K',
       minTime: this.minTime,
       maxTime: this.maxTime,
       defaultDate: this.defaultDate,
@@ -333,14 +324,12 @@ export class TimePicker extends FormMixin(LitElement) {
     });
   }
 
-  async handleOpen(): Promise<void> {
-    this._hasInteracted = true;
-    this._showValidationMessage = false;
-    await this.updateComplete;
+  handleOpen(): void {
+    /// future: custom logic of onOpen
   }
 
   async handleClose(): Promise<void> {
-    this._showValidationMessage = true;
+    this._hasInteracted = true;
     this._validate();
     await this.updateComplete;
   }
@@ -350,15 +339,16 @@ export class TimePicker extends FormMixin(LitElement) {
     dateStr: string
   ): Promise<void> {
     this._hasInteracted = true;
+
     if (selectedDates.length > 0) {
       this.value = selectedDates[0].getTime();
       this.emitValue(dateStr);
+      this._validate();
     } else {
       this.value = null;
       this.emitValue('');
+      this._validate();
     }
-    this._showValidationMessage = false;
-    this._validate();
     await this.updateComplete;
   }
 
@@ -373,16 +363,6 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private _validate(): void {
-    this._isInvalid = this.required && !this.value;
-
-    if (this._isInvalid && (this._showValidationMessage || this.invalidText)) {
-      if (!this.invalidText) {
-        this.invalidText = 'This field is required';
-      }
-    } else {
-      this.invalidText = '';
-    }
-
     this.requestUpdate();
   }
 

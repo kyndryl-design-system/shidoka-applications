@@ -142,13 +142,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @state()
   private _hasInteracted = false;
 
-  /**
-   * Sets validation message to visible.
-   * @internal
-   */
-  @state()
-  private _showValidationMessage = false;
-
   /** Customizable text strings. */
   @property({ type: Object })
   textStrings = _defaultTextStrings;
@@ -212,13 +205,16 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
-    const shouldShowError =
-      (this._showValidationMessage && this._hasInteracted) || this.invalidText;
+    const hasValidStart = this.value[0] !== null;
+    const hasValidEnd = this.value[1] !== null;
 
-    if (shouldShowError) {
+    if (
+      this.invalidText ||
+      (this.required && this._hasInteracted && (!hasValidStart || !hasValidEnd))
+    ) {
       return html`<div id=${errorId} class="error error-text" role="alert">
         <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-          .invalidText}
+          .invalidText || 'Both start and end dates are required'}
       </div>`;
     }
 
@@ -250,15 +246,20 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
+
     if (
       changedProperties.has('dateFormat') ||
-      changedProperties.has('invalidText') ||
       changedProperties.has('minDate') ||
       changedProperties.has('maxDate') ||
       changedProperties.has('locale')
     ) {
       this.updateEnableTime();
       this.reinitializeFlatpickr();
+    }
+
+    if (changedProperties.has('invalidText')) {
+      this._validate();
+      this.requestUpdate();
     }
   }
 
@@ -410,39 +411,22 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   handleOpen(): void {
-    this._hasInteracted = true;
-    this._showValidationMessage = false;
+    /// future: custom logic of onOpen
   }
 
-  async handleDateChange(selectedDates: Date[], dateStr: string) {
+  async handleDateChange(selectedDates: Date[]) {
     this._hasInteracted = true;
-    this._showValidationMessage = false;
 
     this.value =
       selectedDates.length === 2
         ? [selectedDates[0].getTime(), selectedDates[1].getTime()]
         : [selectedDates[0]?.getTime() || null, null];
 
-    if (selectedDates.length === 2) {
-      this.flatpickrInstance?.setDate(selectedDates, false);
-    }
-
-    this.dispatchEvent(
-      new CustomEvent('on-change', {
-        detail: { dates: selectedDates, dateString: dateStr },
-        bubbles: true,
-        composed: true,
-      })
-    );
-
-    this._validate();
-    this.updateSelectedDateRangeAria(selectedDates);
-
-    await this.updateComplete;
+    this.requestUpdate();
   }
 
   async handleClose() {
-    this._showValidationMessage = true;
+    this._hasInteracted = true;
     this._validate();
     await this.updateComplete;
   }
@@ -465,21 +449,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   private _validate(): void {
-    const hasValidStart =
-      typeof this.value[0] === 'number' && this.value[0] !== null;
-    const hasValidEnd =
-      typeof this.value[1] === 'number' && this.value[1] !== null;
-
-    this._isInvalid = this.required && (!hasValidStart || !hasValidEnd);
-
-    if ((this._isInvalid && this._showValidationMessage) || this.invalidText) {
-      if (!this.invalidText) {
-        this.invalidText = 'Both start and end dates are required';
-      }
-    } else {
-      this.invalidText = '';
-    }
-
     this.requestUpdate();
   }
 

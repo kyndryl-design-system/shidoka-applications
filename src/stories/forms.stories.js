@@ -163,7 +163,8 @@ export const Default = {
 
         <kyn-time-picker
           name="timepicker"
-          size="md"
+          label="Time Picker"
+          required
           caption="Time picker example"
           @on-input=${(e) => action(e.type)(e)}
         >
@@ -173,9 +174,10 @@ export const Default = {
         <br /><br />
 
         <kyn-date-picker
-          size="md"
+          required
           name="date-picker"
-          datePickerType="single"
+          label="Date Picker"
+          dateFormat="Y-m-d"
           caption="Date picker example"
           @on-input=${(e) => action(e.type)(e)}
         >
@@ -185,9 +187,10 @@ export const Default = {
         <br /><br />
 
         <kyn-date-picker
-          size="md"
+          required
           name="date-time-picker"
-          datePickerType="date-time"
+          label="Date / Time Picker"
+          dateFormat="Y-m-d H:i"
           caption="Date time picker example"
           @on-input=${(e) => action(e.type)(e)}
         >
@@ -197,8 +200,10 @@ export const Default = {
         <br /><br />
 
         <kyn-date-range-picker
-          size="md"
+          required
+          label="Date Range Picker"
           name="date-range"
+          dateFormat="Y-m-d"
           caption="Date range picker example"
           @on-input=${(e) => action(e.type)(e)}
         >
@@ -208,9 +213,10 @@ export const Default = {
         <br /><br />
 
         <kyn-date-range-picker
-          size="md"
+          required
           name="date-time-range"
-          datePickerType="date-time"
+          label="Date / Time Range Picker"
+          dateFormat="Y-m-d H:i"
           caption="Date time range picker example"
           @on-input=${(e) => action(e.type)(e)}
         >

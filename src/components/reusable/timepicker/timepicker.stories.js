@@ -61,7 +61,7 @@ export const DefaultTimePicker = Template.bind({});
 DefaultTimePicker.args = {
   nameAttr: 'default-timepicker',
   locale: 'en',
-  required: true,
+  required: false,
   value: null,
   warnText: '',
   invalidText: '',

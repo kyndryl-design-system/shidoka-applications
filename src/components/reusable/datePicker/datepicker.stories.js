@@ -79,7 +79,7 @@ DatePickerDefault.args = {
   nameAttr: 'default-date-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
-  required: true,
+  required: false,
   value: '',
   warnText: '',
   invalidText: '',
