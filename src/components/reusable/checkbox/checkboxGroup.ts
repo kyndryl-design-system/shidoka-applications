@@ -8,6 +8,7 @@ import '../textInput';
 import './checkbox';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@carbon/icons/es/warning--filled/16';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 const _defaultTextStrings = {
   selectAll: 'Select all',
@@ -24,7 +25,7 @@ const _defaultTextStrings = {
  * @fires on-search - Captures the search input event and emits the search term.
  * @fires on-limit-toggle - Captures the show more/less click and emits the expanded state.
  * @slot unnamed - Slot for individual checkboxes.
- * @slot label - Slot for label text.
+ * @slot tooltip - Slot for tooltip.
  * @slot description - Slot for description text.
  */
 @customElement('kyn-checkbox-group')
@@ -70,6 +71,10 @@ export class CheckboxGroup extends FormMixin(LitElement) {
   /** Adds a search input to enable filtering of checkboxes. */
   @property({ type: Boolean })
   filterable = false;
+
+  /** Label text. */
+  @property({ type: String })
+  label = '';
 
   /** Filter text input value.
    * @internal
@@ -149,7 +154,8 @@ export class CheckboxGroup extends FormMixin(LitElement) {
                   </abbr>
                 `
               : null}
-            <slot name="label"></slot>
+            <span>${ifDefined(this.label)}</span>
+            <slot name="tooltip"></slot>
           </legend>
           <div class="description-text">
             <slot name="description"></slot>

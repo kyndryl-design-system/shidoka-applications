@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
+import '../tooltip';
 
 export default {
   title: 'Components/Toggle Button',
@@ -15,7 +16,7 @@ export default {
 
 export const ToggleButton = {
   args: {
-    unnamed: 'Label',
+    label: 'Label',
     checked: false,
     name: 'toggle',
     value: 'example',
@@ -29,6 +30,7 @@ export const ToggleButton = {
   render: (args) => {
     return html`
       <kyn-toggle-button
+        label=${args.label}
         ?checked=${args.checked}
         name=${args.name}
         value=${args.value}
@@ -40,7 +42,7 @@ export const ToggleButton = {
         uncheckedText=${args.uncheckedText}
         @on-change=${(e) => action(e.type)(e)}
       >
-        ${args.unnamed}
+        <kyn-tooltip> tooltip </kyn-tooltip>
       </kyn-toggle-button>
     `;
   },

@@ -2,15 +2,20 @@ import { LitElement, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import ToggleButtonScss from './toggleButton.scss';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 /**
  * Toggle Button.
  * @fires on-change - Captures the change event and emits the selected value and original event details.
- * @slot unnamed - Slot for label text.
+ * @slot unnamed - Slot for tooltip.
  */
 @customElement('kyn-toggle-button')
 export class ToggleButton extends FormMixin(LitElement) {
   static override styles = ToggleButtonScss;
+
+  /** Label text. */
+  @property({ type: String })
+  label = '';
 
   /** Checkbox checked state. */
   @property({ type: Boolean })
@@ -54,6 +59,7 @@ export class ToggleButton extends FormMixin(LitElement) {
           class="label-text  ${this.hideLabel ? 'sr-only' : ''}"
           for=${this.name}
         >
+          <span>${ifDefined(this.label)}</span>
           <slot></slot>
         </label>
 

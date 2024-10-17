@@ -17,6 +17,7 @@ import errorIcon from '@carbon/icons/es/warning--filled/16';
 import clearIcon from '@carbon/icons/es/close/24';
 import clearIcon16 from '@carbon/icons/es/close/16';
 import { deepmerge } from 'deepmerge-ts';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 const _defaultTextStrings = {
   selectedOptions: 'List of selected options',
@@ -30,11 +31,15 @@ const _defaultTextStrings = {
  * @fires on-search - Capture the search input event and emits the search text.
  * @fires on-clear-all - Captures the the multi-select clear all button click event and emits the value.
  * @slot unnamed - Slot for dropdown options.
- * @slot label - Slot for input label.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-dropdown')
 export class Dropdown extends FormMixin(LitElement) {
   static override styles = DropdownScss;
+
+  /** Label text. */
+  @property({ type: String })
+  label = '';
 
   /** Update by value instead of deriving value from child selections. */
   @property({ type: Boolean })
@@ -230,7 +235,8 @@ export class Dropdown extends FormMixin(LitElement) {
                 </abbr>
               `
             : null}
-          <slot name="label"></slot>
+          <span>${ifDefined(this.label)}</span>
+          <slot name="tooltip"></slot>
         </label>
 
         <div
