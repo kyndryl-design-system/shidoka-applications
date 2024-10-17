@@ -45,7 +45,7 @@ interface FlatpickrOptionsContext {
   multipleInputs?: boolean;
   endAnchorEl?: HTMLElement;
   startAnchorEl: HTMLElement;
-  allowInput: boolean;
+  allowInput?: boolean;
   minDate?: string | number | Date;
   maxDate?: string | number | Date;
   minTime?: string | number | Date;
