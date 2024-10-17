@@ -178,11 +178,19 @@ export class TableHeader extends LitElement {
       case SORT_DIRECTION.DEFAULT:
       case SORT_DIRECTION.DESC:
         this.sortDirection = SORT_DIRECTION.ASC;
-        this.assistiveText = `Column header ${this.sortKey} sorted in ascending order`;
+        if (this.assistiveText === '') {
+          this.assistiveText = `Column header ${this.sortKey} sorted in ascending order`;
+        } else {
+          this.assistiveText = `Column header ${this.sortKey} is sorted in ascending order`;
+        }
         break;
       case SORT_DIRECTION.ASC:
         this.sortDirection = SORT_DIRECTION.DESC;
-        this.assistiveText = `Column header ${this.sortKey} sorted in descending order`;
+        if (this.assistiveText === '') {
+          this.assistiveText = `Column header ${this.sortKey} sorted in descending order`;
+        } else {
+          this.assistiveText = `Column header ${this.sortKey} is sorted in descending order`;
+        }
         break;
     }
 
@@ -245,7 +253,7 @@ export class TableHeader extends LitElement {
      * - onKeyDown: Handles keyboard events for sortable headers to allow sorting via the keyboard.
      */
     const role = this.sortable ? 'button' : undefined;
-    const arialSort = this.sortable ? this.sortDirection : undefined;
+    // const arialSort = this.sortable ? this.sortDirection : undefined;
     const ariaLabel =
       this.sortable && this.headerLabel
         ? `Sort by ${this.headerLabel}`
@@ -262,13 +270,13 @@ export class TableHeader extends LitElement {
     return html`
       <div
         class="container"
+        role=${ifDefined(role)}
         @click=${this.sortable ? () => this.toggleSortDirection() : undefined}
-        arial-label=${ifDefined(ariaLabel)}
-        arial-sort=${ifDefined(arialSort)}
+        aria-label=${ifDefined(ariaLabel)}
         tabindex=${ifDefined(tabIndex)}
         @keydown=${onKeyDown}
       >
-        <div class=${classMap(slotClasses)} role=${ifDefined(role)}>
+        <div class=${classMap(slotClasses)}>
           <slot></slot>
         </div>
         ${this.sortable
