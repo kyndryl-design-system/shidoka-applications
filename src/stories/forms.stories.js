@@ -70,12 +70,12 @@ export const Default = {
         <br /><br />
 
         <kyn-dropdown
+          label="Dropdown"
           name="dropdown"
           caption="Dropdown example"
           @on-change=${(e) => action(e.type)(e)}
         >
-          <span slot="label"> Dropdown </span>
-          <kyn-tooltip slot="label" anchorPosition="start">
+          <kyn-tooltip slot="tooltip">
             <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
             Tooltip example.
           </kyn-tooltip>
@@ -95,12 +95,12 @@ export const Default = {
 
         <kyn-dropdown
           name="dropdownMulti"
+          label="Multi-select dropdown"
           multiple
           searchable
           caption="Searchable Multi-Select Dropdown example"
           @on-change=${(e) => action(e.type)(e)}
         >
-          <span slot="label">Multi-select dropdown</span>
           <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
           <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
           <kyn-dropdown-option value="3" disabled>
