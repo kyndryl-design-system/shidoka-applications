@@ -9,21 +9,27 @@ import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import addIcon from '@carbon/icons/es/add/20';
 import subtractIcon from '@carbon/icons/es/subtract/20';
 import { deepmerge } from 'deepmerge-ts';
+import errorIcon from '@carbon/icons/es/warning--filled/16';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
   subtract: 'Subtract',
   add: 'Add',
+  error: 'Error',
 };
 
 /**
  * Number input.
  * @fires on-input - Captures the input event and emits the value and original event details.
- * @slot unnamed - Slot for label text.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-number-input')
 export class NumberInput extends FormMixin(LitElement) {
   static override styles = Styles;
+
+  /** Label text. */
+  @property({ type: String })
+  label = '';
 
   /** Input size. "sm", "md", or "lg". */
   @property({ type: String })
@@ -97,7 +103,8 @@ export class NumberInput extends FormMixin(LitElement) {
                 >*</abbr
               >`
             : null}
-          <slot></slot>
+          ${this.label}
+          <slot name="tooltip"></slot>
         </label>
 
         <div
@@ -154,6 +161,11 @@ export class NumberInput extends FormMixin(LitElement) {
         ${this._isInvalid
           ? html`
               <div id="error" class="error">
+                <kd-icon
+                  .icon="${errorIcon}"
+                  title=${this._textStrings.error}
+                  aria-label=${this._textStrings.error}
+                ></kd-icon>
                 ${this.invalidText || this._internalValidationMsg}
               </div>
             `
