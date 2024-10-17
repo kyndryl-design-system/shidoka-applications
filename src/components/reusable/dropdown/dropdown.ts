@@ -17,7 +17,6 @@ import errorIcon from '@carbon/icons/es/warning--filled/16';
 import clearIcon from '@carbon/icons/es/close/24';
 import clearIcon16 from '@carbon/icons/es/close/16';
 import { deepmerge } from 'deepmerge-ts';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 const _defaultTextStrings = {
   selectedOptions: 'List of selected options',
@@ -235,7 +234,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 </abbr>
               `
             : null}
-          <span>${ifDefined(this.label)}</span>
+          <span>${this.label}</span>
           <slot name="tooltip"></slot>
         </label>
 
@@ -400,6 +399,7 @@ export class Dropdown extends FormMixin(LitElement) {
               <div class="error">
                 <kd-icon
                   class="error-info-icon"
+                  role="img"
                   title=${this._textStrings.error}
                   aria-label=${this._textStrings.error}
                   .icon=${errorIcon}

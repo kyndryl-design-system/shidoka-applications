@@ -163,6 +163,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
             ? html`
                 <div class="error">
                   <kd-icon
+                    role="img"
                     .icon="${errorIcon}"
                     title=${this._textStrings.error}
                     aria-label=${this._textStrings.error}
