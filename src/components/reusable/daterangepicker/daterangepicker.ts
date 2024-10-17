@@ -35,7 +35,7 @@ const _defaultTextStrings = {
 /**
  * Date Range Picker component: uses flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
- * @slot tooltip - Slot for label text.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-date-range-picker')
 export class DateRangePicker extends FormMixin(LitElement) {
@@ -259,7 +259,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     if (changedProperties.has('invalidText')) {
       this._validate();
-      this.requestUpdate();
     }
   }
 
@@ -362,7 +361,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     this.setCalendarAttributes();
-    this.requestUpdate();
+    this._validate();
   }
 
   setCalendarAttributes(): void {
@@ -422,7 +421,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
         ? [selectedDates[0].getTime(), selectedDates[1].getTime()]
         : [selectedDates[0]?.getTime() || null, null];
 
-    this.requestUpdate();
+    this.updateSelectedDateRangeAria(selectedDates);
   }
 
   async handleClose() {

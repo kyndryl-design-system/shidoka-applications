@@ -3,6 +3,11 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/addons';
 
+import '../tooltip';
+
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import infoIcon from '@carbon/icons/es/information/16';
+
 export default {
   title: 'Components/DatePicker',
   component: 'kyn-date-picker',
@@ -42,39 +47,43 @@ const disconnectFlatpickr = () => {
   calendarElements.forEach((calendar) => calendar.remove());
 };
 
-const InputTemplate = (args) => {
+const Template = (args) => {
   useEffect(() => {
     return () => {
       disconnectFlatpickr();
     };
   }, []);
 
-  return html`<kyn-date-picker
-    .nameAttr="${args.nameAttr}"
-    .locale="${args.locale}"
-    .label="${args.label}"
-    .dateFormat="${args.dateFormat}"
-    ?required="${args.required}"
-    .value="${args.value}"
-    .warnText="${args.warnText}"
-    .invalidText="${args.invalidText}"
-    .altFormat=${args.altFormat}
-    .disable="${args.disable}"
-    .enable="${args.enable}"
-    .mode="${args.mode}"
-    .caption="${args.caption}"
-    ?datePickerDisabled="${args.datePickerDisabled}"
-    ?twentyFourHourFormat="${args.twentyFourHourFormat}"
-    .minDate="${args.minDate}"
-    .maxDate="${args.maxDate}"
-    .label="${args.label}"
-    @on-change=${(e) => action(e.type)(e)}
-  >
-    ${args.tooltip}
-  </kyn-date-picker>`;
+  return html`
+    <kyn-date-picker
+      .nameAttr="${args.nameAttr}"
+      .locale="${args.locale}"
+      .label="${args.label}"
+      .dateFormat="${args.dateFormat}"
+      ?required="${args.required}"
+      .value="${args.value}"
+      .warnText="${args.warnText}"
+      .invalidText="${args.invalidText}"
+      .altFormat=${args.altFormat}
+      .disable="${args.disable}"
+      .enable="${args.enable}"
+      .mode="${args.mode}"
+      .caption="${args.caption}"
+      ?datePickerDisabled="${args.datePickerDisabled}"
+      ?twentyFourHourFormat="${args.twentyFourHourFormat}"
+      .minDate="${args.minDate}"
+      .maxDate="${args.maxDate}"
+      @on-change=${(e) => action(e.type)(e)}
+    >
+      <kyn-tooltip slot="tooltip" anchorPosition="start">
+        <kd-icon .icon=${infoIcon}></kd-icon>
+        Tooltip example.
+      </kyn-tooltip>
+    </kyn-date-picker>
+  `;
 };
 
-export const DatePickerDefault = InputTemplate.bind({});
+export const DatePickerDefault = Template.bind({});
 DatePickerDefault.args = {
   nameAttr: 'default-date-picker',
   locale: 'en',
@@ -96,7 +105,7 @@ DatePickerDefault.args = {
 };
 DatePickerDefault.storyName = 'Date Selection (Default)';
 
-export const DateWithTime = InputTemplate.bind({});
+export const DateWithTime = Template.bind({});
 DateWithTime.args = {
   ...DatePickerDefault.args,
   locale: 'hi',
@@ -107,7 +116,7 @@ DateWithTime.args = {
 };
 DateWithTime.storyName = 'Date + Time (Hindi Locale)';
 
-export const DatePickerMultiple = InputTemplate.bind({});
+export const DatePickerMultiple = Template.bind({});
 DatePickerMultiple.args = {
   ...DatePickerDefault.args,
   locale: 'en',

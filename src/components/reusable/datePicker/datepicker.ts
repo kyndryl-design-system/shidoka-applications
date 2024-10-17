@@ -257,7 +257,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
     if (changedProperties.has('invalidText')) {
       this._validate();
-      this.requestUpdate();
     }
   }
 
@@ -287,7 +286,7 @@ export class DatePicker extends FormMixin(LitElement) {
       appendToBody: false,
     });
 
-    this.requestUpdate();
+    this._validate();
   }
 
   private setupAnchor() {

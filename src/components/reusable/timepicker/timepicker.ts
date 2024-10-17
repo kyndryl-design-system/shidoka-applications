@@ -32,7 +32,7 @@ const _defaultTextStrings = {
 /**
  * Timepicker: uses flatpickr datetime picker library, timepicker implementation -- `https://flatpickr.js.org/examples/#time-picker`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
- * @slot unnamed - Slot for label text.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-time-picker')
 export class TimePicker extends FormMixin(LitElement) {
@@ -224,7 +224,6 @@ export class TimePicker extends FormMixin(LitElement) {
 
     if (changedProperties.has('invalidText')) {
       this._validate();
-      this.requestUpdate();
     }
   }
 
@@ -265,7 +264,7 @@ export class TimePicker extends FormMixin(LitElement) {
       }
     });
     this.setCalendarAttributes();
-    this.requestUpdate();
+    this._validate();
   }
 
   setCalendarAttributes(): void {

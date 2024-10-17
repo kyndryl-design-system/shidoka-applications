@@ -3,6 +3,11 @@ import './index';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/addons';
 
+import '../tooltip';
+
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import infoIcon from '@carbon/icons/es/information/16';
+
 export default {
   title: 'Components/Timepicker',
   component: 'kyn-time-picker',
@@ -52,7 +57,10 @@ const Template = (args) => {
       ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       @on-change=${(e) => action(e.type)(e)}
     >
-      ${args.unnamed}
+      <kyn-tooltip slot="tooltip" anchorPosition="start">
+        <kd-icon .icon=${infoIcon}></kd-icon>
+        Tooltip example.
+      </kyn-tooltip>
     </kyn-time-picker>
   `;
 };

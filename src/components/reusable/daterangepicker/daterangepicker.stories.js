@@ -3,6 +3,11 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/addons';
 
+import '../tooltip';
+
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import infoIcon from '@carbon/icons/es/information/16';
+
 export default {
   title: 'Components/Date Range Picker',
   component: 'kyn-date-range-picker',
@@ -71,7 +76,10 @@ const SingleInput = (args) => {
       .endDateLabel="${args.endDateLabel}"
       @on-change=${(e) => action(e.type)(e)}
     >
-      ${args.unnamed}
+      <kyn-tooltip slot="tooltip" anchorPosition="start">
+        <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+        Tooltip example.
+      </kyn-tooltip>
     </kyn-date-range-picker>
   `;
 };
