@@ -206,6 +206,7 @@ export const Default = {
           dateFormat="Y-m-d"
           caption="Date range picker example"
           @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 375px;"
         >
           Date range
         </kyn-date-range-picker>
@@ -219,6 +220,7 @@ export const Default = {
           dateFormat="Y-m-d H:i"
           caption="Date time range picker example"
           @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 375px;"
         >
           Date time range
         </kyn-date-range-picker>

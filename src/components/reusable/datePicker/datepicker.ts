@@ -195,12 +195,7 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
-    const hasValidDate = this.value !== null && this.value !== '';
-
-    if (
-      this.invalidText ||
-      (this.required && this._hasInteracted && !hasValidDate)
-    ) {
+    if (this._isInvalid) {
       return html`<div
         id=${errorId}
         class="error error-text"
@@ -412,6 +407,12 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private _validate(): void {
+    const hasValidDate = this.value !== null && this.value !== '';
+
+    this._isInvalid =
+      !!this.invalidText ||
+      (this.required && this._hasInteracted && !hasValidDate);
+
     this.requestUpdate();
   }
 

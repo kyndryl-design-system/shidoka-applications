@@ -172,12 +172,7 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
-    const hasValidTime = this.value !== null;
-
-    if (
-      this.invalidText ||
-      (this.required && this._hasInteracted && !hasValidTime)
-    ) {
+    if (this._isInvalid) {
       return html`<div id=${errorId} class="error error-text" role="alert">
         <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
           .invalidText || 'A time value is required'}
@@ -342,12 +337,12 @@ export class TimePicker extends FormMixin(LitElement) {
     if (selectedDates.length > 0) {
       this.value = selectedDates[0].getTime();
       this.emitValue(dateStr);
-      this._validate();
     } else {
       this.value = null;
       this.emitValue('');
-      this._validate();
     }
+
+    this._validate();
     await this.updateComplete;
   }
 
@@ -362,6 +357,12 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private _validate(): void {
+    const hasValidTime = this.value !== null;
+
+    this._isInvalid =
+      !!this.invalidText ||
+      (this.required && this._hasInteracted && !hasValidTime);
+
     this.requestUpdate();
   }
 

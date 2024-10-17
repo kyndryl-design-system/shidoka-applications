@@ -205,13 +205,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
-    const hasValidStart = this.value[0] !== null;
-    const hasValidEnd = this.value[1] !== null;
-
-    if (
-      this.invalidText ||
-      (this.required && this._hasInteracted && (!hasValidStart || !hasValidEnd))
-    ) {
+    if (this._isInvalid) {
       return html`<div id=${errorId} class="error error-text" role="alert">
         <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
           .invalidText || 'Both start and end dates are required'}
@@ -413,7 +407,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     /// future: custom logic of onOpen
   }
 
-  async handleDateChange(selectedDates: Date[]) {
+  async handleDateChange(selectedDates: Date[]): Promise<void> {
     this._hasInteracted = true;
 
     this.value =
@@ -421,7 +415,24 @@ export class DateRangePicker extends FormMixin(LitElement) {
         ? [selectedDates[0].getTime(), selectedDates[1].getTime()]
         : [selectedDates[0]?.getTime() || null, null];
 
+    const formattedDates = selectedDates.map((date) => date.toISOString());
+    const dateString =
+      (this._startAnchorEl as HTMLInputElement)?.value ||
+      formattedDates.join(' to ');
+
+    const customEvent = new CustomEvent('on-change', {
+      detail: {
+        dates: formattedDates,
+        dateString,
+      },
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(customEvent);
+
     this.updateSelectedDateRangeAria(selectedDates);
+    this._validate();
+    await this.updateComplete;
   }
 
   async handleClose() {
@@ -448,6 +459,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   private _validate(): void {
+    const hasValidStart = this.value[0] !== null;
+    const hasValidEnd = this.value[1] !== null;
+
+    this._isInvalid =
+      !!this.invalidText ||
+      (this.required &&
+        this._hasInteracted &&
+        (!hasValidStart || !hasValidEnd));
+
     this.requestUpdate();
   }
 
