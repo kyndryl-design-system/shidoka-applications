@@ -38,8 +38,12 @@ export const Default = {
         <kyn-radio-button-group
           name="radio"
           @on-radio-group-change=${(e) => action(e.type)(e)}
+          label="Radio buttons"
         >
-          <span slot="label">Radio buttons</span>
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
           <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
           <kyn-radio-button value="2"> Option 2 </kyn-radio-button>
           <kyn-radio-button value="3"> Option 3 </kyn-radio-button>
@@ -119,33 +123,42 @@ export const Default = {
           name="textInput"
           placeholder="Placeholder text"
           caption="Text input example"
+          label="Text input"
           @on-input=${(e) => action(e.type)(e)}
         >
-          Text input
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-text-input>
-
         <br /><br />
 
         <kyn-text-area
           name="textArea"
           placeholder="Placeholder text"
           caption="Text area example"
+          label="Text area"
           @on-input=${(e) => action(e.type)(e)}
           @keydown=${(e) => e.stopPropagation()}
         >
-          Text area
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-text-area>
-
         <br /><br />
 
         <kyn-number-input
           name="numberInput"
           caption="Number input example"
+          label="Number input"
           @on-input=${(e) => action(e.type)(e)}
         >
-          Number input
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-number-input>
-
         <br /><br />
 
         <kyn-time-picker
