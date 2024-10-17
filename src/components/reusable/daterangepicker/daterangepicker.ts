@@ -21,7 +21,6 @@ import DateRangePickerStyles from './daterangepicker.scss';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
 
@@ -145,13 +144,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   @state()
   private _showValidationMessage = false;
-
-  /**
-   * Queries the anchor DOM element.
-   * @ignore
-   */
-  @state()
-  private _anchorEl?: HTMLElement;
 
   /** Customizable text strings. */
   @property({ type: Object })

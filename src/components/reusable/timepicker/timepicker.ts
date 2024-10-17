@@ -20,7 +20,6 @@ import TimepickerStyles from './timepicker.scss';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/time.svg';
 
@@ -128,9 +127,9 @@ export class TimePicker extends FormMixin(LitElement) {
     const errorId = 'error-message';
     const warningId = 'warning-message';
     const anchorId =
-      this.nameAttr ||
-      `time-picker-button-${Math.random().toString(36).slice(2, 11)}`;
+      this.nameAttr || `time-picker-${Math.random().toString(36).slice(2, 11)}`;
     const descriptionId = this.nameAttr ?? '';
+    const placeholder = 'hh:mm';
 
     return html`
       <div class=${classMap(this.getTimepickerClasses())}>
@@ -151,7 +150,7 @@ export class TimePicker extends FormMixin(LitElement) {
             type="text"
             id=${anchorId}
             name=${this.nameAttr}
-            placeholder="Select time"
+            placeholder=${placeholder}
             ?disabled=${this.timepickerDisabled}
             ?required=${this.required}
           />
@@ -298,6 +297,7 @@ export class TimePicker extends FormMixin(LitElement) {
       enableTime: true,
       twentyFourHourFormat: this.twentyFourHourFormat,
       startAnchorEl: this._anchorEl!,
+      allowInput: true,
       minTime: this.minTime,
       maxTime: this.maxTime,
       defaultDate: this.defaultDate,

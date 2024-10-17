@@ -21,7 +21,6 @@ import DatePickerStyles from './datepicker.scss';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
 

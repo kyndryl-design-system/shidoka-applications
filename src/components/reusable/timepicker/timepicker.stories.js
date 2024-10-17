@@ -71,16 +71,16 @@ DefaultTimePicker.args = {
   unnamed: 'Timepicker',
   textStrings: { requiredText: 'Required' },
 };
-DefaultTimePicker.storyName = 'Default';
+DefaultTimePicker.storyName = 'Default (12H)';
 
 export const TimePickerTwentyFourHour = Template.bind({});
 TimePickerTwentyFourHour.args = {
   ...DefaultTimePicker.args,
   locale: 'en',
   twentyFourHourFormat: true,
-  unnamed: 'Timepicker with Button Anchor',
+  unnamed: 'Timepicker (24H)',
 };
-TimePickerTwentyFourHour.storyName = 'Twenty-Four-Hour Format';
+TimePickerTwentyFourHour.storyName = 'Timepicker (24H)';
 
 export const TimePickerAltLanguage = Template.bind({});
 TimePickerAltLanguage.args = {

@@ -90,7 +90,7 @@ DatePickerDefault.args = {
   maxDate: '',
   unnamed: 'Date',
 };
-DatePickerDefault.storyName = 'Single Date Selection (Default)';
+DatePickerDefault.storyName = 'Date Selection (Default)';
 
 export const DateWithTime = InputTemplate.bind({});
 DateWithTime.args = {
@@ -101,7 +101,7 @@ DateWithTime.args = {
   caption: '',
   unnamed: 'दिनांक एवं समय चयनकर्ता',
 };
-DateWithTime.storyName = 'Single Date + Time (Hindi Locale)';
+DateWithTime.storyName = 'Date + Time (Hindi Locale)';
 
 export const DatePickerMultiple = InputTemplate.bind({});
 DatePickerMultiple.args = {

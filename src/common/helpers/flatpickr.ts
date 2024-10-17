@@ -45,6 +45,7 @@ interface FlatpickrOptionsContext {
   multipleInputs?: boolean;
   endAnchorEl?: HTMLElement;
   startAnchorEl: HTMLElement;
+  allowInput: boolean;
   minDate?: string | number | Date;
   maxDate?: string | number | Date;
   minTime?: string | number | Date;
@@ -254,6 +255,7 @@ export async function getFlatpickrOptions(
     multipleInputs,
     endAnchorEl,
     startAnchorEl,
+    allowInput,
     minDate,
     maxDate,
     minTime,
@@ -281,7 +283,7 @@ export async function getFlatpickrOptions(
     mode: mode === 'time' ? 'single' : mode,
     enableTime: mode === 'time' ? true : enableTime,
     noCalendar: mode === 'time' ? true : noCalendar,
-    allowInput: false,
+    allowInput: allowInput || false,
     clickOpens: true,
     time_24hr: twentyFourHourFormat,
     weekNumbers: false,
