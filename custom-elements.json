@@ -110,6 +110,69 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/header/header.ts",
       "declarations": [
         {
@@ -2019,69 +2082,6 @@
           "declaration": {
             "name": "LocalNavLink",
             "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -6066,11 +6066,21 @@
           "name": "NumberInput",
           "slots": [
             {
-              "description": "Slot for label text.",
-              "name": "unnamed"
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
             }
           ],
           "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
             {
               "kind": "field",
               "name": "size",
@@ -6172,7 +6182,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  subtract: 'Subtract',\n  add: 'Add',\n}",
+              "default": "{\n  requiredText: 'Required',\n  subtract: 'Subtract',\n  add: 'Add',\n  error: 'Error',\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -6256,6 +6266,15 @@
             }
           ],
           "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
             {
               "name": "size",
               "type": {
@@ -8000,15 +8019,25 @@
               "name": "unnamed"
             },
             {
-              "description": "Slot for label text.",
-              "name": "label"
-            },
-            {
               "description": "Slot for description text.",
               "name": "description"
+            },
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
             }
           ],
           "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text",
+              "attribute": "label"
+            },
             {
               "kind": "field",
               "name": "required",
@@ -8089,6 +8118,15 @@
             }
           ],
           "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text",
+              "fieldName": "label"
+            },
             {
               "name": "required",
               "type": {
@@ -12582,11 +12620,21 @@
           "name": "TextArea",
           "slots": [
             {
-              "description": "Slot for label text.",
-              "name": "unnamed"
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
             }
           ],
           "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
             {
               "kind": "field",
               "name": "caption",
@@ -12704,6 +12752,15 @@
             }
           ],
           "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
             {
               "name": "caption",
               "type": {
@@ -12829,15 +12886,25 @@
           "name": "TextInput",
           "slots": [
             {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            },
-            {
               "description": "Slot for contextual icon.",
               "name": "icon"
+            },
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
             }
           ],
           "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
             {
               "kind": "field",
               "name": "type",
@@ -13019,6 +13086,15 @@
             }
           ],
           "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
             {
               "name": "type",
               "type": {
@@ -13394,6 +13470,133 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/tooltip/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tooltip",
+          "declaration": {
+            "name": "Tooltip",
+            "module": "./tooltip"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tooltip/tooltip.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tooltip.",
+          "name": "Tooltip",
+          "slots": [
+            {
+              "description": "Slot for tooltip content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for custom anchor button content.",
+              "name": "anchor"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Toggle Tooltip'",
+              "description": "Assistive text for anchor button.",
+              "attribute": "assistiveText"
+            },
+            {
+              "kind": "method",
+              "name": "_positionTooltip",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleOpen",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleMouseLeave",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleEsc",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitToggle",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the open state of the tooltip on open/close.",
+              "name": "on-tooltip-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Toggle Tooltip'",
+              "description": "Assistive text for anchor button.",
+              "fieldName": "assistiveText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tooltip",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tooltip",
+          "declaration": {
+            "name": "Tooltip",
+            "module": "src/components/reusable/tooltip/tooltip.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tooltip",
+          "declaration": {
+            "name": "Tooltip",
+            "module": "src/components/reusable/tooltip/tooltip.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/timepicker/index.ts",
       "declarations": [],
       "exports": [
@@ -13673,133 +13876,6 @@
           "declaration": {
             "name": "TimePicker",
             "module": "src/components/reusable/timepicker/timepicker.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tooltip/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tooltip",
-          "declaration": {
-            "name": "Tooltip",
-            "module": "./tooltip"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tooltip/tooltip.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tooltip.",
-          "name": "Tooltip",
-          "slots": [
-            {
-              "description": "Slot for tooltip content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for custom anchor button content.",
-              "name": "anchor"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "assistiveText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Toggle Tooltip'",
-              "description": "Assistive text for anchor button.",
-              "attribute": "assistiveText"
-            },
-            {
-              "kind": "method",
-              "name": "_positionTooltip",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleOpen",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClose",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleMouseLeave",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleEsc",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "KeyboardEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitToggle",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the open state of the tooltip on open/close.",
-              "name": "on-tooltip-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "assistiveText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Toggle Tooltip'",
-              "description": "Assistive text for anchor button.",
-              "fieldName": "assistiveText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tooltip",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tooltip",
-          "declaration": {
-            "name": "Tooltip",
-            "module": "src/components/reusable/tooltip/tooltip.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tooltip",
-          "declaration": {
-            "name": "Tooltip",
-            "module": "src/components/reusable/tooltip/tooltip.ts"
           }
         }
       ]
