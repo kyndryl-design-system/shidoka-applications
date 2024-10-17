@@ -147,18 +147,17 @@ export class DatePicker extends FormMixin(LitElement) {
   _textStrings = _defaultTextStrings;
 
   override render() {
-    const errorId = 'error-message';
-    const warningId = 'warning-message';
-    const anchorId =
-      this.nameAttr || `date-picker-${Math.random().toString(36).slice(2, 11)}`;
+    const errorId = `${this.nameAttr}-error-message`;
+    const warningId = `${this.nameAttr}-warning-message`;
+    const anchorId = this.nameAttr
+      ? `${this.nameAttr}-${Math.random().toString(36).slice(2, 11)}`
+      : `date-picker-${Math.random().toString(36).slice(2, 11)}`;
     const descriptionId = this.nameAttr ?? '';
-
     const placeholder = getPlaceholder(this.dateFormat);
 
     return html`
       <div class=${classMap(this.getDatepickerClasses())}>
         <label
-          slot="label"
           class="label-text"
           for=${anchorId}
           ?disabled=${this.datePickerDisabled}
@@ -167,12 +166,14 @@ export class DatePicker extends FormMixin(LitElement) {
             ? html`<abbr
                 class="required"
                 title=${this._textStrings?.requiredText || 'Required'}
+                role="img"
                 aria-label=${this._textStrings?.requiredText || 'Required'}
                 >*</abbr
               >`
             : null}
           <slot></slot>
         </label>
+
         <div class="input-wrapper">
           <input
             class="input-custom"

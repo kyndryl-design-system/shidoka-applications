@@ -124,21 +124,27 @@ export class TimePicker extends FormMixin(LitElement) {
   _textStrings = _defaultTextStrings;
 
   override render() {
-    const errorId = 'error-message';
-    const warningId = 'warning-message';
-    const anchorId =
-      this.nameAttr || `time-picker-${Math.random().toString(36).slice(2, 11)}`;
+    const errorId = `${this.nameAttr}-error-message`;
+    const warningId = `${this.nameAttr}-warning-message`;
+    const anchorId = this.nameAttr
+      ? `${this.nameAttr}-${Math.random().toString(36).slice(2, 11)}`
+      : `time-picker-${Math.random().toString(36).slice(2, 11)}`;
     const descriptionId = this.nameAttr ?? '';
     const placeholder = 'hh:mm';
 
     return html`
       <div class=${classMap(this.getTimepickerClasses())}>
-        <label for=${anchorId} class="label-text">
+        <label
+          class="label-text"
+          for=${anchorId}
+          ?disabled=${this.timepickerDisabled}
+        >
           ${this.required
             ? html`<abbr
                 class="required"
-                title=${'Required'}
-                aria-label=${'Required'}
+                title=${this._textStrings?.requiredText || 'Required'}
+                role="img"
+                aria-label=${this._textStrings?.requiredText || 'Required'}
                 >*</abbr
               >`
             : null}
