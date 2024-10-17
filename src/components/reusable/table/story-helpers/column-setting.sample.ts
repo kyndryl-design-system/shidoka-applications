@@ -250,7 +250,9 @@ class StoryColumSetting extends LitElement {
                       size="small"
                       @on-click=${(e: CustomEvent) =>
                         this.handleLockingRow(e, row.id, row.locked)}
-                      description="freeze column"
+                      description=${row.locked
+                        ? `frozen column ${row.colName}`
+                        : 'freeze column'}
                     >
                       <kd-icon
                         slot="icon"
