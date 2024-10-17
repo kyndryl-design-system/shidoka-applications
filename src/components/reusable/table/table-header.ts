@@ -289,7 +289,7 @@ export class TableHeader extends LitElement {
         <div
           class="assistive-text"
           role="status"
-          aria-live="assertive"
+          aria-live="polite"
           aria-relevant="additions text"
         >
           ${this.assistiveText}
