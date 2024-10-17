@@ -42,6 +42,10 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   nameAttr = '';
 
+  /** Label text. */
+  @property({ type: String })
+  label = '';
+
   /** Sets desired locale and, if supported, dynamically loads language lib */
   @property({ type: String })
   locale: SupportedLocale = 'en';
@@ -148,8 +152,10 @@ export class TimePicker extends FormMixin(LitElement) {
                 >*</abbr
               >`
             : null}
-          <slot></slot>
+          ${this.label}
+          <slot name="tooltip"></slot>
         </label>
+
         <div class="input-wrapper">
           <input
             class="input-custom"
@@ -159,28 +165,37 @@ export class TimePicker extends FormMixin(LitElement) {
             placeholder=${placeholder}
             ?disabled=${this.timepickerDisabled}
             ?required=${this.required}
+            aria-invalid=${this._isInvalid ? 'true' : 'false'}
           />
-          <span class="icon" @click=${() => this.flatpickrInstance?.open()}
-            >${unsafeSVG(clockIcon)}</span
-          >
+          <span class="icon">${unsafeSVG(clockIcon)}</span>
         </div>
+
         ${this.caption
-          ? html`<div id=${descriptionId} class="caption options-text">
-              ${this.caption}
-            </div>`
+          ? html`<div id=${descriptionId} class="caption">${this.caption}</div>`
           : ''}
-        ${this._showValidationMessage && this._hasInteracted && this._isInvalid
-          ? html`<div id=${errorId} class="error error-text" role="alert">
-              <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-                .invalidText}
-            </div>`
-          : this.warnText
-          ? html`<div id=${warningId} class="warn warn-text" role="alert">
-              ${this.warnText}
-            </div>`
-          : ''}
+        ${this.renderValidationMessage(errorId, warningId)}
       </div>
     `;
+  }
+
+  private renderValidationMessage(errorId: string, warningId: string) {
+    const shouldShowError =
+      (this._showValidationMessage && this._hasInteracted) || this.invalidText;
+
+    if (shouldShowError) {
+      return html`<div id=${errorId} class="error error-text" role="alert">
+        <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
+          .invalidText}
+      </div>`;
+    }
+
+    if (this.warnText) {
+      return html`<div id=${warningId} class="warn warn-text" role="alert">
+        ${this.warnText}
+      </div>`;
+    }
+
+    return null;
   }
 
   getTimepickerClasses() {
@@ -202,6 +217,7 @@ export class TimePicker extends FormMixin(LitElement) {
     await super.updated(changedProperties);
     if (
       changedProperties.has('defaultDate') ||
+      changedProperties.has('invalidText') ||
       changedProperties.has('minTime') ||
       changedProperties.has('maxTime')
     ) {
@@ -358,9 +374,15 @@ export class TimePicker extends FormMixin(LitElement) {
 
   private _validate(): void {
     this._isInvalid = this.required && !this.value;
-    if (this._isInvalid && !this.invalidText) {
-      this.invalidText = 'This field is required';
+
+    if (this._isInvalid && (this._showValidationMessage || this.invalidText)) {
+      if (!this.invalidText) {
+        this.invalidText = 'This field is required';
+      }
+    } else {
+      this.invalidText = '';
     }
+
     this.requestUpdate();
   }
 

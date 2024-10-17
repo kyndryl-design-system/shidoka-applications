@@ -13,10 +13,12 @@ export default {
     },
   },
   argTypes: {
+    label: { control: { type: 'text' } },
     locale: { control: { type: 'text' } },
     minTime: { control: { type: 'text' } },
     maxTime: { control: { type: 'text' } },
     defaultDate: { control: { type: 'text' } },
+    invalidText: { control: { type: 'text' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
   },
 };
@@ -36,6 +38,7 @@ const Template = (args) => {
   return html`
     <kyn-time-picker
       .nameAttr="${args.nameAttr}"
+      .label="${args.label}"
       .locale="${args.locale}"
       ?required="${args.required}"
       .value="${args.value}"
@@ -68,8 +71,7 @@ DefaultTimePicker.args = {
   maxTime: '',
   timepickerDisabled: false,
   twentyFourHourFormat: false,
-  unnamed: 'Timepicker',
-  textStrings: { requiredText: 'Required' },
+  label: 'Timepicker',
 };
 DefaultTimePicker.storyName = 'Default (12H)';
 
@@ -78,7 +80,7 @@ TimePickerTwentyFourHour.args = {
   ...DefaultTimePicker.args,
   locale: 'en',
   twentyFourHourFormat: true,
-  unnamed: 'Timepicker (24H)',
+  label: 'Timepicker (24H)',
 };
 TimePickerTwentyFourHour.storyName = 'Timepicker (24H)';
 
@@ -86,6 +88,6 @@ export const TimePickerAltLanguage = Template.bind({});
 TimePickerAltLanguage.args = {
   ...DefaultTimePicker.args,
   locale: 'ja',
-  unnamed: 'タイムピッカー',
+  label: 'タイムピッカー',
 };
 TimePickerAltLanguage.storyName = 'Japanese Locale Example';

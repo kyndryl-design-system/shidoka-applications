@@ -28,8 +28,10 @@ export default {
       ],
       control: { type: 'select' },
     },
+    label: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
     maxDate: { control: { type: 'text' } },
+    invalidText: { control: { type: 'text' } },
   },
 };
 
@@ -49,6 +51,7 @@ const SingleInput = (args) => {
   return html`
     <kyn-date-range-picker
       .nameAttr="${args.nameAttr}"
+      .label="${args.label}"
       .locale="${args.locale}"
       .dateFormat="${args.dateFormat}"
       .value="${args.value}"
@@ -91,7 +94,7 @@ DefaultDateRangePicker.args = {
   twentyFourHourFormat: false,
   minDate: '',
   maxDate: '',
-  unnamed: 'Date Range',
+  label: 'Date Range',
 };
 DefaultDateRangePicker.storyName = 'Date Range Only (Default)';
 
@@ -100,8 +103,7 @@ DateTimeRangePickerSingle.args = {
   ...DefaultDateRangePicker.args,
   nameAttr: 'date-time-range-picker',
   dateFormat: 'Y-m-d H:i',
-  caption:
-    'Here is an example caption for the Date Range Picker with Time Input',
-  unnamed: 'Start + End Date / Time',
+  caption: 'Example caption for the Date Range Picker with Time Input',
+  label: 'Start + End Date / Time',
 };
 DateTimeRangePickerSingle.storyName = 'Date + Time Range';

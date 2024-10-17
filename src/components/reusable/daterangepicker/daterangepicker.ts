@@ -35,7 +35,7 @@ const _defaultTextStrings = {
 /**
  * Date Range Picker component: uses flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
- * @slot unnamed - Slot for label text.
+ * @slot tooltip - Slot for label text.
  */
 @customElement('kyn-date-range-picker')
 export class DateRangePicker extends FormMixin(LitElement) {
@@ -44,6 +44,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
   /** Sets date range picker attribute name (ex: `contact-form-date-range-picker`). */
   @property({ type: String })
   nameAttr = '';
+
+  /** Label text. */
+  @property({ type: String })
+  label = '';
 
   /** Sets and dynamically imports specific l10n calendar localization. */
   @property({ type: String })
@@ -181,7 +185,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
                 >*</abbr
               >`
             : null}
-          <slot></slot>
+          ${this.label}
+          <slot name="tooltip"></slot>
         </label>
 
         <div class="input-wrapper">
@@ -199,24 +204,31 @@ export class DateRangePicker extends FormMixin(LitElement) {
         </div>
 
         ${this.caption
-          ? html`<div id=${descriptionId} class="caption options-text">
-              ${this.caption}
-            </div>`
+          ? html`<div id=${descriptionId} class="caption">${this.caption}</div>`
           : ''}
-        ${this._hasInteracted &&
-        this._showValidationMessage &&
-        (this._isInvalid || this.invalidText)
-          ? html`<div id=${errorId} class="error error-text" role="alert">
-              <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-                .invalidText || this._internalValidationMsg}
-            </div>`
-          : this.warnText
-          ? html`<div id=${warningId} class="warn warn-text" role="alert">
-              ${this.warnText}
-            </div>`
-          : ''}
+        ${this.renderValidationMessage(errorId, warningId)}
       </div>
     `;
+  }
+
+  private renderValidationMessage(errorId: string, warningId: string) {
+    const shouldShowError =
+      (this._showValidationMessage && this._hasInteracted) || this.invalidText;
+
+    if (shouldShowError) {
+      return html`<div id=${errorId} class="error error-text" role="alert">
+        <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
+          .invalidText}
+      </div>`;
+    }
+
+    if (this.warnText) {
+      return html`<div id=${warningId} class="warn warn-text" role="alert">
+        ${this.warnText}
+      </div>`;
+    }
+
+    return null;
   }
 
   getDateRangePickerClasses() {
@@ -240,6 +252,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     super.updated(changedProperties);
     if (
       changedProperties.has('dateFormat') ||
+      changedProperties.has('invalidText') ||
       changedProperties.has('minDate') ||
       changedProperties.has('maxDate') ||
       changedProperties.has('locale')
@@ -451,19 +464,23 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }
 
-  _validate() {
-    const wasInvalid = this._isInvalid;
-    this._isInvalid = this.required && (!this.value[0] || !this.value[1]);
+  private _validate(): void {
+    const hasValidStart =
+      typeof this.value[0] === 'number' && this.value[0] !== null;
+    const hasValidEnd =
+      typeof this.value[1] === 'number' && this.value[1] !== null;
 
-    this._internalValidationMsg = this._isInvalid
-      ? this.invalidText || 'Both start and end dates are required'
-      : '';
+    this._isInvalid = this.required && (!hasValidStart || !hasValidEnd);
 
-    if (wasInvalid !== this._isInvalid) {
-      this.requestUpdate();
+    if ((this._isInvalid && this._showValidationMessage) || this.invalidText) {
+      if (!this.invalidText) {
+        this.invalidText = 'Both start and end dates are required';
+      }
+    } else {
+      this.invalidText = '';
     }
 
-    return !this._isInvalid;
+    this.requestUpdate();
   }
 
   override disconnectedCallback() {

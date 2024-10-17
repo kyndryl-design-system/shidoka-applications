@@ -32,6 +32,8 @@ export default {
     },
     minDate: { control: { type: 'text' } },
     maxDate: { control: { type: 'text' } },
+    label: { control: { type: 'text' } },
+    invalidText: { control: { type: 'text' } },
   },
 };
 
@@ -50,6 +52,7 @@ const InputTemplate = (args) => {
   return html`<kyn-date-picker
     .nameAttr="${args.nameAttr}"
     .locale="${args.locale}"
+    .label="${args.label}"
     .dateFormat="${args.dateFormat}"
     ?required="${args.required}"
     .value="${args.value}"
@@ -64,9 +67,10 @@ const InputTemplate = (args) => {
     ?twentyFourHourFormat="${args.twentyFourHourFormat}"
     .minDate="${args.minDate}"
     .maxDate="${args.maxDate}"
+    .label="${args.label}"
     @on-change=${(e) => action(e.type)(e)}
   >
-    ${args.unnamed}
+    ${args.tooltip}
   </kyn-date-picker>`;
 };
 
@@ -88,7 +92,7 @@ DatePickerDefault.args = {
   twentyFourHourFormat: false,
   minDate: '',
   maxDate: '',
-  unnamed: 'Date',
+  label: 'Date',
 };
 DatePickerDefault.storyName = 'Date Selection (Default)';
 
@@ -99,7 +103,7 @@ DateWithTime.args = {
   nameAttr: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
   caption: '',
-  unnamed: 'दिनांक एवं समय चयनकर्ता',
+  label: 'दिनांक एवं समय चयनकर्ता',
 };
 DateWithTime.storyName = 'Date + Time (Hindi Locale)';
 
@@ -111,6 +115,6 @@ DatePickerMultiple.args = {
   dateFormat: 'Y-m-d',
   caption: '',
   mode: 'multiple',
-  unnamed: 'Date Picker (w/ Multiselect)',
+  label: 'Date Picker (w/ Multiselect)',
 };
 DatePickerMultiple.storyName = 'Multiple Date Selection';
