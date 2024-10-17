@@ -20,6 +20,12 @@ import styles from './table.scss';
 export class Table extends LitElement {
   static override styles = [styles];
 
+  /** aria role.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  override role = 'table';
+
   /**
    * checkboxSelection: Boolean indicating whether rows should be
    * selectable using checkboxes.

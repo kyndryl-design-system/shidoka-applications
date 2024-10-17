@@ -116,7 +116,13 @@ export const Selection: Story = {
 };
 
 export const NestedTable: Story = {
-  render: () => {
+  args: {
+    textStrings: {
+      expanded: 'Expanded',
+      collapsed: 'Collapsed',
+    },
+  },
+  render: (args) => {
     const rows = allData.slice(0, 5);
     return html` <style>
         .story-table-container {
@@ -149,6 +155,7 @@ export const NestedTable: Story = {
                 key="row-${row.id}"
                 expandable
                 checkboxSelection
+                .textStrings=${args.textStrings}
               >
                 <kyn-td .align=${'center'}>${row.id}</kyn-td>
                 <kyn-td>${row.firstName}</kyn-td>
@@ -180,7 +187,13 @@ export const NestedTable: Story = {
 };
 
 export const ExpandableRows: Story = {
-  render: () => {
+  args: {
+    textStrings: {
+      expanded: 'Expanded',
+      collapsed: 'Collapsed',
+    },
+  },
+  render: (args) => {
     return html` <style>
         .center-content {
           display: flex;
@@ -207,7 +220,12 @@ export const ExpandableRows: Story = {
             characters,
             (row: any) => row.id,
             (row: any) => html`
-              <kyn-tr .rowId=${row.id} key="row-${row.id}" expandable>
+              <kyn-tr
+                .rowId=${row.id}
+                key="row-${row.id}"
+                expandable
+                .textStrings=${args.textStrings}
+              >
                 <kyn-td .align=${'center'}>${row.id}</kyn-td>
                 <kyn-td>${row.firstName}</kyn-td>
                 <kyn-td>${row.lastName}</kyn-td>
@@ -222,8 +240,7 @@ export const ExpandableRows: Story = {
               </kyn-tr>
               <kyn-expanded-tr .colSpan=${8}>
                 <div class="center-content">
-                  <!-- Put your expanded table content here -->
-                  <h4>Expanded content goes here</h4>
+                  Put your expanded table content here
                 </div>
               </kyn-expanded-tr>
             `

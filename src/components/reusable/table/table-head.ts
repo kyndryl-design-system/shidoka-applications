@@ -22,6 +22,12 @@ import styles from './table-head.scss';
 export class TableHead extends LitElement {
   static override styles = [styles];
 
+  /** aria role.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  override role = 'rowgroup';
+
   @property({ type: Boolean, reflect: true })
   stickyHeader = false;
 

@@ -14,6 +14,12 @@ import styles from './table-header-row.scss';
 export class TableHeaderRow extends TableRow {
   static override styles = [styles];
 
+  /** aria role.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  override role = 'row';
+
   /**
    * headerCheckboxIndeterminate: Boolean indicating whether the header
    * checkbox is in an indeterminate state.
@@ -78,7 +84,9 @@ export class TableHeaderRow extends TableRow {
         ? html`<kyn-th
             .align="${'center'}"
             .width=${this.expandableColumnWidth}
-          ></kyn-th>`
+            visiblyHidden
+            >Expandable Header Column
+          </kyn-th>`
         : null}
       ${this.checkboxSelection
         ? html` <kyn-th

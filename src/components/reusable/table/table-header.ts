@@ -30,6 +30,12 @@ import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
 export class TableHeader extends LitElement {
   static override styles = [styles];
 
+  /** aria role.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  override role = 'columnheader';
+
   /** Determines if the cell should have a denser layout. */
   @property({ type: Boolean, reflect: true })
   dense = false;
@@ -152,6 +158,13 @@ export class TableHeader extends LitElement {
   }
 
   /**
+   * Assistive text for screen readers.
+   * @ignore
+   */
+  @state()
+  assistiveText = '';
+
+  /**
    * Toggles the sort direction between ascending, descending, and default states.
    * It also dispatches an event to notify parent components of the sorting change.
    */
@@ -165,9 +178,19 @@ export class TableHeader extends LitElement {
       case SORT_DIRECTION.DEFAULT:
       case SORT_DIRECTION.DESC:
         this.sortDirection = SORT_DIRECTION.ASC;
+        if (this.assistiveText === '') {
+          this.assistiveText = `Column header ${this.sortKey} sorted in ascending order`;
+        } else {
+          this.assistiveText = `Column header ${this.sortKey} is sorted in ascending order`;
+        }
         break;
       case SORT_DIRECTION.ASC:
         this.sortDirection = SORT_DIRECTION.DESC;
+        if (this.assistiveText === '') {
+          this.assistiveText = `Column header ${this.sortKey} sorted in descending order`;
+        } else {
+          this.assistiveText = `Column header ${this.sortKey} is sorted in descending order`;
+        }
         break;
     }
 
@@ -230,7 +253,7 @@ export class TableHeader extends LitElement {
      * - onKeyDown: Handles keyboard events for sortable headers to allow sorting via the keyboard.
      */
     const role = this.sortable ? 'button' : undefined;
-    const arialSort = this.sortable ? this.sortDirection : undefined;
+    // const arialSort = this.sortable ? this.sortDirection : undefined;
     const ariaLabel =
       this.sortable && this.headerLabel
         ? `Sort by ${this.headerLabel}`
@@ -247,10 +270,9 @@ export class TableHeader extends LitElement {
     return html`
       <div
         class="container"
-        @click=${this.sortable ? () => this.toggleSortDirection() : undefined}
         role=${ifDefined(role)}
-        arial-label=${ifDefined(ariaLabel)}
-        arial-sort=${ifDefined(arialSort)}
+        @click=${this.sortable ? () => this.toggleSortDirection() : undefined}
+        aria-label=${ifDefined(ariaLabel)}
         tabindex=${ifDefined(tabIndex)}
         @keydown=${onKeyDown}
       >
@@ -263,6 +285,15 @@ export class TableHeader extends LitElement {
               .icon=${arrowUpIcon}
             ></kd-icon>`
           : null}
+
+        <div
+          class="assistive-text"
+          role="status"
+          aria-live="polite"
+          aria-relevant="additions text"
+        >
+          ${this.assistiveText}
+        </div>
       </div>
     `;
   }

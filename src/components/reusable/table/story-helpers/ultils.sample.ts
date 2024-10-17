@@ -9,7 +9,7 @@ interface Person {
 
 export const sortByFName = (sortDirection: SORT_DIRECTION) => {
   return (a: Person, b: Person) => {
-    return sortDirection === 'asc'
+    return sortDirection === SORT_DIRECTION.ASC
       ? a.firstName.localeCompare(b.firstName)
       : b.firstName.localeCompare(a.firstName);
   };
@@ -17,7 +17,7 @@ export const sortByFName = (sortDirection: SORT_DIRECTION) => {
 
 export const sortByLName = (sortDirection: SORT_DIRECTION) => {
   return (a: Person, b: Person) => {
-    return sortDirection === 'asc'
+    return sortDirection === SORT_DIRECTION.ASC
       ? a.lastName.localeCompare(b.lastName)
       : b.lastName.localeCompare(a.lastName);
   };
@@ -25,13 +25,13 @@ export const sortByLName = (sortDirection: SORT_DIRECTION) => {
 
 export const sortById = (sortDirection: SORT_DIRECTION) => {
   return (a: Person, b: Person) => {
-    return sortDirection === 'asc' ? a.id - b.id : b.id - a.id;
+    return sortDirection === SORT_DIRECTION.ASC ? a.id - b.id : b.id - a.id;
   };
 };
 
 export const sortByAge = (sortDirection: SORT_DIRECTION) => {
   return (a: Person, b: Person) => {
-    return sortDirection === 'asc' ? a.age - b.age : b.age - a.age;
+    return sortDirection === SORT_DIRECTION.ASC ? a.age - b.age : b.age - a.age;
   };
 };
 
@@ -40,9 +40,9 @@ export const sortByDate = (sortDirection: SORT_DIRECTION) => {
     const dateA = new Date(a.birthday);
     const dateB = new Date(b.birthday);
 
-    if (sortDirection === 'asc') {
+    if (sortDirection === SORT_DIRECTION.ASC) {
       return dateA.getTime() - dateB.getTime();
-    } else if (sortDirection === 'desc') {
+    } else if (sortDirection === SORT_DIRECTION.DESC) {
       return dateB.getTime() - dateA.getTime();
     } else {
       throw new Error('Invalid sort direction. Use "asc" or "desc".');
