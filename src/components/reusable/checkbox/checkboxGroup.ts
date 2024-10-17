@@ -8,7 +8,6 @@ import '../textInput';
 import './checkbox';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@carbon/icons/es/warning--filled/16';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 const _defaultTextStrings = {
   selectAll: 'Select all',
@@ -154,7 +153,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
                   </abbr>
                 `
               : null}
-            <span>${ifDefined(this.label)}</span>
+            <span>${this.label}</span>
             <slot name="tooltip"></slot>
           </legend>
           <div class="description-text">

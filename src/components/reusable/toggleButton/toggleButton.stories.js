@@ -42,7 +42,7 @@ export const ToggleButton = {
         uncheckedText=${args.uncheckedText}
         @on-change=${(e) => action(e.type)(e)}
       >
-        <kyn-tooltip> tooltip </kyn-tooltip>
+        <kyn-tooltip slot="tooltip"> tooltip </kyn-tooltip>
       </kyn-toggle-button>
     `;
   },
