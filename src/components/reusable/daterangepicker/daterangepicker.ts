@@ -1,83 +1,150 @@
-import { LitElement, html, PropertyValues } from 'lit';
-import { customElement, property, query, state } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
+import { html, LitElement, PropertyValues } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { DATE_PICKER_TYPES } from '../datePicker/defs';
 import { FormMixin } from '../../../common/mixins/form-input';
-import DateRangePickerScss from './daterangepicker.scss';
-import { deepmerge } from 'deepmerge-ts';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import {
+  isSupportedLocale,
+  langsArray,
+  injectFlatpickrStyles,
+  initializeMultiAnchorFlatpickr,
+  getFlatpickrOptions,
+  getPlaceholder,
+} from '../../../common/helpers/flatpickr';
+
+import { BaseOptions } from 'flatpickr/dist/types/options';
+import type { Instance } from 'flatpickr/dist/types/instance';
+import { Locale } from 'flatpickr/dist/types/locale';
+import { default as English } from 'flatpickr/dist/l10n/default.js';
+
+import DateRangePickerStyles from './daterangepicker.scss';
+import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
+
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
+import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
+
+type SupportedLocale = (typeof langsArray)[number];
 
 const _defaultTextStrings = {
   requiredText: 'Required',
+  subtract: 'Subtract',
+  add: 'Add',
 };
 
 /**
- * Date-Range picker
- * @fires on-input - Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)
- * @prop {string} minDate - Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.
- * @prop {string} maxDate - Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.
- * @slot unnamed - Slot for label text.
+ * Date Range Picker component: uses flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
+ * @fires on-change - Captures the input event and emits the selected value and original event details.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-date-range-picker')
 export class DateRangePicker extends FormMixin(LitElement) {
-  static override styles = DateRangePickerScss;
+  static override styles = [DateRangePickerStyles, ShidokaFlatpickrTheme];
 
-  /** Optional text beneath the input. */
+  /** Sets date range picker attribute name (ex: `contact-form-date-range-picker`). */
   @property({ type: String })
-  caption = '';
+  nameAttr = '';
 
-  /** Datepicker size. "sm", "md", or "lg". */
+  /** Label text. */
   @property({ type: String })
-  size = 'md';
+  label = '';
 
-  /** Datepicker Start date in YYYY-MM-DD format. */
+  /** Sets and dynamically imports specific l10n calendar localization. */
   @property({ type: String })
-  startDate = '';
+  locale: SupportedLocale = 'en';
 
-  /** Datepicker End date in YYYY-MM-DD format. */
+  /** Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`). */
   @property({ type: String })
-  endDate = '';
+  dateFormat = 'Y-m-d';
 
-  /** Makes the date required. */
+  /** Sets default error message. */
+  @property({ type: String })
+  defaultErrorMessage = '';
+
+  /** Sets date range to have start and end date inputs. */
   @property({ type: Boolean })
-  required = false;
+  multipleInputs = false;
 
-  /** Date disabled state. */
-  @property({ type: Boolean })
-  disabled = false;
+  /** Sets pre-selected date/time value. */
+  @property({ type: Array })
+  override value: [number | null, number | null] = [null, null];
 
-  /** Date range picker types. Default 'single' */
-  @property({ type: String })
-  datePickerType: DATE_PICKER_TYPES = DATE_PICKER_TYPES.SINGLE;
-
-  /** Date warning text */
+  /** Sets validation warning messaging. */
   @property({ type: String })
   warnText = '';
 
-  /** Maximum date in YYYY-MM-DD format.
-   * If the value isn't a possible date string in the format, then the element has no maximum date value
-   */
+  /** Sets validation error messaging. */
   @property({ type: String })
-  maxDate!: string;
+  override invalidText = '';
 
-  /** Minimum date in YYYY-MM-DD format,
-   * If the value isn't a possible date string in the format, then the element has no minimum date value.
-   */
+  /** Sets flatpickr alternative formatting value (ex: `F j, Y`). */
   @property({ type: String })
-  minDate!: string;
+  altFormat = '';
 
-  /** Specifies the granularity that the value must adhere to, or the special value any,
-   * For date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.
-   * The default value of step is 1, indicating 1 day.*/
+  /** Sets flatpickr options setting to disable specific dates. */
+  @property({ type: Array })
+  disable: (string | number | Date)[] = [];
+
+  /** Sets flatpickr options setting to enable specific dates. */
+  @property({ type: Array })
+  enable: (string | number | Date)[] = [];
+
+  /** Sets caption to be displayed under primary date picker elements. */
   @property({ type: String })
-  step!: string;
+  caption = '';
+
+  /** Sets date range picker form input value to required/required. */
+  @property({ type: Boolean })
+  required = false;
+
+  /** Sets entire date range picker form element to enabled/disabled. */
+  @property({ type: Boolean })
+  dateRangePickerDisabled = false;
+
+  /** Sets 24 hour formatting true/false. */
+  @property({ type: Boolean })
+  twentyFourHourFormat = false;
+
+  /** Sets lower boundary of date range picker date selection. */
+  @property({ type: String })
+  minDate: string | number | Date = '';
+
+  /** Sets upper boundary of date range picker date selection. */
+  @property({ type: String })
+  maxDate: string | number | Date = '';
+
+  /** Sets flatpickr enableTime value based on detected dateFormat.
+   * @internal
+   */
+  @state()
+  private _enableTime = false;
+
+  /** Flatpickr instantiation.
+   * @internal
+   */
+  @state()
+  private flatpickrInstance?: Instance;
 
   /**
-   * Queries the Start Date <input> DOM element.
-   * @ignore
+   * Queries the start date (default) anchor DOM element.
+   * @internal
    */
-  @query('input.date-start')
-  inputElStart!: HTMLInputElement;
+  @state()
+  private _startAnchorEl?: HTMLInputElement;
+
+  /**
+   * Queries the end date anchor DOM element.
+   * @internal
+   */
+  @state()
+  private _endAnchorEl?: HTMLInputElement;
+
+  /**
+   * Sets whether user has interacted with datepicker for error handling.
+   * @internal
+   */
+  @state()
+  private _hasInteracted = false;
 
   /** Customizable text strings. */
   @property({ type: Object })
@@ -89,232 +156,330 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @state()
   _textStrings = _defaultTextStrings;
 
-  /**
-   * Queries the End Date <input> DOM element.
-   * @ignore
-   */
-  @query('input.date-end')
-  inputElEnd!: HTMLInputElement;
-
   override render() {
+    const errorId = `${this.nameAttr}-error-message`;
+    const warningId = `${this.nameAttr}-warning-message`;
+    const anchorId = this.nameAttr
+      ? `${this.nameAttr}-${Math.random().toString(36).slice(2, 11)}`
+      : `date-range-picker-${Math.random().toString(36).slice(2, 11)}`;
+    const descriptionId = this.nameAttr ?? '';
+
+    const placeholder = getPlaceholder(this.dateFormat, true);
+
     return html`
-      <div class="daterange-picker" ?disabled=${this.disabled}>
-        <label class="label-text" for=${this.name} ?disabled=${this.disabled}>
+      <div class=${classMap(this.getDateRangePickerClasses())}>
+        <label
+          class="label-text"
+          for=${anchorId}
+          ?disabled=${this.dateRangePickerDisabled}
+        >
           ${this.required
             ? html`<abbr
                 class="required"
-                title=${this._textStrings.requiredText}
-                aria-label=${this._textStrings.requiredText}
+                title=${this._textStrings?.requiredText || 'Required'}
+                role="img"
+                aria-label=${this._textStrings?.requiredText || 'Required'}
                 >*</abbr
               >`
             : null}
-          <slot></slot>
+          ${this.label}
+          <slot name="tooltip"></slot>
         </label>
 
-        <div class="wrapper">
-          <div class="input-wrapper">
-            <input
-              class="${classMap({
-                'date-start': true,
-                'size--sm': this.size === 'sm',
-                'size--lg': this.size === 'lg',
-              })}"
-              type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
-                ? 'datetime-local'
-                : 'date'}
-              id="${this.name}-start"
-              name="${this.name}-end"
-              aria-label="Start Date"
-              value=${this.startDate}
-              ?required=${this.required}
-              ?disabled=${this.disabled}
-              ?invalid=${this._isInvalid}
-              aria-invalid=${this._isInvalid}
-              aria-describedby=${this._isInvalid
-                ? 'error'
-                : this.warnText !== '' && !this._isInvalid
-                ? 'warning'
-                : ''}
-              min=${ifDefined(this.minDate)}
-              max=${ifDefined(this.endDate ?? this.maxDate ?? '')}
-              step=${ifDefined(this.step)}
-              @input=${(e: any) => this.handleStartDate(e)}
-            />
-          </div>
-
-          <span class="range-span">—</span>
-          <div class="input-wrapper">
-            <input
-              class="${classMap({
-                'date-end': true,
-                'size--sm': this.size === 'sm',
-                'size--lg': this.size === 'lg',
-              })}"
-              type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
-                ? 'datetime-local'
-                : 'date'}
-              id="${this.name}-end"
-              name="${this.name}-end"
-              aria-label="End Date"
-              value=${this.endDate}
-              ?required=${this.required}
-              ?disabled=${this.disabled}
-              ?invalid=${this._isInvalid}
-              aria-invalid=${this._isInvalid}
-              aria-describedby=${this._isInvalid
-                ? 'error'
-                : this.warnText !== '' && !this._isInvalid
-                ? 'warning'
-                : ''}
-              min=${ifDefined(this.startDate ?? this.minDate ?? '')}
-              max=${ifDefined(this.maxDate)}
-              step=${ifDefined(this.step)}
-              @input=${(e: any) => this.handleEndDate(e)}
-            />
-          </div>
+        <div class="input-wrapper">
+          <input
+            class="input-custom"
+            type="text"
+            id=${anchorId}
+            name=${this.nameAttr}
+            placeholder=${placeholder}
+            ?disabled=${this.dateRangePickerDisabled}
+            ?required=${this.required}
+            aria-invalid=${this._isInvalid ? 'true' : 'false'}
+          />
+          <span class="icon">${unsafeSVG(calendarIcon)}</span>
         </div>
 
-        ${this.caption !== ''
-          ? html` <div class="caption">${this.caption}</div> `
-          : null}
-        ${this._isInvalid
-          ? html`
-              <div id="error" class="error">
-                ${this.invalidText || this._internalValidationMsg}
-              </div>
-            `
-          : null}
-        ${this.warnText !== '' && !this._isInvalid
-          ? html`<div id="warning" class="warn">${this.warnText}</div>`
-          : null}
+        ${this.caption
+          ? html`<div id=${descriptionId} class="caption">${this.caption}</div>`
+          : ''}
+        ${this.renderValidationMessage(errorId, warningId)}
       </div>
     `;
   }
 
-  override updated(changedProps: PropertyValues) {
-    // preserve FormMixin updated function
-    this._onUpdated(changedProps);
-
-    if (changedProps.has('startDate')) {
-      this.inputElStart.value = this.startDate;
+  private renderValidationMessage(errorId: string, warningId: string) {
+    if (this._isInvalid) {
+      return html`<div id=${errorId} class="error error-text" role="alert">
+        <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
+          .invalidText || this.defaultErrorMessage}
+      </div>`;
     }
 
-    if (changedProps.has('endDate')) {
-      this.inputElEnd.value = this.endDate;
+    if (this.warnText) {
+      return html`<div id=${warningId} class="warn warn-text" role="alert">
+        ${this.warnText}
+      </div>`;
     }
 
-    if (changedProps.has('startDate') || changedProps.has('endDate')) {
-      this._validate(false, false);
-
-      const combineVals =
-        this.startDate !== '' && this.endDate !== ''
-          ? `${this.startDate}:${this.endDate}`
-          : '';
-      // set form value on element internals
-      this._internals.setFormValue(combineVals);
-    }
+    return null;
   }
 
-  // on-change start date
-  private async handleStartDate(e: any) {
-    this.startDate = e.target.value;
+  getDateRangePickerClasses() {
+    return {
+      'date-range-picker': true,
+      'date-range-picker__enable-time': this._enableTime,
+      'date-range-picker__multi-input': this.multipleInputs,
+      'date-range-picker__disabled': this.dateRangePickerDisabled,
+    };
+  }
+
+  override async firstUpdated(changedProperties: PropertyValues) {
+    super.firstUpdated(changedProperties);
+    injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
 
     await this.updateComplete;
-    this._validate(true, false);
-    this._emitValue(e);
+    this.setupAnchors();
   }
 
-  // on-change end date
-  private async handleEndDate(e: any) {
-    this.endDate = e.target.value;
+  override updated(changedProperties: PropertyValues) {
+    super.updated(changedProperties);
 
-    await this.updateComplete;
-    this._validate(true, false);
-    this._emitValue(e);
-  }
-
-  private _validate(interacted: Boolean, report: Boolean) {
-    const StartValid = this.inputElStart.checkValidity();
-    const EndValid = this.inputElEnd.checkValidity();
-
-    if (StartValid && EndValid) {
-      // clear validation errors
-      this._internals.setValidity({});
-    } else if (!StartValid) {
-      // validate start date
-
-      // get validity state from inputEl, combine customError flag if invalidText is provided
-      const Validity =
-        this.invalidText !== ''
-          ? { ...this.inputElStart.validity, customError: true }
-          : this.inputElStart.validity;
-
-      // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
-      const ValidationMessage =
-        this.invalidText !== ''
-          ? this.invalidText
-          : this.inputElStart.validationMessage;
-
-      this._internals.setValidity(
-        Validity,
-        ValidationMessage,
-        this.inputElStart
-      );
-    } else if (!EndValid) {
-      // validate end date
-
-      // get validity state from inputEl, combine customError flag if invalidText is provided
-      const Validity =
-        this.invalidText !== ''
-          ? { ...this.inputElEnd.validity, customError: true }
-          : this.inputElEnd.validity;
-
-      // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
-      const ValidationMessage =
-        this.invalidText !== ''
-          ? this.invalidText
-          : this.inputElEnd.validationMessage;
-
-      this._internals.setValidity(Validity, ValidationMessage, this.inputElEnd);
+    if (
+      changedProperties.has('dateFormat') ||
+      changedProperties.has('minDate') ||
+      changedProperties.has('maxDate') ||
+      changedProperties.has('locale')
+    ) {
+      this.updateEnableTime();
+      this.reinitializeFlatpickr();
     }
 
-    // set internal validation message if value was changed by user input
-    if (interacted) {
-      this._internalValidationMsg =
-        this.inputElStart.validationMessage ||
-        this.inputElEnd.validationMessage;
-    }
-
-    // focus the form field to show validity
-    if (report) {
-      this._internals.reportValidity();
+    if (changedProperties.has('invalidText')) {
+      this._validate();
     }
   }
 
-  private _emitValue(e: any) {
-    const event = new CustomEvent('on-input', {
-      detail: {
-        startDate: this.startDate,
-        endDate: this.endDate,
-        origEvent: e,
-      },
+  private updateEnableTime() {
+    this._enableTime = this.dateFormat.includes('H:');
+  }
+
+  private async reinitializeFlatpickr() {
+    this.flatpickrInstance?.destroy();
+    await this.initializeFlatpickr();
+  }
+
+  private async setupAnchors() {
+    this._startAnchorEl = this.shadowRoot?.querySelector(
+      '.input-custom'
+    ) as HTMLInputElement;
+
+    if (this._startAnchorEl) {
+      await this.initializeFlatpickr();
+    }
+  }
+
+  private async initializeFlatpickr() {
+    if (!this._startAnchorEl) return;
+
+    this.flatpickrInstance = await initializeMultiAnchorFlatpickr({
+      startAnchorEl: this._startAnchorEl,
+      endAnchorEl: this._endAnchorEl,
+      getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
+      setCalendarAttributes: this.setCalendarAttributes.bind(this),
     });
-    this.dispatchEvent(event);
   }
 
-  override willUpdate(changedProps: any) {
-    if (changedProps.has('textStrings')) {
-      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+  async loadLocale(locale: string): Promise<Locale> {
+    if (locale === 'en') return English;
+
+    if (!isSupportedLocale(locale)) {
+      console.error(`Locale ${locale} not supported. Falling back to English.`);
+      return English;
+    }
+
+    try {
+      const module = await import(`flatpickr/dist/l10n/${locale}.js`);
+      const localeConfig =
+        module[locale] || module.default[locale] || module.default;
+
+      if (!localeConfig) {
+        throw new Error('Locale configuration not found');
+      }
+
+      return localeConfig;
+    } catch (error) {
+      console.error(
+        `Failed to load locale ${locale}. Falling back to English.`,
+        error
+      );
+      return English;
     }
   }
 
-  // private _handleFormdata(e: any) {
-  //   const combineVals =
-  //     this.startDate !== '' && this.endDate !== ''
-  //       ? `${this.startDate}:${this.endDate}`
-  //       : '';
-  //   e.formData.append(this.name, combineVals);
-  // }
+  async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+    return getFlatpickrOptions({
+      locale: this.locale,
+      dateFormat: this.dateFormat,
+      altFormat: this.altFormat,
+      enableTime: this._enableTime,
+      twentyFourHourFormat: this.twentyFourHourFormat,
+      multipleInputs: false,
+      mode: 'range',
+      startAnchorEl: this._startAnchorEl!,
+      endAnchorEl: this._endAnchorEl,
+      minDate: this.minDate,
+      maxDate: this.maxDate,
+      enable: this.enable,
+      disable: this.disable,
+      loadLocale: this.loadLocale.bind(this),
+      onChange: this.handleDateChange.bind(this),
+      onClose: this.handleClose.bind(this),
+      onOpen: this.handleOpen.bind(this),
+    });
+  }
+
+  async updateFlatpickrOptions() {
+    if (!this.flatpickrInstance) return;
+
+    const currentDates = this.flatpickrInstance.selectedDates;
+    const newOptions = await this.getComponentFlatpickrOptions();
+
+    Object.keys(newOptions).forEach((key) => {
+      this.flatpickrInstance!.set(
+        key as keyof BaseOptions,
+        newOptions[key as keyof BaseOptions]
+      );
+    });
+
+    this.flatpickrInstance.redraw();
+
+    if (currentDates && currentDates.length === 2) {
+      this.flatpickrInstance.setDate(currentDates, false);
+    }
+
+    this.setCalendarAttributes();
+    this._validate();
+  }
+
+  setCalendarAttributes(): void {
+    if (this.flatpickrInstance?.calendarContainer) {
+      this.flatpickrInstance.calendarContainer.setAttribute(
+        'role',
+        'application'
+      );
+      this.flatpickrInstance.calendarContainer.setAttribute(
+        'aria-label',
+        'Date range calendar'
+      );
+
+      this._startAnchorEl?.setAttribute('aria-label', 'Start date');
+      this._endAnchorEl?.setAttribute('aria-label', 'End date');
+    }
+  }
+
+  setInitialDates(): void {
+    if (
+      Array.isArray(this.value) &&
+      this.value.length === 2 &&
+      this.value[0] !== null &&
+      this.value[1] !== null
+    ) {
+      this.flatpickrInstance!.setDate(
+        [new Date(this.value[0]), new Date(this.value[1])],
+        false
+      );
+    }
+  }
+
+  /**
+   * Redraw component on viewport resize.
+   * @internal
+   */
+  private _handleResize = () => {
+    this.updateShowMonths();
+    this.flatpickrInstance?.destroy();
+    this.initializeFlatpickr();
+  };
+
+  private updateShowMonths() {
+    const isWideScreen = window.innerWidth >= 767;
+    this.flatpickrInstance?.set('showMonths', isWideScreen ? 2 : 1);
+  }
+
+  handleOpen(): void {
+    /// future: custom logic of onOpen
+  }
+
+  async handleDateChange(selectedDates: Date[]): Promise<void> {
+    this._hasInteracted = true;
+
+    this.value =
+      selectedDates.length === 2
+        ? [selectedDates[0].getTime(), selectedDates[1].getTime()]
+        : [selectedDates[0]?.getTime() || null, null];
+
+    const formattedDates = selectedDates.map((date) => date.toISOString());
+    const dateString =
+      (this._startAnchorEl as HTMLInputElement)?.value ||
+      formattedDates.join(' to ');
+
+    const customEvent = new CustomEvent('on-change', {
+      detail: {
+        dates: formattedDates,
+        dateString,
+      },
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(customEvent);
+
+    this.updateSelectedDateRangeAria(selectedDates);
+    this._validate();
+    await this.updateComplete;
+  }
+
+  async handleClose() {
+    this._hasInteracted = true;
+    this._validate();
+    await this.updateComplete;
+  }
+
+  updateSelectedDateRangeAria(selectedDates: Date[]) {
+    if (selectedDates.length === 2) {
+      const [startDate, endDate] = selectedDates;
+      this._startAnchorEl?.setAttribute(
+        'aria-label',
+        `Selected start date: ${startDate.toLocaleDateString()}`
+      );
+      this._endAnchorEl?.setAttribute(
+        'aria-label',
+        `Selected end date: ${endDate.toLocaleDateString()}`
+      );
+    } else {
+      this._startAnchorEl?.setAttribute('aria-label', 'Start date');
+      this._endAnchorEl?.setAttribute('aria-label', 'End date');
+    }
+  }
+
+  private _validate(): void {
+    const hasValidStart = this.value[0] !== null;
+    const hasValidEnd = this.value[1] !== null;
+
+    this._isInvalid =
+      !!this.invalidText ||
+      (this.required &&
+        this._hasInteracted &&
+        (!hasValidStart || !hasValidEnd));
+
+    this.requestUpdate();
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.flatpickrInstance?.destroy();
+    window.removeEventListener('resize', this._handleResize);
+  }
 }
 
 declare global {

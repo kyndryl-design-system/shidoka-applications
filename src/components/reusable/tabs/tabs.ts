@@ -3,7 +3,6 @@ import {
   customElement,
   property,
   queryAssignedElements,
-  state,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import TabsScss from './tabs.scss';

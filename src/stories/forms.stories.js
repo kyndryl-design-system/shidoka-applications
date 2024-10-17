@@ -163,8 +163,10 @@ export const Default = {
 
         <kyn-time-picker
           name="timepicker"
-          size="md"
+          label="Time Picker"
+          required
           caption="Time picker example"
+          defaultErrorMessage="A time value is required"
           @on-input=${(e) => action(e.type)(e)}
         >
           Time
@@ -173,10 +175,12 @@ export const Default = {
         <br /><br />
 
         <kyn-date-picker
-          size="md"
+          required
           name="date-picker"
-          datePickerType="single"
+          label="Date Picker"
+          dateFormat="Y-m-d"
           caption="Date picker example"
+          defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)(e)}
         >
           Date
@@ -185,10 +189,12 @@ export const Default = {
         <br /><br />
 
         <kyn-date-picker
-          size="md"
+          required
           name="date-time-picker"
-          datePickerType="date-time"
+          label="Date / Time Picker"
+          dateFormat="Y-m-d H:i"
           caption="Date time picker example"
+          defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)(e)}
         >
           Date time
@@ -197,10 +203,14 @@ export const Default = {
         <br /><br />
 
         <kyn-date-range-picker
-          size="md"
+          required
+          label="Date Range Picker"
           name="date-range"
+          dateFormat="Y-m-d"
           caption="Date range picker example"
+          defaultErrorMessage="Both start and end dates are required"
           @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 375px;"
         >
           Date range
         </kyn-date-range-picker>
@@ -208,11 +218,14 @@ export const Default = {
         <br /><br />
 
         <kyn-date-range-picker
-          size="md"
+          required
           name="date-time-range"
-          datePickerType="date-time"
+          label="Date / Time Range Picker"
+          dateFormat="Y-m-d H:i"
           caption="Date time range picker example"
+          defaultErrorMessage="Both start and end dates are required"
           @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 375px;"
         >
           Date time range
         </kyn-date-range-picker>
