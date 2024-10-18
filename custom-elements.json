@@ -3196,44 +3196,63 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Datepicker.",
+          "description": "Datepicker: uses flatpickr datetime picker library -- `https://flatpickr.js.org`",
           "name": "DatePicker",
           "slots": [
             {
-              "description": "Slot for label text.",
-              "name": "unnamed"
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
             }
           ],
           "members": [
             {
               "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
+              "name": "nameAttr",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
+              "description": "Sets datepicker attribute name (ex: `contact-form-date-picker`).",
+              "attribute": "nameAttr"
             },
             {
               "kind": "field",
-              "name": "value",
+              "name": "label",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format.",
-              "attribute": "value"
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale"
+              },
+              "default": "'en'",
+              "attribute": "locale"
+            },
+            {
+              "kind": "field",
+              "name": "dateFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Y-m-d'",
+              "description": "Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`).",
+              "attribute": "dateFormat"
+            },
+            {
+              "kind": "field",
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "attribute": "defaultErrorMessage"
             },
             {
               "kind": "field",
@@ -3242,18 +3261,18 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Makes the date required.",
+              "description": "Sets datepicker form input value to required/required.",
               "attribute": "required"
             },
             {
               "kind": "field",
-              "name": "disabled",
+              "name": "value",
               "type": {
-                "text": "boolean"
+                "text": "string | Date | Date[] | null"
               },
-              "default": "false",
-              "description": "Date disabled state.",
-              "attribute": "disabled"
+              "default": "null",
+              "description": "Sets pre-selected date/time value.",
+              "attribute": "value"
             },
             {
               "kind": "field",
@@ -3262,44 +3281,148 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Date warning text",
+              "description": "Sets validation warning messaging.",
               "attribute": "warnText"
             },
             {
               "kind": "field",
-              "name": "maxDate",
+              "name": "invalidText",
               "type": {
                 "text": "string"
               },
-              "description": "Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value",
-              "attribute": "maxDate"
+              "default": "''",
+              "description": "Sets validation error messaging.",
+              "attribute": "invalidText"
+            },
+            {
+              "kind": "field",
+              "name": "altFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets flatpickr alternative formatting value (ex: `F j, Y`).",
+              "attribute": "altFormat"
+            },
+            {
+              "kind": "field",
+              "name": "disable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to disable specific dates.",
+              "attribute": "disable"
+            },
+            {
+              "kind": "field",
+              "name": "enable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to enable specific dates.",
+              "attribute": "enable"
+            },
+            {
+              "kind": "field",
+              "name": "mode",
+              "type": {
+                "text": "'single' | 'multiple'"
+              },
+              "default": "'single'",
+              "description": "Sets flatpickr mode to select single (default), multiple dates.",
+              "attribute": "mode"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "datePickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire datepicker form element to enabled/disabled.",
+              "attribute": "datePickerDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets 24 hour formatting true/false.",
+              "attribute": "twentyFourHourFormat"
             },
             {
               "kind": "field",
               "name": "minDate",
               "type": {
-                "text": "string"
+                "text": "string | number | Date"
               },
-              "description": "Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "default": "''",
+              "description": "Sets lower boundary of datepicker date selection.",
               "attribute": "minDate"
             },
             {
               "kind": "field",
-              "name": "step",
+              "name": "maxDate",
               "type": {
-                "text": "string"
+                "text": "string | number | Date"
               },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
-              "attribute": "step"
+              "default": "''",
+              "description": "Sets upper boundary of datepicker date selection.",
+              "attribute": "maxDate"
             },
             {
               "kind": "field",
-              "name": "datePickerType",
+              "name": "errorAriaLabel",
               "type": {
-                "text": "DATE_PICKER_TYPES"
+                "text": "string"
               },
-              "description": "Date picker types. Default 'single'",
-              "attribute": "datePickerType"
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "attribute": "errorAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "attribute": "errorTitle"
+            },
+            {
+              "kind": "field",
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "attribute": "warningAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "attribute": "warningTitle"
             },
             {
               "kind": "field",
@@ -3313,70 +3436,222 @@
             },
             {
               "kind": "method",
-              "name": "handleInput",
+              "name": "renderValidationMessage",
               "privacy": "private",
               "parameters": [
                 {
-                  "name": "e",
+                  "name": "errorId",
                   "type": {
-                    "text": "any"
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "warningId",
+                  "type": {
+                    "text": "string"
                   }
                 }
               ]
             },
             {
               "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
+              "name": "getDatepickerClasses"
+            },
+            {
+              "kind": "method",
+              "name": "updateEnableTime",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "reinitializeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "initializeFlatpickr",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "setupAnchor",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "setCalendarAttributes",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "setInitialDates",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "loadLocale",
+              "return": {
+                "type": {
+                  "text": "Promise<Locale>"
+                }
+              },
               "parameters": [
                 {
-                  "name": "interacted",
+                  "name": "locale",
                   "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
+                    "text": "string"
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "getComponentFlatpickrOptions",
+              "return": {
+                "type": {
+                  "text": "Promise<Partial<BaseOptions>>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleOpen",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleClose",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleDateChange",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                },
+                {
+                  "name": "dateStr",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "setShouldFlatpickrOpen",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "closeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "preventFlatpickrOpen",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleInputClickEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleInputFocusEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
             }
           ],
           "events": [
             {
               "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-input"
+              "name": "on-change"
             }
           ],
           "attributes": [
             {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "caption",
+              "name": "nameAttr",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
+              "description": "Sets datepicker attribute name (ex: `contact-form-date-picker`).",
+              "fieldName": "nameAttr"
             },
             {
-              "name": "value",
+              "name": "label",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker value in YYYY-MM-DD or YYYY-MM-DDThh:mm format.",
-              "fieldName": "value"
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale"
+              },
+              "default": "'en'",
+              "fieldName": "locale"
+            },
+            {
+              "name": "dateFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Y-m-d'",
+              "description": "Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`).",
+              "fieldName": "dateFormat"
+            },
+            {
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "fieldName": "defaultErrorMessage"
             },
             {
               "name": "required",
@@ -3384,17 +3659,17 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Makes the date required.",
+              "description": "Sets datepicker form input value to required/required.",
               "fieldName": "required"
             },
             {
-              "name": "disabled",
+              "name": "value",
               "type": {
-                "text": "boolean"
+                "text": "string | Date | Date[] | null"
               },
-              "default": "false",
-              "description": "Date disabled state.",
-              "fieldName": "disabled"
+              "default": "null",
+              "description": "Sets pre-selected date/time value.",
+              "fieldName": "value"
             },
             {
               "name": "warnText",
@@ -3402,40 +3677,134 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Date warning text",
+              "description": "Sets validation warning messaging.",
               "fieldName": "warnText"
             },
             {
-              "name": "maxDate",
+              "name": "invalidText",
               "type": {
                 "text": "string"
               },
-              "description": "Maximum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no maximum date value",
-              "fieldName": "maxDate"
+              "default": "''",
+              "description": "Sets validation error messaging.",
+              "fieldName": "invalidText"
+            },
+            {
+              "name": "altFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets flatpickr alternative formatting value (ex: `F j, Y`).",
+              "fieldName": "altFormat"
+            },
+            {
+              "name": "disable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to disable specific dates.",
+              "fieldName": "disable"
+            },
+            {
+              "name": "enable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to enable specific dates.",
+              "fieldName": "enable"
+            },
+            {
+              "name": "mode",
+              "type": {
+                "text": "'single' | 'multiple'"
+              },
+              "default": "'single'",
+              "description": "Sets flatpickr mode to select single (default), multiple dates.",
+              "fieldName": "mode"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "datePickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire datepicker form element to enabled/disabled.",
+              "fieldName": "datePickerDisabled"
+            },
+            {
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets 24 hour formatting true/false.",
+              "fieldName": "twentyFourHourFormat"
             },
             {
               "name": "minDate",
               "type": {
-                "text": "string"
+                "text": "string | number | Date"
               },
-              "description": "Mimimum date in YYYY-MM-DD or YYYY-MM-DDThh:mm format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "default": "''",
+              "description": "Sets lower boundary of datepicker date selection.",
               "fieldName": "minDate"
             },
             {
-              "name": "step",
+              "name": "maxDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of datepicker date selection.",
+              "fieldName": "maxDate"
+            },
+            {
+              "name": "errorAriaLabel",
               "type": {
                 "text": "string"
               },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
-              "fieldName": "step"
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "fieldName": "errorAriaLabel"
             },
             {
-              "name": "datePickerType",
+              "name": "errorTitle",
               "type": {
-                "text": "DATE_PICKER_TYPES"
+                "text": "string"
               },
-              "description": "Date picker types. Default 'single'",
-              "fieldName": "datePickerType"
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "fieldName": "errorTitle"
+            },
+            {
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "fieldName": "warningAriaLabel"
+            },
+            {
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "fieldName": "warningTitle"
             },
             {
               "name": "textStrings",
@@ -3479,53 +3848,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/datePicker/defs.ts",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "regexDateFormat",
-          "default": "/^\\d{4}-\\d{2}-\\d{2}$/"
-        },
-        {
-          "kind": "variable",
-          "name": "regexDateTimeFormat",
-          "default": "/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$/"
-        },
-        {
-          "kind": "variable",
-          "name": "regexDateTimeFormatSec",
-          "default": "/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$/"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "regexDateFormat",
-          "declaration": {
-            "name": "regexDateFormat",
-            "module": "src/components/reusable/datePicker/defs.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "regexDateTimeFormat",
-          "declaration": {
-            "name": "regexDateTimeFormat",
-            "module": "src/components/reusable/datePicker/defs.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "regexDateTimeFormatSec",
-          "declaration": {
-            "name": "regexDateTimeFormatSec",
-            "module": "src/components/reusable/datePicker/defs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/datePicker/index.ts",
       "declarations": [],
       "exports": [
@@ -3545,83 +3867,84 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Date-Range picker",
+          "description": "Date Range Picker component: uses flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`",
           "name": "DateRangePicker",
           "slots": [
             {
-              "description": "Slot for label text.",
-              "name": "unnamed"
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
             }
           ],
           "members": [
             {
               "kind": "field",
-              "name": "caption",
+              "name": "nameAttr",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
+              "description": "Sets date range picker attribute name (ex: `contact-form-date-range-picker`).",
+              "attribute": "nameAttr"
             },
             {
               "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "startDate",
+              "name": "label",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "attribute": "startDate"
+              "description": "Label text.",
+              "attribute": "label"
             },
             {
               "kind": "field",
-              "name": "endDate",
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale"
+              },
+              "default": "'en'",
+              "description": "Sets and dynamically imports specific l10n calendar localization.",
+              "attribute": "locale"
+            },
+            {
+              "kind": "field",
+              "name": "dateFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Y-m-d'",
+              "description": "Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`).",
+              "attribute": "dateFormat"
+            },
+            {
+              "kind": "field",
+              "name": "defaultErrorMessage",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "attribute": "endDate"
+              "description": "Sets default error message.",
+              "attribute": "defaultErrorMessage"
             },
             {
               "kind": "field",
-              "name": "required",
+              "name": "multipleInputs",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Makes the date required.",
-              "attribute": "required"
+              "description": "Sets date range to have start and end date inputs.",
+              "attribute": "multipleInputs"
             },
             {
               "kind": "field",
-              "name": "disabled",
+              "name": "value",
               "type": {
-                "text": "boolean"
+                "text": "[number | null, number | null]"
               },
-              "default": "false",
-              "description": "Date disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "datePickerType",
-              "type": {
-                "text": "DATE_PICKER_TYPES"
-              },
-              "description": "Date range picker types. Default 'single'",
-              "attribute": "datePickerType"
+              "default": "[null, null]",
+              "description": "Sets pre-selected date/time value.",
+              "attribute": "value"
             },
             {
               "kind": "field",
@@ -3630,40 +3953,153 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Date warning text",
+              "description": "Sets validation warning messaging.",
               "attribute": "warnText"
             },
             {
               "kind": "field",
-              "name": "maxDate",
+              "name": "invalidText",
               "type": {
                 "text": "string"
               },
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
-              "attribute": "maxDate"
+              "default": "''",
+              "description": "Sets validation error messaging.",
+              "attribute": "invalidText"
+            },
+            {
+              "kind": "field",
+              "name": "altFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets flatpickr alternative formatting value (ex: `F j, Y`).",
+              "attribute": "altFormat"
+            },
+            {
+              "kind": "field",
+              "name": "disable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to disable specific dates.",
+              "attribute": "disable"
+            },
+            {
+              "kind": "field",
+              "name": "enable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to enable specific dates.",
+              "attribute": "enable"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets date range picker form input value to required/required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "dateRangePickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to enabled/disabled.",
+              "attribute": "dateRangePickerDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets 24 hour formatting true/false.",
+              "attribute": "twentyFourHourFormat"
             },
             {
               "kind": "field",
               "name": "minDate",
               "type": {
-                "text": "string"
+                "text": "string | number | Date"
               },
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "default": "''",
+              "description": "Sets lower boundary of date range picker date selection.",
               "attribute": "minDate"
             },
             {
               "kind": "field",
-              "name": "step",
+              "name": "maxDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of date range picker date selection.",
+              "attribute": "maxDate"
+            },
+            {
+              "kind": "field",
+              "name": "errorAriaLabel",
               "type": {
                 "text": "string"
               },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
-              "attribute": "step"
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "attribute": "errorAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "attribute": "errorTitle"
+            },
+            {
+              "kind": "field",
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "attribute": "warningAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "attribute": "warningTitle"
             },
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n}",
+              "default": "{\n  requiredText: 'Required',\n  subtract: 'Subtract',\n  add: 'Add',\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -3672,131 +4108,247 @@
             },
             {
               "kind": "method",
-              "name": "handleStartDate",
+              "name": "renderValidationMessage",
               "privacy": "private",
               "parameters": [
                 {
-                  "name": "e",
+                  "name": "errorId",
                   "type": {
-                    "text": "any"
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "warningId",
+                  "type": {
+                    "text": "string"
                   }
                 }
               ]
             },
             {
               "kind": "method",
-              "name": "handleEndDate",
-              "privacy": "private",
+              "name": "getDateRangePickerClasses"
+            },
+            {
+              "kind": "method",
+              "name": "updateEnableTime",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "reinitializeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "setupAnchors",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "initializeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "loadLocale",
+              "return": {
+                "type": {
+                  "text": "Promise<Locale>"
+                }
+              },
               "parameters": [
                 {
-                  "name": "e",
+                  "name": "locale",
                   "type": {
-                    "text": "any"
+                    "text": "string"
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "getComponentFlatpickrOptions",
+              "return": {
+                "type": {
+                  "text": "Promise<Partial<BaseOptions>>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updateFlatpickrOptions"
+            },
+            {
+              "kind": "method",
+              "name": "setCalendarAttributes",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "setInitialDates",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updateShowMonths",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleOpen",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleDateChange",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleClose"
+            },
+            {
+              "kind": "method",
+              "name": "updateSelectedDateRangeAria",
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "setShouldFlatpickrOpen",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "closeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "preventFlatpickrOpen",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleInputClickEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleInputFocusEvent",
+              "privacy": "private"
             },
             {
               "kind": "method",
               "name": "_validate",
               "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
+              "return": {
+                "type": {
+                  "text": "void"
                 }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
+              }
             }
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the selected values and original event details. (Only if startDate <= endDate)",
-              "name": "on-input"
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-change"
             }
           ],
           "attributes": [
             {
-              "name": "caption",
+              "name": "nameAttr",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
+              "description": "Sets date range picker attribute name (ex: `contact-form-date-range-picker`).",
+              "fieldName": "nameAttr"
             },
             {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Datepicker size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "startDate",
+              "name": "label",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker Start date in YYYY-MM-DD format.",
-              "fieldName": "startDate"
+              "description": "Label text.",
+              "fieldName": "label"
             },
             {
-              "name": "endDate",
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale"
+              },
+              "default": "'en'",
+              "description": "Sets and dynamically imports specific l10n calendar localization.",
+              "fieldName": "locale"
+            },
+            {
+              "name": "dateFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Y-m-d'",
+              "description": "Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`).",
+              "fieldName": "dateFormat"
+            },
+            {
+              "name": "defaultErrorMessage",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Datepicker End date in YYYY-MM-DD format.",
-              "fieldName": "endDate"
+              "description": "Sets default error message.",
+              "fieldName": "defaultErrorMessage"
             },
             {
-              "name": "required",
+              "name": "multipleInputs",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Makes the date required.",
-              "fieldName": "required"
+              "description": "Sets date range to have start and end date inputs.",
+              "fieldName": "multipleInputs"
             },
             {
-              "name": "disabled",
+              "name": "value",
               "type": {
-                "text": "boolean"
+                "text": "[number | null, number | null]"
               },
-              "default": "false",
-              "description": "Date disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "datePickerType",
-              "type": {
-                "text": "DATE_PICKER_TYPES"
-              },
-              "description": "Date range picker types. Default 'single'",
-              "fieldName": "datePickerType"
+              "default": "[null, null]",
+              "description": "Sets pre-selected date/time value.",
+              "fieldName": "value"
             },
             {
               "name": "warnText",
@@ -3804,32 +4356,134 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Date warning text",
+              "description": "Sets validation warning messaging.",
               "fieldName": "warnText"
             },
             {
-              "name": "maxDate",
+              "name": "invalidText",
               "type": {
                 "text": "string"
               },
-              "description": "Maximum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no maximum date value.",
-              "fieldName": "maxDate"
+              "default": "''",
+              "description": "Sets validation error messaging.",
+              "fieldName": "invalidText"
+            },
+            {
+              "name": "altFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets flatpickr alternative formatting value (ex: `F j, Y`).",
+              "fieldName": "altFormat"
+            },
+            {
+              "name": "disable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to disable specific dates.",
+              "fieldName": "disable"
+            },
+            {
+              "name": "enable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to enable specific dates.",
+              "fieldName": "enable"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets date range picker form input value to required/required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "dateRangePickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to enabled/disabled.",
+              "fieldName": "dateRangePickerDisabled"
+            },
+            {
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets 24 hour formatting true/false.",
+              "fieldName": "twentyFourHourFormat"
             },
             {
               "name": "minDate",
               "type": {
-                "text": "string"
+                "text": "string | number | Date"
               },
-              "description": "Mimimum date in YYYY-MM-DD format. If the value isn't a possible date string in the format, then the element has no minimum date value.",
+              "default": "''",
+              "description": "Sets lower boundary of date range picker date selection.",
               "fieldName": "minDate"
             },
             {
-              "name": "step",
+              "name": "maxDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of date range picker date selection.",
+              "fieldName": "maxDate"
+            },
+            {
+              "name": "errorAriaLabel",
               "type": {
                 "text": "string"
               },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nFor date inputs, the value of step is given in days; and is treated as a number of milliseconds equal to 86,400,000 times the step value.\nThe default value of step is 1, indicating 1 day.",
-              "fieldName": "step"
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "fieldName": "errorAriaLabel"
+            },
+            {
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "fieldName": "errorTitle"
+            },
+            {
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "fieldName": "warningAriaLabel"
+            },
+            {
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "fieldName": "warningTitle"
             },
             {
               "name": "textStrings",
@@ -3881,7 +4535,7 @@
           "name": "DateRangePicker",
           "declaration": {
             "name": "DateRangePicker",
-            "module": "\"./daterangepicker\""
+            "module": "./daterangepicker"
           }
         }
       ]
@@ -9480,6 +10134,476 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tabs",
+          "declaration": {
+            "name": "Tabs",
+            "module": "./tabs"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "./tab"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TabPanel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "./tabPanel"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/tab.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tabs.",
+          "name": "Tab",
+          "slots": [
+            {
+              "description": "Slot for tab button text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "id",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Tab ID, required.",
+              "attribute": "id",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab selected state. Must match Tab Panel visible state.",
+              "attribute": "selected",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The parameter \"e\" is an event object that represents the event that triggered the\nclick event handler."
+                }
+              ],
+              "description": "Dispatches a custom event called 'tab-activated' with the original event and tabId as details,\nif the tab is not selected."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "id",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Tab ID, required.",
+              "fieldName": "id"
+            },
+            {
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab selected state. Must match Tab Panel visible state.",
+              "fieldName": "selected"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab disabled state.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tab",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "src/components/reusable/tabs/tab.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "src/components/reusable/tabs/tab.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/tabPanel.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tabs.",
+          "name": "TabPanel",
+          "slots": [
+            {
+              "description": "Slot for tab content.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "tabId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Matching Tab ID, required.",
+              "attribute": "tabId"
+            },
+            {
+              "kind": "field",
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab Panel visible state.  Must match Tab selected state.",
+              "attribute": "visible",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "noPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Remove side padding (left/right) on tab panel.",
+              "attribute": "noPadding"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "tabId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Matching Tab ID, required.",
+              "fieldName": "tabId"
+            },
+            {
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab Panel visible state.  Must match Tab selected state.",
+              "fieldName": "visible"
+            },
+            {
+              "name": "noPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Remove side padding (left/right) on tab panel.",
+              "fieldName": "noPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tab-panel",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TabPanel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "src/components/reusable/tabs/tabPanel.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tab-panel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "src/components/reusable/tabs/tabPanel.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/tabs.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tabs.",
+          "name": "Tabs",
+          "slots": [
+            {
+              "description": "Slot for kyn-tab-panel components.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for kyn-tab components.",
+              "name": "tabs"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "tabStyle",
+              "type": {
+                "text": "string"
+              },
+              "default": "'contained'",
+              "description": "Tab style. `'contained'` or `'line'`.",
+              "attribute": "tabStyle"
+            },
+            {
+              "kind": "field",
+              "name": "tabSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
+              "attribute": "tabSize"
+            },
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Vertical orientation.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "disableAutoFocusUpdate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
+              "attribute": "disableAutoFocusUpdate"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChangeTabs",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The parameter \"e\" is an event object that contains information about the event\nthat triggered the handleChange function."
+                }
+              ],
+              "description": "Updates children and emits a change event based on the provided\nevent details when a child kyn-tab is clicked."
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildrenSelection",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "selectedTabId",
+                  "type": {
+                    "text": "string"
+                  },
+                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe tab that is currently selected."
+                },
+                {
+                  "name": "updatePanel",
+                  "default": "true"
+                }
+              ],
+              "description": "Updates the selected property of tabs and the visible property of tab panels based on\nthe selected tab ID."
+            },
+            {
+              "kind": "method",
+              "name": "_emitChangeEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "origEvent",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The origEvent parameter is the original event object that triggered the\nchange event. It could be any type of event object, such as a click event or a keydown event."
+                },
+                {
+                  "name": "selectedTabId",
+                  "type": {
+                    "text": "string"
+                  },
+                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe selected tab."
+                }
+              ],
+              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\nselected tab ID as details."
+            },
+            {
+              "kind": "method",
+              "name": "_handleKeyboard",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The parameter `e` is an event object that represents the keyboard event. It\ncontains information about the keyboard event, such as the key code of the pressed key."
+                }
+              ],
+              "description": "Handles keyboard events for navigating between tabs.",
+              "return": {
+                "type": {
+                  "text": ""
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the new selected Tab ID when switching tabs.",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "tabStyle",
+              "type": {
+                "text": "string"
+              },
+              "default": "'contained'",
+              "description": "Tab style. `'contained'` or `'line'`.",
+              "fieldName": "tabStyle"
+            },
+            {
+              "name": "tabSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
+              "fieldName": "tabSize"
+            },
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Vertical orientation.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "disableAutoFocusUpdate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
+              "fieldName": "disableAutoFocusUpdate"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tabs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tabs",
+          "declaration": {
+            "name": "Tabs",
+            "module": "src/components/reusable/tabs/tabs.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tabs",
+          "declaration": {
+            "name": "Tabs",
+            "module": "src/components/reusable/tabs/tabs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/table/defs.ts",
       "declarations": [],
       "exports": []
@@ -11744,476 +12868,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "./tabs"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "./tab"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "TabPanel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "./tabPanel"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tab.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tabs.",
-          "name": "Tab",
-          "slots": [
-            {
-              "description": "Slot for tab button text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "id",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tab ID, required.",
-              "attribute": "id",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab selected state. Must match Tab Panel visible state.",
-              "attribute": "selected",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The parameter \"e\" is an event object that represents the event that triggered the\nclick event handler."
-                }
-              ],
-              "description": "Dispatches a custom event called 'tab-activated' with the original event and tabId as details,\nif the tab is not selected."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "id",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tab ID, required.",
-              "fieldName": "id"
-            },
-            {
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab selected state. Must match Tab Panel visible state.",
-              "fieldName": "selected"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab disabled state.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tab",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "src/components/reusable/tabs/tab.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "src/components/reusable/tabs/tab.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tabPanel.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tabs.",
-          "name": "TabPanel",
-          "slots": [
-            {
-              "description": "Slot for tab content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "tabId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Matching Tab ID, required.",
-              "attribute": "tabId"
-            },
-            {
-              "kind": "field",
-              "name": "visible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab Panel visible state.  Must match Tab selected state.",
-              "attribute": "visible",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "noPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Remove side padding (left/right) on tab panel.",
-              "attribute": "noPadding"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "tabId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Matching Tab ID, required.",
-              "fieldName": "tabId"
-            },
-            {
-              "name": "visible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab Panel visible state.  Must match Tab selected state.",
-              "fieldName": "visible"
-            },
-            {
-              "name": "noPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Remove side padding (left/right) on tab panel.",
-              "fieldName": "noPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tab-panel",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TabPanel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "src/components/reusable/tabs/tabPanel.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tab-panel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "src/components/reusable/tabs/tabPanel.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tabs.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tabs.",
-          "name": "Tabs",
-          "slots": [
-            {
-              "description": "Slot for kyn-tab-panel components.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for kyn-tab components.",
-              "name": "tabs"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "tabStyle",
-              "type": {
-                "text": "string"
-              },
-              "default": "'contained'",
-              "description": "Tab style. `'contained'` or `'line'`.",
-              "attribute": "tabStyle"
-            },
-            {
-              "kind": "field",
-              "name": "tabSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
-              "attribute": "tabSize"
-            },
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Vertical orientation.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "disableAutoFocusUpdate",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
-              "attribute": "disableAutoFocusUpdate"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChangeTabs",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The parameter \"e\" is an event object that contains information about the event\nthat triggered the handleChange function."
-                }
-              ],
-              "description": "Updates children and emits a change event based on the provided\nevent details when a child kyn-tab is clicked."
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildrenSelection",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "selectedTabId",
-                  "type": {
-                    "text": "string"
-                  },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe tab that is currently selected."
-                },
-                {
-                  "name": "updatePanel",
-                  "default": "true"
-                }
-              ],
-              "description": "Updates the selected property of tabs and the visible property of tab panels based on\nthe selected tab ID."
-            },
-            {
-              "kind": "method",
-              "name": "_emitChangeEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "origEvent",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The origEvent parameter is the original event object that triggered the\nchange event. It could be any type of event object, such as a click event or a keydown event."
-                },
-                {
-                  "name": "selectedTabId",
-                  "type": {
-                    "text": "string"
-                  },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe selected tab."
-                }
-              ],
-              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\nselected tab ID as details."
-            },
-            {
-              "kind": "method",
-              "name": "_handleKeyboard",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The parameter `e` is an event object that represents the keyboard event. It\ncontains information about the keyboard event, such as the key code of the pressed key."
-                }
-              ],
-              "description": "Handles keyboard events for navigating between tabs.",
-              "return": {
-                "type": {
-                  "text": ""
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the new selected Tab ID when switching tabs.",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "tabStyle",
-              "type": {
-                "text": "string"
-              },
-              "default": "'contained'",
-              "description": "Tab style. `'contained'` or `'line'`.",
-              "fieldName": "tabStyle"
-            },
-            {
-              "name": "tabSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
-              "fieldName": "tabSize"
-            },
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Vertical orientation.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "disableAutoFocusUpdate",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
-              "fieldName": "disableAutoFocusUpdate"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tabs",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "src/components/reusable/tabs/tabs.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "src/components/reusable/tabs/tabs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/tag/index.ts",
       "declarations": [],
       "exports": [
@@ -13233,6 +13887,614 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/timepicker/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TimePicker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "./timepicker"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/timepicker/timepicker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Timepicker: uses flatpickr datetime picker library, timepicker implementation -- `https://flatpickr.js.org/examples/#time-picker`",
+          "name": "TimePicker",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "nameAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets timepicker attribute name (ex: `contact-form-time-picker`).",
+              "attribute": "nameAttr"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale"
+              },
+              "default": "'en'",
+              "description": "Sets desired locale and, if supported, dynamically loads language lib",
+              "attribute": "locale"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets pre-selected date/time value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default time value.",
+              "attribute": "defaultDate"
+            },
+            {
+              "kind": "field",
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "attribute": "defaultErrorMessage"
+            },
+            {
+              "kind": "field",
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "attribute": "warnText"
+            },
+            {
+              "kind": "field",
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation error messaging.",
+              "attribute": "invalidText"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets datepicker form input value to required/required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "timepickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire datepicker form element to enabled/disabled.",
+              "attribute": "timepickerDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets 24 hour formatting true/false.",
+              "attribute": "twentyFourHourFormat"
+            },
+            {
+              "kind": "field",
+              "name": "minTime",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of datepicker date selection.",
+              "attribute": "minTime"
+            },
+            {
+              "kind": "field",
+              "name": "maxTime",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of datepicker date selection.",
+              "attribute": "maxTime"
+            },
+            {
+              "kind": "field",
+              "name": "errorAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "attribute": "errorAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "attribute": "errorTitle"
+            },
+            {
+              "kind": "field",
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "attribute": "warningAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "attribute": "warningTitle"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  requiredText: 'Required',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "renderValidationMessage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "errorId",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "warningId",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getTimepickerClasses"
+            },
+            {
+              "kind": "method",
+              "name": "setupAnchor",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "initializeFlatpickr",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updateFlatpickrOptions",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "setCalendarAttributes",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "loadLocale",
+              "return": {
+                "type": {
+                  "text": "Promise<Partial<Locale>>"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "locale",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getComponentFlatpickrOptions",
+              "return": {
+                "type": {
+                  "text": "Promise<Partial<BaseOptions>>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleOpen",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleClose",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleTimeChange",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                },
+                {
+                  "name": "dateStr",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "emitValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "timeStr",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "setShouldFlatpickrOpen",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "closeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "preventFlatpickrOpen",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleInputClickEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleInputFocusEvent",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "on-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Captures the input event and emits the selected value and original event details."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "nameAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets timepicker attribute name (ex: `contact-form-time-picker`).",
+              "fieldName": "nameAttr"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale"
+              },
+              "default": "'en'",
+              "description": "Sets desired locale and, if supported, dynamically loads language lib",
+              "fieldName": "locale"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets pre-selected date/time value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "defaultDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default time value.",
+              "fieldName": "defaultDate"
+            },
+            {
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "fieldName": "defaultErrorMessage"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "invalidText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation error messaging.",
+              "fieldName": "invalidText"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets datepicker form input value to required/required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "timepickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire datepicker form element to enabled/disabled.",
+              "fieldName": "timepickerDisabled"
+            },
+            {
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets 24 hour formatting true/false.",
+              "fieldName": "twentyFourHourFormat"
+            },
+            {
+              "name": "minTime",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of datepicker date selection.",
+              "fieldName": "minTime"
+            },
+            {
+              "name": "maxTime",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of datepicker date selection.",
+              "fieldName": "maxTime"
+            },
+            {
+              "name": "errorAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "fieldName": "errorAriaLabel"
+            },
+            {
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "fieldName": "errorTitle"
+            },
+            {
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "fieldName": "warningAriaLabel"
+            },
+            {
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "fieldName": "warningTitle"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-time-picker",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TimePicker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "src/components/reusable/timepicker/timepicker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-time-picker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "src/components/reusable/timepicker/timepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/toggleButton/index.ts",
       "declarations": [],
       "exports": [
@@ -13591,291 +14853,6 @@
           "declaration": {
             "name": "Tooltip",
             "module": "src/components/reusable/tooltip/tooltip.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/timepicker/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TimePicker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "./timepicker"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/timepicker/timepicker.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Time picker.",
-          "name": "TimePicker",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input warn text.",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "maxTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum Time hh:mm format.",
-              "attribute": "maxTime"
-            },
-            {
-              "kind": "field",
-              "name": "minTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Minimum Time in hh:mm format.",
-              "attribute": "minTime"
-            },
-            {
-              "kind": "field",
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nIt takes value that equates to the number of seconds you want to increment by;\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
-              "attribute": "step"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The value of the time input is always in 24-hour format that includes leading zeros: hh:mm,\nregardless of the input format, which is likely to be selected based on the user's locale (or by the user agent).\nIf the time includes seconds (by step attribute), the format is always hh:mm:ss",
-              "fieldName": "value"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Time input warn text.",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "maxTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum Time hh:mm format.",
-              "fieldName": "maxTime"
-            },
-            {
-              "name": "minTime",
-              "type": {
-                "text": "string"
-              },
-              "description": "Minimum Time in hh:mm format.",
-              "fieldName": "minTime"
-            },
-            {
-              "name": "step",
-              "type": {
-                "text": "string"
-              },
-              "description": "Specifies the granularity that the value must adhere to, or the special value any,\nIt takes value that equates to the number of seconds you want to increment by;\nthe default (60 sec.). If you specify a value of less than 60 sec., the time input will show a seconds input area alongside the hours and minutes",
-              "fieldName": "step"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-time-picker",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TimePicker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "src/components/reusable/timepicker/timepicker.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-time-picker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "src/components/reusable/timepicker/timepicker.ts"
           }
         }
       ]

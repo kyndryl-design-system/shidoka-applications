@@ -163,58 +163,87 @@ export const Default = {
 
         <kyn-time-picker
           name="timepicker"
-          size="md"
+          label="Time Picker"
+          required
           caption="Time picker example"
+          defaultErrorMessage="A time value is required"
           @on-input=${(e) => action(e.type)(e)}
         >
           Time
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-time-picker>
 
         <br /><br />
 
         <kyn-date-picker
-          size="md"
+          required
           name="date-picker"
-          datePickerType="single"
+          label="Date Picker"
+          dateFormat="Y-m-d"
           caption="Date picker example"
+          defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)(e)}
         >
-          Date
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-date-picker>
 
         <br /><br />
 
         <kyn-date-picker
-          size="md"
+          required
           name="date-time-picker"
-          datePickerType="date-time"
+          label="Date / Time Picker"
+          dateFormat="Y-m-d H:i"
           caption="Date time picker example"
+          defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)(e)}
         >
-          Date time
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-date-picker>
 
         <br /><br />
 
         <kyn-date-range-picker
-          size="md"
+          required
+          label="Date Range Picker"
           name="date-range"
+          dateFormat="Y-m-d"
           caption="Date range picker example"
+          defaultErrorMessage="Both start and end dates are required"
           @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 375px;"
         >
-          Date range
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-date-range-picker>
 
         <br /><br />
 
         <kyn-date-range-picker
-          size="md"
+          required
           name="date-time-range"
-          datePickerType="date-time"
+          label="Date / Time Range Picker"
+          dateFormat="Y-m-d H:i"
           caption="Date time range picker example"
+          defaultErrorMessage="Both start and end dates are required"
           @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 375px;"
         >
-          Date time range
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-date-range-picker>
 
         <br /><br />

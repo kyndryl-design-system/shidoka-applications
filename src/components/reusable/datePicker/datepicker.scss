@@ -1,28 +1,40 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/form-input.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
-  display: inline-block;
+    display: inline-block;
 }
 
-input {
-  -webkit-appearance: none;
-  appearance: none;
-  display: block;
-  width: 100%;
-  border: 1px solid var(--kd-color-border-ui);
-  border-radius: 4px;
-  height: 48px;
-  padding: 10px 16px;
-  min-width: 167px;
+.input-custom {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--kd-color-border-ui);
+    border-radius: 4px;
+    height: 48px;
+    padding: 0 40px 0 16px;
+    line-height: 48px;
+    -webkit-appearance: none;
+    appearance: none;
+}
 
-  &.size--sm {
-    height: 32px;
-    padding: 2px 16px;
-  }
+.icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    height: 24px;
+    width: 24px;
+    color: var(--kd-color-text-secondary);
+}
 
-  &.size--lg {
-    height: 56px;
-    padding: 14px 16px;
-  }
+.date-picker {
+    width: inherit;
+
+    &__disabled ::slotted(*) {
+        opacity: 0.5;
+    }
 }

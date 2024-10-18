@@ -9,6 +9,7 @@
   gap: 8px;
   padding: 0;
   margin-bottom: 8px;
+  cursor: default;
 
   &.sr-only {
     @include visibility.sr-only;
@@ -42,6 +43,7 @@
 input,
 .input-custom,
 textarea {
+  pointer-events: auto;
   @include typography.type-body-02;
   border-color: var(--kd-color-border-ui);
   color: var(--kd-color-text-primary);
@@ -78,6 +80,15 @@ textarea {
   align-items: center;
   color: var(--kd-color-text-error);
   margin-top: 8px;
+  cursor: default;
+
+  &.error-text {
+
+    .error-icon {
+      display: flex;
+      align-items: center;
+    }
+  }
 
   [disabled] & {
     color: var(--kd-color-text-disabled);
@@ -107,6 +118,7 @@ textarea {
 
 .caption {
   margin-top: 8px;
+  cursor: default;
 
   [disabled] & {
     color: var(--kd-color-text-disabled);
@@ -117,6 +129,11 @@ textarea {
   display: flex;
   align-items: center;
   margin-top: 8px;
+  cursor: default;
+
+  &.warn-text {
+    font-size: 16px;
+  }
 
   [disabled] & {
     color: var(--kd-color-text-disabled);
