@@ -720,6 +720,7 @@ export class Dropdown extends FormMixin(LitElement) {
     ) {
       this.open = false;
     }
+    this._validate(true, false);
   }
 
   private handleSearchBlur(e: any) {
@@ -732,6 +733,7 @@ export class Dropdown extends FormMixin(LitElement) {
     ) {
       this.open = false;
     }
+    this._validate(true, false);
   }
 
   private handleSearchKeydown(e: any) {
