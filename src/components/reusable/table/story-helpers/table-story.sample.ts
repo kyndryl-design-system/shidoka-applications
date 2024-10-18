@@ -276,13 +276,13 @@ class MyStoryTable extends LitElement {
               </kyn-th>
               <kyn-th
                 .sortable=${this.sortable}
-                sortKey="lastNme"
+                sortKey="lastName"
                 @on-sort-changed=${this.handleSortByLName}
                 >Last Name</kyn-th
               >
               <kyn-th
                 .sortable=${this.sortable}
-                sortKey="birtday"
+                sortKey="birthday"
                 @on-sort-changed=${this.handleSortByDate}
                 >Birthday</kyn-th
               >

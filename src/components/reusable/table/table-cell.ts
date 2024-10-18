@@ -23,6 +23,12 @@ export class TableCell extends LitElement {
   @property({ type: Boolean, reflect: true })
   dense = false;
 
+  /** aria role.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  override role = 'cell';
+
   /** Determines the text alignment of the table cell's content. */
   @property({ type: String, reflect: true })
   align: TABLE_CELL_ALIGN = TABLE_CELL_ALIGN.LEFT;
@@ -111,7 +117,7 @@ export class TableCell extends LitElement {
 
   override render() {
     return html`
-      <div class="slot-wrapper" aria-disabled=${this.disabled}>
+      <div class="slot-wrapper">
         <slot></slot>
       </div>
     `;

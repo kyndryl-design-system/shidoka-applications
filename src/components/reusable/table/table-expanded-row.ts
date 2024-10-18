@@ -16,6 +16,12 @@ import styles from './table-expanded-row.scss';
 export class TableExpandedRow extends LitElement {
   static override styles = [styles];
 
+  /** aria role.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  override role = 'row';
+
   /**
    * The number of columns that the expanded row should span.
    * Reflects the `colspan` attribute.
