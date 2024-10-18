@@ -20,12 +20,16 @@ const _defaultTextStrings = {
  * Radio button group container.
  * @fires on-radio-group-change - Captures the change event and emits the selected value.
  * @slot unnamed - Slot for individual radio buttons.
- * @slot label - Slot for label text.
  * @slot description - Slot for description text.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-radio-button-group')
 export class RadioButtonGroup extends FormMixin(LitElement) {
   static override styles = RadioButtonGroupScss;
+
+  /** Label text */
+  @property({ type: String })
+  label = '';
 
   /** Makes the input required. */
   @property({ type: Boolean })
@@ -71,7 +75,9 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
                 </abbr>
               `
             : null}
-          <slot name="label"></slot>
+
+          <span>${this.label}</span>
+          <slot name="tooltip"></slot>
         </legend>
         <div class="description-text">
           <slot name="description"></slot>
