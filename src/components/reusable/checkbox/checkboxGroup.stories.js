@@ -2,6 +2,8 @@ import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
 import '../tooltip';
+import infoIcon from '@carbon/icons/es/information/16';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 export default {
   title: 'Components/Checkbox',
@@ -62,7 +64,9 @@ export const CheckboxGroup = {
         @on-search=${(e) => action(e.type)(e)}
         @on-limit-toggle=${(e) => action(e.type)(e)}
       >
-        <kyn-tooltip slot="tooltip"> tooltip </kyn-tooltip>
+        <kyn-tooltip slot="tooltip">
+          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+        </kyn-tooltip>
         <div slot="description">${args.description}</div>
         <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
         <kyn-checkbox value="2"> Option 2 </kyn-checkbox>
@@ -96,7 +100,9 @@ export const CheckboxSubgroups = {
         @on-search=${(e) => action(e.type)(e)}
         @on-limit-toggle=${(e) => action(e.type)(e)}
       >
-        <kyn-tooltip slot="tooltip"> tooltip </kyn-tooltip>
+        <kyn-tooltip slot="tooltip">
+          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+        </kyn-tooltip>
         <div slot="description">${args.description}</div>
         <kyn-checkbox-subgroup>
           <kyn-checkbox slot="parent" value="parent1">
