@@ -30,11 +30,15 @@ const _defaultTextStrings = {
  * @fires on-search - Capture the search input event and emits the search text.
  * @fires on-clear-all - Captures the the multi-select clear all button click event and emits the value.
  * @slot unnamed - Slot for dropdown options.
- * @slot label - Slot for input label.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-dropdown')
 export class Dropdown extends FormMixin(LitElement) {
   static override styles = DropdownScss;
+
+  /** Label text. */
+  @property({ type: String })
+  label = '';
 
   /** Update by value instead of deriving value from child selections. */
   @property({ type: Boolean })
@@ -230,7 +234,8 @@ export class Dropdown extends FormMixin(LitElement) {
                 </abbr>
               `
             : null}
-          <slot name="label"></slot>
+          <span>${this.label}</span>
+          <slot name="tooltip"></slot>
         </label>
 
         <div
@@ -394,6 +399,7 @@ export class Dropdown extends FormMixin(LitElement) {
               <div class="error">
                 <kd-icon
                   class="error-info-icon"
+                  role="img"
                   title=${this._textStrings.error}
                   aria-label=${this._textStrings.error}
                   .icon=${errorIcon}
@@ -454,6 +460,8 @@ export class Dropdown extends FormMixin(LitElement) {
       // focus search input if searchable
       if (this.searchable) {
         this.searchEl.focus();
+      } else {
+        this.buttonEl.focus();
       }
     }
   }
@@ -714,6 +722,7 @@ export class Dropdown extends FormMixin(LitElement) {
     ) {
       this.open = false;
     }
+    this._validate(true, false);
   }
 
   private handleSearchBlur(e: any) {
@@ -726,6 +735,7 @@ export class Dropdown extends FormMixin(LitElement) {
     ) {
       this.open = false;
     }
+    this._validate(true, false);
   }
 
   private handleSearchKeydown(e: any) {
