@@ -10,6 +10,9 @@ import {
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
   getPlaceholder,
+  preventFlatpickrOpen,
+  handleInputClick,
+  handleInputFocus,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
@@ -79,11 +82,11 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   altFormat = '';
 
-  /** Sets flatpcikr options setting to disable specific dates. */
+  /** Sets flatpickr options setting to disable specific dates. */
   @property({ type: Array })
   disable: (string | number | Date)[] = [];
 
-  /** Sets flatpcikr options setting to enable specific dates. */
+  /** Sets flatpickr options setting to enable specific dates. */
   @property({ type: Array })
   enable: (string | number | Date)[] = [];
 
@@ -147,6 +150,12 @@ export class DatePicker extends FormMixin(LitElement) {
   @state()
   _textStrings = _defaultTextStrings;
 
+  /** Control flag to prevent Flatpickr from opening when clicking caption, error, label, or warning elements.
+   * @internal
+   */
+  @state()
+  private _shouldFlatpickrOpen = false;
+
   override render() {
     const errorId = `${this.nameAttr}-error-message`;
     const warningId = `${this.nameAttr}-warning-message`;
@@ -158,10 +167,12 @@ export class DatePicker extends FormMixin(LitElement) {
 
     return html`
       <div class=${classMap(this.getDatepickerClasses())}>
-        <label
+        <div
           class="label-text"
-          for=${anchorId}
+          @mousedown=${this.preventFlatpickrOpen}
+          @click=${this.preventFlatpickrOpen}
           ?disabled=${this.datePickerDisabled}
+          id=${`label-${anchorId}`}
         >
           ${this.required
             ? html`<abbr
@@ -174,7 +185,7 @@ export class DatePicker extends FormMixin(LitElement) {
             : null}
           ${this.label}
           <slot name="tooltip"></slot>
-        </label>
+        </div>
 
         <div class="input-wrapper">
           <input
@@ -186,12 +197,22 @@ export class DatePicker extends FormMixin(LitElement) {
             ?disabled=${this.datePickerDisabled}
             ?required=${this.required}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
+            aria-labelledby=${`label-${anchorId}`}
+            @click=${this.handleInputClickEvent}
+            @focus=${this.handleInputFocusEvent}
           />
           <span class="icon">${unsafeSVG(calendarIcon)}</span>
         </div>
 
         ${this.caption
-          ? html`<div id=${descriptionId} class="caption">${this.caption}</div>`
+          ? html`<div
+              id=${descriptionId}
+              class="caption"
+              @mousedown=${this.preventFlatpickrOpen}
+              @click=${this.preventFlatpickrOpen}
+            >
+              ${this.caption}
+            </div>`
           : ''}
         ${this.renderValidationMessage(errorId, warningId)}
       </div>
@@ -204,7 +225,8 @@ export class DatePicker extends FormMixin(LitElement) {
         id=${errorId}
         class="error error-text"
         role="alert"
-        @click=${(e: Event) => e.stopPropagation()}
+        @mousedown=${this.preventFlatpickrOpen}
+        @click=${this.preventFlatpickrOpen}
       >
         <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
           .invalidText || this.defaultErrorMessage}
@@ -212,7 +234,13 @@ export class DatePicker extends FormMixin(LitElement) {
     }
 
     if (this.warnText) {
-      return html`<div id=${warningId} class="warn warn-text" role="alert">
+      return html`<div
+        id=${warningId}
+        class="warn warn-text"
+        role="alert"
+        @mousedown=${this.preventFlatpickrOpen}
+        @click=${this.preventFlatpickrOpen}
+      >
         ${this.warnText}
       </div>`;
     }
@@ -371,7 +399,12 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   handleOpen(): void {
-    /// future: custom logic of onOpen
+    console.log('Flatpickr opened.');
+    if (!this._shouldFlatpickrOpen) {
+      console.log('Closing Flatpickr due to non-trigger element interaction.');
+      this.flatpickrInstance?.close();
+      this._shouldFlatpickrOpen = true;
+    }
   }
 
   async handleClose(): Promise<void> {
@@ -408,6 +441,30 @@ export class DatePicker extends FormMixin(LitElement) {
     this._validate();
     await this.updateComplete;
   }
+
+  private setShouldFlatpickrOpen = (value: boolean) => {
+    this._shouldFlatpickrOpen = value;
+  };
+
+  private closeFlatpickr = () => {
+    this.flatpickrInstance?.close();
+  };
+
+  private preventFlatpickrOpen = (event: Event) => {
+    preventFlatpickrOpen(event, this.setShouldFlatpickrOpen);
+  };
+
+  private handleInputClickEvent = () => {
+    handleInputClick(this.setShouldFlatpickrOpen);
+  };
+
+  private handleInputFocusEvent = () => {
+    handleInputFocus(
+      this._shouldFlatpickrOpen,
+      this.closeFlatpickr,
+      this.setShouldFlatpickrOpen
+    );
+  };
 
   private _validate(): void {
     const hasValidDate = this.value !== null && this.value !== '';

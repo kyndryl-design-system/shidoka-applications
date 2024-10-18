@@ -10,6 +10,9 @@ import {
   initializeMultiAnchorFlatpickr,
   getFlatpickrOptions,
   getPlaceholder,
+  preventFlatpickrOpen,
+  handleInputClick,
+  handleInputFocus,
 } from '../../../common/helpers/flatpickr';
 
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -156,6 +159,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @state()
   _textStrings = _defaultTextStrings;
 
+  /** Control flag to prevent Flatpickr from opening when clicking caption, error, label, or warning elements.
+   * @internal
+   */
+  @state()
+  private _shouldFlatpickrOpen = false;
+
   override render() {
     const errorId = `${this.nameAttr}-error-message`;
     const warningId = `${this.nameAttr}-warning-message`;
@@ -168,10 +177,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     return html`
       <div class=${classMap(this.getDateRangePickerClasses())}>
-        <label
+        <div
           class="label-text"
-          for=${anchorId}
+          @mousedown=${this.preventFlatpickrOpen}
+          @click=${this.preventFlatpickrOpen}
           ?disabled=${this.dateRangePickerDisabled}
+          id=${`label-${anchorId}`}
         >
           ${this.required
             ? html`<abbr
@@ -184,7 +195,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             : null}
           ${this.label}
           <slot name="tooltip"></slot>
-        </label>
+        </div>
 
         <div class="input-wrapper">
           <input
@@ -196,12 +207,22 @@ export class DateRangePicker extends FormMixin(LitElement) {
             ?disabled=${this.dateRangePickerDisabled}
             ?required=${this.required}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
+            aria-labelledby=${`label-${anchorId}`}
+            @click=${this.handleInputClickEvent}
+            @focus=${this.handleInputFocusEvent}
           />
           <span class="icon">${unsafeSVG(calendarIcon)}</span>
         </div>
 
         ${this.caption
-          ? html`<div id=${descriptionId} class="caption">${this.caption}</div>`
+          ? html`<div
+              id=${descriptionId}
+              class="caption"
+              @mousedown=${this.preventFlatpickrOpen}
+              @click=${this.preventFlatpickrOpen}
+            >
+              ${this.caption}
+            </div>`
           : ''}
         ${this.renderValidationMessage(errorId, warningId)}
       </div>
@@ -210,14 +231,26 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   private renderValidationMessage(errorId: string, warningId: string) {
     if (this._isInvalid) {
-      return html`<div id=${errorId} class="error error-text" role="alert">
+      return html`<div
+        id=${errorId}
+        class="error error-text"
+        role="alert"
+        @mousedown=${this.preventFlatpickrOpen}
+        @click=${this.preventFlatpickrOpen}
+      >
         <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
           .invalidText || this.defaultErrorMessage}
       </div>`;
     }
 
     if (this.warnText) {
-      return html`<div id=${warningId} class="warn warn-text" role="alert">
+      return html`<div
+        id=${warningId}
+        class="warn warn-text"
+        role="alert"
+        @mousedown=${this.preventFlatpickrOpen}
+        @click=${this.preventFlatpickrOpen}
+      >
         ${this.warnText}
       </div>`;
     }
@@ -461,6 +494,30 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this._endAnchorEl?.setAttribute('aria-label', 'End date');
     }
   }
+
+  private setShouldFlatpickrOpen = (value: boolean) => {
+    this._shouldFlatpickrOpen = value;
+  };
+
+  private closeFlatpickr = () => {
+    this.flatpickrInstance?.close();
+  };
+
+  private preventFlatpickrOpen = (event: Event) => {
+    preventFlatpickrOpen(event, this.setShouldFlatpickrOpen);
+  };
+
+  private handleInputClickEvent = () => {
+    handleInputClick(this.setShouldFlatpickrOpen);
+  };
+
+  private handleInputFocusEvent = () => {
+    handleInputFocus(
+      this._shouldFlatpickrOpen,
+      this.closeFlatpickr,
+      this.setShouldFlatpickrOpen
+    );
+  };
 
   private _validate(): void {
     const hasValidStart = this.value[0] !== null;
