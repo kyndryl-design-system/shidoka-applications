@@ -66,6 +66,10 @@ const Template = (args) => {
       .enable="${args.enable}"
       .mode="${args.mode}"
       .caption="${args.caption}"
+      .errorAriaLabel="${args.errorAriaLabel}"
+      .errorTitle="${args.errorTitle}"
+      .warningAriaLabel="${args.warningAriaLabel}"
+      .warningTitle="${args.warningTitle}"
       ?datePickerDisabled="${args.datePickerDisabled}"
       ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       .minDate="${args.minDate}"
@@ -89,6 +93,10 @@ DatePickerDefault.args = {
   altFormat: 'F j, Y',
   disable: [],
   enable: [],
+  errorAriaLabel: '',
+  errorTitle: '',
+  warningAriaLabel: '',
+  warningTitle: '',
   mode: 'single',
   caption: 'Example datepicker caption.',
   datePickerDisabled: false,

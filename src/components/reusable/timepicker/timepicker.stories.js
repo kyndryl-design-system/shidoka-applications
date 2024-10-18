@@ -50,6 +50,10 @@ const Template = (args) => {
       .defaultErrorMessage="${args.defaultErrorMessage}"
       .minTime="${args.minTime}"
       .maxTime="${args.maxTime}"
+      .errorAriaLabel="${args.errorAriaLabel}"
+      .errorTitle="${args.errorTitle}"
+      .warningAriaLabel="${args.warningAriaLabel}"
+      .warningTitle="${args.warningTitle}"
       ?timepickerDisabled="${args.timepickerDisabled}"
       ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       @on-change=${(e) => action(e.type)(e)}
@@ -71,6 +75,10 @@ DefaultTimePicker.args = {
   defaultErrorMessage: 'A time value is required',
   minTime: '',
   maxTime: '',
+  errorAriaLabel: '',
+  errorTitle: '',
+  warningAriaLabel: '',
+  warningTitle: '',
   timepickerDisabled: false,
   twentyFourHourFormat: false,
   label: 'Timepicker',

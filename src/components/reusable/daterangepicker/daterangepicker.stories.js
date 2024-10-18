@@ -69,6 +69,10 @@ const SingleInput = (args) => {
       ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       .minDate="${args.minDate}"
       .maxDate="${args.maxDate}"
+      .errorAriaLabel="${args.errorAriaLabel}"
+      .errorTitle="${args.errorTitle}"
+      .warningAriaLabel="${args.warningAriaLabel}"
+      .warningTitle="${args.warningTitle}"
       .startDateLabel="${args.startDateLabel}"
       .endDateLabel="${args.endDateLabel}"
       @on-change=${(e) => action(e.type)(e)}
@@ -91,6 +95,10 @@ DefaultDateRangePicker.args = {
   altFormat: 'F j, Y',
   disable: [],
   enable: [],
+  errorAriaLabel: '',
+  errorTitle: '',
+  warningAriaLabel: '',
+  warningTitle: '',
   caption: 'Click the input above to select a date range.',
   dateRangePickerDisabled: false,
   twentyFourHourFormat: false,

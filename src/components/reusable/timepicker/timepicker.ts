@@ -97,6 +97,22 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   maxTime: string | number | Date = '';
 
+  /** Sets aria label attribute for error message. */
+  @property({ type: String })
+  errorAriaLabel = '';
+
+  /** Sets title attribute for error message. */
+  @property({ type: String })
+  errorTitle = '';
+
+  /** Sets aria label attribute for warning message. */
+  @property({ type: String })
+  warningAriaLabel = '';
+
+  /** Sets title attribute for warning message. */
+  @property({ type: String })
+  warningTitle = '';
+
   /**
    * Sets whether user has interacted with timepicker for error handling.
    * @internal
@@ -202,6 +218,8 @@ export class TimePicker extends FormMixin(LitElement) {
         id=${errorId}
         class="error error-text"
         role="alert"
+        aria-label=${this.errorAriaLabel || 'Error message'}
+        title=${this.errorTitle || 'Error'}
         @mousedown=${this.preventFlatpickrOpen}
         @click=${this.preventFlatpickrOpen}
       >
@@ -215,6 +233,8 @@ export class TimePicker extends FormMixin(LitElement) {
         id=${warningId}
         class="warn warn-text"
         role="alert"
+        aria-label=${this.warningAriaLabel || 'Warning message'}
+        title=${this.warningTitle || 'Warning'}
         @mousedown=${this.preventFlatpickrOpen}
         @click=${this.preventFlatpickrOpen}
       >
