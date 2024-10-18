@@ -419,9 +419,7 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   handleOpen(): void {
-    console.log('Flatpickr opened.');
     if (!this._shouldFlatpickrOpen) {
-      console.log('Closing Flatpickr due to non-trigger element interaction.');
       this.flatpickrInstance?.close();
       this._shouldFlatpickrOpen = true;
     }
