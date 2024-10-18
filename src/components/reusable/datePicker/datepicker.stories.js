@@ -3,11 +3,6 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/addons';
 
-import '../tooltip';
-
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import infoIcon from '@carbon/icons/es/information/16';
-
 export default {
   title: 'Components/DatePicker',
   component: 'kyn-date-picker',
@@ -77,10 +72,6 @@ const Template = (args) => {
       .maxDate="${args.maxDate}"
       @on-change=${(e) => action(e.type)(e)}
     >
-      <kyn-tooltip slot="tooltip" anchorPosition="start">
-        <kd-icon .icon=${infoIcon}></kd-icon>
-        Tooltip example.
-      </kyn-tooltip>
     </kyn-date-picker>
   `;
 };

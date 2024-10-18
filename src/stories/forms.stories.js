@@ -170,6 +170,10 @@ export const Default = {
           @on-input=${(e) => action(e.type)(e)}
         >
           Time
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-time-picker>
 
         <br /><br />
@@ -183,7 +187,10 @@ export const Default = {
           defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)(e)}
         >
-          Date
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-date-picker>
 
         <br /><br />
@@ -197,7 +204,10 @@ export const Default = {
           defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)(e)}
         >
-          Date time
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-date-picker>
 
         <br /><br />
@@ -212,7 +222,10 @@ export const Default = {
           @on-input=${(e) => action(e.type)(e)}
           style="min-width: 375px;"
         >
-          Date range
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-date-range-picker>
 
         <br /><br />
@@ -227,7 +240,10 @@ export const Default = {
           @on-input=${(e) => action(e.type)(e)}
           style="min-width: 375px;"
         >
-          Date time range
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            Tooltip example.
+          </kyn-tooltip>
         </kyn-date-range-picker>
 
         <br /><br />
