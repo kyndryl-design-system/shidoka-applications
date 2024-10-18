@@ -341,7 +341,7 @@ export class TimePicker extends FormMixin(LitElement) {
       twentyFourHourFormat: this.twentyFourHourFormat,
       startAnchorEl: this._anchorEl!,
       allowInput: true,
-      dateFormat: this.twentyFourHourFormat ? 'H:i' : 'h:i K',
+      dateFormat: !this.twentyFourHourFormat ? 'h:i K' : 'H:i',
       minTime: this.minTime,
       maxTime: this.maxTime,
       defaultDate: this.defaultDate,
