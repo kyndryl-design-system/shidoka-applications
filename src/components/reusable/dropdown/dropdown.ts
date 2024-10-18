@@ -460,6 +460,8 @@ export class Dropdown extends FormMixin(LitElement) {
       // focus search input if searchable
       if (this.searchable) {
         this.searchEl.focus();
+      } else {
+        this.buttonEl.focus();
       }
     }
   }
