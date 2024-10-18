@@ -176,22 +176,24 @@ export class TableHeader extends LitElement {
 
     switch (this.sortDirection) {
       case SORT_DIRECTION.DEFAULT:
-      case SORT_DIRECTION.DESC:
+      case SORT_DIRECTION.DESC: {
         this.sortDirection = SORT_DIRECTION.ASC;
-        if (this.assistiveText === '') {
-          this.assistiveText = `Column header ${this.sortKey} sorted in ascending order`;
-        } else {
-          this.assistiveText = `Column header ${this.sortKey} is sorted in ascending order`;
-        }
+        const assistiveText1 = `Column header ${this.sortKey} sorted in ascending order`;
+        this.assistiveText =
+          this.assistiveText === '' || this.assistiveText === assistiveText1
+            ? `${assistiveText1}.`
+            : assistiveText1;
         break;
-      case SORT_DIRECTION.ASC:
+      }
+      case SORT_DIRECTION.ASC: {
         this.sortDirection = SORT_DIRECTION.DESC;
-        if (this.assistiveText === '') {
-          this.assistiveText = `Column header ${this.sortKey} sorted in descending order`;
-        } else {
-          this.assistiveText = `Column header ${this.sortKey} is sorted in descending order`;
-        }
+        const assistiveText2 = `Column header ${this.sortKey} sorted in descending order`;
+        this.assistiveText =
+          this.assistiveText === '' || this.assistiveText === assistiveText2
+            ? `${assistiveText2}.`
+            : assistiveText2;
         break;
+      }
     }
 
     // Dispatch event to notify parent components of the sorting change
