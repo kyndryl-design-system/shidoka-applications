@@ -62,7 +62,6 @@ const SingleInput = (args) => {
       .altFormat=${args.altFormat}
       .disable="${args.disable}"
       .enable="${args.enable}"
-      .multipleInputs="${args.multipleInputs}"
       .caption="${args.caption}"
       ?required="${args.required}"
       ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
@@ -88,7 +87,6 @@ DefaultDateRangePicker.args = {
   dateFormat: 'Y-m-d',
   required: false,
   defaultErrorMessage: 'Both start and end dates are required',
-  multipleInputs: false,
   value: [null, null],
   warnText: '',
   invalidText: '',

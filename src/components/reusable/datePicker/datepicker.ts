@@ -62,6 +62,10 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   defaultErrorMessage = '';
 
+  /** Sets manually entered error message. */
+  @property({ type: String })
+  override invalidText = '';
+
   /** Sets datepicker form input value to required/required. */
   @property({ type: Boolean })
   required = false;
@@ -238,7 +242,7 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
-    if (this._isInvalid && this._hasInteracted) {
+    if (this.invalidText || (this._isInvalid && this._hasInteracted)) {
       return html`<div
         id=${errorId}
         class="error error-text"
@@ -461,29 +465,29 @@ export class DatePicker extends FormMixin(LitElement) {
     await this.updateComplete;
   }
 
-  private setShouldFlatpickrOpen = (value: boolean) => {
+  private setShouldFlatpickrOpen(value: boolean): void {
     this._shouldFlatpickrOpen = value;
-  };
+  }
 
-  private closeFlatpickr = () => {
+  private closeFlatpickr(): void {
     this.flatpickrInstance?.close();
-  };
+  }
 
-  private preventFlatpickrOpen = (event: Event) => {
+  private preventFlatpickrOpen(event: Event): void {
     preventFlatpickrOpen(event, this.setShouldFlatpickrOpen);
-  };
+  }
 
-  private handleInputClickEvent = () => {
+  private handleInputClickEvent(): void {
     handleInputClick(this.setShouldFlatpickrOpen);
-  };
+  }
 
-  private handleInputFocusEvent = () => {
+  private handleInputFocusEvent(): void {
     handleInputFocus(
       this._shouldFlatpickrOpen,
       this.closeFlatpickr,
       this.setShouldFlatpickrOpen
     );
-  };
+  }
 
   private _validate(interacted: boolean, report: boolean): void {
     if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) {
@@ -520,18 +524,18 @@ export class DatePicker extends FormMixin(LitElement) {
     this.requestUpdate();
   }
 
-  private _onChange = () => {
+  private _onChange() {
     this._validate(true, false);
-  };
+  }
 
-  private _handleFormReset = () => {
+  private _handleFormReset() {
     this.value = null;
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
     }
     this._hasInteracted = false;
     this._validate(false, false);
-  };
+  }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();

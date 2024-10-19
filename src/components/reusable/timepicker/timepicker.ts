@@ -63,7 +63,11 @@ export class TimePicker extends FormMixin(LitElement) {
 
   /** Sets default error message. */
   @property({ type: String })
-  defaultErrorMessage = 'This field is required';
+  defaultErrorMessage = '';
+
+  /** Sets manually entered error message. */
+  @property({ type: String })
+  override invalidText = '';
 
   /** Sets validation warning messaging. */
   @property({ type: String })
@@ -161,7 +165,6 @@ export class TimePicker extends FormMixin(LitElement) {
 
     return html`
       <div class=${classMap(this.getTimepickerClasses())}>
-        <!-- Use <div> for label to prevent default label behavior -->
         <div
           class="label-text"
           @mousedown=${this.preventFlatpickrOpen}
@@ -215,7 +218,7 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
-    if (this._isInvalid && this._hasInteracted) {
+    if (this.invalidText || (this._isInvalid && this._hasInteracted)) {
       return html`<div
         id=${errorId}
         class="error error-text"
@@ -447,42 +450,42 @@ export class TimePicker extends FormMixin(LitElement) {
     this.requestUpdate();
   }
 
-  private _onChange = () => {
+  private _onChange() {
     this._validate(true, false);
-  };
+  }
 
-  private _handleFormReset = () => {
+  private _handleFormReset() {
     this.value = null;
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
     }
     this._hasInteracted = false;
     this._validate(false, false);
-  };
+  }
 
-  private setShouldFlatpickrOpen = (value: boolean) => {
+  private setShouldFlatpickrOpen(value: boolean) {
     this._shouldFlatpickrOpen = value;
-  };
+  }
 
-  private closeFlatpickr = () => {
+  private closeFlatpickr() {
     this.flatpickrInstance?.close();
-  };
+  }
 
-  private preventFlatpickrOpen = (event: Event) => {
+  private preventFlatpickrOpen(event: Event) {
     preventFlatpickrOpen(event, this.setShouldFlatpickrOpen);
-  };
+  }
 
-  private handleInputClickEvent = () => {
+  private handleInputClickEvent() {
     handleInputClick(this.setShouldFlatpickrOpen);
-  };
+  }
 
-  private handleInputFocusEvent = () => {
+  private handleInputFocusEvent() {
     handleInputFocus(
       this._shouldFlatpickrOpen,
       this.closeFlatpickr,
       this.setShouldFlatpickrOpen
     );
-  };
+  }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();

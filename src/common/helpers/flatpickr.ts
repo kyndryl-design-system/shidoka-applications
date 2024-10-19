@@ -106,7 +106,6 @@ interface FlatpickrOptionsContext {
   enableTime: boolean;
   twentyFourHourFormat: boolean;
   altFormat?: string;
-  multipleInputs?: boolean;
   endAnchorEl?: HTMLElement;
   startAnchorEl: HTMLElement;
   allowInput?: boolean;
@@ -345,7 +344,6 @@ export async function getFlatpickrOptions(
     enableTime,
     twentyFourHourFormat,
     altFormat,
-    multipleInputs,
     endAnchorEl,
     startAnchorEl,
     allowInput,
@@ -417,20 +415,6 @@ export async function getFlatpickrOptions(
         instance.calendarContainer.querySelector('.flatpickr-time');
       timeContainer?.classList.add('default-time-select');
     };
-  }
-
-  if (multipleInputs && endAnchorEl) {
-    const endInput =
-      endAnchorEl instanceof HTMLInputElement
-        ? endAnchorEl
-        : endAnchorEl.querySelector('input') || undefined;
-
-    if (endInput) {
-      options.plugins = [
-        ...(options.plugins || []),
-        rangePlugin({ input: endInput }),
-      ];
-    }
   }
 
   if (!(startAnchorEl instanceof HTMLInputElement)) {

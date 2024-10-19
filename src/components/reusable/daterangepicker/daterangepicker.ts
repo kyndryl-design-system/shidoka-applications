@@ -62,7 +62,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   /** Sets default error message. */
   @property({ type: String })
-  defaultErrorMessage = 'This field is required';
+  defaultErrorMessage = '';
+
+  /** Sets manually entered error message. */
+  @property({ type: String })
+  override invalidText = '';
 
   /** Sets pre-selected date/time value. */
   @property({ type: Array })
@@ -237,7 +241,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
-    if (this._isInvalid && this._hasInteracted) {
+    if (this.invalidText || (this._isInvalid && this._hasInteracted)) {
       return html`<div
         id=${errorId}
         class="error error-text"
@@ -479,29 +483,29 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }
 
-  private setShouldFlatpickrOpen = (value: boolean) => {
+  private setShouldFlatpickrOpen(value: boolean) {
     this._shouldFlatpickrOpen = value;
-  };
+  }
 
-  private closeFlatpickr = () => {
+  private closeFlatpickr() {
     this.flatpickrInstance?.close();
-  };
+  }
 
-  private preventFlatpickrOpen = (event: Event) => {
+  private preventFlatpickrOpen(event: Event) {
     preventFlatpickrOpen(event, this.setShouldFlatpickrOpen);
-  };
+  }
 
-  private handleInputClickEvent = () => {
+  private handleInputClickEvent() {
     handleInputClick(this.setShouldFlatpickrOpen);
-  };
+  }
 
-  private handleInputFocusEvent = () => {
+  private handleInputFocusEvent() {
     handleInputFocus(
       this._shouldFlatpickrOpen,
       this.closeFlatpickr,
       this.setShouldFlatpickrOpen
     );
-  };
+  }
 
   private _validate(interacted: boolean, report: boolean): void {
     if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) {
@@ -539,18 +543,18 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.requestUpdate();
   }
 
-  private _onChange = () => {
+  private _onChange() {
     this._validate(true, false);
-  };
+  }
 
-  private _handleFormReset = () => {
+  private _handleFormReset() {
     this.value = [null, null];
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
     }
     this._hasInteracted = false;
     this._validate(false, false);
-  };
+  }
 
   override disconnectedCallback() {
     super.disconnectedCallback();
