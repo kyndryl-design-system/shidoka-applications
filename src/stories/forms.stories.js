@@ -165,11 +165,12 @@ export const Default = {
           name="timepicker"
           label="Time Picker"
           required
+          dateFormat="H:i"
           caption="Time picker example"
+          ?twentyFourHourFormat=${true}
           defaultErrorMessage="A time value is required"
           @on-input=${(e) => action(e.type)(e)}
         >
-          Time
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
             Tooltip example.
@@ -186,12 +187,7 @@ export const Default = {
           caption="Date picker example"
           defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)(e)}
-        >
-          <kyn-tooltip slot="tooltip" anchorPosition="start">
-            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
-            Tooltip example.
-          </kyn-tooltip>
-        </kyn-date-picker>
+        ></kyn-date-picker>
 
         <br /><br />
 
@@ -199,8 +195,9 @@ export const Default = {
           required
           name="date-time-picker"
           label="Date / Time Picker"
-          dateFormat="Y-m-d H:i"
+          dateFormat="Y-m-d h:i K"
           caption="Date time picker example"
+          ?twentyFourHourFormat=${false}
           defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)(e)}
         >
@@ -234,8 +231,9 @@ export const Default = {
           required
           name="date-time-range"
           label="Date / Time Range Picker"
-          dateFormat="Y-m-d H:i"
+          dateFormat="Y-m-d h:i K"
           caption="Date time range picker example"
+          ?twentyFourHourFormat=${false}
           defaultErrorMessage="Both start and end dates are required"
           @on-input=${(e) => action(e.type)(e)}
           style="min-width: 375px;"

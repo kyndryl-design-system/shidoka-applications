@@ -74,10 +74,6 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   warnText = '';
 
-  /** Sets validation error messaging. */
-  @property({ type: String })
-  override invalidText = '';
-
   /** Sets flatpickr alternative formatting value (ex: `F j, Y`). */
   @property({ type: String })
   altFormat = '';
@@ -154,7 +150,7 @@ export class DatePicker extends FormMixin(LitElement) {
    * @ignore
    */
   @state()
-  private _anchorEl?: HTMLElement;
+  private _inputEl?: HTMLInputElement;
 
   /** Customizable text strings. */
   @property({ type: Object })
@@ -171,6 +167,12 @@ export class DatePicker extends FormMixin(LitElement) {
    */
   @state()
   private _shouldFlatpickrOpen = false;
+
+  constructor() {
+    super();
+    this.addEventListener('change', this._onChange);
+    this.addEventListener('reset', this._handleFormReset);
+  }
 
   override render() {
     const errorId = `${this.nameAttr}-error-message`;
@@ -236,7 +238,7 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
-    if (this._isInvalid) {
+    if (this._isInvalid && this._hasInteracted) {
       return html`<div
         id=${errorId}
         class="error error-text"
@@ -247,7 +249,9 @@ export class DatePicker extends FormMixin(LitElement) {
         @click=${this.preventFlatpickrOpen}
       >
         <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-          .invalidText || this.defaultErrorMessage}
+          .invalidText ||
+        this._internalValidationMsg ||
+        this.defaultErrorMessage}
       </div>`;
     }
 
@@ -301,14 +305,11 @@ export class DatePicker extends FormMixin(LitElement) {
       this.updateEnableTime();
       this.reinitializeFlatpickr();
     }
-
-    if (changedProperties.has('invalidText')) {
-      this._validate();
-    }
   }
 
   private updateEnableTime() {
-    this._enableTime = this.dateFormat.includes('H:');
+    this._enableTime =
+      this.dateFormat.includes('H:') || this.dateFormat.includes('h:');
   }
 
   private async reinitializeFlatpickr() {
@@ -319,28 +320,28 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async initializeFlatpickr(): Promise<void> {
-    if (!this._anchorEl) return;
+    if (!this._inputEl) return;
 
     if (this.flatpickrInstance) {
       this.flatpickrInstance.destroy();
     }
 
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
-      anchorEl: this._anchorEl,
+      anchorEl: this._inputEl,
       getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
       setCalendarAttributes: this.setCalendarAttributes.bind(this),
       setInitialDates: this.setInitialDates.bind(this),
       appendToBody: false,
     });
 
-    this._validate();
+    this._validate(false, false);
   }
 
   private setupAnchor() {
     const inputEl =
       this.shadowRoot?.querySelector<HTMLInputElement>('.input-custom');
     if (inputEl) {
-      this._anchorEl = inputEl;
+      this._inputEl = inputEl;
       this.initializeFlatpickr();
     } else {
       console.error('Internal input element not found');
@@ -348,7 +349,7 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   setCalendarAttributes(): void {
-    if (!(this._anchorEl instanceof HTMLInputElement)) {
+    if (!(this._inputEl instanceof HTMLInputElement)) {
       return;
     }
 
@@ -404,7 +405,7 @@ export class DatePicker extends FormMixin(LitElement) {
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat,
       altFormat: this.altFormat,
-      startAnchorEl: this._anchorEl!,
+      startAnchorEl: this._inputEl!,
       minDate: this.minDate,
       maxDate: this.maxDate,
       enable: this.enable,
@@ -427,7 +428,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
   async handleClose(): Promise<void> {
     this._hasInteracted = true;
-    this._validate();
+    this._validate(true, false);
     await this.updateComplete;
   }
 
@@ -448,7 +449,7 @@ export class DatePicker extends FormMixin(LitElement) {
     const customEvent = new CustomEvent('on-change', {
       detail: {
         dates: formattedDates,
-        dateString: (this._anchorEl as HTMLInputElement)?.value || dateStr,
+        dateString: (this._inputEl as HTMLInputElement)?.value || dateStr,
       },
       bubbles: true,
       composed: true,
@@ -456,7 +457,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
     this.dispatchEvent(customEvent);
 
-    this._validate();
+    this._validate(true, false);
     await this.updateComplete;
   }
 
@@ -484,18 +485,58 @@ export class DatePicker extends FormMixin(LitElement) {
     );
   };
 
-  private _validate(): void {
-    const hasValidDate = this.value !== null && this.value !== '';
+  private _validate(interacted: boolean, report: boolean): void {
+    if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) {
+      return;
+    }
 
-    this._isInvalid =
-      !!this.invalidText ||
-      (this.required && this._hasInteracted && !hasValidDate);
+    if (interacted) {
+      this._hasInteracted = true;
+    }
+
+    const isEmpty = !this._inputEl.value.trim();
+    const isRequired = this.required;
+
+    let validity = this._inputEl.validity;
+    let validationMessage = this._inputEl.validationMessage;
+
+    if (isRequired && isEmpty) {
+      validity = { ...validity, valueMissing: true };
+      validationMessage = this.defaultErrorMessage;
+    }
+
+    if (this.invalidText) {
+      validity = { ...validity, customError: true };
+      validationMessage = this.invalidText;
+    }
+
+    this._internals.setValidity(validity, validationMessage, this._inputEl);
+    this._internalValidationMsg = validationMessage;
+
+    if (report) {
+      this._internals.reportValidity();
+    }
 
     this.requestUpdate();
   }
 
+  private _onChange = () => {
+    this._validate(true, false);
+  };
+
+  private _handleFormReset = () => {
+    this.value = null;
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.clear();
+    }
+    this._hasInteracted = false;
+    this._validate(false, false);
+  };
+
   override disconnectedCallback(): void {
     super.disconnectedCallback();
+    this.removeEventListener('change', this._onChange);
+    this.removeEventListener('reset', this._handleFormReset);
 
     if (this.flatpickrInstance) {
       this.flatpickrInstance.destroy();

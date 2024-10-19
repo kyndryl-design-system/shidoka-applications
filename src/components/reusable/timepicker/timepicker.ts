@@ -1,5 +1,5 @@
 import { html, LitElement, PropertyValues } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
@@ -63,15 +63,11 @@ export class TimePicker extends FormMixin(LitElement) {
 
   /** Sets default error message. */
   @property({ type: String })
-  defaultErrorMessage = '';
+  defaultErrorMessage = 'This field is required';
 
   /** Sets validation warning messaging. */
   @property({ type: String })
   warnText = '';
-
-  /** Sets validation error messaging. */
-  @property({ type: String })
-  override invalidText = '';
 
   /** Sets caption to be displayed under primary date picker elements. */
   @property({ type: String })
@@ -130,8 +126,8 @@ export class TimePicker extends FormMixin(LitElement) {
    * Queries the anchor DOM element.
    * @ignore
    */
-  @state()
-  private _anchorEl?: HTMLElement;
+  @query('input.input-custom')
+  private _inputEl?: HTMLInputElement;
 
   /** Customizable text strings. */
   @property({ type: Object })
@@ -147,6 +143,12 @@ export class TimePicker extends FormMixin(LitElement) {
    * @internal
    */
   private _shouldFlatpickrOpen = true;
+
+  override connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('change', this._onChange);
+    this.addEventListener('reset', this._handleFormReset);
+  }
 
   override render() {
     const errorId = `${this.nameAttr}-error-message`;
@@ -213,7 +215,7 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
-    if (this._isInvalid) {
+    if (this._isInvalid && this._hasInteracted) {
       return html`<div
         id=${errorId}
         class="error error-text"
@@ -224,7 +226,9 @@ export class TimePicker extends FormMixin(LitElement) {
         @click=${this.preventFlatpickrOpen}
       >
         <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-          .invalidText || this.defaultErrorMessage}
+          .invalidText ||
+        this._internalValidationMsg ||
+        this.defaultErrorMessage}
       </div>`;
     }
 
@@ -273,17 +277,13 @@ export class TimePicker extends FormMixin(LitElement) {
         this.initializeFlatpickr();
       }
     }
-
-    if (changedProperties.has('invalidText')) {
-      this._validate();
-    }
   }
 
   private setupAnchor() {
     const inputEl =
       this.shadowRoot?.querySelector<HTMLInputElement>('.input-custom');
     if (inputEl) {
-      this._anchorEl = inputEl;
+      this._inputEl = inputEl;
       this.initializeFlatpickr();
     } else {
       console.error('Internal input element not found');
@@ -291,11 +291,11 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   async initializeFlatpickr(): Promise<void> {
-    if (!this._anchorEl) return;
+    if (!this._inputEl) return;
     if (this.flatpickrInstance) this.flatpickrInstance.destroy();
 
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
-      anchorEl: this._anchorEl,
+      anchorEl: this._inputEl,
       getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
       setCalendarAttributes: this.setCalendarAttributes.bind(this),
       setInitialDates: undefined,
@@ -316,7 +316,6 @@ export class TimePicker extends FormMixin(LitElement) {
       }
     });
     this.setCalendarAttributes();
-    this._validate();
   }
 
   setCalendarAttributes(): void {
@@ -359,7 +358,7 @@ export class TimePicker extends FormMixin(LitElement) {
       locale: this.locale,
       enableTime: true,
       twentyFourHourFormat: this.twentyFourHourFormat,
-      startAnchorEl: this._anchorEl!,
+      startAnchorEl: this._inputEl!,
       allowInput: true,
       dateFormat: !this.twentyFourHourFormat ? 'h:i K' : 'H:i',
       minTime: this.minTime,
@@ -375,12 +374,15 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   handleOpen(): void {
-    // future: custom logic of onOpen
+    if (!this._shouldFlatpickrOpen) {
+      this.flatpickrInstance?.close();
+      this._shouldFlatpickrOpen = true;
+    }
   }
 
   async handleClose(): Promise<void> {
     this._hasInteracted = true;
-    this._validate();
+    this._validate(true, false);
     await this.updateComplete;
   }
 
@@ -388,8 +390,6 @@ export class TimePicker extends FormMixin(LitElement) {
     selectedDates: Date[],
     dateStr: string
   ): Promise<void> {
-    this._hasInteracted = true;
-
     if (selectedDates.length > 0) {
       this.value = selectedDates[0].getTime();
       this.emitValue(dateStr);
@@ -398,7 +398,7 @@ export class TimePicker extends FormMixin(LitElement) {
       this.emitValue('');
     }
 
-    this._validate();
+    this._validate(true, false);
     await this.updateComplete;
   }
 
@@ -412,15 +412,53 @@ export class TimePicker extends FormMixin(LitElement) {
     );
   }
 
-  private _validate(): void {
-    const hasValidTime = this.value !== null;
+  private _validate(interacted: boolean, report: boolean): void {
+    if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) {
+      return;
+    }
 
-    this._isInvalid =
-      !!this.invalidText ||
-      (this.required && this._hasInteracted && !hasValidTime);
+    if (interacted) {
+      this._hasInteracted = true;
+    }
+
+    const isEmpty = !this._inputEl.value.trim();
+    const isRequired = this.required;
+
+    let validity = this._inputEl.validity;
+    let validationMessage = this._inputEl.validationMessage;
+
+    if (isRequired && isEmpty) {
+      validity = { ...validity, valueMissing: true };
+      validationMessage = this.defaultErrorMessage;
+    }
+
+    if (this.invalidText) {
+      validity = { ...validity, customError: true };
+      validationMessage = this.invalidText;
+    }
+
+    this._internals.setValidity(validity, validationMessage, this._inputEl);
+    this._internalValidationMsg = validationMessage;
+
+    if (report) {
+      this._internals.reportValidity();
+    }
 
     this.requestUpdate();
   }
+
+  private _onChange = () => {
+    this._validate(true, false);
+  };
+
+  private _handleFormReset = () => {
+    this.value = null;
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.clear();
+    }
+    this._hasInteracted = false;
+    this._validate(false, false);
+  };
 
   private setShouldFlatpickrOpen = (value: boolean) => {
     this._shouldFlatpickrOpen = value;
@@ -448,6 +486,9 @@ export class TimePicker extends FormMixin(LitElement) {
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
+    this.removeEventListener('change', this._onChange);
+    this.removeEventListener('reset', this._handleFormReset);
+
     if (this.flatpickrInstance) {
       this.flatpickrInstance.destroy();
       this.flatpickrInstance = undefined;

@@ -26,6 +26,22 @@ Breaking Changes
   - Radio Button Group , Number Input, Text Input , Text Area
     - Added a dedicated slot for tooltip.
     - `label` slot has been updated to a `label` string prop
+- Updated date, time, and date range picker components
+  - Utilizes Flatpickr third-party date picker library to standardize cross-browser date, time, and date range pickers, and to support theming and locale
+  - The locale can now be set via the `locale` attribute
+  - The date output format defaults to ISO 8601 but is configurable via the `dateFormat` flatpickr attribute
+  - Aligns additional attributes with Flatpickr API configuration options:
+    - Adds the `time_24hr` (twentyFourHourFormat) prop to toggle between 12-hour and 24-hour time formats
+    - Adds a dedicated slot for tooltip
+    - Adds `minDate` and `maxDate` options
+    - Adds `altFormat` option
+    - Adds `disable` and `enable` options
+    - Adds `mode` option
+    - Adds `defaultDate` option to time picker for optional preset time: `defaultDate: "13:45"`
+    - Adds `enableTime` option
+    - Hardcodes other Flatpickr options where applicable and necessary
+  - Adds `errorAriaLabel`, `errorTitle`, `warningAriaLabel`, and `warningTitle` props
+  - Adds `datePickerDisabled`, `timePickerDisabled`, and `dateRangePickerDisabled` props
 
 ## 1.0
 
