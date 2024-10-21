@@ -35,7 +35,7 @@ const _defaultTextStrings = {
 };
 
 /**
- * Datepicker: uses flatpickr datetime picker library -- `https://flatpickr.js.org`
+ * Datepicker: uses Flatpickr's datetime picker library -- `https://flatpickr.js.org`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot tooltip - Slot for tooltip.
  */

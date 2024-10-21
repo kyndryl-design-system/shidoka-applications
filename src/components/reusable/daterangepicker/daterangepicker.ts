@@ -37,7 +37,7 @@ const _defaultTextStrings = {
 };
 
 /**
- * Date Range Picker component: uses flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
+ * Date Range Picker: uses Flatpicker library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot tooltip - Slot for tooltip.
  */

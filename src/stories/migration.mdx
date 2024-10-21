@@ -26,22 +26,46 @@ Breaking Changes
   - Radio Button Group , Number Input, Text Input , Text Area
     - Added a dedicated slot for tooltip.
     - `label` slot has been updated to a `label` string prop
-- Updated date, time, and date range picker components
-  - Utilizes Flatpickr third-party date picker library to standardize date, time, and date range pickers across all browsers and to support Flatpickr theming and localization -- run `npm install` to ensure packages are installed
-  - The locale must now be set via the `locale` attribute
-  - The date output format defaults to ISO strings but is configurable via the `dateFormat` flatpickr attribute
-  - Aligns additional attributes with Flatpickr API configuration options:
-    - Adds the `time_24hr` (twentyFourHourFormat) prop to toggle between 12-hour and 24-hour time formats
-    - Adds a dedicated slot for tooltip
-    - Adds `minDate` and `maxDate` options
-    - Adds `altFormat` option
-    - Adds `disable` and `enable` options
-    - Adds `mode` option
-    - Adds `defaultDate` option to time picker for optional preset time: `defaultDate: "13:45"`
-    - Adds `enableTime` option
-    - Hardcodes other Flatpickr options where applicable and necessary
-  - Adds `errorAriaLabel`, `errorTitle`, `warningAriaLabel`, and `warningTitle` props
-  - Adds `datePickerDisabled`, `timePickerDisabled`, and `dateRangePickerDisabled` props
+- Updated Date, Time, and Date Range Picker components
+  - Library integration
+    - Utilizes Flatpickr third-party date picker library to standardize date, time, and date range pickers across all browsers
+    - Localization support provided by Flatpickr (see `locale` prop note below)
+    - run `npm install` to ensure required packages are installed
+  - Property changes
+    - Replace `datePickerType` with `mode` property (for DatePicker and DateRangePicker)
+    - Use Flatpickr's `mode` and `dateFormat` instead of `DATE_PICKER_TYPES`
+    - Update `value` property:
+      - For DatePicker: Change from string to `Date | null`
+      - For DateRangePicker: Change from string to `[Date | null, Date | null]`
+      - For TimePicker: Change from string to `Date | null`
+    - Rename `disabled` property to `datePickerDisabled` (for DatePicker), `dateRangePickerDisabled` (for DateRangePicker), and `timePickerDisabled` (for TimePicker)
+    - Remove usage of `step` property
+  - New Properties
+    - Add use `locale` property (must use for Flatpickr localization)
+    - Add `altFormat` property for alternative date output formatting (if needed)
+    - Add `twentyFourHourFormat` property for time format (if needed)
+  - Event handling
+    - Update event listeners from `@on-input` to `@on-change`
+    - Update event detail structure in event handler
+      - Old structure: `{ value: string, origEvent: Event }`
+      - New structure: `{ dates: string | string[], dateString: string }`
+  - Template changes
+    - Replace unnamed slot for label with `label` property
+    - Add tooltip slot if tooltip functionality is needed
+  - Styling considerations
+    - Flatpickr theming has been customized to coordinate with broader Shidoka Design System
+    - Update any custom CSS that targets internal elements of the components
+    - Be aware of new Flatpickr-related classes for styling overrides
+  - Validation
+    - Update any custom validation logic to work with the new Flatpickr integration
+    - Use `defaultErrorMessage` property instead of setting custom validation messages directly
+  - Accessibility
+    - Add `errorAriaLabel`, `errorTitle`, `warningAriaLabel`, and `warningTitle` properties if custom accessibility labels are needed
+    - Update any code that relies on specific date string formats to work with the new `Date` object values
+  - Date and Time handling
+  - Update any code that relies on specific date string formats to work with the new `Date` object values
+  - For TimePicker, update any code that assumes a specific time string format to work with the new `Date` object values
+  - Remember to consult the new component documentation for detailed information on new properties, events, and behaviors introduced in this version.
 
 ## 1.0
 
