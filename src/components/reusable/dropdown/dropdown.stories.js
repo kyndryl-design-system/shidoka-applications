@@ -13,14 +13,6 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    resetSelection: {
-      description:
-        'Manually reset the dropdown value. Useful when programmatically updating child options. Must be called after child options are updated/re-rendered.',
-      table: {
-        category: 'Methods',
-        type: 'Function',
-      },
-    },
   },
   parameters: {
     design: {
@@ -46,7 +38,6 @@ const args = {
   caption: '',
   searchText: '',
   menuMinWidth: 'initial',
-  updateByValue: false,
   textStrings: {
     required: 'Required',
     error: 'Error',
@@ -68,8 +59,8 @@ export const Single = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
-        ?updateByValue=${args.updateByValue}
         .textStrings=${args.textStrings}
+        value=""
         @on-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
@@ -105,8 +96,8 @@ export const SingleSearchable = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
-        ?updateByValue=${args.updateByValue}
         .textStrings=${args.textStrings}
+        value=""
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >
@@ -144,8 +135,8 @@ export const MultiSelect = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
-        ?updateByValue=${args.updateByValue}
         .textStrings=${args.textStrings}
+        value=""
         @on-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
@@ -185,8 +176,8 @@ export const MultiSelectSearchable = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
-        ?updateByValue=${args.updateByValue}
         .textStrings=${args.textStrings}
+        value=""
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >
@@ -241,8 +232,8 @@ export const Grouped = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
-        ?updateByValue=${args.updateByValue}
         .textStrings=${args.textStrings}
+        value=""
         @on-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
@@ -279,8 +270,8 @@ export const DataDrivenOptions = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
-        ?updateByValue=${args.updateByValue}
         .textStrings=${args.textStrings}
+        value=""
         @on-change=${(e) => {
           // console.log(e.detail);
           action(e.type)(e);
@@ -290,11 +281,7 @@ export const DataDrivenOptions = {
 
         ${items.map((item) => {
           return html`
-            <kyn-dropdown-option
-              value=${item.value}
-              ?selected=${item.selected}
-              ?disabled=${item.disabled}
-            >
+            <kyn-dropdown-option value=${item.value} ?disabled=${item.disabled}>
               ${item.text}
             </kyn-dropdown-option>
           `;

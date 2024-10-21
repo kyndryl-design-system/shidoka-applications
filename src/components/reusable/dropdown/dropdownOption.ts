@@ -17,8 +17,10 @@ export class DropdownOption extends LitElement {
   @property({ type: String })
   value = '';
 
-  /** Option selected state. */
-  @property({ type: Boolean, reflect: true })
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
   selected = false;
 
   /** Option disabled state. */
