@@ -45,7 +45,6 @@ const args = {
   invalidText: '',
   caption: '',
   searchText: '',
-  value: '',
   menuMinWidth: 'initial',
   textStrings: {
     required: 'Required',
@@ -69,7 +68,7 @@ export const Single = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=${args.value}
+        value=""
         @on-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
@@ -106,7 +105,7 @@ export const SingleSearchable = {
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
         .textStrings=${args.textStrings}
-        value=${args.value}
+        value=""
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >
@@ -145,7 +144,7 @@ export const MultiSelect = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=${args.value}
+        value=""
         @on-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
@@ -186,7 +185,7 @@ export const MultiSelectSearchable = {
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
         .textStrings=${args.textStrings}
-        value=${args.value}
+        value=""
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >
@@ -242,7 +241,7 @@ export const Grouped = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=${args.value}
+        value=""
         @on-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
@@ -280,7 +279,7 @@ export const DataDrivenOptions = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=${items[1].value}
+        value=""
         @on-change=${(e) => {
           // console.log(e.detail);
           action(e.type)(e);
@@ -290,11 +289,7 @@ export const DataDrivenOptions = {
 
         ${items.map((item) => {
           return html`
-            <kyn-dropdown-option
-              value=${item.value}
-              ?disabled=${item.disabled}
-              ?selected=${item.selected}
-            >
+            <kyn-dropdown-option value=${item.value} ?disabled=${item.disabled}>
               ${item.text}
             </kyn-dropdown-option>
           `;

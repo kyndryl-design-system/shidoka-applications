@@ -427,14 +427,6 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleSlotChange() {
-    this.resetSelection();
-  }
-
-  /**
-   * Retrieves the selected values from the list of child options and sets value property.
-   * @function
-   */
-  public resetSelection() {
     this._updateOptions();
   }
 
