@@ -33,11 +33,17 @@ Breaking Changes
     - run `npm install` to ensure required packages are installed
   - Property changes
     - Replace `datePickerType` with `mode` property (for DatePicker and DateRangePicker)
-    - Use Flatpickr's `mode` and `dateFormat` instead of `DATE_PICKER_TYPES`
     - Update `value` property:
-      - For DatePicker: Change from string to `Date | null`
-      - For DateRangePicker: Change from string to `[Date | null, Date | null]`
-      - For TimePicker: Change from string to `Date | null`
+      - DatePicker: Change from string to `Date | null`
+        - Input: Accept `Date` object or ISO string
+        - Output: `Date` object
+      - DateRangePicker: Change from `string` to `[Date | null, Date | null]`
+        - Input: Accept array of two `Date` objects or ISO strings
+        - Output: Array of two `Date` objects
+      - TimePicker: Change from string to `Date | null`
+        - Input: Accept `Date` object or ISO string
+        - Output: `Date` object
+    - Use Flatpickr's `mode` and `dateFormat` instead of `DATE_PICKER_TYPES`
     - Rename `disabled` property to `datePickerDisabled` (for DatePicker), `dateRangePickerDisabled` (for DateRangePicker), and `timePickerDisabled` (for TimePicker)
     - Remove usage of `step` property
   - New Properties
@@ -63,8 +69,10 @@ Breaking Changes
     - Add `errorAriaLabel`, `errorTitle`, `warningAriaLabel`, and `warningTitle` properties if custom accessibility labels are needed
     - Update any code that relies on specific date string formats to work with the new `Date` object values
   - Date and Time handling
-  - Update any code that relies on specific date string formats to work with the new `Date` object values
-  - For TimePicker, update any code that assumes a specific time string format to work with the new `Date` object values
+    - Update any code that relies on specific date string formats to work with the new `Date` object values
+    - For TimePicker, update any code that assumes a specific time string format to work with the new `Date` object values
+    - Use `dateFormat` property to specify the desired input/output format for date strings
+    - Use `altFormat` property if you need an alternative output format
   - Remember to consult the new component documentation for detailed information on new properties, events, and behaviors introduced in this version.
 
 ## 1.0
