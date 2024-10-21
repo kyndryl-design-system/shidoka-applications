@@ -242,7 +242,7 @@ export const Grouped = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=${items[1].value}
+        value=${args.value}
         @on-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
@@ -280,7 +280,7 @@ export const DataDrivenOptions = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=${args.value}
+        value=${items[1].value}
         @on-change=${(e) => {
           // console.log(e.detail);
           action(e.type)(e);
