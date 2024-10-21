@@ -45,10 +45,6 @@ const _defaultTextStrings = {
 export class DateRangePicker extends FormMixin(LitElement) {
   static override styles = [DateRangePickerStyles, ShidokaFlatpickrTheme];
 
-  /** Sets date range picker attribute name (ex: `contact-form-date-range-picker`). */
-  @property({ type: String })
-  nameAttr = '';
-
   /** Label text. */
   @property({ type: String })
   label = '';
@@ -71,7 +67,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   /** Sets pre-selected date/time value. */
   @property({ type: Array })
-  override value: [number | null, number | null] = [null, null];
+  override value: [Date | null, Date | null] = [null, null];
 
   /** Sets validation warning messaging. */
   @property({ type: String })
@@ -96,6 +92,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
   /** Sets date range picker form input value to required/required. */
   @property({ type: Boolean })
   required = false;
+
+  /** Input size. "sm", "md", or "lg". */
+  @property({ type: String })
+  size = 'md';
 
   /** Sets entire date range picker form element to enabled/disabled. */
   @property({ type: Boolean })
@@ -178,12 +178,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   override render() {
-    const errorId = `${this.nameAttr}-error-message`;
-    const warningId = `${this.nameAttr}-warning-message`;
-    const anchorId = this.nameAttr
-      ? `${this.nameAttr}-${Math.random().toString(36).slice(2, 11)}`
+    const errorId = `${this.name}-error-message`;
+    const warningId = `${this.name}-warning-message`;
+    const anchorId = this.name
+      ? `${this.name}-${Math.random().toString(36).slice(2, 11)}`
       : `date-range-picker-${Math.random().toString(36).slice(2, 11)}`;
-    const descriptionId = this.nameAttr ?? '';
+    const descriptionId = this.name ?? '';
 
     const placeholder = getPlaceholder(this.dateFormat, true);
 
@@ -211,10 +211,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
         <div class="input-wrapper">
           <input
-            class="input-custom"
+            class="${classMap({
+              [`size--${this.size}`]: true,
+              'input-custom': true,
+            })}"
             type="text"
             id=${anchorId}
-            name=${this.nameAttr}
+            name=${this.name}
             placeholder=${placeholder}
             ?disabled=${this.dateRangePickerDisabled}
             ?required=${this.required}
@@ -248,13 +251,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
         id=${errorId}
         class="error error-text"
         role="alert"
-        aria-label=${this.errorAriaLabel || 'Error message'}
         title=${this.errorTitle || 'Error'}
         @mousedown=${this.preventFlatpickrOpen}
         @click=${this.preventFlatpickrOpen}
       >
-        <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-          .invalidText ||
+        <span
+          class="error-icon"
+          aria-label=${this.errorAriaLabel || 'Error message'}
+          >${unsafeSVG(errorIcon)}</span
+        >${this.invalidText ||
         this._internalValidationMsg ||
         this.defaultErrorMessage}
       </div>`;
@@ -384,7 +389,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.value[1] !== null
     ) {
       this.flatpickrInstance!.setDate(
-        [new Date(this.value[0]), new Date(this.value[1])],
+        this.value.filter((date) => date !== null),
         false
       );
     }
@@ -402,8 +407,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     this.value =
       selectedDates.length === 2
-        ? [selectedDates[0].getTime(), selectedDates[1].getTime()]
-        : [selectedDates[0]?.getTime() || null, null];
+        ? [selectedDates[0], selectedDates[1]]
+        : [selectedDates[0] || null, null];
 
     const formattedDates = selectedDates.map((date) => date.toISOString());
     const dateString = this._inputEl?.value || formattedDates.join(' to ');

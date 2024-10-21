@@ -41,10 +41,6 @@ const _defaultTextStrings = {
 export class TimePicker extends FormMixin(LitElement) {
   static override styles = [TimepickerStyles, ShidokaFlatpickrTheme];
 
-  /** Sets timepicker attribute name (ex: `contact-form-time-picker`). */
-  @property({ type: String })
-  nameAttr = '';
-
   /** Label text. */
   @property({ type: String })
   label = '';
@@ -54,8 +50,8 @@ export class TimePicker extends FormMixin(LitElement) {
   locale: SupportedLocale = 'en';
 
   /** Sets pre-selected date/time value. */
-  @property({ type: Number })
-  override value: number | null = null;
+  @property({ type: Object })
+  override value: Date | null = null;
 
   /** Sets default time value. */
   @property({ type: String })
@@ -80,6 +76,10 @@ export class TimePicker extends FormMixin(LitElement) {
   /** Sets datepicker form input value to required/required. */
   @property({ type: Boolean })
   required = false;
+
+  /** Input size. "sm", "md", or "lg". */
+  @property({ type: String })
+  size = 'md';
 
   /** Sets entire datepicker form element to enabled/disabled. */
   @property({ type: Boolean })
@@ -155,12 +155,12 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   override render() {
-    const errorId = `${this.nameAttr}-error-message`;
-    const warningId = `${this.nameAttr}-warning-message`;
-    const anchorId = this.nameAttr
-      ? `${this.nameAttr}-${Math.random().toString(36).slice(2, 11)}`
+    const errorId = `${this.name}-error-message`;
+    const warningId = `${this.name}-warning-message`;
+    const anchorId = this.name
+      ? `${this.name}-${Math.random().toString(36).slice(2, 11)}`
       : `time-picker-${Math.random().toString(36).slice(2, 11)}`;
-    const descriptionId = this.nameAttr ?? '';
+    const descriptionId = this.name ?? '';
     const placeholder = 'hh:mm';
 
     return html`
@@ -187,10 +187,13 @@ export class TimePicker extends FormMixin(LitElement) {
 
         <div class="input-wrapper">
           <input
-            class="input-custom"
+            class="${classMap({
+              [`size--${this.size}`]: true,
+              'input-custom': true,
+            })}"
             type="text"
             id=${anchorId}
-            name=${this.nameAttr}
+            name=${this.name}
             placeholder=${placeholder}
             ?disabled=${this.timepickerDisabled}
             ?required=${this.required}
@@ -224,13 +227,15 @@ export class TimePicker extends FormMixin(LitElement) {
         id=${errorId}
         class="error error-text"
         role="alert"
-        aria-label=${this.errorAriaLabel || 'Error message'}
         title=${this.errorTitle || 'Error'}
         @mousedown=${this.preventFlatpickrOpen}
         @click=${this.preventFlatpickrOpen}
       >
-        <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-          .invalidText ||
+        <span
+          class="error-icon"
+          aria-label=${this.errorAriaLabel || 'Error message'}
+          >${unsafeSVG(errorIcon)}</span
+        >${this.invalidText ||
         this._internalValidationMsg ||
         this.defaultErrorMessage}
       </div>`;
@@ -363,7 +368,7 @@ export class TimePicker extends FormMixin(LitElement) {
     dateStr: string
   ): Promise<void> {
     if (selectedDates.length > 0) {
-      this.value = selectedDates[0].getTime();
+      this.value = selectedDates[0];
       emitValue(this, 'on-change', { time: dateStr });
     } else {
       this.value = null;

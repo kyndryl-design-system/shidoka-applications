@@ -30,6 +30,10 @@ export default {
       options: ['single', 'multiple'],
       control: { type: 'select' },
     },
+    size: {
+      options: ['sm', 'md', 'lg'],
+      control: { type: 'select' },
+    },
     defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
     maxDate: { control: { type: 'text' } },
@@ -58,6 +62,7 @@ const Template = (args) => {
       .dateFormat="${args.dateFormat}"
       .defaultErrorMessage="${args.defaultErrorMessage}"
       ?required="${args.required}"
+      .size="${args.size}"
       .value="${args.value}"
       .warnText="${args.warnText}"
       .invalidText="${args.invalidText}"
@@ -87,13 +92,14 @@ DatePickerDefault.args = {
   dateFormat: 'Y-m-d',
   defaultErrorMessage: 'A date value is required',
   required: false,
+  size: 'md',
   value: '',
   warnText: '',
   invalidText: '',
   altFormat: 'F j, Y',
   disable: [],
   enable: [],
-  errorAriaLabel: '',
+  errorAriaLabel: 'Error message icon',
   errorTitle: '',
   warningAriaLabel: '',
   warningTitle: '',

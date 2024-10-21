@@ -13,6 +13,10 @@ export default {
     },
   },
   argTypes: {
+    size: {
+      options: ['sm', 'md', 'lg'],
+      control: { type: 'select' },
+    },
     label: { control: { type: 'text' } },
     locale: { control: { type: 'text' } },
     minTime: { control: { type: 'text' } },
@@ -42,6 +46,7 @@ const Template = (args) => {
       .label="${args.label}"
       .locale="${args.locale}"
       ?required="${args.required}"
+      .size="${args.size}"
       .value="${args.value}"
       .warnText="${args.warnText}"
       .invalidText="${args.invalidText}"
@@ -67,6 +72,7 @@ DefaultTimePicker.args = {
   nameAttr: 'default-timepicker',
   locale: 'en',
   required: false,
+  size: 'md',
   value: null,
   warnText: '',
   invalidText: '',
@@ -75,7 +81,7 @@ DefaultTimePicker.args = {
   defaultErrorMessage: 'A time value is required',
   minTime: '',
   maxTime: '',
-  errorAriaLabel: '',
+  errorAriaLabel: 'Error message icon',
   errorTitle: '',
   warningAriaLabel: '',
   warningTitle: '',

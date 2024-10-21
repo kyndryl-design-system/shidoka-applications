@@ -28,6 +28,10 @@ export default {
       ],
       control: { type: 'select' },
     },
+    size: {
+      options: ['sm', 'md', 'lg'],
+      control: { type: 'select' },
+    },
     label: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
@@ -64,6 +68,7 @@ const SingleInput = (args) => {
       .enable="${args.enable}"
       .caption="${args.caption}"
       ?required="${args.required}"
+      .size="${args.size}"
       ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
       ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       .minDate="${args.minDate}"
@@ -86,6 +91,7 @@ DefaultDateRangePicker.args = {
   locale: 'en',
   dateFormat: 'Y-m-d',
   required: false,
+  size: 'md',
   defaultErrorMessage: 'Both start and end dates are required',
   value: [null, null],
   warnText: '',
@@ -93,7 +99,7 @@ DefaultDateRangePicker.args = {
   altFormat: 'F j, Y',
   disable: [],
   enable: [],
-  errorAriaLabel: '',
+  errorAriaLabel: 'Error message icon',
   errorTitle: '',
   warningAriaLabel: '',
   warningTitle: '',

@@ -43,10 +43,6 @@ const _defaultTextStrings = {
 export class DatePicker extends FormMixin(LitElement) {
   static override styles = [DatePickerStyles, ShidokaFlatpickrTheme];
 
-  /** Sets datepicker attribute name (ex: `contact-form-date-picker`). */
-  @property({ type: String })
-  nameAttr = '';
-
   /** Label text. */
   @property({ type: String })
   label = '';
@@ -71,9 +67,13 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   required = false;
 
-  /** Sets pre-selected date/time value. */
+  /** Input size. "sm", "md", or "lg". */
   @property({ type: String })
-  override value: string | Date | Date[] | null = null;
+  size = 'md';
+
+  /** Sets pre-selected date/time value. */
+  @property({ type: Array })
+  override value: Date | Date[] | null = null;
 
   /** Sets validation warning messaging. */
   @property({ type: String })
@@ -180,12 +180,12 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   override render() {
-    const errorId = `${this.nameAttr}-error-message`;
-    const warningId = `${this.nameAttr}-warning-message`;
-    const anchorId = this.nameAttr
-      ? `${this.nameAttr}-${Math.random().toString(36).slice(2, 11)}`
+    const errorId = `${this.name}-error-message`;
+    const warningId = `${this.name}-warning-message`;
+    const anchorId = this.name
+      ? `${this.name}-${Math.random().toString(36).slice(2, 11)}`
       : `date-picker-${Math.random().toString(36).slice(2, 11)}`;
-    const descriptionId = this.nameAttr ?? '';
+    const descriptionId = this.name ?? '';
     const placeholder = getPlaceholder(this.dateFormat);
 
     return html`
@@ -212,10 +212,13 @@ export class DatePicker extends FormMixin(LitElement) {
 
         <div class="input-wrapper">
           <input
-            class="input-custom"
+            class="${classMap({
+              [`size--${this.size}`]: true,
+              'input-custom': true,
+            })}"
             type="text"
             id=${anchorId}
-            name=${this.nameAttr}
+            name=${this.name}
             placeholder=${placeholder}
             ?disabled=${this.datePickerDisabled}
             ?required=${this.required}
@@ -249,13 +252,15 @@ export class DatePicker extends FormMixin(LitElement) {
         id=${errorId}
         class="error error-text"
         role="alert"
-        aria-label=${this.errorAriaLabel || 'Error message'}
         title=${this.errorTitle || 'Error'}
         @mousedown=${this.preventFlatpickrOpen}
         @click=${this.preventFlatpickrOpen}
       >
-        <span class="error-icon">${unsafeSVG(errorIcon)}</span>${this
-          .invalidText ||
+        <span
+          class="error-icon"
+          aria-label=${`${this.errorAriaLabel}` || 'Error message icon'}
+          >${unsafeSVG(errorIcon)}</span
+        >${this.invalidText ||
         this._internalValidationMsg ||
         this.defaultErrorMessage}
       </div>`;
@@ -384,12 +389,12 @@ export class DatePicker extends FormMixin(LitElement) {
     if (this.mode === 'multiple') {
       this.value = [...selectedDates];
     } else {
-      this.value = dateStr;
+      this.value = selectedDates[0];
     }
 
     const formattedDates = Array.isArray(this.value)
       ? this.value.map((date) => date.toISOString())
-      : this.value;
+      : this.value.toISOString();
 
     emitValue(this, 'on-change', {
       dates: formattedDates,
