@@ -13,6 +13,14 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    resetSelection: {
+      description:
+        'Manually reset the dropdown value. Useful when programmatically updating child options. Must be called after child options are updated/re-rendered.',
+      table: {
+        category: 'Methods',
+        type: 'Function',
+      },
+    },
   },
   parameters: {
     design: {
