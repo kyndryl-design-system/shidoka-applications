@@ -5,19 +5,19 @@ import { FormMixin } from '../../../common/mixins/form-input';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import {
   langsArray,
-  isSupportedLocale,
   injectFlatpickrStyles,
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
   preventFlatpickrOpen,
   handleInputClick,
   handleInputFocus,
+  setCalendarAttributes,
+  loadLocale,
+  emitValue,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
-import { Locale } from 'flatpickr/dist/types/locale';
-import { default as English } from 'flatpickr/dist/l10n/default.js';
 
 import TimepickerStyles from './timepicker.scss';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
@@ -194,7 +194,8 @@ export class TimePicker extends FormMixin(LitElement) {
             placeholder=${placeholder}
             ?disabled=${this.timepickerDisabled}
             ?required=${this.required}
-            aria-invalid=${this._isInvalid ? 'true' : 'false'}
+            ?invalid=${this._isInvalid}
+            aria-invalid=${this._isInvalid}
             aria-labelledby=${`label-${anchorId}`}
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
@@ -300,10 +301,13 @@ export class TimePicker extends FormMixin(LitElement) {
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
       anchorEl: this._inputEl,
       getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
-      setCalendarAttributes: this.setCalendarAttributes.bind(this),
+      setCalendarAttributes: (instance) =>
+        setCalendarAttributes(instance, 'time-picker-container'),
       setInitialDates: undefined,
       appendToBody: false,
     });
+
+    this._validate(false, false);
   }
 
   async updateFlatpickrOptions(): Promise<void> {
@@ -318,42 +322,7 @@ export class TimePicker extends FormMixin(LitElement) {
         );
       }
     });
-    this.setCalendarAttributes();
-  }
-
-  setCalendarAttributes(): void {
-    if (this.flatpickrInstance?.calendarContainer) {
-      this.flatpickrInstance.calendarContainer.setAttribute(
-        'role',
-        'application'
-      );
-      this.flatpickrInstance.calendarContainer.setAttribute(
-        'aria-label',
-        'time-picker-container'
-      );
-    }
-  }
-
-  async loadLocale(locale: string): Promise<Partial<Locale>> {
-    if (locale === 'en') return English;
-    if (!isSupportedLocale(locale)) {
-      console.warn(`Unsupported locale: ${locale}. Falling back to English.`);
-      return English;
-    }
-
-    try {
-      const module = await import(`flatpickr/dist/l10n/${locale}.js`);
-      const localeConfig =
-        module[locale] || module.default[locale] || module.default;
-      if (!localeConfig) throw new Error('Locale configuration not found');
-      return localeConfig;
-    } catch (error) {
-      console.warn(
-        `Failed to load locale ${locale}. Falling back to English.`,
-        error
-      );
-      return English;
-    }
+    setCalendarAttributes(this.flatpickrInstance, 'time-picker-container');
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
@@ -367,7 +336,7 @@ export class TimePicker extends FormMixin(LitElement) {
       minTime: this.minTime,
       maxTime: this.maxTime,
       defaultDate: this.defaultDate,
-      loadLocale: this.loadLocale.bind(this),
+      loadLocale,
       mode: 'time',
       noCalendar: true,
       onChange: this.handleTimeChange.bind(this),
@@ -395,24 +364,14 @@ export class TimePicker extends FormMixin(LitElement) {
   ): Promise<void> {
     if (selectedDates.length > 0) {
       this.value = selectedDates[0].getTime();
-      this.emitValue(dateStr);
+      emitValue(this, 'on-change', { time: dateStr });
     } else {
       this.value = null;
-      this.emitValue('');
+      emitValue(this, 'on-change', { time: '' });
     }
 
     this._validate(true, false);
     await this.updateComplete;
-  }
-
-  private emitValue(timeStr: string): void {
-    this.dispatchEvent(
-      new CustomEvent('on-change', {
-        detail: { time: timeStr },
-        bubbles: true,
-        composed: true,
-      })
-    );
   }
 
   private _validate(interacted: boolean, report: boolean): void {
@@ -440,7 +399,11 @@ export class TimePicker extends FormMixin(LitElement) {
       validationMessage = this.invalidText;
     }
 
+    const isValid = !validity.valueMissing && !validity.customError;
+
     this._internals.setValidity(validity, validationMessage, this._inputEl);
+    this._isInvalid =
+      !isValid && (this._hasInteracted || this.invalidText !== '');
     this._internalValidationMsg = validationMessage;
 
     if (report) {
@@ -472,18 +435,18 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private preventFlatpickrOpen(event: Event) {
-    preventFlatpickrOpen(event, this.setShouldFlatpickrOpen);
+    preventFlatpickrOpen(event, this.setShouldFlatpickrOpen.bind(this));
   }
 
   private handleInputClickEvent() {
-    handleInputClick(this.setShouldFlatpickrOpen);
+    handleInputClick(this.setShouldFlatpickrOpen.bind(this));
   }
 
   private handleInputFocusEvent() {
     handleInputFocus(
       this._shouldFlatpickrOpen,
-      this.closeFlatpickr,
-      this.setShouldFlatpickrOpen
+      this.closeFlatpickr.bind(this),
+      this.setShouldFlatpickrOpen.bind(this)
     );
   }
 

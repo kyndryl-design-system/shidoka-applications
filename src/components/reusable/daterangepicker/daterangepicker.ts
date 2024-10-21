@@ -4,7 +4,6 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import {
-  isSupportedLocale,
   langsArray,
   injectFlatpickrStyles,
   initializeSingleAnchorFlatpickr,
@@ -13,12 +12,14 @@ import {
   preventFlatpickrOpen,
   handleInputClick,
   handleInputFocus,
+  setCalendarAttributes,
+  loadLocale,
+  emitValue,
+  updateEnableTime,
 } from '../../../common/helpers/flatpickr';
 
 import { BaseOptions } from 'flatpickr/dist/types/options';
 import type { Instance } from 'flatpickr/dist/types/instance';
-import { Locale } from 'flatpickr/dist/types/locale';
-import { default as English } from 'flatpickr/dist/l10n/default.js';
 
 import DateRangePickerStyles from './daterangepicker.scss';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
@@ -217,6 +218,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             placeholder=${placeholder}
             ?disabled=${this.dateRangePickerDisabled}
             ?required=${this.required}
+            ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
             aria-labelledby=${`label-${anchorId}`}
             @click=${this.handleInputClickEvent}
@@ -300,14 +302,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
       changedProperties.has('maxDate') ||
       changedProperties.has('locale')
     ) {
-      this.updateEnableTime();
+      this._enableTime = updateEnableTime(this.dateFormat);
       this.reinitializeFlatpickr();
     }
-  }
-
-  private updateEnableTime() {
-    this._enableTime =
-      this.dateFormat.includes('H:') || this.dateFormat.includes('h:');
   }
 
   private async reinitializeFlatpickr() {
@@ -328,37 +325,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
       anchorEl: this._inputEl,
       getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
-      setCalendarAttributes: this.setCalendarAttributes.bind(this),
-      setInitialDates: undefined,
+      setCalendarAttributes: () =>
+        setCalendarAttributes(this.flatpickrInstance!, 'Date range calendar'),
+      setInitialDates: this.setInitialDates.bind(this),
       appendToBody: false,
     });
-  }
 
-  async loadLocale(locale: string): Promise<Locale> {
-    if (locale === 'en') return English;
-
-    if (!isSupportedLocale(locale)) {
-      console.warn(`Locale ${locale} not supported. Falling back to English.`);
-      return English;
-    }
-
-    try {
-      const module = await import(`flatpickr/dist/l10n/${locale}.js`);
-      const localeConfig =
-        module[locale] || module.default[locale] || module.default;
-
-      if (!localeConfig) {
-        throw new Error('Locale configuration not found');
-      }
-
-      return localeConfig;
-    } catch (error) {
-      console.error(
-        `Failed to load locale ${locale}. Falling back to English.`,
-        error
-      );
-      return English;
-    }
+    this._validate(false, false);
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
@@ -374,7 +347,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       maxDate: this.maxDate,
       enable: this.enable,
       disable: this.disable,
-      loadLocale: this.loadLocale.bind(this),
+      loadLocale,
       onChange: this.handleDateChange.bind(this),
       onClose: this.handleClose.bind(this),
       onOpen: this.handleOpen.bind(this),
@@ -400,22 +373,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.flatpickrInstance.setDate(currentDates, false);
     }
 
-    this.setCalendarAttributes();
-  }
-
-  setCalendarAttributes(): void {
-    if (this.flatpickrInstance?.calendarContainer) {
-      this.flatpickrInstance.calendarContainer.setAttribute(
-        'role',
-        'application'
-      );
-      this.flatpickrInstance.calendarContainer.setAttribute(
-        'aria-label',
-        'Date range calendar'
-      );
-
-      this._inputEl?.setAttribute('aria-label', 'Date range');
-    }
+    setCalendarAttributes(this.flatpickrInstance, 'Date range calendar');
   }
 
   setInitialDates(): void {
@@ -450,15 +408,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
     const formattedDates = selectedDates.map((date) => date.toISOString());
     const dateString = this._inputEl?.value || formattedDates.join(' to ');
 
-    const customEvent = new CustomEvent('on-change', {
-      detail: {
-        dates: formattedDates,
-        dateString,
-      },
-      bubbles: true,
-      composed: true,
+    emitValue(this, 'on-change', {
+      dates: formattedDates,
+      dateString,
     });
-    this.dispatchEvent(customEvent);
 
     this.updateSelectedDateRangeAria(selectedDates);
     this._validate(true, false);
@@ -492,18 +445,18 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   private preventFlatpickrOpen(event: Event) {
-    preventFlatpickrOpen(event, this.setShouldFlatpickrOpen);
+    preventFlatpickrOpen(event, this.setShouldFlatpickrOpen.bind(this));
   }
 
   private handleInputClickEvent() {
-    handleInputClick(this.setShouldFlatpickrOpen);
+    handleInputClick(this.setShouldFlatpickrOpen.bind(this));
   }
 
   private handleInputFocusEvent() {
     handleInputFocus(
       this._shouldFlatpickrOpen,
-      this.closeFlatpickr,
-      this.setShouldFlatpickrOpen
+      this.closeFlatpickr.bind(this),
+      this.setShouldFlatpickrOpen.bind(this)
     );
   }
 
@@ -533,7 +486,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
       validationMessage = this.invalidText;
     }
 
+    const isValid = !validity.valueMissing && !validity.customError;
+
     this._internals.setValidity(validity, validationMessage, this._inputEl);
+    this._isInvalid =
+      !isValid && (this._hasInteracted || this.invalidText !== '');
     this._internalValidationMsg = validationMessage;
 
     if (report) {

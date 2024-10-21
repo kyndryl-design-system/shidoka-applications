@@ -162,7 +162,7 @@ export const Default = {
         <br /><br />
 
         <kyn-time-picker
-          name="timepicker"
+          name="time-picker"
           label="Time Picker"
           required
           dateFormat="H:i"

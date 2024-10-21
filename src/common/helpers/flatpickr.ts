@@ -3,6 +3,7 @@ import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import { Instance } from 'flatpickr/dist/types/instance';
 import { BaseOptions, Hook } from 'flatpickr/dist/types/options';
 import { Locale } from 'flatpickr/dist/types/locale';
+import { default as English } from 'flatpickr/dist/l10n/default.js';
 
 let flatpickrStylesInjected = false;
 
@@ -344,7 +345,6 @@ export async function getFlatpickrOptions(
     enableTime,
     twentyFourHourFormat,
     altFormat,
-    endAnchorEl,
     startAnchorEl,
     allowInput,
     minDate,
@@ -430,4 +430,87 @@ export async function getFlatpickrOptions(
   if (disable && disable.length > 0) options.disable = disable;
 
   return options;
+}
+
+export function updateEnableTime(dateFormat: string): boolean {
+  return dateFormat.includes('H:') || dateFormat.includes('h:');
+}
+
+export function setCalendarAttributes(instance: Instance, label: string): void {
+  if (instance.calendarContainer) {
+    instance.calendarContainer.setAttribute('role', 'application');
+    instance.calendarContainer.setAttribute('aria-label', label);
+  }
+}
+
+export async function loadLocale(locale: string): Promise<Partial<Locale>> {
+  if (locale === 'en') return English;
+  if (!isSupportedLocale(locale)) {
+    console.warn(`Unsupported locale: ${locale}. Falling back to English.`);
+    return English;
+  }
+
+  try {
+    const module = await import(`flatpickr/dist/l10n/${locale}.js`);
+    const localeConfig =
+      module[locale] || module.default[locale] || module.default;
+    if (!localeConfig) throw new Error('Locale configuration not found');
+    return localeConfig;
+  } catch (error) {
+    console.warn(
+      `Failed to load locale ${locale}. Falling back to English.`,
+      error
+    );
+    return English;
+  }
+}
+
+export function validate(
+  inputEl: HTMLInputElement,
+  required: boolean,
+  invalidText: string,
+  defaultErrorMessage: string,
+  hasInteracted: boolean,
+  internals: ElementInternals
+): { isValid: boolean; validationMessage: string } {
+  if (!inputEl) {
+    return { isValid: true, validationMessage: '' };
+  }
+
+  const isEmpty = !inputEl.value.trim();
+  const isRequired = required;
+
+  let validity = inputEl.validity;
+  let validationMessage = inputEl.validationMessage;
+
+  if (isRequired && isEmpty) {
+    validity = { ...validity, valueMissing: true };
+    validationMessage = defaultErrorMessage;
+  }
+
+  if (invalidText) {
+    validity = { ...validity, customError: true };
+    validationMessage = invalidText;
+  }
+
+  internals.setValidity(validity, validationMessage, inputEl);
+
+  const isValid =
+    !invalidText && (!hasInteracted || !isEmpty || (isEmpty && !isRequired));
+
+  return { isValid, validationMessage };
+}
+
+export function emitValue(
+  element: HTMLElement,
+  eventName: string,
+  detail: any
+): void {
+  element.dispatchEvent(
+    new CustomEvent(eventName, {
+      detail,
+      bubbles: true,
+      composed: true,
+    })
+  );
 }

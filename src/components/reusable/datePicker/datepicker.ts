@@ -1,10 +1,9 @@
 import { html, LitElement, PropertyValues } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import {
-  isSupportedLocale,
   injectFlatpickrStyles,
   langsArray,
   initializeSingleAnchorFlatpickr,
@@ -13,12 +12,14 @@ import {
   preventFlatpickrOpen,
   handleInputClick,
   handleInputFocus,
+  updateEnableTime,
+  setCalendarAttributes,
+  loadLocale,
+  emitValue,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
-import { Locale } from 'flatpickr/dist/types/locale';
-import { default as English } from 'flatpickr/dist/l10n/default.js';
 
 import DatePickerStyles from './datepicker.scss';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
@@ -151,9 +152,9 @@ export class DatePicker extends FormMixin(LitElement) {
 
   /**
    * Queries the anchor DOM element.
-   * @ignore
+   * @internal
    */
-  @state()
+  @query('input')
   private _inputEl?: HTMLInputElement;
 
   /** Customizable text strings. */
@@ -172,8 +173,8 @@ export class DatePicker extends FormMixin(LitElement) {
   @state()
   private _shouldFlatpickrOpen = false;
 
-  constructor() {
-    super();
+  override connectedCallback() {
+    super.connectedCallback();
     this.addEventListener('change', this._onChange);
     this.addEventListener('reset', this._handleFormReset);
   }
@@ -218,6 +219,7 @@ export class DatePicker extends FormMixin(LitElement) {
             placeholder=${placeholder}
             ?disabled=${this.datePickerDisabled}
             ?required=${this.required}
+            ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
             aria-labelledby=${`label-${anchorId}`}
             @click=${this.handleInputClickEvent}
@@ -285,55 +287,47 @@ export class DatePicker extends FormMixin(LitElement) {
     };
   }
 
-  override async firstUpdated(
-    changedProperties: PropertyValues
-  ): Promise<void> {
+  override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
-
     injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
 
     await this.updateComplete;
     this.setupAnchor();
   }
 
-  override updated(changedProperties: PropertyValues): void {
+  override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
     if (
       changedProperties.has('dateFormat') ||
-      changedProperties.has('invalidText') ||
-      changedProperties.has('locale') ||
-      changedProperties.has('mode') ||
       changedProperties.has('minDate') ||
-      changedProperties.has('maxDate')
+      changedProperties.has('maxDate') ||
+      changedProperties.has('locale')
     ) {
-      this.updateEnableTime();
+      this._enableTime = updateEnableTime(this.dateFormat);
       this.reinitializeFlatpickr();
     }
   }
 
-  private updateEnableTime() {
-    this._enableTime =
-      this.dateFormat.includes('H:') || this.dateFormat.includes('h:');
+  private async reinitializeFlatpickr() {
+    this.flatpickrInstance?.destroy();
+    await this.initializeFlatpickr();
   }
 
-  private async reinitializeFlatpickr() {
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.destroy();
+  private async setupAnchor() {
+    if (this._inputEl) {
+      await this.initializeFlatpickr();
     }
-    await this.initializeFlatpickr();
   }
 
   async initializeFlatpickr(): Promise<void> {
     if (!this._inputEl) return;
-
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.destroy();
-    }
+    if (this.flatpickrInstance) this.flatpickrInstance.destroy();
 
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
       anchorEl: this._inputEl,
       getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
-      setCalendarAttributes: this.setCalendarAttributes.bind(this),
+      setCalendarAttributes: (instance) =>
+        setCalendarAttributes(instance, 'Calendar'),
       setInitialDates: this.setInitialDates.bind(this),
       appendToBody: false,
     });
@@ -341,64 +335,9 @@ export class DatePicker extends FormMixin(LitElement) {
     this._validate(false, false);
   }
 
-  private setupAnchor() {
-    const inputEl =
-      this.shadowRoot?.querySelector<HTMLInputElement>('.input-custom');
-    if (inputEl) {
-      this._inputEl = inputEl;
-      this.initializeFlatpickr();
-    } else {
-      console.error('Internal input element not found');
-    }
-  }
-
-  setCalendarAttributes(): void {
-    if (!(this._inputEl instanceof HTMLInputElement)) {
-      return;
-    }
-
-    if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
-      this.flatpickrInstance.calendarContainer.setAttribute(
-        'role',
-        'application'
-      );
-      this.flatpickrInstance.calendarContainer.setAttribute(
-        'aria-label',
-        'Calendar'
-      );
-    }
-  }
-
   setInitialDates(): void {
     if (this.value && this.flatpickrInstance) {
       this.flatpickrInstance.setDate(this.value, true);
-    }
-  }
-
-  async loadLocale(locale: string): Promise<Locale> {
-    if (locale === 'en') return English;
-
-    if (!isSupportedLocale(locale)) {
-      console.error(`Locale ${locale} not supported. Falling back to English.`);
-      return English;
-    }
-
-    try {
-      const module = await import(`flatpickr/dist/l10n/${locale}.js`);
-      const localeConfig =
-        module[locale] || module.default[locale] || module.default;
-
-      if (!localeConfig) {
-        throw new Error('Locale configuration not found');
-      }
-
-      return localeConfig;
-    } catch (error) {
-      console.error(
-        `Failed to load locale ${locale}. Falling back to English.`,
-        error
-      );
-      return English;
     }
   }
 
@@ -419,7 +358,7 @@ export class DatePicker extends FormMixin(LitElement) {
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),
       onChange: this.handleDateChange.bind(this),
-      loadLocale: this.loadLocale.bind(this),
+      loadLocale,
     });
   }
 
@@ -440,6 +379,8 @@ export class DatePicker extends FormMixin(LitElement) {
     selectedDates: Date[],
     dateStr: string
   ): Promise<void> {
+    this._hasInteracted = true;
+
     if (this.mode === 'multiple') {
       this.value = [...selectedDates];
     } else {
@@ -450,16 +391,10 @@ export class DatePicker extends FormMixin(LitElement) {
       ? this.value.map((date) => date.toISOString())
       : this.value;
 
-    const customEvent = new CustomEvent('on-change', {
-      detail: {
-        dates: formattedDates,
-        dateString: (this._inputEl as HTMLInputElement)?.value || dateStr,
-      },
-      bubbles: true,
-      composed: true,
+    emitValue(this, 'on-change', {
+      dates: formattedDates,
+      dateString: (this._inputEl as HTMLInputElement)?.value || dateStr,
     });
-
-    this.dispatchEvent(customEvent);
 
     this._validate(true, false);
     await this.updateComplete;
@@ -474,18 +409,18 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private preventFlatpickrOpen(event: Event): void {
-    preventFlatpickrOpen(event, this.setShouldFlatpickrOpen);
+    preventFlatpickrOpen(event, this.setShouldFlatpickrOpen.bind(this));
   }
 
   private handleInputClickEvent(): void {
-    handleInputClick(this.setShouldFlatpickrOpen);
+    handleInputClick(this.setShouldFlatpickrOpen.bind(this));
   }
 
   private handleInputFocusEvent(): void {
     handleInputFocus(
       this._shouldFlatpickrOpen,
-      this.closeFlatpickr,
-      this.setShouldFlatpickrOpen
+      this.closeFlatpickr.bind(this),
+      this.setShouldFlatpickrOpen.bind(this)
     );
   }
 
@@ -514,7 +449,11 @@ export class DatePicker extends FormMixin(LitElement) {
       validationMessage = this.invalidText;
     }
 
+    const isValid = !validity.valueMissing && !validity.customError;
+
     this._internals.setValidity(validity, validationMessage, this._inputEl);
+    this._isInvalid =
+      !isValid && (this._hasInteracted || this.invalidText !== '');
     this._internalValidationMsg = validationMessage;
 
     if (report) {
