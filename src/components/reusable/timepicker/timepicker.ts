@@ -53,9 +53,9 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: Object })
   override value: Date | null = null;
 
-  /** Sets the initial selected time(s) */
-  @property({ type: Object })
-  defaultDate: Date | null = null;
+  /** Sets default time value. */
+  @property({ type: String })
+  defaultDate = '';
 
   /** Sets initial value of the hour element. */
   @property({ type: Number })
@@ -289,7 +289,7 @@ export class TimePicker extends FormMixin(LitElement) {
       if (this.flatpickrInstance) {
         await this.updateFlatpickrOptions();
       } else {
-        await this.initializeFlatpickr();
+        this.initializeFlatpickr();
       }
     }
   }
@@ -317,7 +317,7 @@ export class TimePicker extends FormMixin(LitElement) {
           console.warn('Calendar container not available...');
         }
       },
-      setInitialDates: this.setInitialDates.bind(this),
+      setInitialDates: undefined,
       appendToBody: false,
     });
 
@@ -388,7 +388,7 @@ export class TimePicker extends FormMixin(LitElement) {
     } else {
       instance.clear();
     }
-    // Update the input field
+
     if (this._inputEl) {
       this._inputEl.value = instance.input.value;
     }
