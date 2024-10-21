@@ -40,7 +40,7 @@ export const Default = {
           @on-radio-group-change=${(e) => action(e.type)(e)}
           label="Radio buttons"
         >
-          <kyn-tooltip slot="tooltip" anchorPosition="start">
+          <kyn-tooltip slot="tooltip">
             <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
             Tooltip example.
           </kyn-tooltip>
@@ -64,22 +64,22 @@ export const Default = {
         <br />
 
         <kyn-toggle-button
+          label="Toggle button"
           name="toggle"
           value="example"
           @on-change=${(e) => action(e.type)(e)}
         >
-          Toggle button
         </kyn-toggle-button>
 
         <br /><br />
 
         <kyn-dropdown
+          label="Dropdown"
           name="dropdown"
           caption="Dropdown example"
           @on-change=${(e) => action(e.type)(e)}
         >
-          <span slot="label"> Dropdown </span>
-          <kyn-tooltip slot="label" anchorPosition="start">
+          <kyn-tooltip slot="tooltip">
             <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
             Tooltip example.
           </kyn-tooltip>
@@ -99,12 +99,12 @@ export const Default = {
 
         <kyn-dropdown
           name="dropdownMulti"
+          label="Multi-select dropdown"
           multiple
           searchable
           caption="Searchable Multi-Select Dropdown example"
           @on-change=${(e) => action(e.type)(e)}
         >
-          <span slot="label">Multi-select dropdown</span>
           <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
           <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
           <kyn-dropdown-option value="3" disabled>
@@ -126,7 +126,7 @@ export const Default = {
           label="Text input"
           @on-input=${(e) => action(e.type)(e)}
         >
-          <kyn-tooltip slot="tooltip" anchorPosition="start">
+          <kyn-tooltip slot="tooltip">
             <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
             Tooltip example.
           </kyn-tooltip>
@@ -141,7 +141,7 @@ export const Default = {
           @on-input=${(e) => action(e.type)(e)}
           @keydown=${(e) => e.stopPropagation()}
         >
-          <kyn-tooltip slot="tooltip" anchorPosition="start">
+          <kyn-tooltip slot="tooltip">
             <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
             Tooltip example.
           </kyn-tooltip>
@@ -154,7 +154,7 @@ export const Default = {
           label="Number input"
           @on-input=${(e) => action(e.type)(e)}
         >
-          <kyn-tooltip slot="tooltip" anchorPosition="start">
+          <kyn-tooltip slot="tooltip">
             <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
             Tooltip example.
           </kyn-tooltip>
