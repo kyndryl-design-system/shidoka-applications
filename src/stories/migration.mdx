@@ -46,10 +46,12 @@ Breaking Changes
     - Use Flatpickr's `mode` and `dateFormat` instead of `DATE_PICKER_TYPES`
     - Rename `disabled` property to `datePickerDisabled` (for DatePicker), `dateRangePickerDisabled` (for DateRangePicker), and `timePickerDisabled` (for TimePicker)
     - Remove usage of `step` property
+    - Use Flatpickr's `enable` and `disable` Array properties where functionality is needed to enable/disable specific dates
   - New Properties
     - Add use `locale` property (must use for Flatpickr localization)
-    - Add `altFormat` property for alternative date output formatting (if needed)
     - Add `twentyFourHourFormat` property for time format (if needed)
+    - Add `defaultDate` property for DatePicker, DateRangePicker, and TimePicker
+    - Add `defaultHour` and `defaultMinute` properties for Timepicker
   - Event handling
     - Update event listeners from `@on-input` to `@on-change`
     - Update event detail structure in event handler
@@ -72,7 +74,6 @@ Breaking Changes
     - Update any code that relies on specific date string formats to work with the new `Date` object values
     - For TimePicker, update any code that assumes a specific time string format to work with the new `Date` object values
     - Use `dateFormat` property to specify the desired input/output format for date strings
-    - Use `altFormat` property if you need an alternative output format
   - Remember to consult the new component documentation for detailed information on new properties, events, and behaviors introduced in this version.
   - Toggle Button
     - Added a dedicated slot for tooltip.

@@ -55,15 +55,15 @@ const SingleInput = (args) => {
 
   return html`
     <kyn-date-range-picker
-      .nameAttr="${args.nameAttr}"
+      .name="${args.name}"
       .label="${args.label}"
       .locale="${args.locale}"
       .dateFormat="${args.dateFormat}"
+      .defaultDate="${args.defaultDate}"
       .defaultErrorMessage="${args.defaultErrorMessage}"
       .value="${args.value}"
       .warnText="${args.warnText}"
       .invalidText="${args.invalidText}"
-      .altFormat=${args.altFormat}
       .disable="${args.disable}"
       .enable="${args.enable}"
       .caption="${args.caption}"
@@ -87,16 +87,16 @@ const SingleInput = (args) => {
 
 export const DefaultDateRangePicker = SingleInput.bind({});
 DefaultDateRangePicker.args = {
-  nameAttr: 'default-date-range-picker',
+  name: 'default-date-range-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
+  defaultDate: '',
   required: false,
   size: 'md',
   defaultErrorMessage: 'Both start and end dates are required',
   value: [null, null],
   warnText: '',
   invalidText: '',
-  altFormat: 'F j, Y',
   disable: [],
   enable: [],
   errorAriaLabel: 'Error message icon',
@@ -115,7 +115,7 @@ DefaultDateRangePicker.storyName = 'Date Range Only (Default)';
 export const DateTimeRangePickerSingle = SingleInput.bind({});
 DateTimeRangePickerSingle.args = {
   ...DefaultDateRangePicker.args,
-  nameAttr: 'date-time-range-picker',
+  name: 'date-time-range-picker',
   dateFormat: 'Y-m-d H:i',
   caption: 'Example caption for the Date Range Picker with Time Input',
   label: 'Start + End Date / Time',

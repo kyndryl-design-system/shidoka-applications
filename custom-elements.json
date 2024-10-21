@@ -4,458 +4,6 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "src/components/global/localNav/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "./localNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "./localNavLink"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "./localNavDivider"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Side Navigation component.",
-          "name": "LocalNav",
-          "slots": [
-            {
-              "description": "The default slot, for local nav links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for a search input",
-              "name": "search"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "attribute": "pinned"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_handleNavToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleMobileNavToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinkActive",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the pinned state and original event details.",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "fieldName": "pinned"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavDivider.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Local Nav divider",
-          "name": "LocalNavDivider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "attribute": "heading"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "fieldName": "heading"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-divider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-divider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Link component for use in the global Side Navigation component.",
-          "name": "LocalNavLink",
-          "slots": [
-            {
-              "description": "The default slot, for the link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon. Use 16px size.",
-              "name": "icon"
-            },
-            {
-              "description": "Slot for the next level of links, supports three levels.",
-              "name": "links"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "attribute": "expanded"
-            },
-            {
-              "kind": "field",
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "attribute": "active",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "method",
-              "name": "_handleTextSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_getSlotText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinksSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event, level, and if default was prevented.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "fieldName": "expanded"
-            },
-            {
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "fieldName": "active"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-link",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/footer/footer.ts",
       "declarations": [
         {
@@ -2025,6 +1573,458 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/localNav/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "./localNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "./localNavLink"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "./localNavDivider"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Side Navigation component.",
+          "name": "LocalNav",
+          "slots": [
+            {
+              "description": "The default slot, for local nav links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for a search input",
+              "name": "search"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "attribute": "pinned"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleMobileNavToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinkActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the pinned state and original event details.",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "fieldName": "pinned"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavDivider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Local Nav divider",
+          "name": "LocalNavDivider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "attribute": "heading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "fieldName": "heading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-divider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-divider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Link component for use in the global Side Navigation component.",
+          "name": "LocalNavLink",
+          "slots": [
+            {
+              "description": "The default slot, for the link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon. Use 16px size.",
+              "name": "icon"
+            },
+            {
+              "description": "Slot for the next level of links, supports three levels.",
+              "name": "links"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "attribute": "expanded"
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "attribute": "active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "method",
+              "name": "_handleTextSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getSlotText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinksSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event, level, and if default was prevented.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "fieldName": "expanded"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "fieldName": "active"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-link",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/uiShell/index.ts",
       "declarations": [],
       "exports": [
@@ -2139,461 +2139,6 @@
           "declaration": {
             "name": "Breadcrumbs",
             "module": "./breadcrumbs"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/blockCodeView/blockCodeView.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements.",
-          "name": "BlockCodeView",
-          "members": [
-            {
-              "kind": "field",
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark'"
-              },
-              "default": "'dark'",
-              "description": "Sets background and text theming.",
-              "attribute": "darkTheme"
-            },
-            {
-              "kind": "field",
-              "name": "language",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language.",
-              "attribute": "language"
-            },
-            {
-              "kind": "field",
-              "name": "maxHeight",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Customizable max-height setting for code snippet container.",
-              "attribute": "maxHeight"
-            },
-            {
-              "kind": "field",
-              "name": "codeViewLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optionally displayed label above code snippet container.",
-              "attribute": "codeViewLabel"
-            },
-            {
-              "kind": "field",
-              "name": "copyOptionVisible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optionally display button to copy code snippet.",
-              "attribute": "copyOptionVisible"
-            },
-            {
-              "kind": "field",
-              "name": "codeViewExpandable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optionally display button to expand code snippet container.",
-              "attribute": "codeViewExpandable"
-            },
-            {
-              "kind": "field",
-              "name": "copyButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets copy code button text (optional).",
-              "attribute": "copyButtonText"
-            },
-            {
-              "kind": "field",
-              "name": "copyButtonDescriptionAttr",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets copy button description attr value.",
-              "attribute": "copyButtonDescriptionAttr"
-            },
-            {
-              "kind": "field",
-              "name": "codeSnippet",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets code snippet for display -- NOTE: original formatting is preserved.",
-              "attribute": "codeSnippet"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  collapsed: 'Collapsed',\n  expanded: 'Expanded',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "getContainerClasses",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "renderCopyButton",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "renderExpandButton",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "highlightCode",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "detectLanguage",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "code",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "calculateRelevance",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "tokens",
-                  "type": {
-                    "text": "(string | Prism.Token)[]"
-                  }
-                },
-                {
-                  "name": "language",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getTokenRelevance",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "token",
-                  "type": {
-                    "text": "Prism.Token"
-                  }
-                },
-                {
-                  "name": "language",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "isLanguageSpecificToken",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "boolean"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "token",
-                  "type": {
-                    "text": "Prism.Token"
-                  }
-                },
-                {
-                  "name": "language",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "determineMarkupLanguage",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "code",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "checkOverflow",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "removeLeadingWhitespace",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "code",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "formatExampleCode",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "code",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "copyCode",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getContainerStyle",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "expandCodeView",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleKeypress",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "KeyboardEvent"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "on-copy",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits when the copy button is clicked."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark'"
-              },
-              "default": "'dark'",
-              "description": "Sets background and text theming.",
-              "fieldName": "darkTheme"
-            },
-            {
-              "name": "language",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language.",
-              "fieldName": "language"
-            },
-            {
-              "name": "maxHeight",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Customizable max-height setting for code snippet container.",
-              "fieldName": "maxHeight"
-            },
-            {
-              "name": "codeViewLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optionally displayed label above code snippet container.",
-              "fieldName": "codeViewLabel"
-            },
-            {
-              "name": "copyOptionVisible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optionally display button to copy code snippet.",
-              "fieldName": "copyOptionVisible"
-            },
-            {
-              "name": "codeViewExpandable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optionally display button to expand code snippet container.",
-              "fieldName": "codeViewExpandable"
-            },
-            {
-              "name": "copyButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets copy code button text (optional).",
-              "fieldName": "copyButtonText"
-            },
-            {
-              "name": "copyButtonDescriptionAttr",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets copy button description attr value.",
-              "fieldName": "copyButtonDescriptionAttr"
-            },
-            {
-              "name": "codeSnippet",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets code snippet for display -- NOTE: original formatting is preserved.",
-              "fieldName": "codeSnippet"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-block-code-view",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "BlockCodeView",
-          "declaration": {
-            "name": "BlockCodeView",
-            "module": "src/components/reusable/blockCodeView/blockCodeView.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-block-code-view",
-          "declaration": {
-            "name": "BlockCodeView",
-            "module": "src/components/reusable/blockCodeView/blockCodeView.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/blockCodeView/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "BlockCodeView",
-          "declaration": {
-            "name": "BlockCodeView",
-            "module": "./blockCodeView"
           }
         }
       ]
@@ -3211,6 +2756,461 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/blockCodeView/blockCodeView.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements.",
+          "name": "BlockCodeView",
+          "members": [
+            {
+              "kind": "field",
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark'"
+              },
+              "default": "'dark'",
+              "description": "Sets background and text theming.",
+              "attribute": "darkTheme"
+            },
+            {
+              "kind": "field",
+              "name": "language",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language.",
+              "attribute": "language"
+            },
+            {
+              "kind": "field",
+              "name": "maxHeight",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Customizable max-height setting for code snippet container.",
+              "attribute": "maxHeight"
+            },
+            {
+              "kind": "field",
+              "name": "codeViewLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optionally displayed label above code snippet container.",
+              "attribute": "codeViewLabel"
+            },
+            {
+              "kind": "field",
+              "name": "copyOptionVisible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display button to copy code snippet.",
+              "attribute": "copyOptionVisible"
+            },
+            {
+              "kind": "field",
+              "name": "codeViewExpandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display button to expand code snippet container.",
+              "attribute": "codeViewExpandable"
+            },
+            {
+              "kind": "field",
+              "name": "copyButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets copy code button text (optional).",
+              "attribute": "copyButtonText"
+            },
+            {
+              "kind": "field",
+              "name": "copyButtonDescriptionAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets copy button description attr value.",
+              "attribute": "copyButtonDescriptionAttr"
+            },
+            {
+              "kind": "field",
+              "name": "codeSnippet",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets code snippet for display -- NOTE: original formatting is preserved.",
+              "attribute": "codeSnippet"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  collapsed: 'Collapsed',\n  expanded: 'Expanded',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "getContainerClasses",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "renderCopyButton",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "renderExpandButton",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "highlightCode",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "detectLanguage",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "code",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "calculateRelevance",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "tokens",
+                  "type": {
+                    "text": "(string | Prism.Token)[]"
+                  }
+                },
+                {
+                  "name": "language",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getTokenRelevance",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "token",
+                  "type": {
+                    "text": "Prism.Token"
+                  }
+                },
+                {
+                  "name": "language",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "isLanguageSpecificToken",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "token",
+                  "type": {
+                    "text": "Prism.Token"
+                  }
+                },
+                {
+                  "name": "language",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "determineMarkupLanguage",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "code",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "checkOverflow",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "removeLeadingWhitespace",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "code",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "formatExampleCode",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "code",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "copyCode",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getContainerStyle",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "expandCodeView",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleKeypress",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-copy",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the copy button is clicked."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark'"
+              },
+              "default": "'dark'",
+              "description": "Sets background and text theming.",
+              "fieldName": "darkTheme"
+            },
+            {
+              "name": "language",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language.",
+              "fieldName": "language"
+            },
+            {
+              "name": "maxHeight",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Customizable max-height setting for code snippet container.",
+              "fieldName": "maxHeight"
+            },
+            {
+              "name": "codeViewLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optionally displayed label above code snippet container.",
+              "fieldName": "codeViewLabel"
+            },
+            {
+              "name": "copyOptionVisible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display button to copy code snippet.",
+              "fieldName": "copyOptionVisible"
+            },
+            {
+              "name": "codeViewExpandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display button to expand code snippet container.",
+              "fieldName": "codeViewExpandable"
+            },
+            {
+              "name": "copyButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets copy code button text (optional).",
+              "fieldName": "copyButtonText"
+            },
+            {
+              "name": "copyButtonDescriptionAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets copy button description attr value.",
+              "fieldName": "copyButtonDescriptionAttr"
+            },
+            {
+              "name": "codeSnippet",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets code snippet for display -- NOTE: original formatting is preserved.",
+              "fieldName": "codeSnippet"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-block-code-view",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BlockCodeView",
+          "declaration": {
+            "name": "BlockCodeView",
+            "module": "src/components/reusable/blockCodeView/blockCodeView.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-block-code-view",
+          "declaration": {
+            "name": "BlockCodeView",
+            "module": "src/components/reusable/blockCodeView/blockCodeView.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/blockCodeView/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BlockCodeView",
+          "declaration": {
+            "name": "BlockCodeView",
+            "module": "./blockCodeView"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/datePicker/datepicker.ts",
       "declarations": [
         {
@@ -3250,8 +3250,18 @@
                 "text": "string"
               },
               "default": "'Y-m-d'",
-              "description": "Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`).",
+              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
               "attribute": "dateFormat"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDate",
+              "type": {
+                "text": "Date | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s)",
+              "attribute": "defaultDate"
             },
             {
               "kind": "field",
@@ -3262,16 +3272,6 @@
               "default": "''",
               "description": "Sets default error message.",
               "attribute": "defaultErrorMessage"
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets manually entered error message.",
-              "attribute": "invalidText"
             },
             {
               "kind": "field",
@@ -3312,16 +3312,6 @@
               "default": "''",
               "description": "Sets validation warning messaging.",
               "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "altFormat",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets flatpickr alternative formatting value (ex: `F j, Y`).",
-              "attribute": "altFormat"
             },
             {
               "kind": "field",
@@ -3475,11 +3465,6 @@
             {
               "kind": "method",
               "name": "getDatepickerClasses"
-            },
-            {
-              "kind": "method",
-              "name": "reinitializeFlatpickr",
-              "privacy": "private"
             },
             {
               "kind": "method",
@@ -3694,8 +3679,17 @@
                 "text": "string"
               },
               "default": "'Y-m-d'",
-              "description": "Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`).",
+              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
               "fieldName": "dateFormat"
+            },
+            {
+              "name": "defaultDate",
+              "type": {
+                "text": "Date | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s)",
+              "fieldName": "defaultDate"
             },
             {
               "name": "defaultErrorMessage",
@@ -3705,15 +3699,6 @@
               "default": "''",
               "description": "Sets default error message.",
               "fieldName": "defaultErrorMessage"
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets manually entered error message.",
-              "fieldName": "invalidText"
             },
             {
               "name": "required",
@@ -3750,15 +3735,6 @@
               "default": "''",
               "description": "Sets validation warning messaging.",
               "fieldName": "warnText"
-            },
-            {
-              "name": "altFormat",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets flatpickr alternative formatting value (ex: `F j, Y`).",
-              "fieldName": "altFormat"
             },
             {
               "name": "disable",
@@ -3965,8 +3941,18 @@
                 "text": "string"
               },
               "default": "'Y-m-d'",
-              "description": "Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`).",
+              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
               "attribute": "dateFormat"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDate",
+              "type": {
+                "text": "Date | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s)",
+              "attribute": "defaultDate"
             },
             {
               "kind": "field",
@@ -3980,22 +3966,12 @@
             },
             {
               "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets manually entered error message.",
-              "attribute": "invalidText"
-            },
-            {
-              "kind": "field",
               "name": "value",
               "type": {
                 "text": "[Date | null, Date | null]"
               },
               "default": "[null, null]",
-              "description": "Sets pre-selected date/time value.",
+              "description": "Sets date/time range value.",
               "attribute": "value"
             },
             {
@@ -4007,16 +3983,6 @@
               "default": "''",
               "description": "Sets validation warning messaging.",
               "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "altFormat",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets flatpickr alternative formatting value (ex: `F j, Y`).",
-              "attribute": "altFormat"
             },
             {
               "kind": "field",
@@ -4367,8 +4333,17 @@
                 "text": "string"
               },
               "default": "'Y-m-d'",
-              "description": "Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`).",
+              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
               "fieldName": "dateFormat"
+            },
+            {
+              "name": "defaultDate",
+              "type": {
+                "text": "Date | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s)",
+              "fieldName": "defaultDate"
             },
             {
               "name": "defaultErrorMessage",
@@ -4380,21 +4355,12 @@
               "fieldName": "defaultErrorMessage"
             },
             {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets manually entered error message.",
-              "fieldName": "invalidText"
-            },
-            {
               "name": "value",
               "type": {
                 "text": "[Date | null, Date | null]"
               },
               "default": "[null, null]",
-              "description": "Sets pre-selected date/time value.",
+              "description": "Sets date/time range value.",
               "fieldName": "value"
             },
             {
@@ -4405,15 +4371,6 @@
               "default": "''",
               "description": "Sets validation warning messaging.",
               "fieldName": "warnText"
-            },
-            {
-              "name": "altFormat",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets flatpickr alternative formatting value (ex: `F j, Y`).",
-              "fieldName": "altFormat"
             },
             {
               "name": "disable",
@@ -13953,262 +13910,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/toggleButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ToggleButton",
-          "declaration": {
-            "name": "ToggleButton",
-            "module": "./toggleButton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/toggleButton/toggleButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Toggle Button.",
-          "name": "ToggleButton",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "checked",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox checked state.",
-              "attribute": "checked"
-            },
-            {
-              "kind": "field",
-              "name": "checkedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'On'",
-              "description": "Checked state text.",
-              "attribute": "checkedText"
-            },
-            {
-              "kind": "field",
-              "name": "uncheckedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Off'",
-              "description": "Unchecked state text.",
-              "attribute": "uncheckedText"
-            },
-            {
-              "kind": "field",
-              "name": "small",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to use small size.",
-              "attribute": "small"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "reverse",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Reverse UI element order, label on the left.",
-              "attribute": "reverse"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the label visually.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "method",
-              "name": "handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the change event and emits the selected value and original event details.",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "checked",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox checked state.",
-              "fieldName": "checked"
-            },
-            {
-              "name": "checkedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'On'",
-              "description": "Checked state text.",
-              "fieldName": "checkedText"
-            },
-            {
-              "name": "uncheckedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Off'",
-              "description": "Unchecked state text.",
-              "fieldName": "uncheckedText"
-            },
-            {
-              "name": "small",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to use small size.",
-              "fieldName": "small"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "reverse",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Reverse UI element order, label on the left.",
-              "fieldName": "reverse"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the label visually.",
-              "fieldName": "hideLabel"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-toggle-button",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ToggleButton",
-          "declaration": {
-            "name": "ToggleButton",
-            "module": "src/components/reusable/toggleButton/toggleButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-toggle-button",
-          "declaration": {
-            "name": "ToggleButton",
-            "module": "src/components/reusable/toggleButton/toggleButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/timepicker/index.ts",
       "declarations": [],
       "exports": [
@@ -14264,18 +13965,38 @@
                 "text": "Date | null"
               },
               "default": "null",
-              "description": "Sets pre-selected date/time value.",
+              "description": "Sets date/time value.",
               "attribute": "value"
             },
             {
               "kind": "field",
               "name": "defaultDate",
               "type": {
-                "text": "string"
+                "text": "Date | null"
               },
-              "default": "''",
-              "description": "Sets default time value.",
+              "default": "null",
+              "description": "Sets the initial selected time(s)",
               "attribute": "defaultDate"
+            },
+            {
+              "kind": "field",
+              "name": "defaultHour",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial value of the hour element.",
+              "attribute": "defaultHour"
+            },
+            {
+              "kind": "field",
+              "name": "defaultMinute",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial value of the minute element.",
+              "attribute": "defaultMinute"
             },
             {
               "kind": "field",
@@ -14286,16 +14007,6 @@
               "default": "''",
               "description": "Sets default error message.",
               "attribute": "defaultErrorMessage"
-            },
-            {
-              "kind": "field",
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets manually entered error message.",
-              "attribute": "invalidText"
             },
             {
               "kind": "field",
@@ -14630,17 +14341,35 @@
                 "text": "Date | null"
               },
               "default": "null",
-              "description": "Sets pre-selected date/time value.",
+              "description": "Sets date/time value.",
               "fieldName": "value"
             },
             {
               "name": "defaultDate",
               "type": {
-                "text": "string"
+                "text": "Date | null"
               },
-              "default": "''",
-              "description": "Sets default time value.",
+              "default": "null",
+              "description": "Sets the initial selected time(s)",
               "fieldName": "defaultDate"
+            },
+            {
+              "name": "defaultHour",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial value of the hour element.",
+              "fieldName": "defaultHour"
+            },
+            {
+              "name": "defaultMinute",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial value of the minute element.",
+              "fieldName": "defaultMinute"
             },
             {
               "name": "defaultErrorMessage",
@@ -14650,15 +14379,6 @@
               "default": "''",
               "description": "Sets default error message.",
               "fieldName": "defaultErrorMessage"
-            },
-            {
-              "name": "invalidText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets manually entered error message.",
-              "fieldName": "invalidText"
             },
             {
               "name": "warnText",
@@ -14804,6 +14524,262 @@
           "declaration": {
             "name": "TimePicker",
             "module": "src/components/reusable/timepicker/timepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/toggleButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ToggleButton",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "./toggleButton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/toggleButton/toggleButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Toggle Button.",
+          "name": "ToggleButton",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox checked state.",
+              "attribute": "checked"
+            },
+            {
+              "kind": "field",
+              "name": "checkedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'On'",
+              "description": "Checked state text.",
+              "attribute": "checkedText"
+            },
+            {
+              "kind": "field",
+              "name": "uncheckedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Off'",
+              "description": "Unchecked state text.",
+              "attribute": "uncheckedText"
+            },
+            {
+              "kind": "field",
+              "name": "small",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to use small size.",
+              "attribute": "small"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "reverse",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Reverse UI element order, label on the left.",
+              "attribute": "reverse"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the label visually.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "method",
+              "name": "handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the change event and emits the selected value and original event details.",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox checked state.",
+              "fieldName": "checked"
+            },
+            {
+              "name": "checkedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'On'",
+              "description": "Checked state text.",
+              "fieldName": "checkedText"
+            },
+            {
+              "name": "uncheckedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Off'",
+              "description": "Unchecked state text.",
+              "fieldName": "uncheckedText"
+            },
+            {
+              "name": "small",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to use small size.",
+              "fieldName": "small"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "reverse",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Reverse UI element order, label on the left.",
+              "fieldName": "reverse"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the label visually.",
+              "fieldName": "hideLabel"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-toggle-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ToggleButton",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "src/components/reusable/toggleButton/toggleButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-toggle-button",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "src/components/reusable/toggleButton/toggleButton.ts"
           }
         }
       ]

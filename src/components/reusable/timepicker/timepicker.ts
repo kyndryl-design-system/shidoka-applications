@@ -49,21 +49,25 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   locale: SupportedLocale = 'en';
 
-  /** Sets pre-selected date/time value. */
+  /** Sets date/time value. */
   @property({ type: Object })
   override value: Date | null = null;
 
-  /** Sets default time value. */
-  @property({ type: String })
-  defaultDate = '';
+  /** Sets the initial selected time(s) */
+  @property({ type: Object })
+  defaultDate: Date | null = null;
+
+  /** Sets initial value of the hour element. */
+  @property({ type: Number })
+  defaultHour: number | null = null;
+
+  /** Sets initial value of the minute element. */
+  @property({ type: Number })
+  defaultMinute: number | null = null;
 
   /** Sets default error message. */
   @property({ type: String })
   defaultErrorMessage = '';
-
-  /** Sets manually entered error message. */
-  @property({ type: String })
-  override invalidText = '';
 
   /** Sets validation warning messaging. */
   @property({ type: String })
@@ -276,6 +280,8 @@ export class TimePicker extends FormMixin(LitElement) {
     await super.updated(changedProperties);
     if (
       changedProperties.has('defaultDate') ||
+      changedProperties.has('defaultHour') ||
+      changedProperties.has('defaultMinute') ||
       changedProperties.has('invalidText') ||
       changedProperties.has('minTime') ||
       changedProperties.has('maxTime')
@@ -358,7 +364,9 @@ export class TimePicker extends FormMixin(LitElement) {
       dateFormat: !this.twentyFourHourFormat ? 'h:i K' : 'H:i',
       minTime: this.minTime,
       maxTime: this.maxTime,
-      defaultDate: this.defaultDate,
+      defaultDate: this.defaultDate ?? undefined,
+      defaultHour: this.defaultHour ?? undefined,
+      defaultMinute: this.defaultMinute ?? undefined,
       loadLocale,
       mode: 'time',
       noCalendar: true,

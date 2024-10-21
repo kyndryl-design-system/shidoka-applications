@@ -104,9 +104,11 @@ type DateFormatOption = keyof typeof DATE_FORMAT_OPTIONS;
 interface FlatpickrOptionsContext {
   locale: string;
   dateFormat?: string;
+  defaultDate?: string | Date;
+  defaultHour?: number;
+  defaultMinute?: number;
   enableTime: boolean;
   twentyFourHourFormat: boolean;
-  altFormat?: string;
   endinputEl?: HTMLElement;
   inputEl: HTMLElement;
   allowInput?: boolean;
@@ -114,7 +116,6 @@ interface FlatpickrOptionsContext {
   maxDate?: string | number | Date;
   minTime?: string | number | Date;
   maxTime?: string | number | Date;
-  defaultDate?: string | number | Date;
   enable?: (string | number | Date)[];
   disable?: (string | number | Date)[];
   onChange?: Hook;
@@ -356,7 +357,6 @@ export async function getFlatpickrOptions(
     dateFormat,
     enableTime,
     twentyFourHourFormat,
-    altFormat,
     inputEl,
     allowInput,
     minDate,
@@ -364,6 +364,8 @@ export async function getFlatpickrOptions(
     minTime,
     maxTime,
     defaultDate,
+    defaultHour,
+    defaultMinute,
     enable,
     disable,
     mode = 'single',
@@ -402,7 +404,6 @@ export async function getFlatpickrOptions(
     showMonths: isWideScreen && mode === 'range' ? 2 : 1,
     monthSelectorType: 'static',
     locale: localeOptions,
-    altFormat: altFormat,
     closeOnSelect: closeOnSelect ?? !(mode === 'multiple' || enableTime),
     onChange: (selectedDates, dateStr, instance) => {
       if (onChange) {
@@ -446,6 +447,8 @@ export async function getFlatpickrOptions(
   if (minTime) options.minTime = minTime;
   if (maxTime) options.maxTime = maxTime;
   if (defaultDate) options.defaultDate = defaultDate;
+  if (defaultHour) options.defaultHour = defaultHour;
+  if (defaultMinute) options.defaultMinute = defaultMinute;
   if (enable && enable.length > 0) options.enable = enable;
   if (disable && disable.length > 0) options.disable = disable;
 

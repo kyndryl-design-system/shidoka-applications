@@ -51,17 +51,17 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   locale: SupportedLocale = 'en';
 
-  /** Sets flatpickr dateFormat attr (ex: `Y-m-d H:i`). */
+  /** Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`). */
   @property({ type: String })
   dateFormat = 'Y-m-d';
+
+  /** Sets the initial selected date(s) */
+  @property({ type: Object })
+  defaultDate: Date | null = null;
 
   /** Sets default error message. */
   @property({ type: String })
   defaultErrorMessage = '';
-
-  /** Sets manually entered error message. */
-  @property({ type: String })
-  override invalidText = '';
 
   /** Sets datepicker form input value to required/required. */
   @property({ type: Boolean })
@@ -78,10 +78,6 @@ export class DatePicker extends FormMixin(LitElement) {
   /** Sets validation warning messaging. */
   @property({ type: String })
   warnText = '';
-
-  /** Sets flatpickr alternative formatting value (ex: `F j, Y`). */
-  @property({ type: String })
-  altFormat = '';
 
   /** Sets flatpickr options setting to disable specific dates. */
   @property({ type: Array })
@@ -304,6 +300,7 @@ export class DatePicker extends FormMixin(LitElement) {
     super.updated(changedProperties);
     if (
       changedProperties.has('dateFormat') ||
+      changedProperties.has('defaultDate') ||
       changedProperties.has('minDate') ||
       changedProperties.has('maxDate') ||
       changedProperties.has('locale')
@@ -383,9 +380,9 @@ export class DatePicker extends FormMixin(LitElement) {
     return getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
+      defaultDate: this.defaultDate ?? undefined,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat,
-      altFormat: this.altFormat,
       inputEl: this._inputEl!,
       minDate: this.minDate,
       maxDate: this.maxDate,

@@ -42,7 +42,7 @@ const Template = (args) => {
 
   return html`
     <kyn-time-picker
-      .nameAttr="${args.nameAttr}"
+      .name="${args.name}"
       .label="${args.label}"
       .locale="${args.locale}"
       ?required="${args.required}"
@@ -69,7 +69,7 @@ const Template = (args) => {
 
 export const DefaultTimePicker = Template.bind({});
 DefaultTimePicker.args = {
-  nameAttr: 'default-timepicker',
+  name: 'default-timepicker',
   locale: 'en',
   required: false,
   size: 'md',

@@ -56,17 +56,17 @@ const Template = (args) => {
 
   return html`
     <kyn-date-picker
-      .nameAttr="${args.nameAttr}"
+      .name="${args.name}"
       .locale="${args.locale}"
       .label="${args.label}"
       .dateFormat="${args.dateFormat}"
+      .defaultDate="${args.defaultDate}"
       .defaultErrorMessage="${args.defaultErrorMessage}"
       ?required="${args.required}"
       .size="${args.size}"
       .value="${args.value}"
       .warnText="${args.warnText}"
       .invalidText="${args.invalidText}"
-      .altFormat=${args.altFormat}
       .disable="${args.disable}"
       .enable="${args.enable}"
       .mode="${args.mode}"
@@ -87,16 +87,16 @@ const Template = (args) => {
 
 export const DatePickerDefault = Template.bind({});
 DatePickerDefault.args = {
-  nameAttr: 'default-date-picker',
+  name: 'default-date-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
+  defaultDate: '',
   defaultErrorMessage: 'A date value is required',
   required: false,
   size: 'md',
   value: '',
   warnText: '',
   invalidText: '',
-  altFormat: 'F j, Y',
   disable: [],
   enable: [],
   errorAriaLabel: 'Error message icon',
@@ -117,7 +117,7 @@ export const DateWithTime = Template.bind({});
 DateWithTime.args = {
   ...DatePickerDefault.args,
   locale: 'hi',
-  nameAttr: 'date-time-picker',
+  name: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
   caption: '',
   label: 'दिनांक एवं समय चयनकर्ता',
@@ -128,7 +128,7 @@ export const DatePickerMultiple = Template.bind({});
 DatePickerMultiple.args = {
   ...DatePickerDefault.args,
   locale: 'en',
-  nameAttr: 'date-multiple-picker',
+  name: 'date-multiple-picker',
   dateFormat: 'Y-m-d',
   caption: '',
   mode: 'multiple',
