@@ -6,11 +6,15 @@ import ToggleButtonScss from './toggleButton.scss';
 /**
  * Toggle Button.
  * @fires on-change - Captures the change event and emits the selected value and original event details.
- * @slot unnamed - Slot for label text.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-toggle-button')
 export class ToggleButton extends FormMixin(LitElement) {
   static override styles = ToggleButtonScss;
+
+  /** Label text. */
+  @property({ type: String })
+  label = '';
 
   /** Checkbox checked state. */
   @property({ type: Boolean })
@@ -54,7 +58,8 @@ export class ToggleButton extends FormMixin(LitElement) {
           class="label-text  ${this.hideLabel ? 'sr-only' : ''}"
           for=${this.name}
         >
-          <slot></slot>
+          <span>${this.label}</span>
+          <slot name="tooltip"></slot>
         </label>
 
         <div class="wrapper ${this.reverse ? 'reverse' : ''}">
