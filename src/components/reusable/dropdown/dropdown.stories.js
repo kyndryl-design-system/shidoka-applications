@@ -242,7 +242,7 @@ export const Grouped = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=${args.value}
+        value=${items[1].value}
         @on-change=${(e) => action(e.type)(e)}
       >
         <span slot="label">${args.label}</span>
@@ -280,9 +280,7 @@ export const DataDrivenOptions = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        .value=${items
-          .filter((item) => item.selected)
-          .map((item) => item.value)[0]}
+        value=${args.value}
         @on-change=${(e) => {
           // console.log(e.detail);
           action(e.type)(e);
@@ -292,7 +290,11 @@ export const DataDrivenOptions = {
 
         ${items.map((item) => {
           return html`
-            <kyn-dropdown-option value=${item.value} ?disabled=${item.disabled}>
+            <kyn-dropdown-option
+              value=${item.value}
+              ?disabled=${item.disabled}
+              ?selected=${item.selected}
+            >
               ${item.text}
             </kyn-dropdown-option>
           `;
