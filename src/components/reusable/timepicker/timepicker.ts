@@ -304,10 +304,18 @@ export class TimePicker extends FormMixin(LitElement) {
     if (this.flatpickrInstance) this.flatpickrInstance.destroy();
 
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
-      anchorEl: this._inputEl,
+      inputEl: this._inputEl,
       getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
-      setCalendarAttributes: (instance) =>
-        setCalendarAttributes(instance, 'time-picker-container'),
+      setCalendarAttributes: (instance) => {
+        if (instance && instance.calendarContainer) {
+          setCalendarAttributes(instance);
+          instance.calendarContainer.setAttribute('aria-label', 'Time picker');
+        } else {
+          console.warn(
+            'Calendar container not available. Skipping attribute setting.'
+          );
+        }
+      },
       setInitialDates: undefined,
       appendToBody: false,
     });
@@ -327,7 +335,20 @@ export class TimePicker extends FormMixin(LitElement) {
         );
       }
     });
-    setCalendarAttributes(this.flatpickrInstance, 'time-picker-container');
+
+    this.flatpickrInstance.redraw();
+
+    setTimeout(() => {
+      if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
+        setCalendarAttributes(this.flatpickrInstance);
+        this.flatpickrInstance.calendarContainer.setAttribute(
+          'aria-label',
+          'Time picker'
+        );
+      } else {
+        console.warn('Calendar container not available...');
+      }
+    }, 0);
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
@@ -335,7 +356,7 @@ export class TimePicker extends FormMixin(LitElement) {
       locale: this.locale,
       enableTime: true,
       twentyFourHourFormat: this.twentyFourHourFormat,
-      startAnchorEl: this._inputEl!,
+      inputEl: this._inputEl!,
       allowInput: true,
       dateFormat: !this.twentyFourHourFormat ? 'h:i K' : 'H:i',
       minTime: this.minTime,

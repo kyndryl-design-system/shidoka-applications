@@ -328,10 +328,21 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (this.flatpickrInstance) this.flatpickrInstance.destroy();
 
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
-      anchorEl: this._inputEl,
+      inputEl: this._inputEl,
       getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
-      setCalendarAttributes: () =>
-        setCalendarAttributes(this.flatpickrInstance!, 'Date range calendar'),
+      setCalendarAttributes: (instance) => {
+        if (instance && instance.calendarContainer) {
+          setCalendarAttributes(instance);
+          instance.calendarContainer.setAttribute(
+            'aria-label',
+            'Date range calendar'
+          );
+        } else {
+          console.warn(
+            'Calendar container not available. Skipping attribute setting.'
+          );
+        }
+      },
       setInitialDates: this.setInitialDates.bind(this),
       appendToBody: false,
     });
@@ -347,7 +358,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat,
       mode: 'range',
-      startAnchorEl: this._inputEl!,
+      inputEl: this._inputEl!,
       minDate: this.minDate,
       maxDate: this.maxDate,
       enable: this.enable,
@@ -378,7 +389,19 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.flatpickrInstance.setDate(currentDates, false);
     }
 
-    setCalendarAttributes(this.flatpickrInstance, 'Date range calendar');
+    setTimeout(() => {
+      if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
+        setCalendarAttributes(this.flatpickrInstance);
+        this.flatpickrInstance.calendarContainer.setAttribute(
+          'aria-label',
+          'Date range calendar'
+        );
+      } else {
+        console.warn(
+          'Calendar container not available. Skipping attribute setting.'
+        );
+      }
+    }, 0);
   }
 
   setInitialDates(): void {

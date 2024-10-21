@@ -81,12 +81,12 @@ interface BaseFlatpickrContext {
 }
 
 interface SingleFlatpickrContext extends BaseFlatpickrContext {
-  anchorEl: HTMLElement;
+  inputEl: HTMLElement;
 }
 
 interface RangeFlatpickrContext extends BaseFlatpickrContext {
-  startAnchorEl: HTMLElement;
-  endAnchorEl?: HTMLElement;
+  inputEl: HTMLElement;
+  endinputEl?: HTMLElement;
 }
 
 const DATE_FORMAT_OPTIONS = {
@@ -107,8 +107,8 @@ interface FlatpickrOptionsContext {
   enableTime: boolean;
   twentyFourHourFormat: boolean;
   altFormat?: string;
-  endAnchorEl?: HTMLElement;
-  startAnchorEl: HTMLElement;
+  endinputEl?: HTMLElement;
+  inputEl: HTMLElement;
   allowInput?: boolean;
   minDate?: string | number | Date;
   maxDate?: string | number | Date;
@@ -180,61 +180,66 @@ export async function initializeMultiAnchorFlatpickr(
   context: RangeFlatpickrContext
 ): Promise<Instance | undefined> {
   const {
-    startAnchorEl,
-    endAnchorEl,
+    inputEl,
+    endinputEl,
     getFlatpickrOptions,
     setCalendarAttributes,
     setInitialDates,
   } = context;
 
-  if (!startAnchorEl) {
-    console.error('Cannot initialize Flatpickr: startAnchorEl is undefined');
+  if (!inputEl) {
+    console.error('Cannot initialize Flatpickr: inputEl is undefined');
     return undefined;
   }
 
   try {
     const options = await getFlatpickrOptions();
 
-    const getInputElement = (anchorEl: HTMLElement): HTMLInputElement => {
-      if (anchorEl instanceof HTMLInputElement) {
-        return anchorEl;
+    const getInputElement = (inputEl: HTMLElement): HTMLInputElement => {
+      if (inputEl instanceof HTMLInputElement) {
+        return inputEl;
       } else {
-        let input = anchorEl.querySelector('input');
+        let input = inputEl.querySelector('input');
         if (!input) {
           input = document.createElement('input');
           input.type = 'text';
           input.style.display = 'none';
-          anchorEl.appendChild(input);
+          inputEl.appendChild(input);
         }
         return input as HTMLInputElement;
       }
     };
 
-    const startInputElement = getInputElement(startAnchorEl);
-    if (endAnchorEl) {
-      const endInputElement = getInputElement(endAnchorEl);
+    const inputElement = getInputElement(inputEl);
+    if (endinputEl) {
+      const endInputElement = getInputElement(endinputEl);
       options.plugins = [
         ...(options.plugins || []),
         rangePlugin({ input: endInputElement }),
       ];
     }
 
-    const flatpickrInstance = flatpickr(startInputElement, options) as Instance;
+    const flatpickrInstance = flatpickr(inputElement, options) as Instance;
 
     if (flatpickrInstance) {
-      setCalendarAttributes(flatpickrInstance);
+      setTimeout(() => {
+        if (setCalendarAttributes) {
+          setCalendarAttributes(flatpickrInstance);
+        }
+      }, 0);
+
       if (setInitialDates) {
         setInitialDates(flatpickrInstance);
       }
 
-      if (!(startAnchorEl instanceof HTMLInputElement)) {
-        startAnchorEl.addEventListener('click', () => {
+      if (!(inputEl instanceof HTMLInputElement)) {
+        inputEl.addEventListener('click', () => {
           flatpickrInstance.open();
         });
       }
 
-      if (endAnchorEl && !(endAnchorEl instanceof HTMLInputElement)) {
-        endAnchorEl.addEventListener('click', () => {
+      if (endinputEl && !(endinputEl instanceof HTMLInputElement)) {
+        endinputEl.addEventListener('click', () => {
           flatpickrInstance.open();
         });
       }
@@ -254,15 +259,15 @@ export async function initializeSingleAnchorFlatpickr(
   context: SingleFlatpickrContext
 ): Promise<Instance | undefined> {
   const {
-    anchorEl,
+    inputEl,
     getFlatpickrOptions,
     setCalendarAttributes,
     setInitialDates,
     appendToBody,
   } = context;
 
-  if (!anchorEl) {
-    console.error('Cannot initialize Flatpickr: anchorEl is undefined');
+  if (!inputEl) {
+    console.error('Cannot initialize Flatpickr: inputEl is undefined');
     return undefined;
   }
 
@@ -272,8 +277,8 @@ export async function initializeSingleAnchorFlatpickr(
 
     let inputElement: HTMLInputElement;
 
-    if (anchorEl instanceof HTMLInputElement) {
-      inputElement = anchorEl;
+    if (inputEl instanceof HTMLInputElement) {
+      inputElement = inputEl;
       options.clickOpens = true;
     } else {
       inputElement = document.createElement('input');
@@ -283,23 +288,27 @@ export async function initializeSingleAnchorFlatpickr(
       if (appendToBody) {
         document.body.appendChild(inputElement);
       } else {
-        anchorEl.appendChild(inputElement);
+        inputEl.appendChild(inputElement);
       }
 
       options.clickOpens = false;
-      options.positionElement = anchorEl;
+      options.positionElement = inputEl;
     }
 
     const flatpickrInstance = flatpickr(inputElement, options) as Instance;
 
     if (flatpickrInstance) {
-      setCalendarAttributes(flatpickrInstance);
+      setTimeout(() => {
+        if (setCalendarAttributes) {
+          setCalendarAttributes(flatpickrInstance);
+        }
+      }, 0);
       if (setInitialDates) {
         setInitialDates(flatpickrInstance);
       }
 
-      if (!(anchorEl instanceof HTMLInputElement)) {
-        anchorEl.addEventListener('click', () => {
+      if (!(inputEl instanceof HTMLInputElement)) {
+        inputEl.addEventListener('click', () => {
           flatpickrInstance.open();
         });
       }
@@ -311,6 +320,9 @@ export async function initializeSingleAnchorFlatpickr(
     }
   } catch (error) {
     console.error('Error initializing Flatpickr:', error);
+    if (error instanceof Error) {
+      console.error('Error details:', error.message);
+    }
     return undefined;
   }
 }
@@ -345,7 +357,7 @@ export async function getFlatpickrOptions(
     enableTime,
     twentyFourHourFormat,
     altFormat,
-    startAnchorEl,
+    inputEl,
     allowInput,
     minDate,
     maxDate,
@@ -363,6 +375,14 @@ export async function getFlatpickrOptions(
     onOpen,
     loadLocale,
   } = context;
+
+  if (!locale) {
+    console.warn('Locale not provided. Falling back to default.');
+  }
+
+  if (!dateFormat) {
+    console.warn('Date format not provided. Using default format.');
+  }
 
   const localeOptions = await loadLocale(locale);
   modifyWeekdayShorthands(localeOptions);
@@ -417,8 +437,8 @@ export async function getFlatpickrOptions(
     };
   }
 
-  if (!(startAnchorEl instanceof HTMLInputElement)) {
-    options.positionElement = startAnchorEl;
+  if (!(inputEl instanceof HTMLInputElement)) {
+    options.positionElement = inputEl;
   }
 
   if (minDate) options.minDate = minDate;
@@ -436,10 +456,14 @@ export function updateEnableTime(dateFormat: string): boolean {
   return dateFormat.includes('H:') || dateFormat.includes('h:');
 }
 
-export function setCalendarAttributes(instance: Instance, label: string): void {
-  if (instance.calendarContainer) {
+export function setCalendarAttributes(instance: Instance): void {
+  if (instance && instance.calendarContainer) {
     instance.calendarContainer.setAttribute('role', 'application');
-    instance.calendarContainer.setAttribute('aria-label', label);
+    instance.calendarContainer.setAttribute('aria-label', 'Calendar');
+  } else {
+    console.warn(
+      'Calendar container not available. Skipping attribute setting.'
+    );
   }
 }
 
@@ -454,13 +478,21 @@ export async function loadLocale(locale: string): Promise<Partial<Locale>> {
     const module = await import(`flatpickr/dist/l10n/${locale}.js`);
     const localeConfig =
       module[locale] || module.default[locale] || module.default;
-    if (!localeConfig) throw new Error('Locale configuration not found');
+    if (!localeConfig) {
+      console.warn(
+        `Locale configuration not found for ${locale}. Falling back to English.`
+      );
+      return English;
+    }
     return localeConfig;
   } catch (error) {
-    console.warn(
+    console.error(
       `Failed to load locale ${locale}. Falling back to English.`,
       error
     );
+    if (error instanceof Error) {
+      console.error('Error details:', error.message);
+    }
     return English;
   }
 }
@@ -474,6 +506,7 @@ export function validate(
   internals: ElementInternals
 ): { isValid: boolean; validationMessage: string } {
   if (!inputEl) {
+    console.warn('Input element is undefined. Skipping validation.');
     return { isValid: true, validationMessage: '' };
   }
 

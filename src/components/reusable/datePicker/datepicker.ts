@@ -309,7 +309,11 @@ export class DatePicker extends FormMixin(LitElement) {
       changedProperties.has('locale')
     ) {
       this._enableTime = updateEnableTime(this.dateFormat);
-      this.reinitializeFlatpickr();
+      if (this.flatpickrInstance) {
+        this.updateFlatpickrOptions();
+      } else {
+        this.initializeFlatpickr();
+      }
     }
   }
 
@@ -329,15 +333,49 @@ export class DatePicker extends FormMixin(LitElement) {
     if (this.flatpickrInstance) this.flatpickrInstance.destroy();
 
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
-      anchorEl: this._inputEl,
+      inputEl: this._inputEl,
       getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
-      setCalendarAttributes: (instance) =>
-        setCalendarAttributes(instance, 'Calendar'),
+      setCalendarAttributes: (instance) => {
+        if (instance && instance.calendarContainer) {
+          setCalendarAttributes(instance);
+          instance.calendarContainer.setAttribute('aria-label', 'Date picker');
+        } else {
+          console.warn('Calendar container not available...');
+        }
+      },
       setInitialDates: this.setInitialDates.bind(this),
       appendToBody: false,
     });
 
     this._validate(false, false);
+  }
+
+  async updateFlatpickrOptions(): Promise<void> {
+    if (!this.flatpickrInstance) return;
+
+    const newOptions = await this.getComponentFlatpickrOptions();
+    Object.keys(newOptions).forEach((key) => {
+      if (key in this.flatpickrInstance!.config) {
+        this.flatpickrInstance!.set(
+          key as keyof BaseOptions,
+          newOptions[key as keyof BaseOptions]
+        );
+      }
+    });
+
+    this.flatpickrInstance.redraw();
+
+    setTimeout(() => {
+      if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
+        setCalendarAttributes(this.flatpickrInstance);
+        this.flatpickrInstance.calendarContainer.setAttribute(
+          'aria-label',
+          'Date picker'
+        );
+      } else {
+        console.warn('Calendar container not available...');
+      }
+    }, 0);
   }
 
   setInitialDates(): void {
@@ -353,7 +391,7 @@ export class DatePicker extends FormMixin(LitElement) {
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat,
       altFormat: this.altFormat,
-      startAnchorEl: this._inputEl!,
+      inputEl: this._inputEl!,
       minDate: this.minDate,
       maxDate: this.maxDate,
       enable: this.enable,
