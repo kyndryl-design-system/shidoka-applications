@@ -22,6 +22,8 @@ export default {
     minTime: { control: { type: 'text' } },
     maxTime: { control: { type: 'text' } },
     defaultDate: { control: { type: 'text' } },
+    defaultHour: { control: { type: 'number' } },
+    defaultMinute: { control: { type: 'number' } },
     invalidText: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
@@ -52,6 +54,8 @@ const Template = (args) => {
       .invalidText="${args.invalidText}"
       .caption="${args.caption}"
       .defaultDate="${args.defaultDate}"
+      .defaultHour="${args.defaultHour}"
+      .defaultMinute="${args.defaultMinute}"
       .defaultErrorMessage="${args.defaultErrorMessage}"
       .minTime="${args.minTime}"
       .maxTime="${args.maxTime}"

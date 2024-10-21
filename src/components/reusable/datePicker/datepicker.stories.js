@@ -34,6 +34,7 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    defaultDate: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
     maxDate: { control: { type: 'text' } },
@@ -111,7 +112,7 @@ DatePickerDefault.args = {
   maxDate: '',
   label: 'Date',
 };
-DatePickerDefault.storyName = 'Date Selection (Default)';
+DatePickerDefault.storyName = 'Single Date (Default)';
 
 export const DateWithTime = Template.bind({});
 DateWithTime.args = {

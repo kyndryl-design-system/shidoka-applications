@@ -447,8 +447,8 @@ export async function getFlatpickrOptions(
   if (minTime) options.minTime = minTime;
   if (maxTime) options.maxTime = maxTime;
   if (defaultDate) options.defaultDate = defaultDate;
-  if (defaultHour) options.defaultHour = defaultHour;
-  if (defaultMinute) options.defaultMinute = defaultMinute;
+  if (defaultHour !== undefined) options.defaultHour = defaultHour;
+  if (defaultMinute !== undefined) options.defaultMinute = defaultMinute;
   if (enable && enable.length > 0) options.enable = enable;
   if (disable && disable.length > 0) options.disable = disable;
 
@@ -464,9 +464,7 @@ export function setCalendarAttributes(instance: Instance): void {
     instance.calendarContainer.setAttribute('role', 'application');
     instance.calendarContainer.setAttribute('aria-label', 'Calendar');
   } else {
-    console.warn(
-      'Calendar container not available. Skipping attribute setting.'
-    );
+    console.warn('Calendar container not available...');
   }
 }
 
@@ -509,7 +507,7 @@ export function validate(
   internals: ElementInternals
 ): { isValid: boolean; validationMessage: string } {
   if (!inputEl) {
-    console.warn('Input element is undefined. Skipping validation.');
+    console.warn('Input element is undefined...');
     return { isValid: true, validationMessage: '' };
   }
 

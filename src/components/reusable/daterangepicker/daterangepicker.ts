@@ -335,9 +335,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             'Date range calendar'
           );
         } else {
-          console.warn(
-            'Calendar container not available. Skipping attribute setting.'
-          );
+          console.warn('Calendar container not available...');
         }
       },
       setInitialDates: this.setInitialDates.bind(this),
@@ -394,9 +392,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
           'Date range calendar'
         );
       } else {
-        console.warn(
-          'Calendar container not available. Skipping attribute setting.'
-        );
+        console.warn('Calendar container not available...');
       }
     }, 0);
   }

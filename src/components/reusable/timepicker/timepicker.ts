@@ -289,7 +289,7 @@ export class TimePicker extends FormMixin(LitElement) {
       if (this.flatpickrInstance) {
         await this.updateFlatpickrOptions();
       } else {
-        this.initializeFlatpickr();
+        await this.initializeFlatpickr();
       }
     }
   }
@@ -314,12 +314,10 @@ export class TimePicker extends FormMixin(LitElement) {
           setCalendarAttributes(instance);
           instance.calendarContainer.setAttribute('aria-label', 'Time picker');
         } else {
-          console.warn(
-            'Calendar container not available. Skipping attribute setting.'
-          );
+          console.warn('Calendar container not available...');
         }
       },
-      setInitialDates: undefined,
+      setInitialDates: this.setInitialDates.bind(this),
       appendToBody: false,
     });
 
@@ -340,6 +338,7 @@ export class TimePicker extends FormMixin(LitElement) {
     });
 
     this.flatpickrInstance.redraw();
+    this.setInitialDates(this.flatpickrInstance);
 
     setTimeout(() => {
       if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
@@ -374,6 +373,25 @@ export class TimePicker extends FormMixin(LitElement) {
       onClose: this.handleClose.bind(this),
       onOpen: this.handleOpen.bind(this),
     });
+  }
+
+  setInitialDates(instance: flatpickr.Instance): void {
+    if (this.defaultDate) {
+      instance.setDate(this.defaultDate, true);
+    } else if (this.defaultHour !== null && this.defaultMinute !== null) {
+      const now = new Date();
+      now.setHours(this.defaultHour);
+      now.setMinutes(this.defaultMinute);
+      now.setSeconds(0);
+      now.setMilliseconds(0);
+      instance.setDate(now, true);
+    } else {
+      instance.clear();
+    }
+    // Update the input field
+    if (this._inputEl) {
+      this._inputEl.value = instance.input.value;
+    }
   }
 
   handleOpen(): void {

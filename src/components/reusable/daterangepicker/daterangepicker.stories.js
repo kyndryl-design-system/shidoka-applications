@@ -32,6 +32,7 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    defaultDate: { control: { type: 'text' } },
     label: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },

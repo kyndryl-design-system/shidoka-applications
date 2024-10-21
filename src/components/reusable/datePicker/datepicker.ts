@@ -390,10 +390,10 @@ export class DatePicker extends FormMixin(LitElement) {
       disable: this.disable,
       mode: this.mode,
       closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
+      loadLocale,
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),
       onChange: this.handleDateChange.bind(this),
-      loadLocale,
     });
   }
 
