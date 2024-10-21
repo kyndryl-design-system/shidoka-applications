@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 import styles from './table-foot.scss';
 
@@ -14,6 +14,12 @@ import styles from './table-foot.scss';
 @customElement('kyn-tfoot')
 export class TableFoot extends LitElement {
   static override styles = [styles];
+
+  /** aria role.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  override role = 'rowgroup';
 
   override render() {
     return html` <slot></slot> `;
