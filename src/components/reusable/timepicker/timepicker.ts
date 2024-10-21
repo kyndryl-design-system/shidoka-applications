@@ -33,7 +33,7 @@ const _defaultTextStrings = {
 };
 
 /**
- * Timepicker: uses flatpickr datetime picker library, timepicker implementation -- `https://flatpickr.js.org/examples/#time-picker`
+ * Timepicker: uses Flatpicker library,time picker implementation  -- `https://flatpickr.js.org/examples/#time-picker`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot tooltip - Slot for tooltip.
  */
