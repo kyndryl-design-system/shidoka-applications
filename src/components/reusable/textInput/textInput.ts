@@ -239,30 +239,37 @@ export class TextInput extends FormMixin(LitElement) {
   }
 
   private _validate(interacted: Boolean, report: Boolean) {
+    // get validity state from inputEl, combine customError flag if invalidText is provided
     const Validity =
       this.invalidText !== ''
         ? { ...this._inputEl.validity, customError: true }
         : this._inputEl.validity;
+    // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
     const ValidationMessage =
       this.invalidText !== ''
         ? this.invalidText
         : this._inputEl.validationMessage;
 
+    // set validity on custom element, anchor to inputEl
     this._internals.setValidity(Validity, ValidationMessage, this._inputEl);
 
+    // set internal validation message if value was changed by user input
     if (interacted) {
       this._internalValidationMsg = this._inputEl.validationMessage;
     }
 
+    // focus the form field to show validity
     if (report) {
       this._internals.reportValidity();
     }
   }
 
   override updated(changedProps: any) {
+    // preserve FormMixin updated function
     this._onUpdated(changedProps);
 
     if (changedProps.has('value')) {
+      // set value on input element
       this._inputEl.value = this.value;
     }
   }

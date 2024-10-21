@@ -317,11 +317,6 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  private async reinitializeFlatpickr() {
-    this.flatpickrInstance?.destroy();
-    await this.initializeFlatpickr();
-  }
-
   private async setupAnchor() {
     if (this._inputEl) {
       await this.initializeFlatpickr();
