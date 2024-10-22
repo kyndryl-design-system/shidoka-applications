@@ -121,7 +121,7 @@ DateWithTime.args = {
   name: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
   caption: '',
-  label: 'दिनांक एवं समय चयनकर्ता',
+  label: 'Hindi Locale Example',
 };
 DateWithTime.storyName = 'Date + Time (Hindi Locale)';
 
