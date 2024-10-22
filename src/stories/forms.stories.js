@@ -243,7 +243,7 @@ export const Default = {
         <kyn-date-range-picker
           required
           name="date-time-range"
-          label="Date / Time Range Picker"
+          label="Date + Time Range Picker"
           dateFormat="Y-m-d h:i K"
           caption="Date time range picker example"
           ?twentyFourHourFormat=${false}
