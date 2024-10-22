@@ -444,12 +444,17 @@ export class DatePicker extends FormMixin(LitElement) {
     if (this.mode === 'multiple') {
       this.value = [...selectedDates];
     } else {
-      this.value = selectedDates[0];
+      this.value = selectedDates.length > 0 ? selectedDates[0] : null;
     }
 
-    const formattedDates = Array.isArray(this.value)
-      ? this.value.map((date) => date.toISOString())
-      : this.value.toISOString();
+    let formattedDates;
+    if (Array.isArray(this.value)) {
+      formattedDates = this.value.map((date) => date.toISOString());
+    } else if (this.value instanceof Date) {
+      formattedDates = this.value.toISOString();
+    } else {
+      formattedDates = null;
+    }
 
     emitValue(this, 'on-change', {
       dates: formattedDates,
