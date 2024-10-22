@@ -354,7 +354,6 @@ export class DatePicker extends FormMixin(LitElement) {
       this.flatpickrInstance.clear();
     }
     this._validate(true, false);
-    emitValue(this, 'on-change', { dates: null, dateString: '' });
   }
 
   async initializeFlatpickr(): Promise<void> {

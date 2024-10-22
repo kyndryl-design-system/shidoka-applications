@@ -318,7 +318,6 @@ export class TimePicker extends FormMixin(LitElement) {
       this.flatpickrInstance.clear();
     }
     this._validate(true, false);
-    emitValue(this, 'on-change', { time: null, timeStr: '' });
   }
 
   private setupAnchor() {

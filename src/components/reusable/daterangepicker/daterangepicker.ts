@@ -301,15 +301,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.flatpickrInstance.clear();
     }
     this._validate(true, false);
-
-    const formattedDates =
-      this.value && Array.isArray(this.value)
-        ? this.value
-            .map((date) => (date instanceof Date ? date.toISOString() : null))
-            .filter(Boolean)
-        : [];
-
-    emitValue(this, 'on-change', { dates: formattedDates, dateString: '' });
   }
 
   getDateRangePickerClasses() {
