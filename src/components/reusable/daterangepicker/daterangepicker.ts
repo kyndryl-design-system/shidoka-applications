@@ -27,17 +27,17 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
+import clearIcon from '@carbon/icons/es/close/24';
 
 type SupportedLocale = (typeof langsArray)[number];
 
 const _defaultTextStrings = {
   requiredText: 'Required',
-  subtract: 'Subtract',
-  add: 'Add',
+  clearAll: 'Clear',
 };
 
 /**
- * Date Range Picker: uses Flatpicker library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
+ * Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot tooltip - Slot for tooltip.
  */
@@ -223,7 +223,21 @@ export class DateRangePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          <span class="icon">${unsafeSVG(calendarIcon)}</span>
+          ${this.value &&
+          this.value.length > 1 &&
+          !this.value.every((date) => date === null)
+            ? html`
+                <button
+                  ?disabled=${this.dateRangePickerDisabled}
+                  class="clear-button"
+                  aria-label=${this._textStrings.clearAll}
+                  title=${this._textStrings.clearAll}
+                  @click=${this._handleClear}
+                >
+                  <kd-icon .icon=${clearIcon}></kd-icon>
+                </button>
+              `
+            : html`<span class="input-icon">${unsafeSVG(calendarIcon)}</span>`}
         </div>
 
         ${this.caption
@@ -276,6 +290,17 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     return null;
+  }
+
+  private _handleClear(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.value = [null, null];
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.clear();
+    }
+    this._validate(true, false);
+    emitValue(this, 'on-change', { dates: null, dateString: '' });
   }
 
   getDateRangePickerClasses() {

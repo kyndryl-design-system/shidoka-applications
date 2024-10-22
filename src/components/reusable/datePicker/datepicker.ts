@@ -27,11 +27,13 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
+import clearIcon from '@carbon/icons/es/close/24';
 
 type SupportedLocale = (typeof langsArray)[number];
 
 const _defaultTextStrings = {
   requiredText: 'Required',
+  clearAll: 'Clear',
 };
 
 /**
@@ -224,7 +226,19 @@ export class DatePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          <span class="icon">${unsafeSVG(calendarIcon)}</span>
+          ${this.value
+            ? html`
+                <button
+                  ?disabled=${this.datePickerDisabled}
+                  class="clear-button"
+                  aria-label=${this._textStrings.clearAll}
+                  title=${this._textStrings.clearAll}
+                  @click=${this._handleClear}
+                >
+                  <kd-icon .icon=${clearIcon}></kd-icon>
+                </button>
+              `
+            : html`<span class="input-icon">${unsafeSVG(calendarIcon)}</span>`}
         </div>
 
         ${this.caption
@@ -318,6 +332,17 @@ export class DatePicker extends FormMixin(LitElement) {
     if (this._inputEl) {
       await this.initializeFlatpickr();
     }
+  }
+
+  private _handleClear(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.value = null;
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.clear();
+    }
+    this._validate(true, false);
+    emitValue(this, 'on-change', { dates: null, dateString: '' });
   }
 
   async initializeFlatpickr(): Promise<void> {

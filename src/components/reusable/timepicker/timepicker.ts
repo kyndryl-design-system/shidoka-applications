@@ -25,15 +25,17 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/time.svg';
+import clearIcon from '@carbon/icons/es/close/24';
 
 type SupportedLocale = (typeof langsArray)[number];
 
 const _defaultTextStrings = {
   requiredText: 'Required',
+  clearAll: 'Clear',
 };
 
 /**
- * Timepicker: uses Flatpicker library,time picker implementation  -- `https://flatpickr.js.org/examples/#time-picker`
+ * Timepicker: uses Flatpickr library,time picker implementation  -- `https://flatpickr.js.org/examples/#time-picker`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot tooltip - Slot for tooltip.
  */
@@ -207,7 +209,19 @@ export class TimePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          <span class="icon">${unsafeSVG(clockIcon)}</span>
+          ${this.value
+            ? html`
+                <button
+                  ?disabled=${this.timepickerDisabled}
+                  class="clear-button"
+                  aria-label=${this._textStrings.clearAll}
+                  title=${this._textStrings.clearAll}
+                  @click=${this._handleClear}
+                >
+                  <kd-icon .icon=${clearIcon}></kd-icon>
+                </button>
+              `
+            : html`<span class="input-icon">${unsafeSVG(clockIcon)}</span>`}
         </div>
 
         ${this.caption
@@ -292,6 +306,17 @@ export class TimePicker extends FormMixin(LitElement) {
         this.initializeFlatpickr();
       }
     }
+  }
+
+  private _handleClear(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.value = null;
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.clear();
+    }
+    this._validate(true, false);
+    emitValue(this, 'on-change', { time: null, timeStr: '' });
   }
 
   private setupAnchor() {

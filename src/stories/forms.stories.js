@@ -193,8 +193,21 @@ export const Default = {
 
         <kyn-date-picker
           required
+          name="date-picker"
+          label="Multi-Date Picker"
+          dateFormat="Y-m-d"
+          mode="multiple"
+          caption="Date picker example"
+          defaultErrorMessage="A date value is required"
+          @on-input=${(e) => action(e.type)(e)}
+        ></kyn-date-picker>
+
+        <br /><br />
+
+        <kyn-date-picker
+          required
           name="date-time-picker"
-          label="Date / Time Picker"
+          label="Date + Time Picker"
           dateFormat="Y-m-d h:i K"
           caption="Date time picker example"
           ?twentyFourHourFormat=${false}
