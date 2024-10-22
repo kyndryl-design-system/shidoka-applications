@@ -14,6 +14,7 @@ import {
   setCalendarAttributes,
   loadLocale,
   emitValue,
+  hideEmptyYear,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
@@ -93,7 +94,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
   /** Sets 24 hour formatting true/false. */
   @property({ type: Boolean })
-  twentyFourHourFormat = false;
+  twentyFourHourFormat: null | false | true = null;
 
   /** Sets lower boundary of datepicker date selection. */
   @property({ type: String })
@@ -298,7 +299,8 @@ export class TimePicker extends FormMixin(LitElement) {
       changedProperties.has('defaultMinute') ||
       changedProperties.has('invalidText') ||
       changedProperties.has('minTime') ||
-      changedProperties.has('maxTime')
+      changedProperties.has('maxTime') ||
+      changedProperties.has('twentyFourHourFormat')
     ) {
       if (this.flatpickrInstance) {
         await this.updateFlatpickrOptions();
@@ -346,6 +348,7 @@ export class TimePicker extends FormMixin(LitElement) {
       appendToBody: false,
     });
 
+    hideEmptyYear();
     this._validate(false, false);
   }
 
@@ -363,6 +366,9 @@ export class TimePicker extends FormMixin(LitElement) {
     });
 
     this.flatpickrInstance.redraw();
+
+    hideEmptyYear();
+
     this.setInitialDates(this.flatpickrInstance);
 
     setTimeout(() => {
@@ -382,7 +388,7 @@ export class TimePicker extends FormMixin(LitElement) {
     return getFlatpickrOptions({
       locale: this.locale,
       enableTime: true,
-      twentyFourHourFormat: this.twentyFourHourFormat,
+      twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl!,
       allowInput: true,
       dateFormat: !this.twentyFourHourFormat ? 'h:i K' : 'H:i',

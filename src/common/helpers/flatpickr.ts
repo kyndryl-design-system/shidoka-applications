@@ -108,7 +108,7 @@ interface FlatpickrOptionsContext {
   defaultHour?: number;
   defaultMinute?: number;
   enableTime: boolean;
-  twentyFourHourFormat: boolean;
+  twentyFourHourFormat?: boolean;
   endinputEl?: HTMLElement;
   inputEl: HTMLElement;
   allowInput?: boolean;
@@ -391,6 +391,10 @@ export async function getFlatpickrOptions(
 
   const isWideScreen = window.innerWidth > 767;
 
+  const isEnglishOr12HourLocale = ['en', 'en-US', 'en-GB', 'es-MX'].includes(
+    locale
+  );
+
   const options: Partial<BaseOptions> = {
     dateFormat: dateFormat || (mode === 'time' ? 'H:i' : 'Y-m-d'),
     mode: mode === 'time' ? 'single' : mode,
@@ -398,7 +402,10 @@ export async function getFlatpickrOptions(
     noCalendar: mode === 'time' ? true : noCalendar,
     allowInput: allowInput || false,
     clickOpens: true,
-    time_24hr: twentyFourHourFormat,
+    time_24hr:
+      typeof twentyFourHourFormat === 'boolean'
+        ? twentyFourHourFormat
+        : !isEnglishOr12HourLocale,
     weekNumbers: false,
     wrap,
     showMonths: isWideScreen && mode === 'range' ? 2 : 1,
@@ -496,6 +503,31 @@ export async function loadLocale(locale: string): Promise<Partial<Locale>> {
     }
     return English;
   }
+}
+
+export function hideEmptyYear(): void {
+  document.querySelectorAll('.numInputWrapper').forEach((wrapper) => {
+    const yearInput = wrapper.querySelector(
+      '.numInput.cur-year'
+    ) as HTMLInputElement;
+
+    const currentMonth = document.querySelector(
+      '.flatpickr-current-month span.cur-month'
+    ) as HTMLElement;
+
+    if (
+      yearInput &&
+      yearInput.min &&
+      yearInput.max &&
+      yearInput.min === yearInput.max
+    ) {
+      (wrapper as HTMLElement).style.display = 'none';
+
+      if (currentMonth) {
+        currentMonth.style.marginLeft = 'auto';
+      }
+    }
+  });
 }
 
 export function validate(

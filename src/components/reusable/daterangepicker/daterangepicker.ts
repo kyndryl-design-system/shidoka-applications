@@ -16,6 +16,7 @@ import {
   loadLocale,
   emitValue,
   updateEnableTime,
+  hideEmptyYear,
 } from '../../../common/helpers/flatpickr';
 
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -99,7 +100,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   /** Sets 24 hour formatting true/false. */
   @property({ type: Boolean })
-  twentyFourHourFormat = false;
+  twentyFourHourFormat: null | false | true = null;
 
   /** Sets lower boundary of date range picker date selection. */
   @property({ type: String })
@@ -335,7 +336,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
       changedProperties.has('minDate') ||
       changedProperties.has('defaultDate') ||
       changedProperties.has('maxDate') ||
-      changedProperties.has('locale')
+      changedProperties.has('locale') ||
+      changedProperties.has('twentyFourHourFormat')
     ) {
       this._enableTime = updateEnableTime(this.dateFormat);
       this.reinitializeFlatpickr();
@@ -375,6 +377,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       appendToBody: false,
     });
 
+    hideEmptyYear();
     this._validate(false, false);
   }
 
@@ -384,7 +387,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       dateFormat: this.dateFormat,
       defaultDate: this.defaultDate ?? undefined,
       enableTime: this._enableTime,
-      twentyFourHourFormat: this.twentyFourHourFormat,
+      twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       mode: 'range',
       inputEl: this._inputEl!,
       minDate: this.minDate,
@@ -412,6 +415,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
     });
 
     this.flatpickrInstance.redraw();
+
+    hideEmptyYear();
 
     if (currentDates && currentDates.length === 2) {
       this.flatpickrInstance.setDate(currentDates, false);

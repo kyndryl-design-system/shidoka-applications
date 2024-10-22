@@ -106,7 +106,6 @@ DefaultDateRangePicker.args = {
   warningTitle: '',
   caption: 'Click the input above to select a date range.',
   dateRangePickerDisabled: false,
-  twentyFourHourFormat: false,
   minDate: '',
   maxDate: '',
   label: 'Date Range',

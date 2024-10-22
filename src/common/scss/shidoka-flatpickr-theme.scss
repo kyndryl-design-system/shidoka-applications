@@ -35,14 +35,14 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
     &.rangeMode.multiMonth .flatpickr-months .flatpickr-month {
         &:first-of-type {
             .flatpickr-current-month {
-                left: 6%;
+                left: 0;
                 right: auto;
             }
         }
 
         &:nth-of-type(2) {
             .flatpickr-current-month {
-                right: 6%;
+                right: 0;
                 left: auto;
             }
         }
@@ -209,13 +209,14 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
 
 .flatpickr-months .flatpickr-prev-month,
 .flatpickr-months .flatpickr-next-month {
+    position: absolute;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     text-decoration: none;
     cursor: pointer;
-    top: 0;
+    top: 8px;
     height: 34px;
     padding: 10px;
     z-index: 3;
@@ -239,7 +240,7 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
       /*rtl:begin:ignore*/
     /*
       */
-    left: 0;
+    left: 3px;
     /*
       /*rtl:end:ignore*/
     /*
@@ -256,7 +257,7 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
       /*rtl:begin:ignore*/
     /*
       */
-    right: 0;
+    right: 3px;
     /*
       /*rtl:end:ignore*/
     /*
@@ -385,8 +386,8 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
     font-weight: 300;
     color: inherit;
     position: absolute;
-    width: 75%;
-    left: 12.5%;
+    width: 100%;
+    left: 0;
     padding: 9px 0 0 0;
     line-height: 1;
     height: 34px;
@@ -404,6 +405,7 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
     color: inherit;
     display: inline-block;
     padding: 0;
+    margin-left: 1.75ch;
 }
 
 .flatpickr-current-month span.cur-month:hover {
@@ -411,7 +413,7 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
 }
 
 .flatpickr-current-month .numInputWrapper {
-    width: 3.75ch;
+    width: 5ch;
     display: inline-block;
 }
 

@@ -90,7 +90,6 @@ DefaultTimePicker.args = {
   warningAriaLabel: '',
   warningTitle: '',
   timepickerDisabled: false,
-  twentyFourHourFormat: false,
   label: 'Timepicker',
 };
 DefaultTimePicker.storyName = 'Default (12H)';

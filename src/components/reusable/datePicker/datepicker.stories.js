@@ -107,7 +107,6 @@ DatePickerDefault.args = {
   mode: 'single',
   caption: 'Example datepicker caption.',
   datePickerDisabled: false,
-  twentyFourHourFormat: false,
   minDate: '',
   maxDate: '',
   label: 'Date',
