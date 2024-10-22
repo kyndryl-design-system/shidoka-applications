@@ -40,7 +40,7 @@ const args = {
   invalidText: '',
   caption: '',
   searchText: '',
-  value: [],
+  value: '',
   menuMinWidth: 'initial',
   textStrings: {
     required: 'Required',
@@ -127,7 +127,7 @@ export const SingleSearchable = {
 };
 
 export const MultiSelect = {
-  args: { ...args, value: ['2'] },
+  args: { ...args, value: [] },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -278,7 +278,6 @@ const items = [
   {
     value: 'option4',
     text: 'Option 4',
-    selected: true,
   },
 ];
 
