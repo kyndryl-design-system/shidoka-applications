@@ -40,7 +40,7 @@ const args = {
   invalidText: '',
   caption: '',
   searchText: '',
-  value: '',
+  value: [],
   menuMinWidth: 'initial',
   textStrings: {
     required: 'Required',
@@ -212,27 +212,6 @@ export const MultiSelectSearchable = {
   },
 };
 
-const items = [
-  {
-    value: 'option1',
-    text: 'Option 1',
-  },
-  {
-    value: 'option2',
-    text: 'Option 2',
-    selected: true,
-  },
-  {
-    value: 'option3',
-    text: 'Option 3',
-    disabled: true,
-  },
-  {
-    value: 'option4',
-    text: 'Option 4',
-  },
-];
-
 export const Grouped = {
   args: args,
   render: (args) => {
@@ -273,9 +252,39 @@ export const Grouped = {
   },
 };
 
+const items = [
+  {
+    value: 'option1',
+    text: 'Option 1',
+  },
+  {
+    value: 'option2',
+    text: 'Option 2',
+    selected: true,
+  },
+  {
+    value: 'option3',
+    text: 'Option 3',
+    disabled: true,
+  },
+  {
+    value: 'option4',
+    text: 'Option 4',
+  },
+];
+
+const initialSelectedValues = items
+  .filter((item) => item.selected)
+  .map((item) => item.value);
+
 export const DataDrivenOptions = {
-  args: args,
+  args: { ...args, value: initialSelectedValues },
   render: (args) => {
+    let selectedValues = args.value || [];
+    const handleChange = (e) => {
+      selectedValues = e.detail.value;
+      action(e.type)(e);
+    };
     return html`
       <kyn-dropdown
         label=${args.label}
@@ -291,11 +300,8 @@ export const DataDrivenOptions = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=${args.value}
-        @on-change=${(e) => {
-          // console.log(e.detail);
-          action(e.type)(e);
-        }}
+        .value=${selectedValues}
+        @on-change=${handleChange}
       >
         <kyn-tooltip slot="tooltip">
           <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip

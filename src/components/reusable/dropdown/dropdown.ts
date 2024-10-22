@@ -40,10 +40,6 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: String })
   label = '';
 
-  /** Update by value instead of deriving value from child selections. */
-  @property({ type: Boolean })
-  updateByValue = false;
-
   /** Dropdown size/height. "sm", "md", or "lg". */
   @property({ type: String })
   size = 'md';
