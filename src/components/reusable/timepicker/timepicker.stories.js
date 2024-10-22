@@ -107,6 +107,7 @@ export const TimePickerAltLanguage = Template.bind({});
 TimePickerAltLanguage.args = {
   ...DefaultTimePicker.args,
   locale: 'ja',
-  label: 'タイムピッカー',
+  twentyFourHourFormat: false,
+  label: 'Non-English 12H Example (Japanese locale)',
 };
 TimePickerAltLanguage.storyName = 'Japanese Locale Example';

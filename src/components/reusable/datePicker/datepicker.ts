@@ -104,7 +104,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
   /** Sets 24 hour formatting true/false. */
   @property({ type: Boolean })
-  twentyFourHourFormat: null | false | true = null;
+  twentyFourHourFormat: boolean | null = null;
 
   /** Sets lower boundary of datepicker date selection. */
   @property({ type: String })
@@ -322,12 +322,22 @@ export class DatePicker extends FormMixin(LitElement) {
       changedProperties.has('twentyFourHourFormat')
     ) {
       this._enableTime = updateEnableTime(this.dateFormat);
-      if (this.flatpickrInstance) {
+      this.reinitializeFlatpickr();
+
+      if (
+        this.flatpickrInstance ||
+        changedProperties.has('twentyFourHourFormat')
+      ) {
         this.updateFlatpickrOptions();
       } else {
         this.initializeFlatpickr();
       }
     }
+  }
+
+  private async reinitializeFlatpickr() {
+    this.flatpickrInstance?.destroy();
+    await this.initializeFlatpickr();
   }
 
   private async setupAnchor() {
