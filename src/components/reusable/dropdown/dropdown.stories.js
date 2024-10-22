@@ -40,6 +40,7 @@ const args = {
   invalidText: '',
   caption: '',
   searchText: '',
+  value: '',
   menuMinWidth: 'initial',
   textStrings: {
     required: 'Required',
@@ -64,7 +65,7 @@ export const Single = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=""
+        value=${args.value}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
@@ -104,7 +105,7 @@ export const SingleSearchable = {
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
         .textStrings=${args.textStrings}
-        value=""
+        value=${args.value}
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >
@@ -146,7 +147,7 @@ export const MultiSelect = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=""
+        value=${args.value}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
@@ -190,7 +191,7 @@ export const MultiSelectSearchable = {
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
         .textStrings=${args.textStrings}
-        value=""
+        value=${args.value}
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >
@@ -249,7 +250,7 @@ export const Grouped = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=""
+        value=${args.value}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
@@ -290,7 +291,7 @@ export const DataDrivenOptions = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=""
+        value=${args.value}
         @on-change=${(e) => {
           // console.log(e.detail);
           action(e.type)(e);
