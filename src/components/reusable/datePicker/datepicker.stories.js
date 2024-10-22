@@ -35,6 +35,7 @@ export default {
       control: { type: 'select' },
     },
     defaultDate: { control: { type: 'text' } },
+    twentyFourHourFormat: { control: { type: 'boolean' } },
     defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
     maxDate: { control: { type: 'text' } },
