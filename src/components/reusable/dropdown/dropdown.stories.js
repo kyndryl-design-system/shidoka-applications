@@ -127,7 +127,7 @@ export const SingleSearchable = {
 };
 
 export const MultiSelect = {
-  args: args,
+  args: { ...args, value: ['2'] },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -147,8 +147,12 @@ export const MultiSelect = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=${args.value}
-        @on-change=${(e) => action(e.type)(e)}
+        .value=${args.value}
+        @on-change=${(e) => {
+          const selectedValues = e.detail.value;
+          args.value = selectedValues;
+          action(e.type)(e);
+        }}
       >
         <kyn-tooltip slot="tooltip">
           <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
@@ -191,8 +195,12 @@ export const MultiSelectSearchable = {
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
         .textStrings=${args.textStrings}
-        value=${args.value}
-        @on-change=${(e) => action(e.type)(e)}
+        .value=${args.value}
+        @on-change=${(e) => {
+          const selectedValues = e.detail.value;
+          args.value = selectedValues;
+          action(e.type)(e);
+        }}
         @on-search=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
@@ -270,6 +278,7 @@ const items = [
   {
     value: 'option4',
     text: 'Option 4',
+    selected: true,
   },
 ];
 
