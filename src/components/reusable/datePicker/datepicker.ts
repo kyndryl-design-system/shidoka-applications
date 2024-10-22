@@ -102,7 +102,9 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   datePickerDisabled = false;
 
-  /** Sets 24 hour formatting true/false. */
+  /** Sets 24 hour formatting true/false.
+   * Defaults to 12H for all `en-*` locales and 24H for all other locales.
+   */
   @property({ type: Boolean })
   twentyFourHourFormat: boolean | null = null;
 
