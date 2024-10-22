@@ -18,7 +18,7 @@ const args = {
   pageSize: 5,
   pageNumber: 1,
   pageSizeOptions: [5, 10, 20, 30, 40, 50, 100],
-  pageSizeLabel: 'Items Per Page:',
+  pageSizeDropdownLabel: 'Items Per Page:',
   hideItemsRange: false,
   hidePageSizeDropdown: false,
   hideNavigationButtons: false,
@@ -42,7 +42,7 @@ export const Pagination = {
         .pageSize=${args.pageSize}
         .pageNumber=${args.pageNumber}
         .pageSizeOptions=${args.pageSizeOptions}
-        .pageSizeLabel=${args.pageSizeLabel}
+        .pageSizeDropdownLabel=${args.pageSizeDropdownLabel}
         ?hideItemsRange=${args.hideItemsRange}
         ?hidePageSizeDropdown=${args.hidePageSizeDropdown}
         ?hideNavigationButtons=${args.hideNavigationButtons}

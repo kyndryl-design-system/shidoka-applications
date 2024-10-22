@@ -1,6 +1,9 @@
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
+import '../tooltip';
+import infoIcon from '@carbon/icons/es/information/16';
+import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 export default {
   title: 'Components/Dropdown',
@@ -49,6 +52,7 @@ export const Single = {
   render: (args) => {
     return html`
       <kyn-dropdown
+        label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
         ?inline=${args.inline}
@@ -63,7 +67,9 @@ export const Single = {
         value=""
         @on-change=${(e) => action(e.type)(e)}
       >
-        <span slot="label">${args.label}</span>
+        <kyn-tooltip slot="tooltip">
+          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+        </kyn-tooltip>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
         <kyn-dropdown-option value="3" disabled>
@@ -83,6 +89,7 @@ export const SingleSearchable = {
   render: (args) => {
     return html`
       <kyn-dropdown
+        label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
         ?inline=${args.inline}
@@ -101,7 +108,9 @@ export const SingleSearchable = {
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >
-        <span slot="label">${args.label}</span>
+        <kyn-tooltip slot="tooltip">
+          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+        </kyn-tooltip>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
         <kyn-dropdown-option value="3" disabled>
@@ -121,6 +130,7 @@ export const MultiSelect = {
   render: (args) => {
     return html`
       <kyn-dropdown
+        label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
         ?inline=${args.inline}
@@ -139,7 +149,9 @@ export const MultiSelect = {
         value=""
         @on-change=${(e) => action(e.type)(e)}
       >
-        <span slot="label">${args.label}</span>
+        <kyn-tooltip slot="tooltip">
+          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+        </kyn-tooltip>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
         <kyn-dropdown-option value="3" disabled>
@@ -159,6 +171,7 @@ export const MultiSelectSearchable = {
   render: (args) => {
     return html`
       <kyn-dropdown
+        label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
         ?inline=${args.inline}
@@ -181,7 +194,9 @@ export const MultiSelectSearchable = {
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >
-        <span slot="label">${args.label}</span>
+        <kyn-tooltip slot="tooltip">
+          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+        </kyn-tooltip>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
         <kyn-dropdown-option value="3" disabled>
@@ -222,6 +237,7 @@ export const Grouped = {
   render: (args) => {
     return html`
       <kyn-dropdown
+        label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
         ?inline=${args.inline}
@@ -236,7 +252,9 @@ export const Grouped = {
         value=""
         @on-change=${(e) => action(e.type)(e)}
       >
-        <span slot="label">${args.label}</span>
+        <kyn-tooltip slot="tooltip">
+          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+        </kyn-tooltip>
         <kyn-dropdown-category>Category 1</kyn-dropdown-category>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
 
@@ -259,6 +277,7 @@ export const DataDrivenOptions = {
   render: (args) => {
     return html`
       <kyn-dropdown
+        label=${args.label}
         multiple
         placeholder=${args.placeholder}
         size=${args.size}
@@ -277,7 +296,9 @@ export const DataDrivenOptions = {
           action(e.type)(e);
         }}
       >
-        <span slot="label">${args.label}</span>
+        <kyn-tooltip slot="tooltip">
+          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+        </kyn-tooltip>
 
         ${items.map((item) => {
           return html`
