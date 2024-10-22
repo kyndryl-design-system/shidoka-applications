@@ -9,6 +9,7 @@
   gap: 8px;
   padding: 0;
   margin-bottom: 8px;
+  cursor: default;
 
   &.sr-only {
     @include visibility.sr-only;
@@ -42,6 +43,7 @@
 input,
 .input-custom,
 textarea {
+  pointer-events: auto;
   @include typography.type-body-02;
   border-color: var(--kd-color-border-ui);
   color: var(--kd-color-text-primary);
@@ -78,6 +80,15 @@ textarea {
   align-items: center;
   color: var(--kd-color-text-error);
   margin-top: 8px;
+  cursor: default;
+
+  &.error-text {
+
+    .error-icon {
+      display: flex;
+      align-items: center;
+    }
+  }
 
   [disabled] & {
     color: var(--kd-color-text-disabled);
@@ -107,16 +118,53 @@ textarea {
 
 .caption {
   margin-top: 8px;
+  cursor: default;
 
   [disabled] & {
     color: var(--kd-color-text-disabled);
   }
 }
 
+.clear-button {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  height: 20px;
+  width: 35px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--kd-color-text-secondary);
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.input-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  height: 16px;
+  width: 16px;
+  color: var(--kd-color-text-secondary);
+}
+
 .warn {
   display: flex;
   align-items: center;
   margin-top: 8px;
+  cursor: default;
+
+  &.warn-text {
+    font-size: 16px;
+  }
 
   [disabled] & {
     color: var(--kd-color-text-disabled);
