@@ -40,10 +40,6 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: String })
   label = '';
 
-  /** Update by value instead of deriving value from child selections. */
-  @property({ type: Boolean })
-  updateByValue = false;
-
   /** Dropdown size/height. "sm", "md", or "lg". */
   @property({ type: String })
   size = 'md';
@@ -437,20 +433,7 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleSlotChange() {
-    this.resetSelection();
-  }
-
-  /**
-   * Retrieves the selected values from the list of child options and sets value property.
-   * @function
-   */
-  public resetSelection() {
-    if (this.updateByValue) {
-      this._updateOptions();
-    } else {
-      this._updateChildren();
-      this.emitValue();
-    }
+    this._updateOptions();
   }
 
   private handleClick() {
@@ -704,6 +687,7 @@ export class Dropdown extends FormMixin(LitElement) {
     // clear selection for single select
     if (!this.multiple) {
       this.value = '';
+      this._validate(true, false);
       this._updateSelectedOptions();
       this.emitValue();
     }
@@ -1019,21 +1003,7 @@ export class Dropdown extends FormMixin(LitElement) {
       this.selectAllIndeterminate =
         SelectedOptions.length < Options.length && SelectedOptions.length > 0;
 
-      // set form data value
-      // if (this.multiple) {
-      //   const entries = new FormData();
-      //   this.value.forEach((value: string) => {
-      //     entries.append(this.name, value);
-      //   });
-      //   this.internals.setFormValue(entries);
-      // } else {
-      //   this.internals.setFormValue(this.value);
-      // }
-
-      if (this.updateByValue) {
-        this._updateOptions();
-      }
-
+      this._updateOptions();
       this._updateTags();
 
       // update selected option text
@@ -1140,35 +1110,6 @@ export class Dropdown extends FormMixin(LitElement) {
         option.selected = this.value === option.value;
       }
     });
-  }
-
-  private _updateChildren() {
-    const Slot: any = this.shadowRoot?.querySelector('slot#children');
-    const Options = Slot?.assignedElements();
-
-    // get value from selected options
-    if (Options) {
-      const values: any = [];
-      let value = '';
-      Options.forEach((option: any) => {
-        option.multiple = this.multiple;
-
-        if (option.selected) {
-          if (this.multiple) {
-            values.push(option.value);
-          } else {
-            value = option.value;
-          }
-        }
-      });
-
-      // set initial values
-      if (this.multiple) {
-        this.value = values;
-      } else {
-        this.value = value;
-      }
-    }
   }
 }
 

@@ -65,7 +65,6 @@ export class PaginationPageSizeDropdown extends LitElement {
         label="${this.pageSizeDropdownLabel}"
         inline
         size="sm"
-        updateByValue
         value=${this.pageSize.toString()}
         @on-change=${(e: CustomEvent) => this.handleChange(e)}
       >
