@@ -16,14 +16,6 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    resetSelection: {
-      description:
-        'Manually reset the dropdown value. Useful when programmatically updating child options. Must be called after child options are updated/re-rendered.',
-      table: {
-        category: 'Methods',
-        type: 'Function',
-      },
-    },
   },
   parameters: {
     design: {
@@ -48,8 +40,8 @@ const args = {
   invalidText: '',
   caption: '',
   searchText: '',
+  value: '',
   menuMinWidth: 'initial',
-  updateByValue: false,
   textStrings: {
     required: 'Required',
     error: 'Error',
@@ -72,8 +64,8 @@ export const Single = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
-        ?updateByValue=${args.updateByValue}
         .textStrings=${args.textStrings}
+        value=${args.value}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
@@ -112,8 +104,8 @@ export const SingleSearchable = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
-        ?updateByValue=${args.updateByValue}
         .textStrings=${args.textStrings}
+        value=${args.value}
         @on-change=${(e) => action(e.type)(e)}
         @on-search=${(e) => action(e.type)(e)}
       >
@@ -135,7 +127,7 @@ export const SingleSearchable = {
 };
 
 export const MultiSelect = {
-  args: args,
+  args: { ...args, value: ['1'] },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -154,9 +146,13 @@ export const MultiSelect = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
-        ?updateByValue=${args.updateByValue}
         .textStrings=${args.textStrings}
-        @on-change=${(e) => action(e.type)(e)}
+        .value=${args.value}
+        @on-change=${(e) => {
+          const selectedValues = e.detail.value;
+          args.value = selectedValues;
+          action(e.type)(e);
+        }}
       >
         <kyn-tooltip slot="tooltip">
           <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
@@ -176,7 +172,7 @@ export const MultiSelect = {
 };
 
 export const MultiSelectSearchable = {
-  args: { ...args, filterSearch: false },
+  args: { ...args, filterSearch: false, value: [] },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -198,15 +194,59 @@ export const MultiSelectSearchable = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
-        ?updateByValue=${args.updateByValue}
         .textStrings=${args.textStrings}
-        @on-change=${(e) => action(e.type)(e)}
+        .value=${args.value}
+        @on-change=${(e) => {
+          const selectedValues = e.detail.value;
+          args.value = selectedValues;
+          action(e.type)(e);
+        }}
         @on-search=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
           <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
         </kyn-tooltip>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+        <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+        <kyn-dropdown-option value="3" disabled>
+          Disabled Option
+        </kyn-dropdown-option>
+        <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
+        <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
+        <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
+        <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
+      </kyn-dropdown>
+    `;
+  },
+};
+
+export const Grouped = {
+  args: args,
+  render: (args) => {
+    return html`
+      <kyn-dropdown
+        label=${args.label}
+        placeholder=${args.placeholder}
+        size=${args.size}
+        ?inline=${args.inline}
+        name=${args.name}
+        ?open=${args.open}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
+        .textStrings=${args.textStrings}
+        value=${args.value}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+        <kyn-tooltip slot="tooltip">
+          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+        </kyn-tooltip>
+        <kyn-dropdown-category>Category 1</kyn-dropdown-category>
+        <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+
+        <kyn-dropdown-category>Category 2</kyn-dropdown-category>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
         <kyn-dropdown-option value="3" disabled>
           Disabled Option
@@ -241,49 +281,18 @@ const items = [
   },
 ];
 
-export const Grouped = {
-  args: args,
-  render: (args) => {
-    return html`
-      <kyn-dropdown
-        label=${args.label}
-        placeholder=${args.placeholder}
-        size=${args.size}
-        ?inline=${args.inline}
-        name=${args.name}
-        ?open=${args.open}
-        ?required=${args.required}
-        ?disabled=${args.disabled}
-        invalidText=${args.invalidText}
-        caption=${args.caption}
-        menuMinWidth=${args.menuMinWidth}
-        ?updateByValue=${args.updateByValue}
-        .textStrings=${args.textStrings}
-        @on-change=${(e) => action(e.type)(e)}
-      >
-        <kyn-tooltip slot="tooltip">
-          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
-        </kyn-tooltip>
-        <kyn-dropdown-category>Category 1</kyn-dropdown-category>
-        <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
-
-        <kyn-dropdown-category>Category 2</kyn-dropdown-category>
-        <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
-        <kyn-dropdown-option value="3" disabled>
-          Disabled Option
-        </kyn-dropdown-option>
-        <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
-        <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
-        <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
-        <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
-      </kyn-dropdown>
-    `;
-  },
-};
+const initialSelectedValues = items
+  .filter((item) => item.selected)
+  .map((item) => item.value);
 
 export const DataDrivenOptions = {
-  args: args,
+  args: { ...args, value: initialSelectedValues },
   render: (args) => {
+    let selectedValues = args.value || [];
+    const handleChange = (e) => {
+      selectedValues = e.detail.value;
+      action(e.type)(e);
+    };
     return html`
       <kyn-dropdown
         label=${args.label}
@@ -298,12 +307,9 @@ export const DataDrivenOptions = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
-        ?updateByValue=${args.updateByValue}
         .textStrings=${args.textStrings}
-        @on-change=${(e) => {
-          // console.log(e.detail);
-          action(e.type)(e);
-        }}
+        .value=${selectedValues}
+        @on-change=${handleChange}
       >
         <kyn-tooltip slot="tooltip">
           <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
@@ -311,11 +317,7 @@ export const DataDrivenOptions = {
 
         ${items.map((item) => {
           return html`
-            <kyn-dropdown-option
-              value=${item.value}
-              ?selected=${item.selected}
-              ?disabled=${item.disabled}
-            >
+            <kyn-dropdown-option value=${item.value} ?disabled=${item.disabled}>
               ${item.text}
             </kyn-dropdown-option>
           `;
