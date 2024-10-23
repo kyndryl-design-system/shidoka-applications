@@ -1,11 +1,7 @@
-import { html } from 'lit';
 import './index';
+import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { ifDefined } from 'lit/directives/if-defined.js';
-import { createOptionsArray } from '../../../common/helpers/helpers';
-
-import { DATE_PICKER_TYPES } from '../datePicker/defs';
-const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
+import { useEffect } from '@storybook/addons';
 
 export default {
   title: 'Components/Date Range Picker',
@@ -13,110 +9,115 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=508%3A142381&mode=dev',
+      url: 'https://www.figma.com/design/s9VKYHFn1GncFyxd5l19nU/1.11-Amsterdam?node-id=6086-1559&node-type=canvas&m=dev',
     },
   },
   argTypes: {
+    locale: { control: { type: 'text' } },
+    twentyFourHourFormat: { control: { type: 'boolean' } },
+    dateRangePickerDisabled: { control: { type: 'boolean' } },
+    dateFormat: {
+      options: [
+        'Y-m-d',
+        'm-d-Y',
+        'd-m-Y',
+        'Y-m-d H:i',
+        'Y-m-d H:i:s',
+        'm-d-Y H:i:s',
+        'd-m-Y H:i:s',
+      ],
+      control: { type: 'select' },
+    },
     size: {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    minDate: {
-      control: { type: 'text' },
-    },
-    maxDate: {
-      control: { type: 'text' },
-    },
-    step: {
-      control: { type: 'text' },
-    },
-    startDate: {
-      control: { type: 'text' },
-    },
-    endDate: {
-      control: { type: 'text' },
-    },
-    datePickerType: {
-      options: createSelectOptions(DATE_PICKER_TYPES),
-      control: { type: 'select', labels: { null: DATE_PICKER_TYPES.SINGLE } },
-      table: {
-        defaultValue: { summary: DATE_PICKER_TYPES.SINGLE },
-      },
-    },
+    defaultDate: { control: { type: 'text' } },
+    label: { control: { type: 'text' } },
+    defaultErrorMessage: { control: { type: 'text' } },
+    minDate: { control: { type: 'text' } },
+    maxDate: { control: { type: 'text' } },
+    invalidText: { control: { type: 'text' } },
   },
 };
 
-const args = {
-  unnamed: 'Date',
-  size: 'md',
-  name: 'dateRangePicker',
-  startDate: '',
-  endDate: '',
-  caption: '',
+const disconnectFlatpickr = () => {
+  const calendarElements = document.querySelectorAll('.flatpickr-calendar');
+  calendarElements.forEach((calendar) => calendar.remove());
+};
+
+const SingleInput = (args) => {
+  // prevents flatpickr calendar overlay from persisting on view change
+  useEffect(() => {
+    return () => {
+      disconnectFlatpickr();
+    };
+  }, []);
+
+  return html`
+    <kyn-date-range-picker
+      .name="${args.name}"
+      .label="${args.label}"
+      .locale="${args.locale}"
+      .dateFormat="${args.dateFormat}"
+      .defaultDate="${args.defaultDate}"
+      .defaultErrorMessage="${args.defaultErrorMessage}"
+      .value="${args.value}"
+      .warnText="${args.warnText}"
+      .invalidText="${args.invalidText}"
+      .disable="${args.disable}"
+      .enable="${args.enable}"
+      .caption="${args.caption}"
+      ?required="${args.required}"
+      .size="${args.size}"
+      ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
+      ?twentyFourHourFormat="${args.twentyFourHourFormat}"
+      .minDate="${args.minDate}"
+      .maxDate="${args.maxDate}"
+      .errorAriaLabel="${args.errorAriaLabel}"
+      .errorTitle="${args.errorTitle}"
+      .warningAriaLabel="${args.warningAriaLabel}"
+      .warningTitle="${args.warningTitle}"
+      .startDateLabel="${args.startDateLabel}"
+      .endDateLabel="${args.endDateLabel}"
+      @on-change=${(e) => action(e.type)(e)}
+    >
+    </kyn-date-range-picker>
+  `;
+};
+
+export const DefaultDateRangePicker = SingleInput.bind({});
+DefaultDateRangePicker.args = {
+  name: 'default-date-range-picker',
+  locale: 'en',
+  dateFormat: 'Y-m-d',
+  defaultDate: '',
   required: false,
-  disabled: false,
-  datePickerType: 'single',
-  invalidText: '',
+  size: 'md',
+  defaultErrorMessage: 'Both start and end dates are required',
+  value: [null, null],
   warnText: '',
-  minDate: undefined,
-  maxDate: undefined,
-  step: undefined,
-  textStrings: {
-    requiredText: 'Required',
-  },
+  invalidText: '',
+  disable: [],
+  enable: [],
+  errorAriaLabel: 'Error message icon',
+  errorTitle: '',
+  warningAriaLabel: '',
+  warningTitle: '',
+  caption: 'Click the input above to select a date range.',
+  dateRangePickerDisabled: false,
+  minDate: '',
+  maxDate: '',
+  label: 'Date Range',
 };
+DefaultDateRangePicker.storyName = 'Date Range Only (Default)';
 
-export const DateRangePicker = {
-  args,
-  render: (args) => {
-    return html`
-      <kyn-date-range-picker
-        size=${args.size}
-        name=${args.name}
-        datePickerType=${args.datePickerType}
-        caption=${args.caption}
-        ?required=${args.required}
-        ?disabled=${args.disabled}
-        invalidText=${args.invalidText}
-        warnText=${args.warnText}
-        .textStrings=${args.textStrings}
-        startDate=${args.startDate}
-        endDate=${args.endDate}
-        minDate=${ifDefined(args.minDate)}
-        maxDate=${ifDefined(args.maxDate)}
-        step=${ifDefined(args.step)}
-        @on-input=${(e) => action(e.type)(e)}
-        @keydown=${(e) => e.stopPropagation()}
-      >
-        ${args.unnamed}
-      </kyn-date-range-picker>
-    `;
-  },
+export const DateTimeRangePickerSingle = SingleInput.bind({});
+DateTimeRangePickerSingle.args = {
+  ...DefaultDateRangePicker.args,
+  name: 'date-time-range-picker',
+  dateFormat: 'Y-m-d H:i',
+  caption: 'Example caption for the Date Range Picker with Time Input',
+  label: 'Start + End Date / Time',
 };
-
-export const DateTimeRangePicker = {
-  args: { ...args, datePickerType: 'date-time' },
-  render: (args) => {
-    return html`
-      <kyn-date-range-picker
-        size=${args.size}
-        name=${args.name}
-        datePickerType=${args.datePickerType}
-        caption=${args.caption}
-        ?required=${args.required}
-        ?disabled=${args.disabled}
-        invalidText=${args.invalidText}
-        warnText=${args.warnText}
-        startDate=${args.startDate}
-        endDate=${args.endDate}
-        minDate=${ifDefined(args.minDate)}
-        maxDate=${ifDefined(args.maxDate)}
-        step=${ifDefined(args.step)}
-        @on-input=${(e) => action(e.type)(e)}
-        @keydown=${(e) => e.stopPropagation()}
-      >
-        ${args.unnamed}
-      </kyn-date-range-picker>
-    `;
-  },
-};
+DateTimeRangePickerSingle.storyName = 'Date + Time Range';

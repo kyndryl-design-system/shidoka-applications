@@ -31,6 +31,55 @@ Breaking Changes
   - Radio Button Group , Number Input, Text Input , Text Area, Checkbox Group, Checkbox subgroups, Dropdown
     - Added a dedicated slot for tooltip.
     - `label` slot has been updated to a `label` string prop
+- Updated Date, Time, and Date Range Picker components
+  - Library integration
+    - Utilizes Flatpickr third-party date picker library to standardize date, time, and date range pickers across all browsers
+    - Localization support provided by Flatpickr (see `locale` prop note below)
+    - run `npm install` to ensure required packages are installed
+  - Property changes
+    - Replace `datePickerType` with `mode` property (for DatePicker and DateRangePicker)
+    - Update `value` property:
+      - DatePicker: Change from string to `Date | null`
+        - Input: Accept `Date` object or ISO string
+        - Output: `Date` object
+      - DateRangePicker: Change from `string` to `[Date | null, Date | null]`
+        - Input: Accept array of two `Date` objects or ISO strings
+        - Output: Array of two `Date` objects
+      - TimePicker: Change from string to `Date | null`
+        - Input: Accept `Date` object or ISO string
+        - Output: `Date` object
+    - Use Flatpickr's `mode` and `dateFormat` instead of `DATE_PICKER_TYPES`
+    - Rename `disabled` property to `datePickerDisabled` (for DatePicker), `dateRangePickerDisabled` (for DateRangePicker), and `timePickerDisabled` (for TimePicker)
+    - Remove usage of `step` property
+    - Use Flatpickr's `enable` and `disable` Array properties where functionality is needed to enable/disable specific dates
+  - New Properties
+    - Add use `locale` property (must use for Flatpickr localization)
+    - Add `twentyFourHourFormat` property for time format (if needed)
+    - Add `defaultDate` property for DatePicker, DateRangePicker, and TimePicker
+    - Add `defaultHour` and `defaultMinute` properties for Timepicker
+  - Event handling
+    - Update event listeners from `@on-input` to `@on-change`
+    - Update event detail structure in event handler
+      - Old structure: `{ value: string, origEvent: Event }`
+      - New structure: `{ dates: string | string[], dateString: string }`
+  - Template changes
+    - Replace unnamed slot for label with `label` property
+    - Add tooltip slot if tooltip functionality is needed
+  - Styling considerations
+    - Flatpickr theming has been customized to coordinate with broader Shidoka Design System
+    - Update any custom CSS that targets internal elements of the components
+    - Be aware of new Flatpickr-related classes for styling overrides
+  - Validation
+    - Update any custom validation logic to work with the new Flatpickr integration
+    - Use `defaultErrorMessage` property instead of setting custom validation messages directly
+  - Accessibility
+    - Add `errorAriaLabel`, `errorTitle`, `warningAriaLabel`, and `warningTitle` properties if custom accessibility labels are needed
+    - Update any code that relies on specific date string formats to work with the new `Date` object values
+  - Date and Time handling
+    - Update any code that relies on specific date string formats to work with the new `Date` object values
+    - For TimePicker, update any code that assumes a specific time string format to work with the new `Date` object values
+    - Use `dateFormat` property to specify the desired input/output format for date strings
+  - Remember to consult the new component documentation for detailed information on new properties, events, and behaviors introduced in this version.
   - Toggle Button
     - Added a dedicated slot for tooltip.
     - `unnamed` slot for `label` has been updated to a `label` string prop
