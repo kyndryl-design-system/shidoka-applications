@@ -48,6 +48,98 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
         }
     }
 
+    &:not(.hasTime) {
+        .numInputWrapper span {
+            opacity: 1;
+            position: absolute;
+            right: 0;
+            width: 14px;
+            padding: 0 4px 0 2px;
+            height: 50%;
+            line-height: 50%;
+            cursor: pointer;
+            border: 1px solid rgba(72, 72, 72, 0.149);
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+            &:after {
+                display: block;
+                content: "";
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            &.arrowUp {
+                top: 0;
+                border: none;
+
+                &:after {
+                    border-left: 4px solid transparent;
+                    border-right: 4px solid transparent;
+                    border-bottom: 4px solid var(--kd-color-background-ui-strong);
+                    top: 26%;
+                }
+
+                &:hover {
+                    &:after {
+                        border-bottom: 4px solid var(--kd-color-background-ui-hover);
+                    }
+                }
+            }
+
+            &.arrowDown {
+                top: 50%;
+                border: none;
+
+                &:after {
+                    border-left: 4px solid transparent;
+                    border-right: 4px solid transparent;
+                    border-top: 4px solid var(--kd-color-background-ui-strong);
+                    top: 40%;
+                }
+
+                &:hover {
+                    &:after {
+                        border-top: 4px solid var(--kd-color-background-ui-hover);
+                    }
+                }
+            }
+        }
+    }
+
+    &.hasTime {
+        .numInputWrapper span {
+            &.arrowUp {
+                border: none;
+
+                &:after {
+                    border-bottom: 4px solid var(--kd-color-background-ui-strong);
+                }
+
+                &:hover {
+                    &:after {
+                        border-bottom: 4px solid var(--kd-color-background-ui-hover);
+                    }
+                }
+            }
+
+            &.arrowDown {
+                border: none;
+
+                &:after {
+                    border-top: 4px solid var(--kd-color-background-ui-strong);
+                }
+
+                &:hover {
+                    &:after {
+                        border-top: 4px solid var(--kd-color-background-ui-hover);
+                    }
+                }
+            }
+        }
+    }
+
     &:not(.noCalendar) {
         padding: 8px 0;
 
