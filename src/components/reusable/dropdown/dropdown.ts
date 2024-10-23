@@ -687,6 +687,7 @@ export class Dropdown extends FormMixin(LitElement) {
     // clear selection for single select
     if (!this.multiple) {
       this.value = '';
+      this._validate(true, false);
       this._updateSelectedOptions();
       this.emitValue();
     }
