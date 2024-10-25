@@ -1,10 +1,10 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import TextAreaScss from './textArea.scss';
 import { FormMixin } from '../../../common/mixins/form-input';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import errorIcon from '@carbon/icons/es/warning--filled/16';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 import { deepmerge } from 'deepmerge-ts';
 
 const _defaultTextStrings = {
@@ -115,12 +115,10 @@ ${this.value}</textarea
             ${this._isInvalid
               ? html`
                   <div id="error" class="error">
-                    <kd-icon
-                      role="img"
-                      title=${this._textStrings.errorText}
-                      aria-label=${this._textStrings.errorText}
-                      .icon=${errorIcon}
-                    ></kd-icon>
+                    <span role="img" aria-label=${this._textStrings.errorText}
+                      >${unsafeSVG(errorIcon)}</span
+                    >
+
                     ${this.invalidText || this._internalValidationMsg}
                   </div>
                 `

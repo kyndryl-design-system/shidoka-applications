@@ -1,9 +1,9 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
 import '../tooltip';
-import infoIcon from '@carbon/icons/es/information/16';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 export default {
   title: 'Components/Dropdown',
@@ -69,7 +69,7 @@ export const Single = {
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
-          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+          <span  slot="anchor" >${unsafeSVG(infoIcon)}</span> tooltip
         </kyn-tooltip>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
@@ -110,7 +110,7 @@ export const SingleSearchable = {
         @on-search=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
-          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+          <span  slot="anchor" >${unsafeSVG(infoIcon)}</span> tooltip
         </kyn-tooltip>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
@@ -155,7 +155,7 @@ export const MultiSelect = {
         }}
       >
         <kyn-tooltip slot="tooltip">
-          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+          <span  slot="anchor" >${unsafeSVG(infoIcon)}</span> tooltip
         </kyn-tooltip>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
@@ -204,7 +204,7 @@ export const MultiSelectSearchable = {
         @on-search=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
-          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+          <span  slot="anchor" >${unsafeSVG(infoIcon)}</span> tooltip
         </kyn-tooltip>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
@@ -241,7 +241,7 @@ export const Grouped = {
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
-          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+          <span  slot="anchor" >${unsafeSVG(infoIcon)}</span> tooltip
         </kyn-tooltip>
         <kyn-dropdown-category>Category 1</kyn-dropdown-category>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
@@ -312,7 +312,7 @@ export const DataDrivenOptions = {
         @on-change=${handleChange}
       >
         <kyn-tooltip slot="tooltip">
-          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+          <span  slot="anchor" >${unsafeSVG(infoIcon)}</span> tooltip
         </kyn-tooltip>
 
         ${items.map((item) => {

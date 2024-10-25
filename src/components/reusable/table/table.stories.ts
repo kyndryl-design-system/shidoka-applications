@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 /**
  * Copyright Kyndryl, Inc. 2023
  */
@@ -15,8 +16,8 @@ import './story-helpers/table-story.sample';
 import './story-helpers/table.settings.sample';
 import { characters, dataForColumns } from './story-helpers/ultils.sample';
 import allData from './story-helpers/table-data.json';
-import maleIcon from '@carbon/icons/es/gender--male/16';
-import femaleIcon from '@carbon/icons/es/gender--female/16';
+import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
+import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 
 const meta: Meta = {
   title: 'Components/Data Table',
@@ -158,8 +159,8 @@ export const NestedTable: Story = {
                 <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
                 <kyn-td .align=${'center'}>
                   ${row.gender === 'male'
-                    ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
-                    : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
+                    ? html`<span>${unsafeSVG(maleIcon)}</span>`
+                    : html`<span>${unsafeSVG(femaleIcon)}</span>`}
                 </kyn-td>
               </kyn-tr>
               <kyn-expanded-tr .colSpan=${8}>
@@ -216,8 +217,8 @@ export const ExpandableRows: Story = {
                 <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
                 <kyn-td .align=${'center'}>
                   ${row.gender === 'male'
-                    ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
-                    : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
+                    ? html`<span>${unsafeSVG(maleIcon)}</span>`
+                    : html`<span>${unsafeSVG(femaleIcon)}</span>`}
                 </kyn-td>
               </kyn-tr>
               <kyn-expanded-tr .colSpan=${8}>

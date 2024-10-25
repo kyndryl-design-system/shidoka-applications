@@ -1,11 +1,11 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css, PropertyValueMap } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import lockedIcon from '@carbon/icons/es/locked/16';
-import unlockedIcon from '@carbon/icons/es/unlocked/16';
+import lockedIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/lock.svg';
+import unlockedIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/unlock.svg';
 
 import '../../globalFilter';
 import '../index';
@@ -244,12 +244,11 @@ class StoryColumSetting extends LitElement {
                         this.handleLockingRow(e, row.id, row.locked)}
                       description="freeze column"
                     >
-                      <kd-icon
-                        slot="icon"
-                        .icon=${row.locked && row.id === this.hoveredButtonId
-                          ? unlockedIcon
-                          : lockedIcon}
-                      ></kd-icon>
+                      <span slot="icon"
+                        >${row.locked && row.id === this.hoveredButtonId
+                          ? unsafeSVG(unlockedIcon)
+                          : unsafeSVG(lockedIcon)}</span
+                      >
                     </kd-button>
                   </kyn-td>
                 </kyn-tr>

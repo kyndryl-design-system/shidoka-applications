@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import {
   customElement,
@@ -8,8 +9,7 @@ import {
 import { deepmerge } from 'deepmerge-ts';
 import RadioButtonGroupScss from './radioButtonGroup.scss';
 import { FormMixin } from '../../../common/mixins/form-input';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import errorIcon from '@carbon/icons/es/warning--filled/16';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 const _defaultTextStrings = {
   required: 'Required',
@@ -85,11 +85,11 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
         ${this._isInvalid
           ? html`
               <div class="error">
-                <kd-icon
-                  .icon="${errorIcon}"
+                <span
                   title=${this._textStrings.error}
                   aria-label=${this._textStrings.error}
-                ></kd-icon>
+                  >${unsafeSVG(errorIcon)}</span
+                >
                 ${this.invalidText || this._internalValidationMsg}
               </div>
             `

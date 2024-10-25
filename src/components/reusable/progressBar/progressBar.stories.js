@@ -1,9 +1,10 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 
 import './index';
 import '../tooltip';
 
-import informationIcon from '@carbon/icons/es/information/16';
+import informationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 export default {
   title: 'Components/Progress Bar',
@@ -43,8 +44,8 @@ const Template = (args) => html`
     ${args.unnamed
       ? html`<kyn-tooltip slot="unnamed">
           <span slot="anchor"
-            ><kd-icon .icon=${informationIcon} part="info-icon"></kd-icon
-          ></span>
+            ><span class="info-icon">${unsafeSVG(informationIcon)}</span></span
+          >
           ${args.unnamed}
         </kyn-tooltip>`
       : ''}

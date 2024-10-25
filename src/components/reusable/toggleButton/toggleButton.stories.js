@@ -1,9 +1,9 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
 import '../tooltip';
-import infoIcon from '@carbon/icons/es/information/16';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 export default {
   title: 'Components/Toggle Button',
@@ -45,7 +45,7 @@ export const ToggleButton = {
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
-          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+          <span slot="anchor">${unsafeSVG(infoIcon)}</span>
           tooltip
         </kyn-tooltip>
       </kyn-toggle-button>

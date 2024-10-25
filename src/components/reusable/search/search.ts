@@ -1,12 +1,12 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import Styles from './search.scss';
 import '../textInput';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import searchIcon from '@carbon/icons/es/search/24';
+import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/search.svg';
 import { deepmerge } from 'deepmerge-ts';
 
 const _defaultTextStrings = {
@@ -56,7 +56,6 @@ export class Search extends LitElement {
   @property({ type: String })
   expandableSearchBtnDescription = '';
 
-
   /** Assistive text strings. */
   @property({ type: Object })
   assistiveTextStrings = _defaultTextStrings;
@@ -105,7 +104,7 @@ export class Search extends LitElement {
           ?disabled=${this.disabled}
           @on-click=${this._handleButtonClick}
         >
-          <kd-icon slot="icon" .icon=${searchIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(searchIcon)}</span>
         </kd-button>
 
         <kyn-text-input
@@ -122,7 +121,7 @@ export class Search extends LitElement {
           @keydown=${(e: any) => this.handleSearchKeydown(e)}
         >
           ${this.label}
-          <kd-icon slot="icon" .icon=${searchIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(searchIcon)}</span>
         </kyn-text-input>
 
         <div
@@ -134,19 +133,24 @@ export class Search extends LitElement {
               html`
                 <div
                   class="suggestion"
-                  @click=${(e: any) => this._handleSuggestionClick(e, suggestion)}
-                  @mouseup=${() => this._handleSuggestionWithMouseUp(suggestion)}
-                  @mousedown=${(e: any) => this._handleSuggestionWithMouseDown(e)}
+                  @click=${(e: any) =>
+                    this._handleSuggestionClick(e, suggestion)}
+                  @mouseup=${() =>
+                    this._handleSuggestionWithMouseUp(suggestion)}
+                  @mousedown=${(e: any) =>
+                    this._handleSuggestionWithMouseDown(e)}
                 >
                   ${suggestion}
                 </div>
               `
           )}
         </div>
-        <div class="assistive-text"
+        <div
+          class="assistive-text"
           role="status"
           aria-live="assertive"
-          aria-relevant="additions text">
+          aria-relevant="additions text"
+        >
           ${this._assistiveText}
         </div>
       </div>
@@ -208,7 +212,7 @@ export class Search extends LitElement {
   }
 
   private _handleSuggestionClick(e: any, suggestion: string) {
-    if(e.type !== 'click') {
+    if (e.type !== 'click') {
       this.value = suggestion;
       this._assistiveText = `${this._assistiveTextStrings.selected} ${this.value}`;
     }
@@ -265,7 +269,8 @@ export class Search extends LitElement {
       case ENTER_KEY_CODE: {
         // select highlighted option
         this.value = suggestionEls[highlightedIndex].innerText;
-        if(target === 'input') this._assistiveText = `${this._assistiveTextStrings.selected} ${this.value}`;
+        if (target === 'input')
+          this._assistiveText = `${this._assistiveTextStrings.selected} ${this.value}`;
         return;
       }
       case DOWN_ARROW_KEY_CODE: {
@@ -306,14 +311,14 @@ export class Search extends LitElement {
   }
 
   private _checkForMatchingSuggestions() {
-    if(this.value === '') {
+    if (this.value === '') {
       this._assistiveText = this._assistiveTextStrings.searchSuggestions;
       return;
     }
     const Els: any = this.shadowRoot?.querySelectorAll('.suggestion');
     const suggestionEls: any = [...Els];
 
-    console.log('suggestions', this.suggestions)
+    console.log('suggestions', this.suggestions);
     const matchedOptionIndex = this.suggestions.findIndex((option) => {
       return option.toLowerCase().includes(this.value.toLowerCase());
     });
@@ -327,12 +332,14 @@ export class Search extends LitElement {
     suggestionEls[matchedOptionIndex].setAttribute('highlighted', true);
     suggestionEls[matchedOptionIndex].scrollIntoView({ block: 'nearest' });
     this._assistiveText = `${this._assistiveTextStrings.found} ${this.suggestions[matchedOptionIndex]}`;
-
   }
 
   override willUpdate(changedProps: any) {
     if (changedProps.has('assistiveTextStrings')) {
-      this._assistiveTextStrings = deepmerge(_defaultTextStrings, this.assistiveTextStrings);
+      this._assistiveTextStrings = deepmerge(
+        _defaultTextStrings,
+        this.assistiveTextStrings
+      );
     }
   }
 }

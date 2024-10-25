@@ -1,9 +1,9 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import currencyIcon from '@carbon/icons/es/currency--dollar/24';
+import currencyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/cost.svg';
 
 export default {
   title: 'Components/Text Input',
@@ -90,6 +90,11 @@ export const WithIcon = {
   args,
   render: (args) => {
     return html`
+      <style>
+        span[slot='icon'] {
+          display: flex;
+        }
+      </style>
       <kyn-text-input
         type=${args.type}
         size=${args.size}
@@ -109,13 +114,9 @@ export const WithIcon = {
         label=${args.label}
         @on-input=${(e) => action(e.type)(e)}
       >
-        <kd-icon
-          slot="icon"
-          .icon=${currencyIcon}
-          role="img"
-          aria-label="Currency"
-          title="Currency"
-        ></kd-icon>
+        <span slot="icon" role="img" aria-label="Currency" title="Currency"
+          >${unsafeSVG(currencyIcon)}</span
+        >
       </kyn-text-input>
     `;
   },

@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import {
   customElement,
@@ -8,10 +9,9 @@ import {
 import { classMap } from 'lit/directives/class-map.js';
 import { deepmerge } from 'deepmerge-ts';
 import LocalNavScss from './localNav.scss';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import arrowIcon from '@carbon/icons/es/chevron--down/16';
-import pinIcon from '@carbon/icons/es/side-panel--open/24';
+import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
+import pinIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/pin.svg';
 
 const _defaultTextStrings = {
   pin: 'Pin',
@@ -106,7 +106,7 @@ export class LocalNav extends LitElement {
           ${this._mobileExpanded
             ? this._textStrings.collapse
             : this._activeLinkText || this._textStrings.menu}
-          <kd-icon .icon=${arrowIcon}></kd-icon>
+          <span>${unsafeSVG(arrowIcon)}</span>
         </button>
 
         <div class="search">
@@ -128,7 +128,7 @@ export class LocalNav extends LitElement {
               ? this._textStrings.unpin
               : this._textStrings.pin}"
           >
-            <kd-icon class="pin-icon" .icon=${pinIcon}></kd-icon>
+            <span class="pin-icon">${unsafeSVG(pinIcon)}</span>
           </button>
         </div>
       </nav>

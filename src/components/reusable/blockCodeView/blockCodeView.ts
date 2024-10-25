@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -10,12 +11,11 @@ import 'prismjs/plugins/autoloader/prism-autoloader';
 import 'prismjs-components-importer';
 Prism.plugins.autoloader.languages_path = 'node_modules/prismjs/components/';
 
-import copyIcon from '@carbon/icons/es/copy/20';
-import checkmarkIcon from '@carbon/icons/es/checkmark--outline/20';
-import chevronDown from '@carbon/icons/es/chevron--down/20';
+import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/copy.svg';
+import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/checkmark.svg';
+import chevronDown from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import BlockCodeViewStyles from './blockCodeView.scss';
 import ShidokaLightTheme from './shidokaLightSyntaxStyles.scss';
@@ -196,11 +196,11 @@ export class BlockCodeView extends LitElement {
         description=${ifDefined(this.copyButtonDescriptionAttr)}
         @click=${this.copyCode}
       >
-        <kd-icon
-          slot="icon"
-          class="copy-icon"
-          .icon=${this._copyState.copied ? checkmarkIcon : copyIcon}
-        ></kd-icon>
+        <span slot="icon" class="copy-icon"
+          >${this._copyState.copied
+            ? unsafeSVG(checkmarkIcon)
+            : unsafeSVG(copyIcon)}</span
+        >
         ${this._copyState.text
           ? html`<span class="copy-text">${this._copyState.text}</span>`
           : null}
@@ -225,7 +225,7 @@ export class BlockCodeView extends LitElement {
           : this._textStrings.collapsed}
         @click=${this.expandCodeView}
       >
-        <kd-icon slot="icon" class="expand-icon" .icon=${chevronDown}></kd-icon>
+        <span slot="icon" class="expand-icon">${unsafeSVG(chevronDown)}</span>
       </kd-button>
     `;
   }

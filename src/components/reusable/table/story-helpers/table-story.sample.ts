@@ -1,15 +1,15 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { action } from '@storybook/addon-actions';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import maleIcon from '@carbon/icons/es/gender--male/16';
-import femaleIcon from '@carbon/icons/es/gender--female/16';
-import successIcon from '@carbon/icons/es/checkmark--filled/20';
-import warningIcon from '@carbon/icons/es/warning--filled/20';
-import failedIcon from '@carbon/icons/es/misuse/20';
+import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
+import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
+import successIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/checkmark-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/warning-filled.svg';
+import failedIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-filled.svg';
 import './action-menu.sample';
 import '../../pagination';
 
@@ -312,8 +312,8 @@ class MyStoryTable extends LitElement {
                   <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
                   <kyn-td .align=${'center'}>
                     ${row.gender === 'male'
-                      ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
-                      : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
+                      ? html`<span>${unsafeSVG(maleIcon)}</span>`
+                      : html`<span>${unsafeSVG(femaleIcon)}</span>`}
                   </kyn-td>
                   ${showTableActions
                     ? html` <kyn-td>
@@ -332,17 +332,28 @@ class MyStoryTable extends LitElement {
       <kyn-table-footer>
         ${this.showLegend
           ? html`
+              <style>
+                .success-icon svg {
+                  fill: #00af41;
+                }
+                .warning-icon svg {
+                  fill: #f5c400;
+                }
+                .failed-icon svg {
+                  fill: #cc1800;
+                }
+              </style>
               <kyn-table-legend>
                 <kyn-table-legend-item>
-                  <kd-icon .icon=${successIcon} fill="#00AF41"></kd-icon>
+                  <span class="success-icon">${unsafeSVG(successIcon)}</span>
                   Success
                 </kyn-table-legend-item>
                 <kyn-table-legend-item>
-                  <kd-icon .icon=${warningIcon} fill="#F5C400"></kd-icon>
+                  <span class="warning-icon">${unsafeSVG(warningIcon)}</span>
                   Warning
                 </kyn-table-legend-item>
                 <kyn-table-legend-item>
-                  <kd-icon .icon=${failedIcon} fill="#CC1800"></kd-icon>
+                  <span class="failed-icon">${unsafeSVG(failedIcon)}</span>
                   Failed
                 </kyn-table-legend-item>
               </kyn-table-legend>

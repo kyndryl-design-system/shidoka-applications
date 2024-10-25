@@ -1,12 +1,12 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import CardSampleScss from './cardSample.scss';
 import '../../components/reusable/overflowMenu';
 import '../../components/reusable/tag';
 
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import actionIcon from '@carbon/icons/es/bookmark/20';
+import actionIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/bookmark.svg';
 
 /**  Sample Lit component to show containable items inside Card. */
 @customElement('sample-card-story-content-component')
@@ -52,7 +52,7 @@ export class SampleCardStoryContentComponent extends LitElement {
                 description="Action"
                 @click=${(e: Event) => e.preventDefault()}
               >
-                <kd-icon slot="icon" .icon=${actionIcon}></kd-icon>
+                <span slot="icon">${unsafeSVG(actionIcon)}</span>
               </kd-button>
             </div>
 
