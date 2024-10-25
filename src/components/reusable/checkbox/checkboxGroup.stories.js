@@ -65,7 +65,8 @@ export const CheckboxGroup = {
         @on-limit-toggle=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
-          <span slot="anchor">${unsafeSVG(infoIcon)}</span> tooltip
+          <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
+          tooltip
         </kyn-tooltip>
         <div slot="description">${args.description}</div>
         <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
@@ -101,7 +102,8 @@ export const CheckboxSubgroups = {
         @on-limit-toggle=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
-          <span slot="anchor">${unsafeSVG(infoIcon)}</span> tooltip
+          <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
+          tooltip
         </kyn-tooltip>
         <div slot="description">${args.description}</div>
         <kyn-checkbox-subgroup>
