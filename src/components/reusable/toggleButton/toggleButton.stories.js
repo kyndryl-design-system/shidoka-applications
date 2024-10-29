@@ -45,7 +45,7 @@ export const ToggleButton = {
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
-          <span slot="anchor">${unsafeSVG(infoIcon)}</span>
+          <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
           tooltip
         </kyn-tooltip>
       </kyn-toggle-button>

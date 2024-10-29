@@ -282,7 +282,7 @@ class StoryTableSettings extends LitElement {
           @on-input=${(e: any) => this._handleSearch(e)}
         >
           Search
-          <span slot="icon">${unsafeSVG(searchIcon)}</span>
+          <span slot="icon" style="display:flex">${unsafeSVG(searchIcon)}</span>
         </kyn-text-input>
 
         <div slot="actions">
@@ -304,7 +304,9 @@ class StoryTableSettings extends LitElement {
                 description="settings button"
               >
                 Settings
-                <span slot="icon">${unsafeSVG(settingsIcon)}</span>
+                <span slot="icon" style="display:flex"
+                  >${unsafeSVG(settingsIcon)}</span
+                >
               </kd-button>
             </div>
             <story-column-setting .rows=${this.columns}></story-column-setting>

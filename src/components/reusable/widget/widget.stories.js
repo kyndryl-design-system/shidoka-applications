@@ -82,7 +82,9 @@ export const WithActions = {
               size="small"
               description="Settings"
             >
-              <span slot="icon">${unsafeSVG(settingsIcon)}</span>
+              <span slot="icon" style="display:flex"
+                >${unsafeSVG(settingsIcon)}</span
+              >
             </kd-button>
 
             <kyn-overflow-menu slot="actions" anchorRight verticalDots>

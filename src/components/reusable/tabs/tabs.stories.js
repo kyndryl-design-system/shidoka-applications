@@ -64,6 +64,11 @@ export const WithIcons = {
   args,
   render: (args) => {
     return html`
+      <style>
+        kyn-tab > span.icon {
+          display: flex;
+        }
+      </style>
       <kyn-tabs
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
@@ -72,15 +77,15 @@ export const WithIcons = {
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>
-          <span>${unsafeSVG(userAvatarIcon)}</span>
+          <span class="icon">${unsafeSVG(userAvatarIcon)}</span>
           Tab 1
         </kyn-tab>
         <kyn-tab slot="tabs" id="tab2">
-          <span>${unsafeSVG(helpIcon)}</span>
+          <span class="icon">${unsafeSVG(helpIcon)}</span>
           Tab 2
         </kyn-tab>
         <kyn-tab slot="tabs" id="tab3">
-          <span>${unsafeSVG(settingsIcon)}</span>
+          <span class="icon">${unsafeSVG(settingsIcon)}</span>
           Tab 3
         </kyn-tab>
 

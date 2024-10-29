@@ -22,6 +22,11 @@ export default {
 export const Default = {
   render: () => {
     return html`
+      <style>
+        .info-icon {
+          display: flex;
+        }
+      </style>
       <form
         @submit=${(e) => {
           e.preventDefault();
@@ -41,7 +46,7 @@ export const Default = {
           label="Radio buttons"
         >
           <kyn-tooltip slot="tooltip">
-            <span slot="anchor">${unsafeSVG(infoIcon)}</span>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
           <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
@@ -80,9 +85,7 @@ export const Default = {
           @on-change=${(e) => action(e.type)(e)}
         >
           <kyn-tooltip slot="tooltip">
-            <span slot="anchor" style="display:flex" class="info-icon"
-              >${unsafeSVG(infoIcon)}</span
-            >
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
 
@@ -129,7 +132,7 @@ export const Default = {
           @on-input=${(e) => action(e.type)(e)}
         >
           <kyn-tooltip slot="tooltip">
-            <span slot="anchor">${unsafeSVG(infoIcon)}</span>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
         </kyn-text-input>
@@ -144,7 +147,7 @@ export const Default = {
           @keydown=${(e) => e.stopPropagation()}
         >
           <kyn-tooltip slot="tooltip">
-            <span slot="anchor">${unsafeSVG(infoIcon)}</span>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
         </kyn-text-area>
@@ -157,7 +160,7 @@ export const Default = {
           @on-input=${(e) => action(e.type)(e)}
         >
           <kyn-tooltip slot="tooltip">
-            <span slot="anchor">${unsafeSVG(infoIcon)}</span>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
         </kyn-number-input>
@@ -174,7 +177,7 @@ export const Default = {
           @on-input=${(e) => action(e.type)(e)}
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
-            <span slot="anchor">${unsafeSVG(infoIcon)}</span>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
         </kyn-time-picker>
@@ -217,7 +220,7 @@ export const Default = {
           @on-input=${(e) => action(e.type)(e)}
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
-            <span slot="anchor">${unsafeSVG(infoIcon)}</span>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
         </kyn-date-picker>
@@ -235,7 +238,7 @@ export const Default = {
           style="min-width: 400px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
-            <span slot="anchor">${unsafeSVG(infoIcon)}</span>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
         </kyn-date-range-picker>
@@ -254,7 +257,7 @@ export const Default = {
           style="min-width: 400px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
-            <span slot="anchor">${unsafeSVG(infoIcon)}</span>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
         </kyn-date-range-picker>

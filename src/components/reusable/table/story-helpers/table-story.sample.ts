@@ -335,12 +335,15 @@ class MyStoryTable extends LitElement {
               <style>
                 .success-icon svg {
                   fill: #00af41;
+                  display: flex;
                 }
                 .warning-icon svg {
                   fill: #f5c400;
+                  display: flex;
                 }
                 .failed-icon svg {
                   fill: #cc1800;
+                  display: flex;
                 }
               </style>
               <kyn-table-legend>

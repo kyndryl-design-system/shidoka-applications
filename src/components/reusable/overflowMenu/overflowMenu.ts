@@ -57,7 +57,7 @@ export class OverflowMenu extends LitElement {
     const buttonClasses = {
       btn: true,
       open: this.open,
-      vertical: this.verticalDots,
+      horizontal: !this.verticalDots,
     };
 
     const menuClasses = {
