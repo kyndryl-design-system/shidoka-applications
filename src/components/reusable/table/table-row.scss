@@ -1,4 +1,5 @@
 @use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
 
 :host {
   display: table-row;
@@ -39,4 +40,8 @@
 
 :host([unread]) {
   box-shadow: 4px 0 0 0 var(--kd-color-text-eyebrow) inset;
+}
+
+.assistive-text {
+  @include mixins.visually-hidden;
 }

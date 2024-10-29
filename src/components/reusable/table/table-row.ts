@@ -15,6 +15,12 @@ import '../checkbox/checkbox';
 
 import { TableExpandedRow } from './table-expanded-row';
 import { TableCell } from './table-cell';
+import { deepmerge } from 'deepmerge-ts';
+
+const _defaultTextStrings = {
+  expanded: 'Expanded',
+  collapsed: 'Collapsed',
+};
 
 /**
  * `kyn-tr` Web Component.
@@ -27,6 +33,18 @@ import { TableCell } from './table-cell';
 @customElement('kyn-tr')
 export class TableRow extends LitElement {
   static override styles = [styles];
+
+  /** aria role.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  override role = 'row';
+
+  /** aria-disabled.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  'aria-disabled' = 'false';
 
   /**
    * rowId: String - Unique identifier for the row.
@@ -102,6 +120,16 @@ export class TableRow extends LitElement {
   @property({ type: Boolean, reflect: true })
   dimmed = false;
 
+  /** Text string customization. */
+  @property({ type: Object })
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
+
   /**
    * @ignore
    */
@@ -127,7 +155,14 @@ export class TableRow extends LitElement {
   );
 
   /**
-   * Updates the cell's dense properties when the context changes.
+   * Assistive text for screen readers.
+   * @ignore
+   */
+  @state()
+  assistiveText = '';
+
+  /**
+   * Updates the cell's dense and ellipsis properties when the context changes.
    * @param {TableContextType} context - The updated context.
    */
   handleContextChange = ({ checkboxSelection }: TableContextType) => {
@@ -151,17 +186,28 @@ export class TableRow extends LitElement {
     );
   }
 
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
+  }
+
   override updated(changedProperties: PropertyValues) {
     // Reflect the expanded state to the next sibling expanded row
     if (changedProperties.has('expanded')) {
       const { expanded, nextElementSibling } = this;
       if (nextElementSibling?.matches('kyn-expanded-tr')) {
         (nextElementSibling as TableExpandedRow).expanded = expanded;
+        (nextElementSibling as HTMLElement).style.display = expanded
+          ? 'inherit'
+          : 'none';
       }
     }
 
     // Reflect the disabled state to the tabindex attribute
     if (changedProperties.has('disabled')) {
+      this['aria-disabled'] = this.disabled.toString();
+
       if (this.disabled) {
         this.setAttribute('tabindex', '-1');
       } else {
@@ -197,6 +243,9 @@ export class TableRow extends LitElement {
       )
     ) {
       this.expanded = expanded;
+      this.assistiveText = expanded
+        ? this._textStrings.expanded
+        : this._textStrings.collapsed;
       this.dispatchEvent(new CustomEvent('table-row-expando-toggled', init));
     }
   }
@@ -223,6 +272,15 @@ export class TableRow extends LitElement {
                 >
                   <kd-icon slot="icon" .icon=${chevronDownIcon}></kd-icon>
                 </kd-button>
+              </div>
+
+              <div
+                class="assistive-text"
+                role="status"
+                aria-live="assertive"
+                aria-relevant="additions text"
+              >
+                ${this.assistiveText}
               </div>
             </kyn-td>
           `

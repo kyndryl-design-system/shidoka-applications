@@ -1,0 +1,55 @@
+import { Meta, Story, Canvas, Controls } from '@storybook/blocks';
+import * as ErrorStories from './errorBlock.stories.js';
+
+<Meta of={ErrorStories} />
+
+# Error Block
+
+Error block.
+
+## Usage
+
+### JS Import
+
+```js
+import '@kyndryl-design-system/shidoka-applications/components/reusable/errorBlock';
+```
+
+### HTML Tag
+
+```html
+<kyn-error-block></kyn-error-block>
+```
+
+## Importing the error svg
+
+The following varients of error images/**Redford's** are available in the `@kyndryl-design-system/shidoka-applications/common/assets/redfords`.
+
+- Alert Redford
+- Not found Redford
+- Stop Redford
+- Timeout Redford
+
+Import the required svg as shown below:
+
+```js
+import timeoutImg from '@kyndryl-design-system/shidoka-applications/common/assets/redfords/Timeout_Redford.svg';
+```
+
+## Primary Example
+
+<Canvas>
+  <Story of={ErrorStories.ErrorBlock} />
+</Canvas>
+
+### Properties Reference
+
+<Controls of={ErrorStories.ErrorBlock} />
+
+### Slots
+
+`kyn-error-block` has the following slots:
+
+- **unnamed**: Slot for the error description.
+- **image**: Slot for the error image.
+- **actions**: Slot for the action buttons.
