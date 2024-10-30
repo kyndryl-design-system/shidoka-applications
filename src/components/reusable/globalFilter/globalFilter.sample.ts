@@ -174,7 +174,6 @@ export class SampleFilterComponent extends LitElement {
               html`
                 <kyn-tag
                   label=${filter.text}
-                  tagColor="grey"
                   @on-close=${(e: any) => this._handleTagClick(e, filter)}
                 ></kyn-tag>
               `

@@ -123,7 +123,6 @@ export class NumberInput extends FormMixin(LitElement) {
           </kd-button>
 
           <input
-            autofocus
             class="${classMap({
               'size--sm': this.size === 'sm',
               'size--lg': this.size === 'lg',

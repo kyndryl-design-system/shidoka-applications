@@ -23,6 +23,12 @@ export class TableBody extends LitElement {
   @property({ type: Boolean, reflect: true })
   striped = false;
 
+  /** aria role.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  override role = 'rowgroup';
+
   /**
    * Context consumer for the table context.
    * Updates the cell's dense properties when the context changes.

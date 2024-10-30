@@ -102,7 +102,8 @@ export const MiniCards = {
   ],
   render: () => {
     return html`
-      This example sets a fixed width on each slide.
+      This example sets a fixed width on each slide. At the mobile breakpoint,
+      slides will be full width.
       <br /><br />
 
       ${SwiperTemplate()}

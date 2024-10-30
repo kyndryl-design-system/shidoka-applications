@@ -30,6 +30,13 @@ class StoryColumSetting extends LitElement {
     .unlockedRow:hover kd-button {
       opacity: 1;
     }
+    .unlockedRow:focus kd-button {
+      opacity: 1;
+    }
+
+    .freeze-button:focus {
+      opacity: 1;
+    }
     kyn-global-filter {
       position: sticky;
       top: 0;
@@ -234,6 +241,7 @@ class StoryColumSetting extends LitElement {
                   <kyn-td>${row.colName}</kyn-td>
                   <kyn-td .align=${'center'} class="min-max-width-100"
                     ><kd-button
+                      class="freeze-button"
                       @mouseover=${() => this.handleMouseOver(row.id)}
                       @mouseout=${this.handleMouseOut}
                       iconposition="center"
@@ -242,7 +250,9 @@ class StoryColumSetting extends LitElement {
                       size="small"
                       @on-click=${(e: CustomEvent) =>
                         this.handleLockingRow(e, row.id, row.locked)}
-                      description="freeze column"
+                      description=${row.locked
+                        ? `frozen column ${row.colName}`
+                        : 'freeze column'}
                     >
                       <span slot="icon"
                         >${row.locked && row.id === this.hoveredButtonId
