@@ -1,11 +1,11 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import exportIcon from '@carbon/icons/es/export/20';
-import exportIcon16 from '@carbon/icons/es/export/16';
-import overflowIcon from '@carbon/icons/es/overflow-menu--vertical/20';
-import trashCanIcon from '@carbon/icons/es/trash-can/20';
+import exportIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/upload.svg';
+import exportIcon16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/upload.svg';
+import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overflow.svg';
+import trashCanIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
 import styles from './batch-actions.scss';
 import '../index';
 
@@ -54,7 +54,7 @@ export class BatchActions extends LitElement {
           @on-click=${this.handleDelete}
           class="delete-button__mobile"
         >
-          <kd-icon slot="icon" .icon=${trashCanIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(trashCanIcon)}</span>
         </kd-button>
       </div>
       <div class="vertical-overflow-menu">
@@ -65,7 +65,7 @@ export class BatchActions extends LitElement {
           iconposition="center"
           @on-click=${() => (this.opened = !this.opened)}
         >
-          <kd-icon slot="icon" .icon=${overflowIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(overflowIcon)}</span>
         </kd-button>
       </div>
       <div class="menu">
@@ -79,7 +79,7 @@ export class BatchActions extends LitElement {
                   size="small"
                   iconposition="center"
                 >
-                  <kd-icon slot="icon" .icon=${exportIcon16}></kd-icon>
+                  <span slot="icon">${unsafeSVG(exportIcon16)}</span>
                 </kd-button>
               </kyn-td>
               <kyn-td class="menu-item__label">Export</kyn-td>
@@ -99,7 +99,7 @@ export class BatchActions extends LitElement {
             size="small"
             iconposition="left"
           >
-            <kd-icon slot="icon" .icon=${exportIcon}></kd-icon>
+            <span slot="icon">${unsafeSVG(exportIcon)}</span>
             Export
           </kd-button>
         </div>

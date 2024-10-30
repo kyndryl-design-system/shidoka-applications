@@ -1,9 +1,9 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
 import '../tooltip';
-import infoIcon from '@carbon/icons/es/information/16';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 export default {
   title: 'Components/Checkbox',
@@ -65,7 +65,8 @@ export const CheckboxGroup = {
         @on-limit-toggle=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
-          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+          <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
+          tooltip
         </kyn-tooltip>
         <div slot="description">${args.description}</div>
         <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
@@ -101,7 +102,8 @@ export const CheckboxSubgroups = {
         @on-limit-toggle=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
-          <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon> tooltip
+          <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
+          tooltip
         </kyn-tooltip>
         <div slot="description">${args.description}</div>
         <kyn-checkbox-subgroup>

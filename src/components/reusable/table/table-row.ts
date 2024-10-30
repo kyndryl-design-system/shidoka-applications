@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, LitElement, PropertyValues } from 'lit';
 import {
   customElement,
@@ -8,7 +9,7 @@ import {
 import { ContextConsumer } from '@lit/context';
 import { tableContext, TableContextType } from './table-context';
 
-import chevronDownIcon from '@carbon/icons/es/chevron--down/20';
+import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
 import styles from './table-row.scss';
 import '../checkbox/checkbox';
@@ -270,7 +271,7 @@ export class TableRow extends LitElement {
                   description="Expand row"
                   @on-click=${this._handleExpanding}
                 >
-                  <kd-icon slot="icon" .icon=${chevronDownIcon}></kd-icon>
+                  <span slot="icon">${unsafeSVG(chevronDownIcon)}</span>
                 </kd-button>
               </div>
 

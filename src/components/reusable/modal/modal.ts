@@ -1,12 +1,12 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import ModalScss from './modal.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import closeIcon from '@carbon/icons/es/close/20';
+import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 /**
  * Modal.
@@ -127,7 +127,7 @@ export class Modal extends LitElement {
             aria-label=${this.closeText}
             @click=${(e: Event) => this._closeModal(e, 'cancel')}
           >
-            <kd-icon .icon=${closeIcon}></kd-icon>
+            <span class="close-icon">${unsafeSVG(closeIcon)}</span>
           </button>
 
           <header>

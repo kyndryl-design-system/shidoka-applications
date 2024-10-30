@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import {
   customElement,
@@ -11,11 +12,10 @@ import DropdownScss from './dropdown.scss';
 import './dropdownOption';
 import '../tag';
 import { FormMixin } from '../../../common/mixins/form-input';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import downIcon from '@carbon/icons/es/chevron--down/24';
-import errorIcon from '@carbon/icons/es/warning--filled/16';
-import clearIcon from '@carbon/icons/es/close/24';
-import clearIcon16 from '@carbon/icons/es/close/16';
+import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import clearIcon16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 import { deepmerge } from 'deepmerge-ts';
 
 const _defaultTextStrings = {
@@ -278,7 +278,7 @@ export class Dropdown extends FormMixin(LitElement) {
                       @click=${(e: Event) => this.handleClearMultiple(e)}
                     >
                       ${this.value.length}
-                      <kd-icon .icon=${clearIcon16}></kd-icon>
+                      <span>${unsafeSVG(clearIcon16)}</span>
                     </button>
                   `
                 : null}
@@ -306,7 +306,7 @@ export class Dropdown extends FormMixin(LitElement) {
                     </span>
                   `}
 
-              <kd-icon class="arrow-icon" .icon=${downIcon}></kd-icon>
+              <span class="arrow-icon">${unsafeSVG(downIcon)}</span>
             </div>
 
             <ul
@@ -355,13 +355,13 @@ export class Dropdown extends FormMixin(LitElement) {
                   aria-label="Clear search text"
                   @click=${(e: any) => this.handleClear(e)}
                 >
-                  <kd-icon .icon=${clearIcon}></kd-icon>
+                  <span>${unsafeSVG(clearIcon)}</span>
                 </button>
               `
             : null}
           <!--
           ${this._isInvalid
-            ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
+            ? html` <span class="error-icon">${unsafeSVG(errorIcon)}</span> `
             : null}
             -->
         </div>
@@ -393,13 +393,13 @@ export class Dropdown extends FormMixin(LitElement) {
         ${this._isInvalid
           ? html`
               <div class="error">
-                <kd-icon
+                <span
                   class="error-info-icon"
                   role="img"
                   title=${this._textStrings.error}
                   aria-label=${this._textStrings.error}
-                  .icon=${errorIcon}
-                ></kd-icon>
+                  >${unsafeSVG(errorIcon)}</span
+                >
                 ${this.invalidText || this._internalValidationMsg}
               </div>
             `

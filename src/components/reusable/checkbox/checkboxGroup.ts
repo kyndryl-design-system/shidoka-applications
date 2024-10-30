@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { deepmerge } from 'deepmerge-ts';
@@ -6,8 +7,7 @@ import CheckboxGroupScss from './checkboxGroup.scss';
 
 import '../textInput';
 import './checkbox';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import errorIcon from '@carbon/icons/es/warning--filled/16';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 const _defaultTextStrings = {
   selectAll: 'Select all',
@@ -162,12 +162,12 @@ export class CheckboxGroup extends FormMixin(LitElement) {
           ${this._isInvalid
             ? html`
                 <div class="error">
-                  <kd-icon
+                  <span
                     role="img"
-                    .icon="${errorIcon}"
                     title=${this._textStrings.error}
                     aria-label=${this._textStrings.error}
-                  ></kd-icon>
+                    >${unsafeSVG(errorIcon)}</span
+                  >
                   ${this.invalidText || this._internalValidationMsg}
                 </div>
               `

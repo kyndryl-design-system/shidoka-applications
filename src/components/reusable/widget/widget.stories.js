@@ -1,12 +1,12 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
 import '../overflowMenu';
 
-import settingsIcon from '@carbon/icons/es/settings/16';
+import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 
 export default {
   title: 'Components/Widget',
@@ -82,7 +82,9 @@ export const WithActions = {
               size="small"
               description="Settings"
             >
-              <kd-icon slot="icon" .icon=${settingsIcon}></kd-icon>
+              <span slot="icon" style="display:flex"
+                >${unsafeSVG(settingsIcon)}</span
+              >
             </kd-button>
 
             <kyn-overflow-menu slot="actions" anchorRight verticalDots>

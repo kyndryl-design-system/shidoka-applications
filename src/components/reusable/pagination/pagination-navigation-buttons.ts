@@ -1,11 +1,11 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, LitElement } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
 // Import required components and icons
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import chevLeftIcon from '@carbon/icons/es/chevron--left/16';
-import chevRightIcon from '@carbon/icons/es/chevron--right/16';
+import chevLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-left.svg';
+import chevRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 
 import styles from './pagination-navigation-buttons.scss';
 // import { OF_TEXT, PAGES_TEXT } from './constants';
@@ -72,7 +72,7 @@ export class PaginationNavigationButtons extends LitElement {
         @on-click=${() => this.handleButtonClick(false)}
         description=${this.textStrings.previousPage}
       >
-        <kd-icon slot="icon" .icon=${chevLeftIcon}></kd-icon>
+        <span slot="icon">${unsafeSVG(chevLeftIcon)}</span>
       </kd-button>
 
       <span class="page-range" role="status" aria-live="polite">
@@ -89,7 +89,7 @@ export class PaginationNavigationButtons extends LitElement {
         @on-click=${() => this.handleButtonClick(true)}
         description=${this.textStrings.nextPage}
       >
-        <kd-icon slot="icon" .icon=${chevRightIcon}></kd-icon>
+        <span slot="icon">${unsafeSVG(chevRightIcon)}</span>
       </kd-button>
     `;
   }

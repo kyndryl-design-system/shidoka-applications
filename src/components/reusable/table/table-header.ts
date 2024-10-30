@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, LitElement, PropertyValues } from 'lit';
 import {
   customElement,
@@ -11,8 +12,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ContextConsumer } from '@lit/context';
 import { tableContext, TableContextType } from './table-context';
 
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import arrowUpIcon from '@carbon/icons/es/arrow--up/16';
+import arrowUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-up.svg';
 import styles from './table-header.scss';
 
 import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
@@ -273,10 +273,9 @@ export class TableHeader extends LitElement {
           <slot></slot>
         </div>
         ${this.sortable
-          ? html`<kd-icon
-              class=${classMap(iconClasses)}
-              .icon=${arrowUpIcon}
-            ></kd-icon>`
+          ? html`<span class=${classMap(iconClasses)}
+              >${unsafeSVG(arrowUpIcon)}</span
+            >`
           : null}
 
         <div
