@@ -33,6 +33,10 @@ export class SampleFilterChartComponent extends LitElement {
     }
   `;
 
+  /** Sets whether the first accordion item should be expanded by default */
+  @property({ type: Boolean })
+  firstExpanded = false;
+
   /** Array of sample checkbox filter options. */
   @property({ type: Array })
   checkboxOptions: Array<any> = [
@@ -140,7 +144,7 @@ export class SampleFilterChartComponent extends LitElement {
           </kd-button>
 
           <kd-accordion filledHeaders compact>
-            <kd-accordion-item>
+            <kd-accordion-item ?opened=${this.firstExpanded}>
               <span slot="title">
                 Colors:
                 ${SelectedOptions.length

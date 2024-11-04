@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import GlobalFilterScss from './globalFilter.scss';
 
 /**
@@ -11,6 +11,10 @@ import GlobalFilterScss from './globalFilter.scss';
 @customElement('kyn-global-filter')
 export class GlobalFilter extends LitElement {
   static override styles = GlobalFilterScss;
+
+  /** Sets whether the first accordion item should be expanded by default */
+  @property({ type: Boolean })
+  firstExpanded = false;
 
   override render() {
     return html`

@@ -18,7 +18,7 @@ export default {
 export const GlobalFilter = {
   render: () => {
     return html`
-      <sample-filter-component></sample-filter-component>
+      <sample-filter-component firstExpanded></sample-filter-component>
 
       <br />
 
@@ -64,7 +64,9 @@ export const WithChart = {
   },
   render: () => {
     return html`
-      <sample-filter-chart-component></sample-filter-chart-component>
+      <sample-filter-chart-component
+        firstExpanded
+      ></sample-filter-chart-component>
 
       <br />
 
@@ -86,7 +88,9 @@ export const WithChart = {
 export const WithTable = {
   render: () => {
     return html`
-      <sample-filter-table-component></sample-filter-table-component>
+      <sample-filter-table-component
+        firstExpanded
+      ></sample-filter-table-component>
       <br />
 
       <p>

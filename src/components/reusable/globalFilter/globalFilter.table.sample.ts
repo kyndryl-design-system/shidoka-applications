@@ -1,5 +1,5 @@
 import { html, css, LitElement } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { action } from '@storybook/addon-actions';
 import { repeat } from 'lit/directives/repeat.js';
 
@@ -20,7 +20,13 @@ import filterEditIcon from '@carbon/icons/es/filter--edit/20';
 import filterRemoveIcon from '@carbon/icons/es/close--filled/16';
 import refreshIcon from '@carbon/icons/es/renew/20';
 
-/**  Sample Lit component to show global filter pattern applied to a Chart. */
+interface CheckboxOption {
+  value: string;
+  text: string;
+  checked?: boolean;
+}
+
+/**  Sample Lit component to show global filter pattern applied to a Table. */
 @customElement('sample-filter-table-component')
 export class SampleFilterTableComponent extends LitElement {
   static override styles = css`
@@ -35,9 +41,13 @@ export class SampleFilterTableComponent extends LitElement {
     }
   `;
 
+  /** Sets whether the first accordion item should be expanded by default */
+  @property({ type: Boolean })
+  firstExpanded = false;
+
   /** Array of sample checkbox filter options. */
   @state()
-  checkboxOptions: Array<any> = [
+  checkboxOptions: CheckboxOption[] = [
     {
       value: 'Stark',
       text: 'Stark',
@@ -53,10 +63,10 @@ export class SampleFilterTableComponent extends LitElement {
   ];
 
   @state()
-  houses: Array<string> = ['Stark', 'Lannister', 'Targaryen'];
+  houses: string[] = ['Stark', 'Lannister', 'Targaryen'];
 
   @state()
-  filteredHouses: Array<string> = [];
+  filteredHouses: string[] = [];
 
   @state()
   private characters = [
@@ -83,7 +93,7 @@ export class SampleFilterTableComponent extends LitElement {
   ];
 
   @state()
-  selectedRows = [];
+  selectedRows: any[] = [];
 
   @state()
   opened = false;
@@ -92,10 +102,6 @@ export class SampleFilterTableComponent extends LitElement {
     this.opened = !this.opened;
   }
 
-  /**
-   * kynTable: Reference to the kyn-table component.
-   * @ignore
-   */
   @state()
   private kynTable: any;
 
@@ -140,7 +146,7 @@ export class SampleFilterTableComponent extends LitElement {
           </kd-button>
 
           <kd-accordion filledHeaders compact>
-            <kd-accordion-item>
+            <kd-accordion-item ?opened=${this.firstExpanded}>
               <span slot="title">
                 Houses:
                 ${SelectedOptions.length
@@ -163,7 +169,7 @@ export class SampleFilterTableComponent extends LitElement {
                   <span slot="label">Filter 1</span>
 
                   ${this.checkboxOptions.map(
-                    (option: any) => html`
+                    (option: CheckboxOption) => html`
                       <kyn-checkbox value=${option.value}>
                         ${option.text}
                       </kyn-checkbox>

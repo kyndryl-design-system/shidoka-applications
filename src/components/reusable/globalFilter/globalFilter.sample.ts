@@ -18,6 +18,12 @@ import filterEditIcon from '@carbon/icons/es/filter--edit/20';
 import filterRemoveIcon from '@carbon/icons/es/close--filled/16';
 import refreshIcon from '@carbon/icons/es/renew/20';
 
+interface CheckboxOption {
+  value: string;
+  text: string;
+  checked?: boolean;
+}
+
 /**  Sample Lit component to show global filter pattern. */
 @customElement('sample-filter-component')
 export class SampleFilterComponent extends LitElement {
@@ -33,9 +39,13 @@ export class SampleFilterComponent extends LitElement {
     }
   `;
 
+  /** Sets whether the first accordion item should be expanded by default */
+  @property({ type: Boolean })
+  firstExpanded = false;
+
   /** Array of sample checkbox filter options. */
   @property({ type: Array })
-  checkboxOptions: Array<any> = [
+  checkboxOptions: CheckboxOption[] = [
     {
       value: '1',
       text: 'Option 1',
@@ -99,7 +109,7 @@ export class SampleFilterComponent extends LitElement {
           </kd-button>
 
           <kd-accordion filledHeaders compact>
-            <kd-accordion-item>
+            <kd-accordion-item ?opened=${this.firstExpanded}>
               <span slot="title">
                 Filter 1:
                 ${SelectedOptions.length
@@ -122,7 +132,7 @@ export class SampleFilterComponent extends LitElement {
                   <span slot="label">Filter 1</span>
 
                   ${this.checkboxOptions.map(
-                    (option: any) => html`
+                    (option: CheckboxOption) => html`
                       <kyn-checkbox value=${option.value}>
                         ${option.text}
                       </kyn-checkbox>
@@ -227,7 +237,7 @@ export class SampleFilterComponent extends LitElement {
     }
   }
 
-  private _handleTagClick(e: any, option: any) {
+  private _handleTagClick(e: any, option: CheckboxOption) {
     action(e.type)(e);
     // console.log(e.detail);
 
@@ -266,6 +276,7 @@ export class SampleFilterComponent extends LitElement {
     // overflow link click logic here
   }
 }
+
 declare global {
   interface HTMLElementTagNameMap {
     'sample-filter-component': SampleFilterComponent;
