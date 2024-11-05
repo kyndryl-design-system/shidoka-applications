@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import './index';
 import '../card/index';
+import '../table/index';
 
 export default {
   title: 'Components/Loaders/Skeleton',
@@ -15,7 +16,7 @@ export default {
 
 export const Block = {
   render: () => {
-    return html` <kyn-skeleton size="block"></kyn-skeleton> `;
+    return html` <kyn-skeleton size="large"></kyn-skeleton> `;
   },
 };
 
@@ -37,6 +38,72 @@ export const CardPattern = {
             <kyn-skeleton size="small"></kyn-skeleton>
           </div>
         </kyn-card>
+      </div>
+    `;
+  },
+};
+
+export const TablePattern = {
+  render: () => {
+    return html`
+      <div style="padding: 0px;">
+        <kyn-table-container>
+          <kyn-table>
+            <kyn-thead>
+              <kyn-tr>
+                <kyn-th><kyn-skeleton size="table-cell"></kyn-skeleton></kyn-th>
+
+                <kyn-th><kyn-skeleton size="table-cell"></kyn-skeleton></kyn-th>
+
+                <kyn-th><kyn-skeleton size="table-cell"></kyn-skeleton></kyn-th>
+
+                <kyn-th><kyn-skeleton size="table-cell"></kyn-skeleton></kyn-th>
+
+                <kyn-th><kyn-skeleton size="table-cell"></kyn-skeleton></kyn-th>
+
+                <kyn-th><kyn-skeleton size="table-cell"></kyn-skeleton></kyn-th>
+
+                <kyn-th><kyn-skeleton size="table-cell"></kyn-skeleton></kyn-th>
+              </kyn-tr>
+            </kyn-thead>
+
+            <kyn-tbody>
+              ${[1, 2, 3, 4, 5].map(
+                () => html`
+                  <kyn-tr>
+                    <kyn-td
+                      ><kyn-skeleton size="table-cell"></kyn-skeleton
+                    ></kyn-td>
+
+                    <kyn-td
+                      ><kyn-skeleton size="table-cell"></kyn-skeleton
+                    ></kyn-td>
+
+                    <kyn-td
+                      ><kyn-skeleton size="table-cell"></kyn-skeleton
+                    ></kyn-td>
+
+                    <kyn-td
+                      ><kyn-skeleton size="table-cell"></kyn-skeleton
+                    ></kyn-td>
+
+                    <kyn-td
+                      ><kyn-skeleton size="table-cell"></kyn-skeleton
+                    ></kyn-td>
+
+                    <kyn-td
+                      ><kyn-skeleton size="table-cell"></kyn-skeleton
+                    ></kyn-td>
+
+                    <kyn-td
+                      ><kyn-skeleton size="table-cell"></kyn-skeleton
+                    ></kyn-td>
+                  </kyn-tr>
+                `
+              )}
+            </kyn-tbody>
+          </kyn-table>
+        </kyn-table-container>
       </div>
     `;
   },

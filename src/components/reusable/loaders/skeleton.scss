@@ -11,8 +11,18 @@
   width: 40px;
 }
 
-:host([size="large"]),
-:host([size="block"]) {
+:host([size="card-logo"]) {
+  max-width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  width: 95%;
+
+  .skeleton {
+    border-radius: 100px;
+  }
+}
+
+:host([size="large"]) {
   height: 128px;
   width: 95%;
 }
@@ -35,13 +45,25 @@
 }
 
 :host([size="small"]) {
-  max-width: 100px;
   height: 12px;
+  width: 95%;
+}
+
+
+:host([size="table-cell"]) {
+  height: 12px;
+  min-width: 100px;
   width: 95%;
 }
 
 :host(:not(:last-child)) {
   margin-bottom: 16px;
+}
+
+kyn-td :host,
+kyn-th :host {
+  margin: 8px;
+  margin-bottom: 0;
 }
 
 .skeleton {

@@ -15,10 +15,17 @@ export class Skeleton extends LitElement {
 
   /** Size variant of the skeleton. */
   @property({ type: String, reflect: true })
-  size?: 'large' | 'medium' | 'title' | 'subtitle' | 'small';
+  size?:
+    | 'large'
+    | 'medium'
+    | 'title'
+    | 'subtitle'
+    | 'small'
+    | 'card-logo'
+    | 'table-cell';
 
   override render() {
-    return html` <div class="skeleton" part="skeleton"></div> `;
+    return html` <div class="skeleton"></div> `;
   }
 }
 
