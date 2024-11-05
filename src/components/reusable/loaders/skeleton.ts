@@ -22,8 +22,8 @@ export class Skeleton extends LitElement {
     | 'subtitle'
     | 'body-text'
     | 'small'
-    | 'card-logo'
-    | 'table-cell';
+    | 'table-cell'
+    | 'card-logo' = 'medium';
 
   override render() {
     return html` <div class="skeleton"></div> `;
