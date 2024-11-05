@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './index';
-// import { action } from '@storybook/addon-actions';
+import '../card/index';
 
 export default {
   title: 'Components/Loaders/Skeleton',
@@ -15,29 +15,29 @@ export default {
 
 export const Block = {
   render: () => {
-    return html`
-      <style>
-        kyn-skeleton.block-example {
-          height: 128px;
-        }
-      </style>
-
-      <kyn-skeleton class="block-example"></kyn-skeleton>
-    `;
+    return html` <kyn-skeleton size="block"></kyn-skeleton> `;
   },
 };
 
 export const Inline = {
   render: () => {
-    return html`
-      <style>
-        kyn-skeleton.inline-example {
-          width: 108px;
-          height: 16px;
-        }
-      </style>
+    return html` <kyn-skeleton inline size="medium"></kyn-skeleton> `;
+  },
+};
 
-      <kyn-skeleton inline class="inline-example"></kyn-skeleton>
+export const CardPattern = {
+  render: () => {
+    return html`
+      <div class="card-pattern">
+        <kyn-card>
+          <kyn-skeleton size="large"></kyn-skeleton>
+          <kyn-skeleton size="title"></kyn-skeleton>
+          <kyn-skeleton size="subtitle"></kyn-skeleton>
+          <div class="card-body">
+            <kyn-skeleton size="small"></kyn-skeleton>
+          </div>
+        </kyn-card>
+      </div>
     `;
   },
 };

@@ -13,8 +13,12 @@ export class Skeleton extends LitElement {
   @property({ type: Boolean })
   inline = false;
 
+  /** Size variant of the skeleton. */
+  @property({ type: String, reflect: true })
+  size?: 'large' | 'medium' | 'title' | 'subtitle' | 'small';
+
   override render() {
-    return html` <div class="skeleton"></div> `;
+    return html` <div class="skeleton" part="skeleton"></div> `;
   }
 }
 
