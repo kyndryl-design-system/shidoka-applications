@@ -14,18 +14,6 @@ export default {
   },
 };
 
-export const Block = {
-  render: () => {
-    return html` <kyn-skeleton size="large"></kyn-skeleton> `;
-  },
-};
-
-export const Inline = {
-  render: () => {
-    return html` <kyn-skeleton inline size="medium"></kyn-skeleton> `;
-  },
-};
-
 export const CardPattern = {
   render: () => {
     return html`
@@ -35,7 +23,24 @@ export const CardPattern = {
           <kyn-skeleton size="title"></kyn-skeleton>
           <kyn-skeleton size="subtitle"></kyn-skeleton>
           <div class="card-body">
-            <kyn-skeleton size="small"></kyn-skeleton>
+            <kyn-skeleton size="body-text"></kyn-skeleton>
+          </div>
+        </kyn-card>
+      </div>
+    `;
+  },
+};
+
+export const CardPatternWithLogo = {
+  render: () => {
+    return html`
+      <div class="card-pattern">
+        <kyn-card>
+          <kyn-skeleton size="card-logo"></kyn-skeleton>
+          <kyn-skeleton size="title"></kyn-skeleton>
+          <kyn-skeleton size="subtitle"></kyn-skeleton>
+          <div class="card-body">
+            <kyn-skeleton size="body-text"></kyn-skeleton>
           </div>
         </kyn-card>
       </div>
@@ -51,60 +56,52 @@ export const TablePattern = {
           <kyn-table>
             <kyn-thead>
               <kyn-tr>
-                <kyn-th><kyn-skeleton size="table-cell"></kyn-skeleton></kyn-th>
-
-                <kyn-th><kyn-skeleton size="table-cell"></kyn-skeleton></kyn-th>
-
-                <kyn-th><kyn-skeleton size="table-cell"></kyn-skeleton></kyn-th>
-
-                <kyn-th><kyn-skeleton size="table-cell"></kyn-skeleton></kyn-th>
-
-                <kyn-th><kyn-skeleton size="table-cell"></kyn-skeleton></kyn-th>
-
-                <kyn-th><kyn-skeleton size="table-cell"></kyn-skeleton></kyn-th>
-
-                <kyn-th><kyn-skeleton size="table-cell"></kyn-skeleton></kyn-th>
+                ${Array(7)
+                  .fill(null)
+                  .map(
+                    () => html`
+                      <kyn-th
+                        ><kyn-skeleton size="table-cell"></kyn-skeleton
+                      ></kyn-th>
+                    `
+                  )}
               </kyn-tr>
             </kyn-thead>
 
             <kyn-tbody>
-              ${[1, 2, 3, 4, 5].map(
-                () => html`
-                  <kyn-tr>
-                    <kyn-td
-                      ><kyn-skeleton size="table-cell"></kyn-skeleton
-                    ></kyn-td>
-
-                    <kyn-td
-                      ><kyn-skeleton size="table-cell"></kyn-skeleton
-                    ></kyn-td>
-
-                    <kyn-td
-                      ><kyn-skeleton size="table-cell"></kyn-skeleton
-                    ></kyn-td>
-
-                    <kyn-td
-                      ><kyn-skeleton size="table-cell"></kyn-skeleton
-                    ></kyn-td>
-
-                    <kyn-td
-                      ><kyn-skeleton size="table-cell"></kyn-skeleton
-                    ></kyn-td>
-
-                    <kyn-td
-                      ><kyn-skeleton size="table-cell"></kyn-skeleton
-                    ></kyn-td>
-
-                    <kyn-td
-                      ><kyn-skeleton size="table-cell"></kyn-skeleton
-                    ></kyn-td>
-                  </kyn-tr>
-                `
-              )}
+              ${Array(5)
+                .fill(null)
+                .map(
+                  () => html`
+                    <kyn-tr>
+                      ${Array(7)
+                        .fill(null)
+                        .map(
+                          () => html`
+                            <kyn-td
+                              ><kyn-skeleton size="table-cell"></kyn-skeleton
+                            ></kyn-td>
+                          `
+                        )}
+                    </kyn-tr>
+                  `
+                )}
             </kyn-tbody>
           </kyn-table>
         </kyn-table-container>
       </div>
     `;
+  },
+};
+
+export const Block = {
+  render: () => {
+    return html` <kyn-skeleton size="large"></kyn-skeleton> `;
+  },
+};
+
+export const Inline = {
+  render: () => {
+    return html` <kyn-skeleton inline size="medium"></kyn-skeleton> `;
   },
 };

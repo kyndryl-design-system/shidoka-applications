@@ -20,6 +20,7 @@ export class Skeleton extends LitElement {
     | 'medium'
     | 'title'
     | 'subtitle'
+    | 'body-text'
     | 'small'
     | 'card-logo'
     | 'table-cell';
