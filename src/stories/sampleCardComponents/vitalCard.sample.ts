@@ -14,25 +14,25 @@ export class VitalCardSampleComponent extends LitElement {
 
   /** loading state control */
   @property({ type: Boolean })
-  isLoading = false;
+  skeleton = false;
 
   override render() {
     return html`
       <div>
         <div class="vital-card-title-label">
-          ${this.isLoading
+          ${this.skeleton
             ? html`<kyn-skeleton lines="1" inline></kyn-skeleton>`
             : 'Title'}
         </div>
         <div class="vital-card-content-wrapper">
           <div class="vital-card-mobile-wrapper-subdiv">
             <div class="vital-card-title-div">
-              ${this.isLoading
+              ${this.skeleton
                 ? html`<kyn-skeleton inline></kyn-skeleton>`
                 : html`<h1 class="vital-card-title">9,999.99k</h1>`}
             </div>
             <div class="vital-card-cat-subcat-text">
-              ${this.isLoading
+              ${this.skeleton
                 ? html` <kyn-skeleton inline></kyn-skeleton>`
                 : html`
                     <h2 class="vital-card-category-text">Category</h2>
@@ -40,7 +40,7 @@ export class VitalCardSampleComponent extends LitElement {
                   `}
             </div>
           </div>
-          ${this.isLoading
+          ${this.skeleton
             ? html`<kyn-skeleton inline></kyn-skeleton>`
             : html`
                 <kd-link

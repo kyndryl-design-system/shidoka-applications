@@ -26,7 +26,7 @@ export const Skeleton = {
   render: () => {
     return html`<kd-card type="normal">
       <vital-card-sample-component
-        .isLoading=${true}
+        .skeleton=${true}
       ></vital-card-sample-component>
     </kd-card>`;
   },
