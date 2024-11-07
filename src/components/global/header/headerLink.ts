@@ -110,7 +110,9 @@ export class HeaderLink extends LitElement {
       slotted: this.slottedEls.length,
     };
 
-    const Links = this.querySelectorAll('kyn-header-link');
+    const Links = this.querySelectorAll(
+      ':scope > kyn-header-link, :scope > kyn-header-category > kyn-header-link'
+    );
 
     return html`
       <div
@@ -170,7 +172,9 @@ export class HeaderLink extends LitElement {
   }
 
   private _searchFilter() {
-    const Links: any = this.querySelectorAll('kyn-header-link');
+    const Links: any = this.querySelectorAll(
+      ':scope > kyn-header-link, :scope > kyn-header-category > kyn-header-link'
+    );
 
     Links.forEach((link: any) => {
       // get link text
