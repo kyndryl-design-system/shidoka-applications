@@ -21,3 +21,13 @@ export const Default = {
     </kd-card>`;
   },
 };
+
+export const Skeleton = {
+  render: () => {
+    return html`<kd-card type="normal">
+      <vital-card-sample-component
+        .isLoading=${true}
+      ></vital-card-sample-component>
+    </kd-card>`;
+  },
+};

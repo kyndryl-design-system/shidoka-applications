@@ -41,3 +41,32 @@ export const Inline = {
     `;
   },
 };
+
+export const WithMultipleBlock = {
+  render: () => {
+    return html`
+      <style>
+        kyn-skeleton.block-example {
+          height: 128px;
+        }
+      </style>
+
+      <kyn-skeleton lines="2" class="block-example"></kyn-skeleton>
+    `;
+  },
+};
+
+export const WithMultipleInline = {
+  render: () => {
+    return html`
+      <style>
+        kyn-skeleton.inline-example {
+          width: 108px;
+          height: 16px;
+        }
+      </style>
+
+      <kyn-skeleton inline lines="2" class="inline-example"></kyn-skeleton>
+    `;
+  },
+};
