@@ -6,6 +6,7 @@ import { DATE_PICKER_TYPES } from '../datePicker/defs';
 import { FormMixin } from '../../../common/mixins/form-input';
 import DateRangePickerScss from './daterangepicker.scss';
 import { deepmerge } from 'deepmerge-ts';
+import '../../reusable/loaders/skeleton';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -96,6 +97,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @query('input.date-end')
   inputElEnd!: HTMLInputElement;
 
+  /**
+   * skeleton state
+   */
+  @property({ type: Boolean })
+  skeleton = false;
+
   override render() {
     return html`
       <div class="daterange-picker" ?disabled=${this.disabled}>
@@ -113,64 +120,72 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
         <div class="wrapper">
           <div class="input-wrapper">
-            <input
-              class="${classMap({
-                'date-start': true,
-                'size--sm': this.size === 'sm',
-                'size--lg': this.size === 'lg',
-              })}"
-              type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
-                ? 'datetime-local'
-                : 'date'}
-              id="${this.name}-start"
-              name="${this.name}-end"
-              aria-label="Start Date"
-              value=${this.startDate}
-              ?required=${this.required}
-              ?disabled=${this.disabled}
-              ?invalid=${this._isInvalid}
-              aria-invalid=${this._isInvalid}
-              aria-describedby=${this._isInvalid
-                ? 'error'
-                : this.warnText !== '' && !this._isInvalid
-                ? 'warning'
-                : ''}
-              min=${ifDefined(this.minDate)}
-              max=${ifDefined(this.endDate ?? this.maxDate ?? '')}
-              step=${ifDefined(this.step)}
-              @input=${(e: any) => this.handleStartDate(e)}
-            />
+            ${this.skeleton
+              ? html` <kyn-skeleton class="block-skeleton"></kyn-skeleton> `
+              : html`
+                  <input
+                    class="${classMap({
+                      'date-start': true,
+                      'size--sm': this.size === 'sm',
+                      'size--lg': this.size === 'lg',
+                    })}"
+                    type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
+                      ? 'datetime-local'
+                      : 'date'}
+                    id="${this.name}-start"
+                    name="${this.name}-end"
+                    aria-label="Start Date"
+                    value=${this.startDate}
+                    ?required=${this.required}
+                    ?disabled=${this.disabled}
+                    ?invalid=${this._isInvalid}
+                    aria-invalid=${this._isInvalid}
+                    aria-describedby=${this._isInvalid
+                      ? 'error'
+                      : this.warnText !== '' && !this._isInvalid
+                      ? 'warning'
+                      : ''}
+                    min=${ifDefined(this.minDate)}
+                    max=${ifDefined(this.endDate ?? this.maxDate ?? '')}
+                    step=${ifDefined(this.step)}
+                    @input=${(e: any) => this.handleStartDate(e)}
+                  />
+                `}
           </div>
 
           <span class="range-span">—</span>
           <div class="input-wrapper">
-            <input
-              class="${classMap({
-                'date-end': true,
-                'size--sm': this.size === 'sm',
-                'size--lg': this.size === 'lg',
-              })}"
-              type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
-                ? 'datetime-local'
-                : 'date'}
-              id="${this.name}-end"
-              name="${this.name}-end"
-              aria-label="End Date"
-              value=${this.endDate}
-              ?required=${this.required}
-              ?disabled=${this.disabled}
-              ?invalid=${this._isInvalid}
-              aria-invalid=${this._isInvalid}
-              aria-describedby=${this._isInvalid
-                ? 'error'
-                : this.warnText !== '' && !this._isInvalid
-                ? 'warning'
-                : ''}
-              min=${ifDefined(this.startDate ?? this.minDate ?? '')}
-              max=${ifDefined(this.maxDate)}
-              step=${ifDefined(this.step)}
-              @input=${(e: any) => this.handleEndDate(e)}
-            />
+            ${this.skeleton
+              ? html` <kyn-skeleton class="block-skeleton"></kyn-skeleton> `
+              : html`
+                  <input
+                    class="${classMap({
+                      'date-end': true,
+                      'size--sm': this.size === 'sm',
+                      'size--lg': this.size === 'lg',
+                    })}"
+                    type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
+                      ? 'datetime-local'
+                      : 'date'}
+                    id="${this.name}-end"
+                    name="${this.name}-end"
+                    aria-label="End Date"
+                    value=${this.endDate}
+                    ?required=${this.required}
+                    ?disabled=${this.disabled}
+                    ?invalid=${this._isInvalid}
+                    aria-invalid=${this._isInvalid}
+                    aria-describedby=${this._isInvalid
+                      ? 'error'
+                      : this.warnText !== '' && !this._isInvalid
+                      ? 'warning'
+                      : ''}
+                    min=${ifDefined(this.startDate ?? this.minDate ?? '')}
+                    max=${ifDefined(this.maxDate)}
+                    step=${ifDefined(this.step)}
+                    @input=${(e: any) => this.handleEndDate(e)}
+                  />
+                `}
           </div>
         </div>
 

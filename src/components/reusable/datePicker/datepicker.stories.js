@@ -5,6 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import { createOptionsArray } from '../../../common/helpers/helpers';
 import { DATE_PICKER_TYPES } from './defs';
+import '../../reusable/loaders/skeleton';
 
 const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
 
@@ -58,6 +59,7 @@ const args = {
   textStrings: {
     requiredText: 'Required',
   },
+  skeleton: false,
 };
 
 export const DatePicker = {
@@ -108,6 +110,34 @@ export const DateWithTime = {
         @keydown=${(e) => e.stopPropagation()}
       >
         ${args.unnamed}
+      </kyn-date-picker>
+    `;
+  },
+};
+
+export const Skeleton = {
+  args: { ...args, skeleton: true },
+  render: (args) => {
+    return html`
+      <kyn-date-picker
+        size=${args.size}
+        name=${args.name}
+        datePickerType=${args.datePickerType}
+        caption=${args.caption}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        .textStrings=${args.textStrings}
+        warnText=${args.warnText}
+        value=${args.value}
+        minDate=${ifDefined(args.minDate)}
+        maxDate=${ifDefined(args.maxDate)}
+        step=${ifDefined(args.step)}
+        .skeleton=${args.skeleton}
+        @on-input=${(e) => action(e.type)(e)}
+        @keydown=${(e) => e.stopPropagation()}
+      >
+        <kyn-skeleton inline></kyn-skeleton>
       </kyn-date-picker>
     `;
   },
