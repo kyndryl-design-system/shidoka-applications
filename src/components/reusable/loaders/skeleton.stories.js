@@ -13,6 +13,10 @@ export default {
   },
 };
 
+const args = {
+  lines: 2,
+};
+
 export const Block = {
   render: () => {
     return html`
@@ -43,7 +47,8 @@ export const Inline = {
 };
 
 export const WithMultipleBlock = {
-  render: () => {
+  args,
+  render: (args) => {
     return html`
       <style>
         kyn-skeleton.block-example {
@@ -51,13 +56,14 @@ export const WithMultipleBlock = {
         }
       </style>
 
-      <kyn-skeleton lines="2" class="block-example"></kyn-skeleton>
+      <kyn-skeleton lines=${args.lines} class="block-example"></kyn-skeleton>
     `;
   },
 };
 
 export const WithMultipleInline = {
-  render: () => {
+  args,
+  render: (args) => {
     return html`
       <style>
         kyn-skeleton.inline-example {
@@ -66,7 +72,11 @@ export const WithMultipleInline = {
         }
       </style>
 
-      <kyn-skeleton inline lines="2" class="inline-example"></kyn-skeleton>
+      <kyn-skeleton
+        inline
+        lines=${args.lines}
+        class="inline-example"
+      ></kyn-skeleton>
     `;
   },
 };
