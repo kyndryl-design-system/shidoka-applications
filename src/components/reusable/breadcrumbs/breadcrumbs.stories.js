@@ -58,7 +58,7 @@ export const Skeleton = {
           width: 80px;
         }
       </style>
-      <kyn-breadcrumbs aria-label="Breadcrumb">
+      <kyn-breadcrumbs>
         ${Array.from(
           { length: 2 },
           () => html`<kd-link>
