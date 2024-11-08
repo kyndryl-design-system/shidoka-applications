@@ -13,8 +13,31 @@ export class Skeleton extends LitElement {
   @property({ type: Boolean })
   inline = false;
 
+  /** Number of skeleton lines to show. */
+  @property({ type: Number })
+  lines = 1;
+
+  /** Minimum width for random skeleton lines. */
+  @property({ type: Number })
+  minWidth = 100; // Minimum width in percentage
+
+  /** Maximum width for random skeleton lines. */
+  @property({ type: Number })
+  maxWidth = 100; // Maximum width in percentage
+
+  private getRandomWidth() {
+    return (
+      Math.floor(Math.random() * (this.maxWidth - this.minWidth + 1)) +
+      this.minWidth
+    );
+  }
+
   override render() {
-    return html` <div class="skeleton"></div> `;
+    const skeletonLines = Array.from({ length: this.lines }, () => {
+      const width = this.getRandomWidth();
+      return html` <div class="skeleton" style="width: ${width}%"></div> `;
+    });
+    return html` ${skeletonLines}`;
   }
 }
 
