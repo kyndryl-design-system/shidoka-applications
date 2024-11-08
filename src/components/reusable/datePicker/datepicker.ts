@@ -6,7 +6,6 @@ import { DATE_PICKER_TYPES } from './defs';
 import { FormMixin } from '../../../common/mixins/form-input';
 import DatePickerScss from './datepicker.scss';
 import { deepmerge } from 'deepmerge-ts';
-import '../../reusable/loaders/skeleton';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -87,12 +86,6 @@ export class DatePicker extends FormMixin(LitElement) {
   @query('input')
   _inputEl!: HTMLInputElement;
 
-  /**
-   * skeleton state
-   */
-  @property({ type: Boolean })
-  skeleton = false;
-
   override render() {
     return html`
       <div class="date-picker" ?disabled=${this.disabled}>
@@ -113,36 +106,32 @@ export class DatePicker extends FormMixin(LitElement) {
             'input-wrapper': true,
           })}"
         >
-          ${this.skeleton
-            ? html` <kyn-skeleton class="block-skeleton"></kyn-skeleton> `
-            : html`
-                <input
-                  class="${classMap({
-                    'size--sm': this.size === 'sm',
-                    'size--lg': this.size === 'lg',
-                  })}"
-                  datePickerType=${this.datePickerType}
-                  type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
-                    ? 'datetime-local'
-                    : 'date'}
-                  id=${this.name ? this.name : 'datepicker-1'}
-                  name=${this.name}
-                  value=${this.value}
-                  ?required=${this.required}
-                  ?disabled=${this.disabled}
-                  ?invalid=${this._isInvalid}
-                  aria-invalid=${this._isInvalid}
-                  aria-describedby=${this._isInvalid
-                    ? 'error'
-                    : this.warnText !== '' && !this._isInvalid
-                    ? 'warning'
-                    : ''}
-                  min=${ifDefined(this.minDate)}
-                  max=${ifDefined(this.maxDate)}
-                  step=${ifDefined(this.step)}
-                  @input=${(e: any) => this.handleInput(e)}
-                />
-              `}
+          <input
+            class="${classMap({
+              'size--sm': this.size === 'sm',
+              'size--lg': this.size === 'lg',
+            })}"
+            datePickerType=${this.datePickerType}
+            type=${this.datePickerType === DATE_PICKER_TYPES.WITHITIME
+              ? 'datetime-local'
+              : 'date'}
+            id=${this.name ? this.name : 'datepicker-1'}
+            name=${this.name}
+            value=${this.value}
+            ?required=${this.required}
+            ?disabled=${this.disabled}
+            ?invalid=${this._isInvalid}
+            aria-invalid=${this._isInvalid}
+            aria-describedby=${this._isInvalid
+              ? 'error'
+              : this.warnText !== '' && !this._isInvalid
+              ? 'warning'
+              : ''}
+            min=${ifDefined(this.minDate)}
+            max=${ifDefined(this.maxDate)}
+            step=${ifDefined(this.step)}
+            @input=${(e: any) => this.handleInput(e)}
+          />
         </div>
         ${this.caption !== ''
           ? html` <div class="caption">${this.caption}</div> `

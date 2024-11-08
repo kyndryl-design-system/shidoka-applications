@@ -64,7 +64,6 @@ const args = {
   textStrings: {
     requiredText: 'Required',
   },
-  skeleton: false,
 };
 
 export const DateRangePicker = {
@@ -117,35 +116,6 @@ export const DateTimeRangePicker = {
         @keydown=${(e) => e.stopPropagation()}
       >
         ${args.unnamed}
-      </kyn-date-range-picker>
-    `;
-  },
-};
-
-export const Skeleton = {
-  args: { ...args, skeleton: true },
-  render: (args) => {
-    return html`
-      <kyn-date-range-picker
-        size=${args.size}
-        name=${args.name}
-        datePickerType=${args.datePickerType}
-        caption=${args.caption}
-        ?required=${args.required}
-        ?disabled=${args.disabled}
-        invalidText=${args.invalidText}
-        warnText=${args.warnText}
-        .textStrings=${args.textStrings}
-        startDate=${args.startDate}
-        endDate=${args.endDate}
-        minDate=${ifDefined(args.minDate)}
-        maxDate=${ifDefined(args.maxDate)}
-        step=${ifDefined(args.step)}
-        .skeleton=${args.skeleton}
-        @on-input=${(e) => action(e.type)(e)}
-        @keydown=${(e) => e.stopPropagation()}
-      >
-        <kyn-skeleton inline></kyn-skeleton>
       </kyn-date-range-picker>
     `;
   },
