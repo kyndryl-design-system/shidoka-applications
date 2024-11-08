@@ -14,8 +14,6 @@ export default {
 
 const args = {
   lines: 2,
-  minWidth: 100,
-  maxWidth: 100,
 };
 
 export const Block = {
@@ -56,12 +54,7 @@ export const MultiBlock = {
           height: 128px;
         }
       </style>
-      <kyn-skeleton
-        lines=${args.lines}
-        minWidth=${args.minWidth}
-        maxWidth=${args.maxWidth}
-        class="block-example"
-      ></kyn-skeleton>
+      <kyn-skeleton lines=${args.lines} class="block-example"></kyn-skeleton>
     `;
   },
 };
@@ -79,8 +72,6 @@ export const MultiInline = {
       <kyn-skeleton
         inline
         lines=${args.lines}
-        minWidth=${args.minWidth}
-        maxWidth=${args.maxWidth}
         class="inline-example"
       ></kyn-skeleton>
     `;
