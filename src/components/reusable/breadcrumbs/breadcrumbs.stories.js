@@ -58,15 +58,17 @@ export const Skeleton = {
           width: 80px;
         }
       </style>
-      <kyn-breadcrumbs>
-        ${Array.from(
-          { length: 2 },
-          () => html`<kd-link>
+      <div role="navigation" aria-label="Breadcrumb Navigation">
+        <kyn-breadcrumbs>
+          <kd-link>
             <kyn-skeleton inline class="inline-example"></kyn-skeleton
-          ></kd-link>`
-        )}
-        <kyn-skeleton inline class="inline-example"></kyn-skeleton>
-      </kyn-breadcrumbs>
+          ></kd-link>
+          <kd-link>
+            <kyn-skeleton inline class="inline-example"></kyn-skeleton
+          ></kd-link>
+          <kyn-skeleton inline class="inline-example"></kyn-skeleton>
+        </kyn-breadcrumbs>
+      </div>
     `;
   },
 };
