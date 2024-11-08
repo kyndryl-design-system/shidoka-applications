@@ -2,39 +2,39 @@
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
-    display: block;
+  display: block;
 }
 
 .error-container {
-    align-self: center;
-    display: grid;
-    place-items: center;
+  align-self: center;
+  display: grid;
+  place-items: center;
 
-    .error-title {
-        p {
-            @include typography.type-headline-01;
-            font-weight: var(--kd-font-weight-bold);
-            color: var(--kd-color-text-brand);
-            text-align: center;
-        }
+  .error-title {
+    p {
+      @include typography.type-headline-01;
+      font-weight: var(--kd-font-weight-bold);
+      color: var(--kd-color-text-brand);
+      text-align: center;
     }
+  }
 
-    .error-description {
-        margin-bottom: 48px;
-        text-align: center;
+  .error-description {
+    margin-bottom: 48px;
+    text-align: center;
+  }
+
+  .error-action-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    @media (max-width: calc(42rem - 1px)) {
+      kd-button {
+        width: 100%;
+        flex-grow: 1;
+      }
     }
-
-    .error-action-buttons {
-        display: flex;
-        gap: 16px;
-        flex-wrap: wrap;
-        justify-content: center;
-
-        @media (max-width: 42rem) {
-            kd-button {
-                width: 100%;
-                flex-grow: 1;
-            }
-        }
-    }
+  }
 }
