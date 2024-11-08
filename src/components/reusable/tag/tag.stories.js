@@ -57,7 +57,6 @@ const args = {
   disabled: false,
   filter: false,
   noTruncation: false,
-  skeleton: false,
 };
 
 export const Tag = {
@@ -72,24 +71,6 @@ export const Tag = {
         ?disabled=${args.disabled}
         ?filter=${args.filter}
         ?noTruncation=${args.noTruncation}
-        @on-close=${(e) => action(e.type)(e)}
-      /></kyn-tag>
-    `;
-  },
-};
-export const Skeleton = {
-  args: { ...args, skeleton: true },
-  render: (args) => {
-    return html`
-      <kyn-tag
-        label=${args.label}
-        tagSize=${args.tagSize}
-        shade=${args.shade}
-        tagColor=${args.tagColor}
-        ?disabled=${args.disabled}
-        ?filter=${args.filter}
-        ?noTruncation=${args.noTruncation}
-        ?skeleton=${args.skeleton}
         @on-close=${(e) => action(e.type)(e)}
       /></kyn-tag>
     `;

@@ -4,7 +4,6 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import clearIcon16 from '@carbon/icons/es/close/16';
 import TagScss from './tag.scss';
-import '../../reusable/loaders/skeleton';
 
 /**
  * Tag.
@@ -63,12 +62,6 @@ export class Tag extends LitElement {
   @property({ type: String })
   clearTagText = 'Clear Tag';
 
-  /**
-   * skeleton state
-   */
-  @property({ type: Boolean })
-  skeleton = false;
-
   override render() {
     const baseColorClass = `tag-${this.tagColor}`;
     const shadeClass = this.shade === 'dark' ? '-dark' : '';
@@ -107,25 +100,21 @@ export class Tag extends LitElement {
         shade=${this.shade}
         title="${this.label}"
       >
-        ${this.skeleton
-          ? html` <kyn-skeleton lines="1" inline></kyn-skeleton> `
-          : html`
-              <span class="${classMap(labelClasses)}">${this.label}</span>
-              ${this.filter
-                ? html`
-                    <button
-                      class="${classMap(iconClasses)}"
-                      shade=${this.shade}
-                      ?disabled="${this.disabled}"
-                      title=${this.clearTagText}
-                      aria-label=${this.clearTagText}
-                      @click=${(e: any) => this.handleTagClear(e, this.label)}
-                    >
-                      <kd-icon .icon=${clearIcon16}></kd-icon>
-                    </button>
-                  `
-                : ''}
-            `}
+        <span class="${classMap(labelClasses)}">${this.label}</span>
+        ${this.filter
+          ? html`
+              <button
+                class="${classMap(iconClasses)}"
+                shade=${this.shade}
+                ?disabled="${this.disabled}"
+                title=${this.clearTagText}
+                aria-label=${this.clearTagText}
+                @click=${(e: any) => this.handleTagClear(e, this.label)}
+              >
+                <kd-icon .icon=${clearIcon16}></kd-icon>
+              </button>
+            `
+          : ''}
       </div>
     `;
   }

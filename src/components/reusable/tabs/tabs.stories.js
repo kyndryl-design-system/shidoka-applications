@@ -164,7 +164,7 @@ export const Skeleton = {
       <style>
         kyn-skeleton.inline-example {
           width: 80px;
-          height: 14px;
+          height: 16px;
         }
       </style>
       <kyn-tabs
@@ -174,15 +174,12 @@ export const Skeleton = {
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
-        <kyn-tab slot="tabs"
-          ><kyn-skeleton inline class="inline-example"></kyn-skeleton
-        ></kyn-tab>
-        <kyn-tab slot="tabs"
-          ><kyn-skeleton inline class="inline-example"></kyn-skeleton
-        ></kyn-tab>
-        <kyn-tab slot="tabs"
-          ><kyn-skeleton inline class="inline-example"></kyn-skeleton
-        ></kyn-tab>
+        ${Array.from(
+          { length: 3 },
+          () => html`<kyn-tab slot="tabs"
+            ><kyn-skeleton inline class="inline-example"></kyn-skeleton
+          ></kyn-tab>`
+        )}
       </kyn-tabs>
     `;
   },

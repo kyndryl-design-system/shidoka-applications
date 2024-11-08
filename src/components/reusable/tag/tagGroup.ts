@@ -7,11 +7,12 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import './tag';
+import './tagSkeleton';
 import TagGroupScss from './tagGroup.scss';
 
 /**
  * Tag & Tag Group
- * @slot unnamed - Slot for individual tags.
+ * @slot unnamed - Slot for individual tags/tags skeleton.
  */
 
 @customElement('kyn-tag-group')

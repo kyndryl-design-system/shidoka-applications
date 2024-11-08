@@ -3,6 +3,7 @@ import '@kyndryl-design-system/shidoka-foundation/components/link';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '../overflowMenu';
 import './';
+import '../loaders/skeleton';
 
 export default {
   title: 'Components/Breadcrumbs',
@@ -46,15 +47,24 @@ export const WithOverflow = {
   },
 };
 
-// export const BreadcrumbsOld = {
-//   render: () => {
-//     return html`
-//       <kyn-breadcrumbs>
-//         <kyn-breadcrumb-item href="/">Home</kyn-breadcrumb-item>
-//         <kyn-breadcrumb-item href="/level1">Level 1</kyn-breadcrumb-item>
-//         <kyn-breadcrumb-item href="/level2">Level 2</kyn-breadcrumb-item>
-//         <kyn-breadcrumb-item>Destination</kyn-breadcrumb-item>
-//       </kyn-breadcrumbs>
-//     `;
-//   },
-// };
+export const Skeleton = {
+  render: () => {
+    return html`
+      <style>
+        kyn-skeleton.inline-example {
+          width: 80px;
+          margin-block-end: 0rem;
+        }
+      </style>
+      <kyn-breadcrumbs aria-label="Breadcrumb">
+        ${Array.from(
+          { length: 3 },
+          () => html`<kyn-skeleton
+            inline
+            class="inline-example"
+          ></kyn-skeleton>`
+        )}
+      </kyn-breadcrumbs>
+    `;
+  },
+};
