@@ -53,17 +53,10 @@ export const Skeleton = {
       <style>
         kyn-skeleton.inline-example {
           width: 80px;
-          margin-block-end: 0rem;
         }
       </style>
       <kyn-breadcrumbs aria-label="Breadcrumb">
-        ${Array.from(
-          { length: 3 },
-          () => html`<kyn-skeleton
-            inline
-            class="inline-example"
-          ></kyn-skeleton>`
-        )}
+        <kyn-skeleton inline class="inline-example"></kyn-skeleton>
       </kyn-breadcrumbs>
     `;
   },
