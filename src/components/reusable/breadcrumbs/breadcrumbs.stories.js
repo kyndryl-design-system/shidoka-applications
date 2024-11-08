@@ -3,7 +3,6 @@ import '@kyndryl-design-system/shidoka-foundation/components/link';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '../overflowMenu';
 import './';
-import '../loaders/skeleton';
 
 export default {
   title: 'Components/Breadcrumbs',
@@ -43,32 +42,6 @@ export const WithOverflow = {
         <kd-link standalone href="/path">Level 5</kd-link>
         <strong aria-current="page">Current page</strong>
       </kyn-breadcrumbs>
-    `;
-  },
-};
-
-export const Skeleton = {
-  render: () => {
-    return html`
-      <style>
-        kyn-skeleton {
-          cursor: default;
-        }
-        kyn-skeleton.inline-example {
-          width: 80px;
-        }
-      </style>
-      <div role="navigation" aria-label="Breadcrumb Navigation">
-        <kyn-breadcrumbs>
-          <kd-link>
-            <kyn-skeleton inline class="inline-example"></kyn-skeleton
-          ></kd-link>
-          <kd-link>
-            <kyn-skeleton inline class="inline-example"></kyn-skeleton
-          ></kd-link>
-          <kyn-skeleton inline class="inline-example"></kyn-skeleton>
-        </kyn-breadcrumbs>
-      </div>
     `;
   },
 };
