@@ -58,7 +58,10 @@ export const Skeleton = {
           width: 80px;
         }
       </style>
-      <kyn-breadcrumbs aria-label="Breadcrumb"> </kyn-breadcrumbs>
+      <kyn-breadcrumbs>
+        <kyn-skeleton inline class="inline-example1"></kyn-skeleton>
+        <kyn-skeleton inline class="inline-example"></kyn-skeleton>
+      </kyn-breadcrumbs>
     `;
   },
 };
