@@ -51,13 +51,14 @@ export const Skeleton = {
   render: () => {
     return html`
       <style>
+        kyn-skeleton.inline-example1 {
+          width: 100px;
+        }
         kyn-skeleton.inline-example {
           width: 80px;
         }
       </style>
-      <kyn-breadcrumbs aria-label="Breadcrumb">
-        <kyn-skeleton inline class="inline-example"></kyn-skeleton>
-      </kyn-breadcrumbs>
+      <kyn-breadcrumbs aria-label="Breadcrumb"> </kyn-breadcrumbs>
     `;
   },
 };
