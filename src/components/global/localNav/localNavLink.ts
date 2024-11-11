@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import {
   customElement,
@@ -7,11 +8,10 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import LocalNavLinkScss from './localNavLink.scss';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import backIcon from '@carbon/icons/es/arrow--left/16';
-import addIcon from '@carbon/icons/es/add/16';
-import subtractIcon from '@carbon/icons/es/subtract/16';
+import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
+import addIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
+import subtractIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-simple.svg';
 
 /**
  * Link component for use in the global Side Navigation component.
@@ -108,9 +108,11 @@ export class LocalNavLink extends LitElement {
           ${this._navLinks.length
             ? html`
                 <span class="expand-icon">
-                  <kd-icon
-                    .icon=${this.expanded ? subtractIcon : addIcon}
-                  ></kd-icon>
+                  <span
+                    >${this.expanded
+                      ? unsafeSVG(subtractIcon)
+                      : unsafeSVG(addIcon)}</span
+                  >
                 </span>
               `
             : null}
@@ -126,7 +128,7 @@ export class LocalNavLink extends LitElement {
           ${this._navLinks.length
             ? html`
                 <button class="go-back" @click=${() => this._handleBack()}>
-                  <kd-icon .icon=${backIcon}></kd-icon>
+                  <span>${unsafeSVG(backIcon)}</span>
                   ${this.backText}
                 </button>
               `

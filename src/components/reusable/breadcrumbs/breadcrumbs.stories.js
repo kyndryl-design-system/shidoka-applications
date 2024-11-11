@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import '@kyndryl-design-system/shidoka-foundation/components/link';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '../overflowMenu';
 import './';
 

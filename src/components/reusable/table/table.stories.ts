@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 /**
  * Copyright Kyndryl, Inc. 2023
  */
@@ -15,8 +16,8 @@ import './story-helpers/table-story.sample';
 import './story-helpers/table.settings.sample';
 import { characters, dataForColumns } from './story-helpers/ultils.sample';
 import allData from './story-helpers/table-data.json';
-import maleIcon from '@carbon/icons/es/gender--male/16';
-import femaleIcon from '@carbon/icons/es/gender--female/16';
+import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
+import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 
 const meta: Meta = {
   title: 'Components/Data Table',
@@ -116,7 +117,13 @@ export const Selection: Story = {
 };
 
 export const NestedTable: Story = {
-  render: () => {
+  args: {
+    textStrings: {
+      expanded: 'Expanded',
+      collapsed: 'Collapsed',
+    },
+  },
+  render: (args) => {
     const rows = allData.slice(0, 5);
     return html` <style>
         .story-table-container {
@@ -149,6 +156,7 @@ export const NestedTable: Story = {
                 key="row-${row.id}"
                 expandable
                 checkboxSelection
+                .textStrings=${args.textStrings}
               >
                 <kyn-td .align=${'center'}>${row.id}</kyn-td>
                 <kyn-td>${row.firstName}</kyn-td>
@@ -158,8 +166,8 @@ export const NestedTable: Story = {
                 <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
                 <kyn-td .align=${'center'}>
                   ${row.gender === 'male'
-                    ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
-                    : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
+                    ? html`<span>${unsafeSVG(maleIcon)}</span>`
+                    : html`<span>${unsafeSVG(femaleIcon)}</span>`}
                 </kyn-td>
               </kyn-tr>
               <kyn-expanded-tr .colSpan=${8}>
@@ -180,7 +188,13 @@ export const NestedTable: Story = {
 };
 
 export const ExpandableRows: Story = {
-  render: () => {
+  args: {
+    textStrings: {
+      expanded: 'Expanded',
+      collapsed: 'Collapsed',
+    },
+  },
+  render: (args) => {
     return html` <style>
         .center-content {
           display: flex;
@@ -207,7 +221,12 @@ export const ExpandableRows: Story = {
             characters,
             (row: any) => row.id,
             (row: any) => html`
-              <kyn-tr .rowId=${row.id} key="row-${row.id}" expandable>
+              <kyn-tr
+                .rowId=${row.id}
+                key="row-${row.id}"
+                expandable
+                .textStrings=${args.textStrings}
+              >
                 <kyn-td .align=${'center'}>${row.id}</kyn-td>
                 <kyn-td>${row.firstName}</kyn-td>
                 <kyn-td>${row.lastName}</kyn-td>
@@ -216,14 +235,13 @@ export const ExpandableRows: Story = {
                 <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
                 <kyn-td .align=${'center'}>
                   ${row.gender === 'male'
-                    ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
-                    : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
+                    ? html`<span>${unsafeSVG(maleIcon)}</span>`
+                    : html`<span>${unsafeSVG(femaleIcon)}</span>`}
                 </kyn-td>
               </kyn-tr>
               <kyn-expanded-tr .colSpan=${8}>
                 <div class="center-content">
-                  <!-- Put your expanded table content here -->
-                  <h4>Expanded content goes here</h4>
+                  Put your expanded table content here
                 </div>
               </kyn-expanded-tr>
             `

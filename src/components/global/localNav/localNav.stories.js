@@ -6,11 +6,10 @@ import './localNav';
 import './localNavLink';
 import '../../reusable/textInput';
 import '../../reusable/blockCodeView';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import { filterLocalNavLinks } from '../../../common/helpers/helpers';
 
 import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/search.svg';
-import sampleIcon from '@carbon/icons/es/circle--outline/16';
+import sampleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 
 export default {
   title: 'Global Components/Local Nav',
@@ -52,38 +51,38 @@ export const LocalNav = {
     return html`
       <kyn-local-nav ?pinned=${args.pinned} .textStrings=${args.textStrings}>
         <kyn-local-nav-link href="javascript:void(0)" active>
-          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
           Link 1
         </kyn-local-nav-link>
 
         <kyn-local-nav-link href="javascript:void(0)">
-          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
           Link 2
 
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
-            <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+            <span slot="icon">${unsafeSVG(sampleIcon)}</span>
             L2 Link 1
           </kyn-local-nav-link>
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
-            <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+            <span slot="icon">${unsafeSVG(sampleIcon)}</span>
             L2 Link 2
           </kyn-local-nav-link>
         </kyn-local-nav-link>
 
         <kyn-local-nav-link href="javascript:void(0)">
-          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
           Link 3
 
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
-            <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+            <span slot="icon">${unsafeSVG(sampleIcon)}</span>
             L2 Link 1
 
             <kyn-local-nav-link slot="links" href="javascript:void(0)">
-              <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+              <span slot="icon">${unsafeSVG(sampleIcon)}</span>
               L3 Link 1
             </kyn-local-nav-link>
             <kyn-local-nav-link slot="links" href="javascript:void(0)">
-              <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+              <span slot="icon">${unsafeSVG(sampleIcon)}</span>
               L3 Link 2
             </kyn-local-nav-link>
           </kyn-local-nav-link>
@@ -104,14 +103,14 @@ export const WithDivider = {
         .textStrings=${args.textStrings}
       >
         <kyn-local-nav-link href="javascript:void(0)" active>
-          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
           Link 1
         </kyn-local-nav-link>
 
         <kyn-local-nav-divider></kyn-local-nav-divider>
 
         <kyn-local-nav-link href="javascript:void(0)">
-          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
           Link 2
         </kyn-local-nav-link>
 
@@ -120,7 +119,7 @@ export const WithDivider = {
         ></kyn-local-nav-divider>
 
         <kyn-local-nav-link href="javascript:void(0)">
-          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
           Link 3
         </kyn-local-nav-link>
       </kyn-local-nav>
@@ -189,7 +188,7 @@ export const WithSearch = {
           ?expanded=${link.expanded}
         >
           ${!isSublink
-            ? html`<kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>`
+            ? html`<span slot="icon">${unsafeSVG(sampleIcon)}</span>`
             : null}
           ${link.text}
           ${link.links && link.links.length

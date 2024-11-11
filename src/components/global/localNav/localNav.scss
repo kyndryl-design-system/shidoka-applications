@@ -5,7 +5,7 @@
 :host {
   display: block;
 
-  @media (max-width: 42rem) {
+  @media (max-width: calc(42rem - 1px)) {
     position: sticky;
     top: 0;
     z-index: var(--kd-z-header);
@@ -150,14 +150,14 @@ slot[name='search'] {
     outline-color: var(--kd-color-border-focus);
   }
 
-  kd-icon {
-    display: block;
-    transition: transform 150ms ease-out;
+  // kd-icon {
+  //   display: block;
+  //   transition: transform 150ms ease-out;
 
-    .nav--expanded-mobile & {
-      transform: rotate(-180deg);
-    }
-  }
+  //   .nav--expanded-mobile & {
+  //     transform: rotate(-180deg);
+  //   }
+  // }
 
   @media (min-width: 42rem) {
     display: none;
@@ -190,7 +190,7 @@ slot[name='search'] {
   transition: background-color 150ms ease-out, color 150ms ease-out,
     outline-color 150ms ease-out;
 
-  kd-icon {
+  .pin-icon {
     display: block;
   }
 

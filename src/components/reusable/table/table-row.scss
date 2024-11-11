@@ -1,4 +1,5 @@
 @use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
 
 :host {
   display: table-row;
@@ -18,12 +19,13 @@
   --kd-color-text-tertiary: var(--kd-color-text-primary);
 }
 
-.kyn--table-expand__button kd-icon {
+.kyn--table-expand__button span[slot='icon'] {
   transition: transform 200ms ease-in-out;
+  transform: translateY(15%);
 }
 
-:host([expanded]) .kyn--table-expand__button kd-icon {
-  transform: rotate(-180deg);
+:host([expanded]) .kyn--table-expand__button span[slot='icon'] {
+  transform: translateY(-10%) rotate(-180deg);
 }
 
 :host([disabled]) {
@@ -39,4 +41,8 @@
 
 :host([unread]) {
   box-shadow: 4px 0 0 0 var(--kd-color-text-eyebrow) inset;
+}
+
+.assistive-text {
+  @include mixins.visually-hidden;
 }

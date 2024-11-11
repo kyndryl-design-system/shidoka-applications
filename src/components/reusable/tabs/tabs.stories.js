@@ -1,11 +1,11 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import userAvatarIcon from '@carbon/icons/es/user--avatar/16';
-import helpIcon from '@carbon/icons/es/help/16';
-import settingsIcon from '@carbon/icons/es/settings/16';
+import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
+import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
+import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 
 export default {
   title: 'Components/Tabs',
@@ -64,6 +64,11 @@ export const WithIcons = {
   args,
   render: (args) => {
     return html`
+      <style>
+        kyn-tab > span.icon {
+          display: flex;
+        }
+      </style>
       <kyn-tabs
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
@@ -72,15 +77,15 @@ export const WithIcons = {
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>
-          <kd-icon .icon=${userAvatarIcon}></kd-icon>
+          <span class="icon">${unsafeSVG(userAvatarIcon)}</span>
           Tab 1
         </kyn-tab>
         <kyn-tab slot="tabs" id="tab2">
-          <kd-icon .icon=${helpIcon}></kd-icon>
+          <span class="icon">${unsafeSVG(helpIcon)}</span>
           Tab 2
         </kyn-tab>
         <kyn-tab slot="tabs" id="tab3">
-          <kd-icon .icon=${settingsIcon}></kd-icon>
+          <span class="icon">${unsafeSVG(settingsIcon)}</span>
           Tab 3
         </kyn-tab>
 

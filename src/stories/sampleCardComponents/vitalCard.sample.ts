@@ -1,10 +1,10 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import vitalCardScss from './vitalCard.scss';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/link';
 
-import chevronRightIcon from '@carbon/icons/es/chevron--right/20';
+import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 
 /**  Sample Lit component to show vital card pattern. */
 @customElement('vital-card-sample-component')
@@ -32,11 +32,7 @@ export class VitalCardSampleComponent extends LitElement {
             @on-click=${(e: Event) => e.preventDefault()}
           >
             <span class="vital-card-link-text">CTA Title</span>
-            <kd-icon
-              slot="icon"
-              sizeoverride="16"
-              .icon=${chevronRightIcon}
-            ></kd-icon>
+            <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
           </kd-link>
         </div>
       </div>

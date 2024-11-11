@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import '../components/reusable/radioButton';
 import '../components/reusable/checkbox';
@@ -11,8 +12,7 @@ import '../components/reusable/datePicker';
 import '../components/reusable/daterangepicker';
 import '../components/reusable/tooltip';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import infoIcon from '@carbon/icons/es/information/16';
+import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 import { action } from '@storybook/addon-actions';
 
 export default {
@@ -22,6 +22,11 @@ export default {
 export const Default = {
   render: () => {
     return html`
+      <style>
+        .info-icon {
+          display: flex;
+        }
+      </style>
       <form
         @submit=${(e) => {
           e.preventDefault();
@@ -41,7 +46,7 @@ export const Default = {
           label="Radio buttons"
         >
           <kyn-tooltip slot="tooltip">
-            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
           <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
@@ -80,7 +85,7 @@ export const Default = {
           @on-change=${(e) => action(e.type)(e)}
         >
           <kyn-tooltip slot="tooltip">
-            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
 
@@ -127,7 +132,7 @@ export const Default = {
           @on-input=${(e) => action(e.type)(e)}
         >
           <kyn-tooltip slot="tooltip">
-            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
         </kyn-text-input>
@@ -142,7 +147,7 @@ export const Default = {
           @keydown=${(e) => e.stopPropagation()}
         >
           <kyn-tooltip slot="tooltip">
-            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
         </kyn-text-area>
@@ -155,7 +160,7 @@ export const Default = {
           @on-input=${(e) => action(e.type)(e)}
         >
           <kyn-tooltip slot="tooltip">
-            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
         </kyn-number-input>
@@ -172,7 +177,7 @@ export const Default = {
           @on-input=${(e) => action(e.type)(e)}
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
-            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
         </kyn-time-picker>
@@ -215,7 +220,7 @@ export const Default = {
           @on-input=${(e) => action(e.type)(e)}
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
-            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
         </kyn-date-picker>
@@ -233,7 +238,7 @@ export const Default = {
           style="min-width: 400px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
-            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
         </kyn-date-range-picker>
@@ -252,7 +257,7 @@ export const Default = {
           style="min-width: 400px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
-            <kd-icon slot="anchor" .icon=${infoIcon}></kd-icon>
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Tooltip example.
           </kyn-tooltip>
         </kyn-date-range-picker>

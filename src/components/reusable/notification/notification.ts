@@ -1,18 +1,17 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import closeIcon from '@carbon/icons/es/close/16';
+import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 import NotificationScss from './notification.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/card';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import successIcon from '@carbon/icons/es/checkmark--filled/16';
-import warningErrorIcon from '@carbon/icons/es/warning--alt--filled/16';
-import infoIcon from '@carbon/icons/es/information--filled/16';
+import successIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
+import warningErrorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information-filled.svg';
 
 import '../tag';
 /**
@@ -35,7 +34,7 @@ export class Notification extends LitElement {
   @property({ type: String })
   notificationSubtitle = '';
 
-  /** 
+  /**
    * Timestamp of notification.
    * It is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.
    */
@@ -67,19 +66,19 @@ export class Notification extends LitElement {
   @property({ type: String })
   closeBtnDescription = 'Close';
 
-  /** 
-   * Assistive text for notification type. 
+  /**
+   * Assistive text for notification type.
    * Required for `'clickable'`, `'inline'` and `'toast'` notification types.
    * */
   @property({ type: String })
   assistiveNotificationTypeText = '';
 
   /** Notification role (Required to support accessibility). */
-  @property({ type: String }) 
+  @property({ type: String })
   notificationRole?: 'alert' | 'log' | 'status';
 
-  /** 
-   * Status label (Required to support accessibility). 
+  /**
+   * Status label (Required to support accessibility).
    * Assign the localized string value for the word **Status**.
    * */
   @property({ type: String })
@@ -141,17 +140,25 @@ export class Notification extends LitElement {
             rel="noopener"
             @on-card-click=${(e: any) => this._handleCardClick(e)}
             hideBorder
-            role=${ifDefined(this.notificationRole)}>
-              <span id="notificationType">${this.assistiveNotificationTypeText}</span>
-              ${this.renderInnerUI()}
-            </kd-card
-          >`
-        : html`
-        <kd-card type=${this.type} role=${ifDefined(this.notificationRole)} class="${classMap(cardBgClasses)}">
-          ${this.type === 'inline' || this.type === 'toast' ? html `<span id="notificationType">${this.assistiveNotificationTypeText}</span>` : null}
-          ${this.renderInnerUI()}
-        </kd-card>`
-      }
+            role=${ifDefined(this.notificationRole)}
+          >
+            <span id="notificationType"
+              >${this.assistiveNotificationTypeText}</span
+            >
+            ${this.renderInnerUI()}
+          </kd-card>`
+        : html` <kd-card
+            type=${this.type}
+            role=${ifDefined(this.notificationRole)}
+            class="${classMap(cardBgClasses)}"
+          >
+            ${this.type === 'inline' || this.type === 'toast'
+              ? html`<span id="notificationType"
+                  >${this.assistiveNotificationTypeText}</span
+                >`
+              : null}
+            ${this.renderInnerUI()}
+          </kd-card>`}
     `;
   }
 
@@ -163,26 +170,18 @@ export class Notification extends LitElement {
       info: infoIcon,
     };
 
-    const notificationIconFillColor: any = {
-      success: 'var(--kd-color-border-success, #1FA452)',
-      error: 'var(--kd-color-border-destructive, #CC1800)',
-      warning: 'var(--kd-color-border-warning,#F5C400)',
-      info: 'var(--kd-color-border-informational, #1473FF)',
-    };
-
     return html`<div class="notification-wrapper">
       <div class="notification-title-wrap">
         <div class="notification-head">
           ${(this.type === 'inline' || this.type === 'toast') &&
           this.tagStatus !== 'default'
-            ? html` <kd-icon
-                class="notification-state-icon"
+            ? html` <span
+                class="notification-state-icon ${this.tagStatus}"
                 slot="icon"
-                fill=${notificationIconFillColor[this.tagStatus]}
-                .icon=${notificationIcon[this.tagStatus]}
                 role="img"
                 aria-label=${`${this.textStrings[this.tagStatus]} icon`}
-              ></kd-icon>`
+                >${unsafeSVG(notificationIcon[this.tagStatus])}</span
+              >`
             : null}
 
           <div class="notification-title">${this.notificationTitle}</div>
@@ -208,13 +207,13 @@ export class Notification extends LitElement {
                 iconPosition="left"
                 @on-click="${() => this._handleClose()}"
               >
-                <kd-icon
+                <span
                   slot="icon"
                   fill="#3D3C3C"
-                  .icon=${closeIcon}
                   role="img"
                   aria-label=${ifDefined(this.closeBtnDescription)}
-                ></kd-icon>
+                  >${unsafeSVG(closeIcon)}</span
+                >
               </kd-button>`
             : null}
           <!-- actions slot could be an overflow menu, close icon (for other notification types) etc. -->
@@ -230,13 +229,12 @@ export class Notification extends LitElement {
         <div class="status-tag">
           ${this.tagStatus !== 'default' &&
           (this.type === 'normal' || this.type === 'clickable')
-            ? html` 
-            <span id="statusLabel">${this.statusLabel}</span>
-            <kyn-tag
-                label=${this.textStrings[this.tagStatus]}
-                tagColor=${this._tagColor[this.tagStatus]}
-                shade="dark"
-              ></kyn-tag>`
+            ? html` <span id="statusLabel">${this.statusLabel}</span>
+                <kyn-tag
+                  label=${this.textStrings[this.tagStatus]}
+                  tagColor=${this._tagColor[this.tagStatus]}
+                  shade="dark"
+                ></kyn-tag>`
             : null}
         </div>
         <div class="timestamp-wrapper">

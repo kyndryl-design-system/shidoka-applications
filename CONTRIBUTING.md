@@ -28,8 +28,9 @@ npm run format
 ## Guidelines
 
 1. Commits
-   1. Commit messages MUST use [Conventional Commit format](https://www.conventionalcommits.org).
-   1. [Certain commit types](https://semantic-release.gitbook.io/semantic-release/#commit-message-format) like `fix:` (patch), `feat:` (minor), and `perf:` (major) or `BREAKING CHANGE:` (in the commit body or footer, major), will automatically trigger a release to publish a new package and update the semantic version.
+   1. Commit messages MUST use [Conventional Commit format](https://semantic-release.gitbook.io/semantic-release#commit-message-format).
+   1. [Certain commit prefixes](https://semantic-release.gitbook.io/semantic-release/#commit-message-format) like `fix:` (patch) or `feat:` (minor) will automatically trigger a release to publish a new package and update the semantic version.
+      1. `BREAKING CHANGE:` in the commit message footer will trigger a major version update.
    1. [Conventional Commits Cheat Sheet](https://gist.github.com/Zekfad/f51cb06ac76e2457f11c80ed705c95a3)
    1. Git hooks are installed to enforce commit message formatting with commitlint, and code formatting with Prettier.
 1. Branching
@@ -69,7 +70,6 @@ npm run format
 
 1. [Lit](https://lit.dev/docs/)
 1. [Storybook](https://storybook.js.org/docs/7.0/web-components/get-started/introduction)
-1. [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/main/packages/icons)
 1. [@storybook/test](https://storybook.js.org/docs/writing-tests)
 1. [TypeScript](https://www.typescriptlang.org/docs/)
 1. [SCSS](https://sass-lang.com/guide)

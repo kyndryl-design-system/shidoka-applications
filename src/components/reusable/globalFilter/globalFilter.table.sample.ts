@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, css, LitElement } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { action } from '@storybook/addon-actions';
@@ -11,14 +12,13 @@ import '../overflowMenu';
 import '../tag';
 import '../table';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/accordion';
 
-import searchIcon from '@carbon/icons/es/search/24';
-import filterIcon from '@carbon/icons/es/filter/20';
-import filterEditIcon from '@carbon/icons/es/filter--edit/20';
-import filterRemoveIcon from '@carbon/icons/es/close--filled/16';
-import refreshIcon from '@carbon/icons/es/renew/20';
+import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/search.svg';
+import filterIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/filter.svg';
+import filterEditIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/filter-edit.svg';
+import filterRemoveIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
+import refreshIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/update.svg';
 
 /**  Sample Lit component to show global filter pattern applied to a Chart. */
 @customElement('sample-filter-table-component')
@@ -32,6 +32,10 @@ export class SampleFilterTableComponent extends LitElement {
       .filter-text {
         display: inline;
       }
+    }
+
+    span[slot='icon'] {
+      display: flex;
     }
   `;
 
@@ -117,7 +121,7 @@ export class SampleFilterTableComponent extends LitElement {
           @on-input=${(e: any) => this._handleSearch(e)}
         >
           Search
-          <kd-icon slot="icon" .icon=${searchIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(searchIcon)}</span>
         </kyn-text-input>
 
         <kyn-modal
@@ -132,10 +136,11 @@ export class SampleFilterTableComponent extends LitElement {
             iconPosition="left"
             tabindex="-1"
           >
-            <kd-icon
-              slot="icon"
-              .icon=${SelectedOptions.length ? filterEditIcon : filterIcon}
-            ></kd-icon>
+            <span slot="icon"
+              >${SelectedOptions.length
+                ? unsafeSVG(filterEditIcon)
+                : unsafeSVG(filterIcon)}</span
+            >
             <span class="filter-text">Filter</span>
           </kd-button>
 
@@ -187,7 +192,7 @@ export class SampleFilterTableComponent extends LitElement {
           iconPosition="left"
           @on-click=${(e: any) => this._handleCustomAction(e)}
         >
-          <kd-icon slot="icon" .icon=${refreshIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(refreshIcon)}</span>
           <span class="filter-text">Refresh</span>
         </kd-button>
 
@@ -213,7 +218,6 @@ export class SampleFilterTableComponent extends LitElement {
               html`
                 <kyn-tag
                   label=${filter.text}
-                  tagColor="grey"
                   @on-close=${(e: any) => this._handleTagClick(e, filter)}
                 ></kyn-tag>
               `
@@ -229,7 +233,7 @@ export class SampleFilterTableComponent extends LitElement {
                 iconPosition="right"
                 @on-click=${(e: any) => this._handleClearTags(e)}
               >
-                <kd-icon slot="icon" .icon=${filterRemoveIcon}></kd-icon>
+                <span slot="icon">${unsafeSVG(filterRemoveIcon)}</span>
                 Clear All
               </kd-button>
             `

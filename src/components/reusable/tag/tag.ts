@@ -1,8 +1,8 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import clearIcon16 from '@carbon/icons/es/close/16';
+import clearIcon16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 import TagScss from './tag.scss';
 
 /**
@@ -111,7 +111,7 @@ export class Tag extends LitElement {
                 aria-label=${this.clearTagText}
                 @click=${(e: any) => this.handleTagClear(e, this.label)}
               >
-                <kd-icon .icon=${clearIcon16}></kd-icon>
+                <span>${unsafeSVG(clearIcon16)}</span>
               </button>
             `
           : ''}

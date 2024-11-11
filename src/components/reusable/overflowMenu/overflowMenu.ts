@@ -1,9 +1,9 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import SCSS from './overflowMenu.scss';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import overflowIcon from '@carbon/icons/es/overflow-menu--horizontal/16';
+import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/overflow.svg';
 
 /**
  * Overflow Menu.
@@ -57,7 +57,7 @@ export class OverflowMenu extends LitElement {
     const buttonClasses = {
       btn: true,
       open: this.open,
-      vertical: this.verticalDots,
+      horizontal: !this.verticalDots,
     };
 
     const menuClasses = {
@@ -79,7 +79,7 @@ export class OverflowMenu extends LitElement {
           aria-label=${this.assistiveText}
           @keydown=${(e: any) => this.handleKeyDown(e)}
         >
-          <kd-icon .icon=${overflowIcon}></kd-icon>
+          <span>${unsafeSVG(overflowIcon)}</span>
         </button>
 
         <div id="menu" class=${classMap(menuClasses)}>
@@ -170,22 +170,26 @@ export class OverflowMenu extends LitElement {
       e.preventDefault();
     }
 
-    if(e.keyCode === ENTER_KEY_CODE || e.keyCode === SPACEBAR_KEY_CODE) {
+    if (e.keyCode === ENTER_KEY_CODE || e.keyCode === SPACEBAR_KEY_CODE) {
       this.toggleMenu();
     }
 
     const menuItems: any = this.getMenuItems();
 
-    if(menuItems.length > 0 && e.keyCode === DOWN_ARROW_KEY_CODE) {
-      const firstItemIndex = menuItems.findIndex((item: any) => !item.hasAttribute('disabled'));
-      menuItems[firstItemIndex].shadowRoot?.querySelector('button') 
-      ? menuItems[firstItemIndex].shadowRoot?.querySelector('button')?.focus() 
-      : menuItems[firstItemIndex].shadowRoot?.querySelector('a')?.focus();
+    if (menuItems.length > 0 && e.keyCode === DOWN_ARROW_KEY_CODE) {
+      const firstItemIndex = menuItems.findIndex(
+        (item: any) => !item.hasAttribute('disabled')
+      );
+      menuItems[firstItemIndex].shadowRoot?.querySelector('button')
+        ? menuItems[firstItemIndex].shadowRoot?.querySelector('button')?.focus()
+        : menuItems[firstItemIndex].shadowRoot?.querySelector('a')?.focus();
     }
   }
 
   getMenuItems() {
-    return Array.from(this.querySelectorAll('kyn-overflow-menu-item') || []).filter((item: any) => !item.hasAttribute('disabled'));
+    return Array.from(
+      this.querySelectorAll('kyn-overflow-menu-item') || []
+    ).filter((item: any) => !item.hasAttribute('disabled'));
   }
 
   getMenu() {
@@ -196,12 +200,16 @@ export class OverflowMenu extends LitElement {
     super.connectedCallback();
 
     document.addEventListener('click', (e) => this.handleClickOut(e));
-    document.addEventListener('keydown', (e) => {this.handleEscapePress(e)});
+    document.addEventListener('keydown', (e) => {
+      this.handleEscapePress(e);
+    });
   }
 
   override disconnectedCallback() {
     document.removeEventListener('click', (e) => this.handleClickOut(e));
-    document.removeEventListener('keydown', (e) => {this.handleEscapePress(e)});
+    document.removeEventListener('keydown', (e) => {
+      this.handleEscapePress(e);
+    });
 
     super.disconnectedCallback();
   }

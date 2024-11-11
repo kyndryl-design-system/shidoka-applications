@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -5,11 +6,10 @@ import { classMap } from 'lit/directives/class-map.js';
 import Styles from './numberInput.scss';
 import { FormMixin } from '../../../common/mixins/form-input';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import addIcon from '@carbon/icons/es/add/20';
-import subtractIcon from '@carbon/icons/es/subtract/20';
 import { deepmerge } from 'deepmerge-ts';
-import errorIcon from '@carbon/icons/es/warning--filled/16';
+import addIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
+import subtractIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-simple.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -119,11 +119,10 @@ export class NumberInput extends FormMixin(LitElement) {
             description=${this._textStrings.subtract}
             @on-click=${this._handleSubtract}
           >
-            <kd-icon slot="icon" .icon=${subtractIcon}></kd-icon>
+            <span slot="icon">${unsafeSVG(subtractIcon)}</span>
           </kd-button>
 
           <input
-            autofocus
             class="${classMap({
               'size--sm': this.size === 'sm',
               'size--lg': this.size === 'lg',
@@ -151,7 +150,7 @@ export class NumberInput extends FormMixin(LitElement) {
             description=${this._textStrings.add}
             @on-click=${this._handleAdd}
           >
-            <kd-icon slot="icon" .icon=${addIcon}></kd-icon>
+            <span slot="icon">${unsafeSVG(addIcon)}</span>
           </kd-button>
         </div>
 
@@ -161,11 +160,11 @@ export class NumberInput extends FormMixin(LitElement) {
         ${this._isInvalid
           ? html`
               <div id="error" class="error">
-                <kd-icon
-                  .icon="${errorIcon}"
+                <span
                   title=${this._textStrings.error}
                   aria-label=${this._textStrings.error}
-                ></kd-icon>
+                  >${errorIcon}</span
+                >
                 ${this.invalidText || this._internalValidationMsg}
               </div>
             `

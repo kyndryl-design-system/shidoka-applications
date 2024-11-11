@@ -1,12 +1,12 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import searchIcon from '@carbon/icons/es/search/24';
+import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/search.svg';
 
-import settingsIcon from '@carbon/icons/es/settings/16';
+import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 import '../index';
 import './column-setting.sample';
 import '../../sideDrawer';
@@ -282,7 +282,7 @@ class StoryTableSettings extends LitElement {
           @on-input=${(e: any) => this._handleSearch(e)}
         >
           Search
-          <kd-icon slot="icon" .icon=${searchIcon}></kd-icon>
+          <span slot="icon" style="display:flex">${unsafeSVG(searchIcon)}</span>
         </kyn-text-input>
 
         <div slot="actions">
@@ -304,7 +304,9 @@ class StoryTableSettings extends LitElement {
                 description="settings button"
               >
                 Settings
-                <kd-icon slot="icon" .icon=${settingsIcon}></kd-icon>
+                <span slot="icon" style="display:flex"
+                  >${unsafeSVG(settingsIcon)}</span
+                >
               </kd-button>
             </div>
             <story-column-setting .rows=${this.columns}></story-column-setting>

@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import {
   customElement,
@@ -11,9 +12,8 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import TextInputScss from './textInput.scss';
 
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import clearIcon from '@carbon/icons/es/close/24';
-import errorIcon from '@carbon/icons/es/warning--filled/16';
+import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 import { deepmerge } from 'deepmerge-ts';
 
 const _defaultTextStrings = {
@@ -174,7 +174,7 @@ export class TextInput extends FormMixin(LitElement) {
                   title=${this._textStrings.clearAll}
                   @click=${() => this._handleClear()}
                 >
-                  <kd-icon .icon=${clearIcon}></kd-icon>
+                  <span>${unsafeSVG(clearIcon)}</span>
                 </button>
               `
             : null}
@@ -188,12 +188,9 @@ export class TextInput extends FormMixin(LitElement) {
             ${this._isInvalid
               ? html`
                   <div id="error" class="error">
-                    <kd-icon
-                      role="img"
-                      title=${this._textStrings.errorText}
-                      aria-label=${this._textStrings.errorText}
-                      .icon=${errorIcon}
-                    ></kd-icon>
+                    <span role="img" aria-label=${this._textStrings.errorText}
+                      >${unsafeSVG(errorIcon)}</span
+                    >
                     ${this.invalidText || this._internalValidationMsg}
                   </div>
                 `
