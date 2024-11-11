@@ -7,7 +7,7 @@ import '../../components/reusable/card';
 import CardSampleScss from '../sampleCardComponents/cardSample.scss';
 
 /**  Sample Lit component to show inoformational card skeleton pattern. */
-@customElement('info-card-simple-skeleton-sample')
+@customElement('info-card-skeleton-sample')
 export class InformationalCardSkeletonComponent extends LitElement {
   static override styles = CardSampleScss;
 
@@ -15,12 +15,27 @@ export class InformationalCardSkeletonComponent extends LitElement {
   @property({ type: Number })
   lines = 0;
 
+  /**  Show or hide thumbnail in example. */
+  @property({ type: Boolean })
+  thumbnailExample?: boolean = false;
+
   override render() {
     return html`
       <div>
         <div class="card-logo">
           <kyn-skeleton elementType="card-logo"></kyn-skeleton>
         </div>
+        ${
+          this.thumbnailExample
+            ? html`
+                <kyn-skeleton
+                  elementType="thumbnail"
+                  class="card-thumbnail-img"
+                  alt="Card thumbnail"
+                ></kyn-skeleton>
+              `
+            : ''
+        }
         <div class="card-title">
           <kyn-skeleton elementType="title"></kyn-skeleton>
         </div>
@@ -44,6 +59,6 @@ export class InformationalCardSkeletonComponent extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'info-card-simple-skeleton-sample': InformationalCardSkeletonComponent;
+    'info-card-skeleton-sample': InformationalCardSkeletonComponent;
   }
 }
