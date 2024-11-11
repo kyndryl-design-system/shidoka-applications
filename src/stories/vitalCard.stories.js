@@ -3,7 +3,7 @@ import '@kyndryl-design-system/shidoka-foundation/css/grid.css';
 import '@kyndryl-design-system/shidoka-foundation/components/card';
 
 import './sampleCardComponents/vitalCard.sample.ts';
-import './sampleCardComponents/vitalCard.skeleton.sample.ts';
+import './skeleton-patterns/vitalCard.skeleton.sample.ts';
 
 export default {
   title: 'Patterns/Vital Card',

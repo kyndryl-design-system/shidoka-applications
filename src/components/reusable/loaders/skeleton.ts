@@ -17,6 +17,7 @@ export class Skeleton extends LitElement {
   @property({ type: String, reflect: true })
   size?:
     | 'large'
+    | 'thumbnail'
     | 'medium'
     | 'title'
     | 'subtitle'

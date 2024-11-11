@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import vitalCardScss from './vitalCard.scss';
+import { customElement } from 'lit/decorators.js';
+import vitalCardScss from '../sampleCardComponents/vitalCard.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '@kyndryl-design-system/shidoka-foundation/components/link';
 import '../../components/reusable/loaders/skeleton';
