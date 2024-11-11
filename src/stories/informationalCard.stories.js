@@ -163,15 +163,19 @@ export const InsideGrid = {
 export const SkeletonSimple = {
   render: () => {
     return html` <kd-card type="normal" href="" target="" rel="">
-      <informational-card-skeleton-sample-component></informational-card-skeleton-sample-component>
+      <info-card-simple-skeleton-sample
+        .lines=${1}
+      ></info-card-simple-skeleton-sample>
     </kd-card>`;
   },
 };
 
-export const SkeletonWithLogo = {
+export const SkeletonWithThumbnail = {
   render: () => {
     return html` <kd-card type="normal" href="" target="" rel="">
-      <informational-card-w-thumbnail-skeleton-sample-component></informational-card-w-thumbnail-skeleton-sample-component>
+      <info-card-w-thumbnail-skeleton-sample
+        .lines=${1}
+      ></info-card-w-thumbnail-skeleton-sample>
     </kd-card>`;
   },
 };

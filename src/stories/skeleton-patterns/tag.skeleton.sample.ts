@@ -1,8 +1,8 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import TagScss from './tag.scss';
-import '../loaders/skeleton';
+import TagScss from '../../components/reusable/tag/tag.scss';
+import '../../components/reusable/loaders/skeleton';
 
 @customElement('kyn-tag-skeleton')
 export class TagSkeleton extends LitElement {

@@ -1,9 +1,17 @@
 @use '../../../common/scss/global.scss';
 
 :host {
+  --skeleton-base-width: 95%;
+  --skeleton-base-height: 12px;
+  --skeleton-border-radius: 4px;
+  --skeleton-background: #eef1f2;
+  --skeleton-shimmer-duration: 1.5s;
+}
+
+:host {
   display: block;
   width: 100%;
-  height: 12px;
+  height: var(--skeleton-base-height);
 }
 
 :host([inline]) {
@@ -11,11 +19,11 @@
   width: 40px;
 }
 
-:host([size="card-logo"]) {
+:host([elementType="card-logo"]) {
   max-width: 32px;
   height: 32px;
   border-radius: 50px;
-  width: 95%;
+  width: var(--skeleton-base-width);
 
   .skeleton {
     border-radius: 100px;
@@ -24,50 +32,46 @@
 
 :host([size="large"]) {
   height: 128px;
-  width: 95%;
+  width: var(--skeleton-base-width);
 }
 
-:host([size="thumbnail"]) {
-  height: 128px;
-  width: 95%;
-}
-
-:host([size="medium"]) {
+:host([elementType="medium"]) {
   height: 16px;
-  width: 95%;
-}
-
-:host([size="title"]) {
-  max-width: 110px;
-  height: 16px;
-  width: 95%;
-}
-
-:host([size="subtitle"]) {
-  max-width: 150px;
-  height: 16px;
-  width: 95%;
-}
-
-:host([size="body-text"]) {
-  max-width: 100px;
-  height: 16px;
-  width: 95%;
+  width: var(--skeleton-base-width);
 }
 
 :host([size="small"]) {
-  height: 12px;
-  width: 95%;
+  height: var(--skeleton-base-height);
+  width: var(--skeleton-base-width);
 }
 
-:host([size="table-cell"]) {
-  height: 12px;
+:host([elementType="thumbnail"]) {
+  height: 128px;
+  width: 216px;
+}
+
+:host([elementType="title"]) {
+  max-width: 110px;
+  height: 16px;
+  width: var(--skeleton-base-width);
+}
+
+:host([elementType="subtitle"]) {
+  max-width: 150px;
+  height: 16px;
+  width: var(--skeleton-base-width);
+}
+
+:host([elementType="body-text"]) {
+  max-width: 100px;
+  height: 16px;
+  width: var(--skeleton-base-width);
+}
+
+:host([elementType="table-cell"]) {
+  height: var(--skeleton-base-height);
   min-width: 115px;
-  width: 95%;
-}
-
-:host(:not(:last-child)) {
-  margin-bottom: 16px;
+  width: var(--skeleton-base-width);
 }
 
 kyn-td :host,
@@ -79,8 +83,8 @@ kyn-th :host {
 .skeleton {
   width: 100%;
   height: 100%;
-  border-radius: 4px;
-  background: #eef1f2;
+  border-radius: var(--skeleton-border-radius);
+  background: var(--skeleton-background);
   position: relative;
   overflow: hidden;
   will-change: transform;
@@ -94,11 +98,11 @@ kyn-th :host {
     transform: translateX(-100%) translate3d(0, 0, 0);
     background-image: linear-gradient(90deg,
         rgba(255, 255, 255, 0) 0,
-        rgba(255, 255, 255, 0.1) 10%,
-        rgba(255, 255, 255, 0.4) 50%,
-        rgba(255, 255, 255, 0.1) 90%,
+        rgba(255, 255, 255, 0.2) 10%,
+        rgba(255, 255, 255, 0.7) 50%,
+        rgba(255, 255, 255, 0.2) 90%,
         rgba(255, 255, 255, 0) 100%);
-    animation: shimmer 1.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+    animation: shimmer var(--skeleton-shimmer-duration) cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
     content: '';
     pointer-events: none;
   }

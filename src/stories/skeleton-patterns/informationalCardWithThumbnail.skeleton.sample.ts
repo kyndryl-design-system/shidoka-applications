@@ -1,26 +1,46 @@
 import { html, LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 import '../../components/reusable/loaders/skeleton';
 import '../../components/reusable/card';
 
+import CardSampleScss from '../sampleCardComponents/cardSample.scss';
+
 /**  Sample Lit component to show informational card with logo skeleton pattern. */
-@customElement('informational-card-w-thumbnail-skeleton-sample-component')
+@customElement('info-card-w-thumbnail-skeleton-sample')
 export class InformationalCardWithThumbnail extends LitElement {
+  static override styles = CardSampleScss;
+
+  /**  Sets the number of body/description lines to show in the skeleton pattern example. */
+  @property({ type: Number })
+  lines = 0;
+
   override render() {
     return html`
-      <div>
-        <kyn-skeleton size="card-logo"></kyn-skeleton>
+          <div>
+        <div class="card-logo">
+          <kyn-skeleton elementType="card-logo"></kyn-skeleton>
+        </div>
         <kyn-skeleton
-          size="thumbnail"
+          elementType="thumbnail"
           class="card-thumbnail-img"
           alt="Card thumbnail"
-          aria-hidden="true"
         ></kyn-skeleton>
-        <kyn-skeleton size="title" aria-hidden="true"></kyn-skeleton>
-        <kyn-skeleton size="subtitle" aria-hidden="true"></kyn-skeleton>
-        <div class="card-body">
-          <kyn-skeleton size="body-text" aria-hidden="true"></kyn-skeleton>
+        <div class="card-title">
+          <kyn-skeleton elementType="title"></kyn-skeleton>
+        </div>
+        <div class="card-subtitle">
+          <kyn-skeleton elementType="subtitle"></kyn-skeleton>
+        </div>
+          ${Array(this.lines)
+            .fill(null)
+            .map(
+              () => html`
+                <div class="card-description">
+                  <kyn-skeleton elementType="body-text"></kyn-skeleton>
+                </div>
+              `
+            )}
         </div>
       </div>
     `;
@@ -29,6 +49,6 @@ export class InformationalCardWithThumbnail extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'informational-card-w-thumbnail-skeleton-sample-component': InformationalCardWithThumbnail;
+    'info-card-w-thumbnail-skeleton-sample': InformationalCardWithThumbnail;
   }
 }

@@ -15,16 +15,18 @@ export class Skeleton extends LitElement {
 
   /** Size variant of the skeleton. */
   @property({ type: String, reflect: true })
-  size?:
-    | 'large'
+  size?: 'large' | 'medium' | 'small' = 'medium';
+
+  /** Element type of the skeleton. */
+  @property({ type: String, reflect: true })
+  elementType?:
+    | 'default'
     | 'thumbnail'
-    | 'medium'
     | 'title'
     | 'subtitle'
     | 'body-text'
-    | 'small'
     | 'table-cell'
-    | 'card-logo' = 'medium';
+    | 'card-logo' = 'default';
 
   /** Number of skeleton lines to show. */
   @property({ type: Number })

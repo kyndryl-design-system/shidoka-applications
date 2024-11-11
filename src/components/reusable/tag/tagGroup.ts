@@ -7,7 +7,6 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import './tag';
-import './tagSkeleton';
 import TagGroupScss from './tagGroup.scss';
 
 /**

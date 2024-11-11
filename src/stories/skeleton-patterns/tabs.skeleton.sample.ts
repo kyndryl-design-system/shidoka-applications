@@ -1,8 +1,8 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import '../loaders/skeleton';
-import TabsSkeletonScss from './tabs.skeleton.scss';
+import '../../components/reusable/loaders/skeleton';
+import TabsSkeletonScss from '../../components/reusable/tabs/tabs.skeleton.scss';
 
 /**
  * Tabs Skeleton.
