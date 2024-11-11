@@ -6,7 +6,6 @@ import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import userAvatarIcon from '@carbon/icons/es/user--avatar/16';
 import helpIcon from '@carbon/icons/es/help/16';
 import settingsIcon from '@carbon/icons/es/settings/16';
-import '../loaders/skeleton';
 
 export default {
   title: 'Components/Tabs',
@@ -152,34 +151,6 @@ export const DisabledTab = {
         <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
         <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
-      </kyn-tabs>
-    `;
-  },
-};
-
-export const Skeleton = {
-  args,
-  render: (args) => {
-    return html`
-      <style>
-        kyn-skeleton.inline-example {
-          width: 80px;
-          height: 16px;
-        }
-      </style>
-      <kyn-tabs
-        tabSize=${args.tabSize}
-        tabStyle=${args.tabStyle}
-        ?vertical=${args.vertical}
-        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
-        @on-change=${(e) => action(e.type)(e)}
-      >
-        ${Array.from(
-          { length: 3 },
-          () => html`<kyn-tab slot="tabs"
-            ><kyn-skeleton inline class="inline-example"></kyn-skeleton
-          ></kyn-tab>`
-        )}
       </kyn-tabs>
     `;
   },

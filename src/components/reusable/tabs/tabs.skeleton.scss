@@ -1,0 +1,92 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/variables/breakpoints.scss';
+
+:host {
+  display: block;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: breakpoints.$bp-md) {
+    &.vertical {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+  }
+}
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+
+  &.contained::after {
+    content: '';
+    background: var(--kd-color-background-ui-soft);
+    flex-grow: 1;
+  }
+
+  &.line::after {
+    content: '';
+    border-bottom: 2px solid var(--kd-color-border-default);
+    flex-grow: 1;
+  }
+
+  @media (min-width: breakpoints.$bp-md) {
+    .vertical & {
+      flex-direction: column;
+      overflow-x: initial;
+    }
+
+    .vertical &.line::after {
+      content: none;
+    }
+  }
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: default;
+  pointer-events: none;
+  border-bottom: 2px solid var(--kd-color-border-default);
+  background: transparent;
+  transition: border-color 150ms ease-out, background-color 150ms ease-out,
+    color 150ms ease-out;
+
+  &.size--sm {
+    height: 32px;
+    padding: 7px 16px;
+  }
+
+  &.size--md {
+    height: 48px;
+    padding: 12px;
+  }
+
+  @media (min-width: breakpoints.$bp-md) {
+    &.vertical {
+      border-bottom: none;
+      border-left: 2px solid var(--kd-color-border-default);
+      white-space: initial;
+      text-align: left;
+    }
+  }
+
+  &.contained {
+    border-bottom: none;
+    border-top: 2px solid transparent;
+    background: var(--kd-color-background-ui-soft);
+  }
+
+  @media (min-width: breakpoints.$bp-md) {
+    &.contained.vertical {
+      border-top: none;
+      border-color: transparent;
+    }
+  }
+}
