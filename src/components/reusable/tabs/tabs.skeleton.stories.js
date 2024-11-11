@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import './index';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 import '../loaders/skeleton';
 

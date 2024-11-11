@@ -5,15 +5,15 @@ import '../loaders/skeleton';
 import TabsSkeletonScss from './tabs.skeleton.scss';
 
 /**
- * Tabs.
+ * Tabs Skeleton.
  */
 @customElement('kyn-tabs-skeleton')
 export class TabsSkeleton extends LitElement {
   static override styles = TabsSkeletonScss;
 
-  /** Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px. */
+  /** Size of the tab buttons, `'sm'` or `'md'`. */
   @property({ type: String })
-  tabSize = 'sm';
+  tabSize = 'md';
 
   /** Vertical orientation. */
   @property({ type: Boolean })
