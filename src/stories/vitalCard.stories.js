@@ -3,6 +3,7 @@ import '@kyndryl-design-system/shidoka-foundation/css/grid.css';
 import '@kyndryl-design-system/shidoka-foundation/components/card';
 
 import './sampleCardComponents/vitalCard.sample.ts';
+import './sampleCardComponents/vitalCard.skeleton.sample.ts';
 
 export default {
   title: 'Patterns/Vital Card',
@@ -18,6 +19,14 @@ export const Default = {
   render: () => {
     return html`<kd-card type="normal">
       <vital-card-sample-component></vital-card-sample-component>
+    </kd-card>`;
+  },
+};
+
+export const Skeleton = {
+  render: () => {
+    return html`<kd-card type="normal">
+      <vital-card-skeleton-sample-component></vital-card-skeleton-sample-component>
     </kd-card>`;
   },
 };

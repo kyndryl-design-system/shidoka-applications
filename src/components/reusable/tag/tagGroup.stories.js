@@ -7,6 +7,7 @@ export default {
   component: 'kyn-tag-group',
   subcomponents: {
     Tag: 'kyn-tag',
+    TagSkeleton: 'kyn-tag-skeleton',
   },
   argTypes: {
     tagSize: {
@@ -50,6 +51,31 @@ export const TagGroup = {
         <kyn-tag label="Tag 8" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
         <kyn-tag label="Tag 9" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
         <kyn-tag label="Tag 10" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
+      </kyn-tag-group>
+    `;
+  },
+};
+
+export const Skeleton = {
+  args: {
+    limitTags: false,
+    tagSize: 'md',
+    textStrings: {
+      showAll: 'Show all',
+      showLess: 'Show less',
+    },
+  },
+  render: (args) => {
+    return html`
+      <kyn-tag-group
+        ?limitTags=${args.limitTags}
+        tagSize=${args.tagSize}
+        .textStrings=${args.textStrings}
+      >
+        ${Array.from(
+          { length: 7 },
+          () => html`<kyn-tag-skeleton></kyn-tag-skeleton>`
+        )}
       </kyn-tag-group>
     `;
   },
