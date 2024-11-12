@@ -15,6 +15,7 @@ export class Skeleton extends LitElement {
     | 'tag'
     | 'tabs'
     | 'pagination'
+    | 'checkbox'
     | 'subtitle'
     | 'body-text'
     | 'table-cell'
