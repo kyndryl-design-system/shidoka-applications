@@ -3,7 +3,7 @@ import './index';
 import { action } from '@storybook/addon-actions';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import '../loaders/skeleton';
+import './sideDrawer.skeleton';
 
 export default {
   title: 'Components/SideDrawer',
@@ -141,31 +141,18 @@ const handleBeforeClose = (returnValue) => {
   }
 };
 
+const skeletonArgs = {
+  open: false,
+  size: 'md',
+};
+
 export const Skeleton = {
-  args,
+  args: skeletonArgs,
   render: (args) => {
     return html`
-      <kyn-side-drawer
-        ?open=${args.open}
-        size=${args.size}
-        titleText=${args.titleText}
-        labelText=${args.labelText}
-        submitBtnText=${args.submitBtnText}
-        cancelBtnText=${args.cancelBtnText}
-        ?submitBtnDisabled=${args.submitBtnDisabled}
-        ?hideFooter=${args.hideFooter}
-        ?destructive=${args.destructive}
-        ?showSecondaryButton=${args.showSecondaryButton}
-        secondaryButtonText=${args.secondaryButtonText}
-        ?hideCancelButton=${args.hideCancelButton}
-        @on-close=${(e) => action(e.type)(e)}
-      >
+      <kyn-side-drawer-skeleton ?open=${args.open} size=${args.size}>
         <span slot="anchor">Open Drawer</span>
-        ${Array.from(
-          { length: 7 },
-          () => html` <kyn-skeleton inline></kyn-skeleton>`
-        )}
-      </kyn-side-drawer>
+      </kyn-side-drawer-skeleton>
     `;
   },
 };
