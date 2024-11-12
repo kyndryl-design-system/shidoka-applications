@@ -30,7 +30,11 @@ const Template = (args) => {
     .map((_, index) => {
       const isLast = index === args.lines - 1;
       return html`
-        <div style="flex: 1; margin-right: ${isLast ? '0' : '8px'};">
+        <div
+          style="${args.inline
+            ? `flex: 1; margin-right: ${isLast ? '0' : '8px'};`
+            : ''}"
+        >
           <kyn-skeleton
             class="${args.inline ? 'inline' : 'skeleton-item'} ${isLast
               ? 'last-item'
@@ -44,8 +48,8 @@ const Template = (args) => {
 
   return html`
     <div
-      style="display: flex; width: 100%; ${args.inline
-        ? 'flex-wrap: wrap; gap: 8px;'
+      style="${args.inline
+        ? 'display: flex; width: 100%; flex-wrap: wrap; gap: 8px;'
         : ''}"
     >
       ${skeletons}
