@@ -46,7 +46,7 @@ export class TableSkeleton extends LitElement {
 
       .kyn-th kyn-skeleton {
         display: block;
-        height: 1.2rem;
+        height: 1rem;
       }
 
       :host {
@@ -222,18 +222,19 @@ export class TableSkeleton extends LitElement {
   override render() {
     return html`
       <div class="${this.ellipsis ? 'ellipsis' : ''}">
-        ${this.tableTitle.length > 0
+        ${this.tableTitle || this.tableSubtitle
           ? html`<kyn-table-toolbar
               tableTitle=${this.tableTitle}
+              tableSubtitle=${this.tableSubtitle}
             ></kyn-table-toolbar>`
           : html`<div class="skeleton-title-wrapper">
-              ${this.tableTitle.length === 0
+              ${!this.tableTitle
                 ? html`<kyn-skeleton
                     class="skeleton-title"
                     elementType="title"
                   ></kyn-skeleton>`
                 : null}
-              ${this.tableSubtitle.length === 0
+              ${!this.tableSubtitle
                 ? html`<kyn-skeleton
                     class="skeleton-subtitle"
                     elementType="subtitle"
