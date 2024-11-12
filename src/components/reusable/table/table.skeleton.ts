@@ -70,10 +70,6 @@ export class TableSkeleton extends LitElement {
     `,
   ];
 
-  /** Sets the ARIA role for the table */
-  @property({ type: String, reflect: true })
-  override role = 'table';
-
   /** Sets number of rows to display in the skeleton */
   @property({ type: Number })
   rows = 5;
@@ -147,78 +143,6 @@ export class TableSkeleton extends LitElement {
   @property({ type: Boolean, reflect: true })
   fixedLayout = false;
 
-  /**
-   * Generates a random width for skeleton cells to create a more natural loading appearance.
-   * @returns {string} A random width value as a percentage
-   * @private
-   */
-  private getRandomWidth() {
-    // Generate random widths for more realistic appearance
-    // Using a wider range of values for more variety
-    const widths = ['45%', '60%', '75%', '85%', '90%', '95%'];
-    return widths[Math.floor(Math.random() * widths.length)];
-  }
-
-  /**
-   * Gets the label for a column at the specified index.
-   * Falls back to a generic label if no specific label is provided.
-   * @param {number} index - The column index
-   * @returns {string} The column label
-   * @private
-   */
-  private getColumnLabel(index: number) {
-    return this.columnLabels[index] || `Column ${index + 1}`;
-  }
-
-  /**
-   * Gets the number of columns to display.
-   * Uses the length of columnLabels if provided, otherwise defaults to 7.
-   * @returns {number} The number of columns
-   * @private
-   */
-  private get columns() {
-    return this.columnLabels.length || 7;
-  }
-
-  /**
-   * Renders a skeleton cell with appropriate accessibility attributes.
-   * @param {number} colIndex - The column index
-   * @param {string} type - The type of cell (header or data)
-   * @returns {TemplateResult} The rendered cell
-   * @private
-   */
-  private renderSkeletonCell(colIndex: number, type: 'header' | 'data') {
-    return html`
-      <span class="visually-hidden">
-        ${type === 'header'
-          ? this.getColumnLabel(colIndex)
-          : `Loading data for ${this.getColumnLabel(colIndex)}`}
-      </span>
-      <kyn-skeleton
-        class="varying-width"
-        style="--width: ${this.getRandomWidth()}"
-        elementType="table-cell"
-      ></kyn-skeleton>
-    `;
-  }
-
-  /**
-   * Renders a skeleton checkbox cell with appropriate accessibility attributes.
-   * @param {number} rowIndex - The row index (optional, for data cells)
-   * @returns {TemplateResult} The rendered checkbox cell
-   * @private
-   */
-  private renderCheckboxCell(rowIndex?: number) {
-    return html`
-      <span class="visually-hidden">
-        ${rowIndex === undefined
-          ? 'Select all rows'
-          : `Select row ${rowIndex + 1}`}
-      </span>
-      <kyn-skeleton elementType="checkbox"></kyn-skeleton>
-    `;
-  }
-
   override render() {
     return html`
       <div class="${this.ellipsis ? 'ellipsis' : ''}">
@@ -247,6 +171,7 @@ export class TableSkeleton extends LitElement {
           aria-busy="true"
         >
           <kyn-table
+            role="table"
             ?dense=${this.dense}
             ?striped=${this.striped}
             ?stickyHeader=${this.stickyHeader}
@@ -254,43 +179,42 @@ export class TableSkeleton extends LitElement {
             ?fixedLayout=${this.fixedLayout}
             ?ellipsis=${this.ellipsis}
           >
-            <kyn-thead>
-              <kyn-tr>
+            <kyn-thead role="rowgroup">
+              <kyn-tr role="row">
                 ${this.checkboxSelection
-                  ? html`<kyn-th>${this.renderCheckboxCell()}</kyn-th>`
+                  ? html`<kyn-th role="columnheader">
+                      ${this.renderCheckboxCell()}
+                    </kyn-th>`
                   : ''}
                 ${Array(this.columns)
                   .fill(null)
                   .map(
                     (_, index) =>
-                      html`<kyn-th
-                        >${this.renderSkeletonCell(index, 'header')}</kyn-th
-                      >`
+                      html`<kyn-th role="columnheader">
+                        ${this.renderSkeletonCell(index, 'header')}
+                      </kyn-th>`
                   )}
               </kyn-tr>
             </kyn-thead>
 
-            <kyn-tbody>
+            <kyn-tbody role="rowgroup">
               ${Array(this.rows)
                 .fill(null)
                 .map(
                   (_, rowIndex) => html`
-                    <kyn-tr>
+                    <kyn-tr role="row">
                       ${this.checkboxSelection
-                        ? html`<kyn-td
-                            >${this.renderCheckboxCell(rowIndex)}</kyn-td
-                          >`
+                        ? html`<kyn-td role="cell">
+                            ${this.renderCheckboxCell(rowIndex)}
+                          </kyn-td>`
                         : ''}
                       ${Array(this.columns)
                         .fill(null)
                         .map(
                           (_, colIndex) =>
-                            html`<kyn-td
-                              >${this.renderSkeletonCell(
-                                colIndex,
-                                'data'
-                              )}</kyn-td
-                            >`
+                            html`<kyn-td role="cell">
+                              ${this.renderSkeletonCell(colIndex, 'data')}
+                            </kyn-td>`
                         )}
                     </kyn-tr>
                   `
@@ -300,6 +224,45 @@ export class TableSkeleton extends LitElement {
         </kyn-table-container>
       </div>
     `;
+  }
+
+  private renderSkeletonCell(colIndex: number, type: 'header' | 'data') {
+    return html`
+      <span class="visually-hidden">
+        ${type === 'header'
+          ? this.getColumnLabel(colIndex)
+          : `Loading data for ${this.getColumnLabel(colIndex)}`}
+      </span>
+      <kyn-skeleton
+        class="varying-width"
+        style="--width: ${this.getRandomWidth()}"
+        elementType="table-cell"
+      ></kyn-skeleton>
+    `;
+  }
+
+  private renderCheckboxCell(rowIndex?: number) {
+    return html`
+      <span class="visually-hidden">
+        ${rowIndex === undefined
+          ? 'Select all rows'
+          : `Select row ${rowIndex + 1}`}
+      </span>
+      <kyn-skeleton elementType="checkbox"></kyn-skeleton>
+    `;
+  }
+
+  private getRandomWidth() {
+    const widths = ['45%', '60%', '75%', '85%', '90%', '95%'];
+    return widths[Math.floor(Math.random() * widths.length)];
+  }
+
+  private getColumnLabel(index: number) {
+    return this.columnLabels[index] || `Column ${index + 1}`;
+  }
+
+  private get columns() {
+    return this.columnLabels.length || 7;
   }
 }
 
