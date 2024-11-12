@@ -24,25 +24,34 @@ export default {
   },
 };
 
-const Template = (args) => html`
-  <div class="skeleton-wrapper">
-    ${Array(args.lines)
-      .fill(null)
-      .map(
-        (_, index) => html`
+const Template = (args) => {
+  const skeletons = Array(args.lines)
+    .fill(null)
+    .map((_, index) => {
+      const isLast = index === args.lines - 1;
+      return html`
+        <div style="flex: 1; margin-right: ${isLast ? '0' : '8px'};">
           <kyn-skeleton
-            class="${!args.inline ? 'skeleton-item' : 'inline'} ${index ===
-            args.lines - 1
+            class="${args.inline ? 'inline' : 'skeleton-item'} ${isLast
               ? 'last-item'
               : ''}"
             elementType=${args.elementType}
-            .lines=${args.lines}
             ?inline=${args.inline}
           ></kyn-skeleton>
-        `
-      )}
-  </div>
-`;
+        </div>
+      `;
+    });
+
+  return html`
+    <div
+      style="display: flex; width: 100%; ${args.inline
+        ? 'flex-wrap: wrap; gap: 8px;'
+        : ''}"
+    >
+      ${skeletons}
+    </div>
+  `;
+};
 
 export const Block = Template.bind({});
 Block.args = {
