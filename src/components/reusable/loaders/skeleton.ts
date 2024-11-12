@@ -1,48 +1,43 @@
-import { LitElement, html } from 'lit';
+import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import Styles from './skeleton.scss';
+import { classMap } from 'lit/directives/class-map.js';
+import skeletonStyles from './skeleton.scss';
 
-/**
- * Skeleton block
- */
 @customElement('kyn-skeleton')
-export class Skeleton extends LitElement {
-  static override styles = Styles;
+export class SkeletonComponent extends LitElement {
+  static override styles = skeletonStyles;
 
-  /** Use inline style instead of block. */
-  @property({ type: Boolean })
-  inline = false;
-
-  /** Size variant of the skeleton. */
   @property({ type: String, reflect: true })
-  size?: 'large' | 'medium' | 'small' = 'medium';
-
-  /** Element type of the skeleton. */
-  @property({ type: String, reflect: true })
-  elementType?:
+  elementType:
     | 'default'
     | 'thumbnail'
     | 'title'
+    | 'tag'
     | 'subtitle'
     | 'body-text'
     | 'table-cell'
     | 'card-logo' = 'default';
 
-  /** Number of skeleton lines to show. */
   @property({ type: Number })
   lines = 1;
 
+  @property({ type: Boolean })
+  inline = false;
+
   override render() {
-    const skeletonLines = Array.from(
-      { length: this.lines },
-      () => html` <div class="skeleton"></div> `
-    );
-    return html` ${skeletonLines}`;
+    const classes = {
+      skeleton: true,
+      [`element-type-${this.elementType}`]: true,
+      'multi-line': this.lines > 1,
+      inline: this.inline,
+    };
+
+    return html` <div class=${classMap(classes)} aria-hidden="true"></div> `;
   }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-skeleton': Skeleton;
+    'kyn-skeleton': SkeletonComponent;
   }
 }

@@ -1,66 +1,71 @@
 import { html } from 'lit';
-import './index';
 
-const args = {
-  lines: 2,
-};
+import './skeleton';
 
 export default {
   title: 'Components/Loaders/Skeleton',
   component: 'kyn-skeleton',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: '',
+  argTypes: {
+    elementType: {
+      control: 'select',
+      options: [
+        'default',
+        'thumbnail',
+        'title',
+        'tag',
+        'subtitle',
+        'body-text',
+        'table-cell',
+        'card-logo',
+      ],
     },
+    lines: { control: 'number' },
+    inline: { control: 'boolean' },
   },
 };
 
-export const Block = {
-  render: () => {
-    return html`
-      <kyn-skeleton size="large" aria-hidden="true"></kyn-skeleton>
-    `;
-  },
+const Template = (args) => html`
+  <div class="skeleton-wrapper">
+    ${Array(args.lines)
+      .fill(null)
+      .map(
+        (_, index) => html`
+          <kyn-skeleton
+            class="${!args.inline ? 'skeleton-item' : 'inline'} ${index ===
+            args.lines - 1
+              ? 'last-item'
+              : ''}"
+            elementType=${args.elementType}
+            .lines=${args.lines}
+            ?inline=${args.inline}
+          ></kyn-skeleton>
+        `
+      )}
+  </div>
+`;
+
+export const Block = Template.bind({});
+Block.args = {
+  elementType: 'default',
+  lines: 1,
+  inline: false,
 };
 
-export const Inline = {
-  render: () => {
-    return html`
-      <kyn-skeleton inline size="medium" aria-hidden="true"></kyn-skeleton>
-    `;
-  },
+export const Inline = Template.bind({});
+Inline.args = {
+  ...Block.args,
+  inline: true,
 };
 
-export const MultiBlock = {
-  args,
-  render: (args) => {
-    return html`
-      <style>
-        kyn-skeleton.block-example {
-          height: 128px;
-        }
-      </style>
-      <kyn-skeleton lines=${args.lines} class="block-example"></kyn-skeleton>
-    `;
-  },
+export const MultiBlock = Template.bind({});
+MultiBlock.args = {
+  ...Block.args,
+  lines: 2,
 };
 
-export const MultiInline = {
-  args,
-  render: (args) => {
-    return html`
-      <style>
-        kyn-skeleton.inline-example {
-          width: 108px;
-          height: 16px;
-        }
-      </style>
-      <kyn-skeleton
-        inline
-        lines=${args.lines}
-        class="inline-example"
-      ></kyn-skeleton>
-    `;
-  },
+export const MultiInline = Template.bind({});
+MultiInline.args = {
+  ...Block.args,
+  lines: 2,
+  inline: true,
 };

@@ -9,85 +9,108 @@
 }
 
 :host {
-  display: block;
+  display: inline-block;
   width: 100%;
-  height: var(--skeleton-base-height);
+  height: auto;
 }
 
-:host([inline]) {
+.element-type-default {
+  height: 128px;
+  width: 100%;
+}
+
+.element-type-default.inline {
+  display: inline-block;
+  height: 16px;
+  width: 100%;
+}
+
+.element-type-default.inline.multi-line {
+  height: 16px;
+}
+
+:host(.skeleton-item) {
+  margin-bottom: 16px;
+}
+
+:host(.last-item) {
+  margin-bottom: 0;
+  margin-right: 0;
+}
+
+:host(.inline:not(.last-item)) {
+  margin-right: 8px;
+}
+
+:host(.inline) {
+  display: inline-block;
+  width: calc(50% - 8px);
+}
+
+.inline {
   display: inline-block;
   width: 40px;
 }
 
-:host([elementType="card-logo"]) {
+.element-type-card-logo {
   max-width: 32px;
   height: 32px;
   border-radius: 50px;
   width: var(--skeleton-base-width);
+  border-radius: 100px;
 
   .skeleton {
     border-radius: 100px;
   }
 }
 
-:host([size="large"]) {
-  height: 128px;
-  width: var(--skeleton-base-width);
-}
-
-:host([elementType="medium"]) {
-  height: 16px;
-  width: var(--skeleton-base-width);
-}
-
-:host([size="small"]) {
-  height: var(--skeleton-base-height);
-  width: var(--skeleton-base-width);
-}
-
-:host([elementType="thumbnail"]) {
+.element-type-thumbnail.skeleton {
   height: 128px;
   width: 216px;
 }
 
-:host([elementType="title"]) {
+.element-type-title {
   max-width: 110px;
   height: 16px;
   width: var(--skeleton-base-width);
 }
 
-:host([elementType="subtitle"]) {
+.element-type-tag.skeleton {
+  min-width: 95%;
+  min-width: 30px;
+  height: 12px;
+  margin-top: 4px;
+}
+
+.element-type-subtitle {
   max-width: 150px;
   height: 16px;
   width: var(--skeleton-base-width);
 }
 
-:host([elementType="body-text"]) {
+.element-type-body-text {
   max-width: 100px;
   height: 16px;
   width: var(--skeleton-base-width);
 }
 
-:host([elementType="table-cell"]) {
+.element-type-table-cell {
   height: var(--skeleton-base-height);
   min-width: 115px;
   width: var(--skeleton-base-width);
 }
 
-kyn-td :host,
-kyn-th :host {
-  margin: 8px;
-  margin-bottom: 0;
-}
-
 .skeleton {
   width: 100%;
-  height: 100%;
   border-radius: var(--skeleton-border-radius);
   background: var(--skeleton-background);
   position: relative;
   overflow: hidden;
   will-change: transform;
+
+  &.element-type-card-logo {
+    border-radius: 100px;
+  }
 
   &::after {
     position: absolute;
@@ -106,10 +129,6 @@ kyn-th :host {
     content: '';
     pointer-events: none;
   }
-}
-
-.skeleton:not(:last-child) {
-  margin-block-end: 0.5rem;
 }
 
 @keyframes shimmer {
