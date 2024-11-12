@@ -13,7 +13,6 @@ import './index';
 import './story-helpers/action-menu.sample';
 import './story-helpers/table-story.sample';
 import './story-helpers/table.settings.sample';
-import '../../../stories/skeleton-patterns/data-table.skeleton.sample';
 import { characters, dataForColumns } from './story-helpers/ultils.sample';
 import allData from './story-helpers/table-data.json';
 import maleIcon from '@carbon/icons/es/gender--male/16';
@@ -483,6 +482,6 @@ export const ColumnSettings: Story = {
 
 export const Skeleton = {
   render: () => {
-    return html`<table-skeleton-sample-component></table-skeleton-sample-component>`;
+    return html`<kyn-table-skeleton></kyn-table-skeleton>`;
   },
 };

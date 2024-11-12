@@ -1,14 +1,14 @@
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
-import '../../components/reusable/loaders/skeleton';
-import '../../components/reusable/table';
+import '../loaders/skeleton';
+import '.';
 
-import dataTableStyles from '../../components/reusable/table/data-table.scss';
+import dataTableStyles from './data-table.scss';
 
 /**  Sample Lit component to show table skeleton pattern. */
-@customElement('table-skeleton-sample-component')
-export class TableSkeletonComponent extends LitElement {
+@customElement('kyn-table-skeleton')
+export class TableSkeleton extends LitElement {
   static override styles = [dataTableStyles];
 
   private columnNames = [
@@ -68,6 +68,6 @@ export class TableSkeletonComponent extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'table-skeleton-sample-component': TableSkeletonComponent;
+    'kyn-table-skeleton': TableSkeleton;
   }
 }

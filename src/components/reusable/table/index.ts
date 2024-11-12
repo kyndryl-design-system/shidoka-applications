@@ -12,3 +12,4 @@ export { TableToolbar } from './table-toolbar';
 export { TableContainer } from './table-container';
 export { TableHeaderRow } from './table-header-row';
 export { TableExpandedRow } from './table-expanded-row';
+export { TableSkeleton } from './table.skeleton';

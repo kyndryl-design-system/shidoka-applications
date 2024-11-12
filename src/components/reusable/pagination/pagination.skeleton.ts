@@ -1,8 +1,9 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-import styles from '../../components/reusable/pagination/pagination.scss';
-import '../../components/reusable/loaders/skeleton';
+import '../loaders/skeleton';
+
+import styles from './pagination.scss';
 
 /**
  * `kyn-pagination-skeleton` Web Component.
