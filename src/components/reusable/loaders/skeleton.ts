@@ -14,6 +14,7 @@ export class Skeleton extends LitElement {
     | 'title'
     | 'tag'
     | 'tabs'
+    | 'pagination'
     | 'subtitle'
     | 'body-text'
     | 'table-cell'
