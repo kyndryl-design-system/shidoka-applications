@@ -4,7 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import skeletonStyles from './skeleton.scss';
 
 @customElement('kyn-skeleton')
-export class SkeletonComponent extends LitElement {
+export class Skeleton extends LitElement {
   static override styles = skeletonStyles;
 
   @property({ type: String, reflect: true })
@@ -38,6 +38,6 @@ export class SkeletonComponent extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-skeleton': SkeletonComponent;
+    'kyn-skeleton': Skeleton;
   }
 }
