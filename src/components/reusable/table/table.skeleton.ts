@@ -1,10 +1,11 @@
-import { html, css, LitElement } from 'lit';
+import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import '../loaders/skeleton';
 import '.';
 
-import tableStyles from './table.scss';
+import dataTableStyles from './data-table.scss';
+import { css } from 'lit';
 
 /**
  * `kyn-table-skeleton` Web Component.
@@ -13,7 +14,7 @@ import tableStyles from './table.scss';
 @customElement('kyn-table-skeleton')
 export class TableSkeleton extends LitElement {
   static override styles = [
-    tableStyles,
+    dataTableStyles,
     css`
       .varying-width {
         --skeleton-width: var(--width, 100%);
@@ -38,7 +39,7 @@ export class TableSkeleton extends LitElement {
 
       .kyn-th kyn-skeleton {
         display: block;
-        height: 14px;
+        height: 1.2rem;
       }
     `,
   ];
@@ -47,7 +48,9 @@ export class TableSkeleton extends LitElement {
   @property({ type: Number })
   rows = 5;
 
-  /** Array of column labels for the table headers */
+  /**
+   * Array of column labels for screen reader accessibility.
+   */
   @property({ type: Array })
   columnLabels: string[] = [];
 
@@ -70,22 +73,6 @@ export class TableSkeleton extends LitElement {
   /** Whether the table has checkbox selection */
   @property({ type: Boolean })
   checkboxSelection = false;
-
-  private getRandomWidth() {
-    // Generate random widths for more realistic appearance
-    const widths = ['60%', '75%', '85%', '90%'];
-    return widths[Math.floor(Math.random() * widths.length)];
-  }
-
-  private getColumnLabel(index: number) {
-    // Use provided label if available, otherwise fall back to numbered column
-    return this.columnLabels[index] || `Column ${index + 1}`;
-  }
-
-  private get columns() {
-    // Use length of columnLabels if provided, otherwise default to 7
-    return this.columnLabels.length || 7;
-  }
 
   override render() {
     return html`
@@ -174,6 +161,20 @@ export class TableSkeleton extends LitElement {
         </kyn-table-container>
       </div>
     `;
+  }
+
+  private getRandomWidth() {
+    // Generate random widths for more realistic appearance
+    const widths = ['60%', '75%', '85%', '90%'];
+    return widths[Math.floor(Math.random() * widths.length)];
+  }
+
+  private getColumnLabel(index: number) {
+    return this.columnLabels[index] || `Column ${index + 1}`;
+  }
+
+  private get columns() {
+    return this.columnLabels.length || 7;
   }
 }
 
