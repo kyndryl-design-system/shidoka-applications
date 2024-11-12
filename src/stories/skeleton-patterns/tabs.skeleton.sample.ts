@@ -45,7 +45,7 @@ export class TabsSkeleton extends LitElement {
       { length: this.tabCount },
       (_) => html`
         <div class=${classMap(tabClasses)}>
-          <kyn-skeleton inline></kyn-skeleton>
+          <kyn-skeleton elementType="tabs" inline></kyn-skeleton>
         </div>
       `
     );

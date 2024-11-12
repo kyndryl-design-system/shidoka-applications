@@ -13,6 +13,7 @@ export class Skeleton extends LitElement {
     | 'thumbnail'
     | 'title'
     | 'tag'
+    | 'tabs'
     | 'subtitle'
     | 'body-text'
     | 'table-cell'
