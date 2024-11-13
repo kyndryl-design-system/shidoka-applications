@@ -12,10 +12,10 @@ export class Skeleton extends LitElement {
   static override styles = skeletonStyles;
 
   /**
-   * Predefined skeleton types with default styling
+   * Optional: Predefined skeleton types with default styling
    */
   @property({ type: String, reflect: true })
-  elementType:
+  elementType?:
     | 'default'
     | 'thumbnail'
     | 'title'
@@ -42,13 +42,13 @@ export class Skeleton extends LitElement {
   inline = false;
 
   /**
-   * Sets custom width (e.g., '100px', '50%')
+   * Optional: Sets custom width (e.g., '100px', '50%')
    */
   @property({ type: String })
   width?: string;
 
   /**
-   * Custom height (e.g., '20px', '100px')
+   * Optional: Custom height (e.g., '20px', '100px')
    */
   @property({ type: String })
   height?: string;
@@ -66,15 +66,20 @@ export class Skeleton extends LitElement {
       ...(this.height && { height: this.height }),
     };
 
-    return html`
-      <div
-        class=${classMap(classes)}
-        style=${Object.entries(styles)
-          .map(([key, value]) => `${key}: ${value}`)
-          .join(';')}
-        aria-hidden="true"
-      ></div>
-    `;
+    const skeletonLines = Array.from(
+      { length: this.lines },
+      () => html`
+        <div
+          class=${classMap(classes)}
+          style=${Object.entries(styles)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join(';')}
+          aria-hidden="true"
+        ></div>
+      `
+    );
+
+    return html` ${skeletonLines} `;
   }
 }
 
