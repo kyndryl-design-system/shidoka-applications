@@ -23,6 +23,8 @@ export class Skeleton extends LitElement {
     | 'subtitle'
     | 'body-text'
     | 'table-cell'
+    | 'button'
+    | 'link'
     | 'card-logo' = 'default';
 
   @property({ type: Number })

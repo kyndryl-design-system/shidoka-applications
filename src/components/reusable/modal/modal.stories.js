@@ -94,45 +94,6 @@ export const ActionButtons = {
   },
 };
 
-// export const CustomActions = {
-//   args,
-//   render: (args) => {
-//     return html`
-//       <kyn-modal
-//         ?open=${args.open}
-//         size=${args.size}
-//         titleText=${args.titleText}
-//         labelText=${args.labelText}
-//         okText=${args.okText}
-//         cancelText=${args.cancelText}
-//         ?destructive=${args.destructive}
-//         @on-close=${(e) => action(e.type)(e)}
-//       >
-//         <span slot="anchor">Open Modal</span>
-
-//         Modal with custom actions.
-
-//         <kd-button
-//           slot="actions"
-//           size="small"
-//           kind="tertiary"
-//           description="Print"
-//         >
-//           <kd-icon slot="icon" .icon=${printIcon}></kd-icon>
-//         </kd-button>
-//         <kd-button
-//           slot="actions"
-//           size="small"
-//           kind="tertiary"
-//           description="Download"
-//         >
-//           <kd-icon slot="icon" .icon=${downloadIcon}></kd-icon>
-//         </kd-button>
-//       </kyn-modal>
-//     `;
-//   },
-// };
-
 export const BeforeClose = {
   args,
   render: (args) => {
@@ -215,4 +176,25 @@ const handleBeforeCloseSubmit = (returnValue) => {
   } else {
     return true;
   }
+};
+
+export const Skeleton = {
+  args: {
+    size: 'auto',
+    hideFooter: false,
+    showSecondaryButton: true,
+    hideCancelButton: false,
+  },
+  render: (args) => {
+    return html`
+      <kyn-modal-skeleton
+        size=${args.size}
+        ?hideFooter=${args.hideFooter}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        ?hideCancelButton=${args.hideCancelButton}
+      >
+        <kd-button slot="anchor"> Open Modal </kd-button>
+      </kyn-modal-skeleton>
+    `;
+  },
 };
