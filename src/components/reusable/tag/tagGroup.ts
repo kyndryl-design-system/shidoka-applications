@@ -11,7 +11,7 @@ import TagGroupScss from './tagGroup.scss';
 
 /**
  * Tag & Tag Group
- * @slot unnamed - Slot for individual tags/tags skeleton.
+ * @slot unnamed - Slot for individual tags and tagsskeleton.
  */
 
 @customElement('kyn-tag-group')

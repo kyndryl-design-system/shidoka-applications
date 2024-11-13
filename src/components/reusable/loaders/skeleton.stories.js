@@ -1,10 +1,16 @@
 import { html } from 'lit';
 
-import './skeleton';
+import './index';
 
 export default {
   title: 'Components/Loaders/Skeleton',
   component: 'kyn-skeleton',
+  parameters: {
+    design: {
+      type: 'figma',
+      url: '',
+    },
+  },
   argTypes: {
     elementType: {
       control: 'select',
