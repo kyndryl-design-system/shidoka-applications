@@ -13,11 +13,6 @@ export class PaginationSkeleton extends LitElement {
   static override styles = [
     styles,
     css`
-      :host {
-        width: 100%;
-        justify-content: flex-end;
-      }
-
       kyn-skeleton {
         width: 150px;
         height: 16px;
@@ -25,10 +20,6 @@ export class PaginationSkeleton extends LitElement {
       }
 
       @media (max-width: 767px) {
-        :host {
-          justify-content: end;
-        }
-
         kyn-skeleton {
           width: clamp(75px, 20vw, 90px);
         }
