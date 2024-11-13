@@ -9,42 +9,9 @@
 }
 
 :host {
-  display: inline-block;
+  display: block;
   width: 100%;
   height: auto;
-}
-
-.element-type-default {
-  height: 100%;
-  width: 100%;
-}
-
-.inline {
-  display: inline-block;
-}
-
-.element-type-default:not(.inline) {
-  min-height: 128px;
-  width: 100%;
-}
-
-.element-type-default.inline {
-  height: 16px;
-  width: 100%;
-}
-
-.element-type-link.skeleton {
-  height: 16px;
-  width: 60px;
-}
-
-.element-type-default.inline.multi-line {
-  height: 16px;
-}
-
-.element-type-button.skeleton {
-  height: 40px;
-  width: 70px;
 }
 
 :host(.skeleton-item) {
@@ -62,6 +29,25 @@
   margin-right: 8px;
 }
 
+.inline {
+  display: inline-block;
+}
+
+.element-type-default {
+  height: 100%;
+  width: 100%;
+}
+
+.element-type-default:not(.inline) {
+  min-height: 128px;
+  width: 100%;
+}
+
+.element-type-default.inline {
+  height: 16px;
+  width: 100%;
+}
+
 .skeleton-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -69,16 +55,26 @@
   width: 100%;
 }
 
-.element-type-card-logo {
+.element-type-link.skeleton {
+  height: 16px;
+  width: 60px;
+}
+
+.element-type-default.inline.multi-line {
+  height: 16px;
+}
+
+.element-type-button.skeleton {
+  height: 40px;
+  width: 70px;
+}
+
+.element-type-card-logo.skeleton {
   max-width: 32px;
   height: 32px;
   border-radius: 50px;
   width: var(--skeleton-base-width);
   border-radius: 100px;
-
-  .skeleton {
-    border-radius: 100px;
-  }
 }
 
 .element-type-thumbnail.skeleton {
@@ -86,7 +82,7 @@
   width: 216px;
 }
 
-.element-type-title {
+.element-type-title.skeleton {
   max-width: 110px;
   height: 16px;
   width: var(--skeleton-base-width);
@@ -107,22 +103,21 @@
   height: 100%;
 }
 
-.element-type-subtitle {
+.element-type-subtitle.skeleton {
   max-width: 150px;
   height: 16px;
   width: var(--skeleton-base-width);
 }
 
-.element-type-body-text {
+.element-type-body-text.skeleton {
   max-width: 100px;
   height: 16px;
   width: var(--skeleton-base-width);
 }
 
-.element-type-table-cell {
+.element-type-table-cell.skeleton {
   height: var(--skeleton-base-height);
-  min-width: 115px;
-  width: var(--skeleton-base-width);
+  width: 115px;
 }
 
 .skeleton {
@@ -137,15 +132,14 @@
     border-radius: 100px;
   }
 
-  // &.dark-theme {
-  //   &::after {
-  //     background-image: linear-gradient(90deg,
-  //         rgba(0, 0, 0, 0) 0,
-  //         rgba(0, 0, 0, 0.2) 10%,
-  //         rgba(0, 0, 0, 0.7) 50%,
-  //         rgba(0, 0, 0, 0.2) 90%,
-  //         rgba(0, 0, 0, 0) 100%);
-  //   }
+  // dark theme gradient to be implemented later
+  // &::after {
+  //   background-image: linear-gradient(90deg,
+  //       rgba(0, 0, 0, 0) 0,
+  //       rgba(0, 0, 0, 0.2) 10%,
+  //       rgba(0, 0, 0, 0.7) 50%,
+  //       rgba(0, 0, 0, 0.2) 90%,
+  //       rgba(0, 0, 0, 0) 100%);
   // }
 
   &::after {

@@ -9,7 +9,7 @@ import styles from './table.scss';
 
 /**
  * `kyn-table-skeleton` Web Component.
- * A skeleton loading state for the table component that mirrors its structure and features.
+ * A skeleton loading state for the table component that mirrors its structure.
  */
 @customElement('kyn-table-skeleton')
 export class TableSkeleton extends LitElement {
@@ -36,41 +36,17 @@ export class TableSkeleton extends LitElement {
         padding: 8px 0 16px;
       }
 
-      kyn-thead kyn-tr {
-        background-color: var(--kd-color-background-ui-soft);
-      }
-
       .skeleton-title {
         margin-bottom: 8px;
       }
 
-      .kyn-th {
-        display: flex;
-        align-items: center;
-      }
-
-      .kyn-th kyn-skeleton {
-        display: block;
-        height: 1rem;
+      kyn-thead kyn-tr {
+        background-color: var(--kd-color-background-ui-soft);
       }
 
       :host {
         display: block;
         width: 100%;
-      }
-
-      :host([fixedLayout]) table {
-        table-layout: fixed;
-      }
-
-      :host(:not([fixedLayout])) table {
-        table-layout: auto;
-      }
-
-      .ellipsis .kyn-td {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
       }
 
       .pagination-skeleton-wrapper {
@@ -82,104 +58,58 @@ export class TableSkeleton extends LitElement {
     `,
   ];
 
-  /** Sets number of rows to display in the skeleton */
+  /** Number of skeleton rows to display. */
   @property({ type: Number })
   rows = 5;
 
-  /**
-   * Sets array of column labels for screen reader accessibility.
-   */
-  @property({ type: Array })
-  columnLabels: string[] = [];
-
-  /** Sets title to display in the table toolbar */
-  @property({ type: String })
-  tableTitle = '';
-
-  /** Sets subtitle to display in the table toolbar */
-  @property({ type: String })
-  tableSubtitle = '';
-
-  /**
-   * dense: Boolean indicating whether the table should be displayed
-   * in dense mode.
-   * @type {boolean}
-   * @default false
-   */
-  @property({ type: Boolean })
-  dense = false;
-
-  /**
-   * striped: Boolean indicating whether rows should have alternate
-   * coloring.
-   * @type {boolean}
-   * @default false
-   */
-  @property({ type: Boolean })
-  striped = false;
-
-  /**
-   * stickyHeader: Boolean indicating whether the table header
-   * should be sticky.
-   * @type {boolean}
-   * @default false
-   */
-  @property({ type: Boolean })
-  stickyHeader = false;
-
-  /**
-   * checkboxSelection: Boolean indicating whether rows should be
-   * selectable using checkboxes.
-   * @type {boolean}
-   * @default false
-   */
-  @property({ type: Boolean })
-  checkboxSelection = false;
-
-  /**
-   * showPagination: Boolean indicating whether pagination
-   * should be displayed.
-   * @type {boolean}
-   * @default false
-   */
+  /** Shows/hides pagination skeleton. */
   @property({ type: Boolean })
   showPagination = false;
 
-  /**
-   * ellipsis: Boolean indicating whether the table should truncate
-   * text content with an ellipsis.
-   * @type {boolean}
-   * @default false
-   */
+  /** Shows/hides checkbox column. */
   @property({ type: Boolean })
-  ellipsis = false;
+  checkboxSelection = false;
 
-  /**
-   * fixedLayout: Boolean indicating whether the table should have a fixed layout.
-   * This will set the table's layout to fixed, which means the table and column widths
-   * will be determined by the width of the columns and not by the content of the cells.
-   * @type {boolean}
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true })
-  fixedLayout = false;
+  /** Sets dense mode value. */
+  @property({ type: Boolean })
+  dense = false;
+
+  /** Sets striped rows value. */
+  @property({ type: Boolean })
+  striped = false;
+
+  /** Show/hide table header. */
+  @property({ type: Boolean })
+  hideTableHeader = false;
+
+  /** Sticky header. */
+  @property({ type: Boolean })
+  stickyHeader = false;
+
+  /** Sets title to display in the table toolbar. */
+  @property({ type: String })
+  tableTitle = '';
+
+  /** Sets subtitle to display in the table toolbar. */
+  @property({ type: String })
+  tableSubtitle = '';
 
   override render() {
     return html`
-      <div class="${this.ellipsis ? 'ellipsis' : ''}">
+      <div>
         ${this.tableTitle || this.tableSubtitle
           ? html`<kyn-table-toolbar
               tableTitle=${this.tableTitle}
               tableSubtitle=${this.tableSubtitle}
             ></kyn-table-toolbar>`
           : html`<div class="skeleton-title-wrapper">
-              ${!this.tableTitle
+              ${!this.hideTableHeader && !this.tableTitle
                 ? html`<kyn-skeleton
                     class="skeleton-title"
                     elementType="title"
                   ></kyn-skeleton>`
                 : null}
-              ${!this.tableSubtitle
+              ${!this.hideTableHeader && !this.tableSubtitle
                 ? html`<kyn-skeleton
                     class="skeleton-subtitle"
                     elementType="subtitle"
@@ -193,18 +123,15 @@ export class TableSkeleton extends LitElement {
             ?striped=${this.striped}
             ?stickyHeader=${this.stickyHeader}
             ?checkboxSelection=${this.checkboxSelection}
-            ?fixedLayout=${this.fixedLayout}
-            ?ellipsis=${this.ellipsis}
-            ?showPagination=${this.showPagination}
           >
             <kyn-thead role="rowgroup">
               <kyn-tr role="row" disabled>
-                ${Array(this.columns)
+                ${Array(7)
                   .fill(null)
                   .map(
-                    (_, index) =>
+                    (_) =>
                       html`<kyn-th role="columnheader">
-                        ${this.renderSkeletonCell(index, 'header')}
+                        ${this.renderSkeletonCell()}
                       </kyn-th>`
                   )}
               </kyn-tr>
@@ -216,12 +143,12 @@ export class TableSkeleton extends LitElement {
                 .map(
                   (_) => html`
                     <kyn-tr role="row" disabled>
-                      ${Array(this.columns)
+                      ${Array(7)
                         .fill(null)
                         .map(
-                          (_, colIndex) =>
+                          (_) =>
                             html`<kyn-td role="cell">
-                              ${this.renderSkeletonCell(colIndex, 'data')}
+                              ${this.renderSkeletonCell()}
                             </kyn-td>`
                         )}
                     </kyn-tr>
@@ -241,13 +168,8 @@ export class TableSkeleton extends LitElement {
     `;
   }
 
-  private renderSkeletonCell(colIndex: number, type: 'header' | 'data') {
+  private renderSkeletonCell() {
     return html`
-      <span class="visually-hidden">
-        ${type === 'header'
-          ? this.getColumnLabel(colIndex)
-          : `Loading data for ${this.getColumnLabel(colIndex)}`}
-      </span>
       <kyn-skeleton
         class="varying-width"
         style="--width: ${this.getRandomWidth()}"
@@ -259,14 +181,6 @@ export class TableSkeleton extends LitElement {
   private getRandomWidth() {
     const widths = ['45%', '60%', '75%', '85%', '90%', '95%'];
     return widths[Math.floor(Math.random() * widths.length)];
-  }
-
-  private getColumnLabel(index: number) {
-    return this.columnLabels[index] || `Column ${index + 1}`;
-  }
-
-  private get columns() {
-    return this.columnLabels.length || 7;
   }
 }
 
