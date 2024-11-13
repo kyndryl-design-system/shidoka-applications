@@ -483,10 +483,12 @@ export const ColumnSettings: Story = {
 export const Skeleton = {
   args: {
     showPagination: true,
+    checkboxSelection: false,
   },
   render: (args) => {
     return html`<kyn-table-skeleton
       ?showPagination=${args.showPagination}
+      ?checkboxSelection=${args.checkboxSelection}
     ></kyn-table-skeleton>`;
   },
   parameters: {

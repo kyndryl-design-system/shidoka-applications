@@ -36,6 +36,10 @@ export class TableSkeleton extends LitElement {
         padding: 8px 0 16px;
       }
 
+      kyn-thead kyn-tr {
+        background-color: var(--kd-color-background-ui-soft);
+      }
+
       .skeleton-title {
         margin-bottom: 8px;
       }
@@ -133,6 +137,15 @@ export class TableSkeleton extends LitElement {
   checkboxSelection = false;
 
   /**
+   * showPagination: Boolean indicating whether pagination
+   * should be displayed.
+   * @type {boolean}
+   * @default false
+   */
+  @property({ type: Boolean })
+  showPagination = false;
+
+  /**
    * ellipsis: Boolean indicating whether the table should truncate
    * text content with an ellipsis.
    * @type {boolean}
@@ -150,14 +163,6 @@ export class TableSkeleton extends LitElement {
    */
   @property({ type: Boolean, reflect: true })
   fixedLayout = false;
-
-  /**
-   * showPagination: Boolean indicating whether the table should display pagination.
-   * @type {boolean}
-   * @default false
-   */
-  @property({ type: Boolean, reflect: true })
-  showPagination = false;
 
   override render() {
     return html`
@@ -193,12 +198,7 @@ export class TableSkeleton extends LitElement {
             ?showPagination=${this.showPagination}
           >
             <kyn-thead role="rowgroup">
-              <kyn-tr role="row">
-                ${this.checkboxSelection
-                  ? html`<kyn-th role="columnheader">
-                      ${this.renderCheckboxCell()}
-                    </kyn-th>`
-                  : ''}
+              <kyn-tr role="row" disabled>
                 ${Array(this.columns)
                   .fill(null)
                   .map(
@@ -214,13 +214,8 @@ export class TableSkeleton extends LitElement {
               ${Array(this.rows)
                 .fill(null)
                 .map(
-                  (_, rowIndex) => html`
-                    <kyn-tr role="row">
-                      ${this.checkboxSelection
-                        ? html`<kyn-td role="cell">
-                            ${this.renderCheckboxCell(rowIndex)}
-                          </kyn-td>`
-                        : ''}
+                  (_) => html`
+                    <kyn-tr role="row" disabled>
                       ${Array(this.columns)
                         .fill(null)
                         .map(
@@ -258,17 +253,6 @@ export class TableSkeleton extends LitElement {
         style="--width: ${this.getRandomWidth()}"
         elementType="table-cell"
       ></kyn-skeleton>
-    `;
-  }
-
-  private renderCheckboxCell(rowIndex?: number) {
-    return html`
-      <span class="visually-hidden">
-        ${rowIndex === undefined
-          ? 'Select all rows'
-          : `Select row ${rowIndex + 1}`}
-      </span>
-      <kyn-skeleton elementType="checkbox"></kyn-skeleton>
     `;
   }
 

@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit';
+import { html, css, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import '../loaders/skeleton';
@@ -10,7 +10,31 @@ import styles from './pagination.scss';
  */
 @customElement('kyn-pagination-skeleton')
 export class PaginationSkeleton extends LitElement {
-  static override styles = [styles];
+  static override styles = [
+    styles,
+    css`
+      :host {
+        width: 100%;
+        justify-content: flex-end;
+      }
+
+      kyn-skeleton {
+        width: 150px;
+        height: 16px;
+        width: clamp(100px, 20vw, 150px);
+      }
+
+      @media (max-width: 767px) {
+        :host {
+          justify-content: end;
+        }
+
+        kyn-skeleton {
+          width: clamp(75px, 20vw, 90px);
+        }
+      }
+    `,
+  ];
 
   /** Option to hide the items range display. */
   @property({ type: Boolean })
@@ -39,7 +63,6 @@ export class PaginationSkeleton extends LitElement {
   }
 }
 
-// Define the custom element in the global namespace
 declare global {
   interface HTMLElementTagNameMap {
     'kyn-pagination-skeleton': PaginationSkeleton;

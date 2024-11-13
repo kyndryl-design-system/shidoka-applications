@@ -8,8 +8,8 @@ import '@kyndryl-design-system/shidoka-foundation/components/link';
 import vitalCardScss from '../sampleCardComponents/vitalCard.scss';
 
 /**  Sample Lit component to show vital card skeleton pattern. */
-@customElement('vital-card-skeleton-sample-component')
-export class VitalCardSkeletonSampleComponent extends LitElement {
+@customElement('kyn-vital-card-skeleton')
+export class VitalCardSkeleton extends LitElement {
   static override styles = [
     vitalCardScss,
     css`
@@ -21,6 +21,10 @@ export class VitalCardSkeletonSampleComponent extends LitElement {
       }
       .vital-card-cat-subcat-text {
         margin-bottom: 16px;
+      }
+
+      .vital-card-content-wrapper kyn-skeleton {
+        width: 100%;
       }
     `,
   ];
@@ -51,6 +55,6 @@ export class VitalCardSkeletonSampleComponent extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'vital-card-skeleton-sample-component': VitalCardSkeletonSampleComponent;
+    'kyn-vital-card-skeleton': VitalCardSkeleton;
   }
 }
