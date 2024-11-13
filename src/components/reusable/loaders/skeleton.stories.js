@@ -22,6 +22,8 @@ export default {
     },
     lines: { control: 'number' },
     inline: { control: 'boolean' },
+    width: { control: 'text' },
+    height: { control: 'text' },
   },
 };
 
@@ -42,6 +44,8 @@ const Template = (args) => {
               : ''}"
             elementType=${args.elementType}
             ?inline=${args.inline}
+            width=${args.width || ''}
+            height=${args.height || ''}
           ></kyn-skeleton>
         </div>
       `;
@@ -83,3 +87,39 @@ MultiInline.args = {
   lines: 2,
   inline: true,
 };
+
+const CustomTemplate = () => html`
+  <div>
+    <h3>Custom Button Skeleton</h3>
+    <kyn-skeleton
+      style="margin: 8px 0 16px"
+      elementType="button"
+      width="120px"
+      height="48px"
+    ></kyn-skeleton>
+
+    <h3>Custom Title Skeleton</h3>
+    <kyn-skeleton
+      style="margin: 8px 0 16px"
+      elementType="title"
+      width="200px"
+      height="24px"
+    ></kyn-skeleton>
+
+    <h3>Custom Thumbnail Skeleton</h3>
+    <kyn-skeleton
+      style="margin: 8px 0 16px"
+      elementType="thumbnail"
+      width="300px"
+      height="180px"
+    ></kyn-skeleton>
+
+    <h3>Custom Card Logo Skeleton</h3>
+    <kyn-skeleton
+      style="margin: 8px 0 0"
+      elementType="card-logo"
+    ></kyn-skeleton>
+  </div>
+`;
+
+export const CustomSizes = CustomTemplate.bind({});
