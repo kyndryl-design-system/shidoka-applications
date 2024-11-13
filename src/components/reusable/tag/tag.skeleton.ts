@@ -42,13 +42,13 @@ export class TagSkeleton extends LitElement {
   tagSize = 'md';
 
   /**
-   * Shade `'light'` (default) and `'dark'` for tag
+   * Shade `'light'` (default) and `'dark'` for tag.
    */
   @property({ type: String })
   shade = 'light';
 
   /**
-   * Color variants. Default spruce
+   * Color variants. Default spruce.
    */
   @property({ type: String })
   tagColor = 'spruce';

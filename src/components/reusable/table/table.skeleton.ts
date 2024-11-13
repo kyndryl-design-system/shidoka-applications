@@ -129,8 +129,11 @@ export class TableSkeleton extends LitElement {
                 ${Array(7)
                   .fill(null)
                   .map(
-                    (_) =>
+                    (_, index) =>
                       html`<kyn-th role="columnheader">
+                        <span class="visually-hidden"
+                          >Loading column ${index + 1}</span
+                        >
                         ${this.renderSkeletonCell()}
                       </kyn-th>`
                   )}

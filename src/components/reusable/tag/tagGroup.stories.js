@@ -64,6 +64,7 @@ export const Skeleton = {
       showAll: 'Show all',
       showLess: 'Show less',
     },
+    tagSkeletonLength: 10,
   },
   render: (args) => {
     return html`
@@ -71,9 +72,10 @@ export const Skeleton = {
         ?limitTags=${args.limitTags}
         tagSize=${args.tagSize}
         .textStrings=${args.textStrings}
+        .tagSkeletonLength=${args.tagSkeletonLength}
       >
         ${Array.from(
-          { length: 7 },
+          { length: args.tagSkeletonLength },
           () => html`<kyn-tag-skeleton></kyn-tag-skeleton>`
         )}
       </kyn-tag-group>
