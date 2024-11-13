@@ -2,6 +2,7 @@ import { html, css, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import '../loaders/skeleton';
+import '../pagination/pagination.skeleton';
 import '.';
 
 import styles from './table.scss';
@@ -143,6 +144,14 @@ export class TableSkeleton extends LitElement {
   @property({ type: Boolean, reflect: true })
   fixedLayout = false;
 
+  /**
+   * showPagination: Boolean indicating whether the table should display pagination.
+   * @type {boolean}
+   * @default false
+   */
+  @property({ type: Boolean })
+  showPagination = false;
+
   override render() {
     return html`
       <div class="${this.ellipsis ? 'ellipsis' : ''}">
@@ -222,6 +231,13 @@ export class TableSkeleton extends LitElement {
             </kyn-tbody>
           </kyn-table>
         </kyn-table-container>
+        ${this.showPagination
+          ? html`
+              <div class="pagination-skeleton-wrapper">
+                <kyn-pagination-skeleton></kyn-pagination-skeleton>
+              </div>
+            `
+          : null}
       </div>
     `;
   }

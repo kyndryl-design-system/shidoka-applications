@@ -482,6 +482,6 @@ export const ColumnSettings: Story = {
 
 export const Skeleton = {
   render: () => {
-    return html`<kyn-table-skeleton></kyn-table-skeleton>`;
+    return html`<kyn-table-skeleton showPagination></kyn-table-skeleton>`;
   },
 };
