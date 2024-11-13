@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import './index';
-// import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'Components/Loaders/Skeleton',
@@ -11,6 +10,10 @@ export default {
       url: '',
     },
   },
+};
+
+const args = {
+  lines: 2,
 };
 
 export const Block = {
@@ -38,6 +41,39 @@ export const Inline = {
       </style>
 
       <kyn-skeleton inline class="inline-example"></kyn-skeleton>
+    `;
+  },
+};
+
+export const MultiBlock = {
+  args,
+  render: (args) => {
+    return html`
+      <style>
+        kyn-skeleton.block-example {
+          height: 128px;
+        }
+      </style>
+      <kyn-skeleton lines=${args.lines} class="block-example"></kyn-skeleton>
+    `;
+  },
+};
+
+export const MultiInline = {
+  args,
+  render: (args) => {
+    return html`
+      <style>
+        kyn-skeleton.inline-example {
+          width: 108px;
+          height: 16px;
+        }
+      </style>
+      <kyn-skeleton
+        inline
+        lines=${args.lines}
+        class="inline-example"
+      ></kyn-skeleton>
     `;
   },
 };

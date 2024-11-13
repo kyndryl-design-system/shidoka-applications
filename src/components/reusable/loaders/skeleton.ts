@@ -13,8 +13,16 @@ export class Skeleton extends LitElement {
   @property({ type: Boolean })
   inline = false;
 
+  /** Number of skeleton lines to show. */
+  @property({ type: Number })
+  lines = 1;
+
   override render() {
-    return html` <div class="skeleton"></div> `;
+    const skeletonLines = Array.from(
+      { length: this.lines },
+      () => html` <div class="skeleton"></div> `
+    );
+    return html` ${skeletonLines}`;
   }
 }
 
