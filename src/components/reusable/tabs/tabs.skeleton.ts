@@ -45,8 +45,13 @@ export class TabsSkeleton extends LitElement {
 
     const skeletonTabs = Array.from(
       { length: this.tabCount },
-      (_) => html`
-        <div class=${classMap(tabClasses)}>
+      (_, index) => html`
+        <div
+          class=${classMap(tabClasses)}
+          role="tab"
+          aria-selected="${index === 0}"
+          tabindex="${index === 0 ? 0 : -1}"
+        >
           <kyn-skeleton elementType="tabs" inline></kyn-skeleton>
         </div>
       `

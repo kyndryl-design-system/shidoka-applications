@@ -68,6 +68,13 @@ export class TableSkeleton extends LitElement {
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+
+      .pagination-skeleton-wrapper {
+        margin-top: 24px;
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+      }
     `,
   ];
 
@@ -149,7 +156,7 @@ export class TableSkeleton extends LitElement {
    * @type {boolean}
    * @default false
    */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   showPagination = false;
 
   override render() {
@@ -174,11 +181,7 @@ export class TableSkeleton extends LitElement {
                   ></kyn-skeleton>`
                 : null}
             </div>`}
-        <kyn-table-container
-          aria-label="Loading table content"
-          aria-live="polite"
-          aria-busy="true"
-        >
+        <kyn-table-container>
           <kyn-table
             role="table"
             ?dense=${this.dense}
@@ -187,6 +190,7 @@ export class TableSkeleton extends LitElement {
             ?checkboxSelection=${this.checkboxSelection}
             ?fixedLayout=${this.fixedLayout}
             ?ellipsis=${this.ellipsis}
+            ?showPagination=${this.showPagination}
           >
             <kyn-thead role="rowgroup">
               <kyn-tr role="row">

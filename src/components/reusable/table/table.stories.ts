@@ -481,7 +481,32 @@ export const ColumnSettings: Story = {
 };
 
 export const Skeleton = {
-  render: () => {
-    return html`<kyn-table-skeleton showPagination></kyn-table-skeleton>`;
+  args: {
+    showPagination: true,
+  },
+  render: (args) => {
+    return html`<kyn-table-skeleton
+      ?showPagination=${args.showPagination}
+    ></kyn-table-skeleton>`;
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `
+        // For guidance on how to construct this code, please refer to the 'table.skeleton.ts' file.
+        // You can find it at the following path:
+        // https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/table/table-skeleton.ts
+        `,
+      },
+    },
+    design: {
+      type: 'figma',
+      url: '',
+    },
+    argTypes: {
+      showPagination: {
+        control: { type: 'boolean' },
+      },
+    },
   },
 };
