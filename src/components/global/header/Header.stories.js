@@ -41,7 +41,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/A13iBXmOmvxaJaBRWwqezd/Top-Nav-1.2?node-id=518%3A17470&mode=dev',
+      url: 'https://www.figma.com/design/qnqPc99nECP6mrcGKE3CTA/Components-%26-Patterns?node-id=311-195&node-type=canvas&m=dev',
     },
     // controls: {
     //   include: Object.keys(Header.args),
