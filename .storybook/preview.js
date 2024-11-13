@@ -1,6 +1,8 @@
 import DocumentationTemplate from './DocumentationTemplate.mdx';
 import { setCustomElementsManifest } from '@storybook/web-components';
 import customElements from '../custom-elements.json';
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
+import { BREAKPOINT_VIEWPORTS } from '@kyndryl-design-system/shidoka-foundation/common/helpers/breakpoints';
 
 import './global.scss?global';
 
@@ -23,9 +25,15 @@ export default {
       page: DocumentationTemplate,
     },
     backgrounds: { disable: true },
+    viewport: {
+      viewports: {
+        ...BREAKPOINT_VIEWPORTS,
+        ...INITIAL_VIEWPORTS,
+      },
+    },
   },
 
-  tags: ['autodocs']
+  tags: ['autodocs'],
 };
 
 setCustomElementsManifest(customElements);
