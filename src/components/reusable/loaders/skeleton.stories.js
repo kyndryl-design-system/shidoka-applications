@@ -110,14 +110,16 @@ const CustomTemplate = () => html`
     <kyn-skeleton
       style="margin: 8px 0 16px"
       elementType="thumbnail"
-      width="300px"
-      height="180px"
+      width="200px"
+      height="120px"
     ></kyn-skeleton>
 
     <h3>Custom Card Logo Skeleton</h3>
     <kyn-skeleton
       style="margin: 8px 0 0"
       elementType="card-logo"
+      width="54px"
+      height="54px"
     ></kyn-skeleton>
   </div>
 `;

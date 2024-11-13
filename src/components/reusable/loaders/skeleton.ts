@@ -6,11 +6,6 @@ import skeletonStyles from './skeleton.scss';
 /**
  * `kyn-skeleton` Web Component.
  * A skeleton loading state to be utilized across patterns and components.
- *
- * CSS Custom Properties for theming:
- * --skeleton-border-radius
- * --skeleton-background
- * --skeleton-shimmer-duration
  */
 @customElement('kyn-skeleton')
 export class Skeleton extends LitElement {
@@ -53,7 +48,7 @@ export class Skeleton extends LitElement {
   width?: string;
 
   /**
-   * Custom height (e.g., '20px')
+   * Custom height (e.g., '20px', '100px')
    */
   @property({ type: String })
   height?: string;
