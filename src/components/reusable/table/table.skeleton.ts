@@ -17,7 +17,7 @@ export class TableSkeleton extends LitElement {
     styles,
     css`
       .varying-width {
-        --skeleton-width: var(--width, 100%);
+        --width: var(--skeleton-width, 100%);
       }
 
       .visually-hidden {
@@ -106,13 +106,15 @@ export class TableSkeleton extends LitElement {
               ${!this.hideTableHeader && !this.tableTitle
                 ? html`<kyn-skeleton
                     class="skeleton-title"
-                    elementType="title"
+                    width="80px"
+                    height="16px"
                   ></kyn-skeleton>`
                 : null}
               ${!this.hideTableHeader && !this.tableSubtitle
                 ? html`<kyn-skeleton
                     class="skeleton-subtitle"
-                    elementType="subtitle"
+                    width="120px"
+                    height="16px"
                   ></kyn-skeleton>`
                 : null}
             </div>`}
@@ -172,18 +174,10 @@ export class TableSkeleton extends LitElement {
   }
 
   private renderSkeletonCell() {
+    const width = '120px';
     return html`
-      <kyn-skeleton
-        class="varying-width"
-        style="--width: ${this.getRandomWidth()}"
-        elementType="table-cell"
-      ></kyn-skeleton>
+      <kyn-skeleton shape="rectangle" width=${width}></kyn-skeleton>
     `;
-  }
-
-  private getRandomWidth() {
-    const widths = ['45%', '60%', '75%', '85%', '90%', '95%'];
-    return widths[Math.floor(Math.random() * widths.length)];
   }
 }
 

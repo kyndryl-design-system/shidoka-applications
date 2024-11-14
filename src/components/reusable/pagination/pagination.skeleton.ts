@@ -49,17 +49,13 @@ export class PaginationSkeleton extends LitElement {
   override render() {
     return html`
       ${!this.hideItemsRange
-        ? html`<kyn-skeleton
-            class="desktop"
-            elementType="pagination"
-            inline
-          ></kyn-skeleton>`
+        ? html`<kyn-skeleton class="desktop" inline></kyn-skeleton>`
         : null}
       ${!this.hidePageSizeDropdown
-        ? html`<kyn-skeleton elementType="pagination" inline></kyn-skeleton>`
+        ? html`<kyn-skeleton inline></kyn-skeleton>`
         : null}
       ${!this.hideNavigationButtons
-        ? html`<kyn-skeleton elementType="pagination" inline></kyn-skeleton>`
+        ? html`<kyn-skeleton inline></kyn-skeleton>`
         : null}
     `;
   }

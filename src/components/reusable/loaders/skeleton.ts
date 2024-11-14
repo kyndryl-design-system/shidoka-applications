@@ -55,7 +55,7 @@ export class Skeleton extends LitElement {
       inline: this.inline,
     };
 
-    let computedWidth = this.width;
+    let computedWidth = this.width?.includes('%') ? undefined : this.width;
     let computedHeight = this.height;
 
     if (!this.width && !this.height && this.size) {
