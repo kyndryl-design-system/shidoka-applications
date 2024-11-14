@@ -155,28 +155,3 @@ export const DisabledTab = {
     `;
   },
 };
-
-export const Skeleton = {
-  title: 'Components/Tabs/Skeleton',
-  component: 'kyn-tabs-skeleton',
-  args: {
-    tabSize: 'md',
-    vertical: false,
-    tabCount: 3,
-  },
-  render: (args) => {
-    return html`
-      <kyn-tabs-skeleton
-        tabSize=${args.tabSize}
-        ?vertical=${args.vertical}
-        tabCount=${args.tabCount}
-      ></kyn-tabs-skeleton>
-    `;
-  },
-  argTypes: {
-    tabSize: {
-      options: ['sm', 'md'],
-      control: { type: 'select' },
-    },
-  },
-};

@@ -3,7 +3,6 @@ import './index';
 import { action } from '@storybook/addon-actions';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import './sideDrawer.skeleton';
 
 export default {
   title: 'Components/SideDrawer',
@@ -139,20 +138,4 @@ const handleBeforeClose = (returnValue) => {
   } else {
     return true;
   }
-};
-
-const skeletonArgs = {
-  open: false,
-  size: 'md',
-};
-
-export const Skeleton = {
-  args: skeletonArgs,
-  render: (args) => {
-    return html`
-      <kyn-side-drawer-skeleton ?open=${args.open} size=${args.size}>
-        <span slot="anchor">Open Drawer</span>
-      </kyn-side-drawer-skeleton>
-    `;
-  },
 };

@@ -177,24 +177,3 @@ const handleBeforeCloseSubmit = (returnValue) => {
     return true;
   }
 };
-
-export const Skeleton = {
-  args: {
-    size: 'auto',
-    hideFooter: false,
-    showSecondaryButton: true,
-    hideCancelButton: false,
-  },
-  render: (args) => {
-    return html`
-      <kyn-modal-skeleton
-        size=${args.size}
-        ?hideFooter=${args.hideFooter}
-        ?showSecondaryButton=${args.showSecondaryButton}
-        ?hideCancelButton=${args.hideCancelButton}
-      >
-        <kd-button slot="anchor"> Open Modal </kd-button>
-      </kyn-modal-skeleton>
-    `;
-  },
-};
