@@ -6,7 +6,10 @@ import '../loaders/skeleton';
 import vitalCardScss from './vitalCard.scss';
 import CardSampleScss from '../../../stories/sampleCardComponents/cardSample.scss';
 
-/**  Sample Lit component to show vital card skeleton pattern. */
+/**
+ * `kyn-vital-card-skeleton` Web Component.
+ * A skeleton loading state for the vital card component that mirrors its structure.
+ */
 @customElement('kyn-vital-card-skeleton')
 export class VitalCardSkeleton extends LitElement {
   static override styles = [
@@ -33,7 +36,7 @@ export class VitalCardSkeleton extends LitElement {
   @property({ type: Number })
   lines? = 0;
 
-  /**  Show or hide thumbnail in example. */
+  /**  Sets show or hide thumbnail element. */
   @property({ type: Boolean })
   thumbnailVisible?: boolean = false;
 

@@ -5,7 +5,10 @@ import '../loaders/skeleton';
 
 import CardSampleScss from '../../../stories/sampleCardComponents/cardSample.scss';
 
-/**  Sample Lit component to show inoformational card skeleton pattern. */
+/**
+ * `kyn-info-card-skeleton` Web Component.
+ * A skeleton loading state for the informational card component that mirrors its structure.
+ */
 @customElement('kyn-info-card-skeleton')
 export class InformationalCardSkeleton extends LitElement {
   static override styles = CardSampleScss;
@@ -14,7 +17,7 @@ export class InformationalCardSkeleton extends LitElement {
   @property({ type: Number })
   lines? = 0;
 
-  /**  Show or hide thumbnail in example. */
+  /**  Sets show or hide thumbnail element. */
   @property({ type: Boolean })
   thumbnailVisible?: boolean = false;
 
