@@ -16,10 +16,6 @@ export class TableSkeleton extends LitElement {
   static override styles = [
     styles,
     css`
-      .varying-width {
-        --width: var(--skeleton-width, 100%);
-      }
-
       .visually-hidden {
         position: absolute;
         width: 1px;
@@ -136,7 +132,7 @@ export class TableSkeleton extends LitElement {
                         <span class="visually-hidden"
                           >Loading column ${index + 1}</span
                         >
-                        ${this.renderSkeletonCell()}
+                        ${this.renderSkeletonCell('thead')}
                       </kyn-th>`
                   )}
               </kyn-tr>
@@ -153,7 +149,7 @@ export class TableSkeleton extends LitElement {
                         .map(
                           (_) =>
                             html`<kyn-td role="cell">
-                              ${this.renderSkeletonCell()}
+                              ${this.renderSkeletonCell('tbody')}
                             </kyn-td>`
                         )}
                     </kyn-tr>
@@ -173,10 +169,11 @@ export class TableSkeleton extends LitElement {
     `;
   }
 
-  private renderSkeletonCell() {
+  private renderSkeletonCell(type: 'thead' | 'tbody') {
+    const height = type === 'thead' ? '14px' : '16px';
     const width = '120px';
     return html`
-      <kyn-skeleton shape="rectangle" width=${width}></kyn-skeleton>
+      <kyn-skeleton width=${width} height=${height}></kyn-skeleton>
     `;
   }
 }
