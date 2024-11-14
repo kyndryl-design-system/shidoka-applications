@@ -24,6 +24,13 @@ export class PaginationSkeleton extends LitElement {
           width: clamp(75px, 20vw, 90px);
         }
       }
+
+      .desktop {
+        display: none;
+        @media (min-width: 42rem) {
+          display: block;
+        }
+      }
     `,
   ];
 
@@ -42,7 +49,11 @@ export class PaginationSkeleton extends LitElement {
   override render() {
     return html`
       ${!this.hideItemsRange
-        ? html`<kyn-skeleton elementType="pagination" inline></kyn-skeleton>`
+        ? html`<kyn-skeleton
+            class="desktop"
+            elementType="pagination"
+            inline
+          ></kyn-skeleton>`
         : null}
       ${!this.hidePageSizeDropdown
         ? html`<kyn-skeleton elementType="pagination" inline></kyn-skeleton>`

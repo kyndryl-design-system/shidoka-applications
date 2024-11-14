@@ -14,6 +14,25 @@ export default {
       options: ['sm', 'md'],
       control: { type: 'select' },
     },
+    shade: {
+      options: ['light', 'dark'],
+      control: { type: 'select' },
+    },
+    tagColor: {
+      options: [
+        'grey',
+        'spruce',
+        'failed',
+        'warning',
+        'passed',
+        'cat01',
+        'cat02',
+        'cat03',
+        'cat04',
+        'cat05',
+      ],
+      control: { type: 'select' },
+    },
   },
   parameters: {
     design: {
@@ -65,6 +84,8 @@ export const Skeleton = {
       showLess: 'Show less',
     },
     tagSkeletonLength: 10,
+    shade: 'light',
+    tagColor: 'spruce',
   },
   render: (args) => {
     return html`
@@ -76,7 +97,10 @@ export const Skeleton = {
       >
         ${Array.from(
           { length: args.tagSkeletonLength },
-          () => html`<kyn-tag-skeleton></kyn-tag-skeleton>`
+          () => html`<kyn-tag-skeleton
+            shade=${args.shade}
+            tagColor=${args.tagColor}
+          ></kyn-tag-skeleton>`
         )}
       </kyn-tag-group>
     `;
