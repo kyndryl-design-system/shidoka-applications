@@ -70,7 +70,7 @@ export class TagSkeleton extends LitElement {
         tagColor=${this.tagColor}
         shade=${this.shade}
       >
-        <kyn-skeleton elementType="tag" inline></kyn-skeleton>
+        <kyn-skeleton shape="rectangle" inline></kyn-skeleton>
       </div>
     `;
   }

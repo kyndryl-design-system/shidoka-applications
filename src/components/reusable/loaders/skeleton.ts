@@ -3,67 +3,69 @@ import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import skeletonStyles from './skeleton.scss';
 
-/**
- * `kyn-skeleton` Web Component.
- * A skeleton loading state to be utilized across patterns and components.
- */
 @customElement('kyn-skeleton')
 export class Skeleton extends LitElement {
   static override styles = skeletonStyles;
 
   /**
-   * Optional: Predefined skeleton types with default styling
+   * Defines the shape of the skeleton element.
    */
   @property({ type: String, reflect: true })
-  elementType?:
-    | 'default'
-    | 'thumbnail'
-    | 'title'
-    | 'tag'
-    | 'tabs'
-    | 'pagination'
-    | 'subtitle'
-    | 'body-text'
-    | 'table-cell'
-    | 'button'
-    | 'link'
-    | 'card-logo' = 'default';
+  shape: 'rectangle' | 'circle' = 'rectangle';
 
   /**
-   *  Sets number of skeleton lines to display
+   * Optional: Predefined size or custom size value (e.g., 'small', '100px').
    */
-  @property({ type: Number })
-  lines = 1;
+  @property({ type: String })
+  size?: 'small' | 'medium' | 'large' | string;
 
   /**
-   * Sets whether to display inline or block
-   */
-  @property({ type: Boolean })
-  inline = false;
-
-  /**
-   * Optional: Sets custom width (e.g., '100px', '50%')
+   * Optional: Custom width (overrides size if provided).
    */
   @property({ type: String })
   width?: string;
 
   /**
-   * Optional: Custom height (e.g., '20px', '100px')
+   * Optional: Custom height (overrides size if provided).
    */
   @property({ type: String })
   height?: string;
 
+  /**
+   * Sets the number of skeleton lines to display.
+   */
+  @property({ type: Number })
+  lines = 1;
+
+  /**
+   * Sets whether to display inline or block.
+   */
+  @property({ type: Boolean })
+  inline = false;
+
   override render() {
+    const isPredefinedSize = ['small', 'medium', 'large'].includes(
+      this.size ?? ''
+    );
     const classes = {
       skeleton: true,
-      [`element-type-${this.elementType}`]: true,
+      [this.shape]: true,
+      [`size-${this.size}`]: isPredefinedSize,
       'multi-line': this.lines > 1,
       inline: this.inline,
     };
 
+    let computedWidth = this.width;
+    let computedHeight = this.height;
+
+    if (!this.width && !this.height && this.size) {
+      computedWidth = this.size;
+      computedHeight = this.size;
+    }
+
     const styles = {
-      ...(this.width && { width: this.width }),
-      ...(this.height && { height: this.height }),
+      ...(computedWidth && { width: computedWidth }),
+      ...(computedHeight && { height: computedHeight }),
     };
 
     const skeletonLines = Array.from(

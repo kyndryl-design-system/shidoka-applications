@@ -6,7 +6,6 @@ import { action } from '@storybook/addon-actions';
 
 import './sampleCardComponents/card.sample.ts';
 import './sampleCardComponents/card.content.sample.ts';
-import './skeleton-patterns/informationalCard.skeleton.sample.ts';
 
 export default {
   title: 'Patterns/Informational Card',
@@ -156,24 +155,5 @@ export const InsideGrid = {
         See the full example component code here.
       </a>
     `;
-  },
-};
-
-export const SkeletonSimple = {
-  render: () => {
-    return html` <kd-card type="normal" href="" target="" rel="">
-      <info-card-skeleton-sample .lines=${1}></info-card-skeleton-sample>
-    </kd-card>`;
-  },
-};
-
-export const SkeletonWithThumbnail = {
-  render: () => {
-    return html` <kd-card type="normal" href="" target="" rel="">
-      <info-card-skeleton-sample
-        .lines=${1}
-        ?thumbnailExample=${true}
-      ></info-card-skeleton-sample>
-    </kd-card>`;
   },
 };

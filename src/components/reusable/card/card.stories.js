@@ -161,3 +161,55 @@ export const InsideGrid = {
     `;
   },
 };
+
+export const VitalCardSkeleton = {
+  args: { ...Simple.args, lines: 1, thumbnailVisible: true },
+  render: (args) => {
+    return html`<kyn-card
+      type=${args.type}
+      href=${args.href}
+      target=${args.target}
+      rel=${args.rel}
+      ?hideBorder=${args.hideBorder}
+    >
+      <kyn-vital-card-skeleton
+        .lines=${args.lines}
+        ?thumbnailVisible=${args.thumbnailVisible}
+      ></kyn-vital-card-skeleton>
+    </kyn-card>`;
+  },
+};
+
+export const InformationalCardSkeleton = {
+  args: { ...Simple.args, lines: 2, thumbnailVisible: false },
+  render: (args) => {
+    return html` <kyn-card
+      type=${args.type}
+      href=${args.href}
+      target=${args.target}
+      rel=${args.rel}
+      ?hideBorder=${args.hideBorder}
+      ><kyn-info-card-skeleton
+        .lines=${args.lines}
+        ?thumbnailVisible=${args.thumbnailVisible}
+      ></kyn-info-card-skeleton
+    ></kyn-card>`;
+  },
+};
+
+export const InformationalCardSkeletonWithThumbnail = {
+  args: { ...Simple.args, lines: 2, thumbnailVisible: true },
+  render: (args) => {
+    return html` <kyn-card
+      type=${args.type}
+      href=${args.href}
+      target=${args.target}
+      rel=${args.rel}
+      ?hideBorder=${args.hideBorder}
+      ><kyn-info-card-skeleton
+        .lines=${args.lines}
+        ?thumbnailVisible=${args.thumbnailVisible}
+      ></kyn-info-card-skeleton
+    ></kyn-card>`;
+  },
+};

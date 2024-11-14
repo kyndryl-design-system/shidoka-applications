@@ -2,32 +2,16 @@
 
 :host {
   // Base variables
-  --skeleton-base-width: 95%;
-  --skeleton-base-height: 12px;
+  --skeleton-base-width: 100%;
+  --skeleton-base-height: 16px;
   --skeleton-border-radius: 4px;
   --skeleton-background: var(--kd-color-background-ui-soft);
   --skeleton-shimmer-duration: 1.5s;
 
-  // Element-specific dimensions
-  --skeleton-default-height: 128px;
-  --skeleton-default-inline-height: 16px;
-  --skeleton-link-width: 60px;
-  --skeleton-link-height: 16px;
-  --skeleton-button-width: 70px;
-  --skeleton-button-height: 40px;
-  --skeleton-card-logo-height: 32px;
-  --skeleton-card-logo-width: 32px;
-  --skeleton-thumbnail-width: 216px;
-  --skeleton-thumbnail-height: 128px;
-  --skeleton-title-width: 110px;
-  --skeleton-title-height: 16px;
-  --skeleton-tabs-width: 50px;
-  --skeleton-tabs-height: 12px;
-  --skeleton-subtitle-width: 150px;
-  --skeleton-subtitle-height: 16px;
-  --skeleton-body-text-width: 100px;
-  --skeleton-body-text-height: 16px;
-  --skeleton-table-cell-width: 115px;
+  // Predefined sizes
+  --skeleton-size-small: 32px;
+  --skeleton-size-medium: 64px;
+  --skeleton-size-large: 128px;
 }
 
 :host {
@@ -55,110 +39,42 @@
   display: inline-block;
 }
 
-.element-type-default {
-  height: 100%;
-  width: 100%;
-}
-
-.element-type-default:not(.inline) {
-  height: var(--skeleton-default-height);
-  width: 100%;
-}
-
-.element-type-default.inline {
-  height: var(--skeleton-default-inline-height);
-  width: 100%;
-}
-
-.skeleton-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  width: 100%;
-}
-
-.element-type-link.skeleton {
-  height: var(--skeleton-link-height);
-  width: var(--skeleton-link-width);
-}
-
-.element-type-default.inline.multi-line {
-  height: var(--skeleton-default-inline-height);
-}
-
-.element-type-button.skeleton {
-  height: var(--skeleton-button-height);
-  width: var(--skeleton-button-width);
-}
-
-.element-type-card-logo.skeleton {
-  height: var(--skeleton-card-logo-height);
-  width: var(--skeleton-card-logo-width);
-  border-radius: 100px;
-}
-
-.element-type-thumbnail.skeleton {
-  height: var(--skeleton-thumbnail-height);
-  width: var(--skeleton-thumbnail-width);
-}
-
-.element-type-title.skeleton {
-  height: var(--skeleton-title-height);
-  width: var(--skeleton-title-width);
-}
-
-.element-type-subtitle.skeleton {
-  height: var(--skeleton-subtitle-height);
-  width: var(--skeleton-subtitle-width);
-}
-
-.element-type-tabs.skeleton {
-  width: var(--skeleton-tabs-width);
-  height: var(--skeleton-tabs-height);
-}
-
-.element-type-tag.skeleton {
-  width: 100%;
-  height: 100%;
-}
-
-.element-type-pagination.skeleton {
-  width: 100%;
-  height: 100%;
-}
-
-.element-type-body-text.skeleton {
-  height: var(--skeleton-body-text-height);
-  width: var(--skeleton-base-width);
-}
-
-.element-type-table-cell.skeleton {
-  height: var(--skeleton-base-height);
-  width: var(--skeleton-table-cell-width);
-}
-
 .skeleton {
-  width: 100%;
+  width: var(--skeleton-base-width);
+  height: var(--skeleton-base-height);
   border-radius: var(--skeleton-border-radius);
   background: var(--skeleton-background);
   position: relative;
   overflow: hidden;
   will-change: transform;
 
-  &.element-type-card-logo {
-    border-radius: 100px;
+  // Shape variants
+  &.rectangle {
+    border-radius: var(--skeleton-border-radius);
   }
 
-  // dark theme gradient to be implemented later
-  // &::after {
-  //   background-image: linear-gradient(90deg,
-  //       rgba(0, 0, 0, 0) 0,
-  //       rgba(0, 0, 0, 0.2) 10%,
-  //       rgba(0, 0, 0, 0.7) 50%,
-  //       rgba(0, 0, 0, 0.2) 90%,
-  //       rgba(0, 0, 0, 0) 100%);
-  // }
+  &.circle {
+    border-radius: 50%;
+    aspect-ratio: 1;
+  }
 
+  // Size variants (only applied when no width/height specified AND size is set)
+  &.size-small {
+    width: var(--skeleton-size-small);
+    height: var(--skeleton-size-small);
+  }
+
+  &.size-medium {
+    width: var(--skeleton-size-medium);
+    height: var(--skeleton-size-medium);
+  }
+
+  &.size-large {
+    width: var(--skeleton-size-large);
+    height: var(--skeleton-size-large);
+  }
+
+  // Shimmer effect
   &::after {
     position: absolute;
     top: 0;
