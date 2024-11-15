@@ -166,7 +166,7 @@ export const Simple = {
 export const VitalCardSkeleton = {
   args: { ...Simple.args, lines: 1, thumbnailVisible: true },
   render: (args) => {
-    return html`<kd-card
+    return html` <kd-card
       type=${args.type}
       href=${args.href}
       target=${args.target}
@@ -181,17 +181,18 @@ export const VitalCardSkeleton = {
 export const InformationalCardSkeleton = {
   args: { ...Simple.args, lines: 2, thumbnailVisible: false },
   render: (args) => {
-    return html` <kyn-card
+    return html` <kd-card
       type=${args.type}
       href=${args.href}
       target=${args.target}
       rel=${args.rel}
       ?hideBorder=${args.hideBorder}
-      ><kd-info-card-skeleton
+    >
+      <kyn-info-card-skeleton
         .lines=${args.lines}
         ?thumbnailVisible=${args.thumbnailVisible}
-      ></kyn-info-card-skeleton
-    ></kd-card>`;
+      ></kyn-info-card-skeleton>
+    </kd-card>`;
   },
 };
 
@@ -204,10 +205,11 @@ export const InformationalCardSkeletonWithThumbnail = {
       target=${args.target}
       rel=${args.rel}
       ?hideBorder=${args.hideBorder}
-      ><kd-info-card-skeleton
+    >
+      <kyn-info-card-skeleton
         .lines=${args.lines}
         ?thumbnailVisible=${args.thumbnailVisible}
-      ></kyn-info-card-skeleton
-    ></kd-card>`;
+      ></kyn-info-card-skeleton>
+    </kd-card>`;
   },
 };
