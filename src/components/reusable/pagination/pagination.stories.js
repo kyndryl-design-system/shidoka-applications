@@ -53,3 +53,16 @@ export const Pagination = {
     `;
   },
 };
+
+export const Skeleton = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-pagination-skeleton
+        ?hideItemsRange=${args.hideItemsRange}
+        ?hidePageSizeDropdown=${args.hidePageSizeDropdown}
+        ?hideNavigationButtons=${args.hideNavigationButtons}
+      ></kyn-pagination-skeleton>
+    `;
+  },
+};

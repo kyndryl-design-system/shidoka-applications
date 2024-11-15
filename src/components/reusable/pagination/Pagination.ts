@@ -109,7 +109,6 @@ export class Pagination extends LitElement {
             <kyn-pagination-page-size-dropdown
               .pageSize=${this.pageSize}
               .pageSizeOptions=${this.pageSizeOptions}
-              .pageSizeLabel=${this.pageSizeLabel}
               .textStrings=${this.textStrings}
               @on-page-size-change=${this.handlePageSizeChange}
             ></kyn-pagination-page-size-dropdown>

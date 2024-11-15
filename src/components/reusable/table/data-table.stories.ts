@@ -31,7 +31,7 @@ const meta: Meta = {
     count: { control: 'number' },
     pageSize: { control: 'select', options: [5, 10, 20, 30, 40, 50, 100] },
     pageNumber: { control: 'number' },
-    pageSizeOptions: { control: 'array' },
+    pageSizeOptions: { control: 'object' },
     hideItemsRange: { control: 'boolean' },
     hidePageSizeDropdown: { control: 'boolean' },
     hideNavigationButtons: { control: 'boolean' },
