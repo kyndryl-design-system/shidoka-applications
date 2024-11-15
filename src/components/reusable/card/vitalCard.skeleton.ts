@@ -36,10 +36,6 @@ export class VitalCardSkeleton extends LitElement {
   @property({ type: Number })
   lines? = 0;
 
-  /**  Sets show or hide thumbnail element. */
-  @property({ type: Boolean })
-  thumbnailVisible?: boolean = false;
-
   override render() {
     return html`
       <div class="vital-card-wrapper">

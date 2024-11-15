@@ -78,9 +78,13 @@ export class TableSkeleton extends LitElement {
   @property({ type: Boolean })
   hideTableHeader = false;
 
-  /** Sticky header. */
+  /** Sticky header boolean. */
   @property({ type: Boolean })
   stickyHeader = false;
+
+  /** Fixed layout boolean. */
+  @property({ type: Boolean })
+  fixedLayout = false;
 
   /** Sets title to display in the table toolbar. */
   @property({ type: String })
@@ -93,33 +97,34 @@ export class TableSkeleton extends LitElement {
   override render() {
     return html`
       <div>
-        ${this.tableTitle || this.tableSubtitle
-          ? html`<kyn-table-toolbar
-              tableTitle=${this.tableTitle}
-              tableSubtitle=${this.tableSubtitle}
-            ></kyn-table-toolbar>`
-          : html`<div class="skeleton-title-wrapper">
-              ${!this.hideTableHeader && !this.tableTitle
-                ? html`<kyn-skeleton
-                    class="skeleton-title"
-                    width="80px"
-                    height="16px"
-                  ></kyn-skeleton>`
-                : null}
-              ${!this.hideTableHeader && !this.tableSubtitle
-                ? html`<kyn-skeleton
-                    class="skeleton-subtitle"
-                    width="120px"
-                    height="16px"
-                  ></kyn-skeleton>`
-                : null}
-            </div>`}
+        ${!this.hideTableHeader
+          ? html`
+              ${this.tableTitle || this.tableSubtitle
+                ? html`<kyn-table-toolbar
+                    tableTitle=${this.tableTitle}
+                    tableSubtitle=${this.tableSubtitle}
+                  ></kyn-table-toolbar>`
+                : html`<div class="skeleton-title-wrapper">
+                    <kyn-skeleton
+                      class="skeleton-title"
+                      width="80px"
+                      height="16px"
+                    ></kyn-skeleton>
+                    <kyn-skeleton
+                      class="skeleton-subtitle"
+                      width="120px"
+                      height="16px"
+                    ></kyn-skeleton>
+                  </div>`}
+            `
+          : null}
         <kyn-table-container>
           <kyn-table
             role="table"
             ?dense=${this.dense}
             ?striped=${this.striped}
             ?stickyHeader=${this.stickyHeader}
+            ?fixedLayout=${this.fixedLayout}
             ?checkboxSelection=${this.checkboxSelection}
           >
             <kyn-thead role="rowgroup">

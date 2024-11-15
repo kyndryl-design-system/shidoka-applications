@@ -486,6 +486,10 @@ export const Skeleton = {
     showPagination: true,
     checkboxSelection: false,
     hideTableHeader: false,
+    striped: false,
+    dense: false,
+    stickyHeader: false,
+    fixedLayout: false,
     tableTitle: '',
     tableSubtitle: '',
   },
@@ -494,6 +498,10 @@ export const Skeleton = {
       .rows=${args.rows}
       ?showPagination=${args.showPagination}
       ?checkboxSelection=${args.checkboxSelection}
+      ?dense=${args.dense}
+      ?striped=${args.striped}
+      ?stickyHeader=${args.stickyHeader}
+      ?fixedLayout=${args.fixedLayout}
       ?hideTableHeader=${args.hideTableHeader}
       tableTitle=${args.tableTitle}
       tableSubtitle=${args.tableSubtitle}
@@ -525,6 +533,18 @@ export const Skeleton = {
         control: { type: 'boolean' },
       },
       hideTableHeader: {
+        control: { type: 'boolean' },
+      },
+      dense: {
+        control: { type: 'boolean' },
+      },
+      fixedLayout: {
+        control: { type: 'boolean' },
+      },
+      striped: {
+        control: { type: 'boolean' },
+      },
+      stickyHeader: {
         control: { type: 'boolean' },
       },
       tableTitle: {

@@ -32,7 +32,7 @@ export const Simple = {
     href: '',
     rel: '',
     target: '_self',
-    hideBorder: false,
+    hideBorder: true,
   },
   render: (args) => {
     return html`
@@ -172,10 +172,7 @@ export const VitalCardSkeleton = {
       rel=${args.rel}
       ?hideBorder=${args.hideBorder}
     >
-      <kyn-vital-card-skeleton
-        .lines=${args.lines}
-        ?thumbnailVisible=${args.thumbnailVisible}
-      ></kyn-vital-card-skeleton>
+      <kyn-vital-card-skeleton .lines=${args.lines}></kyn-vital-card-skeleton>
     </kyn-card>`;
   },
 };
