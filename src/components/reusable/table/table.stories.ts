@@ -485,10 +485,9 @@ export const Skeleton = {
     rows: 5,
     showPagination: true,
     checkboxSelection: false,
-    hideTableHeader: false,
+    hideTableTitles: false,
     striped: false,
     dense: false,
-    stickyHeader: false,
     fixedLayout: false,
     tableTitle: '',
     tableSubtitle: '',
@@ -500,9 +499,8 @@ export const Skeleton = {
       ?checkboxSelection=${args.checkboxSelection}
       ?dense=${args.dense}
       ?striped=${args.striped}
-      ?stickyHeader=${args.stickyHeader}
       ?fixedLayout=${args.fixedLayout}
-      ?hideTableHeader=${args.hideTableHeader}
+      ?hideTableTitles=${args.hideTableTitles}
       tableTitle=${args.tableTitle}
       tableSubtitle=${args.tableSubtitle}
     ></kyn-table-skeleton>`;
@@ -532,7 +530,7 @@ export const Skeleton = {
       checkboxSelection: {
         control: { type: 'boolean' },
       },
-      hideTableHeader: {
+      hideTableTitles: {
         control: { type: 'boolean' },
       },
       dense: {
@@ -542,9 +540,6 @@ export const Skeleton = {
         control: { type: 'boolean' },
       },
       striped: {
-        control: { type: 'boolean' },
-      },
-      stickyHeader: {
         control: { type: 'boolean' },
       },
       tableTitle: {

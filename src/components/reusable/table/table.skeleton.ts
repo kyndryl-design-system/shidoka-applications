@@ -76,11 +76,7 @@ export class TableSkeleton extends LitElement {
 
   /** Show/hide table header. */
   @property({ type: Boolean })
-  hideTableHeader = false;
-
-  /** Sticky header boolean. */
-  @property({ type: Boolean })
-  stickyHeader = false;
+  hideTableTitles = false;
 
   /** Fixed layout boolean. */
   @property({ type: Boolean })
@@ -97,7 +93,7 @@ export class TableSkeleton extends LitElement {
   override render() {
     return html`
       <div>
-        ${!this.hideTableHeader
+        ${!this.hideTableTitles
           ? html`
               ${this.tableTitle || this.tableSubtitle
                 ? html`<kyn-table-toolbar
@@ -123,7 +119,6 @@ export class TableSkeleton extends LitElement {
             role="table"
             ?dense=${this.dense}
             ?striped=${this.striped}
-            ?stickyHeader=${this.stickyHeader}
             ?fixedLayout=${this.fixedLayout}
             ?checkboxSelection=${this.checkboxSelection}
           >
