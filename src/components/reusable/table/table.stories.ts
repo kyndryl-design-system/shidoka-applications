@@ -457,3 +457,77 @@ export const ColumnSettings: Story = {
     },
   },
 };
+
+export const Skeleton = {
+  args: {
+    rows: 5,
+    showPagination: true,
+    checkboxSelection: false,
+    hideTableTitles: false,
+    striped: false,
+    dense: false,
+    fixedLayout: false,
+    tableTitle: '',
+    tableSubtitle: '',
+  },
+  render: (args) => {
+    return html`<kyn-table-skeleton
+      .rows=${args.rows}
+      ?showPagination=${args.showPagination}
+      ?checkboxSelection=${args.checkboxSelection}
+      ?dense=${args.dense}
+      ?striped=${args.striped}
+      ?fixedLayout=${args.fixedLayout}
+      ?hideTableTitles=${args.hideTableTitles}
+      tableTitle=${args.tableTitle}
+      tableSubtitle=${args.tableSubtitle}
+    ></kyn-table-skeleton>`;
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `
+        // For guidance on how to construct this code, please refer to the 'table.skeleton.ts' file.
+        // You can find it at the following path:
+        // https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/table/table-skeleton.ts
+        `,
+      },
+    },
+    design: {
+      type: 'figma',
+      url: '',
+    },
+    argTypes: {
+      rows: {
+        control: { type: 'number' },
+        description: 'Number of skeleton rows to display',
+      },
+      showPagination: {
+        control: { type: 'boolean' },
+      },
+      checkboxSelection: {
+        control: { type: 'boolean' },
+      },
+      hideTableTitles: {
+        control: { type: 'boolean' },
+      },
+      dense: {
+        control: { type: 'boolean' },
+      },
+      fixedLayout: {
+        control: { type: 'boolean' },
+      },
+      striped: {
+        control: { type: 'boolean' },
+      },
+      tableTitle: {
+        control: { type: 'text' },
+        description: 'Title to display in the table toolbar',
+      },
+      tableSubtitle: {
+        control: { type: 'text' },
+        description: 'Subtitle to display in the table toolbar',
+      },
+    },
+  },
+};

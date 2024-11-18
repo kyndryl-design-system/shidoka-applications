@@ -7,10 +7,30 @@ export default {
   component: 'kyn-tag-group',
   subcomponents: {
     Tag: 'kyn-tag',
+    TagSkeleton: 'kyn-tag-skeleton',
   },
   argTypes: {
     tagSize: {
       options: ['sm', 'md'],
+      control: { type: 'select' },
+    },
+    shade: {
+      options: ['light', 'dark'],
+      control: { type: 'select' },
+    },
+    tagColor: {
+      options: [
+        'grey',
+        'spruce',
+        'failed',
+        'warning',
+        'passed',
+        'cat01',
+        'cat02',
+        'cat03',
+        'cat04',
+        'cat05',
+      ],
       control: { type: 'select' },
     },
   },
@@ -50,6 +70,38 @@ export const TagGroup = {
         <kyn-tag label="Tag 8" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
         <kyn-tag label="Tag 9" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
         <kyn-tag label="Tag 10" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
+      </kyn-tag-group>
+    `;
+  },
+};
+
+export const Skeleton = {
+  args: {
+    limitTags: false,
+    tagSize: 'md',
+    textStrings: {
+      showAll: 'Show all',
+      showLess: 'Show less',
+    },
+    tagSkeletonLength: 10,
+    shade: 'light',
+    tagColor: 'spruce',
+  },
+  render: (args) => {
+    return html`
+      <kyn-tag-group
+        ?limitTags=${args.limitTags}
+        tagSize=${args.tagSize}
+        .textStrings=${args.textStrings}
+        .tagSkeletonLength=${args.tagSkeletonLength}
+      >
+        ${Array.from(
+          { length: args.tagSkeletonLength },
+          () => html`<kyn-tag-skeleton
+            shade=${args.shade}
+            tagColor=${args.tagColor}
+          ></kyn-tag-skeleton>`
+        )}
       </kyn-tag-group>
     `;
   },

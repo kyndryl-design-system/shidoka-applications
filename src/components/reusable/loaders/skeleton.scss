@@ -1,31 +1,114 @@
 @use '../../../common/scss/global.scss';
 
 :host {
+  // Base variables
+  --skeleton-base-width: 100%;
+  --skeleton-base-height: 16px;
+  --skeleton-border-radius: 4px;
+  --skeleton-background: var(--kd-color-background-ui-soft);
+  --skeleton-shimmer-duration: 1.5s;
+
+  // Predefined sizes
+  --skeleton-size-small: 32px;
+  --skeleton-size-medium: 64px;
+  --skeleton-size-large: 128px;
+}
+
+:host {
   display: block;
   width: 100%;
-  height: 12px;
+  height: auto;
+}
+
+:host(.skeleton-item) {
+  margin-bottom: 16px;
+}
+
+:host(.last-item) {
+  margin-bottom: 0;
+  margin-right: 0;
 }
 
 :host([inline]) {
   display: inline-block;
-  width: 40px;
+  width: 100%;
 }
 
 .skeleton {
-  width: 100%;
-  height: 100%;
-  border-radius: 4px;
-  animation: pulse 1.5s infinite;
+  width: var(--skeleton-base-width);
 }
 
-@keyframes pulse {
+.skeleton[style*='%'] {
+  width: 100%;
+}
+
+.skeleton {
+  width: var(--skeleton-base-width);
+  height: var(--skeleton-base-height);
+  border-radius: var(--skeleton-border-radius);
+  background: var(--skeleton-background);
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+
+  &.rectangle {
+    border-radius: var(--skeleton-border-radius);
+  }
+
+  &.circle {
+    border-radius: 50%;
+    aspect-ratio: 1;
+  }
+
+  &.size-small {
+    width: var(--skeleton-size-small);
+    height: var(--skeleton-size-small);
+  }
+
+  &.size-medium {
+    width: var(--skeleton-size-medium);
+    height: var(--skeleton-size-medium);
+  }
+
+  &.size-large {
+    width: var(--skeleton-size-large);
+    height: var(--skeleton-size-large);
+  }
+
+  // dark mode shimmer gradient to be implemented later
+  // background-image: linear-gradient(90deg,
+  //   rgba(30, 30, 30, 0) 0%,
+  //   rgba(60, 60, 60, 0.2) 10%,
+  //   rgba(100, 100, 100, 0.5) 50%,
+  //   rgba(60, 60, 60, 0.2) 90%,
+  //   rgba(30, 30, 30, 0) 100%);
+
+
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%) translate3d(0, 0, 0);
+    background-image: linear-gradient(90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.2) 10%,
+        rgba(255, 255, 255, 0.7) 50%,
+        rgba(255, 255, 255, 0.2) 90%,
+        rgba(255, 255, 255, 0) 100%);
+    animation: shimmer var(--skeleton-shimmer-duration) cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    content: '';
+    pointer-events: none;
+  }
+}
+
+@keyframes shimmer {
   0% {
-    background-color: #edf1f2;
+    transform: translateX(-100%) translate3d(0, 0, 0);
   }
-  50% {
-    background-color: #d5d9db;
-  }
+
   100% {
-    background-color: #edf1f2;
+    transform: translateX(100%) translate3d(0, 0, 0);
   }
 }
