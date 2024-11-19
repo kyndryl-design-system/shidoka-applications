@@ -16,16 +16,16 @@
   }
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-level-primary);
   }
 }
 
 .required {
   text-decoration: none;
-  color: var(--kd-color-text-error);
+  color: var(--kd-color-text-variant-destructive);
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-level-primary);
   }
 }
 
@@ -36,7 +36,7 @@
 
 .options-text {
   margin: 0;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-text-level-primary);
   @include typography.type-ui-03;
 }
 
@@ -45,20 +45,20 @@ input,
 textarea {
   pointer-events: auto;
   @include typography.type-body-02;
-  border-color: var(--kd-color-border-ui);
-  color: var(--kd-color-text-primary);
+  border-color: var(--kd-color-border-ui-default);
+  color: var(--kd-color-text-level-primary);
   transition: background-color 150ms ease-out, border-color 150ms ease-out,
     outline-color 150ms ease-out;
-  background: var(--kd-color-background-inverse);
+  background: var(--kd-color-background-ui-hollow-default);
   outline: 2px solid transparent;
   outline-offset: 2px;
 
   &[invalid] {
-    border-color: var(--kd-color-border-error);
+    border-color: var(--kd-color-border-variants-destructive);
   }
 
   &[disabled] {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
     border-color: var(--kd-color-border-ui-disabled);
   }
 
@@ -67,18 +67,18 @@ textarea {
   }
 
   &:focus {
-    outline-color: var(--kd-color-border-focus);
+    outline-color: var(--kd-color-border-variants-focus);
   }
 
   &::placeholder {
-    color: var(--kd-color-text-placeholder);
+    color: var(--kd-color-text-level-secondary);
   }
 }
 
 .error {
   display: flex;
   align-items: center;
-  color: var(--kd-color-text-error);
+  color: var(--kd-color-text-variant-destructive);
   margin-top: 8px;
   cursor: default;
 
@@ -99,8 +99,10 @@ textarea {
   }
 }
 
+
+// CHECK: ERROR ICON -- not yet modified
 .error-icon {
-  color: var(--kd-color-text-error);
+  color: var(--kd-color-text-variant-destructive);
 
   [disabled] & {
     color: var(--kd-color-text-disabled);
@@ -136,7 +138,7 @@ textarea {
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-text-icon-primary);
 
   &:hover {
     opacity: 0.8;
@@ -178,11 +180,7 @@ textarea {
 
 .description-text {
   @include typography.type-body-02;
-  color: var(--kd-color-text-primary);
+  color: var(--kd-color-text-level-primary);
   margin-top: -4px;
   margin-bottom: 8px;
-
-  [disabled] & {
-    color: var(--kd-color-text-disabled);
-  }
 }

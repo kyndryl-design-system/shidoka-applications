@@ -13,7 +13,7 @@ label {
   position: relative;
 
   &[disabled] {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-level-primary);
   }
 }
 
@@ -34,7 +34,7 @@ input {
   margin: 0;
   width: 16px;
   height: 16px;
-  border: 2px solid var(--kd-color-border-ui);
+  border: 2px solid var(--kd-color-border-ui-default);
   border-radius: 2px;
   background-color: transparent;
   outline: 2px solid transparent;
@@ -52,12 +52,12 @@ input {
   }
 
   &:checked {
-    background: var(--kd-color-background-primary);
-    border-color: var(--kd-color-border-ui-hover);
+    background: var(--kd-color-background-button-primary-default);
+    border-color: var(--kd-color-border-button-primary-default);
 
     [disabled] & {
-      background-color: var(--kd-color-background-disabled);
-      border-color: var(--kd-color-background-disabled);
+      background-color: var(--kd-color-background-ui-default-disabled);
+      border-color: var(--kd-color-border-ui-disabled);
     }
 
     &::before {
@@ -65,49 +65,54 @@ input {
     }
 
     &:hover {
-      background-color: var(--kd-color-background-primary-hover);
+      background-color: var(--kd-color-border-button-primary-hover);
       border-color: var(--kd-color-background-primary-hover);
 
       [disabled] & {
-        background-color: var(--kd-color-background-disabled);
-        border-color: var(--kd-color-background-disabled);
+        background-color: var(--kd-color-background-button-primary-hover);
+        border-color: var(--kd-color-border-button-primary-hover);
       }
     }
 
     &:active {
-      background-color: var(--kd-color-background-primary-pressed);
-      border-color: var(--kd-color-background-primary-pressed);
+      background-color: var(--kd-color-background-button-primary-pressed);
+      border-color: var(--kd-color-border-button-primary-pressed);
     }
   }
 
   &:hover {
-    background-color: var(--kd-color-background-inverse-hover);
+    background-color: var(--kd-color-background-ui-hollow-hover);
     border-color: var(--kd-color-border-ui-hover);
   }
 
   &:focus {
-    outline-color: var(--kd-color-border-focus);
+    outline-color: var(--kd-color-border-variants-focus);
     outline-offset: 2px;
   }
 
   &:active {
-    background-color: var(--kd-color-background-accent-ui);
-    border-color: var(--kd-color-background-primary);
+    background-color: var(--kd-color-background-ui-hollow-pressed);
+    border-color: var(--kd-color-border-ui-hover);
   }
 
   &[disabled] {
-    background-color: transparent;
+    background-color: var(--kd-color-background-ui-hollow-default);
     border-color: var(--kd-color-border-ui-disabled);
 
+
+    // CHECK: DISABLED HOVER -- was transparent
     &:hover {
-      background-color: transparent;
+      background-color: var(--kd-color-background-ui-hollow-default);
     }
 
+
+    //CHECK: ERROR STATUS -- was --kd-color-text-disabled
     &[invalid] {
-      border-color: var(--kd-color-text-disabled);
+      border-color: var(--kd-color-text-variant-destructive);
     }
   }
 
+  // CHECK: ERROR STATUS -- was --kd-color-border-destructive
   &[invalid] {
     border-color: var(--kd-color-border-destructive);
   }
@@ -118,12 +123,27 @@ input {
 }
 
 input[type='checkbox']:indeterminate {
-  background: var(--kd-color-background-primary);
-  border-color: var(--kd-color-border-ui-hover);
+  background: var(--kd-color-background-button-primary-default);
+  border-color: var(--kd-color-border-button-primary-default);
 
   [disabled] & {
-    background-color: var(--kd-color-background-disabled);
-    border-color: var(--kd-color-background-disabled);
+    background-color: var(--kd-color-background-ui-default-disabled);
+    border-color: var(--kd-color-background-ui-default-disabled);
+  }
+
+  &:disabled {
+    background-color: var(--kd-color-background-ui-default-disabled);
+    border-color: var(--kd-color-background-ui-default-disabled);
+  }
+
+  &:active {
+    background-color: var(--kd-color-border-button-primary-pressed);
+    border-color: var(--kd-color-border-button-primary-pressed);
+  }
+
+  &:hover {
+    background-color: var(--kd-color-background-button-primary-hover);
+    border-color: var(--kd-color-border-button-primary-hover);
   }
 
   &::before {
