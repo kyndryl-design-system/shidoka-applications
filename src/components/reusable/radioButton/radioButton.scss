@@ -53,7 +53,25 @@ input {
 
     &::before {
       transform: scale(1);
-      background: rgba(var(--kd-color-border-level-tertiary), 0.2);
+      background: var(--kd-color-border-level-tertiary);
+    }
+
+    &:hover {
+      border-color: var(--kd-color-border-level-tertiary);
+      background: var(--kd-color-background-ui-hollow-hover);
+      outline-color: transparent;
+    }
+
+    &:focus {
+      &::before {
+        background: var(--kd-color-background-button-primary-default);
+      }
+    }
+
+    &:active {
+      &::before {
+        background: var(--kd-color-background-button-primary-default);
+      }
     }
   }
 
@@ -62,12 +80,20 @@ input {
     background-color: var(--kd-color-background-ui-hollow-hover);
   }
 
+  &:not([disabled]):active {
+    border-color: var(--kd-color-border-ui-hover);
+    background-color: var(--kd-color-background-ui-hollow-pressed);
+    outline-color: transparent;
+  }
+
   &:focus {
     outline-color: var(--kd-color-background-button-primary-default);
     outline-offset: 2px;
 
-    &::before {
-      background: var(--kd-color-background-button-primary-default);
+    &:not([checked]) {
+      &::before {
+        background: var(--kd-color-background-container-default);
+      }
     }
   }
 
@@ -75,11 +101,22 @@ input {
     background-color: var(--kd-color-background-accent-ui);
   }
 
+  &[invalid] {
+    border-color: var(--kd-color-border-variants-destructive);
+
+    &::before {
+      background: var(--kd-color-status-error-dark);
+    }
+  }
+
+  // Disabled states with increased specificity
   &[disabled] {
     border-color: var(--kd-color-border-ui-disabled);
+    outline-color: transparent;
 
     &:hover {
-      background-color: transparent;
+      background: transparent;
+      border-color: var(--kd-color-border-ui-disabled);
     }
 
     &::before {
@@ -91,7 +128,15 @@ input {
     }
   }
 
-  &[invalid] {
-    border-color: var(--kd-color-border-variants-destructive);
+  // Most specific disabled state selectors
+  &[disabled][checked],
+  &[disabled]:active,
+  &[disabled]:hover {
+    border-color: var(--kd-color-border-ui-disabled);
+    background: var(--kd-color-background-container-default);
+
+    &::before {
+      background: var(--kd-color-background-ui-default-disabled);
+    }
   }
 }
