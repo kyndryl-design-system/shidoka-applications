@@ -17,7 +17,7 @@
 
 .status-text {
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
   }
 }
 
@@ -34,7 +34,7 @@ input {
   padding: 0;
   margin: 0;
   border-radius: 12px;
-  background: var(--kd-color-background-secondary);
+  background: var(--kd-color-background-button-web-default);
 
   &:before {
     content: '';
@@ -44,22 +44,32 @@ input {
     border-radius: 50%;
     margin: 4px 0 0 4px;
     transition: background-color 150ms ease-out, transform 200ms ease-out;
-    background: var(--kd-color-background-inverse);
+    background: var(--kd-color-background-ui-hollow-default);
   }
 
   &:hover {
-    background-color: var(--kd-color-background-ui-hover);
+    background-color: var(--kd-color-background-button-primary-default);
 
     &:before {
-      background-color: var(--kd-color-background-inverse-hover);
+      background-color: var(--kd-color-background-ui-hollow-hover);
+    }
+  }
+
+  &:active {
+    &:hover {
+      background-color: var(--kd-color-background-button-web-default);
+
+      &:before {
+        background-color: var(--kd-color-background-ui-hollow-default);
+      }
     }
   }
 
   &:focus {
-    outline-color: var(--kd-color-border-focus);
+    outline-color: var(--kd-color-border-variants-focus);
 
     &:before {
-      background-color: var(--kd-color-background-inverse);
+      background-color: var(--kd-color-background-ui-hollow-default);
     }
   }
 
@@ -67,22 +77,22 @@ input {
     background-color: var(--kd-color-background-success);
 
     &:before {
-      background-color: var(--kd-color-background-inverse);
+      background-color: var(--kd-color-background-ui-hollow-default);
     }
   }
 
   &:checked {
-    background-color: var(--kd-color-background-success);
+    background-color: var(--kd-color-status-success-dark);
 
     &:before {
       transform: translateX(24px);
     }
 
     &:hover {
-      background-color: var(--kd-color-background-ui-hover);
+      background-color: var(--kd-color-background-button-primary-default);
 
       &:before {
-        background-color: var(--kd-color-background-inverse-hover);
+        background-color: var(--kd-color-background-ui-hollow-hover);
       }
     }
 
@@ -90,31 +100,31 @@ input {
       background-color: var(--kd-color-background-secondary);
 
       &:before {
-        background-color: var(--kd-color-background-inverse);
+        background-color: var(--kd-color-background-ui-hollow-hover);
       }
     }
   }
 
   &[disabled] {
-    background-color: var(--kd-color-background-disabled);
+    background-color: var(--kd-color-background-ui-default-disabled);
 
     &:before {
-      background-color: var(--kd-color-background-inverse);
+      background-color: var(--kd-color-background-ui-hollow-default);
     }
 
     &:hover {
-      background-color: var(--kd-color-background-disabled);
+      background-color: var(--kd-color-background-ui-hollow-pressed);
 
       &:before {
-        background-color: var(--kd-color-background-inverse);
+        background-color: var(--kd-color-background-ui-hollow-default);
       }
     }
 
     &:active {
-      background-color: var(--kd-color-background-disabled);
+      background-color: var(--kd-color-background-ui-hollow-pressed);
 
       &:before {
-        background-color: var(--kd-color-background-inverse);
+        background-color: var(--kd-color-background-ui-hollow-default);
       }
     }
   }
@@ -127,15 +137,21 @@ input {
       width: 12px;
       height: 12px;
       margin: 2px 0 0 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--kd-color-background-ui-hollow-default);
     }
 
     &:checked {
       &:before {
         content: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiBmaWxsPSIjMDBBRjQxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxwYXRoIGQ9Ik02LjI0MDA4IDIuMjQwMDFMMy4yMDAwOCA1LjI4MDAxTDEuNDQwMDggMy41MjAwMUwxLjA4MDA4IDMuODgwMDFMMi44NDAwOCA1LjY0MDAxTDMuMjAwMDggNi4wMDAwMUw2LjYwMDA4IDIuNjAwMDFMNi4yNDAwOCAyLjI0MDAxWiIgLz4KPC9zdmc+IA==');
+        background-color: var(--kd-color-background-ui-hollow-default);
+        transform: translateX(16px);
         display: flex;
         align-items: center;
         justify-content: center;
-        transform: translateX(16px);
+        line-height: 0;
       }
     }
 

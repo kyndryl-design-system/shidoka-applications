@@ -16,9 +16,8 @@ input {
   appearance: none;
   display: block;
   flex-grow: 1;
-  // flex-shrink: 1;
   min-width: 48px;
-  border: 1px solid var(--kd-color-border-ui);
+  border: 1px solid var(--kd-color-border-ui-default);
   border-radius: 4px;
   height: 48px;
   padding: 0 16px;
@@ -35,16 +34,17 @@ input {
     padding-left: 48px;
   }
 }
+
 /* Hide native arrow controls */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  /* display: none; <- Crashes Chrome on hover */
   -webkit-appearance: none;
-  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  margin: 0;
 }
 
 input[type='number'] {
-  -moz-appearance: textfield; /* Firefox */
+  -moz-appearance: textfield;
+  /* Firefox */
 }
 
 span[slot='icon'] {
