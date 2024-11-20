@@ -1,12 +1,14 @@
 @use '../../../common/scss/global.scss';
 
 :host {
+  // Base variables
   --skeleton-base-width: 100%;
   --skeleton-base-height: 16px;
   --skeleton-border-radius: 4px;
-  --skeleton-background: var(--kd-color-background-container-soft);
+  --skeleton-background: var(--kd-color-background-ui-soft);
   --skeleton-shimmer-duration: 1.5s;
 
+  // Predefined sizes
   --skeleton-size-small: 32px;
   --skeleton-size-medium: 64px;
   --skeleton-size-large: 128px;
@@ -73,6 +75,15 @@
     height: var(--skeleton-size-large);
   }
 
+  // dark mode shimmer gradient to be implemented later
+  // background-image: linear-gradient(90deg,
+  //   rgba(30, 30, 30, 0) 0%,
+  //   rgba(60, 60, 60, 0.2) 10%,
+  //   rgba(100, 100, 100, 0.5) 50%,
+  //   rgba(60, 60, 60, 0.2) 90%,
+  //   rgba(30, 30, 30, 0) 100%);
+
+
   &::after {
     position: absolute;
     top: 0;
@@ -81,11 +92,11 @@
     left: 0;
     transform: translateX(-100%) translate3d(0, 0, 0);
     background-image: linear-gradient(90deg,
-        color-mix(in srgb, var(--kd-color-background-container-default) 0%, transparent) 0%,
-        color-mix(in srgb, var(--kd-color-background-container-default) 20%, transparent) 10%,
-        color-mix(in srgb, var(--kd-color-background-container-default) 70%, transparent) 50%,
-        color-mix(in srgb, var(--kd-color-background-container-default) 20%, transparent) 90%,
-        color-mix(in srgb, var(--kd-color-background-container-default) 0%, transparent) 100%);
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.2) 10%,
+        rgba(255, 255, 255, 0.7) 50%,
+        rgba(255, 255, 255, 0.2) 90%,
+        rgba(255, 255, 255, 0) 100%);
     animation: shimmer var(--skeleton-shimmer-duration) cubic-bezier(0.4, 0, 0.2, 1) infinite;
     content: '';
     pointer-events: none;
