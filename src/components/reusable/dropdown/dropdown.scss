@@ -114,6 +114,12 @@
   opacity: 0;
   z-index: -1;
 
+  input {
+    &::placeholder {
+      color: var(--kd-color-text-variant-placeholder);
+    }
+  }
+
   &.upwards {
     transform-origin: bottom;
     top: auto;
@@ -173,6 +179,10 @@
   height: 100%;
   margin-left: -16px;
   padding-left: 16px;
+
+  &::placeholder {
+    color: var(--kd-color-text-variant-placeholder);
+  }
 }
 
 .clear {
@@ -199,17 +209,20 @@
   align-items: center;
   justify-content: space-between;
   border: none;
-  background: var(--kd-color-background-ui-strong);
-  color: var(--kd-color-text-inversed);
   width: 48px;
   height: 24px;
   padding: 8px;
-  border-radius: 16px;
+  border-radius: 4px;
   margin-right: 8px;
   cursor: pointer;
 
   span {
     display: flex;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
   }
 
   &[disabled] {
