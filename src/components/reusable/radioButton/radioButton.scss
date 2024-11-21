@@ -49,21 +49,28 @@ input {
   }
 
   &[checked] {
-    border-color: var(--kd-color-border-level-tertiary);
+    border-color: var(--kd-color-background-button-primary-default);
     border-width: 3px;
 
     &::before {
       transform: scale(1);
-      background: var(--kd-color-border-level-tertiary);
+      background: var(--kd-color-background-button-primary-default);
     }
 
     &:hover {
-      border-color: var(--kd-color-border-level-tertiary);
-      background: var(--kd-color-background-ui-hollow-hover);
+      border-color: var(--kd-color-border-ui-hover);
+      background: var(--kd-color-background-ui-hollow-default);
       outline-color: transparent;
+
+      &::before {
+        background: var(--kd-color-background-ui-default-hover);
+      }
     }
 
     &:focus {
+      border-width: 2px;
+      border-color: var(--kd-color-border-ui-default);
+
       &::before {
         background: var(--kd-color-background-button-primary-default);
       }
@@ -79,6 +86,7 @@ input {
   &:hover {
     border-color: var(--kd-color-border-ui-hover);
     background-color: var(--kd-color-background-ui-hollow-hover);
+    outline: transparent;
   }
 
   &:not([disabled]):active {
