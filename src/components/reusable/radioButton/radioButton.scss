@@ -49,30 +49,30 @@ input {
   }
 
   &[checked] {
-    border-color: var(--kd-color-background-button-primary-default);
+    border-color: var(--kd-color-background-button-secondary-state-default);
     border-width: 3px;
 
     &::before {
       transform: scale(1);
-      background: var(--kd-color-background-button-primary-default);
+      background: var(--kd-color-background-button-secondary-state-default);
     }
 
     &:hover {
-      border-color: var(--kd-color-border-ui-hover);
+      border-color: var(--kd-color-background-ui-default-secondary);
       background: var(--kd-color-background-ui-hollow-default);
       outline-color: transparent;
 
       &::before {
-        background: var(--kd-color-background-ui-default-hover);
+        background: var(--kd-color-background-ui-default-secondary);
       }
     }
 
     &:focus {
-      border-width: 2px;
-      border-color: var(--kd-color-border-ui-default);
+      border-color: var(--kd-color-background-button-secondary-state-default) !important;
+      outline-color: var(--kd-color-background-ui-default-focus);
 
       &::before {
-        background: var(--kd-color-background-button-primary-default);
+        background: var(--kd-color-background-button-secondary-state-default) !important;
       }
     }
 
@@ -96,7 +96,7 @@ input {
   }
 
   &:focus {
-    outline-color: var(--kd-color-background-button-primary-default);
+    outline-color: var(--kd-color-border-variants-focus);
     outline-offset: 2px;
 
     &:not([checked]) {
@@ -107,18 +107,18 @@ input {
   }
 
   &:active {
-    background-color: var(--kd-color-background-accent-ui);
+    background-color: var(--kd-color-background-ui-default-pressedi);
+    border-color: var(--kd-color-background-ui-hollow-pressed);
   }
 
   &[invalid] {
-    border-color: var(--kd-color-border-variants-destructive);
+    border-color: var(--kd-color-status-error-dark);
 
     &::before {
       background: var(--kd-color-status-error-dark);
     }
   }
 
-  // Disabled states with increased specificity
   &[disabled] {
     border-color: var(--kd-color-border-ui-disabled);
     outline-color: transparent;
@@ -137,7 +137,6 @@ input {
     }
   }
 
-  // Most specific disabled state selectors
   &[disabled][checked],
   &[disabled]:active,
   &[disabled]:hover {
