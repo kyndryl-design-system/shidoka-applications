@@ -38,8 +38,18 @@
   cursor: default;
   white-space: nowrap;
 
+  background: var(--kd-color-background-container-default);
+
   [searchable] & {
     padding-right: 80px;
+  }
+
+  &:not([disabled]):hover {
+    background-color: var(--kd-color-text-variant-inversed);
+  }
+
+  &:hover {
+    border: 1px solid var(--kd-color-border-ui-default);
   }
 
   span {
@@ -68,7 +78,7 @@
     background-color: transparent;
 
     &:hover {
-      background-color: var(--kd-color-background-accent-subtle);
+      background-color: var(--kd-color-text-variant-inversed);
       border-color: var(--kd-color-border-variants-inverse);
 
       [disabled] & {
@@ -102,7 +112,7 @@
   max-height: 280px;
   overflow-y: auto;
   outline: none;
-  background: var(--kd-color-background-ui-hollow-default);
+  background: var(--kd-color-background-container-default);
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12),
     0px 4px 12px 0px rgba(0, 0, 0, 0.08);
   outline: 2px solid transparent;
