@@ -71,11 +71,19 @@ input {
     }
   }
 
-  &:focus {
+  &:focus:not(:hover) {
     outline-color: var(--kd-color-border-variants-focus);
 
     &:before {
       background-color: var(--kd-color-background-ui-hollow-default);
+    }
+  }
+
+  &:focus:hover {
+    outline-color: var(--kd-color-border-variants-focus);
+
+    &:before {
+      background-color: var(--kd-color-background-ui-hollow-hover);
     }
   }
 
