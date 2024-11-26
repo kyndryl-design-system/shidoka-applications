@@ -1,13 +1,13 @@
-$date-picker-background: var(--kd-color-background-ui-default);
-$caret-color: var(--kd-color-border-inverse);
-$current-month-year: var(--kd-color-text-eyebrow);
+$date-picker-background: var(--kd-color-date-and-time-picker-background-container);
+$caret-color: var(--kd-color-date-and-time-picker-icon-default);
+$current-month-year: var(--kd-color-date-and-time-picker-text-title);
 $range-dates: var(--kd-color-background-inverse-hover);
 $selected-date: var(--kd-color-border-accent-spruce-light);
-$today: var(--kd-color-border-accent-springgreen);
+$today: var(--kd-color-date-and-time-picker-border-focus);
 $de: var(--kd-color-coolgray-10);
-$weekday: var(--kd-color-text-placeholder);
-$calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
-    0px 1px 2px 0px rgba(0, 0, 0, 0.12);
+$weekday: var(--kd-color-date-and-time-picker-text-placeholder);
+$calendar-box-shadow: 0px 0px 6px 0px rgba(61, 60, 60, 0.50);
+$flatpickr-prev-next-month: var(--kd-color-date-and-time-picker-icon-default);
 
 .flatpickr-calendar {
     background: $date-picker-background;
@@ -58,7 +58,7 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
             height: 50%;
             line-height: 50%;
             cursor: pointer;
-            border: 1px solid rgba(72, 72, 72, 0.149);
+            border: 1px solid var(--kd-color-border-variants-light);
             -webkit-box-sizing: border-box;
             box-sizing: border-box;
 
@@ -77,13 +77,13 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
                 &:after {
                     border-left: 4px solid transparent;
                     border-right: 4px solid transparent;
-                    border-bottom: 4px solid var(--kd-color-background-ui-strong);
+                    border-bottom: 4px solid var(--kd-color-date-and-time-picker-icon-default);
                     top: 26%;
                 }
 
                 &:hover {
                     &:after {
-                        border-bottom: 4px solid var(--kd-color-background-ui-hover);
+                        border-bottom: 4px solid var(--kd-color-date-and-time-picker-background-hover);
                     }
                 }
             }
@@ -95,13 +95,13 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
                 &:after {
                     border-left: 4px solid transparent;
                     border-right: 4px solid transparent;
-                    border-top: 4px solid var(--kd-color-background-ui-strong);
+                    border-top: 4px solid var(--kd-color-date-and-time-picker-icon-default);
                     top: 40%;
                 }
 
                 &:hover {
                     &:after {
-                        border-top: 4px solid var(--kd-color-background-ui-hover);
+                        border-top: 4px solid var(--kd-color-date-and-time-picker-background-hover);
                     }
                 }
             }
@@ -114,12 +114,12 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
                 border: none;
 
                 &:after {
-                    border-bottom: 4px solid var(--kd-color-background-ui-strong);
+                    border-bottom: 4px solid var(--kd-color-date-and-time-picker-icon-default);
                 }
 
                 &:hover {
                     &:after {
-                        border-bottom: 4px solid var(--kd-color-background-ui-hover);
+                        border-bottom: 4px solid var(--kd-color-date-and-time-picker-background-hover);
                     }
                 }
             }
@@ -128,12 +128,12 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
                 border: none;
 
                 &:after {
-                    border-top: 4px solid var(--kd-color-background-ui-strong);
+                    border-top: 4px solid var(--kd-color-date-and-time-picker-icon-default);
                 }
 
                 &:hover {
                     &:after {
-                        border-top: 4px solid var(--kd-color-background-ui-hover);
+                        border-top: 4px solid var(--kd-color-date-and-time-picker-background-hover);
                     }
                 }
             }
@@ -145,7 +145,7 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
 
         .flatpickr-time {
             border: 1px solid $de;
-            background: $date-picker-background;
+            background: var(--kd-color-date-and-time-picker-background-container-2);
             position: relative;
             z-index: 2;
             margin: 10px auto 4px;
@@ -282,8 +282,8 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
     border-radius: 5px;
     margin-bottom: 10px;
     background: $date-picker-background;
-    color: var(--kd-color-text-inversed);
-    fill: var(--kd-color-text-inversed);
+    color: var(--kd-color-date-and-time-picker-text-title);
+    fill: var(--kd-color-date-and-time-picker-text-title);
     height: 34px;
     line-height: 1;
     text-align: center;
@@ -312,8 +312,8 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
     height: 34px;
     padding: 10px;
     z-index: 3;
-    color: var(--kd-color-coolgray-80);
-    fill: var(--kd-color-coolgray-80);
+    color: $flatpickr-prev-next-month;
+    fill: $flatpickr-prev-next-month;
 }
 
 .flatpickr-months .flatpickr-prev-month.flatpickr-disabled,
@@ -683,7 +683,7 @@ span.flatpickr-weekday {
     border-radius: 150px;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    color: var(--kd-color-text-secondary);
+    color: var(--kd-color-date-and-time-picker-text-default);
     cursor: pointer;
     font-weight: 400;
     width: 14.2857143%;
@@ -739,7 +739,7 @@ span.flatpickr-weekday {
 .flatpickr-day.today:focus {
     border-color: $selected-date;
     background: transparent;
-    color: var(--kd-color-text-primary);
+    color: var(--kd-color-text-level-primary);
 }
 
 .flatpickr-day.selected,
@@ -762,7 +762,7 @@ span.flatpickr-weekday {
     background: $selected-date;
     -webkit-box-shadow: none;
     box-shadow: none;
-    color: var(--kd-color-text-inversed);
+    color: var(--kd-color-text-variant-inversed);
     border-color: $selected-date;
 }
 
@@ -770,7 +770,7 @@ span.flatpickr-weekday {
     background: $range-dates;
     -webkit-box-shadow: none;
     box-shadow: none;
-    color: var(--kd-color-text-primary);
+    color: var(--kd-color-text-level-primary);
     border-color: $range-dates;
 }
 
@@ -904,30 +904,6 @@ span.flatpickr-weekday {
     float: left;
 }
 
-// .flatpickr-time .numInputWrapper span.arrowUp:after {
-//     border-bottom-color: var(--kd-color-border-secondary);
-// }
-
-// .flatpickr-time .numInputWrapper span.arrowDown:after {
-//     border-top-color: var(--kd-color-border-secondary);
-// }
-
-// .flatpickr-calendar.arrowBottom:before {
-//     border-top-color: $date-picker-background;
-// }
-
-// .flatpickr-calendar.arrowBottom:after {
-//     border-top-color: $date-picker-background;
-// }
-
-// .flatpickr-calendar.arrowTop:before {
-//     border-bottom-color: $date-picker-background;
-// }
-
-// .flatpickr-calendar.arrowTop:after {
-//     border-bottom-color: $date-picker-background;
-// }
-
 .flatpickr-time.hasSeconds .numInputWrapper {
     width: 26%;
 }
@@ -947,7 +923,7 @@ span.flatpickr-weekday {
     padding: 0;
     height: inherit;
     line-height: inherit;
-    color: var(--kd-color-text-secondary);
+    color: var(--kd-color-date-and-time-picker-text-default);
     font-size: 14px;
     position: relative;
     -webkit-box-sizing: border-box;
@@ -980,7 +956,7 @@ span.flatpickr-weekday {
     height: inherit;
     float: left;
     line-height: inherit;
-    color: var(--kd-color-text-secondary);
+    color: var(--kd-color-date-and-time-picker-text-default);
     font-weight: bold;
     width: 2%;
     -webkit-user-select: none;
