@@ -18,7 +18,7 @@ export class Tooltip extends LitElement {
 
   /** Assistive text for anchor button. */
   @property({ type: String })
-  assistiveText = 'Toggle Tooltip';
+  assistiveText = 'Tooltip';
 
   /** Tooltip open state.
    * @internal
