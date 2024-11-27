@@ -491,6 +491,7 @@ export const Skeleton = {
     fixedLayout: false,
     tableTitle: '',
     tableSubtitle: '',
+    showGlobalFilter: true,
   },
   render: (args) => {
     return html`<kyn-table-skeleton
@@ -503,6 +504,7 @@ export const Skeleton = {
       ?hideTableTitles=${args.hideTableTitles}
       tableTitle=${args.tableTitle}
       tableSubtitle=${args.tableSubtitle}
+      ?showGlobalFilter=${args.showGlobalFilter}
     ></kyn-table-skeleton>`;
   },
   parameters: {

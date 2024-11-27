@@ -6,6 +6,7 @@ import '../pagination/pagination.skeleton';
 import '.';
 
 import styles from './table.scss';
+import '../globalFilter/globalFilter';
 
 /**
  * `kyn-table-skeleton` Web Component.
@@ -90,6 +91,10 @@ export class TableSkeleton extends LitElement {
   @property({ type: String })
   tableSubtitle = '';
 
+  /** Shows/hides golbal filter skeleton. */
+  @property({ type: Boolean })
+  showGlobalFilter = false;
+
   override render() {
     return html`
       <div>
@@ -103,16 +108,25 @@ export class TableSkeleton extends LitElement {
                 : html`<div class="skeleton-title-wrapper">
                     <kyn-skeleton
                       class="skeleton-title"
-                      width="80px"
-                      height="16px"
+                      width="122px"
                     ></kyn-skeleton>
                     <kyn-skeleton
                       class="skeleton-subtitle"
-                      width="120px"
-                      height="16px"
+                      width="61px"
                     ></kyn-skeleton>
                   </div>`}
             `
+          : null}
+        ${this.showGlobalFilter
+          ? html` <kyn-global-filter>
+              <div style="display: flex; gap: 16px;">
+                <kyn-skeleton width="122px" shade="dark"></kyn-skeleton>
+                <kyn-skeleton width="122px" shade="dark"></kyn-skeleton>
+              </div>
+              <div slot="actions">
+                <kyn-skeleton width="122px" shade="dark"></kyn-skeleton>
+              </div>
+            </kyn-global-filter>`
           : null}
         <kyn-table-container>
           <kyn-table
@@ -124,7 +138,7 @@ export class TableSkeleton extends LitElement {
           >
             <kyn-thead role="rowgroup">
               <kyn-tr role="row" disabled>
-                ${Array(7)
+                ${Array(5)
                   .fill(null)
                   .map(
                     (_, index) =>
@@ -144,7 +158,7 @@ export class TableSkeleton extends LitElement {
                 .map(
                   (_) => html`
                     <kyn-tr role="row" disabled>
-                      ${Array(7)
+                      ${Array(5)
                         .fill(null)
                         .map(
                           (_) =>
@@ -170,10 +184,10 @@ export class TableSkeleton extends LitElement {
   }
 
   private renderSkeletonCell(type: 'thead' | 'tbody') {
-    const height = type === 'thead' ? '14px' : '16px';
-    const width = '120px';
+    const width = type === 'thead' ? '192px' : '114px';
+    const shade = type === 'thead' ? 'dark' : '';
     return html`
-      <kyn-skeleton width=${width} height=${height}></kyn-skeleton>
+      <kyn-skeleton width=${width} height="16px" shade=${shade}></kyn-skeleton>
     `;
   }
 }
