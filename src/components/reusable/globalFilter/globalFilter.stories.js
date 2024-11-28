@@ -3,6 +3,7 @@ import { html } from 'lit';
 import './globalFilter.sample';
 import './globalFilter.chart.sample';
 import './globalFilter.table.sample';
+import '../loaders/skeleton';
 
 export default {
   title: 'Patterns/Global Filter',
@@ -106,6 +107,22 @@ export const WithTable = {
       >
         See the full example component code here.
       </a>
+    `;
+  },
+};
+
+export const Skeleton = {
+  render: () => {
+    return html`
+      <kyn-global-filter>
+        <div style="display: flex; gap: 16px;">
+          <kyn-skeleton width="122px" shade="dark"></kyn-skeleton>
+          <kyn-skeleton width="122px" shade="dark"></kyn-skeleton>
+        </div>
+        <div slot="actions">
+          <kyn-skeleton width="122px" shade="dark"></kyn-skeleton>
+        </div>
+      </kyn-global-filter>
     `;
   },
 };
