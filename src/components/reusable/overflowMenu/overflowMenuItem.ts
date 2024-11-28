@@ -1,7 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import SCSS from './overflowMenuItem.scss';
 
 /**
@@ -24,10 +23,6 @@ export class OverflowMenuItem extends LitElement {
   /** Item disabled state. */
   @property({ type: Boolean })
   disabled = false;
-
-  /** ARIA label for the button for accessibility. */
-  @property({ type: String })
-  description = '';
 
   /**
    * Has the menu items in the current oveflow menu.
@@ -72,7 +67,6 @@ export class OverflowMenuItem extends LitElement {
           ?disabled=${this.disabled}
           @click=${(e: Event) => this.handleClick(e)}
           @keydown=${(e: Event) => this.handleKeyDown(e)}
-          aria-label=${ifDefined(this.description)}
           title=${title}
         >
           <slot></slot>
@@ -85,7 +79,6 @@ export class OverflowMenuItem extends LitElement {
           ?disabled=${this.disabled}
           @click=${(e: Event) => this.handleClick(e)}
           @keydown=${(e: Event) => this.handleKeyDown(e)}
-          aria-label=${ifDefined(this.description)}
           title=${title}
         >
           <slot></slot>

@@ -35,6 +35,12 @@ export const OverflowMenu = {
   args: args,
   render: (args) => {
     return html`
+      <style>
+        .sr-only {
+          position: absolute;
+          clip: rect(0, 0, 0, 0);
+        }
+      </style>
       <kyn-overflow-menu
         ?open=${args.open}
         ?anchorRight=${args.anchorRight}
@@ -62,13 +68,13 @@ export const OverflowMenu = {
             action(e.type)(e);
           }}
         >
-          Option 4</kyn-overflow-menu-item
-        >
+          Option 4
+        </kyn-overflow-menu-item>
         <kyn-overflow-menu-item
           @on-click=${(e) => {
             action(e.type)(e);
           }}
-          >Longer Text Option will show as tooltip</kyn-overflow-menu-item
+          >Longer Text Option example</kyn-overflow-menu-item
         >
         <kyn-overflow-menu-item
           destructive
@@ -76,8 +82,9 @@ export const OverflowMenu = {
           @on-click=${(e) => {
             action(e.type)(e);
           }}
-          >Option 5</kyn-overflow-menu-item
-        >
+          >Option 5
+          <span class="sr-only">Destructive Action</span>
+        </kyn-overflow-menu-item>
       </kyn-overflow-menu>
     `;
   },
