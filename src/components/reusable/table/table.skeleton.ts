@@ -6,7 +6,7 @@ import '../pagination/pagination.skeleton';
 import '.';
 
 import styles from './table.scss';
-import '../globalFilter/globalFilter';
+import '../globalFilter/globalFilter.skeleton.sample';
 
 /**
  * `kyn-table-skeleton` Web Component.
@@ -118,15 +118,7 @@ export class TableSkeleton extends LitElement {
             `
           : null}
         ${this.showGlobalFilter
-          ? html` <kyn-global-filter>
-              <div style="display: flex; gap: 16px;">
-                <kyn-skeleton width="122px" shade="dark"></kyn-skeleton>
-                <kyn-skeleton width="122px" shade="dark"></kyn-skeleton>
-              </div>
-              <div slot="actions">
-                <kyn-skeleton width="122px" shade="dark"></kyn-skeleton>
-              </div>
-            </kyn-global-filter>`
+          ? html` <sample-filter-skeleton-component></sample-filter-skeleton-component>`
           : null}
         <kyn-table-container>
           <kyn-table

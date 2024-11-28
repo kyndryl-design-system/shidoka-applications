@@ -4,6 +4,7 @@ import './globalFilter.sample';
 import './globalFilter.chart.sample';
 import './globalFilter.table.sample';
 import '../loaders/skeleton';
+import './globalFilter.skeleton.sample';
 
 export default {
   title: 'Patterns/Global Filter',
@@ -114,15 +115,20 @@ export const WithTable = {
 export const Skeleton = {
   render: () => {
     return html`
-      <kyn-global-filter>
-        <div style="display: flex; gap: 16px;">
-          <kyn-skeleton width="122px" shade="dark"></kyn-skeleton>
-          <kyn-skeleton width="122px" shade="dark"></kyn-skeleton>
-        </div>
-        <div slot="actions">
-          <kyn-skeleton width="122px" shade="dark"></kyn-skeleton>
-        </div>
-      </kyn-global-filter>
+      <sample-filter-skeleton-component></sample-filter-skeleton-component>
+      <br />
+
+      <p>This example shows a Global Filter pattern with skeleton</p>
+
+      <br />
+
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/blob/main/src/components/reusable/globalFilter/globalFilter.skeleton.sample.ts"
+        target="_blank"
+        rel="noopener"
+      >
+        See the full example component code here.
+      </a>
     `;
   },
 };
