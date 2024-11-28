@@ -130,7 +130,7 @@ export class TableSkeleton extends LitElement {
           >
             <kyn-thead role="rowgroup">
               <kyn-tr role="row" disabled>
-                ${Array(5)
+                ${Array(this.rows)
                   .fill(null)
                   .map(
                     (_, index) =>
@@ -150,7 +150,7 @@ export class TableSkeleton extends LitElement {
                 .map(
                   (_) => html`
                     <kyn-tr role="row" disabled>
-                      ${Array(5)
+                      ${Array(this.rows)
                         .fill(null)
                         .map(
                           (_) =>
