@@ -2,6 +2,7 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import SCSS from './overflowMenuItem.scss';
+import '../tooltip';
 
 /**
  * Overflow Menu.
@@ -23,6 +24,10 @@ export class OverflowMenuItem extends LitElement {
   /** Item disabled state. */
   @property({ type: Boolean })
   disabled = false;
+
+  /** Item description text for screen reader's */
+  @property({ type: String })
+  description = '';
 
   /**
    * Has the menu items in the current oveflow menu.
@@ -57,7 +62,7 @@ export class OverflowMenuItem extends LitElement {
       destructive: this.destructive,
     };
 
-    const title = this.isTruncated ? this.tooltipText : '';
+    const itemText = this.isTruncated ? this.tooltipText : '';
 
     if (this.href !== '') {
       return html`
@@ -67,9 +72,12 @@ export class OverflowMenuItem extends LitElement {
           ?disabled=${this.disabled}
           @click=${(e: Event) => this.handleClick(e)}
           @keydown=${(e: Event) => this.handleKeyDown(e)}
-          title=${title}
+          title=${itemText}
         >
           <slot></slot>
+          ${this.destructive
+            ? html`<span class="sr-only">${this.description}</span>`
+            : null}
         </a>
       `;
     } else {
@@ -79,9 +87,12 @@ export class OverflowMenuItem extends LitElement {
           ?disabled=${this.disabled}
           @click=${(e: Event) => this.handleClick(e)}
           @keydown=${(e: Event) => this.handleKeyDown(e)}
-          title=${title}
+          title=${itemText}
         >
           <slot></slot>
+          ${this.destructive
+            ? html`<span class="sr-only">${this.description}</span>`
+            : null}
         </button>
       `;
     }

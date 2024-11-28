@@ -1,7 +1,6 @@
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
-// import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'Components/Overflow Menu',
@@ -29,18 +28,13 @@ const args = {
   verticalDots: false,
   fixed: false,
   assistiveText: 'Toggle Menu',
+  description: 'Destructive Action',
 };
 
 export const OverflowMenu = {
   args: args,
   render: (args) => {
     return html`
-      <style>
-        .sr-only {
-          position: absolute;
-          clip: rect(0, 0, 0, 0);
-        }
-      </style>
       <kyn-overflow-menu
         ?open=${args.open}
         ?anchorRight=${args.anchorRight}
@@ -74,16 +68,15 @@ export const OverflowMenu = {
           @on-click=${(e) => {
             action(e.type)(e);
           }}
-          >Longer Text Option example</kyn-overflow-menu-item
-        >
+          >Longer Text Option example
+        </kyn-overflow-menu-item>
         <kyn-overflow-menu-item
           destructive
-          description="Button description"
+          description=${args.description}
           @on-click=${(e) => {
             action(e.type)(e);
           }}
           >Option 5
-          <span class="sr-only">Destructive Action</span>
         </kyn-overflow-menu-item>
       </kyn-overflow-menu>
     `;
