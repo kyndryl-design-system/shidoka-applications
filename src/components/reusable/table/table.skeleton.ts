@@ -63,10 +63,6 @@ export class TableSkeleton extends LitElement {
   @property({ type: Boolean })
   showPagination = false;
 
-  /** Shows/hides checkbox column. */
-  @property({ type: Boolean })
-  checkboxSelection = false;
-
   /** Sets dense mode value. */
   @property({ type: Boolean })
   dense = false;
@@ -126,11 +122,10 @@ export class TableSkeleton extends LitElement {
             ?dense=${this.dense}
             ?striped=${this.striped}
             ?fixedLayout=${this.fixedLayout}
-            ?checkboxSelection=${this.checkboxSelection}
           >
             <kyn-thead role="rowgroup">
               <kyn-tr role="row" disabled>
-                ${Array(this.rows)
+                ${Array(5)
                   .fill(null)
                   .map(
                     (_, index) =>
@@ -150,7 +145,7 @@ export class TableSkeleton extends LitElement {
                 .map(
                   (_) => html`
                     <kyn-tr role="row" disabled>
-                      ${Array(this.rows)
+                      ${Array(5)
                         .fill(null)
                         .map(
                           (_) =>

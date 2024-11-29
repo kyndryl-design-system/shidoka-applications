@@ -484,7 +484,6 @@ export const Skeleton = {
   args: {
     rows: 5,
     showPagination: true,
-    checkboxSelection: false,
     hideTableTitles: false,
     striped: false,
     dense: false,
@@ -497,7 +496,6 @@ export const Skeleton = {
     return html`<kyn-table-skeleton
       .rows=${args.rows}
       ?showPagination=${args.showPagination}
-      ?checkboxSelection=${args.checkboxSelection}
       ?dense=${args.dense}
       ?striped=${args.striped}
       ?fixedLayout=${args.fixedLayout}
