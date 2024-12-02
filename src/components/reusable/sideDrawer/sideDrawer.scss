@@ -9,8 +9,8 @@ dialog {
   margin: 0;
   padding: 0;
   color: inherit;
-  background: var(--kd-color-background-ui-default);
-  border: 1px solid var(--kd-color-border-light);
+  background: var(--kd-color-background-container-default);
+  border: none;
   box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.12);
   top: 0;
   right: 0;
@@ -51,15 +51,6 @@ button {
   border-radius: 4px;
   outline: 2px solid transparent;
   transition: outline-color 150ms ease-out, color 150ms ease-out;
-  &:focus {
-    outline-color: var(--kd-color-border-focus);
-  }
-  &:hover {
-    color: var(--kd-color-text-link-hover);
-  }
-  &:active {
-    color: var(--kd-color-text-pressed);
-  }
 }
 
 .anchor {
@@ -71,7 +62,6 @@ header {
   position: sticky;
   top: 0;
   z-index: 1;
-  background-color: var(--kd-color-background-ui-default);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -86,9 +76,11 @@ form {
 
 .body {
   margin: 0 32px;
-  padding-right: 24px;
+  padding: 32px;
   flex-grow: 1;
   overflow-y: auto;
+  color: var(--kd-color-text-level-secondary);
+  background-color: var(--kd-color-background-accent-subtle);
 }
 
 .header-label-title {
@@ -99,7 +91,7 @@ form {
   position: absolute;
   top: 32px;
   right: 32px;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-icon-secondary);
 
   span {
     display: flex;
@@ -108,11 +100,12 @@ form {
 
 .label {
   @include typography.type-ui-02;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-text-level-secondary);
 }
 
 h1 {
   @include typography.type-body-01;
+  color: var(--kd-color-text-level-primary);
   margin: 0;
   order: 1;
 }
@@ -124,7 +117,7 @@ h1 {
   margin-top: 32px;
   background-color: var(--kd-color-background-accent-subtle);
   padding: 24px 32px 24px 32px;
-  border-top: 1px solid var(--kd-color-border-light);
+  border-top: 1px solid var(--kd-color-border-variants-light);
 }
 
 .actions {
@@ -179,10 +172,12 @@ h1 {
     }
   }
 }
+
 @keyframes dialog-in {
   0% {
     transform: translateX(100%);
   }
+
   100% {
     transform: none;
   }
