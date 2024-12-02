@@ -2,7 +2,7 @@ import { html, LitElement, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
-import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+
 import {
   langsArray,
   injectFlatpickrStyles,
@@ -23,8 +23,10 @@ import { BaseOptions } from 'flatpickr/dist/types/options';
 import TimepickerStyles from './timepicker.scss';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
 
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
-import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/time.svg';
+import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/time.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/close-simple.svg';
 
 type SupportedLocale = (typeof langsArray)[number];
@@ -169,7 +171,7 @@ export class TimePicker extends FormMixin(LitElement) {
       ? `${this.name}-${Math.random().toString(36).slice(2, 11)}`
       : `time-picker-${Math.random().toString(36).slice(2, 11)}`;
     const descriptionId = this.name ?? '';
-    const placeholder = 'hh:mm';
+    const placeholder = '—— : ——';
 
     return html`
       <div class=${classMap(this.getTimepickerClasses())}>
@@ -220,7 +222,7 @@ export class TimePicker extends FormMixin(LitElement) {
                   title=${this._textStrings.clearAll}
                   @click=${this._handleClear}
                 >
-                  <span  >${unsafeSVG(clearIcon)}</span>
+                  <span>${unsafeSVG(clearIcon)}</span>
                 </button>
               `
             : html`<span class="input-icon">${unsafeSVG(clockIcon)}</span>`}

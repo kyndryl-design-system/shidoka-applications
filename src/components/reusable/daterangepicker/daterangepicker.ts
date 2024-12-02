@@ -26,7 +26,7 @@ import DateRangePickerStyles from './daterangepicker.scss';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
-import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
+import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/calendar.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/close-simple.svg';
 
 type SupportedLocale = (typeof langsArray)[number];
@@ -236,7 +236,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
                   title=${this._textStrings.clearAll}
                   @click=${this._handleClear}
                 >
-                  <span  >${unsafeSVG(clearIcon)}</span>
+                  <span>${unsafeSVG(clearIcon)}</span>
                 </button>
               `
             : html`<span class="input-icon">${unsafeSVG(calendarIcon)}</span>`}
