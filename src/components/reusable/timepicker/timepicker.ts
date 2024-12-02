@@ -27,7 +27,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/time.svg';
-import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/close-simple.svg';
+import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
 
 type SupportedLocale = (typeof langsArray)[number];
 
