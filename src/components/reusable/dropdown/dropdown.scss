@@ -15,10 +15,10 @@
 }
 
 .required {
-  color: var(--kd-color-text-error);
+  color: var(--kd-color-text-variant-destructive);
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
   }
 }
 
@@ -31,15 +31,26 @@
   align-items: center;
   -webkit-appearance: none;
   appearance: none;
-  border: 1px solid var(--kd-color-border-ui);
+  border: 1px solid var(--kd-color-border-ui-default);
   border-radius: 4px;
   height: 48px;
   padding: 0 48px 0 16px;
   cursor: default;
+  font-weight: 400;
   white-space: nowrap;
+
+  background: var(--kd-color-background-container-default);
 
   [searchable] & {
     padding-right: 80px;
+  }
+
+  &:not([disabled]):hover {
+    background-color: var(--kd-color-text-variant-inversed);
+  }
+
+  &:hover {
+    border: 1px solid var(--kd-color-border-ui-default);
   }
 
   span {
@@ -60,7 +71,7 @@
   }
 
   .dropdown:focus-within & {
-    outline-color: var(--kd-color-border-focus);
+    outline-color: var(--kd-color-border-variants-focus);
   }
 
   &.inline {
@@ -68,8 +79,8 @@
     background-color: transparent;
 
     &:hover {
-      background-color: var(--kd-color-background-inverse);
-      border-color: var(--kd-color-border-ui);
+      background-color: var(--kd-color-text-variant-inversed);
+      border-color: var(--kd-color-border-variants-inverse);
 
       [disabled] & {
         border-color: transparent;
@@ -102,7 +113,7 @@
   max-height: 280px;
   overflow-y: auto;
   outline: none;
-  background: var(--kd-color-background-inverse);
+  background: var(--kd-color-background-forms-search-bg);
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12),
     0px 4px 12px 0px rgba(0, 0, 0, 0.08);
   outline: 2px solid transparent;
@@ -113,6 +124,12 @@
   transform-origin: top;
   opacity: 0;
   z-index: -1;
+
+  input {
+    &::placeholder {
+      color: var(--kd-color-text-variant-placeholder);
+    }
+  }
 
   &.upwards {
     transform-origin: bottom;
@@ -128,7 +145,7 @@
   }
 
   [searchable] &:focus {
-    outline-color: var(--kd-color-border-focus);
+    outline-color: var(--kd-color-border-variants-focus);
   }
 }
 
@@ -173,6 +190,10 @@
   height: 100%;
   margin-left: -16px;
   padding-left: 16px;
+
+  &::placeholder {
+    color: var(--kd-color-text-variant-placeholder);
+  }
 }
 
 .clear {
@@ -186,7 +207,7 @@
   transform: translateY(-50%);
   cursor: pointer;
   display: block;
-  color: var(--kd-color-text-primary);
+  color: var(--kd-color-text-icon-primary);
 
   span {
     display: flex;
@@ -199,17 +220,20 @@
   align-items: center;
   justify-content: space-between;
   border: none;
-  background: var(--kd-color-background-ui-strong);
-  color: var(--kd-color-text-inversed);
   width: 48px;
   height: 24px;
   padding: 8px;
-  border-radius: 16px;
+  border-radius: 4px;
   margin-right: 8px;
   cursor: pointer;
 
   span {
     display: flex;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
   }
 
   &[disabled] {

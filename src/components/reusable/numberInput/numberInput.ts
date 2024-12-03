@@ -7,6 +7,7 @@ import Styles from './numberInput.scss';
 import { FormMixin } from '../../../common/mixins/form-input';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import { deepmerge } from 'deepmerge-ts';
+
 import addIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
 import subtractIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-simple.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
@@ -160,10 +161,8 @@ export class NumberInput extends FormMixin(LitElement) {
         ${this._isInvalid
           ? html`
               <div id="error" class="error">
-                <span
-                  title=${this._textStrings.error}
-                  aria-label=${this._textStrings.error}
-                  >${errorIcon}</span
+                <span role="img" aria-label=${this._textStrings.error}
+                  >${unsafeSVG(errorIcon)}</span
                 >
                 ${this.invalidText || this._internalValidationMsg}
               </div>
