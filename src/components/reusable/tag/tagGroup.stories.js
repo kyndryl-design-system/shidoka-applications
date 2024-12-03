@@ -47,10 +47,11 @@ export const TagGroup = {
     filter: false,
     limitTags: false,
     tagSize: 'md',
-    textStrings: {
+    textStrings:{
       showAll: 'Show all',
       showLess: 'Show less',
     },
+    tagColor:"failed"
   },
   render: (args) => {
     return html`
@@ -85,7 +86,6 @@ export const Skeleton = {
     },
     tagSkeletonLength: 10,
     shade: 'light',
-    tagColor: 'spruce',
   },
   render: (args) => {
     return html`
@@ -97,10 +97,7 @@ export const Skeleton = {
       >
         ${Array.from(
           { length: args.tagSkeletonLength },
-          () => html`<kyn-tag-skeleton
-            shade=${args.shade}
-            tagColor=${args.tagColor}
-          ></kyn-tag-skeleton>`
+          () => html`<kyn-tag-skeleton shade=${args.shade}></kyn-tag-skeleton>`
         )}
       </kyn-tag-group>
     `;

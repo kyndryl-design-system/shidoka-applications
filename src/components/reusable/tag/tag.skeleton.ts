@@ -11,21 +11,14 @@ export class TagSkeleton extends LitElement {
   static override styles = [
     TagStyles,
     css`
-      .tag-small kyn-skeleton {
-        height: 100%;
-        width: 100%;
-        padding: 6px 4px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-width: 50px;
-        position: relative;
+      .tag-small,
+      .tag-medium {
+        padding: 0px;
       }
-
+      .tag-small kyn-skeleton,
       .tag-medium kyn-skeleton {
         height: 100%;
         width: 100%;
-        padding: 6px 4px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -39,7 +32,7 @@ export class TagSkeleton extends LitElement {
    * Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.
    */
   @property({ type: String })
-  tagSize = 'md';
+  tagSize = 'sm';
 
   /**
    * Shade `'light'` (default) and `'dark'` for tag.
@@ -47,30 +40,24 @@ export class TagSkeleton extends LitElement {
   @property({ type: String })
   shade = 'light';
 
-  /**
-   * Color variants. Default spruce.
-   */
-  @property({ type: String })
-  tagColor = 'spruce';
-
   override render() {
-    const baseColorClass = `tag-${this.tagColor}`;
     const shadeClass = this.shade === 'dark' ? '-dark' : '';
     const sizeClass = this.tagSize === 'md' ? 'tag-medium' : 'tag-small';
 
     const tagClasses = {
       tags: true,
-      [`${baseColorClass}${shadeClass}`]: true,
+      [`${shadeClass}`]: true,
       [`${sizeClass}`]: true,
     };
 
     return html`
-      <div
-        class="${classMap(tagClasses)}"
-        tagColor=${this.tagColor}
-        shade=${this.shade}
-      >
-        <kyn-skeleton shape="rectangle" inline></kyn-skeleton>
+      <div class="${classMap(tagClasses)}" shade=${this.shade}>
+        <kyn-skeleton
+          shape="rectangle"
+          height="100%"
+          width="60px"
+          inline
+        ></kyn-skeleton>
       </div>
     `;
   }
