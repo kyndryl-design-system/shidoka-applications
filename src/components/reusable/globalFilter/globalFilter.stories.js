@@ -3,6 +3,8 @@ import { html } from 'lit';
 import './globalFilter.sample';
 import './globalFilter.chart.sample';
 import './globalFilter.table.sample';
+import '../loaders/skeleton';
+import './globalFilter.skeleton.sample';
 
 export default {
   title: 'Patterns/Global Filter',
@@ -101,6 +103,27 @@ export const WithTable = {
 
       <a
         href="https://github.com/kyndryl-design-system/shidoka-applications/blob/main/src/components/reusable/globalFilter/globalFilter.table.sample.ts"
+        target="_blank"
+        rel="noopener"
+      >
+        See the full example component code here.
+      </a>
+    `;
+  },
+};
+
+export const Skeleton = {
+  render: () => {
+    return html`
+      <sample-filter-skeleton-component></sample-filter-skeleton-component>
+      <br />
+
+      <p>This example shows a Global Filter pattern with skeleton</p>
+
+      <br />
+
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/blob/main/src/components/reusable/globalFilter/globalFilter.skeleton.sample.ts"
         target="_blank"
         rel="noopener"
       >
