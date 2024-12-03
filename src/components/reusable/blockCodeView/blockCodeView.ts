@@ -18,8 +18,7 @@ import chevronDown from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 
 import BlockCodeViewStyles from './blockCodeView.scss';
-import ShidokaLightTheme from './shidokaLightSyntaxStyles.scss';
-import ShidokaDarkTheme from './shidokaDarkSyntaxStyles.scss';
+import ShidokaSyntaxTheme from '../../../common/scss/shidoka-syntax-styles.scss';
 
 interface LanguageMatch {
   language: string;
@@ -47,11 +46,7 @@ const LANGUAGE_SPECIFIC_TOKENS: Record<string, string[]> = {
  */
 @customElement('kyn-block-code-view')
 export class BlockCodeView extends LitElement {
-  static override styles = [
-    BlockCodeViewStyles,
-    ShidokaLightTheme,
-    ShidokaDarkTheme,
-  ];
+  static override styles = [BlockCodeViewStyles, ShidokaSyntaxTheme];
 
   /** Sets background and text theming. */
   @property({ type: String })

@@ -1,0 +1,256 @@
+/**
+ * Shidoka Syntax Theme -- syntax highlighting for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Hsu Ka An
+ */
+
+.shidoka-dark-syntax-theme,
+.shidoka-light-syntax-theme {
+    background: light-dark(#F9F9F9, #272727);
+
+    code[class*="language-"],
+    pre[class*="language-"] {
+        background: light-dark(#F9F9F9, #272727);
+        color: light-dark(#3D3C3C, #FFFFFF);
+        font-family: var(--kd-font-family-code-view);
+
+        -moz-tab-size: 4;
+        -o-tab-size: 4;
+        tab-size: 4;
+
+        -webkit-hyphens: none;
+        -moz-hyphens: none;
+        -ms-hyphens: none;
+        hyphens: none;
+    }
+
+    pre[class*="language-"]::selection,
+    pre[class*="language-"] ::selection,
+    code[class*="language-"]::selection,
+    code[class*="language-"] ::selection {
+        text-shadow: none;
+        background: inherit;
+    }
+
+    pre[class*="language-"]::-moz-selection,
+    pre[class*="language-"] ::-moz-selection,
+    code[class*="language-"]::-moz-selection,
+    code[class*="language-"] ::-moz-selection {
+        text-shadow: none;
+        background: inherit;
+    }
+
+    .code-view__copy-button .copy-text,
+    .code-view__copy-button .copy-icon,
+    .code-view__expand-button .expand-icon {
+        fill: light-dark(#3D3C3C, #FFFFFF);
+        color: light-dark(#3D3C3C, #FFFFFF);
+    }
+
+    .code-view__copy-button:disabled:hover .copy-text,
+    .code-view__copy-button:disabled:hover .copy-icon {
+        fill: light-dark(#3D3C3C, #FFFFFF);
+        color: light-dark(#3D3C3C, #FFFFFF);
+    }
+
+    @media print {
+
+        code[class*="language-"],
+        pre[class*="language-"] {
+            text-shadow: none;
+        }
+    }
+
+    .token {
+        &.comment {
+            color: var(--kd-color-code-view-comment);
+        }
+
+        &.prolog {
+            color: var(--kd-color-code-view-prolog);
+        }
+
+        &.doctype {
+            color: var(--kd-color-code-view-doctype);
+        }
+
+        &.cdata {
+            color: var(--kd-color-code-view-cdata);
+        }
+
+        &.punctuation {
+            color: var(--kd-color-code-view-punctuation);
+        }
+
+        &.namespace {
+            opacity: 0.7;
+        }
+
+        &.boolean {
+            color: var(--kd-color-code-view-boolean);
+        }
+
+        &.constant {
+            color: var(--kd-color-code-view-constant);
+        }
+
+        &.symbol {
+            color: var(--kd-color-code-view-symbol);
+        }
+
+        &.tag {
+            color: var(--kd-color-code-view-tag);
+        }
+
+        &.deleted {
+            color: var(--kd-color-code-view-deleted);
+        }
+
+        &.number {
+            color: var(--kd-color-code-view-number);
+        }
+
+        &.property {
+            color: var(--kd-color-code-view-property);
+        }
+
+        &.string,
+        .language-css &.string,
+        .style &.string {
+            color: var(--kd-color-code-view-string);
+        }
+
+        &.builtin {
+            color: var(--kd-color-code-view-builtin);
+        }
+
+        &.selector {
+            color: var(--kd-color-code-view-selector);
+        }
+
+        &.inserted {
+            color: var(--kd-color-code-view-inserted);
+        }
+
+        &.entity {
+            color: var(--kd-color-code-view-entity);
+            cursor: help;
+        }
+
+        &.attr-name {
+            color: var(--kd-color-code-viewattr-name);
+        }
+
+        &.char {
+            color: var(--kd-color-code-view-char);
+        }
+
+        &.url {
+            color: var(--kd-color-code-view-url);
+        }
+
+        &.operator {
+            color: var(--kd-color-code-view-operator);
+        }
+
+        &.atrule {
+            color: var(--kd-color-code-view-atrule);
+        }
+
+        &.keyword {
+            color: var(--kd-color-code-view-keyword);
+        }
+
+        &.attr-value {
+            color: var(--kd-color-code-view-attr-value);
+        }
+
+        &.function {
+            color: var(--kd-color-code-view-function);
+        }
+
+        &.class-name {
+            color: var(--kd-color-code-view-class-name);
+        }
+
+        &.regex {
+            color: var(--kd-color-code-view-regex);
+        }
+
+        &.variable {
+            color: var(--kd-color-code-view-variable);
+        }
+
+        &.important {
+            color: var(--kd-color-code-view-important);
+            font-weight: bold;
+        }
+
+        &.bold {
+            font-weight: bold;
+        }
+
+        &.italic {
+            font-style: italic;
+        }
+    }
+
+    /// scrollbar styles
+    &.single-line .code-snippet-wrapper {
+        pre {
+            scrollbar-color: light-dark(rgba(0, 0, 0, 0.3) rgba(255, 255, 255, 0.1),
+                    rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1));
+
+            &::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3));
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: light-dark(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.5));
+            }
+
+            &::-webkit-scrollbar-track {
+                background: light-dark(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+                border-radius: 4px;
+            }
+        }
+    }
+
+    &.multi-line .code-snippet-wrapper {
+        pre {
+            scrollbar-color: light-dark(rgba(0, 0, 0, 0.3) rgba(255, 255, 255, 0.1),
+                    rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1));
+
+            &::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: light-dark(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3));
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: light-dark(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.5));
+            }
+        }
+    }
+
+    .code-snippet-wrapper pre::selection,
+    .code-snippet-wrapper pre *::selection,
+    .code-snippet-wrapper pre::-moz-selection,
+    .code-snippet-wrapper pre *::-moz-selection {
+        background-color: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3));
+        color: inherit;
+    }
+}

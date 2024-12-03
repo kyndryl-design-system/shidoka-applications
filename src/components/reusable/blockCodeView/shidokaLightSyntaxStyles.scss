@@ -131,38 +131,54 @@ $default-light-font-color: #3D3C3C;
     }
 
 
-    /// light-mode scrollbar styles
+    /// scrollbar styles
     &.single-line .code-snippet-wrapper {
         pre {
+            scrollbar-color: light-dark(rgba(0, 0, 0, 0.3) rgba(255, 255, 255, 0.1),
+                    rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1));
+
+            &::-webkit-scrollbar {
+                width: 8px;
+            }
+
             &::-webkit-scrollbar-thumb {
-                background: rgba(0, 0, 0, 0.3);
+                background: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3));
+                border-radius: 4px;
             }
 
             &::-webkit-scrollbar-thumb:hover {
-                background: rgba(0, 0, 0, 0.5);
+                background: light-dark(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.5));
             }
 
-            scrollbar-color: rgba(0, 0, 0, 0.3) rgba(255, 255, 255, 0.1);
+            &::-webkit-scrollbar-track {
+                background: light-dark(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+                border-radius: 4px;
+            }
         }
     }
 
     &.multi-line .code-snippet-wrapper {
         pre {
+            scrollbar-color: light-dark(rgba(0, 0, 0, 0.3) rgba(255, 255, 255, 0.1),
+                    rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1));
+
+            &::-webkit-scrollbar {
+                width: 8px;
+            }
+
             &::-webkit-scrollbar-track {
-                background: rgba(0, 0, 0, 0.1);
+                background: light-dark(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
                 border-radius: 4px;
             }
 
             &::-webkit-scrollbar-thumb {
-                background: rgba(0, 0, 0, 0.3);
+                background: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3));
                 border-radius: 4px;
             }
 
             &::-webkit-scrollbar-thumb:hover {
-                background: rgba(0, 0, 0, 0.5);
+                background: light-dark(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.5));
             }
-
-            scrollbar-color: rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.1);
         }
     }
 
