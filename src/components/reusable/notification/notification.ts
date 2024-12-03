@@ -10,7 +10,8 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cl
 import NotificationScss from './notification.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/card';
 import successIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
-import warningErrorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information-filled.svg';
 
 import '../tag';
@@ -165,8 +166,8 @@ export class Notification extends LitElement {
   private renderInnerUI() {
     const notificationIcon: any = {
       success: successIcon,
-      error: warningErrorIcon,
-      warning: warningErrorIcon,
+      error: errorIcon,
+      warning: warningIcon,
       info: infoIcon,
     };
 

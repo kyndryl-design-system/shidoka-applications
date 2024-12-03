@@ -7,47 +7,60 @@
 :host {
   display: block;
   width: 100%;
+
   kd-card {
     width: 100%;
   }
 }
+
 // change card backgound and outline as per types
 kd-card.notification-inline::part(card-wrapper) {
   outline: none;
 }
+
 kd-card.notification-toast::part(card-wrapper) {
   @include elevation.shadow(3);
   outline: none;
+
   &:hover {
     @include elevation.shadow(2);
     transition: box-shadow 300ms ease-out;
   }
 }
+
 kd-card.notification-error::part(card-wrapper) {
-  background-color: var(--kd-color-background-error-light, #f7e6e6);
+  background-color: var(--kd-color-status-error-accent);
 }
+
 kd-card.notification-success::part(card-wrapper) {
-  background-color: var(--kd-color-background-success-light, #e5f7eb);
+  background-color: var(--kd-color-status-success-light);
 }
+
 kd-card.notification-warning::part(card-wrapper) {
-  background-color: var(--kd-color-background-warning-light, #fef9e5);
+  background-color: var(--kd-color-status-warning-light);
 }
+
 kd-card.notification-info::part(card-wrapper) {
-  background-color: var(--kd-color-background-informational-light, #e9f2ff);
+  background-color: var(--kd-color-status-informational-light);
 }
+
 kd-card.notification-default::part(card-wrapper) {
-  background-color: var(--kd-color-background-ui-soft, #f1f0f0);
+  background-color: var(--kd-color-background-accent-light);
 }
+
 // Change card style based on notification read prop
 kd-card.notification-mark-unread::part(card-wrapper) {
+  // check with UX
   background-color: var(--kd-color-skye-10);
   outline: 1px solid var(--kd-color-skye-20);
+
   &:hover {
     outline: 2px solid var(--kd-color-border-ui-hover);
   }
 }
 
 kd-card.notification-mark-read::part(card-wrapper) {
+  // check with UX
   background-color: var(--kd-color-background-ui-default);
 }
 
@@ -58,15 +71,17 @@ kd-card.notification-mark-read::part(card-wrapper) {
     justify-content: space-between;
     align-items: center;
   }
+
   &-title {
     @include typography.type-body-02;
     font-weight: 500;
-    color: var(--kd-color-text-primary);
+    color: var(--kd-color-text-level-dark);
     margin: 0;
   }
+
   &-subtitle {
     @include typography.type-ui-02;
-    color: var(--kd-color-text-secondary);
+    color: var(--kd-color-text-secondary); // check with UX
   }
 
   &-content-wrapper {
@@ -75,12 +90,15 @@ kd-card.notification-mark-read::part(card-wrapper) {
     align-items: center;
     padding-top: 10px;
   }
+
   &-state-icon {
     padding-right: 8px;
   }
+
   &-toast {
     z-index: 999999;
     animation: fadeIn 600ms ease-in-out forwards;
+
     //animation: slideInRight 600ms ease-in-out forwards;
     &-close-btn {
       position: absolute;
@@ -100,20 +118,29 @@ kd-card.notification-mark-read::part(card-wrapper) {
 .notification-toast .notification-content-wrapper {
   padding: 0;
 }
+
 .notification-description {
   @include typography.type-ui-02;
-  color: var(--kd-color-text-primary);
+  color: var(--kd-color-text-level-dark);
   padding-top: 10px;
 }
+
 .notification-inline .notification-description,
 .notification-toast .notification-description {
   padding-top: 0px;
   padding-left: 24px;
 }
+
 .notification-inline.notification-default .notification-description,
 .notification-toast.notification-default .notification-description {
   padding-top: 0px;
   padding-left: 0px;
+  color: var(--kd-color-text-level-primary);
+}
+
+.notification-inline.notification-default .notification-title,
+.notification-toast.notification-default .notification-title {
+  color: var(--kd-color-text-level-primary);
 }
 
 .timestamp {
@@ -123,26 +150,31 @@ kd-card.notification-mark-read::part(card-wrapper) {
     flex: 1;
     margin-left: 8px;
   }
+
   &-text {
     @include typography.type-ui-02;
-    color: var(--kd-color-text-primary);
+    color: var(--kd-color-text-primary); // need to update
     font-weight: 500;
   }
 }
+
 // fadeIn animation
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
+
 // optional slidein right animation
 @keyframes slideInRight {
   from {
     transform: translateX(100%);
   }
+
   to {
     transform: none;
   }
@@ -159,18 +191,21 @@ kd-card.notification-mark-read::part(card-wrapper) {
 }
 
 .info svg {
-  fill: var(--kd-color-border-informational, #1473ff);
+  fill: var(--kd-color-status-informational-dark);
   display: flex;
 }
+
 .success svg {
-  fill: var(--kd-color-border-success, #1fa452);
+  fill: var(--kd-color-status-success-dark);
   display: flex;
 }
+
 .warning svg {
-  fill: var(--kd-color-border-warning, #f5c400);
+  fill: var(--kd-color-status-warning-dark);
   display: flex;
 }
+
 .error svg {
-  fill: var(--kd-color-border-destructive, #cc1800);
+  fill: var(--kd-color-status-error-dark);
   display: flex;
 }
