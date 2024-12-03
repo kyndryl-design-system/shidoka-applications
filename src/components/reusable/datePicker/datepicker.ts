@@ -228,7 +228,7 @@ export class DatePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${this.value
+          ${this._inputEl?.value
             ? html`
                 <button
                   ?disabled=${this.datePickerDisabled}
@@ -353,8 +353,12 @@ export class DatePicker extends FormMixin(LitElement) {
     this.value = null;
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
+      if (this._inputEl) {
+        this._inputEl.value = '';
+      }
     }
     this._validate(true, false);
+    this.requestUpdate();
   }
 
   async initializeFlatpickr(): Promise<void> {
@@ -457,7 +461,7 @@ export class DatePicker extends FormMixin(LitElement) {
     this._hasInteracted = true;
 
     if (this.mode === 'multiple') {
-      this.value = [...selectedDates];
+      this.value = selectedDates.length > 0 ? [...selectedDates] : null;
     } else {
       this.value = selectedDates.length > 0 ? selectedDates[0] : null;
     }
