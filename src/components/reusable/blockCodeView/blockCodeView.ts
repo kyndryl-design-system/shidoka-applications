@@ -18,7 +18,7 @@ import chevronDown from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 
 import BlockCodeViewStyles from './blockCodeView.scss';
-import ShidokaSyntaxTheme from '../../../common/scss/shidoka-syntax-styles.scss';
+import ShidokaSyntaxTheme from '../../../common/scss/shidoka-syntax-theme.scss';
 
 interface LanguageMatch {
   language: string;
@@ -50,7 +50,7 @@ export class BlockCodeView extends LitElement {
 
   /** Sets background and text theming. */
   @property({ type: String })
-  darkTheme: 'light' | 'dark' = 'dark';
+  darkTheme: 'light' | 'dark' | 'default' = 'default';
 
   /** If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language. */
   @property({ type: String })
@@ -142,6 +142,62 @@ export class BlockCodeView extends LitElement {
   @state()
   private _expandedHeight: number | null = null;
 
+  private _colorSchemeMeta: HTMLMetaElement | null = null;
+
+  constructor() {
+    super();
+    this._colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
+  }
+
+  override updated(changedProperties: Map<string, unknown>) {
+    if (changedProperties.has('darkTheme')) {
+      this._syncColorScheme();
+    }
+
+    if (
+      changedProperties.has('codeSnippet') ||
+      changedProperties.has('language') ||
+      changedProperties.has('maxHeight')
+    ) {
+      this.highlightCode();
+      this.checkOverflow();
+    }
+
+    if (changedProperties.has('copyButtonText')) {
+      this._copyState = { ...this._copyState, text: this.copyButtonText };
+    }
+    super.updated(changedProperties);
+  }
+
+  private _syncColorScheme() {
+    if (this.darkTheme === 'default') {
+      if (this._colorSchemeMeta) {
+        const scheme = this._colorSchemeMeta.getAttribute('content');
+        if (scheme !== 'light' && scheme !== 'dark') {
+          console.warn('Invalid color-scheme value:', scheme);
+        }
+      }
+    } else {
+      if (this._colorSchemeMeta) {
+        this._colorSchemeMeta.setAttribute('content', this.darkTheme);
+      } else {
+        this._colorSchemeMeta = document.createElement('meta');
+        this._colorSchemeMeta.setAttribute('name', 'color-scheme');
+        this._colorSchemeMeta.setAttribute('content', this.darkTheme);
+        document.head.appendChild(this._colorSchemeMeta);
+      }
+    }
+  }
+
+  private get _effectiveTheme(): 'light' | 'dark' {
+    if (this.darkTheme !== 'default') {
+      return this.darkTheme;
+    }
+    return this._colorSchemeMeta?.getAttribute('content') === 'dark'
+      ? 'dark'
+      : 'light';
+  }
+
   override render() {
     return html`
       ${this.codeViewLabel
@@ -172,8 +228,8 @@ export class BlockCodeView extends LitElement {
       'copy-button-text-true':
         this.copyButtonText && this.copyButtonText.length > 0,
       'copy-button-text-false': !this.copyButtonText,
-      'shidoka-dark-syntax-theme': this.darkTheme === 'dark',
-      'shidoka-light-syntax-theme': this.darkTheme === 'light',
+      'shidoka-dark-syntax-theme': this._effectiveTheme === 'dark',
+      'shidoka-light-syntax-theme': this._effectiveTheme === 'light',
       'expanded-code-view': this.codeExpanded,
       'has-overflow': this.hasOverflow,
     });
@@ -229,22 +285,6 @@ export class BlockCodeView extends LitElement {
     if (changedProps.has('codeExpanded')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
-  }
-
-  override updated(changedProperties: Map<string, unknown>) {
-    if (
-      changedProperties.has('codeSnippet') ||
-      changedProperties.has('language') ||
-      changedProperties.has('maxHeight')
-    ) {
-      this.highlightCode();
-      this.checkOverflow();
-    }
-
-    if (changedProperties.has('copyButtonText')) {
-      this._copyState = { ...this._copyState, text: this.copyButtonText };
-    }
-    super.updated(changedProperties);
   }
 
   private highlightCode() {
@@ -388,7 +428,6 @@ export class BlockCodeView extends LitElement {
       .trim();
   }
 
-  // for @action printout
   private formatExampleCode(code: string) {
     return { code };
   }
