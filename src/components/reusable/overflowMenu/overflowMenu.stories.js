@@ -28,7 +28,6 @@ const args = {
   verticalDots: false,
   fixed: false,
   assistiveText: 'Toggle Menu',
-  description: 'Destructive Action',
 };
 
 export const OverflowMenu = {
@@ -72,7 +71,7 @@ export const OverflowMenu = {
         </kyn-overflow-menu-item>
         <kyn-overflow-menu-item
           destructive
-          description=${args.description}
+          description="Destructive Action"
           @on-click=${(e) => {
             action(e.type)(e);
           }}

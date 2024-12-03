@@ -162,10 +162,7 @@ export class OverflowMenuItem extends LitElement {
         contentElement.scrollWidth > contentElement.offsetWidth;
       if (this.isTruncated) {
         let text = '';
-        const nodes = this.shadowRoot?.querySelector('slot')?.assignedNodes({
-          flatten: true,
-        })[0];
-        text += nodes?.textContent?.trim();
+        text += this.textContent?.trim();
         this.tooltipText = text;
       }
     }
