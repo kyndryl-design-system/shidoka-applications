@@ -12,10 +12,8 @@ $progress-bar-status-colors: (
 $progress-bar-height: 4px;
 $progress-bar-radius: 4px;
 $progress-bar-background: var(--kd-color-background-inverse-hover);
-$progress-bar-indeterminate-color: map-get(
-  $progress-bar-status-colors,
-  default
-);
+$progress-bar-indeterminate-color: map-get($progress-bar-status-colors,
+    default);
 
 @mixin progress-bar-color($color) {
   background-color: $color;
@@ -41,6 +39,7 @@ $progress-bar-indeterminate-color: map-get(
     padding: 0;
     margin: 0;
     height: 18px;
+
     &.sr-only {
       @include visibility.sr-only;
     }
@@ -56,6 +55,7 @@ $progress-bar-indeterminate-color: map-get(
     margin: 0;
     line-height: 16px;
     height: 16px;
+    color: var(--kd-color-text-level-secondary);
   }
 
   &__status-icon {
@@ -65,7 +65,7 @@ $progress-bar-indeterminate-color: map-get(
     line-height: 1;
 
     p {
-      color: var(--kd-color-text-secondary);
+      color: var(--kd-color-text-level-secondary);
       padding: 0;
       margin: 0;
       font-size: 12px;
@@ -117,9 +117,7 @@ $progress-bar-indeterminate-color: map-get(
       width: 55px;
       position: absolute;
       left: 0;
-      @include progress-bar-color(
-        map-get($progress-bar-status-colors, default)
-      );
+      @include progress-bar-color(map-get($progress-bar-status-colors, default));
       animation: indeterminate 3s ease-in-out infinite;
     }
 
