@@ -33,6 +33,14 @@
 .input-wrapper {
   position: relative;
   display: flex;
+
+  input[disabled],
+  .input-custom[disabled],
+  textarea[disabled] {
+    &~.input-icon {
+      color: var(--kd-color-icon-disabled);
+    }
+  }
 }
 
 .options-text {
@@ -112,8 +120,6 @@ textarea {
   }
 }
 
-
-// CHECK: ERROR ICON -- not yet modified
 .error-icon {
   color: var(--kd-color-status-error-dark);
 

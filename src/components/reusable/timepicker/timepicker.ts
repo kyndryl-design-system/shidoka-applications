@@ -311,6 +311,14 @@ export class TimePicker extends FormMixin(LitElement) {
         this.initializeFlatpickr();
       }
     }
+
+    if (
+      changedProperties.has('timepickerDisabled') &&
+      this.timepickerDisabled &&
+      this.flatpickrInstance
+    ) {
+      this.flatpickrInstance.close();
+    }
   }
 
   private _handleClear(event: Event) {

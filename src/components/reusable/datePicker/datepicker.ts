@@ -334,6 +334,14 @@ export class DatePicker extends FormMixin(LitElement) {
         this.initializeFlatpickr();
       }
     }
+
+    if (
+      changedProperties.has('datePickerDisabled') &&
+      this.datePickerDisabled &&
+      this.flatpickrInstance
+    ) {
+      this.flatpickrInstance.close();
+    }
   }
 
   private async reinitializeFlatpickr() {

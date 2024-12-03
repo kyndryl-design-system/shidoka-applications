@@ -338,6 +338,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (changedProperties.has('twentyFourHourFormat')) {
       this.updateFlatpickrOptions();
     }
+
+    if (
+      changedProperties.has('dateRangePickerDisabled') &&
+      this.dateRangePickerDisabled &&
+      this.flatpickrInstance
+    ) {
+      this.flatpickrInstance.close();
+    }
   }
 
   private async reinitializeFlatpickr() {
