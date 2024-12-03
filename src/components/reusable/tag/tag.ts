@@ -107,8 +107,10 @@ export class Tag extends LitElement {
                 class="${classMap(iconClasses)}"
                 shade=${this.shade}
                 ?disabled="${this.disabled}"
-                title=${this.clearTagText}
-                aria-label=${this.clearTagText}
+                title="${this.clearTagText}
+                 ${this.label}"
+                aria-label="${this.clearTagText}
+                 ${this.label}"
                 @click=${(e: any) => this.handleTagClear(e, this.label)}
               >
                 <kd-icon .icon=${clearIcon16}></kd-icon>

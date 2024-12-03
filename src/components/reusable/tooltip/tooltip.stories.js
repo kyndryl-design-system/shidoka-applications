@@ -15,7 +15,7 @@ export default {
 };
 
 const args = {
-  assistiveText: 'Toggle Tooltip',
+  assistiveText: 'Tooltip',
   unnamed: 'Tooltip content here.',
 };
 
