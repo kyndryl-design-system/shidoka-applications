@@ -43,6 +43,12 @@ export class Skeleton extends LitElement {
   @property({ type: Boolean })
   inline = false;
 
+  /**
+   * Defines the shade of the skeleton.
+   */
+  @property({ type: String })
+  shade: 'light' | 'dark' | string = 'light';
+
   override render() {
     const isPredefinedSize = ['small', 'medium', 'large'].includes(
       this.size ?? ''
@@ -53,6 +59,7 @@ export class Skeleton extends LitElement {
       [`size-${this.size}`]: isPredefinedSize,
       'multi-line': this.lines > 1,
       inline: this.inline,
+      [`shade-${this.shade}`]: this.shade,
     };
 
     let computedWidth = this.width?.includes('%') ? undefined : this.width;

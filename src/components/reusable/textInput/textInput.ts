@@ -7,14 +7,15 @@ import {
   query,
   queryAssignedElements,
 } from 'lit/decorators.js';
+import { deepmerge } from 'deepmerge-ts';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { FormMixin } from '../../../common/mixins/form-input';
-import TextInputScss from './textInput.scss';
 
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
-import { deepmerge } from 'deepmerge-ts';
+
+import { FormMixin } from '../../../common/mixins/form-input';
+import TextInputScss from './textInput.scss';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
