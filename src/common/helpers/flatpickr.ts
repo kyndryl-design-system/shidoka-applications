@@ -93,10 +93,10 @@ const DATE_FORMAT_OPTIONS = {
   'Y-m-d': 'yyyy-mm-dd',
   'm-d-Y': 'mm-dd-yyyy',
   'd-m-Y': 'dd-mm-yyyy',
-  'Y-m-d H:i': 'yyyy-mm-dd hh:mm',
-  'Y-m-d H:i:s': 'yyyy-mm-dd hh:mm:ss',
-  'm-d-Y H:i:s': 'mm-dd-yyyy hh:mm:ss',
-  'd-m-Y H:i:s': 'dd-mm-yyyy hh:mm:ss',
+  'Y-m-d H:i': 'yyyy-mm-dd —— : ——',
+  'Y-m-d H:i:s': 'yyyy-mm-dd —— : —— ——',
+  'm-d-Y H:i:s': 'mm-dd-yyyy  —— : —— ——',
+  'd-m-Y H:i:s': 'dd-mm-yyyy —— : —— ——',
 } as const;
 
 type DateFormatOption = keyof typeof DATE_FORMAT_OPTIONS;
