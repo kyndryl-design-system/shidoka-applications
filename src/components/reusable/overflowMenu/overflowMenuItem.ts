@@ -2,6 +2,7 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import SCSS from './overflowMenuItem.scss';
+import '../tooltip';
 
 /**
  * Overflow Menu.
@@ -24,7 +25,11 @@ export class OverflowMenuItem extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
-  /** 
+  /** Item description text for screen reader's */
+  @property({ type: String })
+  description = '';
+
+  /**
    * Has the menu items in the current oveflow menu.
    * @ignore
    */
@@ -38,11 +43,26 @@ export class OverflowMenuItem extends LitElement {
   @state()
   _menu: any;
 
+  /**
+   * Tracks if the item content is overflowing and needs a tooltip.
+   * @ignore
+   */
+  @state()
+  isTruncated = false;
+
+  /** Holds the text content for the title tooltip.
+   * @ignore
+   */
+  @state()
+  tooltipText = '';
+
   override render() {
     const classes = {
       'overflow-menu-item': true,
       destructive: this.destructive,
     };
+
+    const itemText = this.isTruncated ? this.tooltipText : '';
 
     if (this.href !== '') {
       return html`
@@ -52,8 +72,12 @@ export class OverflowMenuItem extends LitElement {
           ?disabled=${this.disabled}
           @click=${(e: Event) => this.handleClick(e)}
           @keydown=${(e: Event) => this.handleKeyDown(e)}
+          title=${itemText}
         >
           <slot></slot>
+          ${this.destructive
+            ? html`<span class="sr-only">${this.description}</span>`
+            : null}
         </a>
       `;
     } else {
@@ -63,8 +87,12 @@ export class OverflowMenuItem extends LitElement {
           ?disabled=${this.disabled}
           @click=${(e: Event) => this.handleClick(e)}
           @keydown=${(e: Event) => this.handleKeyDown(e)}
+          title=${itemText}
         >
           <slot></slot>
+          ${this.destructive
+            ? html`<span class="sr-only">${this.description}</span>`
+            : null}
         </button>
       `;
     }
@@ -80,7 +108,7 @@ export class OverflowMenuItem extends LitElement {
   private handleKeyDown(e: any) {
     const DOWN_ARROW_KEY_CODE = 40;
     const UP_ARROW_KEY_CODE = 38;
-    
+
     const menuItemsLength = this._menuItems.length;
 
     const activeEl = document.activeElement;
@@ -88,25 +116,25 @@ export class OverflowMenuItem extends LitElement {
 
     switch (e.keyCode) {
       case DOWN_ARROW_KEY_CODE: {
-        if(activeIndex < menuItemsLength - 1) {
+        if (activeIndex < menuItemsLength - 1) {
           const nextItem = this._menuItems[activeIndex + 1];
-          if(nextItem) {
-            nextItem.shadowRoot?.querySelector('button') 
-            ? nextItem.shadowRoot?.querySelector('button')?.focus() 
-            : nextItem.shadowRoot?.querySelector('a')?.focus();
+          if (nextItem) {
+            nextItem.shadowRoot?.querySelector('button')
+              ? nextItem.shadowRoot?.querySelector('button')?.focus()
+              : nextItem.shadowRoot?.querySelector('a')?.focus();
           }
         }
         return;
       }
       case UP_ARROW_KEY_CODE: {
-        if(activeIndex > 0) {
+        if (activeIndex > 0) {
           const prevItem = this._menuItems[activeIndex - 1];
-          if(prevItem) {
-            prevItem.shadowRoot?.querySelector('button') 
-            ? prevItem.shadowRoot?.querySelector('button')?.focus() 
-            : prevItem.shadowRoot?.querySelector('a')?.focus();
+          if (prevItem) {
+            prevItem.shadowRoot?.querySelector('button')
+              ? prevItem.shadowRoot?.querySelector('button')?.focus()
+              : prevItem.shadowRoot?.querySelector('a')?.focus();
           }
-        } else if(activeIndex === 0) {
+        } else if (activeIndex === 0) {
           this._menu?.querySelector('button')?.focus();
         }
         return;
@@ -123,6 +151,20 @@ export class OverflowMenuItem extends LitElement {
     if (parent) {
       this._menuItems = parent.getMenuItems();
       this._menu = parent.getMenu();
+    }
+    this.checkOverflow();
+  }
+
+  private checkOverflow() {
+    const contentElement = this.shadowRoot?.querySelector('button, a');
+    if (contentElement instanceof HTMLElement) {
+      this.isTruncated =
+        contentElement.scrollWidth > contentElement.offsetWidth;
+      if (this.isTruncated) {
+        let text = '';
+        text += this.textContent?.trim();
+        this.tooltipText = text;
+      }
     }
   }
 }

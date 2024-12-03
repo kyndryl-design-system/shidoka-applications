@@ -20,6 +20,10 @@ export default {
       control: 'select',
       options: ['small', 'medium', 'large'],
     },
+    shade: {
+      control: 'select',
+      options: ['light', 'dark'],
+    },
     lines: { control: 'number' },
     inline: { control: 'boolean' },
     width: { control: 'text' },
@@ -46,6 +50,7 @@ const Template = (args) => {
             ?inline=${args.inline}
             width=${args.width || ''}
             height=${args.height || ''}
+            shade=${args.shade}
           ></kyn-skeleton>
         </div>
       `;
@@ -68,6 +73,7 @@ Block.args = {
   lines: 1,
   inline: false,
   height: '128px',
+  shade: 'light',
 };
 
 export const Inline = Template.bind({});

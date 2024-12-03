@@ -2605,14 +2605,6 @@
       "exports": [
         {
           "kind": "js",
-          "name": "Card",
-          "declaration": {
-            "name": "Card",
-            "module": "./card"
-          }
-        },
-        {
-          "kind": "js",
           "name": "VitalCardSkeleton",
           "declaration": {
             "name": "VitalCardSkeleton",
@@ -4743,93 +4735,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/errorBlock/errorBlock.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Error block.",
-          "name": "ErrorBlock",
-          "slots": [
-            {
-              "description": "Slot for the error description.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the error image.",
-              "name": "image"
-            },
-            {
-              "description": "Slot for the action buttons.",
-              "name": "actions"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title text",
-              "attribute": "titleText"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title text",
-              "fieldName": "titleText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-error-block",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ErrorBlock",
-          "declaration": {
-            "name": "ErrorBlock",
-            "module": "src/components/reusable/errorBlock/errorBlock.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-error-block",
-          "declaration": {
-            "name": "ErrorBlock",
-            "module": "src/components/reusable/errorBlock/errorBlock.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/errorBlock/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ErrorBlock",
-          "declaration": {
-            "name": "ErrorBlock",
-            "module": "./errorBlock"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/dropdown/dropdown.ts",
       "declarations": [
         {
@@ -5723,6 +5628,93 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/errorBlock/errorBlock.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Error block.",
+          "name": "ErrorBlock",
+          "slots": [
+            {
+              "description": "Slot for the error description.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the error image.",
+              "name": "image"
+            },
+            {
+              "description": "Slot for the action buttons.",
+              "name": "actions"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title text",
+              "attribute": "titleText"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title text",
+              "fieldName": "titleText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-error-block",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ErrorBlock",
+          "declaration": {
+            "name": "ErrorBlock",
+            "module": "src/components/reusable/errorBlock/errorBlock.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-error-block",
+          "declaration": {
+            "name": "ErrorBlock",
+            "module": "src/components/reusable/errorBlock/errorBlock.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/errorBlock/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ErrorBlock",
+          "declaration": {
+            "name": "ErrorBlock",
+            "module": "./errorBlock"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/globalFilter/globalFilter.ts",
       "declarations": [
         {
@@ -6162,6 +6154,16 @@
               "default": "false",
               "description": "Sets whether to display inline or block.",
               "attribute": "inline"
+            },
+            {
+              "kind": "field",
+              "name": "shade",
+              "type": {
+                "text": "'light' | 'dark' | string"
+              },
+              "default": "'light'",
+              "description": "Defines the shade of the skeleton.",
+              "attribute": "shade"
             }
           ],
           "attributes": [
@@ -6215,6 +6217,15 @@
               "default": "false",
               "description": "Sets whether to display inline or block.",
               "fieldName": "inline"
+            },
+            {
+              "name": "shade",
+              "type": {
+                "text": "'light' | 'dark' | string"
+              },
+              "default": "'light'",
+              "description": "Defines the shade of the skeleton.",
+              "fieldName": "shade"
             }
           ],
           "superclass": {
@@ -7681,6 +7692,16 @@
               "attribute": "disabled"
             },
             {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Item description text for screen reader's",
+              "attribute": "description"
+            },
+            {
               "kind": "method",
               "name": "handleClick",
               "privacy": "private",
@@ -7705,6 +7726,11 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "checkOverflow",
+              "privacy": "private"
             }
           ],
           "events": [
@@ -7740,6 +7766,15 @@
               "default": "false",
               "description": "Item disabled state.",
               "fieldName": "disabled"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Item description text for screen reader's",
+              "fieldName": "description"
             }
           ],
           "superclass": {
@@ -9051,7 +9086,7 @@
                 {
                   "name": "e",
                   "type": {
-                    "text": "any"
+                    "text": "Event"
                   }
                 }
               ]
@@ -12700,16 +12735,6 @@
             },
             {
               "kind": "field",
-              "name": "checkboxSelection",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Shows/hides checkbox column.",
-              "attribute": "checkboxSelection"
-            },
-            {
-              "kind": "field",
               "name": "dense",
               "type": {
                 "text": "boolean"
@@ -12769,6 +12794,16 @@
               "attribute": "tableSubtitle"
             },
             {
+              "kind": "field",
+              "name": "showGlobalFilter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Shows/hides golbal filter skeleton.",
+              "attribute": "showGlobalFilter"
+            },
+            {
               "kind": "method",
               "name": "renderSkeletonCell",
               "privacy": "private",
@@ -12800,15 +12835,6 @@
               "default": "false",
               "description": "Shows/hides pagination skeleton.",
               "fieldName": "showPagination"
-            },
-            {
-              "name": "checkboxSelection",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Shows/hides checkbox column.",
-              "fieldName": "checkboxSelection"
             },
             {
               "name": "dense",
@@ -12863,6 +12889,15 @@
               "default": "''",
               "description": "Sets subtitle to display in the table toolbar.",
               "fieldName": "tableSubtitle"
+            },
+            {
+              "name": "showGlobalFilter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Shows/hides golbal filter skeleton.",
+              "fieldName": "showGlobalFilter"
             }
           ],
           "superclass": {
@@ -13634,7 +13669,7 @@
               "type": {
                 "text": "string"
               },
-              "default": "'md'",
+              "default": "'sm'",
               "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
               "attribute": "tagSize"
             },
@@ -13647,16 +13682,6 @@
               "default": "'light'",
               "description": "Shade `'light'` (default) and `'dark'` for tag.",
               "attribute": "shade"
-            },
-            {
-              "kind": "field",
-              "name": "tagColor",
-              "type": {
-                "text": "string"
-              },
-              "default": "'spruce'",
-              "description": "Color variants. Default spruce.",
-              "attribute": "tagColor"
             }
           ],
           "attributes": [
@@ -13665,7 +13690,7 @@
               "type": {
                 "text": "string"
               },
-              "default": "'md'",
+              "default": "'sm'",
               "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
               "fieldName": "tagSize"
             },
@@ -13677,15 +13702,6 @@
               "default": "'light'",
               "description": "Shade `'light'` (default) and `'dark'` for tag.",
               "fieldName": "shade"
-            },
-            {
-              "name": "tagColor",
-              "type": {
-                "text": "string"
-              },
-              "default": "'spruce'",
-              "description": "Color variants. Default spruce.",
-              "fieldName": "tagColor"
             }
           ],
           "superclass": {
@@ -15657,7 +15673,7 @@
               "type": {
                 "text": "string"
               },
-              "default": "'Toggle Tooltip'",
+              "default": "'Tooltip'",
               "description": "Assistive text for anchor button.",
               "attribute": "assistiveText"
             },
@@ -15712,7 +15728,7 @@
               "type": {
                 "text": "string"
               },
-              "default": "'Toggle Tooltip'",
+              "default": "'Tooltip'",
               "description": "Assistive text for anchor button.",
               "fieldName": "assistiveText"
             }

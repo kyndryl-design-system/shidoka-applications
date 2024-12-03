@@ -462,25 +462,25 @@ export const Skeleton = {
   args: {
     rows: 5,
     showPagination: true,
-    checkboxSelection: false,
     hideTableTitles: false,
     striped: false,
     dense: false,
     fixedLayout: false,
     tableTitle: '',
     tableSubtitle: '',
+    showGlobalFilter: true,
   },
   render: (args) => {
     return html`<kyn-table-skeleton
       .rows=${args.rows}
       ?showPagination=${args.showPagination}
-      ?checkboxSelection=${args.checkboxSelection}
       ?dense=${args.dense}
       ?striped=${args.striped}
       ?fixedLayout=${args.fixedLayout}
       ?hideTableTitles=${args.hideTableTitles}
       tableTitle=${args.tableTitle}
       tableSubtitle=${args.tableSubtitle}
+      ?showGlobalFilter=${args.showGlobalFilter}
     ></kyn-table-skeleton>`;
   },
   parameters: {
