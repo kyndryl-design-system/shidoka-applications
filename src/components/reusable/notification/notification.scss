@@ -48,20 +48,22 @@ kd-card.notification-default::part(card-wrapper) {
   background-color: var(--kd-color-background-accent-light);
 }
 
+kd-card.notification-normal::part(card-wrapper) {
+  background-color: var(--kd-color-background-card-background);
+}
+
 // Change card style based on notification read prop
 kd-card.notification-mark-unread::part(card-wrapper) {
-  // check with UX
-  background-color: var(--kd-color-skye-10);
-  outline: 1px solid var(--kd-color-skye-20);
+  background-color: var(--kd-color-background-notification-unread-fill);
+  // outline: 1px solid var(--kd-color-background-notification-unread-border); // need to update after card changes
 
   &:hover {
-    outline: 2px solid var(--kd-color-border-ui-hover);
+    outline: 2px solid var(--kd-color-background-card-hover); // need to update after card changes
   }
 }
 
 kd-card.notification-mark-read::part(card-wrapper) {
-  // check with UX
-  background-color: var(--kd-color-background-ui-default);
+  background-color: var(--kd-color-background-card-background);
 }
 
 .notification {
@@ -81,7 +83,7 @@ kd-card.notification-mark-read::part(card-wrapper) {
 
   &-subtitle {
     @include typography.type-ui-02;
-    color: var(--kd-color-text-secondary); // check with UX
+    color: var(--kd-color-text-level-secondary);
   }
 
   &-content-wrapper {
@@ -143,6 +145,21 @@ kd-card.notification-mark-read::part(card-wrapper) {
   color: var(--kd-color-text-level-primary);
 }
 
+.notification-inline.notification-default .timestamp-text,
+.notification-toast.notification-default .notification-title {
+  color: var(--kd-color-text-level-primary);
+}
+
+.notification-normal,
+.notification-mark-unread,
+.notification-mark-read {
+
+  .notification-title,
+  .notification-description {
+    color: var(--kd-color-text-level-primary);
+  }
+}
+
 .timestamp {
   &-wrapper {
     display: inline-flex;
@@ -153,7 +170,7 @@ kd-card.notification-mark-read::part(card-wrapper) {
 
   &-text {
     @include typography.type-ui-02;
-    color: var(--kd-color-text-primary); // need to update
+    color: var(--kd-color-text-level-dark);
     font-weight: 500;
   }
 }
@@ -208,4 +225,9 @@ kd-card.notification-mark-read::part(card-wrapper) {
 .error svg {
   fill: var(--kd-color-status-error-dark);
   display: flex;
+}
+
+.notification-toast-close-btn svg {
+  fill: var(--kd-color-icon-switcher-icon);
+  display: block;
 }

@@ -110,6 +110,7 @@ export class Notification extends LitElement {
 
   override render() {
     const cardBgClasses = {
+      'notification-normal': this.type === 'normal',
       'notification-inline': this.type === 'inline',
       'notification-toast': this.type === 'toast',
       'notification-error':
@@ -210,7 +211,6 @@ export class Notification extends LitElement {
               >
                 <span
                   slot="icon"
-                  fill="#3D3C3C"
                   role="img"
                   aria-label=${ifDefined(this.closeBtnDescription)}
                   >${unsafeSVG(closeIcon)}</span
