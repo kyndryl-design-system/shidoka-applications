@@ -58,9 +58,9 @@ export const Default = {
 
         <kyn-checkbox-group
           name="checkbox"
+          label="Checkboxes"
           @on-checkbox-group-change=${(e) => action(e.type)(e)}
         >
-          <span slot="label">Checkboxes</span>
           <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
           <kyn-checkbox value="2"> Option 2 </kyn-checkbox>
           <kyn-checkbox value="3"> Option 3 </kyn-checkbox>
