@@ -12,7 +12,7 @@ export class InlineCodeView extends LitElement {
 
   /** Sets background and text theming. */
   @property({ type: String })
-  darkTheme: 'light' | 'dark' | 'default' = 'default';
+  darkTheme: 'light' | 'dark' | 'default' = 'dark';
 
   /** Font size value (px) to match code snippet font-size of surrounding text (min, default 14px). */
   @property({ type: Number })
