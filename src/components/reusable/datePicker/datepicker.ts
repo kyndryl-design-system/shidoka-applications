@@ -26,8 +26,8 @@ import DatePickerStyles from './datepicker.scss';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
-import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/calendar.svg';
-import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/close-simple.svg';
+import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/calendar.svg';
+import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
 
 type SupportedLocale = (typeof langsArray)[number];
 
@@ -228,7 +228,7 @@ export class DatePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${this.value
+          ${this._inputEl?.value
             ? html`
                 <button
                   ?disabled=${this.datePickerDisabled}
@@ -334,6 +334,14 @@ export class DatePicker extends FormMixin(LitElement) {
         this.initializeFlatpickr();
       }
     }
+
+    if (
+      changedProperties.has('datePickerDisabled') &&
+      this.datePickerDisabled &&
+      this.flatpickrInstance
+    ) {
+      this.flatpickrInstance.close();
+    }
   }
 
   private async reinitializeFlatpickr() {
@@ -353,8 +361,12 @@ export class DatePicker extends FormMixin(LitElement) {
     this.value = null;
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
+      if (this._inputEl) {
+        this._inputEl.value = '';
+      }
     }
     this._validate(true, false);
+    this.requestUpdate();
   }
 
   async initializeFlatpickr(): Promise<void> {
@@ -457,7 +469,7 @@ export class DatePicker extends FormMixin(LitElement) {
     this._hasInteracted = true;
 
     if (this.mode === 'multiple') {
-      this.value = [...selectedDates];
+      this.value = selectedDates.length > 0 ? [...selectedDates] : null;
     } else {
       this.value = selectedDates.length > 0 ? selectedDates[0] : null;
     }
