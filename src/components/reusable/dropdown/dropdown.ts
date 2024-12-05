@@ -353,6 +353,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 <button
                   class="clear"
                   aria-label="Clear search text"
+                  ?disabled=${this.disabled}
                   @click=${(e: any) => this.handleClear(e)}
                 >
                   <span>${unsafeSVG(clearIcon)}</span>
