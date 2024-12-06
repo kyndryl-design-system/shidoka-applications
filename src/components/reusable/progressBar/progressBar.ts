@@ -7,7 +7,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import '../loaders';
 import '../tooltip';
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 import ProgressBarStyles from './progressBar.scss';
 
