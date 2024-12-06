@@ -76,10 +76,12 @@ export class DropdownOption extends LitElement {
                   value=${this.value}
                   aria-hidden="true"
                   tabindex="-1"
-                  @mousedown=${(e: any) => e.preventDefault()}
+                  @pointerdown=${(e: any) => e.preventDefault()}
+                  @pointerup=${(e: any) => e.preventDefault()}
                   .checked=${this.selected}
                   ?checked=${this.selected}
                   ?disabled=${this.disabled}
+                  visiblyHidden
                   .indeterminate=${this.indeterminate}
                 ></kyn-checkbox>
               `
