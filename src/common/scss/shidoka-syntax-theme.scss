@@ -6,12 +6,12 @@
 
 .shidoka-dark-syntax-theme,
 .shidoka-light-syntax-theme {
-    background: light-dark(#F9F9F9, #272727);
+    background: var(--kd-color-code-view-background);
 
     code[class*="language-"],
     pre[class*="language-"] {
-        background: light-dark(#F9F9F9, #272727);
-        color: light-dark(#3D3C3C, #FFFFFF);
+        background: var(--kd-color-code-view-background);
+        color: var(--kd-color-code-view-default);
         font-family: var(--kd-font-family-code-view);
 
         -moz-tab-size: 4;
@@ -43,14 +43,14 @@
     .code-view__copy-button .copy-text,
     .code-view__copy-button .copy-icon,
     .code-view__expand-button .expand-icon {
-        fill: light-dark(#3D3C3C, #FFFFFF);
-        color: light-dark(#3D3C3C, #FFFFFF);
+        fill: var(--kd-color-code-view-default);
+        color: var(--kd-color-code-view-default);
     }
 
     .code-view__copy-button:disabled:hover .copy-text,
     .code-view__copy-button:disabled:hover .copy-icon {
-        fill: light-dark(#3D3C3C, #FFFFFF);
-        color: light-dark(#3D3C3C, #FFFFFF);
+        fill: var(--kd-color-code-view-default);
+        color: var(--kd-color-code-view-default);
     }
 
     @media print {
@@ -94,19 +94,17 @@
             color: var(--kd-color-code-view-char);
         }
 
-        // &.class {
-        // color: var(--kd-color-code-view-class);
-        // }
+        &.class {
+            color: var(--kd-color-code-view-class);
+        }
 
-        // &.class-name {
-        //     // color: var(--kd-color-code-view-class-name);
-        //     color: light-dark(#f3acd6, #dc4b89);
-        // }
+        &.class-name {
+            color: var(--kd-color-code-view-class-name);
+        }
 
-        // &.comment {
-        //     color: var(--kd-color-code-view-comment);
-        //     color: light-dark(#f3acd6, #dc4b89)
-        // }
+        &.comment {
+            color: var(--kd-color-code-view-comment);
+        }
 
         &.constant {
             color: var(--kd-color-code-view-constant);
@@ -126,8 +124,7 @@
         }
 
         &.function {
-            // color: var(--kd-color-code-view-function);
-            color: light-dark(#6F42C1, #79C7FF);
+            color: var(--kd-color-code-view-function);
         }
 
         &.hexcode {
@@ -195,10 +192,9 @@
             color: var(--kd-color-code-view-regex);
         }
 
-        // &.selector {
-        //     color: light-dark(#81e1b5, #008d72);
-        //     color: var(--kd-color-code-view-selector);
-        // }
+        &.selector {
+            color: var(--kd-color-code-view-selector);
+        }
 
         &.symbol {
             color: var(--kd-color-code-view-symbol);
@@ -223,8 +219,7 @@
 
     .token.string,
     .style .token.string {
-        // color: var(--kd-color-code-view-string) 
-        color: light-dark(#032F62, #79C7FF);
+        color: var(--kd-color-code-view-string)
     }
 
     .language-css .token.string {
