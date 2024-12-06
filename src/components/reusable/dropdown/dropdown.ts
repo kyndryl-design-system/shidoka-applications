@@ -353,6 +353,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 <button
                   class="clear"
                   aria-label="Clear search text"
+                  ?disabled=${this.disabled}
                   @click=${(e: any) => this.handleClear(e)}
                 >
                   <span>${unsafeSVG(clearIcon)}</span>
@@ -866,6 +867,7 @@ export class Dropdown extends FormMixin(LitElement) {
   // }
 
   private _handleClickOut(e: Event) {
+    // console.log(e.composedPath());
     if (!e.composedPath().includes(this)) {
       this.open = false;
     }
