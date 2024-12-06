@@ -867,6 +867,7 @@ export class Dropdown extends FormMixin(LitElement) {
   // }
 
   private _handleClickOut(e: Event) {
+    // console.log(e.composedPath());
     if (!e.composedPath().includes(this)) {
       this.open = false;
     }

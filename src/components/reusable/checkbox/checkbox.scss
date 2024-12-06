@@ -16,6 +16,10 @@ label {
   width: 100%;
   position: relative;
 
+  &.label-hidden {
+    gap: 0;
+  }
+
   &[disabled] {
     color: var(--kd-color-text-level-primary);
   }
@@ -106,7 +110,7 @@ input {
 
     &:focus {
       border-color: transparent;
-      outline-color: var(--kd-color-border-variants-focus)
+      outline-color: var(--kd-color-border-variants-focus);
     }
 
     &:active {
@@ -155,7 +159,11 @@ input[type='checkbox']:indeterminate {
       transform: scale(1);
       background: var(--kd-color-background-ui-hollow-default);
       mask: linear-gradient(transparent 3px, #000 3px 5px, transparent 5px);
-      -webkit-mask: linear-gradient(transparent 3px, #000 3px 5px, transparent 5px);
+      -webkit-mask: linear-gradient(
+        transparent 3px,
+        #000 3px 5px,
+        transparent 5px
+      );
     }
 
     &:hover {
@@ -190,7 +198,11 @@ input[type='checkbox']:indeterminate:disabled {
     transform: scale(1);
     background: var(--kd-color-background-ui-hollow-default);
     mask: linear-gradient(transparent 3px, #000 3px 5px, transparent 5px);
-    -webkit-mask: linear-gradient(transparent 3px, #000 3px 5px, transparent 5px);
+    -webkit-mask: linear-gradient(
+      transparent 3px,
+      #000 3px 5px,
+      transparent 5px
+    );
   }
 }
 
@@ -221,7 +233,9 @@ input[type='checkbox'][invalid] {
   }
 
   &:active {
-    background: var(--kd-color-background-button-destructive-pressed) !important;
+    background: var(
+      --kd-color-background-button-destructive-pressed
+    ) !important;
     border-color: var(--kd-color-border-button-descrutive-pressed) !important;
   }
 }
