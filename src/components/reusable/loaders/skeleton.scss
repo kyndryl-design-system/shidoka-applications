@@ -6,8 +6,10 @@
   --skeleton-base-height: 16px;
   --skeleton-border-radius: 4px;
   --skeleton-background: var(--kd-color-background-loader-skeleton-default);
-  --skeleton-background-dark: var(--kd-color-background-container-subtle);
-  --skeleton-shimmer-duration: 1.2s;
+  --skeleton-background-dark: var(
+    --kd-color-background-loader-skeleton-secondary
+  );
+  --skeleton-shimmer-duration: 1.5s;
 
   // Predefined sizes
   --skeleton-size-small: 32px;
@@ -93,14 +95,17 @@
     right: 0;
     bottom: 0;
     left: 0;
-    transform: translateX(-100%);
-    background: linear-gradient(
-      to right,
-      var(--kd-color-background-loader-skeleton-default),
-      var(--kd-color-background-container-subtle),
-      var(--kd-color-background-loader-skeleton-default)
+    transform: translateX(-100%) translate3d(0, 0, 0);
+    background-image: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0,
+      var(--kd-color-background-loader-skeleton-default) 10%,
+      var(--kd-color-background-loader-skeleton-tertiary) 50%,
+      var(--kd-color-background-loader-skeleton-default) 90%,
+      rgba(255, 255, 255, 0) 100%
     );
-    animation: shimmer var(--skeleton-shimmer-duration) ease-in-out infinite;
+    animation: shimmer var(--skeleton-shimmer-duration)
+      cubic-bezier(0.4, 0, 0.2, 1) infinite;
     content: '';
     pointer-events: none;
   }
@@ -108,9 +113,9 @@
 
 @keyframes shimmer {
   0% {
-    transform: translateX(-100%);
+    transform: translateX(-100%) translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(100%);
+    transform: translateX(100%) translate3d(0, 0, 0);
   }
 }
