@@ -1,7 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { classMap } from 'lit/directives/class-map.js';
 import SideDrawerScss from './sideDrawer.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
