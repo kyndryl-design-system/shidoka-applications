@@ -1,0 +1,194 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: inline-block;
+}
+
+dialog {
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  background: var(--kd-color-background-ui-default);
+  border: 1px solid var(--kd-color-border-light);
+  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.12);
+  top: 0;
+  right: 0;
+  left: auto;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+
+  &[open] {
+    animation: dialog-in 400ms forwards;
+  }
+
+  &::backdrop {
+    background: rgba(60, 61, 60, 0.4);
+  }
+
+  &.size--sm {
+    width: 384px;
+  }
+
+  &.size--standard {
+    width: 560px;
+  }
+
+  &.size--md {
+    width: 800px;
+  }
+}
+
+button {
+  appearance: none;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  border-radius: 4px;
+  outline: 2px solid transparent;
+  transition: outline-color 150ms ease-out, color 150ms ease-out;
+
+  &:focus {
+    outline-color: var(--kd-color-border-focus);
+  }
+
+  &:hover {
+    color: var(--kd-color-text-link-hover);
+  }
+
+  &:active {
+    color: var(--kd-color-text-pressed);
+  }
+}
+
+.anchor {
+  display: inline-block;
+  width: 100%;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--kd-color-background-ui-default);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 32px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.body {
+  margin: 0 32px;
+  padding-right: 24px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.header-label-title {
+  margin-right: 32px;
+}
+
+.close {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  color: var(--kd-color-text-secondary);
+
+  span {
+    display: flex;
+  }
+}
+
+.label {
+  @include typography.type-ui-02;
+  color: var(--kd-color-text-secondary);
+}
+
+h1 {
+  @include typography.type-body-01;
+  margin: 0;
+  order: 1;
+}
+
+.dialog-footer {
+  position: sticky;
+  bottom: 0px;
+  z-index: 1;
+  margin-top: 32px;
+  background-color: var(--kd-color-background-accent-subtle);
+  padding: 24px 32px 24px 32px;
+  border-top: 1px solid var(--kd-color-border-light);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  @media (max-width: calc(42rem - 1px)) {
+    kd-button {
+      width: 100%;
+      flex-grow: 1;
+    }
+  }
+}
+
+.size--sm kd-button {
+  width: 100%;
+  flex-grow: 1;
+}
+
+.custom-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.action-button:nth-child(3) {
+  margin-left: auto;
+}
+
+@supports (transition-behavior: allow-discrete) {
+  dialog {
+    transition: right 400ms ease, transform 400ms ease,
+      overlay 400ms ease allow-discrete, display 400ms ease allow-discrete;
+    transform: translateX(100%);
+
+    &::backdrop {
+      background-color: rgba(0, 0, 0, 0);
+      transition: display 400ms allow-discrete, overlay 400ms allow-discrete,
+        background-color 400ms;
+    }
+
+    &[open] {
+      animation: none;
+      transform: none;
+
+      &::backdrop {
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+    }
+  }
+}
+
+@keyframes dialog-in {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: none;
+  }
+}
