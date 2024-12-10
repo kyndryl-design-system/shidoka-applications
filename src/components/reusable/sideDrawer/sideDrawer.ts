@@ -1,7 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import SideDrawerScss from './sideDrawer.scss';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
@@ -138,13 +138,22 @@ export class SideDrawer extends LitElement {
             <button
               class="close"
               @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
+              aria-label="Close drawer"
+              title="Close drawer"
+              role="button"
             >
-              <span>${unsafeSVG(closeIcon)}</span>
+              <span class="visually-hidden">Close drawer</span>
+              <span aria-hidden="true">${unsafeSVG(closeIcon)}</span>
             </button>
           </header>
 
           <!-- Body -->
-          <div class="body">
+          <div
+            class="body"
+            tabindex="0"
+            role="region"
+            aria-label="${this.titleText} content"
+          >
             <slot></slot>
           </div>
 
