@@ -18,11 +18,19 @@ export class InlineCodeView extends LitElement {
   @property({ type: Number })
   snippetFontSize = 14;
 
-  private _colorSchemeMeta: HTMLMetaElement | null = null;
-
-  constructor() {
-    super();
-    this._colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
+  override render() {
+    return html`
+      <code
+        class="${classMap({
+          'inline-code-view': true,
+          'shidoka-dark-syntax-theme': this._effectiveTheme === 'dark',
+          'shidoka-light-syntax-theme': this._effectiveTheme === 'light',
+        })}"
+        style="--inline-snippet-font-size: ${this.snippetFontSize};"
+      >
+        <slot></slot>
+      </code>
+    `;
   }
 
   override updated(changedProperties: Map<string, unknown>) {
@@ -30,6 +38,19 @@ export class InlineCodeView extends LitElement {
       this._syncColorScheme();
     }
     super.updated(changedProperties);
+  }
+
+  private get _colorSchemeMeta(): HTMLMetaElement | null {
+    return document.querySelector('meta[name="color-scheme"]');
+  }
+
+  private get _effectiveTheme(): 'light' | 'dark' {
+    if (this.darkTheme !== 'default') {
+      return this.darkTheme;
+    }
+    return this._colorSchemeMeta?.getAttribute('content') === 'dark'
+      ? 'dark'
+      : 'light';
   }
 
   private _syncColorScheme() {
@@ -44,36 +65,12 @@ export class InlineCodeView extends LitElement {
       if (this._colorSchemeMeta) {
         this._colorSchemeMeta.setAttribute('content', this.darkTheme);
       } else {
-        this._colorSchemeMeta = document.createElement('meta');
-        this._colorSchemeMeta.setAttribute('name', 'color-scheme');
-        this._colorSchemeMeta.setAttribute('content', this.darkTheme);
-        document.head.appendChild(this._colorSchemeMeta);
+        const meta = document.createElement('meta');
+        meta.setAttribute('name', 'color-scheme');
+        meta.setAttribute('content', this.darkTheme);
+        document.head.appendChild(meta);
       }
     }
-  }
-
-  private get _effectiveTheme(): 'light' | 'dark' {
-    if (this.darkTheme !== 'default') {
-      return this.darkTheme;
-    }
-    return this._colorSchemeMeta?.getAttribute('content') === 'dark'
-      ? 'dark'
-      : 'light';
-  }
-
-  override render() {
-    return html`
-      <code
-        class="${classMap({
-          'inline-code-view': true,
-          'shidoka-dark-syntax-theme': this._effectiveTheme === 'dark',
-          'shidoka-light-syntax-theme': this._effectiveTheme === 'light',
-        })}"
-        style="--inline-snippet-font-size: ${this.snippetFontSize};"
-      >
-        <slot></slot>
-      </code>
-    `;
   }
 }
 
