@@ -169,25 +169,22 @@ export class BlockCodeView extends LitElement {
   }
 
   private get _effectiveTheme(): 'light' | 'dark' {
-    this._initPrefersColorSchemeListener();
     if (this.darkTheme !== 'default') {
       return this.darkTheme;
     }
     const metaScheme = this._colorSchemeMeta?.getAttribute('content');
-    const prefersDark = window.matchMedia(
-      '(prefers-color-scheme: dark)'
-    ).matches;
-    return prefersDark || metaScheme === 'dark' ? 'dark' : 'light';
-  }
+    console.log({ metaScheme });
 
-  private _initPrefersColorSchemeListener() {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    mq.addEventListener('change', (event) => {
-      const newColorScheme = event.matches ? 'dark' : 'light';
-      console.log({ newColorScheme });
-      this.darkTheme = newColorScheme;
-      this.requestUpdate();
-    });
+    // If metaScheme is 'light dark', it means auto mode is enabled
+    // In this case, we should check the system preference
+    if (metaScheme === 'light dark') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    }
+
+    // Otherwise, use the explicit theme setting
+    return metaScheme === 'dark' ? 'dark' : 'light';
   }
 
   override updated(changedProperties: Map<string, unknown>) {
@@ -254,20 +251,18 @@ export class BlockCodeView extends LitElement {
   private renderCopyButton() {
     if (!this.copyOptionVisible) return null;
     return html`
-      <div
-        class="code-view__copy-button"
-        ?disabled=${this._copyState.copied}
-        description=${ifDefined(this.copyButtonDescriptionAttr)}
-        @click=${this.copyCode}
-      >
-        <span slot="icon" class="copy-icon"
-          >${this._copyState.copied
-            ? unsafeSVG(checkmarkIcon)
-            : unsafeSVG(copyIcon)}</span
+      <span
+          >${
+            this._copyState.copied
+              ? unsafeSVG(checkmarkIcon)
+              : unsafeSVG(copyIcon)
+          }</span
         >
-        ${this._copyState.text
-          ? html`<span class="copy-text">${this._copyState.text}</span>`
-          : null}
+        ${
+          this._copyState.text
+            ? html`<span class="copy-text">${this._copyState.text}</span>`
+            : null
+        }
       </div>
     `;
   }

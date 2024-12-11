@@ -45,12 +45,25 @@ export class InlineCodeView extends LitElement {
   }
 
   private get _effectiveTheme(): 'light' | 'dark' {
+    this._initPrefersColorSchemeListener();
     if (this.darkTheme !== 'default') {
       return this.darkTheme;
     }
-    return this._colorSchemeMeta?.getAttribute('content') === 'dark'
-      ? 'dark'
-      : 'light';
+    const metaScheme = this._colorSchemeMeta?.getAttribute('content');
+    const prefersDark = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    ).matches;
+    return prefersDark || metaScheme === 'dark' ? 'dark' : 'light';
+  }
+
+  private _initPrefersColorSchemeListener() {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', (event) => {
+      const newColorScheme = event.matches ? 'dark' : 'light';
+      console.log({ newColorScheme });
+      this.darkTheme = newColorScheme;
+      this.requestUpdate();
+    });
   }
 
   override render() {
@@ -62,7 +75,8 @@ export class InlineCodeView extends LitElement {
           'shidoka-dark-syntax-theme': theme === 'dark',
           'shidoka-light-syntax-theme': theme === 'light',
         })}"
-        style="--inline-snippet-font-size: ${this.snippetFontSize};"
+        style="--inline-snippet-font-size: ${this
+          .snippetFontSize}; --color-scheme: ${theme};"
       >
         <slot></slot>
       </code>
