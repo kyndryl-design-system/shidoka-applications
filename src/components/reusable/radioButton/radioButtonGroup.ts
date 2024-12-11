@@ -90,10 +90,22 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
           : null}
 
         <div class="${this.horizontal ? 'horizontal' : ''}">
-          <slot></slot>
+          <slot @slotchange=${this._handleSlotChange}></slot>
         </div>
       </fieldset>
     `;
+  }
+
+  private _handleSlotChange() {
+    this._updateChildren();
+    this.requestUpdate();
+  }
+
+  private _updateChildren() {
+    this.radioButtons.forEach((radioButton) => {
+      radioButton.disabled = this.disabled;
+      radioButton.checked = this.value.includes(radioButton.value);
+    });
   }
 
   override willUpdate(changedProps: any) {
