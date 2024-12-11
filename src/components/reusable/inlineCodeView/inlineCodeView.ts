@@ -48,8 +48,9 @@ export class InlineCodeView extends LitElement {
     if (this.darkTheme !== 'default') {
       return this.darkTheme;
     }
-    const metaScheme = this._colorSchemeMeta?.getAttribute('content');
-    return metaScheme === 'dark' ? 'dark' : 'light';
+    return this._colorSchemeMeta?.getAttribute('content') === 'dark'
+      ? 'dark'
+      : 'light';
   }
 
   override render() {
@@ -61,8 +62,7 @@ export class InlineCodeView extends LitElement {
           'shidoka-dark-syntax-theme': theme === 'dark',
           'shidoka-light-syntax-theme': theme === 'light',
         })}"
-        style="--inline-snippet-font-size: ${this
-          .snippetFontSize}; --color-scheme: ${theme};"
+        style="--inline-snippet-font-size: ${this.snippetFontSize};"
       >
         <slot></slot>
       </code>

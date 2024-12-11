@@ -169,11 +169,25 @@ export class BlockCodeView extends LitElement {
   }
 
   private get _effectiveTheme(): 'light' | 'dark' {
+    this._initPrefersColorSchemeListener();
     if (this.darkTheme !== 'default') {
       return this.darkTheme;
     }
     const metaScheme = this._colorSchemeMeta?.getAttribute('content');
-    return metaScheme === 'dark' ? 'dark' : 'light';
+    const prefersDark = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    ).matches;
+    return prefersDark || metaScheme === 'dark' ? 'dark' : 'light';
+  }
+
+  private _initPrefersColorSchemeListener() {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', (event) => {
+      const newColorScheme = event.matches ? 'dark' : 'light';
+      console.log({ newColorScheme });
+      this.darkTheme = newColorScheme;
+      this.requestUpdate();
+    });
   }
 
   override updated(changedProperties: Map<string, unknown>) {
