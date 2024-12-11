@@ -142,16 +142,43 @@ export class BlockCodeView extends LitElement {
   @state()
   private _expandedHeight: number | null = null;
 
-  private _colorSchemeMeta: HTMLMetaElement | null = null;
+  private _colorSchemeObserver: MutationObserver | null = null;
 
-  constructor() {
-    super();
-    this._colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
+  override connectedCallback() {
+    super.connectedCallback();
+    this._observeColorScheme();
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this._colorSchemeObserver?.disconnect();
+  }
+
+  private _observeColorScheme() {
+    const meta = this._colorSchemeMeta;
+    if (meta) {
+      this._colorSchemeObserver = new MutationObserver(() => {
+        this.requestUpdate();
+      });
+      this._colorSchemeObserver.observe(meta, { attributes: true });
+    }
+  }
+
+  private get _colorSchemeMeta(): HTMLMetaElement | null {
+    return document.querySelector('meta[name="color-scheme"]');
+  }
+
+  private get _effectiveTheme(): 'light' | 'dark' {
+    if (this.darkTheme !== 'default') {
+      return this.darkTheme;
+    }
+    const metaScheme = this._colorSchemeMeta?.getAttribute('content');
+    return metaScheme === 'dark' ? 'dark' : 'light';
   }
 
   override updated(changedProperties: Map<string, unknown>) {
     if (changedProperties.has('darkTheme')) {
-      this._syncColorScheme();
+      this.requestUpdate();
     }
 
     if (
@@ -169,44 +196,18 @@ export class BlockCodeView extends LitElement {
     super.updated(changedProperties);
   }
 
-  private _syncColorScheme() {
-    if (this.darkTheme === 'default') {
-      if (this._colorSchemeMeta) {
-        const scheme = this._colorSchemeMeta.getAttribute('content');
-        if (scheme !== 'light' && scheme !== 'dark') {
-          console.warn('Invalid color-scheme value:', scheme);
-        }
-      }
-    } else {
-      if (this._colorSchemeMeta) {
-        this._colorSchemeMeta.setAttribute('content', this.darkTheme);
-      } else {
-        this._colorSchemeMeta = document.createElement('meta');
-        this._colorSchemeMeta.setAttribute('name', 'color-scheme');
-        this._colorSchemeMeta.setAttribute('content', this.darkTheme);
-        document.head.appendChild(this._colorSchemeMeta);
-      }
-    }
-  }
-
-  private get _effectiveTheme(): 'light' | 'dark' {
-    if (this.darkTheme !== 'default') {
-      return this.darkTheme;
-    }
-    return this._colorSchemeMeta?.getAttribute('content') === 'dark'
-      ? 'dark'
-      : 'light';
-  }
-
   override render() {
+    const theme = this._effectiveTheme;
+    const containerStyle = `${this.getContainerStyle()}; --color-scheme: ${theme};`;
+
     return html`
       ${this.codeViewLabel
         ? html`<div class="code-view__label">
             <label>${this.codeViewLabel}</label>
           </div>`
         : null}
-      <div class="${this.getContainerClasses()}">
-        <div class="code-snippet-wrapper" style=${this.getContainerStyle()}>
+      <div class="${this.getContainerClasses()}" style="${containerStyle}">
+        <div class="code-snippet-wrapper">
           <pre
             @keydown=${this.handleKeypress}
             role="region"
@@ -221,6 +222,7 @@ export class BlockCodeView extends LitElement {
   }
 
   private getContainerClasses() {
+    const theme = this._effectiveTheme;
     return classMap({
       'code-view__container': true,
       'single-line': this._isSingleLine,
@@ -228,8 +230,8 @@ export class BlockCodeView extends LitElement {
       'copy-button-text-true':
         this.copyButtonText && this.copyButtonText.length > 0,
       'copy-button-text-false': !this.copyButtonText,
-      'shidoka-dark-syntax-theme': this._effectiveTheme === 'dark',
-      'shidoka-light-syntax-theme': this._effectiveTheme === 'light',
+      'shidoka-dark-syntax-theme': theme === 'dark',
+      'shidoka-light-syntax-theme': theme === 'light',
       'expanded-code-view': this.codeExpanded,
       'has-overflow': this.hasOverflow,
     });
@@ -461,10 +463,10 @@ export class BlockCodeView extends LitElement {
   private getContainerStyle(): string {
     if (this.codeExpanded) {
       return this._expandedHeight
-        ? `max-height: ${this._expandedHeight}px;`
+        ? `max-height: ${this._expandedHeight}px`
         : '';
     }
-    return this.maxHeight !== null ? `max-height: ${this.maxHeight}px;` : '';
+    return this.maxHeight !== null ? `max-height: ${this.maxHeight}px` : '';
   }
 
   private expandCodeView() {

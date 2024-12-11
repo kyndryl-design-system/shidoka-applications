@@ -18,26 +18,26 @@ export class InlineCodeView extends LitElement {
   @property({ type: Number })
   snippetFontSize = 14;
 
-  override render() {
-    return html`
-      <code
-        class="${classMap({
-          'inline-code-view': true,
-          'shidoka-dark-syntax-theme': this._effectiveTheme === 'dark',
-          'shidoka-light-syntax-theme': this._effectiveTheme === 'light',
-        })}"
-        style="--inline-snippet-font-size: ${this.snippetFontSize};"
-      >
-        <slot></slot>
-      </code>
-    `;
+  private _colorSchemeObserver: MutationObserver | null = null;
+
+  override connectedCallback() {
+    super.connectedCallback();
+    this._observeColorScheme();
   }
 
-  override updated(changedProperties: Map<string, unknown>) {
-    if (changedProperties.has('darkTheme')) {
-      this._syncColorScheme();
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this._colorSchemeObserver?.disconnect();
+  }
+
+  private _observeColorScheme() {
+    const meta = this._colorSchemeMeta;
+    if (meta) {
+      this._colorSchemeObserver = new MutationObserver(() => {
+        this.requestUpdate();
+      });
+      this._colorSchemeObserver.observe(meta, { attributes: true });
     }
-    super.updated(changedProperties);
   }
 
   private get _colorSchemeMeta(): HTMLMetaElement | null {
@@ -48,34 +48,24 @@ export class InlineCodeView extends LitElement {
     if (this.darkTheme !== 'default') {
       return this.darkTheme;
     }
-    return this._colorSchemeMeta?.getAttribute('content') === 'dark'
-      ? 'dark'
-      : 'light';
+    const metaScheme = this._colorSchemeMeta?.getAttribute('content');
+    return metaScheme === 'dark' ? 'dark' : 'light';
   }
 
-  private _syncColorScheme() {
-    if (this.darkTheme === 'default') {
-      if (this._colorSchemeMeta) {
-        const scheme = this._colorSchemeMeta.getAttribute('content');
-        if (scheme !== 'light' && scheme !== 'dark') {
-          console.warn('Invalid color-scheme value:', scheme);
-        }
-      }
-    } else {
-      if (this._colorSchemeMeta) {
-        this._colorSchemeMeta.setAttribute('content', this.darkTheme);
-      } else {
-        const meta = document.createElement('meta');
-        meta.setAttribute('name', 'color-scheme');
-        meta.setAttribute('content', this.darkTheme);
-        document.head.appendChild(meta);
-      }
-    }
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'kyn-inline-code-view': InlineCodeView;
+  override render() {
+    const theme = this._effectiveTheme;
+    return html`
+      <code
+        class="${classMap({
+          'inline-code-view': true,
+          'shidoka-dark-syntax-theme': theme === 'dark',
+          'shidoka-light-syntax-theme': theme === 'light',
+        })}"
+        style="--inline-snippet-font-size: ${this
+          .snippetFontSize}; --color-scheme: ${theme};"
+      >
+        <slot></slot>
+      </code>
+    `;
   }
 }
