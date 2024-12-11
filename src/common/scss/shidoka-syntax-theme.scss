@@ -41,19 +41,6 @@
         background: inherit;
     }
 
-    .code-view__copy-button .copy-text,
-    .code-view__copy-button .copy-icon,
-    .code-view__expand-button .expand-icon {
-        fill: var(--kd-color-code-view-default);
-        color: var(--kd-color-code-view-default);
-    }
-
-    .code-view__copy-button:disabled:hover .copy-text,
-    .code-view__copy-button:disabled:hover .copy-icon {
-        fill: var(--kd-color-code-view-default);
-        color: var(--kd-color-code-view-default);
-    }
-
     @media print {
 
         code[class*="language-"],
@@ -282,6 +269,73 @@
 
     .code-snippet-wrapper {
         background: var(--kd-color-code-view-background);
+    }
+
+    .code-view__copy-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+
+        .copy-icon,
+        .copy-text {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            fill: var(--kd-color-text-link-level-default);
+            color: var(--kd-color-text-link-level-default);
+        }
+
+        &.icon-only {
+            padding: 8px;
+            min-width: unset;
+        }
+
+        &:not([disabled]) {
+            &:hover {
+
+                .copy-icon,
+                .copy-text {
+                    fill: var(--kd-color-text-link-level-hover);
+                    color: var(--kd-color-text-link-level-hover);
+                }
+            }
+        }
+
+        .copy-text {
+            margin-left: 8px;
+        }
+
+        &[disabled] {
+            cursor: not-allowed;
+
+            .copy-icon,
+            .copy-text {
+                fill: var(--kd-color-text-variant-eyebrow);
+                color: var(--kd-color-text-variant-eyebrow);
+            }
+        }
+    }
+
+    .code-view__expand-button {
+        &:hover {
+            .expand-icon {
+                fill: var(--kd-color-text-variant-eyebrow);
+                color: var(--kd-color-text-variant-eyebrow);
+            }
+        }
+
+        .expand-icon {
+            fill: var(--kd-color-text-link-level-tertiary);
+            color: var(--kd-color-text-link-level-tertiary);
+        }
+    }
+
+
+    .code-view__copy-button:disabled:hover .copy-text,
+    .code-view__copy-button:disabled:hover .copy-icon {
+        fill: var(--kd-color-text-link-level-default);
+        color: var(--kd-color-text-link-level-default);
     }
 
     .code-snippet-wrapper pre::selection,
