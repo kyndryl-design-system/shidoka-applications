@@ -60,7 +60,6 @@ export class InlineCodeView extends LitElement {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
     mq.addEventListener('change', (event) => {
       const newColorScheme = event.matches ? 'dark' : 'light';
-      console.log({ newColorScheme });
       this.darkTheme = newColorScheme;
       this.requestUpdate();
     });

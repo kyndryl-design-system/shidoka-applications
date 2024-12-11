@@ -2,6 +2,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { deepmerge } from 'deepmerge-ts';
 
@@ -145,6 +146,7 @@ export class BlockCodeView extends LitElement {
 
   override connectedCallback() {
     super.connectedCallback();
+    this._initPrefersColorSchemeListener();
     this._observeColorScheme();
   }
 
@@ -172,18 +174,17 @@ export class BlockCodeView extends LitElement {
       return this.darkTheme;
     }
     const metaScheme = this._colorSchemeMeta?.getAttribute('content');
-    console.log({ metaScheme });
+    const prefersDark = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    ).matches;
+    return prefersDark || metaScheme === 'dark' ? 'dark' : 'light';
+  }
 
-    // If metaScheme is 'light dark', it means auto mode is enabled
-    // In this case, we should check the system preference
-    if (metaScheme === 'light dark') {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light';
-    }
-
-    // Otherwise, use the explicit theme setting
-    return metaScheme === 'dark' ? 'dark' : 'light';
+  private _initPrefersColorSchemeListener() {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', () => {
+      this.requestUpdate();
+    });
   }
 
   override updated(changedProperties: Map<string, unknown>) {
@@ -250,18 +251,20 @@ export class BlockCodeView extends LitElement {
   private renderCopyButton() {
     if (!this.copyOptionVisible) return null;
     return html`
-      <span
-          >${
-            this._copyState.copied
-              ? unsafeSVG(checkmarkIcon)
-              : unsafeSVG(copyIcon)
-          }</span
+      <div
+        class="code-view__copy-button"
+        ?disabled=${this._copyState.copied}
+        description=${ifDefined(this.copyButtonDescriptionAttr)}
+        @click=${this.copyCode}
+      >
+        <span slot="icon" class="copy-icon"
+          >${this._copyState.copied
+            ? unsafeSVG(checkmarkIcon)
+            : unsafeSVG(copyIcon)}</span
         >
-        ${
-          this._copyState.text
-            ? html`<span class="copy-text">${this._copyState.text}</span>`
-            : null
-        }
+        ${this._copyState.text
+          ? html`<span class="copy-text">${this._copyState.text}</span>`
+          : null}
       </div>
     `;
   }
