@@ -47,6 +47,7 @@ const Template = (args) => {
               ? 'last-item'
               : ''}"
             shape=${args.shape}
+            size=${args.size || ''}
             ?inline=${args.inline}
             width=${args.width || ''}
             height=${args.height || ''}
@@ -72,15 +73,15 @@ Block.args = {
   shape: 'rectangle',
   lines: 1,
   inline: false,
-  height: '128px',
   shade: 'light',
+
+  width: '100%',
 };
 
 export const Inline = Template.bind({});
 Inline.args = {
   ...Block.args,
   inline: true,
-  height: '', // Reset height for inline variant
 };
 
 export const MultiBlock = Template.bind({});
@@ -96,7 +97,8 @@ MultiInline.args = {
   shape: 'rectangle',
   lines: 2,
   inline: true,
-  height: '', // Reset height for inline variant
+  size: 'medium',
+  width: '100%',
 };
 
 const CustomTemplate = () => html`
@@ -136,12 +138,12 @@ export const CustomShapeAndSizing = CustomTemplate.bind({});
 CustomShapeAndSizing.storyName = 'Custom Shape and Sizing';
 
 const SizesTemplate = () => html`
-  <div style="display: flex; gap: 16px; align-items: center;">
+  <div style="display: flex; gap: 16px; align-items: top;">
     <kyn-skeleton shape="rectangle" size="small"></kyn-skeleton>
     <kyn-skeleton shape="rectangle" size="medium"></kyn-skeleton>
     <kyn-skeleton shape="rectangle" size="large"></kyn-skeleton>
   </div>
-  <div style="display: flex; gap: 16px; align-items: center; margin-top: 16px;">
+  <div style="display: flex; gap: 16px; align-items: top; margin-top: 24px;">
     <kyn-skeleton shape="circle" size="small"></kyn-skeleton>
     <kyn-skeleton shape="circle" size="medium"></kyn-skeleton>
     <kyn-skeleton shape="circle" size="large"></kyn-skeleton>
