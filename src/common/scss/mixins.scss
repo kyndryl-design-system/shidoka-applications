@@ -7,3 +7,33 @@
   white-space: nowrap;
   width: 1px;
 }
+
+@mixin close-icon-btn($top: 32px, $right: 32px) {
+  tab-size: 2;
+  position: absolute;
+  top: $top;
+  right: $right;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  color: var(--kd-color-icon-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  border: 1px solid transparent;
+
+  &:hover {
+    background: var(--kd-color-background-ui-hollow-hover);
+  }
+
+  &:active,
+  &:focus {
+    background: var(--kd-color-background-ui-hollow-hover);
+    border: 1px solid var(--kd-color-border-ui-pressed);
+  }
+
+  span {
+    display: flex;
+  }
+}

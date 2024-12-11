@@ -1,4 +1,5 @@
 @use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
@@ -6,25 +7,21 @@
   display: inline-block;
 }
 
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+.close-drawer-label {
+  @include mixins.visually-hidden;
+}
+
+.close-icon-btn {
+  @include mixins.close-icon-btn();
 }
 
 dialog {
   margin: 0;
   padding: 0;
   color: inherit;
-  background: var(--kd-color-background-container-default);
+  background: var(--kd-color-background-accent-subtle);
   border: none;
-  box-shadow: var(--kd-elevation-level-3);
+  box-shadow: var(--kd-elevation-level-4);
   top: 0;
   right: 0;
   left: auto;
@@ -96,17 +93,6 @@ form {
   margin-right: 32px;
 }
 
-.close {
-  position: absolute;
-  top: 32px;
-  right: 32px;
-  color: var(--kd-color-text-primary);
-
-  span {
-    display: flex;
-  }
-}
-
 .label {
   @include typography.type-ui-02;
   color: var(--kd-color-text-level-secondary);
@@ -176,7 +162,6 @@ h1 {
       transform: none;
 
       &::backdrop {
-        background: var(--kd-color-background-opacity-4);
         backdrop-filter: var(--kd-background-blur-medium);
       }
     }
