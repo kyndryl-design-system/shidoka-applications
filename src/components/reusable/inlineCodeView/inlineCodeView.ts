@@ -23,6 +23,7 @@ export class InlineCodeView extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
     this._observeColorScheme();
+    this._initPrefersColorSchemeListener();
   }
 
   override disconnectedCallback() {
@@ -45,22 +46,28 @@ export class InlineCodeView extends LitElement {
   }
 
   private get _effectiveTheme(): 'light' | 'dark' {
-    this._initPrefersColorSchemeListener();
+    // 1. use darkTheme if explicitly set
     if (this.darkTheme !== 'default') {
       return this.darkTheme;
     }
+
     const metaScheme = this._colorSchemeMeta?.getAttribute('content');
-    const prefersDark = window.matchMedia(
-      '(prefers-color-scheme: dark)'
-    ).matches;
-    return prefersDark || metaScheme === 'dark' ? 'dark' : 'light';
+    // 2. use meta color-scheme if explicitly set to light or dark
+    if (metaScheme === 'light' || metaScheme === 'dark') {
+      return metaScheme;
+    }
+
+    // 3. default to system preference
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
   }
 
   private _initPrefersColorSchemeListener() {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
     mq.addEventListener('change', (event) => {
       const newColorScheme = event.matches ? 'dark' : 'light';
-      this.darkTheme = newColorScheme;
+      console.log({ newColorScheme });
       this.requestUpdate();
     });
   }
