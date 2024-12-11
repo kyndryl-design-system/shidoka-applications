@@ -17,11 +17,13 @@ export const RadioButton = {
   args: {
     unnamed: 'Label',
     value: 'example',
+    disabled: false,
   },
   render: (args) => {
     return html`
       <kyn-radio-button
         value=${args.value}
+        ?disabled=${args.disabled}
         @on-radio-change=${(e) => action(e.type)(e)}
       >
         ${args.unnamed}
