@@ -98,7 +98,6 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
 
   private _handleSlotChange() {
     this._updateChildren();
-    this.requestUpdate();
   }
 
   private _updateChildren() {
