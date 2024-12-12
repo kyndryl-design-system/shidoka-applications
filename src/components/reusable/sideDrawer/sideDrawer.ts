@@ -136,15 +136,24 @@ export class SideDrawer extends LitElement {
             </div>
 
             <button
-              class="close"
+              class="close-icon-btn"
               @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
+              aria-label="Close drawer"
+              title="Close drawer"
+              role="button"
             >
-              <span>${unsafeSVG(closeIcon)}</span>
+              <span class="close-drawer-label">Close drawer</span>
+              <span aria-hidden="true">${unsafeSVG(closeIcon)}</span>
             </button>
           </header>
 
           <!-- Body -->
-          <div class="body">
+          <div
+            class="body"
+            tabindex="0"
+            role="region"
+            aria-label="${this.titleText} content"
+          >
             <slot></slot>
           </div>
 
