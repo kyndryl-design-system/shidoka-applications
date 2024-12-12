@@ -9,6 +9,7 @@
 .search {
   display: flex;
   position: relative;
+  background: var(--kd-color-background-forms-secondary);
 }
 
 kd-button {
@@ -46,6 +47,7 @@ kyn-text-input {
   transform-origin: top;
   opacity: 0;
   z-index: -1;
+  background-color: var(--kd-color-background-forms-secondary);
 
   .focused.has-value &,
   &:focus {
@@ -59,11 +61,13 @@ kyn-text-input {
     padding: 16px;
     cursor: pointer;
     transition: background-color 150ms ease-out;
-    background-color: var(--kd-color-background-ui-default);
+    color: var(--kd-color-text-level-primary);
 
     &:hover,
     &[highlighted] {
-      background-color: var(--kd-color-background-inverse-hover);
+      background-color: var(
+        --kd-color-background-inverse-hover
+      ); // check with UX
     }
   }
 }
