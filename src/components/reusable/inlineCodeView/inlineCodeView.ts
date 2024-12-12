@@ -18,69 +18,16 @@ export class InlineCodeView extends LitElement {
   @property({ type: Number })
   snippetFontSize = 14;
 
-  private _colorSchemeObserver: MutationObserver | null = null;
-
-  override connectedCallback() {
-    super.connectedCallback();
-    this._observeColorScheme();
-    this._initPrefersColorSchemeListener();
-  }
-
-  override disconnectedCallback() {
-    super.disconnectedCallback();
-    this._colorSchemeObserver?.disconnect();
-  }
-
-  private _observeColorScheme() {
-    const meta = this._colorSchemeMeta;
-    if (meta) {
-      this._colorSchemeObserver = new MutationObserver(() => {
-        this.requestUpdate();
-      });
-      this._colorSchemeObserver.observe(meta, { attributes: true });
-    }
-  }
-
-  private get _colorSchemeMeta(): HTMLMetaElement | null {
-    return document.querySelector('meta[name="color-scheme"]');
-  }
-
-  private get _effectiveTheme(): 'light' | 'dark' {
-    // 1. use darkTheme if explicitly set
-    if (this.darkTheme !== 'default') {
-      return this.darkTheme;
-    }
-
-    const metaScheme = this._colorSchemeMeta?.getAttribute('content');
-    // 2. use meta color-scheme if explicitly set to light or dark
-    if (metaScheme === 'light' || metaScheme === 'dark') {
-      return metaScheme;
-    }
-
-    // 3. default to system preference
-    return window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light';
-  }
-
-  private _initPrefersColorSchemeListener() {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    mq.addEventListener('change', () => {
-      this.requestUpdate();
-    });
-  }
-
   override render() {
-    const theme = this._effectiveTheme;
     return html`
       <code
         class="${classMap({
           'inline-code-view': true,
-          'shidoka-dark-syntax-theme': theme === 'dark',
-          'shidoka-light-syntax-theme': theme === 'light',
+          'shidoka-syntax-theme': true,
+          'shidoka-syntax-theme--dark': this.darkTheme === 'dark',
+          'shidoka-syntax-theme--light': this.darkTheme === 'light',
         })}"
-        style="--inline-snippet-font-size: ${this
-          .snippetFontSize}; --color-scheme: ${theme};"
+        style="--inline-snippet-font-size: ${this.snippetFontSize};"
       >
         <slot></slot>
       </code>

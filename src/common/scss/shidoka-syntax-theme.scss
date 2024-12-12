@@ -4,11 +4,17 @@
  * @author Hsu Ka An
  */
 
-.shidoka-dark-syntax-theme,
-.shidoka-light-syntax-theme {
+.shidoka-syntax-theme {
     background: var(--kd-color-code-view-background);
-    color-scheme: var(--color-scheme, light);
     font-weight: 500;
+
+    &--dark {
+        color-scheme: dark;
+    }
+
+    &--light {
+        color-scheme: light;
+    }
 
     code[class*="language-"],
     pre[class*="language-"] {
@@ -220,8 +226,7 @@
         pre {
             background: var(--kd-color-code-view-background) !important;
 
-            scrollbar-color: light-dark(rgba(0, 0, 0, 0.3) rgba(255, 255, 255, 0.1),
-                    rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1));
+            scrollbar-color: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3)) light-dark(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
 
             &::-webkit-scrollbar {
                 width: 8px;
@@ -245,8 +250,7 @@
 
     &.multi-line .code-snippet-wrapper {
         pre {
-            scrollbar-color: light-dark(rgba(0, 0, 0, 0.3) rgba(255, 255, 255, 0.1),
-                    rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1));
+            scrollbar-color: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3)) light-dark(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
 
             &::-webkit-scrollbar {
                 width: 8px;
@@ -331,7 +335,6 @@
             color: var(--kd-color-text-link-level-tertiary);
         }
     }
-
 
     .code-view__copy-button:disabled:hover .copy-text,
     .code-view__copy-button:disabled:hover .copy-icon {

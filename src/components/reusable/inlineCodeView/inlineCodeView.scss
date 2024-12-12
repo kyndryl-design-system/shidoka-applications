@@ -4,7 +4,7 @@
     display: inline-block;
 }
 
-code {
+.inline-code-view {
     line-height: 1.5;
     word-break: break-word;
     vertical-align: text-bottom;
@@ -14,11 +14,20 @@ code {
     font-size: max(calc(var(--inline-snippet-font-size, 14) * 1px), 14px);
     border-radius: 2px;
     background: var(--kd-color-code-view-background);
-    color-scheme: var(--color-scheme, light);
     color: var(--kd-color-code-view-default);
 
     &::selection {
-        background-color: var(--kd-color-code-view-background);
+        background-color: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3));
         color: inherit;
+    }
+}
+
+.shidoka-syntax-theme {
+    &--dark {
+        color-scheme: dark;
+    }
+
+    &--light {
+        color-scheme: light;
     }
 }
