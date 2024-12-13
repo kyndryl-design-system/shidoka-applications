@@ -5,18 +5,26 @@
   display: table-row;
   vertical-align: middle;
 }
+
 :host(:hover) {
-  background-color: var(--kd-color-background-inverse-hover) !important;
+  background-color: var(--kd-color-background-table-row-active) !important;
   transition: background-color 200ms ease-out;
 }
 
 :host([selected]:not([disabled]):not([preventHighlight])),
 :host([checkboxselection]:hover:not([disabled])) {
-  background-color: var(--kd-color-background-inverse-hover) !important;
+  background-color: var(--kd-color-background-table-alt-row) !important;
 }
 
 .kyn--table-expand__button {
   --kd-color-text-tertiary: var(--kd-color-text-primary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background: transparent;
+  }
 }
 
 .kyn--table-expand__button span[slot='icon'] {
@@ -33,13 +41,15 @@
 }
 
 :host([locked]) {
+
   kyn-td,
   ::slotted(kyn-td) {
-    border-bottom: 1px solid var(--kd-color-border-primary);
+    border-bottom: 1px solid var(--kd-color-border-variants-light);
   }
 }
 
 :host([unread]) {
+  // TODO: check color tertiary tokens
   box-shadow: 4px 0 0 0 var(--kd-color-text-eyebrow) inset;
 }
 

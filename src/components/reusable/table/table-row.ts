@@ -261,9 +261,8 @@ export class TableRow extends LitElement {
         ? html`
             <kyn-td .align=${'center'} ?dense=${this.dense}>
               <div class="kyn--table-expand">
-                <kd-button
+                <button
                   class="kyn--table-expand__button"
-                  kind="tertiary"
                   type="button"
                   ?disabled=${this.disabled}
                   size="small"
@@ -272,7 +271,7 @@ export class TableRow extends LitElement {
                   @on-click=${this._handleExpanding}
                 >
                   <span slot="icon">${unsafeSVG(chevronDownIcon)}</span>
-                </kd-button>
+                </button>
               </div>
 
               <div
