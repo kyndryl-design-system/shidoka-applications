@@ -267,7 +267,12 @@ export class TableRow extends LitElement {
                   ?disabled=${this.disabled}
                   size="small"
                   iconPosition="center"
-                  description="Expand row"
+                  title=${this.expanded
+                    ? this._textStrings.expanded
+                    : this._textStrings.collapsed}
+                  aria-label=${this.expanded
+                    ? this._textStrings.expanded
+                    : this._textStrings.collapsed}
                   @on-click=${this._handleExpanding}
                 >
                   <span slot="icon">${unsafeSVG(chevronDownIcon)}</span>
