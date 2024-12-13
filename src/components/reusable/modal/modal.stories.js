@@ -55,6 +55,7 @@ export const Modal = {
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
         ?hideFooter=${args.hideFooter}
+        ?hideCancelButton=${args.hideCancelButton}
         @on-close=${(e) => action(e.type)(e)}
       >
         <kd-button slot="anchor"> Open Modal </kd-button>
@@ -108,6 +109,7 @@ export const BeforeClose = {
         cancelText=${args.cancelText}
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
+        ?hideCancelButton=${args.hideCancelButton}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
       >
