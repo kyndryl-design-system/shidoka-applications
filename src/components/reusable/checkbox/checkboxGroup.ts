@@ -332,6 +332,10 @@ export class CheckboxGroup extends FormMixin(LitElement) {
       } else {
         this.value = [];
       }
+
+      this.checkboxes.forEach((checkbox: any) => {
+        checkbox.indeterminate = false;
+      });
     } else {
       const newValues = [...this.value];
       if (newValues.includes(value)) {
