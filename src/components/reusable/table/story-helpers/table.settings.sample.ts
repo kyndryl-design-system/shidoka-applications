@@ -4,14 +4,17 @@ import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
-import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/search.svg';
 
+import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/search.svg';
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
+
 import '../index';
 import './column-setting.sample';
 import '../../sideDrawer';
 import '../../textInput';
 import { dataForColumns as rows } from './ultils.sample';
+
+import '../../../../common/scss/global.scss';
 
 @customElement('story-table-settings')
 class StoryTableSettings extends LitElement {
@@ -41,7 +44,7 @@ class StoryTableSettings extends LitElement {
       box-shadow: 0px 2px 8px rgba(61, 60, 60, 0.25);
     }
     kyn-table.first-col-locked kyn-td:first-child {
-      background-color: white;
+      background-color: var(--kd-color-background-table-row);
     }
     kyn-global-filter kyn-side-drawer::part(drawer-dialog) {
       overflow-y: hidden;
