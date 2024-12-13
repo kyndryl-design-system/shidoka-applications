@@ -42,6 +42,7 @@ class StoryTableSettings extends LitElement {
       left: 0;
       z-index: 3; /* To make sure the sticky cells stay on top of others */
       box-shadow: 0px 2px 8px rgba(61, 60, 60, 0.25);
+      border-right-color: transparent;
     }
     kyn-table.first-col-locked kyn-td:first-child {
       background-color: var(--kd-color-background-table-row);
