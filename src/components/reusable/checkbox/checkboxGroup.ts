@@ -7,7 +7,7 @@ import CheckboxGroupScss from './checkboxGroup.scss';
 
 import '../textInput';
 import './checkbox';
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information-filled.svg';
 
 const _defaultTextStrings = {
   selectAll: 'Select all',
