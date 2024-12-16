@@ -4,7 +4,7 @@
 $checkbox-mask: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEwIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTMuNSA1Ljg1NTQ3TDkgLTIuMDMwNjNlLTA2TDEwIDEuMDY0NjNMMy40ODU2NiA4TDAgNC4yODkwNkwxLjAxNDM0IDMuMjA5MTZMMy41IDUuODU1NDdaIiBmaWxsPSIjMDAwIi8+DQo8L3N2Zz4=');
 
 $main-checkbox-background: var(--kd-color-background-ui-default-secondary);
-$invalid-checkbox-background: var(--kd-color-background-button-primary-destructive-default);
+$invalid-checkbox-background: var(--kd-color-status-error-dark);
 
 :host {
   display: block;
@@ -203,8 +203,8 @@ input[type='checkbox']:indeterminate:disabled {
   }
 }
 
-input[type='checkbox'][invalid]:not[disabled] {
-  border-color: var(--kd-color-status-error-dark);
+input[type='checkbox'][invalid] {
+  border-color: $invalid-checkbox-background;
 
   &:not([disabled]):checked,
   &:not([disabled]):indeterminate {
@@ -219,6 +219,7 @@ input[type='checkbox'][invalid]:not[disabled] {
     &:active {
       background: var(--kd-color-background-button-primary-destructive-pressed);
       border-color: var(--kd-color-background-button-primary-destructive-pressed);
+      outline-color: var(--kd-color-background-button-primary-destructive-pressed);
     }
   }
 
@@ -228,17 +229,14 @@ input[type='checkbox'][invalid]:not[disabled] {
   }
 
   &:focus {
-    border-color: var(--kd-color-status-error-dark);
-    outline-color: transparent;
-
-    &:hover {
-      border-color: transparent;
-    }
+    border-color: $invalid-checkbox-background;
+    outline-color: $invalid-checkbox-background;
   }
 
   &:active {
     background: var(--kd-color-background-button-primary-destructive-pressed);
     border-color: var(--kd-color-background-button-primary-destructive-pressed);
+    outline-color: var(--kd-color-background-button-primary-destructive-pressed);
   }
 }
 
