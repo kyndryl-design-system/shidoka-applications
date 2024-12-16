@@ -143,7 +143,11 @@ export class TextInput extends FormMixin(LitElement) {
           })}"
         >
           <span class="context-icon">
-            <slot name="icon"></slot>
+            ${!this.iconRight
+              ? html` <slot name="icon"></slot> `
+              : html`${this.iconRight && this.value === ''
+                  ? html` <slot name="icon"></slot> `
+                  : null}`}
           </span>
 
           <input
