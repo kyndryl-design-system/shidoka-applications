@@ -79,8 +79,6 @@ export class RadioButton extends LitElement {
 
     this.checked = input.checked;
 
-    console.log('clicked: ', input);
-
     const event = new CustomEvent('on-radio-change', {
       bubbles: true,
       composed: true,
