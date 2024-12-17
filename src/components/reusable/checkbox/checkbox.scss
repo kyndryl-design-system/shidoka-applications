@@ -206,25 +206,48 @@ input[type='checkbox']:indeterminate:disabled {
 input[type='checkbox'][invalid] {
   border-color: $invalid-checkbox-background;
 
-  &:not([disabled]):checked,
-  &:not([disabled]):indeterminate {
-    background: $invalid-checkbox-background;
-    border-color: transparent;
+  &:not([disabled]) {
 
-    &:hover {
-      background: var(--kd-color-background-button-primary-destructive-hover);
-      border-color: var(--kd-color-background-button-primary-destructive-hover);
-    }
+    &:checked,
+    &:indeterminate {
+      background: $invalid-checkbox-background;
+      border-color: transparent;
 
-    &:active {
-      background: var(--kd-color-background-button-primary-destructive-pressed);
-      border-color: var(--kd-color-background-button-primary-destructive-pressed);
-      outline-color: var(--kd-color-background-button-primary-destructive-pressed);
+      &:hover {
+        background: var(--kd-color-background-button-primary-destructive-hover);
+        border-color: var(--kd-color-background-button-primary-destructive-hover);
+      }
+
+      &:active {
+        background: var(--kd-color-background-button-primary-destructive-pressed);
+        border-color: var(--kd-color-background-button-primary-destructive-pressed);
+        outline-color: var(--kd-color-background-button-primary-destructive-pressed);
+      }
     }
   }
 
   &[disabled] {
     border-color: var(--kd-color-border-ui-disabled);
+
+    &:hover {
+      border-color: var(--kd-color-border-ui-disabled);
+    }
+
+    &[checked] {
+      border-color: transparent;
+
+      &:hover {
+        border-color: transparent;
+        background: var(--kd-color-background-ui-default-disabled);
+      }
+    }
+
+    &:active,
+    &:focus {
+      background-color: transparent;
+      border-color: var(--kd-color-border-ui-disabled);
+      outline-color: transparent;
+    }
   }
 
   &:hover {
