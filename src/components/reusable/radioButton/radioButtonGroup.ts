@@ -96,10 +96,24 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
           : null}
 
         <div class="${this.horizontal ? 'horizontal' : ''}">
-          <slot></slot>
+          <slot @slotchange=${this._handleSlotChange}></slot>
         </div>
       </fieldset>
     `;
+  }
+
+  private _handleSlotChange() {
+    this._updateChildren();
+  }
+
+  private _updateChildren() {
+    this.radioButtons.forEach((radio) => {
+      radio.disabled = this.disabled;
+      radio.checked = radio.value === this.value;
+      radio.name = this.name;
+      radio.required = this.required;
+      radio.invalid = this._isInvalid;
+    });
   }
 
   override willUpdate(changedProps: any) {
@@ -109,48 +123,17 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
   }
 
   override updated(changedProps: any) {
-    // preserve FormMixin updated function
     this._onUpdated(changedProps);
 
-    if (changedProps.has('name')) {
-      // set name for each radio button
-      this.radioButtons.forEach((radio: any) => {
-        radio.name = this.name;
-      });
-    }
-
-    if (changedProps.has('value')) {
-      // set checked state for each radio button
-      this.radioButtons.forEach((radio: any) => {
-        radio.checked = radio.value === this.value;
-      });
-    }
-
-    if (changedProps.has('required')) {
-      // set required for each radio button
-      this.radioButtons.forEach((radio: any) => {
-        radio.required = this.required;
-      });
-    }
-
     if (
-      changedProps.has('disabled') &&
-      changedProps.get('disabled') !== undefined
-    ) {
-      // set disabled for each radio button
-      this.radioButtons.forEach((radio: any) => {
-        radio.disabled = this.disabled;
-      });
-    }
-
-    if (
+      changedProps.has('value') ||
+      changedProps.has('name') ||
+      changedProps.has('required') ||
+      changedProps.has('disabled') ||
       changedProps.has('invalidText') ||
       changedProps.has('internalValidationMsg')
     ) {
-      // set invalid state for each radio button
-      this.radioButtons.forEach((radio: any) => {
-        radio.invalid = this._isInvalid;
-      });
+      this._updateChildren();
     }
   }
 
