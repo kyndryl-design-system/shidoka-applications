@@ -82,17 +82,17 @@ textarea {
     color: var(--kd-color-text-variant-placeholder);
   }
 
-  &[invalid] {
-    border-color: var(--kd-color-status-error-dark);
-  }
-
-  &[disabled] {
-    color: var(--kd-color-text-link-level-disabled);
+  input[disabled] {
+    background: var(--kd-color-background-ui-hollow-default);
     border-color: var(--kd-color-border-ui-disabled);
 
     &[invalid] {
-      border-color: var(--kd-color-status-error-dark);
+      border-color: var(--kd-color-border-ui-disabled);
     }
+  }
+
+  input:not([disabled])[invalid] {
+    border-color: var(--kd-color-status-error-dark);
   }
 }
 
