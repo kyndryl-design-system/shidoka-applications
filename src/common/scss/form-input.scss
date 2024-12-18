@@ -26,7 +26,7 @@
   color: var(--kd-color-status-error-dark);
 
   [disabled] & {
-    color: var(--kd-color-text-level-primary);
+    color: var(--kd-color-status-error-dark);
   }
 }
 
@@ -82,17 +82,17 @@ textarea {
     color: var(--kd-color-text-variant-placeholder);
   }
 
-  &[invalid] {
-    border-color: var(--kd-color-status-error-dark);
-  }
-
-  &[disabled] {
-    color: var(--kd-color-text-link-level-disabled);
+  input[disabled] {
+    background: var(--kd-color-background-ui-hollow-default);
     border-color: var(--kd-color-border-ui-disabled);
 
     &[invalid] {
-      border-color: var(--kd-color-status-error-dark);
+      border-color: var(--kd-color-border-ui-disabled);
     }
+  }
+
+  input:not([disabled])[invalid] {
+    border-color: var(--kd-color-status-error-dark);
   }
 }
 
@@ -111,7 +111,7 @@ textarea {
   }
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
   }
 
   span svg {
@@ -120,13 +120,11 @@ textarea {
   }
 }
 
-
-// CHECK: ERROR ICON -- not yet modified
 .error-icon {
   color: var(--kd-color-status-error-dark);
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
   }
 }
 
@@ -134,7 +132,7 @@ textarea {
   color: var(--kd-color-background-success);
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
   }
 }
 
@@ -144,7 +142,7 @@ textarea {
   color: var(--kd-color-text-forms-label-secondary);
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
   }
 }
 
@@ -205,7 +203,7 @@ textarea {
   }
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
   }
 
   span,
@@ -222,6 +220,6 @@ textarea {
   margin-bottom: 8px;
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
   }
 }

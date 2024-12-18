@@ -7,7 +7,7 @@ import CheckboxGroupScss from './checkboxGroup.scss';
 
 import '../textInput';
 import './checkbox';
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 const _defaultTextStrings = {
   selectAll: 'Select all',
@@ -338,6 +338,10 @@ export class CheckboxGroup extends FormMixin(LitElement) {
       } else {
         this.value = [];
       }
+
+      this.checkboxes.forEach((checkbox: any) => {
+        checkbox.indeterminate = false;
+      });
     } else {
       const newValues = [...this.value];
       if (newValues.includes(value)) {
