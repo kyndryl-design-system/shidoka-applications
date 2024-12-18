@@ -91,6 +91,13 @@ export class LocalNavLink extends LitElement {
   @state()
   menuPosition: any = {};
 
+  /**
+   * Queries slotted icon.
+   * @ignore
+   */
+  @queryAssignedElements({ slot: 'icon' })
+  _icon!: Array<any>;
+
   override render() {
     const classes = {
       'level--1': this._level == 1,
@@ -109,7 +116,10 @@ export class LocalNavLink extends LitElement {
         @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
       >
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
-          <slot name="icon"></slot>
+          <span class="icon ${this._icon.length ? 'slotted' : ''}">
+            <slot name="icon"></slot>
+          </span>
+
           <span class="text">
             <slot @slotchange=${this._handleTextSlotChange}></slot>
           </span>
