@@ -4,6 +4,7 @@
 $checkbox-mask: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEwIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTMuNSA1Ljg1NTQ3TDkgLTIuMDMwNjNlLTA2TDEwIDEuMDY0NjNMMy40ODU2NiA4TDAgNC4yODkwNkwxLjAxNDM0IDMuMjA5MTZMMy41IDUuODU1NDdaIiBmaWxsPSIjMDAwIi8+DQo8L3N2Zz4=');
 
 $main-checkbox-background: var(--kd-color-background-ui-default-secondary);
+$invalid-checkbox-background: var(--kd-color-status-error-dark);
 
 :host {
   display: block;
@@ -159,11 +160,9 @@ input[type='checkbox']:indeterminate {
       transform: scale(1);
       background: var(--kd-color-background-ui-hollow-default);
       mask: linear-gradient(transparent 3px, #000 3px 5px, transparent 5px);
-      -webkit-mask: linear-gradient(
-        transparent 3px,
-        #000 3px 5px,
-        transparent 5px
-      );
+      -webkit-mask: linear-gradient(transparent 3px,
+          #000 3px 5px,
+          transparent 5px);
     }
 
     &:hover {
@@ -198,47 +197,74 @@ input[type='checkbox']:indeterminate:disabled {
     transform: scale(1);
     background: var(--kd-color-background-ui-hollow-default);
     mask: linear-gradient(transparent 3px, #000 3px 5px, transparent 5px);
-    -webkit-mask: linear-gradient(
-      transparent 3px,
-      #000 3px 5px,
-      transparent 5px
-    );
+    -webkit-mask: linear-gradient(transparent 3px,
+        #000 3px 5px,
+        transparent 5px);
   }
 }
 
 input[type='checkbox'][invalid] {
-  border-color: var(--kd-color-status-error-dark);
+  border-color: $invalid-checkbox-background;
 
-  &[checked] {
-    background: var(--kd-color-status-error-dark);
+  &:not([disabled]) {
+
+    &:checked,
+    &:indeterminate {
+      background: $invalid-checkbox-background;
+      border-color: transparent;
+
+      &:hover {
+        background: var(--kd-color-background-button-primary-destructive-hover);
+        border-color: var(--kd-color-background-button-primary-destructive-hover);
+      }
+
+      &:active {
+        background: var(--kd-color-background-button-primary-destructive-pressed);
+        border-color: var(--kd-color-background-button-primary-destructive-pressed);
+        outline-color: var(--kd-color-background-button-primary-destructive-pressed);
+      }
+    }
+  }
+
+  &[disabled] {
+    border-color: var(--kd-color-border-ui-disabled);
 
     &:hover {
       background: var(--kd-color-background-button-primary-destructive-hover);
       border-color: var(--kd-color-border-button-descrutive-hover);
     }
+
+    &[checked] {
+      border-color: transparent;
+
+      &:hover {
+        border-color: transparent;
+        background: var(--kd-color-background-ui-default-disabled);
+      }
+    }
+
+    &:active,
+    &:focus {
+      background-color: transparent;
+      border-color: var(--kd-color-border-ui-disabled);
+      outline-color: transparent;
+    }
   }
 
   &:hover {
     background: transparent;
-    border-color: var(
-      --kd-color-border-button-primary-descrutive-hover
-    ) !important;
+    border-color: var(--kd-color-background-button-primary-destructive-hover);
   }
 
   &:focus {
-    border-color: var(--kd-color-status-error-dark);
-    outline-color: transparent;
-
-    &:hover {
-      border-color: transparent;
-    }
+    border-color: $invalid-checkbox-background;
+    outline-color: $invalid-checkbox-background;
   }
 
   &:active {
-    background: var(
-      --kd-color-background-button-destructive-pressed
-    ) !important;
-    border-color: var(--kd-color-border-button-descrutive-pressed) !important;
+    background: var(--kd-color-background-button-primary-destructive-pressed);
+    border-color: var(--kd-color-background-button-primary-destructive-pressed);
+    outline-color: var(--kd-color-background-button-primary-destructive-pressed);
   }
 }
 
