@@ -76,18 +76,18 @@ export class LocalNavLink extends LitElement {
   _navLinks!: Array<any>;
 
   /**
-   * Queries slotted icon.
-   * @ignore
-   */
-  @queryAssignedElements({ slot: 'icon' })
-  _icon!: Array<any>;
-
-  /**
    * Queries slotted dividers.
    * @ignore
    */
   @queryAssignedElements({ slot: 'links', selector: 'kyn-local-nav-divider' })
   _dividers!: Array<any>;
+
+  /**
+   * Queries slotted icon.
+   * @ignore
+   */
+  @queryAssignedElements({ slot: 'icon' })
+  _icon!: Array<any>;
 
   override render() {
     const classes = {
@@ -105,6 +105,14 @@ export class LocalNavLink extends LitElement {
     return html`
       <div class=${classMap(classes)}>
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
+          <span class="icon ${this._icon.length ? 'slotted' : ''}">
+            <slot name="icon"></slot>
+          </span>
+
+          <span class="text">
+            <slot @slotchange=${this._handleTextSlotChange}></slot>
+          </span>
+
           ${this._navLinks.length
             ? html`
                 <span class="expand-icon">
