@@ -38,7 +38,7 @@ export class TableSkeleton extends LitElement {
       }
 
       kyn-thead kyn-tr {
-        background-color: var(--kd-color-background-ui-soft);
+        background-color: var(--kd-color-background-container-soft);
       }
 
       :host {
