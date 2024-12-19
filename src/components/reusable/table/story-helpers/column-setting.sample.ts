@@ -11,6 +11,8 @@ import '../../globalFilter';
 import '../index';
 import '../../checkbox';
 
+import '../../../../common/scss/global.scss';
+
 @customElement('story-column-setting')
 class StoryColumSetting extends LitElement {
   static override styles = css`
@@ -44,7 +46,7 @@ class StoryColumSetting extends LitElement {
     }
     .lockedRow {
       position: sticky;
-      background: white;
+      background: var(--kd-color-background-table-row);
       top: 124px;
       z-index: 3;
     }
@@ -57,7 +59,7 @@ class StoryColumSetting extends LitElement {
     }
     .seperator-div {
       height: 8px;
-      background: white;
+      background: var(--kd-color-background-table-row);
       position: sticky;
       top: 64px;
       z-index: 3; // hide column behind scroll
