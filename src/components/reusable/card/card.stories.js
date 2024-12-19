@@ -42,6 +42,7 @@ export const Simple = {
         href=${args.href}
         target=${args.target}
         rel=${args.rel}
+        ?hideBorder=${args.hideBorder}
       >
         <sample-card-component>
           <div slot="title">This is a card title</div>
