@@ -5,8 +5,8 @@
   --skeleton-base-width: 100%;
   --skeleton-base-height: 16px;
   --skeleton-border-radius: 4px;
-  --skeleton-background: var(--kd-color-background-ui-soft);
-  --skeleton-background-dark: var(--kd-color-background-ui-subtle);
+  --skeleton-background: var(--kd-color-background-loader-skeleton-default);
+  --skeleton-background-dark: var(--kd-color-background-loader-skeleton-secondary);
   --skeleton-shimmer-duration: 1.5s;
 
   // Predefined sizes
@@ -32,14 +32,6 @@
 
 :host([inline]) {
   display: inline-block;
-  width: 100%;
-}
-
-.skeleton {
-  width: var(--skeleton-base-width);
-}
-
-.skeleton[style*='%'] {
   width: 100%;
 }
 
@@ -75,17 +67,19 @@
     width: var(--skeleton-size-large);
     height: var(--skeleton-size-large);
   }
+
   &.shade-dark {
     background: var(--skeleton-background-dark);
-  }
 
-  // dark mode shimmer gradient to be implemented later
-  // background-image: linear-gradient(90deg,
-  //   rgba(30, 30, 30, 0) 0%,
-  //   rgba(60, 60, 60, 0.2) 10%,
-  //   rgba(100, 100, 100, 0.5) 50%,
-  //   rgba(60, 60, 60, 0.2) 90%,
-  //   rgba(30, 30, 30, 0) 100%);
+    &::after {
+      background-image: linear-gradient(90deg,
+          rgba(30, 30, 30, 0) 0%,
+          rgba(60, 60, 60, 0.2) 10%,
+          rgba(100, 100, 100, 0.5) 50%,
+          rgba(60, 60, 60, 0.2) 90%,
+          rgba(30, 30, 30, 0) 100%);
+    }
+  }
 
   &::after {
     position: absolute;
@@ -94,16 +88,13 @@
     bottom: 0;
     left: 0;
     transform: translateX(-100%) translate3d(0, 0, 0);
-    background-image: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0) 0,
-      rgba(255, 255, 255, 0.2) 10%,
-      rgba(255, 255, 255, 0.7) 50%,
-      rgba(255, 255, 255, 0.2) 90%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    animation: shimmer var(--skeleton-shimmer-duration)
-      cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    background-image: linear-gradient(90deg,
+        rgba(255, 255, 255, 0) 0,
+        var(--kd-color-background-loader-skeleton-default) 10%,
+        var(--kd-color-background-loader-skeleton-tertiary) 50%,
+        var(--kd-color-background-loader-skeleton-default) 90%,
+        rgba(255, 255, 255, 0) 100%);
+    animation: shimmer var(--skeleton-shimmer-duration) cubic-bezier(0.4, 0, 0.2, 1) infinite;
     content: '';
     pointer-events: none;
   }
