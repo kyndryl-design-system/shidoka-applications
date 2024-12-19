@@ -154,7 +154,6 @@ kd-card.notification-mark-read::part(card-wrapper) {
 .notification-normal,
 .notification-mark-unread,
 .notification-mark-read {
-
   .notification-title,
   .notification-description,
   .timestamp-text {
@@ -229,7 +228,18 @@ kd-card.notification-mark-read::part(card-wrapper) {
   display: flex;
 }
 
-.notification-toast-close-btn svg {
-  fill: var(--kd-color-icon-switcher-icon);
-  display: block;
+.notification-toast-close-btn {
+  @include mixins.close-icon-btn();
+  top: 10px;
+  right: 10px;
+  color: var(--kd-color-icon-dark);
+
+  &:hover {
+    background: none;
+    border: 1px solid var(--kd-color-border-ui-hover);
+  }
+}
+
+.default-close {
+  color: var(--kd-color-icon-primary);
 }
