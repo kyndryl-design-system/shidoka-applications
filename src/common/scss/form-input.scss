@@ -37,7 +37,7 @@
   input[disabled],
   .input-custom[disabled],
   textarea[disabled] {
-    & ~ .input-icon {
+    &~.input-icon {
       color: var(--kd-color-icon-disabled);
     }
   }
@@ -54,7 +54,7 @@ input,
 textarea {
   pointer-events: auto;
   @include typography.type-body-02;
-  border-color: var(--kd-color-border-ui-default);
+  border-color: var(--kd-color-border-forms-default);
   color: var(--kd-color-text-forms-input-field-text);
   transition: background-color 150ms ease-out, border-color 150ms ease-out,
     outline-color 150ms ease-out;
@@ -90,20 +90,21 @@ textarea {
     &[invalid] {
       border-color: var(--kd-color-border-ui-disabled);
     }
+
     &::placeholder {
       color: var(--kd-color-text-link-level-disabled);
     }
   }
 
-  input:not([disabled])[invalid] {
-    border-color: var(--kd-color-status-error-dark);
+  &:not([disabled])[invalid] {
+    border-color: var(--kd-color-border-variants-destructive);
   }
 }
 
 .error {
   display: flex;
   align-items: center;
-  color: var(--kd-color-status-error-dark);
+  color: var(--kd-color-text-variant-destructive);
   margin-top: 8px;
   cursor: default;
 

@@ -10,7 +10,7 @@ import { deepmerge } from 'deepmerge-ts';
 
 import addIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
 import subtractIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-simple.svg';
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -114,9 +114,10 @@ export class NumberInput extends FormMixin(LitElement) {
           })}"
         >
           <kd-button
-            kind="secondary"
+            kind="primary-app"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value <= this.min}
+            ?outlineOnly=${true}
             description=${this._textStrings.subtract}
             @on-click=${this._handleSubtract}
           >
@@ -132,7 +133,7 @@ export class NumberInput extends FormMixin(LitElement) {
             id=${this.name}
             name=${this.name}
             value=${this.value.toString()}
-            placeholder=${this.placeholder}
+            placehlder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
             ?invalid=${this._isInvalid}
@@ -145,9 +146,10 @@ export class NumberInput extends FormMixin(LitElement) {
           />
 
           <kd-button
-            kind="secondary"
+            kind="primary-app"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value >= this.max}
+            ?outlineOnly=${true}
             description=${this._textStrings.add}
             @on-click=${this._handleAdd}
           >
@@ -172,8 +174,8 @@ export class NumberInput extends FormMixin(LitElement) {
     `;
   }
 
-  private _sizeMap(size: string) {
-    let btnSize = 'medium';
+  private _sizeMap(size: string): 'small' | 'medium' | 'large' {
+    let btnSize: 'small' | 'medium' | 'large' = 'medium';
 
     switch (size) {
       case 'lg':
