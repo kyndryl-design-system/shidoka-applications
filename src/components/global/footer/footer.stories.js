@@ -31,10 +31,10 @@ export const Footer = {
   },
   render: (args) => html`
     <kyn-footer rootUrl=${args.rootUrl}>
-      <kd-link href="javascript:void(0);">Link 1</kd-link>
-      <kd-link href="javascript:void(0);">Link 2</kd-link>
-      <kd-link href="javascript:void(0);">Link 3</kd-link>
-      <kd-link href="javascript:void(0);">Link 4</kd-link>
+      <kd-link href="javascript:void(0);" standalone="">Link 1</kd-link>
+      <kd-link href="javascript:void(0);" standalone="">Link 2</kd-link>
+      <kd-link href="javascript:void(0);" standalone="">Link 3</kd-link>
+      <kd-link href="javascript:void(0);" standalone="">Link 4</kd-link>
 
       <span slot="copyright">
         Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights
