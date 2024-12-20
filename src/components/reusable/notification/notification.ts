@@ -10,7 +10,8 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cl
 import NotificationScss from './notification.scss';
 import '@kyndryl-design-system/shidoka-foundation/components/card';
 import successIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
-import warningErrorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information-filled.svg';
 
 import '../tag';
@@ -109,6 +110,7 @@ export class Notification extends LitElement {
 
   override render() {
     const cardBgClasses = {
+      'notification-normal': this.type === 'normal',
       'notification-inline': this.type === 'inline',
       'notification-toast': this.type === 'toast',
       'notification-error':
@@ -165,8 +167,8 @@ export class Notification extends LitElement {
   private renderInnerUI() {
     const notificationIcon: any = {
       success: successIcon,
-      error: warningErrorIcon,
-      warning: warningErrorIcon,
+      error: errorIcon,
+      warning: warningIcon,
       info: infoIcon,
     };
 
@@ -199,22 +201,15 @@ export class Notification extends LitElement {
         <div>
           ${(this.type === 'toast' || this.type === 'inline') &&
           !this.hideCloseButton
-            ? html` <kd-button
-                class="notification-toast-close-btn"
-                kind="tertiary"
-                size="small"
-                description=${ifDefined(this.closeBtnDescription)}
-                iconPosition="left"
-                @on-click="${() => this._handleClose()}"
+            ? html` <button
+                class="notification-toast-close-btn ${this.tagStatus}-close"
+                @click=${() => this._handleClose()}
+                aria-label=${ifDefined(this.closeBtnDescription)}
               >
-                <span
-                  slot="icon"
-                  fill="#3D3C3C"
-                  role="img"
-                  aria-label=${ifDefined(this.closeBtnDescription)}
+                <span aria-label=${ifDefined(this.closeBtnDescription)}
                   >${unsafeSVG(closeIcon)}</span
                 >
-              </kd-button>`
+              </button>`
             : null}
           <!-- actions slot could be an overflow menu, close icon (for other notification types) etc. -->
           <slot name="actions"></slot>
