@@ -45,6 +45,12 @@ export class Tag extends LitElement {
   noTruncation = false;
 
   /**
+   * Determine if Tag is clickable.
+   */
+  @property({ type: Boolean })
+  clickable = false;
+
+  /**
    * Color variants. Default spruce
    */
   @property({ type: String })
@@ -63,6 +69,8 @@ export class Tag extends LitElement {
     const tagClasses = {
       tags: true,
       'tag-disable': this.disabled,
+      'tag-clickable': this.clickable,
+      [`tag-clickable-${this.tagColor}`]: this.clickable,
       [`${baseColorClass}`]: true,
       [`${sizeClass}`]: true,
       [`${sizeClass}-filter`]: this.filter,
@@ -91,6 +99,8 @@ export class Tag extends LitElement {
         ?filter=${this.filter}
         tagColor=${this.tagColor}
         title="${this.label}"
+        tabindex="${this.clickable ? '0' : '-1'}"
+        @click=${(e: any) => this.handleTagClick(e, this.label)}
       >
         <span class="${classMap(labelClasses)}">${this.label}</span>
         ${this.filter
@@ -113,8 +123,21 @@ export class Tag extends LitElement {
   }
 
   private handleTagClear(e: any, value: string) {
+    e.stopPropagation();
     if (!this.disabled) {
       const event = new CustomEvent('on-close', {
+        detail: {
+          value,
+          origEvent: e,
+        },
+      });
+      this.dispatchEvent(event);
+    }
+  }
+
+  private handleTagClick(e: any, value: string) {
+    if (!this.disabled && this.clickable) {
+      const event = new CustomEvent('on-click', {
         detail: {
           value,
           origEvent: e,

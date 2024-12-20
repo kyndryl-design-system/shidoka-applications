@@ -41,6 +41,11 @@ export default {
         type: 'boolean',
       },
     },
+    clickable: {
+      control: {
+        type: 'boolean',
+      },
+    },
   },
   parameters: {
     design: {
@@ -57,6 +62,7 @@ const args = {
   tagColor: 'spruce',
   disabled: false,
   filter: false,
+  clickable: false,
   noTruncation: false,
 };
 
@@ -71,8 +77,10 @@ export const Tag = {
         tagColor=${args.tagColor}
         ?disabled=${args.disabled}
         ?filter=${args.filter}
+        ?clickable=${args.clickable}
         ?noTruncation=${args.noTruncation}
         @on-close=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)(e)}
       /></kyn-tag>
     `;
   },
