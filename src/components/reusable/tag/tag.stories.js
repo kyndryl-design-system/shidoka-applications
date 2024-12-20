@@ -28,6 +28,7 @@ export default {
         'cat03',
         'cat04',
         'cat05',
+        'cat06',
       ],
       control: { type: 'select' },
     },
