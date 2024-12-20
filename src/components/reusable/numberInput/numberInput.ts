@@ -133,7 +133,7 @@ export class NumberInput extends FormMixin(LitElement) {
             id=${this.name}
             name=${this.name}
             value=${this.value.toString()}
-            placehlder=${this.placeholder}
+            placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
             ?invalid=${this._isInvalid}
