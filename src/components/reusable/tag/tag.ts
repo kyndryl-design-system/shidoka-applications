@@ -45,12 +45,6 @@ export class Tag extends LitElement {
   noTruncation = false;
 
   /**
-   * Shade `'light'` (default) and `'dark'` for tag
-   */
-  @property({ type: String })
-  shade = 'light';
-
-  /**
    * Color variants. Default spruce
    */
   @property({ type: String })
@@ -64,18 +58,17 @@ export class Tag extends LitElement {
 
   override render() {
     const baseColorClass = `tag-${this.tagColor}`;
-    const shadeClass = this.shade === 'dark' ? '-dark' : '';
     const sizeClass = this.tagSize === 'md' ? 'tag-medium' : 'tag-small';
 
     const tagClasses = {
       tags: true,
       'tag-disable': this.disabled,
-      [`${baseColorClass}${shadeClass}`]: true,
+      [`${baseColorClass}`]: true,
       [`${sizeClass}`]: true,
       [`${sizeClass}-filter`]: this.filter,
     };
 
-    const iconOutlineClasses = `${baseColorClass}${shadeClass}-close-btn`;
+    const iconOutlineClasses = `${baseColorClass}-close-btn`;
     const iconOutlineOffsetClass = `tag-close-btn-${this.tagSize}`;
     const iconClasses = {
       'tag-close-btn': true,
@@ -97,7 +90,6 @@ export class Tag extends LitElement {
         ?disabled="${this.disabled}"
         ?filter=${this.filter}
         tagColor=${this.tagColor}
-        shade=${this.shade}
         title="${this.label}"
       >
         <span class="${classMap(labelClasses)}">${this.label}</span>
@@ -105,7 +97,6 @@ export class Tag extends LitElement {
           ? html`
               <button
                 class="${classMap(iconClasses)}"
-                shade=${this.shade}
                 ?disabled="${this.disabled}"
                 title="${this.clearTagText}
                  ${this.label}"

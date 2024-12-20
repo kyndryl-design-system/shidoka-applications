@@ -18,9 +18,11 @@ export default {
       options: [
         'grey',
         'spruce',
-        'failed',
+        'interactive',
+        'blue',
+        'error',
         'warning',
-        'passed',
+        'success',
         'cat01',
         'cat02',
         'cat03',
