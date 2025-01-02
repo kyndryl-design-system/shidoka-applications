@@ -8,8 +8,8 @@ import { FormMixin } from '../../../common/mixins/form-input';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import { deepmerge } from 'deepmerge-ts';
 
-import addIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
-import subtractIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-simple.svg';
+import chevronLeft from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-left.svg';
+import chevronRight from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 const _defaultTextStrings = {
@@ -121,7 +121,7 @@ export class NumberInput extends FormMixin(LitElement) {
             description=${this._textStrings.subtract}
             @on-click=${this._handleSubtract}
           >
-            <span slot="icon">${unsafeSVG(subtractIcon)}</span>
+            <span slot="icon">${unsafeSVG(chevronLeft)}</span>
           </kd-button>
 
           <input
@@ -153,7 +153,7 @@ export class NumberInput extends FormMixin(LitElement) {
             description=${this._textStrings.add}
             @on-click=${this._handleAdd}
           >
-            <span slot="icon">${unsafeSVG(addIcon)}</span>
+            <span slot="icon">${unsafeSVG(chevronRight)}</span>
           </kd-button>
         </div>
 
