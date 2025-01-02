@@ -117,7 +117,7 @@ export class NumberInput extends FormMixin(LitElement) {
             kind="primary-app"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value <= this.min}
-            ?outlineOnly=${true}
+            outlineOnly
             description=${this._textStrings.subtract}
             @on-click=${this._handleSubtract}
           >
@@ -149,7 +149,7 @@ export class NumberInput extends FormMixin(LitElement) {
             kind="primary-app"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value >= this.max}
-            ?outlineOnly=${true}
+            outlineOnly
             description=${this._textStrings.add}
             @on-click=${this._handleAdd}
           >
