@@ -6,7 +6,7 @@ import lottie from 'lottie-web';
 import animationData from './json/indeterminate.json';
 import Styles from './inline.scss';
 import successIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 /**
  * Inline Loader.
