@@ -13,7 +13,7 @@ import './dropdownOption';
 import '../tag';
 import { FormMixin } from '../../../common/mixins/form-input';
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 import clearIcon16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 import { deepmerge } from 'deepmerge-ts';

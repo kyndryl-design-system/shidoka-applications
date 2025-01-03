@@ -8,9 +8,9 @@ import { FormMixin } from '../../../common/mixins/form-input';
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import { deepmerge } from 'deepmerge-ts';
 
-import addIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
-import subtractIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-simple.svg';
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import chevronLeft from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-left.svg';
+import chevronRight from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -114,13 +114,14 @@ export class NumberInput extends FormMixin(LitElement) {
           })}"
         >
           <kd-button
-            kind="secondary"
+            kind="primary-app"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value <= this.min}
+            outlineOnly
             description=${this._textStrings.subtract}
             @on-click=${this._handleSubtract}
           >
-            <span slot="icon">${unsafeSVG(subtractIcon)}</span>
+            <span slot="icon">${unsafeSVG(chevronLeft)}</span>
           </kd-button>
 
           <input
@@ -145,13 +146,14 @@ export class NumberInput extends FormMixin(LitElement) {
           />
 
           <kd-button
-            kind="secondary"
+            kind="primary-app"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value >= this.max}
+            outlineOnly
             description=${this._textStrings.add}
             @on-click=${this._handleAdd}
           >
-            <span slot="icon">${unsafeSVG(addIcon)}</span>
+            <span slot="icon">${unsafeSVG(chevronRight)}</span>
           </kd-button>
         </div>
 
@@ -172,8 +174,8 @@ export class NumberInput extends FormMixin(LitElement) {
     `;
   }
 
-  private _sizeMap(size: string) {
-    let btnSize = 'medium';
+  private _sizeMap(size: string): 'small' | 'medium' | 'large' {
+    let btnSize: 'small' | 'medium' | 'large' = 'medium';
 
     switch (size) {
       case 'lg':

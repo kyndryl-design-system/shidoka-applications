@@ -9,7 +9,7 @@ import {
 import { deepmerge } from 'deepmerge-ts';
 import RadioButtonGroupScss from './radioButtonGroup.scss';
 import { FormMixin } from '../../../common/mixins/form-input';
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 const _defaultTextStrings = {
   required: 'Required',

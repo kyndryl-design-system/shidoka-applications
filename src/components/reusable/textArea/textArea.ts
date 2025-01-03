@@ -2,10 +2,12 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import TextAreaScss from './textArea.scss';
 import { FormMixin } from '../../../common/mixins/form-input';
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 import { deepmerge } from 'deepmerge-ts';
+
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+
+import TextAreaScss from './textArea.scss';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
