@@ -12,7 +12,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 import { FormMixin } from '../../../common/mixins/form-input';
 import TextInputScss from './textInput.scss';
@@ -43,7 +43,7 @@ export class TextInput extends FormMixin(LitElement) {
 
   /** Input type, limited to options that are "text like". */
   @property({ type: String })
-  type = 'text';
+  type: 'text' | 'password' | 'email' | 'search' | 'tel' | 'url' = 'text';
 
   /** Input size. "sm", "md", or "lg". */
   @property({ type: String })

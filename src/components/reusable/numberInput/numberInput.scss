@@ -16,8 +16,9 @@ input {
   appearance: none;
   display: block;
   flex-grow: 1;
-  min-width: 48px;
-  border: 1px solid var(--kd-color-border-ui-default);
+  min-width: 170px;
+  border-width: 1px;
+  border-style: solid;
   border-radius: 4px;
   height: 48px;
   padding: 0 16px;
@@ -36,6 +37,16 @@ input {
 
   &.icon--left {
     padding-left: 48px;
+  }
+
+  &:not([disabled])[invalid] {
+    border-color: var(--kd-color-border-variants-destructive);
+  }
+
+  &:not([disabled]) {
+    &:active {
+      outline: 2px solid var(--kd-color-border-ui-pressed);
+    }
   }
 }
 
