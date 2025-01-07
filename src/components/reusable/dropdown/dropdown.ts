@@ -297,7 +297,10 @@ export class Dropdown extends FormMixin(LitElement) {
                     />
                   `
                 : html`
-                    <span class=${this.value === '' ? 'placeholder' : ''}>
+                    <span
+                      class=${this.value === '' ? 'placeholder' : ''}
+                      aria-hidden=${this.value === ''}
+                    >
                       ${this.multiple
                         ? this.placeholder
                         : this.value === ''
