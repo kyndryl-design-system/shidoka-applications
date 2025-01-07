@@ -10,10 +10,6 @@ export default {
       options: ['sm', 'md'],
       control: { type: 'select' },
     },
-    shade: {
-      options: ['light', 'dark'],
-      control: { type: 'select' },
-    },
     tagColor: {
       options: [
         'grey',
@@ -59,7 +55,6 @@ export default {
 const args = {
   label: 'Tag Example',
   tagSize: 'md',
-  shade: 'light',
   tagColor: 'spruce',
   disabled: false,
   filter: false,
@@ -74,7 +69,6 @@ export const Tag = {
       <kyn-tag
         label=${args.label}
         tagSize=${args.tagSize}
-        shade=${args.shade}
         tagColor=${args.tagColor}
         ?disabled=${args.disabled}
         ?filter=${args.filter}
