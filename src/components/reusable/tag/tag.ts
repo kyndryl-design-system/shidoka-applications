@@ -101,6 +101,7 @@ export class Tag extends LitElement {
         title="${this.label}"
         tabindex="${this.clickable ? '0' : '-1'}"
         @click=${(e: any) => this.handleTagClick(e, this.label)}
+        @keydown=${(e: any) => this.handleTagPress(e, this.label)}
       >
         <span class="${classMap(labelClasses)}">${this.label}</span>
         ${this.filter
@@ -113,6 +114,7 @@ export class Tag extends LitElement {
                 aria-label="${this.clearTagText}
                  ${this.label}"
                 @click=${(e: any) => this.handleTagClear(e, this.label)}
+                @keydown=${(e: any) => this.handleTagClearPress(e, this.label)}
               >
                 <span>${unsafeSVG(clearIcon16)}</span>
               </button>
@@ -124,7 +126,20 @@ export class Tag extends LitElement {
 
   private handleTagClear(e: any, value: string) {
     e.stopPropagation();
-    if (!this.disabled) {
+    if (e.pointerType && !this.disabled) {
+      const event = new CustomEvent('on-close', {
+        detail: {
+          value,
+          origEvent: e,
+        },
+      });
+      this.dispatchEvent(event);
+    }
+  }
+
+  private handleTagClearPress(e: any, value: string) {
+    e.stopPropagation();
+    if ((e.keyCode === 32 || e.keyCode === 13) && !this.disabled) {
       const event = new CustomEvent('on-close', {
         detail: {
           value,
@@ -137,6 +152,22 @@ export class Tag extends LitElement {
 
   private handleTagClick(e: any, value: string) {
     if (!this.disabled && this.clickable) {
+      const event = new CustomEvent('on-click', {
+        detail: {
+          value,
+          origEvent: e,
+        },
+      });
+      this.dispatchEvent(event);
+    }
+  }
+
+  private handleTagPress(e: any, value: string) {
+    if (
+      (e.keyCode === 32 || e.keyCode === 13) &&
+      !this.disabled &&
+      this.clickable
+    ) {
       const event = new CustomEvent('on-click', {
         detail: {
           value,
