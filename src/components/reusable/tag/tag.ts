@@ -139,6 +139,7 @@ export class Tag extends LitElement {
 
   private handleTagClearPress(e: any, value: string) {
     e.stopPropagation();
+    // Keyboard key codes: 32 = SPACE | 13 = ENTER
     if ((e.keyCode === 32 || e.keyCode === 13) && !this.disabled) {
       const event = new CustomEvent('on-close', {
         detail: {
@@ -163,6 +164,7 @@ export class Tag extends LitElement {
   }
 
   private handleTagPress(e: any, value: string) {
+    // Keyboard key codes: 32 = SPACE | 13 = ENTER
     if (
       (e.keyCode === 32 || e.keyCode === 13) &&
       !this.disabled &&
