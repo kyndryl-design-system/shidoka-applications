@@ -199,6 +199,7 @@ export class SideDrawer extends LitElement {
   }
 
   private _openDrawer() {
+    document.body.classList.add('no-scroll');
     this.open = true;
   }
 
@@ -207,6 +208,7 @@ export class SideDrawer extends LitElement {
       !this.beforeClose ||
       (this.beforeClose && this.beforeClose(returnValue))
     ) {
+      document.body.classList.remove('no-scroll');
       this.open = false;
       this._dialog.returnValue = returnValue;
       this._emitCloseEvent(e);
