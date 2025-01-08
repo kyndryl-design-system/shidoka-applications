@@ -4,14 +4,14 @@
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 
 $progress-bar-status-colors: (
-  default: var(--kd-color-background-primary-hover),
-  success: var(--kd-color-background-success),
-  error: var(--kd-color-background-error),
+  default: var(--kd-color-background-loader-bar-primary),
+  success: var(--kd-color-status-success-dark),
+  error: var(--kd-color-status-error-dark),
 );
 
 $progress-bar-height: 4px;
 $progress-bar-radius: 4px;
-$progress-bar-background: var(--kd-color-background-inverse-hover);
+$progress-bar-background: var(--kd-color-background-loader-bar-secondary);
 $progress-bar-indeterminate-color: map-get(
   $progress-bar-status-colors,
   default
@@ -57,7 +57,6 @@ $progress-bar-indeterminate-color: map-get(
     margin: 0;
     line-height: 16px;
     height: 16px;
-    color: var(--kd-color-text-level-secondary);
   }
 
   &__status-icon {
@@ -65,6 +64,18 @@ $progress-bar-indeterminate-color: map-get(
     align-items: center;
     padding-right: 2px;
     line-height: 1;
+
+    .success-icon {
+      svg {
+        fill: map-get($progress-bar-status-colors, success);
+      }
+    }
+
+    .error-icon {
+      svg {
+        fill: map-get($progress-bar-status-colors, error);
+      }
+    }
 
     p {
       color: var(--kd-color-text-level-secondary);
@@ -140,6 +151,15 @@ $progress-bar-indeterminate-color: map-get(
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
+}
+
+.active,
+.success {
+  color: var(--kd-color-text-level-secondary);
+}
+
+.error {
+  color: var(--kd-color-status-error-dark);
 }
 
 @keyframes indeterminate {
