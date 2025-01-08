@@ -205,8 +205,11 @@ export class BlockCodeView extends LitElement {
   private renderCopyButton() {
     if (!this.copyOptionVisible) return null;
     return html`
-      <div
+      <kd-button
         class="code-view__copy-button"
+        kind="tertiary"
+        size="small"
+        iconPosition="left"
         ?disabled=${this._copyState.copied}
         description=${ifDefined(this.copyButtonDescriptionAttr)}
         @click=${this.copyCode}
@@ -219,7 +222,7 @@ export class BlockCodeView extends LitElement {
         ${this._copyState.text
           ? html`<span class="copy-text">${this._copyState.text}</span>`
           : null}
-      </div>
+      </kd-button>
     `;
   }
 
@@ -230,15 +233,19 @@ export class BlockCodeView extends LitElement {
     )
       return null;
     return html`
-      <div
+      <kd-button
         class="code-view__expand-button"
+        kind="tertiary"
+        size="small"
+        iconPosition="left"
+        outlineOnly
         description=${this.codeExpanded
           ? this._textStrings.expanded
           : this._textStrings.collapsed}
         @click=${this.expandCodeView}
       >
         <span slot="icon" class="expand-icon">${unsafeSVG(chevronDown)}</span>
-      </div>
+      </kd-button>
     `;
   }
 

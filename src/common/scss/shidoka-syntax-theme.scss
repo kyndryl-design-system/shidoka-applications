@@ -103,6 +103,10 @@ $shidoka-code-view-background: var(--kd-color-code-view-background);
             color: var(--kd-color-code-view-comment);
         }
 
+        &.console {
+            color: var(--kd-color-code-view-console);
+        }
+
         &.constant {
             color: var(--kd-color-code-view-constant);
         }
@@ -149,6 +153,14 @@ $shidoka-code-view-background: var(--kd-color-code-view-background);
             color: var(--kd-color-code-view-keyword);
         }
 
+        &.language-javascript {
+            color: var(--kd-color-code-language-javascript);
+        }
+
+        &.method {
+            color: var(--kd-color-code-view-method);
+        }
+
         &.namespace {
             opacity: 0.7;
         }
@@ -191,6 +203,11 @@ $shidoka-code-view-background: var(--kd-color-code-view-background);
 
         &.selector {
             color: var(--kd-color-code-view-selector);
+        }
+
+        &.string,
+        &.string-literal {
+            color: var(--kd-color-code-view-string);
         }
 
         &.symbol {
@@ -289,59 +306,25 @@ $shidoka-code-view-background: var(--kd-color-code-view-background);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            fill: var(--kd-color-text-link-level-default);
+        }
+
+        .copy-icon {
             color: var(--kd-color-text-link-level-default);
+            fill: var(--kd-color-text-link-level-default);
         }
 
         &.icon-only {
             padding: 8px;
             min-width: unset;
         }
-
-        &:not([disabled]) {
-            &:hover {
-
-                .copy-icon,
-                .copy-text {
-                    fill: var(--kd-color-text-link-level-hover);
-                    color: var(--kd-color-text-link-level-hover);
-                }
-            }
-        }
-
-        .copy-text {
-            margin-left: 8px;
-        }
-
-        &[disabled] {
-            cursor: not-allowed;
-
-            .copy-icon,
-            .copy-text {
-                fill: var(--kd-color-text-variant-eyebrow);
-                color: var(--kd-color-text-variant-eyebrow);
-            }
-        }
     }
 
     .code-view__expand-button {
-        &:hover {
-            .expand-icon {
-                fill: var(--kd-color-text-variant-eyebrow);
-                color: var(--kd-color-text-variant-eyebrow);
-            }
-        }
 
         .expand-icon {
-            fill: var(--kd-color-text-link-level-tertiary);
-            color: var(--kd-color-text-link-level-tertiary);
+            fill: var(--kd-color-text-level-tertiary);
+            color: var(--kd-color-text-level-tertiary);
         }
-    }
-
-    .code-view__copy-button:disabled:hover .copy-text,
-    .code-view__copy-button:disabled:hover .copy-icon {
-        fill: var(--kd-color-text-link-level-default);
-        color: var(--kd-color-text-link-level-default);
     }
 
     .code-snippet-wrapper pre::selection,
