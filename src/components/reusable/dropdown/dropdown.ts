@@ -297,13 +297,20 @@ export class Dropdown extends FormMixin(LitElement) {
                     />
                   `
                 : html`
-                    <span>
-                      ${this.multiple
-                        ? this.placeholder
+                    <input
+                      type="text"
+                      class="input-custom"
+                      .value=${this.multiple
+                        ? ''
                         : this.value === ''
-                        ? this.placeholder
+                        ? ''
                         : this.text}
-                    </span>
+                      placeholder=${this.multiple
+                        ? this.placeholder
+                        : this.placeholder}
+                      readonly
+                      tabindex="-1"
+                    />
                   `}
 
               <span class="arrow-icon">${unsafeSVG(downIcon)}</span>
