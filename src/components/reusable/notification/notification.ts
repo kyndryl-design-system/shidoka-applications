@@ -90,10 +90,10 @@ export class Notification extends LitElement {
    */
   @state()
   _tagColor: any = {
-    success: 'passed',
+    success: 'success',
     warning: 'warning',
     info: 'cat01',
-    error: 'failed',
+    error: 'error',
   };
 
   /** Set notification mark read prop. Required ony for `type: 'clickable'`.*/
