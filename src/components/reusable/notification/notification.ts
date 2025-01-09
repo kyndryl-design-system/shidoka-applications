@@ -201,15 +201,20 @@ export class Notification extends LitElement {
         <div>
           ${(this.type === 'toast' || this.type === 'inline') &&
           !this.hideCloseButton
-            ? html` <button
-                class="notification-toast-close-btn ${this.tagStatus}-close"
-                @click=${() => this._handleClose()}
-                aria-label=${ifDefined(this.closeBtnDescription)}
+            ? html` <kd-button
+                class="notification-toast-close-btn"
+                kind="tertiary"
+                size="small"
+                description=${ifDefined(this.closeBtnDescription)}
+                @on-click="${() => this._handleClose()}"
               >
-                <span aria-label=${ifDefined(this.closeBtnDescription)}
+                <span
+                  slot="icon"
+                  role="img"
+                  aria-label=${ifDefined(this.closeBtnDescription)}
                   >${unsafeSVG(closeIcon)}</span
                 >
-              </button>`
+              </kd-button>`
             : null}
           <!-- actions slot could be an overflow menu, close icon (for other notification types) etc. -->
           <slot name="actions"></slot>
