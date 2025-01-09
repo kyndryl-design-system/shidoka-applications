@@ -39,7 +39,7 @@ const meta: Meta = {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Applications-with-Specs?node-id=828%3A4607&mode=dev',
+      url: 'https://www.figma.com/design/CQuDZEeLiuGiALvCWjAKlu/branch/qMpff4GuFUEcsMUkvacS3U/Applications---Component-Library?node-id=9379-209416&p=f&m=dev',
     },
   },
 };
