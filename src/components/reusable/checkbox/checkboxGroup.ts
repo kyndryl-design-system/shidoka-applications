@@ -517,7 +517,6 @@ export class CheckboxGroup extends FormMixin(LitElement) {
         }
       }
     }
-    console.log(newValues);
 
     this.value = newValues;
 

@@ -13,7 +13,7 @@
   justify-content: space-around;
   border-radius: 4px;
   gap: 4px;
-  color: var(--kd-color-text-primary);
+  color: var(--kd-color-text-level-primary);
   min-width: 24px;
 }
 
@@ -76,13 +76,13 @@
 
   &:focus,
   &:active {
-    outline-width: 2px;
+    outline-width: 1px;
     outline-style: solid;
   }
 
   &[disabled] {
-    background-color: var(--kd-color-background-disabled);
-    color: var(--kd-color-text-link-level-disabled);
+    background-color: var(--kd-color-tags-background-disabled);
+    color: var(--kd-color-icon-disabled);
     border: none;
     cursor: not-allowed;
     pointer-events: none;
@@ -125,35 +125,120 @@
   }
 
   &-disable {
-    cursor: not-allowed;
-    background-color: var(--kd-color-background-disabled) !important;
-    color: var(--kd-color-text-disabled) !important;
+    cursor: not-allowed !important;
+    background-color: var(--kd-color-tags-background-disabled) !important;
+    color: var(--kd-color-text-level-disabled) !important;
+  }
+
+  &-clickable {
+    cursor: pointer;
+
+    &:focus,
+    &:active {
+      outline: 1px solid var(--kd-color-border-variants-focus);
+      outline-offset: 1px;
+    }
+
+    &-grey {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-gray);
+      }
+    }
+
+    &-spruce {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-spruce);
+      }
+    }
+
+    &-interactive {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-interactive);
+      }
+    }
+
+    &-blue {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-blue);
+      }
+    }
+
+    &-error {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-error);
+      }
+    }
+
+    &-warning {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-warning);
+      }
+    }
+
+    &-success {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-success);
+      }
+    }
+
+    &-cat01 {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-1);
+      }
+    }
+
+    &-cat02 {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-2);
+      }
+    }
+
+    &-cat03 {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-3);
+      }
+    }
+
+    &-cat04 {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-4);
+      }
+    }
+
+    &-cat05 {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-5);
+      }
+    }
+
+    &-cat06 {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-6);
+      }
+    }
   }
 
   /* Grey color */
   &-grey {
-    background-color: var(--kd-color-background-ui-soft);
-    color: var(--kd-color-text-primary);
+    background-color: var(--kd-color-tags-background-gray);
 
     &-close-btn {
+      color: var(--kd-color-icon-primary);
 
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-border-primary);
+      svg {
+        display: block;
       }
-    }
 
-    &-dark {
-      background-color: var(--kd-color-background-ui-strong);
-      color: var(--kd-color-text-inversed);
+      &:hover {
+        background-color: var(--kd-color-tags-hover-gray);
+      }
 
-      &-close-btn {
+      &:focus {
+        background-color: var(--kd-color-tags-hover-gray);
+        outline-color: var(--kd-color-border-variants-focus);
 
-        &:hover,
-        &:focus,
         &:active {
-          outline-color: var(--kd-color-border-inverse);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
@@ -161,55 +246,103 @@
 
   /* spruce color */
   &-spruce {
-    background-color: var(--kd-color-spruce-10);
+    background-color: var(--kd-color-tags-background-spruce);
 
     &-close-btn {
+      color: var(--kd-color-icon-primary);
 
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-background-primary);
+      svg {
+        display: block;
       }
-    }
 
-    &-dark {
-      background-color: var(--kd-color-background-primary);
-      color: var(--kd-color-text-inversed);
+      &:hover {
+        background-color: var(--kd-color-tags-hover-spruce);
+      }
 
-      &-close-btn {
+      &:focus {
+        background-color: var(--kd-color-tags-hover-spruce);
+        outline-color: var(--kd-color-border-variants-focus);
 
-        &:hover,
-        &:focus,
         &:active {
-          outline-color: var(--kd-color-background-inverse-hover);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
   }
 
-  /* failed color */
-  &-failed {
-    background-color: var(--kd-color-background-error-light);
+  /* interactive color */
+  &-interactive {
+    background-color: var(--kd-color-tags-background-interactive);
 
     &-close-btn {
+      color: var(--kd-color-icon-primary);
 
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-border-error);
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-interactive);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-interactive);
+        outline-color: var(--kd-color-border-variants-focus);
+
+        &:active {
+          outline-color: var(--kd-color-border-ui-pressed);
+        }
       }
     }
+  }
 
-    &-dark {
-      background-color: var(--kd-color-background-destructive);
-      color: var(--kd-color-text-inversed);
+  /* blue color */
+  &-blue {
+    background-color: var(--kd-color-tags-background-blue);
 
-      &-close-btn {
+    &-close-btn {
+      color: var(--kd-color-icon-primary);
 
-        &:hover,
-        &:focus,
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-blue);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-blue);
+        outline-color: var(--kd-color-border-variants-focus);
+
         &:active {
-          outline-color: var(--kd-color-error-light);
+          outline-color: var(--kd-color-border-ui-pressed);
+        }
+      }
+    }
+  }
+
+  /* error color */
+  &-error {
+    background-color: var(--kd-color-tags-background-error);
+
+    &-close-btn {
+      color: var(--kd-color-icon-primary);
+
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-error);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-error);
+        outline-color: var(--kd-color-border-variants-focus);
+
+        &:active {
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
@@ -217,54 +350,51 @@
 
   /* warning color */
   &-warning {
-    background-color: var(--kd-color-background-warning-light);
+    background-color: var(--kd-color-tags-background-warning);
 
     &-close-btn {
+      color: var(--kd-color-icon-primary);
 
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-background-warning);
+      svg {
+        display: block;
       }
-    }
 
-    &-dark {
-      background-color: var(--kd-color-background-warning);
+      &:hover {
+        background-color: var(--kd-color-tags-hover-warning);
+      }
 
-      &-close-btn {
+      &:focus {
+        background-color: var(--kd-color-tags-hover-warning);
+        outline-color: var(--kd-color-border-variants-focus);
 
-        &:hover,
-        &:focus,
         &:active {
-          outline-color: var(--kd-color-background-warning-light);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
   }
 
-  /* passed color */
-  &-passed {
-    background-color: var(--kd-color-background-success-light);
+  /* success color */
+  &-success {
+    background-color: var(--kd-color-tags-background-success);
 
     &-close-btn {
+      color: var(--kd-color-icon-primary);
 
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: #00af41;
+      svg {
+        display: block;
       }
-    }
 
-    &-dark {
-      background-color: #00af41;
-      color: var(--kd-color-text-inversed);
+      &:hover {
+        background-color: var(--kd-color-tags-hover-success);
+      }
 
-      &-close-btn {
+      &:focus {
+        background-color: var(--kd-color-tags-hover-success);
+        outline-color: var(--kd-color-border-variants-focus);
 
-        &:hover,
-        &:focus,
         &:active {
-          outline-color: var(--kd-color-background-success-light);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
@@ -272,27 +402,25 @@
 
   /* cat01 color */
   &-cat01 {
-    background-color: var(--kd-color-data-seq-01-10);
+    background-color: var(--kd-color-tags-background-cat-1);
 
     &-close-btn {
+      color: var(--kd-color-icon-primary);
 
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-data-seq-01-40);
+      svg {
+        display: block;
       }
-    }
 
-    &-dark {
-      background-color: var(--kd-color-data-seq-01-40);
-      color: var(--kd-color-text-inversed);
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-1);
+      }
 
-      &-close-btn {
+      &:focus {
+        background-color: var(--kd-color-tags-hover-cat-1);
+        outline-color: var(--kd-color-border-variants-focus);
 
-        &:hover,
-        &:focus,
         &:active {
-          outline-color: var(--kd-color-data-seq-01-10);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
@@ -300,27 +428,25 @@
 
   /* cat02 color */
   &-cat02 {
-    background-color: var(--kd-color-data-seq-02-10);
+    background-color: var(--kd-color-tags-background-cat-2);
 
     &-close-btn {
+      color: var(--kd-color-icon-primary);
 
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-data-seq-02-70);
+      svg {
+        display: block;
       }
-    }
 
-    &-dark {
-      background-color: var(--kd-color-data-seq-02-70);
-      color: var(--kd-color-text-inversed);
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-2);
+      }
 
-      &-close-btn {
+      &:focus {
+        background-color: var(--kd-color-tags-hover-cat-2);
+        outline-color: var(--kd-color-border-variants-focus);
 
-        &:hover,
-        &:focus,
         &:active {
-          outline-color: var(--kd-color-data-seq-02-10);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
@@ -328,27 +454,25 @@
 
   /* cat03 color */
   &-cat03 {
-    background-color: var(--kd-color-data-seq-03-10);
+    background-color: var(--kd-color-tags-background-cat-3);
 
     &-close-btn {
+      color: var(--kd-color-icon-primary);
 
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-data-seq-03-40);
+      svg {
+        display: block;
       }
-    }
 
-    &-dark {
-      background-color: var(--kd-color-data-seq-03-40);
-      color: var(--kd-color-text-inversed);
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-3);
+      }
 
-      &-close-btn {
+      &:focus {
+        background-color: var(--kd-color-tags-hover-cat-3);
+        outline-color: var(--kd-color-border-variants-focus);
 
-        &:hover,
-        &:focus,
         &:active {
-          outline-color: var(--kd-color-data-seq-03-10);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
@@ -356,27 +480,25 @@
 
   /* cat04 color */
   &-cat04 {
-    background-color: var(--kd-color-data-seq-04-10);
+    background-color: var(--kd-color-tags-background-cat-4);
 
     &-close-btn {
+      color: var(--kd-color-icon-primary);
 
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-data-seq-04-70);
+      svg {
+        display: block;
       }
-    }
 
-    &-dark {
-      background-color: var(--kd-color-data-seq-04-70);
-      color: var(--kd-color-text-inversed);
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-4);
+      }
 
-      &-close-btn {
+      &:focus {
+        background-color: var(--kd-color-tags-hover-cat-4);
+        outline-color: var(--kd-color-border-variants-focus);
 
-        &:hover,
-        &:focus,
         &:active {
-          outline-color: var(--kd-color-data-seq-04-10);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
@@ -384,27 +506,51 @@
 
   /* cat05 color */
   &-cat05 {
-    background-color: var(--kd-color-data-seq-05-10);
+    background-color: var(--kd-color-tags-background-cat-5);
 
     &-close-btn {
+      color: var(--kd-color-icon-primary);
 
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-data-seq-05-70);
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-5);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-cat-5);
+        outline-color: var(--kd-color-border-variants-focus);
+
+        &:active {
+          outline-color: var(--kd-color-border-ui-pressed);
+        }
       }
     }
+  }
 
-    &-dark {
-      background-color: var(--kd-color-data-seq-05-70);
-      color: var(--kd-color-text-inversed);
+  /* cat06 color */
+  &-cat06 {
+    background-color: var(--kd-color-tags-background-cat-6);
 
-      &-close-btn {
+    &-close-btn {
+      color: var(--kd-color-icon-primary);
 
-        &:hover,
-        &:focus,
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-6);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-cat-6);
+        outline-color: var(--kd-color-border-variants-focus);
+
         &:active {
-          outline-color: var(--kd-color-data-seq-05-10);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
