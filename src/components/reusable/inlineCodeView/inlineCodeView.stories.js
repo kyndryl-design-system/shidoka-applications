@@ -12,14 +12,14 @@ export default {
   },
   argTypes: {
     darkTheme: {
-      options: ['light', 'dark'],
+      options: ['light', 'dark', 'default'],
       control: { type: 'select' },
     },
   },
 };
 
 const args = {
-  darkTheme: 'dark',
+  darkTheme: 'default',
   snippetFontSize: 14,
   unnamed: `console.log("Hello, World!");`,
 };
