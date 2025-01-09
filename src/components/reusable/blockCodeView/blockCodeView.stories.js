@@ -118,14 +118,14 @@ export default {
       },
     },
     darkTheme: {
-      options: ['light', 'dark'],
+      options: ['light', 'dark', 'default'],
       control: { type: 'select' },
     },
   },
 };
 
 const args = {
-  darkTheme: 'dark',
+  darkTheme: 'default',
   language: '',
   maxHeight: null,
   codeViewLabel: 'Block Code View',
