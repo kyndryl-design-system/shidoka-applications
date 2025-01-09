@@ -10,22 +10,21 @@ export default {
       options: ['sm', 'md'],
       control: { type: 'select' },
     },
-    shade: {
-      options: ['light', 'dark'],
-      control: { type: 'select' },
-    },
     tagColor: {
       options: [
         'grey',
         'spruce',
-        'failed',
+        'interactive',
+        'blue',
+        'error',
         'warning',
-        'passed',
+        'success',
         'cat01',
         'cat02',
         'cat03',
         'cat04',
         'cat05',
+        'cat06',
       ],
       control: { type: 'select' },
     },
@@ -35,6 +34,11 @@ export default {
       },
     },
     filter: {
+      control: {
+        type: 'boolean',
+      },
+    },
+    clickable: {
       control: {
         type: 'boolean',
       },
@@ -51,10 +55,10 @@ export default {
 const args = {
   label: 'Tag Example',
   tagSize: 'md',
-  shade: 'light',
   tagColor: 'spruce',
   disabled: false,
   filter: false,
+  clickable: false,
   noTruncation: false,
 };
 
@@ -65,12 +69,13 @@ export const Tag = {
       <kyn-tag
         label=${args.label}
         tagSize=${args.tagSize}
-        shade=${args.shade}
         tagColor=${args.tagColor}
         ?disabled=${args.disabled}
         ?filter=${args.filter}
+        ?clickable=${args.clickable}
         ?noTruncation=${args.noTruncation}
         @on-close=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)(e)}
       /></kyn-tag>
     `;
   },
