@@ -166,7 +166,7 @@ export class TextInput extends FormMixin(LitElement) {
             maxlength=${ifDefined(this.maxLength)}
             @input=${(e: any) => this._handleInput(e)}
           />
-          ${this.value !== ''
+          ${this.type === 'search' && this.value !== ''
             ? html`
                 <button
                   ?disabled=${this.disabled}

@@ -210,6 +210,7 @@ export const WithSearch = {
         .textStrings=${args.textStrings}
       >
         <kyn-text-input
+          type="search"
           slot="search"
           size="sm"
           placeholder="Search"
