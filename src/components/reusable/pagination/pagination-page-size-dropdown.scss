@@ -1,17 +1,41 @@
+// pagination-page-size-dropdown.scss
 @use '../../../common/scss/global.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
   @include typography.type-body-02;
-  display: none;
   align-items: center;
-  gap: 6px;
+  gap: 24px;
 
   @media (min-width: 42rem) {
     display: flex;
   }
 }
 
-kyn-dropdown {
-  min-width: 100px;
+:host([mode='pagination']) .dropdown {
+  padding: 0 !important;
+}
+
+:host([mode='pagination']) .select {
+  display: flex;
+  align-items: center;
+  /* Force content to distribute fully */
+  justify-content: space-between;
+  width: 115px;
+  /* or whatever you need */
+  padding: 0 !important;
+  /* truly remove all padding */
+  box-sizing: border-box;
+}
+
+:host([mode='pagination']) input.input-custom {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-indent: 0 !important;
+  width: auto;
+  width: 100% !important;
+  text-align: left;
+  box-sizing: border-box;
 }

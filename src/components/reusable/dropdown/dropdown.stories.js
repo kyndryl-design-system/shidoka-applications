@@ -31,6 +31,7 @@ const args = {
   size: 'md',
   inline: false,
   name: 'example',
+  mode: 'default',
   open: false,
   required: false,
   disabled: false,
@@ -60,6 +61,7 @@ export const Single = {
         name=${args.name}
         ?open=${args.open}
         ?required=${args.required}
+        mode=${args.mode}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         caption=${args.caption}
@@ -103,6 +105,7 @@ export const SingleSearchable = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         caption=${args.caption}
+        mode=${args.mode}
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
         .textStrings=${args.textStrings}
@@ -144,6 +147,7 @@ export const MultiSelect = {
         ?disabled=${args.disabled}
         ?hideTags=${args.hideTags}
         ?selectAll=${args.selectAll}
+        mode=${args.mode}
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         caption=${args.caption}
@@ -192,6 +196,7 @@ export const MultiSelectSearchable = {
         ?disabled=${args.disabled}
         ?hideTags=${args.hideTags}
         ?selectAll=${args.selectAll}
+        mode=${args.mode}
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         caption=${args.caption}
@@ -240,6 +245,7 @@ export const Grouped = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
+        mode=${args.mode}
         .textStrings=${args.textStrings}
         value=${args.value}
         @on-change=${(e) => action(e.type)(e)}
@@ -309,6 +315,7 @@ export const DataDrivenOptions = {
         ?open=${args.open}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        mode=${args.mode}
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}

@@ -9,6 +9,7 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import DropdownScss from './dropdown.scss';
+import DropdownPaginationScss from '../pagination/pagination-page-size-dropdown.scss';
 import './dropdownOption';
 import '../tag';
 import { FormMixin } from '../../../common/mixins/form-input';
@@ -34,7 +35,7 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-dropdown')
 export class Dropdown extends FormMixin(LitElement) {
-  static override styles = DropdownScss;
+  static override styles = [DropdownScss, DropdownPaginationScss];
 
   /** Label text. */
   @property({ type: String })
@@ -55,6 +56,10 @@ export class Dropdown extends FormMixin(LitElement) {
   /** Dropdown placeholder. */
   @property({ type: String })
   placeholder = '';
+
+  /** Mode of the dropdown. */
+  @property({ type: String })
+  mode: 'default' | 'pagination' = 'default';
 
   /** Listbox/drawer open state. */
   @property({ type: Boolean })
@@ -212,6 +217,7 @@ export class Dropdown extends FormMixin(LitElement) {
         ?open=${this.open}
         ?inline=${this.inline}
         ?searchable=${this.searchable}
+        mode=${this.mode}
       >
         <label
           for=${this.name}

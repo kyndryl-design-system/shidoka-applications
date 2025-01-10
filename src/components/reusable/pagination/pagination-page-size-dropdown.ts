@@ -62,6 +62,7 @@ export class PaginationPageSizeDropdown extends LitElement {
       <label> ${this.textStrings.itemsPerPage} </label>
       <kyn-dropdown
         name="page-size"
+        mode="pagination"
         label="${this.pageSizeDropdownLabel}"
         inline
         size="sm"
