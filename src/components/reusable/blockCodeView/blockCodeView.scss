@@ -3,24 +3,10 @@
 
 $transition-duration: 0.3s;
 $border-radius: 4px;
-$shidoka-dark-syntax-theme-background : #272727;
-$shidoka-light-syntax-theme-background: #F9F9F9;
 
 :host {
     display: block;
     position: relative;
-}
-
-.shidoka-dark-syntax-theme {
-    .code-view__copy-button {
-        background: $shidoka-dark-syntax-theme-background;
-    }
-}
-
-.shidoka-light-syntax-theme {
-    .code-view__copy-button {
-        background: $shidoka-light-syntax-theme-background;
-    }
 }
 
 .code-view {
@@ -29,7 +15,7 @@ $shidoka-light-syntax-theme-background: #F9F9F9;
 
         label {
             @include typography.type-ui-01;
-            color: var(--kd-color-text-secondary);
+            color: var(--kd-color-text-level-secondary);
             font-weight: 500;
         }
     }
@@ -39,27 +25,6 @@ $shidoka-light-syntax-theme-background: #F9F9F9;
         position: absolute;
         z-index: 1;
         cursor: pointer;
-    }
-
-    &__copy-button {
-        width: auto;
-
-        button {
-            padding: 4px;
-        }
-
-        .copy-text {
-            margin-left: 4px;
-        }
-
-        &:disabled {
-            cursor: not-allowed;
-        }
-
-        &.icon-only {
-            padding: 8px;
-            min-width: unset;
-        }
     }
 
     &__expand-button {

@@ -1,15 +1,10 @@
 @use '../../../common/scss/global.scss';
 
-$default-dark-bg: #272727;
-$default-dark-font-color: #FFFFFF;
-$default-light-bg: #F9F9F9;
-$default-light-font-color: #3D3C3C;
-
 :host {
     display: inline-block;
 }
 
-code {
+.inline-code-view {
     line-height: 1.5;
     word-break: break-word;
     vertical-align: text-bottom;
@@ -18,14 +13,21 @@ code {
     font-family: var(--kd-font-family-code-view);
     font-size: max(calc(var(--inline-snippet-font-size, 14) * 1px), 14px);
     border-radius: 2px;
+    background: var(--kd-color-code-view-background);
+    color: var(--kd-color-code-view-default);
 
-    &.shidoka-dark-syntax-theme {
-        background: $default-dark-bg;
-        color: $default-dark-font-color;
+    &::selection {
+        background-color: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3));
+        color: inherit;
+    }
+}
+
+.shidoka-syntax-theme {
+    &--dark {
+        color-scheme: dark;
     }
 
-    &.shidoka-light-syntax-theme {
-        background: $default-light-bg;
-        color: $default-light-font-color;
+    &--light {
+        color-scheme: light;
     }
 }
