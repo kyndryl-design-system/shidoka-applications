@@ -13,6 +13,7 @@ import '@kyndryl-design-system/shidoka-foundation/components/button';
 import '@kyndryl-design-system/shidoka-foundation/components/accordion';
 
 import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/search.svg';
+import filterIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/filter.svg';
 import filterEditIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/filter-edit.svg';
 import filterRemoveIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import refreshIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/update.svg';
@@ -95,7 +96,11 @@ export class SampleFilterComponent extends LitElement {
             iconPosition="left"
             outlineOnly
           >
-            <span slot="icon">${unsafeSVG(filterEditIcon)}</span>
+            <span slot="icon"
+              >${SelectedOptions.length
+                ? unsafeSVG(filterEditIcon)
+                : unsafeSVG(filterIcon)}</span
+            >
             <span class="filter-text">Filter</span>
           </kd-button>
 

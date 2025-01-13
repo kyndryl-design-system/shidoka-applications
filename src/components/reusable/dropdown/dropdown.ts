@@ -9,7 +9,6 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import DropdownScss from './dropdown.scss';
-import DropdownPaginationScss from '../pagination/pagination-page-size-dropdown.scss';
 import './dropdownOption';
 import '../tag';
 import { FormMixin } from '../../../common/mixins/form-input';
@@ -35,7 +34,7 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-dropdown')
 export class Dropdown extends FormMixin(LitElement) {
-  static override styles = [DropdownScss, DropdownPaginationScss];
+  static override styles = DropdownScss;
 
   /** Label text. */
   @property({ type: String })
