@@ -134,7 +134,11 @@ export const Inline = {
         <div>
           ${notificationBodyMsg}
           <div style="margin-top: 10px;">
-            <kd-link href="#" @on-click=${(e) => e.preventDefault()}>
+            <kd-link
+              href="#"
+              shade="dark"
+              @on-click=${(e) => e.preventDefault()}
+            >
               Link
             </kd-link>
           </div>
