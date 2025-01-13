@@ -24,31 +24,36 @@ kd-card.notification-toast::part(card-wrapper) {
   }
 }
 kd-card.notification-error::part(card-wrapper) {
-  background-color: var(--kd-color-background-error-light, #f7e6e6);
+  background-color: var(--kd-color-status-error-accent);
 }
 kd-card.notification-success::part(card-wrapper) {
-  background-color: var(--kd-color-background-success-light, #e5f7eb);
+  background-color: var(--kd-color-status-success-light);
 }
 kd-card.notification-warning::part(card-wrapper) {
-  background-color: var(--kd-color-background-warning-light, #fef9e5);
+  background-color: var(--kd-color-status-warning-light);
 }
 kd-card.notification-info::part(card-wrapper) {
-  background-color: var(--kd-color-background-informational-light, #e9f2ff);
+  background-color: var(--kd-color-status-informational-light);
 }
 kd-card.notification-default::part(card-wrapper) {
-  background-color: var(--kd-color-background-ui-soft, #f1f0f0);
+  background-color: var(--kd-color-background-accent-light);
 }
+
+kd-card.notification-normal::part(card-wrapper) {
+  background-color: var(--kd-color-background-card-background);
+}
+
 // Change card style based on notification read prop
 kd-card.notification-mark-unread::part(card-wrapper) {
-  background-color: var(--kd-color-skye-10);
-  outline: 1px solid var(--kd-color-skye-20);
+  background-color: var(--kd-color-background-notification-unread-fill);
+  outline: 1px solid var(--kd-color-background-notification-unread-border);
   &:hover {
-    outline: 2px solid var(--kd-color-border-ui-hover);
+    outline: 2px solid var(--kd-color-background-card-hover);
   }
 }
 
 kd-card.notification-mark-read::part(card-wrapper) {
-  background-color: var(--kd-color-background-ui-default);
+  background-color: var(--kd-color-background-card-background);
 }
 
 .notification {
@@ -61,12 +66,12 @@ kd-card.notification-mark-read::part(card-wrapper) {
   &-title {
     @include typography.type-body-02;
     font-weight: 500;
-    color: var(--kd-color-text-primary);
+    color: var(--kd-color-text-level-dark);
     margin: 0;
   }
   &-subtitle {
     @include typography.type-ui-02;
-    color: var(--kd-color-text-secondary);
+    color: var(--kd-color-text-level-secondary);
   }
 
   &-content-wrapper {
@@ -102,7 +107,7 @@ kd-card.notification-mark-read::part(card-wrapper) {
 }
 .notification-description {
   @include typography.type-ui-02;
-  color: var(--kd-color-text-primary);
+  color: var(--kd-color-text-level-dark);
   padding-top: 10px;
 }
 .notification-inline .notification-description,
@@ -114,6 +119,28 @@ kd-card.notification-mark-read::part(card-wrapper) {
 .notification-toast.notification-default .notification-description {
   padding-top: 0px;
   padding-left: 0px;
+  color: var(--kd-color-text-level-primary);
+}
+
+.notification-inline.notification-default .notification-title,
+.notification-toast.notification-default .notification-title {
+  color: var(--kd-color-text-level-primary);
+}
+
+.notification-inline.notification-default .timestamp-text,
+.notification-toast.notification-default .notification-title,
+.notification-toast.notification-default .timestamp-text {
+  color: var(--kd-color-text-level-primary);
+}
+
+.notification-normal,
+.notification-mark-unread,
+.notification-mark-read {
+  .notification-title,
+  .notification-description,
+  .timestamp-text {
+    color: var(--kd-color-text-level-primary);
+  }
 }
 
 .timestamp {
@@ -125,7 +152,7 @@ kd-card.notification-mark-read::part(card-wrapper) {
   }
   &-text {
     @include typography.type-ui-02;
-    color: var(--kd-color-text-primary);
+    color: var(--kd-color-text-level-dark);
     font-weight: 500;
   }
 }
@@ -159,18 +186,18 @@ kd-card.notification-mark-read::part(card-wrapper) {
 }
 
 .info svg {
-  fill: var(--kd-color-border-informational, #1473ff);
+  fill: var(--kd-color-status-informational-dark);
   display: flex;
 }
 .success svg {
-  fill: var(--kd-color-border-success, #1fa452);
+  fill: var(--kd-color-status-success-dark);
   display: flex;
 }
 .warning svg {
-  fill: var(--kd-color-border-warning, #f5c400);
+  fill: var(--kd-color-status-warning-dark);
   display: flex;
 }
 .error svg {
-  fill: var(--kd-color-border-destructive, #cc1800);
+  fill: var(--kd-color-status-error-dark);
   display: flex;
 }
