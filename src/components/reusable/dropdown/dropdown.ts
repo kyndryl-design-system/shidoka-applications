@@ -358,7 +358,7 @@ export class Dropdown extends FormMixin(LitElement) {
                     />
                   `
                 : html`
-                    <span class="input-custom">
+                    <span>
                       ${this.multiple
                         ? this.placeholder
                         : this.value === ''
