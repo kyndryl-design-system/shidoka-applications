@@ -211,6 +211,67 @@ export class Dropdown extends FormMixin(LitElement) {
 
   override render() {
     return html`
+      ${this.renderDropdownContent()}
+
+        ${
+          this.multiple && !this.hideTags && this._tags.length
+            ? html`
+                <kyn-tag-group
+                  filter
+                  role="list"
+                  aria-label=${this._textStrings.selectedOptions}
+                >
+                  ${this._tags.map((tag: any) => {
+                    return html`
+                      <kyn-tag
+                        role="listitem"
+                        label=${tag.text}
+                        ?disabled=${this.disabled}
+                        clearTagText="Clear Tag ${tag.text}"
+                        @on-close=${() => this.handleTagClear(tag.value)}
+                      ></kyn-tag>
+                    `;
+                  })}
+                </kyn-tag-group>
+              `
+            : null
+        }
+        ${
+          this.caption !== ''
+            ? html` <div class="caption">${this.caption}</div> `
+            : null
+        }
+        ${
+          this._isInvalid
+            ? html`
+                <div class="error">
+                  <span
+                    class="error-info-icon"
+                    role="img"
+                    title=${this._textStrings.error}
+                    aria-label=${this._textStrings.error}
+                    >${unsafeSVG(errorIcon)}</span
+                  >
+                  ${this.invalidText || this._internalValidationMsg}
+                </div>
+              `
+            : null
+        }
+
+        <div
+          class="assistive-text"
+          role="status"
+          aria-live="assertive"
+          aria-relevant="additions text"
+        >
+          ${this.assistiveText}
+        </div>
+      </div>
+    `;
+  }
+
+  private renderDropdownContent() {
+    return html`
       <div
         class="dropdown"
         ?disabled=${this.disabled}
@@ -250,7 +311,6 @@ export class Dropdown extends FormMixin(LitElement) {
             <div
               class="${classMap({
                 select: true,
-                'input-custom': true,
                 'size--sm': this.size === 'sm',
                 'size--lg': this.size === 'lg',
                 inline: this.inline,
@@ -303,20 +363,13 @@ export class Dropdown extends FormMixin(LitElement) {
                     />
                   `
                 : html`
-                    <input
-                      type="text"
-                      class="input-custom"
-                      .value=${this.multiple
-                        ? ''
-                        : this.value === ''
-                        ? ''
-                        : this.text}
-                      placeholder=${this.multiple
+                    <span class="input-custom">
+                      ${this.multiple
                         ? this.placeholder
-                        : this.placeholder}
-                      readonly
-                      tabindex="-1"
-                    />
+                        : this.value === ''
+                        ? this.placeholder
+                        : this.text}
+                    </span>
                   `}
 
               <span class="arrow-icon">${unsafeSVG(downIcon)}</span>
@@ -378,54 +431,6 @@ export class Dropdown extends FormMixin(LitElement) {
             ? html` <span class="error-icon">${unsafeSVG(errorIcon)}</span> `
             : null}
             -->
-        </div>
-
-        ${this.multiple && !this.hideTags && this._tags.length
-          ? html`
-              <kyn-tag-group
-                filter
-                role="list"
-                aria-label=${this._textStrings.selectedOptions}
-              >
-                ${this._tags.map((tag: any) => {
-                  return html`
-                    <kyn-tag
-                      role="listitem"
-                      label=${tag.text}
-                      ?disabled=${this.disabled}
-                      clearTagText="Clear Tag ${tag.text}"
-                      @on-close=${() => this.handleTagClear(tag.value)}
-                    ></kyn-tag>
-                  `;
-                })}
-              </kyn-tag-group>
-            `
-          : null}
-        ${this.caption !== ''
-          ? html` <div class="caption">${this.caption}</div> `
-          : null}
-        ${this._isInvalid
-          ? html`
-              <div class="error">
-                <span
-                  class="error-info-icon"
-                  role="img"
-                  title=${this._textStrings.error}
-                  aria-label=${this._textStrings.error}
-                  >${unsafeSVG(errorIcon)}</span
-                >
-                ${this.invalidText || this._internalValidationMsg}
-              </div>
-            `
-          : null}
-
-        <div
-          class="assistive-text"
-          role="status"
-          aria-live="assertive"
-          aria-relevant="additions text"
-        >
-          ${this.assistiveText}
         </div>
       </div>
     `;
