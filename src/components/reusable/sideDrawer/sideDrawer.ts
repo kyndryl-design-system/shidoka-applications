@@ -12,6 +12,7 @@ import closeIcon from '@carbon/icons/es/close/20';
  * @slot unnamed - Slot for drawer body content.
  * @slot anchor - Slot for the anchor button content.
  * @fires on-close - Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).
+ * @fires on-open - Emits the drawer open event.
  */
 
 @customElement('kyn-side-drawer')
@@ -223,10 +224,16 @@ export class SideDrawer extends LitElement {
     this.dispatchEvent(event);
   }
 
+  private _emitOpenEvent() {
+    const event = new CustomEvent('on-open');
+    this.dispatchEvent(event);
+  }
+
   override updated(changedProps: any) {
     if (changedProps.has('open')) {
       if (this.open) {
         this._dialog.showModal();
+        this._emitOpenEvent();
       } else {
         this._dialog.close();
       }

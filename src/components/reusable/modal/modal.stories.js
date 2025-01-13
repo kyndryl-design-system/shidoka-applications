@@ -57,6 +57,7 @@ export const Modal = {
         ?hideFooter=${args.hideFooter}
         ?hideCancelButton=${args.hideCancelButton}
         @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
       >
         <kd-button slot="anchor"> Open Modal </kd-button>
 
@@ -86,6 +87,7 @@ export const ActionButtons = {
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideCancelButton=${args.hideCancelButton}
         @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
       >
         <kd-button slot="anchor"> Open Modal </kd-button>
 
@@ -112,6 +114,7 @@ export const BeforeClose = {
         ?hideCancelButton=${args.hideCancelButton}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
       >
         <kd-button slot="anchor"> Open Modal </kd-button>
 
@@ -150,6 +153,7 @@ export const WithForm = {
         ?hideCancelButton=${args.hideCancelButton}
         .beforeClose=${(returnValue) => handleBeforeCloseSubmit(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
       >
         <kd-button slot="anchor"> Open Modal </kd-button>
 

@@ -54,6 +54,7 @@ export const SideDrawer = {
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
         @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
       >
         <span slot="anchor">Open Drawer</span>
 
@@ -101,6 +102,7 @@ export const BeforeClose = {
         ?destructive=${args.destructive}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
       >
         <span slot="anchor">Open Drawer</span>
 
