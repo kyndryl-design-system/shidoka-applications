@@ -57,10 +57,6 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: String })
   placeholder = '';
 
-  /** Mode of the dropdown. */
-  @property({ type: String })
-  mode: 'default' | 'pagination' = 'default';
-
   /** Listbox/drawer open state. */
   @property({ type: Boolean })
   open = false;
@@ -278,7 +274,6 @@ export class Dropdown extends FormMixin(LitElement) {
         ?open=${this.open}
         ?inline=${this.inline}
         ?searchable=${this.searchable}
-        mode=${this.mode}
       >
         <label
           for=${this.name}
