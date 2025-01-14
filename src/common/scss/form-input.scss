@@ -1,5 +1,6 @@
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '../../common/scss/mixins.scss';
 
 .label-text {
   @include typography.type-ui-02;
@@ -158,23 +159,14 @@ textarea {
 
 .clear-button,
 .clear {
-  position: absolute;
+  @include mixins.close-icon-btn($top: 50%, $right: 16px, $size: 16px);
   border: none;
-  background: none;
   padding: 0;
   margin: 0;
-  position: absolute;
-  top: 50%;
-  right: 16px;
   transform: translateY(-50%);
-  color: var(--kd-color-text-icon-primary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  height: 24px;
 
-  span {
-    display: flex;
+  &.dropdown-clear {
+    right: 48px;
   }
 
   &[disabled] {
@@ -184,7 +176,7 @@ textarea {
 
   &:hover {
     opacity: 0.8;
-    color: var(--kd-color-text-icon-secondary);
+    color: var(--kd-color-icon-secondary);
   }
 }
 

@@ -9,14 +9,15 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import DropdownScss from './dropdown.scss';
+import { FormMixin } from '../../../common/mixins/form-input';
+import { deepmerge } from 'deepmerge-ts';
+
 import './dropdownOption';
 import '../tag';
-import { FormMixin } from '../../../common/mixins/form-input';
+
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
-import clearIcon16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
-import { deepmerge } from 'deepmerge-ts';
 
 const _defaultTextStrings = {
   selectedOptions: 'List of selected options',
@@ -338,7 +339,7 @@ export class Dropdown extends FormMixin(LitElement) {
                       @click=${(e: Event) => this.handleClearMultiple(e)}
                     >
                       ${this.value.length}
-                      <span>${unsafeSVG(clearIcon16)}</span>
+                      <span>${unsafeSVG(clearIcon)}</span>
                     </button>
                   `
                 : null}
@@ -411,7 +412,7 @@ export class Dropdown extends FormMixin(LitElement) {
           ${this.searchable && this.searchEl && this.searchText !== ''
             ? html`
                 <button
-                  class="clear"
+                  class="clear dropdown-clear"
                   aria-label="Clear search text"
                   ?disabled=${this.disabled}
                   @click=${(e: any) => this.handleClear(e)}
