@@ -156,19 +156,31 @@ textarea {
   }
 }
 
-.clear-button {
+.clear-button,
+.clear {
   position: absolute;
-  right: 8px;
-  top: 25px;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  right: 16px;
   transform: translateY(-50%);
+  color: var(--kd-color-text-icon-primary);
+  cursor: pointer;
   display: flex;
   align-items: center;
-  height: 20px;
-  width: 35px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--kd-color-text-icon-primary);
+  height: 24px;
+
+  span {
+    display: flex;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 
   &:hover {
     opacity: 0.8;
