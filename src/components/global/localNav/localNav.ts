@@ -8,10 +8,11 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { deepmerge } from 'deepmerge-ts';
+import '@kyndryl-design-system/shidoka-foundation/components/button';
 import LocalNavScss from './localNav.scss';
 
 import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
-import pinIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/pin.svg';
+import pinIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/side-drawer-out.svg';
 
 const _defaultTextStrings = {
   pin: 'Pin',
@@ -118,18 +119,16 @@ export class LocalNav extends LitElement {
         </div>
 
         <div class="toggle-container">
-          <button
-            class="nav-toggle"
-            @click=${(e: Event) => this._handleNavToggle(e)}
-            title="${this.pinned
+          <kd-button
+            kind="tertiary"
+            size="small"
+            description=${this.pinned
               ? this._textStrings.unpin
-              : this._textStrings.pin}"
-            aria-label="${this.pinned
-              ? this._textStrings.unpin
-              : this._textStrings.pin}"
+              : this._textStrings.pin}
+            @on-click=${(e: Event) => this._handleNavToggle(e)}
           >
-            <span class="pin-icon">${unsafeSVG(pinIcon)}</span>
-          </button>
+            <span class="pin-icon" slot="icon"> ${unsafeSVG(pinIcon)} </span>
+          </kd-button>
         </div>
       </nav>
 

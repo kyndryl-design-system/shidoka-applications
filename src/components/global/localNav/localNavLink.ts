@@ -105,22 +105,12 @@ export class LocalNavLink extends LitElement {
     return html`
       <div class=${classMap(classes)}>
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
-          <span class="icon ${this._icon.length ? 'slotted' : ''}">
-            <slot name="icon"></slot>
-          </span>
-
-          <span class="text">
-            <slot @slotchange=${this._handleTextSlotChange}></slot>
-          </span>
-
           ${this._navLinks.length
             ? html`
                 <span class="expand-icon">
-                  <span
-                    >${this.expanded
-                      ? unsafeSVG(subtractIcon)
-                      : unsafeSVG(addIcon)}</span
-                  >
+                  ${this.expanded
+                    ? unsafeSVG(subtractIcon)
+                    : unsafeSVG(addIcon)}
                 </span>
               `
             : null}
@@ -136,8 +126,7 @@ export class LocalNavLink extends LitElement {
           ${this._navLinks.length
             ? html`
                 <button class="go-back" @click=${() => this._handleBack()}>
-                  <span>${unsafeSVG(backIcon)}</span>
-                  ${this.backText}
+                  ${unsafeSVG(backIcon)} ${this.backText}
                 </button>
               `
             : null}

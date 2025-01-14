@@ -20,7 +20,7 @@ nav {
   padding: 4px 8px;
   left: 0;
   width: 100%;
-  background: var(--kd-color-background-ui-soft);
+  background: var(--kd-color-background-container-soft);
   overflow: hidden;
 
   @media (min-width: 42rem) {
@@ -61,7 +61,7 @@ nav {
     visibility: hidden;
 
     .nav--expanded + & {
-      background-color: var(--kd-color-light-opacity-50);
+      background-color: var(--kd-color-background-opacity-4);
       visibility: visible;
 
       &.pinned {
@@ -101,7 +101,7 @@ slot[name='search'] {
   top: 100%;
   left: 0;
   width: 100%;
-  background: var(--kd-color-background-ui-soft);
+  background: var(--kd-color-background-container-soft);
   padding-top: 4px;
   transition: height 250ms ease-out, visibility 250ms ease-out;
   height: 0;
@@ -137,7 +137,7 @@ slot[name='search'] {
   outline: 2px solid transparent;
   outline-offset: -2px;
   font: inherit;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-text-level-secondary);
   padding: 8px 12px;
   cursor: pointer;
   display: flex;
@@ -147,7 +147,7 @@ slot[name='search'] {
   height: 48px;
 
   &:focus {
-    outline-color: var(--kd-color-border-focus);
+    outline-color: var(--kd-color-border-variants-focus);
   }
 
   // kd-icon {
@@ -166,46 +166,11 @@ slot[name='search'] {
 
 .toggle-container {
   display: none;
-  padding-top: 4px;
-  border-top: 1px solid var(--kd-color-border-light);
+  padding: 8px 4px 4px;
+  border-top: 1px solid var(--kd-color-border-variants-light);
 
   @media (min-width: 42rem) {
     display: flex;
-  }
-}
-
-.nav-toggle {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-  background: none;
-  color: var(--kd-color-text-link);
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-  transition: background-color 150ms ease-out, color 150ms ease-out,
-    outline-color 150ms ease-out;
-
-  .pin-icon {
-    display: block;
-  }
-
-  &:hover {
-    background-color: var(--kd-color-background-primary);
-    color: var(--kd-color-text-inversed);
-  }
-
-  &:focus {
-    outline-color: var(--kd-color-border-focus);
-  }
-
-  &:active {
-    background-color: var(--kd-color-background-primary-pressed);
-    color: var(--kd-color-text-inversed);
   }
 }
 
