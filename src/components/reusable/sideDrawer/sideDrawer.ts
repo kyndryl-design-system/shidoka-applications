@@ -149,9 +149,7 @@ export class SideDrawer extends LitElement {
               description=${ifDefined(this.closeBtnDescription)}
               @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
             >
-              <span slot="icon" class="expand-icon"
-                >${unsafeSVG(closeIcon)}</span
-              >
+              <span slot="icon">${unsafeSVG(closeIcon)}</span>
             </kd-button>
           </header>
 
