@@ -13,6 +13,7 @@ import closeIcon from '@carbon/icons/es/close/20';
  * @slot unnamed - Slot for modal body content.
  * @slot anchor - Slot for the anchor button content.
  * @fires on-close - Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).
+ * @fires on-open - Emits the modal open event.
  */
 @customElement('kyn-modal')
 export class Modal extends LitElement {
@@ -219,10 +220,16 @@ export class Modal extends LitElement {
     this.dispatchEvent(event);
   }
 
+  private _emitOpenEvent() {
+    const event = new CustomEvent('on-open');
+    this.dispatchEvent(event);
+  }
+
   override updated(changedProps: any) {
     if (changedProps.has('open')) {
       if (this.open) {
         this._dialog.showModal();
+        this._emitOpenEvent();
       } else {
         this._dialog.close();
       }
