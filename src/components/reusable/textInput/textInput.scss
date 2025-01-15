@@ -20,8 +20,7 @@
     right: 16px;
   }
 
-  &.icon--right .clear,
-  &.icon--right .error-icon {
+  &.icon--right .clear {
     right: 45px;
   }
 
@@ -71,4 +70,25 @@ input[type='search']::-webkit-search-cancel-button,
 input[type='search']::-webkit-search-results-button,
 input[type='search']::-webkit-search-results-decoration {
   appearance: none;
+}
+
+.clear {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: block;
+
+  &[disabled] {
+    cursor: not-allowed;
+  }
+
+  span {
+    display: flex;
+  }
 }

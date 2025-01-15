@@ -3,7 +3,7 @@ import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import currencyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/cost.svg';
+import currencyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/cost.svg';
 
 export default {
   title: 'Components/Text Input',
