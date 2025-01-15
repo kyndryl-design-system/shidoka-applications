@@ -2,10 +2,12 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import SideDrawerScss from './sideDrawer.scss';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import '@kyndryl-design-system/shidoka-foundation/components/button';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+
+import SideDrawerScss from './sideDrawer.scss';
 
 /**
  * Side Drawer.
@@ -71,6 +73,10 @@ export class SideDrawer extends LitElement {
   @property({ type: String })
   cancelBtnText = 'Cancel';
 
+  /** Close button description (Required to support accessibility). */
+  @property({ type: String })
+  closeBtnDescription = 'Close';
+
   /** Disables the primary button. */
   @property({ type: Boolean })
   submitBtnDisabled = false;
@@ -135,16 +141,16 @@ export class SideDrawer extends LitElement {
                 : null}
             </div>
 
-            <button
-              class="close-icon-btn"
+            <kd-button
+              class="code-view__expand-button"
+              kind="tertiary"
+              size="small"
+              iconPosition="left"
+              description=${ifDefined(this.closeBtnDescription)}
               @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
-              aria-label="Close drawer"
-              title="Close drawer"
-              role="button"
             >
-              <span class="close-drawer-label">Close drawer</span>
-              <span aria-hidden="true">${unsafeSVG(closeIcon)}</span>
-            </button>
+              <span slot="icon">${unsafeSVG(closeIcon)}</span>
+            </kd-button>
           </header>
 
           <!-- Body -->
