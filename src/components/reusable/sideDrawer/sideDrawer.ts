@@ -142,7 +142,7 @@ export class SideDrawer extends LitElement {
             </div>
 
             <kd-button
-              class="code-view__expand-button"
+              class="side-drawer-close-btn"
               kind="tertiary"
               size="small"
               iconPosition="left"
