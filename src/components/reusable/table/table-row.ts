@@ -265,15 +265,13 @@ export class TableRow extends LitElement {
                   class="kyn--table-expand__button"
                   type="button"
                   ?disabled=${this.disabled}
-                  size="small"
-                  iconPosition="center"
                   title=${this.expanded
                     ? this._textStrings.expanded
                     : this._textStrings.collapsed}
                   aria-label=${this.expanded
                     ? this._textStrings.expanded
                     : this._textStrings.collapsed}
-                  @on-click=${this._handleExpanding}
+                  @click=${this._handleExpanding}
                 >
                   <span slot="icon">${unsafeSVG(chevronDownIcon)}</span>
                 </button>
