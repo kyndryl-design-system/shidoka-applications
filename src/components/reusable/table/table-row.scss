@@ -21,6 +21,8 @@
   background: transparent;
   border: none;
   cursor: pointer;
+  padding: 0.5rem;
+  line-height: 0;
 
   &:hover {
     background: transparent;
@@ -28,12 +30,13 @@
 }
 
 .kyn--table-expand__button span[slot='icon'] {
+  display: inline-flex;
   transition: transform 200ms ease-in-out;
-  transform: translateY(15%);
+  transform-origin: center;
 }
 
 :host([expanded]) .kyn--table-expand__button span[slot='icon'] {
-  transform: translateY(-10%) rotate(-180deg);
+  transform: rotate(-180deg);
 }
 
 :host([disabled]) {
