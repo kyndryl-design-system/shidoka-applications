@@ -22,8 +22,8 @@ import circleFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/
 import substractFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/substract-filled.svg';
 import substractFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-filled.svg';
 
-import errorFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/warning-filled.svg';
-import errorFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import errorFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/error-filled.svg';
+import errorFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 import warningFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/warning-filled.svg';
 import warningFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
@@ -80,7 +80,7 @@ export class StepperItem extends LitElement {
 
   /** Optional. Show counter for vertical stepper when stepState is `'pending'`. */
   @property({ type: Boolean })
-  showCounter = false;
+  showCounter = true;
 
   /** Progress of stepper.
    * @ignore
@@ -135,11 +135,10 @@ export class StepperItem extends LitElement {
     const iconMapper: any = {
       active: this.stepSize === 'large' ? circleFilled : circleFilled16,
       excluded: this.stepSize === 'large' ? substractFilled : substractFilled16,
-      disabled: this.stepSize === 'large' ? errorFilled : errorFilled16,
+      disabled: this.stepSize === 'large' ? substractFilled : substractFilled16,
       completed:
         this.stepSize === 'large' ? checkmarkFilled : checkmarkFilled16,
-      destructive:
-        this.stepSize === 'large' ? substractFilled : substractFilled16,
+      destructive: this.stepSize === 'large' ? errorFilled : errorFilled16,
       warning: this.stepSize === 'large' ? warningFilled : warningFilled16,
     };
     // map first step and last step class to parent div
