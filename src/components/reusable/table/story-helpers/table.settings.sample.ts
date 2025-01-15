@@ -257,7 +257,7 @@ class StoryTableSettings extends LitElement {
   }
 
   _handleSearch(e: any) {
-    confirm('Search for ' + e.target.value);
+    console.log('Search for ' + e.target.value);
   }
 
   override render() {
