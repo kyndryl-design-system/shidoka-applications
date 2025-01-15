@@ -156,7 +156,11 @@ export const WithForm = {
         <br /><br />
 
         <form @submit=${(e) => handleSubmit(e)}>
-          <kyn-text-input name="test" required>Required input</kyn-text-input>
+          <kyn-text-input
+            name="test"
+            label="Required input"
+            required
+          ></kyn-text-input>
         </form>
       </kyn-modal>
     `;
