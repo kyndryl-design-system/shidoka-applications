@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import HeaderUserProfileScss from './headerUserProfile.scss';
-import '@kyndryl-design-system/shidoka-foundation/components/link';
+import '../../reusable/link';
 
 /**
  * Header user profile.
@@ -47,9 +47,9 @@ export class HeaderUserProfile extends LitElement {
           ${this.email !== ''
             ? html`
                 <div class="email">
-                  <kd-link standalone href="mailto:${this.email}">
+                  <kyn-link standalone href="mailto:${this.email}">
                     ${this.email}
-                  </kd-link>
+                  </kyn-link>
                 </div>
               `
             : null}
@@ -58,13 +58,13 @@ export class HeaderUserProfile extends LitElement {
         ${this.profileLink !== ''
           ? html`
               <div class="view-profile">
-                <kd-link
+                <kyn-link
                   standalone
                   href=${this.profileLink}
                   @on-click=${(e: Event) => this._handleProfileClick(e)}
                 >
                   ${this.profileLinkText}
-                </kd-link>
+                </kyn-link>
               </div>
             `
           : null}

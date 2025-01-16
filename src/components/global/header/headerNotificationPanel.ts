@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../../reusable/button';
 
 import HeaderNotificationPanelScss from './headerNotificationPanel.scss';
 
@@ -48,10 +48,10 @@ export class HeaderNotificationPanel extends LitElement {
       ${this.hidePanelFooter
         ? null
         : html` <div class="panel-footer">
-            <kd-button
+            <kyn-button
               kind="tertiary"
               @click=${(e: Event) => this._handlefooterBtnEvent(e)}
-              >${this.panelFooterBtnText}</kd-button
+              >${this.panelFooterBtnText}</kyn-button
             >
           </div>`}
     </div>`;

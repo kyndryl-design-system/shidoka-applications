@@ -3,7 +3,7 @@ import { html, LitElement } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
 // Import required components and icons
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../button';
 import chevLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-left.svg';
 import chevRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 
@@ -63,7 +63,7 @@ export class PaginationNavigationButtons extends LitElement {
 
     // Render back button, current page number, and next button
     return html`
-      <kd-button
+      <kyn-button
         iconposition="center"
         kind="tertiary"
         type="button"
@@ -73,14 +73,14 @@ export class PaginationNavigationButtons extends LitElement {
         description=${this.textStrings.previousPage}
       >
         <span slot="icon">${unsafeSVG(chevLeftIcon)}</span>
-      </kd-button>
+      </kyn-button>
 
       <span class="page-range" role="status" aria-live="polite">
         ${this.pageNumber} ${this.textStrings.of} ${this.numberOfPages}
         ${this.textStrings.pages}
       </span>
 
-      <kd-button
+      <kyn-button
         iconposition="center"
         kind="tertiary"
         type="button"
@@ -90,7 +90,7 @@ export class PaginationNavigationButtons extends LitElement {
         description=${this.textStrings.nextPage}
       >
         <span slot="icon">${unsafeSVG(chevRightIcon)}</span>
-      </kd-button>
+      </kyn-button>
     `;
   }
 }

@@ -11,7 +11,7 @@ import '../components/reusable/timepicker';
 import '../components/reusable/datePicker';
 import '../components/reusable/daterangepicker';
 import '../components/reusable/tooltip';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../components/reusable/button';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 import { action } from '@storybook/addon-actions';
 
@@ -264,7 +264,7 @@ export const Default = {
 
         <br /><br />
 
-        <kd-button
+        <kyn-button
           type="submit"
           name="test"
           @on-click=${() => {
@@ -277,7 +277,7 @@ export const Default = {
           }}
         >
           Submit
-        </kd-button>
+        </kyn-button>
       </form>
     `;
   },

@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../button';
 
 export default {
   title: 'Components/SideDrawer',
@@ -53,6 +53,7 @@ export const SideDrawer = {
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
         @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
       >
         <span slot="anchor">Open Drawer</span>
 
@@ -98,8 +99,12 @@ export const BeforeClose = {
         ?submitBtnDisabled=${args.submitBtnDisabled}
         ?hideFooter=${args.hideFooter}
         ?destructive=${args.destructive}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        secondaryButtonText=${args.secondaryButtonText}
+        ?hideCancelButton=${args.hideCancelButton}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
       >
         <span slot="anchor">Open Drawer</span>
 
