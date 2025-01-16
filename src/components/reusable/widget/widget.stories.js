@@ -2,7 +2,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../button';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
 import '../overflowMenu';
 
@@ -76,7 +76,7 @@ export const WithActions = {
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
           >
-            <kd-button
+            <kyn-button
               slot="actions"
               kind="tertiary"
               size="small"
@@ -85,7 +85,7 @@ export const WithActions = {
               <span slot="icon" style="display:flex"
                 >${unsafeSVG(settingsIcon)}</span
               >
-            </kd-button>
+            </kyn-button>
 
             <kyn-overflow-menu slot="actions" anchorRight verticalDots>
               <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>

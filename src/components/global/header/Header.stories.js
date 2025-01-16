@@ -2,7 +2,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import './';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../../reusable/button';
 
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/user.svg';
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/question.svg';
@@ -236,19 +236,19 @@ export const WithNotificationPanel = {
           ?hidePanelFooter=${notificationPanelArgs.hidePanelFooter}
           @on-footer-btn-click=${(e) => action(e.type)(e)}
         >
-          <kd-button
+          <kyn-button
             slot="menu-slot"
             kind="tertiary"
             @click=${(e) => selectAllNotificationsAsRead(e)}
-            >Mark all as Read</kd-button
+            >Mark all as Read</kyn-button
           >
-          <kd-button
+          <kyn-button
             slot="menu-slot"
             kind="tertiary"
             @click=${(e) => console.log(e)}
           >
             <span>${unsafeSVG(useSetingIcon)}</span>
-          </kd-button>
+          </kyn-button>
 
           <!-- Notification component inside notification panel -->
           ${notificationTagStatusArr.map(
@@ -379,7 +379,7 @@ export const WithEverything = {
         </kyn-header-link>
       </kyn-header-nav>
 
-      <kd-button size="small">Button</kd-button>
+      <kyn-button size="small">Button</kyn-button>
 
       <kyn-header-flyouts>
         <kyn-header-flyout label="Menu Label">

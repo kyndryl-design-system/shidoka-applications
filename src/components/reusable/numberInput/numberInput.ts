@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import Styles from './numberInput.scss';
 import { FormMixin } from '../../../common/mixins/form-input';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../button';
 import { deepmerge } from 'deepmerge-ts';
 
 import chevronLeft from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-left.svg';
@@ -113,7 +113,7 @@ export class NumberInput extends FormMixin(LitElement) {
             'input-wrapper': true,
           })}"
         >
-          <kd-button
+          <kyn-button
             kind="primary-app"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value <= this.min}
@@ -122,7 +122,7 @@ export class NumberInput extends FormMixin(LitElement) {
             @on-click=${this._handleSubtract}
           >
             <span slot="icon">${unsafeSVG(chevronLeft)}</span>
-          </kd-button>
+          </kyn-button>
 
           <input
             class="${classMap({
@@ -145,7 +145,7 @@ export class NumberInput extends FormMixin(LitElement) {
             @input=${(e: any) => this._handleInput(e)}
           />
 
-          <kd-button
+          <kyn-button
             kind="primary-app"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value >= this.max}
@@ -154,7 +154,7 @@ export class NumberInput extends FormMixin(LitElement) {
             @on-click=${this._handleAdd}
           >
             <span slot="icon">${unsafeSVG(chevronRight)}</span>
-          </kd-button>
+          </kyn-button>
         </div>
 
         ${this.caption !== ''

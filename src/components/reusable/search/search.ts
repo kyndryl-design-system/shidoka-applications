@@ -5,7 +5,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import Styles from './search.scss';
 import '../textInput';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../button';
 import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/search.svg';
 import { deepmerge } from 'deepmerge-ts';
 
@@ -97,7 +97,7 @@ export class Search extends LitElement {
 
     return html`
       <div class="${classMap(classes)}">
-        <kd-button
+        <kyn-button
           kind="secondary"
           size=${this._buttonSizeMap()}
           description=${ifDefined(this.expandableSearchBtnDescription)}
@@ -105,7 +105,7 @@ export class Search extends LitElement {
           @on-click=${this._handleButtonClick}
         >
           <span slot="icon">${unsafeSVG(searchIcon)}</span>
-        </kd-button>
+        </kyn-button>
 
         <kyn-text-input
           name=${this.name}
