@@ -1,8 +1,8 @@
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/link';
+import '../button';
+import '../link';
 
 import '../overflowMenu';
 
@@ -134,13 +134,13 @@ export const Inline = {
         <div>
           ${notificationBodyMsg}
           <div style="margin-top: 10px;">
-            <kd-link
+            <kyn-link
               href="#"
               shade="dark"
               @on-click=${(e) => e.preventDefault()}
             >
               Link
-            </kd-link>
+            </kyn-link>
           </div>
         </div>
       </kyn-notification> `;

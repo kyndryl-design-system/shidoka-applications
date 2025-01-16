@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import '@kyndryl-design-system/shidoka-foundation/components/link';
+import '../link';
 import '../overflowMenu';
 import './';
 
@@ -18,8 +18,8 @@ export const Breadcrumbs = {
   render: () => {
     return html`
       <kyn-breadcrumbs aria-label="Breadcrumb">
-        <kd-link standalone href="/path">Level 1</kd-link>
-        <kd-link standalone href="/path">Level 2</kd-link>
+        <kyn-link standalone href="/path">Level 1</kyn-link>
+        <kyn-link standalone href="/path">Level 2</kyn-link>
         <strong aria-current="page">Current page</strong>
       </kyn-breadcrumbs>
     `;
@@ -30,15 +30,15 @@ export const WithOverflow = {
   render: () => {
     return html`
       <kyn-breadcrumbs aria-label="Breadcrumb">
-        <kd-link standalone href="/path">Level 1</kd-link>
-        <kd-link standalone href="/path">Level 2</kd-link>
+        <kyn-link standalone href="/path">Level 1</kyn-link>
+        <kyn-link standalone href="/path">Level 2</kyn-link>
 
         <kyn-overflow-menu>
           <kyn-overflow-menu-item href="/path">Level 3</kyn-overflow-menu-item>
           <kyn-overflow-menu-item href="/path">Level 4</kyn-overflow-menu-item>
         </kyn-overflow-menu>
 
-        <kd-link standalone href="/path">Level 5</kd-link>
+        <kyn-link standalone href="/path">Level 5</kyn-link>
         <strong aria-current="page">Current page</strong>
       </kyn-breadcrumbs>
     `;

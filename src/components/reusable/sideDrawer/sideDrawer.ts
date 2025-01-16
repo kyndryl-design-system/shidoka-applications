@@ -4,7 +4,7 @@ import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import SideDrawerScss from './sideDrawer.scss';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../button';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 /**
@@ -162,7 +162,7 @@ export class SideDrawer extends LitElement {
             ? html`
                 <div class="dialog-footer">
                   <div class="actions">
-                    <kd-button
+                    <kyn-button
                       class="action-button"
                       value="Ok"
                       ?disabled=${this.submitBtnDisabled}
@@ -170,11 +170,11 @@ export class SideDrawer extends LitElement {
                       @click=${(e: Event) => this._closeDrawer(e, 'ok')}
                     >
                       ${this.submitBtnText}
-                    </kd-button>
+                    </kyn-button>
 
                     ${this.showSecondaryButton
                       ? html`
-                          <kd-button
+                          <kyn-button
                             class="action-button"
                             value="Secondary"
                             kind="secondary"
@@ -182,13 +182,13 @@ export class SideDrawer extends LitElement {
                               this._closeDrawer(e, 'secondary')}
                           >
                             ${this.secondaryButtonText}
-                          </kd-button>
+                          </kyn-button>
                         `
                       : null}
                     ${this.hideCancelButton
                       ? null
                       : html`
-                          <kd-button
+                          <kyn-button
                             class="action-button"
                             value="Cancel"
                             kind="tertiary"
@@ -196,7 +196,7 @@ export class SideDrawer extends LitElement {
                               this._closeDrawer(e, 'cancel')}
                           >
                             ${this.cancelBtnText}
-                          </kd-button>
+                          </kyn-button>
                         `}
                   </div>
                 </div>

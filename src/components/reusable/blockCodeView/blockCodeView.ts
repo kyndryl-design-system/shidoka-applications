@@ -15,7 +15,7 @@ import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/cop
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/checkmark.svg';
 import chevronDown from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../button';
 
 import BlockCodeViewStyles from './blockCodeView.scss';
 import ShidokaSyntaxTheme from '../../../common/scss/shidoka-syntax-theme.scss';
@@ -205,7 +205,7 @@ export class BlockCodeView extends LitElement {
   private renderCopyButton() {
     if (!this.copyOptionVisible) return null;
     return html`
-      <kd-button
+      <kyn-button
         class="code-view__copy-button"
         kind="tertiary"
         size="small"
@@ -222,7 +222,7 @@ export class BlockCodeView extends LitElement {
         ${this._copyState.text
           ? html`<span class="copy-text">${this._copyState.text}</span>`
           : null}
-      </kd-button>
+      </kyn-button>
     `;
   }
 
@@ -233,7 +233,7 @@ export class BlockCodeView extends LitElement {
     )
       return null;
     return html`
-      <kd-button
+      <kyn-button
         class="code-view__expand-button"
         kind="tertiary"
         size="small"
@@ -245,7 +245,7 @@ export class BlockCodeView extends LitElement {
         @click=${this.expandCodeView}
       >
         <span slot="icon" class="expand-icon">${unsafeSVG(chevronDown)}</span>
-      </kd-button>
+      </kyn-button>
     `;
   }
 
