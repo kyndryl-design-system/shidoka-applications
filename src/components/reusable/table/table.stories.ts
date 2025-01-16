@@ -16,6 +16,7 @@ import './story-helpers/table-story.sample';
 import './story-helpers/table.settings.sample';
 import { characters, dataForColumns } from './story-helpers/ultils.sample';
 import allData from './story-helpers/table-data.json';
+
 import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 
