@@ -411,7 +411,7 @@ export const DisabledRows: Story = {
                 .rowId=${row.id}
                 key="row-${row.id}"
                 ?disabled=${row.id == 1 || row.id == 3 ? true : false}
-                ?selected=${row.id == 3 ? true : false}
+                ?selected=${row.id == 2 ? true : false}
               >
                 <kyn-td .align=${'center'}>${row.id}</kyn-td>
                 <kyn-td>${row.firstName}</kyn-td>
