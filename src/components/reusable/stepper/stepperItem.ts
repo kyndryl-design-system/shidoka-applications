@@ -80,7 +80,7 @@ export class StepperItem extends LitElement {
 
   /** Optional. Show counter for vertical stepper when stepState is `'pending'`. */
   @property({ type: Boolean })
-  showCounter = true;
+  showCounter = false;
 
   /** Progress of stepper.
    * @ignore
