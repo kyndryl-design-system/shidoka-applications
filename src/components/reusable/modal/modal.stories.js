@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../button';
 import '../textInput';
 
 export default {
@@ -56,8 +56,9 @@ export const Modal = {
         ?hideFooter=${args.hideFooter}
         ?hideCancelButton=${args.hideCancelButton}
         @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
       >
-        <kd-button slot="anchor"> Open Modal </kd-button>
+        <kyn-button slot="anchor"> Open Modal </kyn-button>
 
         Basic Modal example.
       </kyn-modal>
@@ -85,8 +86,9 @@ export const ActionButtons = {
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideCancelButton=${args.hideCancelButton}
         @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
       >
-        <kd-button slot="anchor"> Open Modal </kd-button>
+        <kyn-button slot="anchor"> Open Modal </kyn-button>
 
         Basic Modal with All Buttons.
       </kyn-modal>
@@ -111,8 +113,9 @@ export const BeforeClose = {
         ?hideCancelButton=${args.hideCancelButton}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
       >
-        <kd-button slot="anchor"> Open Modal </kd-button>
+        <kyn-button slot="anchor"> Open Modal </kyn-button>
 
         Modal with custom beforeClose handler function.
       </kyn-modal>
@@ -149,8 +152,9 @@ export const WithForm = {
         ?hideCancelButton=${args.hideCancelButton}
         .beforeClose=${(returnValue) => handleBeforeCloseSubmit(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
       >
-        <kd-button slot="anchor"> Open Modal </kd-button>
+        <kyn-button slot="anchor"> Open Modal </kyn-button>
 
         Modal with form validation.
         <br /><br />

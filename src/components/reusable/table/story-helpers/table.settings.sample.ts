@@ -3,7 +3,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../../button';
 
 import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/search.svg';
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
@@ -299,7 +299,7 @@ class StoryTableSettings extends LitElement {
             @on-close=${(e: CustomEvent) => this.handleClose(e)}
           >
             <div slot="anchor">
-              <kd-button
+              <kyn-button
                 iconposition="left"
                 kind="tertiary"
                 type="button"
@@ -311,7 +311,7 @@ class StoryTableSettings extends LitElement {
                 <span slot="icon" style="display:flex"
                   >${unsafeSVG(settingsIcon)}</span
                 >
-              </kd-button>
+              </kyn-button>
             </div>
             <story-column-setting .rows=${this.columns}></story-column-setting>
           </kyn-side-drawer>

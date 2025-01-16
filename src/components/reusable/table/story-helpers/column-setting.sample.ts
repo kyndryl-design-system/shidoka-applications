@@ -3,7 +3,7 @@ import { LitElement, html, css, PropertyValueMap } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../../button';
 import lockedIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/lock.svg';
 import unlockedIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/unlock.svg';
 
@@ -26,13 +26,13 @@ class StoryColumSetting extends LitElement {
       --kyn-th-max-width: 100px;
       --kyn-th-width: 100px;
     }
-    .unlockedRow kd-button {
+    .unlockedRow kyn-button {
       opacity: 0;
     }
-    .unlockedRow:hover kd-button {
+    .unlockedRow:hover kyn-button {
       opacity: 1;
     }
-    .unlockedRow:focus kd-button {
+    .unlockedRow:focus kyn-button {
       opacity: 1;
     }
 
@@ -242,7 +242,7 @@ class StoryColumSetting extends LitElement {
                 >
                   <kyn-td>${row.colName}</kyn-td>
                   <kyn-td .align=${'center'} class="min-max-width-100"
-                    ><kd-button
+                    ><kyn-button
                       class="freeze-button"
                       @mouseover=${() => this.handleMouseOver(row.id)}
                       @mouseout=${this.handleMouseOut}
@@ -261,7 +261,7 @@ class StoryColumSetting extends LitElement {
                           ? unsafeSVG(unlockedIcon)
                           : unsafeSVG(lockedIcon)}</span
                       >
-                    </kd-button>
+                    </kyn-button>
                   </kyn-td>
                 </kyn-tr>
               `
