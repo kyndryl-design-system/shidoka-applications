@@ -2,7 +2,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import vitalCardScss from './vitalCard.scss';
-import '@kyndryl-design-system/shidoka-foundation/components/link';
+import '../../components/reusable/link';
 
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import '../../components/reusable/loaders/skeleton';
@@ -43,7 +43,7 @@ export class VitalCardSampleComponent extends LitElement {
           ${this.skeleton
             ? html`<kyn-skeleton inline></kyn-skeleton>`
             : html`
-                <kd-link
+                <kyn-link
                   class="vital-card-link"
                   standalone
                   href="#"
@@ -51,7 +51,7 @@ export class VitalCardSampleComponent extends LitElement {
                 >
                   <span class="vital-card-link-text">CTA Title</span>
                   <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
-                </kd-link>
+                </kyn-link>
               `}
         </div>
       </div>

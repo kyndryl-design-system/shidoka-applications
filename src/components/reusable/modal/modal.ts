@@ -4,7 +4,7 @@ import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import ModalScss from './modal.scss';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../button';
 
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
@@ -147,7 +147,7 @@ export class Modal extends LitElement {
           ${!this.hideFooter
             ? html`
                 <div class="footer">
-                  <kd-button
+                  <kyn-button
                     class="action-button"
                     value="ok"
                     ?destructive=${this.destructive}
@@ -155,10 +155,10 @@ export class Modal extends LitElement {
                     @click=${(e: Event) => this._closeModal(e, 'ok')}
                   >
                     ${this.okText}
-                  </kd-button>
+                  </kyn-button>
                   ${this.showSecondaryButton
                     ? html`
-                        <kd-button
+                        <kyn-button
                           class="action-button"
                           value="Secondary"
                           kind="secondary"
@@ -167,20 +167,20 @@ export class Modal extends LitElement {
                             this._closeModal(e, 'secondary')}
                         >
                           ${this.secondaryButtonText}
-                        </kd-button>
+                        </kyn-button>
                       `
                     : null}
                   ${this.hideCancelButton
                     ? null
                     : html`
-                        <kd-button
+                        <kyn-button
                           class="action-button"
                           value="cancel"
                           kind="tertiary"
                           @click=${(e: Event) => this._closeModal(e, 'cancel')}
                         >
                           ${this.cancelText}
-                        </kd-button>
+                        </kyn-button>
                       `}
                   <!--
             <div class="custom-actions">
