@@ -72,7 +72,9 @@ export class StepperItemChild extends LitElement {
           aria-label="Child progress: ${this.progress}%"
         >
           <div
-            class="child-step-progress-line"
+            class="${this.progress === 100
+              ? 'child-step-progress-line-completed'
+              : ''} child-step-progress-line"
             style="height:${this.progress}%;"
           ></div>
         </div>
