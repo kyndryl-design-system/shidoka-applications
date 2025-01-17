@@ -40,7 +40,7 @@ const args = {
 };
 
 export const Modal = {
-  args,
+  args: { ...args, showSecondaryButton: false },
   render: (args) => {
     return html`
       <kyn-modal
@@ -100,7 +100,7 @@ export const ActionButtons = {
 };
 
 export const BeforeClose = {
-  args,
+  args: { ...args, showSecondaryButton: false },
   render: (args) => {
     return html`
       <kyn-modal
