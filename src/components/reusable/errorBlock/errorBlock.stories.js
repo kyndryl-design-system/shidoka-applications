@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './index';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../button';
 import alertImg from '../../../common/assets/redfords/Alert_Redford.svg';
 import notFoundImg from '../../../common/assets/redfords/NotFound_Redford.svg';
 import stopImg from '../../../common/assets/redfords/Stop_Redford.svg';
@@ -33,22 +33,22 @@ export const ErrorBlock = {
         <!-- <div slot="image">${unsafeSVG(stopImg)}</div> -->
         <div slot="image">${unsafeSVG(timeoutImg)}</div>
         <p>Your description for the error message goes here.</p>
-        <kd-button
+        <kyn-button
           slot="actions"
           size="medium"
           kind="primary-app"
           description="Primary action"
         >
           Primary action
-        </kd-button>
-        <kd-button
+        </kyn-button>
+        <kyn-button
           slot="actions"
           size="medium"
           kind="secondary"
           description="Secondary action"
         >
           Secondary action
-        </kd-button>
+        </kyn-button>
       </kyn-error-block>
     `;
   },

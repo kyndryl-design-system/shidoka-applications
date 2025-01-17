@@ -4,13 +4,14 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../button';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 import NotificationScss from './notification.scss';
-import '@kyndryl-design-system/shidoka-foundation/components/card';
+import '../card';
 import successIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
-import warningErrorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information-filled.svg';
 
 import '../tag';
@@ -89,10 +90,10 @@ export class Notification extends LitElement {
    */
   @state()
   _tagColor: any = {
-    success: 'passed',
+    success: 'success',
     warning: 'warning',
     info: 'cat01',
-    error: 'failed',
+    error: 'error',
   };
 
   /** Set notification mark read prop. Required ony for `type: 'clickable'`.*/
@@ -109,6 +110,7 @@ export class Notification extends LitElement {
 
   override render() {
     const cardBgClasses = {
+      'notification-normal': this.type === 'normal',
       'notification-inline': this.type === 'inline',
       'notification-toast': this.type === 'toast',
       'notification-error':
@@ -130,7 +132,7 @@ export class Notification extends LitElement {
 
     return html`
       ${this.type === 'clickable'
-        ? html`<kd-card
+        ? html`<kyn-card
             class="${this.unRead
               ? 'notification-mark-unread'
               : 'notification-mark-read'}"
@@ -146,8 +148,8 @@ export class Notification extends LitElement {
               >${this.assistiveNotificationTypeText}</span
             >
             ${this.renderInnerUI()}
-          </kd-card>`
-        : html` <kd-card
+          </kyn-card>`
+        : html` <kyn-card
             type=${this.type}
             role=${ifDefined(this.notificationRole)}
             class="${classMap(cardBgClasses)}"
@@ -158,15 +160,15 @@ export class Notification extends LitElement {
                 >`
               : null}
             ${this.renderInnerUI()}
-          </kd-card>`}
+          </kyn-card>`}
     `;
   }
 
   private renderInnerUI() {
     const notificationIcon: any = {
       success: successIcon,
-      error: warningErrorIcon,
-      warning: warningErrorIcon,
+      error: errorIcon,
+      warning: warningIcon,
       info: infoIcon,
     };
 
@@ -199,22 +201,20 @@ export class Notification extends LitElement {
         <div>
           ${(this.type === 'toast' || this.type === 'inline') &&
           !this.hideCloseButton
-            ? html` <kd-button
+            ? html` <kyn-button
                 class="notification-toast-close-btn"
                 kind="tertiary"
                 size="small"
                 description=${ifDefined(this.closeBtnDescription)}
-                iconPosition="left"
                 @on-click="${() => this._handleClose()}"
               >
                 <span
                   slot="icon"
-                  fill="#3D3C3C"
                   role="img"
                   aria-label=${ifDefined(this.closeBtnDescription)}
                   >${unsafeSVG(closeIcon)}</span
                 >
-              </kd-button>`
+              </kyn-button>`
             : null}
           <!-- actions slot could be an overflow menu, close icon (for other notification types) etc. -->
           <slot name="actions"></slot>

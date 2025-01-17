@@ -11,8 +11,8 @@ import '../textInput';
 import '../overflowMenu';
 import '../tag';
 import '../table';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/accordion';
+import '../button';
+import '../accordion';
 
 import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/search.svg';
 import filterIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/filter.svg';
@@ -129,7 +129,7 @@ export class SampleFilterTableComponent extends LitElement {
           titleText="Filter"
           @on-close=${(e: any) => this._handleModalClose(e)}
         >
-          <kd-button
+          <kyn-button
             slot="anchor"
             kind="tertiary"
             size="small"
@@ -142,10 +142,10 @@ export class SampleFilterTableComponent extends LitElement {
                 : unsafeSVG(filterIcon)}</span
             >
             <span class="filter-text">Filter</span>
-          </kd-button>
+          </kyn-button>
 
-          <kd-accordion filledHeaders compact>
-            <kd-accordion-item>
+          <kyn-accordion filledHeaders compact>
+            <kyn-accordion-item>
               <span slot="title">
                 Houses:
                 ${SelectedOptions.length
@@ -176,16 +176,16 @@ export class SampleFilterTableComponent extends LitElement {
                   )}
                 </kyn-checkbox-group>
               </div>
-            </kd-accordion-item>
+            </kyn-accordion-item>
 
-            <kd-accordion-item>
+            <kyn-accordion-item>
               <span slot="title">Filter 2: Any</span>
               <div slot="body">Some other filter control here.</div>
-            </kd-accordion-item>
-          </kd-accordion>
+            </kyn-accordion-item>
+          </kyn-accordion>
         </kyn-modal>
 
-        <kd-button
+        <kyn-button
           slot="actions"
           kind="tertiary"
           size="small"
@@ -194,7 +194,7 @@ export class SampleFilterTableComponent extends LitElement {
         >
           <span slot="icon">${unsafeSVG(refreshIcon)}</span>
           <span class="filter-text">Refresh</span>
-        </kd-button>
+        </kyn-button>
 
         <kyn-overflow-menu
           slot="actions"
@@ -226,7 +226,7 @@ export class SampleFilterTableComponent extends LitElement {
 
         ${SelectedOptions.length
           ? html`
-              <kd-button
+              <kyn-button
                 slot="tags"
                 kind="tertiary"
                 size="small"
@@ -235,7 +235,7 @@ export class SampleFilterTableComponent extends LitElement {
               >
                 <span slot="icon">${unsafeSVG(filterRemoveIcon)}</span>
                 Clear All
-              </kd-button>
+              </kyn-button>
             `
           : null}
       </kyn-global-filter>

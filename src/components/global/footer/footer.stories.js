@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './index';
-import '@kyndryl-design-system/shidoka-foundation/components/link';
+import '../../reusable/link';
 
 export default {
   title: 'Global Components/Footer',
@@ -31,10 +31,10 @@ export const Footer = {
   },
   render: (args) => html`
     <kyn-footer rootUrl=${args.rootUrl}>
-      <kd-link href="javascript:void(0);" standalone="">Link 1</kd-link>
-      <kd-link href="javascript:void(0);" standalone="">Link 2</kd-link>
-      <kd-link href="javascript:void(0);" standalone="">Link 3</kd-link>
-      <kd-link href="javascript:void(0);" standalone="">Link 4</kd-link>
+      <kyn-link href="javascript:void(0);" standalone="">Link 1</kyn-link>
+      <kyn-link href="javascript:void(0);" standalone="">Link 2</kyn-link>
+      <kyn-link href="javascript:void(0);" standalone="">Link 3</kyn-link>
+      <kyn-link href="javascript:void(0);" standalone="">Link 4</kyn-link>
 
       <span slot="copyright">
         Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights
