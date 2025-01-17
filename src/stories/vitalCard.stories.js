@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import '@kyndryl-design-system/shidoka-foundation/css/grid.css';
-import '@kyndryl-design-system/shidoka-foundation/components/card';
+import '../components/reusable/card';
 
 import './sampleCardComponents/vitalCard.sample.ts';
 
@@ -14,10 +14,33 @@ export default {
   },
 };
 
+const args = {
+  type: 'normal',
+  href: '',
+  rel: '',
+  target: '_self',
+  hideBorder: false,
+};
+
 export const Default = {
   render: () => {
-    return html`<kd-card type="normal">
+    return html`<kyn-card type="normal">
       <vital-card-sample-component></vital-card-sample-component>
-    </kd-card>`;
+    </kyn-card>`;
+  },
+};
+
+export const VitalCardSkeleton = {
+  args: { ...args, lines: 1, thumbnailVisible: true },
+  render: (args) => {
+    return html` <kyn-card
+      type=${args.type}
+      href=${args.href}
+      target=${args.target}
+      rel=${args.rel}
+      ?hideBorder=${args.hideBorder}
+    >
+      <kyn-vital-card-skeleton .lines=${args.lines}></kyn-vital-card-skeleton>
+    </kyn-card>`;
   },
 };

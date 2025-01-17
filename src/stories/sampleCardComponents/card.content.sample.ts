@@ -5,7 +5,7 @@ import CardSampleScss from './cardSample.scss';
 import '../../components/reusable/overflowMenu';
 import '../../components/reusable/tag';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../../components/reusable/button';
 import actionIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/bookmark.svg';
 
 /**  Sample Lit component to show containable items inside Card. */
@@ -45,7 +45,7 @@ export class SampleCardStoryContentComponent extends LitElement {
           <div class="card-actions">
             <!-- Example : Card action button -->
             <div class="card-action-btn-class">
-              <kd-button
+              <kyn-button
                 kind="tertiary"
                 size="small"
                 iconPosition="center"
@@ -53,7 +53,7 @@ export class SampleCardStoryContentComponent extends LitElement {
                 @click=${(e: Event) => e.preventDefault()}
               >
                 <span slot="icon">${unsafeSVG(actionIcon)}</span>
-              </kd-button>
+              </kyn-button>
             </div>
 
             <div class="card-option-wrapper">
@@ -95,19 +95,19 @@ export class SampleCardStoryContentComponent extends LitElement {
       <!-- Example : Card links -->
       <div class="card-link">
         <div class="card-link-elements">
-          <kd-button
+          <kyn-button
             href="#"
             kind="tertiary"
             size="small"
             @click=${(e: Event) => e.preventDefault()}
-            >Link 1</kd-button
+            >Link 1</kyn-button
           >
-          <kd-button
+          <kyn-button
             href="#"
             kind="tertiary"
             size="small"
             @click=${(e: Event) => e.preventDefault()}
-            >Link 2</kd-button
+            >Link 2</kyn-button
           >
         </div>
       </div>

@@ -8,7 +8,7 @@ import {
 import { classMap } from 'lit-html/directives/class-map.js';
 import './tag';
 import TagGroupScss from './tagGroup.scss';
-import '@kyndryl-design-system/shidoka-foundation/components/link';
+import '../link';
 
 /**
  * Tag & Tag Group
@@ -65,7 +65,7 @@ export class TagGroup extends LitElement {
 
         ${this.limitTags && this.tags.length > 5
           ? html`
-              <kd-link
+              <kyn-link
                 class="${classMap(toggleBtnClasses)}"
                 standalone
                 @on-click=${() => this._toggleRevealed(!this.limitRevealed)}
@@ -73,7 +73,7 @@ export class TagGroup extends LitElement {
                 ${this.limitRevealed
                   ? this.textStrings.showLess
                   : html` ${this.textStrings.showAll}`}
-              </kd-link>
+              </kyn-link>
             `
           : null}
       </div>

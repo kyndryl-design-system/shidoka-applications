@@ -1,0 +1,135 @@
+/**
+ * Copyright Kyndryl, Inc. 2023
+ */
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+.kyn-accordion-item {
+  padding: 0px 0px;
+  display: block;
+  background-color: var(--kd-color-background-page-default);
+  border-radius: inherit;
+
+  &.filled-header {
+    .kyn-accordion-item-title {
+      background-color: var(--kd-color-background-accent-subtle);
+
+      &:hover {
+        outline-width: 1px;
+        outline-color: var(--kd-color-border-ui-default);
+      }
+    }
+
+    .kyn-accordion-item-body {
+      border-top: 1px solid var(--kd-color-border-variants-light);
+    }
+  }
+
+  &.compact .kyn-accordion-item-title {
+    padding: 16px;
+  }
+
+  & .kyn-accordion-item-body {
+    padding: 24px 16px;
+    display: none;
+  }
+
+  &.opened.filled-header .kyn-accordion-item-title {
+    border-radius: 0;
+  }
+
+  &.opened .kyn-accordion-item-body {
+    display: block;
+  }
+
+  .icon {
+    vertical-align: middle;
+  }
+}
+
+.expand-icon {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  margin-left: auto;
+  transition: transform 150ms ease-out;
+
+  .opened & {
+    transform: rotate(-180deg);
+  }
+}
+
+.kyn-accordion-item-title {
+  border-radius: inherit;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  background: none;
+  position: relative;
+  font-weight: var(--kd-font-weight-medium);
+  padding: 24px 16px;
+  outline: 2px solid transparent;
+  transition: background-color 150ms ease-out, outline-color 150ms ease-out;
+  outline-offset: -1px;
+
+  &:hover {
+    background-color: var(--kd-color-background-accent-subtle);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-variants-focus);
+  }
+
+  .number,
+  .icon {
+    font-weight: var(--kd-font-weight-regular);
+    padding-right: 2em;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+    align-self: auto;
+    order: 0;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+  }
+
+  .number {
+    color: var(--kd-color-text-variant-placeholder);
+  }
+
+  .title {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+    align-self: auto;
+    order: 0;
+  }
+
+  .disabled & {
+    color: var(--kd-color-text-link-level-disabled);
+    background-color: var(--kd-color-background-page-default);
+    outline: none;
+  }
+}
+
+.kyn-accordion-item-subtitle {
+  @include typography.type-ui-02;
+  font-weight: var(--kd-font-weight-regular);
+  color: var(--kd-color-text-level-secondary);
+
+  .disabled & {
+    color: var(--kd-color-text-link-level-disabled);
+  }
+}
+
+.disabled .kyn-accordion-item-body {
+  color: var(--kd-color-text-link-level-disabled);
+}

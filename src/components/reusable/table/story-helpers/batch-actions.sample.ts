@@ -1,7 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../../button';
 import exportIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/upload.svg';
 import exportIcon16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/upload.svg';
 import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overflow.svg';
@@ -35,7 +35,7 @@ export class BatchActions extends LitElement {
   override render() {
     return html`
       <div class="action-delete">
-        <kd-button
+        <kyn-button
           kind="primary-app"
           type="button"
           destructive
@@ -44,8 +44,8 @@ export class BatchActions extends LitElement {
           class="delete-button"
         >
           Delete
-        </kd-button>
-        <kd-button
+        </kyn-button>
+        <kyn-button
           kind="tertiary"
           type="button"
           destructive
@@ -55,10 +55,10 @@ export class BatchActions extends LitElement {
           class="delete-button__mobile"
         >
           <span slot="icon">${unsafeSVG(trashCanIcon)}</span>
-        </kd-button>
+        </kyn-button>
       </div>
       <div class="vertical-overflow-menu">
-        <kd-button
+        <kyn-button
           kind="tertiary"
           type="button"
           size="small"
@@ -66,21 +66,21 @@ export class BatchActions extends LitElement {
           @on-click=${() => (this.opened = !this.opened)}
         >
           <span slot="icon">${unsafeSVG(overflowIcon)}</span>
-        </kd-button>
+        </kyn-button>
       </div>
       <div class="menu">
         <kyn-table>
           <kyn-tbody>
             <kyn-tr class="menu-item" @click=${this.handleClick}>
               <kyn-td class="menu-item__icon">
-                <kd-button
+                <kyn-button
                   kind="tertiary"
                   type="button"
                   size="small"
                   iconposition="center"
                 >
                   <span slot="icon">${unsafeSVG(exportIcon16)}</span>
-                </kd-button>
+                </kyn-button>
               </kyn-td>
               <kyn-td class="menu-item__label">Export</kyn-td>
             </kyn-tr>
@@ -93,7 +93,7 @@ export class BatchActions extends LitElement {
       </div>
       <div class="actions-container">
         <div class="action-item">
-          <kd-button
+          <kyn-button
             kind="secondary"
             type="button"
             size="small"
@@ -101,10 +101,10 @@ export class BatchActions extends LitElement {
           >
             <span slot="icon">${unsafeSVG(exportIcon)}</span>
             Export
-          </kd-button>
+          </kyn-button>
         </div>
         <div class="action-item">
-          <kd-button
+          <kyn-button
             kind="secondary"
             type="button"
             size="small"
@@ -113,7 +113,7 @@ export class BatchActions extends LitElement {
             href=""
           >
             Action
-          </kd-button>
+          </kyn-button>
         </div>
       </div>
     `;

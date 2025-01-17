@@ -1,7 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
-import cloudDownloadIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/cloud-download.svg';
+import cloudDownloadIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/cloud-download.svg';
 
 export default {
   title: 'Components/PageTitle',
