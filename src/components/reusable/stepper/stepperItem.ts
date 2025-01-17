@@ -11,7 +11,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
 import stepperItemStyles from './stepperItem.scss';
-import '@kyndryl-design-system/shidoka-foundation/components/link';
+import '../link';
 
 import checkmarkFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/checkmark-filled.svg';
 import checkmarkFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
@@ -250,14 +250,14 @@ export class StepperItem extends LitElement {
             <div class="step-title-wrapper">
               ${this.stepperType === 'procedure' && this.stepLink !== ''
                 ? html`
-                    <kd-link
+                    <kyn-link
                       href=${this.stepLink}
                       kind="primary"
                       ?disabled=${this.disabled}
                       @on-click=${(e: Event) => this._handleStepClick(e)}
                     >
                       ${this.stepTitle}
-                    </kd-link>
+                    </kyn-link>
                   `
                 : html`
                     <p class="step-title-text type--${this.stepperType}">
@@ -327,14 +327,14 @@ export class StepperItem extends LitElement {
             <div class="vertical-title-wrapper">
               ${this.stepperType === 'procedure' && this.stepLink !== ''
                 ? html`
-                    <kd-link
+                    <kyn-link
                       href=${this.stepLink}
                       kind="primary"
                       ?disabled=${this.disabled}
                       @on-click=${(e: Event) => this._handleStepClick(e)}
                     >
                       ${this.stepTitle}
-                    </kd-link>
+                    </kyn-link>
                   `
                 : html`
                     <p class="step-title-text type--${this.stepperType}">

@@ -1,0 +1,39 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: block;
+}
+
+li {
+  cursor: default;
+  padding: 16px;
+  transition: background-color 150ms ease-out;
+
+  &[selected] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--kd-color-background-accent-subtle);
+  }
+
+  &:hover,
+  &[highlighted] {
+    background-color: var(--kd-color-background-accent-subtle);
+  }
+
+  &[disabled] {
+    color: var(--kd-color-text-link-level-disabled);
+
+    &:hover {
+      background-color: transparent;
+      cursor: not-allowed;
+    }
+  }
+
+  span {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
