@@ -26,7 +26,7 @@ export default {
           .swiper-slide {
             height: 200px;
             padding: 16px;
-            background-color: var(--kd-color-background-ui-soft);
+            background-color: var(--kd-color-background-container-soft);
             border-radius: 8px;
           }
         </style>

@@ -8,8 +8,8 @@
   --swiper-bullets-height: 32px;
   --swiper-tabs-height: 64px;
   --swiper-scrollbar-size: 8px;
-  --swiper-scrollbar-drag-bg-color: var(--kd-color-background-accent-tertiary);
-  --swiper-scrollbar-bg-color: var(--kd-color-background-ui-soft);
+  --swiper-scrollbar-drag-bg-color: var(--kd-color-background-container-subtle);
+  --swiper-scrollbar-bg-color: var(--kd-color-background-container-soft);
   --swiper-scrollbar-border-radius: 8px;
 
   @media (min-width: 82rem) {
@@ -68,14 +68,14 @@
 }
 
 .swiper-pagination-bullet {
-  border: 1px solid var(--kd-color-border-light);
+  border: 1px solid var(--kd-color-background-accent-tertiary);
   background: none;
   opacity: initial;
   width: 16px;
   height: 16px;
 
   &-active {
-    background: var(--kd-color-background-ui-subtle);
+    background: var(--kd-color-background-container-subtle);
   }
 
   .tabs & {
@@ -90,28 +90,27 @@
       transition: border-color 150ms ease-out, background-color 150ms ease-out,
         color 150ms ease-out, outline-color 150ms ease-out;
       outline: 2px solid transparent;
-      border-bottom: 2px solid var(--kd-color-border-default);
-      background: none;
 
       &:hover {
-        color: var(--kd-color-text-link-hover);
+        color: var(--kd-color-text-link-level-hover);
         border-color: var(--kd-color-border-ui-hover);
-        background-color: var(--kd-color-background-inverse-hover);
+        background-color: var(--kd-color-background-ui-hollow-hover);
       }
 
       &:active {
-        color: var(--kd-color-text-pressed);
-        border-color: var(--kd-color-border-ui-hover);
-        background-color: var(--kd-color-background-inverse-hover);
+        color: var(--kd-color-text-link-level-pressed);
+        border-color: var(--kd-color-border-variants-focus);
+        background-color: var(--kd-color-background-ui-hollow-hover);
       }
 
       &:focus {
-        outline-color: var(--kd-color-border-focus);
+        color: var(--kd-color-text-level-primary);
+        outline-color: var(--kd-color-border-variants-focus);
       }
 
       &-active {
-        color: var(--kd-color-text-link);
-        border-bottom: 2px solid var(--kd-color-border-tertiary);
+        color: var(--kd-color-text-level-tertiary);
+        border-bottom: 2px solid var(--kd-color-border-level-tertiary);
         font-weight: 500;
       }
     }
@@ -136,7 +135,7 @@
   @include typography.type-ui-02;
   justify-content: end;
   gap: 2px;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-text-level-secondary);
 
   .swiper-full-bleed & {
     padding-right: var(--kd-page-gutter);
@@ -162,7 +161,7 @@
     0px - var(--swiper-navigation-size) / 2 - var(--swiper-fractional-height) /
       2
   );
-  background: var(--kd-color-background-ui-default);
+  background: var(--kd-color-icon-inverse);
   outline: 2px solid transparent;
   transition: outline-color 150ms ease-out;
 
@@ -183,7 +182,7 @@
   }
 
   &:focus {
-    outline-color: var(--kd-color-border-focus);
+    outline-color: var(--kd-color-border-card-hover);
   }
 
   &:before {
