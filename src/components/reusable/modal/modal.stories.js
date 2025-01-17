@@ -111,6 +111,9 @@ export const BeforeClose = {
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
         ?hideCancelButton=${args.hideCancelButton}
+        ?hideFooter=${args.hideFooter}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        ?secondaryDisabled=${args.secondaryDisabled}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
