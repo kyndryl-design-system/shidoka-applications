@@ -40,7 +40,7 @@ const args = {
 };
 
 export const Modal = {
-  args,
+  args: { ...args, showSecondaryButton: false },
   render: (args) => {
     return html`
       <kyn-modal
@@ -53,6 +53,9 @@ export const Modal = {
         closeText=${args.closeText}
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        secondaryButtonText=${args.secondaryButtonText}
+        ?secondaryDisabled=${args.secondaryDisabled}
         ?hideFooter=${args.hideFooter}
         ?hideCancelButton=${args.hideCancelButton}
         @on-close=${(e) => action(e.type)(e)}
@@ -97,7 +100,7 @@ export const ActionButtons = {
 };
 
 export const BeforeClose = {
-  args,
+  args: { ...args, showSecondaryButton: false },
   render: (args) => {
     return html`
       <kyn-modal
@@ -111,6 +114,10 @@ export const BeforeClose = {
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
         ?hideCancelButton=${args.hideCancelButton}
+        ?hideFooter=${args.hideFooter}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        secondaryButtonText=${args.secondaryButtonText}
+        ?secondaryDisabled=${args.secondaryDisabled}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
