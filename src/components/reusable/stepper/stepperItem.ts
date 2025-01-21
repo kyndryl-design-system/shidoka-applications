@@ -16,8 +16,8 @@ import '../link';
 import checkmarkFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/checkmark-filled.svg';
 import checkmarkFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 
-import circleFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/circle-filled.svg';
-import circleFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-filled.svg';
+import circleSelected from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/circle-selected.svg';
+import circleSelected16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-selected.svg';
 
 import substractFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/substract-filled.svg';
 import substractFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-filled.svg';
@@ -133,7 +133,7 @@ export class StepperItem extends LitElement {
 
   override render() {
     const iconMapper: any = {
-      active: this.stepSize === 'large' ? circleFilled : circleFilled16,
+      active: this.stepSize === 'large' ? circleSelected : circleSelected16,
       excluded: this.stepSize === 'large' ? substractFilled : substractFilled16,
       disabled: this.stepSize === 'large' ? substractFilled : substractFilled16,
       completed:
