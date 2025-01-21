@@ -26,7 +26,7 @@ p {
     border-left-style: solid;
     border-left-width: 1px;
     bottom: 0;
-    border-color: var(--kd-color-background-inverse-hover, #ddf0f3);
+    border-color: var(--kd-color-background-loader-progress-background);
     border-radius: 5px;
     &-large {
       left: 11.5px;
@@ -46,7 +46,10 @@ p {
     border-left-width: 1px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    border-color: var(--kd-color-border-accent-spruce-light, #3fadbd);
+    border-color: var(--kd-color-background-loader-progress-active);
+    &-completed {
+      border-color: var(--kd-color-background-loader-progress-complete);
+    }
   }
   &-icon-wrapper {
     width: 8px;
@@ -66,12 +69,15 @@ p {
   &-icon {
     width: 8px;
     height: 8px;
-    outline: 1px solid var(--kd-color-spruce-20);
+    outline: 1px solid var(--kd-color-icon-interactive-primary);
     border-radius: 50%;
-    &-active,
+    &-active {
+      outline: none;
+      background-color: var(--kd-color-background-loader-progress-active);
+    }
     &-completed {
       outline: none;
-      background-color: var(--kd-color-border-accent-spruce-light);
+      background-color: var(--kd-color-background-loader-progress-complete);
     }
   }
   &-content {
@@ -81,7 +87,7 @@ p {
     gap: 3px;
   }
   &-subtitle {
-    color: var(--kd-color-text-secondary);
+    color: var(--kd-color-text-level-secondary);
     @include typography.type-ui-02;
   }
 }
