@@ -119,7 +119,7 @@ export class LocalNav extends LitElement {
         </div>
 
         <div class="toggle-container">
-          <kd-button
+          <kyn-button
             kind="tertiary"
             size="small"
             description=${this.pinned
@@ -128,7 +128,7 @@ export class LocalNav extends LitElement {
             @on-click=${(e: Event) => this._handleNavToggle(e)}
           >
             <span class="pin-icon" slot="icon"> ${unsafeSVG(pinIcon)} </span>
-          </kd-button>
+          </kyn-button>
         </div>
       </nav>
 
