@@ -304,8 +304,8 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
     border-radius: 5px;
     margin-bottom: 10px;
     background: $date-picker-background;
-    color: var(--kd-color-date-and-time-picker-text-default);
-    fill: var(--kd-color-date-and-time-picker-text-default);
+    color: var(--kd-color-date-and-time-picker-text-title);
+    fill: var(--kd-color-date-and-time-picker-text-title);
     font-weight: 400;
     height: 34px;
     line-height: 1;
@@ -365,7 +365,7 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
       /*rtl:begin:ignore*/
     /*
       */
-    top: 4px;
+    top: 0px;
     left: 3px;
     /*
       /*rtl:end:ignore*/
@@ -383,7 +383,7 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
       /*rtl:begin:ignore*/
     /*
       */
-    top: 5px;
+    top: 0px;
     right: 3px;
     /*
       /*rtl:end:ignore*/
@@ -537,9 +537,8 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
     color: inherit;
     display: inline-block;
     padding: 0;
-    margin-left: 1.5ch;
     width: 8ch;
-    text-align: center;
+    text-align: right;
 }
 
 .flatpickr-current-month span.cur-month:hover {
@@ -557,9 +556,9 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     color: inherit;
-    text-align: center;
+    text-align: left;
     cursor: text;
-    padding: 0 0 0 0.5ch;
+    padding: 0 0 0 0;
     margin: 0;
     display: inline-block;
     font-weight: 500;
@@ -568,6 +567,7 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
     line-height: inherit;
     height: auto;
     border: none;
+    max-width: 5.5ch;
     border-radius: 0;
     vertical-align: initial;
     -webkit-appearance: textfield;
@@ -786,9 +786,9 @@ span.flatpickr-weekday {
 .flatpickr-day:focus,
 .flatpickr-day.prevMonthDay:focus,
 .flatpickr-day.nextMonthDay:focus {
-    background: transparent;
+    background: var(--kd-color-date-and-time-picker-background-hover);
     color: var(--kd-color-date-and-time-picker-text-default);
-    border-color: var(--kd-color-date-and-time-picker-border-focus);
+    border-color: transparent;
 }
 
 .flatpickr-day.today {
@@ -797,8 +797,8 @@ span.flatpickr-weekday {
 
 .flatpickr-day.today:hover,
 .flatpickr-day.today:focus {
-    border-color: $selected-date;
-    background: transparent;
+    border-color: transparent;
+    background: var(--kd-color-date-and-time-picker-background-hover);
     color: var(--kd-color-date-and-time-picker-text-default);
 }
 
@@ -1108,21 +1108,47 @@ span.flatpickr-weekday {
 }
 
 
-@media (min-width: 768px) {
-    .flatpickr-calendar {
-        &.rangeMode {
-            .flatpickr-innerContainer {
-                z-index: 1;
+.flatpickr-calendar {
+    &.rangeMode {
+        .flatpickr-months {
+            position: relative;
 
-                &::after {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    bottom: 0;
-                    left: 49.75%;
-                    width: 1px;
-                    background-color: $de;
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 50%;
+                width: 1px;
+                background-color: var(--kd-color-border-variants-light);
+            }
+
+            .flatpickr-month {
+                .flatpickr-current-month .cur-month {
+                    margin-left: -0.5ch;
                 }
+            }
+        }
+
+        .flatpickr-innerContainer {
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 50%;
+                width: 1px;
+                background-color: var(--kd-color-border-variants-light);
+            }
+
+            .dayContainer:first-of-type {
+                padding-right: 2px;
+            }
+
+            .dayContainer:nth-child(2) {
+                padding-left: 3px;
             }
         }
     }
