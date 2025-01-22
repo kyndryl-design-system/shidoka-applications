@@ -9,14 +9,15 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import DropdownScss from './dropdown.scss';
+import { FormMixin } from '../../../common/mixins/form-input';
+import { deepmerge } from 'deepmerge-ts';
+
 import './dropdownOption';
 import '../tag';
-import { FormMixin } from '../../../common/mixins/form-input';
+
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
-import clearIcon16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
-import { deepmerge } from 'deepmerge-ts';
 
 const _defaultTextStrings = {
   selectedOptions: 'List of selected options',
@@ -206,6 +207,67 @@ export class Dropdown extends FormMixin(LitElement) {
 
   override render() {
     return html`
+      ${this.renderDropdownContent()}
+
+        ${
+          this.multiple && !this.hideTags && this._tags.length
+            ? html`
+                <kyn-tag-group
+                  filter
+                  role="list"
+                  aria-label=${this._textStrings.selectedOptions}
+                >
+                  ${this._tags.map((tag: any) => {
+                    return html`
+                      <kyn-tag
+                        role="listitem"
+                        label=${tag.text}
+                        ?disabled=${this.disabled}
+                        clearTagText="Clear Tag ${tag.text}"
+                        @on-close=${() => this.handleTagClear(tag.value)}
+                      ></kyn-tag>
+                    `;
+                  })}
+                </kyn-tag-group>
+              `
+            : null
+        }
+        ${
+          this.caption !== ''
+            ? html` <div class="caption">${this.caption}</div> `
+            : null
+        }
+        ${
+          this._isInvalid
+            ? html`
+                <div class="error">
+                  <span
+                    class="error-info-icon"
+                    role="img"
+                    title=${this._textStrings.error}
+                    aria-label=${this._textStrings.error}
+                    >${unsafeSVG(errorIcon)}</span
+                  >
+                  ${this.invalidText || this._internalValidationMsg}
+                </div>
+              `
+            : null
+        }
+
+        <div
+          class="assistive-text"
+          role="status"
+          aria-live="assertive"
+          aria-relevant="additions text"
+        >
+          ${this.assistiveText}
+        </div>
+      </div>
+    `;
+  }
+
+  private renderDropdownContent() {
+    return html`
       <div
         class="dropdown"
         ?disabled=${this.disabled}
@@ -244,7 +306,6 @@ export class Dropdown extends FormMixin(LitElement) {
             <div
               class="${classMap({
                 select: true,
-                'input-custom': true,
                 'size--sm': this.size === 'sm',
                 'size--lg': this.size === 'lg',
                 inline: this.inline,
@@ -278,7 +339,7 @@ export class Dropdown extends FormMixin(LitElement) {
                       @click=${(e: Event) => this.handleClearMultiple(e)}
                     >
                       ${this.value.length}
-                      <span>${unsafeSVG(clearIcon16)}</span>
+                      <span>${unsafeSVG(clearIcon)}</span>
                     </button>
                   `
                 : null}
@@ -297,20 +358,13 @@ export class Dropdown extends FormMixin(LitElement) {
                     />
                   `
                 : html`
-                    <input
-                      type="text"
-                      class="input-custom"
-                      .value=${this.multiple
-                        ? ''
-                        : this.value === ''
-                        ? ''
-                        : this.text}
-                      placeholder=${this.multiple
+                    <span>
+                      ${this.multiple
                         ? this.placeholder
-                        : this.placeholder}
-                      readonly
-                      tabindex="-1"
-                    />
+                        : this.value === ''
+                        ? this.placeholder
+                        : this.text}
+                    </span>
                   `}
 
               <span class="arrow-icon">${unsafeSVG(downIcon)}</span>
@@ -358,7 +412,7 @@ export class Dropdown extends FormMixin(LitElement) {
           ${this.searchable && this.searchEl && this.searchText !== ''
             ? html`
                 <button
-                  class="clear"
+                  class="clear dropdown-clear"
                   aria-label="Clear search text"
                   ?disabled=${this.disabled}
                   @click=${(e: any) => this.handleClear(e)}
@@ -372,54 +426,6 @@ export class Dropdown extends FormMixin(LitElement) {
             ? html` <span class="error-icon">${unsafeSVG(errorIcon)}</span> `
             : null}
             -->
-        </div>
-
-        ${this.multiple && !this.hideTags && this._tags.length
-          ? html`
-              <kyn-tag-group
-                filter
-                role="list"
-                aria-label=${this._textStrings.selectedOptions}
-              >
-                ${this._tags.map((tag: any) => {
-                  return html`
-                    <kyn-tag
-                      role="listitem"
-                      label=${tag.text}
-                      ?disabled=${this.disabled}
-                      clearTagText="Clear Tag ${tag.text}"
-                      @on-close=${() => this.handleTagClear(tag.value)}
-                    ></kyn-tag>
-                  `;
-                })}
-              </kyn-tag-group>
-            `
-          : null}
-        ${this.caption !== ''
-          ? html` <div class="caption">${this.caption}</div> `
-          : null}
-        ${this._isInvalid
-          ? html`
-              <div class="error">
-                <span
-                  class="error-info-icon"
-                  role="img"
-                  title=${this._textStrings.error}
-                  aria-label=${this._textStrings.error}
-                  >${unsafeSVG(errorIcon)}</span
-                >
-                ${this.invalidText || this._internalValidationMsg}
-              </div>
-            `
-          : null}
-
-        <div
-          class="assistive-text"
-          role="status"
-          aria-live="assertive"
-          aria-relevant="additions text"
-        >
-          ${this.assistiveText}
         </div>
       </div>
     `;

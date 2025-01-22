@@ -12,7 +12,7 @@ import '../tag';
 import '../button';
 import '../accordion';
 
-import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/search.svg';
+import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/search.svg';
 import filterIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/filter.svg';
 import filterEditIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/filter-edit.svg';
 import filterRemoveIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
@@ -94,6 +94,7 @@ export class SampleFilterComponent extends LitElement {
             kind="tertiary"
             size="small"
             iconPosition="left"
+            outlineOnly
           >
             <span slot="icon"
               >${SelectedOptions.length
