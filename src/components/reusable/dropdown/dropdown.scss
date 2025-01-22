@@ -35,19 +35,18 @@
   border-radius: 4px;
   height: 48px;
   padding: 0 48px 0 16px;
-  cursor: default;
+  cursor: pointer;
   font-weight: 400;
   white-space: nowrap;
 
   background: var(--kd-color-background-forms-default);
 
-  .input-custom {
-    border: none;
-    background: transparent;
-  }
-
   [searchable] & {
     padding-right: 80px;
+  }
+
+  &:hover {
+    border-color: var(--kd-color-border-ui-hover);
   }
 
   span {
@@ -76,8 +75,6 @@
     background-color: transparent;
 
     &:hover {
-      background-color: var(--kd-color-text-variant-inversed);
-      border-color: var(--kd-color-border-variants-inverse);
 
       [disabled] & {
         border-color: transparent;
@@ -190,29 +187,6 @@
 
   &::placeholder {
     color: var(--kd-color-text-variant-placeholder);
-  }
-}
-
-.clear {
-  border: none;
-  background: none;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  right: 48px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  display: block;
-  color: var(--kd-color-text-icon-primary);
-
-  span {
-    display: flex;
-  }
-
-  &[disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
   }
 }
 

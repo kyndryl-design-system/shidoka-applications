@@ -1,3 +1,5 @@
+import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/arrow-left.svg';
+
 export const SwiperConfig = {
   slidesPerView: 1.25,
   centeredSlides: true,
@@ -30,6 +32,9 @@ export const SwiperConfig = {
   },
   on: {
     init: function (swiper: any) {
+      swiper.navigation.prevEl.innerHTML = arrowLeftIcon;
+      swiper.navigation.nextEl.innerHTML = arrowLeftIcon;
+
       DetectOffScreen(swiper);
     },
     slideChangeTransitionEnd: function (swiper: any) {
