@@ -96,13 +96,19 @@ export const WithActions = {
               kind="tertiary"
               size="small"
               description="Settings"
+              ?disabled=${args.disabled}
             >
               <span slot="icon" style="display:flex"
                 >${unsafeSVG(settingsIcon)}</span
               >
             </kyn-button>
 
-            <kyn-overflow-menu slot="actions" anchorRight verticalDots>
+            <kyn-overflow-menu
+              slot="actions"
+              anchorRight
+              verticalDots
+              ?disabled=${args.disabled}
+            >
               <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
               <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
             </kyn-overflow-menu>
