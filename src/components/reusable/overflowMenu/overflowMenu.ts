@@ -106,19 +106,28 @@ export class OverflowMenu extends LitElement {
   private _positionMenu() {
     if (this.open) {
       if (this.fixed) {
-        const Top =
-          this._btnEl.getBoundingClientRect().top +
-          this._btnEl.getBoundingClientRect().height;
+        const BtnBounds = this._btnEl.getBoundingClientRect();
+        const Top = BtnBounds.top + BtnBounds.height;
         const MenuHeight =
           this.querySelectorAll('kyn-overflow-menu-item').length * 48;
 
         if (this._openUpwards) {
-          this._menuEl.style.top =
-            this._btnEl.getBoundingClientRect().top - MenuHeight - 18 + 'px';
+          this._menuEl.style.top = BtnBounds.top - MenuHeight - 18 + 'px';
           this._menuEl.style.bottom = 'initial';
         } else {
           this._menuEl.style.top = Top + 'px';
           this._menuEl.style.bottom = 'initial';
+        }
+
+        if (this.fixed) {
+          if (this.anchorRight) {
+            this._menuEl.style.left = 'initial';
+            this._menuEl.style.right =
+              window.innerWidth - BtnBounds.right + 'px';
+          } else {
+            this._menuEl.style.right = 'initial';
+            this._menuEl.style.left = BtnBounds.left + 'px';
+          }
         }
       } else {
         this._menuEl.style.top = 'initial';
