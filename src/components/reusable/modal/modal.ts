@@ -122,7 +122,7 @@ export class Modal extends LitElement {
         @cancel=${(e: Event) => this._closeModal(e, 'cancel')}
       >
         <form method="dialog">
-          <kd-button
+          <kyn-button
             class="close"
             kind="tertiary"
             size="small"
@@ -131,7 +131,7 @@ export class Modal extends LitElement {
             @click=${(e: Event) => this._closeModal(e, 'cancel')}
           >
             <span slot="icon">${unsafeSVG(closeIcon)}</span>
-          </kd-button>
+          </kyn-button>
           <header>
             <div>
               <h1 id="dialogLabel">${this.titleText}</h1>
