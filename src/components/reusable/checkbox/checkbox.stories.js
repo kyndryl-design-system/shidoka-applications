@@ -15,7 +15,7 @@ export default {
 
 export const Checkbox = {
   args: {
-    unnamed: 'Label',
+    unnamed: 'Value',
     value: 'example',
     checked: false,
     disabled: false,
