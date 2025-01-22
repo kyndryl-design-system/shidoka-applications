@@ -35,6 +35,21 @@ export default {
       },
     },
   },
+  decorators: [
+    (story) => html`
+      <style>
+        .test {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--kd-color-background-container-soft);
+          height: 100%;
+          border-radius: 4px;
+        }
+      </style>
+      ${story()}
+    `,
+  ],
 };
 
 const args = {
@@ -48,16 +63,6 @@ export const Widget = {
   args,
   render: (args) => {
     return html`
-      <style>
-        .test {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: var(--kd-color-background-container-soft);
-          height: 100%;
-          border-radius: 4px;
-        }
-      </style>
       <div style="display: flex; max-width: 500px; min-height: 200px;">
         <div style="flex-grow: 1;">
           <kyn-widget
@@ -78,16 +83,6 @@ export const WithActions = {
   args,
   render: (args) => {
     return html`
-      <style>
-        .test {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: var(--kd-color-background-container-soft);
-          height: 100%;
-          border-radius: 4px;
-        }
-      </style>
       <div style="display: flex; max-width: 500px; min-height: 200px;">
         <div style="flex-grow: 1;">
           <kyn-widget
@@ -165,16 +160,6 @@ export const WithChart = {
 export const StaticGrid = {
   render: () => {
     return html`
-      <style>
-        .test {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: var(--kd-color-background-container-soft);
-          height: 100%;
-          border-radius: 4px;
-        }
-      </style>
       This example uses
       <a
         href="https://kyndryl-design-system.github.io/shidoka-foundation/?path=/docs/foundation-grid--docs"
