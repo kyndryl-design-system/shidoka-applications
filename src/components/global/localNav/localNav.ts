@@ -8,7 +8,7 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { deepmerge } from 'deepmerge-ts';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../../reusable/button';
 import LocalNavScss from './localNav.scss';
 
 import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
