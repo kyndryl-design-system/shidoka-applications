@@ -152,12 +152,12 @@ export class Button extends LitElement {
       [BUTTON_KINDS.PRIMARY_WEB]: 'primary-web',
       [BUTTON_KINDS.SECONDARY]: 'secondary',
       [BUTTON_KINDS.TERTIARY]: 'tertiary',
+      [BUTTON_KINDS.GHOST]: 'ghost',
     };
 
     const baseTypeClass = typeClassMap[this.kind];
 
     let classes = {
-      button: true,
       'kd-btn--large': this.size === BUTTON_SIZES.LARGE,
       'kd-btn--small': this.size === BUTTON_SIZES.SMALL,
       'kd-btn--medium': this._reSizeBtn || this.size === BUTTON_SIZES.MEDIUM,
