@@ -225,9 +225,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${this.value &&
-          this.value.length > 1 &&
-          !this.value.every((date) => date === null)
+          ${(this.value &&
+            this.value.length > 1 &&
+            !this.value.every((date) => date === null)) ||
+          this.defaultDate
             ? html`
                 <button
                   ?disabled=${this.dateRangePickerDisabled}
@@ -297,12 +298,21 @@ export class DateRangePicker extends FormMixin(LitElement) {
   private _handleClear(event: Event) {
     event.preventDefault();
     event.stopPropagation();
+
     this.value = [null, null];
     this.defaultDate = null;
+
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
     }
+    if (this._inputEl) {
+      this._inputEl.value = '';
+    }
+
+    this.reinitializeFlatpickr();
+
     this._validate(true, false);
+    this.requestUpdate();
   }
 
   getDateRangePickerClasses() {

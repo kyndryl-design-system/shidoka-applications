@@ -228,7 +228,7 @@ export class DatePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${this._inputEl?.value
+          ${this._inputEl?.value || this.defaultDate
             ? html`
                 <button
                   ?disabled=${this.datePickerDisabled}
@@ -358,14 +358,19 @@ export class DatePicker extends FormMixin(LitElement) {
   private _handleClear(event: Event) {
     event.preventDefault();
     event.stopPropagation();
+
     this.value = null;
     this.defaultDate = null;
+
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
-      if (this._inputEl) {
-        this._inputEl.value = '';
-      }
     }
+    if (this._inputEl) {
+      this._inputEl.value = '';
+    }
+
+    this.reinitializeFlatpickr();
+
     this._validate(true, false);
     this.requestUpdate();
   }
