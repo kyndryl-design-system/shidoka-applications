@@ -542,3 +542,18 @@ span {
 .hidden {
   display: none; /* Class to hide elements */
 }
+
+.kd-btn--ghost {
+  @extend .kd-btn;
+  background: none;
+  border: none;
+  outline: 2px solid transparent;
+
+  &:focus {
+    outline-color: var(--kd-color-border-button-primary-state-focused);
+  }
+
+  &:disabled {
+    @include kd-btn-disabled;
+  }
+}
