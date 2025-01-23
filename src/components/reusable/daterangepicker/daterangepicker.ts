@@ -57,9 +57,29 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: String })
   dateFormat = 'Y-m-d';
 
-  /** Sets the initial selected date(s) */
-  @property({ type: Object })
-  defaultDate: Date | null = null;
+  /** Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. ["2024-01-01", "2024-01-07"]). */
+  @property({
+    type: String,
+    attribute: 'default-date',
+  })
+  get defaultDate(): string | string[] | null {
+    return this._defaultDate;
+  }
+  set defaultDate(value: string | string[] | null) {
+    const oldValue = this._defaultDate;
+    if (typeof value === 'string') {
+      try {
+        const parsed = JSON.parse(value);
+        this._defaultDate = Array.isArray(parsed) ? parsed : value;
+      } catch {
+        this._defaultDate = value;
+      }
+    } else {
+      this._defaultDate = value;
+    }
+    this.requestUpdate('defaultDate', oldValue);
+  }
+  private _defaultDate: string | string[] | null = null;
 
   /** Sets default error message. */
   @property({ type: String })
@@ -440,7 +460,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   setInitialDates(): void {
-    if (
+    if (Array.isArray(this.defaultDate) && this.defaultDate.length === 2) {
+      this.flatpickrInstance!.setDate(this.defaultDate, false);
+    } else if (
       Array.isArray(this.value) &&
       this.value.length === 2 &&
       this.value[0] !== null &&

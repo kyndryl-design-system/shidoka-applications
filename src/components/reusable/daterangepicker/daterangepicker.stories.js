@@ -86,8 +86,8 @@ const SingleInput = (args) => {
   `;
 };
 
-export const DefaultDateRangePicker = SingleInput.bind({});
-DefaultDateRangePicker.args = {
+export const DefaultDateRange = SingleInput.bind({});
+DefaultDateRange.args = {
   name: 'default-date-range-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
@@ -110,14 +110,32 @@ DefaultDateRangePicker.args = {
   maxDate: '',
   label: 'Date Range',
 };
-DefaultDateRangePicker.storyName = 'Date Range Only (Default)';
 
-export const DateTimeRangePickerSingle = SingleInput.bind({});
-DateTimeRangePickerSingle.args = {
-  ...DefaultDateRangePicker.args,
+export const DateTimeRange = SingleInput.bind({});
+DateTimeRange.args = {
+  ...DefaultDateRange.args,
   name: 'date-time-range-picker',
   dateFormat: 'Y-m-d H:i',
   caption: 'Example caption for the Date Range Picker with Time Input',
   label: 'Start + End Date / Time',
 };
-DateTimeRangePickerSingle.storyName = 'Date + Time Range';
+
+export const WithPreselectedRange = SingleInput.bind({});
+WithPreselectedRange.args = {
+  ...DefaultDateRange.args,
+  name: 'preselected-date-range',
+  dateFormat: 'Y-m-d',
+  defaultDate: '["2024-01-01", "2024-01-07"]',
+  caption: 'Example with preselected date range (format: Y-m-d)',
+  label: 'Preselected Range',
+};
+
+export const WithPreselectedDateTime = SingleInput.bind({});
+WithPreselectedDateTime.args = {
+  ...DefaultDateRange.args,
+  name: 'preselected-date-time-range',
+  dateFormat: 'Y-m-d H:i',
+  defaultDate: '["2024-01-01 09:00", "2024-01-02 17:00"]',
+  caption: 'Example with preselected date/time range (format: Y-m-d H:i)',
+  label: 'Preselected Date/Time Range',
+};
