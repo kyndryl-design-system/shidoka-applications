@@ -34,10 +34,6 @@ export class OverflowMenu extends LitElement {
   @property({ type: String })
   assistiveText = 'Toggle Menu';
 
-  /** Disabled state. */
-  @property({ type: Boolean })
-  disabled = false;
-
   /** Button element
    * @internal
    */
@@ -81,7 +77,6 @@ export class OverflowMenu extends LitElement {
           aria-expanded=${this.open}
           title=${this.assistiveText}
           aria-label=${this.assistiveText}
-          ?disabled=${this.disabled}
           @keydown=${(e: any) => this.handleKeyDown(e)}
         >
           <span>${unsafeSVG(overflowIcon)}</span>
