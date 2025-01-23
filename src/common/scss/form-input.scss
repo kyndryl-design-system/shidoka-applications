@@ -157,26 +157,16 @@ textarea {
   }
 }
 
-.clear-button,
-.clear {
-  @include mixins.close-icon-btn($top: 50%, $right: 8px, $size: 16px);
-  border: none;
-  margin: 0;
+.clear-button {
+  @include mixins.close-icon-btn($top: 50%, $right: 10px, $size: 16px);
   transform: translateY(-50%);
-  cursor: pointer;
+
+  &:not[disabled] {
+    cursor: pointer;
+  }
 
   &.dropdown-clear {
     right: 48px;
-  }
-
-  &[disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  &:hover {
-    opacity: 0.8;
-    color: var(--kd-color-icon-secondary);
   }
 }
 
@@ -200,10 +190,6 @@ textarea {
   display: flex;
   align-items: center;
   color: var(--kd-color-text-secondary);
-
-  &:hover {
-    cursor: pointer;
-  }
 }
 
 .warn {

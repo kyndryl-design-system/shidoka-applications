@@ -34,7 +34,11 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    defaultDate: { control: { type: 'text' } },
+    defaultDate: {
+      control: { type: 'object' },
+      description:
+        'For multiple mode, provide an array of date strings matching dateFormat',
+    },
     twentyFourHourFormat: { control: { type: 'boolean' } },
     defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
@@ -62,7 +66,7 @@ const Template = (args) => {
       .locale="${args.locale}"
       .label="${args.label}"
       .dateFormat="${args.dateFormat}"
-      .defaultDate="${args.defaultDate}"
+      .defaultDate=${args.defaultDate}
       .defaultErrorMessage="${args.defaultErrorMessage}"
       ?required="${args.required}"
       .size="${args.size}"
@@ -144,7 +148,7 @@ DateTimeMultiple.args = {
   locale: 'en',
   name: 'date-time-multiple-picker',
   dateFormat: 'Y-m-d H:i',
-  defaultDate: '["2024-01-01 09:00", "2024-01-02 17:00"]',
+  defaultDate: ['2024-01-01 09:00', '2024-01-02 17:00'],
   caption: 'Select multiple dates with time. Example shows preselected dates.',
   mode: 'multiple',
   label: 'Multiple Date/Time Selection',

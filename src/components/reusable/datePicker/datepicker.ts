@@ -236,11 +236,12 @@ export class DatePicker extends FormMixin(LitElement) {
                   class="clear-button"
                   kind="ghost"
                   size="small"
-                  outlineOnly
                   description=${this._textStrings.clearAll}
                   @click=${this._handleClear}
                 >
-                  <span>${unsafeSVG(clearIcon)}</span>
+                  <span style="display:flex;" slot="icon"
+                    >${unsafeSVG(clearIcon)}</span
+                  >
                 </kyn-button>
               `
             : html`<span class="input-icon">${unsafeSVG(calendarIcon)}</span>`}

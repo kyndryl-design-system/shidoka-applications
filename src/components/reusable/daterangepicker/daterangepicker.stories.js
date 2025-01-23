@@ -32,7 +32,7 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    defaultDate: { control: { type: 'text' } },
+    defaultDate: { control: { type: 'object' } },
     label: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
@@ -60,7 +60,7 @@ const SingleInput = (args) => {
       .label="${args.label}"
       .locale="${args.locale}"
       .dateFormat="${args.dateFormat}"
-      .defaultDate="${args.defaultDate}"
+      .defaultDate=${args.defaultDate}
       .defaultErrorMessage="${args.defaultErrorMessage}"
       .value="${args.value}"
       .warnText="${args.warnText}"

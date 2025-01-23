@@ -227,20 +227,26 @@ export class DateRangePicker extends FormMixin(LitElement) {
             @focus=${this.handleInputFocusEvent}
           />
           ${(this.value &&
+            Array.isArray(this.value) &&
             this.value.length > 1 &&
             !this.value.every((date) => date === null)) ||
-          this.defaultDate
+          (this.defaultDate &&
+            this.defaultDate !== '' &&
+            Array.isArray(this.defaultDate) &&
+            this.defaultDate.length === 2 &&
+            this.defaultDate.every((date) => date !== null && date !== ''))
             ? html`
                 <kyn-button
                   ?disabled=${this.dateRangePickerDisabled}
                   class="clear-button"
                   kind="ghost"
                   size="small"
-                  outlineOnly
                   description=${this._textStrings.clearAll}
                   @click=${this._handleClear}
                 >
-                  <span>${unsafeSVG(clearIcon)}</span>
+                  <span style="display:flex;" slot="icon"
+                    >${unsafeSVG(clearIcon)}</span
+                  >
                 </kyn-button>
               `
             : html`<span class="input-icon">${unsafeSVG(calendarIcon)}</span>`}
@@ -301,14 +307,19 @@ export class DateRangePicker extends FormMixin(LitElement) {
   private _handleClear(event: Event) {
     event.preventDefault();
     event.stopPropagation();
-    this.value = [null, null];
-    this.defaultDate = null;
+
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
-      if (this._inputEl) {
-        this._inputEl.value = '';
-      }
     }
+
+    if (this._inputEl) {
+      this._inputEl.value = '';
+    }
+
+    this.value = [null, null];
+    this.defaultDate = [];
+
+    this.reinitializeFlatpickr();
     this._validate(true, false);
     this.requestUpdate();
   }
