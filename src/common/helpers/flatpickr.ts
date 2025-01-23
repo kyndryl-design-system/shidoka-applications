@@ -104,7 +104,7 @@ type DateFormatOption = keyof typeof DATE_FORMAT_OPTIONS;
 interface FlatpickrOptionsContext {
   locale: string;
   dateFormat?: string;
-  defaultDate?: string | Date;
+  defaultDate?: string | Date | string[] | Date[];
   defaultHour?: number;
   defaultMinute?: number;
   enableTime: boolean;
@@ -453,7 +453,13 @@ export async function getFlatpickrOptions(
   if (maxDate) options.maxDate = maxDate;
   if (minTime) options.minTime = minTime;
   if (maxTime) options.maxTime = maxTime;
-  if (defaultDate) options.defaultDate = defaultDate;
+  if (defaultDate) {
+    if (Array.isArray(defaultDate) && mode === 'range') {
+      options.defaultDate = defaultDate;
+    } else if (!Array.isArray(defaultDate)) {
+      options.defaultDate = defaultDate;
+    }
+  }
   if (defaultHour !== undefined) options.defaultHour = defaultHour;
   if (defaultMinute !== undefined) options.defaultMinute = defaultMinute;
   if (enable && enable.length > 0) options.enable = enable;

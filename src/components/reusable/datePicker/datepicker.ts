@@ -57,9 +57,9 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   dateFormat = 'Y-m-d';
 
-  /** Sets the initial selected date(s) */
-  @property({ type: Object })
-  defaultDate: Date | null = null;
+  /** Sets the initial selected date(s). For multiple mode, provide an array of date strings matching dateFormat. */
+  @property({ type: Array })
+  defaultDate: string | string[] | null = null;
 
   /** Sets default error message. */
   @property({ type: String })
@@ -423,8 +423,10 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   setInitialDates(): void {
-    if (this.value && this.flatpickrInstance) {
-      this.flatpickrInstance.setDate(this.value, true);
+    if (this.defaultDate && this.flatpickrInstance) {
+      this.flatpickrInstance.setDate(this.defaultDate, false);
+    } else if (this.value && this.flatpickrInstance) {
+      this.flatpickrInstance.setDate(this.value, false);
     }
   }
 
