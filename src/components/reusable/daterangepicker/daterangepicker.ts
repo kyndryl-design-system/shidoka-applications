@@ -298,19 +298,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
   private _handleClear(event: Event) {
     event.preventDefault();
     event.stopPropagation();
-
     this.value = [null, null];
     this.defaultDate = null;
-
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
+      if (this._inputEl) {
+        this._inputEl.value = '';
+      }
     }
-    if (this._inputEl) {
-      this._inputEl.value = '';
-    }
-
-    this.reinitializeFlatpickr();
-
     this._validate(true, false);
     this.requestUpdate();
   }
