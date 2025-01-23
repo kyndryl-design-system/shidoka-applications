@@ -125,7 +125,7 @@ WithPreselectedRange.args = {
   ...DateRangeDefault.args,
   name: 'preselected-date-range',
   dateFormat: 'Y-m-d',
-  defaultDate: '["2024-01-01", "2024-01-07"]',
+  defaultDate: ['2024-01-01', '2024-01-07'],
   caption: 'Example with preselected date range (format: Y-m-d)',
   label: 'Preselected Range',
 };
@@ -135,7 +135,7 @@ WithPreselectedDateTime.args = {
   ...DateRangeDefault.args,
   name: 'preselected-date-time-range',
   dateFormat: 'Y-m-d H:i',
-  defaultDate: '["2024-01-01 09:00", "2024-01-02 17:00"]',
+  defaultDate: ['2024-01-01 09:00', '2024-01-02 17:00'],
   caption: 'Example with preselected date/time range (format: Y-m-d H:i)',
   label: 'Preselected Date/Time Range',
 };

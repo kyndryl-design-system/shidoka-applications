@@ -58,23 +58,7 @@ export class DatePicker extends FormMixin(LitElement) {
   dateFormat = 'Y-m-d';
 
   /** Sets the initial selected date(s). For multiple mode, provide an array of date strings matching dateFormat. */
-  @property({
-    converter: {
-      fromAttribute: (value: string) => {
-        if (!value) return null;
-        try {
-          const parsed = JSON.parse(value);
-          return Array.isArray(parsed) ? parsed : value;
-        } catch {
-          return value;
-        }
-      },
-      toAttribute: (value: string | string[] | null) => {
-        if (!value) return null;
-        return Array.isArray(value) ? JSON.stringify(value) : value;
-      },
-    },
-  })
+  @property({ type: Array })
   defaultDate: string | string[] | null = null;
 
   /** Sets default error message. */

@@ -58,28 +58,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
   dateFormat = 'Y-m-d';
 
   /** Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. ["2024-01-01", "2024-01-07"]). */
-  @property({
-    type: String,
-    attribute: 'default-date',
-  })
-  get defaultDate(): string | string[] | null {
-    return this._defaultDate;
-  }
-  set defaultDate(value: string | string[] | null) {
-    const oldValue = this._defaultDate;
-    if (typeof value === 'string') {
-      try {
-        const parsed = JSON.parse(value);
-        this._defaultDate = Array.isArray(parsed) ? parsed : value;
-      } catch {
-        this._defaultDate = value;
-      }
-    } else {
-      this._defaultDate = value;
-    }
-    this.requestUpdate('defaultDate', oldValue);
-  }
-  private _defaultDate: string | string[] | null = null;
+  @property({ type: Array })
+  defaultDate: string | string[] | null = null;
 
   /** Sets default error message. */
   @property({ type: String })
