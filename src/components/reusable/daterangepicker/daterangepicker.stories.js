@@ -86,8 +86,8 @@ const SingleInput = (args) => {
   `;
 };
 
-export const DefaultDateRange = SingleInput.bind({});
-DefaultDateRange.args = {
+export const DateRangeDefault = SingleInput.bind({});
+DateRangeDefault.args = {
   name: 'default-date-range-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
@@ -113,7 +113,7 @@ DefaultDateRange.args = {
 
 export const DateTimeRange = SingleInput.bind({});
 DateTimeRange.args = {
-  ...DefaultDateRange.args,
+  ...DateRangeDefault.args,
   name: 'date-time-range-picker',
   dateFormat: 'Y-m-d H:i',
   caption: 'Example caption for the Date Range Picker with Time Input',
@@ -122,7 +122,7 @@ DateTimeRange.args = {
 
 export const WithPreselectedRange = SingleInput.bind({});
 WithPreselectedRange.args = {
-  ...DefaultDateRange.args,
+  ...DateRangeDefault.args,
   name: 'preselected-date-range',
   dateFormat: 'Y-m-d',
   defaultDate: '["2024-01-01", "2024-01-07"]',
@@ -132,7 +132,7 @@ WithPreselectedRange.args = {
 
 export const WithPreselectedDateTime = SingleInput.bind({});
 WithPreselectedDateTime.args = {
-  ...DefaultDateRange.args,
+  ...DateRangeDefault.args,
   name: 'preselected-date-time-range',
   dateFormat: 'Y-m-d H:i',
   defaultDate: '["2024-01-01 09:00", "2024-01-02 17:00"]',
