@@ -16,6 +16,7 @@ import './story-helpers/table-story.sample';
 import './story-helpers/table.settings.sample';
 import { characters, dataForColumns } from './story-helpers/ultils.sample';
 import allData from './story-helpers/table-data.json';
+
 import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 
@@ -39,7 +40,7 @@ const meta: Meta = {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Applications-with-Specs?node-id=828%3A4607&mode=dev',
+      url: 'https://www.figma.com/design/CQuDZEeLiuGiALvCWjAKlu/branch/qMpff4GuFUEcsMUkvacS3U/Applications---Component-Library?node-id=9379-209416&p=f&m=dev',
     },
   },
 };
@@ -328,6 +329,7 @@ export const StickyHeader: Story = {
         .tableTitle=${'Sticky Header'}
         .rows=${rows}
         ?stickyHeader=${args.stickyHeader}
+        showTableActions
       >
       </story-table>
     `;
@@ -411,7 +413,7 @@ export const DisabledRows: Story = {
                 .rowId=${row.id}
                 key="row-${row.id}"
                 ?disabled=${row.id == 1 || row.id == 3 ? true : false}
-                ?selected=${row.id == 3 ? true : false}
+                ?selected=${row.id == 2 ? true : false}
               >
                 <kyn-td .align=${'center'}>${row.id}</kyn-td>
                 <kyn-td>${row.firstName}</kyn-td>
