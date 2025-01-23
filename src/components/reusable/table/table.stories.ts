@@ -329,6 +329,7 @@ export const StickyHeader: Story = {
         .tableTitle=${'Sticky Header'}
         .rows=${rows}
         ?stickyHeader=${args.stickyHeader}
+        showTableActions
       >
       </story-table>
     `;

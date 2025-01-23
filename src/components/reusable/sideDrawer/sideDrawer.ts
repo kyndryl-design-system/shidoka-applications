@@ -142,7 +142,7 @@ export class SideDrawer extends LitElement {
                 : null}
             </div>
 
-            <kd-button
+            <kyn-button
               class="side-drawer-close-btn"
               kind="tertiary"
               size="small"
@@ -151,7 +151,7 @@ export class SideDrawer extends LitElement {
               @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
             >
               <span slot="icon">${unsafeSVG(closeIcon)}</span>
-            </kd-button>
+            </kyn-button>
           </header>
 
           <!-- Body -->
