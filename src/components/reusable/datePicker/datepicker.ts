@@ -363,8 +363,8 @@ export class DatePicker extends FormMixin(LitElement) {
     event.preventDefault();
     event.stopPropagation();
 
-    this.value = null;
-    this.defaultDate = null;
+    this.value = this.mode === 'multiple' ? [] : null;
+    this.defaultDate = this.mode === 'multiple' ? [] : null;
 
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
@@ -434,9 +434,21 @@ export class DatePicker extends FormMixin(LitElement) {
 
   setInitialDates(): void {
     if (this.defaultDate && this.flatpickrInstance) {
-      this.flatpickrInstance.setDate(this.defaultDate, false);
+      if (Array.isArray(this.defaultDate)) {
+        const defaultDates = this.defaultDate.map((date) => new Date(date));
+        this.value = this.mode === 'multiple' ? defaultDates : defaultDates[0];
+        this.flatpickrInstance.setDate(this.defaultDate, false);
+      } else {
+        const defaultDate = new Date(this.defaultDate);
+        this.value = defaultDate;
+        this.flatpickrInstance.setDate([this.defaultDate], false);
+      }
     } else if (this.value && this.flatpickrInstance) {
-      this.flatpickrInstance.setDate(this.value, false);
+      if (Array.isArray(this.value)) {
+        this.flatpickrInstance.setDate(this.value, false);
+      } else {
+        this.flatpickrInstance.setDate([this.value], false);
+      }
     }
   }
 

@@ -461,6 +461,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   setInitialDates(): void {
     if (Array.isArray(this.defaultDate) && this.defaultDate.length === 2) {
+      const defaultDates = this.defaultDate.map((date) => new Date(date));
+      this.value = defaultDates as [Date, Date];
       this.flatpickrInstance!.setDate(this.defaultDate, false);
     } else if (
       Array.isArray(this.value) &&
