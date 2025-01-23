@@ -197,6 +197,7 @@ export class Button extends LitElement {
       ${this.href && this.href !== ''
         ? html`
             <a
+              part="button"
               class=${classMap(baseClasses)}
               href=${this.href}
               ?disabled=${this.disabled}
@@ -215,6 +216,7 @@ export class Button extends LitElement {
           `
         : html`
             <button
+              part="button"
               class=${classMap(baseClasses)}
               type=${this.type}
               ?disabled=${this.disabled}
