@@ -18,6 +18,7 @@ import {
   updateEnableTime,
   hideEmptyYear,
 } from '../../../common/helpers/flatpickr';
+import '../../reusable/button';
 
 import { BaseOptions } from 'flatpickr/dist/types/options';
 import type { Instance } from 'flatpickr/dist/types/instance';
@@ -230,15 +231,17 @@ export class DateRangePicker extends FormMixin(LitElement) {
             !this.value.every((date) => date === null)) ||
           this.defaultDate
             ? html`
-                <button
+                <kyn-button
                   ?disabled=${this.dateRangePickerDisabled}
                   class="clear-button"
-                  aria-label=${this._textStrings.clearAll}
-                  title=${this._textStrings.clearAll}
+                  kind="ghost"
+                  size="small"
+                  outlineOnly
+                  description=${this._textStrings.clearAll}
                   @click=${this._handleClear}
                 >
                   <span>${unsafeSVG(clearIcon)}</span>
-                </button>
+                </kyn-button>
               `
             : html`<span class="input-icon">${unsafeSVG(calendarIcon)}</span>`}
         </div>

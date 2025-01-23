@@ -18,6 +18,7 @@ import {
   emitValue,
   hideEmptyYear,
 } from '../../../common/helpers/flatpickr';
+import '../../reusable/button';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -230,15 +231,17 @@ export class DatePicker extends FormMixin(LitElement) {
           />
           ${this._inputEl?.value || this.defaultDate
             ? html`
-                <button
+                <kyn-button
                   ?disabled=${this.datePickerDisabled}
                   class="clear-button"
-                  aria-label=${this._textStrings.clearAll}
-                  title=${this._textStrings.clearAll}
+                  kind="ghost"
+                  size="small"
+                  outlineOnly
+                  description=${this._textStrings.clearAll}
                   @click=${this._handleClear}
                 >
                   <span>${unsafeSVG(clearIcon)}</span>
-                </button>
+                </kyn-button>
               `
             : html`<span class="input-icon">${unsafeSVG(calendarIcon)}</span>`}
         </div>
