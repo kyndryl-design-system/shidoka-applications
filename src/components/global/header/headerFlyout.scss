@@ -12,7 +12,7 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  color: var(--kd-color-text-primary);
+  color: var(--kd-color-icon-primary);
   padding: 16px 12px 16px 8px;
   height: 56px;
   text-decoration: none;
@@ -36,53 +36,28 @@
 
 .menu-label {
   @include typography.type-ui-03;
-  color: var(--kd-color-text-tertiary-bold);
+  color: var(--kd-color-text-level-tertiary-bold);
   font-weight: 500;
   text-transform: uppercase;
   padding: 8px;
-  border-bottom: 1px solid var(--kd-color-border-light);
+  border-bottom: 1px solid var(--kd-color-border-variants-light);
 }
 
 .menu {
-  &:hover {
-    .interactive {
-      ::slotted(kyn-header-avatar) {
-        background: none;
-        border-color: var(--kd-color-border-inverse);
-        color: var(--kd-color-text-inversed);
-      }
-    }
-  }
-
   &.open {
     .interactive {
-      ::slotted(kyn-header-avatar) {
-        color: var(--kd-color-text-inversed);
-        background: var(--kd-color-background-primary);
-        border: 1px solid var(--kd-color-border-brand);
-      }
+      background-color: var(--kd-color-background-button-primary-state-hover);
+      color: var(--kd-color-text-button-dark-primary);
 
       &:hover {
-        background-color: var(--kd-color-background-primary-hover);
-
-        ::slotted(kyn-header-avatar) {
-          background: none;
-          border-color: var(--kd-color-border-inverse);
-          color: var(--kd-color-text-inversed);
-        }
+        background-color: var(--kd-color-background-button-primary-state-hover);
+        color: var(--kd-color-text-button-dark-primary);
       }
 
       &:active {
-        background-color: var(--kd-color-background-primary-pressed);
+        background: var(--kd-color-background-button-primary-state-pressed);
+        color: var(--kd-color-text-button-dark-primary);
       }
-    }
-  }
-
-  .interactive:focus {
-    ::slotted(kyn-header-avatar) {
-      background: var(--kd-color-background-primary);
-      border-color: var(--kd-color-border-inverse);
-      color: var(--kd-color-text-inversed);
     }
   }
 }
