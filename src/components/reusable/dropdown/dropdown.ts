@@ -414,7 +414,7 @@ export class Dropdown extends FormMixin(LitElement) {
             ? html`
                 <kyn-button
                   class="clear-button dropdown-clear"
-                  kind="ghost"
+                  ghost
                   size="small"
                   description="Clear search text"
                   ?disabled=${this.disabled}

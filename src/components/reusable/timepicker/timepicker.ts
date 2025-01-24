@@ -220,7 +220,7 @@ export class TimePicker extends FormMixin(LitElement) {
                 <kyn-button
                   ?disabled=${this.timepickerDisabled}
                   class="clear-button"
-                  kind="ghost"
+                  ghost
                   size="small"
                   description=${this._textStrings.clearAll}
                   @click=${this._handleClear}

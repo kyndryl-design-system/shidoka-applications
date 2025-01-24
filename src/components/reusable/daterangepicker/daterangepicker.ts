@@ -239,7 +239,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
                 <kyn-button
                   ?disabled=${this.dateRangePickerDisabled}
                   class="clear-button"
-                  kind="ghost"
+                  ghost
                   size="small"
                   description=${this._textStrings.clearAll}
                   @click=${this._handleClear}

@@ -144,7 +144,7 @@ export class SideDrawer extends LitElement {
 
             <kyn-button
               class="side-drawer-close-btn"
-              kind="ghost"
+              ghost
               size="small"
               description=${ifDefined(this.closeBtnDescription)}
               @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
