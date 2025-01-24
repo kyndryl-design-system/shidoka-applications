@@ -9,7 +9,6 @@ export enum BUTTON_KINDS {
   PRIMARY_WEB = 'primary-web',
   SECONDARY = 'secondary',
   TERTIARY = 'tertiary',
-  GHOST = 'ghost',
 }
 
 export enum BUTTON_SIZES {

@@ -96,6 +96,10 @@ export class Button extends LitElement {
   @property({ type: Boolean, reflect: true })
   outlineOnly = false;
 
+  /** Ghost style button */
+  @property({ type: Boolean, reflect: true })
+  ghost = false;
+
   /** Button value.  */
   @property({ type: String })
   value = '';
@@ -152,7 +156,6 @@ export class Button extends LitElement {
       [BUTTON_KINDS.PRIMARY_WEB]: 'primary-web',
       [BUTTON_KINDS.SECONDARY]: 'secondary',
       [BUTTON_KINDS.TERTIARY]: 'tertiary',
-      [BUTTON_KINDS.GHOST]: 'ghost',
     };
 
     const baseTypeClass = typeClassMap[this.kind];
@@ -172,7 +175,7 @@ export class Button extends LitElement {
 
     const getButtonClasses = () => {
       let cls = `kd-btn--${baseTypeClass}`;
-      if (this.destructive || this.outlineOnly) {
+      if (this.destructive || this.outlineOnly || this.ghost) {
         if (this.destructive) {
           if (this.outlineOnly) {
             cls = `kd-btn--${baseTypeClass}-destructive-outline`;
@@ -182,6 +185,8 @@ export class Button extends LitElement {
         } else {
           if (this.outlineOnly) {
             cls = `kd-btn--${baseTypeClass}-outline`;
+          } else if (this.ghost) {
+            cls = `kd-btn--${baseTypeClass}-ghost`;
           } else {
             cls = `kd-btn--${baseTypeClass}`;
           }
