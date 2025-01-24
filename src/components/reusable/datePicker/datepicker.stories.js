@@ -131,8 +131,22 @@ DatePickerMultiple.args = {
   locale: 'en',
   name: 'date-multiple-picker',
   dateFormat: 'Y-m-d',
-  caption: '',
+  defaultDate: '',
+  caption: 'Select multiple dates. Example shows preselected dates.',
   mode: 'multiple',
-  label: 'Date Picker (w/ Multiselect)',
+  label: 'Multiple Date Selection',
 };
 DatePickerMultiple.storyName = 'Multiple Date Selection';
+
+export const DateTimeMultiple = Template.bind({});
+DateTimeMultiple.args = {
+  ...DatePickerDefault.args,
+  locale: 'en',
+  name: 'date-time-multiple-picker',
+  dateFormat: 'Y-m-d H:i',
+  defaultDate: '["2024-01-01 09:00", "2024-01-02 17:00"]',
+  caption: 'Select multiple dates with time. Example shows preselected dates.',
+  mode: 'multiple',
+  label: 'Multiple Date/Time Selection',
+};
+DateTimeMultiple.storyName = 'With Preselected Date Time';
