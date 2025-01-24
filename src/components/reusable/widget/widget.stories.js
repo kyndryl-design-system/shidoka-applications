@@ -35,6 +35,21 @@ export default {
       },
     },
   },
+  decorators: [
+    (story) => html`
+      <style>
+        .test {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--kd-color-background-container-soft);
+          height: 100%;
+          border-radius: 4px;
+        }
+      </style>
+      ${story()}
+    `,
+  ],
 };
 
 const args = {
@@ -56,7 +71,7 @@ export const Widget = {
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
           >
-            Widget Content
+            <div class="test">Widget Content</div>
           </kyn-widget>
         </div>
       </div>
@@ -81,18 +96,24 @@ export const WithActions = {
               kind="tertiary"
               size="small"
               description="Settings"
+              ?disabled=${args.disabled}
             >
               <span slot="icon" style="display:flex"
                 >${unsafeSVG(settingsIcon)}</span
               >
             </kyn-button>
 
-            <kyn-overflow-menu slot="actions" anchorRight verticalDots>
+            <kyn-overflow-menu
+              slot="actions"
+              anchorRight
+              verticalDots
+              ?disabled=${args.disabled}
+            >
               <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
               <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
             </kyn-overflow-menu>
 
-            Widget Content
+            <div class="test">Widget Content</div>
           </kyn-widget>
         </div>
       </div>
@@ -158,31 +179,35 @@ export const StaticGrid = {
       <div class="kd-grid">
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
           <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-            Widget Content
+            <div class="test">Widget Content</div>
           </kyn-widget>
         </div>
 
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
           <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-            Widget Content
-            <br />
-            Widget Content
-            <br />
-            Widget Content
+            <div class="test">
+              Widget Content
+              <br />
+              Widget Content
+              <br />
+              Widget Content
+            </div>
           </kyn-widget>
         </div>
 
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
           <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-            Widget Content
-            <br />
-            Widget Content
+            <div class="test">
+              Widget Content
+              <br />
+              Widget Content
+            </div>
           </kyn-widget>
         </div>
 
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
           <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-            Widget Content
+            <div class="test">Widget Content</div>
           </kyn-widget>
         </div>
       </div>
@@ -190,7 +215,7 @@ export const StaticGrid = {
       <div class="kd-grid" style="margin-top: 32px;">
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-8">
           <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-            Widget Content
+            <div class="test">Widget Content</div>
           </kyn-widget>
         </div>
 
@@ -200,7 +225,7 @@ export const StaticGrid = {
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-                Widget Content
+                <div class="test">Widget Content</div>
               </kyn-widget>
             </div>
 
@@ -208,21 +233,21 @@ export const StaticGrid = {
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-                Widget Content
+                <div class="test">Widget Content</div>
               </kyn-widget>
             </div>
             <div
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-                Widget Content
+                <div class="test">Widget Content</div>
               </kyn-widget>
             </div>
             <div
               class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-6"
             >
               <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-                Widget Content
+                <div class="test">Widget Content</div>
               </kyn-widget>
             </div>
           </div>
@@ -232,7 +257,7 @@ export const StaticGrid = {
       <div class="kd-grid" style="margin-top: 32px;">
         <div class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
           <kyn-widget widgetTitle="Widget Title" subTitle="Widget Subtitle">
-            Widget Content
+            <div class="test">Widget Content</div>
           </kyn-widget>
         </div>
       </div>
