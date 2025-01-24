@@ -229,7 +229,15 @@ export class DatePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${this._inputEl?.value || this.defaultDate
+          ${this._inputEl?.value ||
+          (this.value &&
+            Array.isArray(this.value) &&
+            this.value.length > 0 &&
+            !this.value.every((date) => date === null)) ||
+          (this.defaultDate &&
+            Array.isArray(this.defaultDate) &&
+            this.defaultDate.length > 0 &&
+            !this.defaultDate.every((date) => date === null || date === ''))
             ? html`
                 <kyn-button
                   ?disabled=${this.datePickerDisabled}

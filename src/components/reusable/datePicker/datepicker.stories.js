@@ -34,11 +34,7 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    defaultDate: {
-      control: { type: 'object' },
-      description:
-        'For multiple mode, provide an array of date strings matching dateFormat',
-    },
+    defaultDate: { control: { type: 'object' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
     defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
