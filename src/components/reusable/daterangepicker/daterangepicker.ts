@@ -228,13 +228,16 @@ export class DateRangePicker extends FormMixin(LitElement) {
           />
           ${(this.value &&
             Array.isArray(this.value) &&
-            this.value.length > 1 &&
-            !this.value.every((date) => date === null)) ||
+            this.value.length === 2 &&
+            this.value[0] !== null &&
+            this.value[1] !== null) ||
           (this.defaultDate &&
-            this.defaultDate !== '' &&
             Array.isArray(this.defaultDate) &&
             this.defaultDate.length === 2 &&
-            this.defaultDate.every((date) => date !== null && date !== ''))
+            this.defaultDate[0] &&
+            this.defaultDate[1] &&
+            this.defaultDate[0] !== '' &&
+            this.defaultDate[1] !== '')
             ? html`
                 <kyn-button
                   ?disabled=${this.dateRangePickerDisabled}
@@ -413,6 +416,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       mode: 'range',
+      allowInput: false,
       inputEl: this._inputEl!,
       minDate: this.minDate,
       maxDate: this.maxDate,
@@ -502,18 +506,23 @@ export class DateRangePicker extends FormMixin(LitElement) {
   async handleDateChange(selectedDates: Date[]): Promise<void> {
     this._hasInteracted = true;
 
-    this.value =
-      selectedDates.length === 2
-        ? [selectedDates[0], selectedDates[1]]
-        : [selectedDates[0] || null, null];
+    if (selectedDates.length === 0) {
+      this.value = [null, null];
+    } else if (selectedDates.length === 1) {
+      this.value = [selectedDates[0], null];
+    } else {
+      this.value = [selectedDates[0], selectedDates[1]];
+    }
 
-    const formattedDates = selectedDates.map((date) => date.toISOString());
-    const dateString = this._inputEl?.value || formattedDates.join(' to ');
+    if (selectedDates.length === 2) {
+      const formattedDates = selectedDates.map((date) => date.toISOString());
+      const dateString = this._inputEl?.value || formattedDates.join(' to ');
 
-    emitValue(this, 'on-change', {
-      dates: formattedDates,
-      dateString,
-    });
+      emitValue(this, 'on-change', {
+        dates: formattedDates,
+        dateString,
+      });
+    }
 
     this.updateSelectedDateRangeAria(selectedDates);
     this._validate(true, false);
@@ -522,6 +531,19 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   async handleClose() {
     this._hasInteracted = true;
+
+    if (
+      this.flatpickrInstance &&
+      this.flatpickrInstance.selectedDates &&
+      this.flatpickrInstance.selectedDates.length === 1
+    ) {
+      this.flatpickrInstance.clear();
+      if (this._inputEl) {
+        this._inputEl.value = '';
+      }
+      this.value = [null, null];
+    }
+
     this._validate(true, false);
     await this.updateComplete;
   }
