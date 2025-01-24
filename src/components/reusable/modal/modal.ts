@@ -126,7 +126,6 @@ export class Modal extends LitElement {
             class="close"
             kind="ghost"
             size="small"
-            iconPosition="left"
             description=${this.closeText}
             @click=${(e: Event) => this._closeModal(e, 'cancel')}
           >
