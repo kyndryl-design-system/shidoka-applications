@@ -460,20 +460,35 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   setInitialDates(): void {
-    if (Array.isArray(this.defaultDate) && this.defaultDate.length === 2) {
-      const defaultDates = this.defaultDate.map((date) => new Date(date));
-      this.value = defaultDates as [Date, Date];
-      this.flatpickrInstance!.setDate(this.defaultDate, false);
-    } else if (
-      Array.isArray(this.value) &&
-      this.value.length === 2 &&
-      this.value[0] !== null &&
-      this.value[1] !== null
-    ) {
-      this.flatpickrInstance!.setDate(
-        this.value.filter((date) => date !== null),
-        false
-      );
+    if (!this.flatpickrInstance) return;
+
+    try {
+      if (Array.isArray(this.defaultDate)) {
+        const validDates = this.defaultDate
+          .filter((date) => date && date !== '')
+          .map((date) => {
+            const parsed = new Date(date);
+            return isNaN(parsed.getTime()) ? null : parsed;
+          })
+          .filter((date): date is Date => date !== null);
+
+        if (validDates.length === 2) {
+          this.value = validDates as [Date, Date];
+          this.flatpickrInstance.setDate(validDates, false);
+        }
+      } else if (Array.isArray(this.value) && this.value.length === 2) {
+        const validDates = this.value
+          .map((date) =>
+            date instanceof Date && !isNaN(date.getTime()) ? date : null
+          )
+          .filter((date): date is Date => date !== null);
+
+        if (validDates.length === 2) {
+          this.flatpickrInstance.setDate(validDates, false);
+        }
+      }
+    } catch (error) {
+      console.warn('Error setting initial dates:', error);
     }
   }
 

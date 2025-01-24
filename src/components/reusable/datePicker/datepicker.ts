@@ -441,22 +441,42 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   setInitialDates(): void {
-    if (this.defaultDate && this.flatpickrInstance) {
-      if (Array.isArray(this.defaultDate)) {
-        const defaultDates = this.defaultDate.map((date) => new Date(date));
-        this.value = this.mode === 'multiple' ? defaultDates : defaultDates[0];
-        this.flatpickrInstance.setDate(this.defaultDate, false);
-      } else {
-        const defaultDate = new Date(this.defaultDate);
-        this.value = defaultDate;
-        this.flatpickrInstance.setDate([this.defaultDate], false);
+    if (!this.flatpickrInstance) return;
+
+    try {
+      if (this.defaultDate) {
+        if (Array.isArray(this.defaultDate)) {
+          const validDates = this.defaultDate
+            .filter((date) => date && date !== '')
+            .map((date) => {
+              const parsed = new Date(date);
+              return isNaN(parsed.getTime()) ? null : parsed;
+            })
+            .filter((date): date is Date => date !== null);
+
+          if (validDates.length > 0) {
+            this.value = this.mode === 'multiple' ? validDates : validDates[0];
+            this.flatpickrInstance.setDate(validDates, false);
+          }
+        } else {
+          const parsed = new Date(this.defaultDate);
+          if (!isNaN(parsed.getTime())) {
+            this.value = parsed;
+            this.flatpickrInstance.setDate([parsed], false);
+          }
+        }
+      } else if (this.value) {
+        const dates = Array.isArray(this.value) ? this.value : [this.value];
+        const validDates = dates.filter(
+          (date): date is Date => date instanceof Date && !isNaN(date.getTime())
+        );
+
+        if (validDates.length > 0) {
+          this.flatpickrInstance.setDate(validDates, false);
+        }
       }
-    } else if (this.value && this.flatpickrInstance) {
-      if (Array.isArray(this.value)) {
-        this.flatpickrInstance.setDate(this.value, false);
-      } else {
-        this.flatpickrInstance.setDate([this.value], false);
-      }
+    } catch (error) {
+      console.warn('Error setting initial dates:', error);
     }
   }
 
