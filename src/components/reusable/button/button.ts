@@ -96,6 +96,10 @@ export class Button extends LitElement {
   @property({ type: Boolean, reflect: true })
   outlineOnly = false;
 
+  /** Ghost style button */
+  @property({ type: Boolean, reflect: true })
+  ghost = false;
+
   /** Button value.  */
   @property({ type: String })
   value = '';
@@ -157,7 +161,6 @@ export class Button extends LitElement {
     const baseTypeClass = typeClassMap[this.kind];
 
     let classes = {
-      button: true,
       'kd-btn--large': this.size === BUTTON_SIZES.LARGE,
       'kd-btn--small': this.size === BUTTON_SIZES.SMALL,
       'kd-btn--medium': this._reSizeBtn || this.size === BUTTON_SIZES.MEDIUM,
@@ -172,7 +175,7 @@ export class Button extends LitElement {
 
     const getButtonClasses = () => {
       let cls = `kd-btn--${baseTypeClass}`;
-      if (this.destructive || this.outlineOnly) {
+      if (this.destructive || this.outlineOnly || this.ghost) {
         if (this.destructive) {
           if (this.outlineOnly) {
             cls = `kd-btn--${baseTypeClass}-destructive-outline`;
@@ -182,6 +185,8 @@ export class Button extends LitElement {
         } else {
           if (this.outlineOnly) {
             cls = `kd-btn--${baseTypeClass}-outline`;
+          } else if (this.ghost) {
+            cls = `kd-btn--${baseTypeClass}-ghost`;
           } else {
             cls = `kd-btn--${baseTypeClass}`;
           }
@@ -197,6 +202,7 @@ export class Button extends LitElement {
       ${this.href && this.href !== ''
         ? html`
             <a
+              part="button"
               class=${classMap(baseClasses)}
               href=${this.href}
               ?disabled=${this.disabled}
@@ -215,6 +221,7 @@ export class Button extends LitElement {
           `
         : html`
             <button
+              part="button"
               class=${classMap(baseClasses)}
               type=${this.type}
               ?disabled=${this.disabled}
