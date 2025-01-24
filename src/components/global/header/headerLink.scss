@@ -26,18 +26,20 @@
     padding-right: 16px;
   }
 
+  &:focus {
+    outline-color: var(--kd-color-border-variants-focus);
+    background: var(--kd-color-background-menu-state-focused);
+    color: var(--kd-color-text-level-primary);
+  }
+
   &:hover {
-    background: var(--kd-color-background-button-primary-state-hover);
+    background: var(--kd-color-background-menu-state-hover);
     color: var(--kd-color-text-button-dark-primary);
   }
 
   &:active {
-    background: var(--kd-color-background-button-primary-state-pressed);
+    background: var(--kd-color-background-menu-state-pressed);
     color: var(--kd-color-text-button-dark-primary);
-  }
-
-  &:focus {
-    outline-color: var(--kd-color-border-variants-focus);
   }
 
   &.active {
@@ -45,7 +47,7 @@
     font-weight: 500;
 
     &:hover {
-      background: var(--kd-color-background-button-primary-state-hover);
+      background: var(--kd-color-background-menu-state-hover);
       color: var(--kd-color-text-button-dark-primary);
     }
   }
@@ -114,11 +116,16 @@
     }
 
     .interactive {
-      color: var(--kd-color-text-level-light);
-      background-color: var(--kd-color-background-button-primary-state-default);
+      color: var(--kd-color-text-button-dark-primary);
+      background-color: var(--kd-color-background-menu-state-open);
 
       &:hover {
-        background-color: var(--kd-color-background-button-primary-state-hover);
+        background-color: var(--kd-color-background-menu-state-hover);
+        color: var(--kd-color-text-button-dark-primary);
+      }
+
+      &:active {
+        background: var(--kd-color-background-menu-state-pressed);
         color: var(--kd-color-text-button-dark-primary);
       }
     }
@@ -126,7 +133,7 @@
 
   &__content {
     display: none;
-    background: var(--kd-color-background-accent-subtle);
+    background: var(--kd-color-background-menu-state-default);
 
     &.slotted {
       display: flex;
