@@ -110,458 +110,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/localNav/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "./localNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "./localNavLink"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "./localNavDivider"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Side Navigation component.",
-          "name": "LocalNav",
-          "slots": [
-            {
-              "description": "The default slot, for local nav links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for a search input",
-              "name": "search"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "attribute": "pinned"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_handleNavToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleMobileNavToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinkActive",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the pinned state and original event details.",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "fieldName": "pinned"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavDivider.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Local Nav divider",
-          "name": "LocalNavDivider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "attribute": "heading"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "fieldName": "heading"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-divider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-divider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Link component for use in the global Side Navigation component.",
-          "name": "LocalNavLink",
-          "slots": [
-            {
-              "description": "The default slot, for the link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon. Use 16px size.",
-              "name": "icon"
-            },
-            {
-              "description": "Slot for the next level of links, supports three levels.",
-              "name": "links"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "attribute": "expanded"
-            },
-            {
-              "kind": "field",
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "attribute": "active",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "method",
-              "name": "_handleTextSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_getSlotText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinksSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event, level, and if default was prevented.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "fieldName": "expanded"
-            },
-            {
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "fieldName": "active"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-link",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/header/header.ts",
       "declarations": [
         {
@@ -895,7 +443,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "DEPRECATED. Use `label` instead.\nButton assistive text, title + aria-label.",
+              "description": "DEPRECATED. Use `label` instead.\r\nButton assistive text, title + aria-label.",
               "attribute": "assistiveText"
             },
             {
@@ -1008,7 +556,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "DEPRECATED. Use `label` instead.\nButton assistive text, title + aria-label.",
+              "description": "DEPRECATED. Use `label` instead.\r\nButton assistive text, title + aria-label.",
               "fieldName": "assistiveText"
             },
             {
@@ -2025,6 +1573,458 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/localNav/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "./localNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "./localNavLink"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "./localNavDivider"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Side Navigation component.",
+          "name": "LocalNav",
+          "slots": [
+            {
+              "description": "The default slot, for local nav links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for a search input",
+              "name": "search"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "attribute": "pinned"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  pin: 'Pin',\r\n  unpin: 'Unpin',\r\n  toggleMenu: 'Toggle Menu',\r\n  collapse: 'Collapse',\r\n  menu: 'Menu',\r\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleMobileNavToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinkActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the pinned state and original event details.",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "fieldName": "pinned"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavDivider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Local Nav divider",
+          "name": "LocalNavDivider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "attribute": "heading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "fieldName": "heading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-divider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-divider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Link component for use in the global Side Navigation component.",
+          "name": "LocalNavLink",
+          "slots": [
+            {
+              "description": "The default slot, for the link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon. Use 16px size.",
+              "name": "icon"
+            },
+            {
+              "description": "Slot for the next level of links, supports three levels.",
+              "name": "links"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "attribute": "expanded"
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "attribute": "active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "method",
+              "name": "_handleTextSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getSlotText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinksSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event, level, and if default was prevented.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "fieldName": "expanded"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "fieldName": "active"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-link",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/uiShell/index.ts",
       "declarations": [],
       "exports": [
@@ -2606,7 +2606,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  collapsed: 'Collapsed',\n  expanded: 'Expanded',\n}",
+              "default": "{\r\n  collapsed: 'Collapsed',\r\n  expanded: 'Expanded',\r\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
@@ -3126,6 +3126,17 @@
             },
             {
               "kind": "field",
+              "name": "ghost",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Ghost style button",
+              "attribute": "ghost",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "string"
@@ -3280,6 +3291,15 @@
               "default": "false",
               "description": "Determines if only the button outline is to be shown",
               "fieldName": "outlineOnly"
+            },
+            {
+              "name": "ghost",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Ghost style button",
+              "fieldName": "ghost"
             },
             {
               "name": "value",
@@ -3570,7 +3590,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-info-card-skeleton` Web Component.\nA skeleton loading state for the informational card component that mirrors its structure.",
+          "description": "`kyn-info-card-skeleton` Web Component.\r\nA skeleton loading state for the informational card component that mirrors its structure.",
           "name": "InformationalCardSkeleton",
           "members": [
             {
@@ -3647,7 +3667,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-vital-card-skeleton` Web Component.\nA skeleton loading state for the vital card component that mirrors its structure.",
+          "description": "`kyn-vital-card-skeleton` Web Component.\r\nA skeleton loading state for the vital card component that mirrors its structure.",
           "name": "VitalCardSkeleton",
           "members": [
             {
@@ -3741,7 +3761,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determines whether the label should be hidden from visual view but remain accessible\nto screen readers for accessibility purposes.",
+              "description": "Determines whether the label should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes.",
               "attribute": "visiblyHidden"
             },
             {
@@ -3799,7 +3819,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determines whether the label should be hidden from visual view but remain accessible\nto screen readers for accessibility purposes.",
+              "description": "Determines whether the label should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes.",
               "fieldName": "visiblyHidden"
             },
             {
@@ -3955,7 +3975,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  selectAll: 'Select all',\n  showMore: 'Show more',\n  showLess: 'Show less',\n  search: 'Search',\n  required: 'Required',\n  error: 'Error',\n}",
+              "default": "{\r\n  selectAll: 'Select all',\r\n  showMore: 'Show more',\r\n  showLess: 'Show less',\r\n  search: 'Search',\r\n  required: 'Required',\r\n  error: 'Error',\r\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
@@ -4312,6 +4332,664 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`",
+          "name": "DateRangePicker",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale"
+              },
+              "default": "'en'",
+              "description": "Sets and dynamically imports specific l10n calendar localization.",
+              "attribute": "locale"
+            },
+            {
+              "kind": "field",
+              "name": "dateFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Y-m-d'",
+              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
+              "attribute": "dateFormat"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDate",
+              "type": {
+                "text": "string | string[] | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. [\"2024-01-01\", \"2024-01-07\"]).",
+              "attribute": "defaultDate"
+            },
+            {
+              "kind": "field",
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "attribute": "defaultErrorMessage"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "[Date | null, Date | null]"
+              },
+              "default": "[null, null]",
+              "description": "Sets date/time range value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "attribute": "warnText"
+            },
+            {
+              "kind": "field",
+              "name": "disable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to disable specific dates.",
+              "attribute": "disable"
+            },
+            {
+              "kind": "field",
+              "name": "enable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to enable specific dates.",
+              "attribute": "enable"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets date range picker form input value to required/required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "dateRangePickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to enabled/disabled.",
+              "attribute": "dateRangePickerDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean | null"
+              },
+              "default": "null",
+              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
+              "attribute": "twentyFourHourFormat"
+            },
+            {
+              "kind": "field",
+              "name": "minDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of date range picker date selection.",
+              "attribute": "minDate"
+            },
+            {
+              "kind": "field",
+              "name": "maxDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of date range picker date selection.",
+              "attribute": "maxDate"
+            },
+            {
+              "kind": "field",
+              "name": "errorAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "attribute": "errorAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "attribute": "errorTitle"
+            },
+            {
+              "kind": "field",
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "attribute": "warningAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "attribute": "warningTitle"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  requiredText: 'Required',\r\n  clearAll: 'Clear',\r\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "renderValidationMessage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "errorId",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "warningId",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClear",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getDateRangePickerClasses"
+            },
+            {
+              "kind": "method",
+              "name": "reinitializeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "setupAnchor",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "initializeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getComponentFlatpickrOptions",
+              "return": {
+                "type": {
+                  "text": "Promise<Partial<BaseOptions>>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updateFlatpickrOptions"
+            },
+            {
+              "kind": "method",
+              "name": "setInitialDates",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleOpen",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleDateChange",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleClose"
+            },
+            {
+              "kind": "method",
+              "name": "updateSelectedDateRangeAria",
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setShouldFlatpickrOpen",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "closeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "preventFlatpickrOpen",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleInputClickEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleInputFocusEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_onChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFormReset",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale"
+              },
+              "default": "'en'",
+              "description": "Sets and dynamically imports specific l10n calendar localization.",
+              "fieldName": "locale"
+            },
+            {
+              "name": "dateFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Y-m-d'",
+              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
+              "fieldName": "dateFormat"
+            },
+            {
+              "name": "defaultDate",
+              "type": {
+                "text": "string | string[] | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. [\"2024-01-01\", \"2024-01-07\"]).",
+              "fieldName": "defaultDate"
+            },
+            {
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "fieldName": "defaultErrorMessage"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "[Date | null, Date | null]"
+              },
+              "default": "[null, null]",
+              "description": "Sets date/time range value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "disable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to disable specific dates.",
+              "fieldName": "disable"
+            },
+            {
+              "name": "enable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to enable specific dates.",
+              "fieldName": "enable"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets date range picker form input value to required/required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "dateRangePickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to enabled/disabled.",
+              "fieldName": "dateRangePickerDisabled"
+            },
+            {
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean | null"
+              },
+              "default": "null",
+              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
+              "fieldName": "twentyFourHourFormat"
+            },
+            {
+              "name": "minDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of date range picker date selection.",
+              "fieldName": "minDate"
+            },
+            {
+              "name": "maxDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of date range picker date selection.",
+              "fieldName": "maxDate"
+            },
+            {
+              "name": "errorAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "fieldName": "errorAriaLabel"
+            },
+            {
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "fieldName": "errorTitle"
+            },
+            {
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "fieldName": "warningAriaLabel"
+            },
+            {
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "fieldName": "warningTitle"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-date-range-picker",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-date-range-picker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "./daterangepicker"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/datePicker/datepicker.ts",
       "declarations": [
         {
@@ -4358,10 +5036,10 @@
               "kind": "field",
               "name": "defaultDate",
               "type": {
-                "text": "Date | null"
+                "text": "string | string[] | null"
               },
               "default": "null",
-              "description": "Sets the initial selected date(s)",
+              "description": "Sets the initial selected date(s). For multiple mode, provide an array of date strings matching dateFormat.",
               "attribute": "defaultDate"
             },
             {
@@ -4471,7 +5149,7 @@
                 "text": "boolean | null"
               },
               "default": "null",
-              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
+              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
               "attribute": "twentyFourHourFormat"
             },
             {
@@ -4537,7 +5215,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n}",
+              "default": "{\r\n  requiredText: 'Required',\r\n  clearAll: 'Clear',\r\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -4804,10 +5482,10 @@
             {
               "name": "defaultDate",
               "type": {
-                "text": "Date | null"
+                "text": "string | string[] | null"
               },
               "default": "null",
-              "description": "Sets the initial selected date(s)",
+              "description": "Sets the initial selected date(s). For multiple mode, provide an array of date strings matching dateFormat.",
               "fieldName": "defaultDate"
             },
             {
@@ -4906,7 +5584,7 @@
                 "text": "boolean | null"
               },
               "default": "null",
-              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
+              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
               "fieldName": "twentyFourHourFormat"
             },
             {
@@ -5020,658 +5698,87 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
+      "path": "src/components/reusable/errorBlock/errorBlock.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`",
-          "name": "DateRangePicker",
+          "description": "Error block.",
+          "name": "ErrorBlock",
           "slots": [
             {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
+              "description": "Slot for the error description.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the error image.",
+              "name": "image"
+            },
+            {
+              "description": "Slot for the action buttons.",
+              "name": "actions"
             }
           ],
           "members": [
             {
               "kind": "field",
-              "name": "label",
+              "name": "titleText",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "locale",
-              "type": {
-                "text": "SupportedLocale"
-              },
-              "default": "'en'",
-              "description": "Sets and dynamically imports specific l10n calendar localization.",
-              "attribute": "locale"
-            },
-            {
-              "kind": "field",
-              "name": "dateFormat",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Y-m-d'",
-              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
-              "attribute": "dateFormat"
-            },
-            {
-              "kind": "field",
-              "name": "defaultDate",
-              "type": {
-                "text": "Date | null"
-              },
-              "default": "null",
-              "description": "Sets the initial selected date(s)",
-              "attribute": "defaultDate"
-            },
-            {
-              "kind": "field",
-              "name": "defaultErrorMessage",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets default error message.",
-              "attribute": "defaultErrorMessage"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "[Date | null, Date | null]"
-              },
-              "default": "[null, null]",
-              "description": "Sets date/time range value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation warning messaging.",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "disable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to disable specific dates.",
-              "attribute": "disable"
-            },
-            {
-              "kind": "field",
-              "name": "enable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to enable specific dates.",
-              "attribute": "enable"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets date range picker form input value to required/required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "dateRangePickerDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire date range picker form element to enabled/disabled.",
-              "attribute": "dateRangePickerDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "twentyFourHourFormat",
-              "type": {
-                "text": "boolean | null"
-              },
-              "default": "null",
-              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
-              "attribute": "twentyFourHourFormat"
-            },
-            {
-              "kind": "field",
-              "name": "minDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets lower boundary of date range picker date selection.",
-              "attribute": "minDate"
-            },
-            {
-              "kind": "field",
-              "name": "maxDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets upper boundary of date range picker date selection.",
-              "attribute": "maxDate"
-            },
-            {
-              "kind": "field",
-              "name": "errorAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for error message.",
-              "attribute": "errorAriaLabel"
-            },
-            {
-              "kind": "field",
-              "name": "errorTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for error message.",
-              "attribute": "errorTitle"
-            },
-            {
-              "kind": "field",
-              "name": "warningAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for warning message.",
-              "attribute": "warningAriaLabel"
-            },
-            {
-              "kind": "field",
-              "name": "warningTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for warning message.",
-              "attribute": "warningTitle"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "renderValidationMessage",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "errorId",
-                  "type": {
-                    "text": "string"
-                  }
-                },
-                {
-                  "name": "warningId",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClear",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getDateRangePickerClasses"
-            },
-            {
-              "kind": "method",
-              "name": "reinitializeFlatpickr",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "setupAnchor",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "initializeFlatpickr",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getComponentFlatpickrOptions",
-              "return": {
-                "type": {
-                  "text": "Promise<Partial<BaseOptions>>"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "updateFlatpickrOptions"
-            },
-            {
-              "kind": "method",
-              "name": "setInitialDates",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "handleOpen",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "handleDateChange",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "selectedDates",
-                  "type": {
-                    "text": "Date[]"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleClose"
-            },
-            {
-              "kind": "method",
-              "name": "updateSelectedDateRangeAria",
-              "parameters": [
-                {
-                  "name": "selectedDates",
-                  "type": {
-                    "text": "Date[]"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "setShouldFlatpickrOpen",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "closeFlatpickr",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "preventFlatpickrOpen",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleInputClickEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleInputFocusEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_onChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFormReset",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-change"
+              "description": "Title text",
+              "attribute": "titleText"
             }
           ],
           "attributes": [
             {
-              "name": "label",
+              "name": "titleText",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "locale",
-              "type": {
-                "text": "SupportedLocale"
-              },
-              "default": "'en'",
-              "description": "Sets and dynamically imports specific l10n calendar localization.",
-              "fieldName": "locale"
-            },
-            {
-              "name": "dateFormat",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Y-m-d'",
-              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
-              "fieldName": "dateFormat"
-            },
-            {
-              "name": "defaultDate",
-              "type": {
-                "text": "Date | null"
-              },
-              "default": "null",
-              "description": "Sets the initial selected date(s)",
-              "fieldName": "defaultDate"
-            },
-            {
-              "name": "defaultErrorMessage",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets default error message.",
-              "fieldName": "defaultErrorMessage"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "[Date | null, Date | null]"
-              },
-              "default": "[null, null]",
-              "description": "Sets date/time range value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation warning messaging.",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "disable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to disable specific dates.",
-              "fieldName": "disable"
-            },
-            {
-              "name": "enable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to enable specific dates.",
-              "fieldName": "enable"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets date range picker form input value to required/required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "dateRangePickerDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire date range picker form element to enabled/disabled.",
-              "fieldName": "dateRangePickerDisabled"
-            },
-            {
-              "name": "twentyFourHourFormat",
-              "type": {
-                "text": "boolean | null"
-              },
-              "default": "null",
-              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
-              "fieldName": "twentyFourHourFormat"
-            },
-            {
-              "name": "minDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets lower boundary of date range picker date selection.",
-              "fieldName": "minDate"
-            },
-            {
-              "name": "maxDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets upper boundary of date range picker date selection.",
-              "fieldName": "maxDate"
-            },
-            {
-              "name": "errorAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for error message.",
-              "fieldName": "errorAriaLabel"
-            },
-            {
-              "name": "errorTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for error message.",
-              "fieldName": "errorTitle"
-            },
-            {
-              "name": "warningAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for warning message.",
-              "fieldName": "warningAriaLabel"
-            },
-            {
-              "name": "warningTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for warning message.",
-              "fieldName": "warningTitle"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
+              "description": "Title text",
+              "fieldName": "titleText"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-date-range-picker",
+          "tagName": "kyn-error-block",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "DateRangePicker",
+          "name": "ErrorBlock",
           "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+            "name": "ErrorBlock",
+            "module": "src/components/reusable/errorBlock/errorBlock.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-date-range-picker",
+          "name": "kyn-error-block",
           "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+            "name": "ErrorBlock",
+            "module": "src/components/reusable/errorBlock/errorBlock.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/index.ts",
+      "path": "src/components/reusable/errorBlock/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "DateRangePicker",
+          "name": "ErrorBlock",
           "declaration": {
-            "name": "DateRangePicker",
-            "module": "./daterangepicker"
+            "name": "ErrorBlock",
+            "module": "./errorBlock"
           }
         }
       ]
@@ -5848,7 +5955,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  selectedOptions: 'List of selected options',\n  required: 'Required',\n  error: 'Error',\n}",
+              "default": "{\r\n  selectedOptions: 'List of selected options',\r\n  required: 'Required',\r\n  error: 'Error',\r\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
@@ -6576,93 +6683,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/errorBlock/errorBlock.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Error block.",
-          "name": "ErrorBlock",
-          "slots": [
-            {
-              "description": "Slot for the error description.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the error image.",
-              "name": "image"
-            },
-            {
-              "description": "Slot for the action buttons.",
-              "name": "actions"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title text",
-              "attribute": "titleText"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title text",
-              "fieldName": "titleText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-error-block",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ErrorBlock",
-          "declaration": {
-            "name": "ErrorBlock",
-            "module": "src/components/reusable/errorBlock/errorBlock.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-error-block",
-          "declaration": {
-            "name": "ErrorBlock",
-            "module": "src/components/reusable/errorBlock/errorBlock.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/errorBlock/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ErrorBlock",
-          "declaration": {
-            "name": "ErrorBlock",
-            "module": "./errorBlock"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/floatingContainer/floatingContainer.ts",
       "declarations": [
         {
@@ -6993,7 +7013,7 @@
             {
               "kind": "field",
               "name": "shade",
-              "description": "Determines the shade of the link. By default `auto`.\nSet this prop to `dark` manually when the link needs to have a better contrast for visibility on light backgroud, irrespective of the theme.\n**NOTE**: Applicable only for **primary** link.",
+              "description": "Determines the shade of the link. By default `auto`.\r\nSet this prop to `dark` manually when the link needs to have a better contrast for visibility on light backgroud, irrespective of the theme.\r\n**NOTE**: Applicable only for **primary** link.",
               "attribute": "shade"
             },
             {
@@ -7085,7 +7105,7 @@
             },
             {
               "name": "shade",
-              "description": "Determines the shade of the link. By default `auto`.\nSet this prop to `dark` manually when the link needs to have a better contrast for visibility on light backgroud, irrespective of the theme.\n**NOTE**: Applicable only for **primary** link.",
+              "description": "Determines the shade of the link. By default `auto`.\r\nSet this prop to `dark` manually when the link needs to have a better contrast for visibility on light backgroud, irrespective of the theme.\r\n**NOTE**: Applicable only for **primary** link.",
               "fieldName": "shade"
             }
           ],
@@ -7954,7 +7974,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Timestamp of notification.\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
+              "description": "Timestamp of notification.\r\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
               "attribute": "timeStamp"
             },
             {
@@ -7993,7 +8013,7 @@
               "type": {
                 "text": "any"
               },
-              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Info',\n    error: 'Error',\n  }",
+              "default": "{\r\n    success: 'Success',\r\n    warning: 'Warning',\r\n    info: 'Info',\r\n    error: 'Error',\r\n  }",
               "description": "Customizable text strings.",
               "attribute": "textStrings"
             },
@@ -8014,7 +8034,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Assistive text for notification type.\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
+              "description": "Assistive text for notification type.\r\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
               "attribute": "assistiveNotificationTypeText"
             },
             {
@@ -8033,7 +8053,7 @@
                 "text": "string"
               },
               "default": "'Status'",
-              "description": "Status label (Required to support accessibility).\nAssign the localized string value for the word **Status**.",
+              "description": "Status label (Required to support accessibility).\r\nAssign the localized string value for the word **Status**.",
               "attribute": "statusLabel"
             },
             {
@@ -8131,7 +8151,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Timestamp of notification.\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
+              "description": "Timestamp of notification.\r\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
               "fieldName": "timeStamp"
             },
             {
@@ -8166,7 +8186,7 @@
               "type": {
                 "text": "any"
               },
-              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Info',\n    error: 'Error',\n  }",
+              "default": "{\r\n    success: 'Success',\r\n    warning: 'Warning',\r\n    info: 'Info',\r\n    error: 'Error',\r\n  }",
               "description": "Customizable text strings.",
               "fieldName": "textStrings"
             },
@@ -8185,7 +8205,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Assistive text for notification type.\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
+              "description": "Assistive text for notification type.\r\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
               "fieldName": "assistiveNotificationTypeText"
             },
             {
@@ -8202,7 +8222,7 @@
                 "text": "string"
               },
               "default": "'Status'",
-              "description": "Status label (Required to support accessibility).\nAssign the localized string value for the word **Status**.",
+              "description": "Status label (Required to support accessibility).\r\nAssign the localized string value for the word **Status**.",
               "fieldName": "statusLabel"
             },
             {
@@ -8266,7 +8286,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Notification container component for Toast notification.\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
+          "description": "Notification container component for Toast notification.\r\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
           "name": "NotificationContainer",
           "slots": [
             {
@@ -8443,7 +8463,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  subtract: 'Subtract',\n  add: 'Add',\n  error: 'Error',\n}",
+              "default": "{\r\n  requiredText: 'Required',\r\n  subtract: 'Subtract',\r\n  add: 'Add',\r\n  error: 'Error',\r\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -9196,262 +9216,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/pagination/Pagination.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-pagination` Web Component.\n\nA component that provides pagination functionality, enabling the user to\nnavigate through large datasets by splitting them into discrete chunks.\nIntegrates with other utility components like items range display, page size dropdown,\nand navigation buttons.",
-          "name": "Pagination",
-          "members": [
-            {
-              "kind": "field",
-              "name": "count",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Total number of items that need pagination.",
-              "attribute": "count",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "pageNumber",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Current active page number.",
-              "attribute": "pageNumber",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "pageSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Number of items displayed per page.",
-              "attribute": "pageSize",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "pageSizeOptions",
-              "type": {
-                "text": "number[]"
-              },
-              "default": "[5, 10, 20, 30, 40, 50, 100]",
-              "description": "Available options for the page size.",
-              "attribute": "pageSizeOptions"
-            },
-            {
-              "kind": "field",
-              "name": "_numberOfPages",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Number of pages."
-            },
-            {
-              "kind": "field",
-              "name": "pageSizeDropdownLabel",
-              "default": "PAGE_SIZE_LABEL",
-              "description": "Label for the page size dropdown. Required for accessibility.",
-              "attribute": "pageSizeDropdownLabel"
-            },
-            {
-              "kind": "field",
-              "name": "hideItemsRange",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the items range display.",
-              "attribute": "hideItemsRange"
-            },
-            {
-              "kind": "field",
-              "name": "hidePageSizeDropdown",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the page size dropdown.",
-              "attribute": "hidePageSizeDropdown"
-            },
-            {
-              "kind": "field",
-              "name": "hideNavigationButtons",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the navigation buttons.",
-              "attribute": "hideNavigationButtons"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showing: 'Showing',\n    of: 'of',\n    items: 'items',\n    pages: 'pages',\n    itemsPerPage: 'Items per page:',\n    previousPage: 'Previous page',\n    nextPage: 'Next page',\n  }",
-              "description": "Customizable text strings",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "method",
-              "name": "handlePageSizeChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  },
-                  "description": "The emitted custom event with the selected page size."
-                }
-              ],
-              "description": "Handler for the event when the page size is changed by the user.\nUpdates the `pageSize` and resets the `pageNumber` to 1."
-            },
-            {
-              "kind": "method",
-              "name": "handlePageNumberChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  },
-                  "description": "The emitted custom event with the selected page number."
-                }
-              ],
-              "description": "Handler for the event when the page number is changed by the user.\nUpdates the `pageNumber`."
-            }
-          ],
-          "events": [
-            {
-              "description": "Dispatched when the page size changes.",
-              "name": "on-page-size-change"
-            },
-            {
-              "description": "Dispatched when the currently active page changes.",
-              "name": "on-page-number-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "count",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Total number of items that need pagination.",
-              "fieldName": "count"
-            },
-            {
-              "name": "pageNumber",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Current active page number.",
-              "fieldName": "pageNumber"
-            },
-            {
-              "name": "pageSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Number of items displayed per page.",
-              "fieldName": "pageSize"
-            },
-            {
-              "name": "pageSizeOptions",
-              "type": {
-                "text": "number[]"
-              },
-              "default": "[5, 10, 20, 30, 40, 50, 100]",
-              "description": "Available options for the page size.",
-              "fieldName": "pageSizeOptions"
-            },
-            {
-              "name": "pageSizeDropdownLabel",
-              "default": "PAGE_SIZE_LABEL",
-              "description": "Label for the page size dropdown. Required for accessibility.",
-              "fieldName": "pageSizeDropdownLabel"
-            },
-            {
-              "name": "hideItemsRange",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the items range display.",
-              "fieldName": "hideItemsRange"
-            },
-            {
-              "name": "hidePageSizeDropdown",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the page size dropdown.",
-              "fieldName": "hidePageSizeDropdown"
-            },
-            {
-              "name": "hideNavigationButtons",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the navigation buttons.",
-              "fieldName": "hideNavigationButtons"
-            },
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showing: 'Showing',\n    of: 'of',\n    items: 'items',\n    pages: 'pages',\n    itemsPerPage: 'Items per page:',\n    previousPage: 'Previous page',\n    nextPage: 'Next page',\n  }",
-              "description": "Customizable text strings",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-pagination",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Pagination",
-          "declaration": {
-            "name": "Pagination",
-            "module": "src/components/reusable/pagination/Pagination.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-pagination",
-          "declaration": {
-            "name": "Pagination",
-            "module": "src/components/reusable/pagination/Pagination.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/pagination/index.ts",
       "declarations": [],
       "exports": [
@@ -9503,7 +9267,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-pagination-items-range` Web Component.\n\nThis component is responsible for displaying the range of items being displayed\nin the context of pagination. It shows which items (by number) are currently visible\nand the total number of items.",
+          "description": "`kyn-pagination-items-range` Web Component.\r\n\r\nThis component is responsible for displaying the range of items being displayed\r\nin the context of pagination. It shows which items (by number) are currently visible\r\nand the total number of items.",
           "name": "PaginationItemsRange",
           "members": [
             {
@@ -9620,7 +9384,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-pagination-navigation-buttons` Web Component.\n\nThis component provides navigational controls for pagination.\nIt includes back and next buttons, along with displaying the current page and total pages.",
+          "description": "`kyn-pagination-navigation-buttons` Web Component.\r\n\r\nThis component provides navigational controls for pagination.\r\nIt includes back and next buttons, along with displaying the current page and total pages.",
           "name": "PaginationNavigationButtons",
           "members": [
             {
@@ -9729,7 +9493,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-pagination-page-size-dropdown` Web Component.\n\nThis component provides a dropdown to select the page size for pagination.\nIt emits events when the selected page size changes.",
+          "description": "`kyn-pagination-page-size-dropdown` Web Component.\r\n\r\nThis component provides a dropdown to select the page size for pagination.\r\nIt emits events when the selected page size changes.",
           "name": "PaginationPageSizeDropdown",
           "members": [
             {
@@ -9917,6 +9681,262 @@
           "declaration": {
             "name": "PaginationSkeleton",
             "module": "src/components/reusable/pagination/pagination.skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagination/Pagination.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-pagination` Web Component.\r\n\r\nA component that provides pagination functionality, enabling the user to\r\nnavigate through large datasets by splitting them into discrete chunks.\r\nIntegrates with other utility components like items range display, page size dropdown,\r\nand navigation buttons.",
+          "name": "Pagination",
+          "members": [
+            {
+              "kind": "field",
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total number of items that need pagination.",
+              "attribute": "count",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Current active page number.",
+              "attribute": "pageNumber",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Number of items displayed per page.",
+              "attribute": "pageSize",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageSizeOptions",
+              "type": {
+                "text": "number[]"
+              },
+              "default": "[5, 10, 20, 30, 40, 50, 100]",
+              "description": "Available options for the page size.",
+              "attribute": "pageSizeOptions"
+            },
+            {
+              "kind": "field",
+              "name": "_numberOfPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Number of pages."
+            },
+            {
+              "kind": "field",
+              "name": "pageSizeDropdownLabel",
+              "default": "PAGE_SIZE_LABEL",
+              "description": "Label for the page size dropdown. Required for accessibility.",
+              "attribute": "pageSizeDropdownLabel"
+            },
+            {
+              "kind": "field",
+              "name": "hideItemsRange",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the items range display.",
+              "attribute": "hideItemsRange"
+            },
+            {
+              "kind": "field",
+              "name": "hidePageSizeDropdown",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the page size dropdown.",
+              "attribute": "hidePageSizeDropdown"
+            },
+            {
+              "kind": "field",
+              "name": "hideNavigationButtons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the navigation buttons.",
+              "attribute": "hideNavigationButtons"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\r\n    showing: 'Showing',\r\n    of: 'of',\r\n    items: 'items',\r\n    pages: 'pages',\r\n    itemsPerPage: 'Items per page:',\r\n    previousPage: 'Previous page',\r\n    nextPage: 'Next page',\r\n  }",
+              "description": "Customizable text strings",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "method",
+              "name": "handlePageSizeChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  },
+                  "description": "The emitted custom event with the selected page size."
+                }
+              ],
+              "description": "Handler for the event when the page size is changed by the user.\r\nUpdates the `pageSize` and resets the `pageNumber` to 1."
+            },
+            {
+              "kind": "method",
+              "name": "handlePageNumberChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  },
+                  "description": "The emitted custom event with the selected page number."
+                }
+              ],
+              "description": "Handler for the event when the page number is changed by the user.\r\nUpdates the `pageNumber`."
+            }
+          ],
+          "events": [
+            {
+              "description": "Dispatched when the page size changes.",
+              "name": "on-page-size-change"
+            },
+            {
+              "description": "Dispatched when the currently active page changes.",
+              "name": "on-page-number-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total number of items that need pagination.",
+              "fieldName": "count"
+            },
+            {
+              "name": "pageNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Current active page number.",
+              "fieldName": "pageNumber"
+            },
+            {
+              "name": "pageSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Number of items displayed per page.",
+              "fieldName": "pageSize"
+            },
+            {
+              "name": "pageSizeOptions",
+              "type": {
+                "text": "number[]"
+              },
+              "default": "[5, 10, 20, 30, 40, 50, 100]",
+              "description": "Available options for the page size.",
+              "fieldName": "pageSizeOptions"
+            },
+            {
+              "name": "pageSizeDropdownLabel",
+              "default": "PAGE_SIZE_LABEL",
+              "description": "Label for the page size dropdown. Required for accessibility.",
+              "fieldName": "pageSizeDropdownLabel"
+            },
+            {
+              "name": "hideItemsRange",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the items range display.",
+              "fieldName": "hideItemsRange"
+            },
+            {
+              "name": "hidePageSizeDropdown",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the page size dropdown.",
+              "fieldName": "hidePageSizeDropdown"
+            },
+            {
+              "name": "hideNavigationButtons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the navigation buttons.",
+              "fieldName": "hideNavigationButtons"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\r\n    showing: 'Showing',\r\n    of: 'of',\r\n    items: 'items',\r\n    pages: 'pages',\r\n    itemsPerPage: 'Items per page:',\r\n    previousPage: 'Previous page',\r\n    nextPage: 'Next page',\r\n  }",
+              "description": "Customizable text strings",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-pagination",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Pagination",
+          "declaration": {
+            "name": "Pagination",
+            "module": "src/components/reusable/pagination/Pagination.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-pagination",
+          "declaration": {
+            "name": "Pagination",
+            "module": "src/components/reusable/pagination/Pagination.ts"
           }
         }
       ]
@@ -10465,7 +10485,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  required: 'Required',\n  error: 'Error',\n}",
+              "default": "{\r\n  required: 'Required',\r\n  error: 'Error',\r\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
@@ -10705,7 +10725,7 @@
             {
               "kind": "field",
               "name": "assistiveTextStrings",
-              "default": "{\n  searchSuggestions: 'Search suggestions.',\n  noMatches: 'No matches found for',\n  selected: 'Selected',\n  found: 'Found',\n}",
+              "default": "{\r\n  searchSuggestions: 'Search suggestions.',\r\n  noMatches: 'No matches found for',\r\n  selected: 'Selected',\r\n  found: 'Found',\r\n}",
               "description": "Assistive text strings.",
               "attribute": "assistiveTextStrings",
               "type": {
@@ -11940,7 +11960,7 @@
                 "text": "string"
               },
               "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
+              "description": "Stepper type `'procedure'` & `'status'`.\r\n\r\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\r\n\r\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\r\n\r\nNote: Read the stepper guidelines for more info.",
               "attribute": "stepperType"
             },
             {
@@ -12015,7 +12035,7 @@
                 "text": "string"
               },
               "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
+              "description": "Stepper type `'procedure'` & `'status'`.\r\n\r\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\r\n\r\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\r\n\r\nNote: Read the stepper guidelines for more info.",
               "fieldName": "stepperType"
             },
             {
@@ -12153,7 +12173,7 @@
                 "text": "string"
               },
               "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\r\n\r\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
               "attribute": "stepState"
             },
             {
@@ -12273,7 +12293,7 @@
                 "text": "string"
               },
               "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\r\n\r\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
               "fieldName": "stepState"
             },
             {
@@ -12611,7 +12631,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-tbody` Web Component.\n\nRepresents the body section of Shidoka's design system tables. Designed to provide\na consistent look and feel, and can offer striped rows for enhanced readability.",
+          "description": "`kyn-tbody` Web Component.\r\n\r\nRepresents the body section of Shidoka's design system tables. Designed to provide\r\na consistent look and feel, and can offer striped rows for enhanced readability.",
           "name": "TableBody",
           "slots": [
             {
@@ -12699,7 +12719,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-td` Web Component.\n\nRepresents a table cell (data cell) within Shidoka's design system tables.\nAllows customization of alignment and can reflect the sort direction when\nused within sortable columns.",
+          "description": "`kyn-td` Web Component.\r\n\r\nRepresents a table cell (data cell) within Shidoka's design system tables.\r\nAllows customization of alignment and can reflect the sort direction when\r\nused within sortable columns.",
           "name": "TableCell",
           "slots": [
             {
@@ -12735,7 +12755,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a fixed width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a fixed width for the cell.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "width",
               "reflects": true
             },
@@ -12746,7 +12766,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "maxWidth",
               "reflects": true
             },
@@ -12757,7 +12777,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a minimum width for the cell;\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "minWidth",
               "reflects": true
             },
@@ -12821,7 +12841,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a fixed width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a fixed width for the cell.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "width"
             },
             {
@@ -12830,7 +12850,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "maxWidth"
             },
             {
@@ -12839,7 +12859,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a minimum width for the cell;\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "minWidth"
             },
             {
@@ -12894,7 +12914,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-table-container` Web Component.\n\nProvides a container for Shidoka's design system tables. It's designed to encapsulate\nand apply styles uniformly across the table elements.",
+          "description": "`kyn-table-container` Web Component.\r\n\r\nProvides a container for Shidoka's design system tables. It's designed to encapsulate\r\nand apply styles uniformly across the table elements.",
           "name": "TableContainer",
           "slots": [
             {
@@ -12977,7 +12997,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "\n`kyn-expanded-tr` Web Component.\n\nDesigned to display additional details for a row in a table.\nThe row is expandable and can be expanded/collapsed by toggling the plus/minus icons.",
+          "description": "\r\n`kyn-expanded-tr` Web Component.\r\n\r\nDesigned to display additional details for a row in a table.\r\nThe row is expandable and can be expanded/collapsed by toggling the plus/minus icons.",
           "name": "TableExpandedRow",
           "slots": [
             {
@@ -12993,7 +13013,7 @@
                 "text": "number"
               },
               "default": "1",
-              "description": "The number of columns that the expanded row should span.\nReflects the `colspan` attribute.",
+              "description": "The number of columns that the expanded row should span.\r\nReflects the `colspan` attribute.",
               "attribute": "colspan"
             },
             {
@@ -13015,7 +13035,7 @@
                 "text": "number"
               },
               "default": "1",
-              "description": "The number of columns that the expanded row should span.\nReflects the `colspan` attribute.",
+              "description": "The number of columns that the expanded row should span.\r\nReflects the `colspan` attribute.",
               "fieldName": "colSpan"
             },
             {
@@ -13061,7 +13081,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-tfoot` Web Component.\n\nRepresents a custom table foot (`<tfoot>`) for Shidoka's design system tables.\nDesigned to contain and style table footer rows (`<tr>`) and footer cells (`<td>`).",
+          "description": "`kyn-tfoot` Web Component.\r\n\r\nRepresents a custom table foot (`<tfoot>`) for Shidoka's design system tables.\r\nDesigned to contain and style table footer rows (`<tr>`) and footer cells (`<td>`).",
           "name": "TableFoot",
           "slots": [
             {
@@ -13103,7 +13123,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Table Footer\n\nIntended to contain Legend and Pagination.",
+          "description": "Table Footer\r\n\r\nIntended to contain Legend and Pagination.",
           "name": "TableFooter",
           "slots": [
             {
@@ -13145,7 +13165,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-thead` Web Component.\n\nRepresents a custom table head (`<thead>`) for Shidoka's design system tables.\nDesigned to contain and style table header rows (`<tr>`) and header cells (`<th>`).",
+          "description": "`kyn-thead` Web Component.\r\n\r\nRepresents a custom table head (`<thead>`) for Shidoka's design system tables.\r\nDesigned to contain and style table header rows (`<tr>`) and header cells (`<th>`).",
           "name": "TableHead",
           "slots": [
             {
@@ -13235,7 +13255,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-header-tr` Web Component.\n\nThe `<kyn-header-tr>` component is designed to function as the\nheader row within a table that's part of Shidoka's design system.",
+          "description": "`kyn-header-tr` Web Component.\r\n\r\nThe `<kyn-header-tr>` component is designed to function as the\r\nheader row within a table that's part of Shidoka's design system.",
           "name": "TableHeaderRow",
           "members": [
             {
@@ -13288,7 +13308,7 @@
                   }
                 }
               ],
-              "description": "Updates the state of the header checkbox based on the number of\nselected rows."
+              "description": "Updates the state of the header checkbox based on the number of\r\nselected rows."
             },
             {
               "kind": "field",
@@ -13312,7 +13332,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "selected: Boolean indicating whether the row is selected.\nReflects the `selected` attribute.",
+              "description": "selected: Boolean indicating whether the row is selected.\r\nReflects the `selected` attribute.",
               "attribute": "selected",
               "reflects": true,
               "inheritedFrom": {
@@ -13327,7 +13347,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
+              "description": "checkboxSelection: Boolean indicating whether rows should be\r\nselectable using checkboxes.",
               "attribute": "checkboxSelection",
               "reflects": true,
               "inheritedFrom": {
@@ -13342,7 +13362,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
+              "description": "dense: Boolean indicating whether the table should be displayed\r\nin dense mode.",
               "attribute": "dense",
               "inheritedFrom": {
                 "name": "TableRow",
@@ -13370,7 +13390,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "locked: Boolean indicating whether the row is locked.\nIf a row is selected before it is locked, it remains selected even after being locked.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "locked: Boolean indicating whether the row is locked.\r\nIf a row is selected before it is locked, it remains selected even after being locked.\r\nA row can be selected and disabled/locked simultaneously.",
               "attribute": "locked",
               "reflects": true,
               "inheritedFrom": {
@@ -13415,7 +13435,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "disabled: Boolean indicating whether the row is disabled.\nA disabled row is not allowed to have any user interactions.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "disabled: Boolean indicating whether the row is disabled.\r\nA disabled row is not allowed to have any user interactions.\r\nA row can be selected and disabled/locked simultaneously.",
               "attribute": "disabled",
               "reflects": true,
               "inheritedFrom": {
@@ -13445,7 +13465,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dimmed: Boolean indicating whether the row is dimmed.\nA row should not be selected and dimmed simultaneously.",
+              "description": "dimmed: Boolean indicating whether the row is dimmed.\r\nA row should not be selected and dimmed simultaneously.",
               "attribute": "dimmed",
               "reflects": true,
               "inheritedFrom": {
@@ -13456,7 +13476,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  expanded: 'Expanded',\n  collapsed: 'Collapsed',\n}",
+              "default": "{\r\n  expanded: 'Expanded',\r\n  collapsed: 'Collapsed',\r\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
@@ -13602,7 +13622,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "selected: Boolean indicating whether the row is selected.\nReflects the `selected` attribute.",
+              "description": "selected: Boolean indicating whether the row is selected.\r\nReflects the `selected` attribute.",
               "fieldName": "selected",
               "inheritedFrom": {
                 "name": "TableRow",
@@ -13615,7 +13635,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
+              "description": "checkboxSelection: Boolean indicating whether rows should be\r\nselectable using checkboxes.",
               "fieldName": "checkboxSelection",
               "inheritedFrom": {
                 "name": "TableRow",
@@ -13628,7 +13648,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
+              "description": "dense: Boolean indicating whether the table should be displayed\r\nin dense mode.",
               "fieldName": "dense",
               "inheritedFrom": {
                 "name": "TableRow",
@@ -13654,7 +13674,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "locked: Boolean indicating whether the row is locked.\nIf a row is selected before it is locked, it remains selected even after being locked.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "locked: Boolean indicating whether the row is locked.\r\nIf a row is selected before it is locked, it remains selected even after being locked.\r\nA row can be selected and disabled/locked simultaneously.",
               "fieldName": "locked",
               "inheritedFrom": {
                 "name": "TableRow",
@@ -13693,7 +13713,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "disabled: Boolean indicating whether the row is disabled.\nA disabled row is not allowed to have any user interactions.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "disabled: Boolean indicating whether the row is disabled.\r\nA disabled row is not allowed to have any user interactions.\r\nA row can be selected and disabled/locked simultaneously.",
               "fieldName": "disabled",
               "inheritedFrom": {
                 "name": "TableRow",
@@ -13719,7 +13739,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dimmed: Boolean indicating whether the row is dimmed.\nA row should not be selected and dimmed simultaneously.",
+              "description": "dimmed: Boolean indicating whether the row is dimmed.\r\nA row should not be selected and dimmed simultaneously.",
               "fieldName": "dimmed",
               "inheritedFrom": {
                 "name": "TableRow",
@@ -13780,7 +13800,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-th` Web Component.\n\nRepresents a custom table header cell (`<th>`) for Shidoka's design system tables.\nProvides sorting functionality when enabled and allows alignment customization.",
+          "description": "`kyn-th` Web Component.\r\n\r\nRepresents a custom table header cell (`<th>`) for Shidoka's design system tables.\r\nProvides sorting functionality when enabled and allows alignment customization.",
           "name": "TableHeader",
           "slots": [
             {
@@ -13820,7 +13840,7 @@
               "type": {
                 "text": "TABLE_CELL_ALIGN"
               },
-              "description": "Specifies the alignment of the content within the table header.\nOptions: 'left', 'center', 'right'",
+              "description": "Specifies the alignment of the content within the table header.\r\nOptions: 'left', 'center', 'right'",
               "attribute": "align",
               "reflects": true
             },
@@ -13831,7 +13851,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Specifies if the column is sortable.\nIf set to true, an arrow icon will be displayed unpon hover,\nallowing the user to toggle sort directions.",
+              "description": "Specifies if the column is sortable.\r\nIf set to true, an arrow icon will be displayed unpon hover,\r\nallowing the user to toggle sort directions.",
               "attribute": "sortable",
               "reflects": true
             },
@@ -13852,7 +13872,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "The textual content associated with this component.\nRepresents the primary content or label that will be displayed.",
+              "description": "The textual content associated with this component.\r\nRepresents the primary content or label that will be displayed.",
               "attribute": "headerLabel"
             },
             {
@@ -13862,7 +13882,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "The unique identifier representing this column header.\nUsed to distinguish between different sortable columns and\nto ensure that only one column is sorted at a time.",
+              "description": "The unique identifier representing this column header.\r\nUsed to distinguish between different sortable columns and\r\nto ensure that only one column is sorted at a time.",
               "attribute": "sortKey"
             },
             {
@@ -13872,7 +13892,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determines whether the content should be hidden from visual view but remain accessible\nto screen readers for accessibility purposes. When set to `true`, the content\nwill not be visibly shown, but its content can still be read by screen readers.\nThis is especially useful for providing additional context or information to\nassistive technologies without cluttering the visual UI.",
+              "description": "Determines whether the content should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes. When set to `true`, the content\r\nwill not be visibly shown, but its content can still be read by screen readers.\r\nThis is especially useful for providing additional context or information to\r\nassistive technologies without cluttering the visual UI.",
               "attribute": "visiblyHidden"
             },
             {
@@ -13882,7 +13902,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a fixed width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a fixed width for the cell.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "width",
               "reflects": true
             },
@@ -13893,7 +13913,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "maxWidth",
               "reflects": true
             },
@@ -13904,20 +13924,20 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a minimum width for the cell;\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "minWidth",
               "reflects": true
             },
             {
               "kind": "method",
               "name": "resetSort",
-              "description": "Resets the sorting direction of the component to its default state.\nUseful for initializing or clearing any applied sorting on the element."
+              "description": "Resets the sorting direction of the component to its default state.\r\nUseful for initializing or clearing any applied sorting on the element."
             },
             {
               "kind": "method",
               "name": "toggleSortDirection",
               "privacy": "private",
-              "description": "Toggles the sort direction between ascending, descending, and default states.\nIt also dispatches an event to notify parent components of the sorting change."
+              "description": "Toggles the sort direction between ascending, descending, and default states.\r\nIt also dispatches an event to notify parent components of the sorting change."
             },
             {
               "kind": "method",
@@ -13948,7 +13968,7 @@
               "type": {
                 "text": "TABLE_CELL_ALIGN"
               },
-              "description": "Specifies the alignment of the content within the table header.\nOptions: 'left', 'center', 'right'",
+              "description": "Specifies the alignment of the content within the table header.\r\nOptions: 'left', 'center', 'right'",
               "fieldName": "align"
             },
             {
@@ -13957,7 +13977,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Specifies if the column is sortable.\nIf set to true, an arrow icon will be displayed unpon hover,\nallowing the user to toggle sort directions.",
+              "description": "Specifies if the column is sortable.\r\nIf set to true, an arrow icon will be displayed unpon hover,\r\nallowing the user to toggle sort directions.",
               "fieldName": "sortable"
             },
             {
@@ -13974,7 +13994,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "The textual content associated with this component.\nRepresents the primary content or label that will be displayed.",
+              "description": "The textual content associated with this component.\r\nRepresents the primary content or label that will be displayed.",
               "fieldName": "headerLabel"
             },
             {
@@ -13983,7 +14003,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "The unique identifier representing this column header.\nUsed to distinguish between different sortable columns and\nto ensure that only one column is sorted at a time.",
+              "description": "The unique identifier representing this column header.\r\nUsed to distinguish between different sortable columns and\r\nto ensure that only one column is sorted at a time.",
               "fieldName": "sortKey"
             },
             {
@@ -13992,7 +14012,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determines whether the content should be hidden from visual view but remain accessible\nto screen readers for accessibility purposes. When set to `true`, the content\nwill not be visibly shown, but its content can still be read by screen readers.\nThis is especially useful for providing additional context or information to\nassistive technologies without cluttering the visual UI.",
+              "description": "Determines whether the content should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes. When set to `true`, the content\r\nwill not be visibly shown, but its content can still be read by screen readers.\r\nThis is especially useful for providing additional context or information to\r\nassistive technologies without cluttering the visual UI.",
               "fieldName": "visiblyHidden"
             },
             {
@@ -14001,7 +14021,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a fixed width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a fixed width for the cell.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "width"
             },
             {
@@ -14010,7 +14030,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "maxWidth"
             },
             {
@@ -14019,7 +14039,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a minimum width for the cell;\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "minWidth"
             }
           ],
@@ -14140,7 +14160,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-tr` Web Component.\n\nRepresents a table row (`<tr>`) equivalent for custom tables created with Shidoka's design system.\nIt primarily acts as a container for individual table cells and behaves similarly to a native `<tr>` element.",
+          "description": "`kyn-tr` Web Component.\r\n\r\nRepresents a table row (`<tr>`) equivalent for custom tables created with Shidoka's design system.\r\nIt primarily acts as a container for individual table cells and behaves similarly to a native `<tr>` element.",
           "name": "TableRow",
           "slots": [
             {
@@ -14167,7 +14187,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "selected: Boolean indicating whether the row is selected.\nReflects the `selected` attribute.",
+              "description": "selected: Boolean indicating whether the row is selected.\r\nReflects the `selected` attribute.",
               "attribute": "selected",
               "reflects": true
             },
@@ -14178,7 +14198,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
+              "description": "checkboxSelection: Boolean indicating whether rows should be\r\nselectable using checkboxes.",
               "attribute": "checkboxSelection",
               "reflects": true
             },
@@ -14189,7 +14209,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
+              "description": "dense: Boolean indicating whether the table should be displayed\r\nin dense mode.",
               "attribute": "dense"
             },
             {
@@ -14209,7 +14229,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "locked: Boolean indicating whether the row is locked.\nIf a row is selected before it is locked, it remains selected even after being locked.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "locked: Boolean indicating whether the row is locked.\r\nIf a row is selected before it is locked, it remains selected even after being locked.\r\nA row can be selected and disabled/locked simultaneously.",
               "attribute": "locked",
               "reflects": true
             },
@@ -14242,7 +14262,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "disabled: Boolean indicating whether the row is disabled.\nA disabled row is not allowed to have any user interactions.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "disabled: Boolean indicating whether the row is disabled.\r\nA disabled row is not allowed to have any user interactions.\r\nA row can be selected and disabled/locked simultaneously.",
               "attribute": "disabled",
               "reflects": true
             },
@@ -14264,14 +14284,14 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dimmed: Boolean indicating whether the row is dimmed.\nA row should not be selected and dimmed simultaneously.",
+              "description": "dimmed: Boolean indicating whether the row is dimmed.\r\nA row should not be selected and dimmed simultaneously.",
               "attribute": "dimmed",
               "reflects": true
             },
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  expanded: 'Expanded',\n  collapsed: 'Collapsed',\n}",
+              "default": "{\r\n  expanded: 'Expanded',\r\n  collapsed: 'Collapsed',\r\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
@@ -14357,7 +14377,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "selected: Boolean indicating whether the row is selected.\nReflects the `selected` attribute.",
+              "description": "selected: Boolean indicating whether the row is selected.\r\nReflects the `selected` attribute.",
               "fieldName": "selected"
             },
             {
@@ -14366,7 +14386,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
+              "description": "checkboxSelection: Boolean indicating whether rows should be\r\nselectable using checkboxes.",
               "fieldName": "checkboxSelection"
             },
             {
@@ -14375,7 +14395,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
+              "description": "dense: Boolean indicating whether the table should be displayed\r\nin dense mode.",
               "fieldName": "dense"
             },
             {
@@ -14393,7 +14413,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "locked: Boolean indicating whether the row is locked.\nIf a row is selected before it is locked, it remains selected even after being locked.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "locked: Boolean indicating whether the row is locked.\r\nIf a row is selected before it is locked, it remains selected even after being locked.\r\nA row can be selected and disabled/locked simultaneously.",
               "fieldName": "locked"
             },
             {
@@ -14420,7 +14440,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "disabled: Boolean indicating whether the row is disabled.\nA disabled row is not allowed to have any user interactions.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "disabled: Boolean indicating whether the row is disabled.\r\nA disabled row is not allowed to have any user interactions.\r\nA row can be selected and disabled/locked simultaneously.",
               "fieldName": "disabled"
             },
             {
@@ -14438,7 +14458,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dimmed: Boolean indicating whether the row is dimmed.\nA row should not be selected and dimmed simultaneously.",
+              "description": "dimmed: Boolean indicating whether the row is dimmed.\r\nA row should not be selected and dimmed simultaneously.",
               "fieldName": "dimmed"
             },
             {
@@ -14481,7 +14501,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-table-toolbar` Web Component.\n\nThis component provides a toolbar for tables, primarily featuring a title and additional content.\nThe title is rendered prominently, while the slot can be used for controls, buttons, or other interactive elements.",
+          "description": "`kyn-table-toolbar` Web Component.\r\n\r\nThis component provides a toolbar for tables, primarily featuring a title and additional content.\r\nThe title is rendered prominently, while the slot can be used for controls, buttons, or other interactive elements.",
           "name": "TableToolbar",
           "slots": [
             {
@@ -14564,7 +14584,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-table-skeleton` Web Component.\nA skeleton loading state for the table component that mirrors its structure.",
+          "description": "`kyn-table-skeleton` Web Component.\r\nA skeleton loading state for the table component that mirrors its structure.",
           "name": "TableSkeleton",
           "members": [
             {
@@ -14787,7 +14807,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-table` Web Component.\nThis component provides a table with sorting, pagination, and selection capabilities.\nIt is designed to be used with the `kyn-table-toolbar` and `kyn-table-container` components.",
+          "description": "`kyn-table` Web Component.\r\nThis component provides a table with sorting, pagination, and selection capabilities.\r\nIt is designed to be used with the `kyn-table-toolbar` and `kyn-table-container` components.",
           "name": "Table",
           "members": [
             {
@@ -14796,7 +14816,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
+              "description": "checkboxSelection: Boolean indicating whether rows should be\r\nselectable using checkboxes.",
               "default": "false",
               "attribute": "checkboxSelection"
             },
@@ -14806,7 +14826,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "striped: Boolean indicating whether rows should have alternate\ncoloring.",
+              "description": "striped: Boolean indicating whether rows should have alternate\r\ncoloring.",
               "default": "false",
               "attribute": "striped"
             },
@@ -14816,7 +14836,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "stickyHeader: Boolean indicating whether the table header\nshould be sticky.",
+              "description": "stickyHeader: Boolean indicating whether the table header\r\nshould be sticky.",
               "default": "false",
               "attribute": "stickyHeader"
             },
@@ -14826,7 +14846,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
+              "description": "dense: Boolean indicating whether the table should be displayed\r\nin dense mode.",
               "default": "false",
               "attribute": "dense"
             },
@@ -14836,7 +14856,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "fixedLayout: Boolean indicating whether the table should have a fixed layout.\nThis will set the table's layout to fixed, which means the table and column widths\nwill be determined by the width of the columns and not by the content of the cells.\nThis can be useful when you want to have a consistent column width across multiple tables.",
+              "description": "fixedLayout: Boolean indicating whether the table should have a fixed layout.\r\nThis will set the table's layout to fixed, which means the table and column widths\r\nwill be determined by the width of the columns and not by the content of the cells.\r\nThis can be useful when you want to have a consistent column width across multiple tables.",
               "default": "false",
               "attribute": "fixedLayout"
             },
@@ -14844,7 +14864,7 @@
               "kind": "method",
               "name": "_updateHeaderCheckbox",
               "privacy": "private",
-              "description": "Updates the state of the header checkbox based on the number of\nselected rows."
+              "description": "Updates the state of the header checkbox based on the number of\r\nselected rows."
             },
             {
               "kind": "method",
@@ -14878,7 +14898,7 @@
               "kind": "method",
               "name": "updateAfterExternalChanges",
               "privacy": "public",
-              "description": "Resets the selection state of all rows in the table.\nThis method is called when the table is reset or cleared.",
+              "description": "Resets the selection state of all rows in the table.\r\nThis method is called when the table is reset or cleared.",
               "return": {
                 "type": {
                   "text": ""
@@ -14939,7 +14959,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
+              "description": "checkboxSelection: Boolean indicating whether rows should be\r\nselectable using checkboxes.",
               "default": "false",
               "fieldName": "checkboxSelection"
             },
@@ -14948,7 +14968,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "striped: Boolean indicating whether rows should have alternate\ncoloring.",
+              "description": "striped: Boolean indicating whether rows should have alternate\r\ncoloring.",
               "default": "false",
               "fieldName": "striped"
             },
@@ -14957,7 +14977,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "stickyHeader: Boolean indicating whether the table header\nshould be sticky.",
+              "description": "stickyHeader: Boolean indicating whether the table header\r\nshould be sticky.",
               "default": "false",
               "fieldName": "stickyHeader"
             },
@@ -14966,7 +14986,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
+              "description": "dense: Boolean indicating whether the table should be displayed\r\nin dense mode.",
               "default": "false",
               "fieldName": "dense"
             },
@@ -14975,7 +14995,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "fixedLayout: Boolean indicating whether the table should have a fixed layout.\nThis will set the table's layout to fixed, which means the table and column widths\nwill be determined by the width of the columns and not by the content of the cells.\nThis can be useful when you want to have a consistent column width across multiple tables.",
+              "description": "fixedLayout: Boolean indicating whether the table should have a fixed layout.\r\nThis will set the table's layout to fixed, which means the table and column widths\r\nwill be determined by the width of the columns and not by the content of the cells.\r\nThis can be useful when you want to have a consistent column width across multiple tables.",
               "default": "false",
               "fieldName": "fixedLayout"
             }
@@ -15095,10 +15115,10 @@
                   "type": {
                     "text": "any"
                   },
-                  "description": "The parameter \"e\" is an event object that represents the event that triggered the\nclick event handler."
+                  "description": "The parameter \"e\" is an event object that represents the event that triggered the\r\nclick event handler."
                 }
               ],
-              "description": "Dispatches a custom event called 'tab-activated' with the original event and tabId as details,\nif the tab is not selected."
+              "description": "Dispatches a custom event called 'tab-activated' with the original event and tabId as details,\r\nif the tab is not selected."
             }
           ],
           "attributes": [
@@ -15339,10 +15359,10 @@
                   "type": {
                     "text": "any"
                   },
-                  "description": "The parameter \"e\" is an event object that contains information about the event\nthat triggered the handleChange function."
+                  "description": "The parameter \"e\" is an event object that contains information about the event\r\nthat triggered the handleChange function."
                 }
               ],
-              "description": "Updates children and emits a change event based on the provided\nevent details when a child kyn-tab is clicked."
+              "description": "Updates children and emits a change event based on the provided\r\nevent details when a child kyn-tab is clicked."
             },
             {
               "kind": "method",
@@ -15354,14 +15374,14 @@
                   "type": {
                     "text": "string"
                   },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe tab that is currently selected."
+                  "description": "The selectedTabId parameter is a string that represents the ID of\r\nthe tab that is currently selected."
                 },
                 {
                   "name": "updatePanel",
                   "default": "true"
                 }
               ],
-              "description": "Updates the selected property of tabs and the visible property of tab panels based on\nthe selected tab ID."
+              "description": "Updates the selected property of tabs and the visible property of tab panels based on\r\nthe selected tab ID."
             },
             {
               "kind": "method",
@@ -15373,17 +15393,17 @@
                   "type": {
                     "text": "any"
                   },
-                  "description": "The origEvent parameter is the original event object that triggered the\nchange event. It could be any type of event object, such as a click event or a keydown event."
+                  "description": "The origEvent parameter is the original event object that triggered the\r\nchange event. It could be any type of event object, such as a click event or a keydown event."
                 },
                 {
                   "name": "selectedTabId",
                   "type": {
                     "text": "string"
                   },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe selected tab."
+                  "description": "The selectedTabId parameter is a string that represents the ID of\r\nthe selected tab."
                 }
               ],
-              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\nselected tab ID as details."
+              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\r\nselected tab ID as details."
             },
             {
               "kind": "method",
@@ -15395,7 +15415,7 @@
                   "type": {
                     "text": "any"
                   },
-                  "description": "The parameter `e` is an event object that represents the keyboard event. It\ncontains information about the keyboard event, such as the key code of the pressed key."
+                  "description": "The parameter `e` is an event object that represents the keyboard event. It\r\ncontains information about the keyboard event, such as the key code of the pressed key."
                 }
               ],
               "description": "Handles keyboard events for navigating between tabs.",
@@ -15473,272 +15493,6 @@
           "declaration": {
             "name": "Tabs",
             "module": "src/components/reusable/tabs/tabs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "./textArea"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/textArea.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Text area.",
-          "name": "TextArea",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "attribute": "placeholder"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "attribute": "maxLength"
-            },
-            {
-              "kind": "field",
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "attribute": "minLength"
-            },
-            {
-              "kind": "field",
-              "name": "rows",
-              "type": {
-                "text": "number"
-              },
-              "description": "textarea rows attribute. The number of visible text lines.",
-              "attribute": "rows"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  errorText: 'Error',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "fieldName": "placeholder"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "fieldName": "maxLength"
-            },
-            {
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "fieldName": "minLength"
-            },
-            {
-              "name": "rows",
-              "type": {
-                "text": "number"
-              },
-              "description": "textarea rows attribute. The number of visible text lines.",
-              "fieldName": "rows"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-text-area",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-text-area",
-          "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
           }
         }
       ]
@@ -16126,7 +15880,7 @@
               "type": {
                 "text": "object"
               },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "default": "{\r\n    showAll: 'Show all',\r\n    showLess: 'Show less',\r\n  }",
               "description": "Text string customization.",
               "attribute": "textStrings"
             },
@@ -16190,7 +15944,7 @@
               "type": {
                 "text": "object"
               },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "default": "{\r\n    showAll: 'Show all',\r\n    showLess: 'Show less',\r\n  }",
               "description": "Text string customization.",
               "fieldName": "textStrings"
             },
@@ -16245,6 +15999,272 @@
           "declaration": {
             "name": "TagGroup",
             "module": "src/components/reusable/tag/tagGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "./textArea"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/textArea.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Text area.",
+          "name": "TextArea",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "attribute": "maxLength"
+            },
+            {
+              "kind": "field",
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "attribute": "minLength"
+            },
+            {
+              "kind": "field",
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "textarea rows attribute. The number of visible text lines.",
+              "attribute": "rows"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  requiredText: 'Required',\r\n  errorText: 'Error',\r\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "fieldName": "maxLength"
+            },
+            {
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "fieldName": "minLength"
+            },
+            {
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "textarea rows attribute. The number of visible text lines.",
+              "fieldName": "rows"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-text-area",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-text-area",
+          "declaration": {
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
           }
         }
       ]
@@ -16403,7 +16423,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear all',\n  errorText: 'Error',\n}",
+              "default": "{\r\n  requiredText: 'Required',\r\n  clearAll: 'Clear all',\r\n  errorText: 'Error',\r\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -16776,7 +16796,7 @@
                 "text": "boolean | null"
               },
               "default": "null",
-              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
+              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
               "attribute": "twentyFourHourFormat"
             },
             {
@@ -16842,7 +16862,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n}",
+              "default": "{\r\n  requiredText: 'Required',\r\n  clearAll: 'Clear',\r\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -17172,7 +17192,7 @@
                 "text": "boolean | null"
               },
               "default": "null",
-              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
+              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
               "fieldName": "twentyFourHourFormat"
             },
             {
