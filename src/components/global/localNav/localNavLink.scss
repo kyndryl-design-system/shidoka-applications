@@ -17,45 +17,47 @@ a {
   text-decoration: none;
   outline: 2px solid transparent;
   outline-offset: -2px;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-text-level-primary);
   transition: background-color 150ms ease-out, color 150ms ease-out,
     outline-color 150ms ease-out;
 
-  .icon.slotted {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
+  ::slotted(*) {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    @media (min-width: 42rem) {
-      width: 32px;
-    }
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
   }
 
   .link-active & {
-    color: var(--kd-color-text-tertiary);
+    background-color: var(--kd-color-background-menu-state-active);
+    color: var(--kd-color-text-button-dark-primary);
     font-weight: 500;
   }
 
-  .link-expanded & {
-    color: var(--kd-color-text-tertiary);
+  .link-expanded.nav-expanded & {
+    background: var(--kd-color-background-menu-state-open);
+    color: var(--kd-color-text-button-dark-primary);
     font-weight: 500;
+
+    &:hover {
+      background: var(--kd-color-background-menu-state-hover);
+    }
   }
 
   &:hover {
-    background: var(--kd-color-background-primary-hover);
-    color: var(--kd-color-text-inversed);
+    background: var(--kd-color-background-menu-state-hover);
+    color: var(--kd-color-text-button-dark-primary);
   }
 
   &:focus {
-    outline-color: var(--kd-color-border-tertiary-bold);
+    outline-color: var(--kd-color-border-variants-focus);
   }
 
   &:active {
-    background-color: var(--kd-color-background-primary-pressed);
-    color: var(--kd-color-text-inversed);
+    background-color: var(--kd-color-background-menu-state-pressed);
+    color: var(--kd-color-text-button-dark-primary);
   }
 
   .link-disabled &,
@@ -81,7 +83,7 @@ a {
   position: absolute;
   bottom: 0;
   width: 100%;
-  background: var(--kd-color-background-accent-subtle);
+  background: var(--kd-color-background-menu-state-default);
 
   transition: transform 300ms ease-out, opacity 300ms ease-out,
     visibility 300ms ease-out;
@@ -143,7 +145,7 @@ a {
       bottom: 19px;
       left: 20px;
       width: 1px;
-      background: var(--kd-color-border-light);
+      background: var(--kd-color-border-variants-light);
     }
   }
 
@@ -158,7 +160,7 @@ a {
       left: -7px;
       width: 10px;
       height: 1px;
-      background: var(--kd-color-border-light);
+      background: var(--kd-color-border-variants-light);
       z-index: -1;
     }
 
@@ -171,7 +173,7 @@ a {
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: var(--kd-color-border-light);
+      background: var(--kd-color-border-variants-light);
       z-index: -1;
     }
   }
@@ -193,24 +195,24 @@ a {
     outline-color 150ms ease-out;
   outline: 2px solid transparent;
   outline-offset: -2px;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-text-level-primary);
 
-  span {
+  svg {
     margin-right: 16px;
   }
 
   &:hover {
-    background: var(--kd-color-background-primary);
-    color: var(--kd-color-text-inversed);
+    background: var(--kd-color-background-menu-state-hover);
+    color: var(--kd-color-text-button-dark-primary);
   }
 
   &:active {
-    background: var(--kd-color-background-primary-pressed);
-    color: var(--kd-color-text-inversed);
+    background-color: var(--kd-color-background-menu-state-pressed);
+    color: var(--kd-color-text-button-dark-primary);
   }
 
   &:focus {
-    outline-color: var(--kd-color-border-focus);
+    outline-color: var(--kd-color-border-variants-focus);
   }
 
   @media (min-width: 42rem) {
@@ -221,10 +223,10 @@ a {
 .category {
   @include typography.type-ui-03;
   font-weight: 500;
-  color: var(--kd-color-text-tertiary-bold);
+  color: var(--kd-color-text-level-tertiary-bold);
   text-transform: uppercase;
   padding: 8px;
-  border-bottom: 1px solid var(--kd-color-border-light);
+  border-bottom: 1px solid var(--kd-color-border-variants-light);
 
   @media (min-width: 42rem) {
     display: none;
@@ -263,7 +265,7 @@ a {
     height: 24px;
   }
 
-  span {
+  svg {
     display: block;
   }
 }
