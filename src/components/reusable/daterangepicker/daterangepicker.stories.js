@@ -32,7 +32,7 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    defaultDate: { control: { type: 'text' } },
+    defaultDate: { control: { type: 'object' } },
     label: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
@@ -41,16 +41,13 @@ export default {
   },
 };
 
-const disconnectFlatpickr = () => {
-  const calendarElements = document.querySelectorAll('.flatpickr-calendar');
-  calendarElements.forEach((calendar) => calendar.remove());
-};
-
-const SingleInput = (args) => {
-  // prevents flatpickr calendar overlay from persisting on view change
+const Template = (args) => {
   useEffect(() => {
     return () => {
-      disconnectFlatpickr();
+      const picker = document.querySelector('kyn-date-range-picker');
+      if (picker) {
+        picker.remove();
+      }
     };
   }, []);
 
@@ -60,7 +57,7 @@ const SingleInput = (args) => {
       .label="${args.label}"
       .locale="${args.locale}"
       .dateFormat="${args.dateFormat}"
-      .defaultDate="${args.defaultDate}"
+      .defaultDate=${args.defaultDate}
       .defaultErrorMessage="${args.defaultErrorMessage}"
       .value="${args.value}"
       .warnText="${args.warnText}"
@@ -86,7 +83,7 @@ const SingleInput = (args) => {
   `;
 };
 
-export const DateRangeDefault = SingleInput.bind({});
+export const DateRangeDefault = Template.bind({});
 DateRangeDefault.args = {
   name: 'default-date-range-picker',
   locale: 'en',
@@ -111,7 +108,7 @@ DateRangeDefault.args = {
   label: 'Date Range',
 };
 
-export const DateTimeRange = SingleInput.bind({});
+export const DateTimeRange = Template.bind({});
 DateTimeRange.args = {
   ...DateRangeDefault.args,
   name: 'date-time-range-picker',
@@ -120,7 +117,7 @@ DateTimeRange.args = {
   label: 'Start + End Date / Time',
 };
 
-export const WithPreselectedRange = SingleInput.bind({});
+export const WithPreselectedRange = Template.bind({});
 WithPreselectedRange.args = {
   ...DateRangeDefault.args,
   name: 'preselected-date-range',
@@ -130,7 +127,7 @@ WithPreselectedRange.args = {
   label: 'Preselected Range',
 };
 
-export const WithPreselectedDateTime = SingleInput.bind({});
+export const WithPreselectedDateTime = Template.bind({});
 WithPreselectedDateTime.args = {
   ...DateRangeDefault.args,
   name: 'preselected-date-time-range',

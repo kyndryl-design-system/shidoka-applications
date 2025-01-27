@@ -235,7 +235,7 @@ export const Default = {
           caption="Date range picker example"
           defaultErrorMessage="Both start and end dates are required"
           @on-input=${(e) => action(e.type)(e)}
-          style="min-width: 400px;"
+          style="min-width: 425px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -254,7 +254,7 @@ export const Default = {
           ?twentyFourHourFormat=${false}
           defaultErrorMessage="Both start and end dates are required"
           @on-input=${(e) => action(e.type)(e)}
-          style="min-width: 400px;"
+          style="min-width: 425px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
