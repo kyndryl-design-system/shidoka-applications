@@ -205,6 +205,7 @@ export class Notification extends LitElement {
                 class="notification-toast-close-btn"
                 kind="tertiary"
                 size="small"
+                ghost
                 description=${ifDefined(this.closeBtnDescription)}
                 @on-click="${() => this._handleClose()}"
               >
