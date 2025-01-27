@@ -454,7 +454,10 @@ export async function getFlatpickrOptions(
   if (minTime) options.minTime = minTime;
   if (maxTime) options.maxTime = maxTime;
   if (defaultDate) {
-    if (Array.isArray(defaultDate) && mode === 'range') {
+    if (
+      Array.isArray(defaultDate) &&
+      (mode === 'range' || mode === 'multiple')
+    ) {
       options.defaultDate = defaultDate;
     } else if (!Array.isArray(defaultDate)) {
       options.defaultDate = defaultDate;

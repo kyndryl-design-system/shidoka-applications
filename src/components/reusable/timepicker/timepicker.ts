@@ -3,6 +3,8 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 
+import '../../reusable/button';
+
 import {
   langsArray,
   injectFlatpickrStyles,
@@ -215,15 +217,18 @@ export class TimePicker extends FormMixin(LitElement) {
           />
           ${this.value
             ? html`
-                <button
+                <kyn-button
                   ?disabled=${this.timepickerDisabled}
                   class="clear-button"
-                  aria-label=${this._textStrings.clearAll}
-                  title=${this._textStrings.clearAll}
+                  ghost
+                  size="small"
+                  description=${this._textStrings.clearAll}
                   @click=${this._handleClear}
                 >
-                  <span>${unsafeSVG(clearIcon)}</span>
-                </button>
+                  <span style="display:flex;" slot="icon"
+                    >${unsafeSVG(clearIcon)}</span
+                  >
+                </kyn-button>
               `
             : html`<span class="input-icon">${unsafeSVG(clockIcon)}</span>`}
         </div>
