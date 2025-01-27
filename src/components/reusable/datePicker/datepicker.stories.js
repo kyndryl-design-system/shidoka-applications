@@ -44,15 +44,13 @@ export default {
   },
 };
 
-const disconnectFlatpickr = () => {
-  const calendarElements = document.querySelectorAll('.flatpickr-calendar');
-  calendarElements.forEach((calendar) => calendar.remove());
-};
-
 const Template = (args) => {
   useEffect(() => {
     return () => {
-      disconnectFlatpickr();
+      const picker = document.querySelector('kyn-date-picker');
+      if (picker) {
+        picker.remove();
+      }
     };
   }, []);
 

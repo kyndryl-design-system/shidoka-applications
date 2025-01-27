@@ -316,12 +316,16 @@ export class DatePicker extends FormMixin(LitElement) {
     };
   }
 
+  private _initialized = false;
+
   override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
-    injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
-
-    await this.updateComplete;
-    this.setupAnchor();
+    if (!this._initialized) {
+      injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
+      this._initialized = true;
+      await this.updateComplete;
+      this.setupAnchor();
+    }
   }
 
   override updated(changedProperties: PropertyValues) {
@@ -335,15 +339,8 @@ export class DatePicker extends FormMixin(LitElement) {
       changedProperties.has('twentyFourHourFormat')
     ) {
       this._enableTime = updateEnableTime(this.dateFormat);
-      this.reinitializeFlatpickr();
-
-      if (
-        this.flatpickrInstance ||
-        changedProperties.has('twentyFourHourFormat')
-      ) {
+      if (this.flatpickrInstance && this._initialized) {
         this.updateFlatpickrOptions();
-      } else {
-        this.initializeFlatpickr();
       }
     }
 
@@ -357,8 +354,10 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private async reinitializeFlatpickr() {
-    this.flatpickrInstance?.destroy();
-    await this.initializeFlatpickr();
+    if (this._initialized && this.flatpickrInstance) {
+      this.flatpickrInstance.destroy();
+      await this.initializeFlatpickr();
+    }
   }
 
   private async setupAnchor() {
