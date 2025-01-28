@@ -234,7 +234,6 @@ export class Notification extends LitElement {
                 <kyn-tag
                   label=${this.textStrings[this.tagStatus]}
                   tagColor=${this._tagColor[this.tagStatus]}
-                  shade="dark"
                 ></kyn-tag>`
             : null}
         </div>

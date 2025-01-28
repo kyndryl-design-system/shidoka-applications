@@ -14,10 +14,11 @@ import { deepmerge } from 'deepmerge-ts';
 
 import './dropdownOption';
 import '../tag';
+import '../button';
 
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
-import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
 
 const _defaultTextStrings = {
   selectedOptions: 'List of selected options',
@@ -411,14 +412,18 @@ export class Dropdown extends FormMixin(LitElement) {
 
           ${this.searchable && this.searchEl && this.searchText !== ''
             ? html`
-                <button
-                  class="clear dropdown-clear"
-                  aria-label="Clear search text"
+                <kyn-button
+                  class="clear-button dropdown-clear"
+                  ghost
+                  size="small"
+                  description="Clear search text"
                   ?disabled=${this.disabled}
                   @click=${(e: any) => this.handleClear(e)}
                 >
-                  <span>${unsafeSVG(clearIcon)}</span>
-                </button>
+                  <span style="display:flex;" slot="icon"
+                    >${unsafeSVG(clearIcon)}</span
+                  >
+                </kyn-button>
               `
             : null}
           <!--

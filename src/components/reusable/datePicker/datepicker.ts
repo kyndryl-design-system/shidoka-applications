@@ -18,6 +18,7 @@ import {
   emitValue,
   hideEmptyYear,
 } from '../../../common/helpers/flatpickr';
+import '../../reusable/button';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -228,17 +229,28 @@ export class DatePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${this._inputEl?.value
+          ${this._inputEl?.value ||
+          (this.value &&
+            Array.isArray(this.value) &&
+            this.value.length > 0 &&
+            !this.value.every((date) => date === null)) ||
+          (this.defaultDate &&
+            Array.isArray(this.defaultDate) &&
+            this.defaultDate.length > 0 &&
+            !this.defaultDate.every((date) => date === null || date === ''))
             ? html`
-                <button
+                <kyn-button
                   ?disabled=${this.datePickerDisabled}
                   class="clear-button"
-                  aria-label=${this._textStrings.clearAll}
-                  title=${this._textStrings.clearAll}
+                  ghost
+                  size="small"
+                  description=${this._textStrings.clearAll}
                   @click=${this._handleClear}
                 >
-                  <span>${unsafeSVG(clearIcon)}</span>
-                </button>
+                  <span style="display:flex;" slot="icon"
+                    >${unsafeSVG(clearIcon)}</span
+                  >
+                </kyn-button>
               `
             : html`<span class="input-icon">${unsafeSVG(calendarIcon)}</span>`}
         </div>
@@ -304,12 +316,16 @@ export class DatePicker extends FormMixin(LitElement) {
     };
   }
 
+  private _initialized = false;
+
   override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
-    injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
-
-    await this.updateComplete;
-    this.setupAnchor();
+    if (!this._initialized) {
+      injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
+      this._initialized = true;
+      await this.updateComplete;
+      this.setupAnchor();
+    }
   }
 
   override updated(changedProperties: PropertyValues) {
@@ -323,15 +339,8 @@ export class DatePicker extends FormMixin(LitElement) {
       changedProperties.has('twentyFourHourFormat')
     ) {
       this._enableTime = updateEnableTime(this.dateFormat);
-      this.reinitializeFlatpickr();
-
-      if (
-        this.flatpickrInstance ||
-        changedProperties.has('twentyFourHourFormat')
-      ) {
+      if (this.flatpickrInstance && this._initialized) {
         this.updateFlatpickrOptions();
-      } else {
-        this.initializeFlatpickr();
       }
     }
 
@@ -345,8 +354,10 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private async reinitializeFlatpickr() {
-    this.flatpickrInstance?.destroy();
-    await this.initializeFlatpickr();
+    if (this._initialized && this.flatpickrInstance) {
+      this.flatpickrInstance.destroy();
+      await this.initializeFlatpickr();
+    }
   }
 
   private async setupAnchor() {
@@ -358,13 +369,19 @@ export class DatePicker extends FormMixin(LitElement) {
   private _handleClear(event: Event) {
     event.preventDefault();
     event.stopPropagation();
-    this.value = null;
+
+    this.value = this.mode === 'multiple' ? [] : null;
+    this.defaultDate = this.mode === 'multiple' ? [] : null;
+
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
-      if (this._inputEl) {
-        this._inputEl.value = '';
-      }
     }
+    if (this._inputEl) {
+      this._inputEl.value = '';
+    }
+
+    this.reinitializeFlatpickr();
+
     this._validate(true, false);
     this.requestUpdate();
   }
@@ -423,10 +440,42 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   setInitialDates(): void {
-    if (this.defaultDate && this.flatpickrInstance) {
-      this.flatpickrInstance.setDate(this.defaultDate, false);
-    } else if (this.value && this.flatpickrInstance) {
-      this.flatpickrInstance.setDate(this.value, false);
+    if (!this.flatpickrInstance) return;
+
+    try {
+      if (this.defaultDate) {
+        if (Array.isArray(this.defaultDate)) {
+          const validDates = this.defaultDate
+            .filter((date) => date && date !== '')
+            .map((date) => {
+              const parsed = new Date(date);
+              return isNaN(parsed.getTime()) ? null : parsed;
+            })
+            .filter((date): date is Date => date !== null);
+
+          if (validDates.length > 0) {
+            this.value = this.mode === 'multiple' ? validDates : validDates[0];
+            this.flatpickrInstance.setDate(validDates, false);
+          }
+        } else {
+          const parsed = new Date(this.defaultDate);
+          if (!isNaN(parsed.getTime())) {
+            this.value = parsed;
+            this.flatpickrInstance.setDate([parsed], false);
+          }
+        }
+      } else if (this.value) {
+        const dates = Array.isArray(this.value) ? this.value : [this.value];
+        const validDates = dates.filter(
+          (date): date is Date => date instanceof Date && !isNaN(date.getTime())
+        );
+
+        if (validDates.length > 0) {
+          this.flatpickrInstance.setDate(validDates, false);
+        }
+      }
+    } catch (error) {
+      console.warn('Error setting initial dates:', error);
     }
   }
 
