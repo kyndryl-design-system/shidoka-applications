@@ -243,6 +243,7 @@ export class DatePicker extends FormMixin(LitElement) {
                   ?disabled=${this.datePickerDisabled}
                   class="clear-button"
                   ghost
+                  kind="tertiary"
                   size="small"
                   description=${this._textStrings.clearAll}
                   @click=${this._handleClear}

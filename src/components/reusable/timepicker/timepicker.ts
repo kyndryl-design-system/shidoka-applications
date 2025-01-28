@@ -221,6 +221,7 @@ export class TimePicker extends FormMixin(LitElement) {
                   ?disabled=${this.timepickerDisabled}
                   class="clear-button"
                   ghost
+                  kind="tertiary"
                   size="small"
                   description=${this._textStrings.clearAll}
                   @click=${this._handleClear}

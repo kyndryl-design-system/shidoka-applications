@@ -24,6 +24,7 @@ export class SampleFilterComponent extends LitElement {
   static override styles = css`
     .filter-text {
       display: none;
+      color: var(--kd-color-text-button-light-primary);
     }
 
     @media (min-width: 42rem) {
@@ -34,6 +35,7 @@ export class SampleFilterComponent extends LitElement {
 
     span[slot='icon'] {
       display: flex;
+      color: var(--kd-color-icon-primary);
     }
   `;
 
@@ -94,9 +96,10 @@ export class SampleFilterComponent extends LitElement {
             kind="tertiary"
             size="small"
             iconPosition="left"
+            class="filter-button"
             outlineOnly
           >
-            <span slot="icon"
+            <span slot="icon" class="filter-icon"
               >${SelectedOptions.length
                 ? unsafeSVG(filterEditIcon)
                 : unsafeSVG(filterIcon)}</span

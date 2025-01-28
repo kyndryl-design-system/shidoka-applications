@@ -146,6 +146,7 @@ export class SideDrawer extends LitElement {
               class="side-drawer-close-btn"
               ghost
               size="small"
+              kind="tertiary"
               description=${ifDefined(this.closeBtnDescription)}
               @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
             >
