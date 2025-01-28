@@ -96,10 +96,9 @@ export class SampleFilterComponent extends LitElement {
             kind="tertiary"
             size="small"
             iconPosition="left"
-            class="filter-button"
             outlineOnly
           >
-            <span slot="icon" class="filter-icon"
+            <span slot="icon"
               >${SelectedOptions.length
                 ? unsafeSVG(filterEditIcon)
                 : unsafeSVG(filterIcon)}</span
