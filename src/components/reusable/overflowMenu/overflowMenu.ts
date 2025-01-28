@@ -135,7 +135,7 @@ export class OverflowMenu extends LitElement {
     }
   }
 
-  override willUpdate(changedProps: any) {
+  override updated(changedProps: any) {
     if (changedProps.has('open')) {
       if (this.open) {
         // open dropdown upwards if closer to bottom of viewport
