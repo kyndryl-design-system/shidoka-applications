@@ -1,52 +1,22 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/form-input.scss';
+@use '../../../common/scss/mixins.scss';
 
-:host {
-    display: inline-block;
-}
+@include mixins.picker-base;
 
 input {
-    display: block;
-    width: 100%;
-    border: 1px solid var(--kd-color-border-ui-default);
-    border-radius: 4px;
-    height: 48px;
     padding: 0 40px 0 16px;
-    line-height: 48px;
-    -webkit-appearance: none;
     cursor: default;
-    appearance: none;
-
-    &.size--sm {
-        height: 32px;
-    }
-
-    &.size--lg {
-        height: 56px;
-    }
 }
 
 .time-picker {
     width: inherit;
 
-    &__disabled .input-custom {
-        pointer-events: none;
-    }
+    &__disabled {
+        @include mixins.picker-disabled;
 
-    &__disabled .error-text,
-    &__disabled .error-text .error-icon {
-        color: var(--kd-color-text-level-disabled);
-    }
-
-    &__disabled .input-icon {
-        cursor: default;
-    }
-
-    &__disabled .caption {
-        color: var(--kd-color-text-level-disabled);
-    }
-
-    &__disabled .label-text {
-        color: var(--kd-color-text-level-disabled);
+        .input-custom {
+            pointer-events: none;
+        }
     }
 }
