@@ -235,13 +235,17 @@ export class Dropdown extends FormMixin(LitElement) {
         }
         ${
           this.caption !== ''
-            ? html` <div class="caption">${this.caption}</div> `
+            ? html`
+                <div class="caption ${this.disabled ? 'disabled' : ''}">
+                  ${this.caption}
+                </div>
+              `
             : null
         }
         ${
           this._isInvalid
             ? html`
-                <div class="error">
+                <div class="error ${this.disabled ? 'disabled' : ''}">
                   <span
                     class="error-info-icon"
                     role="img"

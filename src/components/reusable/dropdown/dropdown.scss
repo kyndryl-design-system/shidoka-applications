@@ -75,11 +75,16 @@
     background-color: transparent;
 
     &:hover {
-
       [disabled] & {
         border-color: transparent;
       }
     }
+  }
+  &[disabled] {
+    background: var(--kd-color-background-ui-hollow-default);
+    border-color: var(--kd-color-border-ui-disabled);
+    color: var(--kd-color-text-link-level-disabled);
+    cursor: default;
   }
 }
 
@@ -161,10 +166,20 @@
   display: flex;
 }
 
+.error.disabled {
+  color: var(--kd-color-text-level-disabled);
+  span svg {
+    color: var(--kd-color-text-link-level-disabled);
+  }
+}
+
 .caption {
   [inline] & {
     margin-left: 16px;
   }
+}
+.caption.disabled {
+  color: var(--kd-color-text-level-disabled);
 }
 
 .assistive-text {
