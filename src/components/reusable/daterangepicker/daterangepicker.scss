@@ -35,12 +35,16 @@ input {
     width: inherit;
 
     &__disabled ::slotted(*) {
-        opacity: 0.5;
         pointer-events: none;
     }
 
     &__disabled .input-icon {
         cursor: default;
+    }
+
+    &__disabled .error-text,
+    &__disabled .error-text .error-icon {
+        color: var(--kd-color-text-level-disabled);
     }
 
     &__disabled .caption {
