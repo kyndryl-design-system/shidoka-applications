@@ -19,7 +19,7 @@ export default {
 export const TextArea = {
   args: {
     label: 'Label',
-    name: 'name',
+    name: 'text-area-1',
     value: '',
     placeholder: '',
     caption: '',
