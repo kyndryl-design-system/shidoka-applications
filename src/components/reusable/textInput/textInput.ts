@@ -190,7 +190,11 @@ export class TextInput extends FormMixin(LitElement) {
         <div class="caption-error-count">
           <div>
             ${this.caption !== ''
-              ? html` <div class="caption">${this.caption}</div> `
+              ? html`
+                  <div class="caption" aria-disabled=${this.disabled}>
+                    ${this.caption}
+                  </div>
+                `
               : null}
             ${this._isInvalid
               ? html`

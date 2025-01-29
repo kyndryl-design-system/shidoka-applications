@@ -235,7 +235,11 @@ export class Dropdown extends FormMixin(LitElement) {
         }
         ${
           this.caption !== ''
-            ? html` <div class="caption">${this.caption}</div> `
+            ? html`
+                <div class="caption" aria-disabled=${this.disabled}>
+                  ${this.caption}
+                </div>
+              `
             : null
         }
         ${
@@ -352,6 +356,7 @@ export class Dropdown extends FormMixin(LitElement) {
                       placeholder=${this.placeholder}
                       value=${this.searchText}
                       ?disabled=${this.disabled}
+                      aria-disabled=${this.disabled}
                       @keydown=${(e: any) => this.handleSearchKeydown(e)}
                       @input=${(e: any) => this.handleSearchInput(e)}
                       @blur=${(e: any) => this.handleSearchBlur(e)}

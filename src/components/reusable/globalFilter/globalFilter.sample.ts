@@ -24,7 +24,6 @@ export class SampleFilterComponent extends LitElement {
   static override styles = css`
     .filter-text {
       display: none;
-      color: var(--kd-color-text-button-light-primary);
     }
 
     @media (min-width: 42rem) {
@@ -35,7 +34,6 @@ export class SampleFilterComponent extends LitElement {
 
     span[slot='icon'] {
       display: flex;
-      color: var(--kd-color-icon-primary);
     }
   `;
 
