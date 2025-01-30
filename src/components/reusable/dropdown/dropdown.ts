@@ -221,15 +221,16 @@ export class Dropdown extends FormMixin(LitElement) {
         ?searchable=${this.searchable}
       >
         <label
+          id="label-${this.name}"
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
           for=${this.name}
-          @click=${this._handleLabelClick}
         >
           ${this.required
             ? html`<abbr
                 class="required"
                 title=${this._textStrings.requiredText}
-                aria-label=${this._textStrings.requiredText}
+                role="img"
+                aria-label=${this._textStrings?.requiredText || 'Required'}
                 >*</abbr
               >`
             : null}
@@ -387,67 +388,6 @@ export class Dropdown extends FormMixin(LitElement) {
         }
         ${
           this.caption !== ''
-            ? html` <div class="caption">${this.caption}</div> `
-            : null
-        }
-        ${
-          this._isInvalid
-            ? html`
-                <div class="error">
-                  <span
-                    class="error-info-icon"
-                    role="img"
-                    title=${this._textStrings.errorText}
-                    aria-label=${this._textStrings.errorText}
-                    >${unsafeSVG(errorIcon)}</span
-                  >
-                  ${this.invalidText || this._internalValidationMsg}
-                </div>
-              `
-            : null
-        }
-
-        <div
-          class="assistive-text"
-          role="status"
-          aria-live="assertive"
-          aria-relevant="additions text"
-        >
-          ${this.assistiveText}
-        </div>
-
-        ${this.renderCaptionError()}
-      </div>
-    `;
-  }
-
-  private renderCaptionError() {
-    return html`
-        ${
-          this.multiple && !this.hideTags && this._tags.length
-            ? html`
-                <kyn-tag-group
-                  filter
-                  role="list"
-                  aria-label=${this._textStrings.selectedOptions}
-                >
-                  ${this._tags.map((tag: any) => {
-                    return html`
-                      <kyn-tag
-                        role="listitem"
-                        label=${tag.text}
-                        ?disabled=${this.disabled}
-                        clearTagText="Clear Tag ${tag.text}"
-                        @on-close=${() => this.handleTagClear(tag.value)}
-                      ></kyn-tag>
-                    `;
-                  })}
-                </kyn-tag-group>
-              `
-            : null
-        }
-        ${
-          this.caption !== ''
             ? html`
                 <div class="caption" aria-disabled=${this.disabled}>
                   ${this.caption}
@@ -460,7 +400,7 @@ export class Dropdown extends FormMixin(LitElement) {
             ? html`
                 <div class="error">
                   <span
-                    class="error-info-icon error-icon"
+                    class="error-info-icon"
                     role="img"
                     title=${this._textStrings.errorText}
                     aria-label=${this._textStrings.errorText}
