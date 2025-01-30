@@ -246,6 +246,7 @@ export class Dropdown extends FormMixin(LitElement) {
             <div
               class="${classMap({
                 select: true,
+                'input-custom': true,
                 'size--sm': this.size === 'sm',
                 'size--lg': this.size === 'lg',
                 inline: this.inline,
@@ -279,7 +280,9 @@ export class Dropdown extends FormMixin(LitElement) {
                       @click=${(e: Event) => this.handleClearMultiple(e)}
                     >
                       ${this.value.length}
-                      <span>${unsafeSVG(clearIcon)}</span>
+                      <span style="display:flex;" slot="icon"
+                        >${unsafeSVG(clearIcon)}</span
+                      >
                     </button>
                   `
                 : null}
@@ -349,29 +352,66 @@ export class Dropdown extends FormMixin(LitElement) {
               ></slot>
             </ul>
           </div>
+        </div>
+        ${this.renderHelperContent()}
+      </div>
+    `;
+  }
 
-          ${this.searchable && this.searchEl && this.searchText !== ''
+  private renderHelperContent() {
+    return html`
+        ${
+          this.multiple && !this.hideTags && this._tags.length
             ? html`
-                <kyn-button
-                  class="clear-button dropdown-clear"
-                  ghost
-                  kind="tertiary"
-                  size="small"
-                  description="Clear search text"
-                  ?disabled=${this.disabled}
-                  @click=${(e: any) => this.handleClear(e)}
+                <kyn-tag-group
+                  filter
+                  role="list"
+                  aria-label=${this._textStrings.selectedOptions}
                 >
-                  <span style="display:flex;" slot="icon"
-                    >${unsafeSVG(clearIcon)}</span
-                  >
-                </kyn-button>
+                  ${this._tags.map((tag: any) => {
+                    return html`
+                      <kyn-tag
+                        role="listitem"
+                        label=${tag.text}
+                        ?disabled=${this.disabled}
+                        clearTagText="Clear Tag ${tag.text}"
+                        @on-close=${() => this.handleTagClear(tag.value)}
+                      ></kyn-tag>
+                    `;
+                  })}
+                </kyn-tag-group>
               `
-            : null}
-          <!--
-          ${this._isInvalid
-            ? html` <span class="error-icon">${unsafeSVG(errorIcon)}</span> `
-            : null}
-            -->
+            : null
+        }
+        ${
+          this.caption !== ''
+            ? html` <div class="caption">${this.caption}</div> `
+            : null
+        }
+        ${
+          this._isInvalid
+            ? html`
+                <div class="error">
+                  <span
+                    class="error-info-icon"
+                    role="img"
+                    title=${this._textStrings.error}
+                    aria-label=${this._textStrings.error}
+                    >${unsafeSVG(errorIcon)}</span
+                  >
+                  ${this.invalidText || this._internalValidationMsg}
+                </div>
+              `
+            : null
+        }
+
+        <div
+          class="assistive-text"
+          role="status"
+          aria-live="assertive"
+          aria-relevant="additions text"
+        >
+          ${this.assistiveText}
         </div>
 
         ${this.renderCaptionError()}
