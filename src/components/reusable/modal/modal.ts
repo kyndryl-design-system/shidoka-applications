@@ -125,6 +125,7 @@ export class Modal extends LitElement {
           <kyn-button
             class="close"
             ghost
+            kind="tertiary"
             size="small"
             description=${this.closeText}
             @click=${(e: Event) => this._closeModal(e, 'cancel')}

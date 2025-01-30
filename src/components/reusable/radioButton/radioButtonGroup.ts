@@ -86,6 +86,7 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
           ? html`
               <div class="error">
                 <span
+                  class="error-icon"
                   title=${this._textStrings.error}
                   aria-label=${this._textStrings.error}
                   >${unsafeSVG(errorIcon)}</span
