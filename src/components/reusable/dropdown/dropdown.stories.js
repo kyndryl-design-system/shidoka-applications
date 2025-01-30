@@ -35,6 +35,7 @@ const args = {
   required: false,
   disabled: false,
   hideTags: false,
+  hideLabel: false,
   selectAll: false,
   selectAllText: 'Select all',
   invalidText: '',
@@ -61,6 +62,7 @@ export const Single = {
         ?open=${args.open}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
@@ -98,6 +100,7 @@ export const SingleSearchable = {
         name=${args.name}
         ?open=${args.open}
         searchable
+        ?hideLabel=${args.hideLabel}
         ?filterSearch=${args.filterSearch}
         ?required=${args.required}
         ?disabled=${args.disabled}
@@ -140,6 +143,7 @@ export const MultiSelect = {
         name=${args.name}
         ?open=${args.open}
         multiple
+        ?hideLabel=${args.hideLabel}
         ?required=${args.required}
         ?disabled=${args.disabled}
         ?hideTags=${args.hideTags}
@@ -188,6 +192,7 @@ export const MultiSelectSearchable = {
         searchable
         ?filterSearch=${args.filterSearch}
         multiple
+        ?hideLabel=${args.hideLabel}
         ?required=${args.required}
         ?disabled=${args.disabled}
         ?hideTags=${args.hideTags}
@@ -235,6 +240,7 @@ export const Grouped = {
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
+        ?hideLabel=${args.hideLabel}
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
@@ -307,6 +313,7 @@ export const DataDrivenOptions = {
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
+        ?hideLabel=${args.hideLabel}
         ?required=${args.required}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
