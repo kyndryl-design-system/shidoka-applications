@@ -82,8 +82,8 @@ export class TextArea extends FormMixin(LitElement) {
             ? html`<abbr
                 class="required"
                 title=${this._textStrings.requiredText}
-                aria-label=${this._textStrings.requiredText}
                 role="img"
+                aria-label=${this._textStrings?.requiredText || 'Required'}
                 >*</abbr
               >`
             : null}
