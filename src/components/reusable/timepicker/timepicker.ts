@@ -221,6 +221,7 @@ export class TimePicker extends FormMixin(LitElement) {
                   ?disabled=${this.timepickerDisabled}
                   class="clear-button"
                   ghost
+                  kind="tertiary"
                   size="small"
                   description=${this._textStrings.clearAll}
                   @click=${this._handleClear}
@@ -237,6 +238,7 @@ export class TimePicker extends FormMixin(LitElement) {
           ? html`<div
               id=${descriptionId}
               class="caption"
+              aria-disabled=${this.timepickerDisabled}
               @mousedown=${this.preventFlatpickrOpen}
               @click=${this.preventFlatpickrOpen}
             >
@@ -260,7 +262,8 @@ export class TimePicker extends FormMixin(LitElement) {
       >
         <span
           class="error-icon"
-          aria-label=${this.errorAriaLabel || 'Error message'}
+          aria-label=${`${this.errorAriaLabel}` || 'Error message icon'}
+          role="button"
           >${unsafeSVG(errorIcon)}</span
         >${this.invalidText ||
         this._internalValidationMsg ||

@@ -11,6 +11,8 @@ import { deepmerge } from 'deepmerge-ts';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 
+import '../../reusable/button';
+
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
@@ -172,6 +174,7 @@ export class TextInput extends FormMixin(LitElement) {
                   ?disabled=${this.disabled}
                   class="clear-button"
                   ghost
+                  kind="tertiary"
                   size="small"
                   description=${this._textStrings.clearAll}
                   @click=${() => this._handleClear()}
@@ -187,12 +190,19 @@ export class TextInput extends FormMixin(LitElement) {
         <div class="caption-error-count">
           <div>
             ${this.caption !== ''
-              ? html` <div class="caption">${this.caption}</div> `
+              ? html`
+                  <div class="caption" aria-disabled=${this.disabled}>
+                    ${this.caption}
+                  </div>
+                `
               : null}
             ${this._isInvalid
               ? html`
                   <div id="error" class="error">
-                    <span role="img" aria-label=${this._textStrings.errorText}
+                    <span
+                      role="img"
+                      class="error-icon"
+                      aria-label=${this._textStrings.errorText}
                       >${unsafeSVG(errorIcon)}</span
                     >
                     ${this.invalidText || this._internalValidationMsg}

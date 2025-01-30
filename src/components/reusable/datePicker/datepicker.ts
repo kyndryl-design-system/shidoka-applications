@@ -243,6 +243,7 @@ export class DatePicker extends FormMixin(LitElement) {
                   ?disabled=${this.datePickerDisabled}
                   class="clear-button"
                   ghost
+                  kind="tertiary"
                   size="small"
                   description=${this._textStrings.clearAll}
                   @click=${this._handleClear}
@@ -259,6 +260,7 @@ export class DatePicker extends FormMixin(LitElement) {
           ? html`<div
               id=${descriptionId}
               class="caption"
+              aria-disabled=${this.datePickerDisabled}
               @mousedown=${this.preventFlatpickrOpen}
               @click=${this.preventFlatpickrOpen}
             >
@@ -283,6 +285,7 @@ export class DatePicker extends FormMixin(LitElement) {
         <span
           class="error-icon"
           aria-label=${`${this.errorAriaLabel}` || 'Error message icon'}
+          role="button"
           >${unsafeSVG(errorIcon)}</span
         >${this.invalidText ||
         this._internalValidationMsg ||
