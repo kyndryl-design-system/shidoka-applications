@@ -203,7 +203,7 @@ export const WithFlyouts = {
             email="user@kyndryl.com"
             profileLink="#"
           >
-            <img src="https://picsum.photos/id/237/112/112" />
+            <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
           </kyn-header-user-profile>
 
           <kyn-header-link href="javascript:void(0)">
@@ -309,7 +309,7 @@ export const WithNotificationPanel = {
           email="user@kyndryl.com"
           profileLink="#"
         >
-          <img src="https://picsum.photos/id/237/112/112" />
+          <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
         </kyn-header-user-profile>
 
         <kyn-header-link href="javascript:void(0)">
@@ -404,7 +404,7 @@ export const WithEverything = {
             email="user@kyndryl.com"
             profileLink="#"
           >
-            <img src="https://picsum.photos/id/237/112/112" />
+            <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
           </kyn-header-user-profile>
 
           <kyn-header-link href="javascript:void(0)">
