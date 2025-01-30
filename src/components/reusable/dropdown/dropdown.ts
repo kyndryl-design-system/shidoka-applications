@@ -24,6 +24,7 @@ const _defaultTextStrings = {
   selectedOptions: 'List of selected options',
   required: 'Required',
   error: 'Error',
+  clearAll: 'Clear',
 };
 
 /**
@@ -352,6 +353,24 @@ export class Dropdown extends FormMixin(LitElement) {
               ></slot>
             </ul>
           </div>
+
+          ${this.searchable && this.searchEl && this.searchText !== ''
+            ? html`
+                <kyn-button
+                  ?disabled=${this.disabled}
+                  class="clear-button dropdown-clear"
+                  ghost
+                  kind="tertiary"
+                  size="small"
+                  description=${this._textStrings.clearAll}
+                  @click=${this.handleClear}
+                >
+                  <span style="display:flex;" slot="icon"
+                    >${unsafeSVG(clearIcon)}</span
+                  >
+                </kyn-button>
+              `
+            : null}
         </div>
         ${this.renderHelperContent()}
       </div>
@@ -385,7 +404,9 @@ export class Dropdown extends FormMixin(LitElement) {
         }
         ${
           this.caption !== ''
-            ? html` <div class="caption">${this.caption}</div> `
+            ? html`<div class="caption" aria-disabled=${this.disabled}>
+                ${this.caption}
+              </div>`
             : null
         }
         ${
@@ -394,71 +415,6 @@ export class Dropdown extends FormMixin(LitElement) {
                 <div class="error">
                   <span
                     class="error-info-icon"
-                    role="img"
-                    title=${this._textStrings.error}
-                    aria-label=${this._textStrings.error}
-                    >${unsafeSVG(errorIcon)}</span
-                  >
-                  ${this.invalidText || this._internalValidationMsg}
-                </div>
-              `
-            : null
-        }
-
-        <div
-          class="assistive-text"
-          role="status"
-          aria-live="assertive"
-          aria-relevant="additions text"
-        >
-          ${this.assistiveText}
-        </div>
-
-        ${this.renderCaptionError()}
-      </div>
-    `;
-  }
-
-  private renderCaptionError() {
-    return html`
-        ${
-          this.multiple && !this.hideTags && this._tags.length
-            ? html`
-                <kyn-tag-group
-                  filter
-                  role="list"
-                  aria-label=${this._textStrings.selectedOptions}
-                >
-                  ${this._tags.map((tag: any) => {
-                    return html`
-                      <kyn-tag
-                        role="listitem"
-                        label=${tag.text}
-                        ?disabled=${this.disabled}
-                        clearTagText="Clear Tag ${tag.text}"
-                        @on-close=${() => this.handleTagClear(tag.value)}
-                      ></kyn-tag>
-                    `;
-                  })}
-                </kyn-tag-group>
-              `
-            : null
-        }
-        ${
-          this.caption !== ''
-            ? html`
-                <div class="caption" aria-disabled=${this.disabled}>
-                  ${this.caption}
-                </div>
-              `
-            : null
-        }
-        ${
-          this._isInvalid
-            ? html`
-                <div class="error">
-                  <span
-                    class="error-info-icon error-icon"
                     role="img"
                     title=${this._textStrings.error}
                     aria-label=${this._textStrings.error}
