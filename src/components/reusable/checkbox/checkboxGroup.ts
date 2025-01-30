@@ -164,6 +164,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
                 <div class="error">
                   <span
                     role="img"
+                    class="error-icon"
                     title=${this._textStrings.error}
                     aria-label=${this._textStrings.error}
                     >${unsafeSVG(errorIcon)}</span

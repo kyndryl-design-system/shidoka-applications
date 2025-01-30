@@ -83,6 +83,7 @@ export class TextArea extends FormMixin(LitElement) {
                 class="required"
                 title=${this._textStrings.requiredText}
                 aria-label=${this._textStrings.requiredText}
+                role="img"
                 >*</abbr
               >`
             : null}
@@ -121,7 +122,10 @@ ${this.value}</textarea
             ${this._isInvalid
               ? html`
                   <div id="error" class="error">
-                    <span role="img" aria-label=${this._textStrings.errorText}
+                    <span
+                      role="img"
+                      class="error-icon"
+                      aria-label=${this._textStrings.errorText}
                       >${unsafeSVG(errorIcon)}</span
                     >
 

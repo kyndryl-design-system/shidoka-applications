@@ -167,7 +167,10 @@ export class NumberInput extends FormMixin(LitElement) {
         ${this._isInvalid
           ? html`
               <div id="error" class="error">
-                <span role="img" aria-label=${this._textStrings.error}
+                <span
+                  role="img"
+                  class="error-icon"
+                  aria-label=${this._textStrings.error}
                   >${unsafeSVG(errorIcon)}</span
                 >
                 ${this.invalidText || this._internalValidationMsg}
