@@ -25,6 +25,7 @@ const _defaultTextStrings = {
   selectedOptions: 'List of selected options',
   requiredText: 'Required',
   errorText: 'Error',
+  clearAll: 'Clear all',
 };
 
 /**
@@ -224,6 +225,7 @@ export class Dropdown extends FormMixin(LitElement) {
           id="label-${this.name}"
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
           for=${this.name}
+          @click=${() => this._handleLabelClick()}
         >
           ${this.required
             ? html`<abbr
@@ -355,6 +357,23 @@ export class Dropdown extends FormMixin(LitElement) {
               ></slot>
             </ul>
           </div>
+          ${this.searchText !== ''
+            ? html`
+                <kyn-button
+                  ?disabled=${this.disabled}
+                  class="clear-button dropdown-clear"
+                  ghost
+                  kind="tertiary"
+                  size="small"
+                  description=${this._textStrings.clearAll}
+                  @click=${(e: Event) => this.handleClear(e)}
+                >
+                  <span style="display:flex;" slot="icon"
+                    >${unsafeSVG(clearIcon)}</span
+                  >
+                </kyn-button>
+              `
+            : null}
         </div>
         ${this.renderHelperContent()}
       </div>
