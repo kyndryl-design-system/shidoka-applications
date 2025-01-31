@@ -37,6 +37,7 @@ export class Footer extends LitElement {
             href="${this.rootUrl}"
             class="logo-link"
             @click="${(e: Event) => this.handleRootLinkClick(e)}"
+            aria-label="Go to Homepage"
           >
             <slot name="logo">${unsafeHTML(logo)}</slot>
           </a>
