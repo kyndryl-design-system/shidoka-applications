@@ -419,7 +419,7 @@ export class Dropdown extends FormMixin(LitElement) {
             ? html`
                 <div class="error">
                   <span
-                    class="error-info-icon"
+                    class="error-icon"
                     role="img"
                     title=${this._textStrings.errorText}
                     aria-label=${this._textStrings.errorText}
