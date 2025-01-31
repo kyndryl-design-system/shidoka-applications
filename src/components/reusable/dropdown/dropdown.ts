@@ -223,7 +223,7 @@ export class Dropdown extends FormMixin(LitElement) {
       >
         <label
           id="label-${this.name}"
-          class="label-text ${this.hideLabel ? 'sr-only' : ''}"
+          class="label-text ${this.hideLabel || this.inline ? 'sr-only' : ''}"
           for=${this.name}
           @click=${() => this._handleLabelClick()}
         >
