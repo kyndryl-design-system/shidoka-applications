@@ -18,6 +18,14 @@
   }
 }
 
+slot[name='icon']::slotted(*) {
+  display: block;
+
+  [disabled] & {
+    color: var(--kd-color-icon-disabled);
+  }
+}
+
 .select {
   display: flex;
   align-items: center;
@@ -30,8 +38,6 @@
   cursor: pointer;
   font-weight: 400;
   white-space: nowrap;
-
-  background: var(--kd-color-background-forms-default);
 
   [searchable] & {
     padding-right: 80px;
