@@ -49,7 +49,10 @@ export class Widget extends LitElement {
         <div class="widget-header">
           <slot name="draghandle"></slot>
 
-          <div class="title-desc">
+          <div class="title-desc" aria-labelledby="title-desc-label">
+            <span id="title-desc-label" class="visually-hidden">
+              ${this.disabled ? 'This widget is disabled' : ''}
+            </span>
             <div class="title">
               ${this.widgetTitle}
               <slot name="tooltip"></slot>
