@@ -311,6 +311,7 @@ export const DataDrivenOptions = {
         placeholder=${args.placeholder}
         size=${args.size}
         ?inline=${args.inline}
+        ?hideTags=${args.hideTags}
         name=${args.name}
         ?open=${args.open}
         ?hideLabel=${args.hideLabel}
