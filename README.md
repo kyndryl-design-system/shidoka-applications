@@ -1,3 +1,4 @@
+[![Board Status](https://dev.azure.com/Kyndryl/f7f7ab25-06ec-43dc-902d-dee2e157cebd/4b57ccb3-10b1-492a-9fa2-ea2543af7b61/_apis/work/boardbadge/425d4652-d8fa-4a49-a502-541e319e36dc)](https://dev.azure.com/Kyndryl/f7f7ab25-06ec-43dc-902d-dee2e157cebd/_boards/board/t/4b57ccb3-10b1-492a-9fa2-ea2543af7b61/Microsoft.RequirementCategory)
 # Shidoka Web Components for Applications
 
 [![shidoka-applications](https://github.com/kyndryl-design-system/shidoka-applications/actions/workflows/actions.yml/badge.svg)](https://github.com/kyndryl-design-system/shidoka-applications/actions/workflows/actions.yml)
