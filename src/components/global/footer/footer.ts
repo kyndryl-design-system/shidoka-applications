@@ -4,6 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import logo from '@kyndryl-design-system/shidoka-foundation/assets/svg/kyndryl-logo.svg';
 import FooterScss from './footer.scss';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 /**
  * The global Footer component.
@@ -19,6 +20,10 @@ export class Footer extends LitElement {
   /** URL for the footer logo link. Should target the application home page. */
   @property({ type: String })
   rootUrl = '/';
+
+  /** Sets aria label attribute for logo link. */
+  @property({ type: String })
+  logoAriaLabel = '';
 
   override render() {
     const classes = {
@@ -37,7 +42,7 @@ export class Footer extends LitElement {
             href="${this.rootUrl}"
             class="logo-link"
             @click="${(e: Event) => this.handleRootLinkClick(e)}"
-            aria-label="Go to Homepage"
+            aria-label=${ifDefined(this.logoAriaLabel)}
           >
             <slot name="logo">${unsafeHTML(logo)}</slot>
           </a>
