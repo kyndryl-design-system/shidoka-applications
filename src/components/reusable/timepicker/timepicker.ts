@@ -187,9 +187,9 @@ export class TimePicker extends FormMixin(LitElement) {
           ${this.required
             ? html`<abbr
                 class="required"
-                title=${this._textStrings?.requiredText || 'Required'}
+                title=${this._textStrings?.requiredText}
                 role="img"
-                aria-label=${this._textStrings?.requiredText || 'Required'}
+                aria-label=${this._textStrings?.requiredText}
                 >*</abbr
               >`
             : null}

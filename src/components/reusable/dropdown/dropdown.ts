@@ -21,9 +21,11 @@ import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/er
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
 
 const _defaultTextStrings = {
+  title: 'Dropdown',
   selectedOptions: 'List of selected options',
-  required: 'Required',
-  error: 'Error',
+  requiredText: 'Required',
+  errorText: 'Error',
+  clearAll: 'Clear all',
 };
 
 /**
@@ -77,6 +79,10 @@ export class Dropdown extends FormMixin(LitElement) {
   /** Makes the dropdown required. */
   @property({ type: Boolean })
   required = false;
+
+  /** Visually hide the label. */
+  @property({ type: Boolean })
+  hideLabel = false;
 
   /** Dropdown disabled state. */
   @property({ type: Boolean })
@@ -216,23 +222,21 @@ export class Dropdown extends FormMixin(LitElement) {
         ?searchable=${this.searchable}
       >
         <label
-          for=${this.name}
           id="label-${this.name}"
-          class="label-text"
-          @click=${this._handleLabelClick}
+          class="label-text ${this.hideLabel || this.inline ? 'sr-only' : ''}"
+          for=${this.name}
+          @click=${() => this._handleLabelClick()}
         >
           ${this.required
-            ? html`
-                <abbr
-                  class="required"
-                  title=${this._textStrings.required}
-                  aria-label=${this._textStrings.required}
-                >
-                  *
-                </abbr>
-              `
+            ? html`<abbr
+                class="required"
+                title=${this._textStrings.requiredText}
+                role="img"
+                aria-label=${this._textStrings?.requiredText || 'Required'}
+                >*</abbr
+              >`
             : null}
-          <span>${this.label}</span>
+          ${this.label}
           <slot name="tooltip"></slot>
         </label>
 
@@ -257,6 +261,7 @@ export class Dropdown extends FormMixin(LitElement) {
               role="combobox"
               id=${this.name}
               name=${this.name}
+              title=${this._textStrings.title}
               ?required=${this.required}
               ?disabled=${this.disabled}
               ?invalid=${this._isInvalid}
@@ -352,6 +357,23 @@ export class Dropdown extends FormMixin(LitElement) {
               ></slot>
             </ul>
           </div>
+          ${this.searchText !== ''
+            ? html`
+                <kyn-button
+                  ?disabled=${this.disabled}
+                  class="clear-button dropdown-clear"
+                  ghost
+                  kind="tertiary"
+                  size="small"
+                  description=${this._textStrings.clearAll}
+                  @click=${(e: Event) => this.handleClear(e)}
+                >
+                  <span style="display:flex;" slot="icon"
+                    >${unsafeSVG(clearIcon)}</span
+                  >
+                </kyn-button>
+              `
+            : null}
         </div>
         ${this.renderHelperContent()}
       </div>
@@ -359,67 +381,6 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private renderHelperContent() {
-    return html`
-        ${
-          this.multiple && !this.hideTags && this._tags.length
-            ? html`
-                <kyn-tag-group
-                  filter
-                  role="list"
-                  aria-label=${this._textStrings.selectedOptions}
-                >
-                  ${this._tags.map((tag: any) => {
-                    return html`
-                      <kyn-tag
-                        role="listitem"
-                        label=${tag.text}
-                        ?disabled=${this.disabled}
-                        clearTagText="Clear Tag ${tag.text}"
-                        @on-close=${() => this.handleTagClear(tag.value)}
-                      ></kyn-tag>
-                    `;
-                  })}
-                </kyn-tag-group>
-              `
-            : null
-        }
-        ${
-          this.caption !== ''
-            ? html` <div class="caption">${this.caption}</div> `
-            : null
-        }
-        ${
-          this._isInvalid
-            ? html`
-                <div class="error">
-                  <span
-                    class="error-info-icon"
-                    role="img"
-                    title=${this._textStrings.error}
-                    aria-label=${this._textStrings.error}
-                    >${unsafeSVG(errorIcon)}</span
-                  >
-                  ${this.invalidText || this._internalValidationMsg}
-                </div>
-              `
-            : null
-        }
-
-        <div
-          class="assistive-text"
-          role="status"
-          aria-live="assertive"
-          aria-relevant="additions text"
-        >
-          ${this.assistiveText}
-        </div>
-
-        ${this.renderCaptionError()}
-      </div>
-    `;
-  }
-
-  private renderCaptionError() {
     return html`
         ${
           this.multiple && !this.hideTags && this._tags.length
@@ -458,10 +419,10 @@ export class Dropdown extends FormMixin(LitElement) {
             ? html`
                 <div class="error">
                   <span
-                    class="error-info-icon error-icon"
+                    class="error-icon"
                     role="img"
-                    title=${this._textStrings.error}
-                    aria-label=${this._textStrings.error}
+                    title=${this._textStrings.errorText}
+                    aria-label=${this._textStrings.errorText}
                     >${unsafeSVG(errorIcon)}</span
                   >
                   ${this.invalidText || this._internalValidationMsg}
@@ -920,18 +881,7 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   }
 
-  // private _handleFormdata(e: any) {
-  //   if (this.multiple) {
-  //     this.value.forEach((value: string) => {
-  //       e.formData.append(this.name, value);
-  //     });
-  //   } else {
-  //     e.formData.append(this.name, this.value);
-  //   }
-  // }
-
   private _handleClickOut(e: Event) {
-    // console.log(e.composedPath());
     if (!e.composedPath().includes(this)) {
       this.open = false;
     }
