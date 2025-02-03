@@ -4,7 +4,6 @@ import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import logo from '@kyndryl-design-system/shidoka-foundation/assets/svg/kyndryl-logo.svg';
 import FooterScss from './footer.scss';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 /**
  * The global Footer component.
@@ -42,7 +41,7 @@ export class Footer extends LitElement {
             href="${this.rootUrl}"
             class="logo-link"
             @click="${(e: Event) => this.handleRootLinkClick(e)}"
-            aria-label=${ifDefined(this.logoAriaLabel)}
+            aria-label=${this.logoAriaLabel}
           >
             <slot name="logo">${unsafeHTML(logo)}</slot>
           </a>
