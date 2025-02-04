@@ -39,6 +39,7 @@ const args = {
   label: 'Label',
   required: false,
   disabled: false,
+  readOnly: false,
   invalidText: '',
   iconRight: false,
   hideLabel: false,
@@ -65,6 +66,7 @@ export const TextInput = {
         caption=${args.caption}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readOnly=${args.readOnly}
         invalidText=${args.invalidText}
         ?hideLabel=${args.hideLabel}
         pattern=${ifDefined(args.pattern)}
@@ -104,6 +106,7 @@ export const WithIcon = {
         caption=${args.caption}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readOnly=${args.readOnly}
         invalidText=${args.invalidText}
         ?hideLabel=${args.hideLabel}
         ?iconRight=${args.iconRight}

@@ -95,6 +95,10 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   timepickerDisabled = false;
 
+  /** Input read only state. */
+  @property({ type: Boolean })
+  readOnly = false;
+
   /** Sets 24 hour formatting true/false.
    * Defaults to 12H for all `en-*` locales and 24H for all other locales.
    */
@@ -182,6 +186,7 @@ export class TimePicker extends FormMixin(LitElement) {
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
           ?disabled=${this.timepickerDisabled}
+          ?readOnly=${this.readOnly}
           id=${`label-${anchorId}`}
         >
           ${this.required
@@ -208,6 +213,7 @@ export class TimePicker extends FormMixin(LitElement) {
             name=${this.name}
             placeholder=${placeholder}
             ?disabled=${this.timepickerDisabled}
+            ?readOnly=${this.readOnly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
@@ -219,6 +225,7 @@ export class TimePicker extends FormMixin(LitElement) {
             ? html`
                 <kyn-button
                   ?disabled=${this.timepickerDisabled}
+                  ?readOnly=${this.readOnly}
                   class="clear-button"
                   ghost
                   kind="tertiary"
@@ -292,6 +299,7 @@ export class TimePicker extends FormMixin(LitElement) {
     return {
       'time-picker': true,
       'time-picker__disabled': this.timepickerDisabled,
+      'time-picker__read-only': this.readOnly,
     };
   }
 

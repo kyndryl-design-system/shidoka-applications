@@ -67,6 +67,10 @@ export class TextInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Input read only state. */
+  @property({ type: Boolean })
+  readOnly = false;
+
   /** RegEx pattern to validate. */
   @property({ type: String })
   pattern!: string;
@@ -120,7 +124,11 @@ export class TextInput extends FormMixin(LitElement) {
 
   override render() {
     return html`
-      <div class="text-input" ?disabled=${this.disabled}>
+      <div
+        class="text-input"
+        ?disabled=${this.disabled}
+        ?readOnly=${this.readOnly}
+      >
         <label
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
           for=${this.name}
@@ -161,6 +169,7 @@ export class TextInput extends FormMixin(LitElement) {
             placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
+            ?readOnly=${this.readOnly}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}
@@ -173,6 +182,7 @@ export class TextInput extends FormMixin(LitElement) {
             ? html`
                 <kyn-button
                   ?disabled=${this.disabled}
+                  ?readOnly=${this.readOnly}
                   class="clear-button"
                   ghost
                   kind="tertiary"

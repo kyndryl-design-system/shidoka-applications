@@ -41,6 +41,7 @@ const args = {
   caption: '',
   required: false,
   disabled: false,
+  readOnly: false,
   invalidText: '',
   hideLabel: false,
   step: 1,
@@ -66,6 +67,7 @@ export const NumberInput = {
         caption=${args.caption}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readOnly=${args.readOnly}
         invalidText=${args.invalidText}
         ?hideLabel=${args.hideLabel}
         step=${ifDefined(args.step)}
