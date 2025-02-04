@@ -103,7 +103,9 @@ export class Tag extends LitElement {
         @click=${(e: any) => this.handleTagClick(e, this.label)}
         @keydown=${(e: any) => this.handleTagPress(e, this.label)}
       >
-        <span class="${classMap(labelClasses)}">${this.label}</span>
+        <span class="${classMap(labelClasses)}" aria-disabled=${this.disabled}
+          >${this.label}</span
+        >
         ${this.filter
           ? html`
               <button
