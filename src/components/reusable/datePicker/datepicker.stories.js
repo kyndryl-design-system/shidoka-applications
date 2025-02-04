@@ -76,6 +76,7 @@ const Template = (args) => {
       .warningAriaLabel="${args.warningAriaLabel}"
       .warningTitle="${args.warningTitle}"
       ?datePickerDisabled="${args.datePickerDisabled}"
+      ?readOnly="${args.readOnly}"
       ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       .minDate="${args.minDate}"
       .maxDate="${args.maxDate}"
@@ -106,6 +107,7 @@ DatePickerDefault.args = {
   mode: 'single',
   caption: 'Example datepicker caption.',
   datePickerDisabled: false,
+  readOnly: false,
   minDate: '',
   maxDate: '',
   label: 'Date',

@@ -138,6 +138,22 @@ export const Default = {
         </kyn-text-input>
         <br /><br />
 
+        <kyn-text-input
+          required
+          name="textInput"
+          placeholder="Read only input example"
+          readOnly
+          caption="Text input example"
+          label="Text input"
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          <kyn-tooltip slot="tooltip">
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
+            Tooltip example.
+          </kyn-tooltip>
+        </kyn-text-input>
+        <br /><br />
+
         <kyn-text-area
           name="textArea"
           placeholder="Placeholder text"

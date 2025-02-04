@@ -64,6 +64,7 @@ const Template = (args) => {
       .warningAriaLabel="${args.warningAriaLabel}"
       .warningTitle="${args.warningTitle}"
       ?timepickerDisabled="${args.timepickerDisabled}"
+      ?readOnly="${args.readOnly}"
       ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       @on-change=${(e) => action(e.type)(e)}
     >
@@ -90,6 +91,7 @@ DefaultTimePicker.args = {
   warningAriaLabel: '',
   warningTitle: '',
   timepickerDisabled: false,
+  readOnly: false,
   label: 'Timepicker',
 };
 DefaultTimePicker.storyName = 'Default (12H)';
