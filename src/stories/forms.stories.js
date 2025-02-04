@@ -142,7 +142,7 @@ export const Default = {
           required
           name="textInput"
           placeholder="Read only input example"
-          readOnly
+          readonly
           caption="Text input example"
           label="Text input"
           @on-input=${(e) => action(e.type)(e)}

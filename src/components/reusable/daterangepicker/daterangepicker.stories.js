@@ -16,7 +16,7 @@ export default {
     locale: { control: { type: 'text' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
     dateRangePickerDisabled: { control: { type: 'boolean' } },
-    readOnly: { control: { type: 'boolean' } },
+    readonly: { control: { type: 'boolean' } },
     dateFormat: {
       options: [
         'Y-m-d',
@@ -69,7 +69,7 @@ const Template = (args) => {
       ?required="${args.required}"
       .size="${args.size}"
       ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
-      ?readOnly="${args.readOnly}"
+      ?readonly="${args.readonly}"
       ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       .minDate="${args.minDate}"
       .maxDate="${args.maxDate}"
@@ -105,7 +105,7 @@ DateRangeDefault.args = {
   warningTitle: '',
   caption: 'Click the input above to select a date range.',
   dateRangePickerDisabled: false,
-  readOnly: false,
+  readonly: false,
   minDate: '',
   maxDate: '',
   label: 'Date Range',

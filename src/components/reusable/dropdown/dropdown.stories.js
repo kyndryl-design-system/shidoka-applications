@@ -34,7 +34,7 @@ const args = {
   open: false,
   required: false,
   disabled: false,
-  readOnly: false,
+  readonly: false,
   hideTags: false,
   hideLabel: false,
   selectAll: false,
@@ -63,7 +63,7 @@ export const Single = {
         ?open=${args.open}
         ?required=${args.required}
         ?disabled=${args.disabled}
-        ?readOnly=${args.readOnly}
+        ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
         caption=${args.caption}
@@ -106,7 +106,7 @@ export const SingleSearchable = {
         ?filterSearch=${args.filterSearch}
         ?required=${args.required}
         ?disabled=${args.disabled}
-        ?readOnly=${args.readOnly}
+        ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
@@ -149,7 +149,7 @@ export const MultiSelect = {
         ?hideLabel=${args.hideLabel}
         ?required=${args.required}
         ?disabled=${args.disabled}
-        ?readOnly=${args.readOnly}
+        ?readonly=${args.readonly}
         ?hideTags=${args.hideTags}
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
@@ -199,7 +199,7 @@ export const MultiSelectSearchable = {
         ?hideLabel=${args.hideLabel}
         ?required=${args.required}
         ?disabled=${args.disabled}
-        ?readOnly=${args.readOnly}
+        ?readonly=${args.readonly}
         ?hideTags=${args.hideTags}
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
@@ -248,7 +248,7 @@ export const Grouped = {
         ?hideLabel=${args.hideLabel}
         ?required=${args.required}
         ?disabled=${args.disabled}
-        ?readOnly=${args.readOnly}
+        ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
@@ -323,7 +323,7 @@ export const DataDrivenOptions = {
         ?hideLabel=${args.hideLabel}
         ?required=${args.required}
         ?disabled=${args.disabled}
-        ?readOnly=${args.readOnly}
+        ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}

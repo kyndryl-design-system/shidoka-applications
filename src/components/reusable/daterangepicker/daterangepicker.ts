@@ -100,7 +100,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   /** Input read only state. */
   @property({ type: Boolean })
-  readOnly = false;
+  readonly = false;
 
   /** Sets 24 hour formatting true/false.
    * Defaults to 12H for all `en-` locales and 24H for all other locales.
@@ -201,8 +201,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
           class="label-text"
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
-          ?disabled=${this.dateRangePickerDisabled || this.readOnly}
-          ?readOnly=${this.readOnly}
+          ?disabled=${this.dateRangePickerDisabled || this.readonly}
+          ?readonly=${this.readonly}
           id=${`label-${anchorId}`}
         >
           ${this.required
@@ -228,8 +228,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
             id=${anchorId}
             name=${this.name}
             placeholder=${placeholder}
-            ?disabled=${this.dateRangePickerDisabled || this.readOnly}
-            ?readOnly=${this.readOnly}
+            ?disabled=${this.dateRangePickerDisabled || this.readonly}
+            ?readonly=${this.readonly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
@@ -251,8 +251,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
             this.defaultDate[1] !== '')
             ? html`
                 <kyn-button
-                  ?disabled=${this.dateRangePickerDisabled || this.readOnly}
-                  ?readOnly=${this.readOnly}
+                  ?disabled=${this.dateRangePickerDisabled || this.readonly}
+                  ?readonly=${this.readonly}
                   class="clear-button"
                   ghost
                   kind="tertiary"
@@ -346,7 +346,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       'date-range-picker': true,
       'date-range-picker__enable-time': this._enableTime,
       'date-range-picker__disabled': this.dateRangePickerDisabled,
-      'date-range-picker__read-only': this.readOnly,
+      'date-range-picker__read-only': this.readonly,
     };
   }
 

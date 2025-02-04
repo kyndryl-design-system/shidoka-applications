@@ -25,7 +25,7 @@ export const TextArea = {
     caption: '',
     required: false,
     disabled: false,
-    readOnly: false,
+    readonly: false,
     invalidText: '',
     minLength: undefined,
     maxLength: undefined,
@@ -44,7 +44,7 @@ export const TextArea = {
         caption=${args.caption}
         ?required=${args.required}
         ?disabled=${args.disabled}
-        ?readOnly=${args.readOnly}
+        ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
         minLength=${ifDefined(args.minLength)}

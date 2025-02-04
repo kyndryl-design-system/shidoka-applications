@@ -54,7 +54,7 @@ export class NumberInput extends FormMixin(LitElement) {
 
   /** Input read only state. */
   @property({ type: Boolean })
-  readOnly = false;
+  readonly = false;
 
   /** Optional text beneath the input. */
   @property({ type: String })
@@ -97,8 +97,8 @@ export class NumberInput extends FormMixin(LitElement) {
     return html`
       <div
         class="number-input"
-        ?disabled=${this.disabled || this.readOnly}
-        ?readOnly=${this.readOnly}
+        ?disabled=${this.disabled || this.readonly}
+        ?readonly=${this.readonly}
       >
         <label
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
@@ -126,7 +126,7 @@ export class NumberInput extends FormMixin(LitElement) {
             kind="primary-app"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value <= this.min}
-            ?readOnly=${this.readOnly}
+            ?readonly=${this.readonly}
             outlineOnly
             description=${this._textStrings.subtract}
             @on-click=${this._handleSubtract}
@@ -145,8 +145,8 @@ export class NumberInput extends FormMixin(LitElement) {
             value=${this.value.toString()}
             placeholder=${this.placeholder}
             ?required=${this.required}
-            ?disabled=${this.disabled || this.readOnly}
-            ?readOnly=${this.readOnly}
+            ?disabled=${this.disabled || this.readonly}
+            ?readonly=${this.readonly}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}
@@ -160,7 +160,7 @@ export class NumberInput extends FormMixin(LitElement) {
             kind="primary-app"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value >= this.max}
-            ?readOnly=${this.readOnly}
+            ?readonly=${this.readonly}
             outlineOnly
             description=${this._textStrings.add}
             @on-click=${this._handleAdd}
@@ -174,7 +174,7 @@ export class NumberInput extends FormMixin(LitElement) {
               <div
                 class="caption"
                 aria-disabled=${this.disabled}
-                ?readOnly=${this.readOnly}
+                ?readonly=${this.readonly}
               >
                 ${this.caption}
               </div>

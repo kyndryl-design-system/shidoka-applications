@@ -104,7 +104,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
   /** Input read only state. */
   @property({ type: Boolean })
-  readOnly = false;
+  readonly = false;
 
   /** Sets 24 hour formatting true/false.
    * Defaults to 12H for all `en-*` locales and 24H for all other locales.
@@ -199,8 +199,8 @@ export class DatePicker extends FormMixin(LitElement) {
           class="label-text"
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
-          ?disabled=${this.datePickerDisabled || this.readOnly}
-          ?readOnly=${this.readOnly}
+          ?disabled=${this.datePickerDisabled || this.readonly}
+          ?readonly=${this.readonly}
           id=${`label-${anchorId}`}
         >
           ${this.required
@@ -226,8 +226,8 @@ export class DatePicker extends FormMixin(LitElement) {
             id=${anchorId}
             name=${this.name}
             placeholder=${placeholder}
-            ?disabled=${this.datePickerDisabled || this.readOnly}
-            ?readOnly=${this.readOnly}
+            ?disabled=${this.datePickerDisabled || this.readonly}
+            ?readonly=${this.readonly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
@@ -246,8 +246,8 @@ export class DatePicker extends FormMixin(LitElement) {
             !this.defaultDate.every((date) => date === null || date === ''))
             ? html`
                 <kyn-button
-                  ?disabled=${this.datePickerDisabled || this.readOnly}
-                  ?readOnly=${this.readOnly}
+                  ?disabled=${this.datePickerDisabled || this.readonly}
+                  ?readonly=${this.readonly}
                   class="clear-button"
                   ghost
                   kind="tertiary"
@@ -323,7 +323,7 @@ export class DatePicker extends FormMixin(LitElement) {
       'date-picker__enable-time': this._enableTime,
       'date-picker__multiple-select': this.mode === 'multiple',
       'date-picker__disabled': this.datePickerDisabled,
-      'date-picker__read-only': this.readOnly,
+      'date-picker__read-only': this.readonly,
     };
   }
 
