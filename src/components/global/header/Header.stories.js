@@ -9,7 +9,7 @@ import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/que
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 import circleIcon24 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/circle-stroke.svg';
 import filledNotificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/notifications-new.svg';
-import useSetingIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/settings.svg';
+import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/settings.svg';
 
 import '../../reusable/notification';
 import '../../reusable/overflowMenu';
@@ -240,14 +240,15 @@ export const WithNotificationPanel = {
             slot="menu-slot"
             kind="tertiary"
             @click=${(e) => selectAllNotificationsAsRead(e)}
-            >Mark all as Read</kyn-button
           >
+            Mark all as Read
+          </kyn-button>
           <kyn-button
             slot="menu-slot"
             kind="tertiary"
             @click=${(e) => console.log(e)}
           >
-            <span>${unsafeSVG(useSetingIcon)}</span>
+            <span slot="icon">${unsafeSVG(settingsIcon)}</span>
           </kyn-button>
 
           <!-- Notification component inside notification panel -->
