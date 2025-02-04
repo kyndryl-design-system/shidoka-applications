@@ -1,0 +1,26 @@
+name: Sync issue to Azure DevOps work item
+
+on:
+  issues:
+    types:
+      [opened, edited, deleted, closed, reopened, labeled, unlabeled, assigned]
+  issue_comment:
+    types: [created, edited, deleted]
+
+concurrency:
+  group: issue-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  alert:
+    if: ${{ !github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: danhellem/github-actions-issue-to-work-item@master
+        env:
+          ado_token: '${{ secrets.ADO_TOKEN }}'
+          github_token: '${{ secrets.GH_TOKEN }}'
+          ado_organization: 'Kyndryl'
+          ado_project: 'Shidoka - Bridge Design System'
+          ado_area_path: 'Shidoka - Bridge Design System\\GitHub Issues'
+          ado_bypassrules: true
