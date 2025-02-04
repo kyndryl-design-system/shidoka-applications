@@ -24,6 +24,7 @@ export const Search = {
     name: 'search',
     expandable: false,
     disabled: false,
+    readOnly: false,
     value: '',
     label: 'Search...',
     size: 'md',
@@ -44,6 +45,7 @@ export const Search = {
         value=${args.value}
         ?expandable=${args.expandable}
         ?disabled=${args.disabled}
+        ?readOnly=${args.readOnly}
         size=${args.size}
         .suggestions=${args.suggestions}
         expandableSearchBtnDescription=${args.expandableSearchBtnDescription}

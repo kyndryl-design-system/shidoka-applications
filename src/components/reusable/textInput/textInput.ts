@@ -126,7 +126,7 @@ export class TextInput extends FormMixin(LitElement) {
     return html`
       <div
         class="text-input"
-        ?disabled=${this.disabled}
+        ?disabled=${this.disabled || this.readOnly}
         ?readOnly=${this.readOnly}
       >
         <label
@@ -168,7 +168,7 @@ export class TextInput extends FormMixin(LitElement) {
             value=${this.value}
             placeholder=${this.placeholder}
             ?required=${this.required}
-            ?disabled=${this.disabled}
+            ?disabled=${this.disabled || this.readOnly}
             ?readOnly=${this.readOnly}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
@@ -181,7 +181,7 @@ export class TextInput extends FormMixin(LitElement) {
           ${this.value !== ''
             ? html`
                 <kyn-button
-                  ?disabled=${this.disabled}
+                  ?disabled=${this.disabled || this.readOnly}
                   ?readOnly=${this.readOnly}
                   class="clear-button"
                   ghost

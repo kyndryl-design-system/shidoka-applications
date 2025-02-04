@@ -82,7 +82,7 @@ export class TextArea extends FormMixin(LitElement) {
     return html`
       <div
         class="text-area"
-        ?disabled=${this.disabled}
+        ?disabled=${this.disabled || this.readOnly}
         ?readOnly=${this.readOnly}
       >
         <label class="label-text" for=${this.name}>
@@ -105,7 +105,7 @@ export class TextArea extends FormMixin(LitElement) {
             name=${this.name}
             placeholder=${this.placeholder}
             ?required=${this.required}
-            ?disabled=${this.disabled}
+            ?disabled=${this.disabled || this.readOnly}
             ?readOnly=${this.readOnly}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}

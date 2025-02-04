@@ -97,7 +97,7 @@ export class NumberInput extends FormMixin(LitElement) {
     return html`
       <div
         class="number-input"
-        ?disabled=${this.disabled}
+        ?disabled=${this.disabled || this.readOnly}
         ?readOnly=${this.readOnly}
       >
         <label
@@ -145,7 +145,7 @@ export class NumberInput extends FormMixin(LitElement) {
             value=${this.value.toString()}
             placeholder=${this.placeholder}
             ?required=${this.required}
-            ?disabled=${this.disabled}
+            ?disabled=${this.disabled || this.readOnly}
             ?readOnly=${this.readOnly}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}

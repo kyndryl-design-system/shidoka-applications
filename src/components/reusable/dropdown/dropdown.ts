@@ -220,7 +220,7 @@ export class Dropdown extends FormMixin(LitElement) {
     return html`
       <div
         class="dropdown"
-        ?disabled=${this.disabled}
+        ?disabled=${this.disabled || this.readOnly}
         ?readOnly=${this.readOnly}
         ?open=${this.open}
         ?inline=${this.inline}
@@ -269,7 +269,7 @@ export class Dropdown extends FormMixin(LitElement) {
               name=${this.name}
               title=${this._textStrings.title}
               ?required=${this.required}
-              ?disabled=${this.disabled}
+              ?disabled=${this.disabled || this.readOnly}
               ?readOnly=${this.readOnly}
               ?invalid=${this._isInvalid}
               tabindex=${this.disabled ? '' : '0'}
@@ -288,7 +288,7 @@ export class Dropdown extends FormMixin(LitElement) {
                       class="clear-multiple"
                       aria-label="${this.value
                         .length} items selected. Clear selections"
-                      ?disabled=${this.disabled}
+                      ?disabled=${this.disabled || this.readOnly}
                       ?readOnly=${this.readOnly}
                       @click=${(e: Event) => this.handleClearMultiple(e)}
                     >
@@ -306,7 +306,7 @@ export class Dropdown extends FormMixin(LitElement) {
                       type="text"
                       placeholder=${this.placeholder}
                       value=${this.searchText}
-                      ?disabled=${this.disabled}
+                      ?disabled=${this.disabled || this.readOnly}
                       ?readOnly=${this.readOnly}
                       aria-disabled=${this.disabled}
                       @keydown=${(e: any) => this.handleSearchKeydown(e)}
@@ -353,7 +353,7 @@ export class Dropdown extends FormMixin(LitElement) {
                       multiple
                       ?selected=${this.selectAllChecked}
                       ?indeterminate=${this.selectAllIndeterminate}
-                      ?disabled=${this.disabled}
+                      ?disabled=${this.disabled || this.readOnly}
                       ?readOnly=${this.readOnly}
                     >
                       ${this.selectAllText}
@@ -370,7 +370,7 @@ export class Dropdown extends FormMixin(LitElement) {
           ${this.searchText !== ''
             ? html`
                 <kyn-button
-                  ?disabled=${this.disabled}
+                  ?disabled=${this.disabled || this.readOnly}
                   ?readOnly=${this.readOnly}
                   class="clear-button dropdown-clear"
                   ghost
@@ -406,7 +406,7 @@ export class Dropdown extends FormMixin(LitElement) {
                       <kyn-tag
                         role="listitem"
                         label=${tag.text}
-                        ?disabled=${this.disabled}
+                        ?disabled=${this.disabled || this.readOnly}
                         ?readOnly=${this.readOnly}
                         clearTagText="Clear Tag ${tag.text}"
                         @on-close=${() => this.handleTagClear(tag.value)}

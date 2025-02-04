@@ -185,7 +185,7 @@ export class TimePicker extends FormMixin(LitElement) {
           class="label-text"
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
-          ?disabled=${this.timepickerDisabled}
+          ?disabled=${this.timepickerDisabled || this.readOnly}
           ?readOnly=${this.readOnly}
           id=${`label-${anchorId}`}
         >
@@ -212,7 +212,7 @@ export class TimePicker extends FormMixin(LitElement) {
             id=${anchorId}
             name=${this.name}
             placeholder=${placeholder}
-            ?disabled=${this.timepickerDisabled}
+            ?disabled=${this.timepickerDisabled || this.readOnly}
             ?readOnly=${this.readOnly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
@@ -224,7 +224,7 @@ export class TimePicker extends FormMixin(LitElement) {
           ${this.value
             ? html`
                 <kyn-button
-                  ?disabled=${this.timepickerDisabled}
+                  ?disabled=${this.timepickerDisabled || this.readOnly}
                   ?readOnly=${this.readOnly}
                   class="clear-button"
                   ghost

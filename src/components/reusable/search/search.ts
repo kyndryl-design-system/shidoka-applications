@@ -48,6 +48,10 @@ export class Search extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Input read only state. */
+  @property({ type: Boolean })
+  readOnly = false;
+
   /** Auto-suggest array of strings that should match the current value. Update this array externally after on-input. */
   @property({ type: Array })
   suggestions: Array<string> = [];
@@ -101,7 +105,8 @@ export class Search extends LitElement {
           kind="secondary"
           size=${this._buttonSizeMap()}
           description=${ifDefined(this.expandableSearchBtnDescription)}
-          ?disabled=${this.disabled}
+          ?disabled=${this.disabled || this.readOnly}
+          ?readOnly=${this.readOnly}
           @on-click=${this._handleButtonClick}
         >
           <span slot="icon">${unsafeSVG(searchIcon)}</span>
@@ -114,7 +119,8 @@ export class Search extends LitElement {
           hideLabel
           value=${this.value}
           size=${this.size}
-          ?disabled=${this.disabled}
+          ?disabled=${this.disabled || this.readOnly}
+          ?readOnly=${this.readOnly}
           @on-input=${(e: CustomEvent) => this._handleInput(e)}
           @focus=${this._handleFocus}
           @blur=${this._handleBlur}

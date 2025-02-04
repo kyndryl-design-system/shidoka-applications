@@ -199,7 +199,7 @@ export class DatePicker extends FormMixin(LitElement) {
           class="label-text"
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
-          ?disabled=${this.datePickerDisabled}
+          ?disabled=${this.datePickerDisabled || this.readOnly}
           ?readOnly=${this.readOnly}
           id=${`label-${anchorId}`}
         >
@@ -226,7 +226,7 @@ export class DatePicker extends FormMixin(LitElement) {
             id=${anchorId}
             name=${this.name}
             placeholder=${placeholder}
-            ?disabled=${this.datePickerDisabled}
+            ?disabled=${this.datePickerDisabled || this.readOnly}
             ?readOnly=${this.readOnly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
@@ -246,7 +246,7 @@ export class DatePicker extends FormMixin(LitElement) {
             !this.defaultDate.every((date) => date === null || date === ''))
             ? html`
                 <kyn-button
-                  ?disabled=${this.datePickerDisabled}
+                  ?disabled=${this.datePickerDisabled || this.readOnly}
                   ?readOnly=${this.readOnly}
                   class="clear-button"
                   ghost
