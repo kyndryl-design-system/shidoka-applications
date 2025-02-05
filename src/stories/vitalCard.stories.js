@@ -24,9 +24,19 @@ const args = {
 
 export const Default = {
   render: () => {
-    return html`<kyn-card type="normal">
-      <vital-card-sample-component></vital-card-sample-component>
-    </kyn-card>`;
+    return html`
+      <h4 style="margin-bottom: 4px">Default card</h4>
+      <kyn-card type="normal">
+        <vital-card-sample-component></vital-card-sample-component>
+      </kyn-card>
+      <br /><br />
+      <h4 style="margin-bottom: 4px">Card with tooltip</h4>
+      <kyn-card type="normal">
+        <vital-card-sample-component
+          ?showtooltip=${true}
+        ></vital-card-sample-component>
+      </kyn-card>
+    `;
   },
 };
 
