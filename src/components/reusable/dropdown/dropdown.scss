@@ -64,8 +64,10 @@ slot[name='icon']::slotted(*) {
     padding-right: 80px;
   }
 
-  .dropdown:focus-within & {
-    outline-color: var(--kd-color-border-variants-focus);
+  .dropdown:focus-within {
+    &:not([readonly]) {
+      outline-color: var(--kd-color-border-variants-focus);
+    }
   }
 
   &.inline {
@@ -88,6 +90,10 @@ slot[name='icon']::slotted(*) {
 
   .open & {
     transform: translateY(-70%) rotate(180deg);
+  }
+
+  &[disabled] {
+    color: var(--kd-color-icon-disabled);
   }
 }
 
@@ -135,8 +141,10 @@ slot[name='icon']::slotted(*) {
     z-index: 11;
   }
 
-  [searchable] &:focus {
-    outline-color: var(--kd-color-border-variants-focus);
+  [searchable]:not([dropdown]) {
+    &:focus {
+      outline-color: var(--kd-color-border-variants-focus);
+    }
   }
 }
 

@@ -97,7 +97,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
   /** Input read only state. */
   @property({ type: Boolean })
-  readonly = false;
+  readOnly = false;
 
   /** Sets 24 hour formatting true/false.
    * Defaults to 12H for all `en-*` locales and 24H for all other locales.
@@ -185,8 +185,8 @@ export class TimePicker extends FormMixin(LitElement) {
           class="label-text"
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
-          ?disabled=${this.timepickerDisabled || this.readonly}
-          ?readonly=${this.readonly}
+          ?disabled=${this.timepickerDisabled || this.readOnly}
+          ?readonly=${this.readOnly}
           id=${`label-${anchorId}`}
         >
           ${this.required
@@ -212,8 +212,8 @@ export class TimePicker extends FormMixin(LitElement) {
             id=${anchorId}
             name=${this.name}
             placeholder=${placeholder}
-            ?disabled=${this.timepickerDisabled || this.readonly}
-            ?readonly=${this.readonly}
+            ?disabled=${this.timepickerDisabled || this.readOnly}
+            ?readonly=${this.readOnly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
@@ -224,8 +224,8 @@ export class TimePicker extends FormMixin(LitElement) {
           ${this.value
             ? html`
                 <kyn-button
-                  ?disabled=${this.timepickerDisabled || this.readonly}
-                  ?readonly=${this.readonly}
+                  ?disabled=${this.timepickerDisabled || this.readOnly}
+                  ?readonly=${this.readOnly}
                   class="clear-button"
                   ghost
                   kind="tertiary"
@@ -299,7 +299,7 @@ export class TimePicker extends FormMixin(LitElement) {
     return {
       'time-picker': true,
       'time-picker__disabled': this.timepickerDisabled,
-      'time-picker__read-only': this.readonly,
+      'time-picker__read-only': this.readOnly,
     };
   }
 

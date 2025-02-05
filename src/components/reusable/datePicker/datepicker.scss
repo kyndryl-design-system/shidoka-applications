@@ -5,17 +5,17 @@
 @include mixins.picker-base;
 
 input {
-    padding: 0 50px 0 16px;
+  padding: 0 50px 0 16px;
 }
 
 .date-picker {
-    width: inherit;
+  width: inherit;
 
-    &__enable-time {
-        min-width: 256px;
-    }
+  &__enable-time {
+    min-width: 256px;
+  }
 
-    &__disabled {
-        @include mixins.picker-disabled;
-    }
+  &[disabled]:not([readonly]) {
+    @include mixins.picker-disabled;
+  }
 }

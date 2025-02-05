@@ -47,7 +47,7 @@ export class TextArea extends FormMixin(LitElement) {
 
   /** Input read only state. */
   @property({ type: Boolean })
-  readonly = false;
+  readOnly = false;
 
   /** Maximum number of characters. */
   @property({ type: Number })
@@ -82,8 +82,8 @@ export class TextArea extends FormMixin(LitElement) {
     return html`
       <div
         class="text-area"
-        ?disabled=${this.disabled || this.readonly}
-        ?readonly=${this.readonly}
+        ?disabled=${this.disabled || this.readOnly}
+        ?readonly=${this.readOnly}
       >
         <label class="label-text" for=${this.name}>
           ${this.required
@@ -105,8 +105,8 @@ export class TextArea extends FormMixin(LitElement) {
             name=${this.name}
             placeholder=${this.placeholder}
             ?required=${this.required}
-            ?disabled=${this.disabled || this.readonly}
-            ?readonly=${this.readonly}
+            ?disabled=${this.disabled || this.readOnly}
+            ?readonly=${this.readOnly}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}

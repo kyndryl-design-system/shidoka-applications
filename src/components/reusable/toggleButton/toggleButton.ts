@@ -36,6 +36,10 @@ export class ToggleButton extends FormMixin(LitElement) {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Input read only state. */
+  @property({ type: Boolean })
+  readonly = false;
+
   /** Reverse UI element order, label on the left. */
   @property({ type: Boolean })
   reverse = false;
@@ -53,7 +57,11 @@ export class ToggleButton extends FormMixin(LitElement) {
 
   override render() {
     return html`
-      <div class="toggle-button" ?disabled=${this.disabled}>
+      <div
+        class="toggle-button"
+        ?disabled=${this.disabled}
+        ?readonly=${this.readonly}
+      >
         <label
           class="label-text  ${this.hideLabel ? 'sr-only' : ''}"
           for=${this.name}
@@ -72,6 +80,7 @@ export class ToggleButton extends FormMixin(LitElement) {
             .checked=${this.checked}
             ?checked=${this.checked}
             ?disabled=${this.disabled}
+            ?readonly=${this.readonly}
             @change=${(e: any) => this.handleChange(e)}
           />
 

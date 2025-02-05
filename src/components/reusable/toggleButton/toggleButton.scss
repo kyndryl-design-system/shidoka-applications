@@ -16,7 +16,7 @@
 }
 
 .status-text {
-  [disabled] & {
+  [disabled]:not([readonly]) & {
     color: var(--kd-color-text-link-level-disabled);
   }
 }
@@ -131,6 +131,18 @@ input {
 
       &:before {
         background-color: var(--kd-color-background-ui-hollow-default);
+      }
+    }
+  }
+
+  &[readonly] {
+    &:before {
+      background-color: var(--kd-color-background-ui-default-default);
+    }
+
+    &:hover {
+      &:before {
+        background-color: var(--kd-color-background-ui-default-default);
       }
     }
   }

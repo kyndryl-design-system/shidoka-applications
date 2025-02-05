@@ -49,6 +49,10 @@ export class Checkbox extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Input read only state. */
+  @property({ type: Boolean })
+  readOnly = false;
+
   /**
    * Checkbox group invalid state, inherited from the parent group.
    * @internal
@@ -70,7 +74,8 @@ export class Checkbox extends LitElement {
   override render() {
     return html`
       <label
-        ?disabled=${this.disabled}
+        ?disabled=${this.disabled || this.readOnly}
+        ?readonly=${this.readOnly}
         ?invalid=${this.invalid}
         class="${this.visiblyHidden ? 'label-hidden' : ''}"
       >
@@ -85,7 +90,8 @@ export class Checkbox extends LitElement {
           .checked=${this.checked}
           ?checked=${this.checked}
           ?required=${this.required}
-          ?disabled=${this.disabled}
+          ?disabled=${this.disabled || this.readOnly}
+          ?readonly=${this.readOnly}
           ?invalid=${this.invalid}
           @change=${(e: any) => this.handleChange(e)}
           .indeterminate=${this.indeterminate}

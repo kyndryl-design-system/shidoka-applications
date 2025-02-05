@@ -144,7 +144,8 @@ export const Default = {
           placeholder="Read only input example"
           readonly
           caption="Text input example"
-          label="Text input"
+          label="Read only Text Input"
+          value="Read only value"
           @on-input=${(e) => action(e.type)(e)}
         >
           <kyn-tooltip slot="tooltip">

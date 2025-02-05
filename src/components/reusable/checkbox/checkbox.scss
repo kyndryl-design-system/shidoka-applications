@@ -123,7 +123,7 @@ input {
     }
   }
 
-  &[disabled] {
+  &[disabled]:not([readonly]) {
     background: var(--kd-color-background-ui-hollow-default);
     border-color: var(--kd-color-border-ui-disabled);
 
@@ -160,9 +160,11 @@ input[type='checkbox']:indeterminate {
       transform: scale(1);
       background: var(--kd-color-background-ui-hollow-default);
       mask: linear-gradient(transparent 3px, #000 3px 5px, transparent 5px);
-      -webkit-mask: linear-gradient(transparent 3px,
-          #000 3px 5px,
-          transparent 5px);
+      -webkit-mask: linear-gradient(
+        transparent 3px,
+        #000 3px 5px,
+        transparent 5px
+      );
     }
 
     &:hover {
@@ -197,9 +199,11 @@ input[type='checkbox']:indeterminate:disabled {
     transform: scale(1);
     background: var(--kd-color-background-ui-hollow-default);
     mask: linear-gradient(transparent 3px, #000 3px 5px, transparent 5px);
-    -webkit-mask: linear-gradient(transparent 3px,
-        #000 3px 5px,
-        transparent 5px);
+    -webkit-mask: linear-gradient(
+      transparent 3px,
+      #000 3px 5px,
+      transparent 5px
+    );
   }
 }
 
@@ -207,7 +211,6 @@ input[type='checkbox'][invalid] {
   border-color: $invalid-checkbox-background;
 
   &:not([disabled]) {
-
     &:checked,
     &:indeterminate {
       background: $invalid-checkbox-background;
@@ -215,18 +218,26 @@ input[type='checkbox'][invalid] {
 
       &:hover {
         background: var(--kd-color-background-button-primary-destructive-hover);
-        border-color: var(--kd-color-background-button-primary-destructive-hover);
+        border-color: var(
+          --kd-color-background-button-primary-destructive-hover
+        );
       }
 
       &:active {
-        background: var(--kd-color-background-button-primary-destructive-pressed);
-        border-color: var(--kd-color-background-button-primary-destructive-pressed);
-        outline-color: var(--kd-color-background-button-primary-destructive-pressed);
+        background: var(
+          --kd-color-background-button-primary-destructive-pressed
+        );
+        border-color: var(
+          --kd-color-background-button-primary-destructive-pressed
+        );
+        outline-color: var(
+          --kd-color-background-button-primary-destructive-pressed
+        );
       }
     }
   }
 
-  &[disabled] {
+  &[disabled]:not([readonly]) {
     border-color: var(--kd-color-border-ui-disabled);
 
     &:hover {
@@ -263,7 +274,9 @@ input[type='checkbox'][invalid] {
   &:active {
     background: var(--kd-color-background-button-primary-destructive-pressed);
     border-color: var(--kd-color-background-button-primary-destructive-pressed);
-    outline-color: var(--kd-color-background-button-primary-destructive-pressed);
+    outline-color: var(
+      --kd-color-background-button-primary-destructive-pressed
+    );
   }
 }
 

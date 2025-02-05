@@ -49,6 +49,12 @@ export class RadioButton extends LitElement {
   disabled = false;
 
   /**
+   * Input read only state.
+   */
+  @property({ type: Boolean })
+  readOnly = false;
+
+  /**
    * Radio button group invalid state, inherited from the parent group.
    * @ignore
    */
@@ -57,7 +63,10 @@ export class RadioButton extends LitElement {
 
   override render() {
     return html`
-      <label ?disabled=${this.disabled} ?invalid=${this.invalid}>
+      <label
+        ?disabled=${this.disabled || this.readOnly}
+        ?invalid=${this.invalid}
+      >
         <span><slot></slot></span>
         <input
           type="radio"
@@ -66,7 +75,8 @@ export class RadioButton extends LitElement {
           .checked=${this.checked}
           ?checked=${this.checked}
           ?required=${this.required}
-          ?disabled=${this.disabled}
+          ?disabled=${this.disabled || this.readOnly}
+          ?readonly=${this.readOnly}
           ?invalid=${this.invalid}
           @change=${(e: any) => this.handleChange(e)}
         />

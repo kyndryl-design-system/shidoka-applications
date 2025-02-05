@@ -68,11 +68,15 @@ input {
     }
 
     &:focus {
-      border-color: var(--kd-color-background-button-secondary-state-default) !important;
+      border-color: var(
+        --kd-color-background-button-secondary-state-default
+      ) !important;
       outline-color: var(--kd-color-background-ui-default-focus);
 
       &::before {
-        background: var(--kd-color-background-button-secondary-state-default) !important;
+        background: var(
+          --kd-color-background-button-secondary-state-default
+        ) !important;
       }
     }
 
@@ -119,7 +123,7 @@ input {
     }
   }
 
-  &[disabled] {
+  &[disabled]:not([readonly]) {
     border-color: var(--kd-color-text-link-level-disabled);
     outline-color: transparent;
     opacity: 0.5;
@@ -142,11 +146,13 @@ input {
   &[disabled][checked],
   &[disabled]:active,
   &[disabled]:hover {
-    border-color: var(--kd-color-border-ui-disabled);
-    background: var(--kd-color-background-container-default);
+    &:not([readonly]) {
+      border-color: var(--kd-color-border-ui-disabled);
+      background: var(--kd-color-background-container-default);
 
-    &::before {
-      background: var(--kd-color-background-ui-default-disabled);
+      &::before {
+        background: var(--kd-color-background-ui-default-disabled);
+      }
     }
   }
 }

@@ -100,7 +100,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   /** Input read only state. */
   @property({ type: Boolean })
-  readonly = false;
+  readOnly = false;
 
   /** Sets 24 hour formatting true/false.
    * Defaults to 12H for all `en-` locales and 24H for all other locales.
@@ -201,8 +201,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
           class="label-text"
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
-          ?disabled=${this.dateRangePickerDisabled || this.readonly}
-          ?readonly=${this.readonly}
+          ?disabled=${this.dateRangePickerDisabled || this.readOnly}
+          ?readonly=${this.readOnly}
           id=${`label-${anchorId}`}
         >
           ${this.required
@@ -228,8 +228,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
             id=${anchorId}
             name=${this.name}
             placeholder=${placeholder}
-            ?disabled=${this.dateRangePickerDisabled || this.readonly}
-            ?readonly=${this.readonly}
+            ?disabled=${this.dateRangePickerDisabled || this.readOnly}
+            ?readonly=${this.readOnly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
@@ -238,6 +238,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             @focus=${this.handleInputFocusEvent}
           />
           ${(this.value &&
+            !this.readOnly &&
             Array.isArray(this.value) &&
             this.value.length === 2 &&
             this.value[0] !== null &&
@@ -251,8 +252,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
             this.defaultDate[1] !== '')
             ? html`
                 <kyn-button
-                  ?disabled=${this.dateRangePickerDisabled || this.readonly}
-                  ?readonly=${this.readonly}
+                  ?disabled=${this.dateRangePickerDisabled || this.readOnly}
+                  ?readonly=${this.readOnly}
                   class="clear-button"
                   ghost
                   kind="tertiary"
@@ -345,8 +346,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
     return {
       'date-range-picker': true,
       'date-range-picker__enable-time': this._enableTime,
-      'date-range-picker__disabled': this.dateRangePickerDisabled,
-      'date-range-picker__read-only': this.readonly,
     };
   }
 

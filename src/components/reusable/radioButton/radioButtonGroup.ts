@@ -39,6 +39,10 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Input read only state. */
+  @property({ type: Boolean })
+  readOnly = false;
+
   /** Radio button group horizontal layout. */
   @property({ type: Boolean })
   horizontal = false;
@@ -62,7 +66,10 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
 
   override render() {
     return html`
-      <fieldset ?disabled=${this.disabled}>
+      <fieldset
+        ?disabled=${this.disabled || this.readOnly}
+        ?readonly=${this.readOnly}
+      >
         <legend class="label-text">
           ${this.required
             ? html`
@@ -109,7 +116,8 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
 
   private _updateChildren() {
     this.radioButtons.forEach((radio) => {
-      radio.disabled = this.disabled;
+      radio.disabled = this.disabled || this.readOnly;
+      radio.readonly = this.readOnly;
       radio.checked = radio.value === this.value;
       radio.name = this.name;
       radio.required = this.required;
@@ -131,6 +139,7 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
       changedProps.has('name') ||
       changedProps.has('required') ||
       changedProps.has('disabled') ||
+      changedProps.has('readOnly') ||
       changedProps.has('invalidText') ||
       changedProps.has('internalValidationMsg')
     ) {
