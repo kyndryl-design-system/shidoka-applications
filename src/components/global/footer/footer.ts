@@ -20,6 +20,10 @@ export class Footer extends LitElement {
   @property({ type: String })
   rootUrl = '/';
 
+  /** Sets aria label attribute for logo link. */
+  @property({ type: String })
+  logoAriaLabel = '';
+
   override render() {
     const classes = {
       footer: true,
@@ -37,6 +41,7 @@ export class Footer extends LitElement {
             href="${this.rootUrl}"
             class="logo-link"
             @click="${(e: Event) => this.handleRootLinkClick(e)}"
+            aria-label=${this.logoAriaLabel}
           >
             <slot name="logo">${unsafeHTML(logo)}</slot>
           </a>
