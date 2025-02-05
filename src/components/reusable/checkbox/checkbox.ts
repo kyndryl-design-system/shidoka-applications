@@ -50,7 +50,7 @@ export class Checkbox extends LitElement {
   disabled = false;
 
   /** Input read only state. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   readOnly = false;
 
   /**
@@ -76,6 +76,7 @@ export class Checkbox extends LitElement {
       <label
         ?disabled=${this.disabled || this.readOnly}
         ?readonly=${this.readOnly}
+        ?checked=${this.checked}
         ?invalid=${this.invalid}
         class="${this.visiblyHidden ? 'label-hidden' : ''}"
       >
@@ -101,13 +102,16 @@ export class Checkbox extends LitElement {
   }
 
   private handleChange(e: any) {
-    // emit selected value, bubble so it can be captured by the checkbox group
+    const input = e.target as HTMLInputElement;
+
+    this.checked = input.checked;
+
     const event = new CustomEvent('on-checkbox-change', {
       bubbles: true,
       composed: true,
       detail: {
-        checked: e.target.checked,
-        value: e.target.value,
+        checked: input.checked,
+        value: input.value,
         origEvent: e,
       },
     });

@@ -65,6 +65,8 @@ export class RadioButton extends LitElement {
     return html`
       <label
         ?disabled=${this.disabled || this.readOnly}
+        ?readonly=${this.readOnly}
+        ?checked=${this.checked}
         ?invalid=${this.invalid}
       >
         <span><slot></slot></span>

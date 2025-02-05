@@ -9,8 +9,8 @@ label {
   display: inline-flex;
   gap: 10px;
 
-  &[disabled] {
-    color: var(--kd-color-text-level-primary);
+  &[disabled]:not([readonly][checked]) {
+    color: var(--kd-color-text-link-level-disabled);
   }
 }
 
@@ -141,18 +141,43 @@ input {
     &[invalid] {
       border-color: var(--kd-color-border-ui-disabled);
     }
-  }
 
-  &[disabled][checked],
-  &[disabled]:active,
-  &[disabled]:hover {
-    &:not([readonly]) {
+    &[checked],
+    &[disabled]:active,
+    &[disabled]:hover {
       border-color: var(--kd-color-border-ui-disabled);
       background: var(--kd-color-background-container-default);
 
       &::before {
         background: var(--kd-color-background-ui-default-disabled);
       }
+    }
+  }
+
+  &[readonly] {
+    &[checked] {
+      background: var(--kd-color-background-ui-default-default);
+      border-color: var(--kd-color-background-ui-default-default);
+
+      &:before {
+        background: var(--kd-color-background-ui-hollow-default);
+      }
+
+      &:hover {
+        background: var(--kd-color-background-ui-default-default);
+        border-color: var(--kd-color-background-ui-default-default);
+      }
+    }
+
+    &:not([checked]) {
+      &:hover {
+        background: transparent;
+        border-color: var(--kd-color-border-ui-disabled);
+      }
+    }
+
+    &:hover {
+      cursor: not-allowed;
     }
   }
 }

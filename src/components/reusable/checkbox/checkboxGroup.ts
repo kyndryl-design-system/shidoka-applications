@@ -264,8 +264,10 @@ export class CheckboxGroup extends FormMixin(LitElement) {
       changedProps.has('readOnly')
     ) {
       this.checkboxes.forEach((checkbox: any) => {
+        checkbox.readOnly = this.readOnly;
         checkbox.disabled = this.disabled || this.readOnly;
       });
+      this._updateCheckboxStates();
     }
 
     if (
@@ -438,12 +440,13 @@ export class CheckboxGroup extends FormMixin(LitElement) {
 
   private _updateChildren() {
     this.checkboxes.forEach((checkbox) => {
-      checkbox.disabled = this.disabled || this.readOnly;
       if (this.value && this.value.length) {
         checkbox.checked = this.value.includes(checkbox.value);
       } else {
         checkbox.checked = false;
       }
+      checkbox.readOnly = this.readOnly;
+      checkbox.disabled = this.disabled || this.readOnly;
     });
 
     if (this.selectAll) {
