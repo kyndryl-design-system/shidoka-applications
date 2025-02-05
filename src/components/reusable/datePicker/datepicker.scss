@@ -1,21 +1,14 @@
 @use '../../../common/scss/global.scss';
-@use '../../../common/scss/form-input.scss';
 @use '../../../common/scss/mixins.scss';
 
-@include mixins.picker-base;
-
-input {
-  padding: 0 50px 0 16px;
-}
-
 .date-picker {
-  width: inherit;
+  @include mixins.picker-base;
+
+  .input-wrapper {
+    max-width: 325px;
+  }
 
   &__enable-time {
     min-width: 256px;
-  }
-
-  &[disabled]:not([readonly]) {
-    @include mixins.picker-disabled;
   }
 }

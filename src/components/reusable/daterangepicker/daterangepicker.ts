@@ -334,6 +334,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   getDateRangePickerClasses() {
     return {
+      'shidoka-picker': true,
       'date-range-picker': true,
       'date-range-picker__enable-time': this._enableTime,
     };
@@ -519,8 +520,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   async handleDateChange(selectedDates: Date[]): Promise<void> {
-    this._hasInteracted = true;
-
     if (selectedDates.length === 0) {
       this.value = [null, null];
     } else if (selectedDates.length === 1) {
@@ -540,13 +539,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     this.updateSelectedDateRangeAria(selectedDates);
-    this._validate(true, false);
     await this.updateComplete;
   }
 
   async handleClose() {
-    this._hasInteracted = true;
-
     if (
       this.flatpickrInstance &&
       this.flatpickrInstance.selectedDates &&
@@ -559,7 +555,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.value = [null, null];
     }
 
-    this._validate(true, false);
+    if (this._inputEl?.value) {
+      this._hasInteracted = true;
+      this._validate(true, false);
+    }
     await this.updateComplete;
   }
 

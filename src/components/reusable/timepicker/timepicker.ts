@@ -299,9 +299,8 @@ export class TimePicker extends FormMixin(LitElement) {
 
   getTimepickerClasses() {
     return {
+      'shidoka-picker': true,
       'time-picker': true,
-      'time-picker__disabled': this.timepickerDisabled,
-      'time-picker__read-only': this.readOnly,
     };
   }
 
@@ -461,8 +460,10 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   async handleClose(): Promise<void> {
-    this._hasInteracted = true;
-    this._validate(true, false);
+    if (this._inputEl?.value) {
+      this._hasInteracted = true;
+      this._validate(true, false);
+    }
     await this.updateComplete;
   }
 
@@ -478,7 +479,6 @@ export class TimePicker extends FormMixin(LitElement) {
       emitValue(this, 'on-change', { time: '' });
     }
 
-    this._validate(true, false);
     await this.updateComplete;
   }
 

@@ -21,6 +21,7 @@
 @mixin picker-base {
   :host {
     display: inline-block;
+    width: inherit;
   }
 
   input {
@@ -32,6 +33,8 @@
     line-height: 48px;
     -webkit-appearance: none;
     appearance: none;
+    padding: 0 40px 0 16px;
+    cursor: default;
 
     &.size--sm {
       height: 32px;
@@ -39,6 +42,20 @@
 
     &.size--lg {
       height: 56px;
+    }
+
+    .date-picker &,
+    .date-range-picker & {
+      padding-right: 50px;
+    }
+  }
+
+  &[disabled]:not([readonly]) {
+    @include picker-disabled;
+
+    ::slotted(*),
+    .input-custom {
+      pointer-events: none;
     }
   }
 }

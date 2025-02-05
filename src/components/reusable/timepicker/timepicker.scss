@@ -1,22 +1,9 @@
-@use '../../../common/scss/global.scss';
-@use '../../../common/scss/form-input.scss';
 @use '../../../common/scss/mixins.scss';
 
-@include mixins.picker-base;
-
-input {
-    padding: 0 40px 0 16px;
-    cursor: default;
-}
-
 .time-picker {
-    width: inherit;
+  @include mixins.picker-base;
 
-    &__disabled {
-        @include mixins.picker-disabled;
-
-        .input-custom {
-            pointer-events: none;
-        }
-    }
+  .input-wrapper {
+    max-width: 325px;
+  }
 }

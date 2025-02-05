@@ -313,6 +313,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
   getDatepickerClasses() {
     return {
+      'shidoka-picker': true,
       'date-picker': true,
       'date-picker__enable-time': this._enableTime,
       'date-picker__multiple-select': this.mode === 'multiple',
@@ -531,8 +532,10 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async handleClose(): Promise<void> {
-    this._hasInteracted = true;
-    this._validate(true, false);
+    if (this._inputEl?.value) {
+      this._hasInteracted = true;
+      this._validate(true, false);
+    }
     await this.updateComplete;
   }
 
@@ -540,8 +543,6 @@ export class DatePicker extends FormMixin(LitElement) {
     selectedDates: Date[],
     dateStr: string
   ): Promise<void> {
-    this._hasInteracted = true;
-
     if (this.mode === 'multiple') {
       this.value = selectedDates.length > 0 ? [...selectedDates] : null;
     } else {
@@ -562,7 +563,6 @@ export class DatePicker extends FormMixin(LitElement) {
       dateString: (this._inputEl as HTMLInputElement)?.value || dateStr,
     });
 
-    this._validate(true, false);
     await this.updateComplete;
   }
 
