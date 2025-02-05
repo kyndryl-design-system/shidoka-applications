@@ -235,16 +235,9 @@ export class DatePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${(this._inputEl?.value && !this.readOnly) ||
-          (this.value &&
-            Array.isArray(this.value) &&
-            this.value.length > 0 &&
-            !this.value.every((date) => date === null)) ||
-          (this.defaultDate &&
-            Array.isArray(this.defaultDate) &&
-            this.defaultDate.length > 0 &&
-            !this.defaultDate.every((date) => date === null || date === '') &&
-            !this.readOnly)
+          ${this.readOnly
+            ? null
+            : this._hasValidDateRange()
             ? html`
                 <kyn-button
                   ?disabled=${this.datePickerDisabled || this.readOnly}
@@ -324,6 +317,25 @@ export class DatePicker extends FormMixin(LitElement) {
       'date-picker__enable-time': this._enableTime,
       'date-picker__multiple-select': this.mode === 'multiple',
     };
+  }
+
+  private _hasValidDateRange(): boolean {
+    const isValidDate = (date: unknown): boolean =>
+      date instanceof Date || (typeof date === 'string' && date.trim() !== '');
+
+    const hasValidValue =
+      Array.isArray(this.value) &&
+      this.value.length === 2 &&
+      isValidDate(this.value[0]) &&
+      isValidDate(this.value[1]);
+
+    const hasValidDefaultDate =
+      Array.isArray(this.defaultDate) &&
+      this.defaultDate.length === 2 &&
+      isValidDate(this.defaultDate[0]) &&
+      isValidDate(this.defaultDate[1]);
+
+    return hasValidValue || hasValidDefaultDate;
   }
 
   private _initialized = false;
@@ -503,6 +515,7 @@ export class DatePicker extends FormMixin(LitElement) {
       disable: this.disable,
       mode: this.mode,
       closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
+      allowInput: !this.readOnly && !this.datePickerDisabled,
       loadLocale,
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),

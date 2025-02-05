@@ -237,19 +237,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${(this.value &&
-            !this.readOnly &&
-            Array.isArray(this.value) &&
-            this.value.length === 2 &&
-            this.value[0] !== null &&
-            this.value[1] !== null) ||
-          (this.defaultDate &&
-            Array.isArray(this.defaultDate) &&
-            this.defaultDate.length === 2 &&
-            this.defaultDate[0] &&
-            this.defaultDate[1] &&
-            this.defaultDate[0] !== '' &&
-            this.defaultDate[1] !== '')
+          ${this.readOnly
+            ? null
+            : this._hasValidDateRange()
             ? html`
                 <kyn-button
                   ?disabled=${this.dateRangePickerDisabled || this.readOnly}
@@ -349,6 +339,22 @@ export class DateRangePicker extends FormMixin(LitElement) {
     };
   }
 
+  private _hasValidDateRange(): boolean {
+    const isValidDate = (date: unknown): boolean =>
+      date instanceof Date || (typeof date === 'string' && date.trim() !== '');
+
+    return (
+      (Array.isArray(this.value) &&
+        this.value.length === 2 &&
+        isValidDate(this.value[0]) &&
+        isValidDate(this.value[1])) ||
+      (Array.isArray(this.defaultDate) &&
+        this.defaultDate.length === 2 &&
+        isValidDate(this.defaultDate[0]) &&
+        isValidDate(this.defaultDate[1]))
+    );
+  }
+
   override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
     if (!this._initialized) {
@@ -425,7 +431,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       mode: 'range',
-      allowInput: false,
+      allowInput: !this.readOnly && !this.dateRangePickerDisabled,
       inputEl: this._inputEl!,
       minDate: this.minDate,
       maxDate: this.maxDate,

@@ -38,7 +38,7 @@ export class ToggleButton extends FormMixin(LitElement) {
 
   /** Input read only state. */
   @property({ type: Boolean })
-  readonly = false;
+  readOnly = false;
 
   /** Reverse UI element order, label on the left. */
   @property({ type: Boolean })
@@ -47,6 +47,14 @@ export class ToggleButton extends FormMixin(LitElement) {
   /** Hides the label visually. */
   @property({ type: Boolean })
   hideLabel = false;
+
+  /**
+   * The state that is considered valid (true/false).
+   * If set, the toggle must be in this state to be valid.
+   * If not set, any state is considered valid.
+   */
+  @property({ type: Boolean, attribute: 'valid-state' })
+  validState?: boolean;
 
   /**
    * Queries the <input> DOM element.
@@ -59,8 +67,8 @@ export class ToggleButton extends FormMixin(LitElement) {
     return html`
       <div
         class="toggle-button"
-        ?disabled=${this.disabled}
-        ?readonly=${this.readonly}
+        ?disabled=${this.disabled || this.readOnly}
+        ?readonly=${this.readOnly}
       >
         <label
           class="label-text  ${this.hideLabel ? 'sr-only' : ''}"
@@ -79,8 +87,8 @@ export class ToggleButton extends FormMixin(LitElement) {
             value=${this.value}
             .checked=${this.checked}
             ?checked=${this.checked}
-            ?disabled=${this.disabled}
-            ?readonly=${this.readonly}
+            ?disabled=${this.disabled || this.readOnly}
+            ?readonly=${this.readOnly}
             @change=${(e: any) => this.handleChange(e)}
           />
 
@@ -103,29 +111,38 @@ export class ToggleButton extends FormMixin(LitElement) {
       },
     });
     this.dispatchEvent(event);
+
+    // Validate after value changes
+    this._validate(true, false);
   }
 
   private _validate(interacted: Boolean, report: Boolean) {
-    // get validity state from inputEl, combine customError flag if invalidText is provided
-    const Validity =
-      this.invalidText !== ''
-        ? { ...this._inputEl.validity, customError: true }
-        : this._inputEl.validity;
-    // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
-    const ValidationMessage =
-      this.invalidText !== ''
-        ? this.invalidText
-        : this._inputEl.validationMessage;
+    let validity = { ...this._inputEl.validity };
+    let validationMessage = '';
 
-    // set validity on custom element, anchor to inputEl
-    this._internals.setValidity(Validity, ValidationMessage, this._inputEl);
-
-    // set internal validation message if value was changed by user input
-    if (interacted) {
-      this._internalValidationMsg = this._inputEl.validationMessage;
+    // Check if a valid state is specified and current state doesn't match
+    if (this.validState !== undefined && this.checked !== this.validState) {
+      validity = { ...validity, customError: true };
+      validationMessage = `This toggle must be ${
+        this.validState ? 'on' : 'off'
+      }`;
     }
 
-    // focus the form field to show validity
+    // Add custom error if invalidText is provided
+    if (this.invalidText !== '') {
+      validity = { ...validity, customError: true };
+      validationMessage = this.invalidText;
+    }
+
+    // Set validity on custom element, anchor to inputEl
+    this._internals.setValidity(validity, validationMessage, this._inputEl);
+
+    // Set internal validation message if value was changed by user input
+    if (interacted) {
+      this._internalValidationMsg = validationMessage;
+    }
+
+    // Focus the form field to show validity
     if (report) {
       this._internals.reportValidity();
     }
@@ -139,12 +156,6 @@ export class ToggleButton extends FormMixin(LitElement) {
       this._internals.setFormValue(this.checked ? this.value : null);
     }
   }
-
-  // private _handleFormdata(e: any) {
-  //   if (this.checked) {
-  //     e.formData.append(this.name, this.value);
-  //   }
-  // }
 }
 
 declare global {

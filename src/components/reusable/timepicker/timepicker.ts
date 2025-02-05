@@ -221,7 +221,9 @@ export class TimePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${this.value
+          ${this.readOnly
+            ? null
+            : this.value
             ? html`
                 <kyn-button
                   ?disabled=${this.timepickerDisabled || this.readOnly}
@@ -416,7 +418,7 @@ export class TimePicker extends FormMixin(LitElement) {
       enableTime: true,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl!,
-      allowInput: true,
+      allowInput: !this.readOnly && !this.timepickerDisabled,
       dateFormat: !this.twentyFourHourFormat ? 'h:i K' : 'H:i',
       minTime: this.minTime,
       maxTime: this.maxTime,
