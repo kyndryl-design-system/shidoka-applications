@@ -1,4 +1,5 @@
 @use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
 @use '../../../common/scss/form-input.scss';
 
 :host {
@@ -112,26 +113,18 @@ input {
   }
 
   &[disabled] {
+    @include mixins.form-disabled;
     background-color: var(--kd-color-background-ui-default-disabled);
 
-    &:before {
+    &:before,
+    &:hover:before,
+    &:active:before {
       background-color: var(--kd-color-background-ui-hollow-default);
     }
 
-    &:hover {
-      background-color: var(--kd-color-background-ui-default-disabled);
-
-      &:before {
-        background-color: var(--kd-color-background-ui-hollow-default);
-      }
-    }
-
+    &:hover,
     &:active {
       background-color: var(--kd-color-background-ui-default-disabled);
-
-      &:before {
-        background-color: var(--kd-color-background-ui-hollow-default);
-      }
     }
   }
 

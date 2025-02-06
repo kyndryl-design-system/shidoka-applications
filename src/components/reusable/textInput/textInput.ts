@@ -178,7 +178,7 @@ export class TextInput extends FormMixin(LitElement) {
             maxlength=${ifDefined(this.maxLength)}
             @input=${(e: any) => this._handleInput(e)}
           />
-          ${this.value !== ''
+          ${this.value !== '' && !this.readOnly
             ? html`
                 <kyn-button
                   ?disabled=${this.disabled || this.readOnly}

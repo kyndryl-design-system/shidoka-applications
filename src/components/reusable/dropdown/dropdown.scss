@@ -43,7 +43,7 @@ slot[name='icon']::slotted(*) {
     padding-right: 80px;
   }
 
-  &:hover:not[disabled] {
+  &:hover:not([disabled]) {
     border-color: var(--kd-color-border-ui-hover);
   }
 
@@ -62,6 +62,15 @@ slot[name='icon']::slotted(*) {
 
   &[invalid] {
     padding-right: 80px;
+  }
+
+  &[disabled] {
+    @include mixins.form-disabled;
+    cursor: not-allowed;
+  }
+
+  &[readonly] {
+    @include mixins.form-readonly;
   }
 
   .dropdown:focus-within {
@@ -93,7 +102,7 @@ slot[name='icon']::slotted(*) {
   }
 
   &[disabled] {
-    color: var(--kd-color-icon-disabled);
+    @include mixins.form-disabled;
   }
 }
 
@@ -208,9 +217,7 @@ slot[name='icon']::slotted(*) {
   }
 
   &[disabled] {
-    background-color: var(--kd-color-tags-background-disabled);
-    color: var(--kd-color-text-level-disabled);
-    cursor: not-allowed;
+    @include mixins.form-disabled;
   }
 }
 

@@ -18,6 +18,36 @@
   justify-content: center;
 }
 
+@mixin form-disabled {
+  background: var(--kd-color-background-ui-hollow-default);
+  border-color: var(--kd-color-border-ui-disabled);
+  color: var(--kd-color-text-level-disabled);
+  cursor: default;
+
+  &::placeholder {
+    color: var(--kd-color-text-link-level-disabled);
+  }
+
+  .input-icon {
+    color: var(--kd-color-icon-disabled);
+  }
+
+  .error-text,
+  .error-text .error-icon,
+  .warn-text,
+  .caption,
+  .label-text,
+  .required {
+    color: var(--kd-color-text-level-disabled);
+  }
+}
+
+@mixin form-readonly {
+  color: var(--kd-color-text-level-primary);
+  background: var(--kd-color-background-ui-hollow-default);
+  border-color: var(--kd-color-border-ui-disabled);
+}
+
 @mixin picker-base {
   :host {
     display: inline-block;
@@ -51,35 +81,11 @@
   }
 
   &[disabled]:not([readonly]) {
-    @include picker-disabled;
+    @include form-disabled;
 
     ::slotted(*),
     .input-custom {
       pointer-events: none;
-    }
-  }
-}
-
-@mixin picker-disabled {
-  .input-icon {
-    cursor: default;
-  }
-
-  .error-text,
-  .error-text .error-icon,
-  .warn-text {
-    color: var(--kd-color-text-level-disabled);
-  }
-
-  .caption {
-    color: var(--kd-color-text-level-disabled);
-  }
-
-  .label-text {
-    color: var(--kd-color-text-level-disabled);
-
-    .required {
-      color: var(--kd-color-text-level-disabled);
     }
   }
 }

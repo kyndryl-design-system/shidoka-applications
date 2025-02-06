@@ -101,24 +101,12 @@ textarea {
     color: var(--kd-color-text-variant-placeholder);
   }
 
-  &[disabled],
+  &[disabled] {
+    @include mixins.form-disabled;
+  }
+
   &[readonly] {
-    background: var(--kd-color-background-ui-hollow-default);
-    border-color: var(--kd-color-border-ui-disabled);
-    color: var(--kd-color-text-level-disabled);
-    cursor: default;
-
-    &[invalid] {
-      border-color: var(--kd-color-border-ui-disabled);
-    }
-
-    &::placeholder {
-      color: var(--kd-color-text-link-level-disabled);
-    }
-
-    &[readonly] {
-      color: var(--kd-color-text-level-primary);
-    }
+    @include mixins.form-readonly;
   }
 
   &:not([disabled])[invalid] {
