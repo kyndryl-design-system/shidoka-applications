@@ -55,7 +55,7 @@ export const SideDrawer = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <span slot="anchor">Open Drawer</span>
+        <kyn-button slot="anchor">Open Drawer</kyn-button>
 
         <div>
           This is a simple paragraph for the drawer content. You can customize
@@ -106,7 +106,7 @@ export const BeforeClose = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <span slot="anchor">Open Drawer</span>
+        <kyn-button slot="anchor">Open Drawer</kyn-button>
 
         <div>
           This is a simple paragraph for the drawer content. You can customize
