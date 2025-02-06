@@ -117,3 +117,33 @@ export const LinkWithIcon = {
     </kyn-link>
   `,
 };
+
+export const LinkWithGenAITheme = {
+  args: {
+    ...args,
+    genAITheme: true,
+  },
+  render: (args) =>
+    html`
+      <kyn-link
+        id="test"
+        ?standalone=${args.standalone}
+        href=${args.href}
+        target=${args.target}
+        kind=${args.kind}
+        shade=${args.shade}
+        ?disabled=${args.disabled}
+        ?genAITheme=${args.genAITheme}
+        @on-click=${args['on-click']}
+      >
+        ${args.unnamed}
+      </kyn-link>
+    `,
+  play: async ({ canvasElement }) => {
+    // example interaction test
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByShadowRole('link'));
+    await waitFor(() => expect(args['on-click']).toHaveBeenCalled());
+    canvas.getByShadowRole('link').blur();
+  },
+};
