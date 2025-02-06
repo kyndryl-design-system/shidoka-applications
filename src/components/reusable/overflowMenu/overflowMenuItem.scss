@@ -25,20 +25,23 @@
   transition: background-color 0.15s ease-out, outline-color 0.15s ease-out;
 
   &:hover {
-    background: var(--kd-color-background-inverse-hover);
+    background: var(--kd-color-background-ui-hollow-hover);
   }
 
   &:focus {
-    outline-color: var(--kd-color-border-focus);
+    outline-color: var(--kd-color-border-variants-focus);
   }
 
   &.destructive {
-    color: var(--kd-color-text-destructive);
-    border-top: 1px solid var(--kd-color-border-light);
+    color: var(--kd-color-text-variant-destructive);
+    border-top: 1px solid var(--kd-color-border-level-tertiary);
+    &:hover {
+      background: var(--kd-color-status-error-light);
+    }
   }
 
   &[disabled] {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
     background: none;
     cursor: not-allowed;
   }

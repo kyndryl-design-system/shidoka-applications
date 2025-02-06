@@ -1,7 +1,7 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
-import cloudDownloadIcon from '@carbon/icons/es/cloud--download/32';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import cloudDownloadIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/cloud-download.svg';
 
 export default {
   title: 'Components/PageTitle',
@@ -46,6 +46,15 @@ export const WithIcon = {
   args,
   render: (args) => {
     return html`
+      <style>
+        .cloud-icon {
+          display: flex;
+          svg {
+            width: 56px;
+            height: 56px;
+          }
+        }
+      </style>
       <kyn-page-title
         type=${args.type}
         headLine=${args.headLine}
@@ -53,11 +62,9 @@ export const WithIcon = {
         subTitle=${args.subTitle}
       >
         <!-- Note: use icon size 56 * 56 for Page title as per UX guidelines -->
-        <kd-icon
-          slot="icon"
-          .icon=${cloudDownloadIcon}
-          sizeOverride="56"
-        ></kd-icon>
+        <span slot="icon" class="cloud-icon"
+          >${unsafeSVG(cloudDownloadIcon)}</span
+        >
       </kyn-page-title>
     `;
   },

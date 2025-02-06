@@ -8,8 +8,8 @@
   --swiper-bullets-height: 32px;
   --swiper-tabs-height: 64px;
   --swiper-scrollbar-size: 8px;
-  --swiper-scrollbar-drag-bg-color: var(--kd-color-background-accent-tertiary);
-  --swiper-scrollbar-bg-color: var(--kd-color-background-ui-soft);
+  --swiper-scrollbar-drag-bg-color: var(--kd-color-background-container-subtle);
+  --swiper-scrollbar-bg-color: var(--kd-color-background-container-soft);
   --swiper-scrollbar-border-radius: 8px;
 
   @media (min-width: 82rem) {
@@ -60,7 +60,7 @@
     }
   }
 
-  kd-link,
+  kyn-link,
   a {
     margin-left: 40px;
     margin-right: 4px;
@@ -68,14 +68,14 @@
 }
 
 .swiper-pagination-bullet {
-  border: 1px solid var(--kd-color-border-light);
+  border: 1px solid var(--kd-color-background-accent-tertiary);
   background: none;
   opacity: initial;
   width: 16px;
   height: 16px;
 
   &-active {
-    background: var(--kd-color-background-ui-subtle);
+    background: var(--kd-color-background-container-subtle);
   }
 
   .tabs & {
@@ -90,28 +90,28 @@
       transition: border-color 150ms ease-out, background-color 150ms ease-out,
         color 150ms ease-out, outline-color 150ms ease-out;
       outline: 2px solid transparent;
-      border-bottom: 2px solid var(--kd-color-border-default);
-      background: none;
 
       &:hover {
-        color: var(--kd-color-text-link-hover);
+        color: var(--kd-color-text-link-level-hover);
         border-color: var(--kd-color-border-ui-hover);
-        background-color: var(--kd-color-background-inverse-hover);
+        background-color: var(--kd-color-background-ui-hollow-hover);
       }
 
       &:active {
-        color: var(--kd-color-text-pressed);
-        border-color: var(--kd-color-border-ui-hover);
-        background-color: var(--kd-color-background-inverse-hover);
+        color: var(--kd-color-text-link-level-pressed);
+        border-color: var(--kd-color-border-variants-focus);
+        background-color: var(--kd-color-background-ui-hollow-hover);
       }
 
       &:focus {
-        outline-color: var(--kd-color-border-focus);
+        color: var(--kd-color-text-level-primary);
+        outline-color: var(--kd-color-border-variants-focus);
       }
 
       &-active {
-        color: var(--kd-color-text-link);
-        border-bottom: 2px solid var(--kd-color-border-tertiary);
+        color: var(--kd-color-text-level-tertiary);
+        border-bottom: 2px solid var(--kd-color-border-level-tertiary);
+        background: var(--kd-color-background-container-default);
         font-weight: 500;
       }
     }
@@ -136,7 +136,7 @@
   @include typography.type-ui-02;
   justify-content: end;
   gap: 2px;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-text-level-secondary);
 
   .swiper-full-bleed & {
     padding-right: var(--kd-page-gutter);
@@ -162,9 +162,11 @@
     0px - var(--swiper-navigation-size) / 2 - var(--swiper-fractional-height) /
       2
   );
-  background: var(--kd-color-background-ui-default);
+  color: var(--kd-color-icon-primary);
+  background: var(--kd-color-icon-inverse);
   outline: 2px solid transparent;
-  transition: outline-color 150ms ease-out;
+  transition: outline-color 150ms ease-out, color 150ms ease-out,
+    box-shadow 150ms ease-out;
 
   .swiper-pagination-bullets ~ & {
     margin-top: calc(
@@ -183,21 +185,17 @@
   }
 
   &:focus {
-    outline-color: var(--kd-color-border-focus);
+    outline-color: var(--kd-color-border-ui-hover);
   }
 
-  &:before {
-    content: '';
-    width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
-    // background-size: 100% auto;
-    background-position: center;
-    transition: opacity 150ms ease-out;
+  & svg {
+    width: initial;
+    height: initial;
   }
 
-  &:hover:before {
-    opacity: 0.8;
+  &:hover {
+    @include elevation.shadow(3);
+    color: var(--kd-color-icon-secondary);
   }
 
   &:after {
@@ -205,21 +203,12 @@
   }
 
   &.swiper-button-disabled {
-    opacity: 1;
-
-    &:before {
-      opacity: 0.35;
-    }
+    color: var(--kd-color-icon-disabled);
   }
 }
 
-.swiper-button-prev:before {
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEzLjk5NzEgMjZMMTUuNDA3MSAyNC41OUw3LjgyNzA3IDE3SDI3Ljk5NzFWMTVINy44MjcwN0wxNS40MDcxIDcuNDFMMTMuOTk3MSA2TDMuOTk3MDcgMTZMMTMuOTk3MSAyNloiIGZpbGw9IiMzRDNDM0MiLz4KPC9zdmc+');
-}
-
-.swiper-button-next:before {
-  content: '';
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE4IDZMMTYuNTkgNy40MUwyNC4xNyAxNUw0IDE1VjE3TDI0LjE3IDE3TDE2LjU5IDI0LjU5TDE4IDI2TDI4IDE2TDE4IDZaIiBmaWxsPSIjM0QzQzNDIi8+Cjwvc3ZnPg==');
+.swiper-button-next svg {
+  transform: rotate(180deg);
 }
 
 .swiper-horizontal > .swiper-scrollbar,

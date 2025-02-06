@@ -1,15 +1,15 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import './';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../../reusable/button';
 
-import userAvatarIcon from '@carbon/icons/es/user--avatar/20';
-import helpIcon from '@carbon/icons/es/help/20';
-import circleIcon from '@carbon/icons/es/circle--outline/16';
-import circleIcon24 from '@carbon/icons/es/circle--outline/24';
-import filledNotificationIcon from '@carbon/icons/es/notification--new/20';
-import useSetingIcon from '@carbon/icons/es/settings/20';
+import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/user.svg';
+import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/question.svg';
+import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
+import circleIcon24 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/circle-stroke.svg';
+import filledNotificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/notifications-new.svg';
+import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/settings.svg';
 
 import '../../reusable/notification';
 import '../../reusable/overflowMenu';
@@ -106,17 +106,17 @@ export const WithNav = {
     <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
       <kyn-header-nav>
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${circleIcon24}></kd-icon>
+          <span>${unsafeSVG(circleIcon24)}</span>
           Link 1
         </kyn-header-link>
 
         <kyn-header-category heading="Category">
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon24}></kd-icon>
+            <span>${unsafeSVG(circleIcon24)}</span>
             Link 2
           </kyn-header-link>
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon24}></kd-icon>
+            <span>${unsafeSVG(circleIcon24)}</span>
             Link 3
           </kyn-header-link>
         </kyn-header-category>
@@ -124,31 +124,31 @@ export const WithNav = {
         <kyn-header-divider></kyn-header-divider>
 
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${circleIcon24}></kd-icon>
+          <span>${unsafeSVG(circleIcon24)}</span>
           Link 4
 
           <kyn-header-link slot="links" href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Sub Link 1
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Sub Link 2
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Sub Link 3
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Sub Link 4
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Sub Link 5
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Sub Link 6
           </kyn-header-link>
         </kyn-header-link>
@@ -163,7 +163,7 @@ export const WithFlyouts = {
     <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
       <kyn-header-flyouts>
         <kyn-header-flyout label="Menu Label" hideButtonLabel>
-          <kd-icon .icon=${helpIcon} slot="button"></kd-icon>
+          <span slot="button">${unsafeSVG(helpIcon)}</span>
           <span slot="button" title="Full Button Text">Short ... Text</span>
           <!--
           <kyn-tooltip slot="button" direction="bottom">
@@ -172,30 +172,30 @@ export const WithFlyouts = {
           -->
 
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Example 1
           </kyn-header-link>
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Example 2
           </kyn-header-link>
         </kyn-header-flyout>
 
         <kyn-header-flyout label="Menu Label">
-          <kd-icon .icon=${helpIcon} slot="button"></kd-icon>
+          <span slot="button">${unsafeSVG(helpIcon)}</span>
 
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Example 1
           </kyn-header-link>
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Example 2
           </kyn-header-link>
         </kyn-header-flyout>
 
         <kyn-header-flyout label="Menu Label" hideMenuLabel>
-          <kd-icon slot="button" .icon=${userAvatarIcon}></kd-icon>
+          <span slot="button">${unsafeSVG(userAvatarIcon)}</span>
 
           <kyn-header-user-profile
             name="User Name"
@@ -203,15 +203,15 @@ export const WithFlyouts = {
             email="user@kyndryl.com"
             profileLink="#"
           >
-            <img src="https://picsum.photos/id/237/112/112" />
+            <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
           </kyn-header-user-profile>
 
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Example Link 1
           </kyn-header-link>
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Example Link 2
           </kyn-header-link>
         </kyn-header-flyout>
@@ -228,7 +228,7 @@ export const WithNotificationPanel = {
   >
     <kyn-header-flyouts>
       <kyn-header-flyout label="Notification" hideMenuLabel>
-        <kd-icon slot="button" .icon=${filledNotificationIcon}></kd-icon>
+        <span slot="button">${unsafeSVG(filledNotificationIcon)}</span>
         <!-- Notification panel inside <kyn-header-flyout></kyn-header-flyout> -->
         <kyn-header-notification-panel
           panelTitle=${notificationPanelArgs.panelTitle}
@@ -236,19 +236,20 @@ export const WithNotificationPanel = {
           ?hidePanelFooter=${notificationPanelArgs.hidePanelFooter}
           @on-footer-btn-click=${(e) => action(e.type)(e)}
         >
-          <kd-button
+          <kyn-button
             slot="menu-slot"
             kind="tertiary"
             @click=${(e) => selectAllNotificationsAsRead(e)}
-            >Mark all as Read</kd-button
           >
-          <kd-button
+            Mark all as Read
+          </kyn-button>
+          <kyn-button
             slot="menu-slot"
             kind="tertiary"
             @click=${(e) => console.log(e)}
           >
-            <kd-icon .icon=${useSetingIcon}></kd-icon>
-          </kd-button>
+            <span slot="icon">${unsafeSVG(settingsIcon)}</span>
+          </kyn-button>
 
           <!-- Notification component inside notification panel -->
           ${notificationTagStatusArr.map(
@@ -289,19 +290,19 @@ export const WithNotificationPanel = {
       </kyn-header-flyout>
 
       <kyn-header-flyout label="Menu Label">
-        <kd-icon .icon=${helpIcon} slot="button"></kd-icon>
+        <span slot="button">${unsafeSVG(helpIcon)}</span>
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${circleIcon}></kd-icon>
+          <span>${unsafeSVG(circleIcon)}</span>
           Example 1
         </kyn-header-link>
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${circleIcon}></kd-icon>
+          <span>${unsafeSVG(circleIcon)}</span>
           Example 2
         </kyn-header-link>
       </kyn-header-flyout>
 
       <kyn-header-flyout label="Menu Label" hideMenuLabel>
-        <kd-icon slot="button" .icon=${userAvatarIcon}></kd-icon>
+        <span slot="button">${unsafeSVG(userAvatarIcon)}</span>
 
         <kyn-header-user-profile
           name="User Name"
@@ -309,15 +310,15 @@ export const WithNotificationPanel = {
           email="user@kyndryl.com"
           profileLink="#"
         >
-          <img src="https://picsum.photos/id/237/112/112" />
+          <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
         </kyn-header-user-profile>
 
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${circleIcon}></kd-icon>
+          <span>${unsafeSVG(circleIcon)}</span>
           Example Link 1
         </kyn-header-link>
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${circleIcon}></kd-icon>
+          <span>${unsafeSVG(circleIcon)}</span>
           Example Link 2
         </kyn-header-link>
       </kyn-header-flyout>
@@ -331,17 +332,17 @@ export const WithEverything = {
     <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
       <kyn-header-nav>
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${circleIcon24}></kd-icon>
+          <span>${unsafeSVG(circleIcon24)}</span>
           Link 1
         </kyn-header-link>
 
         <kyn-header-category heading="Category">
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon24}></kd-icon>
+            <span>${unsafeSVG(circleIcon24)}</span>
             Link 2
           </kyn-header-link>
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon24}></kd-icon>
+            <span>${unsafeSVG(circleIcon24)}</span>
             Link 3
           </kyn-header-link>
         </kyn-header-category>
@@ -349,54 +350,54 @@ export const WithEverything = {
         <kyn-header-divider></kyn-header-divider>
 
         <kyn-header-link href="javascript:void(0)">
-          <kd-icon .icon=${circleIcon24}></kd-icon>
+          <span>${unsafeSVG(circleIcon24)}</span>
           Link 4
 
           <kyn-header-link slot="links" href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Sub Link 1
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Sub Link 2
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Sub Link 3
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Sub Link 4
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Sub Link 5
           </kyn-header-link>
           <kyn-header-link slot="links" href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Sub Link 6
           </kyn-header-link>
         </kyn-header-link>
       </kyn-header-nav>
 
-      <kd-button size="small">Button</kd-button>
+      <kyn-button size="small">Button</kyn-button>
 
       <kyn-header-flyouts>
         <kyn-header-flyout label="Menu Label">
-          <kd-icon .icon=${helpIcon} slot="button"></kd-icon>
+          <span slot="button">${unsafeSVG(helpIcon)}</span>
 
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Example 1
           </kyn-header-link>
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Example 2
           </kyn-header-link>
         </kyn-header-flyout>
 
         <kyn-header-flyout label="Menu Label" hideMenuLabel>
-          <kd-icon slot="button" .icon=${userAvatarIcon}></kd-icon>
+          <span slot="button">${unsafeSVG(userAvatarIcon)}</span>
 
           <kyn-header-user-profile
             name="User Name"
@@ -404,15 +405,15 @@ export const WithEverything = {
             email="user@kyndryl.com"
             profileLink="#"
           >
-            <img src="https://picsum.photos/id/237/112/112" />
+            <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
           </kyn-header-user-profile>
 
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Example Link 1
           </kyn-header-link>
           <kyn-header-link href="javascript:void(0)">
-            <kd-icon .icon=${circleIcon}></kd-icon>
+            <span>${unsafeSVG(circleIcon)}</span>
             Example Link 2
           </kyn-header-link>
         </kyn-header-flyout>

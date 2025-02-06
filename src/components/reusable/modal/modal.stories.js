@@ -2,8 +2,7 @@ import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import '../button';
 import '../textInput';
 
 export default {
@@ -41,7 +40,7 @@ const args = {
 };
 
 export const Modal = {
-  args,
+  args: { ...args, showSecondaryButton: false },
   render: (args) => {
     return html`
       <kyn-modal
@@ -54,12 +53,15 @@ export const Modal = {
         closeText=${args.closeText}
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        secondaryButtonText=${args.secondaryButtonText}
+        ?secondaryDisabled=${args.secondaryDisabled}
         ?hideFooter=${args.hideFooter}
         ?hideCancelButton=${args.hideCancelButton}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kd-button slot="anchor"> Open Modal </kd-button>
+        <kyn-button slot="anchor"> Open Modal </kyn-button>
 
         Basic Modal example.
       </kyn-modal>
@@ -89,7 +91,7 @@ export const ActionButtons = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kd-button slot="anchor"> Open Modal </kd-button>
+        <kyn-button slot="anchor"> Open Modal </kyn-button>
 
         Basic Modal with All Buttons.
       </kyn-modal>
@@ -98,7 +100,7 @@ export const ActionButtons = {
 };
 
 export const BeforeClose = {
-  args,
+  args: { ...args, showSecondaryButton: false },
   render: (args) => {
     return html`
       <kyn-modal
@@ -112,11 +114,15 @@ export const BeforeClose = {
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
         ?hideCancelButton=${args.hideCancelButton}
+        ?hideFooter=${args.hideFooter}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        secondaryButtonText=${args.secondaryButtonText}
+        ?secondaryDisabled=${args.secondaryDisabled}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kd-button slot="anchor"> Open Modal </kd-button>
+        <kyn-button slot="anchor"> Open Modal </kyn-button>
 
         Modal with custom beforeClose handler function.
       </kyn-modal>
@@ -155,13 +161,17 @@ export const WithForm = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kd-button slot="anchor"> Open Modal </kd-button>
+        <kyn-button slot="anchor"> Open Modal </kyn-button>
 
         Modal with form validation.
         <br /><br />
 
         <form @submit=${(e) => handleSubmit(e)}>
-          <kyn-text-input name="test" required>Required input</kyn-text-input>
+          <kyn-text-input
+            name="test"
+            label="Required input"
+            required
+          ></kyn-text-input>
         </form>
       </kyn-modal>
     `;

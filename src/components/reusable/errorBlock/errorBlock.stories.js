@@ -2,11 +2,8 @@ import { html } from 'lit';
 import './index';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import alertImg from '../../../common/assets/redfords/Alert_Redford.svg';
-import notFoundImg from '../../../common/assets/redfords/NotFound_Redford.svg';
-import stopImg from '../../../common/assets/redfords/Stop_Redford.svg';
-import timeoutImg from '../../../common/assets/redfords/Timeout_Redford.svg';
+import '../button';
+import warningImg from '@kyndryl-design-system/shidoka-foundation/assets/svg/mascot/warning.svg';
 
 export default {
   title: 'Components/Error Block',
@@ -28,27 +25,24 @@ export const ErrorBlock = {
   render: (args) => {
     return html`
       <kyn-error-block titleText=${args.titleText}>
-        <!-- <div slot="image">${unsafeSVG(alertImg)}</div> -->
-        <!-- <div slot="image">${unsafeSVG(notFoundImg)}</div> -->
-        <!-- <div slot="image">${unsafeSVG(stopImg)}</div> -->
-        <div slot="image">${unsafeSVG(timeoutImg)}</div>
+        <div slot="image">${unsafeSVG(warningImg)}</div>
         <p>Your description for the error message goes here.</p>
-        <kd-button
+        <kyn-button
           slot="actions"
           size="medium"
           kind="primary-app"
           description="Primary action"
         >
           Primary action
-        </kd-button>
-        <kd-button
+        </kyn-button>
+        <kyn-button
           slot="actions"
           size="medium"
           kind="secondary"
           description="Secondary action"
         >
           Secondary action
-        </kd-button>
+        </kyn-button>
       </kyn-error-block>
     `;
   },

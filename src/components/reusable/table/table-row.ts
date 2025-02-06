@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, LitElement, PropertyValues } from 'lit';
 import {
   customElement,
@@ -8,7 +9,7 @@ import {
 import { ContextConsumer } from '@lit/context';
 import { tableContext, TableContextType } from './table-context';
 
-import chevronDownIcon from '@carbon/icons/es/chevron--down/20';
+import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
 import styles from './table-row.scss';
 import '../checkbox/checkbox';
@@ -138,7 +139,7 @@ export class TableRow extends LitElement {
 
   /**
    * Context consumer for the table context.
-   * Updates the cell's dense and ellipsis properties when the context changes.
+   * Updates the cell's dense properties when the context changes.
    * @private
    * @ignore
    * @type {ContextConsumer<TableContextType, TableHeader>}
@@ -260,18 +261,20 @@ export class TableRow extends LitElement {
         ? html`
             <kyn-td .align=${'center'} ?dense=${this.dense}>
               <div class="kyn--table-expand">
-                <kd-button
+                <button
                   class="kyn--table-expand__button"
-                  kind="tertiary"
                   type="button"
                   ?disabled=${this.disabled}
-                  size="small"
-                  iconPosition="center"
-                  description="Expand row"
-                  @on-click=${this._handleExpanding}
+                  title=${this.expanded
+                    ? this._textStrings.expanded
+                    : this._textStrings.collapsed}
+                  aria-label=${this.expanded
+                    ? this._textStrings.expanded
+                    : this._textStrings.collapsed}
+                  @click=${this._handleExpanding}
                 >
-                  <kd-icon slot="icon" .icon=${chevronDownIcon}></kd-icon>
-                </kd-button>
+                  <span slot="icon">${unsafeSVG(chevronDownIcon)}</span>
+                </button>
               </div>
 
               <div

@@ -1,0 +1,337 @@
+/**
+ * Shidoka Syntax Theme -- syntax highlighting for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Hsu Ka An
+ */
+
+$shidoka-code-view-background: var(--kd-color-code-view-background);
+
+.shidoka-syntax-theme {
+    background: $shidoka-code-view-background;
+    font-weight: 500;
+
+    &--dark {
+        color-scheme: dark;
+    }
+
+    &--light {
+        color-scheme: light;
+    }
+
+    code[class*="language-"],
+    pre[class*="language-"] {
+        background: $shidoka-code-view-background;
+        color: var(--kd-color-code-view-default);
+        font-family: var(--kd-font-family-code-view);
+
+        -moz-tab-size: 4;
+        -o-tab-size: 4;
+        tab-size: 4;
+
+        -webkit-hyphens: none;
+        -moz-hyphens: none;
+        -ms-hyphens: none;
+        hyphens: none;
+    }
+
+    pre[class*="language-"]::selection,
+    pre[class*="language-"] ::selection,
+    code[class*="language-"]::selection,
+    code[class*="language-"] ::selection {
+        text-shadow: none;
+        background: inherit;
+    }
+
+    pre[class*="language-"]::-moz-selection,
+    pre[class*="language-"] ::-moz-selection,
+    code[class*="language-"]::-moz-selection,
+    code[class*="language-"] ::-moz-selection {
+        text-shadow: none;
+        background: inherit;
+    }
+
+    @media print {
+
+        code[class*="language-"],
+        pre[class*="language-"] {
+            text-shadow: none;
+        }
+    }
+
+    .token {
+        &.atrule {
+            color: var(--kd-color-code-view-atrule);
+        }
+
+        &.attr-name {
+            color: var(--kd-color-code-viewattr-name);
+        }
+
+        &.attr-value {
+            color: var(--kd-color-code-view-attr-value);
+        }
+
+        &.boolean {
+            color: var(--kd-color-code-view-boolean);
+        }
+
+        &.bold {
+            font-weight: bold;
+        }
+
+        &.builtin {
+            color: var(--kd-color-code-view-builtin);
+        }
+
+        &.cdata {
+            color: var(--kd-color-code-view-cdata);
+        }
+
+        &.char {
+            color: var(--kd-color-code-view-char);
+        }
+
+        &.class {
+            color: var(--kd-color-code-view-class);
+        }
+
+        &.class-name {
+            color: var(--kd-color-code-view-class-name);
+        }
+
+        &.comment {
+            color: var(--kd-color-code-view-comment);
+        }
+
+        &.console {
+            color: var(--kd-color-code-view-console);
+        }
+
+        &.constant {
+            color: var(--kd-color-code-view-constant);
+        }
+
+        &.deleted {
+            color: var(--kd-color-code-view-deleted);
+        }
+
+        &.doctype {
+            color: var(--kd-color-code-view-doctype);
+        }
+
+        &.entity {
+            color: var(--kd-color-code-view-entity);
+            cursor: help;
+        }
+
+        &.function {
+            color: var(--kd-color-code-view-function);
+        }
+
+        &.hexcode {
+            color: var(--kd-color-code-view-hexcode);
+        }
+
+        &.id {
+            color: var(--kd-color-code-view-id);
+        }
+
+        &.important {
+            color: var(--kd-color-code-view-important);
+            font-weight: bold;
+        }
+
+        &.inserted {
+            color: var(--kd-color-code-view-inserted);
+        }
+
+        &.italic {
+            font-style: italic;
+        }
+
+        &.keyword {
+            color: var(--kd-color-code-view-keyword);
+        }
+
+        &.language-javascript {
+            color: var(--kd-color-code-language-javascript);
+        }
+
+        &.method {
+            color: var(--kd-color-code-view-method);
+        }
+
+        &.namespace {
+            opacity: 0.7;
+        }
+
+        &.number {
+            color: var(--kd-color-code-view-number);
+        }
+
+        &.operator {
+            color: var(--kd-color-code-view-operator);
+        }
+
+        &.parameter {
+            color: var(--kd-color-code-view-parameter);
+        }
+
+        &.prolog {
+            color: var(--kd-color-code-view-prolog);
+        }
+
+        &.property {
+            color: var(--kd-color-code-view-property);
+        }
+
+        &.pseudo-class {
+            color: var(--kd-color-code-view-pseudo-class);
+        }
+
+        &.pseudo-element {
+            color: var(--kd-color-code-view-pseudo-element);
+        }
+
+        &.punctuation {
+            color: var(--kd-color-code-view-punctuation);
+        }
+
+        &.regex {
+            color: var(--kd-color-code-view-regex);
+        }
+
+        &.selector {
+            color: var(--kd-color-code-view-selector);
+        }
+
+        &.string,
+        &.string-literal {
+            color: var(--kd-color-code-view-string);
+        }
+
+        &.symbol {
+            color: var(--kd-color-code-view-symbol);
+        }
+
+        &.tag {
+            color: var(--kd-color-code-view-tag);
+        }
+
+        &.unit {
+            color: var(--kd-color-code-view-unit);
+        }
+
+        &.url {
+            color: var(--kd-color-code-view-url);
+        }
+
+        &.variable {
+            color: var(--kd-color-code-view-variable);
+        }
+    }
+
+    .token.string,
+    .style .token.string {
+        color: var(--kd-color-code-view-string)
+    }
+
+    .language-css .token.string {
+        color: var(--kd-color-code-view-languagestring);
+    }
+
+    /// scrollbar styles
+    &.single-line .code-snippet-wrapper {
+        pre {
+            background: $shidoka-code-view-background !important;
+
+            scrollbar-color: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3)) light-dark(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+
+            &::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3));
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: light-dark(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.5));
+            }
+
+            &::-webkit-scrollbar-track {
+                background: light-dark(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+                border-radius: 4px;
+            }
+        }
+    }
+
+    &.multi-line .code-snippet-wrapper {
+        pre {
+            scrollbar-color: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3)) light-dark(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+
+            &::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: light-dark(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3));
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: light-dark(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.5));
+            }
+        }
+    }
+
+    .code-snippet-wrapper {
+        background: $shidoka-code-view-background;
+    }
+
+    .code-view__copy-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+
+        .copy-icon,
+        .copy-text {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .copy-icon {
+            color: var(--kd-color-text-link-level-default);
+            fill: var(--kd-color-text-link-level-default);
+        }
+
+        &.icon-only {
+            padding: 8px;
+            min-width: unset;
+        }
+    }
+
+    .code-view__expand-button {
+
+        .expand-icon {
+            fill: var(--kd-color-text-level-tertiary);
+            color: var(--kd-color-text-level-tertiary);
+        }
+    }
+
+    .code-snippet-wrapper pre::selection,
+    .code-snippet-wrapper pre *::selection,
+    .code-snippet-wrapper pre::-moz-selection,
+    .code-snippet-wrapper pre *::-moz-selection {
+        background-color: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3));
+        color: inherit;
+    }
+}

@@ -13,7 +13,7 @@
   justify-content: space-around;
   border-radius: 4px;
   gap: 4px;
-  color: var(--kd-color-text-primary);
+  color: var(--kd-color-text-level-dark);
   min-width: 24px;
 }
 
@@ -40,23 +40,29 @@
   outline-offset: -3px;
   outline: 1px solid transparent;
   transition: outline 150ms ease-out;
+
   &-md {
     height: 24px;
     padding: 4px;
+
     &:hover {
       outline-offset: -3px;
     }
+
     &:focus,
     &:active {
       outline-offset: -4px;
     }
   }
+
   &-sm {
     height: 20px;
     padding: 2px;
+
     &:hover {
       outline-offset: -3px;
     }
+
     &:focus,
     &:active {
       outline-offset: -4px;
@@ -70,13 +76,13 @@
 
   &:focus,
   &:active {
-    outline-width: 2px;
+    outline-width: 1px;
     outline-style: solid;
   }
 
   &[disabled] {
-    background-color: var(--kd-color-background-disabled);
-    color: var(--kd-color-text-disabled);
+    background-color: var(--kd-color-tags-background-disabled);
+    color: var(--kd-color-icon-disabled);
     border: none;
     cursor: not-allowed;
     pointer-events: none;
@@ -87,24 +93,31 @@
   &-medium {
     height: 24px;
     padding: 0 4px 0 4px;
+
     &-filter {
       padding-right: 0px;
     }
+
     &-label {
       padding: 4px 8px 4px 8px;
+
       &-filter {
         padding-right: 1px;
       }
     }
   }
+
   &-small {
     height: 20px;
     padding: 0 2px 0 2px;
+
     &-filter {
       padding-right: 0px;
     }
+
     &-label {
       padding: 2px 4px 2px 4px;
+
       &-filter {
         padding-right: 0px;
       }
@@ -112,141 +125,326 @@
   }
 
   &-disable {
-    cursor: not-allowed;
-    background-color: var(--kd-color-background-disabled) !important;
-    color: var(--kd-color-text-disabled) !important;
+    cursor: not-allowed !important;
+    background-color: var(--kd-color-tags-background-disabled) !important;
+    color: var(--kd-color-text-level-disabled) !important;
   }
+
+  &-clickable {
+    cursor: pointer;
+
+    &:focus,
+    &:active {
+      outline: 1px solid var(--kd-color-border-variants-focus);
+      outline-offset: 1px;
+    }
+
+    &-grey {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-gray);
+      }
+    }
+
+    &-spruce {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-spruce);
+      }
+    }
+
+    &-interactive {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-interactive);
+      }
+    }
+
+    &-blue {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-blue);
+      }
+    }
+
+    &-error {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-error);
+      }
+    }
+
+    &-warning {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-warning);
+      }
+    }
+
+    &-success {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-success);
+      }
+    }
+
+    &-cat01 {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-1);
+      }
+    }
+
+    &-cat02 {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-2);
+      }
+    }
+
+    &-cat03 {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-3);
+      }
+    }
+
+    &-cat04 {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-4);
+      }
+    }
+
+    &-cat05 {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-5);
+      }
+    }
+
+    &-cat06 {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-6);
+      }
+    }
+
+    &-successDark {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-success-dark);
+      }
+    }
+
+    &-errorDark {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-error-dark);
+      }
+    }
+
+    &-warningDark {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-warning-dark);
+      }
+    }
+
+    &-informationDark {
+      &:hover {
+        background-color: var(--kd-color-tags-hover-blue-dark);
+      }
+    }
+  }
+
   /* Grey color */
   &-grey {
-    background-color: var(--kd-color-background-ui-soft);
-    color: var(--kd-color-text-primary);
-    &-close-btn {
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-border-primary);
-      }
-    }
+    background-color: var(--kd-color-tags-background-gray);
 
-    &-dark {
-      background-color: var(--kd-color-background-ui-strong);
-      color: var(--kd-color-text-inversed);
-      &-close-btn {
-        &:hover,
-        &:focus,
+    &-close-btn {
+      color: var(--kd-color-icon-dark);
+
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-gray);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-gray);
+        outline-color: var(--kd-color-border-variants-focus);
+
         &:active {
-          outline-color: var(--kd-color-border-inverse);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
   }
+
   /* spruce color */
   &-spruce {
-    background-color: var(--kd-color-spruce-10);
+    background-color: var(--kd-color-tags-background-spruce);
 
     &-close-btn {
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-background-primary);
-      }
-    }
+      color: var(--kd-color-icon-dark);
 
-    &-dark {
-      background-color: var(--kd-color-background-primary);
-      color: var(--kd-color-text-inversed);
-      &-close-btn {
-        &:hover,
-        &:focus,
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-spruce);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-spruce);
+        outline-color: var(--kd-color-border-variants-focus);
+
         &:active {
-          outline-color: var(--kd-color-background-inverse-hover);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
   }
-  /* failed color */
-  &-failed {
-    background-color: var(--kd-color-background-error-light);
+
+  /* interactive color */
+  &-interactive {
+    background-color: var(--kd-color-tags-background-interactive);
+
     &-close-btn {
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-border-error);
+      color: var(--kd-color-icon-dark);
+
+      svg {
+        display: block;
       }
-    }
-    &-dark {
-      background-color: var(--kd-color-background-destructive);
-      color: var(--kd-color-text-inversed);
-      &-close-btn {
-        &:hover,
-        &:focus,
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-interactive);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-interactive);
+        outline-color: var(--kd-color-border-variants-focus);
+
         &:active {
-          outline-color: var(--kd-color-error-light);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
   }
+
+  /* blue color */
+  &-blue {
+    background-color: var(--kd-color-tags-background-blue);
+
+    &-close-btn {
+      color: var(--kd-color-icon-dark);
+
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-blue);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-blue);
+        outline-color: var(--kd-color-border-variants-focus);
+
+        &:active {
+          outline-color: var(--kd-color-border-ui-pressed);
+        }
+      }
+    }
+  }
+
+  /* error color */
+  &-error {
+    background-color: var(--kd-color-tags-background-error);
+
+    &-close-btn {
+      color: var(--kd-color-icon-dark);
+
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-error);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-error);
+        outline-color: var(--kd-color-border-variants-focus);
+
+        &:active {
+          outline-color: var(--kd-color-border-ui-pressed);
+        }
+      }
+    }
+  }
+
   /* warning color */
   &-warning {
-    background-color: var(--kd-color-background-warning-light);
+    background-color: var(--kd-color-tags-background-warning);
+
     &-close-btn {
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-background-warning);
+      color: var(--kd-color-icon-dark);
+
+      svg {
+        display: block;
       }
-    }
-    &-dark {
-      background-color: var(--kd-color-background-warning);
-      &-close-btn {
-        &:hover,
-        &:focus,
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-warning);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-warning);
+        outline-color: var(--kd-color-border-variants-focus);
+
         &:active {
-          outline-color: var(--kd-color-background-warning-light);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
   }
-  /* passed color */
-  &-passed {
-    background-color: var(--kd-color-background-success-light);
+
+  /* success color */
+  &-success {
+    background-color: var(--kd-color-tags-background-success);
+
     &-close-btn {
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: #00af41;
+      color: var(--kd-color-icon-dark);
+
+      svg {
+        display: block;
       }
-    }
-    &-dark {
-      background-color: #00af41;
-      color: var(--kd-color-text-inversed);
-      &-close-btn {
-        &:hover,
-        &:focus,
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-success);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-success);
+        outline-color: var(--kd-color-border-variants-focus);
+
         &:active {
-          outline-color: var(--kd-color-background-success-light);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
   }
+
   /* cat01 color */
   &-cat01 {
-    background-color: var(--kd-color-data-seq-01-10);
+    background-color: var(--kd-color-tags-background-cat-1);
+
     &-close-btn {
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-data-seq-01-40);
+      color: var(--kd-color-icon-dark);
+
+      svg {
+        display: block;
       }
-    }
-    &-dark {
-      background-color: var(--kd-color-data-seq-01-40);
-      color: var(--kd-color-text-inversed);
-      &-close-btn {
-        &:hover,
-        &:focus,
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-1);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-cat-1);
+        outline-color: var(--kd-color-border-variants-focus);
+
         &:active {
-          outline-color: var(--kd-color-data-seq-01-10);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
@@ -254,22 +452,25 @@
 
   /* cat02 color */
   &-cat02 {
-    background-color: var(--kd-color-data-seq-02-10);
+    background-color: var(--kd-color-tags-background-cat-2);
+
     &-close-btn {
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-data-seq-02-70);
+      color: var(--kd-color-icon-dark);
+
+      svg {
+        display: block;
       }
-    }
-    &-dark {
-      background-color: var(--kd-color-data-seq-02-70);
-      color: var(--kd-color-text-inversed);
-      &-close-btn {
-        &:hover,
-        &:focus,
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-2);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-cat-2);
+        outline-color: var(--kd-color-border-variants-focus);
+
         &:active {
-          outline-color: var(--kd-color-data-seq-02-10);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
@@ -277,22 +478,25 @@
 
   /* cat03 color */
   &-cat03 {
-    background-color: var(--kd-color-data-seq-03-10);
+    background-color: var(--kd-color-tags-background-cat-3);
+
     &-close-btn {
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-data-seq-03-40);
+      color: var(--kd-color-icon-dark);
+
+      svg {
+        display: block;
       }
-    }
-    &-dark {
-      background-color: var(--kd-color-data-seq-03-40);
-      color: var(--kd-color-text-inversed);
-      &-close-btn {
-        &:hover,
-        &:focus,
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-3);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-cat-3);
+        outline-color: var(--kd-color-border-variants-focus);
+
         &:active {
-          outline-color: var(--kd-color-data-seq-03-10);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
@@ -300,22 +504,25 @@
 
   /* cat04 color */
   &-cat04 {
-    background-color: var(--kd-color-data-seq-04-10);
+    background-color: var(--kd-color-tags-background-cat-4);
+
     &-close-btn {
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-data-seq-04-70);
+      color: var(--kd-color-icon-dark);
+
+      svg {
+        display: block;
       }
-    }
-    &-dark {
-      background-color: var(--kd-color-data-seq-04-70);
-      color: var(--kd-color-text-inversed);
-      &-close-btn {
-        &:hover,
-        &:focus,
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-4);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-cat-4);
+        outline-color: var(--kd-color-border-variants-focus);
+
         &:active {
-          outline-color: var(--kd-color-data-seq-04-10);
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }
@@ -323,22 +530,158 @@
 
   /* cat05 color */
   &-cat05 {
-    background-color: var(--kd-color-data-seq-05-10);
+    background-color: var(--kd-color-tags-background-cat-5);
+
     &-close-btn {
-      &:hover,
-      &:focus,
-      &:active {
-        outline-color: var(--kd-color-data-seq-05-70);
+      color: var(--kd-color-icon-dark);
+
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-5);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-cat-5);
+        outline-color: var(--kd-color-border-variants-focus);
+
+        &:active {
+          outline-color: var(--kd-color-border-ui-pressed);
+        }
       }
     }
-    &-dark {
-      background-color: var(--kd-color-data-seq-05-70);
-      color: var(--kd-color-text-inversed);
-      &-close-btn {
-        &:hover,
-        &:focus,
+  }
+
+  /* cat06 color */
+  &-cat06 {
+    background-color: var(--kd-color-tags-background-cat-6);
+
+    &-close-btn {
+      color: var(--kd-color-icon-dark);
+
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-cat-6);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-cat-6);
+        outline-color: var(--kd-color-border-variants-focus);
+
         &:active {
-          outline-color: var(--kd-color-data-seq-05-10);
+          outline-color: var(--kd-color-border-ui-pressed);
+        }
+      }
+    }
+  }
+
+  /* success dark color */
+  &-successDark {
+    background-color: var(--kd-color-status-success-dark);
+    color: var(--kd-color-text-level-light);
+
+    &-close-btn {
+      color: var(--kd-color-icon-light);
+
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-success-dark);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-success-dark);
+        outline-color: var(--kd-color-border-variants-focus);
+
+        &:active {
+          outline-color: var(--kd-color-border-ui-pressed);
+        }
+      }
+    }
+  }
+  /* error dark color */
+  &-errorDark {
+    background-color: var(--kd-color-status-error-dark);
+    color: var(--kd-color-text-level-light);
+
+    &-close-btn {
+      color: var(--kd-color-icon-light);
+
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-error-dark);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-error-dark);
+        outline-color: var(--kd-color-border-variants-focus);
+
+        &:active {
+          outline-color: var(--kd-color-border-ui-pressed);
+        }
+      }
+    }
+  }
+
+  /* warning dark color */
+  &-warningDark {
+    background-color: var(--kd-color-status-warning-dark);
+    color: var(--kd-color-text-level-dark);
+
+    &-close-btn {
+      color: var(--kd-color-icon-dark);
+
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-warning-dark);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-warning-dark);
+        outline-color: var(--kd-color-border-variants-focus);
+
+        &:active {
+          outline-color: var(--kd-color-border-ui-pressed);
+        }
+      }
+    }
+  }
+
+  /* information dark color */
+  &-informationDark {
+    background-color: var(--kd-color-status-informational-dark);
+    color: var(--kd-color-text-level-light);
+
+    &-close-btn {
+      color: var(--kd-color-icon-light);
+
+      svg {
+        display: block;
+      }
+
+      &:hover {
+        background-color: var(--kd-color-tags-hover-blue-dark);
+      }
+
+      &:focus {
+        background-color: var(--kd-color-tags-hover-blue-dark);
+        outline-color: var(--kd-color-border-variants-focus);
+
+        &:active {
+          outline-color: var(--kd-color-border-ui-pressed);
         }
       }
     }

@@ -1,11 +1,13 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import SideDrawerScss from './sideDrawer.scss';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import closeIcon from '@carbon/icons/es/close/20';
+import '../button';
+import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+
+import SideDrawerScss from './sideDrawer.scss';
 
 /**
  * Side Drawer.
@@ -72,6 +74,10 @@ export class SideDrawer extends LitElement {
   @property({ type: String })
   cancelBtnText = 'Cancel';
 
+  /** Close button description (Required to support accessibility). */
+  @property({ type: String })
+  closeBtnDescription = 'Close';
+
   /** Disables the primary button. */
   @property({ type: Boolean })
   submitBtnDisabled = false;
@@ -136,16 +142,25 @@ export class SideDrawer extends LitElement {
                 : null}
             </div>
 
-            <button
-              class="close"
+            <kyn-button
+              class="side-drawer-close-btn"
+              ghost
+              size="small"
+              kind="tertiary"
+              description=${ifDefined(this.closeBtnDescription)}
               @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
             >
-              <kd-icon .icon=${closeIcon}></kd-icon>
-            </button>
+              <span slot="icon">${unsafeSVG(closeIcon)}</span>
+            </kyn-button>
           </header>
 
           <!-- Body -->
-          <div class="body">
+          <div
+            class="body"
+            tabindex="0"
+            role="region"
+            aria-label="${this.titleText} content"
+          >
             <slot></slot>
           </div>
 
@@ -154,7 +169,7 @@ export class SideDrawer extends LitElement {
             ? html`
                 <div class="dialog-footer">
                   <div class="actions">
-                    <kd-button
+                    <kyn-button
                       class="action-button"
                       value="Ok"
                       ?disabled=${this.submitBtnDisabled}
@@ -162,11 +177,11 @@ export class SideDrawer extends LitElement {
                       @click=${(e: Event) => this._closeDrawer(e, 'ok')}
                     >
                       ${this.submitBtnText}
-                    </kd-button>
+                    </kyn-button>
 
                     ${this.showSecondaryButton
                       ? html`
-                          <kd-button
+                          <kyn-button
                             class="action-button"
                             value="Secondary"
                             kind="secondary"
@@ -174,13 +189,13 @@ export class SideDrawer extends LitElement {
                               this._closeDrawer(e, 'secondary')}
                           >
                             ${this.secondaryButtonText}
-                          </kd-button>
+                          </kyn-button>
                         `
                       : null}
                     ${this.hideCancelButton
                       ? null
                       : html`
-                          <kd-button
+                          <kyn-button
                             class="action-button"
                             value="Cancel"
                             kind="tertiary"
@@ -188,7 +203,7 @@ export class SideDrawer extends LitElement {
                               this._closeDrawer(e, 'cancel')}
                           >
                             ${this.cancelBtnText}
-                          </kd-button>
+                          </kyn-button>
                         `}
                   </div>
                 </div>

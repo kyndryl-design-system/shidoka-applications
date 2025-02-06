@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import {
   customElement,
@@ -6,10 +7,8 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import HeaderFlyoutScss from './headerFlyout.scss';
-import chevronIcon from '@carbon/icons/es/chevron--right/16';
-import backIcon from '@carbon/icons/es/arrow--left/16';
-
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
+import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 
 /**
  * Component for header flyout items.
@@ -99,11 +98,9 @@ export class HeaderFlyout extends LitElement {
                     `
                   : null}
 
-                <kd-icon
-                  slot="button"
-                  class="arrow"
-                  .icon="${chevronIcon}"
-                ></kd-icon>
+                <span slot="button" class="arrow"
+                  >${unsafeSVG(chevronIcon)}</span
+                >
               </a>
             `
           : html`
@@ -123,17 +120,15 @@ export class HeaderFlyout extends LitElement {
                     `
                   : null}
 
-                <kd-icon
-                  slot="button"
-                  class="arrow"
-                  .icon="${chevronIcon}"
-                ></kd-icon>
+                <span slot="button" class="arrow"
+                  >${unsafeSVG(chevronIcon)}</span
+                >
               </button>
             `}
 
         <div class=${classMap(contentClasses)}>
           <button class="go-back" @click=${() => this._handleBack()}>
-            <kd-icon .icon=${backIcon}></kd-icon>
+            <span>${unsafeSVG(backIcon)}</span>
             ${this.backText}
           </button>
 

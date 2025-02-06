@@ -1,53 +1,67 @@
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '../../common/scss/mixins.scss';
 
 .label-text {
   @include typography.type-ui-02;
+  color: var(--kd-color-text-forms-label-primary);
   font-weight: 500;
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 0;
   margin-bottom: 8px;
+  cursor: default;
+  z-index: 4;
 
   &.sr-only {
     @include visibility.sr-only;
   }
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-level-disabled);
   }
 }
 
 .required {
   text-decoration: none;
-  color: var(--kd-color-text-error);
+  color: var(--kd-color-status-error-dark);
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-level-disabled);
   }
 }
 
 .input-wrapper {
   position: relative;
   display: flex;
+
+  input[disabled],
+  .input-custom[disabled],
+  textarea[disabled] {
+    & ~ .input-icon {
+      color: var(--kd-color-icon-disabled);
+    }
+  }
 }
 
 .options-text {
   margin: 0;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-text-forms-label-secondary);
   @include typography.type-ui-03;
 }
 
 input,
 .input-custom,
+.flatpickr-input,
 textarea {
+  pointer-events: auto;
   @include typography.type-body-02;
-  border-color: var(--kd-color-border-ui);
-  color: var(--kd-color-text-primary);
+  border-color: var(--kd-color-border-forms-default);
+  color: var(--kd-color-text-level-primary);
   transition: background-color 150ms ease-out, border-color 150ms ease-out,
     outline-color 150ms ease-out;
-  background: var(--kd-color-background-inverse);
+  background: var(--kd-color-background-forms-default);
   outline: 2px solid transparent;
   outline-offset: 2px;
 
@@ -56,44 +70,74 @@ textarea {
   }
 
   &:focus {
-    outline-color: var(--kd-color-border-focus);
+    outline-color: var(--kd-color-border-variants-focus);
   }
 
   &::placeholder {
-    color: var(--kd-color-text-placeholder);
+    color: var(--kd-color-text-variant-placeholder);
   }
 
-  &[invalid] {
-    border-color: var(--kd-color-border-error);
+  &:-ms-input-placeholder {
+    color: var(--kd-color-text-variant-placeholder);
+  }
+
+  &::-ms-input-placeholder {
+    color: var(--kd-color-text-variant-placeholder);
   }
 
   &[disabled] {
-    color: var(--kd-color-text-disabled);
+    background: var(--kd-color-background-ui-hollow-default);
     border-color: var(--kd-color-border-ui-disabled);
+    color: var(--kd-color-text-level-disabled);
+    cursor: default;
+
+    &[invalid] {
+      border-color: var(--kd-color-border-ui-disabled);
+    }
+
+    &::placeholder {
+      color: var(--kd-color-text-link-level-disabled);
+    }
+  }
+
+  &:not([disabled])[invalid] {
+    border-color: var(--kd-color-border-variants-destructive);
   }
 }
 
 .error {
   display: flex;
   align-items: center;
-  color: var(--kd-color-text-error);
+  color: var(--kd-color-text-variant-destructive);
   margin-top: 8px;
+  cursor: default;
 
-  [disabled] & {
-    color: var(--kd-color-text-disabled);
+  &.error-text {
+    .error-icon {
+      display: flex;
+      align-items: center;
+    }
   }
 
-  kd-icon,
-  svg {
+  [disabled] & {
+    color: var(--kd-color-text-link-level-disabled);
+
+    span svg {
+      color: var(--kd-color-text-link-level-disabled);
+    }
+  }
+
+  span svg {
     margin-right: 8px;
+    display: block;
   }
 }
 
 .error-icon {
-  color: var(--kd-color-text-error);
+  color: var(--kd-color-status-error-dark);
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
   }
 }
 
@@ -101,40 +145,83 @@ textarea {
   color: var(--kd-color-background-success);
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
   }
 }
 
 .caption {
   margin-top: 8px;
+  cursor: default;
+  color: var(--kd-color-text-forms-input-field-text);
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-level-disabled);
   }
+}
+
+.clear-button {
+  @include mixins.close-icon-btn($top: 50%, $right: 10px, $size: 16px);
+  transform: translateY(-50%);
+
+  &:not[disabled] {
+    cursor: pointer;
+  }
+
+  &.dropdown-clear {
+    right: 45px;
+  }
+}
+
+.caption-error-count {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  .count {
+    @include typography.type-ui-02;
+    color: var(--kd-color-text-forms-input-field-text);
+    margin-top: 13px;
+  }
+}
+
+.input-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  color: var(--kd-color-text-secondary);
 }
 
 .warn {
   display: flex;
   align-items: center;
   margin-top: 8px;
+  cursor: default;
 
-  [disabled] & {
-    color: var(--kd-color-text-disabled);
+  &.warn-text {
+    font-size: 16px;
   }
 
-  kd-icon,
+  [disabled] & {
+    color: var(--kd-color-text-link-level-disabled);
+  }
+
+  span,
   svg {
     margin-right: 8px;
+    display: block;
   }
 }
 
 .description-text {
   @include typography.type-body-02;
-  color: var(--kd-color-text-primary);
+  color: var(--kd-color-text-level-primary);
   margin-top: -4px;
   margin-bottom: 8px;
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
   }
 }

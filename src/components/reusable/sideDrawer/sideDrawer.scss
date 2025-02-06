@@ -1,17 +1,38 @@
 @use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :host {
   display: inline-block;
 }
 
+.close-drawer-label {
+  @include mixins.visually-hidden;
+}
+
+#close-drawer {
+
+  span.close-icon {
+    display: flex;
+    color: var(--kd-color-icon-primary);
+  }
+
+  &:hover {
+
+    span.close-icon {
+      color: var(--kd-color-text-button-dark-primary);
+    }
+  }
+}
+
 dialog {
+  @include elevation.shadow(4);
   margin: 0;
   padding: 0;
   color: inherit;
-  background: var(--kd-color-background-ui-default);
-  border: 1px solid var(--kd-color-border-light);
-  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.12);
+  background: var(--kd-color-background-container-default);
+  border: none;
   top: 0;
   right: 0;
   left: auto;
@@ -21,10 +42,6 @@ dialog {
 
   &[open] {
     animation: dialog-in 400ms forwards;
-  }
-
-  &::backdrop {
-    background: rgba(60, 61, 60, 0.4);
   }
 
   &.size--sm {
@@ -51,27 +68,18 @@ button {
   border-radius: 4px;
   outline: 2px solid transparent;
   transition: outline-color 150ms ease-out, color 150ms ease-out;
-  &:focus {
-    outline-color: var(--kd-color-border-focus);
-  }
-  &:hover {
-    color: var(--kd-color-text-link-hover);
-  }
-  &:active {
-    color: var(--kd-color-text-pressed);
-  }
 }
 
 .anchor {
   display: inline-block;
   width: 100%;
+  color: var(--kd-color-text-level-primary);
 }
 
 header {
   position: sticky;
   top: 0;
   z-index: 1;
-  background-color: var(--kd-color-background-ui-default);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -86,7 +94,7 @@ form {
 
 .body {
   margin: 0 32px;
-  padding-right: 24px;
+  padding: 0;
   flex-grow: 1;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -96,24 +104,14 @@ form {
   margin-right: 32px;
 }
 
-.close {
-  position: absolute;
-  top: 32px;
-  right: 32px;
-  color: var(--kd-color-text-secondary);
-
-  kd-icon {
-    display: block;
-  }
-}
-
 .label {
   @include typography.type-ui-02;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-text-level-secondary);
 }
 
 h1 {
   @include typography.type-body-01;
+  color: var(--kd-color-text-level-primary);
   margin: 0;
   order: 1;
 }
@@ -125,7 +123,7 @@ h1 {
   margin-top: 32px;
   background-color: var(--kd-color-background-accent-subtle);
   padding: 24px 32px 24px 32px;
-  border-top: 1px solid var(--kd-color-border-light);
+  border-top: 1px solid var(--kd-color-border-variants-light);
 }
 
 .actions {
@@ -135,14 +133,14 @@ h1 {
   gap: 16px;
 
   @media (max-width: calc(42rem - 1px)) {
-    kd-button {
+    kyn-button {
       width: 100%;
       flex-grow: 1;
     }
   }
 }
 
-.size--sm kd-button {
+.size--sm kyn-button {
   width: 100%;
   flex-grow: 1;
 }
@@ -165,7 +163,7 @@ h1 {
     transform: translateX(100%);
 
     &::backdrop {
-      background-color: rgba(0, 0, 0, 0);
+      background: var(--kd-color-neutral-dark-opacity-50);
       transition: display 400ms allow-discrete, overlay 400ms allow-discrete,
         background-color 400ms;
     }
@@ -175,15 +173,17 @@ h1 {
       transform: none;
 
       &::backdrop {
-        background-color: rgba(0, 0, 0, 0.4);
+        backdrop-filter: var(--kd-background-blur-medium);
       }
     }
   }
 }
+
 @keyframes dialog-in {
   0% {
     transform: translateX(100%);
   }
+
   100% {
     transform: none;
   }

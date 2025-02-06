@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
 import '../footer';
@@ -5,12 +6,11 @@ import '../header';
 import '../localNav';
 import '../../reusable/table';
 import allData from './../../reusable/table/story-helpers/table-data.json';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import userAvatarIcon from '@carbon/icons/es/user--avatar/20';
-import helpIcon from '@carbon/icons/es/help/20';
-import sampleIcon from '@carbon/icons/es/circle--outline/16';
-import circleIcon24 from '@carbon/icons/es/circle--outline/24';
+import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/user.svg';
+import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/question.svg';
+import sampleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
+import circleIcon24 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/circle-stroke.svg';
 
 export default {
   title: 'Global Components/UI Shell',
@@ -47,43 +47,43 @@ export const WithLocalNav = {
 
       <kyn-local-nav>
         <kyn-local-nav-link href="javascript:void(0)" active>
-          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
           Link 1
         </kyn-local-nav-link>
 
         <kyn-local-nav-link href="javascript:void(0)">
-          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
           Link 2
 
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
-            <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+            <span slot="icon">${unsafeSVG(sampleIcon)}</span>
             L2 Link 1
           </kyn-local-nav-link>
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
-            <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+            <span slot="icon">${unsafeSVG(sampleIcon)}</span>
             L2 Link 2
           </kyn-local-nav-link>
         </kyn-local-nav-link>
 
         <kyn-local-nav-link href="javascript:void(0)">
-          <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
           Link 3
 
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
-            <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+            <span slot="icon">${unsafeSVG(sampleIcon)}</span>
             L2 Link 1
 
             <kyn-local-nav-link slot="links" href="javascript:void(0)">
-              <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+              <span slot="icon">${unsafeSVG(sampleIcon)}</span>
               L3 Link 1
             </kyn-local-nav-link>
             <kyn-local-nav-link slot="links" href="javascript:void(0)">
-              <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+              <span slot="icon">${unsafeSVG(sampleIcon)}</span>
               L3 Link 2
             </kyn-local-nav-link>
           </kyn-local-nav-link>
           <kyn-local-nav-link slot="links" href="javascript:void(0)">
-            <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+            <span slot="icon">${unsafeSVG(sampleIcon)}</span>
             L2 Link 2
           </kyn-local-nav-link>
         </kyn-local-nav-link>
@@ -115,17 +115,17 @@ export const WithEverything = {
         <kyn-header appTitle="UI Shell Example">
           <kyn-header-nav>
             <kyn-header-link href="javascript:void(0)">
-              <kd-icon .icon=${circleIcon24}></kd-icon>
+              <span>${unsafeSVG(circleIcon24)}</span>
               Link 1
             </kyn-header-link>
 
             <kyn-header-category heading="Category">
               <kyn-header-link href="javascript:void(0)">
-                <kd-icon .icon=${circleIcon24}></kd-icon>
+                <span>${unsafeSVG(circleIcon24)}</span>
                 Link 2
               </kyn-header-link>
               <kyn-header-link href="javascript:void(0)">
-                <kd-icon .icon=${circleIcon24}></kd-icon>
+                <span>${unsafeSVG(circleIcon24)}</span>
                 Link 3
               </kyn-header-link>
             </kyn-header-category>
@@ -133,31 +133,31 @@ export const WithEverything = {
             <kyn-header-divider></kyn-header-divider>
 
             <kyn-header-link href="javascript:void(0)">
-              <kd-icon .icon=${circleIcon24}></kd-icon>
+              <span>${unsafeSVG(circleIcon24)}</span>
               Link 4
 
               <kyn-header-link slot="links" href="javascript:void(0)">
-                <kd-icon .icon=${sampleIcon}></kd-icon>
+                <span>${unsafeSVG(sampleIcon)}</span>
                 Sub Link 1
               </kyn-header-link>
               <kyn-header-link slot="links" href="javascript:void(0)">
-                <kd-icon .icon=${sampleIcon}></kd-icon>
+                <span>${unsafeSVG(sampleIcon)}</span>
                 Sub Link 2
               </kyn-header-link>
               <kyn-header-link slot="links" href="javascript:void(0)">
-                <kd-icon .icon=${sampleIcon}></kd-icon>
+                <span>${unsafeSVG(sampleIcon)}</span>
                 Sub Link 3
               </kyn-header-link>
               <kyn-header-link slot="links" href="javascript:void(0)">
-                <kd-icon .icon=${sampleIcon}></kd-icon>
+                <span>${unsafeSVG(sampleIcon)}</span>
                 Sub Link 4
               </kyn-header-link>
               <kyn-header-link slot="links" href="javascript:void(0)">
-                <kd-icon .icon=${sampleIcon}></kd-icon>
+                <span>${unsafeSVG(sampleIcon)}</span>
                 Sub Link 5
               </kyn-header-link>
               <kyn-header-link slot="links" href="javascript:void(0)">
-                <kd-icon .icon=${sampleIcon}></kd-icon>
+                <span>${unsafeSVG(sampleIcon)}</span>
                 Sub Link 6
               </kyn-header-link>
             </kyn-header-link>
@@ -165,20 +165,20 @@ export const WithEverything = {
 
           <kyn-header-flyouts>
             <kyn-header-flyout label="Menu Label">
-              <kd-icon .icon=${helpIcon} slot="button"></kd-icon>
+              <span slot="button">${unsafeSVG(helpIcon)}</span>
 
               <kyn-header-link href="javascript:void(0)">
-                <kd-icon .icon=${sampleIcon}></kd-icon>
+                <span>${unsafeSVG(sampleIcon)}</span>
                 Example 1
               </kyn-header-link>
               <kyn-header-link href="javascript:void(0)">
-                <kd-icon .icon=${sampleIcon}></kd-icon>
+                <span>${unsafeSVG(sampleIcon)}</span>
                 Example 2
               </kyn-header-link>
             </kyn-header-flyout>
 
             <kyn-header-flyout label="Menu Label" hideMenuLabel>
-              <kd-icon slot="button" .icon=${userAvatarIcon}></kd-icon>
+              <span slot="button">${unsafeSVG(userAvatarIcon)}</span>
 
               <kyn-header-user-profile
                 name="User Name"
@@ -190,11 +190,11 @@ export const WithEverything = {
               </kyn-header-user-profile>
 
               <kyn-header-link href="javascript:void(0)">
-                <kd-icon .icon=${sampleIcon}></kd-icon>
+                <span>${unsafeSVG(sampleIcon)}</span>
                 Example Link 1
               </kyn-header-link>
               <kyn-header-link href="javascript:void(0)">
-                <kd-icon .icon=${sampleIcon}></kd-icon>
+                <span>${unsafeSVG(sampleIcon)}</span>
                 Example Link 2
               </kyn-header-link>
             </kyn-header-flyout>
@@ -203,42 +203,42 @@ export const WithEverything = {
 
         <kyn-local-nav>
           <kyn-local-nav-link href="javascript:void(0)" active>
-            <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+            <span slot="icon">${unsafeSVG(sampleIcon)}</span>
             Link 1
           </kyn-local-nav-link>
 
           <kyn-local-nav-link href="javascript:void(0)">
-            <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+            <span slot="icon">${unsafeSVG(sampleIcon)}</span>
             Link 2
 
             <kyn-local-nav-link slot="links" href="javascript:void(0)">
               L2 Link 1
             </kyn-local-nav-link>
             <kyn-local-nav-link slot="links" href="javascript:void(0)">
-              <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+              <span slot="icon">${unsafeSVG(sampleIcon)}</span>
               L2 Link 2
             </kyn-local-nav-link>
           </kyn-local-nav-link>
 
           <kyn-local-nav-link href="javascript:void(0)">
-            <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+            <span slot="icon">${unsafeSVG(sampleIcon)}</span>
             Link 3
 
             <kyn-local-nav-link slot="links" href="javascript:void(0)">
-              <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+              <span slot="icon">${unsafeSVG(sampleIcon)}</span>
               L2 Link 1
 
               <kyn-local-nav-link slot="links" href="javascript:void(0)">
-                <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+                <span slot="icon">${unsafeSVG(sampleIcon)}</span>
                 L3 Link 1
               </kyn-local-nav-link>
               <kyn-local-nav-link slot="links" href="javascript:void(0)">
-                <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+                <span slot="icon">${unsafeSVG(sampleIcon)}</span>
                 L3 Link 2
               </kyn-local-nav-link>
             </kyn-local-nav-link>
             <kyn-local-nav-link slot="links" href="javascript:void(0)">
-              <kd-icon slot="icon" .icon=${sampleIcon}></kd-icon>
+              <span slot="icon">${unsafeSVG(sampleIcon)}</span>
               L2 Link 2
             </kyn-local-nav-link>
           </kyn-local-nav-link>

@@ -12,12 +12,12 @@
     font-weight: 500;
   }
 
-  ::slotted(kd-link) {
+  ::slotted(kyn-link) {
     @include typography.type-ui-02;
   }
 
   /* add arrow-left icon as pseudo element for mobile only */
-  ::slotted(kd-link:nth-last-child(2)) {
+  ::slotted(kyn-link:nth-last-child(2)) {
     &::before {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2329707a' viewBox='0 0 16 16'%3E%3Cpath d='M6.7 12.3L2.9 8.5 15 8.5 15 7.5 2.9 7.5 6.7 3.7 6 3 1 8 6 13z'/%3E%3C/svg%3E");
       width: 16px;
@@ -30,7 +30,7 @@
     }
   }
 
-  ::slotted(kd-link),
+  ::slotted(kyn-link),
   ::slotted(kyn-overflow-menu) {
     display: flex;
     align-items: center;
@@ -49,28 +49,13 @@
   }
 
   /* hide all breadcrumbs except the previous page breadcrumb on mobile */
-  ::slotted(kd-link:not(:nth-last-child(2))),
+  ::slotted(kyn-link:not(:nth-last-child(2))),
   ::slotted(strong),
   ::slotted(kyn-overflow-menu) {
     display: none;
 
     @media (min-width: 42rem) {
       display: flex;
-    }
-  }
-
-  /* deprecated styles to be removed */
-  ::slotted(kyn-breadcrumb-item:not(:last-child)) {
-    display: inline-flex;
-    color: var(--kd-color-text-tertiary);
-
-    &::after {
-      content: '\2014\2014'; // Unicode for double em dash
-      margin-left: 16px;
-      color: var(--kd-color-background-ui-subtle);
-      font-weight: var(--kd-font-weight-regular);
-      letter-spacing: -2px;
-      font-size: var(--kd-font-size-utility-3-max);
     }
   }
 }

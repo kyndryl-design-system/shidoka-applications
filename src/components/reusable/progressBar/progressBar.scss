@@ -4,169 +4,196 @@
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 
 $progress-bar-status-colors: (
-    default: var(--kd-color-background-primary-hover),
-    success: var(--kd-color-background-success),
-    error: var(--kd-color-background-error)
+  default: var(--kd-color-background-loader-bar-primary),
+  success: var(--kd-color-status-success-dark),
+  error: var(--kd-color-status-error-dark),
 );
 
 $progress-bar-height: 4px;
 $progress-bar-radius: 4px;
-$progress-bar-background: var(--kd-color-background-inverse-hover);
-$progress-bar-indeterminate-color: map-get($progress-bar-status-colors, default);
+$progress-bar-background: var(--kd-color-background-loader-bar-secondary);
+$progress-bar-indeterminate-color: map-get(
+  $progress-bar-status-colors,
+  default
+);
 
 @mixin progress-bar-color($color) {
-    background-color: $color;
+  background-color: $color;
 }
 
 :host {
-    display: inline-block;
-    width: 100%;
+  display: inline-block;
+  width: 100%;
 }
 
 ::slotted(kyn-tooltip) {
-    display: inline-block;
-    line-height: 8px;
-    margin-left: 0;
-    margin-top: 1px;
+  display: inline-block;
+  line-height: 8px;
+  margin-left: 0;
+  margin-top: 1px;
 }
 
 .progress-bar {
-    &__upper-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0;
-        margin: 0;
-        height: 18px;
-        &.sr-only{
-            @include visibility.sr-only;
-        }
+  &__upper-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    height: 18px;
+
+    &.sr-only {
+      @include visibility.sr-only;
+    }
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+
+  &__helper-text {
+    margin: 0;
+    line-height: 16px;
+    height: 16px;
+  }
+
+  &__status-icon {
+    display: flex;
+    align-items: center;
+    padding-right: 2px;
+    line-height: 1;
+
+    .success-icon {
+      svg {
+        fill: map-get($progress-bar-status-colors, success);
+      }
     }
 
-    &__label {
-        display: flex;
-        align-items: center;
-        margin: 0;
+    .error-icon {
+      svg {
+        fill: map-get($progress-bar-status-colors, error);
+      }
     }
 
-    &__helper-text {
-        margin: 0;
-        line-height: 16px;
-        height: 16px;
+    p {
+      color: var(--kd-color-text-level-secondary);
+      padding: 0;
+      margin: 0;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+
+      span {
+        margin: 0 8px;
+        font-weight: 400;
+        vertical-align: middle;
+      }
     }
 
-    &__status-icon {
-        display: flex;
-        align-items: center;
-        padding-right: 2px;
-        line-height: 1;
+    span[class$='-icon'] {
+      animation: fadeInRotate 600ms ease-in-out forwards;
+    }
+  }
 
-        p {
-            color: var(--kd-color-text-secondary);
-            padding: 0;
-            margin: 0;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
+  &__active {
+    animation: active-slide 400ms linear infinite;
+  }
 
-            span {
-                margin: 0 8px;
-                font-weight: 400;
-                vertical-align: middle;
-            }
-        }
+  &__container {
+    width: 100%;
+    margin: 8px 0;
+    height: $progress-bar-height;
+    background-color: $progress-bar-background;
+    border-radius: $progress-bar-radius;
+    position: relative;
+    overflow: hidden;
+  }
 
-        kd-icon {
-            animation: fadeInRotate 600ms ease-in-out forwards;
-        }
+  &__background {
+    width: 100%;
+    height: 100%;
+    background-color: $progress-bar-background;
+    border-radius: $progress-bar-radius;
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__main {
+    height: 100%;
+    background-color: map-get($progress-bar-status-colors, default);
+    border-radius: 0 $progress-bar-radius $progress-bar-radius 0;
+    transition: width 0.3s ease-in-out;
+
+    &.is-indeterminate {
+      width: 55px;
+      position: absolute;
+      left: 0;
+      @include progress-bar-color(
+        map-get($progress-bar-status-colors, default)
+      );
+      animation: indeterminate 3s ease-in-out infinite;
     }
 
-    &__active {
-        animation: active-slide 400ms linear infinite;
-    }
+    @include progress-bar-color(map-get($progress-bar-status-colors, default));
+  }
 
-    &__container {
-        width: 100%;
-        margin: 8px 0;
-        height: $progress-bar-height;
-        background-color: $progress-bar-background;
-        border-radius: $progress-bar-radius;
-        position: relative;
-        overflow: hidden;
-    }
+  &__success {
+    @include progress-bar-color(map-get($progress-bar-status-colors, success));
+  }
 
-    &__background {
-        width: 100%;
-        height: 100%;
-        background-color: $progress-bar-background;
-        border-radius: $progress-bar-radius;
-        overflow: hidden;
-        position: relative;
-    }
+  &__error {
+    @include progress-bar-color(map-get($progress-bar-status-colors, error));
+  }
 
-    &__main {
-        height: 100%;
-        background-color: map-get($progress-bar-status-colors, default);
-        border-radius: 0 $progress-bar-radius $progress-bar-radius 0;
-        transition: width 0.3s ease-in-out;
+  &__active {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
 
-        &.is-indeterminate {
-            width: 55px;
-            position: absolute;
-            left: 0;
-            @include progress-bar-color(map-get($progress-bar-status-colors, default));
-            animation: indeterminate 3s ease-in-out infinite;
-        }
+.active,
+.success {
+  color: var(--kd-color-text-level-secondary);
+}
 
-        @include progress-bar-color(map-get($progress-bar-status-colors, default));
-    }
-
-    &__success {
-        @include progress-bar-color(map-get($progress-bar-status-colors, success));
-    }
-
-    &__error {
-        @include progress-bar-color(map-get($progress-bar-status-colors, error));
-    }
-
-    &__active {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
+.error {
+  color: var(--kd-color-status-error-dark);
 }
 
 @keyframes indeterminate {
-    0% {
-        left: 0;
-    }
+  0% {
+    left: 0;
+  }
 
-    50% {
-        left: calc(100% - 55px);
-    }
+  50% {
+    left: calc(100% - 55px);
+  }
 
-    100% {
-        left: 0;
-    }
+  100% {
+    left: 0;
+  }
 }
 
 @keyframes active-slide {
-    0% {
-        background-position: 0 0;
-    }
+  0% {
+    background-position: 0 0;
+  }
 
-    100% {
-        background-position: 40px 0;
-    }
+  100% {
+    background-position: 40px 0;
+  }
 }
 
 @keyframes fadeInRotate {
-    from {
-        opacity: 0;
-        transform: rotate(-45deg);
-    }
+  from {
+    opacity: 0;
+    transform: rotate(-45deg);
+  }
 
-    to {
-        opacity: 1;
-        transform: rotate(0deg);
-    }
+  to {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
 }

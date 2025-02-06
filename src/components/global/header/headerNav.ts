@@ -1,10 +1,11 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import HeaderNavScss from './headerNav.scss';
 
-import menuIcon from '@carbon/icons/es/menu/24';
-import closeIcon from '@carbon/icons/es/close/24';
+import menuIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/hamburger-menu.svg';
+import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/close-simple.svg';
 
 /**
  * Container for header navigation links.
@@ -40,8 +41,8 @@ export class HeaderNav extends LitElement {
           @click=${() => this._toggleMenuOpen()}
         >
           ${this.menuOpen
-            ? html` <kd-icon .icon=${closeIcon}></kd-icon> `
-            : html` <kd-icon .icon=${menuIcon}></kd-icon> `}
+            ? html` <span>${unsafeSVG(closeIcon)}</span> `
+            : html` <span>${unsafeSVG(menuIcon)}</span> `}
         </button>
 
         <div class="menu__content left">

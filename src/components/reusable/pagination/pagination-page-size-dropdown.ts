@@ -33,6 +33,12 @@ export class PaginationPageSizeDropdown extends LitElement {
   @property({ type: Object })
   textStrings: any = {};
 
+  /** Label for the page size dropdown. Required for accessibility.
+   * @internal
+   */
+  @property({ type: String })
+  pageSizeDropdownLabel = 'Items per page';
+
   /**
    * Handles the dropdown change event.
    * @param {CustomEvent} event - The dropdown change event.
@@ -56,9 +62,9 @@ export class PaginationPageSizeDropdown extends LitElement {
       <label> ${this.textStrings.itemsPerPage} </label>
       <kyn-dropdown
         name="page-size"
+        label="${this.pageSizeDropdownLabel}"
         inline
         size="sm"
-        updateByValue
         value=${this.pageSize.toString()}
         @on-change=${(e: CustomEvent) => this.handleChange(e)}
       >

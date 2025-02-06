@@ -1,8 +1,12 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+
+import '../checkbox';
+
+import checkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/check.svg';
+
 import DropdownOptionScss from './dropdownOption.scss';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import checkmarkIcon from '@carbon/icons/es/checkmark/20';
 
 /**
  * Dropdown option.
@@ -17,8 +21,10 @@ export class DropdownOption extends LitElement {
   @property({ type: String })
   value = '';
 
-  /** Option selected state. */
-  @property({ type: Boolean, reflect: true })
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
   selected = false;
 
   /** Option disabled state. */
@@ -65,16 +71,19 @@ export class DropdownOption extends LitElement {
         <span>
           ${this.multiple
             ? html`
-                <input
+                <kyn-checkbox
                   type="checkbox"
+                  value=${this.value}
                   aria-hidden="true"
                   tabindex="-1"
-                  @mousedown=${(e: any) => e.preventDefault()}
+                  @pointerdown=${(e: any) => e.preventDefault()}
+                  @pointerup=${(e: any) => e.preventDefault()}
                   .checked=${this.selected}
                   ?checked=${this.selected}
                   ?disabled=${this.disabled}
+                  visiblyHidden
                   .indeterminate=${this.indeterminate}
-                />
+                ></kyn-checkbox>
               `
             : null}
 
@@ -82,7 +91,7 @@ export class DropdownOption extends LitElement {
         </span>
 
         ${this.selected && !this.multiple
-          ? html`<kd-icon .icon=${checkmarkIcon}></kd-icon>`
+          ? html`<span class="check-icon">${unsafeSVG(checkIcon)}</span>`
           : null}
       </li>
     `;

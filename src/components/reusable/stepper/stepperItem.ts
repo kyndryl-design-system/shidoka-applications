@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import {
   customElement,
@@ -7,26 +8,25 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
-import downIcon from '@carbon/icons/es/chevron--down/20';
+import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
 import stepperItemStyles from './stepperItem.scss';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import '@kyndryl-design-system/shidoka-foundation/components/link';
+import '../link';
 
-import checkmarkFilled from '@carbon/icons/es/checkmark--filled/24';
-import checkmarkFilled16 from '@carbon/icons/es/checkmark--filled/16';
+import checkmarkFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/checkmark-filled.svg';
+import checkmarkFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 
-import circleFilled from '@carbon/icons/es/circle--filled/24';
-import circleFilled16 from '@carbon/icons/es/circle--filled/16';
+import circleSelected from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/circle-selected.svg';
+import circleSelected16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-selected.svg';
 
-import substractFilled from '@carbon/icons/es/subtract--filled/24';
-import substractFilled16 from '@carbon/icons/es/subtract--filled/16';
+import substractFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/substract-filled.svg';
+import substractFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-filled.svg';
 
-import errorFilled from '@carbon/icons/es/error--filled/24';
-import errorFilled16 from '@carbon/icons/es/error--filled/16';
+import errorFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/error-filled.svg';
+import errorFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
-import warningFilled from '@carbon/icons/es/warning--filled/24';
-import warningFilled16 from '@carbon/icons/es/warning--filled/16';
+import warningFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/warning-filled.svg';
+import warningFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 import './stepperItemChild';
 
@@ -133,22 +133,13 @@ export class StepperItem extends LitElement {
 
   override render() {
     const iconMapper: any = {
-      active: this.stepSize === 'large' ? circleFilled : circleFilled16,
+      active: this.stepSize === 'large' ? circleSelected : circleSelected16,
       excluded: this.stepSize === 'large' ? substractFilled : substractFilled16,
-      disabled: this.stepSize === 'large' ? errorFilled : errorFilled16,
+      disabled: this.stepSize === 'large' ? substractFilled : substractFilled16,
       completed:
         this.stepSize === 'large' ? checkmarkFilled : checkmarkFilled16,
-      destructive:
-        this.stepSize === 'large' ? substractFilled : substractFilled16,
+      destructive: this.stepSize === 'large' ? errorFilled : errorFilled16,
       warning: this.stepSize === 'large' ? warningFilled : warningFilled16,
-    };
-    const iconFillColor: any = {
-      active: 'var(--kd-color-border-accent-spruce-light, #3FADBD)',
-      completed: 'var(--kd-color-spruce-50,#2F808C)',
-      excluded: 'var(--kd-color-background-secondary, ##3D3C3C)',
-      disabled: 'var(--kd-color-background-ui, #898888)',
-      destructive: 'var(--kd-color-background-destructive, #CC1800)',
-      warning: 'var(--kd-color-background-warning, #F5C400)',
     };
     // map first step and last step class to parent div
     const stepContainerClasses = {
@@ -216,22 +207,18 @@ export class StepperItem extends LitElement {
           <div class="${classMap(stepperIconClasses)}">
             <!-- Step icon -->
             ${this.stepState !== 'pending'
-              ? html` <kd-icon
+              ? html` <span
                   slot="icon"
-                  .icon=${this.disabled
-                    ? iconMapper.disabled
-                    : iconMapper[this.stepState]}
-                  fill=${this.disabled
-                    ? iconFillColor.disabled
-                    : iconFillColor[this.stepState]}
-                ></kd-icon>`
+                  class=${this.disabled ? 'disabled' : this.stepState}
+                  >${this.disabled
+                    ? unsafeSVG(iconMapper.disabled)
+                    : unsafeSVG(iconMapper[this.stepState])}</span
+                >`
               : this.stepState === 'pending' && this.disabled
               ? html`
-                  <kd-icon
-                    slot="icon"
-                    .icon=${iconMapper.disabled}
-                    fill=${iconFillColor.disabled}
-                  ></kd-icon>
+                  <span slot="icon" class="disabled"
+                    >${unsafeSVG(iconMapper.disabled)}</span
+                  >
                 `
               : null}
           </div>
@@ -262,14 +249,14 @@ export class StepperItem extends LitElement {
             <div class="step-title-wrapper">
               ${this.stepperType === 'procedure' && this.stepLink !== ''
                 ? html`
-                    <kd-link
+                    <kyn-link
                       href=${this.stepLink}
                       kind="primary"
                       ?disabled=${this.disabled}
                       @on-click=${(e: Event) => this._handleStepClick(e)}
                     >
                       ${this.stepTitle}
-                    </kd-link>
+                    </kyn-link>
                   `
                 : html`
                     <p class="step-title-text type--${this.stepperType}">
@@ -313,22 +300,18 @@ export class StepperItem extends LitElement {
           <!-- Step icons -->
           <div class="${classMap(verticalIconClasses)}">
             ${this.stepState !== 'pending'
-              ? html` <kd-icon
+              ? html` <span
                   slot="icon"
-                  .icon=${this.disabled
-                    ? iconMapper.disabled
-                    : iconMapper[this.stepState]}
-                  fill=${this.disabled
-                    ? iconFillColor.disabled
-                    : iconFillColor[this.stepState]}
-                ></kd-icon>`
+                  class=${this.disabled ? 'disabled' : this.stepState}
+                  >${this.disabled
+                    ? unsafeSVG(iconMapper.disabled)
+                    : unsafeSVG(iconMapper[this.stepState])}</span
+                >`
               : this.stepState === 'pending' && this.disabled
               ? html`
-                  <kd-icon
-                    slot="icon"
-                    .icon=${iconMapper.disabled}
-                    fill=${iconFillColor.disabled}
-                  ></kd-icon>
+                  <span slot="icon" class="disabled"
+                    >${unsafeSVG(iconMapper.disabled)}</span
+                  >
                 `
               : this.showCounter
               ? html`<p class="counter-txt ${this.stepSize}">
@@ -343,14 +326,14 @@ export class StepperItem extends LitElement {
             <div class="vertical-title-wrapper">
               ${this.stepperType === 'procedure' && this.stepLink !== ''
                 ? html`
-                    <kd-link
+                    <kyn-link
                       href=${this.stepLink}
                       kind="primary"
                       ?disabled=${this.disabled}
                       @on-click=${(e: Event) => this._handleStepClick(e)}
                     >
                       ${this.stepTitle}
-                    </kd-link>
+                    </kyn-link>
                   `
                 : html`
                     <p class="step-title-text type--${this.stepperType}">
@@ -370,15 +353,16 @@ export class StepperItem extends LitElement {
                       @click=${() => this._handleChildToggle()}
                       ?disabled=${this.disabled}
                     >
-                      <kd-icon
+                      <span
                         slot="icon"
                         class=${classMap({
                           'arrow-icon': true,
                           open: this.openChildren,
+                          disabled: this.disabled,
+                          'not-disabled': !this.disabled,
                         })}
-                        .icon=${downIcon}
-                        fill=${this.disabled ? '#898888' : '#29707A'}
-                      ></kd-icon>
+                        >${unsafeSVG(downIcon)}</span
+                      >
                     </button>
                   `
                 : null}

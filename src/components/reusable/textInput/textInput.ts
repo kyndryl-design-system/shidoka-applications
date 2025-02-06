@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import {
   customElement,
@@ -6,15 +7,17 @@ import {
   query,
   queryAssignedElements,
 } from 'lit/decorators.js';
+import { deepmerge } from 'deepmerge-ts';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
+
+import '../../reusable/button';
+
+import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+
 import { FormMixin } from '../../../common/mixins/form-input';
 import TextInputScss from './textInput.scss';
-
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import clearIcon from '@carbon/icons/es/close/24';
-import errorIcon from '@carbon/icons/es/warning--filled/24';
-import { deepmerge } from 'deepmerge-ts';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -28,16 +31,21 @@ const _defaultTextStrings = {
  * @prop {string} pattern - RegEx pattern to validate.
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
- * @slot unnamed - Slot for label text.
  * @slot icon - Slot for contextual icon.
+ * @slot tooltip - Slot for tooltip.
+ *
  */
 @customElement('kyn-text-input')
 export class TextInput extends FormMixin(LitElement) {
   static override styles = TextInputScss;
 
+  /** Label text. */
+  @property({ type: String })
+  label = '';
+
   /** Input type, limited to options that are "text like". */
   @property({ type: String })
-  type = 'text';
+  type: 'text' | 'password' | 'email' | 'search' | 'tel' | 'url' = 'text';
 
   /** Input size. "sm", "md", or "lg". */
   @property({ type: String })
@@ -121,11 +129,13 @@ export class TextInput extends FormMixin(LitElement) {
             ? html`<abbr
                 class="required"
                 title=${this._textStrings.requiredText}
-                aria-label=${this._textStrings.requiredText}
+                role="img"
+                aria-label=${this._textStrings?.requiredText || 'Required'}
                 >*</abbr
               >`
             : null}
-          <slot></slot>
+          ${this.label}
+          <slot name="tooltip"></slot>
         </label>
 
         <div
@@ -159,28 +169,21 @@ export class TextInput extends FormMixin(LitElement) {
             maxlength=${ifDefined(this.maxLength)}
             @input=${(e: any) => this._handleInput(e)}
           />
-
-          ${this._isInvalid
-            ? html`
-                <kd-icon
-                  class="error-icon"
-                  role="img"
-                  aria-label=${this._textStrings.errorText}
-                  .icon=${errorIcon}
-                ></kd-icon>
-              `
-            : null}
           ${this.value !== ''
             ? html`
-                <button
+                <kyn-button
                   ?disabled=${this.disabled}
-                  class="clear"
-                  aria-label=${this._textStrings.clearAll}
-                  title=${this._textStrings.clearAll}
+                  class="clear-button"
+                  ghost
+                  kind="tertiary"
+                  size="small"
+                  description=${this._textStrings.clearAll}
                   @click=${() => this._handleClear()}
                 >
-                  <kd-icon .icon=${clearIcon}></kd-icon>
-                </button>
+                  <span style="display:flex;" slot="icon"
+                    >${unsafeSVG(clearIcon)}</span
+                  >
+                </kyn-button>
               `
             : null}
         </div>
@@ -188,11 +191,21 @@ export class TextInput extends FormMixin(LitElement) {
         <div class="caption-error-count">
           <div>
             ${this.caption !== ''
-              ? html` <div class="caption">${this.caption}</div> `
+              ? html`
+                  <div class="caption" aria-disabled=${this.disabled}>
+                    ${this.caption}
+                  </div>
+                `
               : null}
             ${this._isInvalid
               ? html`
                   <div id="error" class="error">
+                    <span
+                      role="img"
+                      class="error-icon"
+                      aria-label=${this._textStrings.errorText}
+                      >${unsafeSVG(errorIcon)}</span
+                    >
                     ${this.invalidText || this._internalValidationMsg}
                   </div>
                 `

@@ -7,48 +7,63 @@
 :host {
   display: block;
   width: 100%;
-  kd-card {
+
+  kyn-card {
     width: 100%;
   }
 }
+
 // change card backgound and outline as per types
-kd-card.notification-inline::part(card-wrapper) {
+kyn-card.notification-inline::part(card-wrapper) {
   outline: none;
 }
-kd-card.notification-toast::part(card-wrapper) {
+
+kyn-card.notification-toast::part(card-wrapper) {
   @include elevation.shadow(3);
   outline: none;
+
   &:hover {
     @include elevation.shadow(2);
     transition: box-shadow 300ms ease-out;
   }
 }
-kd-card.notification-error::part(card-wrapper) {
-  background-color: var(--kd-color-background-error-light, #f7e6e6);
+
+kyn-card.notification-error::part(card-wrapper) {
+  background-color: var(--kd-color-status-error-accent);
 }
-kd-card.notification-success::part(card-wrapper) {
-  background-color: var(--kd-color-background-success-light, #e5f7eb);
+
+kyn-card.notification-success::part(card-wrapper) {
+  background-color: var(--kd-color-status-success-light);
 }
-kd-card.notification-warning::part(card-wrapper) {
-  background-color: var(--kd-color-background-warning-light, #fef9e5);
+
+kyn-card.notification-warning::part(card-wrapper) {
+  background-color: var(--kd-color-status-warning-light);
 }
-kd-card.notification-info::part(card-wrapper) {
-  background-color: var(--kd-color-background-informational-light, #e9f2ff);
+
+kyn-card.notification-info::part(card-wrapper) {
+  background-color: var(--kd-color-status-informational-light);
 }
-kd-card.notification-default::part(card-wrapper) {
-  background-color: var(--kd-color-background-ui-soft, #f1f0f0);
+
+kyn-card.notification-default::part(card-wrapper) {
+  background-color: var(--kd-color-background-accent-light);
 }
+
+kyn-card.notification-normal::part(card-wrapper) {
+  background-color: var(--kd-color-background-card-background);
+}
+
 // Change card style based on notification read prop
-kd-card.notification-mark-unread::part(card-wrapper) {
-  background-color: var(--kd-color-skye-10);
-  outline: 1px solid var(--kd-color-skye-20);
+kyn-card.notification-mark-unread::part(card-wrapper) {
+  background-color: var(--kd-color-background-highlight-fill);
+  outline: 1px solid var(--kd-color-background-highlight-border);
+
   &:hover {
-    outline: 2px solid var(--kd-color-border-ui-hover);
+    outline: 2px solid var(--kd-color-background-card-hover);
   }
 }
 
-kd-card.notification-mark-read::part(card-wrapper) {
-  background-color: var(--kd-color-background-ui-default);
+kyn-card.notification-mark-read::part(card-wrapper) {
+  background-color: var(--kd-color-background-card-background);
 }
 
 .notification {
@@ -58,15 +73,17 @@ kd-card.notification-mark-read::part(card-wrapper) {
     justify-content: space-between;
     align-items: center;
   }
+
   &-title {
     @include typography.type-body-02;
     font-weight: 500;
-    color: var(--kd-color-text-primary);
+    color: var(--kd-color-text-level-dark);
     margin: 0;
   }
+
   &-subtitle {
     @include typography.type-ui-02;
-    color: var(--kd-color-text-secondary);
+    color: var(--kd-color-text-level-secondary);
   }
 
   &-content-wrapper {
@@ -75,17 +92,31 @@ kd-card.notification-mark-read::part(card-wrapper) {
     align-items: center;
     padding-top: 10px;
   }
+
   &-state-icon {
     padding-right: 8px;
   }
+
   &-toast {
     z-index: 999999;
     animation: fadeIn 600ms ease-in-out forwards;
-    //animation: slideInRight 600ms ease-in-out forwards;
+
     &-close-btn {
+      span {
+        color: var(--kd-color-icon-dark); // Close icon color
+      }
       position: absolute;
       top: 5px;
       right: 5px;
+    }
+  }
+}
+
+.notification-inline.notification-default,
+.notification-toast.notification-default {
+  .notification-toast-close-btn {
+    span {
+      color: var(--kd-color-icon-primary); // Close icon color
     }
   }
 }
@@ -100,20 +131,45 @@ kd-card.notification-mark-read::part(card-wrapper) {
 .notification-toast .notification-content-wrapper {
   padding: 0;
 }
+
 .notification-description {
   @include typography.type-ui-02;
-  color: var(--kd-color-text-primary);
+  color: var(--kd-color-text-level-dark);
   padding-top: 10px;
 }
+
 .notification-inline .notification-description,
 .notification-toast .notification-description {
   padding-top: 0px;
   padding-left: 24px;
 }
+
 .notification-inline.notification-default .notification-description,
 .notification-toast.notification-default .notification-description {
   padding-top: 0px;
   padding-left: 0px;
+  color: var(--kd-color-text-level-primary);
+}
+
+.notification-inline.notification-default .notification-title,
+.notification-toast.notification-default .notification-title {
+  color: var(--kd-color-text-level-primary);
+}
+
+.notification-inline.notification-default .timestamp-text,
+.notification-toast.notification-default .notification-title,
+.notification-toast.notification-default .timestamp-text {
+  color: var(--kd-color-text-level-primary);
+}
+
+.notification-normal,
+.notification-mark-unread,
+.notification-mark-read {
+  .notification-title,
+  .notification-description,
+  .timestamp-text {
+    color: var(--kd-color-text-level-primary);
+  }
 }
 
 .timestamp {
@@ -123,26 +179,31 @@ kd-card.notification-mark-read::part(card-wrapper) {
     flex: 1;
     margin-left: 8px;
   }
+
   &-text {
     @include typography.type-ui-02;
-    color: var(--kd-color-text-primary);
+    color: var(--kd-color-text-level-dark);
     font-weight: 500;
   }
 }
+
 // fadeIn animation
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
+
 // optional slidein right animation
 @keyframes slideInRight {
   from {
     transform: translateX(100%);
   }
+
   to {
     transform: none;
   }
@@ -156,4 +217,24 @@ kd-card.notification-mark-read::part(card-wrapper) {
 
 #notificationType {
   @include visibility.sr-only;
+}
+
+.info svg {
+  fill: var(--kd-color-status-informational-dark);
+  display: flex;
+}
+
+.success svg {
+  fill: var(--kd-color-status-success-dark);
+  display: flex;
+}
+
+.warning svg {
+  fill: var(--kd-color-status-warning-dark);
+  display: flex;
+}
+
+.error svg {
+  fill: var(--kd-color-status-error-dark);
+  display: flex;
 }

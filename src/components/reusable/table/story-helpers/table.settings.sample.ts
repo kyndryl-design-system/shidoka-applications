@@ -1,17 +1,20 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import searchIcon from '@carbon/icons/es/search/24';
+import '../../button';
 
-import settingsIcon from '@carbon/icons/es/settings/16';
+import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/search.svg';
+import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
+
 import '../index';
 import './column-setting.sample';
 import '../../sideDrawer';
 import '../../textInput';
 import { dataForColumns as rows } from './ultils.sample';
+
+import '../../../../common/scss/global.scss';
 
 @customElement('story-table-settings')
 class StoryTableSettings extends LitElement {
@@ -39,9 +42,10 @@ class StoryTableSettings extends LitElement {
       left: 0;
       z-index: 3; /* To make sure the sticky cells stay on top of others */
       box-shadow: 0px 2px 8px rgba(61, 60, 60, 0.25);
+      border-right-color: transparent;
     }
     kyn-table.first-col-locked kyn-td:first-child {
-      background-color: white;
+      background-color: var(--kd-color-background-table-row);
     }
     kyn-global-filter kyn-side-drawer::part(drawer-dialog) {
       overflow-y: hidden;
@@ -253,7 +257,7 @@ class StoryTableSettings extends LitElement {
   }
 
   _handleSearch(e: any) {
-    confirm('Search for ' + e.target.value);
+    console.log('Search for ' + e.target.value);
   }
 
   override render() {
@@ -282,7 +286,7 @@ class StoryTableSettings extends LitElement {
           @on-input=${(e: any) => this._handleSearch(e)}
         >
           Search
-          <kd-icon slot="icon" .icon=${searchIcon}></kd-icon>
+          <span slot="icon" style="display:flex">${unsafeSVG(searchIcon)}</span>
         </kyn-text-input>
 
         <div slot="actions">
@@ -295,7 +299,7 @@ class StoryTableSettings extends LitElement {
             @on-close=${(e: CustomEvent) => this.handleClose(e)}
           >
             <div slot="anchor">
-              <kd-button
+              <kyn-button
                 iconposition="left"
                 kind="tertiary"
                 type="button"
@@ -304,8 +308,10 @@ class StoryTableSettings extends LitElement {
                 description="settings button"
               >
                 Settings
-                <kd-icon slot="icon" .icon=${settingsIcon}></kd-icon>
-              </kd-button>
+                <span slot="icon" style="display:flex"
+                  >${unsafeSVG(settingsIcon)}</span
+                >
+              </kyn-button>
             </div>
             <story-column-setting .rows=${this.columns}></story-column-setting>
           </kyn-side-drawer>

@@ -1,12 +1,12 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import CardSampleScss from './cardSample.scss';
 import '../../components/reusable/overflowMenu';
 import '../../components/reusable/tag';
 
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import actionIcon from '@carbon/icons/es/bookmark/20';
+import '../../components/reusable/button';
+import actionIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/bookmark.svg';
 
 /**  Sample Lit component to show containable items inside Card. */
 @customElement('sample-card-story-content-component')
@@ -45,15 +45,15 @@ export class SampleCardStoryContentComponent extends LitElement {
           <div class="card-actions">
             <!-- Example : Card action button -->
             <div class="card-action-btn-class">
-              <kd-button
+              <kyn-button
                 kind="tertiary"
                 size="small"
                 iconPosition="center"
                 description="Action"
                 @click=${(e: Event) => e.preventDefault()}
               >
-                <kd-icon slot="icon" .icon=${actionIcon}></kd-icon>
-              </kd-button>
+                <span slot="icon">${unsafeSVG(actionIcon)}</span>
+              </kyn-button>
             </div>
 
             <div class="card-option-wrapper">
@@ -95,19 +95,19 @@ export class SampleCardStoryContentComponent extends LitElement {
       <!-- Example : Card links -->
       <div class="card-link">
         <div class="card-link-elements">
-          <kd-button
+          <kyn-button
             href="#"
             kind="tertiary"
             size="small"
             @click=${(e: Event) => e.preventDefault()}
-            >Link 1</kd-button
+            >Link 1</kyn-button
           >
-          <kd-button
+          <kyn-button
             href="#"
             kind="tertiary"
             size="small"
             @click=${(e: Event) => e.preventDefault()}
-            >Link 2</kd-button
+            >Link 2</kyn-button
           >
         </div>
       </div>
