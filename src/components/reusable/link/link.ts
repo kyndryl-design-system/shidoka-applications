@@ -61,7 +61,6 @@ export class Link extends LitElement {
       <a
         class="kyn-link-text ${classes}"
         target=${this.target}
-        role="link"
         part="link"
         rel=${this.rel}
         href=${this.href ? this.href : 'javascript:void(0)'}

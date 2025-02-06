@@ -186,7 +186,7 @@ export const WithEverything = {
                 email="user@kyndryl.com"
                 profileLink="#"
               >
-                <img src="https://picsum.photos/id/237/112/112" />
+                <img alt="" src="https://picsum.photos/id/237/112/112" />
               </kyn-header-user-profile>
 
               <kyn-header-link href="javascript:void(0)">

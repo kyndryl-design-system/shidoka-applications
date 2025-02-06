@@ -61,6 +61,7 @@ export class DropdownOption extends LitElement {
         role="option"
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
+        aria-selected=${this.selected}
         ?disabled=${this.disabled}
         aria-disabled=${this.disabled}
         ?multiple=${this.multiple}
