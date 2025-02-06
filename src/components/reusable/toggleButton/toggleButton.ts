@@ -50,8 +50,6 @@ export class ToggleButton extends FormMixin(LitElement) {
 
   /**
    * The state that is considered valid (true/false).
-   * If set, the toggle must be in this state to be valid.
-   * If not set, any state is considered valid.
    */
   @property({ type: Boolean, attribute: 'valid-state' })
   validState?: boolean;
@@ -102,7 +100,7 @@ export class ToggleButton extends FormMixin(LitElement) {
 
   private handleChange(e: any) {
     this.checked = e.target.checked;
-    // emit selected value, bubble so it can be captured by the checkbox group
+
     const event = new CustomEvent('on-change', {
       detail: {
         checked: e.target.checked,
@@ -112,7 +110,6 @@ export class ToggleButton extends FormMixin(LitElement) {
     });
     this.dispatchEvent(event);
 
-    // Validate after value changes
     this._validate(true, false);
   }
 
@@ -120,7 +117,6 @@ export class ToggleButton extends FormMixin(LitElement) {
     let validity = { ...this._inputEl.validity };
     let validationMessage = '';
 
-    // Check if a valid state is specified and current state doesn't match
     if (this.validState !== undefined && this.checked !== this.validState) {
       validity = { ...validity, customError: true };
       validationMessage = `This toggle must be ${
@@ -128,21 +124,17 @@ export class ToggleButton extends FormMixin(LitElement) {
       }`;
     }
 
-    // Add custom error if invalidText is provided
     if (this.invalidText !== '') {
       validity = { ...validity, customError: true };
       validationMessage = this.invalidText;
     }
 
-    // Set validity on custom element, anchor to inputEl
     this._internals.setValidity(validity, validationMessage, this._inputEl);
 
-    // Set internal validation message if value was changed by user input
     if (interacted) {
       this._internalValidationMsg = validationMessage;
     }
 
-    // Focus the form field to show validity
     if (report) {
       this._internals.reportValidity();
     }
@@ -152,7 +144,6 @@ export class ToggleButton extends FormMixin(LitElement) {
     this._onUpdated(changedProps);
 
     if (changedProps.has('checked')) {
-      // set form data value
       this._internals.setFormValue(this.checked ? this.value : null);
     }
   }

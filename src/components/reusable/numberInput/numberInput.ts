@@ -171,11 +171,7 @@ export class NumberInput extends FormMixin(LitElement) {
 
         ${this.caption !== ''
           ? html`
-              <div
-                class="caption"
-                aria-disabled=${this.disabled}
-                ?readonly=${this.readOnly}
-              >
+              <div class="caption" aria-disabled=${this.disabled}>
                 ${this.caption}
               </div>
             `
