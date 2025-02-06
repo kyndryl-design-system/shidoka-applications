@@ -128,7 +128,6 @@ export class SideDrawer extends LitElement {
 
       <dialog
         class="${classMap(classes)}"
-        autofocus
         aria-labelledby="dialogLabel"
         @cancel=${(e: Event) => this._closeDrawer(e, 'cancel')}
       >

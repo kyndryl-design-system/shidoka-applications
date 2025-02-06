@@ -117,7 +117,6 @@ export class Modal extends LitElement {
 
       <dialog
         class="${classMap(classes)}"
-        autofocus
         aria-labelledby="dialogLabel"
         @cancel=${(e: Event) => this._closeModal(e, 'cancel')}
       >
