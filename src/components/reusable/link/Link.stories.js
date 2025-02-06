@@ -54,6 +54,7 @@ const args = {
   kind: 'primary',
   shade: 'auto',
   disabled: false,
+  genAITheme: false,
   standalone: false,
   iconLeft: false,
   'on-click': fn(),
@@ -74,6 +75,7 @@ export const Link = {
         kind=${args.kind}
         shade=${args.shade}
         ?disabled=${args.disabled}
+        ?genAITheme=${args.genAITheme}
         @on-click=${args['on-click']}
       >
         ${args.unnamed}
@@ -101,6 +103,7 @@ export const LinkWithIcon = {
       shade=${args.shade}
       kind=${args.kind}
       ?disabled=${args.disabled}
+      ?genAITheme=${args.genAITheme}
       @on-click=${args['on-click']}
     >
       ${args.unnamed}
