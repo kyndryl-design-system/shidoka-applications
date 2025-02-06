@@ -3,6 +3,7 @@ import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import vitalCardScss from './vitalCard.scss';
 import '../../components/reusable/link';
+import '../../components/reusable/tooltip';
 
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import '../../components/reusable/loaders/skeleton';
@@ -16,6 +17,10 @@ export class VitalCardSampleComponent extends LitElement {
   @property({ type: Boolean })
   skeleton = false;
 
+  /** show tooltip */
+  @property({ type: Boolean })
+  showTooltip = false;
+
   override render() {
     return html`
       <div>
@@ -23,6 +28,9 @@ export class VitalCardSampleComponent extends LitElement {
           ${this.skeleton
             ? html`<kyn-skeleton lines="1" inline></kyn-skeleton>`
             : 'Title'}
+          ${this.showTooltip
+            ? html`<kyn-tooltip>Tooltip content</kyn-tooltip>`
+            : null}
         </div>
         <div class="vital-card-content-wrapper">
           <div class="vital-card-mobile-wrapper-subdiv">
