@@ -32,7 +32,10 @@ export const SwiperConfig = {
     init: function (swiper: any) {
       DetectOffScreen(swiper);
     },
-    slideChangeTransitionEnd: function (swiper: any) {
+    transitionEnd: function (swiper: any) {
+      DetectOffScreen(swiper);
+    },
+    scrollbarDragEnd: function (swiper: any) {
       DetectOffScreen(swiper);
     },
   },
