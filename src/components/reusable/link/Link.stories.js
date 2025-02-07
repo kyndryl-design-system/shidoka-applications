@@ -54,7 +54,7 @@ const args = {
   kind: 'primary',
   shade: 'auto',
   disabled: false,
-  genAITheme: false,
+  aiConnected: false,
   standalone: false,
   iconLeft: false,
   'on-click': fn(),
@@ -75,7 +75,7 @@ export const Link = {
         kind=${args.kind}
         shade=${args.shade}
         ?disabled=${args.disabled}
-        ?genAITheme=${args.genAITheme}
+        ?aiConnected=${args.aiConnected}
         @on-click=${args['on-click']}
       >
         ${args.unnamed}
@@ -103,7 +103,7 @@ export const LinkWithIcon = {
       shade=${args.shade}
       kind=${args.kind}
       ?disabled=${args.disabled}
-      ?genAITheme=${args.genAITheme}
+      ?aiConnected=${args.aiConnected}
       @on-click=${args['on-click']}
     >
       ${args.unnamed}
@@ -118,10 +118,10 @@ export const LinkWithIcon = {
   `,
 };
 
-export const LinkWithGenAITheme = {
+export const LinkAIConnected = {
   args: {
     ...args,
-    genAITheme: true,
+    aiConnected: true,
   },
   render: (args) =>
     html`
@@ -133,7 +133,7 @@ export const LinkWithGenAITheme = {
         kind=${args.kind}
         shade=${args.shade}
         ?disabled=${args.disabled}
-        ?genAITheme=${args.genAITheme}
+        ?aiConnected=${args.aiConnected}
         @on-click=${args['on-click']}
       >
         ${args.unnamed}

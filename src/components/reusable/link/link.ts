@@ -48,7 +48,7 @@ export class Link extends LitElement {
 
   /** Determines if the link is themed for GenAI.*/
   @property({ type: Boolean })
-  genAITheme = false;
+  aiConnected = false;
 
   /**
    * Determines the shade of the link. By default `auto`.
@@ -83,7 +83,7 @@ export class Link extends LitElement {
     const baseClasses = {
       ['kyn-link-text-disabled']: this.disabled,
       'icon-left': this.iconLeft,
-      ['kyn-link-text-gen-ai-theme']: this.genAITheme,
+      ['kyn-link-text-ai-connected']: this.aiConnected,
     };
 
     if (this.disabled) {
