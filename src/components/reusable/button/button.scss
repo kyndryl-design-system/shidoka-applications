@@ -89,6 +89,112 @@
   pointer-events: none;
 }
 
+// AI-specific Button Mixins
+@mixin ai-connected-primary {
+  background-color: var(--kd-color-background-button-primary-ai-default);
+
+  &:hover {
+    &:before {
+      background-color: var(--kd-color-background-button-primary-ai-hover);
+    }
+  }
+
+  &:active {
+    &:before {
+      background-color: var(--kd-color-background-button-primary-ai-pressed);
+    }
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-background-button-primary-ai-focused);
+  }
+
+  &:disabled {
+    @include kd-btn-disabled;
+    background-color: var(--kd-color-background-ui-default-disabled);
+  }
+}
+
+@mixin ai-connected-secondary {
+  background-color: var(--kd-color-background-button-secondary-ai-default);
+
+  &:hover {
+    background-color: var(--kd-color-background-button-secondary-ai-hover);
+  }
+
+  &:focus {
+    background-color: var(--kd-color-background-button-secondary-ai-focused);
+    outline-color: var(--kd-color-background-button-secondary-state-focused);
+  }
+
+  &:active {
+    background-color: var(--kd-color-background-button-secondary-ai-pressed);
+  }
+
+  &:disabled {
+    @include kd-btn-disabled;
+    background-color: var(--kd-color-background-opacity-1);
+  }
+}
+
+@mixin ai-connected-tertiary {
+  background-color: var(--kd-color-background-button-tertiary-ai-default);
+
+  &:hover {
+    background-color: var(--kd-color-background-button-tertiary-ai-hover);
+  }
+
+  &:focus {
+    background-color: var(--kd-color-background-button-tertiary-ai-focused);
+    outline-color: var(--kd-color-border-button-tertiary-state-focused);
+    color: var(--kd-color-text-button-light-primary);
+  }
+
+  &:active {
+    background-color: var(--kd-color-background-button-tertiary-ai-pressed);
+  }
+
+  &:disabled {
+    @include kd-btn-disabled;
+    background-color: transparent;
+  }
+}
+
+@mixin ai-connected-outline($type: 'primary') {
+  background-color: transparent;
+  @if $type == 'tertiary' {
+    color: var(--kd-color-text-button-light-primary);
+  } @else {
+    color: var(--kd-color-background-button-#{$type}-ai-default);
+  }
+  border: 1px solid var(--kd-color-background-button-#{$type}-ai-default);
+
+  &:hover {
+    border-color: var(--kd-color-background-button-#{$type}-ai-hover);
+  }
+
+  &:active:before {
+    border-color: var(--kd-color-background-button-#{$type}-ai-pressed);
+  }
+
+  &:focus {
+    border-color: var(--kd-color-background-button-#{$type}-ai-focused);
+    box-shadow: inset 0 0 0 1px
+        var(--kd-color-background-button-#{$type}-ai-focused),
+      inset 0 0 0 1px var(--kd-color-background-button-#{$type}-ai-focused);
+    @if $type == 'tertiary' {
+      outline-color: var(--kd-color-border-button-tertiary-state-focused);
+    }
+  }
+
+  &:active {
+    border-color: var(--kd-color-background-button-#{$type}-ai-pressed);
+    box-shadow: inset 0 0 0 0.5px
+        var(--kd-color-background-button-#{$type}-ai-pressed),
+      inset 0 0 0 0.5px var(--kd-color-background-button-#{$type}-ai-pressed);
+  }
+}
+
 span {
   display: flex;
   align-items: center;
@@ -143,6 +249,10 @@ span {
     @include kd-btn-disabled;
     background-color: var(--kd-color-background-ui-default-disabled);
   }
+
+  &.kd-btn--ai-connected {
+    @include ai-connected-primary;
+  }
 }
 
 .kd-btn--primary-web {
@@ -193,6 +303,10 @@ span {
 
   &:disabled {
     @include kd-outline-btn-disabled;
+  }
+
+  &.kd-btn--ai-connected {
+    @include ai-connected-outline('primary');
   }
 }
 
@@ -302,6 +416,10 @@ span {
     @include kd-btn-disabled;
     background-color: var(--kd-color-background-opacity-1);
   }
+
+  &.kd-btn--ai-connected {
+    @include ai-connected-secondary;
+  }
 }
 
 // Secondary Outline Only Button
@@ -331,6 +449,10 @@ span {
 
   &:disabled {
     @include kd-outline-btn-disabled;
+  }
+
+  &.kd-btn--ai-connected {
+    @include ai-connected-outline('secondary');
   }
 }
 
@@ -415,6 +537,10 @@ span {
     @include kd-btn-disabled;
     background-color: transparent;
   }
+
+  &.kd-btn--ai-connected {
+    @include ai-connected-tertiary;
+  }
 }
 
 // Tertiary Outline Only Button
@@ -446,6 +572,10 @@ span {
 
   &:disabled {
     @include kd-outline-btn-disabled;
+  }
+
+  &.kd-btn--ai-connected {
+    @include ai-connected-outline('tertiary');
   }
 }
 

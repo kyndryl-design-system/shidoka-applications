@@ -88,6 +88,9 @@ export class Button extends LitElement {
   @property({ type: Boolean, reflect: true })
   disabled = false;
 
+  @property({ type: Boolean, reflect: true })
+  aiConnected = false;
+
   /** Determines if the button indicates a destructive action. */
   @property({ type: Boolean, reflect: true })
   destructive = false;
@@ -168,6 +171,7 @@ export class Button extends LitElement {
       [`kd-btn--icon-${this.iconPosition}`]:
         !!this.iconPosition && !this.iconOnly,
       [`kd-btn--icon-center`]: this._iconEls?.length && this.iconOnly,
+      ['kd-btn--ai-connected']: this.aiConnected,
       'icon-only': this._iconEls?.length && this.iconOnly,
       'btn-float': this.isFloating,
       'btn-hidden': this.showOnScroll && !this._showButton,
