@@ -106,6 +106,10 @@ export class SideDrawer extends LitElement {
   @property({ attribute: false })
   beforeClose!: Function;
 
+  /** Determines if the component is themed for GenAI.*/
+  @property({ type: Boolean, reflect: true })
+  aiConnected = false;
+
   /** The dialog element
    * @internal
    */
@@ -119,6 +123,7 @@ export class SideDrawer extends LitElement {
       'size--md': this.size === 'md',
       'size--standard': this.size === 'standard',
       'size--sm': this.size === 'sm',
+      'side-drawer--ai': this.aiConnected,
     };
 
     return html`
@@ -173,6 +178,7 @@ export class SideDrawer extends LitElement {
                       value="Ok"
                       ?disabled=${this.submitBtnDisabled}
                       ?destructive=${this.destructive}
+                      ?aiConnected=${this.aiConnected}
                       @click=${(e: Event) => this._closeDrawer(e, 'ok')}
                     >
                       ${this.submitBtnText}
@@ -184,6 +190,7 @@ export class SideDrawer extends LitElement {
                             class="action-button"
                             value="Secondary"
                             kind="secondary"
+                            ?aiConnected=${this.aiConnected}
                             @click=${(e: Event) =>
                               this._closeDrawer(e, 'secondary')}
                           >
@@ -198,6 +205,7 @@ export class SideDrawer extends LitElement {
                             class="action-button"
                             value="Cancel"
                             kind="tertiary"
+                            ?aiConnected=${this.aiConnected}
                             @click=${(e: Event) =>
                               this._closeDrawer(e, 'cancel')}
                           >
