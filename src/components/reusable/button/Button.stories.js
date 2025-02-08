@@ -68,6 +68,7 @@ const args = {
   outlineOnly: false,
   ghost: false,
   disabled: false,
+  aiConnected: false,
   iconPosition: 'right',
   description: 'Button description',
   href: '',
@@ -88,6 +89,7 @@ export const Button = {
         ?outlineOnly=${args.outlineOnly}
         ?ghost=${args.ghost}
         ?disabled=${args.disabled}
+        ?aiConnected=${args.aiConnected}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
         size=${args.size}
@@ -120,6 +122,7 @@ export const ButtonWithIcon = {
         type=${args.type}
         ?destructive=${args.destructive}
         ?disabled=${args.disabled}
+        ?aiConnected=${args.aiConnected}
         ?outlineOnly=${args.outlineOnly}
         ?ghost=${args.ghost}
         ?isFloating=${args.isFloating}
@@ -153,6 +156,72 @@ export const IconOnly = {
         ?outlineOnly=${args.outlineOnly}
         ?ghost=${args.ghost}
         ?disabled=${args.disabled}
+        ?aiConnected=${args.aiConnected}
+        ?isFloating=${args.isFloating}
+        ?showOnScroll=${args.showOnScroll}
+        size=${args.size}
+        iconPosition="center"
+        description=${args.description}
+        href=${args.href}
+        name=${args.name}
+        value=${args.value}
+        @on-click=${(e) => action(e.type)(e)}
+      >
+        <span style="display:flex;" slot="icon"
+          >${unsafeSVG(chevronRightIcon)}</span
+        >
+      </kyn-button>
+    `;
+  },
+};
+
+export const AIConnected = {
+  args: {
+    ...args,
+    aiConnected: true,
+  },
+  render: (args) => {
+    return html`
+      <kyn-button
+        kind=${args.kind}
+        type=${args.type}
+        ?destructive=${args.destructive}
+        ?outlineOnly=${args.outlineOnly}
+        ?ghost=${args.ghost}
+        ?disabled=${args.disabled}
+        ?aiConnected=${args.aiConnected}
+        ?isFloating=${args.isFloating}
+        ?showOnScroll=${args.showOnScroll}
+        size=${args.size}
+        iconPosition=${args.iconPosition}
+        description=${args.description}
+        href=${args.href}
+        name=${args.name}
+        value=${args.value}
+        @on-click=${(e) => action(e.type)(e)}
+      >
+        ${args.unnamed}
+      </kyn-button>
+    `;
+  },
+};
+
+export const AIConnectedIconOnly = {
+  args: {
+    ...args,
+    aiConnected: true,
+    description: 'Button Description',
+  },
+  render: (args) => {
+    return html`
+      <kyn-button
+        kind=${args.kind}
+        type=${args.type}
+        ?destructive=${args.destructive}
+        ?outlineOnly=${args.outlineOnly}
+        ?ghost=${args.ghost}
+        ?disabled=${args.disabled}
+        ?aiConnected=${args.aiConnected}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
         size=${args.size}
