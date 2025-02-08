@@ -171,7 +171,7 @@ export class Button extends LitElement {
       [`kd-btn--icon-${this.iconPosition}`]:
         !!this.iconPosition && !this.iconOnly,
       [`kd-btn--icon-center`]: this._iconEls?.length && this.iconOnly,
-      ['kd-btn--ai-connected']: this.aiConnected,
+      ['kd-btn--ai']: this.aiConnected,
       'icon-only': this._iconEls?.length && this.iconOnly,
       'btn-float': this.isFloating,
       'btn-hidden': this.showOnScroll && !this._showButton,
