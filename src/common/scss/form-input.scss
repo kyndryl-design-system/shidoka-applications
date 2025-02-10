@@ -1,6 +1,6 @@
+@use '../../common/scss/mixins.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
-@use '../../common/scss/mixins.scss';
 
 .label-text {
   @include typography.type-ui-02;
@@ -21,13 +21,17 @@
   [disabled] & {
     color: var(--kd-color-text-level-disabled);
   }
+
+  [readonly] & {
+    color: var(--kd-color-text-level-primary);
+  }
 }
 
 .required {
   text-decoration: none;
   color: var(--kd-color-status-error-dark);
 
-  [disabled] & {
+  [disabled]:not([readonly]) & {
     color: var(--kd-color-text-level-disabled);
   }
 }
@@ -38,7 +42,17 @@
 
   input[disabled],
   .input-custom[disabled],
-  textarea[disabled] {
+  textarea[disabled],
+  .select[disabled] {
+    & ~ .input-icon {
+      color: var(--kd-color-icon-disabled);
+    }
+  }
+
+  input[readonly],
+  .input-custom[readonly],
+  textarea[readonly],
+  .select[readonly] {
     & ~ .input-icon {
       color: var(--kd-color-icon-disabled);
     }
@@ -70,7 +84,9 @@ textarea {
   }
 
   &:focus {
-    outline-color: var(--kd-color-border-variants-focus);
+    &:not[readonly] {
+      outline-color: var(--kd-color-border-variants-focus);
+    }
   }
 
   &::placeholder {
@@ -86,18 +102,11 @@ textarea {
   }
 
   &[disabled] {
-    background: var(--kd-color-background-ui-hollow-default);
-    border-color: var(--kd-color-border-ui-disabled);
-    color: var(--kd-color-text-level-disabled);
-    cursor: default;
+    @include mixins.form-disabled;
+  }
 
-    &[invalid] {
-      border-color: var(--kd-color-border-ui-disabled);
-    }
-
-    &::placeholder {
-      color: var(--kd-color-text-link-level-disabled);
-    }
+  &[readonly] {
+    @include mixins.form-readonly;
   }
 
   &:not([disabled])[invalid] {
@@ -119,7 +128,7 @@ textarea {
     }
   }
 
-  [disabled] & {
+  [disabled]:not([readonly]) & {
     color: var(--kd-color-text-link-level-disabled);
 
     span svg {
@@ -136,7 +145,7 @@ textarea {
 .error-icon {
   color: var(--kd-color-status-error-dark);
 
-  [disabled] & {
+  [disabled]:not([readonly]) & {
     color: var(--kd-color-text-link-level-disabled);
   }
 }
@@ -144,7 +153,7 @@ textarea {
 .success-icon {
   color: var(--kd-color-background-success);
 
-  [disabled] & {
+  [disabled]:not([readonly]) & {
     color: var(--kd-color-text-link-level-disabled);
   }
 }
@@ -154,7 +163,7 @@ textarea {
   cursor: default;
   color: var(--kd-color-text-forms-input-field-text);
 
-  [disabled] & {
+  [disabled]:not([readonly]) & {
     color: var(--kd-color-text-level-disabled);
   }
 }
@@ -204,7 +213,7 @@ textarea {
     font-size: 16px;
   }
 
-  [disabled] & {
+  [disabled]:not([readonly]) & {
     color: var(--kd-color-text-link-level-disabled);
   }
 
@@ -221,7 +230,7 @@ textarea {
   margin-top: -4px;
   margin-bottom: 8px;
 
-  [disabled] & {
+  [disabled]:not([readonly]) & {
     color: var(--kd-color-text-link-level-disabled);
   }
 }

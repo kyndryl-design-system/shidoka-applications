@@ -26,6 +26,7 @@ const args = {
   value: ['1'],
   required: false,
   disabled: false,
+  readOnly: false,
   horizontal: false,
   selectAll: false,
   hideLegend: false,
@@ -53,6 +54,7 @@ export const CheckboxGroup = {
         .value=${args.value}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readOnly}
         ?horizontal=${args.horizontal}
         ?selectAll=${args.selectAll}
         ?hideLegend=${args.hideLegend}
@@ -90,6 +92,7 @@ export const CheckboxSubgroups = {
         .value=${args.value}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readOnly}
         ?horizontal=${args.horizontal}
         ?selectAll=${args.selectAll}
         ?hideLegend=${args.hideLegend}

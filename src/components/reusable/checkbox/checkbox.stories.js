@@ -19,6 +19,7 @@ export const Checkbox = {
     value: 'example',
     checked: false,
     disabled: false,
+    readOnly: false,
     indeterminate: false,
   },
   render: (args) => {
@@ -27,6 +28,7 @@ export const Checkbox = {
         value=${args.value}
         ?checked=${args.checked}
         ?disabled=${args.disabled}
+        ?readonly=${args.readOnly}
         ?indeterminate=${args.indeterminate}
         @on-checkbox-change=${(e) => action(e.type)(e)}
       >

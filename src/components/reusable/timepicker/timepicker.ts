@@ -95,6 +95,10 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   timepickerDisabled = false;
 
+  /** Input read only state. */
+  @property({ type: Boolean })
+  readOnly = false;
+
   /** Sets 24 hour formatting true/false.
    * Defaults to 12H for all `en-*` locales and 24H for all other locales.
    */
@@ -181,7 +185,8 @@ export class TimePicker extends FormMixin(LitElement) {
           class="label-text"
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
-          ?disabled=${this.timepickerDisabled}
+          ?disabled=${this.timepickerDisabled || this.readOnly}
+          ?readonly=${this.readOnly}
           id=${`label-${anchorId}`}
         >
           ${this.required
@@ -207,7 +212,8 @@ export class TimePicker extends FormMixin(LitElement) {
             id=${anchorId}
             name=${this.name}
             placeholder=${placeholder}
-            ?disabled=${this.timepickerDisabled}
+            ?disabled=${this.timepickerDisabled || this.readOnly}
+            ?readonly=${this.readOnly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
@@ -215,10 +221,13 @@ export class TimePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${this.value
+          ${this.readOnly
+            ? null
+            : this.value
             ? html`
                 <kyn-button
-                  ?disabled=${this.timepickerDisabled}
+                  ?disabled=${this.timepickerDisabled || this.readOnly}
+                  ?readonly=${this.readOnly}
                   class="clear-button"
                   ghost
                   kind="tertiary"
@@ -290,8 +299,8 @@ export class TimePicker extends FormMixin(LitElement) {
 
   getTimepickerClasses() {
     return {
+      'shidoka-picker': true,
       'time-picker': true,
-      'time-picker__disabled': this.timepickerDisabled,
     };
   }
 
@@ -408,7 +417,7 @@ export class TimePicker extends FormMixin(LitElement) {
       enableTime: true,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl!,
-      allowInput: true,
+      allowInput: !this.readOnly && !this.timepickerDisabled,
       dateFormat: !this.twentyFourHourFormat ? 'h:i K' : 'H:i',
       minTime: this.minTime,
       maxTime: this.maxTime,
@@ -451,8 +460,10 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   async handleClose(): Promise<void> {
-    this._hasInteracted = true;
-    this._validate(true, false);
+    if (this._inputEl?.value) {
+      this._hasInteracted = true;
+      this._validate(true, false);
+    }
     await this.updateComplete;
   }
 
@@ -468,7 +479,6 @@ export class TimePicker extends FormMixin(LitElement) {
       emitValue(this, 'on-change', { time: '' });
     }
 
-    this._validate(true, false);
     await this.updateComplete;
   }
 

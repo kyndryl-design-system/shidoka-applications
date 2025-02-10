@@ -102,6 +102,10 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   datePickerDisabled = false;
 
+  /** Input read only state. */
+  @property({ type: Boolean })
+  readOnly = false;
+
   /** Sets 24 hour formatting true/false.
    * Defaults to 12H for all `en-*` locales and 24H for all other locales.
    */
@@ -195,7 +199,8 @@ export class DatePicker extends FormMixin(LitElement) {
           class="label-text"
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
-          ?disabled=${this.datePickerDisabled}
+          ?disabled=${this.datePickerDisabled || this.readOnly}
+          ?readonly=${this.readOnly}
           id=${`label-${anchorId}`}
         >
           ${this.required
@@ -221,7 +226,8 @@ export class DatePicker extends FormMixin(LitElement) {
             id=${anchorId}
             name=${this.name}
             placeholder=${placeholder}
-            ?disabled=${this.datePickerDisabled}
+            ?disabled=${this.datePickerDisabled || this.readOnly}
+            ?readonly=${this.readOnly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
@@ -229,18 +235,13 @@ export class DatePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${this._inputEl?.value ||
-          (this.value &&
-            Array.isArray(this.value) &&
-            this.value.length > 0 &&
-            !this.value.every((date) => date === null)) ||
-          (this.defaultDate &&
-            Array.isArray(this.defaultDate) &&
-            this.defaultDate.length > 0 &&
-            !this.defaultDate.every((date) => date === null || date === ''))
+          ${this.readOnly
+            ? null
+            : this._hasValidDateRange()
             ? html`
                 <kyn-button
-                  ?disabled=${this.datePickerDisabled}
+                  ?disabled=${this.datePickerDisabled || this.readOnly}
+                  ?readonly=${this.readOnly}
                   class="clear-button"
                   ghost
                   kind="tertiary"
@@ -312,11 +313,30 @@ export class DatePicker extends FormMixin(LitElement) {
 
   getDatepickerClasses() {
     return {
+      'shidoka-picker': true,
       'date-picker': true,
       'date-picker__enable-time': this._enableTime,
       'date-picker__multiple-select': this.mode === 'multiple',
-      'date-picker__disabled': this.datePickerDisabled,
     };
+  }
+
+  private _hasValidDateRange(): boolean {
+    const isValidDate = (date: unknown): boolean =>
+      date instanceof Date || (typeof date === 'string' && date.trim() !== '');
+
+    const hasValidValue =
+      Array.isArray(this.value) &&
+      this.value.length === 2 &&
+      isValidDate(this.value[0]) &&
+      isValidDate(this.value[1]);
+
+    const hasValidDefaultDate =
+      Array.isArray(this.defaultDate) &&
+      this.defaultDate.length === 2 &&
+      isValidDate(this.defaultDate[0]) &&
+      isValidDate(this.defaultDate[1]);
+
+    return hasValidValue || hasValidDefaultDate;
   }
 
   private _initialized = false;
@@ -496,6 +516,7 @@ export class DatePicker extends FormMixin(LitElement) {
       disable: this.disable,
       mode: this.mode,
       closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
+      allowInput: !this.readOnly && !this.datePickerDisabled,
       loadLocale,
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),
@@ -511,8 +532,10 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async handleClose(): Promise<void> {
-    this._hasInteracted = true;
-    this._validate(true, false);
+    if (this._inputEl?.value) {
+      this._hasInteracted = true;
+      this._validate(true, false);
+    }
     await this.updateComplete;
   }
 
@@ -520,8 +543,6 @@ export class DatePicker extends FormMixin(LitElement) {
     selectedDates: Date[],
     dateStr: string
   ): Promise<void> {
-    this._hasInteracted = true;
-
     if (this.mode === 'multiple') {
       this.value = selectedDates.length > 0 ? [...selectedDates] : null;
     } else {
@@ -542,7 +563,6 @@ export class DatePicker extends FormMixin(LitElement) {
       dateString: (this._inputEl as HTMLInputElement)?.value || dateStr,
     });
 
-    this._validate(true, false);
     await this.updateComplete;
   }
 

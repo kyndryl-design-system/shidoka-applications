@@ -205,7 +205,7 @@ export class Button extends LitElement {
               part="button"
               class=${classMap(baseClasses)}
               href=${this.href}
-              ?disabled=${this.disabled}
+              ?disabled=${this.disabled || this.readOnly}
               aria-label=${ifDefined(this.description)}
               title=${ifDefined(this.description)}
               @click=${(e: Event) => this.handleClick(e)}
@@ -224,7 +224,7 @@ export class Button extends LitElement {
               part="button"
               class=${classMap(baseClasses)}
               type=${this.type}
-              ?disabled=${this.disabled}
+              ?disabled=${this.disabled || this.readOnly}
               aria-label=${ifDefined(this.description)}
               title=${ifDefined(this.description)}
               name=${ifDefined(this.name)}

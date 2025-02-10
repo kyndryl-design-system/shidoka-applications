@@ -43,6 +43,10 @@ export class CheckboxGroup extends FormMixin(LitElement) {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Input read only state. */
+  @property({ type: Boolean })
+  readOnly = false;
+
   /** Checkbox group horizontal style. */
   @property({ type: Boolean })
   horizontal = false;
@@ -132,7 +136,8 @@ export class CheckboxGroup extends FormMixin(LitElement) {
                 placeholder=${this._textStrings.search}
                 hideLabel
                 value=${this.searchTerm}
-                ?disabled=${this.disabled}
+                ?disabled=${this.disabled || this.readOnly}
+                ?readonly=${this.readOnly}
                 @on-input=${(e: Event) => this._handleFilter(e)}
               >
                 ${this._textStrings.search}
@@ -140,7 +145,10 @@ export class CheckboxGroup extends FormMixin(LitElement) {
             `
           : null}
 
-        <fieldset ?disabled=${this.disabled}>
+        <fieldset
+          ?disabled=${this.disabled || this.readOnly}
+          ?readonly=${this.readOnly}
+        >
           <legend class="label-text ${this.hideLegend ? 'sr-only' : ''}">
             ${this.required
               ? html`
@@ -183,7 +191,8 @@ export class CheckboxGroup extends FormMixin(LitElement) {
                     ?checked=${this.selectAllChecked}
                     ?indeterminate=${this.selectAllIndeterminate}
                     ?required=${this.required}
-                    ?disabled=${this.disabled}
+                    ?disabled=${this.disabled || this.readOnly}
+                    ?readonly=${this.readOnly}
                     ?invalid=${this.invalidText !== '' ||
                     this._internalValidationMsg !== ''}
                   >
@@ -250,12 +259,15 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     }
 
     if (
-      changedProps.has('disabled') &&
-      changedProps.get('disabled') !== undefined
+      (changedProps.has('disabled') &&
+        changedProps.get('disabled') !== undefined) ||
+      changedProps.has('readOnly')
     ) {
       this.checkboxes.forEach((checkbox: any) => {
-        checkbox.disabled = this.disabled;
+        checkbox.readOnly = this.readOnly;
+        checkbox.disabled = this.disabled || this.readOnly;
       });
+      this._updateCheckboxStates();
     }
 
     if (
@@ -428,12 +440,13 @@ export class CheckboxGroup extends FormMixin(LitElement) {
 
   private _updateChildren() {
     this.checkboxes.forEach((checkbox) => {
-      checkbox.disabled = this.disabled;
       if (this.value && this.value.length) {
         checkbox.checked = this.value.includes(checkbox.value);
       } else {
         checkbox.checked = false;
       }
+      checkbox.readOnly = this.readOnly;
+      checkbox.disabled = this.disabled || this.readOnly;
     });
 
     if (this.selectAll) {

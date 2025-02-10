@@ -1,27 +1,13 @@
 @use '../../../common/scss/global.scss';
-@use '../../../common/scss/form-input.scss';
 @use '../../../common/scss/mixins.scss';
 
-@include mixins.picker-base;
+.date-range-picker {
+  @include mixins.picker-base;
 
-input {
-    padding: 0 50px 0 16px;
-}
-
-.input-wrapper {
+  .input-wrapper {
     position: relative;
     display: inline-block;
     width: 100%;
-}
-
-.date-range-picker {
-    width: inherit;
-
-    &__disabled {
-        @include mixins.picker-disabled;
-
-        ::slotted(*) {
-            pointer-events: none;
-        }
-    }
+    max-width: 500px;
+  }
 }

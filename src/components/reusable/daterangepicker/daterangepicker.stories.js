@@ -68,6 +68,7 @@ const Template = (args) => {
       ?required="${args.required}"
       .size="${args.size}"
       ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
+      ?readonly="${args.readOnly}"
       ?twentyFourHourFormat="${args.twentyFourHourFormat}"
       .minDate="${args.minDate}"
       .maxDate="${args.maxDate}"
@@ -103,6 +104,7 @@ DateRangeDefault.args = {
   warningTitle: '',
   caption: 'Click the input above to select a date range.',
   dateRangePickerDisabled: false,
+  readOnly: false,
   minDate: '',
   maxDate: '',
   label: 'Date Range',

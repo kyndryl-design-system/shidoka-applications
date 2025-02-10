@@ -98,6 +98,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   dateRangePickerDisabled = false;
 
+  /** Input read only state. */
+  @property({ type: Boolean })
+  readOnly = false;
+
   /** Sets 24 hour formatting true/false.
    * Defaults to 12H for all `en-` locales and 24H for all other locales.
    */
@@ -197,7 +201,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
           class="label-text"
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
-          ?disabled=${this.dateRangePickerDisabled}
+          ?disabled=${this.dateRangePickerDisabled || this.readOnly}
+          ?readonly=${this.readOnly}
           id=${`label-${anchorId}`}
         >
           ${this.required
@@ -223,7 +228,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
             id=${anchorId}
             name=${this.name}
             placeholder=${placeholder}
-            ?disabled=${this.dateRangePickerDisabled}
+            ?disabled=${this.dateRangePickerDisabled || this.readOnly}
+            ?readonly=${this.readOnly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
@@ -231,21 +237,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${(this.value &&
-            Array.isArray(this.value) &&
-            this.value.length === 2 &&
-            this.value[0] !== null &&
-            this.value[1] !== null) ||
-          (this.defaultDate &&
-            Array.isArray(this.defaultDate) &&
-            this.defaultDate.length === 2 &&
-            this.defaultDate[0] &&
-            this.defaultDate[1] &&
-            this.defaultDate[0] !== '' &&
-            this.defaultDate[1] !== '')
+          ${this.readOnly
+            ? null
+            : this._hasValidDateRange()
             ? html`
                 <kyn-button
-                  ?disabled=${this.dateRangePickerDisabled}
+                  ?disabled=${this.dateRangePickerDisabled || this.readOnly}
+                  ?readonly=${this.readOnly}
                   class="clear-button"
                   ghost
                   kind="tertiary"
@@ -336,10 +334,26 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   getDateRangePickerClasses() {
     return {
+      'shidoka-picker': true,
       'date-range-picker': true,
       'date-range-picker__enable-time': this._enableTime,
-      'date-range-picker__disabled': this.dateRangePickerDisabled,
     };
+  }
+
+  private _hasValidDateRange(): boolean {
+    const isValidDate = (date: unknown): boolean =>
+      date instanceof Date || (typeof date === 'string' && date.trim() !== '');
+
+    return (
+      (Array.isArray(this.value) &&
+        this.value.length === 2 &&
+        isValidDate(this.value[0]) &&
+        isValidDate(this.value[1])) ||
+      (Array.isArray(this.defaultDate) &&
+        this.defaultDate.length === 2 &&
+        isValidDate(this.defaultDate[0]) &&
+        isValidDate(this.defaultDate[1]))
+    );
   }
 
   override async firstUpdated(changedProperties: PropertyValues) {
@@ -418,7 +432,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       mode: 'range',
-      allowInput: false,
+      allowInput: !this.readOnly && !this.dateRangePickerDisabled,
       inputEl: this._inputEl!,
       minDate: this.minDate,
       maxDate: this.maxDate,
@@ -506,8 +520,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   async handleDateChange(selectedDates: Date[]): Promise<void> {
-    this._hasInteracted = true;
-
     if (selectedDates.length === 0) {
       this.value = [null, null];
     } else if (selectedDates.length === 1) {
@@ -527,13 +539,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     this.updateSelectedDateRangeAria(selectedDates);
-    this._validate(true, false);
     await this.updateComplete;
   }
 
   async handleClose() {
-    this._hasInteracted = true;
-
     if (
       this.flatpickrInstance &&
       this.flatpickrInstance.selectedDates &&
@@ -546,7 +555,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.value = [null, null];
     }
 
-    this._validate(true, false);
+    if (this._inputEl?.value) {
+      this._hasInteracted = true;
+      this._validate(true, false);
+    }
     await this.updateComplete;
   }
 

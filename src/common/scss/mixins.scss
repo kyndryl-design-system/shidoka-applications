@@ -18,9 +18,40 @@
   justify-content: center;
 }
 
+@mixin form-disabled {
+  background: var(--kd-color-background-ui-hollow-default);
+  border-color: var(--kd-color-border-ui-disabled);
+  color: var(--kd-color-text-level-disabled);
+  cursor: default;
+
+  &::placeholder {
+    color: var(--kd-color-text-link-level-disabled);
+  }
+
+  .input-icon {
+    color: var(--kd-color-icon-disabled);
+  }
+
+  .error-text,
+  .error-text .error-icon,
+  .warn-text,
+  .caption,
+  .label-text,
+  .required {
+    color: var(--kd-color-text-level-disabled);
+  }
+}
+
+@mixin form-readonly {
+  color: var(--kd-color-text-level-primary);
+  background: var(--kd-color-background-ui-hollow-default);
+  border-color: var(--kd-color-border-ui-disabled);
+}
+
 @mixin picker-base {
   :host {
     display: inline-block;
+    width: inherit;
   }
 
   input {
@@ -32,6 +63,8 @@
     line-height: 48px;
     -webkit-appearance: none;
     appearance: none;
+    padding: 0 40px 0 16px;
+    cursor: default;
 
     &.size--sm {
       height: 32px;
@@ -40,29 +73,19 @@
     &.size--lg {
       height: 56px;
     }
-  }
-}
 
-@mixin picker-disabled {
-  .input-icon {
-    cursor: default;
-  }
-
-  .error-text,
-  .error-text .error-icon,
-  .warn-text {
-    color: var(--kd-color-text-level-disabled);
+    .date-picker &,
+    .date-range-picker & {
+      padding-right: 50px;
+    }
   }
 
-  .caption {
-    color: var(--kd-color-text-level-disabled);
-  }
+  &[disabled]:not([readonly]) {
+    @include form-disabled;
 
-  .label-text {
-    color: var(--kd-color-text-level-disabled);
-
-    .required {
-      color: var(--kd-color-text-level-disabled);
+    ::slotted(*),
+    .input-custom {
+      pointer-events: none;
     }
   }
 }
