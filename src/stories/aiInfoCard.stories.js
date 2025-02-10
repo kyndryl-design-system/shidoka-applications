@@ -9,7 +9,7 @@ import '../components/reusable/tooltip';
 import '../components/reusable/link';
 
 export default {
-  title: 'AI Section/Patterns/Info Component',
+  title: 'AI Section/Patterns/Info',
   parameters: {
     design: {
       type: 'figma',
