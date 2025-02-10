@@ -1,3 +1,12 @@
+/*
+TODO:
+- add proper error handling
+- check requirement for uploaded files and add requied logic
+- check for required scenario
+- remove console logs
+- check if uploaded files can be removed
+*/
+
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -20,37 +29,51 @@ const _defaultTextStrings = {
 export class FileUploader extends LitElement {
   static override styles = FileUploaderScss;
 
-  /** Set the file types that the component accepts. By default, it accepts all file types.  */
+  /**
+   * Set the file types that the component accepts. By default, it accepts all file types.
+   */
   @property({ type: Array })
   fileTypes: string[] = [];
 
-  /** Set this to `true`, if the component accepts multiple file uploads. */
+  /**
+   * Set this to `true`, if the component accepts multiple file uploads.
+   */
   @property({ type: Boolean })
   multiple = false;
 
-  /** Uploaded files. */
+  /**
+   * Uploaded files.
+   */
   @property({ type: Array })
   uploadedFiles: File[] = [];
 
-  /** Set the type of file uploader needed. Accepted values
+  /**
+   * Set the type of file uploader needed. Accepted values
    * are `button`, `drag-drop` or `both`. Default value is `button`.
    */
   @property({ type: String })
   fileUploderType = 'button';
 
-  /** Customizable text strings. */
+  /**
+   * Customizable text strings.
+   */
   @property({ type: Object })
   textStrings = _defaultTextStrings;
 
-  /** Set the maximum file size that the component accepts. Default value is `5MB`. */
+  /**
+   * Set the maximum file size that the component accepts. Default value is `5MB`.
+   */
   @property({ type: String })
   maxFileSize = '5MB';
 
-  /** Set this to `true`, if the component is disabled. */
+  /**
+   * Set this to `true`, if the component is disabled.
+   */
   @property({ type: Boolean })
   disabled = false;
 
-  /** Internal text strings.
+  /**
+   * Internal text strings.
    * @internal
    */
   @state()
