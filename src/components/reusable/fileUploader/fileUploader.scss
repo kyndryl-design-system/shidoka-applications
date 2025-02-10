@@ -12,6 +12,14 @@
   width: 400px;
   align-items: center;
 
+  .accepted-file-types-container {
+    .accepted-file-types-text {
+      &.disabled {
+        color: var(--kd-color-text-level-disabled);
+      }
+    }
+  }
+
   .drag-drop-container {
     width: 300px;
     height: 200px;
@@ -23,10 +31,26 @@
     &:hover {
       border-color: var(--kd-color-border-variants-dark);
     }
+
+    &:focus-visible {
+      outline: none;
+      border-color: var(--kd-color-border-variants-dark);
+    }
+
+    &.disabled {
+      border-color: var(--kd-color-border-variants-light);
+      color: var(--kd-color-text-level-disabled);
+      cursor: not-allowed;
+    }
+  }
+
+  .or-text {
+    &.disabled {
+      color: var(--kd-color-text-level-disabled);
+    }
   }
 
   .file-input {
-    // visibility: hidden;
     display: none;
   }
 }
