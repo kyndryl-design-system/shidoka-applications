@@ -97,6 +97,10 @@ export class Modal extends LitElement {
   @property({ type: String })
   closeText = 'Close';
 
+  /** Determines if the component is themed for GenAI.*/
+  @property({ type: Boolean, reflect: true })
+  aiConnected = false;
+
   /** The dialog element
    * @internal
    */
@@ -108,6 +112,7 @@ export class Modal extends LitElement {
       modal: true,
       'size--md': this.size === 'md',
       'size--lg': this.size === 'lg',
+      'modal--ai': this.aiConnected,
     };
 
     return html`
@@ -126,6 +131,7 @@ export class Modal extends LitElement {
             ghost
             kind="tertiary"
             size="small"
+            ?aiConnected=${this.aiConnected}
             description=${this.closeText}
             @click=${(e: Event) => this._closeModal(e, 'cancel')}
           >
@@ -150,6 +156,7 @@ export class Modal extends LitElement {
                   <kyn-button
                     class="action-button"
                     value="ok"
+                    ?aiConnected=${this.aiConnected}
                     ?destructive=${this.destructive}
                     ?disabled=${this.okDisabled}
                     @click=${(e: Event) => this._closeModal(e, 'ok')}
@@ -162,6 +169,7 @@ export class Modal extends LitElement {
                           class="action-button"
                           value="Secondary"
                           kind="secondary"
+                          ?aiConnected=${this.aiConnected}
                           ?disabled=${this.secondaryDisabled}
                           @click=${(e: Event) =>
                             this._closeModal(e, 'secondary')}
@@ -177,6 +185,7 @@ export class Modal extends LitElement {
                           class="action-button"
                           value="cancel"
                           kind="tertiary"
+                          ?aiConnected=${this.aiConnected}
                           @click=${(e: Event) => this._closeModal(e, 'cancel')}
                         >
                           ${this.cancelText}

@@ -37,10 +37,14 @@ const args = {
   secondaryButtonText: 'Secondary',
   secondaryDisabled: false,
   hideCancelButton: false,
+  aiConnected: false,
 };
 
 export const Modal = {
-  args: { ...args, showSecondaryButton: false },
+  args: {
+    ...args,
+    showSecondaryButton: false,
+  },
   render: (args) => {
     return html`
       <kyn-modal
@@ -58,10 +62,13 @@ export const Modal = {
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideFooter=${args.hideFooter}
         ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button slot="anchor"> Open Modal </kyn-button>
+        <kyn-button slot="anchor" ?aiConnected=${args.aiConnected}>
+          Open Modal
+        </kyn-button>
 
         Basic Modal example.
       </kyn-modal>
@@ -88,10 +95,13 @@ export const ActionButtons = {
         secondaryButtonText=${args.secondaryButtonText}
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button slot="anchor"> Open Modal </kyn-button>
+        <kyn-button slot="anchor" ?aiConnected=${args.aiConnected}>
+          Open Modal
+        </kyn-button>
 
         Basic Modal with All Buttons.
       </kyn-modal>
@@ -192,4 +202,37 @@ const handleBeforeCloseSubmit = (returnValue) => {
   } else {
     return true;
   }
+};
+
+export const AIConnected = {
+  args: { ...args, aiConnected: true },
+  render: (args) => {
+    return html`
+      <kyn-modal
+        ?open=${args.open}
+        size=${args.size}
+        titleText=${args.titleText}
+        labelText=${args.labelText}
+        okText=${args.okText}
+        cancelText=${args.cancelText}
+        closeText=${args.closeText}
+        ?destructive=${args.destructive}
+        ?okDisabled=${args.okDisabled}
+        ?hideFooter=${args.hideFooter}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        secondaryButtonText=${args.secondaryButtonText}
+        ?secondaryDisabled=${args.secondaryDisabled}
+        ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
+        @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
+      >
+        <kyn-button slot="anchor" ?aiConnected=${args.aiConnected}>
+          Open Modal
+        </kyn-button>
+
+        Basic Modal with All Buttons.
+      </kyn-modal>
+    `;
+  },
 };
