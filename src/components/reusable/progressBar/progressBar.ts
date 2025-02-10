@@ -1,13 +1,13 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 import '../loaders';
 import '../tooltip';
-import checkmarkIcon from '@carbon/icons/es/checkmark--filled/16';
-import errorIcon from '@carbon/icons/es/error--filled/16';
+import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 import ProgressBarStyles from './progressBar.scss';
 
@@ -177,12 +177,11 @@ export class ProgressBar extends LitElement {
     currentValue: number | null
   ) {
     if (currentStatus !== ProgressStatus.ACTIVE) {
-      return html`<kd-icon
-        class="${currentStatus}-icon"
-        .icon=${currentStatus === ProgressStatus.SUCCESS
-          ? checkmarkIcon
-          : errorIcon}
-      ></kd-icon>`;
+      return html`<span class="${currentStatus}-icon"
+        >${currentStatus === ProgressStatus.SUCCESS
+          ? unsafeSVG(checkmarkIcon)
+          : unsafeSVG(errorIcon)}</span
+      >`;
     }
 
     const hardcodedProgressReached =

@@ -20,8 +20,7 @@
     right: 16px;
   }
 
-  &.icon--right .clear,
-  &.icon--right .error-icon {
+  &.icon--right .clear-button {
     right: 45px;
   }
 
@@ -38,7 +37,7 @@ slot[name='icon']::slotted(*) {
   display: block;
 
   [disabled] & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-icon-disabled);
   }
 }
 
@@ -47,7 +46,8 @@ input {
   appearance: none;
   display: block;
   width: 100%;
-  border: 1px solid var(--kd-color-border-ui);
+  border-width: 1px;
+  border-style: solid;
   border-radius: 4px;
   height: 48px;
   padding: 0 48px 0 16px;
@@ -70,48 +70,4 @@ input[type='search']::-webkit-search-cancel-button,
 input[type='search']::-webkit-search-results-button,
 input[type='search']::-webkit-search-results-decoration {
   appearance: none;
-}
-
-.error-icon {
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  left: auto;
-  transform: translateY(-50%);
-}
-
-.clear {
-  border: none;
-  background: none;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: var(--kd-color-text-primary);
-  background: var(--kd-color-background-inverse);
-  display: block;
-
-  &[disabled] {
-    color: var(--kd-color-text-disabled);
-    cursor: not-allowed;
-  }
-
-  kd-icon {
-    display: block;
-  }
-}
-
-.caption-error-count {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  .count {
-    @include typography.type-ui-02;
-    color: var(--kd-color-text-secondary);
-    margin-top: 13px;
-  }
 }

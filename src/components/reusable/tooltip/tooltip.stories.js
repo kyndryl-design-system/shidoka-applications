@@ -1,7 +1,6 @@
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import './index';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
 export default {
   title: 'Components/Tooltip',

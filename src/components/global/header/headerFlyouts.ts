@@ -1,9 +1,9 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import HeaderFlyoutsScss from './headerFlyouts.scss';
 
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import overflowIcon from '@carbon/icons/es/overflow-menu--vertical/20';
+import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overflow.svg';
 
 /**
  * Container for header-flyout components.
@@ -26,7 +26,7 @@ export class HeaderFlyouts extends LitElement {
           title="Toggle Menu"
           @click=${() => this._toggleOpen()}
         >
-          <kd-icon .icon=${overflowIcon}></kd-icon>
+          <span class="overflow-icon">${unsafeSVG(overflowIcon)}</span>
         </button>
 
         <div class="menu__content">

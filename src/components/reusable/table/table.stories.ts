@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 /**
  * Copyright Kyndryl, Inc. 2023
  */
@@ -15,8 +16,9 @@ import './story-helpers/table-story.sample';
 import './story-helpers/table.settings.sample';
 import { characters, dataForColumns } from './story-helpers/ultils.sample';
 import allData from './story-helpers/table-data.json';
-import maleIcon from '@carbon/icons/es/gender--male/16';
-import femaleIcon from '@carbon/icons/es/gender--female/16';
+
+import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
+import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 
 const meta: Meta = {
   title: 'Components/Data Table',
@@ -38,7 +40,7 @@ const meta: Meta = {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Applications-with-Specs?node-id=828%3A4607&mode=dev',
+      url: 'https://www.figma.com/design/CQuDZEeLiuGiALvCWjAKlu/branch/qMpff4GuFUEcsMUkvacS3U/Applications---Component-Library?node-id=9379-209416&p=f&m=dev',
     },
   },
 };
@@ -165,8 +167,8 @@ export const NestedTable: Story = {
                 <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
                 <kyn-td .align=${'center'}>
                   ${row.gender === 'male'
-                    ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
-                    : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
+                    ? html`<span>${unsafeSVG(maleIcon)}</span>`
+                    : html`<span>${unsafeSVG(femaleIcon)}</span>`}
                 </kyn-td>
               </kyn-tr>
               <kyn-expanded-tr .colSpan=${8}>
@@ -234,8 +236,8 @@ export const ExpandableRows: Story = {
                 <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
                 <kyn-td .align=${'center'}>
                   ${row.gender === 'male'
-                    ? html`<kd-icon .icon=${maleIcon}></kd-icon>`
-                    : html`<kd-icon .icon=${femaleIcon}></kd-icon>`}
+                    ? html`<span>${unsafeSVG(maleIcon)}</span>`
+                    : html`<span>${unsafeSVG(femaleIcon)}</span>`}
                 </kyn-td>
               </kyn-tr>
               <kyn-expanded-tr .colSpan=${8}>
@@ -327,7 +329,6 @@ export const StickyHeader: Story = {
         .tableTitle=${'Sticky Header'}
         .rows=${rows}
         ?stickyHeader=${args.stickyHeader}
-        showTableActions
       >
       </story-table>
     `;
@@ -368,29 +369,6 @@ export const Dense: Story = {
   },
   parameters,
 };
-
-// export const Ellipsis: Story = {
-//   args: {
-//     ellipsis: true,
-//   },
-//   render: (args) => {
-//     const rows = characters.map((row: any) => {
-//       return {
-//         ...row,
-//         firstName: 'This is a very long description that should be truncated.',
-//       };
-//     });
-//     return html`
-//       <story-table
-//         .tableTitle=${'Ellipsis'}
-//         .rows=${rows}
-//         ?ellipsis=${args.ellipsis}
-//       >
-//       </story-table>
-//     `;
-//   },
-//   parameters,
-// };
 
 export const FixedLayout: Story = {
   args: {
@@ -434,7 +412,7 @@ export const DisabledRows: Story = {
                 .rowId=${row.id}
                 key="row-${row.id}"
                 ?disabled=${row.id == 1 || row.id == 3 ? true : false}
-                ?selected=${row.id == 3 ? true : false}
+                ?selected=${row.id == 2 ? true : false}
               >
                 <kyn-td .align=${'center'}>${row.id}</kyn-td>
                 <kyn-td>${row.firstName}</kyn-td>

@@ -1,15 +1,17 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css, PropertyValueMap } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import lockedIcon from '@carbon/icons/es/locked/16';
-import unlockedIcon from '@carbon/icons/es/unlocked/16';
+import '../../button';
+import lockedIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/lock.svg';
+import unlockedIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/unlock.svg';
 
 import '../../globalFilter';
 import '../index';
 import '../../checkbox';
+
+import '../../../../common/scss/global.scss';
 
 @customElement('story-column-setting')
 class StoryColumSetting extends LitElement {
@@ -24,13 +26,13 @@ class StoryColumSetting extends LitElement {
       --kyn-th-max-width: 100px;
       --kyn-th-width: 100px;
     }
-    .unlockedRow kd-button {
+    .unlockedRow kyn-button {
       opacity: 0;
     }
-    .unlockedRow:hover kd-button {
+    .unlockedRow:hover kyn-button {
       opacity: 1;
     }
-    .unlockedRow:focus kd-button {
+    .unlockedRow:focus kyn-button {
       opacity: 1;
     }
 
@@ -44,7 +46,7 @@ class StoryColumSetting extends LitElement {
     }
     .lockedRow {
       position: sticky;
-      background: white;
+      background: var(--kd-color-background-table-row);
       top: 124px;
       z-index: 3;
     }
@@ -57,7 +59,7 @@ class StoryColumSetting extends LitElement {
     }
     .seperator-div {
       height: 8px;
-      background: white;
+      background: var(--kd-color-background-table-row);
       position: sticky;
       top: 64px;
       z-index: 3; // hide column behind scroll
@@ -240,7 +242,7 @@ class StoryColumSetting extends LitElement {
                 >
                   <kyn-td>${row.colName}</kyn-td>
                   <kyn-td .align=${'center'} class="min-max-width-100"
-                    ><kd-button
+                    ><kyn-button
                       class="freeze-button"
                       @mouseover=${() => this.handleMouseOver(row.id)}
                       @mouseout=${this.handleMouseOut}
@@ -254,13 +256,12 @@ class StoryColumSetting extends LitElement {
                         ? `frozen column ${row.colName}`
                         : 'freeze column'}
                     >
-                      <kd-icon
-                        slot="icon"
-                        .icon=${row.locked && row.id === this.hoveredButtonId
-                          ? unlockedIcon
-                          : lockedIcon}
-                      ></kd-icon>
-                    </kd-button>
+                      <span slot="icon"
+                        >${row.locked && row.id === this.hoveredButtonId
+                          ? unsafeSVG(unlockedIcon)
+                          : unsafeSVG(lockedIcon)}</span
+                      >
+                    </kyn-button>
                   </kyn-td>
                 </kyn-tr>
               `

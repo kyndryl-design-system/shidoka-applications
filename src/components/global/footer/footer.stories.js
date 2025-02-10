@@ -1,14 +1,10 @@
 import { html } from 'lit';
 import './index';
-import '@kyndryl-design-system/shidoka-foundation/components/link';
+import '../../reusable/link';
 
 export default {
   title: 'Global Components/Footer',
   component: 'kyn-footer',
-  // subcomponents: {
-  //   FooterNav: 'kyn-footer-nav',
-  //   FooterNavLink: 'kyn-footer-link',
-  // },
   parameters: {
     design: {
       type: 'figma',
@@ -32,13 +28,14 @@ export default {
 export const Footer = {
   args: {
     rootUrl: '/',
+    logoAriaLabel: 'Go to Homepage',
   },
   render: (args) => html`
-    <kyn-footer rootUrl=${args.rootUrl}>
-      <kd-link href="javascript:void(0);">Link 1</kd-link>
-      <kd-link href="javascript:void(0);">Link 2</kd-link>
-      <kd-link href="javascript:void(0);">Link 3</kd-link>
-      <kd-link href="javascript:void(0);">Link 4</kd-link>
+    <kyn-footer rootUrl=${args.rootUrl} logoAriaLabel=${args.logoAriaLabel}>
+      <kyn-link href="javascript:void(0);" standalone="">Link 1</kyn-link>
+      <kyn-link href="javascript:void(0);" standalone="">Link 2</kyn-link>
+      <kyn-link href="javascript:void(0);" standalone="">Link 3</kyn-link>
+      <kyn-link href="javascript:void(0);" standalone="">Link 4</kyn-link>
 
       <span slot="copyright">
         Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights

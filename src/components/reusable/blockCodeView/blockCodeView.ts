@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -10,16 +11,14 @@ import 'prismjs/plugins/autoloader/prism-autoloader';
 import 'prismjs-components-importer';
 Prism.plugins.autoloader.languages_path = 'node_modules/prismjs/components/';
 
-import copyIcon from '@carbon/icons/es/copy/20';
-import checkmarkIcon from '@carbon/icons/es/checkmark--outline/20';
-import chevronDown from '@carbon/icons/es/chevron--down/20';
+import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/copy.svg';
+import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/checkmark.svg';
+import chevronDown from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import '../button';
 
 import BlockCodeViewStyles from './blockCodeView.scss';
-import ShidokaLightTheme from './shidokaLightSyntaxStyles.scss';
-import ShidokaDarkTheme from './shidokaDarkSyntaxStyles.scss';
+import ShidokaSyntaxTheme from '../../../common/scss/shidoka-syntax-theme.scss';
 
 interface LanguageMatch {
   language: string;
@@ -47,15 +46,11 @@ const LANGUAGE_SPECIFIC_TOKENS: Record<string, string[]> = {
  */
 @customElement('kyn-block-code-view')
 export class BlockCodeView extends LitElement {
-  static override styles = [
-    BlockCodeViewStyles,
-    ShidokaLightTheme,
-    ShidokaDarkTheme,
-  ];
+  static override styles = [BlockCodeViewStyles, ShidokaSyntaxTheme];
 
   /** Sets background and text theming. */
   @property({ type: String })
-  darkTheme: 'light' | 'dark' = 'dark';
+  darkTheme: 'light' | 'dark' | 'default' = 'default';
 
   /** If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language. */
   @property({ type: String })
@@ -147,15 +142,37 @@ export class BlockCodeView extends LitElement {
   @state()
   private _expandedHeight: number | null = null;
 
+  override updated(changedProperties: Map<string, unknown>) {
+    if (changedProperties.has('darkTheme')) {
+      this.requestUpdate();
+    }
+
+    if (
+      changedProperties.has('codeSnippet') ||
+      changedProperties.has('language') ||
+      changedProperties.has('maxHeight')
+    ) {
+      this.highlightCode();
+      this.checkOverflow();
+    }
+
+    if (changedProperties.has('copyButtonText')) {
+      this._copyState = { ...this._copyState, text: this.copyButtonText };
+    }
+    super.updated(changedProperties);
+  }
+
   override render() {
+    const containerStyle = `${this.getContainerStyle()};`;
+
     return html`
       ${this.codeViewLabel
         ? html`<div class="code-view__label">
             <label>${this.codeViewLabel}</label>
           </div>`
         : null}
-      <div class="${this.getContainerClasses()}">
-        <div class="code-snippet-wrapper" style=${this.getContainerStyle()}>
+      <div class="${this.getContainerClasses()}" style="${containerStyle}">
+        <div class="code-snippet-wrapper">
           <pre
             @keydown=${this.handleKeypress}
             role="region"
@@ -177,8 +194,9 @@ export class BlockCodeView extends LitElement {
       'copy-button-text-true':
         this.copyButtonText && this.copyButtonText.length > 0,
       'copy-button-text-false': !this.copyButtonText,
-      'shidoka-dark-syntax-theme': this.darkTheme === 'dark',
-      'shidoka-light-syntax-theme': this.darkTheme === 'light',
+      'shidoka-syntax-theme': true,
+      'shidoka-syntax-theme--dark': this.darkTheme === 'dark',
+      'shidoka-syntax-theme--light': this.darkTheme === 'light',
       'expanded-code-view': this.codeExpanded,
       'has-overflow': this.hasOverflow,
     });
@@ -187,7 +205,7 @@ export class BlockCodeView extends LitElement {
   private renderCopyButton() {
     if (!this.copyOptionVisible) return null;
     return html`
-      <kd-button
+      <kyn-button
         class="code-view__copy-button"
         kind="tertiary"
         size="small"
@@ -196,15 +214,15 @@ export class BlockCodeView extends LitElement {
         description=${ifDefined(this.copyButtonDescriptionAttr)}
         @click=${this.copyCode}
       >
-        <kd-icon
-          slot="icon"
-          class="copy-icon"
-          .icon=${this._copyState.copied ? checkmarkIcon : copyIcon}
-        ></kd-icon>
+        <span slot="icon" class="copy-icon"
+          >${this._copyState.copied
+            ? unsafeSVG(checkmarkIcon)
+            : unsafeSVG(copyIcon)}</span
+        >
         ${this._copyState.text
           ? html`<span class="copy-text">${this._copyState.text}</span>`
           : null}
-      </kd-button>
+      </kyn-button>
     `;
   }
 
@@ -215,18 +233,19 @@ export class BlockCodeView extends LitElement {
     )
       return null;
     return html`
-      <kd-button
+      <kyn-button
         class="code-view__expand-button"
         kind="tertiary"
         size="small"
         iconPosition="left"
+        outlineOnly
         description=${this.codeExpanded
           ? this._textStrings.expanded
           : this._textStrings.collapsed}
         @click=${this.expandCodeView}
       >
-        <kd-icon slot="icon" class="expand-icon" .icon=${chevronDown}></kd-icon>
-      </kd-button>
+        <span slot="icon" class="expand-icon">${unsafeSVG(chevronDown)}</span>
+      </kyn-button>
     `;
   }
 
@@ -234,22 +253,6 @@ export class BlockCodeView extends LitElement {
     if (changedProps.has('codeExpanded')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
-  }
-
-  override updated(changedProperties: Map<string, unknown>) {
-    if (
-      changedProperties.has('codeSnippet') ||
-      changedProperties.has('language') ||
-      changedProperties.has('maxHeight')
-    ) {
-      this.highlightCode();
-      this.checkOverflow();
-    }
-
-    if (changedProperties.has('copyButtonText')) {
-      this._copyState = { ...this._copyState, text: this.copyButtonText };
-    }
-    super.updated(changedProperties);
   }
 
   private highlightCode() {
@@ -393,7 +396,6 @@ export class BlockCodeView extends LitElement {
       .trim();
   }
 
-  // for @action printout
   private formatExampleCode(code: string) {
     return { code };
   }
@@ -427,10 +429,10 @@ export class BlockCodeView extends LitElement {
   private getContainerStyle(): string {
     if (this.codeExpanded) {
       return this._expandedHeight
-        ? `max-height: ${this._expandedHeight}px;`
+        ? `max-height: ${this._expandedHeight}px`
         : '';
     }
-    return this.maxHeight !== null ? `max-height: ${this.maxHeight}px;` : '';
+    return this.maxHeight !== null ? `max-height: ${this.maxHeight}px` : '';
   }
 
   private expandCodeView() {

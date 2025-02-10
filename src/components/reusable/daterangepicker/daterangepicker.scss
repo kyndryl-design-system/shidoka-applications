@@ -1,41 +1,27 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/form-input.scss';
+@use '../../../common/scss/mixins.scss';
 
-:host {
-  display: inline-block;
-}
+@include mixins.picker-base;
 
-.wrapper {
-  display: flex;
-  align-items: center;
+input {
+    padding: 0 50px 0 16px;
 }
 
 .input-wrapper {
-  flex-grow: 1;
+    position: relative;
+    display: inline-block;
+    width: 100%;
 }
 
-input {
-  -webkit-appearance: none;
-  appearance: none;
-  display: block;
-  width: 100%;
-  border: 1px solid var(--kd-color-border-ui);
-  border-radius: 4px;
-  height: 48px;
-  padding: 10px 16px;
-  min-width: 167px;
+.date-range-picker {
+    width: inherit;
 
-  &.size--sm {
-    height: 32px;
-    padding: 2px 16px;
-  }
+    &__disabled {
+        @include mixins.picker-disabled;
 
-  &.size--lg {
-    height: 56px;
-    padding: 14px 16px;
-  }
-}
-
-.range-span {
-  margin: 0 5px;
+        ::slotted(*) {
+            pointer-events: none;
+        }
+    }
 }

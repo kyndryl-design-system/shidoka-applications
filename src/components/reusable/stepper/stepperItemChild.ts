@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
-import '@kyndryl-design-system/shidoka-foundation/components/link';
+import '../link';
 import StepChildCss from './stepperItemChild.scss';
 
 /**
@@ -72,7 +72,9 @@ export class StepperItemChild extends LitElement {
           aria-label="Child progress: ${this.progress}%"
         >
           <div
-            class="child-step-progress-line"
+            class="${this.progress === 100
+              ? 'child-step-progress-line-completed'
+              : ''} child-step-progress-line"
             style="height:${this.progress}%;"
           ></div>
         </div>
@@ -87,14 +89,14 @@ export class StepperItemChild extends LitElement {
           <!-- Child Title & Optional Subtitle -->
           ${this.childLink !== ''
             ? html`
-                <kd-link
+                <kyn-link
                   href=${this.childLink}
                   kind="primary"
                   ?disabled=${this.disabled}
                   @on-click=${(e: any) => this._handleChildStepClick(e)}
                 >
                   ${this.childTitle}
-                </kd-link>
+                </kyn-link>
               `
             : html`<p class="title-text">${this.childTitle}</p>`}
           ${this.childSubTitle !== ''

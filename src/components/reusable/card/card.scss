@@ -1,7 +1,6 @@
-@use '../../../common/scss/global.scss';
-@use '../../../common/scss/mixins.scss';
-@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
   display: inline-block;
@@ -10,29 +9,38 @@
 .card {
   &-wrapper {
     position: relative;
-    padding: 24px;
-    background-color: var(--kd-color-background-ui-default);
-    outline: 1px solid var(--kd-color-border-light);
+    padding: 16px;
+    background-color: var(--kd-color-background-container-default);
+    outline: 1px solid var(--kd-color-border-card-default);
     border-radius: 8px;
     height: 100%;
   }
+
   &-wrapper-clickable {
     position: relative;
     display: inline-block;
     color: unset;
     width: inherit;
     text-decoration: none;
-    background-color: var(--kd-color-background-ui-default);
+    background-color: var(--kd-color-background-container-default);
     border-radius: 8px;
-    padding: 24px;
-    transition: outline 200ms ease-out;
+    padding: 16px;
+    outline: 1px solid transparent;
+    transition: outline-color 150ms ease-out, box-shadow 150ms ease-out;
+
     &:hover {
-      outline: 2px solid var(--kd-color-border-ui-hover);
+      outline-color: var(--kd-color-border-ui-hover);
+      @include elevation.shadow(2);
+    }
+
+    &:focus {
+      outline-color: var(--kd-color-border-ui-hover);
       @include elevation.shadow(2);
     }
   }
+
   &-border {
-    outline: 1px solid var(--kd-color-border-ui);
+    outline: 1px solid var(--kd-color-border-card-clickable);
     @include elevation.shadow(1);
   }
 }

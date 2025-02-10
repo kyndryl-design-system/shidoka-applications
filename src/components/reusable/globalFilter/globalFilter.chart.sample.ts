@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, css, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { action } from '@storybook/addon-actions';
@@ -8,15 +9,14 @@ import '../modal';
 import '../textInput';
 import '../overflowMenu';
 import '../tag';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import '@kyndryl-design-system/shidoka-foundation/components/accordion';
+import '../button';
+import '../accordion';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
 
-import searchIcon from '@carbon/icons/es/search/24';
-import filterIcon from '@carbon/icons/es/filter/20';
-import filterEditIcon from '@carbon/icons/es/filter--edit/20';
-import filterRemoveIcon from '@carbon/icons/es/close--filled/16';
+import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/search.svg';
+import filterIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/filter.svg';
+import filterEditIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/filter-edit.svg';
+import filterRemoveIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 
 /**  Sample Lit component to show global filter pattern applied to a Chart. */
 @customElement('sample-filter-chart-component')
@@ -30,6 +30,10 @@ export class SampleFilterChartComponent extends LitElement {
       .filter-text {
         display: inline;
       }
+    }
+
+    span[slot='icon'] {
+      display: flex;
     }
   `;
 
@@ -118,7 +122,7 @@ export class SampleFilterChartComponent extends LitElement {
           @on-input=${(e: any) => this._handleSearch(e)}
         >
           Search
-          <kd-icon slot="icon" .icon=${searchIcon}></kd-icon>
+          <span slot="icon">${unsafeSVG(searchIcon)}</span>
         </kyn-text-input>
 
         <kyn-modal
@@ -126,21 +130,22 @@ export class SampleFilterChartComponent extends LitElement {
           titleText="Filter"
           @on-close=${(e: any) => this._handleModalClose(e)}
         >
-          <kd-button
+          <kyn-button
             slot="anchor"
             kind="tertiary"
             size="small"
             iconPosition="left"
           >
-            <kd-icon
-              slot="icon"
-              .icon=${SelectedOptions.length ? filterEditIcon : filterIcon}
-            ></kd-icon>
+            <span slot="icon"
+              >${SelectedOptions.length
+                ? unsafeSVG(filterEditIcon)
+                : unsafeSVG(filterIcon)}</span
+            >
             <span class="filter-text">Filter</span>
-          </kd-button>
+          </kyn-button>
 
-          <kd-accordion filledHeaders compact>
-            <kd-accordion-item>
+          <kyn-accordion filledHeaders compact>
+            <kyn-accordion-item>
               <span slot="title">
                 Colors:
                 ${SelectedOptions.length
@@ -171,13 +176,13 @@ export class SampleFilterChartComponent extends LitElement {
                   )}
                 </kyn-checkbox-group>
               </div>
-            </kd-accordion-item>
+            </kyn-accordion-item>
 
-            <kd-accordion-item>
+            <kyn-accordion-item>
               <span slot="title">Filter 2: Any</span>
               <div slot="body">Some other filter control here.</div>
-            </kd-accordion-item>
-          </kd-accordion>
+            </kyn-accordion-item>
+          </kyn-accordion>
         </kyn-modal>
 
         <kyn-tag-group slot="tags" filter limitTags>
@@ -194,16 +199,16 @@ export class SampleFilterChartComponent extends LitElement {
 
         ${SelectedOptions.length
           ? html`
-              <kd-button
+              <kyn-button
                 slot="tags"
                 kind="tertiary"
                 size="small"
                 iconPosition="right"
                 @on-click=${(e: any) => this._handleClearTags(e)}
               >
-                <kd-icon slot="icon" .icon=${filterRemoveIcon}></kd-icon>
+                <span slot="icon">${unsafeSVG(filterRemoveIcon)}</span>
                 Clear All
-              </kd-button>
+              </kyn-button>
             `
           : null}
       </kyn-global-filter>

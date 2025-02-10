@@ -14,7 +14,7 @@
   gap: 12px;
   padding: 16px 12px 16px 8px;
   text-decoration: none;
-  color: var(--kd-color-text-primary);
+  color: var(--kd-color-text-level-primary);
   white-space: nowrap;
   border-radius: 4px;
   transition: background-color 150ms ease-out, color 150ms ease-out,
@@ -26,30 +26,37 @@
     padding-right: 16px;
   }
 
+  &:focus {
+    outline-color: var(--kd-color-border-variants-focus);
+    background: var(--kd-color-background-menu-state-focused);
+    color: var(--kd-color-text-level-primary);
+  }
+
   &:hover {
-    background: var(--kd-color-background-primary-hover);
-    color: var(--kd-color-text-inversed);
+    background: var(--kd-color-background-menu-state-hover);
+    color: var(--kd-color-text-button-dark-primary);
   }
 
   &:active {
-    background: var(--kd-color-background-primary-pressed);
-    color: var(--kd-color-text-inversed);
-  }
-
-  &:focus {
-    outline-color: var(--kd-color-border-tertiary-bold);
+    background: var(--kd-color-background-menu-state-pressed);
+    color: var(--kd-color-text-button-dark-primary);
   }
 
   &.active {
-    color: var(--kd-color-text-link);
+    color: var(--kd-color-text-link-level-hover);
     font-weight: 500;
 
     &:hover {
-      color: var(--kd-color-text-inversed);
+      background: var(--kd-color-background-menu-state-hover);
+      color: var(--kd-color-text-button-dark-primary);
     }
   }
 
-  ::slotted(kd-icon),
+  ::slotted(span) {
+    margin-top: -3px;
+  }
+
+  ::slotted(span),
   ::slotted(svg) {
     display: flex;
     align-items: center;
@@ -57,6 +64,10 @@
     width: 24px;
     height: 24px;
   }
+}
+
+.search-icon {
+  display: flex;
 }
 
 .level {
@@ -75,20 +86,20 @@
       @include typography.type-ui-02;
       padding: 8px;
       height: 40px;
-      color: var(--kd-color-text-secondary);
+      color: var(--kd-color-text-level-primary);
 
       &.active {
-        color: var(--kd-color-text-link);
+        color: var(--kd-color-text-link-level-hover);
         font-weight: 500;
 
         &:hover {
-          color: var(--kd-color-text-inversed);
+          color: var(--kd-color-text-button-dark-primary);
         }
       }
 
       &:hover,
       &:active {
-        color: var(--kd-color-text-inversed);
+        color: var(--kd-color-text-button-dark-primary);
       }
     }
   }
@@ -109,19 +120,24 @@
     }
 
     .interactive {
-      color: var(--kd-color-text-inversed);
-      background-color: var(--kd-color-background-primary);
+      color: var(--kd-color-text-button-dark-primary);
+      background-color: var(--kd-color-background-menu-state-open);
 
       &:hover {
-        background-color: var(--kd-color-background-primary-hover);
-        color: var(--kd-color-text-inversed);
+        background-color: var(--kd-color-background-menu-state-hover);
+        color: var(--kd-color-text-button-dark-primary);
+      }
+
+      &:active {
+        background: var(--kd-color-background-menu-state-pressed);
+        color: var(--kd-color-text-button-dark-primary);
       }
     }
   }
 
   &__content {
     display: none;
-    background: var(--kd-color-background-accent-subtle);
+    background: var(--kd-color-background-menu-state-default);
 
     &.slotted {
       display: flex;

@@ -7,3 +7,62 @@
   white-space: nowrap;
   width: 1px;
 }
+
+@mixin close-icon-btn($top: 32px, $right: 10px, $size: 20px) {
+  position: absolute;
+  tab-size: 2;
+  top: $top;
+  right: $right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin picker-base {
+  :host {
+    display: inline-block;
+  }
+
+  input {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--kd-color-border-forms-default);
+    border-radius: 4px;
+    height: 48px;
+    line-height: 48px;
+    -webkit-appearance: none;
+    appearance: none;
+
+    &.size--sm {
+      height: 32px;
+    }
+
+    &.size--lg {
+      height: 56px;
+    }
+  }
+}
+
+@mixin picker-disabled {
+  .input-icon {
+    cursor: default;
+  }
+
+  .error-text,
+  .error-text .error-icon,
+  .warn-text {
+    color: var(--kd-color-text-level-disabled);
+  }
+
+  .caption {
+    color: var(--kd-color-text-level-disabled);
+  }
+
+  .label-text {
+    color: var(--kd-color-text-level-disabled);
+
+    .required {
+      color: var(--kd-color-text-level-disabled);
+    }
+  }
+}

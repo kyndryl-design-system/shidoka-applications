@@ -10,66 +10,59 @@
 a {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   height: 40px;
   padding: 8px;
   border-radius: 4px;
   text-decoration: none;
   outline: 2px solid transparent;
   outline-offset: -2px;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-text-level-primary);
   transition: background-color 150ms ease-out, color 150ms ease-out,
     outline-color 150ms ease-out;
 
-  .icon.slotted {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
+  ::slotted(*) {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    @media (min-width: 42rem) {
-      width: 32px;
-    }
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
   }
 
   .link-active & {
-    color: var(--kd-color-text-tertiary);
+    background-color: var(--kd-color-background-menu-state-active);
+    color: var(--kd-color-text-button-dark-primary);
     font-weight: 500;
   }
 
-  .link-expanded & {
-    background: var(--kd-color-background-primary);
-    color: var(--kd-color-text-inversed);
-  }
+  .link-expanded.nav-expanded & {
+    background: var(--kd-color-background-menu-state-open);
+    color: var(--kd-color-text-button-dark-primary);
+    font-weight: 500;
 
-  @media (min-width: 42rem) {
-    padding: 4px;
-  }
-
-  .nav-expanded & {
-    // padding: 8px;
-    padding-right: 12px;
+    &:hover {
+      background: var(--kd-color-background-menu-state-hover);
+    }
   }
 
   &:hover {
-    background: var(--kd-color-background-primary-hover);
-    color: var(--kd-color-text-inversed);
+    background: var(--kd-color-background-menu-state-hover);
+    color: var(--kd-color-text-button-dark-primary);
   }
 
   &:focus {
-    outline-color: var(--kd-color-border-tertiary-bold);
+    outline-color: var(--kd-color-border-variants-focus);
   }
 
   &:active {
-    background-color: var(--kd-color-background-primary-pressed);
-    color: var(--kd-color-text-inversed);
+    background-color: var(--kd-color-background-menu-state-pressed);
+    color: var(--kd-color-text-button-dark-primary);
   }
 
   .link-disabled &,
   .nav-expanded.link-active.link-disabled & {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
 
     &:hover {
       background-color: transparent;
@@ -90,7 +83,7 @@ a {
   position: absolute;
   bottom: 0;
   width: 100%;
-  background: var(--kd-color-background-accent-subtle);
+  background: var(--kd-color-background-menu-state-default);
 
   transition: transform 300ms ease-out, opacity 300ms ease-out,
     visibility 300ms ease-out;
@@ -98,12 +91,18 @@ a {
   opacity: 0;
   transform-origin: right;
 
-  &.has-links {
+  @media (min-width: 42rem) {
+    background: none;
+  }
+
+  .has-links & {
     padding: 4px 8px 8px;
 
     @media (min-width: 42rem) {
-      padding-top: 8px;
-      border-bottom: 4px solid var(--kd-color-border-accent-spruce-light);
+      padding-left: 28px;
+      padding-top: 2px;
+      padding-right: 0;
+      padding-bottom: 0;
     }
   }
 
@@ -113,17 +112,14 @@ a {
   }
 
   @media (min-width: 42rem) {
-    @include elevation.shadow(2);
-    position: fixed;
+    // @include elevation.shadow(2);
+    display: none;
+    position: static;
     bottom: auto;
     width: auto;
-    padding-top: 0;
     transform: none;
-    max-height: calc(100vh - var(--kd-header-height));
-
-    transition: margin-left 300ms ease-out, opacity 300ms ease-out,
-      visibility 300ms ease-out;
-    margin-left: -20px;
+    visibility: visible;
+    opacity: 1;
   }
 
   .link-expanded.nav-expanded & {
@@ -132,8 +128,53 @@ a {
     transform: none;
 
     @media (min-width: 42rem) {
-      transform: none;
-      margin-left: 0;
+      display: flex;
+    }
+  }
+}
+
+@media (min-width: 42rem) {
+  .link-expanded {
+    position: relative;
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 42px;
+      bottom: 19px;
+      left: 20px;
+      width: 1px;
+      background: var(--kd-color-border-variants-light);
+    }
+  }
+
+  .sub-level a {
+    position: relative;
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: -7px;
+      width: 10px;
+      height: 1px;
+      background: var(--kd-color-border-variants-light);
+      z-index: -1;
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: calc(50% - 2px);
+      left: 0px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--kd-color-border-variants-light);
+      z-index: -1;
     }
   }
 }
@@ -154,24 +195,24 @@ a {
     outline-color 150ms ease-out;
   outline: 2px solid transparent;
   outline-offset: -2px;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-text-level-primary);
 
-  kd-icon {
+  svg {
     margin-right: 16px;
   }
 
   &:hover {
-    background: var(--kd-color-background-primary);
-    color: var(--kd-color-text-inversed);
+    background: var(--kd-color-background-menu-state-hover);
+    color: var(--kd-color-text-button-dark-primary);
   }
 
   &:active {
-    background: var(--kd-color-background-primary-pressed);
-    color: var(--kd-color-text-inversed);
+    background-color: var(--kd-color-background-menu-state-pressed);
+    color: var(--kd-color-text-button-dark-primary);
   }
 
   &:focus {
-    outline-color: var(--kd-color-border-focus);
+    outline-color: var(--kd-color-border-variants-focus);
   }
 
   @media (min-width: 42rem) {
@@ -180,10 +221,12 @@ a {
 }
 
 .category {
-  @include typography.type-ui-02;
+  @include typography.type-ui-03;
   font-weight: 500;
-  color: var(--kd-color-text-secondary);
-  padding: 8px 16px 8px 8px;
+  color: var(--kd-color-text-level-tertiary-bold);
+  text-transform: uppercase;
+  padding: 8px;
+  border-bottom: 1px solid var(--kd-color-border-variants-light);
 
   @media (min-width: 42rem) {
     display: none;
@@ -193,24 +236,36 @@ a {
 .text {
   min-width: 120px;
 
+  @media (min-width: 42rem) {
+    margin-left: 4px;
+
+    // .link:not(.has-icon):not(.has-links) & {
+    //   margin-left: 8px;
+    // }
+  }
+
   .nav-expanded & {
     display: block;
   }
 
-  .level--1:not(.nav-expanded) & {
+  .top-level:not(.nav-expanded) & {
     @include mixins.visually-hidden;
   }
 }
 
-.arrow-icon {
+.expand-icon {
   display: none;
-  margin-left: auto;
 
   .nav-expanded & {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
   }
 
-  kd-icon {
+  svg {
     display: block;
   }
 }

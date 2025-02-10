@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import {
   customElement,
@@ -8,8 +9,7 @@ import {
 import { deepmerge } from 'deepmerge-ts';
 import RadioButtonGroupScss from './radioButtonGroup.scss';
 import { FormMixin } from '../../../common/mixins/form-input';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import errorIcon from '@carbon/icons/es/warning--filled/16';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 const _defaultTextStrings = {
   required: 'Required',
@@ -20,12 +20,16 @@ const _defaultTextStrings = {
  * Radio button group container.
  * @fires on-radio-group-change - Captures the change event and emits the selected value.
  * @slot unnamed - Slot for individual radio buttons.
- * @slot label - Slot for label text.
  * @slot description - Slot for description text.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-radio-button-group')
 export class RadioButtonGroup extends FormMixin(LitElement) {
   static override styles = RadioButtonGroupScss;
+
+  /** Label text */
+  @property({ type: String })
+  label = '';
 
   /** Makes the input required. */
   @property({ type: Boolean })
@@ -71,7 +75,9 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
                 </abbr>
               `
             : null}
-          <slot name="label"></slot>
+
+          <span>${this.label}</span>
+          <slot name="tooltip"></slot>
         </legend>
         <div class="description-text">
           <slot name="description"></slot>
@@ -79,11 +85,12 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
         ${this._isInvalid
           ? html`
               <div class="error">
-                <kd-icon
-                  .icon="${errorIcon}"
+                <span
+                  class="error-icon"
                   title=${this._textStrings.error}
                   aria-label=${this._textStrings.error}
-                ></kd-icon>
+                  >${unsafeSVG(errorIcon)}</span
+                >
                 ${this.invalidText || this._internalValidationMsg}
               </div>
             `

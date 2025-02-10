@@ -70,7 +70,6 @@ npm run format
 
 1. [Lit](https://lit.dev/docs/)
 1. [Storybook](https://storybook.js.org/docs/7.0/web-components/get-started/introduction)
-1. [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/main/packages/icons)
 1. [@storybook/test](https://storybook.js.org/docs/writing-tests)
 1. [TypeScript](https://www.typescriptlang.org/docs/)
 1. [SCSS](https://sass-lang.com/guide)

@@ -25,7 +25,7 @@ export const Search = {
     expandable: false,
     disabled: false,
     value: '',
-    label: 'Search',
+    label: 'Search...',
     size: 'md',
     suggestions: ['Strings', 'Matching', 'Value', 'Here'],
     expandableSearchBtnDescription: 'Expandable search button',
@@ -34,7 +34,7 @@ export const Search = {
       noMatches: 'No matches found for',
       selected: 'Selected',
       found: 'Found',
-    }
+    },
   },
   render: (args) => {
     return html`

@@ -8,6 +8,7 @@ import {
 import { classMap } from 'lit-html/directives/class-map.js';
 import './tag';
 import TagGroupScss from './tagGroup.scss';
+import '../link';
 
 /**
  * Tag & Tag Group
@@ -64,14 +65,15 @@ export class TagGroup extends LitElement {
 
         ${this.limitTags && this.tags.length > 5
           ? html`
-              <button
+              <kyn-link
                 class="${classMap(toggleBtnClasses)}"
-                @click=${() => this._toggleRevealed(!this.limitRevealed)}
+                standalone
+                @on-click=${() => this._toggleRevealed(!this.limitRevealed)}
               >
                 ${this.limitRevealed
                   ? this.textStrings.showLess
                   : html` ${this.textStrings.showAll}`}
-              </button>
+              </kyn-link>
             `
           : null}
       </div>

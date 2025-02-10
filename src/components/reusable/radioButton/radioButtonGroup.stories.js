@@ -41,9 +41,9 @@ export const RadioButtonGroup = {
         ?horizontal=${args.horizontal}
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
+        label=${args.label}
         @on-radio-group-change=${(e) => action(e.type)(e)}
       >
-        <span slot="label">${args.label}</span>
         <div slot="description">${args.description}</div>
         <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
         <kyn-radio-button value="2"> Option 2 </kyn-radio-button>

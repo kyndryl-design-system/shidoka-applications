@@ -1,10 +1,10 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import TooltipScss from './tooltip.scss';
 
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import infoIcon from '@carbon/icons/es/information/20';
+import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/information.svg';
 
 /**
  * Tooltip.
@@ -81,7 +81,9 @@ export class Tooltip extends LitElement {
           @focus=${this._handleOpen}
           @blur=${this._handleClose}
         >
-          <slot name="anchor"><kd-icon .icon=${infoIcon}></kd-icon></slot>
+          <slot name="anchor"
+            ><span class="info-icon">${unsafeSVG(infoIcon)}</span></slot
+          >
         </button>
 
         <div

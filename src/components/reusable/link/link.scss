@@ -1,0 +1,146 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: inline-block;
+}
+
+// base class
+.kyn-link-text {
+  display: flex;
+  position: relative;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 300ms ease-in-out;
+
+  &:hover {
+    slot[name='icon']::slotted(*) {
+      transform: translate(4px, 0);
+    }
+  }
+
+  &.icon-left:hover {
+    slot[name='icon']::slotted(*) {
+      transform: translate(-4px, 0);
+    }
+  }
+
+  // Primary (app)
+  &-primary {
+    color: var(--kd-color-text-link-level-default);
+
+    &:hover {
+      color: var(--kd-color-text-link-level-hover);
+    }
+    &:focus {
+      color: var(--kd-color-text-link-level-default);
+      outline: 1px solid var(--kd-color-border-variants-focus);
+      -webkit-transition: outline 100ms ease-in-out;
+      -moz-transition: outline 100ms ease-in-out;
+      -o-transition: outline 100ms ease-in-out;
+      transition: outline 100ms ease-in-out;
+      text-decoration: none;
+    }
+    &:active {
+      color: var(--kd-color-text-link-level-pressed);
+      text-decoration: underline;
+      outline: none;
+    }
+  }
+
+  // Used for link on a light background in dark mode
+  &-primary-dark {
+    color: var(--kd-color-background-link-level-default-light);
+
+    &:hover {
+      color: var(--kd-color-background-link-level-hover-light);
+    }
+    &:focus {
+      color: var(--kd-color-background-link-level-default-light);
+      outline: 1px solid var(--kd-color-border-variants-focus);
+      transition: outline 100ms ease-in-out;
+      text-decoration: none;
+    }
+    &:active {
+      color: var(--kd-color-background-link-level-pressed-light);
+      text-decoration: underline;
+      outline: none;
+    }
+  }
+
+  // Secondary (web)
+  &-secondary {
+    color: var(--kd-color-text-level-primary);
+
+    &:hover {
+      color: var(--kd-color-text-link-level-hover);
+    }
+    &:focus {
+      outline: 1px solid var(--kd-color-text-level-primary);
+      -webkit-transition: outline 100ms ease-in-out;
+      -moz-transition: outline 100ms ease-in-out;
+      -o-transition: outline 100ms ease-in-out;
+      transition: outline 100ms ease-in-out;
+      text-decoration: none;
+    }
+    &:active {
+      color: var(--kd-color-text-link-level-pressed);
+      text-decoration: underline;
+      outline: none;
+    }
+  }
+  // Link disable class
+  &-disabled {
+    cursor: not-allowed;
+    color: var(--kd-color-text-link-level-disabled);
+    text-decoration: none;
+    border: none;
+    outline: none;
+    pointer-events: none;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:visited {
+      color: var(--kd-color-text-link-level-disabled);
+      border: none;
+      outline: none;
+      text-decoration: none;
+      slot[name='icon']::slotted(*) {
+        transform: translate(0px, 0);
+      }
+    }
+  }
+
+  // Link Inline - standalone classes
+  &-inline {
+    text-decoration: underline;
+  }
+
+  &-standalone {
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &-span-flex {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .icon-left & slot[name='icon']::slotted(*) {
+      order: -1;
+      margin-right: 8px;
+    }
+
+    slot[name='icon']::slotted(*) {
+      display: inline-flex;
+      align-self: center;
+      margin-left: 0px;
+      transition: 300ms ease-in-out;
+      -moz-transition: 300ms ease-in-out;
+      -o-transition: 300ms ease-in-out;
+      -webkit-transition: 300ms ease-in-out;
+    }
+  }
+}

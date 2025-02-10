@@ -74,17 +74,21 @@ export class RadioButton extends LitElement {
     `;
   }
 
-  private handleChange(e: any) {
-    // emit selected value, bubble so it can be captured by the radio group
+  private handleChange(e: Event) {
+    const input = e.target as HTMLInputElement;
+
+    this.checked = input.checked;
+
     const event = new CustomEvent('on-radio-change', {
       bubbles: true,
       composed: true,
       detail: {
-        checked: e.target.checked,
-        value: e.target.value,
+        checked: input.checked,
+        value: input.value,
         origEvent: e,
       },
     });
+
     this.dispatchEvent(event);
   }
 }

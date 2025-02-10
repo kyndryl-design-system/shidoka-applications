@@ -1,12 +1,12 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import lottie from 'lottie-web';
 import animationData from './json/indeterminate.json';
 import Styles from './inline.scss';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import successIcon from '@carbon/icons/es/checkmark--filled/16';
-import errorIcon from '@carbon/icons/es/error--filled/16';
+import successIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 /**
  * Inline Loader.
@@ -65,9 +65,9 @@ export class LoaderInline extends LitElement {
       <div class="${classMap(Classes)}">
         <div class="container"></div>
 
-        <kd-icon class="status-icon success" .icon=${successIcon}></kd-icon>
+        <span class="status-icon success">${unsafeSVG(successIcon)}</span>
 
-        <kd-icon class="status-icon error" .icon=${errorIcon}></kd-icon>
+        <span class="status-icon error">${unsafeSVG(errorIcon)}</span>
 
         <slot></slot>
       </div>

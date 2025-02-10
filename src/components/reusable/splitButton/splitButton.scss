@@ -1,0 +1,337 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: inline-block;
+}
+
+/* ----------------- Split btn -------------------- */
+.split-btn-wrapper {
+  width: 100%;
+  display: inline-flex;
+  position: relative;
+  gap: 2px;
+}
+.kyn-split-btn {
+  transition: outline-color 0.2s ease-in-out, color 0.2s ease-in-out,
+    background-color 0.2s ease-in-out;
+  white-space: nowrap;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  width: 100%;
+  min-width: 96px;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include typography.type-body-02;
+
+  &-label {
+    border-radius: 4px 0px 0px 4px;
+  }
+
+  &-icon {
+    border-radius: 0px 4px 4px 0px;
+  }
+
+  &-margin-overlapped {
+    margin-left: -3px;
+  }
+
+  &--small {
+    padding: 4px 16px;
+    height: 32px;
+    &-arrow-btn {
+      min-width: 32px;
+      width: 32px;
+    }
+  }
+
+  &--medium {
+    padding: 12px 16px;
+    height: 48px;
+    &-arrow-btn {
+      min-width: 48px;
+      width: 48px;
+    }
+  }
+
+  &--large {
+    padding: 16px 16px;
+    height: 56px;
+    &-arrow-btn {
+      min-width: 56px;
+      width: 56px;
+    }
+  }
+}
+
+// Disabled Button Styles
+@mixin kyn-split-btn-disabled {
+  color: var(--kd-color-text-link-level-disabled);
+  border: none;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+// Disabled Outline Button Styles
+@mixin kd-outline-btn-disabled {
+  background-color: transparent;
+  color: var(--kd-color-text-link-level-disabled);
+  border: 1px solid var(--kd-color-border-ui-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+span {
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+// Primary Split Button Styles (Web & App)
+.kyn-split-btn--primary-web,
+.kyn-split-btn--primary-app {
+  @extend .kyn-split-btn;
+  background-color: var(--kd-color-background-button-primary-state-default);
+  color: var(--kd-color-text-button-dark-primary);
+  border: none;
+  position: relative;
+  overflow: hidden;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--kd-color-background-button-primary-state-hover);
+    transition: transform 300ms ease-out, opacity 200ms ease-out,
+      background-color 150ms ease-in-out;
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 0;
+  }
+
+  &:hover {
+    &:before {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    border: none;
+
+    &:before {
+      background-color: var(--kd-color-background-button-primary-state-pressed);
+    }
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-background-button-primary-state-focused);
+  }
+
+  &:disabled {
+    @include kyn-split-btn-disabled;
+    background-color: var(--kd-color-background-ui-default-disabled);
+  }
+}
+
+.kyn-split-btn--primary-web {
+  background-color: var(--kd-color-background-button-web-default);
+
+  &:before {
+    background-color: var(--kd-color-background-button-web-hover);
+  }
+
+  &:active:before {
+    background-color: var(--kd-color-background-button-web-pressed);
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-variants-focus);
+  }
+}
+
+// Primary Destructive Button
+.kyn-split-btn--primary-app-destructive,
+.kyn-split-btn--primary-web-destructive {
+  @extend .kyn-split-btn;
+  background-color: var(
+    --kd-color-background-button-primary-destructive-default
+  );
+  color: var(--kd-color-text-button-dark-destructive);
+  border: none;
+  position: relative;
+  overflow: hidden;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(
+      --kd-color-background-button-primary-destructive-hover
+    );
+    transition: transform 300ms ease-out, opacity 200ms ease-out,
+      background-color 150ms ease-in-out;
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 0;
+  }
+
+  &:hover {
+    &:before {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+  }
+
+  &:active:before {
+    background-color: var(
+      --kd-color-background-button-primary-destructive-pressed
+    );
+  }
+
+  &:focus {
+    outline-color: var(
+      --kd-color-background-button-primary-destructive-focused
+    );
+  }
+
+  &:disabled {
+    @include kyn-split-btn-disabled;
+    background-color: var(--kd-color-background-ui-default-disabled);
+  }
+}
+
+// Secondary Button Styles
+.kyn-split-btn--secondary {
+  @extend .kyn-split-btn;
+  background-color: transparent;
+  color: var(--kd-color-text-button-light-secondary);
+  border: 1px solid var(--kd-color-border-button-secondary-state-default);
+  &-icon {
+    border-width: 1px 1px 1px 0.5px;
+  }
+  &-label {
+    border-width: 1px 0.5px 1px 1px;
+  }
+
+  &:hover {
+    border-color: var(--kd-color-border-button-secondary-state-hover);
+  }
+
+  &:active {
+    border-color: var(--kd-color-border-button-secondary-state-pressed);
+  }
+
+  &:focus {
+    border-width: 2px;
+    border-color: var(--kd-color-border-button-secondary-state-focused);
+  }
+
+  &:disabled {
+    @include kd-outline-btn-disabled;
+  }
+}
+// Secondary Destructive Button
+.kyn-split-btn--secondary-destructive {
+  @extend .kyn-split-btn;
+  background-color: transparent;
+  color: var(--kd-color-text-button-light-destructive);
+  border: 1px solid var(--kd-color-border-button-secondary-destructive-default);
+
+  &:hover {
+    border-color: var(--kd-color-border-button-secondary-destructive-hover);
+  }
+
+  &:active {
+    border-color: var(--kd-color-border-button-secondary-destructive-pressed);
+  }
+
+  &:focus {
+    border-color: var(--kd-color-border-button-secondary-destructive-focused);
+    outline-color: var(--kd-color-border-button-primary-destructive-default);
+  }
+
+  &:disabled {
+    @include kd-outline-btn-disabled;
+    color: var(--kd-color-text-button-dark-destructive);
+  }
+}
+
+.kyn-split-btn--icon {
+  // Styles for buttons with icons on the left side
+  &-left span {
+    // Reverse the flex direction to place the icon to the left
+    flex-direction: row-reverse;
+
+    // Styling for the actual icon within the button
+    slot[name='icon']::slotted(*) {
+      // Add margin to the right to space the icon from the text
+      margin-right: 8px;
+    }
+  }
+
+  // Styles for buttons with icons on the right side
+  &-right {
+    // Styling for the actual icon within the button
+    slot[name='icon']::slotted(*) {
+      // Add margin to the left to space the icon from the text
+      margin-left: 8px;
+    }
+  }
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 100%;
+  margin-top: 4px;
+  width: 100%;
+  max-height: 280px;
+  overflow-y: auto;
+  outline: none;
+  background: var(--kd-color-background-container-default);
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12),
+    0px 4px 12px 0px rgba(0, 0, 0, 0.08);
+  outline: 2px solid transparent;
+  transition: transform 150ms ease-out, opacity 150ms ease-out,
+    outline-color 150ms ease-out, visibility 150ms ease-out;
+  visibility: hidden;
+  transform: scaleY(0);
+  transform-origin: top;
+  opacity: 0;
+  z-index: -1;
+
+  &.upwards {
+    transform-origin: bottom;
+    top: auto;
+    bottom: 100%;
+  }
+
+  &.open {
+    visibility: visible;
+    transform: scaleY(1);
+    opacity: 1;
+    z-index: 11;
+  }
+}
+
+.arrow-icon {
+  transform: rotate(0deg);
+  .open & {
+    transform: rotate(180deg);
+  }
+}

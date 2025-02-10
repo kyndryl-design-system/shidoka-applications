@@ -1,6 +1,11 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/mixins.scss';
 
+$checkbox-mask: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEwIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTMuNSA1Ljg1NTQ3TDkgLTIuMDMwNjNlLTA2TDEwIDEuMDY0NjNMMy40ODU2NiA4TDAgNC4yODkwNkwxLjAxNDM0IDMuMjA5MTZMMy41IDUuODU1NDdaIiBmaWxsPSIjMDAwIi8+DQo8L3N2Zz4=');
+
+$main-checkbox-background: var(--kd-color-background-ui-default-secondary);
+$invalid-checkbox-background: var(--kd-color-status-error-dark);
+
 :host {
   display: block;
 }
@@ -11,8 +16,12 @@ label {
   width: 100%;
   position: relative;
 
+  &.label-hidden {
+    gap: 0;
+  }
+
   &[disabled] {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
   }
 }
 
@@ -34,16 +43,15 @@ input {
   margin-top: 4px;
   width: 16px;
   height: 16px;
-  border: 2px solid var(--kd-color-border-ui);
+  border: 2px solid var(--kd-color-border-forms-default);
   border-radius: 2px;
-  background-color: transparent;
+  background: var(--kd-color-background-ui-hollow-default);
   outline: 2px solid transparent;
-  transition: background-color 150ms ease-out, border-color 150ms ease-out,
+  transition: background 150ms ease-out, border-color 150ms ease-out,
     outline-color 150ms ease-out;
 
   &::before {
     content: '';
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEwIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTMuNSA1Ljg1NTQ3TDkgLTIuMDMwNjNlLTA2TDEwIDEuMDY0NjNMMy40ODU2NiA4TDAgNC4yODkwNkwxLjAxNDM0IDMuMjA5MTZMMy41IDUuODU1NDdaIiBmaWxsPSJ3aGl0ZSIvPg0KPC9zdmc+IA==');
     display: block;
     width: 10px;
     height: 8px;
@@ -51,86 +59,214 @@ input {
     transform: scale(0);
   }
 
-  &:checked {
-    background: var(--kd-color-background-primary);
-    border-color: var(--kd-color-border-ui-hover);
-
-    [disabled] & {
-      background-color: var(--kd-color-background-disabled);
-      border-color: var(--kd-color-background-disabled);
-    }
-
-    &::before {
-      transform: scale(1);
+  &:not([disabled]) {
+    &:active {
+      background: var(--kd-color-background-button-primary-pressed);
+      border-color: var(--kd-color-background-ui-hollow-pressed);
     }
 
     &:hover {
-      background-color: var(--kd-color-background-primary-hover);
-      border-color: var(--kd-color-background-primary-hover);
+      background: var(--kd-color-background-ui-hollow-hover);
+      border-color: var(--kd-color-border-ui-hover);
+    }
 
-      [disabled] & {
-        background-color: var(--kd-color-background-disabled);
-        border-color: var(--kd-color-background-disabled);
+    &:focus {
+      border-color: var(--kd-color-border-forms-default);
+      outline-color: var(--kd-color-border-variants-focus);
+      background: var(--kd-color-background-ui-hollow-default);
+      outline-offset: 2px;
+    }
+
+    &:active {
+      background: var(--kd-color-background-ui-hollow-pressed);
+      border-color: var(--kd-color-border-ui-pressed);
+      outline-color: transparent;
+    }
+  }
+
+  &:not([disabled]):checked {
+    background: $main-checkbox-background;
+    border-color: transparent;
+
+    &::before {
+      transform: scale(1);
+      background: var(--kd-color-background-ui-hollow-default);
+      mask: $checkbox-mask;
+      -webkit-mask: $checkbox-mask;
+      mask-size: contain;
+      -webkit-mask-size: contain;
+      mask-repeat: no-repeat;
+      -webkit-mask-repeat: no-repeat;
+      mask-position: center;
+      -webkit-mask-position: center;
+    }
+
+    &:hover {
+      outline-color: transparent;
+
+      &::before {
+        background: var(--kd-color-background-ui-hollow-hover);
+      }
+    }
+
+    &:focus {
+      border-color: transparent;
+      outline-color: var(--kd-color-border-variants-focus);
+    }
+
+    &:active {
+      border-color: transparent;
+
+      &::before {
+        background: var(--kd-color-background-ui-hollow-pressed);
+      }
+    }
+  }
+
+  &[disabled] {
+    background: var(--kd-color-background-ui-hollow-default);
+    border-color: var(--kd-color-border-ui-disabled);
+
+    &:checked {
+      background: var(--kd-color-background-ui-default-disabled);
+      border-color: transparent;
+
+      &::before {
+        transform: scale(1);
+        background: var(--kd-color-background-ui-hollow-default);
+        mask: $checkbox-mask;
+        -webkit-mask: $checkbox-mask;
+        mask-size: contain;
+        -webkit-mask-size: contain;
+        mask-repeat: no-repeat;
+        -webkit-mask-repeat: no-repeat;
+        mask-position: center;
+        -webkit-mask-position: center;
+      }
+    }
+  }
+}
+
+input[type='checkbox']:indeterminate {
+  &:not([disabled]) {
+    background: $main-checkbox-background;
+    border-color: transparent;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 10px;
+      height: 8px;
+      transform: scale(1);
+      background: var(--kd-color-background-ui-hollow-default);
+      mask: linear-gradient(transparent 3px, #000 3px 5px, transparent 5px);
+      -webkit-mask: linear-gradient(transparent 3px,
+          #000 3px 5px,
+          transparent 5px);
+    }
+
+    &:hover {
+      background: $main-checkbox-background;
+      border-color: transparent;
+
+      &::before {
+        background: var(--kd-color-background-ui-hollow-hover);
       }
     }
 
     &:active {
-      background-color: var(--kd-color-background-primary-pressed);
-      border-color: var(--kd-color-background-primary-pressed);
+      background: $main-checkbox-background;
+      border-color: transparent;
+
+      &::before {
+        background: var(--kd-color-background-ui-hollow-pressed);
+      }
+    }
+  }
+}
+
+input[type='checkbox']:indeterminate:disabled {
+  background: var(--kd-color-background-ui-default-disabled);
+  border-color: transparent;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 8px;
+    transform: scale(1);
+    background: var(--kd-color-background-ui-hollow-default);
+    mask: linear-gradient(transparent 3px, #000 3px 5px, transparent 5px);
+    -webkit-mask: linear-gradient(transparent 3px,
+        #000 3px 5px,
+        transparent 5px);
+  }
+}
+
+input[type='checkbox'][invalid] {
+  border-color: $invalid-checkbox-background;
+
+  &:not([disabled]) {
+
+    &:checked,
+    &:indeterminate {
+      background: $invalid-checkbox-background;
+      border-color: transparent;
+
+      &:hover {
+        background: var(--kd-color-background-button-primary-destructive-hover);
+        border-color: var(--kd-color-background-button-primary-destructive-hover);
+      }
+
+      &:active {
+        background: var(--kd-color-background-button-primary-destructive-pressed);
+        border-color: var(--kd-color-background-button-primary-destructive-pressed);
+        outline-color: var(--kd-color-background-button-primary-destructive-pressed);
+      }
+    }
+  }
+
+  &[disabled] {
+    border-color: var(--kd-color-border-ui-disabled);
+
+    &:hover {
+      border-color: var(--kd-color-border-ui-disabled);
+    }
+
+    &[checked] {
+      border-color: transparent;
+
+      &:hover {
+        border-color: transparent;
+        background: var(--kd-color-background-ui-default-disabled);
+      }
+    }
+
+    &:active,
+    &:focus {
+      background-color: transparent;
+      border-color: var(--kd-color-border-ui-disabled);
+      outline-color: transparent;
     }
   }
 
   &:hover {
-    background-color: var(--kd-color-background-inverse-hover);
-    border-color: var(--kd-color-border-ui-hover);
+    background: transparent;
+    border-color: var(--kd-color-background-button-primary-destructive-hover);
   }
 
   &:focus {
-    outline-color: var(--kd-color-border-focus);
-    outline-offset: 2px;
+    border-color: $invalid-checkbox-background;
+    outline-color: $invalid-checkbox-background;
   }
 
   &:active {
-    background-color: var(--kd-color-background-accent-ui);
-    border-color: var(--kd-color-background-primary);
-  }
-
-  &[disabled] {
-    background-color: transparent;
-    border-color: var(--kd-color-border-ui-disabled);
-
-    &:hover {
-      background-color: transparent;
-    }
-
-    &[invalid] {
-      border-color: var(--kd-color-text-disabled);
-    }
-  }
-
-  &[invalid] {
-    border-color: var(--kd-color-border-destructive);
+    background: var(--kd-color-background-button-primary-destructive-pressed);
+    border-color: var(--kd-color-background-button-primary-destructive-pressed);
+    outline-color: var(--kd-color-background-button-primary-destructive-pressed);
   }
 }
 
 .sr-only {
   @include mixins.visually-hidden;
-}
-
-input[type='checkbox']:indeterminate {
-  background: var(--kd-color-background-primary);
-  border-color: var(--kd-color-border-ui-hover);
-
-  [disabled] & {
-    background-color: var(--kd-color-background-disabled);
-    border-color: var(--kd-color-background-disabled);
-  }
-
-  &::before {
-    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBVcGxvYWRlZCB0bzogU1ZHIFJlcG8sIHd3dy5zdmdyZXBvLmNvbSwgR2VuZXJhdG9yOiBTVkcgUmVwbyBNaXhlciBUb29scyAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIGZpbGw9IiNmZmZmZmYiIHZlcnNpb249IjEuMSIgaWQ9IkNhcGFfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgDQoJIHdpZHRoPSIycHgiIGhlaWdodD0iMTBweCIgdmlld0JveD0iMCAwIDQ4NS4wNjQgNDg1LjA2NCINCgkgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Zz4NCgkJPHBhdGggZD0iTTQ1OC43MzYsMTgxLjA5N0gyNi4zMzRDMTEuNzkzLDE4MS4wOTcsMCwxOTIuODg0LDAsMjA3LjQyNXY3MC4yMTVjMCwxNC41NDEsMTEuNzg3LDI2LjMyOCwyNi4zMzQsMjYuMzI4aDQzMi40MDINCgkJCWMxNC41NDEsMCwyNi4zMjgtMTEuNzg3LDI2LjMyOC0yNi4zMjh2LTcwLjIxNUM0ODUuMDcsMTkyLjg4NCw0NzMuMjgzLDE4MS4wOTcsNDU4LjczNiwxODEuMDk3eiIvPg0KCTwvZz4NCjwvZz4NCjwvc3ZnPg==');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    transform: scale(1);
-  }
 }

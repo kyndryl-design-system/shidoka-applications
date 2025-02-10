@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import '@kyndryl-design-system/shidoka-foundation/components/link';
+import '../../components/reusable/link';
 import arrowRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-right.svg';
 
 // import Swiper bundle with all modules installed
@@ -26,7 +26,7 @@ export default {
           .swiper-slide {
             height: 200px;
             padding: 16px;
-            background-color: var(--kd-color-background-ui-soft);
+            background-color: var(--kd-color-background-container-soft);
             border-radius: 8px;
           }
         </style>
@@ -215,10 +215,10 @@ export const WithLink = {
         <div class="pagination-with-link">
           <div class="swiper-pagination"></div>
 
-          <kd-link standalone href="javascript:void(0);">
+          <kyn-link standalone href="javascript:void(0);">
             Link
             <span slot="icon">${unsafeSVG(arrowRightIcon)}</span>
-          </kd-link>
+          </kyn-link>
         </div>
 
         <!-- If we need navigation buttons -->

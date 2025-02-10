@@ -45,7 +45,11 @@ export class Widget extends LitElement {
     };
 
     return html`
-      <div class=${classMap(Classes)}>
+      <div
+        class=${classMap(Classes)}
+        role="group"
+        aria-disabled=${this.disabled}
+      >
         <div class="widget-header">
           <slot name="draghandle"></slot>
 

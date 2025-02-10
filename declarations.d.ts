@@ -4,6 +4,4 @@ declare module '*.scss' {
   export default styles;
 }
 
-declare module '@carbon/icons/*';
-
 declare module '*.svg';

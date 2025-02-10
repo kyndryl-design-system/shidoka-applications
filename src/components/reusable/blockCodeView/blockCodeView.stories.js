@@ -2,7 +2,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import './index';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
+import '../button';
 
 const defaultTemplateCodes = {
   DEFAULT: `
@@ -10,7 +10,7 @@ const defaultTemplateCodes = {
       console.log(\`Hello, \${name}!\`);
     }
 
-    /* NOTE: Comment here */ 
+    /* NOTE: Comment here */
 
     greetUser('World');
   `,
@@ -88,7 +88,7 @@ const defaultTemplateCodes = {
   SWIFT: `struct Person {
     let name: String
     var age: Int
-    
+
     func introduce() -> String {
         return "Hello, I'm (name) and I'm (age) years old."
     }
@@ -118,14 +118,14 @@ export default {
       },
     },
     darkTheme: {
-      options: ['light', 'dark'],
+      options: ['light', 'dark', 'default'],
       control: { type: 'select' },
     },
   },
 };
 
 const args = {
-  darkTheme: 'dark',
+  darkTheme: 'default',
   language: '',
   maxHeight: null,
   codeViewLabel: 'Block Code View',

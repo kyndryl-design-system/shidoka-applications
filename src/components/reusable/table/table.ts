@@ -63,16 +63,6 @@ export class Table extends LitElement {
   dense?: boolean;
 
   /**
-   * ellipsis: Boolean indicating whether the table should truncate
-   * text content with an ellipsis.
-   * @type {boolean}
-   * @default false
-   * @ignore
-   */
-  @property({ type: Boolean })
-  ellipsis?: boolean;
-
-  /**
    * fixedLayout: Boolean indicating whether the table should have a fixed layout.
    * This will set the table's layout to fixed, which means the table and column widths
    * will be determined by the width of the columns and not by the content of the cells.
@@ -102,7 +92,6 @@ export class Table extends LitElement {
 
     // Check each property in _propsToCheck and add it to newValues if it has really changed
     if (changedProperties.has('dense')) newValues.dense = this.dense;
-    if (changedProperties.has('ellipsis')) newValues.ellipsis = this.ellipsis;
     if (changedProperties.has('striped')) newValues.striped = this.striped;
     if (changedProperties.has('checkboxSelection'))
       newValues.checkboxSelection = this.checkboxSelection;

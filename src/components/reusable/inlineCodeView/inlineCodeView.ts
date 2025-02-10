@@ -12,7 +12,7 @@ export class InlineCodeView extends LitElement {
 
   /** Sets background and text theming. */
   @property({ type: String })
-  darkTheme: 'light' | 'dark' = 'dark';
+  darkTheme: 'light' | 'dark' | 'default' = 'default';
 
   /** Font size value (px) to match code snippet font-size of surrounding text (min, default 14px). */
   @property({ type: Number })
@@ -23,19 +23,14 @@ export class InlineCodeView extends LitElement {
       <code
         class="${classMap({
           'inline-code-view': true,
-          'shidoka-dark-syntax-theme': this.darkTheme === 'dark',
-          'shidoka-light-syntax-theme': this.darkTheme === 'light',
+          'shidoka-syntax-theme': true,
+          'shidoka-syntax-theme--dark': this.darkTheme === 'dark',
+          'shidoka-syntax-theme--light': this.darkTheme === 'light',
         })}"
         style="--inline-snippet-font-size: ${this.snippetFontSize};"
       >
         <slot></slot>
       </code>
     `;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'kyn-inline-code-view': InlineCodeView;
   }
 }

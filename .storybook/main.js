@@ -3,12 +3,13 @@ const Sass = require('sass');
 
 export default {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-designs',
     '@storybook/addon-storysource',
-    'storybook-addon-themes',
+    '@storybook/addon-themes',
     {
       name: '@storybook/addon-docs',
       options: {
@@ -68,16 +69,22 @@ export default {
     '@storybook/addon-a11y',
     '@storybook/addon-interactions',
   ],
+
   framework: {
     name: '@storybook/web-components-webpack5',
     options: {},
   },
+
   core: {
     disableTelemetry: true,
   },
+
   staticDirs: ['./static'],
+
   async babel(options) {
     options.presets = ['@babel/preset-react'];
     return options;
   },
+
+  docs: {}
 };

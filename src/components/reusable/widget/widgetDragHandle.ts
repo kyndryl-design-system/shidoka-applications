@@ -1,9 +1,9 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import Styles from './widgetDragHandle.scss';
 
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import dragIcon from '@carbon/icons/es/draggable/16';
+import dragIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/draggable.svg';
 
 /**
  * Widget drag handle.
@@ -19,7 +19,7 @@ export class WidgetDragHandle extends LitElement {
   override render() {
     return html`
       <div class="drag-handle">
-        <kd-icon .icon=${dragIcon}></kd-icon>
+        <span>${unsafeSVG(dragIcon)}</span>
       </div>
     `;
   }

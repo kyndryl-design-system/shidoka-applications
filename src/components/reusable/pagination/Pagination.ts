@@ -43,9 +43,9 @@ export class Pagination extends LitElement {
   @state()
   _numberOfPages = 1;
 
-  /** Label for the page size dropdown.*/
+  /** Label for the page size dropdown. Required for accessibility. */
   @property({ type: String })
-  pageSizeLabel = PAGE_SIZE_LABEL;
+  pageSizeDropdownLabel = PAGE_SIZE_LABEL;
 
   /** Option to hide the items range display. */
   @property({ type: Boolean })
@@ -109,6 +109,7 @@ export class Pagination extends LitElement {
             <kyn-pagination-page-size-dropdown
               .pageSize=${this.pageSize}
               .pageSizeOptions=${this.pageSizeOptions}
+              .pageSizeDropdownLabel=${this.pageSizeDropdownLabel}
               .textStrings=${this.textStrings}
               @on-page-size-change=${this.handlePageSizeChange}
             ></kyn-pagination-page-size-dropdown>

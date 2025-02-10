@@ -34,24 +34,16 @@ export class TagSkeleton extends LitElement {
   @property({ type: String })
   tagSize = 'sm';
 
-  /**
-   * Shade `'light'` (default) and `'dark'` for tag.
-   */
-  @property({ type: String })
-  shade = 'light';
-
   override render() {
-    const shadeClass = this.shade === 'dark' ? '-dark' : '';
     const sizeClass = this.tagSize === 'md' ? 'tag-medium' : 'tag-small';
 
     const tagClasses = {
       tags: true,
-      [`${shadeClass}`]: true,
       [`${sizeClass}`]: true,
     };
 
     return html`
-      <div class="${classMap(tagClasses)}" shade=${this.shade}>
+      <div class="${classMap(tagClasses)}">
         <kyn-skeleton
           shape="rectangle"
           height="100%"
