@@ -32,6 +32,7 @@ export const BlankCard = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    aiConnected: false,
   },
   render: (args) => {
     return html` <kyn-card
@@ -41,6 +42,7 @@ export const BlankCard = {
       rel=${args.rel}
       role="article"
       ?hideBorder=${args.hideBorder}
+      ?aiConnected=${args.aiConnected}
       aria-label="Blank card"
     ></kyn-card>`;
   },
@@ -53,6 +55,7 @@ export const Simple = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    aiConnected: false,
   },
   render: (args) => {
     return html`
@@ -62,6 +65,7 @@ export const Simple = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
+        ?aiConnected=${args.aiConnected}
         role="article"
         aria-label="Simple card"
       >
@@ -118,6 +122,7 @@ export const InsideGrid = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    aiConnected: false,
   },
   render: (args) => {
     return html`
@@ -130,6 +135,7 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            ?aiConnected=${args.aiConnected}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -149,6 +155,7 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            ?aiConnected=${args.aiConnected}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -170,6 +177,7 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            ?aiConnected=${args.aiConnected}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -188,6 +196,7 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            ?aiConnected=${args.aiConnected}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
