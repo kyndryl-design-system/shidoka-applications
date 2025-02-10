@@ -34,7 +34,7 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   hideBorder = false;
 
-  @property({ type: Boolean, reflect: true })
+  @property({ type: Boolean })
   aiConnected = false;
 
   override render() {
