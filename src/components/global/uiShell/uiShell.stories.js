@@ -30,7 +30,7 @@ export const UIShell = {
 
       <main>Main content here.</main>
 
-      <kyn-footer>
+      <kyn-footer logoAriaLabel="Go to Homepage">
         <span slot="copyright">
           Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights
           reserved.
@@ -91,7 +91,7 @@ export const WithLocalNav = {
 
       <main>Main content here.</main>
 
-      <kyn-footer>
+      <kyn-footer logoAriaLabel="Go to Homepage">
         <span slot="copyright">
           Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights
           reserved.
@@ -276,7 +276,7 @@ export const WithEverything = {
           </kyn-table-container>
         </main>
 
-        <kyn-footer>
+        <kyn-footer logoAriaLabel="Go to Homepage">
           <span slot="copyright">
             Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights
             reserved.
