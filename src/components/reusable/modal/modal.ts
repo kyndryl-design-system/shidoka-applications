@@ -131,6 +131,7 @@ export class Modal extends LitElement {
             ghost
             kind="tertiary"
             size="small"
+            ?aiConnected=${this.aiConnected}
             description=${this.closeText}
             @click=${(e: Event) => this._closeModal(e, 'cancel')}
           >
