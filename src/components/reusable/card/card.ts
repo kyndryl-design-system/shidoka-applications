@@ -44,7 +44,7 @@ export class Card extends LitElement {
     };
     const cardWrapperDefaultClasses = {
       'card-wrapper': true,
-      'card-aiConnected': this.aiConnected,
+      'card-ai': this.aiConnected,
     };
 
     return html`${this.type === 'clickable'
