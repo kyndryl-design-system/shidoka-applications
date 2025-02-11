@@ -6,10 +6,10 @@ import './sampleCardComponents/aiInfoCard.ts';
 import policeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/police.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/delete.svg';
 import '../components/reusable/tooltip';
-import '../components/reusable/link';
+import '../components/reusable/button';
 
 export default {
-  title: 'AI Section/Patterns/Info',
+  title: 'AI/Patterns/Info',
   parameters: {
     design: {
       type: 'figma',
@@ -18,21 +18,38 @@ export default {
   },
 };
 
-const args = {
-  showLeftIcon: true,
-  showTitle: true,
-  showRightIcon: true,
-};
-
 export const Default = {
-  args,
-  render: (args) => {
+  render: () => {
     return html`
       <kyn-card style="width:80%" type="normal" ?aiConnected=${true}>
         <ai-info-card-component
-          ?showLeftIcon=${args.showLeftIcon}
-          ?showTitle=${args.showTitle}
-          ?showRightIcon=${args.showRightIcon}
+          ?showLeftIcon=${true}
+          ?showTitle=${true}
+          ?showRightIcon=${true}
+        >
+          <div slot="leftIcon">${unsafeSVG(policeIcon)}</div>
+          <div slot="title">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit
+          </div>
+          <div slot="subText">
+            Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum
+          </div>
+          <div slot="rightIcon"><kyn-tooltip>Tooltip content</kyn-tooltip></div>
+        </ai-info-card-component>
+      </kyn-card>
+    `;
+  },
+};
+
+export const WithoutTitle = {
+  render: () => {
+    return html`
+      <kyn-card style="width:80%" type="normal" ?aiConnected=${true}>
+        <ai-info-card-component
+          ?showLeftIcon=${true}
+          ?showTitle=${false}
+          ?showRightIcon=${true}
         >
           <div slot="leftIcon">${unsafeSVG(policeIcon)}</div>
           <div slot="title">
@@ -50,67 +67,9 @@ export const Default = {
 };
 
 export const WithAction = {
-  args: { ...args },
-  render: (args) => {
-    return html`
-      <style>
-        .card {
-          width: 80%;
-        }
-
-        .btn {
-          background-color: transparent;
-          border: none;
-          cursor: pointer;
-        }
-        .btn :hover {
-          background: var(--kd-color-background-menu-state-hover);
-          color: var(--kd-color-text-button-dark-primary);
-          border-radius: 4px;
-          transition: background-color 150msease-out, color 150msease-out,
-            outline-color 150msease-out;
-        }
-      </style>
-      <kyn-card style="width:80%" type="normal" ?aiConnected=${true}>
-        <ai-info-card-component
-          ?showLeftIcon=${args.showLeftIcon}
-          ?showTitle=${args.showTitle}
-          ?showRightIcon=${args.showRightIcon}
-        >
-          <div slot="leftIcon">${unsafeSVG(policeIcon)}</div>
-          <div slot="title">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit
-          </div>
-          <div slot="subText">
-            Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum
-          </div>
-          <div slot="rightIcon">
-            <button
-              class="btn"
-              aria-label="Toggle Delete"
-              title="Toggle Delete"
-              @click=${(e) => console.log(e)}
-            >
-              <span>${unsafeSVG(deleteIcon)}</span>
-            </button>
-          </div>
-        </ai-info-card-component>
-      </kyn-card>
-    `;
-  },
-};
-
-export const Multiple = {
   render: () => {
     return html`
-      <style>
-        .card {
-          width: 80%;
-          margin-bottom: 32px;
-        }
-      </style>
-      <kyn-card class="card" type="normal" ?aiConnected=${true}>
+      <kyn-card style="width:80%" type="normal" ?aiConnected=${true}>
         <ai-info-card-component
           ?showLeftIcon=${true}
           ?showTitle=${true}
@@ -124,32 +83,26 @@ export const Multiple = {
             Duis aute irure dolor in reprehenderit in voluptate velit esse
             cillum
           </div>
-          <div slot="rightIcon"><kyn-tooltip>Tooltip content</kyn-tooltip></div>
+          <div slot="rightIcon">
+            <kyn-button
+              iconposition="center"
+              kind="primary-app"
+              type="button"
+              size="small"
+              description="Button Description"
+              href=""
+              name=""
+              value=""
+              ?ghost=${true}
+              ?aiConnected=${true}
+            >
+              <span style="display:flex;" slot="icon"
+                >${unsafeSVG(deleteIcon)}</span
+              >
+            </kyn-button>
+          </div>
         </ai-info-card-component>
       </kyn-card>
-      ${Array.from({ length: 2 }).map(
-        () => html`
-          <kyn-card class="card" type="normal" ?aiConnected=${true}>
-            <ai-info-card-component
-              ?showLeftIcon=${true}
-              ?showTitle=${false}
-              ?showRightIcon=${true}
-            >
-              <div slot="leftIcon">${unsafeSVG(policeIcon)}</div>
-              <div slot="title">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-              </div>
-              <div slot="subText">
-                Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum
-              </div>
-              <div slot="rightIcon">
-                <kyn-tooltip>Tooltip content</kyn-tooltip>
-              </div>
-            </ai-info-card-component>
-          </kyn-card>
-        `
-      )}
     `;
   },
 };
