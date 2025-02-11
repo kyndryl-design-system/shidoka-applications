@@ -27,7 +27,6 @@ export const Default = {
         iconposition="left"
         description="Button 1"
         ?isFloating=${true}
-        ?aiConnected=${false}
         @on-click=${(e) => action(e.type)(e)}
         >Button 1
         <span slot="icon">${unsafeSVG(chevronUpIcon)}</span>
@@ -61,7 +60,6 @@ export const WithSecondaryButton = {
         iconposition="left"
         description="Button 1"
         ?isFloating=${true}
-        ?aiConnected=${false}
         @on-click=${(e) => action(e.type)(e)}
       >
         <span class="test">Button 1</span>
@@ -73,7 +71,6 @@ export const WithSecondaryButton = {
         iconposition="left"
         description="Button 2"
         ?isFloating=${true}
-        ?aiConnected=${false}
         @on-click=${(e) => action(e.type)(e)}
       >
         <span class="test">Button 2</span>
@@ -153,7 +150,6 @@ export const WithScroll = {
         size="small"
         iconposition="left"
         ?isFloating=${true}
-        ?aiConnected=${false}
         ?showOnScroll=${true}
         description="Button 1"
         @on-click=${(e) => action(e.type)(e)}
@@ -184,13 +180,12 @@ export const AILaunch = {
     </div>
     <kyn-button-float-container>
       <kyn-button
-        kind="primary-web"
+        kind="primary-ai"
         type="button"
         size="large"
         iconposition="left"
         description="Button 1"
         ?isFloating=${true}
-        ?aiConnected=${true}
         @on-click=${(e) => action(e.type)(e)}
       >
         <span class="test"></span>
