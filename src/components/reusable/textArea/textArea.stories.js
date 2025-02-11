@@ -57,6 +57,49 @@ export const TextArea = {
   },
 };
 
+export const AIConnected = {
+  args: {
+    label: 'Label',
+    name: 'text-area-1',
+    value: '',
+    placeholder: '',
+    caption: '',
+    required: false,
+    disabled: false,
+    aiConnected: true,
+    invalidText: '',
+    minLength: undefined,
+    maxLength: undefined,
+    rows: undefined,
+    textStrings: {
+      requiredText: 'Required',
+      errorText: 'Error',
+    },
+  },
+  render: (args) => {
+    return html`
+      <kyn-text-area
+        name=${args.name}
+        value=${args.value}
+        placeholder=${args.placeholder}
+        caption=${args.caption}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?aiConnected=${args.aiConnected}
+        invalidText=${args.invalidText}
+        .textStrings=${args.textStrings}
+        minLength=${ifDefined(args.minLength)}
+        maxLength=${ifDefined(args.maxLength)}
+        rows=${args.rows}
+        @on-input=${(e) => action(e.type)(e)}
+        @keydown=${(e) => e.stopPropagation()}
+        label=${args.label}
+      >
+      </kyn-text-area>
+    `;
+  },
+};
+
 TextArea.parameters = {
   design: {
     type: 'figma',

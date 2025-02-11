@@ -129,6 +129,69 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/localNav/index.ts",
       "declarations": [],
       "exports": [
@@ -2038,69 +2101,6 @@
           "declaration": {
             "name": "HeaderNotificationPanel",
             "module": "./headerNotificationPanel"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -5906,7 +5906,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  title: 'Dropdown',\n  selectedOptions: 'List of selected options',\n  requiredText: 'Required',\n  errorText: 'Error',\n}",
+              "default": "{\n  title: 'Dropdown',\n  selectedOptions: 'List of selected options',\n  requiredText: 'Required',\n  errorText: 'Error',\n  clearAll: 'Clear all',\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
@@ -5926,11 +5926,6 @@
             {
               "kind": "method",
               "name": "renderHelperContent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "renderCaptionError",
               "privacy": "private"
             },
             {
@@ -11028,377 +11023,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/sideDrawer/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SideDrawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "./sideDrawer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/sideDrawer/sideDrawer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Side Drawer.",
-          "name": "SideDrawer",
-          "slots": [
-            {
-              "description": "Slot for drawer body content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the anchor button content.",
-              "name": "anchor"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Drawer open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Drawer size. `'md'`, or `'sm'`.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title / Heading text, required.",
-              "attribute": "titleText"
-            },
-            {
-              "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "submitBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Ok'",
-              "description": "Submit button text.",
-              "attribute": "submitBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "closeBtnDescription",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button description (Required to support accessibility).",
-              "attribute": "closeBtnDescription"
-            },
-            {
-              "kind": "field",
-              "name": "submitBtnDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "attribute": "submitBtnDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine whether needs footer",
-              "attribute": "hideFooter"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text.",
-              "attribute": "secondaryButtonText"
-            },
-            {
-              "kind": "field",
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the secondary button.",
-              "attribute": "showSecondaryButton"
-            },
-            {
-              "kind": "field",
-              "name": "hideCancelButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the cancel button.",
-              "attribute": "hideCancelButton"
-            },
-            {
-              "kind": "field",
-              "name": "beforeClose",
-              "type": {
-                "text": "Function"
-              },
-              "description": "Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
-            },
-            {
-              "kind": "method",
-              "name": "_openDrawer",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_closeDrawer",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "returnValue",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitCloseEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitOpenEvent",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
-              "name": "on-close"
-            },
-            {
-              "description": "Emits the drawer open event.",
-              "name": "on-open"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Drawer open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Drawer size. `'md'`, or `'sm'`.",
-              "fieldName": "size"
-            },
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title / Heading text, required.",
-              "fieldName": "titleText"
-            },
-            {
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "fieldName": "labelText"
-            },
-            {
-              "name": "submitBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Ok'",
-              "description": "Submit button text.",
-              "fieldName": "submitBtnText"
-            },
-            {
-              "name": "cancelBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "fieldName": "cancelBtnText"
-            },
-            {
-              "name": "closeBtnDescription",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button description (Required to support accessibility).",
-              "fieldName": "closeBtnDescription"
-            },
-            {
-              "name": "submitBtnDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "fieldName": "submitBtnDisabled"
-            },
-            {
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine whether needs footer",
-              "fieldName": "hideFooter"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text.",
-              "fieldName": "secondaryButtonText"
-            },
-            {
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the secondary button.",
-              "fieldName": "showSecondaryButton"
-            },
-            {
-              "name": "hideCancelButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the cancel button.",
-              "fieldName": "hideCancelButton"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-side-drawer",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SideDrawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-side-drawer",
-          "declaration": {
-            "name": "SideDrawer",
-            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/splitButton/defs.ts",
       "declarations": [],
       "exports": []
@@ -15081,6 +14705,377 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/sideDrawer/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SideDrawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "./sideDrawer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/sideDrawer/sideDrawer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Side Drawer.",
+          "name": "SideDrawer",
+          "slots": [
+            {
+              "description": "Slot for drawer body content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the anchor button content.",
+              "name": "anchor"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Drawer open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Drawer size. `'md'`, or `'sm'`.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title / Heading text, required.",
+              "attribute": "titleText"
+            },
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "submitBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Ok'",
+              "description": "Submit button text.",
+              "attribute": "submitBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "attribute": "cancelBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "closeBtnDescription",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button description (Required to support accessibility).",
+              "attribute": "closeBtnDescription"
+            },
+            {
+              "kind": "field",
+              "name": "submitBtnDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "attribute": "submitBtnDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine whether needs footer",
+              "attribute": "hideFooter"
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "secondaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Secondary'",
+              "description": "Secondary button text.",
+              "attribute": "secondaryButtonText"
+            },
+            {
+              "kind": "field",
+              "name": "showSecondaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the secondary button.",
+              "attribute": "showSecondaryButton"
+            },
+            {
+              "kind": "field",
+              "name": "hideCancelButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the cancel button.",
+              "attribute": "hideCancelButton"
+            },
+            {
+              "kind": "field",
+              "name": "beforeClose",
+              "type": {
+                "text": "Function"
+              },
+              "description": "Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
+            },
+            {
+              "kind": "method",
+              "name": "_openDrawer",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_closeDrawer",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "returnValue",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitCloseEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitOpenEvent",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
+              "name": "on-close"
+            },
+            {
+              "description": "Emits the drawer open event.",
+              "name": "on-open"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Drawer open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Drawer size. `'md'`, or `'sm'`.",
+              "fieldName": "size"
+            },
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title / Heading text, required.",
+              "fieldName": "titleText"
+            },
+            {
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "fieldName": "labelText"
+            },
+            {
+              "name": "submitBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Ok'",
+              "description": "Submit button text.",
+              "fieldName": "submitBtnText"
+            },
+            {
+              "name": "cancelBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "fieldName": "cancelBtnText"
+            },
+            {
+              "name": "closeBtnDescription",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button description (Required to support accessibility).",
+              "fieldName": "closeBtnDescription"
+            },
+            {
+              "name": "submitBtnDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "fieldName": "submitBtnDisabled"
+            },
+            {
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine whether needs footer",
+              "fieldName": "hideFooter"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "secondaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Secondary'",
+              "description": "Secondary button text.",
+              "fieldName": "secondaryButtonText"
+            },
+            {
+              "name": "showSecondaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the secondary button.",
+              "fieldName": "showSecondaryButton"
+            },
+            {
+              "name": "hideCancelButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the cancel button.",
+              "fieldName": "hideCancelButton"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-side-drawer",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SideDrawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-side-drawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/tabs/index.ts",
       "declarations": [],
       "exports": [
@@ -15551,6 +15546,512 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/tag/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "./tag"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TagGroup",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "./tagGroup"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TagSkeleton",
+          "declaration": {
+            "name": "TagSkeleton",
+            "module": "./tag.skeleton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/tag.skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "TagSkeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'sm'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "attribute": "tagSize"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'sm'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "fieldName": "tagSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tag-skeleton",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TagSkeleton",
+          "declaration": {
+            "name": "TagSkeleton",
+            "module": "src/components/reusable/tag/tag.skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tag-skeleton",
+          "declaration": {
+            "name": "TagSkeleton",
+            "module": "src/components/reusable/tag/tag.skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/tag.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tag.",
+          "name": "Tag",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Tag name (Required).",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "attribute": "tagSize"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify if the Tag is disabled.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag state is filter.",
+              "attribute": "filter"
+            },
+            {
+              "kind": "field",
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "attribute": "noTruncation"
+            },
+            {
+              "kind": "field",
+              "name": "clickable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag is clickable.",
+              "attribute": "clickable"
+            },
+            {
+              "kind": "field",
+              "name": "tagColor",
+              "type": {
+                "text": "string"
+              },
+              "default": "'spruce'",
+              "description": "Color variants. Default spruce",
+              "attribute": "tagColor"
+            },
+            {
+              "kind": "field",
+              "name": "clearTagText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Clear Tag'",
+              "description": "Clear Tag Text to improve accessibility",
+              "attribute": "clearTagText"
+            },
+            {
+              "kind": "method",
+              "name": "handleTagClear",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleTagClearPress",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleTagClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleTagPress",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the close event and emits the Tag value. Works with filterable tags.",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Tag name (Required).",
+              "fieldName": "label"
+            },
+            {
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "fieldName": "tagSize"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify if the Tag is disabled.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag state is filter.",
+              "fieldName": "filter"
+            },
+            {
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "fieldName": "noTruncation"
+            },
+            {
+              "name": "clickable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag is clickable.",
+              "fieldName": "clickable"
+            },
+            {
+              "name": "tagColor",
+              "type": {
+                "text": "string"
+              },
+              "default": "'spruce'",
+              "description": "Color variants. Default spruce",
+              "fieldName": "tagColor"
+            },
+            {
+              "name": "clearTagText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Clear Tag'",
+              "description": "Clear Tag Text to improve accessibility",
+              "fieldName": "clearTagText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tag",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "src/components/reusable/tag/tag.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "src/components/reusable/tag/tag.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/tagGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tag & Tag Group",
+          "name": "TagGroup",
+          "slots": [
+            {
+              "description": "Slot for individual tags and tagsskeleton.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "description": "Text string customization.",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "field",
+              "name": "limitTags",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
+              "attribute": "limitTags"
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tag group filter",
+              "attribute": "filter"
+            },
+            {
+              "kind": "field",
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "attribute": "tagSize"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_toggleRevealed",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "revealed",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "limitTags",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
+              "fieldName": "limitTags"
+            },
+            {
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tag group filter",
+              "fieldName": "filter"
+            },
+            {
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "fieldName": "tagSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tag-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TagGroup",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "src/components/reusable/tag/tagGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tag-group",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "src/components/reusable/tag/tagGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/textArea/index.ts",
       "declarations": [],
       "exports": [
@@ -15655,6 +16156,16 @@
               },
               "description": "textarea rows attribute. The number of visible text lines.",
               "attribute": "rows"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "attribute": "aiConnected"
             },
             {
               "kind": "field",
@@ -15774,6 +16285,15 @@
               },
               "description": "textarea rows attribute. The number of visible text lines.",
               "fieldName": "rows"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "fieldName": "aiConnected"
             },
             {
               "name": "textStrings",
@@ -17087,512 +17607,6 @@
           "declaration": {
             "name": "ToggleButton",
             "module": "src/components/reusable/toggleButton/toggleButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "./tag"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "TagGroup",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "./tagGroup"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "TagSkeleton",
-          "declaration": {
-            "name": "TagSkeleton",
-            "module": "./tag.skeleton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/tag.skeleton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "TagSkeleton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'sm'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "attribute": "tagSize"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'sm'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "fieldName": "tagSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tag-skeleton",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TagSkeleton",
-          "declaration": {
-            "name": "TagSkeleton",
-            "module": "src/components/reusable/tag/tag.skeleton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tag-skeleton",
-          "declaration": {
-            "name": "TagSkeleton",
-            "module": "src/components/reusable/tag/tag.skeleton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/tag.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tag.",
-          "name": "Tag",
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tag name (Required).",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "attribute": "tagSize"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify if the Tag is disabled.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine if Tag state is filter.",
-              "attribute": "filter"
-            },
-            {
-              "kind": "field",
-              "name": "noTruncation",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Removes label text truncation.",
-              "attribute": "noTruncation"
-            },
-            {
-              "kind": "field",
-              "name": "clickable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine if Tag is clickable.",
-              "attribute": "clickable"
-            },
-            {
-              "kind": "field",
-              "name": "tagColor",
-              "type": {
-                "text": "string"
-              },
-              "default": "'spruce'",
-              "description": "Color variants. Default spruce",
-              "attribute": "tagColor"
-            },
-            {
-              "kind": "field",
-              "name": "clearTagText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Clear Tag'",
-              "description": "Clear Tag Text to improve accessibility",
-              "attribute": "clearTagText"
-            },
-            {
-              "kind": "method",
-              "name": "handleTagClear",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleTagClearPress",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleTagClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleTagPress",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the close event and emits the Tag value. Works with filterable tags.",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tag name (Required).",
-              "fieldName": "label"
-            },
-            {
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "fieldName": "tagSize"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify if the Tag is disabled.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine if Tag state is filter.",
-              "fieldName": "filter"
-            },
-            {
-              "name": "noTruncation",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Removes label text truncation.",
-              "fieldName": "noTruncation"
-            },
-            {
-              "name": "clickable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine if Tag is clickable.",
-              "fieldName": "clickable"
-            },
-            {
-              "name": "tagColor",
-              "type": {
-                "text": "string"
-              },
-              "default": "'spruce'",
-              "description": "Color variants. Default spruce",
-              "fieldName": "tagColor"
-            },
-            {
-              "name": "clearTagText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Clear Tag'",
-              "description": "Clear Tag Text to improve accessibility",
-              "fieldName": "clearTagText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tag",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "src/components/reusable/tag/tag.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "src/components/reusable/tag/tag.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/tagGroup.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tag & Tag Group",
-          "name": "TagGroup",
-          "slots": [
-            {
-              "description": "Slot for individual tags and tagsskeleton.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
-              "description": "Text string customization.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "field",
-              "name": "limitTags",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
-              "attribute": "limitTags"
-            },
-            {
-              "kind": "field",
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tag group filter",
-              "attribute": "filter"
-            },
-            {
-              "kind": "field",
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "attribute": "tagSize"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_toggleRevealed",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "revealed",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "limitTags",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
-              "fieldName": "limitTags"
-            },
-            {
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tag group filter",
-              "fieldName": "filter"
-            },
-            {
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "fieldName": "tagSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tag-group",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TagGroup",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "src/components/reusable/tag/tagGroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tag-group",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "src/components/reusable/tag/tagGroup.ts"
           }
         }
       ]

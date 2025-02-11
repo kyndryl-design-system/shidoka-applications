@@ -1,0 +1,45 @@
+import { html } from 'lit';
+import '../components/reusable/textArea';
+import '../components/reusable/button';
+import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/send.svg';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+
+export default {
+  title: 'AI/Patterns/Input Query',
+};
+
+export const Default = {
+  render: () => {
+    return html`
+      <div class="input-query-container">
+        <kyn-text-area
+          class="input-text-area"
+          rows="2"
+          placeholder="Type your message..."
+          ?aiConnected=${true}
+        ></kyn-text-area>
+        <kyn-button>
+          <span slot="icon">${unsafeSVG(sendIcon)}</span>
+        </kyn-button>
+      </div>
+
+      <style>
+        .input-query-container {
+          width: 724px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          background-color: var(--kd-color-background-container-ai-default);
+          box-shadow: 0px 0px 24px 0px var(--kd-color-border-dropshadow-ai);
+          border-radius: 8px;
+
+          .input-text-area {
+            width: 646px;
+            padding: 10px;
+          }
+        }
+      </style>
+    `;
+  },
+};

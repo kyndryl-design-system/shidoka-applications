@@ -8,6 +8,7 @@ import { deepmerge } from 'deepmerge-ts';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 import TextAreaScss from './textArea.scss';
+import { classMap } from 'lit/directives/class-map.js';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -57,6 +58,10 @@ export class TextArea extends FormMixin(LitElement) {
   @property({ type: Number })
   rows!: number;
 
+  /** Set this to `true` for AI theme. */
+  @property({ type: Boolean })
+  aiConnected = false;
+
   /** Customizable text strings. */
   @property({ type: Object })
   textStrings = _defaultTextStrings;
@@ -91,7 +96,12 @@ export class TextArea extends FormMixin(LitElement) {
           <slot name="tooltip"></slot>
         </label>
 
-        <div class="input-wrapper">
+        <div
+          class=${classMap({
+            'input-wrapper': true,
+            'ai-connected': this.aiConnected,
+          })}
+        >
           <textarea
             id=${this.name}
             name=${this.name}
