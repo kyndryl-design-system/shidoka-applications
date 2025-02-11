@@ -203,9 +203,8 @@ export class Notification extends LitElement {
           !this.hideCloseButton
             ? html` <kyn-button
                 class="notification-toast-close-btn"
-                kind="tertiary"
+                kind="ghost"
                 size="small"
-                ghost
                 description=${ifDefined(this.closeBtnDescription)}
                 @on-click="${() => this._handleClose()}"
               >

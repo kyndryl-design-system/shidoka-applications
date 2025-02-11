@@ -20,6 +20,8 @@ import {
   BUTTON_SIZES,
   BUTTON_TYPES,
   BUTTON_ICON_POSITION,
+  BUTTON_KINDS_SOLID,
+  BUTTON_KINDS_OUTLINE,
 } from './defs';
 
 import stylesheet from './button.scss';
@@ -64,7 +66,7 @@ export class Button extends LitElement {
 
   /** Specifies the visual appearance/kind of the button. */
   @property({ type: String })
-  kind: BUTTON_KINDS = BUTTON_KINDS.PRIMARY_APP;
+  kind: BUTTON_KINDS = BUTTON_KINDS.PRIMARY;
 
   /** Converts the button to an &lt;a&gt; tag if specified. */
   @property({ type: String })
@@ -88,20 +90,9 @@ export class Button extends LitElement {
   @property({ type: Boolean, reflect: true })
   disabled = false;
 
+  /** Determines if the button is an AI-specific variant. */
   @property({ type: Boolean, reflect: true })
   aiConnected = false;
-
-  /** Determines if the button indicates a destructive action. */
-  @property({ type: Boolean, reflect: true })
-  destructive = false;
-
-  /** Determines if only the button outline is to be shown */
-  @property({ type: Boolean, reflect: true })
-  outlineOnly = false;
-
-  /** Ghost style button */
-  @property({ type: Boolean, reflect: true })
-  ghost = false;
 
   /** Button value.  */
   @property({ type: String })
@@ -154,16 +145,11 @@ export class Button extends LitElement {
   _btnEl!: any;
 
   override render() {
-    const typeClassMap = {
-      [BUTTON_KINDS.PRIMARY_APP]: 'primary-app',
-      [BUTTON_KINDS.PRIMARY_WEB]: 'primary-web',
-      [BUTTON_KINDS.SECONDARY]: 'secondary',
-      [BUTTON_KINDS.TERTIARY]: 'tertiary',
-    };
-
-    const baseTypeClass = typeClassMap[this.kind];
-
-    let classes = {
+    const BtnClasses = {
+      'kd-btn': true,
+      [`kd-btn--${this.kind}`]: true,
+      'kd-btn--solid-styles': BUTTON_KINDS_SOLID.includes(this.kind),
+      'kd-btn--outline-styles': BUTTON_KINDS_OUTLINE.includes(this.kind),
       'kd-btn--large': this.size === BUTTON_SIZES.LARGE,
       'kd-btn--small': this.size === BUTTON_SIZES.SMALL,
       'kd-btn--medium': this._reSizeBtn || this.size === BUTTON_SIZES.MEDIUM,
@@ -172,42 +158,17 @@ export class Button extends LitElement {
         !!this.iconPosition && !this.iconOnly,
       [`kd-btn--icon-center`]: this._iconEls?.length && this.iconOnly,
       ['kd-btn--ai']: this.aiConnected,
+      'kd-btn--float': this.isFloating,
+      'kd-btn--hidden': this.showOnScroll && !this._showButton,
       'icon-only': this._iconEls?.length && this.iconOnly,
-      'btn-float': this.isFloating,
-      'btn-hidden': this.showOnScroll && !this._showButton,
     };
-
-    const getButtonClasses = () => {
-      let cls = `kd-btn--${baseTypeClass}`;
-      if (this.destructive || this.outlineOnly || this.ghost) {
-        if (this.destructive) {
-          if (this.outlineOnly) {
-            cls = `kd-btn--${baseTypeClass}-destructive-outline`;
-          } else {
-            cls = `kd-btn--${baseTypeClass}-destructive`;
-          }
-        } else {
-          if (this.outlineOnly) {
-            cls = `kd-btn--${baseTypeClass}-outline`;
-          } else if (this.ghost) {
-            cls = `kd-btn--${baseTypeClass}-ghost`;
-          } else {
-            cls = `kd-btn--${baseTypeClass}`;
-          }
-        }
-      }
-      classes = { ...classes, [`${cls}`]: true };
-      return classes;
-    };
-
-    const baseClasses = getButtonClasses();
 
     return html`
       ${this.href && this.href !== ''
         ? html`
             <a
               part="button"
-              class=${classMap(baseClasses)}
+              class=${classMap(BtnClasses)}
               href=${this.href}
               ?disabled=${this.disabled}
               aria-label=${ifDefined(this.description)}
@@ -226,7 +187,7 @@ export class Button extends LitElement {
         : html`
             <button
               part="button"
-              class=${classMap(baseClasses)}
+              class=${classMap(BtnClasses)}
               type=${this.type}
               ?disabled=${this.disabled}
               aria-label=${ifDefined(this.description)}
