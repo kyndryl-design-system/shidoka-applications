@@ -35,7 +35,7 @@ export const Default = {
             Duis aute irure dolor in reprehenderit in voluptate velit esse
             cillum
           </div>
-          <div slot="rightIcon"><kyn-tooltip>Tooltip content</kyn-tooltip></div>
+          <kyn-tooltip slot="rightIcon">Tooltip content</kyn-tooltip>>
         </ai-info-card-component>
       </kyn-card>
     `;
@@ -59,7 +59,7 @@ export const WithoutTitle = {
             Duis aute irure dolor in reprehenderit in voluptate velit esse
             cillum
           </div>
-          <div slot="rightIcon"><kyn-tooltip>Tooltip content</kyn-tooltip></div>
+          <kyn-tooltip slot="rightIcon">Tooltip content</kyn-tooltip>
         </ai-info-card-component>
       </kyn-card>
     `;
@@ -83,24 +83,23 @@ export const WithAction = {
             Duis aute irure dolor in reprehenderit in voluptate velit esse
             cillum
           </div>
-          <div slot="rightIcon">
-            <kyn-button
-              iconposition="center"
-              kind="primary-app"
-              type="button"
-              size="small"
-              description="Button Description"
-              href=""
-              name=""
-              value=""
-              ?ghost=${true}
-              ?aiConnected=${true}
+          <kyn-button
+            slot="rightIcon"
+            iconposition="center"
+            kind="primary-app"
+            type="button"
+            size="small"
+            description="Button Description"
+            href=""
+            name=""
+            value=""
+            ?ghost=${true}
+            ?aiConnected=${true}
+          >
+            <span style="display:flex;" slot="icon"
+              >${unsafeSVG(deleteIcon)}</span
             >
-              <span style="display:flex;" slot="icon"
-                >${unsafeSVG(deleteIcon)}</span
-              >
-            </kyn-button>
-          </div>
+          </kyn-button>
         </ai-info-card-component>
       </kyn-card>
     `;
