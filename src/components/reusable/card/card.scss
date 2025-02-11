@@ -14,6 +14,9 @@
     outline: 1px solid var(--kd-color-border-level-secondary);
     border-radius: 8px;
     height: 100%;
+    &.aiConnected {
+      background-color: var(--kd-color-background-container-ai-subtle);
+    }
   }
 
   &-wrapper-clickable {
@@ -37,14 +40,20 @@
       outline-color: var(--kd-color-border-ui-hover);
       @include elevation.shadow(2);
     }
+
+    &.aiConnected {
+      background-color: var(--kd-color-background-container-ai-subtle);
+
+      // &:hover,  Needs to be updated after UX shares the clickable varient design
+      // &:focus {
+      //   outline-color: var(--kd-color-border-ui-hover);
+      //   @include elevation.shadow(2);
+      // }
+    }
   }
 
   &-border {
     outline: 1px solid var(--kd-color-border-level-secondary);
     @include elevation.shadow(1);
-  }
-
-  &-ai {
-    background-color: var(--kd-color-background-container-ai-subtle);
   }
 }

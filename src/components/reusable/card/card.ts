@@ -1,6 +1,5 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
 
 import CardScss from './card.scss';
 
@@ -38,20 +37,21 @@ export class Card extends LitElement {
   aiConnected = false;
 
   override render() {
-    const cardWrapperClasses = {
-      'card-wrapper-clickable': true,
-      'card-border': this.hideBorder === false,
-      'card-ai': this.aiConnected,
-    };
-    const cardWrapperDefaultClasses = {
-      'card-wrapper': true,
-      'card-ai': this.aiConnected,
-    };
+    const cardWrapperClasses = `
+      card-wrapper-clickable
+      ${this.aiConnected ? 'aiConnected' : ''}
+      ${this.hideBorder ? '' : 'card-border'}
+    `.trim();
+
+    const cardWrapperDefaultClasses = `
+      card-wrapper
+      ${this.aiConnected ? 'aiConnected' : ''}
+    `.trim();
 
     return html`${this.type === 'clickable'
       ? html`<a
           part="card-wrapper"
-          class="${classMap(cardWrapperClasses)}"
+          class="${cardWrapperClasses}"
           href=${this.href}
           target=${this.target}
           rel=${this.rel}
@@ -59,10 +59,7 @@ export class Card extends LitElement {
         >
           <slot></slot>
         </a>`
-      : html`<div
-          part="card-wrapper"
-          class="${classMap(cardWrapperDefaultClasses)}"
-        >
+      : html`<div part="card-wrapper" class="${cardWrapperDefaultClasses}">
           <slot></slot>
         </div>`} `;
   }
