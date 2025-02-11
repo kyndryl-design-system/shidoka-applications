@@ -4,6 +4,7 @@
 
 @use '../../../common/scss/global.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :host {
   display: inline-block;
@@ -112,6 +113,33 @@
   &:disabled {
     @include kd-btn-disabled;
     background-color: var(--kd-color-background-ui-default-disabled);
+  }
+
+  &.btn-float {
+    @include elevation.shadow(3);
+    // box-shadow: var(--kd-elevation--level-3-ai);
+    background-color: var(--kd-color-background-ui-hollow-default);
+
+    &:hover {
+      &:before {
+        background-color: var(--kd-color-background-button-tertiary-ai-hover);
+      }
+    }
+
+    &:active {
+      &:before {
+        background-color: var(--kd-color-background-button-tertiary-ai-pressed);
+      }
+    }
+
+    &:focus {
+      outline-color: var(--kd-color-background-button-tertiary-ai-focused);
+    }
+
+    &:disabled {
+      @include kd-btn-disabled;
+      background-color: var(--kd-color-background-ui-default-disabled);
+    }
   }
 }
 

@@ -27,6 +27,7 @@ export const Default = {
         iconposition="left"
         description="Button 1"
         ?isFloating=${true}
+        ?aiConnected=${false}
         @on-click=${(e) => action(e.type)(e)}
         >Button 1
         <span slot="icon">${unsafeSVG(chevronUpIcon)}</span>
@@ -60,6 +61,7 @@ export const WithSecondaryButton = {
         iconposition="left"
         description="Button 1"
         ?isFloating=${true}
+        ?aiConnected=${false}
         @on-click=${(e) => action(e.type)(e)}
       >
         <span class="test">Button 1</span>
@@ -72,6 +74,7 @@ export const WithSecondaryButton = {
         iconposition="left"
         description="Button 2"
         ?isFloating=${true}
+        ?aiConnected=${false}
         @on-click=${(e) => action(e.type)(e)}
       >
         <span class="test">Button 2</span>
@@ -151,6 +154,7 @@ export const WithScroll = {
         size="small"
         iconposition="left"
         ?isFloating=${true}
+        ?aiConnected=${false}
         ?showOnScroll=${true}
         description="Button 1"
         @on-click=${(e) => action(e.type)(e)}
@@ -159,5 +163,54 @@ export const WithScroll = {
         <span slot="icon">${unsafeSVG(chevronUpIcon)}</span>
       </kyn-button>
     </kyn-button-float-container>
+  `,
+};
+
+export const AILaunch = {
+  render: () => html`
+    <div style="padding-bottom:80px;">
+      <!-- Add some space in bottom so FAB doesn't obstruct any essestial UI element -->
+      <!-- Add some long content here to see the floating button in action -->
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+        velit esse cillum Lorem ipsum dolor sit amet, consectetur adipiscing
+        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+        ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+        reprehenderit in voluptate velit esse cillum
+      </p>
+    </div>
+    <kyn-button-float-container>
+      <kyn-button
+        kind="primary-web"
+        type="button"
+        size="large"
+        iconposition="left"
+        description="Button 1"
+        ?isFloating=${true}
+        ?aiConnected=${true}
+        @on-click=${(e) => action(e.type)(e)}
+      >
+        <span class="test"></span>
+        <span class="_icon" slot="icon">${unsafeSVG(chevronUpIcon)}</span>
+      </kyn-button>
+    </kyn-button-float-container>
+    <style>
+      .test {
+        display: none;
+      }
+      ._icon {
+        display: flex;
+      }
+
+      @media (min-width: 42rem) {
+        .test {
+          display: inline;
+        }
+      }
+    </style>
   `,
 };
