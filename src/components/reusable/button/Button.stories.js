@@ -34,9 +34,9 @@ export default {
     },
     kind: {
       options: createSelectOptions(BUTTON_KINDS),
-      control: { type: 'select', labels: { null: BUTTON_KINDS.PRIMARY_APP } },
+      control: { type: 'select', labels: { null: BUTTON_KINDS.PRIMARY } },
       table: {
-        defaultValue: { summary: BUTTON_KINDS.PRIMARY_APP },
+        defaultValue: { summary: BUTTON_KINDS.PRIMARY },
       },
     },
     size: {
@@ -61,14 +61,10 @@ export default {
 
 const args = {
   unnamed: 'Button Text',
-  kind: 'primary-app',
+  kind: 'primary',
   type: 'button',
   size: 'medium',
-  destructive: false,
-  outlineOnly: false,
-  ghost: false,
   disabled: false,
-  aiConnected: false,
   iconPosition: 'right',
   description: 'Button description',
   href: '',
@@ -85,11 +81,7 @@ export const Button = {
       <kyn-button
         kind=${args.kind}
         type=${args.type}
-        ?destructive=${args.destructive}
-        ?outlineOnly=${args.outlineOnly}
-        ?ghost=${args.ghost}
         ?disabled=${args.disabled}
-        ?aiConnected=${args.aiConnected}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
         size=${args.size}
@@ -120,11 +112,7 @@ export const ButtonWithIcon = {
       <kyn-button
         kind=${args.kind}
         type=${args.type}
-        ?destructive=${args.destructive}
         ?disabled=${args.disabled}
-        ?aiConnected=${args.aiConnected}
-        ?outlineOnly=${args.outlineOnly}
-        ?ghost=${args.ghost}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
         size=${args.size}
@@ -152,11 +140,7 @@ export const IconOnly = {
       <kyn-button
         kind=${args.kind}
         type=${args.type}
-        ?destructive=${args.destructive}
-        ?outlineOnly=${args.outlineOnly}
-        ?ghost=${args.ghost}
         ?disabled=${args.disabled}
-        ?aiConnected=${args.aiConnected}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
         size=${args.size}
@@ -175,10 +159,10 @@ export const IconOnly = {
   },
 };
 
-export const AIConnected = {
+export const AISpecific = {
   args: {
     ...args,
-    aiConnected: true,
+    kind: 'primary-ai',
   },
   render: (args) => {
     return html`
@@ -189,7 +173,6 @@ export const AIConnected = {
         ?outlineOnly=${args.outlineOnly}
         ?ghost=${args.ghost}
         ?disabled=${args.disabled}
-        ?aiConnected=${args.aiConnected}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
         size=${args.size}
@@ -206,11 +189,11 @@ export const AIConnected = {
   },
 };
 
-export const AIConnectedIconOnly = {
+export const AISpecificIconOnly = {
   args: {
     ...args,
-    aiConnected: true,
     description: 'Button Description',
+    kind: 'primary-ai',
   },
   render: (args) => {
     return html`
@@ -221,7 +204,6 @@ export const AIConnectedIconOnly = {
         ?outlineOnly=${args.outlineOnly}
         ?ghost=${args.ghost}
         ?disabled=${args.disabled}
-        ?aiConnected=${args.aiConnected}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
         size=${args.size}

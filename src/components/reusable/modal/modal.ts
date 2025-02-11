@@ -123,8 +123,7 @@ export class Modal extends LitElement {
         <form method="dialog">
           <kyn-button
             class="close"
-            ghost
-            kind="tertiary"
+            kind="ghost"
             size="small"
             description=${this.closeText}
             @click=${(e: Event) => this._closeModal(e, 'cancel')}
@@ -150,7 +149,7 @@ export class Modal extends LitElement {
                   <kyn-button
                     class="action-button"
                     value="ok"
-                    ?destructive=${this.destructive}
+                    kind=${this.destructive ? 'primary-destructive' : 'primary'}
                     ?disabled=${this.okDisabled}
                     @click=${(e: Event) => this._closeModal(e, 'ok')}
                   >

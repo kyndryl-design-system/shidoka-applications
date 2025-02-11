@@ -21,7 +21,7 @@ export const Default = {
   render: () => html`
     <kyn-button-float-container>
       <kyn-button
-        kind="primary-web"
+        kind="content"
         type="button"
         size="small"
         iconposition="left"
@@ -55,7 +55,7 @@ export const WithSecondaryButton = {
     </div>
     <kyn-button-float-container>
       <kyn-button
-        kind="primary-web"
+        kind="content"
         type="button"
         size="small"
         iconposition="left"
@@ -68,7 +68,6 @@ export const WithSecondaryButton = {
         <span class="_icon" slot="icon">${unsafeSVG(chevronUpIcon)}</span>
       </kyn-button>
       <kyn-button
-        kind="primary-app"
         type="button"
         size="small"
         iconposition="left"
@@ -149,7 +148,7 @@ export const WithScroll = {
     </div>
     <kyn-button-float-container>
       <kyn-button
-        kind="primary-web"
+        kind="content"
         type="button"
         size="small"
         iconposition="left"

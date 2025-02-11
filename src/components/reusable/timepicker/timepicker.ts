@@ -220,15 +220,14 @@ export class TimePicker extends FormMixin(LitElement) {
                 <kyn-button
                   ?disabled=${this.timepickerDisabled}
                   class="clear-button"
-                  ghost
-                  kind="tertiary"
+                  kind="ghost"
                   size="small"
                   description=${this._textStrings.clearAll}
                   @click=${this._handleClear}
                 >
-                  <span style="display:flex;" slot="icon"
-                    >${unsafeSVG(clearIcon)}</span
-                  >
+                  <span style="display:flex;" slot="icon">
+                    ${unsafeSVG(clearIcon)}
+                  </span>
                 </kyn-button>
               `
             : html`<span class="input-icon">${unsafeSVG(clockIcon)}</span>`}
