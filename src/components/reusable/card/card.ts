@@ -41,6 +41,7 @@ export class Card extends LitElement {
     const cardWrapperClasses = {
       'card-wrapper-clickable': true,
       'card-border': this.hideBorder === false,
+      'card-ai': this.aiConnected,
     };
     const cardWrapperDefaultClasses = {
       'card-wrapper': true,

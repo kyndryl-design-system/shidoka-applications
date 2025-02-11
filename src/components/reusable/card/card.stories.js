@@ -89,6 +89,7 @@ export const Clickable = {
     rel: 'noopener',
     target: '_blank',
     hideBorder: false,
+    aiConnected: false,
   },
   render: (args) => {
     return html`
@@ -98,6 +99,7 @@ export const Clickable = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
+        ?aiConnected=${args.aiConnected}
         role="link"
         aria-label="Clickable card"
         @on-card-click=${(e) => action(e.type)(e)}
