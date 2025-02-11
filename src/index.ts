@@ -7,6 +7,7 @@ export {
   HeaderFlyouts,
   HeaderFlyout,
   HeaderUserProfile,
+  HeaderAvatar,
   HeaderPanelLink,
   HeaderNotificationPanel,
 } from './components/global/header';
@@ -28,6 +29,7 @@ export {
 } from './components/reusable/checkbox';
 export { TextInput } from './components/reusable/textInput';
 export { TextArea } from './components/reusable/textArea';
+export { Response } from './components/reusable/response';
 export { ToggleButton } from './components/reusable/toggleButton';
 export {
   Dropdown,
@@ -57,7 +59,17 @@ export {
   TableHeaderRow,
   TableExpandedRow,
 } from './components/reusable/table';
+// export {
+//   TableNew,
+//   TableNewHead,
+//   TableNewHeaderRow,
+//   TableNewHeader,
+//   TableNewBody,
+//   TableNewRow,
+//   TableNewCell,
+// } from './components/reusable/tableNew';
 export { Pagination } from './components/reusable/pagination';
+// export { FileUploader } from './components/reusable/fileUploader';
 export {
   OverflowMenu,
   OverflowMenuItem,
