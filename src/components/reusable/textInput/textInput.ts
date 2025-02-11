@@ -174,15 +174,14 @@ export class TextInput extends FormMixin(LitElement) {
                 <kyn-button
                   ?disabled=${this.disabled}
                   class="clear-button"
-                  ghost
-                  kind="tertiary"
+                  kind="ghost"
                   size="small"
                   description=${this._textStrings.clearAll}
                   @click=${() => this._handleClear()}
                 >
-                  <span style="display:flex;" slot="icon"
-                    >${unsafeSVG(clearIcon)}</span
-                  >
+                  <span style="display:flex;" slot="icon">
+                    ${unsafeSVG(clearIcon)}
+                  </span>
                 </kyn-button>
               `
             : null}
