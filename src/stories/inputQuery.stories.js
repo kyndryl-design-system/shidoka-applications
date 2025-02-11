@@ -6,6 +6,12 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 export default {
   title: 'AI/Patterns/Input Query',
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library-2.0?node-id=26094-200279&t=ZNgmsCAVJz1EMzfR-0',
+    },
+  },
 };
 
 export const Default = {
