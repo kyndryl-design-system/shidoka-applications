@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './response';
-import '../../global/header';
+import '../avatar';
 // import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 // import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai-response.svg';
 
@@ -15,7 +15,7 @@ export const ResponseWithAvatar = {
   render: (args) => {
     return html`
       <kyn-response>
-        <kyn-header-avatar initials="A"> </kyn-header-avatar>
+        <kyn-avatar initials="A"> </kyn-avatar>
 
         <span class="response-msg">
           The benefits of adopting Hybrid IT Modernization:

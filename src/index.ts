@@ -7,7 +7,6 @@ export {
   HeaderFlyouts,
   HeaderFlyout,
   HeaderUserProfile,
-  HeaderAvatar,
   HeaderPanelLink,
   HeaderNotificationPanel,
 } from './components/global/header';
@@ -29,6 +28,7 @@ export {
 } from './components/reusable/checkbox';
 export { TextInput } from './components/reusable/textInput';
 export { TextArea } from './components/reusable/textArea';
+export { Avatar } from './components/reusable/avatar';
 export { Response } from './components/reusable/response';
 export { ToggleButton } from './components/reusable/toggleButton';
 export {

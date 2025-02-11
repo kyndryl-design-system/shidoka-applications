@@ -1,13 +1,13 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import HeaderAvatarScss from './headerAvatar.scss';
+import AvatarScss from './avatar.scss';
 
 /**
  * User avatar.
  */
-@customElement('kyn-header-avatar')
-export class HeaderAvatar extends LitElement {
-  static override styles = HeaderAvatarScss;
+@customElement('kyn-avatar')
+export class Avatar extends LitElement {
+  static override styles = AvatarScss;
 
   /** Two letters, first and last initial, to show in the user avatar circle. */
   @property({ type: String })
@@ -20,6 +20,6 @@ export class HeaderAvatar extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-header-avatar': HeaderAvatar;
+    'kyn-avatar': Avatar;
   }
 }
