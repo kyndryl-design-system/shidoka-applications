@@ -21,7 +21,7 @@ export default {
 export const Default = {
   render: () => {
     return html`
-      <kyn-card style="width:80%" type="normal" ?aiConnected=${true}>
+      <kyn-card type="normal" ?aiConnected=${true}>
         <ai-info-card-component
           ?showLeftIcon=${true}
           ?showTitle=${true}
@@ -45,7 +45,7 @@ export const Default = {
 export const WithoutTitle = {
   render: () => {
     return html`
-      <kyn-card style="width:80%" type="normal" ?aiConnected=${true}>
+      <kyn-card type="normal" ?aiConnected=${true}>
         <ai-info-card-component
           ?showLeftIcon=${true}
           ?showTitle=${false}
@@ -69,7 +69,7 @@ export const WithoutTitle = {
 export const WithAction = {
   render: () => {
     return html`
-      <kyn-card style="width:80%" type="normal" ?aiConnected=${true}>
+      <kyn-card type="normal" ?aiConnected=${true}>
         <ai-info-card-component
           ?showLeftIcon=${true}
           ?showTitle=${true}
