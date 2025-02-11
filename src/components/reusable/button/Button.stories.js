@@ -34,9 +34,9 @@ export default {
     },
     kind: {
       options: createSelectOptions(BUTTON_KINDS),
-      control: { type: 'select', labels: { null: BUTTON_KINDS.PRIMARY_APP } },
+      control: { type: 'select', labels: { null: BUTTON_KINDS.PRIMARY } },
       table: {
-        defaultValue: { summary: BUTTON_KINDS.PRIMARY_APP },
+        defaultValue: { summary: BUTTON_KINDS.PRIMARY },
       },
     },
     size: {
@@ -61,12 +61,9 @@ export default {
 
 const args = {
   unnamed: 'Button Text',
-  kind: 'primary-app',
+  kind: 'primary',
   type: 'button',
   size: 'medium',
-  destructive: false,
-  outlineOnly: false,
-  ghost: false,
   disabled: false,
   iconPosition: 'right',
   description: 'Button description',
@@ -84,9 +81,6 @@ export const Button = {
       <kyn-button
         kind=${args.kind}
         type=${args.type}
-        ?destructive=${args.destructive}
-        ?outlineOnly=${args.outlineOnly}
-        ?ghost=${args.ghost}
         ?disabled=${args.disabled}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
@@ -118,10 +112,7 @@ export const ButtonWithIcon = {
       <kyn-button
         kind=${args.kind}
         type=${args.type}
-        ?destructive=${args.destructive}
         ?disabled=${args.disabled}
-        ?outlineOnly=${args.outlineOnly}
-        ?ghost=${args.ghost}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
         size=${args.size}
@@ -149,9 +140,6 @@ export const IconOnly = {
       <kyn-button
         kind=${args.kind}
         type=${args.type}
-        ?destructive=${args.destructive}
-        ?outlineOnly=${args.outlineOnly}
-        ?ghost=${args.ghost}
         ?disabled=${args.disabled}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
