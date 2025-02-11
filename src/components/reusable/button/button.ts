@@ -90,10 +90,6 @@ export class Button extends LitElement {
   @property({ type: Boolean, reflect: true })
   disabled = false;
 
-  /** Determines if the button is an AI-specific variant. */
-  @property({ type: Boolean, reflect: true })
-  aiConnected = false;
-
   /** Button value.  */
   @property({ type: String })
   value = '';
@@ -157,7 +153,6 @@ export class Button extends LitElement {
       [`kd-btn--icon-${this.iconPosition}`]:
         !!this.iconPosition && !this.iconOnly,
       [`kd-btn--icon-center`]: this._iconEls?.length && this.iconOnly,
-      ['kd-btn--ai']: this.aiConnected,
       'kd-btn--float': this.isFloating,
       'kd-btn--hidden': this.showOnScroll && !this._showButton,
       'icon-only': this._iconEls?.length && this.iconOnly,
