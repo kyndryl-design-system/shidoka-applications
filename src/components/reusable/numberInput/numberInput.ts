@@ -115,10 +115,9 @@ export class NumberInput extends FormMixin(LitElement) {
           })}"
         >
           <kyn-button
-            kind="primary-app"
+            kind="outline"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value <= this.min}
-            outlineOnly
             description=${this._textStrings.subtract}
             @on-click=${this._handleSubtract}
           >
@@ -147,10 +146,9 @@ export class NumberInput extends FormMixin(LitElement) {
           />
 
           <kyn-button
-            kind="primary-app"
+            kind="outline"
             size=${this._sizeMap(this.size)}
             ?disabled=${this.disabled || this.value >= this.max}
-            outlineOnly
             description=${this._textStrings.add}
             @on-click=${this._handleAdd}
           >
