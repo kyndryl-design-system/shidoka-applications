@@ -160,3 +160,51 @@ export const WithScroll = {
     </kyn-button-float-container>
   `,
 };
+
+export const AILaunch = {
+  render: () => html`
+    <div style="padding-bottom:80px;">
+      <!-- Add some space in bottom so FAB doesn't obstruct any essestial UI element -->
+      <!-- Add some long content here to see the floating button in action -->
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+        velit esse cillum Lorem ipsum dolor sit amet, consectetur adipiscing
+        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+        ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+        reprehenderit in voluptate velit esse cillum
+      </p>
+    </div>
+    <kyn-button-float-container>
+      <kyn-button
+        kind="primary-ai"
+        type="button"
+        size="large"
+        iconposition="left"
+        description="Button 1"
+        ?isFloating=${true}
+        @on-click=${(e) => action(e.type)(e)}
+      >
+        <span class="test"></span>
+        <span class="_icon" slot="icon"></span>
+      </kyn-button>
+    </kyn-button-float-container>
+    <style>
+      .test {
+        display: none;
+      }
+      ._icon {
+        display: flex;
+      }
+
+      @media (min-width: 42rem) {
+        .test {
+          display: inline;
+        }
+      }
+    </style>
+  `,
+};
