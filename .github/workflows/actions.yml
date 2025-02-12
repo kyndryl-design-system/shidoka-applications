@@ -5,6 +5,7 @@ on:
       - main
       - beta
       - next
+      - 'v[0-9]'
   pull_request:
 env:
   GH_TOKEN: '${{ secrets.GH_TOKEN }}'
@@ -64,7 +65,7 @@ jobs:
   Release:
     needs: [Lint, Build, Test]
     runs-on: ubuntu-latest
-    if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/beta' || github.ref == 'refs/heads/next') && github.event_name == 'push' }}
+    if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/beta' || github.ref == 'refs/heads/next' || github.ref == 'refs/heads/v1') && github.event_name == 'push' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
