@@ -4,17 +4,18 @@ import AvatarScss from './avatar.scss';
 
 /**
  * User avatar.
+ * @slot unnamed - Slot for the profile picture img.
  */
 @customElement('kyn-avatar')
 export class Avatar extends LitElement {
   static override styles = AvatarScss;
 
-  /** Two letters, first and last initial, to show in the user avatar circle. */
+  /** 1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials */
   @property({ type: String })
   initials = '';
 
   override render() {
-    return html` ${this.initials} `;
+    return html` <slot>${this.initials}</slot>`;
   }
 }
 

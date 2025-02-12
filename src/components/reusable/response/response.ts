@@ -8,7 +8,9 @@ export class Response extends LitElement {
   static override styles = ResponseScss;
 
   override render() {
-    return html` <slot></slot>`;
+    return html` <div class="response-wrapper">
+      <slot></slot>
+    </div>`;
   }
 }
 
