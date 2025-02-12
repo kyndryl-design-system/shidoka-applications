@@ -393,7 +393,7 @@ export async function getFlatpickrOptions(
     locale
   );
 
-  const isWideScreen = window.innerWidth >= 991;
+  const isWideScreen = window.innerWidth >= 767;
   const options: Partial<BaseOptions> = {
     dateFormat: dateFormat || (mode === 'time' ? 'H:i' : 'Y-m-d'),
     mode: mode === 'time' ? 'single' : mode,
