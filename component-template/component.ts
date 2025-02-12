@@ -37,12 +37,13 @@ export class Component extends LitElement {
 
   override render() {
     return html`
-      <div class="component" @click=${(e: Event) => this._handleClick(e)}>
+      <div class="component">
         ${this.stringProp}
         <br />
         ${this._internalProp}
         <br />
         <slot></slot>
+        <button @click=${(e: Event) => this._handleClick(e)}>Button</button>
       </div>
     `;
   }

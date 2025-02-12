@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import {
   customElement,
@@ -9,10 +10,9 @@ import { classMap } from 'lit/directives/class-map.js';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderLinkScss from './headerLink.scss';
 import '../../reusable/textInput';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import arrowIcon from '@carbon/icons/es/chevron--right/16';
-import backIcon from '@carbon/icons/es/arrow--left/16';
-import searchIcon from '@carbon/icons/es/search/24';
+import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
+import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
+import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/search.svg';
 
 /**
  * Component for navigation links within the Header.
@@ -131,7 +131,7 @@ export class HeaderLink extends LitElement {
           <slot></slot>
 
           ${this.slottedEls.length
-            ? html` <kd-icon class="arrow" .icon=${arrowIcon}></kd-icon> `
+            ? html` <span class="arrow">${unsafeSVG(arrowIcon)}</span> `
             : null}
         </a>
 
@@ -140,7 +140,7 @@ export class HeaderLink extends LitElement {
           style=${`top: ${this.menuPosition.top}px; left: ${this.menuPosition.left}px;`}
         >
           <button class="go-back" @click=${() => this._handleBack()}>
-            <kd-icon .icon=${backIcon}></kd-icon>
+            <span>${unsafeSVG(backIcon)}</span>
             ${this.backText}
           </button>
 
@@ -152,7 +152,9 @@ export class HeaderLink extends LitElement {
                   value=${this._searchTerm}
                   @on-input=${(e: Event) => this._handleSearch(e)}
                 >
-                  <kd-icon .icon=${searchIcon} slot="icon"></kd-icon>
+                  <span slot="icon" class="search-icon"
+                    >${unsafeSVG(searchIcon)}</span
+                  >
                   ${this.searchLabel}
                 </kyn-text-input>
               `

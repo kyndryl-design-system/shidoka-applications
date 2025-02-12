@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import {
   customElement,
@@ -8,20 +9,23 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import DropdownScss from './dropdown.scss';
-import './dropdownOption';
-import '../tag';
 import { FormMixin } from '../../../common/mixins/form-input';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import downIcon from '@carbon/icons/es/chevron--down/24';
-import errorIcon from '@carbon/icons/es/warning--filled/16';
-import clearIcon from '@carbon/icons/es/close/24';
-import clearIcon16 from '@carbon/icons/es/close/16';
 import { deepmerge } from 'deepmerge-ts';
 
+import './dropdownOption';
+import '../tag';
+import '../button';
+
+import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
+
 const _defaultTextStrings = {
+  title: 'Dropdown',
   selectedOptions: 'List of selected options',
-  required: 'Required',
-  error: 'Error',
+  requiredText: 'Required',
+  errorText: 'Error',
+  clearAll: 'Clear all',
 };
 
 /**
@@ -30,15 +34,15 @@ const _defaultTextStrings = {
  * @fires on-search - Capture the search input event and emits the search text.
  * @fires on-clear-all - Captures the the multi-select clear all button click event and emits the value.
  * @slot unnamed - Slot for dropdown options.
- * @slot label - Slot for input label.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-dropdown')
 export class Dropdown extends FormMixin(LitElement) {
   static override styles = DropdownScss;
 
-  /** Update by value instead of deriving value from child selections. */
-  @property({ type: Boolean })
-  updateByValue = false;
+  /** Label text. */
+  @property({ type: String })
+  label = '';
 
   /** Dropdown size/height. "sm", "md", or "lg". */
   @property({ type: String })
@@ -75,6 +79,10 @@ export class Dropdown extends FormMixin(LitElement) {
   /** Makes the dropdown required. */
   @property({ type: Boolean })
   required = false;
+
+  /** Visually hide the label. */
+  @property({ type: Boolean })
+  hideLabel = false;
 
   /** Dropdown disabled state. */
   @property({ type: Boolean })
@@ -214,23 +222,23 @@ export class Dropdown extends FormMixin(LitElement) {
         ?searchable=${this.searchable}
       >
         <label
-          for=${this.name}
           id="label-${this.name}"
-          class="label-text"
-          @click=${this._handleLabelClick}
+          class="label-text ${this.hideLabel || this.inline ? 'sr-only' : ''}"
+          for=${this.name}
+          aria-disabled=${this.disabled}
+          @click=${() => this._handleLabelClick()}
         >
           ${this.required
-            ? html`
-                <abbr
-                  class="required"
-                  title=${this._textStrings.required}
-                  aria-label=${this._textStrings.required}
-                >
-                  *
-                </abbr>
-              `
+            ? html`<abbr
+                class="required"
+                title=${this._textStrings.requiredText}
+                role="img"
+                aria-label=${this._textStrings?.requiredText || 'Required'}
+                >*</abbr
+              >`
             : null}
-          <slot name="label"></slot>
+          ${this.label}
+          <slot name="tooltip"></slot>
         </label>
 
         <div
@@ -254,6 +262,7 @@ export class Dropdown extends FormMixin(LitElement) {
               role="combobox"
               id=${this.name}
               name=${this.name}
+              title=${this._textStrings.title}
               ?required=${this.required}
               ?disabled=${this.disabled}
               ?invalid=${this._isInvalid}
@@ -277,7 +286,9 @@ export class Dropdown extends FormMixin(LitElement) {
                       @click=${(e: Event) => this.handleClearMultiple(e)}
                     >
                       ${this.value.length}
-                      <kd-icon .icon=${clearIcon16}></kd-icon>
+                      <span style="display:flex;" slot="icon"
+                        >${unsafeSVG(clearIcon)}</span
+                      >
                     </button>
                   `
                 : null}
@@ -289,6 +300,7 @@ export class Dropdown extends FormMixin(LitElement) {
                       placeholder=${this.placeholder}
                       value=${this.searchText}
                       ?disabled=${this.disabled}
+                      aria-disabled=${this.disabled}
                       @keydown=${(e: any) => this.handleSearchKeydown(e)}
                       @input=${(e: any) => this.handleSearchInput(e)}
                       @blur=${(e: any) => this.handleSearchBlur(e)}
@@ -296,7 +308,7 @@ export class Dropdown extends FormMixin(LitElement) {
                     />
                   `
                 : html`
-                    <span>
+                    <span aria-disabled=${this.disabled}>
                       ${this.multiple
                         ? this.placeholder
                         : this.value === ''
@@ -305,7 +317,7 @@ export class Dropdown extends FormMixin(LitElement) {
                     </span>
                   `}
 
-              <kd-icon class="arrow-icon" .icon=${downIcon}></kd-icon>
+              <span class="arrow-icon">${unsafeSVG(downIcon)}</span>
             </div>
 
             <ul
@@ -346,63 +358,78 @@ export class Dropdown extends FormMixin(LitElement) {
               ></slot>
             </ul>
           </div>
-
-          ${this.searchable && this.searchEl && this.searchText !== ''
+          ${this.searchText !== ''
             ? html`
-                <button
-                  class="clear"
-                  aria-label="Clear search text"
+                <kyn-button
                   ?disabled=${this.disabled}
-                  @click=${(e: any) => this.handleClear(e)}
+                  class="clear-button dropdown-clear"
+                  kind="ghost"
+                  size="small"
+                  description=${this._textStrings.clearAll}
+                  @click=${(e: Event) => this.handleClear(e)}
                 >
-                  <kd-icon .icon=${clearIcon}></kd-icon>
-                </button>
+                  <span style="display:flex;" slot="icon"
+                    >${unsafeSVG(clearIcon)}</span
+                  >
+                </kyn-button>
               `
             : null}
-          <!--
-          ${this._isInvalid
-            ? html` <kd-icon class="error-icon" .icon=${errorIcon}></kd-icon> `
-            : null}
-            -->
         </div>
+        ${this.renderHelperContent()}
+      </div>
+    `;
+  }
 
-        ${this.multiple && !this.hideTags && this._tags.length
-          ? html`
-              <kyn-tag-group
-                filter
-                role="list"
-                aria-label=${this._textStrings.selectedOptions}
-              >
-                ${this._tags.map((tag: any) => {
-                  return html`
-                    <kyn-tag
-                      role="listitem"
-                      label=${tag.text}
-                      ?disabled=${this.disabled}
-                      clearTagText="Clear Tag ${tag.text}"
-                      @on-close=${() => this.handleTagClear(tag.value)}
-                    ></kyn-tag>
-                  `;
-                })}
-              </kyn-tag-group>
-            `
-          : null}
-        ${this.caption !== ''
-          ? html` <div class="caption">${this.caption}</div> `
-          : null}
-        ${this._isInvalid
-          ? html`
-              <div class="error">
-                <kd-icon
-                  class="error-info-icon"
-                  title=${this._textStrings.error}
-                  aria-label=${this._textStrings.error}
-                  .icon=${errorIcon}
-                ></kd-icon>
-                ${this.invalidText || this._internalValidationMsg}
-              </div>
-            `
-          : null}
+  private renderHelperContent() {
+    return html`
+        ${
+          this.multiple && !this.hideTags && this._tags.length
+            ? html`
+                <kyn-tag-group
+                  filter
+                  role="list"
+                  aria-label=${this._textStrings.selectedOptions}
+                >
+                  ${this._tags.map((tag: any) => {
+                    return html`
+                      <kyn-tag
+                        role="listitem"
+                        label=${tag.text}
+                        ?disabled=${this.disabled}
+                        clearTagText="Clear Tag ${tag.text}"
+                        @on-close=${() => this.handleTagClear(tag.value)}
+                      ></kyn-tag>
+                    `;
+                  })}
+                </kyn-tag-group>
+              `
+            : null
+        }
+        ${
+          this.caption !== ''
+            ? html`
+                <div class="caption" aria-disabled=${this.disabled}>
+                  ${this.caption}
+                </div>
+              `
+            : null
+        }
+        ${
+          this._isInvalid
+            ? html`
+                <div class="error">
+                  <span
+                    class="error-icon"
+                    role="img"
+                    title=${this._textStrings.errorText}
+                    aria-label=${this._textStrings.errorText}
+                    >${unsafeSVG(errorIcon)}</span
+                  >
+                  ${this.invalidText || this._internalValidationMsg}
+                </div>
+              `
+            : null
+        }
 
         <div
           class="assistive-text"
@@ -432,20 +459,7 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleSlotChange() {
-    this.resetSelection();
-  }
-
-  /**
-   * Retrieves the selected values from the list of child options and sets value property.
-   * @function
-   */
-  public resetSelection() {
-    if (this.updateByValue) {
-      this._updateOptions();
-    } else {
-      this._updateChildren();
-      this.emitValue();
-    }
+    this._updateOptions();
   }
 
   private handleClick() {
@@ -455,6 +469,8 @@ export class Dropdown extends FormMixin(LitElement) {
       // focus search input if searchable
       if (this.searchable) {
         this.searchEl.focus();
+      } else {
+        this.buttonEl.focus();
       }
     }
   }
@@ -697,6 +713,7 @@ export class Dropdown extends FormMixin(LitElement) {
     // clear selection for single select
     if (!this.multiple) {
       this.value = '';
+      this._validate(true, false);
       this._updateSelectedOptions();
       this.emitValue();
     }
@@ -715,6 +732,7 @@ export class Dropdown extends FormMixin(LitElement) {
     ) {
       this.open = false;
     }
+    this._validate(true, false);
   }
 
   private handleSearchBlur(e: any) {
@@ -727,6 +745,7 @@ export class Dropdown extends FormMixin(LitElement) {
     ) {
       this.open = false;
     }
+    this._validate(true, false);
   }
 
   private handleSearchKeydown(e: any) {
@@ -861,16 +880,6 @@ export class Dropdown extends FormMixin(LitElement) {
       this.open = false;
     }
   }
-
-  // private _handleFormdata(e: any) {
-  //   if (this.multiple) {
-  //     this.value.forEach((value: string) => {
-  //       e.formData.append(this.name, value);
-  //     });
-  //   } else {
-  //     e.formData.append(this.name, this.value);
-  //   }
-  // }
 
   private _handleClickOut(e: Event) {
     if (!e.composedPath().includes(this)) {
@@ -1010,21 +1019,7 @@ export class Dropdown extends FormMixin(LitElement) {
       this.selectAllIndeterminate =
         SelectedOptions.length < Options.length && SelectedOptions.length > 0;
 
-      // set form data value
-      // if (this.multiple) {
-      //   const entries = new FormData();
-      //   this.value.forEach((value: string) => {
-      //     entries.append(this.name, value);
-      //   });
-      //   this.internals.setFormValue(entries);
-      // } else {
-      //   this.internals.setFormValue(this.value);
-      // }
-
-      if (this.updateByValue) {
-        this._updateOptions();
-      }
-
+      this._updateOptions();
       this._updateTags();
 
       // update selected option text
@@ -1131,35 +1126,6 @@ export class Dropdown extends FormMixin(LitElement) {
         option.selected = this.value === option.value;
       }
     });
-  }
-
-  private _updateChildren() {
-    const Slot: any = this.shadowRoot?.querySelector('slot#children');
-    const Options = Slot?.assignedElements();
-
-    // get value from selected options
-    if (Options) {
-      const values: any = [];
-      let value = '';
-      Options.forEach((option: any) => {
-        option.multiple = this.multiple;
-
-        if (option.selected) {
-          if (this.multiple) {
-            values.push(option.value);
-          } else {
-            value = option.value;
-          }
-        }
-      });
-
-      // set initial values
-      if (this.multiple) {
-        this.value = values;
-      } else {
-        this.value = value;
-      }
-    }
   }
 }
 

@@ -22,15 +22,11 @@ export default {
   decorators: [
     (story) => html`
       <style>
-        body {
-          background: var(--kd-color-background-accent-subtle);
-        }
-
         .test {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: var(--kd-color-background-ui-soft);
+          background: var(--kd-color-background-container-soft);
           height: 100%;
           border-radius: 4px;
         }

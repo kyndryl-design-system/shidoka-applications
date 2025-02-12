@@ -10,7 +10,7 @@
 }
 
 :host(:focus) {
-  outline-color: var(--kd-color-border-focus);
+  outline-color: var(--kd-color-border-variants-focus);
 }
 
 :host([disabled]:focus) {
@@ -24,7 +24,7 @@
   cursor: pointer;
   white-space: nowrap;
   text-align: center;
-  border-bottom: 2px solid var(--kd-color-border-default);
+  border-bottom: 2px solid var(--kd-color-border-variants-light);
   background: transparent;
   transition: border-color 150ms ease-out, background-color 150ms ease-out,
     color 150ms ease-out;
@@ -50,7 +50,7 @@
   @media (min-width: breakpoints.$bp-md) {
     &.vertical {
       border-bottom: none;
-      border-left: 2px solid var(--kd-color-border-default);
+      border-left: 2px solid var(--kd-color-border-variants-light);
       white-space: initial;
       text-align: left;
     }
@@ -59,20 +59,24 @@
   &.contained {
     border-bottom: none;
     border-top: 2px solid transparent;
-    background: var(--kd-color-background-ui-soft);
+    background: var(--kd-color-background-container-soft);
   }
 
   @media (min-width: breakpoints.$bp-md) {
     &.contained.vertical {
       border-top: none;
       border-color: transparent;
+
+      &.selected {
+        border-color: var(--kd-color-border-level-tertiary);
+      }
     }
   }
 
   &:hover {
-    color: var(--kd-color-text-link-hover);
+    color: var(--kd-color-text-link-level-hover);
     border-color: var(--kd-color-border-ui-hover);
-    background-color: var(--kd-color-background-inverse-hover);
+    background-color: var(--kd-color-background-ui-hollow-hover);
 
     &.contained {
       border-color: transparent;
@@ -80,9 +84,9 @@
   }
 
   &:active {
-    color: var(--kd-color-text-pressed);
-    border-color: var(--kd-color-border-ui-hover);
-    background-color: var(--kd-color-background-inverse-hover);
+    color: var(--kd-color-text-link-level-pressed);
+    border-color: var(--kd-color-border-variants-focus);
+    background-color: var(--kd-color-background-ui-hollow-hover);
 
     &.contained {
       border-color: transparent;
@@ -91,25 +95,21 @@
 
   &.selected {
     font-weight: 500;
-    color: var(--kd-color-text-link);
-    border-color: var(--kd-color-border-tertiary);
+    color: var(--kd-color-text-level-tertiary);
+    border-color: var(--kd-color-border-level-tertiary);
+    background: var(--kd-color-background-container-default);
 
     &.size--lg {
       font-weight: 400;
     }
 
-    &.contained {
-      background: transparent;
-      border-color: var(--kd-color-border-tertiary);
-
-      &:hover {
-        background: var(--kd-color-background-inverse-hover);
-      }
+    &:hover {
+      background: var(--kd-color-background-ui-hollow-hover);
     }
   }
 
   &.disabled {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
     cursor: not-allowed;
     border-color: var(--kd-color-border-ui-disabled);
 
@@ -118,7 +118,7 @@
     }
 
     &.contained {
-      background: var(--kd-color-background-disabled);
+      background: var(--kd-color-background-ui-default-disabled);
       border-color: transparent;
     }
   }

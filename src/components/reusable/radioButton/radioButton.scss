@@ -1,4 +1,5 @@
 @use '../../../common/scss/global.scss';
+// @use '../../../common/scss/form-input.scss';
 
 :host {
   display: block;
@@ -9,7 +10,7 @@ label {
   gap: 10px;
 
   &[disabled] {
-    color: var(--kd-color-text-disabled);
+    color: var(--kd-color-text-link-level-disabled);
   }
 }
 
@@ -29,9 +30,9 @@ input {
   margin-top: 2px;
   width: 18px;
   height: 18px;
-  border: 2px solid var(--kd-color-border-ui);
+  border: 2px solid var(--kd-color-border-forms-default);
   border-radius: 50%;
-  background-color: transparent;
+  background: var(--kd-color-background-ui-hollow-default);
   outline: 2px solid transparent;
   transition: background-color 150ms ease-out, border-color 150ms ease-out,
     outline-color 150ms ease-out;
@@ -42,45 +43,101 @@ input {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--kd-color-background-primary);
-    transition: 150ms transform ease-out;
+    background: var(--kd-color-background-container-default);
+    transition: background-color 150ms ease-out, border-color 150ms ease-out,
+      150ms transform ease-out;
     transform: scale(0);
   }
 
-  &:checked {
-    border-color: var(--kd-color-border-ui-hover);
+  &[checked] {
+    border-color: var(--kd-color-border-forms-default);
     border-width: 3px;
 
     &::before {
       transform: scale(1);
+      background: var(--kd-color-border-forms-default);
+    }
+
+    &:hover {
+      border-color: var(--kd-color-background-ui-default-secondary);
+      background: var(--kd-color-background-ui-hollow-default);
+
+      &::before {
+        background: var(--kd-color-background-ui-default-secondary);
+      }
+    }
+
+    &:focus {
+      outline-color: var(--kd-color-border-variants-focus);
+    }
+
+    &:active {
+      &::before {
+        background: var(--kd-color-background-ui-default-secondary);
+      }
     }
   }
 
-  &:hover {
+  &:not([disabled]):hover {
     border-color: var(--kd-color-border-ui-hover);
-    background-color: var(--kd-color-background-inverse-hover);
+    background-color: var(--kd-color-background-ui-hollow-hover);
   }
 
-  &:focus {
-    outline-color: var(--kd-color-border-focus);
+  &:not([disabled]):active {
+    border-color: var(--kd-color-border-ui-hover);
+  }
+
+  &:not([disabled]):focus {
+    outline-color: var(--kd-color-border-variants-focus);
     outline-offset: 2px;
+
+    &:not([checked]) {
+      &::before {
+        background: var(--kd-color-background-container-default);
+      }
+    }
   }
 
   &:active {
-    background-color: var(--kd-color-background-accent-ui);
+    border-color: var(--kd-color-background-ui-hollow-pressed);
+  }
+
+  &[invalid] {
+    border-color: var(--kd-color-status-error-dark);
+
+    &::before {
+      background: var(--kd-color-status-error-dark);
+    }
+
+    &:hover {
+      border-color: var(--kd-color-border-button-primary-destructive-hover);
+
+      &::before {
+        background: var(--kd-color-border-button-primary-destructive-hover);
+      }
+    }
+
+    &:focus {
+      outline-color: var(--kd-color-status-error-dark);
+    }
+
+    &:active {
+      border-color: var(--kd-color-border-button-primary-destructive-pressed);
+
+      &::before {
+        background: var(--kd-color-border-button-primary-destructive-pressed);
+      }
+    }
   }
 
   &[disabled] {
-    border-color: var(--kd-color-text-disabled);
+    border-color: var(--kd-color-text-link-level-disabled);
+    outline-color: transparent;
     opacity: 0.5;
     cursor: not-allowed;
 
-    &:hover {
-      background-color: transparent;
-    }
-
     &::before {
-      background: var(--kd-color-background-disabled);
+      background: var(--kd-color-background-ui-default-disabled);
     }
 
     &[invalid] {
@@ -88,7 +145,11 @@ input {
     }
   }
 
-  &[invalid] {
-    border-color: var(--kd-color-border-destructive);
+  &[disabled][checked] {
+    border-color: var(--kd-color-border-ui-disabled);
+
+    &::before {
+      background: var(--kd-color-background-ui-default-disabled);
+    }
   }
 }

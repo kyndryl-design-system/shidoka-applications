@@ -12,19 +12,23 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  color: var(--kd-color-text-primary);
+  color: var(--kd-color-icon-primary);
   padding: 16px 12px 16px 8px;
   height: 56px;
   text-decoration: none;
   white-space: nowrap;
 
-  ::slotted(kd-icon),
+  ::slotted(span.arrow),
   ::slotted(svg) {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 24px;
     height: 24px;
+  }
+
+  ::slotted([slot='button']) {
+    display: flex;
   }
 
   @media (min-width: 42rem) {
@@ -36,53 +40,30 @@
 
 .menu-label {
   @include typography.type-ui-03;
-  color: var(--kd-color-text-tertiary-bold);
+  color: var(--kd-color-text-level-tertiary-bold);
+  background: var(--kd-color-background-menu-state-category);
   font-weight: 500;
   text-transform: uppercase;
   padding: 8px;
-  border-bottom: 1px solid var(--kd-color-border-light);
+  border-bottom: 1px solid var(--kd-color-border-variants-light);
 }
 
 .menu {
-  &:hover {
-    .interactive {
-      ::slotted(kyn-header-avatar) {
-        background: none;
-        border-color: var(--kd-color-border-inverse);
-        color: var(--kd-color-text-inversed);
-      }
-    }
-  }
-
   &.open {
     .interactive {
-      ::slotted(kyn-header-avatar) {
-        color: var(--kd-color-text-inversed);
-        background: var(--kd-color-background-primary);
-        border: 1px solid var(--kd-color-border-brand);
-      }
+      outline-color: var(--kd-color-border-variants-focus);
+      background: var(--kd-color-background-menu-state-focused);
+      color: var(--kd-color-text-level-primary);
 
       &:hover {
-        background-color: var(--kd-color-background-primary-hover);
-
-        ::slotted(kyn-header-avatar) {
-          background: none;
-          border-color: var(--kd-color-border-inverse);
-          color: var(--kd-color-text-inversed);
-        }
+        background-color: var(--kd-color-background-menu-state-hover);
+        color: var(--kd-color-text-button-dark-primary);
       }
 
       &:active {
-        background-color: var(--kd-color-background-primary-pressed);
+        background: var(--kd-color-background-menu-state-pressed);
+        color: var(--kd-color-text-button-dark-primary);
       }
-    }
-  }
-
-  .interactive:focus {
-    ::slotted(kyn-header-avatar) {
-      background: var(--kd-color-background-primary);
-      border-color: var(--kd-color-border-inverse);
-      color: var(--kd-color-text-inversed);
     }
   }
 }
@@ -96,6 +77,7 @@
 
 .arrow {
   margin-left: auto;
+  display: flex;
 }
 
 @media (max-width: calc(42rem - 1px)) {

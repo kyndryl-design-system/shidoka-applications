@@ -1,8 +1,7 @@
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import '../button';
 
 export default {
   title: 'Components/SideDrawer',
@@ -16,7 +15,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/pQKkip0UrZqEbaGN2dQ3dY/Istanbul-Release?type=design&node-id=8-9732&mode=design&t=PzDSmelS0t4Y4gte-0',
+      url: 'https://www.figma.com/design/CQuDZEeLiuGiALvCWjAKlu/branch/qMpff4GuFUEcsMUkvacS3U/Applications---Component-Library?node-id=8451-17321&node-type=canvas&m=dev',
     },
   },
 };
@@ -56,7 +55,7 @@ export const SideDrawer = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <span slot="anchor">Open Drawer</span>
+        <kyn-button slot="anchor">Open Drawer</kyn-button>
 
         <div>
           This is a simple paragraph for the drawer content. You can customize
@@ -107,7 +106,7 @@ export const BeforeClose = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <span slot="anchor">Open Drawer</span>
+        <kyn-button slot="anchor">Open Drawer</kyn-button>
 
         <div>
           This is a simple paragraph for the drawer content. You can customize

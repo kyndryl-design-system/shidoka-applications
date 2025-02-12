@@ -37,7 +37,6 @@ export default {
       }
     },
   },
-  external: [/shidoka-foundation\/components/],
   plugins: [
     del({ targets: 'dist/*' }),
     multiInput(),

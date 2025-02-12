@@ -18,8 +18,8 @@ export default {
 
 export const TextArea = {
   args: {
-    unnamed: 'Label',
-    name: 'name',
+    label: 'Label',
+    name: 'text-area-1',
     value: '',
     placeholder: '',
     caption: '',
@@ -50,8 +50,8 @@ export const TextArea = {
         rows=${args.rows}
         @on-input=${(e) => action(e.type)(e)}
         @keydown=${(e) => e.stopPropagation()}
+        label=${args.label}
       >
-        ${args.unnamed}
       </kyn-text-area>
     `;
   },

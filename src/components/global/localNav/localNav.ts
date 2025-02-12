@@ -1,3 +1,4 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import {
   customElement,
@@ -6,16 +7,26 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { deepmerge } from 'deepmerge-ts';
+import '../../reusable/button';
 import LocalNavScss from './localNav.scss';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
 
-import arrowIcon from '@carbon/icons/es/chevron--down/16';
-import pinIcon from '@carbon/icons/es/side-panel--open/24';
+import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
+import pinIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/side-drawer-out.svg';
+
+const _defaultTextStrings = {
+  pin: 'Pin',
+  unpin: 'Unpin',
+  toggleMenu: 'Toggle Menu',
+  collapse: 'Collapse',
+  menu: 'Menu',
+};
 
 /**
  * The global Side Navigation component.
  * @slot unnamed - The default slot, for local nav links.
- * @fires on-toggle - Captures the click event and emits the open state and original event details.
+ * @slot search - Slot for a search input
+ * @fires on-toggle - Captures the click event and emits the pinned state and original event details.
  */
 @customElement('kyn-local-nav')
 export class LocalNav extends LitElement {
@@ -25,21 +36,15 @@ export class LocalNav extends LitElement {
   @property({ type: Boolean })
   pinned = false;
 
-  /** Pin open button assistive text. */
-  @property({ type: String })
-  pinText = 'Pin';
-
-  /** Unpin button assistive text. */
-  @property({ type: String })
-  unpinText = 'Unpin';
-
-  /** Menu toggle button assistive text. */
+  /** Text string customization. */
   @property({ type: Object })
-  textStrings = {
-    toggleMenu: 'Toggle Menu',
-    collapse: 'Collapse',
-    menu: 'Menu',
-  };
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = _defaultTextStrings;
 
   /** Local nav desktop expanded state.
    * @internal
@@ -65,6 +70,12 @@ export class LocalNav extends LitElement {
   @queryAssignedElements({ selector: 'kyn-local-nav-link' })
   _navLinks!: any;
 
+  /** Queries top-level slotted dividers.
+   * @internal
+   */
+  @queryAssignedElements({ selector: 'kyn-local-nav-divider' })
+  _dividers!: any;
+
   /** Timeout function to delay flyout open.
    * @internal
    */
@@ -89,29 +100,35 @@ export class LocalNav extends LitElement {
       >
         <button
           class="mobile-toggle"
-          title=${this.textStrings.toggleMenu}
-          aria-label=${this.textStrings.toggleMenu}
+          title=${this._textStrings.toggleMenu}
+          aria-label=${this._textStrings.toggleMenu}
           @click=${this._handleMobileNavToggle}
         >
           ${this._mobileExpanded
-            ? this.textStrings.collapse
-            : this._activeLinkText || this.textStrings.menu}
-          <kd-icon .icon=${arrowIcon}></kd-icon>
+            ? this._textStrings.collapse
+            : this._activeLinkText || this._textStrings.menu}
+          <span>${unsafeSVG(arrowIcon)}</span>
         </button>
+
+        <div class="search">
+          <slot name="search"></slot>
+        </div>
 
         <div class="links">
           <slot @slotchange=${this.handleSlotChange}></slot>
         </div>
 
         <div class="toggle-container">
-          <button
-            class="nav-toggle"
-            @click=${(e: Event) => this._handleNavToggle(e)}
-            title="${this.pinned ? this.unpinText : this.pinText}"
-            aria-label="${this.pinned ? this.unpinText : this.pinText}"
+          <kyn-button
+            kind="tertiary"
+            size="small"
+            description=${this.pinned
+              ? this._textStrings.unpin
+              : this._textStrings.pin}
+            @on-click=${(e: Event) => this._handleNavToggle(e)}
           >
-            <kd-icon class="pin-icon" .icon=${pinIcon}></kd-icon>
-          </button>
+            <span class="pin-icon" slot="icon"> ${unsafeSVG(pinIcon)} </span>
+          </kyn-button>
         </div>
       </nav>
 
@@ -157,6 +174,10 @@ export class LocalNav extends LitElement {
       link._navExpanded = this._expanded || this.pinned;
       link._navExpandedMobile = this._mobileExpanded;
     });
+
+    this._dividers.forEach((divider: any) => {
+      divider._navExpanded = this._expanded || this.pinned;
+    });
   }
 
   private handleSlotChange() {
@@ -175,6 +196,10 @@ export class LocalNav extends LitElement {
       changedProps.has('_mobileExpanded')
     ) {
       this._updateChildren();
+    }
+
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
   }
 

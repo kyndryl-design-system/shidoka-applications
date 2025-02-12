@@ -16,12 +16,16 @@ input {
   appearance: none;
   display: block;
   flex-grow: 1;
-  // flex-shrink: 1;
-  min-width: 48px;
-  border: 1px solid var(--kd-color-border-ui);
+  min-width: 170px;
+  border-width: 1px;
+  border-style: solid;
   border-radius: 4px;
   height: 48px;
   padding: 0 16px;
+
+  &:focus {
+    outline-color: transparent;
+  }
 
   &.size--sm {
     height: 32px;
@@ -34,15 +38,30 @@ input {
   &.icon--left {
     padding-left: 48px;
   }
+
+  &:not([disabled])[invalid] {
+    border-color: var(--kd-color-border-variants-destructive);
+  }
+
+  &:not([disabled]) {
+    &:active {
+      outline: 2px solid var(--kd-color-border-ui-pressed);
+    }
+  }
 }
+
 /* Hide native arrow controls */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  /* display: none; <- Crashes Chrome on hover */
   -webkit-appearance: none;
-  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  margin: 0;
 }
 
 input[type='number'] {
-  -moz-appearance: textfield; /* Firefox */
+  -moz-appearance: textfield;
+  /* Firefox */
+}
+
+span[slot='icon'] {
+  display: flex;
 }

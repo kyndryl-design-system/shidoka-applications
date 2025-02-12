@@ -10,9 +10,9 @@ dialog {
   @include elevation.shadow(3);
   padding: 32px;
   color: inherit;
-  background: var(--kd-color-background-ui-default);
+  background: var(--kd-color-background-container-default);
   border-radius: 8px;
-  border: 1px solid var(--kd-color-border-light);
+  border: 1px solid var(--kd-color-border-variants-light);
   min-width: 288px;
   max-width: calc(100% - 32px);
   max-height: calc(100% - 32px);
@@ -28,7 +28,7 @@ dialog {
   }
 
   &.size--md {
-    width: 387px;
+    width: 400px;
   }
 
   &.size--lg {
@@ -83,25 +83,27 @@ form {
 button {
   appearance: none;
   background: none;
-  border: none;
+  border: 1px solid transparent;
   color: inherit;
   cursor: pointer;
   font: inherit;
   padding: 0;
-  border-radius: 4px;
+  border-radius: 2px;
   outline: 2px solid transparent;
   transition: outline-color 150ms ease-out, color 150ms ease-out;
 
   &:focus {
-    outline-color: var(--kd-color-border-focus);
+    outline: 1px solid var(--kd-color-border-variants-focus);
   }
 
   &:hover {
-    color: var(--kd-color-text-link-hover);
+    background: var(--kd-color-background-ui-hollow-hover);
   }
 
   &:active {
-    color: var(--kd-color-text-pressed);
+    border-radius: 2px;
+    border: 1px solid var(--kd-color-border-ui-pressed);
+    background: var(--kd-color-background-ui-hollow-hover);
   }
 }
 
@@ -119,16 +121,16 @@ header {
   position: absolute;
   top: 32px;
   right: 32px;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-icon-primary);
 
-  kd-icon {
-    display: block;
+  span {
+    display: flex;
   }
 }
 
 .label {
   @include typography.type-ui-02;
-  color: var(--kd-color-text-secondary);
+  color: var(--kd-color-text-level-secondary);
 }
 
 h1 {
@@ -145,7 +147,7 @@ h1 {
   margin-top: 32px;
 
   @media (max-width: calc(42rem - 1px)) {
-    kd-button {
+    kyn-button {
       width: 100%;
       flex-grow: 1;
     }

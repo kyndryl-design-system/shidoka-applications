@@ -10,10 +10,8 @@ Read the [Contributing Guide](CONTRIBUTING.md) here.
 
 ## Install
 
-<!-- Note: This will not work until you have configured the enterprise package registry following the instructions above. -->
-
 ```bash
-npm install @kyndryl-design-system/shidoka-applications @kyndryl-design-system/shidoka-foundation -S
+npm install @kyndryl-design-system/shidoka-applications -S
 ```
 
 ## Import the root stylesheets to your app's global styles

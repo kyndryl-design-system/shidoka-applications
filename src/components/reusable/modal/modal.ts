@@ -1,12 +1,12 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import ModalScss from './modal.scss';
 
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
+import '../button';
 
-import closeIcon from '@carbon/icons/es/close/20';
+import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 /**
  * Modal.
@@ -117,20 +117,19 @@ export class Modal extends LitElement {
 
       <dialog
         class="${classMap(classes)}"
-        autofocus
         aria-labelledby="dialogLabel"
         @cancel=${(e: Event) => this._closeModal(e, 'cancel')}
       >
         <form method="dialog">
-          <button
+          <kyn-button
             class="close"
-            title=${this.closeText}
-            aria-label=${this.closeText}
+            kind="ghost"
+            size="small"
+            description=${this.closeText}
             @click=${(e: Event) => this._closeModal(e, 'cancel')}
           >
-            <kd-icon .icon=${closeIcon}></kd-icon>
-          </button>
-
+            <span slot="icon">${unsafeSVG(closeIcon)}</span>
+          </kyn-button>
           <header>
             <div>
               <h1 id="dialogLabel">${this.titleText}</h1>
@@ -147,18 +146,18 @@ export class Modal extends LitElement {
           ${!this.hideFooter
             ? html`
                 <div class="footer">
-                  <kd-button
+                  <kyn-button
                     class="action-button"
                     value="ok"
-                    ?destructive=${this.destructive}
+                    kind=${this.destructive ? 'primary-destructive' : 'primary'}
                     ?disabled=${this.okDisabled}
                     @click=${(e: Event) => this._closeModal(e, 'ok')}
                   >
                     ${this.okText}
-                  </kd-button>
+                  </kyn-button>
                   ${this.showSecondaryButton
                     ? html`
-                        <kd-button
+                        <kyn-button
                           class="action-button"
                           value="Secondary"
                           kind="secondary"
@@ -167,20 +166,20 @@ export class Modal extends LitElement {
                             this._closeModal(e, 'secondary')}
                         >
                           ${this.secondaryButtonText}
-                        </kd-button>
+                        </kyn-button>
                       `
                     : null}
                   ${this.hideCancelButton
                     ? null
                     : html`
-                        <kd-button
+                        <kyn-button
                           class="action-button"
                           value="cancel"
                           kind="tertiary"
                           @click=${(e: Event) => this._closeModal(e, 'cancel')}
                         >
                           ${this.cancelText}
-                        </kd-button>
+                        </kyn-button>
                       `}
                   <!--
             <div class="custom-actions">

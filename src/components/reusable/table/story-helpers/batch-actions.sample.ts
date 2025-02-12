@@ -1,11 +1,11 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import exportIcon from '@carbon/icons/es/export/20';
-import exportIcon16 from '@carbon/icons/es/export/16';
-import overflowIcon from '@carbon/icons/es/overflow-menu--vertical/20';
-import trashCanIcon from '@carbon/icons/es/trash-can/20';
+import '../../button';
+import exportIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/upload.svg';
+import exportIcon16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/upload.svg';
+import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overflow.svg';
+import trashCanIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
 import styles from './batch-actions.scss';
 import '../index';
 
@@ -35,52 +35,50 @@ export class BatchActions extends LitElement {
   override render() {
     return html`
       <div class="action-delete">
-        <kd-button
-          kind="primary-app"
+        <kyn-button
+          kind="primary-destructive"
           type="button"
-          destructive
           size="small"
           @on-click=${this.handleDelete}
           class="delete-button"
         >
           Delete
-        </kd-button>
-        <kd-button
-          kind="tertiary"
+        </kyn-button>
+        <kyn-button
+          kind="secondary-destructive"
           type="button"
-          destructive
           size="small"
           iconposition="center"
           @on-click=${this.handleDelete}
           class="delete-button__mobile"
         >
-          <kd-icon slot="icon" .icon=${trashCanIcon}></kd-icon>
-        </kd-button>
+          <span slot="icon">${unsafeSVG(trashCanIcon)}</span>
+        </kyn-button>
       </div>
       <div class="vertical-overflow-menu">
-        <kd-button
+        <kyn-button
           kind="tertiary"
           type="button"
           size="small"
           iconposition="center"
           @on-click=${() => (this.opened = !this.opened)}
         >
-          <kd-icon slot="icon" .icon=${overflowIcon}></kd-icon>
-        </kd-button>
+          <span slot="icon">${unsafeSVG(overflowIcon)}</span>
+        </kyn-button>
       </div>
       <div class="menu">
         <kyn-table>
           <kyn-tbody>
             <kyn-tr class="menu-item" @click=${this.handleClick}>
               <kyn-td class="menu-item__icon">
-                <kd-button
+                <kyn-button
                   kind="tertiary"
                   type="button"
                   size="small"
                   iconposition="center"
                 >
-                  <kd-icon slot="icon" .icon=${exportIcon16}></kd-icon>
-                </kd-button>
+                  <span slot="icon">${unsafeSVG(exportIcon16)}</span>
+                </kyn-button>
               </kyn-td>
               <kyn-td class="menu-item__label">Export</kyn-td>
             </kyn-tr>
@@ -93,18 +91,18 @@ export class BatchActions extends LitElement {
       </div>
       <div class="actions-container">
         <div class="action-item">
-          <kd-button
+          <kyn-button
             kind="secondary"
             type="button"
             size="small"
             iconposition="left"
           >
-            <kd-icon slot="icon" .icon=${exportIcon}></kd-icon>
+            <span slot="icon">${unsafeSVG(exportIcon)}</span>
             Export
-          </kd-button>
+          </kyn-button>
         </div>
         <div class="action-item">
-          <kd-button
+          <kyn-button
             kind="secondary"
             type="button"
             size="small"
@@ -113,7 +111,7 @@ export class BatchActions extends LitElement {
             href=""
           >
             Action
-          </kd-button>
+          </kyn-button>
         </div>
       </div>
     `;

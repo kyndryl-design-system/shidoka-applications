@@ -1,9 +1,8 @@
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
-import '@kyndryl-design-system/shidoka-foundation/components/button';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import '@kyndryl-design-system/shidoka-foundation/components/link';
+import '../button';
+import '../link';
 
 import '../overflowMenu';
 
@@ -60,20 +59,22 @@ export const Notification = {
       @on-notification-click=${(e) => action(e.type)(e)}
       style="width:464px;"
     >
-      <kyn-overflow-menu
-        slot="actions"
-        anchorRight
-        assistiveText="Menu option"
-        @click=${(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-      >
-        <kyn-overflow-menu-item @on-click=${(e) => action(e.type)(e)}
-          >Mark as Read</kyn-overflow-menu-item
-        >
-        <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
-      </kyn-overflow-menu>
+      ${args.type === 'normal' || args.type === 'clickable'
+        ? html` <kyn-overflow-menu
+            slot="actions"
+            anchorRight
+            assistiveText="Menu option"
+            @click=${(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
+            <kyn-overflow-menu-item @on-click=${(e) => action(e.type)(e)}
+              >Mark as Read</kyn-overflow-menu-item
+            >
+            <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
+          </kyn-overflow-menu>`
+        : null}
 
       <div>${notificationBodyMsg}</div>
     </kyn-notification>`;
@@ -133,9 +134,13 @@ export const Inline = {
         <div>
           ${notificationBodyMsg}
           <div style="margin-top: 10px;">
-            <kd-link href="#" @on-click=${(e) => e.preventDefault()}>
+            <kyn-link
+              href="#"
+              shade="dark"
+              @on-click=${(e) => e.preventDefault()}
+            >
               Link
-            </kd-link>
+            </kyn-link>
           </div>
         </div>
       </kyn-notification> `;

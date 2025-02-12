@@ -1,6 +1,9 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
+import '../tooltip';
+import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 export default {
   title: 'Components/Toggle Button',
@@ -15,7 +18,7 @@ export default {
 
 export const ToggleButton = {
   args: {
-    unnamed: 'Label',
+    label: 'Label',
     checked: false,
     name: 'toggle',
     value: 'example',
@@ -29,6 +32,7 @@ export const ToggleButton = {
   render: (args) => {
     return html`
       <kyn-toggle-button
+        label=${args.label}
         ?checked=${args.checked}
         name=${args.name}
         value=${args.value}
@@ -40,7 +44,10 @@ export const ToggleButton = {
         uncheckedText=${args.uncheckedText}
         @on-change=${(e) => action(e.type)(e)}
       >
-        ${args.unnamed}
+        <kyn-tooltip slot="tooltip">
+          <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
+          tooltip
+        </kyn-tooltip>
       </kyn-toggle-button>
     `;
   },

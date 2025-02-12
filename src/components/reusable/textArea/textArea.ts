@@ -1,11 +1,13 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import TextAreaScss from './textArea.scss';
 import { FormMixin } from '../../../common/mixins/form-input';
-import '@kyndryl-design-system/shidoka-foundation/components/icon';
-import errorIcon from '@carbon/icons/es/warning--filled/24';
 import { deepmerge } from 'deepmerge-ts';
+
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+
+import TextAreaScss from './textArea.scss';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -17,11 +19,15 @@ const _defaultTextStrings = {
  * @fires on-input - Captures the input event and emits the selected value and original event details.
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
- * @slot unnamed - Slot for label text.
+ * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-text-area')
 export class TextArea extends FormMixin(LitElement) {
   static override styles = TextAreaScss;
+
+  /** Label text. */
+  @property({ type: String })
+  label = '';
 
   /** Optional text beneath the input. */
   @property({ type: String })
@@ -76,11 +82,13 @@ export class TextArea extends FormMixin(LitElement) {
             ? html`<abbr
                 class="required"
                 title=${this._textStrings.requiredText}
-                aria-label=${this._textStrings.requiredText}
+                role="img"
+                aria-label=${this._textStrings?.requiredText}
                 >*</abbr
               >`
             : null}
-          <slot></slot>
+          ${this.label}
+          <slot name="tooltip"></slot>
         </label>
 
         <div class="input-wrapper">
@@ -100,27 +108,27 @@ export class TextArea extends FormMixin(LitElement) {
           >
 ${this.value}</textarea
           >
-
-          ${this._isInvalid
-            ? html`
-                <kd-icon
-                  class="error-icon"
-                  role="img"
-                  aria-label=${this._textStrings.errorText}
-                  .icon=${errorIcon}
-                ></kd-icon>
-              `
-            : null}
         </div>
 
         <div class="caption-error-count">
           <div>
             ${this.caption !== ''
-              ? html` <div class="caption">${this.caption}</div> `
+              ? html`
+                  <div class="caption" aria-disabled=${this.disabled}>
+                    ${this.caption}
+                  </div>
+                `
               : null}
             ${this._isInvalid
               ? html`
                   <div id="error" class="error">
+                    <span
+                      role="img"
+                      class="error-icon"
+                      aria-label=${this._textStrings.errorText}
+                      >${unsafeSVG(errorIcon)}</span
+                    >
+
                     ${this.invalidText || this._internalValidationMsg}
                   </div>
                 `
