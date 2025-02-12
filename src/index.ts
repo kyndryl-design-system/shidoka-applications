@@ -58,17 +58,7 @@ export {
   TableHeaderRow,
   TableExpandedRow,
 } from './components/reusable/table';
-// export {
-//   TableNew,
-//   TableNewHead,
-//   TableNewHeaderRow,
-//   TableNewHeader,
-//   TableNewBody,
-//   TableNewRow,
-//   TableNewCell,
-// } from './components/reusable/tableNew';
 export { Pagination } from './components/reusable/pagination';
-// export { FileUploader } from './components/reusable/fileUploader';
 export {
   OverflowMenu,
   OverflowMenuItem,
