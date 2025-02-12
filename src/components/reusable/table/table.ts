@@ -210,7 +210,7 @@ export class Table extends LitElement {
     this._updateHeaderCheckbox();
 
     const init = {
-      bubbles: true,
+      bubbles: false,
       cancelable: true,
       composed: true,
       detail: {
@@ -249,7 +249,7 @@ export class Table extends LitElement {
     this._updateHeaderCheckbox();
 
     const init = {
-      bubbles: true,
+      bubbles: false,
       cancelable: true,
       composed: true,
       detail: {
