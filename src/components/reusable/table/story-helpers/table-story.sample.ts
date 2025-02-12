@@ -195,6 +195,7 @@ class MyStoryTable extends LitElement {
   }
 
   handleSelectedRowsChange(e: CustomEvent) {
+    e.stopPropagation();
     action(e.type)(e);
     const { selectedRows } = e.detail;
     this.selectedRows = selectedRows;
