@@ -1,5 +1,5 @@
 @use '../../../common/scss/global.scss';
-@use '../../../common/scss/form-input.scss';
+// @use '../../../common/scss/form-input.scss';
 
 :host {
   display: block;
@@ -72,25 +72,22 @@ input {
     }
 
     &:active {
-      background: var(--kd-color-background-ui-hollow-pressed);
-
       &::before {
         background: var(--kd-color-background-ui-default-secondary);
       }
     }
   }
 
-  &:hover {
+  &:not([disabled]):hover {
     border-color: var(--kd-color-border-ui-hover);
     background-color: var(--kd-color-background-ui-hollow-hover);
   }
 
   &:not([disabled]):active {
     border-color: var(--kd-color-border-ui-hover);
-    background-color: var(--kd-color-background-ui-hollow-pressed);
   }
 
-  &:focus {
+  &:not([disabled]):focus {
     outline-color: var(--kd-color-border-variants-focus);
     outline-offset: 2px;
 
@@ -102,7 +99,6 @@ input {
   }
 
   &:active {
-    background-color: var(--kd-color-background-ui-default-pressed);
     border-color: var(--kd-color-background-ui-hollow-pressed);
   }
 
@@ -140,11 +136,6 @@ input {
     opacity: 0.5;
     cursor: not-allowed;
 
-    &:hover {
-      background: transparent;
-      border-color: var(--kd-color-border-ui-disabled);
-    }
-
     &::before {
       background: var(--kd-color-background-ui-default-disabled);
     }
@@ -154,11 +145,8 @@ input {
     }
   }
 
-  &[disabled][checked],
-  &[disabled]:active,
-  &[disabled]:hover {
+  &[disabled][checked] {
     border-color: var(--kd-color-border-ui-disabled);
-    background: var(--kd-color-background-container-default);
 
     &::before {
       background: var(--kd-color-background-ui-default-disabled);
