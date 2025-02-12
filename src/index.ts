@@ -29,7 +29,6 @@ export {
 export { TextInput } from './components/reusable/textInput';
 export { TextArea } from './components/reusable/textArea';
 export { Avatar } from './components/reusable/avatar';
-export { Response } from './components/reusable/response';
 export { ToggleButton } from './components/reusable/toggleButton';
 export {
   Dropdown,

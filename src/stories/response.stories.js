@@ -1,6 +1,5 @@
 import { html } from 'lit';
-import './response';
-import '../avatar';
+import '../components/reusable/avatar';
 // import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 // import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai-response.svg';
 
@@ -14,7 +13,7 @@ export const WithAvatarInitials = {
   args,
   render: (args) => {
     return html`
-      <kyn-response>
+      <div class="response-wrapper">
         <kyn-avatar initials="A"></kyn-avatar>
 
         <span class="response-msg">
@@ -42,9 +41,13 @@ export const WithAvatarInitials = {
             </li>
           </ol>
         </span>
-      </kyn-response>
+      </div>
 
       <style>
+        .response-wrapper {
+          display: flex;
+          gap: 20px;
+        }
         ol {
           margin-left: -1rem;
         }
@@ -57,7 +60,7 @@ export const WithAvatarImage = {
   args,
   render: (args) => {
     return html`
-      <kyn-response>
+      <div class="response-wrapper">
         <kyn-avatar
           ><img src="https://picsum.photos/id/237/112/112" alt="User Name"
         /></kyn-avatar>
@@ -87,9 +90,13 @@ export const WithAvatarImage = {
             </li>
           </ol>
         </span>
-      </kyn-response>
+      </div>
 
       <style>
+        .response-wrapper {
+          display: flex;
+          gap: 20px;
+        }
         ol {
           margin-left: -1rem;
         }
@@ -102,7 +109,7 @@ export const WithAIImage = {
   args,
   render: (args) => {
     return html`
-      <kyn-response>
+      <div class="response-wrapper">
         <span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -154,9 +161,13 @@ export const WithAIImage = {
             </li>
           </ol>
         </span>
-      </kyn-response>
+      </div>
 
       <style>
+        .response-wrapper {
+          display: flex;
+          gap: 20px;
+        }
         ol {
           margin-left: -1rem;
         }
