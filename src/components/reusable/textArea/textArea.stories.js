@@ -71,6 +71,7 @@ export const AIConnected = {
     minLength: undefined,
     maxLength: undefined,
     rows: undefined,
+    maxRowsVisible: undefined,
     textStrings: {
       requiredText: 'Required',
       errorText: 'Error',
@@ -91,6 +92,7 @@ export const AIConnected = {
         minLength=${ifDefined(args.minLength)}
         maxLength=${ifDefined(args.maxLength)}
         rows=${args.rows}
+        maxRowsVisible=${args.maxRowsVisible}
         @on-input=${(e) => action(e.type)(e)}
         @keydown=${(e) => e.stopPropagation()}
         label=${args.label}

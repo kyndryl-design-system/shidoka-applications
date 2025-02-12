@@ -9,6 +9,7 @@ import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/er
 
 import TextAreaScss from './textArea.scss';
 import { classMap } from 'lit/directives/class-map.js';
+import { text } from 'stream/consumers';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -61,6 +62,13 @@ export class TextArea extends FormMixin(LitElement) {
   /** Set this to `true` for AI theme. */
   @property({ type: Boolean })
   aiConnected = false;
+
+  /** Maximum number of visible text lines allowed. Default `5` rows.
+   * Applies only when `aiConnected` is set to `true`.
+   * `rows` is used as minimum number of visible text lines.
+   */
+  @property({ type: Number })
+  maxRowsVisible = 5;
 
   /** Customizable text strings. */
   @property({ type: Object })
@@ -163,6 +171,8 @@ ${this.value}</textarea
   private handleInput(e: any) {
     this.value = e.target.value;
 
+    if (this.aiConnected) this._updateVisibleRows();
+
     this._validate(true, false);
 
     // emit selected value
@@ -173,6 +183,17 @@ ${this.value}</textarea
       },
     });
     this.dispatchEvent(event);
+  }
+
+  private _updateVisibleRows() {
+    const textarea = this.shadowRoot?.querySelector('textarea');
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.minHeight = `${this.rows * 24 + 34}px`;
+      textarea.style.height = `${textarea.scrollHeight + 2}px`;
+      textarea.style.maxHeight = `${this.maxRowsVisible * 24 + 20}px`;
+      // 24 -> line height, rest all are for text visibility adjustment and works for all scenarios.
+    }
   }
 
   override updated(changedProps: any) {

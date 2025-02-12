@@ -22,6 +22,7 @@ export const Default = {
           class="input-text-area"
           rows="2"
           placeholder="Type your message..."
+          maxRowsVisible="6"
           ?aiConnected=${true}
         ></kyn-text-area>
         <kyn-button>
