@@ -25,7 +25,7 @@ export const Default = {
           maxRowsVisible="6"
           ?aiConnected=${true}
         ></kyn-text-area>
-        <kyn-button>
+        <kyn-button kind="primary-ai">
           <span slot="icon">${unsafeSVG(sendIcon)}</span>
         </kyn-button>
       </div>
@@ -42,8 +42,8 @@ export const Default = {
           border-radius: 8px;
 
           .input-text-area {
-            width: 646px;
-            padding: 10px;
+            width: 654px;
+            padding: 2px 0px 10px 10px;
           }
         }
       </style>
