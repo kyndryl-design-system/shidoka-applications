@@ -34,9 +34,9 @@ export default {
     },
     kind: {
       options: createSelectOptions(BUTTON_KINDS),
-      control: { type: 'select', labels: { null: BUTTON_KINDS.PRIMARY_APP } },
+      control: { type: 'select', labels: { null: BUTTON_KINDS.PRIMARY } },
       table: {
-        defaultValue: { summary: BUTTON_KINDS.PRIMARY_APP },
+        defaultValue: { summary: BUTTON_KINDS.PRIMARY },
       },
     },
     size: {
@@ -61,12 +61,9 @@ export default {
 
 const args = {
   unnamed: 'Button Text',
-  kind: 'primary-app',
+  kind: 'primary',
   type: 'button',
   size: 'medium',
-  destructive: false,
-  outlineOnly: false,
-  ghost: false,
   disabled: false,
   iconPosition: 'right',
   description: 'Button description',
@@ -84,9 +81,6 @@ export const Button = {
       <kyn-button
         kind=${args.kind}
         type=${args.type}
-        ?destructive=${args.destructive}
-        ?outlineOnly=${args.outlineOnly}
-        ?ghost=${args.ghost}
         ?disabled=${args.disabled}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
@@ -118,10 +112,7 @@ export const ButtonWithIcon = {
       <kyn-button
         kind=${args.kind}
         type=${args.type}
-        ?destructive=${args.destructive}
         ?disabled=${args.disabled}
-        ?outlineOnly=${args.outlineOnly}
-        ?ghost=${args.ghost}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
         size=${args.size}
@@ -149,9 +140,6 @@ export const IconOnly = {
       <kyn-button
         kind=${args.kind}
         type=${args.type}
-        ?destructive=${args.destructive}
-        ?outlineOnly=${args.outlineOnly}
-        ?ghost=${args.ghost}
         ?disabled=${args.disabled}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
@@ -167,6 +155,46 @@ export const IconOnly = {
           >${unsafeSVG(chevronRightIcon)}</span
         >
       </kyn-button>
+    `;
+  },
+};
+
+export const Gallery = {
+  render: () => {
+    return html`
+      <div class="heading kd-type--headline-04">Gallery</div>
+
+      <div class="heading kd-type--headline-06">Primary</div>
+
+      <kyn-button>Primary</kyn-button>
+      <kyn-button kind="secondary">Secondary</kyn-button>
+      <kyn-button kind="tertiary">Tertiary</kyn-button>
+      <kyn-button kind="outline">Outline</kyn-button>
+
+      <div class="heading kd-type--headline-06">AI</div>
+
+      <kyn-button kind="primary-ai">Primary AI</kyn-button>
+      <kyn-button kind="secondary-ai">Secondary AI</kyn-button>
+      <kyn-button kind="outline-ai">Outline AI</kyn-button>
+
+      <div class="heading kd-type--headline-06">Destructive</div>
+
+      <kyn-button kind="primary-destructive">Primary Destructive</kyn-button>
+      <kyn-button kind="secondary-destructive">
+        Secondary Destructive
+      </kyn-button>
+      <kyn-button kind="outline-destructive">Outline Destructive</kyn-button>
+
+      <div class="heading kd-type--headline-06">Miscellaneous</div>
+
+      <kyn-button kind="ghost">Ghost</kyn-button>
+      <kyn-button kind="content">Content</kyn-button>
+
+      <div class="heading kd-type--headline-06">Disabled</div>
+
+      <kyn-button disabled>Solid Disabled</kyn-button>
+      <kyn-button kind="outline" disabled>Outline Disabled</kyn-button>
+      <kyn-button kind="ghost" disabled>Ghost Disabled</kyn-button>
     `;
   },
 };
