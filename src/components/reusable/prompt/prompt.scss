@@ -1,0 +1,94 @@
+@use '../../../common/scss/global.scss' as *;
+
+:host {
+  display: block;
+  max-width: 800px;
+}
+
+button.prompt-wrapper-clickable {
+  appearance: none;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+
+.prompt-wrapper,
+.prompt-wrapper-clickable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-decoration: none;
+  color: var(--kd-color-text-title-ai-tertiary);
+  padding: 24px;
+  min-height: 80px;
+  background: var(--kd-color-background-container-default);
+  position: relative;
+
+  &:hover {
+    cursor: pointer;
+    background: var(--kd-color-background-container-default);
+    border-color: var(--kd-color-border-button-ai-state-hover);
+    color: var(--kd-color-text-title-ai-primary);
+  }
+
+  &:active {
+    border-color: var(--kd-color-border-button-ai-state-pressed);
+  }
+
+  &:focus {
+    outline: 1px solid var(--kd-color-border-button-primary-state-focused);
+    background: var(--kd-color-background-button-secondary-ai-default);
+    border-color: var(--kd-color-border-button-ai-state-focused);
+  }
+
+  ::slotted([slot='label']) {
+    text-align: center;
+    width: 100%;
+  }
+
+  .checkmark-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 20px;
+    height: 20px;
+    color: var(--kd-color-text-title-ai-tertiary);
+  }
+}
+
+.prompt-border {
+  border: 1px solid var(--kd-color-border-button-ai-state-default);
+  border-radius: 4px;
+}
+
+:host([selected]) {
+  .prompt-wrapper,
+  .prompt-wrapper-clickable {
+    background: var(--kd-color-background-button-secondary-ai-default);
+    border: 1px solid var(--kd-color-border-button-ai-state-default);
+
+    &:hover {
+      cursor: pointer;
+      background: var(--kd-color-background-container-default);
+      border-color: var(--kd-color-border-button-ai-state-hover);
+      color: var(--kd-color-text-title-ai-primary);
+
+      .checkmark-icon {
+        color: var(--kd-color-text-title-ai-primary);
+      }
+    }
+
+    &:active {
+      border-color: var(--kd-color-border-button-ai-state-pressed);
+    }
+
+    &:focus {
+      outline: 1px solid var(--kd-color-border-button-primary-state-focused);
+      background: var(--kd-color-background-button-secondary-ai-default);
+      border-color: var(--kd-color-border-button-ai-state-focused);
+    }
+  }
+}
