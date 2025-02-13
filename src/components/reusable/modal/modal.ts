@@ -128,8 +128,7 @@ export class Modal extends LitElement {
         <form method="dialog">
           <kyn-button
             class="close"
-            ghost
-            kind="tertiary"
+            kind="ghost"
             size="small"
             ?aiConnected=${this.aiConnected}
             description=${this.closeText}
@@ -157,7 +156,7 @@ export class Modal extends LitElement {
                     class="action-button"
                     value="ok"
                     ?aiConnected=${this.aiConnected}
-                    ?destructive=${this.destructive}
+                    kind=${this.destructive ? 'primary-destructive' : 'primary'}
                     ?disabled=${this.okDisabled}
                     @click=${(e: Event) => this._closeModal(e, 'ok')}
                   >

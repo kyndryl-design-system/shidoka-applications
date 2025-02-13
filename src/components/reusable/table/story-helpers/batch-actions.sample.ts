@@ -36,9 +36,8 @@ export class BatchActions extends LitElement {
     return html`
       <div class="action-delete">
         <kyn-button
-          kind="primary-app"
+          kind="primary-destructive"
           type="button"
-          destructive
           size="small"
           @on-click=${this.handleDelete}
           class="delete-button"
@@ -46,9 +45,8 @@ export class BatchActions extends LitElement {
           Delete
         </kyn-button>
         <kyn-button
-          kind="tertiary"
+          kind="secondary-destructive"
           type="button"
-          destructive
           size="small"
           iconposition="center"
           @on-click=${this.handleDelete}

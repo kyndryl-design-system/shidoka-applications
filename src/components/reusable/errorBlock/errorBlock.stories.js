@@ -27,12 +27,7 @@ export const ErrorBlock = {
       <kyn-error-block titleText=${args.titleText}>
         <div slot="image">${unsafeSVG(warningImg)}</div>
         <p>Your description for the error message goes here.</p>
-        <kyn-button
-          slot="actions"
-          size="medium"
-          kind="primary-app"
-          description="Primary action"
-        >
+        <kyn-button slot="actions" size="medium" description="Primary action">
           Primary action
         </kyn-button>
         <kyn-button
