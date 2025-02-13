@@ -175,10 +175,38 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   private _initialized = false;
 
+  private resizeTimeout: number | null = null;
+
+  private handleResize = () => {
+    if (this.resizeTimeout) {
+      window.clearTimeout(this.resizeTimeout);
+    }
+
+    this.resizeTimeout = window.setTimeout(async () => {
+      if (this.flatpickrInstance) {
+        // re-initialize flatpickr to properly handle the viewport change
+        await this.initializeFlatpickr();
+      }
+      this.resizeTimeout = null;
+    }, 250);
+  };
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('change', this._onChange);
+    this.removeEventListener('reset', this._handleFormReset);
+    window.removeEventListener('resize', this.handleResize);
+    if (this.resizeTimeout) {
+      window.clearTimeout(this.resizeTimeout);
+    }
+    this.flatpickrInstance?.destroy();
+  }
+
   override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('change', this._onChange);
     this.addEventListener('reset', this._handleFormReset);
+    window.addEventListener('resize', this.handleResize);
   }
 
   override render() {
@@ -636,13 +664,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
     this._hasInteracted = false;
     this._validate(false, false);
-  }
-
-  override disconnectedCallback() {
-    super.disconnectedCallback();
-    this.removeEventListener('change', this._onChange);
-    this.removeEventListener('reset', this._handleFormReset);
-    this.flatpickrInstance?.destroy();
   }
 }
 
