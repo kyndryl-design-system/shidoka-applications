@@ -25,7 +25,7 @@ export const Default = {
           maxRowsVisible="6"
           ?aiConnected=${true}
         ></kyn-text-area>
-        <kyn-button kind="primary-ai">
+        <kyn-button kind="primary-ai" description="send button">
           <span slot="icon">${unsafeSVG(sendIcon)}</span>
         </kyn-button>
       </div>
