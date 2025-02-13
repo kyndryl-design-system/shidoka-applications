@@ -28,14 +28,18 @@ dialog {
   }
 
   &.size--md {
-    width: 400px;
+    width: 384px;
   }
 
   &.size--lg {
-    width: 711px;
+    width: 800px;
   }
 
-  &.modal--ai {
+  &.size--xl {
+    width: 1024px;
+  }
+
+  &.ai-connected {
     // @include elevation.shadow('3', true);
     box-shadow: 0px 0px 24px var(--kd-color-border-dropshadow-ai);
     background: var(--kd-color-background-container-ai-subtle);
@@ -133,6 +137,10 @@ h1 {
   }
 }
 
+::slotted([slot='footer']) {
+  margin-top: 32px;
+}
+
 .custom-actions {
   margin-left: auto;
   display: flex;
@@ -146,8 +154,10 @@ h1 {
 
 .body {
   flex-grow: 1;
-  overflow-y: auto;
   margin: -4px;
   padding: 4px 16px 4px 4px;
+}
+.body:not(.disableScroll) {
+  overflow-y: auto;
   overscroll-behavior: contain;
 }

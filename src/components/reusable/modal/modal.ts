@@ -41,7 +41,7 @@ export class Modal extends LitElement {
   @property({ type: Boolean })
   open = false;
 
-  /** Modal size. `'auto'`, `'md'`, or `'lg'`. */
+  /** Modal size. `'auto'`, `'md'`, or `'lg', or `'xl'`. */
   @property({ type: String })
   size = 'auto';
 
@@ -97,22 +97,27 @@ export class Modal extends LitElement {
   @property({ type: String })
   closeText = 'Close';
 
-  /** Determines if the component is themed for GenAI.*/
-  @property({ type: Boolean, reflect: true })
-  aiConnected = false;
-
   /** The dialog element
    * @internal
    */
   @query('dialog')
   _dialog!: any;
 
+  /** Determines if the component is themed for GenAI.*/
+  @property({ type: Boolean, reflect: true })
+  aiConnected = false;
+
+  /** Disables the secondary button. */
+  @property({ type: Boolean })
+  disableScroll = false;
+
   override render() {
     const classes = {
       modal: true,
       'size--md': this.size === 'md',
       'size--lg': this.size === 'lg',
-      'modal--ai': this.aiConnected,
+      'size--xl': this.size === 'xl',
+      'ai-connected': this.aiConnected,
     };
 
     return html`
@@ -145,57 +150,62 @@ export class Modal extends LitElement {
             </div>
           </header>
 
-          <div class="body">
+          <div class="body ${this.disableScroll ? 'disableScroll' : ''}">
             <slot></slot>
           </div>
 
           ${!this.hideFooter
             ? html`
-                <div class="footer">
-                  <kyn-button
-                    class="action-button"
-                    value="ok"
-                    ?aiConnected=${this.aiConnected}
-                    kind=${this.destructive ? 'primary-destructive' : 'primary'}
-                    ?disabled=${this.okDisabled}
-                    @click=${(e: Event) => this._closeModal(e, 'ok')}
-                  >
-                    ${this.okText}
-                  </kyn-button>
-                  ${this.showSecondaryButton
-                    ? html`
-                        <kyn-button
-                          class="action-button"
-                          value="Secondary"
-                          kind="secondary"
-                          ?aiConnected=${this.aiConnected}
-                          ?disabled=${this.secondaryDisabled}
-                          @click=${(e: Event) =>
-                            this._closeModal(e, 'secondary')}
-                        >
-                          ${this.secondaryButtonText}
-                        </kyn-button>
-                      `
-                    : null}
-                  ${this.hideCancelButton
-                    ? null
-                    : html`
-                        <kyn-button
-                          class="action-button"
-                          value="cancel"
-                          kind="tertiary"
-                          ?aiConnected=${this.aiConnected}
-                          @click=${(e: Event) => this._closeModal(e, 'cancel')}
-                        >
-                          ${this.cancelText}
-                        </kyn-button>
-                      `}
-                  <!--
+                <slot name="footer">
+                  <div class="footer">
+                    <kyn-button
+                      class="action-button"
+                      value="ok"
+                      ?aiConnected=${this.aiConnected}
+                      kind=${this.destructive
+                        ? 'primary-destructive'
+                        : 'primary'}
+                      ?disabled=${this.okDisabled}
+                      @click=${(e: Event) => this._closeModal(e, 'ok')}
+                    >
+                      ${this.okText}
+                    </kyn-button>
+                    ${this.showSecondaryButton
+                      ? html`
+                          <kyn-button
+                            class="action-button"
+                            value="Secondary"
+                            kind="secondary"
+                            ?aiConnected=${this.aiConnected}
+                            ?disabled=${this.secondaryDisabled}
+                            @click=${(e: Event) =>
+                              this._closeModal(e, 'secondary')}
+                          >
+                            ${this.secondaryButtonText}
+                          </kyn-button>
+                        `
+                      : null}
+                    ${this.hideCancelButton
+                      ? null
+                      : html`
+                          <kyn-button
+                            class="action-button"
+                            value="cancel"
+                            kind="tertiary"
+                            ?aiConnected=${this.aiConnected}
+                            @click=${(e: Event) =>
+                              this._closeModal(e, 'cancel')}
+                          >
+                            ${this.cancelText}
+                          </kyn-button>
+                        `}
+                    <!--
             <div class="custom-actions">
               <slot name="actions"></slot>
             </div>
             -->
-                </div>
+                  </div>
+                </slot>
               `
             : null}
         </form>
