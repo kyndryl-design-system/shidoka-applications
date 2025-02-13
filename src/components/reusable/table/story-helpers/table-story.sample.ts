@@ -229,8 +229,7 @@ class MyStoryTable extends LitElement {
           : `${selectedRows.length} items selected`
         : this.tableTitle;
 
-    return html` <div style=${stickyHeader ? 'height: 400px' : ''}>
-      <kyn-table-toolbar
+    return html` <kyn-table-toolbar
         tableTitle=${tableTitle}
         tableSubtitle=${this.tableSubtitle}
       >
@@ -241,7 +240,7 @@ class MyStoryTable extends LitElement {
           : null}
       </kyn-table-toolbar>
 
-      <kyn-table-container>
+      <kyn-table-container style=${stickyHeader ? 'height: 400px' : ''}>
         <kyn-table
           ?striped=${striped}
           ?dense=${dense}
@@ -377,8 +376,7 @@ class MyStoryTable extends LitElement {
               ></kyn-pagination>
             `
           : null}
-      </kyn-table-footer>
-    </div>`;
+      </kyn-table-footer>`;
   }
 }
 
