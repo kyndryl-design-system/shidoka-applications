@@ -2,13 +2,20 @@
 
 :host {
   display: block;
-  max-width: 800px;
+  width: 250px;
+}
+
+:host([size='sm']) {
+  width: 200px;
+}
+
+:host([size='lg']) {
+  width: 300px;
 }
 
 button.prompt-wrapper-clickable {
   appearance: none;
   background: none;
-  border: none;
   margin: 0;
   padding: 0;
   font: inherit;
@@ -23,15 +30,20 @@ button.prompt-wrapper-clickable {
   text-decoration: none;
   color: var(--kd-color-text-title-ai-tertiary);
   padding: 24px;
-  min-height: 80px;
-  background: var(--kd-color-background-container-default);
+  min-height: 120px;
+  background: var(--kd-color-background-card-default);
   position: relative;
+  border-radius: 4px;
+
+  &.prompt-border {
+    border: 1px solid var(--kd-color-border-button-ai-state-default);
+  }
 
   &:hover {
     cursor: pointer;
-    background: var(--kd-color-background-container-default);
-    border-color: var(--kd-color-border-button-ai-state-hover);
+    background: var(--kd-color-background-button-secondary-ai-default);
     color: var(--kd-color-text-title-ai-primary);
+    border-color: var(--kd-color-border-button-ai-state-hover);
   }
 
   &:active {
@@ -39,7 +51,7 @@ button.prompt-wrapper-clickable {
   }
 
   &:focus {
-    outline: 1px solid var(--kd-color-border-button-primary-state-focused);
+    outline: none;
     background: var(--kd-color-background-button-secondary-ai-default);
     border-color: var(--kd-color-border-button-ai-state-focused);
   }
@@ -59,21 +71,13 @@ button.prompt-wrapper-clickable {
   }
 }
 
-.prompt-border {
-  border: 1px solid var(--kd-color-border-button-ai-state-default);
-  border-radius: 4px;
-}
-
 :host([selected]) {
   .prompt-wrapper,
   .prompt-wrapper-clickable {
     background: var(--kd-color-background-button-secondary-ai-default);
-    border: 1px solid var(--kd-color-border-button-ai-state-default);
 
     &:hover {
       cursor: pointer;
-      background: var(--kd-color-background-container-default);
-      border-color: var(--kd-color-border-button-ai-state-hover);
       color: var(--kd-color-text-title-ai-primary);
 
       .checkmark-icon {
@@ -81,13 +85,8 @@ button.prompt-wrapper-clickable {
       }
     }
 
-    &:active {
-      border-color: var(--kd-color-border-button-ai-state-pressed);
-    }
-
     &:focus {
-      outline: 1px solid var(--kd-color-border-button-primary-state-focused);
-      background: var(--kd-color-background-button-secondary-ai-default);
+      outline: none;
       border-color: var(--kd-color-border-button-ai-state-focused);
     }
   }

@@ -12,78 +12,145 @@ export default {
       url: '',
     },
   },
+  argTypes: {
+    size: {
+      options: ['sm', 'md', 'lg'],
+      control: { type: 'select' },
+    },
+    type: {
+      options: ['normal', 'clickable'],
+      control: { type: 'select' },
+    },
+    hideBorder: {
+      control: { type: 'boolean' },
+    },
+    selected: {
+      control: { type: 'boolean' },
+    },
+  },
+};
+
+const args = {
+  type: 'normal',
+  size: 'md',
+  hideBorder: false,
+  selected: false,
+  value: '',
 };
 
 export const Normal = {
-  render: () => html`
-    <kyn-prompt size="large">
+  render: (args) => html`
+    <kyn-prompt
+      type=${args.type}
+      .size=${args.size}
+      ?hideBorder=${args.hideBorder}
+      ?selected=${args.selected}
+      value=${args.value}
+    >
       <div slot="label">Normal Prompt</div>
     </kyn-prompt>
   `,
 };
 
 export const Clickable = {
-  render: () => html`
-    <kyn-prompt type="clickable" size="large">
+  render: (args) => html`
+    <kyn-prompt
+      type=${args.type}
+      .size=${args.size}
+      ?hideBorder=${args.hideBorder}
+      ?selected=${args.selected}
+      value=${args.value}
+    >
       <div slot="label">Clickable Prompt</div>
     </kyn-prompt>
   `,
 };
 
 export const Selected = {
-  render: () => html`
-    <kyn-prompt selected size="large">
+  args: { ...args, size: 'md', selected: true },
+  render: (args) => html`
+    <kyn-prompt
+      type=${args.type}
+      .size=${args.size}
+      ?hideBorder=${args.hideBorder}
+      ?selected=${args.selected}
+      value=${args.value}
+    >
       <div slot="label">Selected Prompt</div>
     </kyn-prompt>
   `,
 };
 
-export const Vertical = {
-  render: () => html`
-    <kyn-prompt promptOrientation="vertical" size="large">
-      <div slot="label">
-        <div>First Label</div>
-        <div>Second Label</div>
-        <div>Third Label</div>
-      </div>
-    </kyn-prompt>
-  `,
-};
-
 export const Groups = {
-  render: () => html`
-    <div
-      style="max-width: 800px; display: flex; flex-direction: column; gap: 32px;"
-    >
+  args: { ...args, type: 'clickable' },
+  render: (args) => html`
+    <div>
       <div>
-        <h3>Single Select Group</h3>
+        <div class="heading kd-type--headline-06">Single Select Group</div>
         <p style="margin: 10px 0 15px;">
           Only one prompt can be selected at a time
         </p>
-        <kyn-prompt-group orientation="horizontal">
-          <kyn-prompt type="clickable" value="option1" selected size="large">
+        <kyn-prompt-group promptOrientation=${'horizontal'}>
+          <kyn-prompt
+            type=${args.type}
+            .size=${args.size}
+            ?hideBorder=${args.hideBorder}
+            ?selected=${args.selected}
+            value=${'option1'}
+          >
             <div slot="label">Option 1</div>
           </kyn-prompt>
-          <kyn-prompt type="clickable" value="option2" size="large">
+          <kyn-prompt
+            type=${args.type}
+            .size=${args.size}
+            ?hideBorder=${args.hideBorder}
+            ?selected=${args.selected}
+            value=${'option2'}
+          >
             <div slot="label">Option 2</div>
           </kyn-prompt>
-          <kyn-prompt type="clickable" value="option3" size="large">
+          <kyn-prompt
+            type=${args.type}
+            .size=${args.size}
+            ?hideBorder=${args.hideBorder}
+            ?selected=${args.selected}
+            value=${'option3'}
+          >
             <div slot="label">Option 3</div>
           </kyn-prompt>
         </kyn-prompt-group>
       </div>
 
       <div>
-        <h3>Multiple Select Group</h3>
+        <div class="heading kd-type--headline-06" style="margin-top: 30px;">
+          Multi-select Group
+        </div>
         <p style="margin: 10px 0 15px;">Multiple prompts can be selected</p>
-        <kyn-prompt-group orientation="vertical" multipleSelect>
-          <kyn-prompt type="clickable" value="option1">
+        <kyn-prompt-group promptOrientation=${'vertical'} multipleSelect>
+          <kyn-prompt
+            type=${args.type}
+            .size=${args.size}
+            ?hideBorder=${args.hideBorder}
+            value=${'option1'}
+          >
             <div slot="label">Option 1</div>
           </kyn-prompt>
-          <kyn-prompt type="clickable" value="option2" selected>
+          <kyn-prompt
+            type=${args.type}
+            .size=${args.size}
+            ?hideBorder=${args.hideBorder}
+            selected
+            value=${'option2'}
+          >
             <div slot="label">Option 2</div>
           </kyn-prompt>
-          <kyn-prompt type="clickable" value="option3" selected>
+          <kyn-prompt
+            type=${args.type}
+            .size=${args.size}
+            ?hideBorder=${args.hideBorder}
+            selected
+            value=${'option3'}
+          >
             <div slot="label">Option 3</div>
           </kyn-prompt>
         </kyn-prompt-group>

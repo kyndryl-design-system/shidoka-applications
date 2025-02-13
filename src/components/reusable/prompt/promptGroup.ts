@@ -13,23 +13,23 @@ import PromptGroupScss from './promptGroup.scss';
 export class PromptGroup extends LitElement {
   static override styles = PromptGroupScss;
 
-  /** Allow multiple prompts to be selected */
+  /** Optionally allow multiple prompts to be selected */
   @property({ type: Boolean })
   multipleSelect = false;
 
-  /** Selected values */
+  /** Array of selected values. */
   @property({ type: Array })
   selectedValues: string[] = [];
 
-  /** Orientation of the group */
+  /** Sets orientation of prompt group. */
   @property({ type: String })
-  orientation: 'horizontal' | 'vertical' = 'horizontal';
+  promptOrientation: 'horizontal' | 'vertical' = 'horizontal';
 
   override render() {
     const groupClasses = {
       'prompt-group': true,
-      'prompt-group--horizontal': this.orientation === 'horizontal',
-      'prompt-group--vertical': this.orientation === 'vertical',
+      'prompt-group--horizontal': this.promptOrientation === 'horizontal',
+      'prompt-group--vertical': this.promptOrientation === 'vertical',
     };
 
     return html`
@@ -45,7 +45,6 @@ export class PromptGroup extends LitElement {
       .assignedElements()
       .filter((el) => el.tagName.toLowerCase() === 'kyn-prompt');
 
-    // Set up listeners for prompt selection changes
     prompts.forEach((prompt: any) => {
       prompt.addEventListener('on-selection-change', (e: CustomEvent) => {
         this._handlePromptSelection(prompt, e.detail.selected);
@@ -55,7 +54,6 @@ export class PromptGroup extends LitElement {
 
   private _handlePromptSelection(selectedPrompt: any, isSelected: boolean) {
     if (!this.multipleSelect) {
-      // Single select mode: deselect others
       const slot = this.shadowRoot?.querySelector('slot');
       const prompts = slot
         ?.assignedElements()
@@ -68,7 +66,6 @@ export class PromptGroup extends LitElement {
       });
     }
 
-    // Update selectedValues
     const value = selectedPrompt.getAttribute('value') || '';
     if (isSelected) {
       this.selectedValues = this.multipleSelect

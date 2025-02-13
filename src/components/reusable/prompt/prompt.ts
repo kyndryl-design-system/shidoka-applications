@@ -9,9 +9,9 @@ import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/2
 
 /**
  * Prompt.
+ * @slot label - Slot for the prompt label content.
  * @fires on-prompt-click - Captures the click event of clickable prompt and emits the original event details. Use `e.stopPropogation()` / `e.preventDefault()` for any internal clickable elements when prompt type is `'clickable'` to stop bubbling / prevent event.
  * @fires on-selection-change - Fires when the prompt's selected state changes, emitting the new selected state.
- * @slot label - Slot for the prompt label content.
  */
 
 @customElement('kyn-prompt')
@@ -30,13 +30,9 @@ export class Prompt extends LitElement {
   @property({ type: Boolean, reflect: true })
   selected = false;
 
-  /** Sets prompt orientation. */
-  @property({ type: String })
-  promptOrientation: 'horizontal' | 'vertical' = 'horizontal';
-
-  /** Sets the size of the card. */
-  @property({ type: String })
-  size = 'large';
+  /** Sets the size of the prompt. Options: 'sm', 'md', 'lg' */
+  @property({ type: String, reflect: true })
+  size: 'sm' | 'md' | 'lg' = 'md';
 
   /** Value associated with this prompt, used for selection tracking in prompt groups */
   @property({ type: String })
@@ -54,9 +50,7 @@ export class Prompt extends LitElement {
         ? html`<button
             part="prompt-wrapper"
             class="${classMap(promptWrapperClasses)}"
-            @click=${this.handleClick}
-            @keydown=${this.handleKeydown}
-            type="button"
+            @click=${(e: Event) => this.handleClick(e)}
           >
             <slot name="label"></slot>
             ${this.selected
@@ -83,29 +77,19 @@ export class Prompt extends LitElement {
     e.preventDefault();
 
     if (this.type === 'clickable') {
-      this.toggleSelection();
+      this.selected = !this.selected;
+
+      this.dispatchEvent(
+        new CustomEvent('on-selection-change', {
+          detail: { selected: this.selected },
+        })
+      );
     }
 
     const event = new CustomEvent('on-prompt-click', {
       detail: { origEvent: e },
     });
     this.dispatchEvent(event);
-  }
-
-  private handleKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      this.toggleSelection();
-    }
-  }
-
-  private toggleSelection() {
-    this.selected = !this.selected;
-    this.dispatchEvent(
-      new CustomEvent('on-selection-change', {
-        detail: { selected: this.selected },
-      })
-    );
   }
 }
 
