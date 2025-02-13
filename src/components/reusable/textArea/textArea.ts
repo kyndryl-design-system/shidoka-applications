@@ -55,6 +55,10 @@ export class TextArea extends FormMixin(LitElement) {
   @property({ type: Number })
   minLength!: number;
 
+  /** Set it to `true`, if text area is not resizeable. */
+  @property({ type: Boolean })
+  notResizeable = false;
+
   /** textarea rows attribute. The number of visible text lines.
    * **Required** when `aiConnected` is set to `true`.
    */
@@ -110,6 +114,7 @@ export class TextArea extends FormMixin(LitElement) {
           class=${classMap({
             'input-wrapper': true,
             'ai-connected': this.aiConnected,
+            'no-resize': this.notResizeable,
           })}
         >
           <textarea

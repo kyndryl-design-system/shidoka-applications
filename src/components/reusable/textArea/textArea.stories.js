@@ -49,6 +49,7 @@ const Template = (args) => {
       maxLength=${ifDefined(args.maxLength)}
       rows=${args.rows}
       ?aiConnected=${args.aiConnected}
+      ?notResizeable=${args.notResizeable}
       maxRowsVisible=${args.maxRowsVisible}
       @on-input=${(e) => action(e.type)(e)}
       @keydown=${(e) => e.stopPropagation()}
@@ -67,6 +68,7 @@ export const AIConnected = Template.bind({});
 AIConnected.args = {
   ...args,
   aiConnected: true,
+  notResizeable: true,
   rows: 1,
   maxRowsVisible: 4,
 };
