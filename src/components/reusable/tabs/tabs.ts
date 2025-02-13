@@ -33,6 +33,10 @@ export class Tabs extends LitElement {
   @property({ type: Boolean })
   disableAutoFocusUpdate = false;
 
+  /** Adds scrollable overflow to the tab panels. */
+  @property({ type: Boolean })
+  scrollablePanels = false;
+
   /** Queries for slotted tabs.
    * @internal
    */
@@ -49,6 +53,7 @@ export class Tabs extends LitElement {
     const wrapperClasses = {
       wrapper: true,
       vertical: this.vertical,
+      scrollable: this.scrollablePanels,
     };
 
     const tabsClasses = {

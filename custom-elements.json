@@ -3389,6 +3389,622 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/checkbox/checkbox.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Checkbox.",
+          "name": "Checkbox",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Checkbox value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state, inherited from the parent group.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "visiblyHidden",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines whether the label should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes.",
+              "attribute": "visiblyHidden"
+            },
+            {
+              "kind": "field",
+              "name": "indeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines whether the checkbox is in an indeterminate state.",
+              "attribute": "indeterminate"
+            },
+            {
+              "kind": "method",
+              "name": "handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the change event and emits the selected value and original event details.",
+              "name": "on-checkbox-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Checkbox value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state, inherited from the parent group.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "visiblyHidden",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines whether the label should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes.",
+              "fieldName": "visiblyHidden"
+            },
+            {
+              "name": "indeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines whether the checkbox is in an indeterminate state.",
+              "fieldName": "indeterminate"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-checkbox",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Checkbox",
+          "declaration": {
+            "name": "Checkbox",
+            "module": "src/components/reusable/checkbox/checkbox.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-checkbox",
+          "declaration": {
+            "name": "Checkbox",
+            "module": "src/components/reusable/checkbox/checkbox.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/checkbox/checkboxGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Checkbox group container.",
+          "name": "CheckboxGroup",
+          "slots": [
+            {
+              "description": "Slot for individual checkboxes.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            },
+            {
+              "description": "Slot for description text.",
+              "name": "description"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[]",
+              "description": "Checkbox group selected values.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes a single selection required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox group disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "horizontal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox group horizontal style.",
+              "attribute": "horizontal"
+            },
+            {
+              "kind": "field",
+              "name": "selectAll",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a \"Select All\" checkbox to the top of the group.",
+              "attribute": "selectAll"
+            },
+            {
+              "kind": "field",
+              "name": "hideLegend",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the group legend/label visually.",
+              "attribute": "hideLegend"
+            },
+            {
+              "kind": "field",
+              "name": "filterable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a search input to enable filtering of checkboxes.",
+              "attribute": "filterable"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "limitCheckboxes",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible checkboxes behind a \"Show all\" button.",
+              "attribute": "limitCheckboxes"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  selectAll: 'Select all',\r\n  showMore: 'Show more',\r\n  showLess: 'Show less',\r\n  search: 'Search',\r\n  required: 'Required',\r\n  error: 'Error',\r\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "checkboxes",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "filteredCheckboxes",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "method",
+              "name": "_updateCheckboxStates",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCheckboxChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitChangeEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFilter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_toggleRevealed",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "revealed",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSubgroupChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the change event and emits the selected values.",
+              "name": "on-checkbox-group-change"
+            },
+            {
+              "description": "Captures the search input event and emits the search term.",
+              "name": "on-search"
+            },
+            {
+              "description": "Captures the show more/less click and emits the expanded state.",
+              "name": "on-limit-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[]",
+              "description": "Checkbox group selected values.",
+              "fieldName": "value"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes a single selection required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox group disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "horizontal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox group horizontal style.",
+              "fieldName": "horizontal"
+            },
+            {
+              "name": "selectAll",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a \"Select All\" checkbox to the top of the group.",
+              "fieldName": "selectAll"
+            },
+            {
+              "name": "hideLegend",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the group legend/label visually.",
+              "fieldName": "hideLegend"
+            },
+            {
+              "name": "filterable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a search input to enable filtering of checkboxes.",
+              "fieldName": "filterable"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "limitCheckboxes",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible checkboxes behind a \"Show all\" button.",
+              "fieldName": "limitCheckboxes"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-checkbox-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CheckboxGroup",
+          "declaration": {
+            "name": "CheckboxGroup",
+            "module": "src/components/reusable/checkbox/checkboxGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-checkbox-group",
+          "declaration": {
+            "name": "CheckboxGroup",
+            "module": "src/components/reusable/checkbox/checkboxGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/checkbox/checkboxSubgroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Checkbox subgroup",
+          "name": "CheckboxSubgroup",
+          "slots": [
+            {
+              "description": "Slot for child kyn-checkboxes.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for parent kyn-checkbox.",
+              "name": "parent"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "_handleSlotchange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_syncParent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "count",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCheckboxChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-checkbox-subgroup",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CheckboxSubgroup",
+          "declaration": {
+            "name": "CheckboxSubgroup",
+            "module": "src/components/reusable/checkbox/checkboxSubgroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-checkbox-subgroup",
+          "declaration": {
+            "name": "CheckboxSubgroup",
+            "module": "src/components/reusable/checkbox/checkboxSubgroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/checkbox/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Checkbox",
+          "declaration": {
+            "name": "Checkbox",
+            "module": "./checkbox"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "CheckboxGroup",
+          "declaration": {
+            "name": "CheckboxGroup",
+            "module": "./checkboxGroup"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "CheckboxSubgroup",
+          "declaration": {
+            "name": "CheckboxSubgroup",
+            "module": "./checkboxSubgroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/card/card.ts",
       "declarations": [
         {
@@ -3708,6 +4324,673 @@
           "declaration": {
             "name": "VitalCardSkeleton",
             "module": "src/components/reusable/card/vitalCard.skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`",
+          "name": "DateRangePicker",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale"
+              },
+              "default": "'en'",
+              "description": "Sets and dynamically imports specific l10n calendar localization.",
+              "attribute": "locale"
+            },
+            {
+              "kind": "field",
+              "name": "dateFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Y-m-d'",
+              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
+              "attribute": "dateFormat"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDate",
+              "type": {
+                "text": "string | string[] | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. [\"2024-01-01\", \"2024-01-07\"]).",
+              "attribute": "defaultDate"
+            },
+            {
+              "kind": "field",
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "attribute": "defaultErrorMessage"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "[Date | null, Date | null]"
+              },
+              "default": "[null, null]",
+              "description": "Sets date/time range value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "attribute": "warnText"
+            },
+            {
+              "kind": "field",
+              "name": "disable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to disable specific dates.",
+              "attribute": "disable"
+            },
+            {
+              "kind": "field",
+              "name": "enable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to enable specific dates.",
+              "attribute": "enable"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets date range picker form input value to required/required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "dateRangePickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to enabled/disabled.",
+              "attribute": "dateRangePickerDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean | null"
+              },
+              "default": "null",
+              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
+              "attribute": "twentyFourHourFormat"
+            },
+            {
+              "kind": "field",
+              "name": "minDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of date range picker date selection.",
+              "attribute": "minDate"
+            },
+            {
+              "kind": "field",
+              "name": "maxDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of date range picker date selection.",
+              "attribute": "maxDate"
+            },
+            {
+              "kind": "field",
+              "name": "errorAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "attribute": "errorAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "attribute": "errorTitle"
+            },
+            {
+              "kind": "field",
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "attribute": "warningAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "attribute": "warningTitle"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  requiredText: 'Required',\r\n  clearAll: 'Clear',\r\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "resizeTimeout",
+              "type": {
+                "text": "number | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "handleResize",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "renderValidationMessage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "errorId",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "warningId",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClear",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getDateRangePickerClasses"
+            },
+            {
+              "kind": "method",
+              "name": "setupAnchor",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "initializeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getComponentFlatpickrOptions",
+              "return": {
+                "type": {
+                  "text": "Promise<Partial<BaseOptions>>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updateFlatpickrOptions"
+            },
+            {
+              "kind": "method",
+              "name": "setInitialDates",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleOpen",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleDateChange",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleClose"
+            },
+            {
+              "kind": "method",
+              "name": "updateSelectedDateRangeAria",
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setShouldFlatpickrOpen",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "closeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "preventFlatpickrOpen",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleInputClickEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleInputFocusEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_onChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFormReset",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale"
+              },
+              "default": "'en'",
+              "description": "Sets and dynamically imports specific l10n calendar localization.",
+              "fieldName": "locale"
+            },
+            {
+              "name": "dateFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Y-m-d'",
+              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
+              "fieldName": "dateFormat"
+            },
+            {
+              "name": "defaultDate",
+              "type": {
+                "text": "string | string[] | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. [\"2024-01-01\", \"2024-01-07\"]).",
+              "fieldName": "defaultDate"
+            },
+            {
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "fieldName": "defaultErrorMessage"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "[Date | null, Date | null]"
+              },
+              "default": "[null, null]",
+              "description": "Sets date/time range value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "disable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to disable specific dates.",
+              "fieldName": "disable"
+            },
+            {
+              "name": "enable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to enable specific dates.",
+              "fieldName": "enable"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets date range picker form input value to required/required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "dateRangePickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to enabled/disabled.",
+              "fieldName": "dateRangePickerDisabled"
+            },
+            {
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean | null"
+              },
+              "default": "null",
+              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
+              "fieldName": "twentyFourHourFormat"
+            },
+            {
+              "name": "minDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of date range picker date selection.",
+              "fieldName": "minDate"
+            },
+            {
+              "name": "maxDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of date range picker date selection.",
+              "fieldName": "maxDate"
+            },
+            {
+              "name": "errorAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "fieldName": "errorAriaLabel"
+            },
+            {
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "fieldName": "errorTitle"
+            },
+            {
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "fieldName": "warningAriaLabel"
+            },
+            {
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "fieldName": "warningTitle"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-date-range-picker",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-date-range-picker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "./daterangepicker"
           }
         }
       ]
@@ -4425,1275 +5708,6 @@
           "declaration": {
             "name": "DatePicker",
             "module": "./datepicker"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`",
-          "name": "DateRangePicker",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "locale",
-              "type": {
-                "text": "SupportedLocale"
-              },
-              "default": "'en'",
-              "description": "Sets and dynamically imports specific l10n calendar localization.",
-              "attribute": "locale"
-            },
-            {
-              "kind": "field",
-              "name": "dateFormat",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Y-m-d'",
-              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
-              "attribute": "dateFormat"
-            },
-            {
-              "kind": "field",
-              "name": "defaultDate",
-              "type": {
-                "text": "string | string[] | null"
-              },
-              "default": "null",
-              "description": "Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. [\"2024-01-01\", \"2024-01-07\"]).",
-              "attribute": "defaultDate"
-            },
-            {
-              "kind": "field",
-              "name": "defaultErrorMessage",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets default error message.",
-              "attribute": "defaultErrorMessage"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "[Date | null, Date | null]"
-              },
-              "default": "[null, null]",
-              "description": "Sets date/time range value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation warning messaging.",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "disable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to disable specific dates.",
-              "attribute": "disable"
-            },
-            {
-              "kind": "field",
-              "name": "enable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to enable specific dates.",
-              "attribute": "enable"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets date range picker form input value to required/required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "dateRangePickerDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire date range picker form element to enabled/disabled.",
-              "attribute": "dateRangePickerDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "twentyFourHourFormat",
-              "type": {
-                "text": "boolean | null"
-              },
-              "default": "null",
-              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
-              "attribute": "twentyFourHourFormat"
-            },
-            {
-              "kind": "field",
-              "name": "minDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets lower boundary of date range picker date selection.",
-              "attribute": "minDate"
-            },
-            {
-              "kind": "field",
-              "name": "maxDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets upper boundary of date range picker date selection.",
-              "attribute": "maxDate"
-            },
-            {
-              "kind": "field",
-              "name": "errorAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for error message.",
-              "attribute": "errorAriaLabel"
-            },
-            {
-              "kind": "field",
-              "name": "errorTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for error message.",
-              "attribute": "errorTitle"
-            },
-            {
-              "kind": "field",
-              "name": "warningAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for warning message.",
-              "attribute": "warningAriaLabel"
-            },
-            {
-              "kind": "field",
-              "name": "warningTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for warning message.",
-              "attribute": "warningTitle"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\r\n  requiredText: 'Required',\r\n  clearAll: 'Clear',\r\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "renderValidationMessage",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "errorId",
-                  "type": {
-                    "text": "string"
-                  }
-                },
-                {
-                  "name": "warningId",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClear",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getDateRangePickerClasses"
-            },
-            {
-              "kind": "method",
-              "name": "setupAnchor",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "initializeFlatpickr",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getComponentFlatpickrOptions",
-              "return": {
-                "type": {
-                  "text": "Promise<Partial<BaseOptions>>"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "updateFlatpickrOptions"
-            },
-            {
-              "kind": "method",
-              "name": "setInitialDates",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "handleOpen",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "handleDateChange",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "selectedDates",
-                  "type": {
-                    "text": "Date[]"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleClose"
-            },
-            {
-              "kind": "method",
-              "name": "updateSelectedDateRangeAria",
-              "parameters": [
-                {
-                  "name": "selectedDates",
-                  "type": {
-                    "text": "Date[]"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "setShouldFlatpickrOpen",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "closeFlatpickr",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "preventFlatpickrOpen",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleInputClickEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleInputFocusEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_onChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFormReset",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "locale",
-              "type": {
-                "text": "SupportedLocale"
-              },
-              "default": "'en'",
-              "description": "Sets and dynamically imports specific l10n calendar localization.",
-              "fieldName": "locale"
-            },
-            {
-              "name": "dateFormat",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Y-m-d'",
-              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
-              "fieldName": "dateFormat"
-            },
-            {
-              "name": "defaultDate",
-              "type": {
-                "text": "string | string[] | null"
-              },
-              "default": "null",
-              "description": "Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. [\"2024-01-01\", \"2024-01-07\"]).",
-              "fieldName": "defaultDate"
-            },
-            {
-              "name": "defaultErrorMessage",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets default error message.",
-              "fieldName": "defaultErrorMessage"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "[Date | null, Date | null]"
-              },
-              "default": "[null, null]",
-              "description": "Sets date/time range value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation warning messaging.",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "disable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to disable specific dates.",
-              "fieldName": "disable"
-            },
-            {
-              "name": "enable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to enable specific dates.",
-              "fieldName": "enable"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets date range picker form input value to required/required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "dateRangePickerDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire date range picker form element to enabled/disabled.",
-              "fieldName": "dateRangePickerDisabled"
-            },
-            {
-              "name": "twentyFourHourFormat",
-              "type": {
-                "text": "boolean | null"
-              },
-              "default": "null",
-              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
-              "fieldName": "twentyFourHourFormat"
-            },
-            {
-              "name": "minDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets lower boundary of date range picker date selection.",
-              "fieldName": "minDate"
-            },
-            {
-              "name": "maxDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets upper boundary of date range picker date selection.",
-              "fieldName": "maxDate"
-            },
-            {
-              "name": "errorAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for error message.",
-              "fieldName": "errorAriaLabel"
-            },
-            {
-              "name": "errorTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for error message.",
-              "fieldName": "errorTitle"
-            },
-            {
-              "name": "warningAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for warning message.",
-              "fieldName": "warningAriaLabel"
-            },
-            {
-              "name": "warningTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for warning message.",
-              "fieldName": "warningTitle"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-date-range-picker",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-date-range-picker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "./daterangepicker"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/checkbox/checkbox.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Checkbox.",
-          "name": "Checkbox",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Checkbox value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox disabled state, inherited from the parent group.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "visiblyHidden",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines whether the label should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes.",
-              "attribute": "visiblyHidden"
-            },
-            {
-              "kind": "field",
-              "name": "indeterminate",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines whether the checkbox is in an indeterminate state.",
-              "attribute": "indeterminate"
-            },
-            {
-              "kind": "method",
-              "name": "handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the change event and emits the selected value and original event details.",
-              "name": "on-checkbox-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Checkbox value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox disabled state, inherited from the parent group.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "visiblyHidden",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines whether the label should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes.",
-              "fieldName": "visiblyHidden"
-            },
-            {
-              "name": "indeterminate",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines whether the checkbox is in an indeterminate state.",
-              "fieldName": "indeterminate"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-checkbox",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Checkbox",
-          "declaration": {
-            "name": "Checkbox",
-            "module": "src/components/reusable/checkbox/checkbox.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-checkbox",
-          "declaration": {
-            "name": "Checkbox",
-            "module": "src/components/reusable/checkbox/checkbox.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/checkbox/checkboxGroup.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Checkbox group container.",
-          "name": "CheckboxGroup",
-          "slots": [
-            {
-              "description": "Slot for individual checkboxes.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            },
-            {
-              "description": "Slot for description text.",
-              "name": "description"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[]",
-              "description": "Checkbox group selected values.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes a single selection required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox group disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "horizontal",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox group horizontal style.",
-              "attribute": "horizontal"
-            },
-            {
-              "kind": "field",
-              "name": "selectAll",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds a \"Select All\" checkbox to the top of the group.",
-              "attribute": "selectAll"
-            },
-            {
-              "kind": "field",
-              "name": "hideLegend",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide the group legend/label visually.",
-              "attribute": "hideLegend"
-            },
-            {
-              "kind": "field",
-              "name": "filterable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds a search input to enable filtering of checkboxes.",
-              "attribute": "filterable"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "limitCheckboxes",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible checkboxes behind a \"Show all\" button.",
-              "attribute": "limitCheckboxes"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\r\n  selectAll: 'Select all',\r\n  showMore: 'Show more',\r\n  showLess: 'Show less',\r\n  search: 'Search',\r\n  required: 'Required',\r\n  error: 'Error',\r\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "checkboxes",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[]"
-            },
-            {
-              "kind": "field",
-              "name": "filteredCheckboxes",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[]"
-            },
-            {
-              "kind": "method",
-              "name": "_updateCheckboxStates",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCheckboxChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitChangeEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFilter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_toggleRevealed",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "revealed",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSubgroupChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the change event and emits the selected values.",
-              "name": "on-checkbox-group-change"
-            },
-            {
-              "description": "Captures the search input event and emits the search term.",
-              "name": "on-search"
-            },
-            {
-              "description": "Captures the show more/less click and emits the expanded state.",
-              "name": "on-limit-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "value",
-              "type": {
-                "text": "Array<any>"
-              },
-              "default": "[]",
-              "description": "Checkbox group selected values.",
-              "fieldName": "value"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes a single selection required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox group disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "horizontal",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox group horizontal style.",
-              "fieldName": "horizontal"
-            },
-            {
-              "name": "selectAll",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds a \"Select All\" checkbox to the top of the group.",
-              "fieldName": "selectAll"
-            },
-            {
-              "name": "hideLegend",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide the group legend/label visually.",
-              "fieldName": "hideLegend"
-            },
-            {
-              "name": "filterable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds a search input to enable filtering of checkboxes.",
-              "fieldName": "filterable"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "limitCheckboxes",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible checkboxes behind a \"Show all\" button.",
-              "fieldName": "limitCheckboxes"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-checkbox-group",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "CheckboxGroup",
-          "declaration": {
-            "name": "CheckboxGroup",
-            "module": "src/components/reusable/checkbox/checkboxGroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-checkbox-group",
-          "declaration": {
-            "name": "CheckboxGroup",
-            "module": "src/components/reusable/checkbox/checkboxGroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/checkbox/checkboxSubgroup.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Checkbox subgroup",
-          "name": "CheckboxSubgroup",
-          "slots": [
-            {
-              "description": "Slot for child kyn-checkboxes.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for parent kyn-checkbox.",
-              "name": "parent"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "_handleSlotchange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_syncParent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "count",
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleCheckboxChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-checkbox-subgroup",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "CheckboxSubgroup",
-          "declaration": {
-            "name": "CheckboxSubgroup",
-            "module": "src/components/reusable/checkbox/checkboxSubgroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-checkbox-subgroup",
-          "declaration": {
-            "name": "CheckboxSubgroup",
-            "module": "src/components/reusable/checkbox/checkboxSubgroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/checkbox/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Checkbox",
-          "declaration": {
-            "name": "Checkbox",
-            "module": "./checkbox"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "CheckboxGroup",
-          "declaration": {
-            "name": "CheckboxGroup",
-            "module": "./checkboxGroup"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "CheckboxSubgroup",
-          "declaration": {
-            "name": "CheckboxSubgroup",
-            "module": "./checkboxSubgroup"
           }
         }
       ]
@@ -6617,6 +6631,63 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/floatingContainer/floatingContainer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Floating Container.",
+          "name": "FloatingContainer",
+          "slots": [
+            {
+              "description": "Slot for kyn-button options.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-button-float-container",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FloatingContainer",
+          "declaration": {
+            "name": "FloatingContainer",
+            "module": "src/components/reusable/floatingContainer/floatingContainer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-button-float-container",
+          "declaration": {
+            "name": "FloatingContainer",
+            "module": "src/components/reusable/floatingContainer/floatingContainer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/floatingContainer/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FloatingContainer",
+          "declaration": {
+            "name": "FloatingContainer",
+            "module": "./floatingContainer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/errorBlock/errorBlock.ts",
       "declarations": [
         {
@@ -6698,63 +6769,6 @@
           "declaration": {
             "name": "ErrorBlock",
             "module": "./errorBlock"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/floatingContainer/floatingContainer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Floating Container.",
-          "name": "FloatingContainer",
-          "slots": [
-            {
-              "description": "Slot for kyn-button options.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-button-float-container",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "FloatingContainer",
-          "declaration": {
-            "name": "FloatingContainer",
-            "module": "src/components/reusable/floatingContainer/floatingContainer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-button-float-container",
-          "declaration": {
-            "name": "FloatingContainer",
-            "module": "src/components/reusable/floatingContainer/floatingContainer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/floatingContainer/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "FloatingContainer",
-          "declaration": {
-            "name": "FloatingContainer",
-            "module": "./floatingContainer"
           }
         }
       ]
@@ -9958,359 +9972,6 @@
           "declaration": {
             "name": "Pagination",
             "module": "src/components/reusable/pagination/Pagination.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/progressBar/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ProgressBar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "./progressBar"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/progressBar/progressBar.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-progress-bar>` -- progress bar status indicator component.",
-          "name": "ProgressBar",
-          "slots": [
-            {
-              "description": "Slot for tooltip text content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "showInlineLoadStatus",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets visibility of optional inline load status spinner.",
-              "attribute": "showInlineLoadStatus"
-            },
-            {
-              "kind": "field",
-              "name": "showActiveHelperText",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Controls whether to show default helper text for active state.",
-              "attribute": "showActiveHelperText"
-            },
-            {
-              "kind": "field",
-              "name": "progressBarId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
-              "attribute": "progressBarId"
-            },
-            {
-              "kind": "field",
-              "name": "status",
-              "type": {
-                "text": "'active' | 'success' | 'error'"
-              },
-              "default": "'active'",
-              "description": "Sets progress bar status mode.",
-              "attribute": "status"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets initial progress bar value (optionally hard-coded).",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "default": "100",
-              "description": "Sets manual max value (default = 100).",
-              "attribute": "max"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional progress bar label.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "helperText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional helper text that appears underneath progress bar element.",
-              "attribute": "helperText"
-            },
-            {
-              "kind": "field",
-              "name": "unit",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
-              "attribute": "unit"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "method",
-              "name": "renderProgressBar",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "renderProgressBarLabel",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "renderStatusIconOrLoader",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getProgressBarClasses",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "status",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getHelperText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getCurrentStatus",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "ProgressStatus"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "startProgress",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "cancelAnimation",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "showInlineLoadStatus",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets visibility of optional inline load status spinner.",
-              "fieldName": "showInlineLoadStatus"
-            },
-            {
-              "name": "showActiveHelperText",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Controls whether to show default helper text for active state.",
-              "fieldName": "showActiveHelperText"
-            },
-            {
-              "name": "progressBarId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
-              "fieldName": "progressBarId"
-            },
-            {
-              "name": "status",
-              "type": {
-                "text": "'active' | 'success' | 'error'"
-              },
-              "default": "'active'",
-              "description": "Sets progress bar status mode.",
-              "fieldName": "status"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets initial progress bar value (optionally hard-coded).",
-              "fieldName": "value"
-            },
-            {
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "default": "100",
-              "description": "Sets manual max value (default = 100).",
-              "fieldName": "max"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional progress bar label.",
-              "fieldName": "label"
-            },
-            {
-              "name": "helperText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional helper text that appears underneath progress bar element.",
-              "fieldName": "helperText"
-            },
-            {
-              "name": "unit",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
-              "fieldName": "unit"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-progress-bar",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ProgressBar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "src/components/reusable/progressBar/progressBar.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-progress-bar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "src/components/reusable/progressBar/progressBar.ts"
           }
         }
       ]
@@ -15361,6 +15022,16 @@
               "attribute": "disableAutoFocusUpdate"
             },
             {
+              "kind": "field",
+              "name": "scrollablePanels",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds scrollable overflow to the tab panels.",
+              "attribute": "scrollablePanels"
+            },
+            {
               "kind": "method",
               "name": "_handleSlotChangeTabs",
               "privacy": "private"
@@ -15489,6 +15160,15 @@
               "default": "false",
               "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
               "fieldName": "disableAutoFocusUpdate"
+            },
+            {
+              "name": "scrollablePanels",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds scrollable overflow to the tab panels.",
+              "fieldName": "scrollablePanels"
             }
           ],
           "superclass": {
@@ -15514,6 +15194,359 @@
           "declaration": {
             "name": "Tabs",
             "module": "src/components/reusable/tabs/tabs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/progressBar/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ProgressBar",
+          "declaration": {
+            "name": "ProgressBar",
+            "module": "./progressBar"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/progressBar/progressBar.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-progress-bar>` -- progress bar status indicator component.",
+          "name": "ProgressBar",
+          "slots": [
+            {
+              "description": "Slot for tooltip text content.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "showInlineLoadStatus",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets visibility of optional inline load status spinner.",
+              "attribute": "showInlineLoadStatus"
+            },
+            {
+              "kind": "field",
+              "name": "showActiveHelperText",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls whether to show default helper text for active state.",
+              "attribute": "showActiveHelperText"
+            },
+            {
+              "kind": "field",
+              "name": "progressBarId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
+              "attribute": "progressBarId"
+            },
+            {
+              "kind": "field",
+              "name": "status",
+              "type": {
+                "text": "'active' | 'success' | 'error'"
+              },
+              "default": "'active'",
+              "description": "Sets progress bar status mode.",
+              "attribute": "status"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial progress bar value (optionally hard-coded).",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "description": "Sets manual max value (default = 100).",
+              "attribute": "max"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional progress bar label.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "helperText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional helper text that appears underneath progress bar element.",
+              "attribute": "helperText"
+            },
+            {
+              "kind": "field",
+              "name": "unit",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
+              "attribute": "unit"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "method",
+              "name": "renderProgressBar",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderProgressBarLabel",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderStatusIconOrLoader",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getProgressBarClasses",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "status",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getHelperText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getCurrentStatus",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "ProgressStatus"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "startProgress",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "cancelAnimation",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "showInlineLoadStatus",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets visibility of optional inline load status spinner.",
+              "fieldName": "showInlineLoadStatus"
+            },
+            {
+              "name": "showActiveHelperText",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls whether to show default helper text for active state.",
+              "fieldName": "showActiveHelperText"
+            },
+            {
+              "name": "progressBarId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
+              "fieldName": "progressBarId"
+            },
+            {
+              "name": "status",
+              "type": {
+                "text": "'active' | 'success' | 'error'"
+              },
+              "default": "'active'",
+              "description": "Sets progress bar status mode.",
+              "fieldName": "status"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial progress bar value (optionally hard-coded).",
+              "fieldName": "value"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "description": "Sets manual max value (default = 100).",
+              "fieldName": "max"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional progress bar label.",
+              "fieldName": "label"
+            },
+            {
+              "name": "helperText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional helper text that appears underneath progress bar element.",
+              "fieldName": "helperText"
+            },
+            {
+              "name": "unit",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
+              "fieldName": "unit"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-progress-bar",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ProgressBar",
+          "declaration": {
+            "name": "ProgressBar",
+            "module": "src/components/reusable/progressBar/progressBar.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-progress-bar",
+          "declaration": {
+            "name": "ProgressBar",
+            "module": "src/components/reusable/progressBar/progressBar.ts"
           }
         }
       ]
