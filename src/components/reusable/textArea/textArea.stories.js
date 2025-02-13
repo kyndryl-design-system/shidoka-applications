@@ -70,8 +70,8 @@ export const AIConnected = {
     invalidText: '',
     minLength: undefined,
     maxLength: undefined,
-    rows: undefined,
-    maxRowsVisible: undefined,
+    rows: 1,
+    maxRowsVisible: 4,
     textStrings: {
       requiredText: 'Required',
       errorText: 'Error',
