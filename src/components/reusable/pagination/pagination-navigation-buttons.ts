@@ -65,7 +65,7 @@ export class PaginationNavigationButtons extends LitElement {
     return html`
       <kyn-button
         iconposition="center"
-        kind="tertiary"
+        kind="ghost"
         type="button"
         size="small"
         ?disabled=${disableBackButton}
@@ -82,7 +82,7 @@ export class PaginationNavigationButtons extends LitElement {
 
       <kyn-button
         iconposition="center"
-        kind="tertiary"
+        kind="ghost"
         type="button"
         size="small"
         ?disabled=${disableNextButton}

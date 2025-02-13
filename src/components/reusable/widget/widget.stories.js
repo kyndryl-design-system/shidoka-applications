@@ -168,11 +168,12 @@ export const StaticGrid = {
     return html`
       This example uses
       <a
-        href="https://kyndryl-design-system.github.io/shidoka-foundation/?path=/docs/foundation-grid--docs"
+        href="https://shidoka-foundation.netlify.app/?path=/docs/foundation-grid--docs"
         target="_blank"
         rel="noopener"
-        >Shidoka Foundation Grid</a
       >
+        Shidoka Foundation Grid
+      </a>
       for a static dashboard layout.
       <br /><br />
 
