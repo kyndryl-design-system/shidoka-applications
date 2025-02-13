@@ -25,14 +25,18 @@ export const Default = {
           maxRowsVisible="3"
           ?aiConnected=${true}
         ></kyn-text-area>
-        <kyn-button kind="primary-ai" description="send button">
+        <kyn-button
+          kind="primary-ai"
+          description="send button"
+          style="margin-right: 10px;"
+        >
           <span slot="icon">${unsafeSVG(sendIcon)}</span>
         </kyn-button>
       </div>
 
       <style>
         .input-query-container {
-          width: 724px;
+          width: 100%;
           display: flex;
           align-items: center;
           gap: 10px;
@@ -42,7 +46,7 @@ export const Default = {
           border-radius: 8px;
 
           .input-text-area {
-            width: 654px;
+            width: 100%;
             padding: 2px 0px 10px 10px;
           }
         }
