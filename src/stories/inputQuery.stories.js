@@ -26,9 +26,9 @@ export const Default = {
           ?aiConnected=${true}
         ></kyn-text-area>
         <kyn-button
+          class="input-send-button"
           kind="primary-ai"
           description="send button"
-          style="margin-right: 10px;"
         >
           <span slot="icon">${unsafeSVG(sendIcon)}</span>
         </kyn-button>
@@ -39,7 +39,6 @@ export const Default = {
           width: 100%;
           display: flex;
           align-items: center;
-          gap: 10px;
 
           background-color: var(--kd-color-background-container-ai-default);
           box-shadow: 0px 0px 24px 0px var(--kd-color-border-dropshadow-ai);
@@ -48,6 +47,11 @@ export const Default = {
           .input-text-area {
             width: 100%;
             padding: 2px 0px 10px 10px;
+            margin-right: 10px;
+          }
+
+          .input-send-button {
+            margin-right: 10px;
           }
         }
       </style>

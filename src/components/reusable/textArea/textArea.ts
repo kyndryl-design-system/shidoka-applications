@@ -191,10 +191,9 @@ ${this.value}</textarea
     const textarea = this.shadowRoot?.querySelector('textarea');
     if (textarea) {
       textarea.style.height = 'auto';
-      textarea.style.minHeight = `${this.rows * 24 + 34}px`;
-      textarea.style.height = `${textarea.scrollHeight + 2}px`;
-      textarea.style.maxHeight = `${this.maxRowsVisible * 24 + 20}px`;
-      // 24 -> line height, rest all are for text visibility adjustment and works for all scenarios.
+      textarea.style.minHeight = `${this.rows * 24 + 32}px`; // 24 -> line height, 32px -> text area padding
+      textarea.style.height = `${textarea.scrollHeight + 2}px`; // 2px -> minor adjustment
+      textarea.style.maxHeight = `${this.maxRowsVisible * 24 + 32}px`; // 24 -> line height, 32px -> text area padding
     }
   }
 
