@@ -14,9 +14,11 @@
   transition: outline-color 0.2s ease-in-out, color 0.2s ease-in-out,
     background-color 0.2s ease-in-out, border-color 0.2s ease-out;
   white-space: nowrap;
+  background: none;
+  border: none;
   outline: 2px solid transparent;
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
   text-decoration: none;
   cursor: pointer;
   width: 100%;
@@ -31,11 +33,11 @@
     min-width: initial;
   }
 
-  &.btn-float {
+  &--float {
     box-shadow: var(--kd-elevation-level-3);
   }
 
-  &.btn-hidden {
+  &--hidden {
     opacity: 0;
     visibility: hidden;
     transition: opacity 300ms ease-in-out, visibility 300ms ease-in-out;
@@ -70,443 +72,361 @@
       padding: 18px;
     }
   }
-}
 
-// Disabled Button Styles
-@mixin kd-btn-disabled {
-  color: var(--kd-color-text-link-level-disabled);
-  border: none;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-// Disabled Outline Button Styles
-@mixin kd-outline-btn-disabled {
-  background-color: transparent;
-  color: var(--kd-color-text-link-level-disabled);
-  border: 1px solid var(--kd-color-border-ui-disabled);
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-span {
-  display: flex;
-  align-items: center;
-  z-index: 1;
-}
-
-// Primary Button Styles (Web & App)
-.kd-btn--primary-web,
-.kd-btn--primary-app {
-  @extend .kd-btn;
-  background-color: var(--kd-color-background-button-primary-state-default);
-  color: var(--kd-color-text-button-dark-primary);
-  border: none;
-  position: relative;
-  overflow: hidden;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: var(--kd-color-background-button-primary-state-hover);
-    transition: transform 300ms ease-out, opacity 200ms ease-out,
-      background-color 150ms ease-in-out;
-    transform: scaleX(0);
-    transform-origin: left;
-    opacity: 0;
+  &[disabled] {
+    cursor: not-allowed;
   }
 
-  &:hover {
+  &--solid-styles {
+    position: relative;
+    overflow: hidden;
+
+    & span {
+      display: flex;
+      align-items: center;
+      z-index: 1;
+    }
+
     &:before {
-      transform: scaleX(1);
-      opacity: 1;
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: transparent;
+      transition: transform 300ms ease-out, opacity 200ms ease-out,
+        background-color 150ms ease-in-out;
+      transform: scaleX(0);
+      transform-origin: left;
+      opacity: 0;
+    }
+
+    &:hover {
+      &:before {
+        transform: scaleX(1);
+        opacity: 1;
+      }
+    }
+
+    &[disabled] {
+      background-color: var(--kd-color-background-ui-default-disabled);
+      color: var(--kd-color-text-link-level-disabled);
+
+      // hover
+      &:before {
+        background-color: transparent;
+      }
+      &:hover {
+        color: var(--kd-color-text-link-level-disabled);
+      }
+
+      &:active {
+        &:before {
+          background-color: transparent;
+        }
+      }
     }
   }
 
-  &:active {
-    border: none;
-
-    &:before {
-      background-color: var(--kd-color-background-button-primary-state-pressed);
-    }
-  }
-
-  &:focus {
-    outline-color: var(--kd-color-background-button-primary-state-focused);
-  }
-
-  &:disabled {
-    @include kd-btn-disabled;
-    background-color: var(--kd-color-background-ui-default-disabled);
-  }
-}
-
-.kd-btn--primary-web {
-  background-color: var(--kd-color-background-button-web-default);
-
-  &:before {
-    background-color: var(--kd-color-background-button-web-hover);
-  }
-
-  &:active:before {
-    background-color: var(--kd-color-background-button-web-pressed);
-  }
-
-  &:focus {
-    outline-color: var(--kd-color-border-variants-focus);
-  }
-}
-
-// Primary Outline Only Button
-.kd-btn--primary-app-outline,
-.kd-btn--primary-web-outline {
-  @extend .kd-btn;
-  background-color: transparent;
-  color: var(--kd-color-text-button-light-primary);
-  border: 1px solid var(--kd-color-border-button-primary-state-default);
-
-  &:hover {
-    border-color: var(--kd-color-border-button-primary-state-hover);
-  }
-
-  &:active:before {
-    border-color: var(--kd-color-border-button-primary-state-pressed);
-  }
-
-  &:focus {
-    border-color: var(--kd-color-border-button-primary-state-focused);
-    box-shadow: inset 0 0 0 1px
-        var(--kd-color-border-button-primary-state-focused),
-      inset 0 0 0 1px var(--kd-color-border-button-primary-state-focused);
-  }
-
-  &:active {
-    border-color: var(--kd-color-border-button-primary-state-pressed);
-    box-shadow: inset 0 0 0 0.5px
-        var(--kd-color-border-button-primary-state-pressed),
-      inset 0 0 0 0.5px var(--kd-color-border-button-primary-state-pressed);
-  }
-
-  &:disabled {
-    @include kd-outline-btn-disabled;
-  }
-}
-
-// Primary Destructive Button
-.kd-btn--primary-app-destructive,
-.kd-btn--primary-web-destructive {
-  @extend .kd-btn;
-  background-color: var(
-    --kd-color-background-button-primary-destructive-default
-  );
-  color: var(--kd-color-text-button-dark-destructive);
-  border: none;
-  position: relative;
-  overflow: hidden;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: var(
-      --kd-color-background-button-primary-destructive-hover
-    );
-    transition: transform 300ms ease-out, opacity 200ms ease-out,
-      background-color 150ms ease-in-out;
-    transform: scaleX(0);
-    transform-origin: left;
-    opacity: 0;
-  }
-
-  &:hover {
-    &:before {
-      transform: scaleX(1);
-      opacity: 1;
-    }
-  }
-
-  &:active:before {
-    background-color: var(
-      --kd-color-background-button-primary-destructive-pressed
-    );
-  }
-
-  &:focus {
-    outline-color: var(
-      --kd-color-background-button-primary-destructive-focused
-    );
-  }
-
-  &:disabled {
-    @include kd-btn-disabled;
-    background-color: var(--kd-color-background-ui-default-disabled);
-  }
-}
-
-// Primary Destructive Outline Only Button
-.kd-btn--primary-app-destructive-outline,
-.kd-btn--primary-web-destructive-outline {
-  @extend .kd-btn;
-  background-color: transparent;
-  color: var(--kd-color-text-button-light-destructive);
-  border: 1px solid var(--kd-color-border-button-primary-destructive-default);
-
-  &:hover {
-    border: 1px solid var(--kd-color-border-button-primary-destructive-hover);
-  }
-
-  &:active:before {
-    border-color: var(--kd-color-border-button-primary-destructive-pressed);
-  }
-
-  &:focus {
-    outline-color: var(
-      --kd-color-background-button-primary-destructive-focused
-    );
-  }
-
-  &:disabled {
-    @include kd-outline-btn-disabled;
-    color: var(--kd-color-text-button-dark-destructive);
-  }
-}
-
-// Secondary Button Styles
-.kd-btn--secondary {
-  @extend .kd-btn;
-  background-color: var(--kd-color-background-button-secondary-state-default);
-  color: var(--kd-color-text-button-dark-primary);
-  border: none;
-
-  &:hover {
-    background-color: var(--kd-color-background-button-secondary-state-hover);
-  }
-
-  &:focus {
-    background-color: var(--kd-color-background-button-secondary-state-focused);
-    outline-color: var(--kd-color-border-button-secondary-state-focused);
-  }
-
-  &:active {
-    background-color: var(--kd-color-background-button-secondary-state-pressed);
-  }
-
-  &:disabled {
-    @include kd-btn-disabled;
-    background-color: var(--kd-color-background-opacity-1);
-  }
-}
-
-// Secondary Outline Only Button
-.kd-btn--secondary-outline {
-  @extend .kd-btn;
-  background-color: transparent;
-  color: var(--kd-color-text-button-light-secondary);
-  border: 1px solid var(--kd-color-border-button-secondary-state-default);
-
-  &:hover {
-    border-color: var(--kd-color-border-button-secondary-state-hover);
-  }
-
-  &:focus {
-    border-color: var(--kd-color-border-button-secondary-state-focused);
-    box-shadow: inset 0 0 0 1px
-        var(--kd-color-border-button-secondary-state-focused),
-      inset 0 0 0 1px var(--kd-color-border-button-secondary-state-focused);
-  }
-
-  &:active {
-    border-color: var(--kd-color-border-button-secondary-state-pressed);
-    box-shadow: inset 0 0 0 0.5px
-        var(--kd-color-border-button-secondary-state-pressed),
-      inset 0 0 0 0.5px var(--kd-color-border-button-secondary-state-pressed);
-  }
-
-  &:disabled {
-    @include kd-outline-btn-disabled;
-  }
-}
-
-// Secondary Destructive Button
-.kd-btn--secondary-destructive {
-  @extend .kd-btn--secondary;
-  background-color: var(
-    --kd-color-background-button-secondary-destructive-default
-  );
-  color: var(--kd-color-text-button-dark-destructive);
-
-  &:hover {
-    background-color: var(
-      --kd-color-background-button-secondary-destructive-hover
-    );
-  }
-
-  &:focus {
-    background-color: var(
-      --kd-color-background-button-secondary-destructive-focused
-    );
-    outline-color: var(--kd-color-border-button-primary-destructive-default);
-  }
-
-  &:active {
-    background-color: var(
-      --kd-color-background-button-secondary-destructive-pressed
-    );
-  }
-}
-
-// Secondary Destructive Outline Only Button
-.kd-btn--secondary-destructive-outline {
-  @extend .kd-btn;
-  background-color: transparent;
-  color: var(--kd-color-text-button-light-destructive);
-  border: 1px solid var(--kd-color-border-button-secondary-destructive-default);
-
-  &:hover {
-    border-color: var(--kd-color-border-button-secondary-destructive-hover);
-  }
-
-  &:focus {
-    border-color: var(--kd-color-border-button-secondary-destructive-focused);
-    outline-color: var(--kd-color-border-button-primary-destructive-default);
-  }
-
-  &:active {
-    border-color: var(--kd-color-border-button-secondary-destructive-pressed);
-  }
-
-  &:disabled {
-    @include kd-outline-btn-disabled;
-    color: var(--kd-color-text-button-dark-destructive);
-  }
-}
-
-// Tertiary Button Styles
-.kd-btn--tertiary {
-  @extend .kd-btn;
-  background-color: var(--kd-color-background-button-tertiary-state-default);
-  color: var(--kd-color-text-button-light-primary);
-  border: none;
-
-  &:hover {
-    background-color: var(--kd-color-background-button-tertiary-state-hover);
+  &--primary {
+    background-color: var(--kd-color-background-button-primary-state-default);
     color: var(--kd-color-text-button-dark-primary);
+
+    // hover
+    &:before {
+      background-color: var(--kd-color-background-button-primary-state-hover);
+    }
+
+    &:focus {
+      outline-color: var(--kd-color-border-button-primary-state-focused);
+    }
+
+    &:active {
+      &:before {
+        background-color: var(
+          --kd-color-background-button-primary-state-pressed
+        );
+      }
+    }
   }
 
-  &:focus {
-    background-color: var(--kd-color-background-button-tertiary-state-focused);
-    outline-color: var(--kd-color-border-button-tertiary-state-focused);
+  &--primary-ai {
+    background-color: var(--kd-color-background-button-primary-ai-default);
+    color: var(--kd-color-text-button-dark-primary);
+
+    // hover
+    &:before {
+      background-color: var(--kd-color-background-button-primary-ai-hover);
+    }
+
+    &:focus {
+      outline-color: var(--kd-color-border-button-ai-state-focused);
+    }
+
+    &:active {
+      &:before {
+        background-color: var(--kd-color-background-button-primary-ai-pressed);
+      }
+    }
+  }
+
+  &--primary-destructive {
+    background-color: var(
+      --kd-color-background-button-primary-destructive-default
+    );
+    color: var(--kd-color-text-button-dark-destructive);
+
+    // hover
+    &:before {
+      background-color: var(
+        --kd-color-background-button-primary-destructive-hover
+      );
+    }
+
+    &:focus {
+      outline-color: var(--kd-color-border-button-primary-destructive-focused);
+    }
+
+    &:active {
+      &:before {
+        background-color: var(
+          --kd-color-background-button-primary-destructive-pressed
+        );
+      }
+    }
+  }
+
+  &--secondary {
+    background-color: var(--kd-color-background-button-secondary-state-default);
+    color: var(--kd-color-text-button-dark-primary);
+
+    // hover
+    &:before {
+      background-color: var(--kd-color-background-button-secondary-state-hover);
+    }
+
+    &:focus {
+      outline-color: var(--kd-color-border-button-secondary-state-focused);
+    }
+
+    &:active {
+      &:before {
+        background-color: var(
+          --kd-color-background-button-secondary-state-pressed
+        );
+      }
+    }
+  }
+
+  &--secondary-ai {
+    background-color: var(--kd-color-background-button-secondary-ai-default);
+    color: var(--kd-color-text-button-ai-default);
+
+    // hover
+    &:before {
+      background-color: var(--kd-color-background-button-secondary-ai-hover);
+    }
+
+    &:focus {
+      outline-color: var(--kd-color-border-button-ai-state-focused);
+    }
+
+    &:active {
+      &:before {
+        background-color: var(
+          --kd-color-background-button-secondary-ai-pressed
+        );
+      }
+    }
+  }
+
+  &--secondary-destructive {
+    background-color: var(
+      --kd-color-background-button-secondary-destructive-default
+    );
+    color: var(--kd-color-text-level-primary);
+
+    // hover
+    &:hover {
+      color: var(--kd-color-text-level-light);
+    }
+    &:before {
+      background-color: var(
+        --kd-color-background-button-secondary-destructive-hover
+      );
+    }
+
+    &:focus {
+      outline-color: var(
+        --kd-color-border-button-secondary-destructive-default
+      );
+    }
+
+    &:active {
+      color: var(--kd-color-text-level-primary);
+
+      &:before {
+        background-color: var(
+          --kd-color-background-button-secondary-destructive-pressed
+        );
+      }
+    }
+  }
+
+  &--tertiary {
+    background-color: var(--kd-color-background-button-tertiary-state-default);
     color: var(--kd-color-text-button-light-primary);
+
+    // hover
+    &:before {
+      background-color: var(--kd-color-background-button-tertiary-state-hover);
+    }
+    &:hover {
+      color: var(--kd-color-text-button-dark-primary);
+    }
+
+    &:focus {
+      outline-color: var(--kd-color-border-button-tertiary-state-focused);
+    }
+
+    &:active {
+      &:before {
+        background-color: var(
+          --kd-color-background-button-tertiary-state-pressed
+        );
+      }
+    }
   }
 
-  &:active {
-    background-color: var(--kd-color-background-button-tertiary-state-pressed);
+  &--content {
+    background-color: var(--kd-color-background-button-web-default);
     color: var(--kd-color-text-button-dark-primary);
+
+    // hover
+    &:before {
+      background-color: var(--kd-color-background-button-web-hover);
+    }
+
+    &:focus {
+      outline-color: var(--kd-color-border-variants-focus);
+    }
+
+    &:active {
+      &:before {
+        background-color: var(--kd-color-background-button-web-pressed);
+      }
+    }
   }
 
-  &:disabled {
-    @include kd-btn-disabled;
-    background-color: transparent;
-  }
-}
+  &--outline-styles {
+    border: 1px solid transparent;
 
-// Tertiary Outline Only Button
-.kd-btn--tertiary-outline {
-  @extend .kd-btn;
-  background-color: transparent;
-  color: var(--kd-color-text-button-light-primary);
-  border: 1px solid var(--kd-color-border-button-tertiary-state-default);
+    &[disabled] {
+      border-color: var(--kd-color-border-ui-disabled);
+      color: var(--kd-color-text-link-level-disabled);
 
-  &:hover {
-    border-color: var(--kd-color-border-button-tertiary-state-hover);
-  }
+      &:hover {
+        border-color: var(--kd-color-border-ui-disabled);
+        background-color: transparent;
+      }
 
-  &:focus {
-    color: var(--kd-color-text-button-light-tertiary);
-    border-color: var(--kd-color-border-button-tertiary-state-focused);
-    box-shadow: inset 0 0 0 1px
-        var(--kd-color-border-button-tertiary-state-focused),
-      inset 0 0 0 1px var(--kd-color-border-button-tertiary-state-focused);
+      &:active {
+        color: var(--kd-color-text-link-level-disabled);
+      }
+    }
   }
 
-  &:active {
-    color: var(--kd-color-text-button-light-tertiary);
-    border-color: var(--kd-color-border-button-tertiary-state-pressed);
-    box-shadow: inset 0 0 0 0.5px
-        var(--kd-color-border-button-tertiary-state-pressed),
-      inset 0 0 0 0.5px var(--kd-color-border-button-tertiary-state-pressed);
+  &--outline {
+    color: var(--kd-color-text-button-light-primary);
+    border-color: var(--kd-color-border-button-primary-state-default);
+
+    &:hover {
+      background-color: var(--kd-color-background-button-ghost-state-hover);
+      border-color: var(--kd-color-border-button-primary-state-hover);
+    }
+
+    &:focus {
+      border-color: var(--kd-color-border-button-primary-state-focused);
+      outline-color: var(--kd-color-border-button-primary-state-focused);
+    }
+
+    &:active {
+      background-color: var(--kd-color-background-button-ghost-state-pressed);
+      border-color: var(--kd-color-border-button-primary-state-pressed);
+      color: var(--kd-color-text-button-dark-primary);
+    }
   }
 
-  &:disabled {
-    @include kd-outline-btn-disabled;
-  }
-}
+  &--outline-ai {
+    color: var(--kd-color-text-button-ai-default);
+    border-color: var(--kd-color-border-button-ai-state-default);
 
-// Tertiary Destructive Button
-.kd-btn--tertiary-destructive {
-  @extend .kd-btn--tertiary;
-  background-color: var(
-    --kd-color-background-button-tertiary-destructive-default
-  );
-  color: var(--kd-color-text-button-light-destructive);
+    &:hover {
+      background-color: var(--kd-color-background-button-primary-ai-hover);
+      border-color: var(--kd-color-border-button-ai-state-hover);
+    }
 
-  &:hover {
-    background-color: var(
-      --kd-color-background-button-tertiary-destructive-hover
-    );
-  }
+    &:focus {
+      border-color: var(--kd-color-border-button-ai-state-focused);
+      outline-color: var(--kd-color-border-button-ai-state-focused);
+    }
 
-  &:focus {
-    background-color: var(
-      --kd-color-background-button-tertiary-destructive-focused
-    );
-    color: var(--kd-color-text-button-dark-destructive);
-    outline-color: var(--kd-color-border-button-primary-destructive-default);
+    &:active {
+      background-color: var(--kd-color-background-button-primary-ai-pressed);
+      border-color: var(--kd-color-border-button-ai-state-pressed);
+    }
   }
 
-  &:active {
-    background-color: var(
-      --kd-color-background-button-tertiary-destructive-pressed
-    );
-    color: var(--kd-color-text-button-dark-destructive);
+  &--outline-destructive {
+    color: var(--kd-color-text-button-light-destructive);
+    border-color: var(--kd-color-border-button-primary-destructive-default);
+
+    &:hover {
+      background-color: var(
+        --kd-color-background-button-secondary-destructive-hover
+      );
+      border-color: var(--kd-color-border-button-primary-destructive-hover);
+      color: var(--kd-color-text-level-light);
+    }
+
+    &:focus {
+      border-color: var(--kd-color-border-button-primary-destructive-focused);
+      outline-color: var(--kd-color-border-button-primary-destructive-focused);
+    }
+
+    &:active {
+      background-color: var(
+        --kd-color-background-button-secondary-destructive-pressed
+      );
+      border-color: var(--kd-color-border-button-primary-destructive-pressed);
+      color: var(--kd-color-text-level-primary);
+    }
   }
 
-  &:disabled {
-    @include kd-btn-disabled;
-    background-color: transparent;
-  }
-}
+  &--ghost {
+    color: var(--kd-color-text-button-light-primary);
 
-// Tertiary Destructive Outline Only Button
-.kd-btn--tertiary-destructive-outline {
-  @extend .kd-btn;
-  background-color: transparent;
-  color: var(--kd-color-text-button-light-destructive);
-  border: 1px solid var(--kd-color-border-button-tertiary-destructive-default);
+    &:hover {
+      background-color: var(--kd-color-background-button-ghost-state-hover);
+    }
 
-  &:hover {
-    border-color: var(--kd-color-border-button-tertiary-destructive-hover);
-  }
+    &:focus {
+      outline-color: var(--kd-color-border-button-tertiary-state-focused);
+    }
 
-  &:focus {
-    border-color: var(--kd-color-border-button-tertiary-destructive-focused);
-    outline-color: var(--kd-color-border-button-primary-destructive-focused);
-  }
+    &:active {
+      background-color: var(--kd-color-background-button-ghost-state-pressed);
+      color: var(--kd-color-text-button-dark-primary);
+    }
 
-  &:active {
-    border-color: var(--kd-color-border-button-tertiary-destructive-pressed);
-  }
+    &[disabled] {
+      color: var(--kd-color-text-link-level-disabled);
 
-  &:disabled {
-    @include kd-outline-btn-disabled;
-    border: none;
+      &:hover {
+        background-color: transparent;
+      }
+    }
   }
 }
 
@@ -536,74 +456,5 @@ span {
     slot[name='icon']::slotted(*) {
       display: flex;
     }
-  }
-}
-
-.hidden {
-  display: none;
-  /* Class to hide elements */
-}
-
-.kd-btn--primary-app-ghost,
-.kd-btn--primary-web-ghost {
-  @extend .kd-btn;
-  background-color: transparent;
-  color: var(--kd-color-text-level-primary);
-  border: 2px solid transparent;
-
-  &:hover {
-    color: var(--kd-color-text-button-dark-primary);
-    background-color: var(--kd-color-background-button-primary-state-hover);
-  }
-
-  &:active {
-    background-color: var(--kd-color-background-button-primary-state-pressed);
-  }
-
-  &:focus {
-    border-color: var(--kd-color-border-button-primary-state-focused);
-  }
-
-  &:disabled {
-    @include kd-btn-disabled;
-  }
-}
-
-.kd-btn--secondary-ghost {
-  @extend .kd-btn;
-  background-color: transparent;
-  color: var(--kd-color-text-level-primary);
-  border: 2px solid transparent;
-
-  &:hover {
-    color: var(--kd-color-text-button-dark-primary);
-    background-color: var(--kd-color-background-button-secondary-state-hover);
-  }
-
-  &:active {
-    background-color: var(--kd-color-background-button-secondary-state-pressed);
-  }
-
-  &:focus {
-    border-color: var(--kd-color-border-button-secondary-state-focused);
-  }
-
-  &:disabled {
-    @include kd-btn-disabled;
-  }
-}
-
-.kd-btn--tertiary-ghost {
-  @extend .kd-btn;
-  background-color: transparent;
-  color: var(--kd-color-text-level-primary);
-  border: 2px solid transparent;
-
-  &:focus {
-    border-color: var(--kd-color-border-button-tertiary-state-focused);
-  }
-
-  &:disabled {
-    @include kd-btn-disabled;
   }
 }
