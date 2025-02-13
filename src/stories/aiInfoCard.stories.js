@@ -7,6 +7,7 @@ import policeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/p
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/delete.svg';
 import '../components/reusable/tooltip';
 import '../components/reusable/button';
+import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'AI/Patterns/Info',
@@ -86,15 +87,11 @@ export const WithAction = {
           <kyn-button
             slot="rightIcon"
             iconposition="center"
-            kind="primary-app"
+            kind="ghost"
             type="button"
             size="small"
             description="Button Description"
-            href=""
-            name=""
-            value=""
-            ?ghost=${true}
-            ?aiConnected=${true}
+            @on-click=${(e) => action(e.type)(e)}
           >
             <span style="display:flex;" slot="icon"
               >${unsafeSVG(deleteIcon)}</span
