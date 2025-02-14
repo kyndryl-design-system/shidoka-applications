@@ -42,7 +42,7 @@ After installation, you can make use of tokens/variables included in root.css su
 
 ## Start using components
 
-See [Storybook](https://kyndryl-design-system.github.io/shidoka-applications/) for the full components documentation.
+See [Storybook](https://shidoka-applications.netlify.app) for the full components documentation.
 
 ### Example: Component with Sub-components
 
