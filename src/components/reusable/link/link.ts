@@ -79,6 +79,7 @@ export class Link extends LitElement {
     const baseClasses = {
       ['kyn-link-text-disabled']: this.disabled,
       'icon-left': this.iconLeft,
+      ['kyn-link-text-ai']: this.kind === LINK_TYPES.AI_CONNECTED,
     };
 
     if (this.disabled) {

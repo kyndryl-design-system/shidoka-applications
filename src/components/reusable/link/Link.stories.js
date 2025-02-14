@@ -115,7 +115,7 @@ export const LinkWithIcon = {
   `,
 };
 
-export const LinkAIConnected = {
+export const LinkAISpecific = {
   args: {
     ...args,
     kind: 'ai',
