@@ -72,7 +72,7 @@ export class Tabs extends LitElement {
           <slot name="tabs" @slotchange=${this._handleSlotChangeTabs}></slot>
         </div>
 
-        <div class="panels">
+        <div class="panels" tabindex=${this.scrollablePanels ? '0' : '-1'}>
           <slot></slot>
         </div>
       </div>
