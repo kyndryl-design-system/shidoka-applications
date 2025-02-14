@@ -48,7 +48,7 @@ const args = {
   tabSize: 'md',
   tabStyle: 'contained',
   vertical: false,
-  kind: 'primary',
+  kind: TAB_KINDS.PRIMARY,
   disableAutoFocusUpdate: false,
 };
 
@@ -135,6 +135,7 @@ export const Nested = {
           <kyn-tabs
             tabStyle="line"
             tabSize=${args.tabSize}
+            kind=${TAB_KINDS.SECONDARY}
             ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
             @on-change=${(e) => action(e.type)(e)}
           >
@@ -143,10 +144,14 @@ export const Nested = {
             <kyn-tab slot="tabs" id="tab1-subtab3">Subtab 3</kyn-tab>
 
             <kyn-tab-panel tabId="tab1-subtab1" visible>
-              Subtab 1 Content
+              Subtab 1 Content (kind=secondary)
             </kyn-tab-panel>
-            <kyn-tab-panel tabId="tab1-subtab2">Subtab 2 Content</kyn-tab-panel>
-            <kyn-tab-panel tabId="tab1-subtab3">Subtab 3 Content</kyn-tab-panel>
+            <kyn-tab-panel tabId="tab1-subtab2"
+              >Subtab 2 Content (kind=secondary)</kyn-tab-panel
+            >
+            <kyn-tab-panel tabId="tab1-subtab3"
+              >Subtab 3 Content (kind=secondary)</kyn-tab-panel
+            >
           </kyn-tabs>
         </kyn-tab-panel>
         <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
@@ -220,13 +225,13 @@ export const Gallery = {
         tabSize="md"
         tabStyle=${'contained'}
         ?vertical=${args.vertical}
-        kind="primary"
+        kind=${TAB_KINDS.PRIMARY}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
-        <kyn-tab slot="tabs" id="tab1" kind="primary" selected>Tab 1</kyn-tab>
-        <kyn-tab slot="tabs" id="tab2" kind="primary">Tab 2</kyn-tab>
-        <kyn-tab slot="tabs" id="tab3" kind="primary">Tab 3</kyn-tab>
+        <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
+        <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
+        <kyn-tab slot="tabs" id="tab3">Tab 3</kyn-tab>
 
         <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
         <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
@@ -239,13 +244,13 @@ export const Gallery = {
         tabSize="md"
         tabStyle=${'line'}
         ?vertical=${args.vertical}
-        kind="secondary"
+        kind=${TAB_KINDS.SECONDARY}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
-        <kyn-tab slot="tabs" id="tab1" kind="secondary" selected>Tab 1</kyn-tab>
-        <kyn-tab slot="tabs" id="tab2" kind="secondary">Tab 2</kyn-tab>
-        <kyn-tab slot="tabs" id="tab3" kind="secondary">Tab 3</kyn-tab>
+        <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
+        <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
+        <kyn-tab slot="tabs" id="tab3">Tab 3</kyn-tab>
 
         <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
         <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
@@ -258,15 +263,13 @@ export const Gallery = {
         tabSize="md"
         tabStyle=${'contained'}
         ?vertical=${args.vertical}
-        kind="primary-ai"
+        kind=${TAB_KINDS.PRIMARY_AI}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
-        <kyn-tab slot="tabs" id="tab1" kind="primary-ai" selected
-          >Tab 1</kyn-tab
-        >
-        <kyn-tab slot="tabs" id="tab2" kind="primary-ai">Tab 2</kyn-tab>
-        <kyn-tab slot="tabs" id="tab3" kind="primary-ai">Tab 3</kyn-tab>
+        <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
+        <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
+        <kyn-tab slot="tabs" id="tab3">Tab 3</kyn-tab>
 
         <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
         <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
@@ -279,15 +282,13 @@ export const Gallery = {
         tabSize="md"
         tabStyle=${'line'}
         ?vertical=${args.vertical}
-        kind="secondary-ai"
+        kind=${TAB_KINDS.SECONDARY_AI}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
-        <kyn-tab slot="tabs" id="tab1" kind="secondary-ai" selected
-          >Tab 1</kyn-tab
-        >
-        <kyn-tab slot="tabs" id="tab2" kind="secondary-ai">Tab 2</kyn-tab>
-        <kyn-tab slot="tabs" id="tab3" kind="secondary-ai">Tab 3</kyn-tab>
+        <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
+        <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
+        <kyn-tab slot="tabs" id="tab3">Tab 3</kyn-tab>
 
         <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
         <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
@@ -300,12 +301,12 @@ export const Gallery = {
         tabSize=${'md'}
         tabStyle=${'contained'}
         ?vertical=${args.vertical}
-        .kind=${'primary'}
+        kind=${TAB_KINDS.PRIMARY}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected disabled>Tab 1</kyn-tab>
-        <kyn-tab slot="tabs" id="tab2" disabled>Tab 2</kyn-tab>
+        <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
         <kyn-tab slot="tabs" id="tab3" disabled>Tab 3</kyn-tab>
 
         <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
