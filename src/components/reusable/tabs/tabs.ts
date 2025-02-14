@@ -5,6 +5,7 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { TAB_KINDS, TAB_SIZES } from './defs';
 import TabsScss from './tabs.scss';
 
 /**
@@ -23,7 +24,11 @@ export class Tabs extends LitElement {
 
   /** Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px. */
   @property({ type: String })
-  tabSize = 'md';
+  tabSize: TAB_SIZES = TAB_SIZES.MEDIUM;
+
+  /** Specifies the visual appearance/kind of the button. */
+  @property({ type: String })
+  kind: TAB_KINDS = TAB_KINDS.PRIMARY;
 
   /** Vertical orientation. */
   @property({ type: Boolean })
@@ -49,6 +54,10 @@ export class Tabs extends LitElement {
     const wrapperClasses = {
       wrapper: true,
       vertical: this.vertical,
+      [`kyn-tabs--${this.kind}`]: true,
+      'size--small': this.tabSize === TAB_SIZES.SMALL,
+      'size--medium': this.tabSize === TAB_SIZES.MEDIUM,
+      'size--large': this.tabSize === TAB_SIZES.LARGE,
     };
 
     const tabsClasses = {
@@ -88,7 +97,8 @@ export class Tabs extends LitElement {
     if (
       changedProps.has('tabSize') ||
       changedProps.has('vertical') ||
-      changedProps.has('tabStyle')
+      changedProps.has('tabStyle') ||
+      changedProps.has('kind')
     ) {
       this._updateChildren();
     }
@@ -100,13 +110,14 @@ export class Tabs extends LitElement {
 
   private _updateChildren() {
     this._tabs.forEach((tab: any) => {
-      tab._size = this.tabSize;
-      tab._vertical = this.vertical;
-      tab._tabStyle = this.tabStyle;
+      tab.tabSize = this.tabSize;
+      tab.vertical = this.vertical;
+      tab.tabStyle = this.tabStyle;
+      tab.kind = this.kind;
     });
 
     this._tabPanels.forEach((tabPanel: any) => {
-      tabPanel._vertical = this.vertical;
+      tabPanel.vertical = this.vertical;
     });
   }
 

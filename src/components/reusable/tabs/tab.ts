@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { TAB_KINDS, TAB_SIZES } from './defs';
 import TabScss from './tab.scss';
 
 /**
@@ -23,23 +24,27 @@ export class Tab extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
-  /** Size of the tab buttons. Inherited.
-   * @internal
-   */
-  @state()
-  private _size = 'md';
+  /** Specifies the visual appearance/kind of the button. */
+  @property({ type: String, reflect: true })
+  kind: TAB_KINDS = TAB_KINDS.PRIMARY;
 
-  /** Vertical orientation. Inherited.
+  /** Size of the tab buttons. Inherited from parent tabs component.
    * @internal
    */
-  @state()
-  private _vertical = false;
+  @property({ type: String })
+  tabSize: TAB_SIZES = TAB_SIZES.MEDIUM;
 
-  /** Tab style. Inherited.
+  /** Vertical orientation. Inherited from parent tabs component.
    * @internal
    */
-  @state()
-  private _tabStyle = 'contained';
+  @property({ type: Boolean })
+  vertical = false;
+
+  /** Tab style. Inherited from parent tabs component.
+   * @internal
+   */
+  @property({ type: String })
+  tabStyle = 'contained';
 
   /** aria role.
    * @internal
@@ -74,14 +79,15 @@ export class Tab extends LitElement {
   override render() {
     const classes = {
       tab: true,
-      contained: this._tabStyle === 'contained',
-      line: this._tabStyle === 'line',
-      'size--sm': this._size === 'sm',
-      'size--md': this._size === 'md',
-      // 'size--lg': this._size === 'lg',
-      vertical: this._vertical,
+      contained: this.tabStyle === 'contained',
+      line: this.tabStyle === 'line',
+      'size--sm': this.tabSize === TAB_SIZES.SMALL,
+      'size--md': this.tabSize === TAB_SIZES.MEDIUM,
+      'size--lg': this.tabSize === TAB_SIZES.LARGE,
+      vertical: this.vertical,
       selected: this.selected,
       disabled: this.disabled,
+      [`kyn-tab--${this.kind}`]: true,
     };
 
     return html` <div class=${classMap(classes)}><slot></slot></div> `;

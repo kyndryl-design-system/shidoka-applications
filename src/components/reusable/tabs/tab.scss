@@ -9,7 +9,14 @@
   transition: outline-color 150ms ease-out;
 }
 
-:host(:focus) {
+:host([kind='primary-ai']:focus),
+:host([kind='secondary-ai']:focus) {
+  outline-color: var(--kd-color-border-button-ai-state-hover);
+}
+
+:host([kind='primary']:focus),
+:host([kind='secondary']:focus) {
+  background: var(--kd-color-background-container-default);
   outline-color: var(--kd-color-border-variants-focus);
 }
 
@@ -74,20 +81,12 @@
   }
 
   &:hover {
-    color: var(--kd-color-text-link-level-hover);
-    border-color: var(--kd-color-border-ui-hover);
-    background-color: var(--kd-color-background-ui-hollow-hover);
-
     &.contained {
       border-color: transparent;
     }
   }
 
   &:active {
-    color: var(--kd-color-text-link-level-pressed);
-    border-color: var(--kd-color-border-variants-focus);
-    background-color: var(--kd-color-background-ui-hollow-hover);
-
     &.contained {
       border-color: transparent;
     }
@@ -95,16 +94,9 @@
 
   &.selected {
     font-weight: 500;
-    color: var(--kd-color-text-level-tertiary);
-    border-color: var(--kd-color-border-level-tertiary);
-    background: var(--kd-color-background-container-default);
 
     &.size--lg {
       font-weight: 400;
-    }
-
-    &:hover {
-      background: var(--kd-color-background-ui-hollow-hover);
     }
   }
 
@@ -120,6 +112,103 @@
     &.contained {
       background: var(--kd-color-background-ui-default-disabled);
       border-color: transparent;
+    }
+  }
+}
+
+:host([kind='primary']) {
+  .tab {
+    color: var(--kd-color-text-level-primary);
+    background: var(--kd-color-background-container-soft);
+
+    &.selected {
+      color: var(--kd-color-text-level-tertiary);
+      border-color: var(--kd-color-border-level-tertiary);
+      background: var(--kd-color-background-container-default);
+    }
+
+    &:hover {
+      background: var(--kd-color-background-ui-hollow-hover);
+      color: var(--kd-color-text-link-level-hover);
+    }
+
+    &:active {
+      color: var(--kd-color-text-link-level-pressed);
+      background: var(--kd-color-background-ui-hollow-hover);
+    }
+  }
+}
+
+:host([kind='secondary']) {
+  .tab {
+    color: var(--kd-color-text-level-primary);
+    border-color: var(--kd-color-border-variants-light);
+    background: var(--kd-color-background-container-default);
+
+    &.selected {
+      color: var(--kd-color-text-level-tertiary);
+      border-color: var(--kd-color-border-level-tertiary);
+      background: var(--kd-color-background-container-default);
+    }
+
+    &:hover {
+      background: var(--kd-color-background-ui-hollow-hover);
+      color: var(--kd-color-text-link-level-hover);
+      border-color: var(--kd-color-border-ui-hover);
+    }
+
+    &:active {
+      color: var(--kd-color-text-link-level-pressed);
+      background: var(--kd-color-background-ui-hollow-hover);
+      border: 2px solid var(--kd-color-border-variants-focus);
+    }
+  }
+}
+
+:host([kind='primary-ai']) {
+  .tab {
+    color: var(--kd-color-text-button-ai-default);
+    border-color: var(--kd-color-background-container-ai-subtle);
+    background: var(--kd-color-background-container-ai-subtle);
+
+    &.selected {
+      border-color: var(--kd-color-border-button-ai-state-default);
+      background: var(--kd-color-background-button-secondary-ai-default);
+    }
+
+    &:hover {
+      background: var(--kd-color-background-button-secondary-ai-hover);
+      border-color: var(--kd-color-background-button-secondary-ai-hover);
+    }
+
+    &:active {
+      color: var(--kd-color-text-button-dark-primary);
+      background: var(--kd-color-background-button-primary-ai-hover);
+      border-color: var(--kd-color-border-button-ai-state-focused);
+    }
+  }
+}
+
+:host([kind='secondary-ai']) {
+  .tab {
+    color: var(--kd-color-text-button-ai-default);
+    border-color: var(--kd-color-border-variants-ai);
+    background: var(--kd-color-background-container-ai-subtle);
+
+    &.selected {
+      border-color: var(--kd-color-border-button-ai-state-default);
+      background: var(--kd-color-background-container-ai-subtle);
+    }
+
+    &:hover {
+      background: var(--kd-color-background-button-secondary-ai-hover);
+      border-color: var(--kd-color-border-button-ai-state-default);
+    }
+
+    &:active {
+      color: var(--kd-color-text-button-dark-primary);
+      background: var(--kd-color-background-button-secondary-ai-pressed);
+      border: 2px solid var(--kd-color-border-button-ai-state-focused);
     }
   }
 }

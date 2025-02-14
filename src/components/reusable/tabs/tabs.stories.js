@@ -1,23 +1,37 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
+import { TAB_KINDS, TAB_SIZES } from './defs';
 import { action } from '@storybook/addon-actions';
+import { createOptionsArray } from '../../../common/helpers/helpers';
 
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
+
+const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
 
 export default {
   title: 'Components/Tabs',
   component: 'kyn-tabs',
   argTypes: {
     tabSize: {
-      options: ['sm', 'md'],
-      control: { type: 'select' },
+      options: createSelectOptions(TAB_SIZES),
+      control: { type: 'select', labels: { null: TAB_SIZES.MEDIUM } },
+      table: {
+        defaultValue: { summary: TAB_SIZES.MEDIUM },
+      },
     },
     tabStyle: {
       options: ['contained', 'line'],
       control: { type: 'select' },
+    },
+    kind: {
+      options: createSelectOptions(TAB_KINDS),
+      control: { type: 'select', labels: { null: TAB_KINDS.PRIMARY } },
+      table: {
+        defaultValue: { summary: TAB_KINDS.PRIMARY },
+      },
     },
   },
   subcomponents: {
@@ -34,6 +48,7 @@ const args = {
   tabSize: 'md',
   tabStyle: 'contained',
   vertical: false,
+  kind: 'primary',
   disableAutoFocusUpdate: false,
 };
 
@@ -45,6 +60,7 @@ export const Tabs = {
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
+        .kind=${args.kind}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
@@ -73,6 +89,7 @@ export const WithIcons = {
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
+        .kind=${args.kind}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
@@ -104,6 +121,7 @@ export const Nested = {
       <kyn-tabs
         tabSize=${args.tabSize}
         ?vertical=${args.vertical}
+        .kind=${args.kind}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
@@ -146,12 +164,102 @@ export const DisabledTab = {
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
+        .kind=${args.kind}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
         <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
         <kyn-tab slot="tabs" id="tab3" disabled>Tab 3</kyn-tab>
+
+        <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
+        <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
+        <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
+      </kyn-tabs>
+    `;
+  },
+};
+
+export const Gallery = {
+  args,
+  render: (args) => {
+    return html`
+      <div class="heading kd-type--headline-04">Gallery</div>
+
+      <div class="heading kd-type--headline-06">Primary</div>
+
+      <kyn-tabs
+        tabSize="md"
+        tabStyle=${'contained'}
+        ?vertical=${args.vertical}
+        kind="primary"
+        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+        <kyn-tab slot="tabs" id="tab1" kind="primary" selected>Tab 1</kyn-tab>
+        <kyn-tab slot="tabs" id="tab2" kind="primary">Tab 2</kyn-tab>
+        <kyn-tab slot="tabs" id="tab3" kind="primary">Tab 3</kyn-tab>
+
+        <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
+        <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
+        <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
+      </kyn-tabs>
+
+      <div class="heading kd-type--headline-06">Secondary</div>
+
+      <kyn-tabs
+        tabSize="md"
+        tabStyle=${'line'}
+        ?vertical=${args.vertical}
+        kind="secondary"
+        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+        <kyn-tab slot="tabs" id="tab1" kind="secondary" selected>Tab 1</kyn-tab>
+        <kyn-tab slot="tabs" id="tab2" kind="secondary">Tab 2</kyn-tab>
+        <kyn-tab slot="tabs" id="tab3" kind="secondary">Tab 3</kyn-tab>
+
+        <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
+        <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
+        <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
+      </kyn-tabs>
+
+      <div class="heading kd-type--headline-06">Primary AI</div>
+
+      <kyn-tabs
+        tabSize="md"
+        tabStyle=${'contained'}
+        ?vertical=${args.vertical}
+        kind="primary-ai"
+        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+        <kyn-tab slot="tabs" id="tab1" kind="primary-ai" selected
+          >Tab 1</kyn-tab
+        >
+        <kyn-tab slot="tabs" id="tab2" kind="primary-ai">Tab 2</kyn-tab>
+        <kyn-tab slot="tabs" id="tab3" kind="primary-ai">Tab 3</kyn-tab>
+
+        <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
+        <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
+        <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
+      </kyn-tabs>
+
+      <div class="heading kd-type--headline-06">Secondary AI</div>
+
+      <kyn-tabs
+        tabSize="md"
+        tabStyle=${'line'}
+        ?vertical=${args.vertical}
+        kind="secondary-ai"
+        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+        <kyn-tab slot="tabs" id="tab1" kind="secondary-ai" selected
+          >Tab 1</kyn-tab
+        >
+        <kyn-tab slot="tabs" id="tab2" kind="secondary-ai">Tab 2</kyn-tab>
+        <kyn-tab slot="tabs" id="tab3" kind="secondary-ai">Tab 3</kyn-tab>
 
         <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
         <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>

@@ -9,6 +9,33 @@
   display: flex;
   flex-direction: column;
 
+  &.kyn-tabs {
+    &--primary {
+      .tabs {
+        &.contained::after {
+          background: var(--kd-color-background-container-soft);
+        }
+      }
+    }
+
+    &--secondary {
+      .tabs {
+        &.contained::after {
+          background: var(--kd-color-background-container-default);
+        }
+      }
+    }
+
+    &--primary-ai,
+    &--secondary-ai {
+      .tabs {
+        &.contained::after {
+          background: var(--kd-color-background-container-ai-subtle);
+        }
+      }
+    }
+  }
+
   @media (min-width: breakpoints.$bp-md) {
     &.vertical {
       flex-direction: row;
@@ -24,7 +51,6 @@
 
   &.contained::after {
     content: '';
-    background: var(--kd-color-background-container-soft);
     flex-grow: 1;
   }
 
