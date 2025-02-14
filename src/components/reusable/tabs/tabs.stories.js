@@ -181,7 +181,8 @@ export const DisabledTab = {
 };
 
 export const Gallery = {
-  args,
+  ...args,
+  tabStyle: '',
   render: (args) => {
     return html`
       <div class="heading kd-type--headline-04">Gallery</div>
