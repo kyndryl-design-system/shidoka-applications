@@ -1592,6 +1592,69 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/localNav/index.ts",
       "declarations": [],
       "exports": [
@@ -2038,69 +2101,6 @@
           "declaration": {
             "name": "LocalNavLink",
             "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -4431,659 +4431,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`",
-          "name": "DateRangePicker",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "locale",
-              "type": {
-                "text": "SupportedLocale"
-              },
-              "default": "'en'",
-              "description": "Sets and dynamically imports specific l10n calendar localization.",
-              "attribute": "locale"
-            },
-            {
-              "kind": "field",
-              "name": "dateFormat",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Y-m-d'",
-              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
-              "attribute": "dateFormat"
-            },
-            {
-              "kind": "field",
-              "name": "defaultDate",
-              "type": {
-                "text": "string | string[] | null"
-              },
-              "default": "null",
-              "description": "Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. [\"2024-01-01\", \"2024-01-07\"]).",
-              "attribute": "defaultDate"
-            },
-            {
-              "kind": "field",
-              "name": "defaultErrorMessage",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets default error message.",
-              "attribute": "defaultErrorMessage"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "[Date | null, Date | null]"
-              },
-              "default": "[null, null]",
-              "description": "Sets date/time range value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation warning messaging.",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "disable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to disable specific dates.",
-              "attribute": "disable"
-            },
-            {
-              "kind": "field",
-              "name": "enable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to enable specific dates.",
-              "attribute": "enable"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets date range picker form input value to required/required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "dateRangePickerDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire date range picker form element to enabled/disabled.",
-              "attribute": "dateRangePickerDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "twentyFourHourFormat",
-              "type": {
-                "text": "boolean | null"
-              },
-              "default": "null",
-              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
-              "attribute": "twentyFourHourFormat"
-            },
-            {
-              "kind": "field",
-              "name": "minDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets lower boundary of date range picker date selection.",
-              "attribute": "minDate"
-            },
-            {
-              "kind": "field",
-              "name": "maxDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets upper boundary of date range picker date selection.",
-              "attribute": "maxDate"
-            },
-            {
-              "kind": "field",
-              "name": "errorAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for error message.",
-              "attribute": "errorAriaLabel"
-            },
-            {
-              "kind": "field",
-              "name": "errorTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for error message.",
-              "attribute": "errorTitle"
-            },
-            {
-              "kind": "field",
-              "name": "warningAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for warning message.",
-              "attribute": "warningAriaLabel"
-            },
-            {
-              "kind": "field",
-              "name": "warningTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for warning message.",
-              "attribute": "warningTitle"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\r\n  requiredText: 'Required',\r\n  clearAll: 'Clear',\r\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "renderValidationMessage",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "errorId",
-                  "type": {
-                    "text": "string"
-                  }
-                },
-                {
-                  "name": "warningId",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClear",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getDateRangePickerClasses"
-            },
-            {
-              "kind": "method",
-              "name": "setupAnchor",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "initializeFlatpickr",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getComponentFlatpickrOptions",
-              "return": {
-                "type": {
-                  "text": "Promise<Partial<BaseOptions>>"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "updateFlatpickrOptions"
-            },
-            {
-              "kind": "method",
-              "name": "setInitialDates",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "handleOpen",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "handleDateChange",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "selectedDates",
-                  "type": {
-                    "text": "Date[]"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleClose"
-            },
-            {
-              "kind": "method",
-              "name": "updateSelectedDateRangeAria",
-              "parameters": [
-                {
-                  "name": "selectedDates",
-                  "type": {
-                    "text": "Date[]"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "setShouldFlatpickrOpen",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "closeFlatpickr",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "preventFlatpickrOpen",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleInputClickEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleInputFocusEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_onChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFormReset",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "locale",
-              "type": {
-                "text": "SupportedLocale"
-              },
-              "default": "'en'",
-              "description": "Sets and dynamically imports specific l10n calendar localization.",
-              "fieldName": "locale"
-            },
-            {
-              "name": "dateFormat",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Y-m-d'",
-              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
-              "fieldName": "dateFormat"
-            },
-            {
-              "name": "defaultDate",
-              "type": {
-                "text": "string | string[] | null"
-              },
-              "default": "null",
-              "description": "Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. [\"2024-01-01\", \"2024-01-07\"]).",
-              "fieldName": "defaultDate"
-            },
-            {
-              "name": "defaultErrorMessage",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets default error message.",
-              "fieldName": "defaultErrorMessage"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "[Date | null, Date | null]"
-              },
-              "default": "[null, null]",
-              "description": "Sets date/time range value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation warning messaging.",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "disable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to disable specific dates.",
-              "fieldName": "disable"
-            },
-            {
-              "name": "enable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to enable specific dates.",
-              "fieldName": "enable"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets date range picker form input value to required/required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "dateRangePickerDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire date range picker form element to enabled/disabled.",
-              "fieldName": "dateRangePickerDisabled"
-            },
-            {
-              "name": "twentyFourHourFormat",
-              "type": {
-                "text": "boolean | null"
-              },
-              "default": "null",
-              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
-              "fieldName": "twentyFourHourFormat"
-            },
-            {
-              "name": "minDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets lower boundary of date range picker date selection.",
-              "fieldName": "minDate"
-            },
-            {
-              "name": "maxDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets upper boundary of date range picker date selection.",
-              "fieldName": "maxDate"
-            },
-            {
-              "name": "errorAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for error message.",
-              "fieldName": "errorAriaLabel"
-            },
-            {
-              "name": "errorTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for error message.",
-              "fieldName": "errorTitle"
-            },
-            {
-              "name": "warningAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for warning message.",
-              "fieldName": "warningAriaLabel"
-            },
-            {
-              "name": "warningTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for warning message.",
-              "fieldName": "warningTitle"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-date-range-picker",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-date-range-picker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "./daterangepicker"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/checkbox/checkbox.ts",
       "declarations": [
         {
@@ -5694,6 +5041,673 @@
           "declaration": {
             "name": "CheckboxSubgroup",
             "module": "./checkboxSubgroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`",
+          "name": "DateRangePicker",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale"
+              },
+              "default": "'en'",
+              "description": "Sets and dynamically imports specific l10n calendar localization.",
+              "attribute": "locale"
+            },
+            {
+              "kind": "field",
+              "name": "dateFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Y-m-d'",
+              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
+              "attribute": "dateFormat"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDate",
+              "type": {
+                "text": "string | string[] | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. [\"2024-01-01\", \"2024-01-07\"]).",
+              "attribute": "defaultDate"
+            },
+            {
+              "kind": "field",
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "attribute": "defaultErrorMessage"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "[Date | null, Date | null]"
+              },
+              "default": "[null, null]",
+              "description": "Sets date/time range value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "attribute": "warnText"
+            },
+            {
+              "kind": "field",
+              "name": "disable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to disable specific dates.",
+              "attribute": "disable"
+            },
+            {
+              "kind": "field",
+              "name": "enable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to enable specific dates.",
+              "attribute": "enable"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets date range picker form input value to required/required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "dateRangePickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to enabled/disabled.",
+              "attribute": "dateRangePickerDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean | null"
+              },
+              "default": "null",
+              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
+              "attribute": "twentyFourHourFormat"
+            },
+            {
+              "kind": "field",
+              "name": "minDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of date range picker date selection.",
+              "attribute": "minDate"
+            },
+            {
+              "kind": "field",
+              "name": "maxDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of date range picker date selection.",
+              "attribute": "maxDate"
+            },
+            {
+              "kind": "field",
+              "name": "errorAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "attribute": "errorAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "attribute": "errorTitle"
+            },
+            {
+              "kind": "field",
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "attribute": "warningAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "attribute": "warningTitle"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  requiredText: 'Required',\r\n  clearAll: 'Clear',\r\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "resizeTimeout",
+              "type": {
+                "text": "number | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "handleResize",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "renderValidationMessage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "errorId",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "warningId",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClear",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getDateRangePickerClasses"
+            },
+            {
+              "kind": "method",
+              "name": "setupAnchor",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "initializeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getComponentFlatpickrOptions",
+              "return": {
+                "type": {
+                  "text": "Promise<Partial<BaseOptions>>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updateFlatpickrOptions"
+            },
+            {
+              "kind": "method",
+              "name": "setInitialDates",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleOpen",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleDateChange",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleClose"
+            },
+            {
+              "kind": "method",
+              "name": "updateSelectedDateRangeAria",
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setShouldFlatpickrOpen",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "closeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "preventFlatpickrOpen",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleInputClickEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleInputFocusEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_onChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFormReset",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale"
+              },
+              "default": "'en'",
+              "description": "Sets and dynamically imports specific l10n calendar localization.",
+              "fieldName": "locale"
+            },
+            {
+              "name": "dateFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Y-m-d'",
+              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
+              "fieldName": "dateFormat"
+            },
+            {
+              "name": "defaultDate",
+              "type": {
+                "text": "string | string[] | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. [\"2024-01-01\", \"2024-01-07\"]).",
+              "fieldName": "defaultDate"
+            },
+            {
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "fieldName": "defaultErrorMessage"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "[Date | null, Date | null]"
+              },
+              "default": "[null, null]",
+              "description": "Sets date/time range value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "disable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to disable specific dates.",
+              "fieldName": "disable"
+            },
+            {
+              "name": "enable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to enable specific dates.",
+              "fieldName": "enable"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets date range picker form input value to required/required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "dateRangePickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to enabled/disabled.",
+              "fieldName": "dateRangePickerDisabled"
+            },
+            {
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean | null"
+              },
+              "default": "null",
+              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
+              "fieldName": "twentyFourHourFormat"
+            },
+            {
+              "name": "minDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of date range picker date selection.",
+              "fieldName": "minDate"
+            },
+            {
+              "name": "maxDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of date range picker date selection.",
+              "fieldName": "maxDate"
+            },
+            {
+              "name": "errorAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "fieldName": "errorAriaLabel"
+            },
+            {
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "fieldName": "errorTitle"
+            },
+            {
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "fieldName": "warningAriaLabel"
+            },
+            {
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "fieldName": "warningTitle"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-date-range-picker",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-date-range-picker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "./daterangepicker"
           }
         }
       ]
@@ -14857,7 +14871,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "stickyHeader: Boolean indicating whether the table header\r\nshould be sticky.",
+              "description": "stickyHeader: Boolean indicating whether the table header should be sticky.\r\nMust also set a height or max-height on kyn-table-container.",
               "default": "false",
               "attribute": "stickyHeader"
             },
@@ -14998,7 +15012,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "stickyHeader: Boolean indicating whether the table header\r\nshould be sticky.",
+              "description": "stickyHeader: Boolean indicating whether the table header should be sticky.\r\nMust also set a height or max-height on kyn-table-container.",
               "default": "false",
               "fieldName": "stickyHeader"
             },
