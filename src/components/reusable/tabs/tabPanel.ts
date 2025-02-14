@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import TabPanelScss from './tabPanel.scss';
 
@@ -26,8 +26,8 @@ export class TabPanel extends LitElement {
   /** Vertical orientation. Inherited from parent tabs component.
    * @internal
    */
-  @property({ type: Boolean })
-  vertical = false;
+  @state()
+  _vertical = false;
 
   /** Tab Panel ID.
    * @internal
@@ -50,7 +50,7 @@ export class TabPanel extends LitElement {
   override render() {
     const classes = {
       'tab-panel': true,
-      vertical: this.vertical,
+      vertical: this._vertical,
       'no-padding': this.noPadding,
     };
 

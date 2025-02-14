@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { TAB_KINDS, TAB_SIZES } from './defs';
 import TabScss from './tab.scss';
@@ -31,20 +31,20 @@ export class Tab extends LitElement {
   /** Size of the tab buttons. Inherited from parent tabs component.
    * @internal
    */
-  @property({ type: String })
-  tabSize: TAB_SIZES = TAB_SIZES.MEDIUM;
+  @state()
+  _tabSize: TAB_SIZES = TAB_SIZES.MEDIUM;
 
   /** Vertical orientation. Inherited from parent tabs component.
    * @internal
    */
-  @property({ type: Boolean })
-  vertical = false;
+  @state()
+  _vertical = false;
 
   /** Tab style. Inherited from parent tabs component.
    * @internal
    */
-  @property({ type: String })
-  tabStyle = 'contained';
+  @state()
+  _tabStyle = 'contained';
 
   /** aria role.
    * @internal
@@ -79,12 +79,12 @@ export class Tab extends LitElement {
   override render() {
     const classes = {
       tab: true,
-      contained: this.tabStyle === 'contained',
-      line: this.tabStyle === 'line',
-      'size--sm': this.tabSize === TAB_SIZES.SMALL,
-      'size--md': this.tabSize === TAB_SIZES.MEDIUM,
-      'size--lg': this.tabSize === TAB_SIZES.LARGE,
-      vertical: this.vertical,
+      contained: this._tabStyle === 'contained',
+      line: this._tabStyle === 'line',
+      'size--sm': this._tabSize === TAB_SIZES.SMALL,
+      'size--md': this._tabSize === TAB_SIZES.MEDIUM,
+      'size--lg': this._tabSize === TAB_SIZES.LARGE,
+      vertical: this._vertical,
       selected: this.selected,
       disabled: this.disabled,
       [`kyn-tab--${this.kind}`]: true,
