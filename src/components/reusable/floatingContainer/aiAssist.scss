@@ -1,0 +1,38 @@
+:host {
+  display: block;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 50%;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  transition: none;
+
+  &.stopped {
+    opacity: 1;
+  }
+
+  &.overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: var(--kd-color-background-opacity-4);
+    backdrop-filter: var(--kd-background-blur-medium);
+    z-index: var(--kd-z-overlay);
+  }
+}
+
+svg {
+  display: block;
+  width: 100px !important;
+}

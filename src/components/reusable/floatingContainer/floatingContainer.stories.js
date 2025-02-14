@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions';
 import chevronUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-up.svg';
 import chatIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chat.svg';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import './aiAssist';
 import './index';
 import '../button';
 
@@ -161,7 +162,7 @@ export const WithScroll = {
   `,
 };
 
-export const AILaunch = {
+export const AIAssistant = {
   render: () => html`
     <div style="padding-bottom:80px;">
       <!-- Add some space in bottom so FAB doesn't obstruct any essestial UI element -->
@@ -189,7 +190,7 @@ export const AILaunch = {
         @on-click=${(e) => action(e.type)(e)}
       >
         <span class="test"></span>
-        <span class="_icon" slot="icon"></span>
+        <span class="_icon" slot="icon"><kyn-ai-assist></kyn-ai-assist></span>
       </kyn-button>
     </kyn-button-float-container>
     <style>

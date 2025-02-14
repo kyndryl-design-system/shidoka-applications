@@ -174,11 +174,16 @@
 
     &.kd-btn--float {
       @include elevation.shadow(3, true);
-
       background-color: var(--kd-color-background-container-ai-subtle);
+      transition: all 150s ease-in-out;
+
+      &:before {
+        background-color: transparent;
+      }
 
       &:hover {
-        background-color: var(--kd-color-background-button-primary-ai-hover);
+        @include elevation.shadow(2, true);
+        background-color: var(--kd-color-background-container-ai-default);
       }
 
       &:active {
