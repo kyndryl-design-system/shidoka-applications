@@ -28,6 +28,7 @@ export default {
     inline: { control: 'boolean' },
     width: { control: 'text' },
     height: { control: 'text' },
+    aiConnected: { control: 'boolean' },
   },
 };
 
@@ -52,6 +53,7 @@ const Template = (args) => {
             width=${args.width || ''}
             height=${args.height || ''}
             shade=${args.shade}
+            ?aiConnected=${args.aiConnected}
           ></kyn-skeleton>
         </div>
       `;
@@ -74,7 +76,7 @@ Block.args = {
   lines: 1,
   inline: false,
   shade: 'light',
-
+  aiConnected: false,
   width: '100%',
 };
 
@@ -82,6 +84,12 @@ export const Inline = Template.bind({});
 Inline.args = {
   ...Block.args,
   inline: true,
+};
+
+export const AITheme = Template.bind({});
+AITheme.args = {
+  ...Block.args,
+  aiConnected: true,
 };
 
 export const MultiBlock = Template.bind({});

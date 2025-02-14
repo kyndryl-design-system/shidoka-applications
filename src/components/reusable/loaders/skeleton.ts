@@ -49,6 +49,12 @@ export class Skeleton extends LitElement {
   @property({ type: String })
   shade: 'light' | 'dark' | string = 'light';
 
+  /**
+   * Sets the AI theme.
+   */
+  @property({ type: Boolean })
+  aiConnected = false;
+
   override render() {
     const classes = {
       skeleton: true,
@@ -57,6 +63,7 @@ export class Skeleton extends LitElement {
       'multi-line': this.lines > 1,
       inline: this.inline,
       [`shade-${this.shade}`]: this.shade,
+      'ai-Skeleton': this.aiConnected,
     };
 
     const styles = {
