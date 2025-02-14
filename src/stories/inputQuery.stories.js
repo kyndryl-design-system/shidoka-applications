@@ -24,6 +24,7 @@ export const Default = {
           placeholder="Type your message..."
           maxRowsVisible="3"
           ?aiConnected=${true}
+          ?notResizeable=${true}
         ></kyn-text-area>
         <kyn-button
           class="input-send-button"
