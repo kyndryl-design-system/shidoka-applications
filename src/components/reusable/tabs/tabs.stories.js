@@ -40,7 +40,7 @@ export default {
   },
   design: {
     type: 'figma',
-    url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Applications-Specs-for-Devs?node-id=2912%3A2268&mode=dev',
+    url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library-2.0?node-id=7695-2985&m=dev',
   },
 };
 
