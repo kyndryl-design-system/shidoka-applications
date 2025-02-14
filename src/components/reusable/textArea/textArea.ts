@@ -69,9 +69,9 @@ export class TextArea extends FormMixin(LitElement) {
   @property({ type: Boolean })
   aiConnected = false;
 
-  /** Maximum number of visible text lines allowed. Default `5` rows.
-   * Applies only when `aiConnected` is set to `true` and
-   * `rows` is used as minimum number of visible text lines.
+  /** Maximum number of visible text lines allowed. Default `5` rows. <br />
+   * **NOTE**: Applies only when `aiConnected` is set to `true`. <br />
+   * `rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.
    */
   @property({ type: Number })
   maxRowsVisible = 5;
