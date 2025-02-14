@@ -45,8 +45,8 @@ export class Table extends LitElement {
   striped?: boolean;
 
   /**
-   * stickyHeader: Boolean indicating whether the table header
-   * should be sticky.
+   * stickyHeader: Boolean indicating whether the table header should be sticky.
+   * Must also set a height or max-height on kyn-table-container.
    * @type {boolean}
    * @default false
    */
