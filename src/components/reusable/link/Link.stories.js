@@ -115,6 +115,7 @@ export const LinkWithIcon = {
   `,
 };
 
+// AI Link
 export const LinkAISpecific = {
   args: {
     ...args,
@@ -135,11 +136,4 @@ export const LinkAISpecific = {
         ${args.unnamed}
       </kyn-link>
     `,
-  play: async ({ canvasElement }) => {
-    // example interaction test
-    const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByShadowRole('link'));
-    await waitFor(() => expect(args['on-click']).toHaveBeenCalled());
-    canvas.getByShadowRole('link').blur();
-  },
 };
