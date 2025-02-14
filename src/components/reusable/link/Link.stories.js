@@ -19,7 +19,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/5TqtPa7KWfhJbQv6ELnbqf/Foundation?node-id=72%3A24578&mode=dev',
+      url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library-2.0?node-id=19896-17163&m=dev',
     },
   },
   argTypes: {
@@ -54,7 +54,6 @@ const args = {
   kind: 'primary',
   shade: 'auto',
   disabled: false,
-  aiConnected: false,
   standalone: false,
   iconLeft: false,
   'on-click': fn(),
@@ -75,7 +74,6 @@ export const Link = {
         kind=${args.kind}
         shade=${args.shade}
         ?disabled=${args.disabled}
-        ?aiConnected=${args.aiConnected}
         @on-click=${args['on-click']}
       >
         ${args.unnamed}
@@ -103,7 +101,6 @@ export const LinkWithIcon = {
       shade=${args.shade}
       kind=${args.kind}
       ?disabled=${args.disabled}
-      ?aiConnected=${args.aiConnected}
       @on-click=${args['on-click']}
     >
       ${args.unnamed}
@@ -121,7 +118,7 @@ export const LinkWithIcon = {
 export const LinkAIConnected = {
   args: {
     ...args,
-    aiConnected: true,
+    kind: 'ai',
   },
   render: (args) =>
     html`
@@ -133,7 +130,6 @@ export const LinkAIConnected = {
         kind=${args.kind}
         shade=${args.shade}
         ?disabled=${args.disabled}
-        ?aiConnected=${args.aiConnected}
         @on-click=${args['on-click']}
       >
         ${args.unnamed}
