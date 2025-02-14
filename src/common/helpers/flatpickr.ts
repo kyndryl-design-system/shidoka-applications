@@ -389,12 +389,11 @@ export async function getFlatpickrOptions(
   const localeOptions = await loadLocale(locale);
   modifyWeekdayShorthands(localeOptions);
 
-  const isWideScreen = window.innerWidth > 767;
-
   const isEnglishOr12HourLocale = ['en', 'en-US', 'en-GB', 'es-MX'].includes(
     locale
   );
 
+  const isWideScreen = window.innerWidth >= 767;
   const options: Partial<BaseOptions> = {
     dateFormat: dateFormat || (mode === 'time' ? 'H:i' : 'Y-m-d'),
     mode: mode === 'time' ? 'single' : mode,
@@ -408,7 +407,7 @@ export async function getFlatpickrOptions(
         : !isEnglishOr12HourLocale,
     weekNumbers: false,
     wrap,
-    showMonths: isWideScreen && mode === 'range' ? 2 : 1,
+    showMonths: mode === 'range' && isWideScreen ? 2 : 1,
     monthSelectorType: 'static',
     locale: localeOptions,
     closeOnSelect: closeOnSelect ?? !(mode === 'multiple' || enableTime),
