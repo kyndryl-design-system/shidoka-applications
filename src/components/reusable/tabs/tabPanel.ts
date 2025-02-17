@@ -27,7 +27,7 @@ export class TabPanel extends LitElement {
    * @internal
    */
   @state()
-  _vertical = false;
+  private _vertical = false;
 
   /** Tab Panel ID.
    * @internal

@@ -32,19 +32,19 @@ export class Tab extends LitElement {
    * @internal
    */
   @state()
-  _tabSize: TAB_SIZES = TAB_SIZES.MEDIUM;
+  private _tabSize: TAB_SIZES = TAB_SIZES.MEDIUM;
 
   /** Vertical orientation. Inherited from parent tabs component.
    * @internal
    */
   @state()
-  _vertical = false;
+  private _vertical = false;
 
   /** Tab style. Inherited from parent tabs component.
    * @internal
    */
   @state()
-  _tabStyle = 'contained';
+  private _tabStyle = 'contained';
 
   /** aria role.
    * @internal
