@@ -56,7 +56,7 @@ export default {
   ],
 };
 
-const InfoTemplate = (withTitleText = true) => {
+const InfoTemplate = (withTitleText) => {
   return html`
     <div class="info-card-container">
       <div class="info-card-leftIcon">${unsafeSVG(policeIcon)}</div>
@@ -96,7 +96,7 @@ export const Default = {
   render: () => {
     return html`
       <kyn-card style="width:80%" type="normal" aiConnected>
-        ${InfoTemplate()}
+        ${InfoTemplate(true)}
       </kyn-card>
     `;
   },
