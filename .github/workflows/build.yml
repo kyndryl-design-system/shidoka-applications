@@ -56,13 +56,40 @@ jobs:
           name: build-artifact
           path: dist
 
+  Build_Storybook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Build storybook
+        run: npm run build-storybook
+
+      - name: Upload build-storybook artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-storybook-artifact
+          path: storybook-static
+
   Test:
+    needs: [Build_Storybook]
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
         with:
           node-version: 22
 
@@ -72,8 +99,11 @@ jobs:
       - name: Install Playwright
         run: npx playwright@latest install --with-deps
 
-      - name: Build Storybook
-        run: npm run build-storybook --quiet
+      - name: Download build-storybook artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-storybook-artifact
+          path: storybook-static
 
       - name: Serve Storybook and run tests
         run: |
