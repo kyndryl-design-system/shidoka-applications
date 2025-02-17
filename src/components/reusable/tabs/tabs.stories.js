@@ -185,6 +185,38 @@ export const DisabledTab = {
   },
 };
 
+export const Scrollable = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-tabs
+        style="height: 200px;"
+        scrollablePanels
+        tabSize=${args.tabSize}
+        tabStyle=${args.tabStyle}
+        ?vertical=${args.vertical}
+        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+        <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
+        <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
+
+        <kyn-tab-panel tabId="tab1" visible>
+          Tab 1 Content<br />Tab 1 Content<br />Tab 1 Content<br />Tab 1
+          Content<br />Tab 1 Content<br />Tab 1 Content<br />Tab 1 Content<br />Tab
+          1 Content<br />Tab 1 Content<br />
+        </kyn-tab-panel>
+        <kyn-tab-panel tabId="tab2">
+          Tab 2 Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab 2
+          Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab
+          2 Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab
+          2 Content<br />Tab 2 Content<br />
+        </kyn-tab-panel>
+      </kyn-tabs>
+    `;
+  },
+};
+
 export const AISpecific = {
   args: {
     ...args,
@@ -295,6 +327,25 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
+      <div class="heading kd-type--headline-08">Secondary AI (Vertical)</div>
+
+      <kyn-tabs
+        tabSize="md"
+        tabStyle=${'line'}
+        ?vertical=${true}
+        kind=${TAB_KINDS.SECONDARY_AI}
+        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+        <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
+        <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
+        <kyn-tab slot="tabs" id="tab3">Tab 3</kyn-tab>
+
+        <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
+        <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
+        <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
+      </kyn-tabs>
+
       <div class="heading kd-type--headline-08">Disabled</div>
 
       <kyn-tabs
@@ -312,38 +363,6 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
         <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
-      </kyn-tabs>
-    `;
-  },
-};
-
-export const Scrollable = {
-  args,
-  render: (args) => {
-    return html`
-      <kyn-tabs
-        style="height: 200px;"
-        scrollablePanels
-        tabSize=${args.tabSize}
-        tabStyle=${args.tabStyle}
-        ?vertical=${args.vertical}
-        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
-        @on-change=${(e) => action(e.type)(e)}
-      >
-        <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
-        <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
-
-        <kyn-tab-panel tabId="tab1" visible>
-          Tab 1 Content<br />Tab 1 Content<br />Tab 1 Content<br />Tab 1
-          Content<br />Tab 1 Content<br />Tab 1 Content<br />Tab 1 Content<br />Tab
-          1 Content<br />Tab 1 Content<br />
-        </kyn-tab-panel>
-        <kyn-tab-panel tabId="tab2">
-          Tab 2 Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab 2
-          Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab
-          2 Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab
-          2 Content<br />Tab 2 Content<br />
-        </kyn-tab-panel>
       </kyn-tabs>
     `;
   },
