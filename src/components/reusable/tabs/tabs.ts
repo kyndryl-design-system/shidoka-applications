@@ -105,7 +105,8 @@ export class Tabs extends LitElement {
       changedProps.has('tabSize') ||
       changedProps.has('vertical') ||
       changedProps.has('tabStyle') ||
-      changedProps.has('kind')
+      changedProps.has('kind') ||
+      changedProps.has('aiConnected')
     ) {
       this._updateChildren();
     }
@@ -125,6 +126,7 @@ export class Tabs extends LitElement {
 
     this._tabPanels.forEach((tabPanel: any) => {
       tabPanel._vertical = this.vertical;
+      tabPanel._aiConnected = this.aiConnected;
     });
   }
 

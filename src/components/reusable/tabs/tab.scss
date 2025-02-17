@@ -13,6 +13,22 @@
   }
 }
 
+:host([focused][tab-style='contained'][ai-connected='true']) {
+  outline: 2px solid var(--kd-color-border-button-ai-state-hover);
+}
+
+:host([focused][tab-style='contained'][ai-connected='false']) {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+}
+
+:host([focused][tab-style='line'][ai-connected='true']) {
+  outline: 2px solid var(--kd-color-border-button-ai-state-focused);
+}
+
+:host([focused][tab-style='line'][ai-connected='false']) {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+}
+
 .tab {
   display: flex;
   align-items: center;
@@ -55,6 +71,7 @@
       text-align: left;
     }
   }
+
   &.selected {
     font-weight: 500;
   }
@@ -119,6 +136,12 @@
         background: var(--kd-color-background-ui-hollow-hover);
         border: 2px solid var(--kd-color-border-variants-focus);
       }
+
+      &.disabled {
+        border-color: var(--kd-color-border-ui-disabled);
+        background: var(--kd-color-background-ui-default-disabled);
+        color: var(--kd-color-text-link-level-disabled);
+      }
     }
 
     &.ai-connected--true {
@@ -140,6 +163,12 @@
         color: var(--kd-color-text-button-dark-primary);
         background: var(--kd-color-background-button-primary-ai-hover);
         border-color: var(--kd-color-border-button-ai-state-focused);
+      }
+
+      &.disabled {
+        border-color: var(--kd-color-border-ui-disabled);
+        background: var(--kd-color-background-ui-default-disabled);
+        color: var(--kd-color-text-link-level-disabled);
       }
     }
   }
@@ -166,6 +195,12 @@
         background: var(--kd-color-background-ui-hollow-hover);
         border: 2px solid var(--kd-color-border-variants-focus);
       }
+
+      &.disabled {
+        border-color: var(--kd-color-border-ui-disabled);
+        background: transparent;
+        color: var(--kd-color-text-link-level-disabled);
+      }
     }
 
     &.ai-connected--true {
@@ -186,6 +221,12 @@
         color: var(--kd-color-text-button-dark-primary);
         background: var(--kd-color-background-button-secondary-ai-pressed);
         border: 2px solid var(--kd-color-border-button-ai-state-focused);
+      }
+
+      &.disabled {
+        border-color: var(--kd-color-border-ui-disabled);
+        background: transparent;
+        color: var(--kd-color-text-link-level-disabled);
       }
     }
   }

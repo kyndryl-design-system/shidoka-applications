@@ -36,7 +36,7 @@ export class Tab extends LitElement {
   @state()
   private _vertical = false;
 
-  /** AI-specific variant. Inherited from parent tabs component.
+  /** AI specifier. Inherited from parent tabs component.
    * @internal
    */
   @state()
@@ -93,15 +93,17 @@ export class Tab extends LitElement {
     };
 
     return html`
-      <div class=${classMap(classes)}>
+      <div class=${classMap(classes)} tabindex="0">
         <slot></slot>
       </div>
     `;
   }
 
+  // NOTE: this is necessary to target the host element directly for the focus state
   override connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('click', (e) => this._handleClick(e));
+    this.addEventListener('focusin', () => this.setAttribute('focused', ''));
+    this.addEventListener('focusout', () => this.removeAttribute('focused'));
   }
 
   override disconnectedCallback() {
@@ -128,6 +130,10 @@ export class Tab extends LitElement {
 
     if (changedProps.has('disabled')) {
       this['aria-disabled'] = this.disabled.toString();
+    }
+
+    if (changedProps.has('_tabStyle')) {
+      this.setAttribute('tab-style', this._tabStyle);
     }
   }
 
