@@ -76,13 +76,17 @@ export class Link extends LitElement {
   }
   // -- Apply classes according to states, kind etc. -- //
   private returnClassMap() {
+    const baseClasses = {
+      ['kyn-link-text-disabled']: this.disabled,
+      'icon-left': this.iconLeft,
+      ['kyn-link-text-ai']: this.kind === LINK_TYPES.AI_CONNECTED,
+    };
+
     if (this.disabled) {
-      return classMap({
-        ['kyn-link-text-disabled']: this.disabled,
-        'icon-left': this.iconLeft,
-      });
+      return classMap(baseClasses);
     } else {
       return classMap({
+        ...baseClasses,
         ['kyn-link-text-primary']:
           (this.kind === LINK_TYPES.PRIMARY || !this.kind) &&
           this.shade === 'auto',
@@ -91,7 +95,6 @@ export class Link extends LitElement {
         ['kyn-link-text-secondary']: this.kind === LINK_TYPES.SECONDARY,
         ['kyn-link-text-inline']: !this.standalone,
         ['kyn-link-text-standalone']: this.standalone,
-        'icon-left': this.iconLeft,
       });
     }
   }
