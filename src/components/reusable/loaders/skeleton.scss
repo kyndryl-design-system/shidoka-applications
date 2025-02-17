@@ -6,7 +6,7 @@
   --skeleton-base-height: 16px;
   --skeleton-border-radius: 4px;
   --skeleton-background: var(--kd-color-background-loader-skeleton-default);
-  --skeleton-ai-background: rgb(212, 9, 212);
+  --skeleton-ai-background: var(--kd-color-border-variants-ai);
   --skeleton-background-dark: var(
     --kd-color-background-loader-skeleton-secondary
   );
@@ -42,7 +42,7 @@
   width: var(--skeleton-base-width);
   height: var(--skeleton-base-height);
   border-radius: var(--skeleton-border-radius);
-  background: var(--skeleton-background);
+  //background: var(--skeleton-background);
   position: relative;
   overflow: hidden;
   will-change: transform;
@@ -51,14 +51,7 @@
     background: var(--skeleton-ai-background);
 
     &::after {
-      background-image: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0) 0,
-        var(--skeleton-ai-background) 10%,
-        white 50%,
-        var(--skeleton-ai-background) 90%,
-        rgba(255, 255, 255, 0) 100%
-      );
+      background: linear-gradient(90deg, #dd80dd 0%, #f1ccf1 50%, #fcf4fc 100%);
     }
   }
 
@@ -96,6 +89,19 @@
         rgba(60, 60, 60, 0.2) 10%,
         rgba(100, 100, 100, 0.5) 50%,
         rgba(60, 60, 60, 0.2) 90%,
+        rgba(30, 30, 30, 0) 100%
+      );
+    }
+  }
+
+  &.shade-ai-dark {
+    &::after {
+      background: linear-gradient(
+        90deg,
+        rgba(30, 30, 30, 0) 0%,
+        #700070 10%,
+        rgba(112, 0, 112, 0.5) 54.5%,
+        rgba(112, 0, 112, 0.05) 90%,
         rgba(30, 30, 30, 0) 100%
       );
     }
