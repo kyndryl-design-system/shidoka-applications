@@ -1592,6 +1592,69 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/localNav/index.ts",
       "declarations": [],
       "exports": [
@@ -2038,69 +2101,6 @@
           "declaration": {
             "name": "LocalNavLink",
             "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -10672,6 +10672,362 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/search/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Search",
+          "declaration": {
+            "name": "Search",
+            "module": "./search"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/search/search.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Search",
+          "name": "Search",
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Search'",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "expandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expandable style search.",
+              "attribute": "expandable"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input & button size.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "suggestions",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
+              "attribute": "suggestions"
+            },
+            {
+              "kind": "field",
+              "name": "expandableSearchBtnDescription",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Expandable style search button description (Required to support accessibility).",
+              "attribute": "expandableSearchBtnDescription"
+            },
+            {
+              "kind": "field",
+              "name": "assistiveTextStrings",
+              "default": "{\n  searchSuggestions: 'Search suggestions.',\n  noMatches: 'No matches found for',\n  selected: 'Selected',\n  found: 'Found',\n}",
+              "description": "Assistive text strings.",
+              "attribute": "assistiveTextStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_buttonSizeMap",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFocus",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBlur",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleButtonClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSuggestionClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "suggestion",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSuggestionWithMouseUp",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "suggestion",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSuggestionWithMouseDown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleSearchKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleListKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyboard",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "keyCode",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "target",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_checkForMatchingSuggestions",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the value on text input/clear.",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Search'",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "expandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expandable style search.",
+              "fieldName": "expandable"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input & button size.",
+              "fieldName": "size"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "suggestions",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
+              "fieldName": "suggestions"
+            },
+            {
+              "name": "expandableSearchBtnDescription",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Expandable style search button description (Required to support accessibility).",
+              "fieldName": "expandableSearchBtnDescription"
+            },
+            {
+              "name": "assistiveTextStrings",
+              "default": "_defaultTextStrings",
+              "description": "Assistive text strings.",
+              "fieldName": "assistiveTextStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-search",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Search",
+          "declaration": {
+            "name": "Search",
+            "module": "src/components/reusable/search/search.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-search",
+          "declaration": {
+            "name": "Search",
+            "module": "src/components/reusable/search/search.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/sideDrawer/index.ts",
       "declarations": [],
       "exports": [
@@ -11037,362 +11393,6 @@
           "declaration": {
             "name": "SideDrawer",
             "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/search/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Search",
-          "declaration": {
-            "name": "Search",
-            "module": "./search"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/search/search.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Search",
-          "name": "Search",
-          "members": [
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Search'",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "expandable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expandable style search.",
-              "attribute": "expandable"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input & button size.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "suggestions",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
-              "attribute": "suggestions"
-            },
-            {
-              "kind": "field",
-              "name": "expandableSearchBtnDescription",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Expandable style search button description (Required to support accessibility).",
-              "attribute": "expandableSearchBtnDescription"
-            },
-            {
-              "kind": "field",
-              "name": "assistiveTextStrings",
-              "default": "{\n  searchSuggestions: 'Search suggestions.',\n  noMatches: 'No matches found for',\n  selected: 'Selected',\n  found: 'Found',\n}",
-              "description": "Assistive text strings.",
-              "attribute": "assistiveTextStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_buttonSizeMap",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFocus",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBlur",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleButtonClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSuggestionClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "suggestion",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSuggestionWithMouseUp",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "suggestion",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSuggestionWithMouseDown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleSearchKeydown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleListKeydown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleKeyboard",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "keyCode",
-                  "type": {
-                    "text": "number"
-                  }
-                },
-                {
-                  "name": "target",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_checkForMatchingSuggestions",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the value on text input/clear.",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "fieldName": "name"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Search'",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "expandable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expandable style search.",
-              "fieldName": "expandable"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input & button size.",
-              "fieldName": "size"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "suggestions",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
-              "fieldName": "suggestions"
-            },
-            {
-              "name": "expandableSearchBtnDescription",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Expandable style search button description (Required to support accessibility).",
-              "fieldName": "expandableSearchBtnDescription"
-            },
-            {
-              "name": "assistiveTextStrings",
-              "default": "_defaultTextStrings",
-              "description": "Assistive text strings.",
-              "fieldName": "assistiveTextStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-search",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Search",
-          "declaration": {
-            "name": "Search",
-            "module": "src/components/reusable/search/search.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-search",
-          "declaration": {
-            "name": "Search",
-            "module": "src/components/reusable/search/search.ts"
           }
         }
       ]

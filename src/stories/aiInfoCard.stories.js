@@ -5,7 +5,6 @@ import policeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/p
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/delete.svg';
 import '../components/reusable/button';
 import { action } from '@storybook/addon-actions';
-import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 
 export default {
   title: 'AI/Patterns/Info',
@@ -30,22 +29,20 @@ export default {
           justify-content: center;
           align-items: flex-start;
           flex: 1 0 0;
-          /* font-weight: var(--kd-font-weight-regular);
-          letter-spacing: var(--kd-letter-spacing-5); */
+          font-weight: var(--kd-font-weight-regular);
+          letter-spacing: var(--kd-letter-spacing-5);
         }
 
         .info-card-title-text {
-          @include typography.type-ui-04;
-          /* font-size: var(--kd-font-size-utility-4-lg);
-          line-height: var(--kd-line-height-utility-4-lg); */
+          font-size: var(--kd-font-size-utility-4-lg);
+          line-height: var(--kd-line-height-utility-4-lg);
           font-family: var(--kd-font-family-primary);
           color: var(--kd-color-text-title-ai-tertiary);
         }
 
         .info-card-sub-text {
-          @include typography.type-ui-02;
-          /* font-size: var(--kd-font-size-utility-2-lg);
-          line-height: var(--kd-line-height-utility-2-lg); */
+          font-size: var(--kd-font-size-utility-2-lg);
+          line-height: var(--kd-line-height-utility-2-lg);
           font-family: var(--kd-font-family-secondary);
           color: var(--kd-color-text-level-primary);
         }
@@ -95,10 +92,10 @@ const InfoTemplate = (withTitleText = true) => {
   `;
 };
 
-export const WithTitle = {
+export const Default = {
   render: () => {
     return html`
-      <kyn-card style="width:80%" type="normal" ?aiConnected=${true}>
+      <kyn-card style="width:80%" type="normal" aiConnected>
         ${InfoTemplate()}
       </kyn-card>
     `;
@@ -108,7 +105,7 @@ export const WithTitle = {
 export const WithoutTitle = {
   render: () => {
     return html`
-      <kyn-card style="width:80%" type="normal" ?aiConnected=${true}>
+      <kyn-card style="width:80%" type="normal" aiConnected>
         ${InfoTemplate(false)}
       </kyn-card>
     `;
