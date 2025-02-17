@@ -42,7 +42,7 @@ export const Default = {
           align-items: center;
 
           background-color: var(--kd-color-background-container-ai-default);
-          box-shadow: 0px 0px 24px 0px var(--kd-color-border-dropshadow-ai);
+          box-shadow: var(--kd-elevation-level-3-ai);
           border-radius: 8px;
 
           .input-text-area {
