@@ -1,7 +1,6 @@
 import { html } from 'lit';
 import '../components/reusable/card';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import './sampleCardComponents/aiInfoCard.ts';
 import policeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/police.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/delete.svg';
 import '../components/reusable/button';
