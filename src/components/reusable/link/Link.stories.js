@@ -19,7 +19,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/5TqtPa7KWfhJbQv6ELnbqf/Foundation?node-id=72%3A24578&mode=dev',
+      url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library-2.0?node-id=19896-17163&m=dev',
     },
   },
   argTypes: {
@@ -113,4 +113,27 @@ export const LinkWithIcon = {
       >
     </kyn-link>
   `,
+};
+
+// AI Link
+export const LinkAISpecific = {
+  args: {
+    ...args,
+    kind: 'ai',
+  },
+  render: (args) =>
+    html`
+      <kyn-link
+        id="test"
+        ?standalone=${args.standalone}
+        href=${args.href}
+        target=${args.target}
+        kind=${args.kind}
+        shade=${args.shade}
+        ?disabled=${args.disabled}
+        @on-click=${args['on-click']}
+      >
+        ${args.unnamed}
+      </kyn-link>
+    `,
 };
