@@ -56,35 +56,57 @@ export default {
   ],
 };
 
+const InfoTemplate = (withTitleText = true) => {
+  return html`
+    <div class="info-card-container">
+      <div class="info-card-leftIcon">${unsafeSVG(policeIcon)}</div>
+      <div class="info-card-content-wrapper">
+        <!-- If we do not need title -->
+        ${withTitleText
+          ? html`
+              <div class="info-card-title-text">
+                Kai may occasionally generate incorrect or misleading
+                information.
+              </div>
+            `
+          : null}
+        <div class="info-card-sub-text">
+          Kai may occasionally generate incorrect or misleading information.
+        </div>
+      </div>
+      <div class="info-card-rightIcon">
+        <kyn-button
+          iconposition="center"
+          kind="ghost"
+          type="button"
+          size="small"
+          description="Button Description"
+          @on-click=${(e) => action(e.type)(e)}
+        >
+          <span style="display:flex;" slot="icon"
+            >${unsafeSVG(deleteIcon)}</span
+          >
+        </kyn-button>
+      </div>
+    </div>
+  `;
+};
+
 export const Default = {
   render: () => {
     return html`
       <kyn-card style="width:80%" type="normal" ?aiConnected=${true}>
-        <div class="info-card-container">
-          <div class="info-card-leftIcon">${unsafeSVG(policeIcon)}</div>
-          <div class="info-card-content-wrapper">
-            <div class="info-card-title-text">
-              Kai may occasionally generate incorrect or misleading information.
-            </div>
-            <div class="info-card-sub-text">
-              Kai may occasionally generate incorrect or misleading information.
-            </div>
-          </div>
-          <div class="info-card-rightIcon">
-            <kyn-button
-              iconposition="center"
-              kind="ghost"
-              type="button"
-              size="small"
-              description="Button Description"
-              @on-click=${(e) => action(e.type)(e)}
-            >
-              <span style="display:flex;" slot="icon"
-                >${unsafeSVG(deleteIcon)}</span
-              >
-            </kyn-button>
-          </div>
-        </div>
+        ${InfoTemplate()}
+      </kyn-card>
+    `;
+  },
+};
+
+export const WithoutTitle = {
+  render: () => {
+    return html`
+      <kyn-card style="width:80%" type="normal" ?aiConnected=${true}>
+        ${InfoTemplate(false)}
       </kyn-card>
     `;
   },
