@@ -15,7 +15,9 @@ export class Avatar extends LitElement {
   initials = '';
 
   override render() {
-    return html` <slot>${this.initials}</slot>`;
+    return html` <div class="avatar-wrapper">
+      <slot>${this.initials}</slot>
+    </div>`;
   }
 }
 
