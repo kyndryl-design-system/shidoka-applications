@@ -1,6 +1,7 @@
 export enum LINK_TYPES {
   PRIMARY = 'primary',
   SECONDARY = 'secondary',
+  AI_CONNECTED = 'ai',
 }
 
 export enum LINK_SIZES {
