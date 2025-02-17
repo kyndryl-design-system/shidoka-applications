@@ -1,7 +1,7 @@
 import './index';
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { useEffect } from '@storybook/addons';
+import { useEffect } from '@storybook/preview-api';
 
 export default {
   title: 'Components/DatePicker',
