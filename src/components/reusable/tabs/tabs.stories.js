@@ -316,3 +316,35 @@ export const Gallery = {
     `;
   },
 };
+
+export const Scrollable = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-tabs
+        style="height: 200px;"
+        scrollablePanels
+        tabSize=${args.tabSize}
+        tabStyle=${args.tabStyle}
+        ?vertical=${args.vertical}
+        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+        <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
+        <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
+
+        <kyn-tab-panel tabId="tab1" visible>
+          Tab 1 Content<br />Tab 1 Content<br />Tab 1 Content<br />Tab 1
+          Content<br />Tab 1 Content<br />Tab 1 Content<br />Tab 1 Content<br />Tab
+          1 Content<br />Tab 1 Content<br />
+        </kyn-tab-panel>
+        <kyn-tab-panel tabId="tab2">
+          Tab 2 Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab 2
+          Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab
+          2 Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab 2 Content<br />Tab
+          2 Content<br />Tab 2 Content<br />
+        </kyn-tab-panel>
+      </kyn-tabs>
+    `;
+  },
+};

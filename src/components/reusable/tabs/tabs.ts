@@ -38,6 +38,10 @@ export class Tabs extends LitElement {
   @property({ type: Boolean })
   disableAutoFocusUpdate = false;
 
+  /** Adds scrollable overflow to the tab panels. */
+  @property({ type: Boolean })
+  scrollablePanels = false;
+
   /** Queries for slotted tabs.
    * @internal
    */
@@ -54,6 +58,7 @@ export class Tabs extends LitElement {
     const wrapperClasses = {
       wrapper: true,
       vertical: this.vertical,
+      scrollable: this.scrollablePanels,
       [`kyn-tabs--${this.kind}`]: true,
       'size--small': this.tabSize === TAB_SIZES.SMALL,
       'size--medium': this.tabSize === TAB_SIZES.MEDIUM,
@@ -76,7 +81,7 @@ export class Tabs extends LitElement {
           <slot name="tabs" @slotchange=${this._handleSlotChangeTabs}></slot>
         </div>
 
-        <div class="panels">
+        <div class="panels" tabindex=${this.scrollablePanels ? '0' : '-1'}>
           <slot></slot>
         </div>
       </div>

@@ -41,18 +41,23 @@
         }
       }
     }
+
+    &.scrollable {
+      align-items: stretch;
+      height: 100%;
+    }
   }
 
   @media (min-width: breakpoints.$bp-md) {
     &.vertical {
       flex-direction: row;
-      align-items: flex-start;
     }
   }
 }
 
 .tabs {
   display: flex;
+  flex-shrink: 0;
   gap: 2px;
   overflow-x: auto;
 
@@ -76,6 +81,10 @@
     .vertical &.line::after {
       content: none;
     }
+
+    .vertical &.contained:after {
+      background: none;
+    }
   }
 }
 
@@ -85,4 +94,15 @@
 
 .panels {
   flex-grow: 1;
+  overflow-y: auto;
+  height: 100%;
+
+  .scrollable & {
+    transition: outline 150ms ease-out;
+    outline: 2px solid transparent;
+  }
+
+  &:focus {
+    outline-color: var(--kd-color-border-variants-focus);
+  }
 }

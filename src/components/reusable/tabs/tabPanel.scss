@@ -1,4 +1,5 @@
 @use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/variables/breakpoints.scss';
 
 :host {
   display: none;
@@ -15,11 +16,13 @@
     padding: 24px 0;
   }
 
-  &.vertical {
-    padding: 12px 24px;
-
-    &.no-padding {
+  @media (min-width: breakpoints.$bp-md) {
+    &.vertical {
       padding: 12px 24px;
+
+      &.no-padding {
+        padding: 12px 24px;
+      }
     }
   }
 }
