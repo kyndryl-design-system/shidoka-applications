@@ -1,7 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
-import { TAB_KINDS, TAB_SIZES } from './defs';
+import { TAB_SIZES } from './defs';
 import { action } from '@storybook/addon-actions';
 import { createOptionsArray } from '../../../common/helpers/helpers';
 
@@ -15,13 +15,6 @@ export default {
   title: 'Components/Tabs',
   component: 'kyn-tabs',
   argTypes: {
-    kind: {
-      options: createSelectOptions(TAB_KINDS),
-      control: { type: 'select', labels: { null: TAB_KINDS.PRIMARY } },
-      table: {
-        defaultValue: { summary: TAB_KINDS.PRIMARY },
-      },
-    },
     tabSize: {
       options: createSelectOptions(TAB_SIZES),
       control: { type: 'select', labels: { null: TAB_SIZES.MEDIUM } },
@@ -48,7 +41,7 @@ const args = {
   tabSize: 'md',
   tabStyle: 'contained',
   vertical: false,
-  kind: TAB_KINDS.PRIMARY,
+  aiConnected: false,
   disableAutoFocusUpdate: false,
 };
 
@@ -60,7 +53,7 @@ export const Tabs = {
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
-        .kind=${args.kind}
+        ?aiConnected=${args.aiConnected}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
@@ -89,7 +82,7 @@ export const WithIcons = {
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
-        .kind=${args.kind}
+        ?aiConnected=${args.aiConnected}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
@@ -121,7 +114,7 @@ export const Nested = {
       <kyn-tabs
         tabSize=${args.tabSize}
         ?vertical=${args.vertical}
-        .kind=${args.kind}
+        ?aiConnected=${args.aiConnected}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
@@ -135,7 +128,6 @@ export const Nested = {
           <kyn-tabs
             tabStyle="line"
             tabSize=${args.tabSize}
-            kind=${TAB_KINDS.SECONDARY}
             ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
             @on-change=${(e) => action(e.type)(e)}
           >
@@ -144,14 +136,10 @@ export const Nested = {
             <kyn-tab slot="tabs" id="tab1-subtab3">Subtab 3</kyn-tab>
 
             <kyn-tab-panel tabId="tab1-subtab1" visible>
-              Subtab 1 Content (kind=secondary)
+              Subtab 1 Content
             </kyn-tab-panel>
-            <kyn-tab-panel tabId="tab1-subtab2"
-              >Subtab 2 Content (kind=secondary)</kyn-tab-panel
-            >
-            <kyn-tab-panel tabId="tab1-subtab3"
-              >Subtab 3 Content (kind=secondary)</kyn-tab-panel
-            >
+            <kyn-tab-panel tabId="tab1-subtab2">Subtab 2 Content</kyn-tab-panel>
+            <kyn-tab-panel tabId="tab1-subtab3">Subtab 3 Content</kyn-tab-panel>
           </kyn-tabs>
         </kyn-tab-panel>
         <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
@@ -169,7 +157,7 @@ export const DisabledTab = {
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
-        .kind=${args.kind}
+        ?aiConnected=${args.aiConnected}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
@@ -195,6 +183,7 @@ export const Scrollable = {
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
+        ?aiConnected=${args.aiConnected}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
@@ -220,7 +209,7 @@ export const Scrollable = {
 export const AISpecific = {
   args: {
     ...args,
-    kind: TAB_KINDS.PRIMARY_AI,
+    aiConnected: true,
   },
   render: (args) => {
     return html`
@@ -228,7 +217,7 @@ export const AISpecific = {
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
-        .kind=${args.kind}
+        ?aiConnected=${args.aiConnected}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
@@ -251,13 +240,13 @@ export const Gallery = {
     return html`
       <div class="heading kd-type--headline-04">Gallery</div>
 
-      <div class="heading kd-type--headline-08">Primary</div>
+      <div class="heading kd-type--headline-08">Contained</div>
 
       <kyn-tabs
         tabSize="md"
         tabStyle=${'contained'}
         ?vertical=${args.vertical}
-        kind=${TAB_KINDS.PRIMARY}
+        ?aiConnected=${false}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
@@ -270,13 +259,13 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-08">Secondary</div>
+      <div class="heading kd-type--headline-08">Line</div>
 
       <kyn-tabs
         tabSize="md"
         tabStyle=${'line'}
         ?vertical=${args.vertical}
-        kind=${TAB_KINDS.SECONDARY}
+        ?aiConnected=${false}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
@@ -289,13 +278,13 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-08">Primary AI</div>
+      <div class="heading kd-type--headline-08">Contained AI</div>
 
       <kyn-tabs
         tabSize="md"
         tabStyle=${'contained'}
         ?vertical=${args.vertical}
-        kind=${TAB_KINDS.PRIMARY_AI}
+        ?aiConnected=${true}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
@@ -308,13 +297,13 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-08">Secondary AI</div>
+      <div class="heading kd-type--headline-08">Line AI</div>
 
       <kyn-tabs
         tabSize="md"
         tabStyle=${'line'}
         ?vertical=${args.vertical}
-        kind=${TAB_KINDS.SECONDARY_AI}
+        ?aiConnected=${true}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
@@ -327,13 +316,13 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-08">Secondary AI (Vertical)</div>
+      <div class="heading kd-type--headline-08">Line AI (Vertical)</div>
 
       <kyn-tabs
         tabSize="md"
         tabStyle=${'line'}
         ?vertical=${true}
-        kind=${TAB_KINDS.SECONDARY_AI}
+        ?aiConnected=${true}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
@@ -352,7 +341,7 @@ export const Gallery = {
         tabSize=${'md'}
         tabStyle=${'contained'}
         ?vertical=${args.vertical}
-        kind=${TAB_KINDS.PRIMARY}
+        ?aiConnected=${false}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >

@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { TAB_KINDS, TAB_SIZES } from './defs';
+import { TAB_SIZES } from './defs';
 import TabScss from './tab.scss';
 
 /**
@@ -24,10 +24,6 @@ export class Tab extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
-  /** Specifies the visual appearance/kind of the button. */
-  @property({ type: String, reflect: true })
-  kind: TAB_KINDS = TAB_KINDS.PRIMARY;
-
   /** Size of the tab buttons. Inherited from parent tabs component.
    * @internal
    */
@@ -39,6 +35,12 @@ export class Tab extends LitElement {
    */
   @state()
   private _vertical = false;
+
+  /** AI-specific variant. Inherited from parent tabs component.
+   * @internal
+   */
+  @state()
+  private _aiConnected = false;
 
   /** Tab style. Inherited from parent tabs component.
    * @internal
@@ -79,18 +81,22 @@ export class Tab extends LitElement {
   override render() {
     const classes = {
       tab: true,
+      selected: this.selected,
+      disabled: this.disabled,
+      vertical: this._vertical,
       contained: this._tabStyle === 'contained',
       line: this._tabStyle === 'line',
       'size--sm': this._tabSize === TAB_SIZES.SMALL,
       'size--md': this._tabSize === TAB_SIZES.MEDIUM,
       'size--lg': this._tabSize === TAB_SIZES.LARGE,
-      vertical: this._vertical,
-      selected: this.selected,
-      disabled: this.disabled,
-      [`kyn-tab--${this.kind}`]: true,
+      [`ai-connected--${this._aiConnected}`]: true,
     };
 
-    return html` <div class=${classMap(classes)}><slot></slot></div> `;
+    return html`
+      <div class=${classMap(classes)}>
+        <slot></slot>
+      </div>
+    `;
   }
 
   override connectedCallback() {

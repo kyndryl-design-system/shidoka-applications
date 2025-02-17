@@ -5,7 +5,7 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { TAB_KINDS, TAB_SIZES } from './defs';
+import { TAB_SIZES } from './defs';
 import TabsScss from './tabs.scss';
 
 /**
@@ -26,13 +26,13 @@ export class Tabs extends LitElement {
   @property({ type: String })
   tabSize: TAB_SIZES = TAB_SIZES.MEDIUM;
 
-  /** Specifies the visual appearance/kind of the button. */
-  @property({ type: String })
-  kind: TAB_KINDS = TAB_KINDS.PRIMARY;
-
   /** Vertical orientation. */
   @property({ type: Boolean })
   vertical = false;
+
+  /** Identifies as non-AI vs. AI-specific variants */
+  @property({ type: Boolean })
+  aiConnected = false;
 
   /** Enables tab content change on focus with keyboard navigation/assistive technologies. */
   @property({ type: Boolean })
@@ -59,16 +59,18 @@ export class Tabs extends LitElement {
       wrapper: true,
       vertical: this.vertical,
       scrollable: this.scrollablePanels,
-      [`kyn-tabs--${this.kind}`]: true,
+      [`kyn-tabs--${this.tabStyle}`]: true,
       'size--small': this.tabSize === TAB_SIZES.SMALL,
       'size--medium': this.tabSize === TAB_SIZES.MEDIUM,
       'size--large': this.tabSize === TAB_SIZES.LARGE,
+      [`ai-connected--${this.aiConnected}`]: true,
     };
 
     const tabsClasses = {
       tabs: true,
       contained: this.tabStyle === 'contained',
       line: this.tabStyle === 'line',
+      [`ai-connected--${this.aiConnected}`]: true,
     };
 
     return html`
@@ -116,9 +118,9 @@ export class Tabs extends LitElement {
   private _updateChildren() {
     this._tabs.forEach((tab: any) => {
       tab._tabSize = this.tabSize;
+      tab._aiConnected = this.aiConnected;
       tab._vertical = this.vertical;
       tab._tabStyle = this.tabStyle;
-      tab.kind = this.kind;
     });
 
     this._tabPanels.forEach((tabPanel: any) => {

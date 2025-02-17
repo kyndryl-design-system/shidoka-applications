@@ -10,34 +10,38 @@
   flex-direction: column;
 
   &.kyn-tabs {
-    &--primary {
-      .tabs {
-        &:after {
-          background: var(--kd-color-background-container-soft);
+    &--contained {
+      &.ai-connected--false {
+        .tabs {
+          &:after {
+            background: var(--kd-color-background-container-soft);
+          }
+        }
+      }
+
+      &.ai-connected--true {
+        .tabs {
+          &::after {
+            background: var(--kd-color-background-container-ai-subtle);
+          }
         }
       }
     }
 
-    &--secondary {
-      .tabs {
-        &::after {
-          background: transparent;
+    &--line {
+      &.ai-connected--false {
+        .tabs {
+          &::after {
+            background: transparent;
+          }
         }
       }
-    }
 
-    &--primary-ai {
-      .tabs {
-        &::after {
-          background: var(--kd-color-background-container-ai-subtle);
-        }
-      }
-    }
-
-    &--secondary-ai {
-      .tabs {
-        &::after {
-          background: var(--kd-color-background-container-ai-subtle);
+      &.ai-connected--true {
+        .tabs {
+          &::after {
+            background: transparent;
+          }
         }
       }
     }
@@ -88,11 +92,11 @@
   }
 }
 
-.kyn-tabs--primary-ai .tabs.line::after {
+.kyn-tabs--contained.ai-connected--true .tabs.line::after {
   border-bottom: 2px solid transparent;
 }
 
-.kyn-tabs--secondary-ai .tabs.line::after {
+.kyn-tabs--line.ai-connected--true .tabs.line::after {
   border-bottom: 2px solid var(--kd-color-border-variants-ai);
 }
 
