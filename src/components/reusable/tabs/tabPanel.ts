@@ -23,7 +23,7 @@ export class TabPanel extends LitElement {
   @property({ type: Boolean })
   noPadding = false;
 
-  /** Vertical orientation. Inherited from parent tabs component.
+  /** Vertical orientation. Inherited.
    * @internal
    */
   @state()

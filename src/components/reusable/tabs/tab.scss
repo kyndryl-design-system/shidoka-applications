@@ -4,29 +4,6 @@
 
 :host {
   display: block;
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-  transition: outline-color 150ms ease-out;
-
-  &[disabled]:focus {
-    outline-color: transparent;
-  }
-}
-
-:host([focused][tab-style='contained'][ai-connected='true']) {
-  outline: 2px solid var(--kd-color-border-button-ai-state-hover);
-}
-
-:host([focused][tab-style='contained'][ai-connected='false']) {
-  outline: 2px solid var(--kd-color-border-variants-focus);
-}
-
-:host([focused][tab-style='line'][ai-connected='true']) {
-  outline: 2px solid var(--kd-color-border-button-ai-state-focused);
-}
-
-:host([focused][tab-style='line'][ai-connected='false']) {
-  outline: 2px solid var(--kd-color-border-variants-focus);
 }
 
 .tab {
@@ -39,7 +16,9 @@
   border-bottom: 2px solid var(--kd-color-border-variants-light);
   background: transparent;
   transition: border-color 150ms ease-out, background-color 150ms ease-out,
-    color 150ms ease-out;
+    color 150ms ease-out, outline-color 150ms ease-out;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
 
   &.size--sm {
     @include typography.type-ui-02;
@@ -93,6 +72,10 @@
     &.selected {
       border-color: var(--kd-color-border-ui-disabled);
     }
+
+    &:focus {
+      outline-color: transparent;
+    }
   }
 
   &.contained {
@@ -131,6 +114,10 @@
         color: var(--kd-color-text-link-level-hover);
       }
 
+      &:focus {
+        outline-color: var(--kd-color-border-variants-focus);
+      }
+
       &:active {
         color: var(--kd-color-text-link-level-pressed);
         background: var(--kd-color-background-ui-hollow-hover);
@@ -157,6 +144,10 @@
       &:hover {
         background: var(--kd-color-background-button-secondary-ai-hover);
         border-color: var(--kd-color-background-button-secondary-ai-hover);
+      }
+
+      &:focus {
+        outline-color: var(--kd-color-border-button-ai-state-hover);
       }
 
       &:active {
@@ -190,6 +181,10 @@
         border-color: var(--kd-color-border-ui-hover);
       }
 
+      &:focus {
+        outline-color: var(--kd-color-border-variants-focus);
+      }
+
       &:active {
         color: var(--kd-color-text-link-level-pressed);
         background: var(--kd-color-background-ui-hollow-hover);
@@ -215,6 +210,10 @@
       &:hover {
         background: var(--kd-color-background-button-secondary-ai-hover);
         border-color: var(--kd-color-border-button-ai-state-default);
+      }
+
+      &:focus {
+        outline-color: var(--kd-color-border-button-ai-state-focused);
       }
 
       &:active {

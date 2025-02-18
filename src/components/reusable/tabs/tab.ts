@@ -24,25 +24,25 @@ export class Tab extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
-  /** Size of the tab buttons. Inherited from parent tabs component.
+  /** Size of the tab buttons. Inherited.
    * @internal
    */
   @state()
   private _tabSize: TAB_SIZES = TAB_SIZES.MEDIUM;
 
-  /** Vertical orientation. Inherited from parent tabs component.
+  /** Vertical orientation. Inherited.
    * @internal
    */
   @state()
   private _vertical = false;
 
-  /** AI specifier. Inherited from parent tabs component.
+  /** AI specifier. Inherited.
    * @internal
    */
   @state()
   private _aiConnected = false;
 
-  /** Tab style. Inherited from parent tabs component.
+  /** Tab style. Inherited.
    * @internal
    */
   @state()
@@ -93,22 +93,10 @@ export class Tab extends LitElement {
     };
 
     return html`
-      <div class=${classMap(classes)} tabindex="0">
+      <div class=${classMap(classes)} tabindex="0" @click=${this._handleClick}>
         <slot></slot>
       </div>
     `;
-  }
-
-  // NOTE: this is necessary to target the host element directly for the focus state
-  override connectedCallback() {
-    super.connectedCallback();
-    this.addEventListener('focusin', () => this.setAttribute('focused', ''));
-    this.addEventListener('focusout', () => this.removeAttribute('focused'));
-  }
-
-  override disconnectedCallback() {
-    this.removeEventListener('click', (e) => this._handleClick(e));
-    super.disconnectedCallback();
   }
 
   /**
@@ -130,10 +118,6 @@ export class Tab extends LitElement {
 
     if (changedProps.has('disabled')) {
       this['aria-disabled'] = this.disabled.toString();
-    }
-
-    if (changedProps.has('_tabStyle')) {
-      this.setAttribute('tab-style', this._tabStyle);
     }
   }
 
