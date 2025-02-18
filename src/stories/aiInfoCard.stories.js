@@ -104,20 +104,20 @@ export const Default = {
   },
 };
 
-export const WithTitleText = {
-  render: () => {
-    return html` ${InfoTemplate(true, true, true)} `;
-  },
-};
+// export const WithTitleText = {
+//   render: () => {
+//     return html` ${InfoTemplate(true, true, true)} `;
+//   },
+// };
 
-export const OnlyLeftIcon = {
-  render: () => {
-    return html` ${InfoTemplate(true, true, false)} `;
-  },
-};
+// export const OnlyLeftIcon = {
+//   render: () => {
+//     return html` ${InfoTemplate(true, true, false)} `;
+//   },
+// };
 
-export const OnlyRightIcon = {
-  render: () => {
-    return html` ${InfoTemplate(false, true, true)} `;
-  },
-};
+// export const OnlyRightIcon = {
+//   render: () => {
+//     return html` ${InfoTemplate(false, true, true)} `;
+//   },
+// };
