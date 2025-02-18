@@ -77,13 +77,13 @@ export class Tab extends LitElement {
   @property({ type: String, reflect: true })
   'aria-disabled' = 'false';
 
-  // Expose a custom aria attribute for aiConnected
-  @property({ type: String, reflect: true, attribute: 'aria-aiconnected' })
-  ariaAiconnected = 'false';
+  // Expose a custom data attribute for aiConnected
+  @property({ type: String, reflect: true, attribute: 'data-aiconnected' })
+  dataAiConnected = 'false';
 
-  // Expose a custom aria attribute for tabStyle
-  @property({ type: String, reflect: true, attribute: 'aria-tab-style' })
-  ariaTabStyle = '';
+  // Expose a custom data attribute for tabStyle
+  @property({ type: String, reflect: true, attribute: 'data-tab-style' })
+  dataTabStyle = '';
 
   override render() {
     const classes = {
@@ -123,9 +123,9 @@ export class Tab extends LitElement {
    * that have changed in the component. It is used to determine which properties have been updated and
    * perform specific actions based on those changes.
    */
-  override willUpdate(changedProps: any) {
+  override willUpdate(changedProps: Map<string, unknown>) {
     if (changedProps.has('id')) {
-      this['aria-controls'] = this.id + '-panel';
+      this['aria-controls'] = `${this.id}-panel`;
     }
 
     if (changedProps.has('selected')) {
@@ -134,11 +134,11 @@ export class Tab extends LitElement {
     }
 
     if (changedProps.has('_aiConnected')) {
-      this.ariaAiconnected = this._aiConnected.toString();
+      this.dataAiConnected = this._aiConnected.toString();
     }
 
     if (changedProps.has('_tabStyle')) {
-      this.ariaTabStyle = this._tabStyle.toString();
+      this.dataTabStyle = this._tabStyle.toString();
     }
 
     if (changedProps.has('disabled')) {
