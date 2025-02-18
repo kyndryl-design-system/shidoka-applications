@@ -49,11 +49,7 @@ export default {
   ],
 };
 
-const InfoTemplate = (
-  showLeftIcon = false,
-  showTitleText = false,
-  showRightIcon = false
-) => {
+const InfoTemplate = (showLeftIcon, showTitleText, showRightIcon) => {
   return html`
     <kyn-card type="normal" aiConnected>
       <div class="info-card-container">
@@ -66,7 +62,7 @@ const InfoTemplate = (
           <!-- If we do not need title -->
           ${showTitleText
             ? html`
-                <div class="info-card-title-text kd-type--ui-04 ">
+                <div class="info-card-title-text kd-type--ui-04">
                   This is a title text
                 </div>
               `
@@ -104,20 +100,20 @@ export const Default = {
   },
 };
 
-// export const WithTitleText = {
-//   render: () => {
-//     return html` ${InfoTemplate(true, true, true)} `;
-//   },
-// };
+export const WithTitleText = {
+  render: () => {
+    return html` ${InfoTemplate(true, true, true)} `;
+  },
+};
 
-// export const OnlyLeftIcon = {
-//   render: () => {
-//     return html` ${InfoTemplate(true, true, false)} `;
-//   },
-// };
+export const OnlyLeftIcon = {
+  render: () => {
+    return html` ${InfoTemplate(true, true, false)} `;
+  },
+};
 
-// export const OnlyRightIcon = {
-//   render: () => {
-//     return html` ${InfoTemplate(false, true, true)} `;
-//   },
-// };
+export const OnlyRightIcon = {
+  render: () => {
+    return html` ${InfoTemplate(false, true, true)} `;
+  },
+};
