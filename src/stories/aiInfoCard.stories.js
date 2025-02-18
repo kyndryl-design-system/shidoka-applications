@@ -5,6 +5,7 @@ import policeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/p
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/delete.svg';
 import '../components/reusable/button';
 import { action } from '@storybook/addon-actions';
+import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 
 export default {
   title: 'AI/Patterns/Info',
@@ -29,21 +30,13 @@ export default {
           justify-content: center;
           align-items: flex-start;
           flex: 1 0 0;
-          font-weight: var(--kd-font-weight-regular);
-          letter-spacing: var(--kd-letter-spacing-5);
         }
 
         .info-card-title-text {
-          font-size: var(--kd-font-size-utility-4-lg);
-          line-height: var(--kd-line-height-utility-4-lg);
-          font-family: var(--kd-font-family-primary);
           color: var(--kd-color-text-title-ai-tertiary);
         }
 
         .info-card-sub-text {
-          font-size: var(--kd-font-size-utility-2-lg);
-          line-height: var(--kd-line-height-utility-2-lg);
-          font-family: var(--kd-font-family-secondary);
           color: var(--kd-color-text-level-primary);
         }
         .info-card-rightIcon,
@@ -64,13 +57,13 @@ const InfoTemplate = (withTitleText) => {
         <!-- If we do not need title -->
         ${withTitleText
           ? html`
-              <div class="info-card-title-text">
+              <div class="info-card-title-text kd-type--ui-04 ">
                 Kai may occasionally generate incorrect or misleading
                 information.
               </div>
             `
           : null}
-        <div class="info-card-sub-text">
+        <div class="info-card-sub-text kd-type--ui-02">
           Kai may occasionally generate incorrect or misleading information.
         </div>
       </div>
@@ -95,9 +88,7 @@ const InfoTemplate = (withTitleText) => {
 export const Default = {
   render: () => {
     return html`
-      <kyn-card style="width:80%" type="normal" aiConnected>
-        ${InfoTemplate(true)}
-      </kyn-card>
+      <kyn-card style="width:80%" type="normal" aiConnected> Testing </kyn-card>
     `;
   },
 };
