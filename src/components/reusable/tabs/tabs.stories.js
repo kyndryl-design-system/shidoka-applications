@@ -240,7 +240,7 @@ export const Gallery = {
     return html`
       <div class="heading kd-type--headline-04">Gallery</div>
 
-      <div class="heading kd-type--headline-08">Contained</div>
+      <div class="heading kd-type--headline-07">Contained</div>
 
       <kyn-tabs
         tabSize="md"
@@ -259,7 +259,7 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-08">Line</div>
+      <div class="heading kd-type--headline-07">Line</div>
 
       <kyn-tabs
         tabSize="md"
@@ -278,7 +278,7 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-08">Contained AI</div>
+      <div class="heading kd-type--headline-07">Contained AI</div>
 
       <kyn-tabs
         tabSize="md"
@@ -297,7 +297,7 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-08">Line AI</div>
+      <div class="heading kd-type--headline-07">Line AI</div>
 
       <kyn-tabs
         tabSize="md"
@@ -316,7 +316,7 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-08">Line AI (Vertical)</div>
+      <div class="heading kd-type--headline-07">Line AI (Vertical)</div>
 
       <kyn-tabs
         tabSize="md"
@@ -335,7 +335,7 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-08">Disabled</div>
+      <div class="heading kd-type--headline-07">Disabled</div>
 
       <kyn-tabs
         tabSize=${'md'}

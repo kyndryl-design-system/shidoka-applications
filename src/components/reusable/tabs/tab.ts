@@ -118,7 +118,9 @@ export class Tab extends LitElement {
    */
   override willUpdate(changedProps: any) {
     if (changedProps.has('id')) {
-      this['aria-controls'] = this.id + '-panel';
+      this['aria-controls'] =
+        this.id +
+        `-panel-${this._tabStyle}-${this._aiConnected}-${this._vertical}`;
     }
 
     if (changedProps.has('selected')) {

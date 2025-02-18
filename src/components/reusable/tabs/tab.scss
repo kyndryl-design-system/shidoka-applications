@@ -150,14 +150,19 @@
     &.selected {
       background: var(--kd-color-background-button-secondary-ai-default);
       border-color: var(--kd-color-border-button-ai-state-default);
+
+      &:hover {
+        border-color: var(--kd-color-border-button-ai-state-default);
+      }
     }
 
     &:hover {
       background: var(--kd-color-background-button-secondary-ai-hover);
-      border-color: var(--kd-color-border-button-ai-state-default);
+      color: var(--kd-color-text-button-ai-default);
     }
 
     &:focus:not(.disabled) {
+      background: transparent;
       outline-color: var(--kd-color-border-button-ai-state-hover);
     }
 
@@ -169,36 +174,45 @@
   }
 
   &.line {
-    background: transparent;
-
     &.ai-connected--false {
+      background: transparent;
       color: var(--kd-color-text-level-primary);
       border-color: var(--kd-color-border-variants-light);
+
+      &.selected {
+        border-color: var(--kd-color-border-level-tertiary);
+      }
+
+      &:hover {
+        background: var(--kd-color-background-ui-hollow-hover);
+        border-color: var(--kd-color-border-ui-hover);
+        color: var(--kd-color-text-link-level-hover);
+      }
     }
 
     &.ai-connected--true {
       background: transparent;
       color: var(--kd-color-text-button-ai-default);
       border-color: var(--kd-color-border-variants-ai);
-    }
 
-    &.selected {
-      border-color: var(--kd-color-border-button-ai-state-default);
-    }
+      &.selected {
+        border-color: var(--kd-color-border-button-ai-state-default);
+      }
 
-    &:hover {
-      background: var(--kd-color-background-button-secondary-ai-hover);
-      border-color: var(--kd-color-border-button-ai-state-default);
-    }
+      &:hover {
+        background: var(--kd-color-background-button-secondary-ai-hover);
+        border-color: var(--kd-color-border-button-ai-state-default);
+      }
 
-    &:focus:not(.disabled) {
-      outline-color: var(--kd-color-border-button-ai-state-focused);
-    }
+      &:focus:not(.disabled) {
+        outline-color: var(--kd-color-border-button-ai-state-focused);
+      }
 
-    &:active:not(.disabled) {
-      color: var(--kd-color-text-button-dark-primary);
-      background: var(--kd-color-background-button-secondary-ai-pressed);
-      border: 2px solid var(--kd-color-border-button-ai-state-focused);
+      &:active:not(.disabled) {
+        color: var(--kd-color-text-button-dark-primary);
+        background: var(--kd-color-background-button-secondary-ai-pressed);
+        border: 2px solid var(--kd-color-border-button-ai-state-focused);
+      }
     }
 
     &.disabled {
