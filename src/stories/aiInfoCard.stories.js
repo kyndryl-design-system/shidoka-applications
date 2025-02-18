@@ -49,55 +49,75 @@ export default {
   ],
 };
 
-const InfoTemplate = {
-  render: ({ withTitleText, ...args }) => {
-    return html`
-      <kyn-card type="normal" aiConnected>
-        <div class="info-card-container">
-          <div class="info-card-leftIcon">${unsafeSVG(policeIcon)}</div>
-          <div class="info-card-content-wrapper">
-            <!-- If we do not need title -->
-            ${withTitleText
-              ? html`
-                  <div class="info-card-title-text kd-type--ui-04 ">
-                    This is a title text
-                  </div>
-                `
-              : null}
-            <div class="info-card-sub-text kd-type--ui-02">
-              This is a sub text
-            </div>
-          </div>
-          <div class="info-card-rightIcon">
-            <kyn-button
-              iconposition="center"
-              kind="ghost"
-              type="button"
-              size="small"
-              description="Button Description"
-              @on-click=${(e) => action(e.type)(e)}
-            >
-              <span style="display:flex;" slot="icon"
-                >${unsafeSVG(deleteIcon)}</span
-              >
-            </kyn-button>
+const InfoTemplate = (
+  showLeftIcon = false,
+  showTitleText = false,
+  showRightIcon = false
+) => {
+  return html`
+    <kyn-card type="normal" aiConnected>
+      <div class="info-card-container">
+        ${showLeftIcon
+          ? html` <div class="info-card-leftIcon">
+              ${unsafeSVG(policeIcon)}
+            </div>`
+          : null}
+        <div class="info-card-content-wrapper">
+          <!-- If we do not need title -->
+          ${showTitleText
+            ? html`
+                <div class="info-card-title-text kd-type--ui-04 ">
+                  This is a title text
+                </div>
+              `
+            : null}
+          <div class="info-card-sub-text kd-type--ui-02">
+            This is a sub text
           </div>
         </div>
-      </kyn-card>
-    `;
-  },
+        ${showRightIcon
+          ? html`
+              <div class="info-card-rightIcon">
+                <kyn-button
+                  iconposition="center"
+                  kind="ghost"
+                  type="button"
+                  size="small"
+                  description="Button Description"
+                  @on-click=${(e) => action(e.type)(e)}
+                >
+                  <span style="display:flex;" slot="icon"
+                    >${unsafeSVG(deleteIcon)}</span
+                  >
+                </kyn-button>
+              </div>
+            `
+          : null}
+      </div>
+    </kyn-card>
+  `;
 };
 
 export const Default = {
-  ...InfoTemplate,
-  args: {
-    withTitleText: true,
+  render: () => {
+    return html` ${InfoTemplate(true, false, true)} `;
   },
 };
 
-export const WithoutTitle = {
-  ...InfoTemplate,
-  args: {
-    withTitleText: false,
+export const WithTitleText = {
+  render: () => {
+    return html` ${InfoTemplate(true, true, true)} `;
+  },
+};
+
+export const OnlyLeftIcon = {
+  render: () => {
+    return html` ${InfoTemplate(true, true, false)} `;
+  },
+};
+
+export const OnlyRightIcon = {
+  render: () => {
+    return html` ${InfoTemplate(false, true, true)} `;
   },
 };
