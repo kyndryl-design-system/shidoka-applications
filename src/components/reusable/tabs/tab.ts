@@ -99,6 +99,16 @@ export class Tab extends LitElement {
     `;
   }
 
+  override connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('click', (e) => this._handleClick(e));
+  }
+
+  override disconnectedCallback() {
+    this.removeEventListener('click', (e) => this._handleClick(e));
+    super.disconnectedCallback();
+  }
+
   /**
    * Updates the 'aria-controls' and 'aria-selected' attributes based on changes to the
    * 'id' and 'selected' properties, respectively.

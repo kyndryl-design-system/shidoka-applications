@@ -32,7 +32,7 @@
   }
 
   &.size--lg {
-    @include typography.type-headline-08;
+    @include typography.type-body-02;
     font-weight: 300;
     height: 56px;
     padding: 14px 12px;
@@ -51,7 +51,7 @@
     }
   }
 
-  &.selected {
+  &.selected:not(.disabled) {
     font-weight: 500;
   }
 
@@ -98,133 +98,116 @@
         }
       }
     }
+  }
 
-    &.ai-connected--false {
-      color: var(--kd-color-text-level-primary);
-      background: var(--kd-color-background-container-soft);
-
-      &.selected {
-        color: var(--kd-color-text-level-tertiary);
-        border-color: var(--kd-color-border-level-tertiary);
-        background: var(--kd-color-background-container-default);
-      }
-
-      &:hover {
-        background: var(--kd-color-background-ui-hollow-hover);
-        color: var(--kd-color-text-link-level-hover);
-      }
-
-      &:focus {
-        outline-color: var(--kd-color-border-variants-focus);
-      }
-
-      &:active {
-        color: var(--kd-color-text-link-level-pressed);
-        background: var(--kd-color-background-ui-hollow-hover);
-        border: 2px solid var(--kd-color-border-variants-focus);
-      }
-
-      &.disabled {
-        border-color: var(--kd-color-border-ui-disabled);
-        background: var(--kd-color-background-ui-default-disabled);
-        color: var(--kd-color-text-link-level-disabled);
-      }
+  &[class*='ai-connected--'] {
+    &.selected {
+      border-color: var(--kd-color-border-level-tertiary);
     }
 
-    &.ai-connected--true {
-      color: var(--kd-color-text-button-ai-default);
-      border-color: var(--kd-color-background-container-ai-subtle);
-      background: var(--kd-color-background-container-ai-subtle);
+    &:hover {
+      background: var(--kd-color-background-ui-hollow-hover);
+      color: var(--kd-color-text-link-level-hover);
+    }
+
+    &:focus:not(.disabled) {
+      outline-color: var(--kd-color-border-variants-focus);
+    }
+
+    &:active:not(.disabled) {
+      color: var(--kd-color-text-link-level-pressed);
+      background: var(--kd-color-background-ui-hollow-hover);
+      border: 2px solid var(--kd-color-border-variants-focus);
+    }
+
+    &.disabled {
+      border-color: var(--kd-color-border-ui-disabled);
+      background: var(--kd-color-background-ui-default-disabled);
+      color: var(--kd-color-text-link-level-disabled);
 
       &.selected {
-        border-color: var(--kd-color-border-button-ai-state-default);
-        background: var(--kd-color-background-button-secondary-ai-default);
-      }
-
-      &:hover {
-        background: var(--kd-color-background-button-secondary-ai-hover);
-        border-color: var(--kd-color-background-button-secondary-ai-hover);
-      }
-
-      &:focus {
-        outline-color: var(--kd-color-border-button-ai-state-hover);
-      }
-
-      &:active {
-        color: var(--kd-color-text-button-dark-primary);
-        background: var(--kd-color-background-button-primary-ai-hover);
-        border-color: var(--kd-color-border-button-ai-state-focused);
-      }
-
-      &.disabled {
-        border-color: var(--kd-color-border-ui-disabled);
-        background: var(--kd-color-background-ui-default-disabled);
         color: var(--kd-color-text-link-level-disabled);
       }
     }
   }
 
+  &.ai-connected--false {
+    color: var(--kd-color-text-level-primary);
+    background: var(--kd-color-background-container-soft);
+
+    &.selected {
+      font-weight: 500;
+      color: var(--kd-color-text-level-tertiary);
+      background: var(--kd-color-background-container-default);
+    }
+  }
+
+  &.ai-connected--true {
+    color: var(--kd-color-text-button-ai-default);
+    border-color: var(--kd-color-background-container-ai-subtle);
+    background: var(--kd-color-background-container-ai-subtle);
+
+    &.selected {
+      background: var(--kd-color-background-button-secondary-ai-default);
+      border-color: var(--kd-color-border-button-ai-state-default);
+    }
+
+    &:hover {
+      background: var(--kd-color-background-button-secondary-ai-hover);
+      border-color: var(--kd-color-border-button-ai-state-default);
+    }
+
+    &:focus:not(.disabled) {
+      outline-color: var(--kd-color-border-button-ai-state-hover);
+    }
+
+    &:active:not(.disabled) {
+      color: var(--kd-color-text-button-dark-primary);
+      background: var(--kd-color-background-button-primary-ai-hover);
+      border-color: var(--kd-color-border-button-ai-state-focused);
+    }
+  }
+
   &.line {
+    background: transparent;
+
     &.ai-connected--false {
       color: var(--kd-color-text-level-primary);
       border-color: var(--kd-color-border-variants-light);
-      background: transparent;
-
-      &.selected {
-        color: var(--kd-color-text-level-tertiary);
-        border-color: var(--kd-color-border-level-tertiary);
-      }
-
-      &:hover {
-        background: var(--kd-color-background-ui-hollow-hover);
-        color: var(--kd-color-text-link-level-hover);
-        border-color: var(--kd-color-border-ui-hover);
-      }
-
-      &:focus {
-        outline-color: var(--kd-color-border-variants-focus);
-      }
-
-      &:active {
-        color: var(--kd-color-text-link-level-pressed);
-        background: var(--kd-color-background-ui-hollow-hover);
-        border: 2px solid var(--kd-color-border-variants-focus);
-      }
-
-      &.disabled {
-        border-color: var(--kd-color-border-ui-disabled);
-        background: transparent;
-        color: var(--kd-color-text-link-level-disabled);
-      }
     }
 
     &.ai-connected--true {
+      background: transparent;
       color: var(--kd-color-text-button-ai-default);
       border-color: var(--kd-color-border-variants-ai);
+    }
+
+    &.selected {
+      border-color: var(--kd-color-border-button-ai-state-default);
+    }
+
+    &:hover {
+      background: var(--kd-color-background-button-secondary-ai-hover);
+      border-color: var(--kd-color-border-button-ai-state-default);
+    }
+
+    &:focus:not(.disabled) {
+      outline-color: var(--kd-color-border-button-ai-state-focused);
+    }
+
+    &:active:not(.disabled) {
+      color: var(--kd-color-text-button-dark-primary);
+      background: var(--kd-color-background-button-secondary-ai-pressed);
+      border: 2px solid var(--kd-color-border-button-ai-state-focused);
+    }
+
+    &.disabled {
+      border-color: var(--kd-color-border-ui-disabled);
       background: transparent;
+      color: var(--kd-color-text-link-level-disabled);
 
       &.selected {
-        border-color: var(--kd-color-border-button-ai-state-default);
-      }
-
-      &:hover {
-        background: var(--kd-color-background-button-secondary-ai-hover);
-        border-color: var(--kd-color-border-button-ai-state-default);
-      }
-
-      &:focus {
-        outline-color: var(--kd-color-border-button-ai-state-focused);
-      }
-
-      &:active {
-        color: var(--kd-color-text-button-dark-primary);
-        background: var(--kd-color-background-button-secondary-ai-pressed);
-        border: 2px solid var(--kd-color-border-button-ai-state-focused);
-      }
-
-      &.disabled {
-        border-color: var(--kd-color-border-ui-disabled);
-        background: transparent;
+        font-weight: 500;
         color: var(--kd-color-text-link-level-disabled);
       }
     }
