@@ -131,6 +131,11 @@ export class SideDrawer extends LitElement {
       'ai-connected': this.aiConnected,
     };
 
+    const dialogHeaderClasses = {
+      'header-title': true,
+      'ai-connected': this.aiConnected,
+    };
+
     return html`
       <span class="anchor" @click=${this._openDrawer}>
         <slot name="anchor"></slot>
@@ -145,10 +150,7 @@ export class SideDrawer extends LitElement {
           <!--  Header -->
           <header>
             <div class="header-label-title">
-              <h1
-                class="header-title ${this.aiConnected ? 'ai-connected' : ''}"
-                id="dialogLabel"
-              >
+              <h1 class="${classMap(dialogHeaderClasses)}" id="dialogLabel">
                 ${this.titleText}
               </h1>
               ${this.labelText !== ''
@@ -201,9 +203,7 @@ export class SideDrawer extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="Secondary"
-                            kind=${this.aiConnected
-                              ? 'outline-ai'
-                              : 'secondary'}
+                            kind=${this.aiConnected ? 'outline-ai' : 'outline'}
                             @click=${(e: Event) =>
                               this._closeDrawer(e, 'secondary')}
                           >
@@ -217,7 +217,7 @@ export class SideDrawer extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="Cancel"
-                            kind=${this.aiConnected ? 'ghost' : 'tertiary'}
+                            kind="ghost"
                             @click=${(e: Event) =>
                               this._closeDrawer(e, 'cancel')}
                           >
