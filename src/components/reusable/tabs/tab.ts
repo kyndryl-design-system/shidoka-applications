@@ -77,11 +77,15 @@ export class Tab extends LitElement {
   @property({ type: String, reflect: true })
   'aria-disabled' = 'false';
 
-  // Expose a custom data attribute for aiConnected
+  /** Expose a custom data attribute for aiConnected.
+   * @internal
+   */
   @property({ type: String, reflect: true, attribute: 'data-aiconnected' })
   dataAiConnected = 'false';
 
-  // Expose a custom data attribute for tabStyle
+  /** Expose a custom data attribute for tabStyle
+   * @internal
+   */
   @property({ type: String, reflect: true, attribute: 'data-tab-style' })
   dataTabStyle = '';
 
