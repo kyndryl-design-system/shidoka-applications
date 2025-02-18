@@ -78,6 +78,8 @@ export class Tab extends LitElement {
   @property({ type: String, reflect: true })
   'aria-disabled' = 'false';
 
+  private _idSuffix: string = Math.random().toString(36).substring(2);
+
   override render() {
     const classes = {
       tab: true,
@@ -88,7 +90,7 @@ export class Tab extends LitElement {
       line: this._tabStyle === 'line',
       'size--sm': this._tabSize === TAB_SIZES.SMALL,
       'size--md': this._tabSize === TAB_SIZES.MEDIUM,
-      'size--lg': this._tabSize === TAB_SIZES.LARGE,
+      // 'size--lg': this._tabSize === TAB_SIZES.LARGE,
       [`ai-connected--${this._aiConnected}`]: true,
     };
 
@@ -118,9 +120,7 @@ export class Tab extends LitElement {
    */
   override willUpdate(changedProps: any) {
     if (changedProps.has('id')) {
-      this['aria-controls'] =
-        this.id +
-        `-panel-${this._tabStyle}-${this._aiConnected}-${this._vertical}`;
+      this['aria-controls'] = this.id + '-panel';
     }
 
     if (changedProps.has('selected')) {
