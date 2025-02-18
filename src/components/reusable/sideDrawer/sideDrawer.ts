@@ -106,6 +106,10 @@ export class SideDrawer extends LitElement {
   @property({ attribute: false })
   beforeClose!: Function;
 
+  /** Set this to `true` for AI theme. */
+  @property({ type: Boolean })
+  aiConnected = false;
+
   /** The dialog element
    * @internal
    */
@@ -119,6 +123,12 @@ export class SideDrawer extends LitElement {
       'size--md': this.size === 'md',
       'size--standard': this.size === 'standard',
       'size--sm': this.size === 'sm',
+      'ai-connected': this.aiConnected,
+    };
+
+    const dialogFooterClasses = {
+      'dialog-footer': true,
+      'ai-connected': this.aiConnected,
     };
 
     return html`
@@ -135,7 +145,12 @@ export class SideDrawer extends LitElement {
           <!--  Header -->
           <header>
             <div class="header-label-title">
-              <h1 id="dialogLabel">${this.titleText}</h1>
+              <h1
+                id="dialogLabel"
+                class="${this.aiConnected ? 'ai-connected' : ''}"
+              >
+                ${this.titleText}
+              </h1>
               ${this.labelText !== ''
                 ? html`<span class="label">${this.labelText}</span>`
                 : null}
@@ -165,7 +180,7 @@ export class SideDrawer extends LitElement {
           <!-- footer -->
           ${!this.hideFooter
             ? html`
-                <div class="dialog-footer">
+                <div class="${classMap(dialogFooterClasses)}">
                   <div class="actions">
                     <kyn-button
                       class="action-button"
@@ -173,6 +188,8 @@ export class SideDrawer extends LitElement {
                       ?disabled=${this.submitBtnDisabled}
                       kind=${this.destructive
                         ? 'primary-destructive'
+                        : this.aiConnected
+                        ? 'primary-ai'
                         : 'primary'}
                       @click=${(e: Event) => this._closeDrawer(e, 'ok')}
                     >
@@ -184,7 +201,9 @@ export class SideDrawer extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="Secondary"
-                            kind="secondary"
+                            kind=${this.aiConnected
+                              ? 'outline-ai'
+                              : 'secondary'}
                             @click=${(e: Event) =>
                               this._closeDrawer(e, 'secondary')}
                           >
@@ -198,7 +217,7 @@ export class SideDrawer extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="Cancel"
-                            kind="tertiary"
+                            kind=${this.aiConnected ? 'ghost' : 'tertiary'}
                             @click=${(e: Event) =>
                               this._closeDrawer(e, 'cancel')}
                           >
