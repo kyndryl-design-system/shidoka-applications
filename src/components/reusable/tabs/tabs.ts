@@ -62,7 +62,7 @@ export class Tabs extends LitElement {
       [`kyn-tabs--${this.tabStyle}`]: true,
       'size--small': this.tabSize === TAB_SIZES.SMALL,
       'size--medium': this.tabSize === TAB_SIZES.MEDIUM,
-      'size--large': this.tabSize === TAB_SIZES.LARGE,
+      // 'size--large': this.tabSize === TAB_SIZES.LARGE,
       [`ai-connected--${this.aiConnected}`]: true,
     };
 

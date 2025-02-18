@@ -78,8 +78,6 @@ export class Tab extends LitElement {
   @property({ type: String, reflect: true })
   'aria-disabled' = 'false';
 
-  private _idSuffix: string = Math.random().toString(36).substring(2);
-
   override render() {
     const classes = {
       tab: true,
