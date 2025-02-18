@@ -56,29 +56,6 @@
     font-weight: 500;
   }
 
-  &.disabled {
-    color: var(--kd-color-text-link-level-disabled);
-    cursor: not-allowed;
-    border-color: var(--kd-color-border-ui-disabled);
-
-    &:hover {
-      background: transparent;
-    }
-
-    &.contained {
-      background: var(--kd-color-background-ui-default-disabled);
-      border-color: transparent;
-    }
-
-    &.selected {
-      border-color: var(--kd-color-border-ui-disabled);
-    }
-
-    &:focus {
-      outline-color: transparent;
-    }
-  }
-
   &.contained {
     border-bottom: none;
     border-top: 2px solid transparent;
@@ -99,6 +76,58 @@
         }
       }
     }
+
+    &.disabled {
+      background: var(--kd-color-background-ui-default-disabled);
+      border-color: transparent;
+
+      &.selected {
+        background: var(--kd-color-background-ui-default-disabled);
+        border-color: transparent;
+        font-weight: normal;
+      }
+    }
+
+    &[class*='ai-connected--'] {
+      &:active:not(.disabled),
+      &.selected:not(.disabled) {
+        border-bottom: none;
+      }
+
+      &.disabled {
+        background: var(--kd-color-background-ui-default-disabled);
+        border-color: transparent;
+
+        &.selected {
+          background: var(--kd-color-background-ui-default-disabled);
+          border-color: transparent;
+          font-weight: normal;
+        }
+      }
+    }
+  }
+
+  &.disabled {
+    color: var(--kd-color-text-link-level-disabled);
+    cursor: not-allowed;
+    border-color: var(--kd-color-border-ui-disabled);
+    background: transparent;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: var(--kd-color-text-link-level-disabled);
+      border-color: var(--kd-color-border-ui-disabled);
+      background: transparent;
+      outline-color: transparent;
+    }
+
+    &.selected {
+      color: var(--kd-color-text-link-level-disabled);
+      background: transparent;
+      border-color: var(--kd-color-border-ui-disabled);
+      font-weight: normal;
+    }
   }
 
   &[class*='ai-connected--'] {
@@ -106,7 +135,7 @@
       border-color: var(--kd-color-border-level-tertiary);
     }
 
-    &:hover {
+    &:hover:not(.disabled) {
       background: var(--kd-color-background-ui-hollow-hover);
       color: var(--kd-color-text-link-level-hover);
     }
@@ -118,16 +147,27 @@
     &:active:not(.disabled) {
       color: var(--kd-color-text-link-level-pressed);
       background: var(--kd-color-background-ui-hollow-hover);
-      border: 2px solid var(--kd-color-border-variants-focus);
+      border-bottom: 2px solid var(--kd-color-border-variants-focus);
     }
 
     &.disabled {
-      border-color: var(--kd-color-border-ui-disabled);
-      background: var(--kd-color-background-ui-default-disabled);
       color: var(--kd-color-text-link-level-disabled);
+      background: var(--kd-color-background-ui-default-disabled);
+      border-color: var(--kd-color-border-ui-disabled);
+
+      &:hover,
+      &:focus,
+      &:active {
+        color: var(--kd-color-text-link-level-disabled);
+        background: var(--kd-color-background-ui-default-disabled);
+        border-color: var(--kd-color-border-ui-disabled);
+        outline-color: transparent;
+      }
 
       &.selected {
         color: var(--kd-color-text-link-level-disabled);
+        border-color: var(--kd-color-border-ui-disabled);
+        font-weight: normal;
       }
     }
   }
@@ -136,10 +176,10 @@
     color: var(--kd-color-text-level-primary);
     background: var(--kd-color-background-container-soft);
 
-    &.selected {
+    &.selected:not(.disabled) {
       font-weight: 500;
       color: var(--kd-color-text-level-tertiary);
-      background: var(--kd-color-background-container-default);
+      background: transparent;
     }
   }
 
@@ -152,12 +192,12 @@
       background: var(--kd-color-background-button-secondary-ai-default);
       border-color: var(--kd-color-border-button-ai-state-default);
 
-      &:hover {
+      &:hover:not(.disabled) {
         border-color: var(--kd-color-border-button-ai-state-default);
       }
     }
 
-    &:hover {
+    &:hover:not(.disabled) {
       background: var(--kd-color-background-button-secondary-ai-hover);
       color: var(--kd-color-text-button-ai-default);
     }
@@ -184,7 +224,7 @@
         border-color: var(--kd-color-border-level-tertiary);
       }
 
-      &:hover {
+      &:hover:not(.disabled) {
         background: var(--kd-color-background-ui-hollow-hover);
         border-color: var(--kd-color-border-ui-hover);
         color: var(--kd-color-text-link-level-hover);
@@ -200,7 +240,7 @@
         border-color: var(--kd-color-border-button-ai-state-default);
       }
 
-      &:hover {
+      &:hover:not(.disabled) {
         background: var(--kd-color-background-button-secondary-ai-hover);
         border-color: var(--kd-color-border-button-ai-state-default);
       }
@@ -212,18 +252,29 @@
       &:active:not(.disabled) {
         color: var(--kd-color-text-button-dark-primary);
         background: var(--kd-color-background-button-secondary-ai-pressed);
-        border: 2px solid var(--kd-color-border-button-ai-state-focused);
+        border-bottom: 2px solid var(--kd-color-border-button-ai-state-focused);
       }
     }
 
     &.disabled {
-      border-color: var(--kd-color-border-ui-disabled);
-      background: transparent;
       color: var(--kd-color-text-link-level-disabled);
+      background: transparent;
+      border-color: var(--kd-color-border-ui-disabled);
+
+      &:hover,
+      &:focus,
+      &:active {
+        color: var(--kd-color-text-link-level-disabled);
+        background: transparent;
+        border-color: var(--kd-color-border-ui-disabled);
+        outline-color: transparent;
+      }
 
       &.selected {
-        font-weight: 500;
         color: var(--kd-color-text-link-level-disabled);
+        background: transparent;
+        border-color: var(--kd-color-border-ui-disabled);
+        font-weight: normal;
       }
     }
   }

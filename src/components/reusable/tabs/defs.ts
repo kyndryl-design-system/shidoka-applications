@@ -1,5 +1,5 @@
 export enum TAB_SIZES {
-  LARGE = 'lg',
-  MEDIUM = 'md',
+  // LARGE = 'lg',
   SMALL = 'sm',
+  MEDIUM = 'md',
 }
