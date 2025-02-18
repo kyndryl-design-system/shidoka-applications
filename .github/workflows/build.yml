@@ -1,94 +1,106 @@
-name: shidoka-applications
+name: 'Build'
+
 on:
-  push:
-    branches:
-      - main
-      - beta
-      - next
   pull_request:
+  workflow_call:
+
 env:
   GH_TOKEN: '${{ secrets.GH_TOKEN }}'
+
 jobs:
   Lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'npm'
+
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
+
       - name: Lint
         run: npm run lint
+
   Build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'npm'
+
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
+
       - name: Build component bundles
         run: npm run build
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: build-artifact
           path: dist
-  Test:
-    timeout-minutes: 60
+
+  Build_Storybook:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
-      - name: Install Playwright
-        run: npx playwright@latest install --with-deps
-      - name: Build Storybook
-        run: npm run build-storybook --quiet
-      - name: Serve Storybook and run tests
-        run: |
-          npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
-            "npx http-server storybook-static --port 6006 --silent" \
-            "npx wait-on tcp:6006 && npm run test"
-  Release:
-    needs: [Lint, Build, Test]
-    runs-on: ubuntu-latest
-    if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/beta' || github.ref == 'refs/heads/next') && github.event_name == 'push' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GH_TOKEN }}
+
       - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'npm'
-          scope: '@kyndryl-design-system'
+
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
-      - name: Install semantic-release extra plugins
-        run: npm i --save-dev @semantic-release/git --legacy-peer-deps
-      - name: Download build artifact
+
+      - name: Build storybook
+        run: npm run build-storybook
+
+      - name: Upload build-storybook artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-storybook-artifact
+          path: storybook-static
+
+  Test:
+    needs: [Build_Storybook]
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Install Playwright
+        run: npx playwright@latest install --with-deps
+
+      - name: Download build-storybook artifact
         uses: actions/download-artifact@v4
         with:
-          name: build-artifact
-          path: dist
-      - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN_PACKAGES }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: HUSKY=0 npx semantic-release
+          name: build-storybook-artifact
+          path: storybook-static
+
+      - name: Serve Storybook and run tests
+        run: |
+          npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
+            "npx http-server storybook-static --port 6006 --silent" \
+            "npx wait-on tcp:6006 && npm run test"
