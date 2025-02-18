@@ -1,15 +1,9 @@
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
-import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
-import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/send.svg';
 
 import '../button';
 import '../textInput';
-import '../textArea';
-import '../tabs';
-import '../avatar';
 
 export default {
   title: 'Components/Modal',
