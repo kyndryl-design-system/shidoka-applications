@@ -43,6 +43,8 @@ const args = {
   secondaryButtonText: 'Secondary',
   secondaryDisabled: false,
   hideCancelButton: false,
+  aiConnected: false,
+  disableScroll: false,
 };
 
 export const Modal = {
@@ -67,6 +69,8 @@ export const Modal = {
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideFooter=${args.hideFooter}
         ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
+        ?disableScroll=${args.disableScroll}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
@@ -99,6 +103,8 @@ export const ActionButtons = {
         secondaryButtonText=${args.secondaryButtonText}
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
+        ?disableScroll=${args.disableScroll}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
@@ -131,11 +137,15 @@ export const BeforeClose = {
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?secondaryDisabled=${args.secondaryDisabled}
+        ?aiConnected=${args.aiConnected}
+        ?disableScroll=${args.disableScroll}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button slot="anchor"> Open Modal </kyn-button>
+        <kyn-button slot="anchor" ?aiConnected=${args.aiConnected}>
+          Open Modal
+        </kyn-button>
 
         Modal with custom beforeClose handler function.
       </kyn-modal>
@@ -170,11 +180,15 @@ export const WithForm = {
         secondaryButtonText=${args.secondaryButtonText}
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
+        ?disableScroll=${args.disableScroll}
         .beforeClose=${(returnValue) => handleBeforeCloseSubmit(returnValue)}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button slot="anchor"> Open Modal </kyn-button>
+        <kyn-button slot="anchor" ?aiConnected=${args.aiConnected}>
+          Open Modal
+        </kyn-button>
 
         Modal with form validation.
         <br /><br />
@@ -192,12 +206,12 @@ export const WithForm = {
 };
 
 export const AIConnected = {
-  args: { ...args, showSecondaryButton: false },
+  args: { ...args, showSecondaryButton: false, aiConnected: true },
   render: (args) => {
     return html`
       <kyn-modal
         ?open=${args.open}
-        size="xl"
+        size=${args.size}
         titleText=${args.titleText}
         labelText=${args.labelText}
         okText=${args.okText}
@@ -210,112 +224,16 @@ export const AIConnected = {
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideFooter=${args.hideFooter}
         ?hideCancelButton=${args.hideCancelButton}
-        aiConnected
-        disableScroll
+        ?aiConnected=${args.aiConnected}
+        ?disableScroll=${args.disableScroll}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button slot="anchor"> Open Modal </kyn-button>
-        <span class="content">
-          <kyn-tabs
-            style="height: 300px;"
-            scrollablePanels
-            tabStyle="line"
-            aiConnected
-            @on-change=${(e) => action(e.type)(e)}
-          >
-            <kyn-tab slot="tabs" id="chat" selected>
-              <span class="icon">${unsafeSVG(userAvatarIcon)}</span>
-              Chat
-            </kyn-tab>
-            <kyn-tab slot="tabs" id="history">
-              <span class="icon">${unsafeSVG(userAvatarIcon)}</span>
-              History
-            </kyn-tab>
-            <kyn-tab slot="tabs" id="settings">
-              <span class="icon">${unsafeSVG(userAvatarIcon)}</span>
-              Settings
-            </kyn-tab>
-
-            <kyn-tab-panel tabId="chat" visible>
-              <div class="response-wrapper">
-                <kyn-avatar initials="A"></kyn-avatar>
-
-                <span class="response-msg">
-                  The benefits of adopting Hybrid IT Modernization:
-                  <ol>
-                    <li>
-                      Cost Efficiency: Hybrid IT allows organizations to combine
-                      on-premises infrastructure with cloud solutions,
-                      optimizing costs by only utilizing cloud services for what
-                      is needed. It helps avoid over-provisioning and can scale
-                      as needed without large upfront investments.
-                    </li>
-                    <li>
-                      Flexibility and Scalability: Organizations can leverage
-                      the flexibility of the cloud for specific workloads while
-                      maintaining critical systems on-premises. This provides
-                      the ability to scale resources up or down as business
-                      needs change, ensuring better alignment with demand.
-                    </li>
-                    <li>
-                      Improved Agility: By modernizing IT infrastructure with a
-                      hybrid approach, businesses can more quickly respond to
-                      market changes and customer needs. They can experiment
-                      with new technologies or software without disrupting core
-                      operations.
-                    </li>
-                  </ol>
-                </span>
-              </div></kyn-tab-panel
-            >
-            <kyn-tab-panel tabId="history">Tab 2 Content</kyn-tab-panel>
-            <kyn-tab-panel tabId="settings">Tab 3 Content</kyn-tab-panel>
-          </kyn-tabs>
-        </span>
-
-        <div class="input-query-container" slot="footer">
-          <kyn-text-area
-            class="input-text-area"
-            rows="2"
-            placeholder="Type your message..."
-            maxRowsVisible="3"
-            ?aiConnected=${args.aiConnected}
-          ></kyn-text-area>
-          <kyn-button
-            class="input-send-button"
-            kind="primary-ai"
-            description="send button"
-          >
-            <span slot="icon">${unsafeSVG(sendIcon)}</span>
-          </kyn-button>
-        </div>
+        <kyn-button slot="anchor" ?aiConnected=${args.aiConnected}>
+          Open Modal
+        </kyn-button>
+        Basic Modal example.
       </kyn-modal>
-      <style>
-        .response-wrapper {
-          display: flex;
-          gap: 20px;
-        }
-        ol {
-          margin-left: -1rem;
-        }
-        .input-query-container {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          background-color: var(--kd-color-background-container-ai-default);
-          box-shadow: 0px 0px 24px 0px var(--kd-color-border-dropshadow-ai);
-          border-radius: 8px;
-          .input-text-area {
-            width: 100%;
-            padding: 2px 0px 10px 10px;
-            margin-right: 10px;
-          }
-          .input-send-button {
-            margin-right: 10px;
-          }
-        }
-      </style>
     `;
   },
 };

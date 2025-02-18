@@ -107,7 +107,7 @@ export class Modal extends LitElement {
   @property({ type: Boolean, reflect: true })
   aiConnected = false;
 
-  /** Disables the secondary button. */
+  /** Disables scroll on the modal body to allow scrolling of nested elements inside. */
   @property({ type: Boolean })
   disableScroll = false;
 
