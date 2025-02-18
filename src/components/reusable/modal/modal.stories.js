@@ -68,7 +68,10 @@ export const Modal = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button slot="anchor" ?aiConnected=${args.aiConnected}>
+        <kyn-button
+          slot="anchor"
+          kind=${args.aiConnected ? 'primary-ai' : 'primary'}
+        >
           Open Modal
         </kyn-button>
 
@@ -102,7 +105,10 @@ export const ActionButtons = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button slot="anchor" ?aiConnected=${args.aiConnected}>
+        <kyn-button
+          slot="anchor"
+          kind=${args.aiConnected ? 'primary-ai' : 'primary'}
+        >
           Open Modal
         </kyn-button>
 
@@ -137,7 +143,10 @@ export const BeforeClose = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button slot="anchor" ?aiConnected=${args.aiConnected}>
+        <kyn-button
+          slot="anchor"
+          kind=${args.aiConnected ? 'primary-ai' : 'primary'}
+        >
           Open Modal
         </kyn-button>
 
@@ -180,7 +189,10 @@ export const WithForm = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button slot="anchor" ?aiConnected=${args.aiConnected}>
+        <kyn-button
+          slot="anchor"
+          kind=${args.aiConnected ? 'primary-ai' : 'primary'}
+        >
           Open Modal
         </kyn-button>
 
@@ -223,7 +235,10 @@ export const AIConnected = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button slot="anchor" ?aiConnected=${args.aiConnected}>
+        <kyn-button
+          slot="anchor"
+          kind=${args.aiConnected ? 'primary-ai' : 'primary'}
+        >
           Open Modal
         </kyn-button>
         Basic Modal example.

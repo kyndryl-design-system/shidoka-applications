@@ -135,7 +135,6 @@ export class Modal extends LitElement {
             class="close"
             kind="ghost"
             size="small"
-            ?aiConnected=${this.aiConnected}
             description=${this.closeText}
             @click=${(e: Event) => this._closeModal(e, 'cancel')}
           >
@@ -161,9 +160,10 @@ export class Modal extends LitElement {
                     <kyn-button
                       class="action-button"
                       value="ok"
-                      ?aiConnected=${this.aiConnected}
                       kind=${this.destructive
                         ? 'primary-destructive'
+                        : this.aiConnected
+                        ? 'primary-ai'
                         : 'primary'}
                       ?disabled=${this.okDisabled}
                       @click=${(e: Event) => this._closeModal(e, 'ok')}
@@ -175,8 +175,7 @@ export class Modal extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="Secondary"
-                            kind="secondary"
-                            ?aiConnected=${this.aiConnected}
+                            kind=${this.aiConnected ? 'outline-ai' : 'outline'}
                             ?disabled=${this.secondaryDisabled}
                             @click=${(e: Event) =>
                               this._closeModal(e, 'secondary')}
@@ -191,8 +190,7 @@ export class Modal extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="cancel"
-                            kind="tertiary"
-                            ?aiConnected=${this.aiConnected}
+                            kind="ghost"
                             @click=${(e: Event) =>
                               this._closeModal(e, 'cancel')}
                           >
