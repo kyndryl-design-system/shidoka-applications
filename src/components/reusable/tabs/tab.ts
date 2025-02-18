@@ -1,7 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { TAB_SIZES } from './defs';
 import TabScss from './tab.scss';
 
 /**
@@ -28,7 +27,7 @@ export class Tab extends LitElement {
    * @internal
    */
   @state()
-  private _tabSize: TAB_SIZES = TAB_SIZES.MEDIUM;
+  private _size = 'md';
 
   /** Vertical orientation. Inherited.
    * @internal
@@ -78,22 +77,30 @@ export class Tab extends LitElement {
   @property({ type: String, reflect: true })
   'aria-disabled' = 'false';
 
+  // Expose a custom aria attribute for aiConnected
+  @property({ type: String, reflect: true, attribute: 'aria-aiconnected' })
+  ariaAiconnected = 'false';
+
+  // Expose a custom aria attribute for tabStyle
+  @property({ type: String, reflect: true, attribute: 'aria-tab-style' })
+  ariaTabStyle = '';
+
   override render() {
     const classes = {
       tab: true,
-      selected: this.selected,
-      disabled: this.disabled,
-      vertical: this._vertical,
       contained: this._tabStyle === 'contained',
       line: this._tabStyle === 'line',
-      'size--sm': this._tabSize === TAB_SIZES.SMALL,
-      'size--md': this._tabSize === TAB_SIZES.MEDIUM,
-      // 'size--lg': this._tabSize === TAB_SIZES.LARGE,
+      'size--sm': this._size === 'sm',
+      'size--md': this._size === 'md',
+      // 'size--lg': this._size === 'lg',
+      vertical: this._vertical,
+      selected: this.selected,
+      disabled: this.disabled,
       [`ai-connected--${this._aiConnected}`]: true,
     };
 
     return html`
-      <div class=${classMap(classes)} tabindex="0" @click=${this._handleClick}>
+      <div class=${classMap(classes)}>
         <slot></slot>
       </div>
     `;
@@ -124,6 +131,14 @@ export class Tab extends LitElement {
     if (changedProps.has('selected')) {
       this['aria-selected'] = this.selected.toString();
       this.tabIndex = this.selected ? 0 : -1;
+    }
+
+    if (changedProps.has('_aiConnected')) {
+      this.ariaAiconnected = this._aiConnected.toString();
+    }
+
+    if (changedProps.has('_tabStyle')) {
+      this.ariaTabStyle = this._tabStyle.toString();
     }
 
     if (changedProps.has('disabled')) {

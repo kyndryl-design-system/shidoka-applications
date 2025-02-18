@@ -161,7 +161,7 @@ export const DisabledTab = {
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
-        <kyn-tab slot="tabs" id="tab1" selected disabled>Tab 1</kyn-tab>
+        <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
         <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
         <kyn-tab slot="tabs" id="tab3" disabled>Tab 3</kyn-tab>
 
@@ -316,7 +316,7 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-07">Line AI (Vertical)</div>
+      <div class="heading kd-type--headline-07">Vertical</div>
 
       <kyn-tabs
         tabSize="md"
@@ -345,7 +345,7 @@ export const Gallery = {
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
-        <kyn-tab slot="tabs" id="tab1" selected disabled>Tab 1</kyn-tab>
+        <kyn-tab slot="tabs" id="tab1">Tab 1</kyn-tab>
         <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
         <kyn-tab slot="tabs" id="tab3" disabled>Tab 3</kyn-tab>
 

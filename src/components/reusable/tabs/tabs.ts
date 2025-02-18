@@ -5,7 +5,6 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { TAB_SIZES } from './defs';
 import TabsScss from './tabs.scss';
 
 /**
@@ -24,13 +23,13 @@ export class Tabs extends LitElement {
 
   /** Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px. */
   @property({ type: String })
-  tabSize: TAB_SIZES = TAB_SIZES.MEDIUM;
+  tabSize = 'md';
 
   /** Vertical orientation. */
   @property({ type: Boolean })
   vertical = false;
 
-  /** Identifies as non-AI vs. AI-specific variants */
+  /** AI specifier. */
   @property({ type: Boolean })
   aiConnected = false;
 
@@ -59,10 +58,6 @@ export class Tabs extends LitElement {
       wrapper: true,
       vertical: this.vertical,
       scrollable: this.scrollablePanels,
-      [`kyn-tabs--${this.tabStyle}`]: true,
-      'size--small': this.tabSize === TAB_SIZES.SMALL,
-      'size--medium': this.tabSize === TAB_SIZES.MEDIUM,
-      // 'size--large': this.tabSize === TAB_SIZES.LARGE,
       [`ai-connected--${this.aiConnected}`]: true,
     };
 
@@ -117,10 +112,10 @@ export class Tabs extends LitElement {
 
   private _updateChildren() {
     this._tabs.forEach((tab: any) => {
-      tab._tabSize = this.tabSize;
-      tab._aiConnected = this.aiConnected;
+      tab._size = this.tabSize;
       tab._vertical = this.vertical;
       tab._tabStyle = this.tabStyle;
+      tab._aiConnected = this.aiConnected;
     });
 
     this._tabPanels.forEach((tabPanel: any) => {
