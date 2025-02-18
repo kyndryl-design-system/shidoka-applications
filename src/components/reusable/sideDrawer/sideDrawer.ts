@@ -146,8 +146,8 @@ export class SideDrawer extends LitElement {
           <header>
             <div class="header-label-title">
               <h1
+                class="header-title ${this.aiConnected ? 'ai-connected' : ''}"
                 id="dialogLabel"
-                class="${this.aiConnected ? 'ai-connected' : ''}"
               >
                 ${this.titleText}
               </h1>
