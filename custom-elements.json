@@ -1500,7 +1500,10 @@
             },
             {
               "kind": "field",
-              "name": "logoAriaLabel",
+              "name": "textStrings",
+              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
               "type": {
                 "text": "string"
               },
@@ -3246,7 +3249,62 @@
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-checkbox",
+          "name": "kyn-button",
+          "declaration": {
+            "name": "Button",
+            "module": "src/components/reusable/button/button.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/button/defs.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "BUTTON_KINDS_SOLID",
+          "type": {
+            "text": "array"
+          },
+          "default": "[\n  BUTTON_KINDS.PRIMARY,\n  BUTTON_KINDS.PRIMARY_AI,\n  BUTTON_KINDS.PRIMARY_DESTRUCTIVE,\n  BUTTON_KINDS.SECONDARY,\n  BUTTON_KINDS.SECONDARY_AI,\n  BUTTON_KINDS.SECONDARY_DESTRUCTIVE,\n  BUTTON_KINDS.TERTIARY,\n  BUTTON_KINDS.CONTENT,\n]"
+        },
+        {
+          "kind": "variable",
+          "name": "BUTTON_KINDS_OUTLINE",
+          "type": {
+            "text": "array"
+          },
+          "default": "[\n  BUTTON_KINDS.OUTLINE,\n  BUTTON_KINDS.OUTLINE_AI,\n  BUTTON_KINDS.OUTLINE_DESTRUCTIVE,\n]"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BUTTON_KINDS_SOLID",
+          "declaration": {
+            "name": "BUTTON_KINDS_SOLID",
+            "module": "src/components/reusable/button/defs.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "BUTTON_KINDS_OUTLINE",
+          "declaration": {
+            "name": "BUTTON_KINDS_OUTLINE",
+            "module": "src/components/reusable/button/defs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/button/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Button",
           "declaration": {
             "name": "Checkbox",
             "module": "src/components/reusable/checkbox/checkbox.ts"
@@ -3627,9 +3685,9 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Checkbox subgroup",
-          "name": "CheckboxSubgroup",
-          "slots": [
+          "description": "`kyn-info-card-skeleton` Web Component.\nA skeleton loading state for the informational card component that mirrors its structure.",
+          "name": "InformationalCardSkeleton",
+          "members": [
             {
               "description": "Slot for child kyn-checkboxes.",
               "name": "unnamed"
@@ -3701,8 +3759,43 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/checkbox/index.ts",
-      "declarations": [],
+      "path": "src/components/reusable/card/vitalCard.skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-vital-card-skeleton` Web Component.\nA skeleton loading state for the vital card component that mirrors its structure.",
+          "name": "VitalCardSkeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "lines",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
+              "attribute": "lines"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "lines",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
+              "fieldName": "lines"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-vital-card-skeleton",
+          "customElement": true
+        }
+      ],
       "exports": [
         {
           "kind": "js",
@@ -3732,78 +3825,28 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/button/button.ts",
+      "path": "src/components/reusable/checkbox/checkbox.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Button component.",
-          "name": "Button",
+          "description": "Checkbox.",
+          "name": "Checkbox",
           "slots": [
             {
-              "description": "Slot for button text.",
+              "description": "Slot for label text.",
               "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon.",
-              "name": "icon"
             }
           ],
           "members": [
             {
               "kind": "field",
-              "name": "description",
+              "name": "value",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "ARIA label for the button for accessibility.",
-              "attribute": "description"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "BUTTON_TYPES"
-              },
-              "description": "Type for the &lt;button&gt; element.",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "kind",
-              "type": {
-                "text": "BUTTON_KINDS"
-              },
-              "description": "Specifies the visual appearance/kind of the button.",
-              "attribute": "kind"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Converts the button to an &lt;a&gt; tag if specified.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "BUTTON_SIZES"
-              },
-              "description": "Specifies the size of the button.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "iconPosition",
-              "type": {
-                "text": "BUTTON_ICON_POSITION"
-              },
-              "description": "Specifies the position of the icon relative to any button text.",
-              "attribute": "iconPosition"
+              "description": "Checkbox value.",
+              "attribute": "value"
             },
             {
               "kind": "field",
@@ -3812,139 +3855,58 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determines if the button is disabled.",
-              "attribute": "disabled",
-              "reflects": true
+              "description": "Checkbox disabled state, inherited from the parent group.",
+              "attribute": "disabled"
             },
             {
               "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Button value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Button name.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "isFloating",
+              "name": "visiblyHidden",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determines if the button is Floatable",
-              "attribute": "isFloating"
+              "description": "Determines whether the label should be hidden from visual view but remain accessible\nto screen readers for accessibility purposes.",
+              "attribute": "visiblyHidden"
             },
             {
               "kind": "field",
-              "name": "showOnScroll",
+              "name": "indeterminate",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Show button after scrolling to 50% of the page",
-              "attribute": "showOnScroll"
-            },
-            {
-              "kind": "field",
-              "name": "formmethod",
-              "type": {
-                "text": "any"
-              },
-              "description": "Button formmethod.",
-              "attribute": "formmethod"
+              "description": "Determines whether the checkbox is in an indeterminate state.",
+              "attribute": "indeterminate"
             },
             {
               "kind": "method",
-              "name": "handleClick",
+              "name": "handleChange",
               "privacy": "private",
               "parameters": [
                 {
                   "name": "e",
                   "type": {
-                    "text": "Event"
+                    "text": "any"
                   }
                 }
               ]
-            },
-            {
-              "kind": "method",
-              "name": "_testIconOnly",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
             }
           ],
           "events": [
             {
-              "description": "Emits the original click event.",
-              "name": "on-click"
+              "description": "Captures the change event and emits the selected value and original event details.",
+              "name": "on-checkbox-change"
             }
           ],
           "attributes": [
             {
-              "name": "description",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "ARIA label for the button for accessibility.",
-              "fieldName": "description"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "BUTTON_TYPES"
-              },
-              "description": "Type for the &lt;button&gt; element.",
-              "fieldName": "type"
-            },
-            {
-              "name": "kind",
-              "type": {
-                "text": "BUTTON_KINDS"
-              },
-              "description": "Specifies the visual appearance/kind of the button.",
-              "fieldName": "kind"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Converts the button to an &lt;a&gt; tag if specified.",
-              "fieldName": "href"
-            },
-            {
-              "name": "size",
+              "name": "value",
               "type": {
                 "text": "BUTTON_SIZES"
               },
-              "description": "Specifies the size of the button.",
-              "fieldName": "size"
-            },
-            {
-              "name": "iconPosition",
-              "type": {
-                "text": "BUTTON_ICON_POSITION"
-              },
-              "description": "Specifies the position of the icon relative to any button text.",
-              "fieldName": "iconPosition"
+              "default": "''",
+              "description": "Checkbox value.",
+              "fieldName": "value"
             },
             {
               "name": "disabled",
@@ -3952,219 +3914,258 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determines if the button is disabled.",
+              "description": "Checkbox disabled state, inherited from the parent group.",
               "fieldName": "disabled"
             },
             {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Button value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Button name.",
-              "fieldName": "name"
-            },
-            {
-              "name": "isFloating",
+              "name": "visiblyHidden",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determines if the button is Floatable",
-              "fieldName": "isFloating"
+              "description": "Determines whether the label should be hidden from visual view but remain accessible\nto screen readers for accessibility purposes.",
+              "fieldName": "visiblyHidden"
             },
             {
-              "name": "showOnScroll",
+              "name": "indeterminate",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Show button after scrolling to 50% of the page",
-              "fieldName": "showOnScroll"
-            },
-            {
-              "name": "formmethod",
-              "type": {
-                "text": "any"
-              },
-              "description": "Button formmethod.",
-              "fieldName": "formmethod"
+              "description": "Determines whether the checkbox is in an indeterminate state.",
+              "fieldName": "indeterminate"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-button",
+          "tagName": "kyn-checkbox",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "Button",
+          "name": "Checkbox",
           "declaration": {
-            "name": "Button",
-            "module": "src/components/reusable/button/button.ts"
+            "name": "Checkbox",
+            "module": "src/components/reusable/checkbox/checkbox.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-button",
+          "name": "kyn-checkbox",
           "declaration": {
-            "name": "Button",
-            "module": "src/components/reusable/button/button.ts"
+            "name": "Checkbox",
+            "module": "src/components/reusable/checkbox/checkbox.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/button/defs.ts",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "BUTTON_KINDS_SOLID",
-          "type": {
-            "text": "array"
-          },
-          "default": "[\n  BUTTON_KINDS.PRIMARY,\n  BUTTON_KINDS.PRIMARY_AI,\n  BUTTON_KINDS.PRIMARY_DESTRUCTIVE,\n  BUTTON_KINDS.SECONDARY,\n  BUTTON_KINDS.SECONDARY_AI,\n  BUTTON_KINDS.SECONDARY_DESTRUCTIVE,\n  BUTTON_KINDS.TERTIARY,\n  BUTTON_KINDS.CONTENT,\n]"
-        },
-        {
-          "kind": "variable",
-          "name": "BUTTON_KINDS_OUTLINE",
-          "type": {
-            "text": "array"
-          },
-          "default": "[\n  BUTTON_KINDS.OUTLINE,\n  BUTTON_KINDS.OUTLINE_AI,\n  BUTTON_KINDS.OUTLINE_DESTRUCTIVE,\n]"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "BUTTON_KINDS_SOLID",
-          "declaration": {
-            "name": "BUTTON_KINDS_SOLID",
-            "module": "src/components/reusable/button/defs.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "BUTTON_KINDS_OUTLINE",
-          "declaration": {
-            "name": "BUTTON_KINDS_OUTLINE",
-            "module": "src/components/reusable/button/defs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/button/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Button",
-          "declaration": {
-            "name": "Button",
-            "module": "./button"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/card/card.ts",
+      "path": "src/components/reusable/checkbox/checkboxGroup.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Card.",
-          "name": "Card",
+          "description": "Checkbox group container.",
+          "name": "CheckboxGroup",
           "slots": [
             {
-              "description": "Slot for card contents.",
+              "description": "Slot for individual checkboxes.",
               "name": "unnamed"
+            },
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            },
+            {
+              "description": "Slot for description text.",
+              "name": "description"
             }
           ],
           "members": [
             {
               "kind": "field",
-              "name": "type",
+              "name": "value",
               "type": {
-                "text": "string"
+                "text": "Array<any>"
               },
-              "default": "'normal'",
-              "description": "Card Type. `'normal'` & `'clickable'`",
-              "attribute": "type"
+              "default": "[]",
+              "description": "Checkbox group selected values.",
+              "attribute": "value"
             },
             {
               "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card link url for clickable cards.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship.",
-              "attribute": "rel"
-            },
-            {
-              "kind": "field",
-              "name": "target",
-              "type": {
-                "text": "any"
-              },
-              "default": "'_self'",
-              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (deafult), `'_blank'`, `'_parent`', `'_top'`",
-              "attribute": "target"
-            },
-            {
-              "kind": "field",
-              "name": "hideBorder",
+              "name": "isFloating",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Hide card border. Useful when clickable card use inside `<kyn-notification>` component.",
-              "attribute": "hideBorder"
+              "description": "Makes a single selection required.",
+              "attribute": "required"
             },
             {
               "kind": "field",
-              "name": "aiConnected",
+              "name": "disabled",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "attribute": "aiConnected"
+              "description": "Checkbox group disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "horizontal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox group horizontal style.",
+              "attribute": "horizontal"
+            },
+            {
+              "kind": "field",
+              "name": "selectAll",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a \"Select All\" checkbox to the top of the group.",
+              "attribute": "selectAll"
+            },
+            {
+              "kind": "field",
+              "name": "hideLegend",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the group legend/label visually.",
+              "attribute": "hideLegend"
+            },
+            {
+              "kind": "field",
+              "name": "filterable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a search input to enable filtering of checkboxes.",
+              "attribute": "filterable"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "limitCheckboxes",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible checkboxes behind a \"Show all\" button.",
+              "attribute": "limitCheckboxes"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  selectAll: 'Select all',\n  showMore: 'Show more',\n  showLess: 'Show less',\n  search: 'Search',\n  required: 'Required',\n  error: 'Error',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "checkboxes",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "filteredCheckboxes",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[]"
             },
             {
               "kind": "method",
-              "name": "handleClick",
+              "name": "_updateCheckboxStates",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCheckboxChange",
               "privacy": "private",
               "parameters": [
                 {
                   "name": "e",
                   "type": {
-                    "text": "Event"
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitChangeEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFilter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_toggleRevealed",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "revealed",
+                  "type": {
+                    "text": "boolean"
                   }
                 }
               ]
@@ -4187,48 +4188,27 @@
               "fieldName": "type"
             },
             {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card link url for clickable cards.",
-              "fieldName": "href"
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
             },
             {
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship.",
-              "fieldName": "rel"
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
             },
             {
-              "name": "target",
-              "type": {
-                "text": "any"
-              },
-              "default": "'_self'",
-              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (deafult), `'_blank'`, `'_parent`', `'_top'`",
-              "fieldName": "target"
-            },
-            {
-              "name": "hideBorder",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide card border. Useful when clickable card use inside `<kyn-notification>` component.",
-              "fieldName": "hideBorder"
-            },
-            {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "aiConnected"
+              "kind": "method",
+              "name": "_handleSubgroupChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
             }
           ],
           "superclass": {
@@ -4434,6 +4414,259 @@
           "name": "DatePicker",
           "slots": [
             {
+              "description": "Captures the change event and emits the selected values.",
+              "name": "on-checkbox-group-change"
+            },
+            {
+              "description": "Captures the search input event and emits the search term.",
+              "name": "on-search"
+            },
+            {
+              "description": "Captures the show more/less click and emits the expanded state.",
+              "name": "on-limit-toggle"
+            }
+          ],
+          "members": [
+            {
+              "name": "value",
+              "type": {
+                "text": "Array<any>"
+              },
+              "default": "[]",
+              "description": "Checkbox group selected values.",
+              "fieldName": "value"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes a single selection required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox group disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "horizontal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox group horizontal style.",
+              "fieldName": "horizontal"
+            },
+            {
+              "name": "selectAll",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a \"Select All\" checkbox to the top of the group.",
+              "fieldName": "selectAll"
+            },
+            {
+              "name": "hideLegend",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the group legend/label visually.",
+              "fieldName": "hideLegend"
+            },
+            {
+              "name": "filterable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds a search input to enable filtering of checkboxes.",
+              "fieldName": "filterable"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "limitCheckboxes",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible checkboxes behind a \"Show all\" button.",
+              "fieldName": "limitCheckboxes"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-checkbox-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CheckboxGroup",
+          "declaration": {
+            "name": "CheckboxGroup",
+            "module": "src/components/reusable/checkbox/checkboxGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-checkbox-group",
+          "declaration": {
+            "name": "CheckboxGroup",
+            "module": "src/components/reusable/checkbox/checkboxGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/checkbox/checkboxSubgroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Checkbox subgroup",
+          "name": "CheckboxSubgroup",
+          "slots": [
+            {
+              "description": "Slot for child kyn-checkboxes.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for parent kyn-checkbox.",
+              "name": "parent"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "_handleSlotchange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_syncParent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "count",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCheckboxChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-checkbox-subgroup",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CheckboxSubgroup",
+          "declaration": {
+            "name": "CheckboxSubgroup",
+            "module": "src/components/reusable/checkbox/checkboxSubgroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-checkbox-subgroup",
+          "declaration": {
+            "name": "CheckboxSubgroup",
+            "module": "src/components/reusable/checkbox/checkboxSubgroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/checkbox/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Checkbox",
+          "declaration": {
+            "name": "Checkbox",
+            "module": "./checkbox"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "CheckboxGroup",
+          "declaration": {
+            "name": "CheckboxGroup",
+            "module": "./checkboxGroup"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "CheckboxSubgroup",
+          "declaration": {
+            "name": "CheckboxSubgroup",
+            "module": "./checkboxSubgroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/datePicker/datepicker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Datepicker: uses Flatpickr's datetime picker library -- `https://flatpickr.js.org`",
+          "name": "DatePicker",
+          "slots": [
+            {
               "description": "Slot for tooltip.",
               "name": "tooltip"
             }
@@ -4490,9 +4723,9 @@
             },
             {
               "kind": "field",
-              "name": "required",
+              "name": "errorAriaLabel",
               "type": {
-                "text": "boolean"
+                "text": "string"
               },
               "default": "false",
               "description": "Sets datepicker form input value to required/required.",
@@ -4945,7 +5178,7 @@
             {
               "name": "required",
               "type": {
-                "text": "boolean"
+                "text": "string"
               },
               "default": "false",
               "description": "Sets datepicker form input value to required/required.",
@@ -5017,7 +5250,7 @@
             {
               "name": "datePickerDisabled",
               "type": {
-                "text": "boolean"
+                "text": "string"
               },
               "default": "false",
               "description": "Sets entire datepicker form element to enabled/disabled.",
@@ -9603,6 +9836,615 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/progressBar/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ProgressBar",
+          "declaration": {
+            "name": "ProgressBar",
+            "module": "./progressBar"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/progressBar/progressBar.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-progress-bar>` -- progress bar status indicator component.",
+          "name": "ProgressBar",
+          "slots": [
+            {
+              "description": "Slot for tooltip text content.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "showInlineLoadStatus",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets visibility of optional inline load status spinner.",
+              "attribute": "showInlineLoadStatus"
+            },
+            {
+              "kind": "field",
+              "name": "showActiveHelperText",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls whether to show default helper text for active state.",
+              "attribute": "showActiveHelperText"
+            },
+            {
+              "kind": "field",
+              "name": "progressBarId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
+              "attribute": "progressBarId"
+            },
+            {
+              "kind": "field",
+              "name": "status",
+              "type": {
+                "text": "'active' | 'success' | 'error'"
+              },
+              "default": "'active'",
+              "description": "Sets progress bar status mode.",
+              "attribute": "status"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial progress bar value (optionally hard-coded).",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "description": "Sets manual max value (default = 100).",
+              "attribute": "max"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional progress bar label.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "helperText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional helper text that appears underneath progress bar element.",
+              "attribute": "helperText"
+            },
+            {
+              "kind": "field",
+              "name": "unit",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
+              "attribute": "unit"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "method",
+              "name": "renderProgressBar",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderProgressBarLabel",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderStatusIconOrLoader",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getProgressBarClasses",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "status",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getHelperText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getCurrentStatus",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "ProgressStatus"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "startProgress",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "cancelAnimation",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "showInlineLoadStatus",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets visibility of optional inline load status spinner.",
+              "fieldName": "showInlineLoadStatus"
+            },
+            {
+              "name": "showActiveHelperText",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls whether to show default helper text for active state.",
+              "fieldName": "showActiveHelperText"
+            },
+            {
+              "name": "progressBarId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
+              "fieldName": "progressBarId"
+            },
+            {
+              "name": "status",
+              "type": {
+                "text": "'active' | 'success' | 'error'"
+              },
+              "default": "'active'",
+              "description": "Sets progress bar status mode.",
+              "fieldName": "status"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial progress bar value (optionally hard-coded).",
+              "fieldName": "value"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "description": "Sets manual max value (default = 100).",
+              "fieldName": "max"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional progress bar label.",
+              "fieldName": "label"
+            },
+            {
+              "name": "helperText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional helper text that appears underneath progress bar element.",
+              "fieldName": "helperText"
+            },
+            {
+              "name": "unit",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
+              "fieldName": "unit"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-progress-bar",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ProgressBar",
+          "declaration": {
+            "name": "ProgressBar",
+            "module": "src/components/reusable/progressBar/progressBar.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-progress-bar",
+          "declaration": {
+            "name": "ProgressBar",
+            "module": "src/components/reusable/progressBar/progressBar.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagination/Pagination.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-pagination` Web Component.\n\nA component that provides pagination functionality, enabling the user to\nnavigate through large datasets by splitting them into discrete chunks.\nIntegrates with other utility components like items range display, page size dropdown,\nand navigation buttons.",
+          "name": "Pagination",
+          "members": [
+            {
+              "kind": "field",
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total number of items that need pagination.",
+              "attribute": "count",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Current active page number.",
+              "attribute": "pageNumber",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Number of items displayed per page.",
+              "attribute": "pageSize",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageSizeOptions",
+              "type": {
+                "text": "number[]"
+              },
+              "default": "[5, 10, 20, 30, 40, 50, 100]",
+              "description": "Available options for the page size.",
+              "attribute": "pageSizeOptions"
+            },
+            {
+              "kind": "field",
+              "name": "_numberOfPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Number of pages."
+            },
+            {
+              "kind": "field",
+              "name": "pageSizeDropdownLabel",
+              "default": "PAGE_SIZE_LABEL",
+              "description": "Label for the page size dropdown. Required for accessibility.",
+              "attribute": "pageSizeDropdownLabel"
+            },
+            {
+              "kind": "field",
+              "name": "hideItemsRange",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the items range display.",
+              "attribute": "hideItemsRange"
+            },
+            {
+              "kind": "field",
+              "name": "hidePageSizeDropdown",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the page size dropdown.",
+              "attribute": "hidePageSizeDropdown"
+            },
+            {
+              "kind": "field",
+              "name": "hideNavigationButtons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the navigation buttons.",
+              "attribute": "hideNavigationButtons"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showing: 'Showing',\n    of: 'of',\n    items: 'items',\n    pages: 'pages',\n    itemsPerPage: 'Items per page:',\n    previousPage: 'Previous page',\n    nextPage: 'Next page',\n  }",
+              "description": "Customizable text strings",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "method",
+              "name": "handlePageSizeChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  },
+                  "description": "The emitted custom event with the selected page size."
+                }
+              ],
+              "description": "Handler for the event when the page size is changed by the user.\nUpdates the `pageSize` and resets the `pageNumber` to 1."
+            },
+            {
+              "kind": "method",
+              "name": "handlePageNumberChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  },
+                  "description": "The emitted custom event with the selected page number."
+                }
+              ],
+              "description": "Handler for the event when the page number is changed by the user.\nUpdates the `pageNumber`."
+            }
+          ],
+          "events": [
+            {
+              "description": "Dispatched when the page size changes.",
+              "name": "on-page-size-change"
+            },
+            {
+              "description": "Dispatched when the currently active page changes.",
+              "name": "on-page-number-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total number of items that need pagination.",
+              "fieldName": "count"
+            },
+            {
+              "name": "pageNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Current active page number.",
+              "fieldName": "pageNumber"
+            },
+            {
+              "name": "pageSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Number of items displayed per page.",
+              "fieldName": "pageSize"
+            },
+            {
+              "name": "pageSizeOptions",
+              "type": {
+                "text": "number[]"
+              },
+              "default": "[5, 10, 20, 30, 40, 50, 100]",
+              "description": "Available options for the page size.",
+              "fieldName": "pageSizeOptions"
+            },
+            {
+              "name": "pageSizeDropdownLabel",
+              "default": "PAGE_SIZE_LABEL",
+              "description": "Label for the page size dropdown. Required for accessibility.",
+              "fieldName": "pageSizeDropdownLabel"
+            },
+            {
+              "name": "hideItemsRange",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the items range display.",
+              "fieldName": "hideItemsRange"
+            },
+            {
+              "name": "hidePageSizeDropdown",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the page size dropdown.",
+              "fieldName": "hidePageSizeDropdown"
+            },
+            {
+              "name": "hideNavigationButtons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the navigation buttons.",
+              "fieldName": "hideNavigationButtons"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showing: 'Showing',\n    of: 'of',\n    items: 'items',\n    pages: 'pages',\n    itemsPerPage: 'Items per page:',\n    previousPage: 'Previous page',\n    nextPage: 'Next page',\n  }",
+              "description": "Customizable text strings",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-pagination",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PaginationSkeleton",
+          "declaration": {
+            "name": "PaginationSkeleton",
+            "module": "src/components/reusable/pagination/pagination.skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-pagination-skeleton",
+          "declaration": {
+            "name": "PaginationSkeleton",
+            "module": "src/components/reusable/pagination/pagination.skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/pagination/index.ts",
       "declarations": [],
       "exports": [
@@ -10074,359 +10916,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/progressBar/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ProgressBar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "./progressBar"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/progressBar/progressBar.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-progress-bar>` -- progress bar status indicator component.",
-          "name": "ProgressBar",
-          "slots": [
-            {
-              "description": "Slot for tooltip text content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "showInlineLoadStatus",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets visibility of optional inline load status spinner.",
-              "attribute": "showInlineLoadStatus"
-            },
-            {
-              "kind": "field",
-              "name": "showActiveHelperText",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Controls whether to show default helper text for active state.",
-              "attribute": "showActiveHelperText"
-            },
-            {
-              "kind": "field",
-              "name": "progressBarId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
-              "attribute": "progressBarId"
-            },
-            {
-              "kind": "field",
-              "name": "status",
-              "type": {
-                "text": "'active' | 'success' | 'error'"
-              },
-              "default": "'active'",
-              "description": "Sets progress bar status mode.",
-              "attribute": "status"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets initial progress bar value (optionally hard-coded).",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "default": "100",
-              "description": "Sets manual max value (default = 100).",
-              "attribute": "max"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional progress bar label.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "helperText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional helper text that appears underneath progress bar element.",
-              "attribute": "helperText"
-            },
-            {
-              "kind": "field",
-              "name": "unit",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
-              "attribute": "unit"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "method",
-              "name": "renderProgressBar",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "renderProgressBarLabel",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "renderStatusIconOrLoader",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getProgressBarClasses",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "status",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getHelperText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getCurrentStatus",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "ProgressStatus"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "startProgress",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "cancelAnimation",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "showInlineLoadStatus",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets visibility of optional inline load status spinner.",
-              "fieldName": "showInlineLoadStatus"
-            },
-            {
-              "name": "showActiveHelperText",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Controls whether to show default helper text for active state.",
-              "fieldName": "showActiveHelperText"
-            },
-            {
-              "name": "progressBarId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
-              "fieldName": "progressBarId"
-            },
-            {
-              "name": "status",
-              "type": {
-                "text": "'active' | 'success' | 'error'"
-              },
-              "default": "'active'",
-              "description": "Sets progress bar status mode.",
-              "fieldName": "status"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets initial progress bar value (optionally hard-coded).",
-              "fieldName": "value"
-            },
-            {
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "default": "100",
-              "description": "Sets manual max value (default = 100).",
-              "fieldName": "max"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional progress bar label.",
-              "fieldName": "label"
-            },
-            {
-              "name": "helperText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional helper text that appears underneath progress bar element.",
-              "fieldName": "helperText"
-            },
-            {
-              "name": "unit",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
-              "fieldName": "unit"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-progress-bar",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ProgressBar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "src/components/reusable/progressBar/progressBar.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-progress-bar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "src/components/reusable/progressBar/progressBar.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/radioButton/index.ts",
       "declarations": [],
       "exports": [
@@ -10885,7 +11374,10 @@
             },
             {
               "kind": "field",
-              "name": "secondaryButtonText",
+              "name": "assistiveTextStrings",
+              "default": "{\n  searchSuggestions: 'Search suggestions.',\n  noMatches: 'No matches found for',\n  selected: 'Selected',\n  found: 'Found',\n}",
+              "description": "Assistive text strings.",
+              "attribute": "assistiveTextStrings",
               "type": {
                 "text": "string"
               },
@@ -16253,12 +16745,42 @@
             },
             {
               "kind": "field",
+              "name": "notResizeable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set it to `true`, if text area is not resizeable.",
+              "attribute": "notResizeable"
+            },
+            {
+              "kind": "field",
               "name": "rows",
               "type": {
                 "text": "number"
               },
-              "description": "textarea rows attribute. The number of visible text lines.",
+              "description": "textarea rows attribute. The number of visible text lines.\n**Required** when `aiConnected` is set to `true`.",
               "attribute": "rows"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "attribute": "aiConnected"
+            },
+            {
+              "kind": "field",
+              "name": "maxRowsVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
+              "attribute": "maxRowsVisible"
             },
             {
               "kind": "field",
@@ -16282,6 +16804,11 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateVisibleRows",
+              "privacy": "private"
             },
             {
               "kind": "method",
@@ -16372,12 +16899,39 @@
               "fieldName": "minLength"
             },
             {
+              "name": "notResizeable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set it to `true`, if text area is not resizeable.",
+              "fieldName": "notResizeable"
+            },
+            {
               "name": "rows",
               "type": {
                 "text": "number"
               },
-              "description": "textarea rows attribute. The number of visible text lines.",
+              "description": "textarea rows attribute. The number of visible text lines.\n**Required** when `aiConnected` is set to `true`.",
               "fieldName": "rows"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "fieldName": "aiConnected"
+            },
+            {
+              "name": "maxRowsVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
+              "fieldName": "maxRowsVisible"
             },
             {
               "name": "textStrings",
