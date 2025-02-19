@@ -128,6 +128,7 @@ export const Nested = {
           <kyn-tabs
             tabStyle="line"
             tabSize=${args.tabSize}
+            ?aiConnected=${args.aiConnected}
             ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
             @on-change=${(e) => action(e.type)(e)}
           >
