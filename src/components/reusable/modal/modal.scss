@@ -28,11 +28,20 @@ dialog {
   }
 
   &.size--md {
-    width: 400px;
+    width: 384px;
   }
 
   &.size--lg {
-    width: 711px;
+    width: 800px;
+  }
+
+  &.size--xl {
+    width: 1024px;
+  }
+
+  &.ai-connected {
+    @include elevation.shadow('3', true);
+    background: var(--kd-color-background-container-ai-subtle);
   }
 }
 
@@ -77,33 +86,6 @@ form {
   100% {
     opacity: 1;
     transform: none;
-  }
-}
-
-button {
-  appearance: none;
-  background: none;
-  border: 1px solid transparent;
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-  padding: 0;
-  border-radius: 2px;
-  outline: 2px solid transparent;
-  transition: outline-color 150ms ease-out, color 150ms ease-out;
-
-  &:focus {
-    outline: 1px solid var(--kd-color-border-variants-focus);
-  }
-
-  &:hover {
-    background: var(--kd-color-background-ui-hollow-hover);
-  }
-
-  &:active {
-    border-radius: 2px;
-    border: 1px solid var(--kd-color-border-ui-pressed);
-    background: var(--kd-color-background-ui-hollow-hover);
   }
 }
 
@@ -154,6 +136,10 @@ h1 {
   }
 }
 
+slot[name='footer']::slotted(*) {
+  margin-top: 32px;
+}
+
 .custom-actions {
   margin-left: auto;
   display: flex;
@@ -167,8 +153,10 @@ h1 {
 
 .body {
   flex-grow: 1;
-  overflow-y: auto;
   margin: -4px;
   padding: 4px 16px 4px 4px;
+}
+.body:not(.disableScroll) {
+  overflow-y: auto;
   overscroll-behavior: contain;
 }
