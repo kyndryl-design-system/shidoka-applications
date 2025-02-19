@@ -11,6 +11,22 @@
 
 :host(:focus) {
   outline-color: var(--kd-color-border-variants-focus);
+
+  .tab {
+    font-weight: 400;
+  }
+}
+
+:host([data-aiconnected='true'][data-tab-style='contained']:focus) {
+  outline-color: var(--kd-color-border-button-ai-state-hover);
+  background: transparent;
+  color: var(--kd-color-text-button-ai-default);
+}
+
+:host([data-aiconnected='true'][data-tab-style='line']:focus) {
+  outline-color: var(--kd-color-border-button-ai-state-focused);
+  background: transparent;
+  color: var(--kd-color-text-button-ai-default);
 }
 
 :host([disabled]:focus) {
@@ -62,13 +78,75 @@
     background: var(--kd-color-background-container-soft);
   }
 
+  &.contained.ai-connected--true:not(.disabled) {
+    color: var(--kd-color-text-button-ai-default);
+    border-color: transparent;
+    background: var(--kd-color-background-container-ai-subtle);
+
+    &.selected {
+      border-top-color: var(--kd-color-border-button-ai-state-default);
+      background: var(--kd-color-background-button-secondary-ai-default);
+    }
+
+    &:hover {
+      background: var(--kd-color-background-button-secondary-ai-hover);
+      color: var(--kd-color-text-button-ai-default);
+      border-color: transparent;
+    }
+
+    &:active {
+      background: var(--kd-color-background-button-primary-ai-hover);
+      color: var(--kd-color-text-button-dark-primary);
+      border-color: transparent;
+    }
+  }
+
+  &.contained.ai-connected--false {
+    border-left: 2px solid var(--kd-color-border-error);
+  }
+
+  &.line.ai-connected--true:not(.disabled) {
+    color: var(--kd-color-text-button-ai-default);
+    border-color: var(--kd-color-border-variants-ai);
+    background: transparent;
+
+    &.selected {
+      border-color: var(--kd-color-border-button-ai-state-default);
+      background: transparent;
+    }
+
+    &:hover {
+      background: var(--kd-color-background-button-secondary-ai-hover);
+      color: var(--kd-color-text-button-ai-default);
+      border-color: var(--kd-color-border-button-ai-state-hover);
+    }
+
+    &:active {
+      background: var(--kd-color-background-button-secondary-ai-pressed);
+      color: var(--kd-color-text-button-dark-primary);
+      border-color: transparent;
+    }
+  }
+
+  &.line.ai-connected--false {
+    background: transparent;
+
+    &.selected {
+      background: transparent;
+    }
+  }
+
   @media (min-width: breakpoints.$bp-md) {
     &.contained.vertical {
       border-top: none;
       border-color: transparent;
 
-      &.selected {
+      &.selected.ai-connected--false {
         border-color: var(--kd-color-border-level-tertiary);
+      }
+
+      &.selected.ai-connected--true {
+        border-color: var(--kd-color-border-button-ai-state-default);
       }
     }
   }
