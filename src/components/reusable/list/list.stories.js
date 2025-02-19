@@ -2,6 +2,7 @@ import { html } from 'lit';
 import './index';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/user.svg';
+import { LIST_STYLE_TYPES } from './defs';
 
 export default {
   title: 'Components/List',
@@ -17,11 +18,11 @@ export default {
 export const unorderedList = {
   render: () => {
     return html`
-      <kyn-list listType="unordered">
+      <kyn-list>
         <h3 slot="title">Unordered list</h3>
-        <li>item 1</li>
-        <li>item 2</li>
-        <li>item 3</li>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
       </kyn-list>
     `;
   },
@@ -30,7 +31,7 @@ export const unorderedList = {
 export const orderedList = {
   render: () => {
     return html`
-      <kyn-list listType="ordered">
+      <kyn-list listType="ordered" listStyleType=${LIST_STYLE_TYPES.DECIMAL}>
         <h3 slot="title">Ordered list</h3>
         <li>Item 1</li>
         <li>Item 2</li>
@@ -43,17 +44,20 @@ export const orderedList = {
 export const nestedList = {
   render: () => {
     return html`
-      <kyn-list>
+      <kyn-list listStyleType=${LIST_STYLE_TYPES.SQUARE}>
         <h3 slot="title">Nested list</h3>
         <li>Item 1</li>
         <li>Item 2</li>
-        <kyn-list listType="ordered">
+        <kyn-list
+          listType="ordered"
+          listStyleType=${LIST_STYLE_TYPES.LOWER_ALPHA}
+        >
           <li>Item 2a</li>
           <li>Item 2b</li>
           <li>Item 2c</li>
         </kyn-list>
         <li>Item 3</li>
-        <kyn-list>
+        <kyn-list listStyleType=${LIST_STYLE_TYPES.CIRCLE}>
           <li>Item 3a</li>
           <li>Item 3b</li>
           <li>Item 3c</li>
@@ -63,15 +67,48 @@ export const nestedList = {
   },
 };
 
-export const unorderedListWithTitleIcon = {
+export const nestedListWithTitleIcon = {
   render: () => {
     return html`
-      <kyn-list listType="unordered">
+      <kyn-list
+        listType="ordered"
+        listStyleType=${LIST_STYLE_TYPES.UPPER_ROMAN}
+      >
         <span slot="icon">${unsafeSVG(userIcon)}</span>
         <h3 slot="title">Unordered list with title icon</h3>
-        <li>item 1</li>
-        <li>item 2</li>
+        <li>Item 1</li>
+        <kyn-list
+          listType="ordered"
+          listStyleType=${LIST_STYLE_TYPES.UPPER_ALPHA}
+        >
+          <li>Item 1a</li>
+          <li>Item 1b</li>
+          <li>Item 1c</li>
+        </kyn-list>
+        <li>Item 2</li>
+        <kyn-list
+          listType="ordered"
+          listStyleType=${LIST_STYLE_TYPES.LOWER_ALPHA}
+        >
+          <li>Item 2a</li>
+          <li>Item 2b</li>
+          <li>Item 2c</li>
+        </kyn-list>
         <li>item 3</li>
+        <kyn-list
+          listType="ordered"
+          listStyleType=${LIST_STYLE_TYPES.LOWER_ROMAN}
+        >
+          <li>Item 3a</li>
+          <li>Item 3b</li>
+          <li>Item 3c</li>
+        </kyn-list>
+        <li>item 4</li>
+        <kyn-list listStyleType=${LIST_STYLE_TYPES.NONE}>
+          <li>Item 4a</li>
+          <li>Item 4b</li>
+          <li>Item 4c</li>
+        </kyn-list>
       </kyn-list>
     `;
   },

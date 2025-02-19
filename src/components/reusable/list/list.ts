@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import ListStyles from './list.scss';
+import { LIST_STYLE_TYPES } from './defs';
 
 /**
  * Component for list.
@@ -16,6 +17,26 @@ export class List extends LitElement {
   @property({ type: String })
   listType = 'unordered';
 
+  /** List style type. Default is `disc`.
+   *
+   * Possible values include:
+   *
+   * **Unordered**:
+   * - `none`
+   * - `disc`
+   * - `circle`
+   * - `square`
+   *
+   * **Ordered**:
+   * - `decimal`
+   * - `lower-roman`
+   * - `upper-roman`
+   * - `lower-alpha`
+   * - `upper-alpha`
+   */
+  @property({ type: String })
+  listStyleType = LIST_STYLE_TYPES.DISC;
+
   override render() {
     return html`
       <div class="list-title-container">
@@ -23,10 +44,10 @@ export class List extends LitElement {
         <slot name="title"></slot>
       </div>
       ${this.listType === 'unordered'
-        ? html`<ul>
+        ? html`<ul style="list-style-type: ${this.listStyleType}">
             <slot></slot>
           </ul>`
-        : html`<ol>
+        : html`<ol style="list-style-type: ${this.listStyleType}">
             <slot></slot>
           </ol>`}
     `;
