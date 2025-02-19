@@ -22,6 +22,9 @@ import circleSelected16 from '@kyndryl-design-system/shidoka-icons/svg/monochrom
 import substractFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/substract-filled.svg';
 import substractFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-filled.svg';
 
+import noAccess from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/no-access.svg';
+import noAccess16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/no-access.svg';
+
 import errorFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/error-filled.svg';
 import errorFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
@@ -134,7 +137,7 @@ export class StepperItem extends LitElement {
   override render() {
     const iconMapper: any = {
       active: this.stepSize === 'large' ? circleSelected : circleSelected16,
-      excluded: this.stepSize === 'large' ? substractFilled : substractFilled16,
+      excluded: this.stepSize === 'large' ? noAccess : noAccess16,
       disabled: this.stepSize === 'large' ? substractFilled : substractFilled16,
       completed:
         this.stepSize === 'large' ? checkmarkFilled : checkmarkFilled16,
