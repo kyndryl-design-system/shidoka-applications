@@ -18,13 +18,17 @@ import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/2
 export class Prompt extends LitElement {
   static override styles = PromptScss;
 
-  /** Prompt Type. `'normal'` & `'clickable'` */
-  @property({ type: String })
-  type = 'normal';
+  /** Prompt is clickable. */
+  @property({ type: Boolean })
+  isClickable = false;
 
   /** Hide prompt border. Useful when clickable prompt use inside `<kyn-notification>` component. */
   @property({ type: Boolean })
   hideBorder = false;
+
+  /** Disable individual prompt. */
+  @property({ type: Boolean })
+  disabled = false;
 
   /** Sets whether prompt is selected/checked, either from user input or by default. */
   @property({ type: Boolean, reflect: true })
@@ -40,13 +44,17 @@ export class Prompt extends LitElement {
 
   override render() {
     const promptWrapperClasses = {
-      'prompt-wrapper-clickable': this.type === 'clickable',
-      'prompt-wrapper': this.type !== 'clickable',
+      'kyn-prompt': true,
+      'kyn-prompt--clickable': this.isClickable,
+      'kyn-prompt--default': !this.isClickable,
       'prompt-border': this.hideBorder === false,
+      'prompt-selected': this.selected,
+      [`size--${this.size}`]: true,
+      disabled: this.disabled,
     };
 
     return html`
-      ${this.type === 'clickable'
+      ${this.isClickable
         ? html`<button
             part="prompt-wrapper"
             class="${classMap(promptWrapperClasses)}"
@@ -76,7 +84,7 @@ export class Prompt extends LitElement {
   private handleClick(e: Event) {
     e.preventDefault();
 
-    if (this.type === 'clickable') {
+    if (this.isClickable && !this.disabled) {
       this.selected = !this.selected;
 
       this.dispatchEvent(

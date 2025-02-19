@@ -31,9 +31,10 @@ export default {
 };
 
 const args = {
-  type: 'normal',
   size: 'md',
   hideBorder: false,
+  isClickable: false,
+  disabled: false,
   selected: false,
   value: '',
 };
@@ -45,6 +46,7 @@ export const Normal = {
       .size=${args.size}
       ?hideBorder=${args.hideBorder}
       ?selected=${args.selected}
+      ?isClickable=${false}
       value=${args.value}
     >
       <div slot="label">Normal Prompt</div>
@@ -53,12 +55,14 @@ export const Normal = {
 };
 
 export const Clickable = {
+  args: { ...args, isClickable: true },
   render: (args) => html`
     <kyn-prompt
       type=${args.type}
       .size=${args.size}
       ?hideBorder=${args.hideBorder}
       ?selected=${args.selected}
+      ?isClickable=${true}
       value=${args.value}
     >
       <div slot="label">Clickable Prompt</div>
@@ -67,13 +71,14 @@ export const Clickable = {
 };
 
 export const Selected = {
-  args: { ...args, size: 'md', selected: true },
+  args: { ...args, size: 'md', selected: true, isClickable: true },
   render: (args) => html`
     <kyn-prompt
       type=${args.type}
       .size=${args.size}
       ?hideBorder=${args.hideBorder}
       ?selected=${args.selected}
+      ?isClickable=${true}
       value=${args.value}
     >
       <div slot="label">Selected Prompt</div>
@@ -82,7 +87,7 @@ export const Selected = {
 };
 
 export const Groups = {
-  args: { ...args, type: 'clickable' },
+  args: { ...args, isClickable: true },
   render: (args) => html`
     <div>
       <div>
@@ -96,6 +101,7 @@ export const Groups = {
             .size=${args.size}
             ?hideBorder=${args.hideBorder}
             ?selected=${args.selected}
+            ?isClickable=${true}
             value=${'option1'}
           >
             <div slot="label">Option 1</div>
@@ -105,6 +111,7 @@ export const Groups = {
             .size=${args.size}
             ?hideBorder=${args.hideBorder}
             ?selected=${args.selected}
+            ?isClickable=${true}
             value=${'option2'}
           >
             <div slot="label">Option 2</div>
@@ -114,6 +121,7 @@ export const Groups = {
             .size=${args.size}
             ?hideBorder=${args.hideBorder}
             ?selected=${args.selected}
+            ?isClickable=${true}
             value=${'option3'}
           >
             <div slot="label">Option 3</div>
@@ -131,6 +139,7 @@ export const Groups = {
             type=${args.type}
             .size=${args.size}
             ?hideBorder=${args.hideBorder}
+            ?isClickable=${true}
             value=${'option1'}
           >
             <div slot="label">Option 1</div>
@@ -139,6 +148,7 @@ export const Groups = {
             type=${args.type}
             .size=${args.size}
             ?hideBorder=${args.hideBorder}
+            ?isClickable=${true}
             selected
             value=${'option2'}
           >
@@ -148,6 +158,7 @@ export const Groups = {
             type=${args.type}
             .size=${args.size}
             ?hideBorder=${args.hideBorder}
+            ?isClickable=${true}
             selected
             value=${'option3'}
           >
