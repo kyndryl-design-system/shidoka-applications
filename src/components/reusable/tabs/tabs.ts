@@ -114,8 +114,8 @@ export class Tabs extends LitElement {
     this._tabs.forEach((tab: any) => {
       tab._size = this.tabSize;
       tab._vertical = this.vertical;
-      tab._tabStyle = this.tabStyle;
-      tab._aiConnected = this.aiConnected;
+      tab.tabStyle = this.tabStyle;
+      tab.aiConnected = this.aiConnected;
     });
 
     this._tabPanels.forEach((tabPanel: any) => {
