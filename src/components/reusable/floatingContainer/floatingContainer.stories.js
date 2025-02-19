@@ -163,7 +163,16 @@ export const WithScroll = {
 };
 
 export const AIAssistant = {
-  render: () => html`
+  args: {
+    disabled: false,
+  },
+  argTypes: {
+    disabled: {
+      control: 'boolean',
+      description: 'Whether the AI Assistant button is disabled',
+    },
+  },
+  render: (args) => html`
     <div style="padding-bottom:80px;">
       <!-- Add some space in bottom so FAB doesn't obstruct any essestial UI element -->
       <!-- Add some long content here to see the floating button in action -->
@@ -180,32 +189,7 @@ export const AIAssistant = {
       </p>
     </div>
     <kyn-button-float-container>
-      <kyn-button
-        kind="primary-ai"
-        type="button"
-        size="large"
-        iconposition="left"
-        description="Button 1"
-        ?isFloating=${true}
-        @on-click=${(e) => action(e.type)(e)}
-      >
-        <span class="test"></span>
-        <span class="_icon" slot="icon"><kyn-ai-assist></kyn-ai-assist></span>
-      </kyn-button>
+      <kyn-ai-assist ?disabled="${args.disabled}"></kyn-ai-assist>
     </kyn-button-float-container>
-    <style>
-      .test {
-        display: none;
-      }
-      ._icon {
-        display: flex;
-      }
-
-      @media (min-width: 42rem) {
-        .test {
-          display: inline;
-        }
-      }
-    </style>
   `,
 };

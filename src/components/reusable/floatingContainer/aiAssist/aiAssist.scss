@@ -1,0 +1,60 @@
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+
+:host {
+  display: block;
+}
+
+.ai-launch-button {
+  @include elevation.shadow(3, true);
+  width: 69px;
+  height: 69px;
+  padding: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+  background: var(--kd-color-background-container-ai-subtle);
+  transition: outline-color 0.2s ease-in-out, color 0.2s ease-in-out,
+    background-color 0.2s ease-in-out, border-color 0.2s ease-out;
+
+  &:hover {
+    border-color: var(--kd-color-border-variants-ai);
+  }
+
+  &:focus {
+    outline: 2px solid var(--kd-color-border-button-primary-state-focused);
+    outline-offset: -2px;
+    background: var(--kd-color-background-container-ai-subtle);
+  }
+
+  &:active {
+    border: 4px solid var(--kd-color-border-button-ai-state-pressed);
+    background: var(--kd-color-background-container-ai-default);
+  }
+
+  &.disabled {
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+    border: 1px solid var(--kd-color-border-ui-disabled);
+  }
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: 2px solid transparent;
+  border-radius: 50px;
+  width: 37px;
+  height: 37px;
+}
+
+svg {
+  display: block;
+  background: transparent;
+}
