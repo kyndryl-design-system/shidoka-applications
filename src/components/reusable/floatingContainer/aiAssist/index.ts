@@ -7,31 +7,21 @@ import aiAssistDisabled from './json/ai_assist_disabled.json';
 import Styles from './aiAssist.scss';
 
 /**
- * AI Icon.
- * @fires on-start - Emits when the loader been started.
- * @fires on-stop - Emits when the loader has been stopped and all animations have completed.
+ * AI Assistant Launch Button.
+ * @fires on-start - Emits when the animation been started.
+ * @fires on-stop - Emits when the animation has been stopped and all animations have completed.
  */
 @customElement('kyn-ai-assist')
 export class AiAssist extends LitElement {
   static override styles = Styles;
 
-  /** Animation stopped state. */
-  @property({ type: Boolean })
-  stopped = true;
-
-  /** Display the loader as an overlay. */
+  /** Display the animated icon as an overlay. */
   @property({ type: Boolean })
   overlay = false;
 
   /** Whether the button is disabled. */
   @property({ type: Boolean })
   disabled = false;
-
-  /** Animation loop has finished and stopped.
-   * @internal
-   */
-  @state()
-  private _stopped = false;
 
   /** Animation container element.
    * @internal
@@ -49,7 +39,6 @@ export class AiAssist extends LitElement {
     const Classes = {
       'ai-launch-button': true,
       overlay: this.overlay,
-      stopped: this._stopped,
       disabled: this.disabled,
     };
 
@@ -67,8 +56,6 @@ export class AiAssist extends LitElement {
   }
 
   override firstUpdated() {
-    this._stopped = this.stopped;
-
     this._animation = lottie.loadAnimation({
       container: this._containerEl,
       renderer: 'svg',
@@ -80,40 +67,34 @@ export class AiAssist extends LitElement {
 
     this._animation.goToAndStop(0, true);
 
-    // hover event to start animation on hover and stop on mouseleave
     const button = this.shadowRoot?.querySelector('button');
     if (button) {
       button.addEventListener('mouseenter', () => {
-        this.stopped = false;
-        this._animation.play();
+        if (!this.disabled) {
+          this._animation.goToAndStop(0, true);
+          this._animation.setDirection(1);
+          this._animation.play();
+          this._emitStart();
+        }
       });
       button.addEventListener('mouseleave', () => {
-        this.stopped = true;
+        const slowdownInterval = setInterval(() => {
+          const newSpeed = this._animation.playSpeed - 0.3;
+          if (newSpeed <= 0.1) {
+            clearInterval(slowdownInterval);
+            this._animation.stop();
+            this._animation.goToAndStop(0, true);
+            this._animation.setSpeed(2);
+            this._emitStop();
+          } else {
+            this._animation.setSpeed(newSpeed);
+          }
+        }, 100);
       });
     }
-
-    this._animation.addEventListener('loopComplete', () => {
-      if (this.stopped) {
-        this._animation.stop();
-        this._stopped = true;
-      }
-    });
-
-    button?.addEventListener('transitionend', () => {
-      if (this._stopped) {
-        this._emitStop();
-      }
-    });
   }
 
   override updated(changedProps: any) {
-    if (changedProps.has('stopped')) {
-      if (!this.stopped) {
-        this._stopped = false;
-        this._emitStart();
-      }
-    }
-
     if (changedProps.has('disabled')) {
       this._animation.destroy();
       this._animation = lottie.loadAnimation({
@@ -123,7 +104,7 @@ export class AiAssist extends LitElement {
         autoplay: false,
         animationData: this.disabled ? aiAssistDisabled : animationData,
       });
-      this._animation.setSpeed(1.5);
+      this._animation.setSpeed(2);
       this._animation.goToAndStop(0, true);
     }
   }
