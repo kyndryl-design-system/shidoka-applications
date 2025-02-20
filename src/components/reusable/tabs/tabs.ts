@@ -29,6 +29,10 @@ export class Tabs extends LitElement {
   @property({ type: Boolean })
   vertical = false;
 
+  /** AI specifier. */
+  @property({ type: Boolean })
+  aiConnected = false;
+
   /** Enables tab content change on focus with keyboard navigation/assistive technologies. */
   @property({ type: Boolean })
   disableAutoFocusUpdate = false;
@@ -54,12 +58,14 @@ export class Tabs extends LitElement {
       wrapper: true,
       vertical: this.vertical,
       scrollable: this.scrollablePanels,
+      [`ai-connected--${this.aiConnected}`]: true,
     };
 
     const tabsClasses = {
       tabs: true,
       contained: this.tabStyle === 'contained',
       line: this.tabStyle === 'line',
+      [`ai-connected--${this.aiConnected}`]: true,
     };
 
     return html`
@@ -93,7 +99,8 @@ export class Tabs extends LitElement {
     if (
       changedProps.has('tabSize') ||
       changedProps.has('vertical') ||
-      changedProps.has('tabStyle')
+      changedProps.has('tabStyle') ||
+      changedProps.has('aiConnected')
     ) {
       this._updateChildren();
     }
@@ -107,7 +114,8 @@ export class Tabs extends LitElement {
     this._tabs.forEach((tab: any) => {
       tab._size = this.tabSize;
       tab._vertical = this.vertical;
-      tab._tabStyle = this.tabStyle;
+      tab.tabStyle = this.tabStyle;
+      tab.aiConnected = this.aiConnected;
     });
 
     this._tabPanels.forEach((tabPanel: any) => {
