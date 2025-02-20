@@ -28,6 +28,7 @@ export default {
     inline: { control: 'boolean' },
     width: { control: 'text' },
     height: { control: 'text' },
+    aiConnected: { control: 'boolean' },
   },
 };
 
@@ -52,6 +53,7 @@ const Template = (args) => {
             width=${args.width || ''}
             height=${args.height || ''}
             shade=${args.shade}
+            ?aiConnected=${args.aiConnected}
           ></kyn-skeleton>
         </div>
       `;
@@ -74,7 +76,7 @@ Block.args = {
   lines: 1,
   inline: false,
   shade: 'light',
-
+  aiConnected: false,
   width: '100%',
 };
 
@@ -90,6 +92,7 @@ MultiBlock.args = {
   lines: 2,
   inline: false,
   height: '128px',
+  aiConnected: false,
 };
 
 export const MultiInline = Template.bind({});
@@ -99,43 +102,79 @@ MultiInline.args = {
   inline: true,
   size: 'medium',
   width: '100%',
+  aiConnected: false,
 };
 
 const CustomTemplate = () => html`
-  <div>
-    <h3>Custom Button Skeleton</h3>
-    <kyn-skeleton
-      style="margin: 8px 0 16px"
-      width="120px"
-      height="48px"
-    ></kyn-skeleton>
+  <div style="display:flex;gap:45px">
+    <div>
+      <h3>Custom Button Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 16px"
+        width="120px"
+        height="48px"
+      ></kyn-skeleton>
 
-    <h3>Custom Title Skeleton</h3>
-    <kyn-skeleton
-      style="margin: 8px 0 16px"
-      width="200px"
-      height="24px"
-    ></kyn-skeleton>
+      <h3>Custom Title Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 16px"
+        width="200px"
+        height="24px"
+      ></kyn-skeleton>
 
-    <h3>Custom Thumbnail Skeleton</h3>
-    <kyn-skeleton
-      style="margin: 8px 0 16px"
-      width="200px"
-      height="120px"
-    ></kyn-skeleton>
+      <h3>Custom Thumbnail Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 16px"
+        width="200px"
+        height="120px"
+      ></kyn-skeleton>
 
-    <h3>Custom Card Logo Skeleton</h3>
-    <kyn-skeleton
-      style="margin: 8px 0 0"
-      shape="circle"
-      width="54px"
-      height="54px"
-    ></kyn-skeleton>
+      <h3>Custom Logo/Icon Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 0"
+        shape="circle"
+        width="54px"
+        height="54px"
+      ></kyn-skeleton>
+    </div>
+    <div>
+      <h3>Custom Button AI Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 16px"
+        width="120px"
+        height="48px"
+        aiConnected
+      ></kyn-skeleton>
+
+      <h3>Custom Title AI Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 16px"
+        width="200px"
+        height="24px"
+        aiConnected
+      ></kyn-skeleton>
+
+      <h3>Custom Thumbnail AI Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 16px"
+        width="200px"
+        height="120px"
+        aiConnected
+      ></kyn-skeleton>
+
+      <h3>Custom Logo/Icon AI Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 0"
+        shape="circle"
+        width="54px"
+        height="54px"
+        aiConnected
+      ></kyn-skeleton>
+    </div>
   </div>
 `;
 
 export const CustomShapeAndSizing = CustomTemplate.bind({});
-CustomShapeAndSizing.storyName = 'Custom Shape and Sizing';
 
 const SizesTemplate = () => html`
   <div style="display: flex; gap: 16px; align-items: top;">
@@ -151,3 +190,10 @@ const SizesTemplate = () => html`
 `;
 
 export const Sizes = SizesTemplate.bind({});
+
+export const AIConnected = Template.bind({});
+AIConnected.args = {
+  ...Block.args,
+  inline: true,
+  aiConnected: true,
+};
