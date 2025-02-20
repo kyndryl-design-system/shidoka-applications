@@ -106,35 +106,71 @@ MultiInline.args = {
 };
 
 const CustomTemplate = () => html`
-  <div>
-    <h3>Custom Button Skeleton</h3>
-    <kyn-skeleton
-      style="margin: 8px 0 16px"
-      width="120px"
-      height="48px"
-    ></kyn-skeleton>
+  <div style="display:flex;gap:45px">
+    <div>
+      <h3>Custom Button Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 16px"
+        width="120px"
+        height="48px"
+      ></kyn-skeleton>
 
-    <h3>Custom Title Skeleton</h3>
-    <kyn-skeleton
-      style="margin: 8px 0 16px"
-      width="200px"
-      height="24px"
-    ></kyn-skeleton>
+      <h3>Custom Title Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 16px"
+        width="200px"
+        height="24px"
+      ></kyn-skeleton>
 
-    <h3>Custom Thumbnail Skeleton</h3>
-    <kyn-skeleton
-      style="margin: 8px 0 16px"
-      width="200px"
-      height="120px"
-    ></kyn-skeleton>
+      <h3>Custom Thumbnail Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 16px"
+        width="200px"
+        height="120px"
+      ></kyn-skeleton>
 
-    <h3>Custom Card Logo Skeleton</h3>
-    <kyn-skeleton
-      style="margin: 8px 0 0"
-      shape="circle"
-      width="54px"
-      height="54px"
-    ></kyn-skeleton>
+      <h3>Custom Logo/Icon Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 0"
+        shape="circle"
+        width="54px"
+        height="54px"
+      ></kyn-skeleton>
+    </div>
+    <div>
+      <h3>Custom Button AI Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 16px"
+        width="120px"
+        height="48px"
+        aiConnected
+      ></kyn-skeleton>
+
+      <h3>Custom Title AI Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 16px"
+        width="200px"
+        height="24px"
+        aiConnected
+      ></kyn-skeleton>
+
+      <h3>Custom Thumbnail AI Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 16px"
+        width="200px"
+        height="120px"
+        aiConnected
+      ></kyn-skeleton>
+
+      <h3>Custom Logo/Icon AI Skeleton</h3>
+      <kyn-skeleton
+        style="margin: 8px 0 0"
+        shape="circle"
+        width="54px"
+        height="54px"
+        aiConnected
+      ></kyn-skeleton>
+    </div>
   </div>
 `;
 
@@ -155,41 +191,9 @@ const SizesTemplate = () => html`
 
 export const Sizes = SizesTemplate.bind({});
 
-const AISkeleton = () => html`
-  <div>
-    <h3>Custom Button Skeleton</h3>
-    <kyn-skeleton
-      style="margin: 8px 0 16px"
-      width="120px"
-      height="48px"
-      aiConnected
-    ></kyn-skeleton>
-
-    <h3>Custom Title Skeleton</h3>
-    <kyn-skeleton
-      style="margin: 8px 0 16px"
-      width="200px"
-      height="24px"
-      aiConnected
-    ></kyn-skeleton>
-
-    <h3>Custom Thumbnail Skeleton</h3>
-    <kyn-skeleton
-      style="margin: 8px 0 16px"
-      width="200px"
-      height="120px"
-      aiConnected
-    ></kyn-skeleton>
-
-    <h3>Custom Card Logo Skeleton</h3>
-    <kyn-skeleton
-      style="margin: 8px 0 0"
-      shape="circle"
-      width="54px"
-      height="54px"
-      aiConnected
-    ></kyn-skeleton>
-  </div>
-`;
-
-export const AIConnected = AISkeleton.bind({});
+export const AIConnected = Template.bind({});
+AIConnected.args = {
+  ...Block.args,
+  inline: true,
+  aiConnected: true,
+};
