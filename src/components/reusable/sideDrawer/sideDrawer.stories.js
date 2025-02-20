@@ -143,3 +143,54 @@ const handleBeforeClose = (returnValue) => {
     return true;
   }
 };
+
+export const AIConnected = {
+  args: { ...args, aiConnected: true },
+  render: (args) => {
+    return html`
+      <kyn-side-drawer
+        ?open=${args.open}
+        size=${args.size}
+        titleText=${args.titleText}
+        labelText=${args.labelText}
+        submitBtnText=${args.submitBtnText}
+        cancelBtnText=${args.cancelBtnText}
+        ?submitBtnDisabled=${args.submitBtnDisabled}
+        ?hideFooter=${args.hideFooter}
+        ?destructive=${args.destructive}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        secondaryButtonText=${args.secondaryButtonText}
+        ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
+        @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
+      >
+        <kyn-button slot="anchor" kind="primary-ai">Open Drawer</kyn-button>
+
+        <div>
+          This is a simple paragraph for the drawer content. You can customize
+          and add more content / components here as needed.
+        </div>
+        <br />
+        <div>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin cursus,
+          purus vitae egestas mollis, augue augue interdum quam, sit amet
+          volutpat justo magna quis justo. Aliquam dapibus mi a arcu consequat,
+          sed placerat metus bibendum. Suspendisse pretium nibh Lorem ipsum
+          dolor sit amet, consectetur adipiscing elit. Proin cursus, purus vitae
+          egestas mollis, augue augue interdum quam, sit amet volutpat justo
+          magna quis justo. Aliquam dapibus mi a arcu consequat, sed placerat
+          metus bibendum. Suspendisse pretium nibh Lorem ipsum dolor sit amet,
+          consectetur adipiscing elit. Proin cursus, purus vitae egestas mollis,
+          augue augue interdum quam, sit amet volutpat justo magna quis justo.
+          Aliquam dapibus mi a arcu consequat, sed placerat metus bibendum.
+          Suspendisse pretium nibh Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit. Proin cursus, purus vitae egestas mollis, augue augue
+          interdum quam, sit amet volutpat justo magna quis justo. Aliquam
+          dapibus mi a arcu consequat, sed placerat metus bibendum. Suspendisse
+          pretium nibh
+        </div>
+      </kyn-side-drawer>
+    `;
+  },
+};
