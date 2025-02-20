@@ -1,0 +1,56 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+.file-uploader-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 400px;
+  align-items: center;
+
+  .accepted-file-types-container {
+    .accepted-file-types-text {
+      &.disabled {
+        color: var(--kd-color-text-level-disabled);
+      }
+    }
+  }
+
+  .drag-drop-container {
+    width: 300px;
+    height: 200px;
+    border: 2px dashed var(--kd-color-border-variants-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      border-color: var(--kd-color-border-variants-dark);
+    }
+
+    &:focus-visible {
+      outline: none;
+      border-color: var(--kd-color-border-variants-dark);
+    }
+
+    &.disabled {
+      border-color: var(--kd-color-border-variants-light);
+      color: var(--kd-color-text-level-disabled);
+      cursor: not-allowed;
+    }
+  }
+
+  .or-text {
+    &.disabled {
+      color: var(--kd-color-text-level-disabled);
+    }
+  }
+
+  .file-input {
+    display: none;
+  }
+}
