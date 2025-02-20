@@ -49,9 +49,7 @@ export class Skeleton extends LitElement {
   @property({ type: String })
   shade: 'light' | 'dark' | string = 'light';
 
-  /**
-   * Sets the AI theme.
-   */
+  /** Set to `true` for AI theme. */
   @property({ type: Boolean })
   aiConnected = false;
 
