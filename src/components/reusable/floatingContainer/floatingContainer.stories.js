@@ -3,7 +3,6 @@ import { action } from '@storybook/addon-actions';
 import chevronUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-up.svg';
 import chatIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chat.svg';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import './../aiAssist/aiAssist';
 import './index';
 import '../button';
 
@@ -158,38 +157,6 @@ export const WithScroll = {
         Button 1
         <span slot="icon">${unsafeSVG(chevronUpIcon)}</span>
       </kyn-button>
-    </kyn-button-float-container>
-  `,
-};
-
-export const AIAssistant = {
-  args: {
-    disabled: false,
-  },
-  argTypes: {
-    disabled: {
-      control: 'boolean',
-      description: 'Whether the AI Assistant button is disabled',
-    },
-  },
-  render: (args) => html`
-    <div style="padding-bottom:80px;">
-      <!-- Add some space in bottom so FAB doesn't obstruct any essestial UI element -->
-      <!-- Add some long content here to see the floating button in action -->
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum Lorem ipsum dolor sit amet, consectetur adipiscing
-        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-        ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-        reprehenderit in voluptate velit esse cillum
-      </p>
-    </div>
-    <kyn-button-float-container>
-      <kyn-ai-assist ?disabled="${args.disabled}"></kyn-ai-assist>
     </kyn-button-float-container>
   `,
 };

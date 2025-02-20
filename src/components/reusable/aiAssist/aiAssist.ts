@@ -10,14 +10,11 @@ import Styles from './aiAssist.scss';
  * AI Assistant Launch Button.
  * @fires on-start - Emits when the animation been started.
  * @fires on-stop - Emits when the animation has been stopped and all animations have completed.
+ * @fires on-click - Emits when the button is clicked.
  */
 @customElement('kyn-ai-assist')
 export class AiAssist extends LitElement {
   static override styles = Styles;
-
-  /** Display the animated icon as an overlay. */
-  @property({ type: Boolean })
-  overlay = false;
 
   /** Whether the button is disabled. */
   @property({ type: Boolean })
@@ -38,7 +35,6 @@ export class AiAssist extends LitElement {
   override render() {
     const Classes = {
       'ai-launch-button': true,
-      overlay: this.overlay,
       disabled: this.disabled,
     };
 
@@ -91,6 +87,12 @@ export class AiAssist extends LitElement {
           }
         }, 100);
       });
+
+      button.addEventListener('click', () => {
+        if (!this.disabled) {
+          this._emitClick();
+        }
+      });
     }
   }
 
@@ -115,6 +117,11 @@ export class AiAssist extends LitElement {
   }
 
   private _emitStop() {
+    const event = new CustomEvent('on-stop');
+    this.dispatchEvent(event);
+  }
+
+  private _emitClick() {
     const event = new CustomEvent('on-stop');
     this.dispatchEvent(event);
   }
