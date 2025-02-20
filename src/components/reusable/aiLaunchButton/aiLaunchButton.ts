@@ -83,16 +83,15 @@ export class AILaunchButton extends LitElement {
 
   public stopHoverAnimation() {
     const slowdownInterval = setInterval(() => {
-      const newSpeed = this._animation.playSpeed - 0.3;
+      const newSpeed = this._animation.playSpeed - 0.1;
       if (newSpeed <= 0.1) {
         clearInterval(slowdownInterval);
         this._animation.stop();
-        this._animation.goToAndStop(0, true);
         this._animation.setSpeed(2);
       } else {
         this._animation.setSpeed(newSpeed);
       }
-    }, 100);
+    }, 50);
   }
 
   override updated(changedProps: any) {
