@@ -105,7 +105,7 @@ export class AILaunchButton extends LitElement {
 
   private _emitClick() {
     if (!this.disabled) {
-      const event = new CustomEvent('on-stop');
+      const event = new CustomEvent('on-click');
       this.dispatchEvent(event);
     }
   }

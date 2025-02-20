@@ -43,7 +43,7 @@ export const Default = {
     <kyn-button-float-container>
       <kyn-ai-assist
         ?disabled="${args.disabled}"
-        @on-stop=${() => action('on-stop')()}
+        @on-click=${() => action('on-click')()}
       ></kyn-ai-assist>
     </kyn-button-float-container>
   `,
