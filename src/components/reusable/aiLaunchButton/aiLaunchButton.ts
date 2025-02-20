@@ -30,6 +30,12 @@ export class AILaunchButton extends LitElement {
   @state()
   private _animation!: any;
 
+  /** Whether to stop at next loop completion
+   * @internal
+   */
+  @state()
+  private _shouldStop = false;
+
   override render() {
     const Classes = {
       'ai-launch-button': true,
@@ -55,6 +61,7 @@ export class AILaunchButton extends LitElement {
     this._initAnimation();
   }
 
+  /// loop the animation on mouseenter. on mouseleave, complete the current loop and then stop.
   private _initAnimation() {
     this._animation = lottie.loadAnimation({
       container: this._containerEl,
@@ -65,10 +72,18 @@ export class AILaunchButton extends LitElement {
     });
     this._animation.setSpeed(2);
     this._animation.goToAndStop(0, true);
+
+    this._animation.addEventListener('loopComplete', () => {
+      if (this._shouldStop) {
+        this._animation.goToAndStop(0, true);
+        this._shouldStop = false;
+      }
+    });
   }
 
   private _startHoverAnimation() {
     if (!this.disabled) {
+      this._shouldStop = false;
       this._animation.goToAndStop(0, true);
       this._animation.setDirection(1);
       this._animation.play();
@@ -76,16 +91,9 @@ export class AILaunchButton extends LitElement {
   }
 
   private _stopHoverAnimation() {
-    const slowdownInterval = setInterval(() => {
-      const newSpeed = this._animation.playSpeed - 0.1;
-      if (newSpeed <= 0.1) {
-        clearInterval(slowdownInterval);
-        this._animation.stop();
-        this._animation.setSpeed(2);
-      } else {
-        this._animation.setSpeed(newSpeed);
-      }
-    }, 50);
+    if (!this.disabled) {
+      this._shouldStop = true;
+    }
   }
 
   override updated(changedProps: any) {
