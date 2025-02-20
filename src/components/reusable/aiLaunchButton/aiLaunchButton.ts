@@ -8,8 +8,6 @@ import Styles from './aiLaunchButton.scss';
 
 /**
  * AI Assistant Launch Button.
- * @fires on-start - Emits when the animation been started.
- * @fires on-stop - Emits when the animation has been stopped and all animations have completed.
  * @fires on-click - Emits when the button is clicked.
  */
 @customElement('kyn-ai-assist')
@@ -43,7 +41,6 @@ export class AILaunchButton extends LitElement {
         type="button"
         class="${classMap(Classes)}"
         aria-label="AI Assistant"
-        tabindex="0"
         ?disabled="${this.disabled}"
       >
         <div class="container"></div>
@@ -52,42 +49,10 @@ export class AILaunchButton extends LitElement {
   }
 
   override firstUpdated() {
-    this._animation = lottie.loadAnimation({
-      container: this._containerEl,
-      renderer: 'svg',
-      loop: true,
-      autoplay: false,
-      animationData: this.disabled ? aiLaunchButtonDisabled : animationData,
-    });
-    this._animation.setSpeed(2);
-
-    this._animation.goToAndStop(0, true);
+    this._initAnimation();
 
     const button = this.shadowRoot?.querySelector('button');
     if (button) {
-      button.addEventListener('mouseenter', () => {
-        if (!this.disabled) {
-          this._animation.goToAndStop(0, true);
-          this._animation.setDirection(1);
-          this._animation.play();
-          this._emitStart();
-        }
-      });
-      button.addEventListener('mouseleave', () => {
-        const slowdownInterval = setInterval(() => {
-          const newSpeed = this._animation.playSpeed - 0.3;
-          if (newSpeed <= 0.1) {
-            clearInterval(slowdownInterval);
-            this._animation.stop();
-            this._animation.goToAndStop(0, true);
-            this._animation.setSpeed(2);
-            this._emitStop();
-          } else {
-            this._animation.setSpeed(newSpeed);
-          }
-        }, 100);
-      });
-
       button.addEventListener('click', () => {
         if (!this.disabled) {
           this._emitClick();
@@ -96,29 +61,45 @@ export class AILaunchButton extends LitElement {
     }
   }
 
-  override updated(changedProps: any) {
-    if (changedProps.has('disabled')) {
-      this._animation.destroy();
-      this._animation = lottie.loadAnimation({
-        container: this._containerEl,
-        renderer: 'svg',
-        loop: true,
-        autoplay: false,
-        animationData: this.disabled ? aiLaunchButtonDisabled : animationData,
-      });
-      this._animation.setSpeed(2);
+  private _initAnimation() {
+    this._animation = lottie.loadAnimation({
+      container: this._containerEl,
+      renderer: 'svg',
+      loop: true,
+      autoplay: false,
+      animationData: this.disabled ? aiLaunchButtonDisabled : animationData,
+    });
+    this._animation.setSpeed(2);
+    this._animation.goToAndStop(0, true);
+  }
+
+  public startHoverAnimation() {
+    if (!this.disabled) {
       this._animation.goToAndStop(0, true);
+      this._animation.setDirection(1);
+      this._animation.play();
     }
   }
 
-  private _emitStart() {
-    const event = new CustomEvent('on-start');
-    this.dispatchEvent(event);
+  public stopHoverAnimation() {
+    const slowdownInterval = setInterval(() => {
+      const newSpeed = this._animation.playSpeed - 0.3;
+      if (newSpeed <= 0.1) {
+        clearInterval(slowdownInterval);
+        this._animation.stop();
+        this._animation.goToAndStop(0, true);
+        this._animation.setSpeed(2);
+      } else {
+        this._animation.setSpeed(newSpeed);
+      }
+    }, 100);
   }
 
-  private _emitStop() {
-    const event = new CustomEvent('on-stop');
-    this.dispatchEvent(event);
+  override updated(changedProps: any) {
+    if (changedProps.has('disabled')) {
+      this._animation.destroy();
+      this._initAnimation();
+    }
   }
 
   private _emitClick() {

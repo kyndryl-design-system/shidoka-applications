@@ -1,3 +1,4 @@
+@use '../../../common/scss/global.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :host {
@@ -6,8 +7,8 @@
 
 .ai-launch-button {
   @include elevation.shadow(3, true);
-  width: 69px;
-  height: 69px;
+  width: 70px;
+  height: 70px;
   padding: 0;
   border-radius: 50%;
   cursor: pointer;
@@ -15,15 +16,16 @@
   align-items: center;
   justify-content: center;
   border: 2px solid transparent;
+  outline: 2px solid transparent;
   background: var(--kd-color-background-container-ai-subtle);
-  transition: all 300ms ease-in-out;
+  transition: all 150ms ease-in-out;
 
   &:hover {
     border-color: var(--kd-color-border-variants-ai);
   }
 
   &:focus {
-    outline: 2px solid var(--kd-color-border-button-primary-state-focused);
+    outline-color: var(--kd-color-border-button-primary-state-focused);
     outline-offset: -2px;
   }
 
