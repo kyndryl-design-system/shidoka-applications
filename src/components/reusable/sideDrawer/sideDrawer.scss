@@ -12,14 +12,12 @@
 }
 
 #close-drawer {
-
   span.close-icon {
     display: flex;
     color: var(--kd-color-icon-primary);
   }
 
   &:hover {
-
     span.close-icon {
       color: var(--kd-color-text-button-dark-primary);
     }
@@ -39,6 +37,11 @@ dialog {
   height: 100vh;
   max-height: 100vh;
   overflow: hidden;
+
+  &.ai-connected {
+    @include elevation.shadow(3, true);
+    background: var(--kd-color-background-container-ai-subtle);
+  }
 
   &[open] {
     animation: dialog-in 400ms forwards;
@@ -109,11 +112,14 @@ form {
   color: var(--kd-color-text-level-secondary);
 }
 
-h1 {
+.header-title {
   @include typography.type-body-01;
   color: var(--kd-color-text-level-primary);
   margin: 0;
   order: 1;
+  &.ai-connected {
+    color: var(--kd-color-text-title-ai-primary);
+  }
 }
 
 .dialog-footer {
@@ -124,6 +130,10 @@ h1 {
   background-color: var(--kd-color-background-accent-subtle);
   padding: 24px 32px 24px 32px;
   border-top: 1px solid var(--kd-color-border-variants-light);
+  &.ai-connected {
+    background-color: var(--kd-color-background-container-ai-default);
+    border-top: 1px solid var(--kd-color-border-variants-ai);
+  }
 }
 
 .actions {
