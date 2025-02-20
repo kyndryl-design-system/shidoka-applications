@@ -43,9 +43,7 @@ export const Default = {
     <kyn-button-float-container>
       <kyn-ai-assist
         ?disabled="${args.disabled}"
-        @on-click=${(e) => action(e.type)(e)}
-        @mouseenter=${(e) => e.target.startHoverAnimation()}
-        @mouseleave=${(e) => e.target.stopHoverAnimation()}
+        @on-stop=${() => action('on-stop')()}
       ></kyn-ai-assist>
     </kyn-button-float-container>
   `,

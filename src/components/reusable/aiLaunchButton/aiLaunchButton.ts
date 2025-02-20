@@ -42,6 +42,9 @@ export class AILaunchButton extends LitElement {
         class="${classMap(Classes)}"
         aria-label="AI Assistant"
         ?disabled="${this.disabled}"
+        @click=${() => this._emitClick()}
+        @mouseenter=${() => this._startHoverAnimation()}
+        @mouseleave=${() => this._stopHoverAnimation()}
       >
         <div class="container"></div>
       </button>
@@ -50,15 +53,6 @@ export class AILaunchButton extends LitElement {
 
   override firstUpdated() {
     this._initAnimation();
-
-    const button = this.shadowRoot?.querySelector('button');
-    if (button) {
-      button.addEventListener('click', () => {
-        if (!this.disabled) {
-          this._emitClick();
-        }
-      });
-    }
   }
 
   private _initAnimation() {
@@ -73,7 +67,7 @@ export class AILaunchButton extends LitElement {
     this._animation.goToAndStop(0, true);
   }
 
-  public startHoverAnimation() {
+  private _startHoverAnimation() {
     if (!this.disabled) {
       this._animation.goToAndStop(0, true);
       this._animation.setDirection(1);
@@ -81,7 +75,7 @@ export class AILaunchButton extends LitElement {
     }
   }
 
-  public stopHoverAnimation() {
+  private _stopHoverAnimation() {
     const slowdownInterval = setInterval(() => {
       const newSpeed = this._animation.playSpeed - 0.1;
       if (newSpeed <= 0.1) {
@@ -102,8 +96,10 @@ export class AILaunchButton extends LitElement {
   }
 
   private _emitClick() {
-    const event = new CustomEvent('on-stop');
-    this.dispatchEvent(event);
+    if (!this.disabled) {
+      const event = new CustomEvent('on-stop');
+      this.dispatchEvent(event);
+    }
   }
 }
 
