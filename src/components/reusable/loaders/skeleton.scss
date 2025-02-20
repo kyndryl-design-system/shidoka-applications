@@ -6,11 +6,10 @@
   --skeleton-base-height: 16px;
   --skeleton-border-radius: 4px;
   --skeleton-background: var(--kd-color-background-loader-skeleton-default);
-  --skeleton-ai-background: var(--kd-color-border-variants-ai);
   --skeleton-background-dark: var(
     --kd-color-background-loader-skeleton-secondary
   );
-  --skeleton-shimmer-duration: 1.5s;
+  --skeleton-shimmer-duration: 1.2s;
 
   // Predefined sizes
   --skeleton-size-small: 32px;
@@ -48,16 +47,13 @@
   will-change: transform;
 
   &.ai-Skeleton {
-    background: rgb(238, 186, 238);
-
+    background: rgba(241, 204, 241);
     &::after {
       background: linear-gradient(
         90deg,
-        rgba(252, 230, 252, 0) 0,
-        rgb(232, 173, 232) 15%,
-        rgb(225, 149, 225) 45%,
-        rgb(226, 138, 226) 75%,
-        rgba(247, 234, 244, 0) 100%
+        rgba(241, 204, 241, 1) 0%,
+        rgba(221, 128, 221, 1) 54.5%,
+        rgba(241, 204, 241, 1) 100%
       );
     }
   }
@@ -102,15 +98,13 @@
   }
 
   &.shade-ai-dark {
-    background: rgb(97, 9, 97);
+    background: rgba(112, 0, 112, 0.5);
     &::after {
       background: linear-gradient(
         90deg,
-        rgba(22, 1, 23, 0) 0%,
-        rgb(110, 11, 110) 10%,
-        rgb(97, 9, 97) 50%,
-        rgb(91, 7, 91) 90%,
-        rgba(22, 1, 23, 0) 100%
+        rgba(112, 0, 112, 0.05) 0%,
+        rgba(112, 0, 112, 1) 50%,
+        rgba(112, 0, 112, 0.05) 100%
       );
     }
   }
@@ -131,7 +125,7 @@
       rgba(255, 255, 255, 0) 100%
     );
     animation: shimmer var(--skeleton-shimmer-duration)
-      cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
     content: '';
     pointer-events: none;
   }

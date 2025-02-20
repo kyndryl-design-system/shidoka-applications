@@ -129,69 +129,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/header/header.ts",
       "declarations": [
         {
@@ -7315,6 +7252,404 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Loader",
+          "declaration": {
+            "name": "Loader",
+            "module": "./loader"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LoaderInline",
+          "declaration": {
+            "name": "LoaderInline",
+            "module": "./inline"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Skeleton",
+          "declaration": {
+            "name": "Skeleton",
+            "module": "./skeleton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/inline.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Inline Loader.",
+          "name": "LoaderInline",
+          "slots": [
+            {
+              "description": "Slot for text/description.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "status",
+              "type": {
+                "text": "string"
+              },
+              "default": "'active'",
+              "description": "Status. Can be `active`, `inactive`, `success`, `error`.",
+              "attribute": "status"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStart",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStop",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits when the loader been started.",
+              "name": "on-start"
+            },
+            {
+              "description": "Emits when the loader has been stopped and all animations have completed.",
+              "name": "on-stop"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "status",
+              "type": {
+                "text": "string"
+              },
+              "default": "'active'",
+              "description": "Status. Can be `active`, `inactive`, `success`, `error`.",
+              "fieldName": "status"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-loader-inline",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LoaderInline",
+          "declaration": {
+            "name": "LoaderInline",
+            "module": "src/components/reusable/loaders/inline.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-loader-inline",
+          "declaration": {
+            "name": "LoaderInline",
+            "module": "src/components/reusable/loaders/inline.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/loader.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Loader.",
+          "name": "Loader",
+          "members": [
+            {
+              "kind": "field",
+              "name": "stopped",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Animation stopped state",
+              "attribute": "stopped"
+            },
+            {
+              "kind": "field",
+              "name": "overlay",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Display the loader as an overlay",
+              "attribute": "overlay"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStart",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStop",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits when the loader been started.",
+              "name": "on-start"
+            },
+            {
+              "description": "Emits when the loader has been stopped and all animations have completed.",
+              "name": "on-stop"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "stopped",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Animation stopped state",
+              "fieldName": "stopped"
+            },
+            {
+              "name": "overlay",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Display the loader as an overlay",
+              "fieldName": "overlay"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-loader",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Loader",
+          "declaration": {
+            "name": "Loader",
+            "module": "src/components/reusable/loaders/loader.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-loader",
+          "declaration": {
+            "name": "Loader",
+            "module": "src/components/reusable/loaders/loader.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Skeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "shape",
+              "type": {
+                "text": "'rectangle' | 'circle'"
+              },
+              "default": "'rectangle'",
+              "description": "Defines the shape of the skeleton element.",
+              "attribute": "shape",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "'small' | 'medium' | 'large' | undefined"
+              },
+              "description": "Optional: Predefined size (small, medium, large).",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "width",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional: Custom width (overrides size if provided).",
+              "attribute": "width"
+            },
+            {
+              "kind": "field",
+              "name": "height",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional: Custom height (overrides size if provided).",
+              "attribute": "height"
+            },
+            {
+              "kind": "field",
+              "name": "lines",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Sets the number of skeleton lines to display.",
+              "attribute": "lines"
+            },
+            {
+              "kind": "field",
+              "name": "inline",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether to display inline or block.",
+              "attribute": "inline"
+            },
+            {
+              "kind": "field",
+              "name": "shade",
+              "type": {
+                "text": "'light' | 'dark' | string"
+              },
+              "default": "'light'",
+              "description": "Defines the shade of the skeleton.",
+              "attribute": "shade"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets the AI theme.",
+              "attribute": "aiConnected"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "shape",
+              "type": {
+                "text": "'rectangle' | 'circle'"
+              },
+              "default": "'rectangle'",
+              "description": "Defines the shape of the skeleton element.",
+              "fieldName": "shape"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "'small' | 'medium' | 'large' | undefined"
+              },
+              "description": "Optional: Predefined size (small, medium, large).",
+              "fieldName": "size"
+            },
+            {
+              "name": "width",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional: Custom width (overrides size if provided).",
+              "fieldName": "width"
+            },
+            {
+              "name": "height",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional: Custom height (overrides size if provided).",
+              "fieldName": "height"
+            },
+            {
+              "name": "lines",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Sets the number of skeleton lines to display.",
+              "fieldName": "lines"
+            },
+            {
+              "name": "inline",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether to display inline or block.",
+              "fieldName": "inline"
+            },
+            {
+              "name": "shade",
+              "type": {
+                "text": "'light' | 'dark' | string"
+              },
+              "default": "'light'",
+              "description": "Defines the shade of the skeleton.",
+              "fieldName": "shade"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets the AI theme.",
+              "fieldName": "aiConnected"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-skeleton",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Skeleton",
+          "declaration": {
+            "name": "Skeleton",
+            "module": "src/components/reusable/loaders/skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-skeleton",
+          "declaration": {
+            "name": "Skeleton",
+            "module": "src/components/reusable/loaders/skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/modal/index.ts",
       "declarations": [],
       "exports": [
@@ -7364,7 +7699,7 @@
                 "text": "string"
               },
               "default": "'auto'",
-              "description": "Modal size. `'auto'`, `'md'`, or `'lg'`.",
+              "description": "Modal size. `'auto'`, `'md'`, or `'lg', or `'xl'`.",
               "attribute": "size"
             },
             {
@@ -7379,204 +7714,6 @@
             },
             {
               "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "okText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'OK'",
-              "description": "OK button text.",
-              "attribute": "okText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelText"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "okDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the primary button.",
-              "attribute": "okDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "secondaryDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the secondary button.",
-              "attribute": "secondaryDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the footer/action buttons to create a passive modal.",
-              "attribute": "hideFooter"
-            },
-            {
-              "kind": "field",
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text.",
-              "attribute": "secondaryButtonText"
-            },
-            {
-              "kind": "field",
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the secondary button.",
-              "attribute": "showSecondaryButton"
-            },
-            {
-              "kind": "field",
-              "name": "hideCancelButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the cancel button.",
-              "attribute": "hideCancelButton"
-            },
-            {
-              "kind": "field",
-              "name": "beforeClose",
-              "type": {
-                "text": "Function"
-              },
-              "description": "Function to execute before the modal can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
-            },
-            {
-              "kind": "field",
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button text.",
-              "attribute": "closeText"
-            },
-            {
-              "kind": "method",
-              "name": "_openModal",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_closeModal",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "returnValue",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitCloseEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitOpenEvent",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).",
-              "name": "on-close"
-            },
-            {
-              "description": "Emits the modal open event.",
-              "name": "on-open"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Modal open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'auto'",
-              "description": "Modal size. `'auto'`, `'md'`, or `'lg', or `'xl'`.",
-              "attribute": "size"
-            },
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title/heading text, required.",
-              "fieldName": "titleText"
-            },
-            {
               "name": "labelText",
               "type": {
                 "text": "string"
@@ -7942,440 +8079,8 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/loaders/index.ts",
+      "path": "src/components/reusable/notification/index.ts",
       "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Loader",
-          "declaration": {
-            "name": "Loader",
-            "module": "./loader"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LoaderInline",
-          "declaration": {
-            "name": "LoaderInline",
-            "module": "./inline"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Skeleton",
-          "declaration": {
-            "name": "Skeleton",
-            "module": "./skeleton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/loaders/inline.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Inline Loader.",
-          "name": "LoaderInline",
-          "slots": [
-            {
-              "description": "Slot for text/description.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "status",
-              "type": {
-                "text": "string"
-              },
-              "default": "'active'",
-              "description": "Status. Can be `active`, `inactive`, `success`, `error`.",
-              "attribute": "status"
-            },
-            {
-              "kind": "method",
-              "name": "_emitStart",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "timeStamp",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Timestamp of notification.\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
-              "attribute": "timeStamp"
-            },
-            {
-              "description": "Emits when the loader been started.",
-              "name": "on-start"
-            },
-            {
-              "description": "Emits when the loader has been stopped and all animations have completed.",
-              "name": "on-stop"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "status",
-              "type": {
-                "text": "string"
-              },
-              "default": "'normal'",
-              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "any"
-              },
-              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Info',\n    error: 'Error',\n  }",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "field",
-              "name": "closeBtnDescription",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button description (Required to support accessibility).",
-              "attribute": "closeBtnDescription"
-            },
-            {
-              "kind": "field",
-              "name": "assistiveNotificationTypeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Assistive text for notification type.\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
-              "attribute": "assistiveNotificationTypeText"
-            },
-            {
-              "kind": "field",
-              "name": "notificationRole",
-              "type": {
-                "text": "'alert' | 'log' | 'status' | undefined"
-              },
-              "description": "Notification role (Required to support accessibility).",
-              "attribute": "notificationRole"
-            },
-            {
-              "kind": "field",
-              "name": "statusLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Status'",
-              "description": "Status label (Required to support accessibility).\nAssign the localized string value for the word **Status**.",
-              "attribute": "statusLabel"
-            },
-            {
-              "kind": "field",
-              "name": "stopped",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Animation stopped state",
-              "attribute": "stopped"
-            },
-            {
-              "kind": "field",
-              "name": "overlay",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Display the loader as an overlay",
-              "attribute": "overlay"
-            },
-            {
-              "kind": "method",
-              "name": "_emitStart",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitStop",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits when the loader been started.",
-              "name": "on-start"
-            },
-            {
-              "description": "Emits when the loader has been stopped and all animations have completed.",
-              "name": "on-stop"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "stopped",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Animation stopped state",
-              "fieldName": "stopped"
-            },
-            {
-              "name": "overlay",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Display the loader as an overlay",
-              "fieldName": "overlay"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-loader",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Loader",
-          "declaration": {
-            "name": "Loader",
-            "module": "src/components/reusable/loaders/loader.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-loader",
-          "declaration": {
-            "name": "Loader",
-            "module": "src/components/reusable/loaders/loader.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/loaders/skeleton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "Skeleton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "shape",
-              "type": {
-                "text": "'rectangle' | 'circle'"
-              },
-              "default": "''",
-              "description": "Timestamp of notification.\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
-              "fieldName": "timeStamp"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "'small' | 'medium' | 'large' | undefined"
-              },
-              "description": "Optional: Predefined size (small, medium, large).",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "width",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional: Custom width (overrides size if provided).",
-              "attribute": "width"
-            },
-            {
-              "kind": "field",
-              "name": "height",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional: Custom height (overrides size if provided).",
-              "attribute": "height"
-            },
-            {
-              "kind": "field",
-              "name": "lines",
-              "type": {
-                "text": "number"
-              },
-              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Info',\n    error: 'Error',\n  }",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "kind": "field",
-              "name": "inline",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets whether to display inline or block.",
-              "attribute": "inline"
-            },
-            {
-              "kind": "field",
-              "name": "shade",
-              "type": {
-                "text": "'light' | 'dark' | string"
-              },
-              "default": "''",
-              "description": "Assistive text for notification type.\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
-              "fieldName": "assistiveNotificationTypeText"
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets the AI theme.",
-              "attribute": "aiConnected"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "shape",
-              "type": {
-                "text": "'rectangle' | 'circle'"
-              },
-              "default": "'rectangle'",
-              "description": "Defines the shape of the skeleton element.",
-              "fieldName": "shape"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "'small' | 'medium' | 'large' | undefined"
-              },
-              "default": "'Status'",
-              "description": "Status label (Required to support accessibility).\nAssign the localized string value for the word **Status**.",
-              "fieldName": "statusLabel"
-            },
-            {
-              "name": "width",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional: Custom width (overrides size if provided).",
-              "fieldName": "width"
-            },
-            {
-              "name": "height",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional: Custom height (overrides size if provided).",
-              "fieldName": "height"
-            },
-            {
-              "name": "lines",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Sets the number of skeleton lines to display.",
-              "fieldName": "lines"
-            },
-            {
-              "name": "inline",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets whether to display inline or block.",
-              "fieldName": "inline"
-            },
-            {
-              "name": "shade",
-              "type": {
-                "text": "'light' | 'dark' | string"
-              },
-              "default": "'light'",
-              "description": "Defines the shade of the skeleton.",
-              "fieldName": "shade"
-            },
-            {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets the AI theme.",
-              "fieldName": "aiConnected"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-skeleton",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Skeleton",
-          "declaration": {
-            "name": "Skeleton",
-            "module": "src/components/reusable/loaders/skeleton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-skeleton",
-          "declaration": {
-            "name": "Skeleton",
-            "module": "src/components/reusable/loaders/skeleton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/notification/notificationContainer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Notification container component for Toast notification.\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
-          "name": "NotificationContainer",
-          "slots": [
-            {
-              "description": "Slot for <kyn-notification type=\"toast\"> component.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-notification-container",
-          "customElement": true
-        }
-      ],
       "exports": [
         {
           "kind": "js",
@@ -8536,10 +8241,7 @@
             },
             {
               "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  subtract: 'Subtract',\n  add: 'Add',\n  error: 'Error',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
+              "name": "hideCloseButton",
               "type": {
                 "text": "boolean"
               },
@@ -10020,12 +9722,13 @@
             },
             {
               "kind": "field",
-              "name": "numberOfPages",
+              "name": "pageSize",
               "type": {
                 "text": "number"
               },
-              "default": "1",
-              "attribute": "numberOfPages",
+              "default": "5",
+              "description": "Number of items displayed per page.",
+              "attribute": "pageSize",
               "reflects": true
             },
             {
@@ -10072,7 +9775,7 @@
                 "text": "number"
               },
               "default": "5",
-              "description": "Current page size.",
+              "description": "Number of items displayed per page.",
               "fieldName": "pageSize"
             }
           ],
@@ -10765,6 +10468,330 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/radioButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RadioButton",
+          "declaration": {
+            "name": "RadioButton",
+            "module": "./radioButton"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "RadioButtonGroup",
+          "declaration": {
+            "name": "RadioButtonGroup",
+            "module": "./radioButtonGroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/radioButton/radioButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Radio button.",
+          "name": "RadioButton",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Radio button value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button disabled state, inherited from the parent group.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the change event and emits the selected value and original event details.",
+              "name": "on-radio-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Radio button value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button disabled state, inherited from the parent group.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-radio-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RadioButton",
+          "declaration": {
+            "name": "RadioButton",
+            "module": "src/components/reusable/radioButton/radioButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-radio-button",
+          "declaration": {
+            "name": "RadioButton",
+            "module": "src/components/reusable/radioButton/radioButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/radioButton/radioButtonGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Radio button group container.",
+          "name": "RadioButtonGroup",
+          "slots": [
+            {
+              "description": "Slot for individual radio buttons.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for description text.",
+              "name": "description"
+            },
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "horizontal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group horizontal layout.",
+              "attribute": "horizontal"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  required: 'Required',\n  error: 'Error',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleRadioChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the change event and emits the selected value.",
+              "name": "on-radio-group-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text",
+              "fieldName": "label"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "horizontal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group horizontal layout.",
+              "fieldName": "horizontal"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-radio-button-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RadioButtonGroup",
+          "declaration": {
+            "name": "RadioButtonGroup",
+            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-radio-button-group",
+          "declaration": {
+            "name": "RadioButtonGroup",
+            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/search/index.ts",
       "declarations": [],
       "exports": [
@@ -11115,330 +11142,6 @@
           "declaration": {
             "name": "Search",
             "module": "src/components/reusable/search/search.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/radioButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "RadioButton",
-          "declaration": {
-            "name": "RadioButton",
-            "module": "./radioButton"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "RadioButtonGroup",
-          "declaration": {
-            "name": "RadioButtonGroup",
-            "module": "./radioButtonGroup"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/radioButton/radioButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Radio button.",
-          "name": "RadioButton",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Radio button value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button disabled state, inherited from the parent group.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the change event and emits the selected value and original event details.",
-              "name": "on-radio-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Radio button value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button disabled state, inherited from the parent group.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-radio-button",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "RadioButton",
-          "declaration": {
-            "name": "RadioButton",
-            "module": "src/components/reusable/radioButton/radioButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-radio-button",
-          "declaration": {
-            "name": "RadioButton",
-            "module": "src/components/reusable/radioButton/radioButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/radioButton/radioButtonGroup.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Radio button group container.",
-          "name": "RadioButtonGroup",
-          "slots": [
-            {
-              "description": "Slot for individual radio buttons.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for description text.",
-              "name": "description"
-            },
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "horizontal",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group horizontal layout.",
-              "attribute": "horizontal"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  required: 'Required',\n  error: 'Error',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleRadioChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the change event and emits the selected value.",
-              "name": "on-radio-group-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text",
-              "fieldName": "label"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "horizontal",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group horizontal layout.",
-              "fieldName": "horizontal"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-radio-button-group",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "RadioButtonGroup",
-          "declaration": {
-            "name": "RadioButtonGroup",
-            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-radio-button-group",
-          "declaration": {
-            "name": "RadioButtonGroup",
-            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
           }
         }
       ]
@@ -12963,537 +12666,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "./tabs"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "./tab"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "TabPanel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "./tabPanel"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tab.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-tbody` Web Component.\n\nRepresents the body section of Shidoka's design system tables. Designed to provide\na consistent look and feel, and can offer striped rows for enhanced readability.",
-          "name": "TableBody",
-          "slots": [
-            {
-              "description": "Slot for tab button text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "id",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tab ID, required.",
-              "attribute": "id",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab selected state. Must match Tab Panel visible state.",
-              "attribute": "selected",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The parameter \"e\" is an event object that represents the event that triggered the\nclick event handler."
-                }
-              ],
-              "description": "Dispatches a custom event called 'tab-activated' with the original event and tabId as details,\nif the tab is not selected."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "id",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tab ID, required.",
-              "fieldName": "id"
-            },
-            {
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab selected state. Must match Tab Panel visible state.",
-              "fieldName": "selected"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab disabled state.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tab",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "src/components/reusable/tabs/tab.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "src/components/reusable/tabs/tab.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tabPanel.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-td` Web Component.\n\nRepresents a table cell (data cell) within Shidoka's design system tables.\nAllows customization of alignment and can reflect the sort direction when\nused within sortable columns.",
-          "name": "TableCell",
-          "slots": [
-            {
-              "description": "Slot for tab content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "dense",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "dense",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "align",
-              "type": {
-                "text": "TABLE_CELL_ALIGN"
-              },
-              "description": "Determines the text alignment of the table cell's content.",
-              "attribute": "align",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "width",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets a fixed width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
-              "attribute": "width",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "maxWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
-              "attribute": "maxWidth",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "minWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
-              "attribute": "minWidth",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "visible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab Panel visible state.  Must match Tab selected state.",
-              "attribute": "visible",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "noPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Remove side padding (left/right) on tab panel.",
-              "attribute": "noPadding"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "tabId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets a fixed width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
-              "fieldName": "width"
-            },
-            {
-              "name": "visible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
-              "fieldName": "maxWidth"
-            },
-            {
-              "name": "minWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
-              "fieldName": "minWidth"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disables the cell.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "dimmed",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Remove side padding (left/right) on tab panel.",
-              "fieldName": "noPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tab-panel",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TabPanel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "src/components/reusable/tabs/tabPanel.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tab-panel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "src/components/reusable/tabs/tabPanel.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tabs.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-table-container` Web Component.\n\nProvides a container for Shidoka's design system tables. It's designed to encapsulate\nand apply styles uniformly across the table elements.",
-          "name": "TableContainer",
-          "slots": [
-            {
-              "description": "Slot for kyn-tab-panel components.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for kyn-tab components.",
-              "name": "tabs"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "tabStyle",
-              "type": {
-                "text": "string"
-              },
-              "default": "'contained'",
-              "description": "Tab style. `'contained'` or `'line'`.",
-              "attribute": "tabStyle"
-            },
-            {
-              "kind": "field",
-              "name": "tabSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
-              "attribute": "tabSize"
-            },
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Vertical orientation.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "disableAutoFocusUpdate",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
-              "attribute": "disableAutoFocusUpdate"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChangeTabs",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The parameter \"e\" is an event object that contains information about the event\nthat triggered the handleChange function."
-                }
-              ],
-              "description": "Updates children and emits a change event based on the provided\nevent details when a child kyn-tab is clicked."
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildrenSelection",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "selectedTabId",
-                  "type": {
-                    "text": "string"
-                  },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe tab that is currently selected."
-                },
-                {
-                  "name": "updatePanel",
-                  "default": "true"
-                }
-              ],
-              "description": "Updates the selected property of tabs and the visible property of tab panels based on\nthe selected tab ID."
-            },
-            {
-              "kind": "method",
-              "name": "_emitChangeEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "origEvent",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The origEvent parameter is the original event object that triggered the\nchange event. It could be any type of event object, such as a click event or a keydown event."
-                },
-                {
-                  "name": "selectedTabId",
-                  "type": {
-                    "text": "string"
-                  },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe selected tab."
-                }
-              ],
-              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\nselected tab ID as details."
-            },
-            {
-              "kind": "method",
-              "name": "_handleKeyboard",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The parameter `e` is an event object that represents the keyboard event. It\ncontains information about the keyboard event, such as the key code of the pressed key."
-                }
-              ],
-              "description": "Handles keyboard events for navigating between tabs.",
-              "return": {
-                "type": {
-                  "text": ""
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the new selected Tab ID when switching tabs.",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "tabStyle",
-              "type": {
-                "text": "string"
-              },
-              "default": "'contained'",
-              "description": "Tab style. `'contained'` or `'line'`.",
-              "fieldName": "tabStyle"
-            },
-            {
-              "name": "tabSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
-              "fieldName": "tabSize"
-            },
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Vertical orientation.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "disableAutoFocusUpdate",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
-              "fieldName": "disableAutoFocusUpdate"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tabs",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "src/components/reusable/tabs/tabs.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "src/components/reusable/tabs/tabs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/table/defs.ts",
       "declarations": [],
       "exports": []
@@ -13512,67 +12684,13 @@
           }
         },
         {
-          "kind": "class",
-          "description": "\n`kyn-expanded-tr` Web Component.\n\nDesigned to display additional details for a row in a table.\nThe row is expandable and can be expanded/collapsed by toggling the plus/minus icons.",
-          "name": "TableExpandedRow",
-          "slots": [
-            {
-              "description": "The slot for adding content to the expandable details section.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "colSpan",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "The number of columns that the expanded row should span.\nReflects the `colspan` attribute.",
-              "attribute": "colspan"
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "`true` if the table row should be expanded.",
-              "attribute": "expanded",
-              "reflects": true
-            }
-          ],
-          "attributes": [
-            {
-              "name": "colspan",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "The number of columns that the expanded row should span.\nReflects the `colspan` attribute.",
-              "fieldName": "colSpan"
-            },
-            {
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "`true` if the table row should be expanded.",
-              "fieldName": "expanded"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-expanded-tr",
-          "customElement": true
-        }
-      ],
-      "exports": [
+          "kind": "js",
+          "name": "TableCell",
+          "declaration": {
+            "name": "TableCell",
+            "module": "./table-cell"
+          }
+        },
         {
           "kind": "js",
           "name": "TableRow",
@@ -13590,25 +12708,13 @@
           }
         },
         {
-          "kind": "class",
-          "description": "`kyn-tfoot` Web Component.\n\nRepresents a custom table foot (`<tfoot>`) for Shidoka's design system tables.\nDesigned to contain and style table footer rows (`<tr>`) and footer cells (`<td>`).",
-          "name": "TableFoot",
-          "slots": [
-            {
-              "description": "The content slot for adding table foot rows.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tfoot",
-          "customElement": true
-        }
-      ],
-      "exports": [
+          "kind": "js",
+          "name": "TableHead",
+          "declaration": {
+            "name": "TableHead",
+            "module": "./table-head"
+          }
+        },
         {
           "kind": "js",
           "name": "TableHeader",
@@ -13624,33 +12730,7 @@
             "name": "TableFoot",
             "module": "./table-foot"
           }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/table/table-footer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Table Footer\n\nIntended to contain Legend and Pagination.",
-          "name": "TableFooter",
-          "slots": [
-            {
-              "description": "Default slot.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-table-footer",
-          "customElement": true
-        }
-      ],
-      "exports": [
+        },
         {
           "kind": "js",
           "name": "TableFooter",
@@ -13723,11 +12803,545 @@
       "declarations": [
         {
           "kind": "class",
+          "description": "`kyn-tbody` Web Component.\n\nRepresents the body section of Shidoka's design system tables. Designed to provide\na consistent look and feel, and can offer striped rows for enhanced readability.",
+          "name": "TableBody",
+          "slots": [
+            {
+              "description": "The content slot for adding rows (`<kyn-tr>`) within the table body.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "striped",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the rows in the table body should be striped.",
+              "attribute": "striped",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "handleContextChange",
+              "description": "Updates the row's striped property when the context changes.",
+              "parameters": [
+                {
+                  "description": "The updated context.",
+                  "name": "context",
+                  "type": {
+                    "text": "TableContextType"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-rows-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Dispatched when the rows in the table body change."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "striped",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the rows in the table body should be striped.",
+              "fieldName": "striped"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tbody",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TableBody",
+          "declaration": {
+            "name": "TableBody",
+            "module": "src/components/reusable/table/table-body.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tbody",
+          "declaration": {
+            "name": "TableBody",
+            "module": "src/components/reusable/table/table-body.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/table/table-cell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-td` Web Component.\n\nRepresents a table cell (data cell) within Shidoka's design system tables.\nAllows customization of alignment and can reflect the sort direction when\nused within sortable columns.",
+          "name": "TableCell",
+          "slots": [
+            {
+              "description": "The content slot for adding table data inside the cell.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "dense",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "dense",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "align",
+              "type": {
+                "text": "TABLE_CELL_ALIGN"
+              },
+              "description": "Determines the text alignment of the table cell's content.",
+              "attribute": "align",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets a fixed width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "attribute": "width",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "maxWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "attribute": "maxWidth",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "minWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "attribute": "minWidth",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the cell.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "dimmed",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Dim the cell.",
+              "attribute": "dimmed",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "handleContextChange",
+              "description": "Updates the cell's dense properties when the context changes.",
+              "parameters": [
+                {
+                  "description": "The updated context.",
+                  "name": "context",
+                  "type": {
+                    "text": "TableContextType"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "dense",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "dense"
+            },
+            {
+              "name": "align",
+              "type": {
+                "text": "TABLE_CELL_ALIGN"
+              },
+              "description": "Determines the text alignment of the table cell's content.",
+              "fieldName": "align"
+            },
+            {
+              "name": "width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets a fixed width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "fieldName": "width"
+            },
+            {
+              "name": "maxWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "fieldName": "maxWidth"
+            },
+            {
+              "name": "minWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "fieldName": "minWidth"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the cell.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "dimmed",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Dim the cell.",
+              "fieldName": "dimmed"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-td",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TableCell",
+          "declaration": {
+            "name": "TableCell",
+            "module": "src/components/reusable/table/table-cell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-td",
+          "declaration": {
+            "name": "TableCell",
+            "module": "src/components/reusable/table/table-cell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/table/table-container.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-table-container` Web Component.\n\nProvides a container for Shidoka's design system tables. It's designed to encapsulate\nand apply styles uniformly across the table elements.",
+          "name": "TableContainer",
+          "slots": [
+            {
+              "description": "The content slot for adding table and related elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "tabIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "attribute": "tabIndex",
+              "reflects": true
+            }
+          ],
+          "attributes": [
+            {
+              "name": "tabIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "fieldName": "tabIndex"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-table-container",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TableContainer",
+          "declaration": {
+            "name": "TableContainer",
+            "module": "src/components/reusable/table/table-container.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-table-container",
+          "declaration": {
+            "name": "TableContainer",
+            "module": "src/components/reusable/table/table-container.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/table/table-context.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "tableContext"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "tableContext",
+          "declaration": {
+            "name": "tableContext",
+            "module": "src/components/reusable/table/table-context.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/table/table-expanded-row.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "\n`kyn-expanded-tr` Web Component.\n\nDesigned to display additional details for a row in a table.\nThe row is expandable and can be expanded/collapsed by toggling the plus/minus icons.",
+          "name": "TableExpandedRow",
+          "slots": [
+            {
+              "description": "The slot for adding content to the expandable details section.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "colSpan",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "The number of columns that the expanded row should span.\nReflects the `colspan` attribute.",
+              "attribute": "colspan"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "`true` if the table row should be expanded.",
+              "attribute": "expanded",
+              "reflects": true
+            }
+          ],
+          "attributes": [
+            {
+              "name": "colspan",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "The number of columns that the expanded row should span.\nReflects the `colspan` attribute.",
+              "fieldName": "colSpan"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "`true` if the table row should be expanded.",
+              "fieldName": "expanded"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-expanded-tr",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TableExpandedRow",
+          "declaration": {
+            "name": "TableExpandedRow",
+            "module": "src/components/reusable/table/table-expanded-row.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-expanded-tr",
+          "declaration": {
+            "name": "TableExpandedRow",
+            "module": "src/components/reusable/table/table-expanded-row.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/table/table-foot.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-tfoot` Web Component.\n\nRepresents a custom table foot (`<tfoot>`) for Shidoka's design system tables.\nDesigned to contain and style table footer rows (`<tr>`) and footer cells (`<td>`).",
+          "name": "TableFoot",
+          "slots": [
+            {
+              "description": "The content slot for adding table foot rows.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tfoot",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TableFoot",
+          "declaration": {
+            "name": "TableFoot",
+            "module": "src/components/reusable/table/table-foot.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tfoot",
+          "declaration": {
+            "name": "TableFoot",
+            "module": "src/components/reusable/table/table-foot.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/table/table-footer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Table Footer\n\nIntended to contain Legend and Pagination.",
+          "name": "TableFooter",
+          "slots": [
+            {
+              "description": "Default slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-table-footer",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TableFooter",
+          "declaration": {
+            "name": "TableFooter",
+            "module": "src/components/reusable/table/table-footer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-table-footer",
+          "declaration": {
+            "name": "TableFooter",
+            "module": "src/components/reusable/table/table-footer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/table/table-head.ts",
+      "declarations": [
+        {
+          "kind": "class",
           "description": "`kyn-thead` Web Component.\n\nRepresents a custom table head (`<thead>`) for Shidoka's design system tables.\nDesigned to contain and style table header rows (`<tr>`) and header cells (`<th>`).",
           "name": "TableHead",
           "slots": [
             {
-              "description": "The content slot for adding rows (`<kyn-tr>`) within the table body.",
+              "description": "The content slot for adding table header rows (`<kyn-header-tr>`).",
               "name": "unnamed"
             }
           ],
@@ -14266,8 +13880,7 @@
               }
             },
             {
-              "kind": "field",
-              "name": "striped",
+              "name": "disabled",
               "type": {
                 "text": "boolean"
               },
@@ -14278,1026 +13891,6 @@
                 "name": "TableRow",
                 "module": "src/components/reusable/table/table-row.ts"
               }
-            },
-            {
-              "kind": "field",
-              "name": "handleContextChange",
-              "description": "Updates the row's striped property when the context changes.",
-              "parameters": [
-                {
-                  "description": "The updated context.",
-                  "name": "context",
-                  "type": {
-                    "text": "TableContextType"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "on-rows-change",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Dispatched when the rows in the table body change."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "striped",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "dimmed: Boolean indicating whether the row is dimmed.\nA row should not be selected and dimmed simultaneously.",
-              "fieldName": "dimmed",
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings",
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tbody",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TableBody",
-          "declaration": {
-            "name": "TableBody",
-            "module": "src/components/reusable/table/table-body.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tbody",
-          "declaration": {
-            "name": "TableBody",
-            "module": "src/components/reusable/table/table-body.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/table/table-cell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-th` Web Component.\n\nRepresents a custom table header cell (`<th>`) for Shidoka's design system tables.\nProvides sorting functionality when enabled and allows alignment customization.",
-          "name": "TableHeader",
-          "slots": [
-            {
-              "description": "The content slot for adding table data inside the cell.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "dense",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "dense",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "align",
-              "type": {
-                "text": "TABLE_CELL_ALIGN"
-              },
-              "description": "Specifies the alignment of the content within the table header.\nOptions: 'left', 'center', 'right'",
-              "attribute": "align",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "width",
-              "type": {
-                "text": "string"
-              },
-              "default": "false",
-              "description": "Specifies if the column is sortable.\nIf set to true, an arrow icon will be displayed unpon hover,\nallowing the user to toggle sort directions.",
-              "attribute": "sortable",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "maxWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
-              "attribute": "maxWidth",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "minWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The textual content associated with this component.\nRepresents the primary content or label that will be displayed.",
-              "attribute": "headerLabel"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "''",
-              "description": "The unique identifier representing this column header.\nUsed to distinguish between different sortable columns and\nto ensure that only one column is sorted at a time.",
-              "attribute": "sortKey"
-            },
-            {
-              "kind": "field",
-              "name": "dimmed",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines whether the content should be hidden from visual view but remain accessible\nto screen readers for accessibility purposes. When set to `true`, the content\nwill not be visibly shown, but its content can still be read by screen readers.\nThis is especially useful for providing additional context or information to\nassistive technologies without cluttering the visual UI.",
-              "attribute": "visiblyHidden"
-            },
-            {
-              "kind": "field",
-              "name": "handleContextChange",
-              "description": "Updates the cell's dense properties when the context changes.",
-              "parameters": [
-                {
-                  "description": "The updated context.",
-                  "name": "context",
-                  "type": {
-                    "text": "TableContextType"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "dense",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "dense"
-            },
-            {
-              "name": "align",
-              "type": {
-                "text": "TABLE_CELL_ALIGN"
-              },
-              "description": "Determines the text alignment of the table cell's content.",
-              "fieldName": "align"
-            },
-            {
-              "name": "width",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets a fixed width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
-              "attribute": "width",
-              "reflects": true
-            },
-            {
-              "name": "maxWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
-              "attribute": "maxWidth",
-              "reflects": true
-            },
-            {
-              "name": "minWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
-              "attribute": "minWidth",
-              "reflects": true
-            },
-            {
-              "kind": "method",
-              "name": "resetSort",
-              "description": "Resets the sorting direction of the component to its default state.\nUseful for initializing or clearing any applied sorting on the element."
-            },
-            {
-              "kind": "method",
-              "name": "toggleSortDirection",
-              "privacy": "private",
-              "description": "Toggles the sort direction between ascending, descending, and default states.\nIt also dispatches an event to notify parent components of the sorting change."
-            },
-            {
-              "description": "The content slot for adding table and related elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "tabIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "attribute": "tabIndex",
-              "reflects": true
-            }
-          ],
-          "attributes": [
-            {
-              "name": "tabIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "fieldName": "tabIndex"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-table-container",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TableContainer",
-          "declaration": {
-            "name": "TableContainer",
-            "module": "src/components/reusable/table/table-container.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-table-container",
-          "declaration": {
-            "name": "TableContainer",
-            "module": "src/components/reusable/table/table-container.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/table/table-context.ts",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "tableContext"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "tableContext",
-          "declaration": {
-            "name": "tableContext",
-            "module": "src/components/reusable/table/table-context.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/table/table-expanded-row.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "\n`kyn-expanded-tr` Web Component.\n\nDesigned to display additional details for a row in a table.\nThe row is expandable and can be expanded/collapsed by toggling the plus/minus icons.",
-          "name": "TableExpandedRow",
-          "slots": [
-            {
-              "description": "The slot for adding content to the expandable details section.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "colSpan",
-              "type": {
-                "text": "number"
-              },
-              "description": "Specifies the alignment of the content within the table header.\nOptions: 'left', 'center', 'right'",
-              "fieldName": "align"
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specifies if the column is sortable.\nIf set to true, an arrow icon will be displayed unpon hover,\nallowing the user to toggle sort directions.",
-              "fieldName": "sortable"
-            },
-            {
-              "name": "sortDirection",
-              "type": {
-                "text": "SORT_DIRECTION"
-              },
-              "description": "Specifies the direction of sorting applied to the column.",
-              "fieldName": "sortDirection"
-            },
-            {
-              "name": "headerLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The textual content associated with this component.\nRepresents the primary content or label that will be displayed.",
-              "fieldName": "headerLabel"
-            },
-            {
-              "name": "colspan",
-              "type": {
-                "text": "number"
-              },
-              "default": "''",
-              "description": "The unique identifier representing this column header.\nUsed to distinguish between different sortable columns and\nto ensure that only one column is sorted at a time.",
-              "fieldName": "sortKey"
-            },
-            {
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines whether the content should be hidden from visual view but remain accessible\nto screen readers for accessibility purposes. When set to `true`, the content\nwill not be visibly shown, but its content can still be read by screen readers.\nThis is especially useful for providing additional context or information to\nassistive technologies without cluttering the visual UI.",
-              "fieldName": "visiblyHidden"
-            },
-            {
-              "name": "width",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets a fixed width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
-              "fieldName": "width"
-            },
-            {
-              "name": "maxWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
-              "fieldName": "maxWidth"
-            },
-            {
-              "name": "minWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
-              "fieldName": "minWidth"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tfoot",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TableFoot",
-          "declaration": {
-            "name": "TableFoot",
-            "module": "src/components/reusable/table/table-foot.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tfoot",
-          "declaration": {
-            "name": "TableFoot",
-            "module": "src/components/reusable/table/table-foot.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/table/table-footer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Table Footer\n\nIntended to contain Legend and Pagination.",
-          "name": "TableFooter",
-          "slots": [
-            {
-              "description": "Default slot.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-table-footer",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TableFooter",
-          "declaration": {
-            "name": "TableFooter",
-            "module": "src/components/reusable/table/table-footer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-table-footer",
-          "declaration": {
-            "name": "TableFooter",
-            "module": "src/components/reusable/table/table-footer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/table/table-head.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-thead` Web Component.\n\nRepresents a custom table head (`<thead>`) for Shidoka's design system tables.\nDesigned to contain and style table header rows (`<tr>`) and header cells (`<th>`).",
-          "name": "TableHead",
-          "slots": [
-            {
-              "description": "The content slot for adding table header rows (`<kyn-header-tr>`).",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "stickyHeader",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "stickyHeader",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "handleContextChange",
-              "description": "Update the stickyHeader property when the context changes.",
-              "parameters": [
-                {
-                  "description": "The updated context.",
-                  "name": "context",
-                  "type": {
-                    "text": "TableContextType"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleChildSort",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "stickyHeader",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "stickyHeader"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-thead",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TableHead",
-          "declaration": {
-            "name": "TableHead",
-            "module": "src/components/reusable/table/table-head.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-thead",
-          "declaration": {
-            "name": "TableHead",
-            "module": "src/components/reusable/table/table-head.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/table/table-header-row.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-tr` Web Component.\n\nRepresents a table row (`<tr>`) equivalent for custom tables created with Shidoka's design system.\nIt primarily acts as a container for individual table cells and behaves similarly to a native `<tr>` element.",
-          "name": "TableRow",
-          "slots": [
-            {
-              "description": "The content slot for adding table cells (`kyn-td` or other relevant cells).",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "expandableColumnWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "'64px'",
-              "description": "expandableColumnWidth: The width of the expandable column.",
-              "attribute": "expandableColumnWidth"
-            },
-            {
-              "kind": "field",
-              "name": "multiSelectColumnWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "'64px'",
-              "description": "multiSelectColumnWidth: The width of the multi-select column.",
-              "attribute": "multiSelectColumnWidth"
-            },
-            {
-              "kind": "method",
-              "name": "handleToggleSelectionAll",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                }
-              ],
-              "description": "Toggles the selection state of all rows in the table."
-            },
-            {
-              "kind": "method",
-              "name": "updateHeaderCheckboxState",
-              "parameters": [
-                {
-                  "name": "indeterminate",
-                  "type": {
-                    "text": "boolean"
-                  }
-                },
-                {
-                  "name": "checked",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ],
-              "description": "Updates the state of the header checkbox based on the number of\nselected rows."
-            },
-            {
-              "kind": "field",
-              "name": "rowId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "rowId: String - Unique identifier for the row.",
-              "attribute": "rowId",
-              "reflects": true,
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "selected: Boolean indicating whether the row is selected.\nReflects the `selected` attribute.",
-              "attribute": "selected",
-              "reflects": true,
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "checkboxSelection",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
-              "attribute": "checkboxSelection",
-              "reflects": true,
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "dense",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
-              "attribute": "dense"
-            },
-            {
-              "kind": "field",
-              "name": "unread",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Unread row state.",
-              "attribute": "unread",
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "locked",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "locked: Boolean indicating whether the row is locked.\nIf a row is selected before it is locked, it remains selected even after being locked.\nA row can be selected and disabled/locked simultaneously.",
-              "attribute": "locked",
-              "reflects": true,
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "expandable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable: Boolean indicating whether the row is expandable.",
-              "attribute": "expandable",
-              "reflects": true,
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expanded: Boolean indicating whether the row is expanded.",
-              "attribute": "expanded",
-              "reflects": true,
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "disabled: Boolean indicating whether the row is disabled.\nA disabled row is not allowed to have any user interactions.\nA row can be selected and disabled/locked simultaneously.",
-              "attribute": "disabled",
-              "reflects": true,
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "preventHighlight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "preventHighlight: Boolean indicating whether the row should not be highlighted.",
-              "attribute": "preventHighlight",
-              "reflects": true,
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "dimmed",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "dimmed: Boolean indicating whether the row is dimmed.\nA row should not be selected and dimmed simultaneously.",
-              "attribute": "dimmed",
-              "reflects": true,
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  expanded: 'Expanded',\n  collapsed: 'Collapsed',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "handleContextChange",
-              "description": "Updates the cell's dense and ellipsis properties when the context changes.",
-              "parameters": [
-                {
-                  "description": "The updated context.",
-                  "name": "context",
-                  "type": {
-                    "text": "TableContextType"
-                  }
-                }
-              ],
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "handleRowSelectionChange",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                }
-              ],
-              "description": "Handles the change of selection state for a specific row.",
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_handleUserInitiatedToggleExpando",
-              "parameters": [
-                {
-                  "name": "expanded",
-                  "default": "!this.expanded"
-                }
-              ],
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_handleExpanding",
-              "privacy": "private",
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            }
-          ],
-          "events": [
-            {
-              "name": "on-header-checkbox-toggle",
-              "type": {
-                "text": "CustomEvent"
-              }
-            },
-            {
-              "name": "on-row-select",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "name": "table-row-expando-beingtoggled",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "name": "table-row-expando-toggled",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            }
-          ],
-          "attributes": [
-            {
-              "name": "expandableColumnWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "'64px'",
-              "description": "expandableColumnWidth: The width of the expandable column.",
-              "fieldName": "expandableColumnWidth"
-            },
-            {
-              "name": "multiSelectColumnWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "'64px'",
-              "description": "multiSelectColumnWidth: The width of the multi-select column.",
-              "fieldName": "multiSelectColumnWidth"
-            },
-            {
-              "name": "rowId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "rowId: String - Unique identifier for the row.",
-              "fieldName": "rowId",
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "selected: Boolean indicating whether the row is selected.\nReflects the `selected` attribute.",
-              "fieldName": "selected"
-            },
-            {
-              "name": "checkboxSelection",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
-              "fieldName": "checkboxSelection"
-            },
-            {
-              "name": "dense",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
-              "fieldName": "dense"
-            },
-            {
-              "name": "unread",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Unread row state.",
-              "fieldName": "unread",
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "name": "locked",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "locked: Boolean indicating whether the row is locked.\nIf a row is selected before it is locked, it remains selected even after being locked.\nA row can be selected and disabled/locked simultaneously.",
-              "fieldName": "locked"
-            },
-            {
-              "name": "expandable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable: Boolean indicating whether the row is expandable.",
-              "fieldName": "expandable",
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expanded: Boolean indicating whether the row is expanded.",
-              "fieldName": "expanded",
-              "inheritedFrom": {
-                "name": "TableRow",
-                "module": "src/components/reusable/table/table-row.ts"
-              }
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "disabled: Boolean indicating whether the row is disabled.\nA disabled row is not allowed to have any user interactions.\nA row can be selected and disabled/locked simultaneously.",
-              "fieldName": "disabled"
             },
             {
               "name": "preventHighlight",
@@ -15319,7 +13912,11 @@
               },
               "default": "false",
               "description": "dimmed: Boolean indicating whether the row is dimmed.\nA row should not be selected and dimmed simultaneously.",
-              "fieldName": "dimmed"
+              "fieldName": "dimmed",
+              "inheritedFrom": {
+                "name": "TableRow",
+                "module": "src/components/reusable/table/table-row.ts"
+              }
             },
             {
               "name": "textStrings",
@@ -15375,8 +13972,8 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-table-toolbar` Web Component.\n\nThis component provides a toolbar for tables, primarily featuring a title and additional content.\nThe title is rendered prominently, while the slot can be used for controls, buttons, or other interactive elements.",
-          "name": "TableToolbar",
+          "description": "`kyn-th` Web Component.\n\nRepresents a custom table header cell (`<th>`) for Shidoka's design system tables.\nProvides sorting functionality when enabled and allows alignment customization.",
+          "name": "TableHeader",
           "slots": [
             {
               "description": "The content slot for adding header text or content.",
@@ -15425,47 +14022,11 @@
               "type": {
                 "text": "boolean"
               },
-              "default": "''",
-              "description": "The subtitle for the toolbar",
-              "fieldName": "tableSubtitle"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-table-toolbar",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TableToolbar",
-          "declaration": {
-            "name": "TableToolbar",
-            "module": "src/components/reusable/table/table-toolbar.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-table-toolbar",
-          "declaration": {
-            "name": "TableToolbar",
-            "module": "src/components/reusable/table/table-toolbar.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/table/table.skeleton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-table-skeleton` Web Component.\nA skeleton loading state for the table component that mirrors its structure.",
-          "name": "TableSkeleton",
-          "members": [
+              "default": "false",
+              "description": "Specifies if the column is sortable.\nIf set to true, an arrow icon will be displayed unpon hover,\nallowing the user to toggle sort directions.",
+              "attribute": "sortable",
+              "reflects": true
+            },
             {
               "kind": "field",
               "name": "sortDirection",
@@ -15687,8 +14248,98 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-table` Web Component.\nThis component provides a table with sorting, pagination, and selection capabilities.\nIt is designed to be used with the `kyn-table-toolbar` and `kyn-table-container` components.",
-          "name": "Table",
+          "description": "Table Legend Item",
+          "name": "TableLegendItem",
+          "slots": [
+            {
+              "description": "Default slot for icon and text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-table-legend-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TableLegendItem",
+          "declaration": {
+            "name": "TableLegendItem",
+            "module": "src/components/reusable/table/table-legend-item.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-table-legend-item",
+          "declaration": {
+            "name": "TableLegendItem",
+            "module": "src/components/reusable/table/table-legend-item.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/table/table-legend.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Table Legend",
+          "name": "TableLegend",
+          "slots": [
+            {
+              "description": "Default slot for Legend Items.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-table-legend",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TableLegend",
+          "declaration": {
+            "name": "TableLegend",
+            "module": "src/components/reusable/table/table-legend.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-table-legend",
+          "declaration": {
+            "name": "TableLegend",
+            "module": "src/components/reusable/table/table-legend.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/table/table-row.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-tr` Web Component.\n\nRepresents a table row (`<tr>`) equivalent for custom tables created with Shidoka's design system.\nIt primarily acts as a container for individual table cells and behaves similarly to a native `<tr>` element.",
+          "name": "TableRow",
+          "slots": [
+            {
+              "description": "The content slot for adding table cells (`kyn-td` or other relevant cells).",
+              "name": "unnamed"
+            }
+          ],
           "members": [
             {
               "kind": "field",
@@ -15749,7 +14400,6 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
               "default": "false",
               "description": "locked: Boolean indicating whether the row is locked.\nIf a row is selected before it is locked, it remains selected even after being locked.\nA row can be selected and disabled/locked simultaneously.",
               "attribute": "locked",
@@ -15761,7 +14411,6 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "striped: Boolean indicating whether rows should have alternate\ncoloring.",
               "default": "false",
               "description": "expandable: Boolean indicating whether the row is expandable.",
               "attribute": "expandable",
@@ -15773,7 +14422,6 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "stickyHeader: Boolean indicating whether the table header should be sticky.\nMust also set a height or max-height on kyn-table-container.",
               "default": "false",
               "description": "expanded: Boolean indicating whether the row is expanded.",
               "attribute": "expanded",
@@ -15785,7 +14433,6 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
               "default": "false",
               "description": "disabled: Boolean indicating whether the row is disabled.\nA disabled row is not allowed to have any user interactions.\nA row can be selected and disabled/locked simultaneously.",
               "attribute": "disabled",
@@ -15797,17 +14444,21 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "fixedLayout: Boolean indicating whether the table should have a fixed layout.\nThis will set the table's layout to fixed, which means the table and column widths\nwill be determined by the width of the columns and not by the content of the cells.\nThis can be useful when you want to have a consistent column width across multiple tables.",
               "default": "false",
               "description": "preventHighlight: Boolean indicating whether the row should not be highlighted.",
               "attribute": "preventHighlight",
               "reflects": true
             },
             {
-              "kind": "method",
-              "name": "_updateHeaderCheckbox",
-              "privacy": "private",
-              "description": "Updates the state of the header checkbox based on the number of\nselected rows."
+              "kind": "field",
+              "name": "dimmed",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "dimmed: Boolean indicating whether the row is dimmed.\nA row should not be selected and dimmed simultaneously.",
+              "attribute": "dimmed",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -15844,29 +14495,7 @@
                   }
                 }
               ],
-              "description": "Toggles the selection state of all rows in the table."
-            },
-            {
-              "kind": "method",
-              "name": "updateAfterExternalChanges",
-              "privacy": "public",
-              "description": "Resets the selection state of all rows in the table.\nThis method is called when the table is reset or cleared.",
-              "return": {
-                "type": {
-                  "text": ""
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "getSelectedRows",
-              "privacy": "public",
-              "description": "Returns the selected rows in the table.",
-              "return": {
-                "type": {
-                  "text": ""
-                }
-              }
+              "description": "Handles the change of selection state for a specific row."
             },
             {
               "kind": "method",
@@ -15928,7 +14557,6 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
               "default": "false",
               "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
               "fieldName": "checkboxSelection"
@@ -15938,7 +14566,6 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "striped: Boolean indicating whether rows should have alternate\ncoloring.",
               "default": "false",
               "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
               "fieldName": "dense"
@@ -16042,15 +14669,8 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/defs.ts",
-      "declarations": [],
-      "exports": []
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/index.ts",
-      "declarations": [],
-      "exports": [
+      "path": "src/components/reusable/table/table-toolbar.ts",
+      "declarations": [
         {
           "kind": "class",
           "description": "`kyn-table-toolbar` Web Component.\n\nThis component provides a toolbar for tables, primarily featuring a title and additional content.\nThe title is rendered prominently, while the slot can be used for controls, buttons, or other interactive elements.",
@@ -16078,27 +14698,29 @@
               "type": {
                 "text": "string"
               },
-              "description": "stickyHeader: Boolean indicating whether the table header should be sticky.\nMust also set a height or max-height on kyn-table-container.",
-              "default": "false",
-              "fieldName": "stickyHeader"
-            },
+              "default": "''",
+              "description": "The subtitle for the toolbar",
+              "attribute": "tableSubtitle"
+            }
+          ],
+          "attributes": [
             {
               "name": "tableTitle",
               "type": {
                 "text": "string"
               },
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
-              "default": "false",
-              "fieldName": "dense"
+              "default": "''",
+              "description": "The title for the toolbar",
+              "fieldName": "tableTitle"
             },
             {
               "name": "tableSubtitle",
               "type": {
                 "text": "string"
               },
-              "description": "fixedLayout: Boolean indicating whether the table should have a fixed layout.\nThis will set the table's layout to fixed, which means the table and column widths\nwill be determined by the width of the columns and not by the content of the cells.\nThis can be useful when you want to have a consistent column width across multiple tables.",
-              "default": "false",
-              "fieldName": "fixedLayout"
+              "default": "''",
+              "description": "The subtitle for the toolbar",
+              "fieldName": "tableSubtitle"
             }
           ],
           "superclass": {
@@ -16134,8 +14756,8 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "",
-          "name": "Tab",
+          "description": "`kyn-table-skeleton` Web Component.\nA skeleton loading state for the table component that mirrors its structure.",
+          "name": "TableSkeleton",
           "members": [
             {
               "kind": "field",
@@ -16143,9 +14765,9 @@
               "type": {
                 "text": "number"
               },
-              "default": "''",
-              "attribute": "id",
-              "reflects": true
+              "default": "5",
+              "description": "Number of skeleton rows to display.",
+              "attribute": "rows"
             },
             {
               "kind": "field",
@@ -16154,8 +14776,8 @@
                 "text": "boolean"
               },
               "default": "false",
-              "attribute": "selected",
-              "reflects": true
+              "description": "Shows/hides pagination skeleton.",
+              "attribute": "showPagination"
             },
             {
               "kind": "field",
@@ -16164,100 +14786,81 @@
                 "text": "boolean"
               },
               "default": "false",
-              "attribute": "disabled"
+              "description": "Sets dense mode value.",
+              "attribute": "dense"
             },
             {
               "kind": "field",
-              "name": "_size",
-              "type": {
-                "text": "string"
-              },
-              "privacy": "private",
-              "default": "'md'"
-            },
-            {
-              "kind": "field",
-              "name": "_vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "default": "false"
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
+              "name": "striped",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "attribute": "data-aiconnected",
-              "reflects": true
+              "description": "Sets striped rows value.",
+              "attribute": "striped"
             },
             {
               "kind": "field",
-              "name": "tabStyle",
+              "name": "hideTableTitles",
               "type": {
-                "text": "string"
+                "text": "boolean"
               },
-              "default": "'contained'",
-              "attribute": "data-tab-style",
-              "reflects": true
+              "default": "false",
+              "description": "Show/hide table header.",
+              "attribute": "hideTableTitles"
             },
             {
               "kind": "field",
-              "name": "role",
+              "name": "fixedLayout",
               "type": {
-                "text": "string"
+                "text": "boolean"
               },
-              "default": "'tab'",
-              "attribute": "role",
-              "reflects": true
+              "default": "false",
+              "description": "Fixed layout boolean.",
+              "attribute": "fixedLayout"
             },
             {
               "kind": "field",
-              "name": "tabIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "attribute": "tabIndex",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "'aria-selected'",
-              "type": {
-                "text": "string"
-              },
-              "default": "'false'",
-              "attribute": "'aria-selected'",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "'aria-controls'",
+              "name": "tableTitle",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "attribute": "'aria-controls'",
-              "reflects": true
+              "description": "Sets title to display in the table toolbar.",
+              "attribute": "tableTitle"
             },
             {
               "kind": "field",
-              "name": "'aria-disabled'",
+              "name": "tableSubtitle",
               "type": {
                 "text": "string"
               },
-              "default": "'false'",
-              "attribute": "'aria-disabled'",
-              "reflects": true
+              "default": "''",
+              "description": "Sets subtitle to display in the table toolbar.",
+              "attribute": "tableSubtitle"
             },
             {
               "kind": "field",
-              "name": "_handleClick",
-              "privacy": "private"
+              "name": "showGlobalFilter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Shows/hides golbal filter skeleton.",
+              "attribute": "showGlobalFilter"
+            },
+            {
+              "kind": "method",
+              "name": "renderSkeletonCell",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "type",
+                  "type": {
+                    "text": "'thead' | 'tbody'"
+                  }
+                }
+              ]
             }
           ],
           "attributes": [
@@ -16266,8 +14869,9 @@
               "type": {
                 "text": "number"
               },
-              "default": "''",
-              "fieldName": "id"
+              "default": "5",
+              "description": "Number of skeleton rows to display.",
+              "fieldName": "rows"
             },
             {
               "name": "showPagination",
@@ -16275,7 +14879,8 @@
                 "text": "boolean"
               },
               "default": "false",
-              "fieldName": "selected"
+              "description": "Shows/hides pagination skeleton.",
+              "fieldName": "showPagination"
             },
             {
               "name": "dense",
@@ -16283,107 +14888,9 @@
                 "text": "boolean"
               },
               "default": "false",
-              "fieldName": "disabled"
+              "description": "Sets dense mode value.",
+              "fieldName": "dense"
             },
-            {
-              "name": "data-aiconnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "aiConnected"
-            },
-            {
-              "name": "data-tab-style",
-              "type": {
-                "text": "string"
-              },
-              "default": "'contained'",
-              "fieldName": "tabStyle"
-            },
-            {
-              "name": "role",
-              "type": {
-                "text": "string"
-              },
-              "default": "'tab'",
-              "fieldName": "role"
-            },
-            {
-              "name": "tabIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "fieldName": "tabIndex"
-            },
-            {
-              "name": "'aria-selected'",
-              "type": {
-                "text": "string"
-              },
-              "default": "'false'",
-              "fieldName": "'aria-selected'"
-            },
-            {
-              "name": "'aria-controls'",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "'aria-controls'"
-            },
-            {
-              "name": "'aria-disabled'",
-              "type": {
-                "text": "string"
-              },
-              "default": "'false'",
-              "fieldName": "'aria-disabled'"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tab",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "src/components/reusable/tabs/tab.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "src/components/reusable/tabs/tab.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tabPanel.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tabs.",
-          "name": "TabPanel",
-          "slots": [
-            {
-              "description": "Slot for tab content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
             {
               "name": "striped",
               "type": {
@@ -16507,17 +15014,7 @@
             },
             {
               "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "AI specifier.",
-              "attribute": "aiConnected"
-            },
-            {
-              "kind": "field",
-              "name": "disableAutoFocusUpdate",
+              "name": "dense",
               "type": {
                 "text": "boolean"
               },
@@ -16527,18 +15024,13 @@
             },
             {
               "kind": "field",
-              "name": "scrollablePanels",
+              "name": "fixedLayout",
               "type": {
                 "text": "boolean"
               },
+              "description": "fixedLayout: Boolean indicating whether the table should have a fixed layout.\nThis will set the table's layout to fixed, which means the table and column widths\nwill be determined by the width of the columns and not by the content of the cells.\nThis can be useful when you want to have a consistent column width across multiple tables.",
               "default": "false",
-              "description": "Adds scrollable overflow to the tab panels.",
-              "attribute": "scrollablePanels"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChangeTabs",
-              "privacy": "private"
+              "attribute": "fixedLayout"
             },
             {
               "kind": "method",
@@ -16554,12 +15046,11 @@
                 {
                   "name": "event",
                   "type": {
-                    "text": "any"
-                  },
-                  "description": "The parameter \"e\" is an event object that contains information about the event\nthat triggered the handleChange function."
+                    "text": "CustomEvent"
+                  }
                 }
               ],
-              "description": "Updates children and emits a change event based on the provided\nevent details when a child kyn-tab is clicked."
+              "description": "Handles the change of selection state for a specific row."
             },
             {
               "kind": "method",
@@ -16569,38 +15060,22 @@
                 {
                   "name": "event",
                   "type": {
-                    "text": "string"
-                  },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe tab that is currently selected."
-                },
-                {
-                  "name": "updatePanel",
-                  "default": "true"
+                    "text": "CustomEvent"
+                  }
                 }
               ],
-              "description": "Updates the selected property of tabs and the visible property of tab panels based on\nthe selected tab ID."
+              "description": "Toggles the selection state of all rows in the table."
             },
             {
               "kind": "method",
-              "name": "_emitChangeEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "origEvent",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The origEvent parameter is the original event object that triggered the\nchange event. It could be any type of event object, such as a click event or a keydown event."
-                },
-                {
-                  "name": "selectedTabId",
-                  "type": {
-                    "text": "string"
-                  },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe selected tab."
+              "name": "updateAfterExternalChanges",
+              "privacy": "public",
+              "description": "Resets the selection state of all rows in the table.\nThis method is called when the table is reset or cleared.",
+              "return": {
+                "type": {
+                  "text": ""
                 }
-              ],
-              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\nselected tab ID as details."
+              }
             },
             {
               "kind": "method",
@@ -16623,7 +15098,7 @@
                   "type": {
                     "text": "CustomEvent"
                   },
-                  "description": "The parameter `e` is an event object that represents the keyboard event. It\ncontains information about the keyboard event, such as the key code of the pressed key."
+                  "description": "The custom event containing the updated rows."
                 }
               ],
               "description": "Handles the change of rows in the table body."
@@ -16679,32 +15154,22 @@
               "fieldName": "stickyHeader"
             },
             {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "AI specifier.",
-              "fieldName": "aiConnected"
-            },
-            {
-              "name": "disableAutoFocusUpdate",
+              "name": "dense",
               "type": {
                 "text": "boolean"
               },
               "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
               "default": "false",
-              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
-              "fieldName": "disableAutoFocusUpdate"
+              "fieldName": "dense"
             },
             {
-              "name": "scrollablePanels",
+              "name": "fixedLayout",
               "type": {
                 "text": "boolean"
               },
+              "description": "fixedLayout: Boolean indicating whether the table should have a fixed layout.\nThis will set the table's layout to fixed, which means the table and column widths\nwill be determined by the width of the columns and not by the content of the cells.\nThis can be useful when you want to have a consistent column width across multiple tables.",
               "default": "false",
-              "description": "Adds scrollable overflow to the tab panels.",
-              "fieldName": "scrollablePanels"
+              "fieldName": "fixedLayout"
             }
           ],
           "superclass": {
@@ -16730,6 +15195,642 @@
           "declaration": {
             "name": "Table",
             "module": "src/components/reusable/table/table.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/defs.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tabs",
+          "declaration": {
+            "name": "Tabs",
+            "module": "./tabs"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "./tab"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TabPanel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "./tabPanel"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/tab.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Tab",
+          "members": [
+            {
+              "kind": "field",
+              "name": "id",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "id",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "selected",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "_size",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "default": "'md'"
+            },
+            {
+              "kind": "field",
+              "name": "_vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "data-aiconnected",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "tabStyle",
+              "type": {
+                "text": "string"
+              },
+              "default": "'contained'",
+              "attribute": "data-tab-style",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "default": "'tab'",
+              "attribute": "role",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "tabIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "attribute": "tabIndex",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "'aria-selected'",
+              "type": {
+                "text": "string"
+              },
+              "default": "'false'",
+              "attribute": "'aria-selected'",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "'aria-controls'",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "'aria-controls'",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "'aria-disabled'",
+              "type": {
+                "text": "string"
+              },
+              "default": "'false'",
+              "attribute": "'aria-disabled'",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "_handleClick",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "id",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "id"
+            },
+            {
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "selected"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "data-aiconnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "aiConnected"
+            },
+            {
+              "name": "data-tab-style",
+              "type": {
+                "text": "string"
+              },
+              "default": "'contained'",
+              "fieldName": "tabStyle"
+            },
+            {
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "default": "'tab'",
+              "fieldName": "role"
+            },
+            {
+              "name": "tabIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "fieldName": "tabIndex"
+            },
+            {
+              "name": "'aria-selected'",
+              "type": {
+                "text": "string"
+              },
+              "default": "'false'",
+              "fieldName": "'aria-selected'"
+            },
+            {
+              "name": "'aria-controls'",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "'aria-controls'"
+            },
+            {
+              "name": "'aria-disabled'",
+              "type": {
+                "text": "string"
+              },
+              "default": "'false'",
+              "fieldName": "'aria-disabled'"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tab",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "src/components/reusable/tabs/tab.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "src/components/reusable/tabs/tab.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/tabPanel.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tabs.",
+          "name": "TabPanel",
+          "slots": [
+            {
+              "description": "Slot for tab content.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "tabId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Matching Tab ID, required.",
+              "attribute": "tabId"
+            },
+            {
+              "kind": "field",
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab Panel visible state.  Must match Tab selected state.",
+              "attribute": "visible",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "noPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Remove side padding (left/right) on tab panel.",
+              "attribute": "noPadding"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "tabId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Matching Tab ID, required.",
+              "fieldName": "tabId"
+            },
+            {
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab Panel visible state.  Must match Tab selected state.",
+              "fieldName": "visible"
+            },
+            {
+              "name": "noPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Remove side padding (left/right) on tab panel.",
+              "fieldName": "noPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tab-panel",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TabPanel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "src/components/reusable/tabs/tabPanel.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tab-panel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "src/components/reusable/tabs/tabPanel.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/tabs.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tabs.",
+          "name": "Tabs",
+          "slots": [
+            {
+              "description": "Slot for kyn-tab-panel components.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for kyn-tab components.",
+              "name": "tabs"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "tabStyle",
+              "type": {
+                "text": "string"
+              },
+              "default": "'contained'",
+              "description": "Tab style. `'contained'` or `'line'`.",
+              "attribute": "tabStyle"
+            },
+            {
+              "kind": "field",
+              "name": "tabSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
+              "attribute": "tabSize"
+            },
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Vertical orientation.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "AI specifier.",
+              "attribute": "aiConnected"
+            },
+            {
+              "kind": "field",
+              "name": "disableAutoFocusUpdate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
+              "attribute": "disableAutoFocusUpdate"
+            },
+            {
+              "kind": "field",
+              "name": "scrollablePanels",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds scrollable overflow to the tab panels.",
+              "attribute": "scrollablePanels"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChangeTabs",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The parameter \"e\" is an event object that contains information about the event\nthat triggered the handleChange function."
+                }
+              ],
+              "description": "Updates children and emits a change event based on the provided\nevent details when a child kyn-tab is clicked."
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildrenSelection",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "selectedTabId",
+                  "type": {
+                    "text": "string"
+                  },
+                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe tab that is currently selected."
+                },
+                {
+                  "name": "updatePanel",
+                  "default": "true"
+                }
+              ],
+              "description": "Updates the selected property of tabs and the visible property of tab panels based on\nthe selected tab ID."
+            },
+            {
+              "kind": "method",
+              "name": "_emitChangeEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "origEvent",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The origEvent parameter is the original event object that triggered the\nchange event. It could be any type of event object, such as a click event or a keydown event."
+                },
+                {
+                  "name": "selectedTabId",
+                  "type": {
+                    "text": "string"
+                  },
+                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe selected tab."
+                }
+              ],
+              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\nselected tab ID as details."
+            },
+            {
+              "kind": "method",
+              "name": "_handleKeyboard",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The parameter `e` is an event object that represents the keyboard event. It\ncontains information about the keyboard event, such as the key code of the pressed key."
+                }
+              ],
+              "description": "Handles keyboard events for navigating between tabs.",
+              "return": {
+                "type": {
+                  "text": ""
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the new selected Tab ID when switching tabs.",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "tabStyle",
+              "type": {
+                "text": "string"
+              },
+              "default": "'contained'",
+              "description": "Tab style. `'contained'` or `'line'`.",
+              "fieldName": "tabStyle"
+            },
+            {
+              "name": "tabSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
+              "fieldName": "tabSize"
+            },
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Vertical orientation.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "AI specifier.",
+              "fieldName": "aiConnected"
+            },
+            {
+              "name": "disableAutoFocusUpdate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
+              "fieldName": "disableAutoFocusUpdate"
+            },
+            {
+              "name": "scrollablePanels",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds scrollable overflow to the tab panels.",
+              "fieldName": "scrollablePanels"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tabs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tabs",
+          "declaration": {
+            "name": "Tabs",
+            "module": "src/components/reusable/tabs/tabs.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tabs",
+          "declaration": {
+            "name": "Tabs",
+            "module": "src/components/reusable/tabs/tabs.ts"
           }
         }
       ]

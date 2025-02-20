@@ -192,4 +192,4 @@ const AISkeleton = () => html`
   </div>
 `;
 
-export const AITheme = AISkeleton.bind({});
+export const AIConnected = AISkeleton.bind({});
