@@ -1,10 +1,10 @@
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import '../floatingContainer';
-import './../aiAssist/aiAssist';
+import './aiLaunchButton';
 
 export default {
-  title: 'AI/Components/AI Assistant',
+  title: 'AI/Components/AI Launch Button',
   component: 'kyn-ai-assist',
   parameters: {
     design: {
@@ -14,7 +14,7 @@ export default {
   },
 };
 
-export const AILaunchButton = {
+export const Default = {
   args: {
     disabled: false,
   },

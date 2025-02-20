@@ -3,8 +3,8 @@ import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import lottie from 'lottie-web';
 import animationData from './json/ai_assist.json';
-import aiAssistDisabled from './json/ai_assist_disabled.json';
-import Styles from './aiAssist.scss';
+import aiLaunchButtonDisabled from './json/ai_assist_disabled.json';
+import Styles from './aiLaunchButton.scss';
 
 /**
  * AI Assistant Launch Button.
@@ -13,7 +13,7 @@ import Styles from './aiAssist.scss';
  * @fires on-click - Emits when the button is clicked.
  */
 @customElement('kyn-ai-assist')
-export class AiAssist extends LitElement {
+export class AILaunchButton extends LitElement {
   static override styles = Styles;
 
   /** Whether the button is disabled. */
@@ -57,7 +57,7 @@ export class AiAssist extends LitElement {
       renderer: 'svg',
       loop: true,
       autoplay: false,
-      animationData: this.disabled ? aiAssistDisabled : animationData,
+      animationData: this.disabled ? aiLaunchButtonDisabled : animationData,
     });
     this._animation.setSpeed(2);
 
@@ -104,7 +104,7 @@ export class AiAssist extends LitElement {
         renderer: 'svg',
         loop: true,
         autoplay: false,
-        animationData: this.disabled ? aiAssistDisabled : animationData,
+        animationData: this.disabled ? aiLaunchButtonDisabled : animationData,
       });
       this._animation.setSpeed(2);
       this._animation.goToAndStop(0, true);
@@ -129,6 +129,6 @@ export class AiAssist extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-ai-assist': AiAssist;
+    'kyn-ai-assist': AILaunchButton;
   }
 }
