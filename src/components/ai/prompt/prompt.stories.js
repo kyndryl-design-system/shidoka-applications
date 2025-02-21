@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import '../link';
+import '../../reusable/link';
 import './prompt';
 import './promptGroup';
 
@@ -17,11 +17,13 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    type: {
-      options: ['normal', 'clickable'],
-      control: { type: 'select' },
+    isClickable: {
+      control: { type: 'boolean' },
     },
     hideBorder: {
+      control: { type: 'boolean' },
+    },
+    disabled: {
       control: { type: 'boolean' },
     },
     selected: {
@@ -40,6 +42,7 @@ const args = {
 };
 
 export const Default = {
+  args,
   render: (args) => html`
     <kyn-prompt
       type=${args.type}
@@ -167,7 +170,7 @@ export const Groups = {
             .size=${args.size}
             ?hideBorder=${args.hideBorder}
             ?isClickable=${true}
-            selected
+            disabled
             value=${'option3'}
           >
             <div slot="label">Option 3</div>
