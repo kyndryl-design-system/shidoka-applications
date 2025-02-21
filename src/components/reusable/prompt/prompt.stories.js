@@ -39,7 +39,7 @@ const args = {
   value: '',
 };
 
-export const Normal = {
+export const Default = {
   render: (args) => html`
     <kyn-prompt
       type=${args.type}
@@ -49,7 +49,7 @@ export const Normal = {
       ?isClickable=${false}
       value=${args.value}
     >
-      <div slot="label">Normal Prompt</div>
+      <div slot="label">Default Prompt</div>
     </kyn-prompt>
   `,
 };
