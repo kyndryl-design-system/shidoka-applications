@@ -1,6 +1,6 @@
 # Shidoka Web Components for Applications
 
-[![shidoka-applications](https://github.com/kyndryl-design-system/shidoka-applications/actions/workflows/actions.yml/badge.svg)](https://github.com/kyndryl-design-system/shidoka-applications/actions/workflows/actions.yml)
+[![Release](https://github.com/kyndryl-design-system/shidoka-applications/actions/workflows/release.yml/badge.svg)](https://github.com/kyndryl-design-system/shidoka-applications/actions/workflows/release.yml)
 
 # Contributing
 
@@ -36,9 +36,13 @@ The method used (SCSS @use, CSS @import, JS import, or &lt;style&gt; tag) will v
 import '@kyndryl-design-system/shidoka-foundation/css/root.css';
 ```
 
+### Set a color scheme
+
+More info on color schemes in the [Foundation Storybook](https://shidoka-foundation.netlify.app/?path=/docs/foundation-colors--docs#setting-a-theme).
+
 ### Use CSS tokens/variables
 
-After installation, you can make use of tokens/variables included in root.css such as the color tokens.
+You can make use of tokens/variables included in Foundation to style your non-Shidoka elements.
 
 ## Start using components
 
