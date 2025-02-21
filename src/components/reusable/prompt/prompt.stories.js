@@ -4,7 +4,7 @@ import './prompt';
 import './promptGroup';
 
 export default {
-  title: 'Components/Prompt',
+  title: 'AI/Components/Prompt',
   component: 'kyn-prompt',
   parameters: {
     design: {
@@ -91,9 +91,9 @@ export const Groups = {
   render: (args) => html`
     <div>
       <div>
-        <div class="heading kd-type--headline-06">Single Select Group</div>
-        <p style="margin: 10px 0 15px;">
-          Only one prompt can be selected at a time
+        <div class="heading kd-type--headline-08">Single Select Group</div>
+        <p style="margin: 5px 0 20px;">
+          Only one prompt can be selected at a time.
         </p>
         <kyn-prompt-group promptOrientation=${'horizontal'}>
           <kyn-prompt
@@ -130,10 +130,10 @@ export const Groups = {
       </div>
 
       <div>
-        <div class="heading kd-type--headline-06" style="margin-top: 30px;">
+        <div class="heading kd-type--headline-08" style="margin-top: 30px;">
           Multi-select Group
         </div>
-        <p style="margin: 10px 0 15px;">Multiple prompts can be selected</p>
+        <p style="margin: 5px 0 20px;">Multiple prompts can be selected.</p>
         <kyn-prompt-group promptOrientation=${'vertical'} multipleSelect>
           <kyn-prompt
             type=${args.type}
