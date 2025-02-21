@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import '../floatingContainer';
+import '../../reusable/floatingContainer';
 import './aiLaunchButton';
 
 export default {
