@@ -32,6 +32,7 @@ export const BlankCard = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    highlight: false,
     aiConnected: false,
   },
   render: (args) => {
@@ -42,6 +43,7 @@ export const BlankCard = {
       rel=${args.rel}
       role="article"
       ?hideBorder=${args.hideBorder}
+      ?highlight=${args.highlight}
       ?aiConnected=${args.aiConnected}
       aria-label="Blank card"
     ></kyn-card>`;
@@ -55,6 +57,7 @@ export const Simple = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    highlight: false,
     aiConnected: false,
   },
   render: (args) => {
@@ -65,6 +68,7 @@ export const Simple = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
+        ?highlight=${args.highlight}
         ?aiConnected=${args.aiConnected}
         role="article"
         aria-label="Simple card"
@@ -89,6 +93,7 @@ export const Clickable = {
     rel: 'noopener',
     target: '_blank',
     hideBorder: false,
+    highlight: false,
     aiConnected: false,
   },
   render: (args) => {
@@ -99,6 +104,7 @@ export const Clickable = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
+        ?highlight=${args.highlight}
         ?aiConnected=${args.aiConnected}
         role="link"
         aria-label="Clickable card"
@@ -225,6 +231,7 @@ export const AIConnected = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    highlight: false,
     aiConnected: true,
   },
   render: (args) => {
@@ -235,6 +242,7 @@ export const AIConnected = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
+        ?highlight=${args.highlight}
         ?aiConnected=${args.aiConnected}
         role="article"
         aria-label="Simple card"
