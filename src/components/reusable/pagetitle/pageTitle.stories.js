@@ -8,7 +8,7 @@ export default {
   component: 'kyn-page-title',
   argTypes: {
     type: {
-      options: ['primary', 'secondary'],
+      options: ['primary', 'secondary', 'tertiary'],
       control: { type: 'select' },
     },
   },
@@ -25,6 +25,7 @@ const args = {
   headLine: '',
   pageTitle: 'Page Title',
   subTitle: '',
+  aiConnected: false,
 };
 
 export const PageTitle = {
@@ -65,6 +66,22 @@ export const WithIcon = {
         <span slot="icon" class="cloud-icon"
           >${unsafeSVG(cloudDownloadIcon)}</span
         >
+      </kyn-page-title>
+    `;
+  },
+};
+
+export const AIConnected = {
+  args: { ...args, aiConnected: true },
+  render: (args) => {
+    return html`
+      <kyn-page-title
+        type=${args.type}
+        headLine=${args.headLine}
+        pageTitle=${args.pageTitle}
+        subTitle=${args.subTitle}
+        ?aiConnected=${args.aiConnected}
+      >
       </kyn-page-title>
     `;
   },
