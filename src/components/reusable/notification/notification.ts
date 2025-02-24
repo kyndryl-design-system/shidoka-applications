@@ -136,6 +136,7 @@ export class Notification extends LitElement {
             class="${this.unRead
               ? 'notification-mark-unread'
               : 'notification-mark-read'}"
+            ?highlight=${this.unRead}
             type=${this.type}
             href=${this.href}
             target="_blank"
