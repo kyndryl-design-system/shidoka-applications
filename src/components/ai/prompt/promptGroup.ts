@@ -6,8 +6,8 @@ import PromptGroupScss from './promptGroup.scss';
 
 /**
  * PromptGroup.
+ * @slot unnamed - default slot for prompt elements
  * @fires on-selection-change - Fires when any prompt's selection changes, emitting array of selected values
- * @slot default - Slot for prompt elements
  */
 @customElement('kyn-prompt-group')
 export class PromptGroup extends LitElement {

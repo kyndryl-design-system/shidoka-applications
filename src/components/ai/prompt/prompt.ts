@@ -10,7 +10,7 @@ import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/2
 /**
  * Prompt.
  * @slot label - Slot for the prompt label content.
- * @fires on-prompt-click - Captures the click event of clickable prompt and emits the original event details. Use `e.stopPropogation()` / `e.preventDefault()` for any internal clickable elements when prompt type is `'clickable'` to stop bubbling / prevent event.
+ * @fires on-prompt-click - Captures the click event of clickable prompt and emits the original event details.
  * @fires on-selection-change - Fires when the prompt's selected state changes, emitting the new selected state.
  */
 
@@ -22,7 +22,7 @@ export class Prompt extends LitElement {
   @property({ type: Boolean })
   isClickable = false;
 
-  /** Hide prompt border. Useful when clickable prompt use inside `<kyn-notification>` component. */
+  /** Hide prompt border. Useful when clickable prompt use inside another component. */
   @property({ type: Boolean })
   hideBorder = false;
 

@@ -8,7 +8,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
   text-decoration: none;
   color: var(--kd-color-text-title-ai-primary);
   padding: 24px;
@@ -25,11 +24,20 @@
   }
 
   &.size--sm {
-    width: 200px;
+    width: 150px;
+    min-height: 80px;
+
+    ::slotted([slot='label']) {
+      font-size: 14px;
+    }
   }
 
   &.size--lg {
     width: 300px;
+
+    ::slotted([slot='label']) {
+      font-size: 18px;
+    }
   }
 
   &.prompt-border {
