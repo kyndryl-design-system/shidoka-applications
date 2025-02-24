@@ -5,7 +5,7 @@ import './aiLaunchButton';
 
 export default {
   title: 'AI/Components/AI Launch Button',
-  component: 'kyn-ai-assist',
+  component: 'kyn-ai-launch-btn',
   parameters: {
     design: {
       type: 'figma',
@@ -41,10 +41,10 @@ export const Default = {
       </p>
     </div>
     <kyn-button-float-container>
-      <kyn-ai-assist
+      <kyn-ai-launch-btn
         ?disabled="${args.disabled}"
         @on-click=${() => action('on-click')()}
-      ></kyn-ai-assist>
+      ></kyn-ai-launch-btn>
     </kyn-button-float-container>
   `,
 };
@@ -70,10 +70,10 @@ export const Disabled = {
       </p>
     </div>
     <kyn-button-float-container>
-      <kyn-ai-assist
+      <kyn-ai-launch-btn
         ?disabled="${args.disabled}"
         @on-click=${() => action('on-click')()}
-      ></kyn-ai-assist>
+      ></kyn-ai-launch-btn>
     </kyn-button-float-container>
   `,
 };
