@@ -23,15 +23,11 @@ export class SampleFilterSkeletonComponent extends LitElement {
     return html`
       <kyn-global-filter>
         <div class="left-wrapper">
-          <kyn-skeleton
-            width="122px"
-            shade="dark"
-            class="left-content"
-          ></kyn-skeleton>
-          <kyn-skeleton width="122px" shade="dark"></kyn-skeleton>
+          <kyn-skeleton width="122px" class="left-content"></kyn-skeleton>
+          <kyn-skeleton width="122px"></kyn-skeleton>
         </div>
         <div slot="actions">
-          <kyn-skeleton width="122px" shade="dark"></kyn-skeleton>
+          <kyn-skeleton width="122px"></kyn-skeleton>
         </div>
         <div slot="tags"></div>
       </kyn-global-filter>
