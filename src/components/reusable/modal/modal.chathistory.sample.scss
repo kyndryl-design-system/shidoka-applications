@@ -1,0 +1,116 @@
+@use '../../../common/scss/global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+kyn-tab-panel > * {
+  margin-bottom: 1.5rem; /* Adjust the margin as needed */
+}
+
+.chat-history-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  align-self: stretch;
+  margin-top: 24px;
+}
+.chat-items {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+}
+.chat-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+.chat-container {
+  display: flex;
+  align-items: center;
+}
+.chat-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  flex: 1 0 0;
+}
+.chat-date {
+  @include typography.type-body-02;
+  color: var(--kd-color-text-level-secondary);
+}
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.query-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  align-self: stretch;
+}
+.query-item {
+  @include typography.type-body-01;
+  display: flex;
+  padding: 16px 0px;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  color: var(--kd-color-text-level-primary);
+}
+.response-wrapper {
+  display: flex;
+  gap: 20px;
+}
+ol {
+  margin-left: -1rem;
+}
+
+.input-query-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: var(--kd-color-background-container-ai-default);
+  box-shadow: 0px 0px 24px 0px var(--kd-color-border-dropshadow-ai);
+  border-radius: 8px;
+  .input-text-area {
+    width: 100%;
+    padding: 2px 0px 10px 10px;
+    margin-right: 10px;
+  }
+  .input-send-button {
+    margin-right: 10px;
+  }
+}
+
+.slide-in {
+  animation: slideIn 500ms ease-out forwards;
+}
+
+.slide-out {
+  animation: slideOut 500ms ease-out backwards;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%); // Start off-screen to the right
+  }
+  100% {
+    transform: translateX(0); // End at its normal position
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0);
+    // Start off-screen to the left
+  }
+  100% {
+    transform: translateX(100%); // End at its normal position
+  }
+}
