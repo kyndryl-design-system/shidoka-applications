@@ -37,6 +37,7 @@ export const PageTitle = {
         headLine=${args.headLine}
         pageTitle=${args.pageTitle}
         subTitle=${args.subTitle}
+        ?aiConnected=${args.aiConnected}
       >
       </kyn-page-title>
     `;
@@ -61,6 +62,7 @@ export const WithIcon = {
         headLine=${args.headLine}
         pageTitle=${args.pageTitle}
         subTitle=${args.subTitle}
+        ?aiConnected=${args.aiConnected}
       >
         <!-- Note: use icon size 56 * 56 for Page title as per UX guidelines -->
         <span slot="icon" class="cloud-icon"
