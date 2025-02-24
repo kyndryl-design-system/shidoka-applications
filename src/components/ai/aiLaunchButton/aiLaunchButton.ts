@@ -10,7 +10,7 @@ import Styles from './aiLaunchButton.scss';
  * AI Assistant Launch Button.
  * @fires on-click - Emits when the button is clicked.
  */
-@customElement('kyn-ai-assist')
+@customElement('kyn-ai-launch-btn')
 export class AILaunchButton extends LitElement {
   static override styles = Styles;
 
@@ -113,6 +113,6 @@ export class AILaunchButton extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-ai-assist': AILaunchButton;
+    'kyn-ai-launch-btn': AILaunchButton;
   }
 }
