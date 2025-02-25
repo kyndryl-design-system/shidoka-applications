@@ -43,19 +43,21 @@ export class SampleChatHistoryComponent extends LitElement {
   private chatHistoryData = [
     {
       id: 1,
-      date: 'Today, Feb 21 2025',
+      date: 'Today, Feb 25 2025',
       message: [
         {
           msgId: 11,
           msgText: 'What are the benefits of adopting Hybrid IT Modernization?',
           showTrashIcon: true,
           showDelete: false,
+          isCancelClicked: false,
         },
         {
           msgId: 12,
           msgText: 'I need more info as for Contract Lifecycle Management?',
           showTrashIcon: true,
           showDelete: false,
+          isCancelClicked: false,
         },
         {
           msgId: 13,
@@ -63,12 +65,13 @@ export class SampleChatHistoryComponent extends LitElement {
             ' What are the purpose, vision, and approach of the knowledge library?',
           showTrashIcon: true,
           showDelete: false,
+          isCancelClicked: false,
         },
       ],
     },
     {
       id: 2,
-      date: 'Today, Feb 20 2025',
+      date: 'Saturday, Feb 8 2025',
       message: [
         {
           msgId: 21,
@@ -76,12 +79,13 @@ export class SampleChatHistoryComponent extends LitElement {
             'Can you explain how I can report a concern anonymously through the Kyndyrl',
           showTrashIcon: true,
           showDelete: false,
+          isCancelClicked: false,
         },
       ],
     },
     {
       id: 3,
-      date: 'Today, Feb 19 2025',
+      date: 'Wednesday, Feb 5 2025',
       message: [
         {
           msgId: 31,
@@ -89,6 +93,7 @@ export class SampleChatHistoryComponent extends LitElement {
             'Can you explain how I can report a concern anonymously through the Kyndyrl',
           showTrashIcon: true,
           showDelete: false,
+          isCancelClicked: false,
         },
       ],
     },
@@ -99,19 +104,21 @@ export class SampleChatHistoryComponent extends LitElement {
   private chatHistoryData_backUp = [
     {
       id: 1,
-      date: 'Today, Feb 21 2025',
+      date: 'Today, Feb 25 2025',
       message: [
         {
           msgId: 11,
           msgText: 'What are the benefits of adopting Hybrid IT Modernization?',
           showTrashIcon: true,
           showDelete: false,
+          isCancelClicked: false,
         },
         {
           msgId: 12,
           msgText: 'I need more info as for Contract Lifecycle Management?',
           showTrashIcon: true,
           showDelete: false,
+          isCancelClicked: false,
         },
         {
           msgId: 13,
@@ -119,12 +126,13 @@ export class SampleChatHistoryComponent extends LitElement {
             ' What are the purpose, vision, and approach of the knowledge library?',
           showTrashIcon: true,
           showDelete: false,
+          isCancelClicked: false,
         },
       ],
     },
     {
       id: 2,
-      date: 'Today, Feb 20 2025',
+      date: 'Saturday, Feb 8 2025',
       message: [
         {
           msgId: 21,
@@ -132,12 +140,13 @@ export class SampleChatHistoryComponent extends LitElement {
             'Can you explain how I can report a concern anonymously through the Kyndyrl',
           showTrashIcon: true,
           showDelete: false,
+          isCancelClicked: false,
         },
       ],
     },
     {
       id: 3,
-      date: 'Today, Feb 19 2025',
+      date: 'Wednesday, Feb 5 2025',
       message: [
         {
           msgId: 31,
@@ -145,6 +154,7 @@ export class SampleChatHistoryComponent extends LitElement {
             'Can you explain how I can report a concern anonymously through the Kyndyrl',
           showTrashIcon: true,
           showDelete: false,
+          isCancelClicked: false,
         },
       ],
     },
@@ -305,35 +315,38 @@ export class SampleChatHistoryComponent extends LitElement {
                                   chat.message,
                                   (message: any) =>
                                     html`
-                                      <kyn-card style="width:100%">
+                                      <kyn-card
+                                        style="width:100%"
+                                        type="clickable"
+                                      >
                                         <div class="chat-container">
                                           <div class="chat-wrapper">
-                                            <kyn-link
+                                            <!-- <kyn-link
                                               id="test"
                                               href=""
                                               target="_self"
                                               kind="primary"
                                               shade="auto"
                                               standalone
-                                              @on-click=${(e: Event) =>
-                                                this._handleQuery(
-                                                  e,
-                                                  message.msgText
-                                                )}
+                                              @on-click=${() =>
+                                              this._handleQuery(
+                                                message.msgText
+                                              )}
                                             >
                                               ${message.msgText}
-                                            </kyn-link>
+                                            </kyn-link> -->
+                                            ${message.msgText}
                                           </div>
                                           ${message.showTrashIcon
-                                            ? html` <span style="display:flex;"
-                                                ><kyn-button
+                                            ? html`
+                                                <kyn-button
                                                   iconposition="center"
                                                   kind="ghost"
                                                   type="button"
                                                   size="small"
                                                   description="Delete"
                                                   .value=${message.msgId}
-                                                  @on-click=${(e: any) =>
+                                                  @on-click=${(e: Event) =>
                                                     this._handleTrashedClick(e)}
                                                 >
                                                   <span
@@ -344,13 +357,13 @@ export class SampleChatHistoryComponent extends LitElement {
                                                     )}</span
                                                   >
                                                 </kyn-button>
-                                              </span>`
+                                              `
                                             : html`
                                                 <span
                                                   style="display:flex;gap:16px"
-                                                  class=${!message.showTrashIcon
-                                                    ? 'slide-in'
-                                                    : 'slide-out'}
+                                                  class="${message.isCancelClicked
+                                                    ? 'slide-out'
+                                                    : 'slide-in'}"
                                                 >
                                                   <kyn-button
                                                     iconposition="center"
@@ -394,7 +407,7 @@ export class SampleChatHistoryComponent extends LitElement {
                         target="_self"
                         kind="ai"
                         shade="auto"
-                        @on-click=${() => this._loadShowOlder(1)}
+                        @on-click=${() => this._loadShowOlder()}
                         >Show older
                         <span style="display:flex;" slot="icon"
                           >${unsafeSVG(chevronDownIcon)}</span
@@ -430,8 +443,8 @@ export class SampleChatHistoryComponent extends LitElement {
   }
 
   private _handleTrashedClick(e: any) {
-    e.preventDefault();
     e.stopPropagation();
+    action(e.type)(e);
     const updatedChatHistoryData = this.updatedChatHistory(
       e.target.value,
       'trash'
@@ -439,13 +452,13 @@ export class SampleChatHistoryComponent extends LitElement {
     this.chatHistoryData = updatedChatHistoryData as any;
   }
 
-  private updatedChatHistory(msgId: number, action: string) {
+  private updatedCancelFlag(msgId: number, action: string) {
     return this.chatHistoryData.map((entry) => {
       const updatedMessages = entry.message.map((msg) => {
         if (msg.msgId === msgId) {
           return {
             ...msg,
-            showTrashIcon: action === 'trash' ? false : true,
+            isCancelClicked: action === 'cancel' ? true : false,
           };
         }
         return msg;
@@ -457,21 +470,42 @@ export class SampleChatHistoryComponent extends LitElement {
     });
   }
 
-  private _handleQuery(e: any, msgText: string) {
+  private updatedChatHistory(msgId: number, action: string) {
+    return this.chatHistoryData.map((entry) => {
+      const updatedMessages = entry.message.map((msg) => {
+        if (msg.msgId === msgId) {
+          return {
+            ...msg,
+            showTrashIcon: action === 'trash' ? false : true,
+            isCancelClicked: false,
+          };
+        }
+        return msg;
+      });
+      return {
+        ...entry,
+        message: updatedMessages,
+      };
+    });
+  }
+
+  private _handleQuery(msgText: string) {
     this.chatHistoryMsgText = msgText;
-    e.preventDefault();
-    e.stopPropagation();
     this.toggleBack();
   }
 
   private _handleCancel(e: any) {
-    e.preventDefault();
-    e.stopPropagation();
-    const updatedChatHistoryData = this.updatedChatHistory(
+    const msgId = e.target.value;
+    const updatedChatHistoryData = this.updatedCancelFlag(
       e.target.value,
       'cancel'
     );
     this.chatHistoryData = updatedChatHistoryData as any;
+
+    setTimeout(() => {
+      const updatedChatHistoryData = this.updatedChatHistory(msgId, 'cancel');
+      this.chatHistoryData = updatedChatHistoryData as any;
+    }, 200);
   }
 
   private _handleLinkClick(e: any) {
@@ -519,18 +553,25 @@ export class SampleChatHistoryComponent extends LitElement {
       .filter(Boolean);
   }
 
-  private _loadShowOlder(incrementBy: number) {
-    const newDate = this.decrementDate('Today, Feb 19 2025', incrementBy);
+  private _loadShowOlder() {
     const oldChat = {
-      id: 4 + incrementBy,
-      date: newDate,
+      id: 5,
+      date: 'Monday, Feb 3 2025',
       message: [
         {
-          msgId: 41 + incrementBy,
+          msgId: 51,
           msgText:
             'Can you explain how I can report a concern anonymously through the Kyndyrl',
           showTrashIcon: true,
           showDelete: false,
+          isCancelClicked: false,
+        },
+        {
+          msgId: 52,
+          msgText: 'Show chat text here.',
+          showTrashIcon: true,
+          showDelete: false,
+          isCancelClicked: false,
         },
       ],
     };
@@ -550,25 +591,6 @@ export class SampleChatHistoryComponent extends LitElement {
       this.chatHistoryData.push(oldChat);
     }
     this.requestUpdate();
-  }
-
-  private decrementDate(startDateStr: string, decrementBy: number) {
-    const startDate = new Date(startDateStr);
-
-    startDate.setDate(startDate.getDate() - decrementBy);
-
-    // Format the date as 'Today, Feb 19 2025'
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    };
-    const newDateStr = `Today, ${startDate.toLocaleDateString(
-      'en-US',
-      options
-    )}`;
-
-    return newDateStr;
   }
 }
 
