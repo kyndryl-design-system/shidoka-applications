@@ -362,7 +362,6 @@ export class TimePicker extends FormMixin(LitElement) {
         }
       },
       setInitialDates: undefined,
-      appendToBody: false,
     });
 
     hideEmptyYear();
@@ -402,6 +401,8 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+    const modal = this.closest('kyn-modal');
+    const container = modal ? modal : document.body;
     return getFlatpickrOptions({
       locale: this.locale,
       enableTime: true,
@@ -420,6 +421,7 @@ export class TimePicker extends FormMixin(LitElement) {
       onChange: this.handleTimeChange.bind(this),
       onClose: this.handleClose.bind(this),
       onOpen: this.handleOpen.bind(this),
+      appendTo: container,
     });
   }
 

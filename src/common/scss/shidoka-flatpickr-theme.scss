@@ -20,7 +20,7 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
   font-size: 14px;
   line-height: 24px;
   border-radius: 4px;
-  position: absolute;
+  position: fixed;
   width: 323.875px;
   border: none;
   box-sizing: border-box;
@@ -186,6 +186,11 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
 .flatpickr-calendar.open {
   display: inline-block;
   z-index: 99999;
+
+  &.static {
+    z-index: 99999;
+    display: block;
+  }
 }
 
 .flatpickr-calendar.animate.open {
@@ -202,11 +207,6 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
 .flatpickr-calendar.static {
   position: absolute;
   top: calc(100% + 2px);
-}
-
-.flatpickr-calendar.static.open {
-  z-index: 999;
-  display: block;
 }
 
 .flatpickr-calendar.multiMonth
@@ -1130,12 +1130,12 @@ span.flatpickr-weekday {
 @media (min-width: 767px) {
   .flatpickr-calendar {
     &.rangeMode {
-      width: 638px;
+      width: 625px !important;
       padding: 4px;
       box-sizing: border-box;
 
       .flatpickr-days {
-        width: 615px;
+        width: 100% !important;
       }
 
       .dayContainer {
@@ -1161,7 +1161,7 @@ span.flatpickr-weekday {
       }
 
       &.flatpickr-days {
-        width: 615px;
+        width: 100% !important;
         margin: 0 auto;
       }
 

@@ -392,9 +392,11 @@ export class DatePicker extends FormMixin(LitElement) {
     if (!this._inputEl) return;
     if (this.flatpickrInstance) this.flatpickrInstance.destroy();
 
+    // const parentModal = this.closest('kyn-modal') ?? document.body;
+
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
       inputEl: this._inputEl,
-      getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
+      getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
       setCalendarAttributes: (instance) => {
         if (instance && instance.calendarContainer) {
           setCalendarAttributes(instance);
@@ -404,7 +406,6 @@ export class DatePicker extends FormMixin(LitElement) {
         }
       },
       setInitialDates: this.setInitialDates.bind(this),
-      appendToBody: false,
     });
 
     hideEmptyYear();
@@ -413,21 +414,19 @@ export class DatePicker extends FormMixin(LitElement) {
 
   async updateFlatpickrOptions(): Promise<void> {
     if (!this.flatpickrInstance) return;
-
-    const newOptions = await this.getComponentFlatpickrOptions();
+    const newOptions = (await this.getComponentFlatpickrOptions()) || {};
     Object.keys(newOptions).forEach((key) => {
-      if (key in this.flatpickrInstance!.config) {
+      if (
+        this.flatpickrInstance!.config &&
+        key in this.flatpickrInstance!.config
+      ) {
         this.flatpickrInstance!.set(
           key as keyof BaseOptions,
           newOptions[key as keyof BaseOptions]
         );
       }
     });
-
     this.flatpickrInstance.redraw();
-
-    hideEmptyYear();
-
     setTimeout(() => {
       if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
         setCalendarAttributes(this.flatpickrInstance);
@@ -481,7 +480,10 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
+  // In your kyn-date-picker component:
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+    const modal = this.closest('kyn-modal');
+    const container = modal ? modal : document.body;
     return getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
@@ -499,6 +501,7 @@ export class DatePicker extends FormMixin(LitElement) {
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),
       onChange: this.handleDateChange.bind(this),
+      appendTo: container,
     });
   }
 

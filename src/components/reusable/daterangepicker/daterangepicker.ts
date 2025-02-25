@@ -430,14 +430,16 @@ export class DateRangePicker extends FormMixin(LitElement) {
         }
       },
       setInitialDates: this.setInitialDates.bind(this),
-      appendToBody: false,
     });
 
     hideEmptyYear();
     this._validate(false, false);
   }
 
+  // In your daterangepicker.ts, update getComponentFlatpickrOptions:
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+    const modal = this.closest('kyn-modal');
+    const container = modal ? modal : document.body;
     return getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
@@ -455,6 +457,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       onChange: this.handleDateChange.bind(this),
       onClose: this.handleClose.bind(this),
       onOpen: this.handleOpen.bind(this),
+      appendTo: container,
     });
   }
 
