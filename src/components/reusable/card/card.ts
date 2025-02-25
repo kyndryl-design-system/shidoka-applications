@@ -38,15 +38,21 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   aiConnected = false;
 
+  /** Set this to `true` for highlight */
+  @property({ type: Boolean })
+  highlight = false;
+
   override render() {
     const cardWrapperClasses = {
       'card-wrapper-clickable': true,
       'card-border': this.hideBorder === false,
+      'card-highlight': this.highlight,
       'ai-Connected': this.aiConnected,
     };
 
     const cardWrapperDefaultClasses = {
       'card-wrapper': true,
+      'card-highlight': this.highlight,
       'ai-Connected': this.aiConnected,
     };
 
