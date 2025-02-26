@@ -32,6 +32,7 @@ export const BlankCard = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    highlight: false,
   },
   render: (args) => {
     return html` <kyn-card
@@ -41,6 +42,7 @@ export const BlankCard = {
       rel=${args.rel}
       role="article"
       ?hideBorder=${args.hideBorder}
+      ?highlight=${args.highlight}
       aria-label="Blank card"
     ></kyn-card>`;
   },
@@ -53,6 +55,7 @@ export const Simple = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    highlight: false,
   },
   render: (args) => {
     return html`
@@ -62,6 +65,7 @@ export const Simple = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
+        ?highlight=${args.highlight}
         role="article"
         aria-label="Simple card"
       >
@@ -85,6 +89,7 @@ export const Clickable = {
     rel: 'noopener',
     target: '_blank',
     hideBorder: false,
+    highlight: false,
   },
   render: (args) => {
     return html`
@@ -94,6 +99,7 @@ export const Clickable = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
+        ?highlight=${args.highlight}
         role="link"
         aria-label="Clickable card"
         @on-card-click=${(e) => action(e.type)(e)}
@@ -118,6 +124,7 @@ export const InsideGrid = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    highlight: false,
   },
   render: (args) => {
     return html`
@@ -130,6 +137,7 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            ?highlight=${args.highlight}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -149,6 +157,7 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            ?highlight=${args.highlight}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -170,6 +179,7 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            ?highlight=${args.highlight}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -188,6 +198,7 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            ?highlight=${args.highlight}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
