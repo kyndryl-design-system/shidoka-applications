@@ -3,7 +3,6 @@ import '@kyndryl-design-system/shidoka-foundation/css/grid.css';
 import './index';
 import { action } from '@storybook/addon-actions';
 import './card.sample';
-import { highlight } from 'prismjs';
 
 export default {
   title: 'Components/Card',
@@ -33,7 +32,6 @@ export const BlankCard = {
     rel: '',
     target: '_self',
     hideBorder: false,
-    highlight: false,
     aiConnected: false,
   },
   render: (args) => {
@@ -44,7 +42,6 @@ export const BlankCard = {
       rel=${args.rel}
       role="article"
       ?hideBorder=${args.hideBorder}
-      ?highlight=${args.highlight}
       ?aiConnected=${args.aiConnected}
       aria-label="Blank card"
     ></kyn-card>`;
@@ -58,7 +55,6 @@ export const Simple = {
     rel: '',
     target: '_self',
     hideBorder: false,
-    highlight: false,
     aiConnected: false,
   },
   render: (args) => {
@@ -69,7 +65,6 @@ export const Simple = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
-        ?highlight=${args.highlight}
         ?aiConnected=${args.aiConnected}
         role="article"
         aria-label="Simple card"
@@ -94,7 +89,6 @@ export const Clickable = {
     rel: 'noopener',
     target: '_blank',
     hideBorder: false,
-    highlight: false,
     aiConnected: false,
   },
   render: (args) => {
@@ -105,7 +99,6 @@ export const Clickable = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
-        ?highlight=${args.highlight}
         ?aiConnected=${args.aiConnected}
         role="link"
         aria-label="Clickable card"
@@ -131,7 +124,6 @@ export const InsideGrid = {
     rel: '',
     target: '_self',
     hideBorder: false,
-    highlight: false,
     aiConnected: false,
   },
   render: (args) => {
@@ -145,7 +137,6 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
-            ?highlight=${args.highlight}
             ?aiConnected=${args.aiConnected}
           >
             <sample-card-component>
@@ -165,7 +156,6 @@ export const InsideGrid = {
             href=${args.href}
             target=${args.target}
             rel=${args.rel}
-            ?highlight=${args.highlight}
             ?hideBorder=${args.hideBorder}
             ?aiConnected=${args.aiConnected}
           >
@@ -189,7 +179,6 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
-            ?highlight=${args.highlight}
             ?aiConnected=${args.aiConnected}
           >
             <sample-card-component>
@@ -209,7 +198,6 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
-            ?highlight=${args.highlight}
             ?aiConnected=${args.aiConnected}
           >
             <sample-card-component>
@@ -237,7 +225,6 @@ export const AIConnected = {
     rel: '',
     target: '_self',
     hideBorder: false,
-    highlight: false,
     aiConnected: true,
   },
   render: (args) => {
@@ -248,7 +235,6 @@ export const AIConnected = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
-        ?highlight=${args.highlight}
         ?aiConnected=${args.aiConnected}
         role="article"
         aria-label="Simple card"
