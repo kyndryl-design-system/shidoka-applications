@@ -181,10 +181,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (this.resizeTimeout) {
       window.clearTimeout(this.resizeTimeout);
     }
-
     this.resizeTimeout = window.setTimeout(async () => {
       if (this.flatpickrInstance) {
-        // re-initialize flatpickr to properly handle the viewport change
         await this.initializeFlatpickr();
       }
       this.resizeTimeout = null;
@@ -417,10 +415,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
       inputEl: this._inputEl,
-      getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
+      getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
       setCalendarAttributes: (instance) => {
         if (instance && instance.calendarContainer) {
-          setCalendarAttributes(instance);
+          const modalDetected = !!this.closest('kyn-modal');
+          setCalendarAttributes(instance, modalDetected);
           instance.calendarContainer.setAttribute(
             'aria-label',
             'Date range calendar'
@@ -430,7 +429,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
         }
       },
       setInitialDates: this.setInitialDates.bind(this),
-      appendToBody: false,
     });
 
     hideEmptyYear();
@@ -438,6 +436,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+    const modal = this.closest('kyn-modal');
+    const container = modal ? modal : document.body;
+
     return getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
@@ -455,6 +456,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       onChange: this.handleDateChange.bind(this),
       onClose: this.handleClose.bind(this),
       onOpen: this.handleOpen.bind(this),
+      appendTo: container,
     });
   }
 
@@ -481,7 +483,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     setTimeout(() => {
       if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
-        setCalendarAttributes(this.flatpickrInstance);
+        const modalDetected = !!this.closest('kyn-modal');
+        setCalendarAttributes(this.flatpickrInstance, modalDetected);
         this.flatpickrInstance.calendarContainer.setAttribute(
           'aria-label',
           'Date range calendar'
