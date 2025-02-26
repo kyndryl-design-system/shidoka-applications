@@ -229,4 +229,4 @@ export const DatepickerInModal = {
     `;
   },
 };
-DatepickerInModal.storyName = 'Datepicker In Modal';
+DatepickerInModal.storyName = 'In Modal';

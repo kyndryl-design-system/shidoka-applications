@@ -218,4 +218,4 @@ export const DateRangePickerInModal = {
     `;
   },
 };
-DateRangePickerInModal.storyName = 'Date-Range Picker In Modal';
+DateRangePickerInModal.storyName = 'In Modal';

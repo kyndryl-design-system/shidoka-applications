@@ -190,4 +190,4 @@ export const TimepickerInModal = {
     `;
   },
 };
-TimepickerInModal.storyName = 'Timepicker In Modal';
+TimepickerInModal.storyName = 'In Modal';
