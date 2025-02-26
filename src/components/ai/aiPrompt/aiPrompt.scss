@@ -1,0 +1,59 @@
+@use '../../../common/scss/global.scss';
+@use '../../reusable/card/card.scss';
+@use '../../../../node_modules/@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+
+:host {
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  gap: 8px;
+
+  kyn-card {
+    width: inherit;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: all 150s ease-in-out;
+    border-radius: 8px;
+
+    &::part(card-wrapper) {
+      @include elevation.shadow(1, true);
+      border-radius: 8px;
+      padding: 16px;
+      gap: 16px;
+      outline: none;
+      border: 1px solid var(--kd-color-border-button-ai-state-default);
+      background: var(--kd-color-background-ui-hollow-default);
+    }
+
+    &:hover {
+      &::part(card-wrapper) {
+        @include elevation.shadow(2, true);
+        border: 1px solid var(--kd-color-border-button-ai-state-hover);
+      }
+    }
+  }
+}
+
+:host([highlight]) {
+  kyn-card::part(card-wrapper) {
+    border: 1px solid var(--kd-color-border-button-ai-state-default);
+    background: var(--kd-color-background-container-ai-default);
+  }
+}
+
+::slotted(*) {
+  margin: 0;
+  padding: 0;
+}
+
+::slotted([slot='title']) {
+  display: block;
+  color: var(--kd-color-text-title-ai-primary);
+}
+
+::slotted([slot='description']) {
+  margin-top: 8px;
+  display: block;
+  color: var(--kd-color-text-title-ai-secondary);
+}
