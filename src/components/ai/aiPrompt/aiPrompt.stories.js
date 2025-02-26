@@ -79,64 +79,65 @@ export const Groups = {
     title: 'AI Prompt Title',
     description:
       'Help me find previous case studies or success stories involving industry or similar clients for business problem or using Kyndryl service',
-    promptOrientation: 'horizontal',
+    orientation: 'horizontal',
+    maxWidth: undefined,
   },
   render: (args) => html`
     <div>
       <div>
-        <div class="heading kd-type--headline-08">Single Select Group</div>
-        <p style="margin: 5px 0 20px;">
-          Only one prompt can be selected at a time.
-        </p>
-        <kyn-ai-prompt-group promptOrientation=${args.promptOrientation}>
-          <kyn-ai-prompt
-            href=${args.href}
-            target=${args.target}
-            rel=${args.rel}
-            ?highlight=${args.highlight}
-            @on-click=${(e) => action(e.type)(e)}
+        <div class="heading kd-type--headline-08" style="margin: 30px 0;">
+          Horizontal Container
+        </div>
+        <div>
+          <kyn-ai-prompts-container
+            orientation=${args.orientation}
+            maxWidth="1275px"
           >
-            <div slot="title">${args.title}</div>
-            <div slot="description">${args.description}</div>
-          </kyn-ai-prompt>
-          <kyn-ai-prompt
-            href=${args.href}
-            target=${args.target}
-            rel=${args.rel}
-            ?highlight=${args.highlight}
-            @on-click=${(e) => action(e.type)(e)}
-          >
-            <div slot="title">${args.title}</div>
-            <div slot="description">${args.description}</div>
-          </kyn-ai-prompt>
-          <kyn-ai-prompt
-            href=${args.href}
-            target=${args.target}
-            rel=${args.rel}
-            ?highlight=${args.highlight}
-            @on-click=${(e) => action(e.type)(e)}
-          >
-            <div slot="title">${args.title}</div>
-            <div slot="description">${args.description}</div>
-          </kyn-ai-prompt>
-        </kyn-ai-prompt-group>
+            <kyn-ai-prompt
+              href=${args.href}
+              target=${args.target}
+              rel=${args.rel}
+              @on-click=${(e) => action(e.type)(e)}
+              width="31.3%"
+            >
+              <div slot="title">${args.title}</div>
+              <div slot="description">${args.description}</div>
+            </kyn-ai-prompt>
+            <kyn-ai-prompt
+              href=${args.href}
+              target=${args.target}
+              rel=${args.rel}
+              highlight
+              @on-click=${(e) => action(e.type)(e)}
+              width="31.3%"
+            >
+              <div slot="title">${args.title}</div>
+              <div slot="description">${args.description}</div>
+            </kyn-ai-prompt>
+            <kyn-ai-prompt
+              href=${args.href}
+              target=${args.target}
+              rel=${args.rel}
+              @on-click=${(e) => action(e.type)(e)}
+              width="31.3%"
+            >
+              <div slot="title">${args.title}</div>
+              <div slot="description">${args.description}</div>
+            </kyn-ai-prompt>
+          </kyn-ai-prompts-container>
+        </div>
       </div>
 
       <div>
-        <div class="heading kd-type--headline-08" style="margin-top: 30px;">
-          Multi-select Group
+        <div class="heading kd-type--headline-08" style="margin: 30px 0;">
+          Vertical Container
         </div>
-        <p style="margin: 5px 0 20px;">Multiple prompts can be selected.</p>
-        <kyn-ai-prompt-group
-          promptOrientation="vertical"
-          multipleSelect
-          style="max-width: 400px;"
-        >
+        <kyn-ai-prompts-container orientation="vertical" maxWidth="400px">
           <kyn-ai-prompt
             href=${args.href}
             target=${args.target}
             rel=${args.rel}
-            ?highlight=${args.highlight}
+            highlight
             @on-click=${(e) => action(e.type)(e)}
           >
             <div slot="title">${args.title}</div>
@@ -146,7 +147,6 @@ export const Groups = {
             href=${args.href}
             target=${args.target}
             rel=${args.rel}
-            ?highlight=${args.highlight}
             @on-click=${(e) => action(e.type)(e)}
           >
             <div slot="title">${args.title}</div>
@@ -156,13 +156,12 @@ export const Groups = {
             href=${args.href}
             target=${args.target}
             rel=${args.rel}
-            ?highlight=${args.highlight}
             @on-click=${(e) => action(e.type)(e)}
           >
             <div slot="title">${args.title}</div>
             <div slot="description">${args.description}</div>
           </kyn-ai-prompt>
-        </kyn-ai-prompt-group>
+        </kyn-ai-prompts-container>
       </div>
     </div>
   `,

@@ -21,17 +21,25 @@ export class AIPrompt extends LitElement {
   @property({ type: String })
   href = '';
 
-  /** Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship. */
+  /** Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship. */
   @property({ type: String })
   rel = '';
 
-  /** Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (deafult), `'_blank'`, `'_parent`', `'_top'` */
+  /** Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (default), `'_blank'`, `'_parent`', `'_top'` */
   @property({ type: String })
   target: any = '_self';
 
   /** Set this to `true` for highlight */
   @property({ type: Boolean })
   highlight = false;
+
+  /** Sets maximum width of the prompt. Use any valid CSS width value. */
+  @property({ type: String })
+  maxWidth?: string;
+
+  /** Sets width of the prompt. Use any valid CSS width value. */
+  @property({ type: String })
+  width?: string;
 
   override render() {
     return html`
@@ -50,6 +58,20 @@ export class AIPrompt extends LitElement {
     `;
   }
 
+  override willUpdate() {
+    if (!this.width && !this.maxWidth) {
+      this.style.width = '100%';
+      this.style.maxWidth = 'none';
+    } else {
+      if (this.width) {
+        this.style.width = this.width;
+      }
+      if (this.maxWidth) {
+        this.style.maxWidth = this.maxWidth;
+      }
+    }
+  }
+
   private handleClick(e: Event) {
     const event = new CustomEvent('on-ai-prompt-click', {
       detail: { origEvent: e },
@@ -57,7 +79,6 @@ export class AIPrompt extends LitElement {
     this.dispatchEvent(event);
   }
 }
-
 declare global {
   interface HTMLElementTagNameMap {
     'kyn-ai-prompt': AIPrompt;

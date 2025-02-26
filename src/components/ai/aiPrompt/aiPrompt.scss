@@ -3,16 +3,14 @@
 @use '../../../../node_modules/@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :host {
-  display: inline-block;
-  width: 100%;
+  display: block;
   position: relative;
-  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
 
   kyn-card {
-    width: inherit;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
+    display: block;
+    width: 100%;
     transition: all 150s ease-in-out;
     border-radius: 8px;
 
@@ -24,6 +22,10 @@
       outline: none;
       border: 1px solid var(--kd-color-border-button-ai-state-default);
       background: var(--kd-color-background-ui-hollow-default);
+
+      a {
+        width: 100%;
+      }
     }
 
     &:hover {
