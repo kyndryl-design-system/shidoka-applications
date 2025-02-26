@@ -77,7 +77,6 @@ interface BaseFlatpickrContext {
   getFlatpickrOptions: () => Promise<Partial<BaseOptions>>;
   setCalendarAttributes: (instance: Instance) => void;
   setInitialDates?: (instance: Instance) => void;
-  appendTo?: HTMLElement;
 }
 
 interface SingleFlatpickrContext extends BaseFlatpickrContext {
@@ -282,11 +281,13 @@ export async function initializeSingleAnchorFlatpickr(
       inputElement = document.createElement('input');
       inputElement.type = 'text';
       inputElement.style.display = 'none';
+
       if (appendTo) {
         appendTo.appendChild(inputElement);
       } else {
         inputEl.appendChild(inputElement);
       }
+
       options.clickOpens = false;
       options.positionElement = inputEl;
     }

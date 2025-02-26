@@ -23,7 +23,7 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
   width: 323.875px;
   border: none;
   box-sizing: border-box;
-  position: fixed;
+  position: absolute;
   opacity: 0;
   padding: 8px;
   left: 20px;
@@ -42,10 +42,6 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
 
   &.container-modal {
     position: fixed;
-  }
-
-  &.container-default {
-    position: absolute;
   }
 
   .flatpickr-innerContainer {
@@ -1135,55 +1131,44 @@ span.flatpickr-weekday {
   }
 }
 
+@mixin vertical-divider {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50.25%;
+  width: 1px;
+  background-color: var(--kd-color-border-variants-light);
+}
+
 @media (min-width: 767px) {
-  .flatpickr-calendar {
-    &.rangeMode {
-      width: 625px !important;
-      padding: 4px;
-      box-sizing: border-box;
+  .flatpickr-calendar.rangeMode {
+    width: 625px !important;
+    padding: 4px;
+    box-sizing: border-box;
 
-      .flatpickr-days {
-        width: 100% !important;
-      }
+    .flatpickr-days {
+      width: 100% !important;
+      margin: 0 auto;
+    }
 
-      .dayContainer {
-        width: 50.25%;
-        min-width: auto;
-        max-width: none;
-      }
+    .dayContainer {
+      width: 50.25%;
+      min-width: auto;
+      max-width: none;
+    }
 
-      .flatpickr-innerContainer {
-        display: flex;
-        justify-content: space-between;
-      }
-      .flatpickr-months {
-        &::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 50.25%;
-          width: 1px;
-          background-color: var(--kd-color-border-variants-light);
-        }
-      }
+    .flatpickr-innerContainer {
+      display: flex;
+      justify-content: space-between;
 
-      &.flatpickr-days {
-        width: 100% !important;
-        margin: 0 auto;
+      &::after {
+        @include vertical-divider;
       }
+    }
 
-      .flatpickr-innerContainer {
-        &::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 50.25%;
-          width: 1px;
-          background-color: var(--kd-color-border-variants-light);
-        }
-      }
+    .flatpickr-months::after {
+      @include vertical-divider;
     }
   }
 }
