@@ -184,38 +184,33 @@ export const DateRangePickerInModal = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button
-          slot="anchor"
-          kind=${args.aiConnected ? 'primary-ai' : 'primary'}
-        >
-          Open Modal
-        </kyn-button>
+        <kyn-button slot="anchor" kind=${'primary'}> Open Modal </kyn-button>
 
         <kyn-date-range-picker
-          .name="${args.name}"
-          .label="${args.label}"
-          .locale="${args.locale}"
-          .dateFormat="${args.dateFormat}"
+          .name=${args.name}
+          .label=${args.label}
+          .locale=${args.locale}
+          .dateFormat=${args.dateFormat}
           .defaultDate=${args.defaultDate}
-          .defaultErrorMessage="${args.defaultErrorMessage}"
-          .value="${args.value}"
-          .warnText="${args.warnText}"
-          .invalidText="${args.invalidText}"
-          .disable="${args.disable}"
-          .enable="${args.enable}"
-          .caption="${args.caption}"
-          ?required="${args.required}"
-          .size="${args.size}"
-          ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
-          ?twentyFourHourFormat="${args.twentyFourHourFormat}"
-          .minDate="${args.minDate}"
-          .maxDate="${args.maxDate}"
-          .errorAriaLabel="${args.errorAriaLabel}"
-          .errorTitle="${args.errorTitle}"
-          .warningAriaLabel="${args.warningAriaLabel}"
-          .warningTitle="${args.warningTitle}"
-          .startDateLabel="${args.startDateLabel}"
-          .endDateLabel="${args.endDateLabel}"
+          .defaultErrorMessage=${args.defaultErrorMessage}
+          .value=${args.value}
+          .warnText=${args.warnText}
+          .invalidText=${args.invalidText}
+          .disable=${args.disable}
+          .enable=${args.enable}
+          .caption=${args.caption}
+          ?required=${args.required}
+          .size=${args.size}
+          ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+          ?twentyFourHourFormat=${args.twentyFourHourFormat}
+          .minDate=${args.minDate}
+          .maxDate=${args.maxDate}
+          .errorAriaLabel=${args.errorAriaLabel}
+          .errorTitle=${args.errorTitle}
+          .warningAriaLabel=${args.warningAriaLabel}
+          .warningTitle=${args.warningTitle}
+          .startDateLabel=${args.startDateLabel}
+          .endDateLabel=${args.endDateLabel}
           @on-change=${(e) => action(e.type)(e)}
         >
         </kyn-date-range-picker>

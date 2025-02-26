@@ -392,18 +392,13 @@ export class DatePicker extends FormMixin(LitElement) {
     if (!this._inputEl) return;
     if (this.flatpickrInstance) this.flatpickrInstance.destroy();
 
-    // const parentModal = this.closest('kyn-modal') ?? document.body;
-
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
       inputEl: this._inputEl,
       getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
       setCalendarAttributes: (instance) => {
-        if (instance && instance.calendarContainer) {
-          setCalendarAttributes(instance);
-          instance.calendarContainer.setAttribute('aria-label', 'Date picker');
-        } else {
-          console.warn('Calendar container not available...');
-        }
+        const modalDetected = !!this.closest('kyn-modal');
+        setCalendarAttributes(instance, modalDetected);
+        instance.calendarContainer.setAttribute('aria-label', 'Date picker');
       },
       setInitialDates: this.setInitialDates.bind(this),
     });
@@ -480,10 +475,10 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  // In your kyn-date-picker component:
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     const modal = this.closest('kyn-modal');
     const container = modal ? modal : document.body;
+
     return getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,

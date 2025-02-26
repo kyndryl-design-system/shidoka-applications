@@ -352,10 +352,11 @@ export class TimePicker extends FormMixin(LitElement) {
 
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
       inputEl: this._inputEl,
-      getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
+      getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
       setCalendarAttributes: (instance) => {
         if (instance && instance.calendarContainer) {
-          setCalendarAttributes(instance);
+          const modalDetected = !!this.closest('kyn-modal');
+          setCalendarAttributes(instance, modalDetected);
           instance.calendarContainer.setAttribute('aria-label', 'Time picker');
         } else {
           console.warn('Calendar container not available...');
@@ -389,7 +390,8 @@ export class TimePicker extends FormMixin(LitElement) {
 
     setTimeout(() => {
       if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
-        setCalendarAttributes(this.flatpickrInstance);
+        const modalDetected = !!this.closest('kyn-modal');
+        setCalendarAttributes(this.flatpickrInstance, modalDetected);
         this.flatpickrInstance.calendarContainer.setAttribute(
           'aria-label',
           'Time picker'
@@ -403,6 +405,7 @@ export class TimePicker extends FormMixin(LitElement) {
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     const modal = this.closest('kyn-modal');
     const container = modal ? modal : document.body;
+
     return getFlatpickrOptions({
       locale: this.locale,
       enableTime: true,

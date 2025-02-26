@@ -199,29 +199,29 @@ export const DatepickerInModal = {
         <kyn-button slot="anchor" kind=${'primary'}> Open Modal </kyn-button>
 
         <kyn-date-picker
-          .name="${args.name}"
-          .locale="${args.locale}"
-          .label="${args.label}"
-          .dateFormat="${args.dateFormat}"
+          .name=${args.name}
+          .locale=${args.locale}
+          .label=${args.label}
+          .dateFormat=${args.dateFormat}
           .defaultDate=${args.defaultDate}
-          .defaultErrorMessage="${args.defaultErrorMessage}"
-          ?required="${args.required}"
-          .size="${args.size}"
-          .value="${args.value}"
-          .warnText="${args.warnText}"
-          .invalidText="${args.invalidText}"
-          .disable="${args.disable}"
-          .enable="${args.enable}"
-          .mode="${args.mode}"
-          .caption="${args.caption}"
-          .errorAriaLabel="${args.errorAriaLabel}"
-          .errorTitle="${args.errorTitle}"
-          .warningAriaLabel="${args.warningAriaLabel}"
-          .warningTitle="${args.warningTitle}"
-          ?datePickerDisabled="${args.datePickerDisabled}"
-          ?twentyFourHourFormat="${args.twentyFourHourFormat}"
-          .minDate="${args.minDate}"
-          .maxDate="${args.maxDate}"
+          .defaultErrorMessage=${args.defaultErrorMessage}
+          ?required=${args.required}
+          .size=${args.size}
+          .value=${args.value}
+          .warnText=${args.warnText}
+          .invalidText=${args.invalidText}
+          .disable=${args.disable}
+          .enable=${args.enable}
+          .mode=${args.mode}
+          .caption=${args.caption}
+          .errorAriaLabel=${args.errorAriaLabel}
+          .errorTitle=${args.errorTitle}
+          .warningAriaLabel=${args.warningAriaLabel}
+          .warningTitle=${args.warningTitle}
+          ?datePickerDisabled=${args.datePickerDisabled}
+          ?twentyFourHourFormat=${args.twentyFourHourFormat}
+          .minDate=${args.minDate}
+          .maxDate=${args.maxDate}
           @on-change=${(e) => action(e.type)(e)}
         >
         </kyn-date-picker>

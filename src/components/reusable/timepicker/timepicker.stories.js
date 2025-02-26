@@ -162,27 +162,27 @@ export const TimepickerInModal = {
         <kyn-button slot="anchor" kind=${'primary'}> Open Modal </kyn-button>
 
         <kyn-time-picker
-          .name="${args.name}"
-          .label="${args.label}"
-          .locale="${args.locale}"
-          ?required="${args.required}"
-          .size="${args.size}"
-          .value="${args.value}"
-          .warnText="${args.warnText}"
-          .invalidText="${args.invalidText}"
-          .caption="${args.caption}"
-          .defaultDate="${args.defaultDate}"
-          .defaultHour="${args.defaultHour}"
-          .defaultMinute="${args.defaultMinute}"
-          .defaultErrorMessage="${args.defaultErrorMessage}"
-          .minTime="${args.minTime}"
-          .maxTime="${args.maxTime}"
-          .errorAriaLabel="${args.errorAriaLabel}"
-          .errorTitle="${args.errorTitle}"
-          .warningAriaLabel="${args.warningAriaLabel}"
-          .warningTitle="${args.warningTitle}"
-          ?timepickerDisabled="${args.timepickerDisabled}"
-          ?twentyFourHourFormat="${args.twentyFourHourFormat}"
+          .name=${args.name}
+          .label=${args.label}
+          .locale=${args.locale}
+          ?required=${args.required}
+          .size=${args.size}
+          .value=${args.value}
+          .warnText=${args.warnText}
+          .invalidText=${args.invalidText}
+          .caption=${args.caption}
+          .defaultDate=${args.defaultDate}
+          .defaultHour=${args.defaultHour}
+          .defaultMinute=${args.defaultMinute}
+          .defaultErrorMessage=${args.defaultErrorMessage}
+          .minTime=${args.minTime}
+          .maxTime=${args.maxTime}
+          .errorAriaLabel=${args.errorAriaLabel}
+          .errorTitle=${args.errorTitle}
+          .warningAriaLabel=${args.warningAriaLabel}
+          .warningTitle=${args.warningTitle}
+          ?timepickerDisabled=${args.timepickerDisabled}
+          ?twentyFourHourFormat=${args.twentyFourHourFormat}
           @on-change=${(e) => action(e.type)(e)}
         >
         </kyn-time-picker>

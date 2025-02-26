@@ -465,10 +465,30 @@ export function updateEnableTime(dateFormat: string): boolean {
   return dateFormat.includes('H:') || dateFormat.includes('h:');
 }
 
-export function setCalendarAttributes(instance: Instance): void {
+export function setCalendarAttributes(
+  instance: Instance,
+  modalDetected?: boolean
+): void {
   if (instance && instance.calendarContainer) {
     instance.calendarContainer.setAttribute('role', 'application');
     instance.calendarContainer.setAttribute('aria-label', 'Calendar');
+
+    instance.calendarContainer.classList.remove(
+      'container-modal',
+      'container-body'
+    );
+
+    console.log(instance.input.closest('kyn-modal'));
+
+    instance.calendarContainer.classList.remove(
+      'container-modal',
+      'container-body'
+    );
+
+    const containerClass = modalDetected
+      ? 'container-modal'
+      : 'container-default';
+    instance.calendarContainer.classList.add(containerClass);
   } else {
     console.warn('Calendar container not available...');
   }
