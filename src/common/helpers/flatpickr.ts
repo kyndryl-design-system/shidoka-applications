@@ -284,8 +284,13 @@ export async function initializeSingleAnchorFlatpickr(
 
       if (appendTo) {
         appendTo.appendChild(inputElement);
-      } else {
+      } else if (
+        inputEl instanceof HTMLElement &&
+        !(inputEl instanceof HTMLInputElement)
+      ) {
         inputEl.appendChild(inputElement);
+      } else {
+        document.body.appendChild(inputElement);
       }
 
       options.clickOpens = false;
