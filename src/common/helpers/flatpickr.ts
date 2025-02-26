@@ -478,8 +478,6 @@ export function setCalendarAttributes(
       'container-body'
     );
 
-    console.log(instance.input.closest('kyn-modal'));
-
     instance.calendarContainer.classList.remove(
       'container-modal',
       'container-body'
