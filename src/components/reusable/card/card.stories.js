@@ -62,7 +62,6 @@ export const Simple = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
-        ?highlight=${args.highlight}
         role="article"
         aria-label="Simple card"
       >
@@ -95,7 +94,6 @@ export const Clickable = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
-        ?highlight=${args.highlight}
         role="link"
         aria-label="Clickable card"
         @on-card-click=${(e) => action(e.type)(e)}
