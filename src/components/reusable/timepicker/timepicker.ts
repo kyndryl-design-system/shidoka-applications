@@ -493,7 +493,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
     if (isRequired && isEmpty) {
       validity = { ...validity, valueMissing: true };
-      validationMessage = this.defaultErrorMessage;
+      validationMessage = this.defaultErrorMessage || 'Please select a time';
     }
 
     if (this.invalidText) {
@@ -502,6 +502,10 @@ export class TimePicker extends FormMixin(LitElement) {
     }
 
     const isValid = !validity.valueMissing && !validity.customError;
+
+    if (!isValid && !validationMessage) {
+      validationMessage = 'Please select a valid time';
+    }
 
     this._internals.setValidity(validity, validationMessage, this._inputEl);
     this._isInvalid =

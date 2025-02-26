@@ -634,7 +634,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     if (isRequired && isEmpty) {
       validity = { ...validity, valueMissing: true };
-      validationMessage = this.defaultErrorMessage;
+      validationMessage =
+        this.defaultErrorMessage || 'Please select a date range';
     }
 
     if (this.invalidText) {
@@ -643,6 +644,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     const isValid = !validity.valueMissing && !validity.customError;
+
+    if (!isValid && !validationMessage) {
+      validationMessage = 'Please select a valid date range';
+    }
 
     this._internals.setValidity(validity, validationMessage, this._inputEl);
     this._isInvalid =
