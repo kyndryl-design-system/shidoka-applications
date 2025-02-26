@@ -52,6 +52,20 @@ kyn-card.notification-normal::part(card-wrapper) {
   background-color: var(--kd-color-background-card-background);
 }
 
+// Change card style based on notification read prop
+kyn-card.notification-mark-unread::part(card-wrapper) {
+  background-color: var(--kd-color-background-highlight-fill);
+  outline: 1px solid var(--kd-color-background-highlight-border);
+
+  &:hover {
+    outline: 2px solid var(--kd-color-background-card-hover);
+  }
+}
+
+kyn-card.notification-mark-read::part(card-wrapper) {
+  background-color: var(--kd-color-background-card-background);
+}
+
 .notification {
   &-title-wrap {
     display: flex;
