@@ -162,7 +162,7 @@ export const DatepickerInModal = {
     caption: 'Datepicker in a modal.',
     label: 'Date',
     open: false,
-    size: 'auto',
+    size: 'lg',
     titleText: 'Select Date',
     labelText: '',
     okText: 'OK',

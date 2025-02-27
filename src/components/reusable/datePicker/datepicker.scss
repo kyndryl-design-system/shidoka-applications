@@ -5,17 +5,45 @@
 @include mixins.picker-base;
 
 input {
-    padding: 0 50px 0 16px;
+  padding: 0 50px 0 16px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  .flatpickr-wrapper {
+    width: 100%;
+  }
+
+  .input-icon,
+  .clear-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    pointer-events: auto;
+  }
+
+  .input-icon {
+    right: 12px;
+  }
+
+  .clear-icon {
+    right: 36px;
+  }
 }
 
 .date-picker {
-    width: inherit;
+  width: inherit;
+  overflow: visible;
 
-    &__enable-time {
-        min-width: 256px;
-    }
+  &__enable-time {
+    min-width: 256px;
+  }
 
-    &__disabled {
-        @include mixins.picker-disabled;
-    }
+  &__disabled {
+    @include mixins.picker-disabled;
+  }
 }

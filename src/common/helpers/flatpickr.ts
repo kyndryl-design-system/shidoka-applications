@@ -405,6 +405,7 @@ export async function getFlatpickrOptions(
     wrap,
     showMonths: mode === 'range' && isWideScreen ? 2 : 1,
     monthSelectorType: 'static',
+    static: true,
     locale: localeOptions,
     closeOnSelect: closeOnSelect ?? !(mode === 'multiple' || enableTime),
     onChange: (selectedDates, dateStr, instance) => {
@@ -471,28 +472,10 @@ export function updateEnableTime(dateFormat: string): boolean {
   return dateFormat.includes('H:') || dateFormat.includes('h:');
 }
 
-export function setCalendarAttributes(
-  instance: Instance,
-  modalDetected?: boolean
-): void {
+export function setCalendarAttributes(instance: Instance): void {
   if (instance && instance.calendarContainer) {
     instance.calendarContainer.setAttribute('role', 'application');
     instance.calendarContainer.setAttribute('aria-label', 'Calendar');
-
-    instance.calendarContainer.classList.remove(
-      'container-modal',
-      'container-body'
-    );
-
-    instance.calendarContainer.classList.remove(
-      'container-modal',
-      'container-body'
-    );
-
-    const containerClass = modalDetected
-      ? 'container-modal'
-      : 'container-default';
-    instance.calendarContainer.classList.add(containerClass);
   } else {
     console.warn('Calendar container not available...');
   }

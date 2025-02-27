@@ -398,8 +398,7 @@ export class DatePicker extends FormMixin(LitElement) {
       inputEl: this._inputEl,
       getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
       setCalendarAttributes: (instance) => {
-        const modalDetected = !!this.closest('kyn-modal');
-        setCalendarAttributes(instance, modalDetected);
+        setCalendarAttributes(instance);
         instance.calendarContainer.setAttribute('aria-label', 'Date picker');
       },
       setInitialDates: this.setInitialDates.bind(this),

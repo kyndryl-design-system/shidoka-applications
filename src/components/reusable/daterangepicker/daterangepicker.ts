@@ -419,8 +419,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
       setCalendarAttributes: (instance) => {
         if (instance && instance.calendarContainer) {
-          const modalDetected = !!this.closest('kyn-modal');
-          setCalendarAttributes(instance, modalDetected);
           instance.calendarContainer.setAttribute(
             'aria-label',
             'Date range calendar'
@@ -484,8 +482,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     setTimeout(() => {
       if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
-        const modalDetected = !!this.closest('kyn-modal');
-        setCalendarAttributes(this.flatpickrInstance, modalDetected);
+        setCalendarAttributes(this.flatpickrInstance);
         this.flatpickrInstance.calendarContainer.setAttribute(
           'aria-label',
           'Date range calendar'
