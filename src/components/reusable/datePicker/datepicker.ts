@@ -35,6 +35,8 @@ type SupportedLocale = (typeof langsArray)[number];
 const _defaultTextStrings = {
   requiredText: 'Required',
   clearAll: 'Clear',
+  pleaseSelectDate: 'Please select a date',
+  pleaseSelectValidDate: 'Please select a valid date',
 };
 
 /**
@@ -584,7 +586,8 @@ export class DatePicker extends FormMixin(LitElement) {
 
     if (isRequired && isEmpty) {
       validity = { ...validity, valueMissing: true };
-      validationMessage = this.defaultErrorMessage || 'Please select a date';
+      validationMessage =
+        this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
     }
 
     if (this.invalidText) {
@@ -596,7 +599,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
     // fix: ensure we have a validation message when validity flags are true
     if (!isValid && !validationMessage) {
-      validationMessage = 'Please select a valid date';
+      validationMessage = this._textStrings.pleaseSelectValidDate;
     }
 
     this._internals.setValidity(validity, validationMessage, this._inputEl);
