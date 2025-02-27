@@ -7,7 +7,7 @@ import '../../reusable/card';
 import PromptScss from './aiPrompt.scss';
 
 /**
- * AI Prompt.
+ * AI Prompt component.
  * @fires on-ai-prompt-click - Captures the click event of clickable prompt and emits the original event details. Use `e.stopPropogation()` / `e.preventDefault()` for any internal clickable elements when prompt type is `'clickable'` to stop bubbling / prevent event.
  * @slot title - Slot for prompt title text.
  * @slot description - slot for prompt body text.
