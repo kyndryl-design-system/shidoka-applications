@@ -35,8 +35,9 @@ type SupportedLocale = (typeof langsArray)[number];
 const _defaultTextStrings = {
   requiredText: 'Required',
   clearAll: 'Clear',
+  pleaseSelectDate: 'Please select a date',
+  pleaseSelectValidDate: 'Please select a valid date',
 };
-
 /**
  * Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
@@ -634,7 +635,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     if (isRequired && isEmpty) {
       validity = { ...validity, valueMissing: true };
-      validationMessage = this.defaultErrorMessage;
+      validationMessage =
+        this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
     }
 
     if (this.invalidText) {
@@ -643,6 +645,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     const isValid = !validity.valueMissing && !validity.customError;
+
+    if (!isValid && !validationMessage) {
+      validationMessage = this._textStrings.pleaseSelectValidDate;
+    }
 
     this._internals.setValidity(validity, validationMessage, this._inputEl);
     this._isInvalid =
