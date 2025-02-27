@@ -3,6 +3,9 @@ import './index';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/preview-api';
 
+import '../button';
+import '../modal';
+
 export default {
   title: 'Components/Timepicker',
   component: 'kyn-time-picker',
@@ -111,3 +114,80 @@ TimePickerAltLanguage.args = {
   label: 'Non-English 12H Example (Japanese locale)',
 };
 TimePickerAltLanguage.storyName = 'Japanese Locale Example';
+
+export const TimepickerInModal = {
+  args: {
+    ...DefaultTimePicker.args,
+    locale: 'en',
+    name: 'timepicker-in-modal',
+    dateFormat: 'Y-m-d',
+    defaultDate: '',
+    caption: 'Timepicker in a modal.',
+    label: 'Date',
+    open: false,
+    size: 'auto',
+    titleText: 'Select Date',
+    labelText: '',
+    okText: 'OK',
+    cancelText: 'Cancel',
+    closeText: 'Close',
+    destructive: false,
+    okDisabled: false,
+    hideFooter: false,
+    showSecondaryButton: false,
+    hideCancelButton: false,
+    aiConnected: false,
+    disableScroll: false,
+  },
+  render: (args) => {
+    return html`
+      <kyn-modal
+        ?open=${args.open}
+        size=${args.size}
+        titleText=${args.titleText}
+        labelText=${args.labelText}
+        okText=${args.okText}
+        cancelText=${args.cancelText}
+        closeText=${args.closeText}
+        ?destructive=${args.destructive}
+        ?okDisabled=${args.okDisabled}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        ?hideFooter=${args.hideFooter}
+        ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
+        ?disableScroll=${args.disableScroll}
+        @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
+      >
+        <kyn-button slot="anchor" kind=${'primary'}> Open Modal </kyn-button>
+
+        <kyn-time-picker
+          .name=${args.name}
+          .label=${args.label}
+          .locale=${args.locale}
+          ?required=${args.required}
+          .size=${args.size}
+          .value=${args.value}
+          .warnText=${args.warnText}
+          .invalidText=${args.invalidText}
+          .caption=${args.caption}
+          .defaultDate=${args.defaultDate}
+          .defaultHour=${args.defaultHour}
+          .defaultMinute=${args.defaultMinute}
+          .defaultErrorMessage=${args.defaultErrorMessage}
+          .minTime=${args.minTime}
+          .maxTime=${args.maxTime}
+          .errorAriaLabel=${args.errorAriaLabel}
+          .errorTitle=${args.errorTitle}
+          .warningAriaLabel=${args.warningAriaLabel}
+          .warningTitle=${args.warningTitle}
+          ?timepickerDisabled=${args.timepickerDisabled}
+          ?twentyFourHourFormat=${args.twentyFourHourFormat}
+          @on-change=${(e) => action(e.type)(e)}
+        >
+        </kyn-time-picker>
+      </kyn-modal>
+    `;
+  },
+};
+TimepickerInModal.storyName = 'In Modal';

@@ -3,6 +3,9 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/preview-api';
 
+import '../button';
+import '../modal';
+
 export default {
   title: 'Components/Date Range Picker',
   component: 'kyn-date-range-picker',
@@ -136,3 +139,83 @@ WithPreselectedDateTime.args = {
   caption: 'Example with preselected date/time range (format: Y-m-d H:i)',
   label: 'Preselected Date/Time Range',
 };
+
+export const DateRangePickerInModal = {
+  args: {
+    ...DateRangeDefault.args,
+    locale: 'en',
+    name: 'date-range-picker-in-modal',
+    dateFormat: 'Y-m-d',
+    defaultDate: '',
+    caption: 'Date-range picker in a modal.',
+    label: 'Date',
+    open: false,
+    size: 'auto',
+    titleText: 'Select Date',
+    labelText: '',
+    okText: 'OK',
+    cancelText: 'Cancel',
+    closeText: 'Close',
+    destructive: false,
+    okDisabled: false,
+    hideFooter: false,
+    showSecondaryButton: false,
+    hideCancelButton: false,
+    aiConnected: false,
+    disableScroll: false,
+  },
+  render: (args) => {
+    return html`
+      <kyn-modal
+        ?open=${args.open}
+        size=${args.size}
+        titleText=${args.titleText}
+        labelText=${args.labelText}
+        okText=${args.okText}
+        cancelText=${args.cancelText}
+        closeText=${args.closeText}
+        ?destructive=${args.destructive}
+        ?okDisabled=${args.okDisabled}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        ?hideFooter=${args.hideFooter}
+        ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
+        ?disableScroll=${args.disableScroll}
+        @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
+      >
+        <kyn-button slot="anchor" kind=${'primary'}> Open Modal </kyn-button>
+
+        <kyn-date-range-picker
+          .name=${args.name}
+          .label=${args.label}
+          .locale=${args.locale}
+          .dateFormat=${args.dateFormat}
+          .defaultDate=${args.defaultDate}
+          .defaultErrorMessage=${args.defaultErrorMessage}
+          .value=${args.value}
+          .warnText=${args.warnText}
+          .invalidText=${args.invalidText}
+          .disable=${args.disable}
+          .enable=${args.enable}
+          .caption=${args.caption}
+          ?required=${args.required}
+          .size=${args.size}
+          ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+          ?twentyFourHourFormat=${args.twentyFourHourFormat}
+          .minDate=${args.minDate}
+          .maxDate=${args.maxDate}
+          .errorAriaLabel=${args.errorAriaLabel}
+          .errorTitle=${args.errorTitle}
+          .warningAriaLabel=${args.warningAriaLabel}
+          .warningTitle=${args.warningTitle}
+          .startDateLabel=${args.startDateLabel}
+          .endDateLabel=${args.endDateLabel}
+          @on-change=${(e) => action(e.type)(e)}
+        >
+        </kyn-date-range-picker>
+      </kyn-modal>
+    `;
+  },
+};
+DateRangePickerInModal.storyName = 'In Modal';

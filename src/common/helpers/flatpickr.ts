@@ -77,7 +77,6 @@ interface BaseFlatpickrContext {
   getFlatpickrOptions: () => Promise<Partial<BaseOptions>>;
   setCalendarAttributes: (instance: Instance) => void;
   setInitialDates?: (instance: Instance) => void;
-  appendToBody?: boolean;
 }
 
 interface SingleFlatpickrContext extends BaseFlatpickrContext {
@@ -126,6 +125,7 @@ interface FlatpickrOptionsContext {
   closeOnSelect?: boolean;
   wrap?: boolean;
   noCalendar?: boolean;
+  appendTo?: HTMLElement;
 }
 
 export function isSupportedLocale(locale: string): boolean {
@@ -257,27 +257,23 @@ export async function initializeMultiAnchorFlatpickr(
 }
 
 export async function initializeSingleAnchorFlatpickr(
-  context: SingleFlatpickrContext
+  context: SingleFlatpickrContext & { appendTo?: HTMLElement }
 ): Promise<Instance | undefined> {
   const {
     inputEl,
     getFlatpickrOptions,
     setCalendarAttributes,
     setInitialDates,
-    appendToBody,
+    appendTo,
   } = context;
-
   if (!inputEl) {
     console.error('Cannot initialize Flatpickr: inputEl is undefined');
     return undefined;
   }
-
   try {
     const options = await getFlatpickrOptions();
     options.dateFormat = options.dateFormat || 'Y-m-d';
-
     let inputElement: HTMLInputElement;
-
     if (inputEl instanceof HTMLInputElement) {
       inputElement = inputEl;
       options.clickOpens = true;
@@ -286,18 +282,21 @@ export async function initializeSingleAnchorFlatpickr(
       inputElement.type = 'text';
       inputElement.style.display = 'none';
 
-      if (appendToBody) {
-        document.body.appendChild(inputElement);
-      } else {
+      if (appendTo) {
+        appendTo.appendChild(inputElement);
+      } else if (
+        inputEl instanceof HTMLElement &&
+        !(inputEl instanceof HTMLInputElement)
+      ) {
         inputEl.appendChild(inputElement);
+      } else {
+        document.body.appendChild(inputElement);
       }
 
       options.clickOpens = false;
       options.positionElement = inputEl;
     }
-
     const flatpickrInstance = flatpickr(inputElement, options) as Instance;
-
     if (flatpickrInstance) {
       setTimeout(() => {
         if (setCalendarAttributes) {
@@ -307,13 +306,9 @@ export async function initializeSingleAnchorFlatpickr(
       if (setInitialDates) {
         setInitialDates(flatpickrInstance);
       }
-
       if (!(inputEl instanceof HTMLInputElement)) {
-        inputEl.addEventListener('click', () => {
-          flatpickrInstance.open();
-        });
+        inputEl.addEventListener('click', () => flatpickrInstance.open());
       }
-
       return flatpickrInstance;
     } else {
       console.error('Failed to initialize Flatpickr');
@@ -376,6 +371,7 @@ export async function getFlatpickrOptions(
     onClose,
     onOpen,
     loadLocale,
+    appendTo,
   } = context;
 
   if (!locale) {
@@ -466,6 +462,7 @@ export async function getFlatpickrOptions(
   if (defaultMinute !== undefined) options.defaultMinute = defaultMinute;
   if (enable && enable.length > 0) options.enable = enable;
   if (disable && disable.length > 0) options.disable = disable;
+  if (appendTo) options.appendTo = appendTo;
 
   return options;
 }
@@ -474,10 +471,28 @@ export function updateEnableTime(dateFormat: string): boolean {
   return dateFormat.includes('H:') || dateFormat.includes('h:');
 }
 
-export function setCalendarAttributes(instance: Instance): void {
+export function setCalendarAttributes(
+  instance: Instance,
+  modalDetected?: boolean
+): void {
   if (instance && instance.calendarContainer) {
     instance.calendarContainer.setAttribute('role', 'application');
     instance.calendarContainer.setAttribute('aria-label', 'Calendar');
+
+    instance.calendarContainer.classList.remove(
+      'container-modal',
+      'container-body'
+    );
+
+    instance.calendarContainer.classList.remove(
+      'container-modal',
+      'container-body'
+    );
+
+    const containerClass = modalDetected
+      ? 'container-modal'
+      : 'container-default';
+    instance.calendarContainer.classList.add(containerClass);
   } else {
     console.warn('Calendar container not available...');
   }
