@@ -14,6 +14,9 @@
     outline: 1px solid var(--kd-color-border-level-secondary);
     border-radius: 8px;
     height: 100%;
+    &.ai-Connected {
+      background-color: var(--kd-color-background-container-ai-subtle);
+    }
   }
 
   &-wrapper-clickable {
@@ -36,6 +39,19 @@
     &:focus {
       outline-color: var(--kd-color-border-ui-hover);
       @include elevation.shadow(2);
+    }
+
+    &.ai-Connected {
+      background-color: var(--kd-color-background-container-ai-subtle);
+
+      &:hover {
+        outline-color: var(--kd-color-border-button-ai-state-default);
+        @include elevation.shadow(2, true);
+      }
+      &:focus {
+        outline-color: var(--kd-color-border-button-ai-state-default);
+        @include elevation.shadow(2, true);
+      }
     }
   }
 
