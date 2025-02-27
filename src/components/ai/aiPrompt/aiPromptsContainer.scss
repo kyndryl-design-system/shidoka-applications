@@ -1,0 +1,32 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.prompt-container {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+
+  &--horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    ::slotted(kyn-ai-prompt) {
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: 100%;
+    }
+  }
+
+  &--vertical {
+    flex-direction: column;
+    gap: 20px;
+
+    ::slotted(kyn-ai-prompt) {
+      width: 100%;
+    }
+  }
+}
