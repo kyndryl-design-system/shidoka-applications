@@ -28,10 +28,15 @@ export class PageTitle extends LitElement {
   @property({ type: String })
   type = 'primary';
 
+  /** Set this to `true` for AI theme. */
+  @property({ type: Boolean })
+  aiConnected = false;
+
   override render() {
     const classes = {
       'page-title': true,
       [`page-title-${this.type}`]: true,
+      'ai-connected': this.aiConnected,
     };
 
     const subTitleClasses = {
