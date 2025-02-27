@@ -56,7 +56,7 @@ export const Groups = {
   args: baseArgs,
   render: (args) => html`
     <div>
-      <div class="heading kd-type--headline-08" style="margin: 30px 0;">
+      <div class="heading kd-type--headline-07" style="margin: 30px 0;">
         Horizontal Container
       </div>
       <kyn-ai-prompts-container orientation="horizontal" maxWidth="1275px">
@@ -93,7 +93,7 @@ export const Groups = {
         </kyn-ai-prompt>
       </kyn-ai-prompts-container>
 
-      <div class="heading kd-type--headline-08" style="margin: 30px 0;">
+      <div class="heading kd-type--headline-07" style="margin: 30px 0;">
         Vertical Container
       </div>
       <kyn-ai-prompts-container orientation="vertical" maxWidth="400px">
