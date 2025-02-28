@@ -110,3 +110,4 @@ export {
   SplitButtonOption,
 } from './components/reusable/splitButton';
 export { FloatingContainer } from './components/reusable/floatingContainer';
+export { InlineConfirm } from './components/reusable/inlineConfirm';
