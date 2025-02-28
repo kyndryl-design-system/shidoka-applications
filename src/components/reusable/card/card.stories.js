@@ -33,6 +33,7 @@ export const BlankCard = {
     target: '_self',
     hideBorder: false,
     aiConnected: false,
+    highlight: false,
   },
   render: (args) => {
     return html` <kyn-card
@@ -43,6 +44,7 @@ export const BlankCard = {
       role="article"
       ?hideBorder=${args.hideBorder}
       ?aiConnected=${args.aiConnected}
+      ?highlight=${args.highlight}
       aria-label="Blank card"
     ></kyn-card>`;
   },
@@ -56,6 +58,7 @@ export const Simple = {
     target: '_self',
     hideBorder: false,
     aiConnected: false,
+    highlight: false,
   },
   render: (args) => {
     return html`
@@ -66,6 +69,7 @@ export const Simple = {
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
         ?aiConnected=${args.aiConnected}
+        ?highlight=${args.highlight}
         role="article"
         aria-label="Simple card"
       >
@@ -90,6 +94,7 @@ export const Clickable = {
     target: '_blank',
     hideBorder: false,
     aiConnected: false,
+    highlight: false,
   },
   render: (args) => {
     return html`
@@ -100,6 +105,7 @@ export const Clickable = {
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
         ?aiConnected=${args.aiConnected}
+        ?highlight=${args.highlight}
         role="link"
         aria-label="Clickable card"
         @on-card-click=${(e) => action(e.type)(e)}
@@ -125,6 +131,7 @@ export const InsideGrid = {
     target: '_self',
     hideBorder: false,
     aiConnected: false,
+    highlight: false,
   },
   render: (args) => {
     return html`
@@ -138,6 +145,7 @@ export const InsideGrid = {
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
             ?aiConnected=${args.aiConnected}
+            ?highlight=${args.highlight}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -158,6 +166,7 @@ export const InsideGrid = {
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
             ?aiConnected=${args.aiConnected}
+            ?highlight=${args.highlight}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -180,6 +189,7 @@ export const InsideGrid = {
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
             ?aiConnected=${args.aiConnected}
+            ?highlight=${args.highlight}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -199,6 +209,7 @@ export const InsideGrid = {
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
             ?aiConnected=${args.aiConnected}
+            ?highlight=${args.highlight}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
