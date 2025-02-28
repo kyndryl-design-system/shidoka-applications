@@ -2630,7 +2630,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n}",
+              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -3338,7 +3338,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n}",
+              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -5248,6 +5248,385 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Loader",
+          "declaration": {
+            "name": "Loader",
+            "module": "./loader"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LoaderInline",
+          "declaration": {
+            "name": "LoaderInline",
+            "module": "./inline"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Skeleton",
+          "declaration": {
+            "name": "Skeleton",
+            "module": "./skeleton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/inline.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Inline Loader.",
+          "name": "LoaderInline",
+          "slots": [
+            {
+              "description": "Slot for text/description.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "status",
+              "type": {
+                "text": "string"
+              },
+              "default": "'active'",
+              "description": "Status. Can be `active`, `inactive`, `success`, `error`.",
+              "attribute": "status"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStart",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStop",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits when the loader been started.",
+              "name": "on-start"
+            },
+            {
+              "description": "Emits when the loader has been stopped and all animations have completed.",
+              "name": "on-stop"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "status",
+              "type": {
+                "text": "string"
+              },
+              "default": "'active'",
+              "description": "Status. Can be `active`, `inactive`, `success`, `error`.",
+              "fieldName": "status"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-loader-inline",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LoaderInline",
+          "declaration": {
+            "name": "LoaderInline",
+            "module": "src/components/reusable/loaders/inline.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-loader-inline",
+          "declaration": {
+            "name": "LoaderInline",
+            "module": "src/components/reusable/loaders/inline.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/loader.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Loader.",
+          "name": "Loader",
+          "members": [
+            {
+              "kind": "field",
+              "name": "stopped",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Animation stopped state",
+              "attribute": "stopped"
+            },
+            {
+              "kind": "field",
+              "name": "overlay",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Display the loader as an overlay",
+              "attribute": "overlay"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStart",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStop",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits when the loader been started.",
+              "name": "on-start"
+            },
+            {
+              "description": "Emits when the loader has been stopped and all animations have completed.",
+              "name": "on-stop"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "stopped",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Animation stopped state",
+              "fieldName": "stopped"
+            },
+            {
+              "name": "overlay",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Display the loader as an overlay",
+              "fieldName": "overlay"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-loader",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Loader",
+          "declaration": {
+            "name": "Loader",
+            "module": "src/components/reusable/loaders/loader.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-loader",
+          "declaration": {
+            "name": "Loader",
+            "module": "src/components/reusable/loaders/loader.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Skeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "shape",
+              "type": {
+                "text": "'rectangle' | 'circle'"
+              },
+              "default": "'rectangle'",
+              "description": "Defines the shape of the skeleton element.",
+              "attribute": "shape",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "'small' | 'medium' | 'large' | undefined"
+              },
+              "description": "Optional: Predefined size (small, medium, large).",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "width",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional: Custom width (overrides size if provided).",
+              "attribute": "width"
+            },
+            {
+              "kind": "field",
+              "name": "height",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional: Custom height (overrides size if provided).",
+              "attribute": "height"
+            },
+            {
+              "kind": "field",
+              "name": "lines",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Sets the number of skeleton lines to display.",
+              "attribute": "lines"
+            },
+            {
+              "kind": "field",
+              "name": "inline",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether to display inline or block.",
+              "attribute": "inline"
+            },
+            {
+              "kind": "field",
+              "name": "shade",
+              "type": {
+                "text": "'light' | 'dark' | string"
+              },
+              "default": "'light'",
+              "description": "Defines the shade of the skeleton.",
+              "attribute": "shade"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "shape",
+              "type": {
+                "text": "'rectangle' | 'circle'"
+              },
+              "default": "'rectangle'",
+              "description": "Defines the shape of the skeleton element.",
+              "fieldName": "shape"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "'small' | 'medium' | 'large' | undefined"
+              },
+              "description": "Optional: Predefined size (small, medium, large).",
+              "fieldName": "size"
+            },
+            {
+              "name": "width",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional: Custom width (overrides size if provided).",
+              "fieldName": "width"
+            },
+            {
+              "name": "height",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional: Custom height (overrides size if provided).",
+              "fieldName": "height"
+            },
+            {
+              "name": "lines",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Sets the number of skeleton lines to display.",
+              "fieldName": "lines"
+            },
+            {
+              "name": "inline",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether to display inline or block.",
+              "fieldName": "inline"
+            },
+            {
+              "name": "shade",
+              "type": {
+                "text": "'light' | 'dark' | string"
+              },
+              "default": "'light'",
+              "description": "Defines the shade of the skeleton.",
+              "fieldName": "shade"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-skeleton",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Skeleton",
+          "declaration": {
+            "name": "Skeleton",
+            "module": "src/components/reusable/loaders/skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-skeleton",
+          "declaration": {
+            "name": "Skeleton",
+            "module": "src/components/reusable/loaders/skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/modal/index.ts",
       "declarations": [],
       "exports": [
@@ -5277,6 +5656,10 @@
             {
               "description": "Slot for the anchor button content.",
               "name": "anchor"
+            },
+            {
+              "description": "Slot for the footer content which replaces the ok, cancel, and second ary buttons.",
+              "name": "footer"
             }
           ],
           "members": [
@@ -5671,385 +6054,6 @@
           "declaration": {
             "name": "Modal",
             "module": "src/components/reusable/modal/modal.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/loaders/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Loader",
-          "declaration": {
-            "name": "Loader",
-            "module": "./loader"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LoaderInline",
-          "declaration": {
-            "name": "LoaderInline",
-            "module": "./inline"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Skeleton",
-          "declaration": {
-            "name": "Skeleton",
-            "module": "./skeleton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/loaders/inline.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Inline Loader.",
-          "name": "LoaderInline",
-          "slots": [
-            {
-              "description": "Slot for text/description.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "status",
-              "type": {
-                "text": "string"
-              },
-              "default": "'active'",
-              "description": "Status. Can be `active`, `inactive`, `success`, `error`.",
-              "attribute": "status"
-            },
-            {
-              "kind": "method",
-              "name": "_emitStart",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitStop",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits when the loader been started.",
-              "name": "on-start"
-            },
-            {
-              "description": "Emits when the loader has been stopped and all animations have completed.",
-              "name": "on-stop"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "status",
-              "type": {
-                "text": "string"
-              },
-              "default": "'active'",
-              "description": "Status. Can be `active`, `inactive`, `success`, `error`.",
-              "fieldName": "status"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-loader-inline",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LoaderInline",
-          "declaration": {
-            "name": "LoaderInline",
-            "module": "src/components/reusable/loaders/inline.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-loader-inline",
-          "declaration": {
-            "name": "LoaderInline",
-            "module": "src/components/reusable/loaders/inline.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/loaders/loader.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Loader.",
-          "name": "Loader",
-          "members": [
-            {
-              "kind": "field",
-              "name": "stopped",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Animation stopped state",
-              "attribute": "stopped"
-            },
-            {
-              "kind": "field",
-              "name": "overlay",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Display the loader as an overlay",
-              "attribute": "overlay"
-            },
-            {
-              "kind": "method",
-              "name": "_emitStart",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitStop",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits when the loader been started.",
-              "name": "on-start"
-            },
-            {
-              "description": "Emits when the loader has been stopped and all animations have completed.",
-              "name": "on-stop"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "stopped",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Animation stopped state",
-              "fieldName": "stopped"
-            },
-            {
-              "name": "overlay",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Display the loader as an overlay",
-              "fieldName": "overlay"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-loader",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Loader",
-          "declaration": {
-            "name": "Loader",
-            "module": "src/components/reusable/loaders/loader.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-loader",
-          "declaration": {
-            "name": "Loader",
-            "module": "src/components/reusable/loaders/loader.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/loaders/skeleton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "Skeleton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "shape",
-              "type": {
-                "text": "'rectangle' | 'circle'"
-              },
-              "default": "'rectangle'",
-              "description": "Defines the shape of the skeleton element.",
-              "attribute": "shape",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "'small' | 'medium' | 'large' | undefined"
-              },
-              "description": "Optional: Predefined size (small, medium, large).",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "width",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional: Custom width (overrides size if provided).",
-              "attribute": "width"
-            },
-            {
-              "kind": "field",
-              "name": "height",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional: Custom height (overrides size if provided).",
-              "attribute": "height"
-            },
-            {
-              "kind": "field",
-              "name": "lines",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Sets the number of skeleton lines to display.",
-              "attribute": "lines"
-            },
-            {
-              "kind": "field",
-              "name": "inline",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets whether to display inline or block.",
-              "attribute": "inline"
-            },
-            {
-              "kind": "field",
-              "name": "shade",
-              "type": {
-                "text": "'light' | 'dark' | string"
-              },
-              "default": "'light'",
-              "description": "Defines the shade of the skeleton.",
-              "attribute": "shade"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "shape",
-              "type": {
-                "text": "'rectangle' | 'circle'"
-              },
-              "default": "'rectangle'",
-              "description": "Defines the shape of the skeleton element.",
-              "fieldName": "shape"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "'small' | 'medium' | 'large' | undefined"
-              },
-              "description": "Optional: Predefined size (small, medium, large).",
-              "fieldName": "size"
-            },
-            {
-              "name": "width",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional: Custom width (overrides size if provided).",
-              "fieldName": "width"
-            },
-            {
-              "name": "height",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional: Custom height (overrides size if provided).",
-              "fieldName": "height"
-            },
-            {
-              "name": "lines",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Sets the number of skeleton lines to display.",
-              "fieldName": "lines"
-            },
-            {
-              "name": "inline",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets whether to display inline or block.",
-              "fieldName": "inline"
-            },
-            {
-              "name": "shade",
-              "type": {
-                "text": "'light' | 'dark' | string"
-              },
-              "default": "'light'",
-              "description": "Defines the shade of the skeleton.",
-              "fieldName": "shade"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-skeleton",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Skeleton",
-          "declaration": {
-            "name": "Skeleton",
-            "module": "src/components/reusable/loaders/skeleton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-skeleton",
-          "declaration": {
-            "name": "Skeleton",
-            "module": "src/components/reusable/loaders/skeleton.ts"
           }
         }
       ]
@@ -7296,6 +7300,16 @@
               "default": "'primary'",
               "description": "Type of page title `'primary'` & `'secondary'`.",
               "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "attribute": "aiConnected"
             }
           ],
           "attributes": [
@@ -7334,6 +7348,15 @@
               "default": "'primary'",
               "description": "Type of page title `'primary'` & `'secondary'`.",
               "fieldName": "type"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "fieldName": "aiConnected"
             }
           ],
           "superclass": {
@@ -10934,7 +10957,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "maxWidth",
               "reflects": true
             },
@@ -11018,7 +11041,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "maxWidth"
             },
             {
@@ -12081,7 +12104,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "maxWidth",
               "reflects": true
             },
@@ -12198,7 +12221,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "maxWidth"
             },
             {
@@ -15258,7 +15281,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n}",
+              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
