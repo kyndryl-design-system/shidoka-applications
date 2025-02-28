@@ -6,6 +6,8 @@
 
 .inline-confirm {
   position: relative;
+
+  --animation-speed: 500ms;
 }
 
 .confirmation {
@@ -14,7 +16,8 @@
   position: absolute;
   top: 0;
   right: 0;
-  transition: opacity 600ms ease-out, visibility 600ms ease-out;
+  transition: opacity var(--animation-speed) ease-out,
+    visibility var(--animation-speed) ease-out;
   visibility: hidden;
   opacity: 0;
 
@@ -31,7 +34,7 @@
 }
 
 .confirm-btn {
-  transition: transform 600ms ease-out;
+  transition: transform var(--animation-speed) ease-out;
   transform: translateX(50%);
 
   .open-right & {
@@ -44,7 +47,7 @@
 }
 
 .anchor {
-  transition: opacity 600ms ease-out;
+  transition: opacity var(--animation-speed) ease-out;
 
   .open & {
     opacity: 0;
