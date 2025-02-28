@@ -29,6 +29,8 @@ export default {
         'errorDark',
         'warningDark',
         'informationDark',
+        'criticalLight',
+        'criticalDark',
       ],
       control: { type: 'select' },
     },
