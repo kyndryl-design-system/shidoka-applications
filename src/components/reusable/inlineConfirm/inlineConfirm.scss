@@ -1,0 +1,43 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: inline-block;
+}
+
+.inline-confirm {
+  position: relative;
+}
+
+.confirmation {
+  display: flex;
+  gap: 16px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: transform 250ms ease-out, opacity 250ms ease-out,
+    visibility 250ms ease-out;
+  transform: translateX(100%);
+  visibility: hidden;
+  opacity: 0;
+
+  .open-right & {
+    right: auto;
+    left: 0;
+    transform: translateX(-100%);
+    flex-direction: row-reverse;
+  }
+
+  .open & {
+    transform: translateX(0);
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.anchor {
+  transition: opacity 250ms ease-out;
+
+  .open & {
+    opacity: 0;
+  }
+}
