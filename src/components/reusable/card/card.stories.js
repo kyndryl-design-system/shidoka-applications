@@ -237,6 +237,7 @@ export const AIConnected = {
     target: '_self',
     hideBorder: false,
     aiConnected: true,
+    highlight: false,
   },
   render: (args) => {
     return html`
