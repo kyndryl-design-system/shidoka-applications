@@ -248,6 +248,7 @@ export const AIConnected = {
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
         ?aiConnected=${args.aiConnected}
+        ?highlight=${args.highlight}
         role="article"
         aria-label="Simple card"
       >
