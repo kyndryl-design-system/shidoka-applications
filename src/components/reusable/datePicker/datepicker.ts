@@ -35,6 +35,8 @@ type SupportedLocale = (typeof langsArray)[number];
 const _defaultTextStrings = {
   requiredText: 'Required',
   clearAll: 'Clear',
+  pleaseSelectDate: 'Please select a date',
+  pleaseSelectValidDate: 'Please select a valid date',
 };
 
 /**
@@ -394,17 +396,13 @@ export class DatePicker extends FormMixin(LitElement) {
 
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
       inputEl: this._inputEl,
-      getFlatpickrOptions: this.getComponentFlatpickrOptions.bind(this),
+      getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
       setCalendarAttributes: (instance) => {
-        if (instance && instance.calendarContainer) {
-          setCalendarAttributes(instance);
-          instance.calendarContainer.setAttribute('aria-label', 'Date picker');
-        } else {
-          console.warn('Calendar container not available...');
-        }
+        const modalDetected = !!this.closest('kyn-modal');
+        setCalendarAttributes(instance, modalDetected);
+        instance.calendarContainer.setAttribute('aria-label', 'Date picker');
       },
       setInitialDates: this.setInitialDates.bind(this),
-      appendToBody: false,
     });
 
     hideEmptyYear();
@@ -413,21 +411,19 @@ export class DatePicker extends FormMixin(LitElement) {
 
   async updateFlatpickrOptions(): Promise<void> {
     if (!this.flatpickrInstance) return;
-
-    const newOptions = await this.getComponentFlatpickrOptions();
+    const newOptions = (await this.getComponentFlatpickrOptions()) || {};
     Object.keys(newOptions).forEach((key) => {
-      if (key in this.flatpickrInstance!.config) {
+      if (
+        this.flatpickrInstance!.config &&
+        key in this.flatpickrInstance!.config
+      ) {
         this.flatpickrInstance!.set(
           key as keyof BaseOptions,
           newOptions[key as keyof BaseOptions]
         );
       }
     });
-
     this.flatpickrInstance.redraw();
-
-    hideEmptyYear();
-
     setTimeout(() => {
       if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
         setCalendarAttributes(this.flatpickrInstance);
@@ -482,6 +478,9 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+    const modal = this.closest('kyn-modal');
+    const container = modal ? modal : document.body;
+
     return getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
@@ -499,6 +498,7 @@ export class DatePicker extends FormMixin(LitElement) {
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),
       onChange: this.handleDateChange.bind(this),
+      appendTo: container,
     });
   }
 
@@ -586,7 +586,8 @@ export class DatePicker extends FormMixin(LitElement) {
 
     if (isRequired && isEmpty) {
       validity = { ...validity, valueMissing: true };
-      validationMessage = this.defaultErrorMessage;
+      validationMessage =
+        this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
     }
 
     if (this.invalidText) {
@@ -595,6 +596,11 @@ export class DatePicker extends FormMixin(LitElement) {
     }
 
     const isValid = !validity.valueMissing && !validity.customError;
+
+    // fix: ensure we have a validation message when validity flags are true
+    if (!isValid && !validationMessage) {
+      validationMessage = this._textStrings.pleaseSelectValidDate;
+    }
 
     this._internals.setValidity(validity, validationMessage, this._inputEl);
     this._isInvalid =
