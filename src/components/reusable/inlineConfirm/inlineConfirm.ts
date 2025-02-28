@@ -86,6 +86,7 @@ export class InlineConfirm extends LitElement {
 
         <div class="confirmation">
           <kyn-button
+            class="confirm-btn"
             kind=${this.destructive ? 'outline-destructive' : 'outline'}
             size="small"
             @on-click=${this._handleConfirm}

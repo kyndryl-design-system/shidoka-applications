@@ -14,28 +14,37 @@
   position: absolute;
   top: 0;
   right: 0;
-  transition: transform 250ms ease-out, opacity 250ms ease-out,
-    visibility 250ms ease-out;
-  transform: translateX(16px);
+  transition: opacity 600ms ease-out, visibility 600ms ease-out;
   visibility: hidden;
   opacity: 0;
 
   .open-right & {
     right: auto;
     left: 0;
-    transform: translateX(-16px);
     flex-direction: row-reverse;
   }
 
   .open & {
-    transform: translateX(0);
     visibility: visible;
     opacity: 1;
   }
 }
 
+.confirm-btn {
+  transition: transform 600ms ease-out;
+  transform: translateX(50%);
+
+  .open-right & {
+    transform: translateX(-50%);
+  }
+
+  .open & {
+    transform: translateX(0);
+  }
+}
+
 .anchor {
-  transition: opacity 250ms ease-out;
+  transition: opacity 600ms ease-out;
 
   .open & {
     opacity: 0;
