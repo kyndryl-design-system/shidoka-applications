@@ -18,6 +18,11 @@
       background-color: var(--kd-color-background-ui-hollow-default);
       outline: 1px solid var(--kd-color-border-variants-light);
     }
+    &.ai-highlight {
+      outline: 1px solid var(--kd-color-border-button-ai-state-default);
+      background: var(--kd-color-background-container-ai-default);
+      color: var(--kd-color-text-level-primary);
+    }
   }
 
   &-wrapper-clickable {
@@ -45,6 +50,18 @@
     &.ai-Connected {
       background-color: var(--kd-color-background-ui-hollow-default);
 
+      &:hover {
+        outline-color: var(--kd-color-border-button-ai-state-hover);
+        @include elevation.shadow(2, true);
+      }
+      &:focus {
+        outline-color: var(--kd-color-border-button-ai-state-hover);
+        @include elevation.shadow(2, true);
+      }
+    }
+
+    &.ai-highlight {
+      background: var(--kd-color-background-container-ai-default);
       &:hover {
         outline-color: var(--kd-color-border-button-ai-state-hover);
         @include elevation.shadow(2, true);
