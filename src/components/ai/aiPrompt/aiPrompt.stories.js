@@ -1,6 +1,7 @@
 import { html } from 'lit';
-import './index';
 import { action } from '@storybook/addon-actions';
+
+import './index';
 
 export default {
   title: 'AI/Components/AI Prompt',
@@ -83,7 +84,7 @@ export const Groups = {
           @on-click=${(e) => action(e.type)(e)}
           width="31.3%"
         >
-          <div slot="title">${args.title}</div>
+          <div slot="title">AI Prompt 1</div>
           <div slot="description">${args.description}</div>
         </kyn-ai-prompt>
         <kyn-ai-prompt
@@ -94,7 +95,7 @@ export const Groups = {
           @on-click=${(e) => action(e.type)(e)}
           width="31.3%"
         >
-          <div slot="title">${args.title}</div>
+          <div slot="title">AI Prompt 2</div>
           <div slot="description">${args.description}</div>
         </kyn-ai-prompt>
         <kyn-ai-prompt
@@ -104,7 +105,7 @@ export const Groups = {
           @on-click=${(e) => action(e.type)(e)}
           width="31.3%"
         >
-          <div slot="title">${args.title}</div>
+          <div slot="title">AI Prompt 3</div>
           <div slot="description">${args.description}</div>
         </kyn-ai-prompt>
       </kyn-ai-prompts-container>
@@ -120,7 +121,7 @@ export const Groups = {
           highlight
           @on-click=${(e) => action(e.type)(e)}
         >
-          <div slot="title">${args.title}</div>
+          <div slot="title">AI Prompt 1</div>
           <div slot="description">${args.description}</div>
         </kyn-ai-prompt>
         <kyn-ai-prompt
@@ -129,7 +130,7 @@ export const Groups = {
           rel=${args.rel}
           @on-click=${(e) => action(e.type)(e)}
         >
-          <div slot="title">${args.title}</div>
+          <div slot="title">AI Prompt 2</div>
           <div slot="description">${args.description}</div>
         </kyn-ai-prompt>
         <kyn-ai-prompt
@@ -138,7 +139,7 @@ export const Groups = {
           rel=${args.rel}
           @on-click=${(e) => action(e.type)(e)}
         >
-          <div slot="title">${args.title}</div>
+          <div slot="title">AI Prompt 3</div>
           <div slot="description">${args.description}</div>
         </kyn-ai-prompt>
       </kyn-ai-prompts-container>
