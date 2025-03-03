@@ -41,7 +41,7 @@ export class TableCell extends LitElement {
   width = '';
 
   /**
-   * Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.
+   * Sets a maximum width for the cell.
    * Accepts standard CSS width values (e.g., '150px', '50%').
    */
   @property({ type: String, reflect: true })
