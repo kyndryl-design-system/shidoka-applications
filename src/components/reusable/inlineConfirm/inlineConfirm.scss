@@ -6,13 +6,19 @@
 
 .inline-confirm {
   position: relative;
-  padding-left: 48px;
+  padding-left: 42px;
+
+  &.open-right {
+    padding-left: 0;
+    padding-right: 42px;
+  }
 
   --animation-speed: 400ms;
 }
 
-.confirmation {
+#confirmation {
   display: flex;
+  flex-direction: row-reverse;
   gap: 8px;
   position: absolute;
   top: 0;
@@ -25,9 +31,7 @@
   .open-right & {
     right: auto;
     left: 0;
-    flex-direction: row-reverse;
-    padding-left: 0;
-    padding-left: 48px;
+    flex-direction: row;
   }
 
   .open & {

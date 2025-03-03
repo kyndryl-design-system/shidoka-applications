@@ -60,6 +60,14 @@ export class InlineConfirm extends LitElement {
 
   private _handleToggle() {
     this._isOpen = !this._isOpen;
+
+    setTimeout(() => {
+      const focusEl: any = this._isOpen
+        ? this.shadowRoot?.querySelector('.cancel-btn')
+        : this.shadowRoot?.querySelector('.anchor');
+
+      focusEl.focus();
+    }, 10);
   }
 
   private _handleConfirm() {
@@ -83,12 +91,24 @@ export class InlineConfirm extends LitElement {
           kind="ghost"
           size="small"
           description=${this.anchorText}
+          aria-controls="confirmation"
+          aria-expanded=${this._isOpen}
           @on-click=${this._handleToggle}
         >
           <slot slot="icon"></slot>
         </kyn-button>
 
-        <div class="confirmation">
+        <div id="confirmation">
+          <kyn-button
+            class="cancel-btn"
+            kind="ghost"
+            size="small"
+            description=${this.cancelText}
+            @on-click=${this._handleToggle}
+          >
+            <span slot="icon">${unsafeSVG(closeIcon)}</span>
+          </kyn-button>
+
           <kyn-button
             class="confirm-btn"
             kind=${this.destructive ? 'outline-destructive' : 'outline'}
@@ -97,15 +117,6 @@ export class InlineConfirm extends LitElement {
             @on-click=${this._handleConfirm}
           >
             <slot slot="icon" name="confirmIcon"></slot>
-          </kyn-button>
-
-          <kyn-button
-            kind="ghost"
-            size="small"
-            description=${this.cancelText}
-            @on-click=${this._handleToggle}
-          >
-            <span slot="icon">${unsafeSVG(closeIcon)}</span>
           </kyn-button>
         </div>
       </div>
