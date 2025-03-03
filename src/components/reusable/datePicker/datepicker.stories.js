@@ -59,29 +59,30 @@ const Template = (args) => {
 
   return html`
     <kyn-date-picker
-      .name="${args.name}"
-      .locale="${args.locale}"
-      .label="${args.label}"
-      .dateFormat="${args.dateFormat}"
+      .name=${args.name}
+      .locale=${args.locale}
+      .label=${args.label}
+      .dateFormat=${args.dateFormat}
       .defaultDate=${args.defaultDate}
-      .defaultErrorMessage="${args.defaultErrorMessage}"
-      ?required="${args.required}"
-      .size="${args.size}"
-      .value="${args.value}"
-      .warnText="${args.warnText}"
-      .invalidText="${args.invalidText}"
-      .disable="${args.disable}"
-      .enable="${args.enable}"
-      .mode="${args.mode}"
-      .caption="${args.caption}"
-      .errorAriaLabel="${args.errorAriaLabel}"
-      .errorTitle="${args.errorTitle}"
-      .warningAriaLabel="${args.warningAriaLabel}"
-      .warningTitle="${args.warningTitle}"
-      ?datePickerDisabled="${args.datePickerDisabled}"
-      ?twentyFourHourFormat="${args.twentyFourHourFormat}"
-      .minDate="${args.minDate}"
-      .maxDate="${args.maxDate}"
+      ?staticPosition=${args.staticPosition}
+      .defaultErrorMessage=${args.defaultErrorMessage}
+      ?required=${args.required}
+      .size=${args.size}
+      .value=${args.value}
+      .warnText=${args.warnText}
+      .invalidText=${args.invalidText}
+      .disable=${args.disable}
+      .enable=${args.enable}
+      .mode=${args.mode}
+      .caption=${args.caption}
+      .errorAriaLabel=${args.errorAriaLabel}
+      .errorTitle=${args.errorTitle}
+      .warningAriaLabel=${args.warningAriaLabel}
+      .warningTitle=${args.warningTitle}
+      ?datePickerDisabled=${args.datePickerDisabled}
+      ?twentyFourHourFormat=${args.twentyFourHourFormat}
+      .minDate=${args.minDate}
+      .maxDate=${args.maxDate}
       @on-change=${(e) => action(e.type)(e)}
     >
     </kyn-date-picker>
@@ -97,6 +98,7 @@ DatePickerDefault.args = {
   defaultErrorMessage: 'A date value is required',
   required: false,
   size: 'md',
+  staticPosition: false,
   value: '',
   warnText: '',
   invalidText: '',
@@ -158,6 +160,7 @@ export const DatepickerInModal = {
     locale: 'en',
     name: 'date-picker-in-modal',
     dateFormat: 'Y-m-d',
+    staticPosition: false,
     defaultDate: '',
     caption: 'Datepicker in a modal.',
     label: 'Date',
@@ -204,6 +207,7 @@ export const DatepickerInModal = {
           .label=${args.label}
           .dateFormat=${args.dateFormat}
           .defaultDate=${args.defaultDate}
+          ?staticPosition=${args.staticPosition}
           .defaultErrorMessage=${args.defaultErrorMessage}
           ?required=${args.required}
           .size=${args.size}

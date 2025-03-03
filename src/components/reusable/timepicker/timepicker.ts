@@ -127,6 +127,10 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   warningTitle = '';
 
+  /** Sets whether the Flatpickr calendar UI should use static positioning. */
+  @property({ type: Boolean })
+  staticPosition = false;
+
   /**
    * Sets whether user has interacted with timepicker for error handling.
    * @internal
@@ -357,7 +361,8 @@ export class TimePicker extends FormMixin(LitElement) {
       getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
       setCalendarAttributes: (instance) => {
         if (instance && instance.calendarContainer) {
-          setCalendarAttributes(instance);
+          const modalDetected = !!this.closest('kyn-modal');
+          setCalendarAttributes(instance, modalDetected);
           instance.calendarContainer.setAttribute('aria-label', 'Time picker');
         } else {
           console.warn('Calendar container not available...');
@@ -425,6 +430,7 @@ export class TimePicker extends FormMixin(LitElement) {
       onClose: this.handleClose.bind(this),
       onOpen: this.handleOpen.bind(this),
       appendTo: container,
+      static: this.staticPosition,
     });
   }
 

@@ -57,30 +57,31 @@ const Template = (args) => {
 
   return html`
     <kyn-date-range-picker
-      .name="${args.name}"
-      .label="${args.label}"
-      .locale="${args.locale}"
-      .dateFormat="${args.dateFormat}"
+      .name=${args.name}
+      .label=${args.label}
+      .locale=${args.locale}
+      .dateFormat=${args.dateFormat}
       .defaultDate=${args.defaultDate}
-      .defaultErrorMessage="${args.defaultErrorMessage}"
-      .value="${args.value}"
-      .warnText="${args.warnText}"
-      .invalidText="${args.invalidText}"
-      .disable="${args.disable}"
-      .enable="${args.enable}"
-      .caption="${args.caption}"
-      ?required="${args.required}"
-      .size="${args.size}"
-      ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
-      ?twentyFourHourFormat="${args.twentyFourHourFormat}"
-      .minDate="${args.minDate}"
-      .maxDate="${args.maxDate}"
-      .errorAriaLabel="${args.errorAriaLabel}"
-      .errorTitle="${args.errorTitle}"
-      .warningAriaLabel="${args.warningAriaLabel}"
-      .warningTitle="${args.warningTitle}"
-      .startDateLabel="${args.startDateLabel}"
-      .endDateLabel="${args.endDateLabel}"
+      .defaultErrorMessage=${args.defaultErrorMessage}
+      .value=${args.value}
+      .warnText=${args.warnText}
+      .invalidText=${args.invalidText}
+      .disable=${args.disable}
+      .enable=${args.enable}
+      .caption=${args.caption}
+      ?required=${args.required}
+      ?staticPosition=${args.staticPosition}
+      .size=${args.size}
+      ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+      ?twentyFourHourFormat=${args.twentyFourHourFormat}
+      .minDate=${args.minDate}
+      .maxDate=${args.maxDate}
+      .errorAriaLabel=${args.errorAriaLabel}
+      .errorTitle=${args.errorTitle}
+      .warningAriaLabel=${args.warningAriaLabel}
+      .warningTitle=${args.warningTitle}
+      .startDateLabel=${args.startDateLabel}
+      .endDateLabel=${args.endDateLabel}
       @on-change=${(e) => action(e.type)(e)}
     >
     </kyn-date-range-picker>
@@ -94,6 +95,7 @@ DateRangeDefault.args = {
   dateFormat: 'Y-m-d',
   defaultDate: '',
   required: false,
+  staticPosition: false,
   size: 'md',
   defaultErrorMessage: 'Both start and end dates are required',
   value: [null, null],
@@ -193,6 +195,7 @@ export const DateRangePickerInModal = {
           .locale=${args.locale}
           .dateFormat=${args.dateFormat}
           .defaultDate=${args.defaultDate}
+          ?staticPosition=${args.staticPosition}
           .defaultErrorMessage=${args.defaultErrorMessage}
           .value=${args.value}
           .warnText=${args.warnText}
@@ -230,6 +233,7 @@ export const DateRangePickerInAccordionInModal = {
     defaultDate: '',
     caption: 'Date-range picker in a modal.',
     label: 'Date',
+    staticPosition: true,
     open: false,
     size: 'lg',
     titleText: 'Select Date',
@@ -286,6 +290,7 @@ export const DateRangePickerInAccordionInModal = {
                 .dateFormat=${args.dateFormat}
                 .defaultDate=${args.defaultDate}
                 .defaultErrorMessage=${args.defaultErrorMessage}
+                ?staticPosition=${args.staticPosition}
                 .value=${args.value}
                 .warnText=${args.warnText}
                 .invalidText=${args.invalidText}
@@ -332,4 +337,5 @@ export const DateRangePickerInAccordionInModal = {
     `;
   },
 };
-DateRangePickerInAccordionInModal.storyName = 'In Accordion In Modal';
+DateRangePickerInAccordionInModal.storyName =
+  'Static Position In Nested Acccordion';

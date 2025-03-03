@@ -134,6 +134,10 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   warningTitle = '';
 
+  /** Sets whether the Flatpickr calendar UI should use static positioning. */
+  @property({ type: Boolean })
+  staticPosition = false;
+
   /** Sets flatpickr enableTime value based on detected dateFormat.
    * @internal
    */
@@ -398,7 +402,8 @@ export class DatePicker extends FormMixin(LitElement) {
       inputEl: this._inputEl,
       getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
       setCalendarAttributes: (instance) => {
-        setCalendarAttributes(instance);
+        const modalDetected = !!this.closest('kyn-modal');
+        setCalendarAttributes(instance, modalDetected);
         instance.calendarContainer.setAttribute('aria-label', 'Date picker');
       },
       setInitialDates: this.setInitialDates.bind(this),
@@ -498,6 +503,7 @@ export class DatePicker extends FormMixin(LitElement) {
       onClose: this.handleClose.bind(this),
       onChange: this.handleDateChange.bind(this),
       appendTo: container,
+      static: this.staticPosition,
     });
   }
 
