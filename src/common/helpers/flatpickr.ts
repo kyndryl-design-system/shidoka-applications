@@ -125,7 +125,6 @@ interface FlatpickrOptionsContext {
   closeOnSelect?: boolean;
   wrap?: boolean;
   noCalendar?: boolean;
-  appendTo?: HTMLElement;
 }
 
 export function isSupportedLocale(locale: string): boolean {
@@ -257,14 +256,13 @@ export async function initializeMultiAnchorFlatpickr(
 }
 
 export async function initializeSingleAnchorFlatpickr(
-  context: SingleFlatpickrContext & { appendTo?: HTMLElement }
+  context: SingleFlatpickrContext
 ): Promise<Instance | undefined> {
   const {
     inputEl,
     getFlatpickrOptions,
     setCalendarAttributes,
     setInitialDates,
-    appendTo,
   } = context;
   if (!inputEl) {
     console.error('Cannot initialize Flatpickr: inputEl is undefined');
@@ -281,17 +279,6 @@ export async function initializeSingleAnchorFlatpickr(
       inputElement = document.createElement('input');
       inputElement.type = 'text';
       inputElement.style.display = 'none';
-
-      if (appendTo) {
-        appendTo.appendChild(inputElement);
-      } else if (
-        inputEl instanceof HTMLElement &&
-        !(inputEl instanceof HTMLInputElement)
-      ) {
-        inputEl.appendChild(inputElement);
-      } else {
-        document.body.appendChild(inputElement);
-      }
 
       options.clickOpens = false;
       options.positionElement = inputEl;
@@ -371,7 +358,6 @@ export async function getFlatpickrOptions(
     onClose,
     onOpen,
     loadLocale,
-    appendTo,
   } = context;
 
   if (!locale) {
@@ -402,10 +388,10 @@ export async function getFlatpickrOptions(
         ? twentyFourHourFormat
         : !isEnglishOr12HourLocale,
     weekNumbers: false,
+    static: true,
     wrap,
     showMonths: mode === 'range' && isWideScreen ? 2 : 1,
     monthSelectorType: 'static',
-    static: true,
     locale: localeOptions,
     closeOnSelect: closeOnSelect ?? !(mode === 'multiple' || enableTime),
     onChange: (selectedDates, dateStr, instance) => {
@@ -463,7 +449,6 @@ export async function getFlatpickrOptions(
   if (defaultMinute !== undefined) options.defaultMinute = defaultMinute;
   if (enable && enable.length > 0) options.enable = enable;
   if (disable && disable.length > 0) options.disable = disable;
-  if (appendTo) options.appendTo = appendTo;
 
   return options;
 }
