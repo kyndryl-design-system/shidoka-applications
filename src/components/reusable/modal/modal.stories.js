@@ -4,6 +4,7 @@ import { action } from '@storybook/addon-actions';
 
 import '../button';
 import '../textInput';
+import './modal.chathistory.sample.ts';
 
 export default {
   title: 'Components/Modal',
@@ -243,6 +244,14 @@ export const AIConnected = {
         </kyn-button>
         Basic Modal example.
       </kyn-modal>
+    `;
+  },
+};
+
+export const ChatHistory = {
+  render: () => {
+    return html`
+      <sample-chathistory-component></sample-chathistory-component>
     `;
   },
 };
