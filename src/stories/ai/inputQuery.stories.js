@@ -1,6 +1,7 @@
 import { html } from 'lit';
-import '../components/reusable/textArea';
-import '../components/reusable/button';
+import { action } from '@storybook/addon-actions';
+import '../../components/reusable/textArea';
+import '../../components/reusable/button';
 import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/send.svg';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
@@ -17,42 +18,44 @@ export default {
 export const Default = {
   render: () => {
     return html`
-      <div class="input-query-container">
+      <form
+        class="ai-input-query"
+        @submit=${(e) => {
+          e.preventDefault();
+          action('submit')(e);
+          const formData = new FormData(e.target);
+          console.log(...formData);
+        }}
+      >
         <kyn-text-area
-          class="input-text-area"
+          name="ai-query"
           rows="2"
           placeholder="Type your message..."
           maxRowsVisible="3"
-          ?aiConnected=${true}
-          ?notResizeable=${true}
+          label="AI Prompt Query"
+          hideLabel
+          aiConnected
+          notResizeable
         ></kyn-text-area>
-        <kyn-button
-          class="input-send-button"
-          kind="primary-ai"
-          description="send button"
-        >
+
+        <kyn-button type="submit" kind="primary-ai" description="Submit">
           <span slot="icon">${unsafeSVG(sendIcon)}</span>
         </kyn-button>
-      </div>
+      </form>
 
       <style>
-        .input-query-container {
-          width: 100%;
+        .ai-input-query {
           display: flex;
+          gap: 10px;
+          padding: 10px;
           align-items: center;
 
           background-color: var(--kd-color-background-container-ai-default);
-          box-shadow: var(--kd-elevation-level-3-ai);
+          border: 2px solid var(--kd-color-border-ai-subtle);
           border-radius: 8px;
 
-          .input-text-area {
-            width: 100%;
-            padding: 2px 0px 10px 10px;
-            margin-right: 10px;
-          }
-
-          .input-send-button {
-            margin-right: 10px;
+          kyn-text-area {
+            flex-grow: 1;
           }
         }
       </style>

@@ -59,6 +59,10 @@ export class TextArea extends FormMixin(LitElement) {
   @property({ type: Boolean })
   notResizeable = false;
 
+  /** Visually hide the label. */
+  @property({ type: Boolean })
+  hideLabel = false;
+
   /** textarea rows attribute. The number of visible text lines.
    * **Required** when `aiConnected` is set to `true`.
    */
@@ -96,7 +100,10 @@ export class TextArea extends FormMixin(LitElement) {
   override render() {
     return html`
       <div class="text-area" ?disabled=${this.disabled}>
-        <label class="label-text" for=${this.name}>
+        <label
+          class="label-text ${this.hideLabel ? 'sr-only' : ''}"
+          for=${this.name}
+        >
           ${this.required
             ? html`<abbr
                 class="required"

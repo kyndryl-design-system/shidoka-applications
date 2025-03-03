@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import '../components/reusable/avatar';
+import '../../components/reusable/avatar';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/response.svg';
 
