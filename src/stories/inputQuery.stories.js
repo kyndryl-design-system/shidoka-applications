@@ -41,7 +41,7 @@ export const Default = {
           display: flex;
           align-items: center;
 
-          background-color: var(--kd-color-background-container-ai-default);
+          background-color: var(--kd-color-background-container-ai-level-2);
           box-shadow: var(--kd-elevation-level-3-ai);
           border-radius: 8px;
 
