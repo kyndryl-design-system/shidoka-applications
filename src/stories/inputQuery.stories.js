@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit';
+import { html } from 'lit';
 import '../components/reusable/textArea';
 import '../components/reusable/button';
 import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/send.svg';
@@ -14,78 +14,48 @@ export default {
   },
 };
 
-export const Default = () => {
-  class AiInputQuery extends LitElement {
-    static properties = {
-      isFocused: { type: Boolean },
-    };
-
-    handleFocus() {
-      const inputElement = this.shadowRoot?.querySelector(
-        '.input-query-container'
-      );
-      inputElement.classList.add('focused');
-    }
-
-    handleBlur() {
-      const inputElement = this.shadowRoot?.querySelector(
-        '.input-query-container'
-      );
-      inputElement.classList.remove('focused');
-    }
-
-    render() {
-      return html`
-        <div
-          class="input-query-container ${this.isFocused ? 'focused' : ''}"
-          @focusin="${this.handleFocus}"
-          @focusout="${this.handleBlur}"
+export const Default = {
+  render: () => {
+    return html`
+      <div class="input-query-container">
+        <kyn-text-area
+          class="input-text-area"
+          rows="2"
+          placeholder="Type your message..."
+          maxRowsVisible="3"
+          ?aiConnected=${true}
+          ?notResizeable=${true}
+        ></kyn-text-area>
+        <kyn-button
+          class="input-send-button"
+          kind="primary-ai"
+          description="send button"
         >
-          <kyn-text-area
-            class="input-text-area"
-            rows="2"
-            placeholder="Type your message..."
-            maxRowsVisible="3"
-            ?aiConnected=${true}
-            ?notResizeable=${true}
-          ></kyn-text-area>
-          <kyn-button
-            class="input-send-button"
-            kind="primary-ai"
-            description="send button"
-          >
-            <span slot="icon">${unsafeSVG(sendIcon)}</span>
-          </kyn-button>
-        </div>
+          <span slot="icon">${unsafeSVG(sendIcon)}</span>
+        </kyn-button>
+      </div>
 
-        <style>
-          .input-query-container {
+      <style>
+        .input-query-container {
+          width: 100%;
+          display: flex;
+          align-items: center;
+
+          background-color: var(--kd-color-background-container-ai-default);
+          box-shadow: var(--kd-elevation-level-3-ai);
+          border-radius: 8px;
+
+          .input-text-area {
             width: 100%;
-            display: flex;
-            align-items: center;
-
-            background-color: var(--kd-color-background-container-ai-default);
-            box-shadow: var(--kd-elevation-level-3-ai);
-            border: 2px solid var(--Border-Ai-Subtle, #ebb2eb);
-            border-radius: 8px;
-
-            .input-text-area {
-              width: 100%;
-              padding: 2px 0px 10px 10px;
-              margin-right: 10px;
-            }
-
-            .input-send-button {
-              margin-right: 10px;
-            }
+            padding: 2px 0px 10px 10px;
+            margin-right: 10px;
           }
-          .focused {
-            border: 2px solid var(--kd-color-border-button-ai-state-focused);
+
+          .input-send-button {
+            margin-right: 10px;
           }
-        </style>
-      `;
-    }
-  }
-  customElements.define('ai-input-query', AiInputQuery);
-  return html`<ai-input-query></ai-input-query>`;
+        }
+      </style>
+    `;
+  },
 };
