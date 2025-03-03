@@ -29,9 +29,13 @@ export class AIPrompt extends LitElement {
   @property({ type: String })
   target: any = '_self';
 
-  /** Set this to `true` for highlight */
+  /** Set highlighted state with unique styles. */
   @property({ type: Boolean })
   highlight = false;
+
+  /** Sets border to hidden when true. */
+  @property({ type: Boolean })
+  hideBorder = false;
 
   /** Sets maximum width of the prompt. Use any valid CSS width value. */
   @property({ type: String })

@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "AI Prompt.",
+          "description": "AI Prompt component.",
           "name": "AIPrompt",
           "slots": [
             {
@@ -58,8 +58,18 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Set this to `true` for highlight",
+              "description": "Set highlighted state with unique styles.",
               "attribute": "highlight"
+            },
+            {
+              "kind": "field",
+              "name": "hideBorder",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets border to hidden when true.",
+              "attribute": "hideBorder"
             },
             {
               "kind": "field",
@@ -133,8 +143,17 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Set this to `true` for highlight",
+              "description": "Set highlighted state with unique styles.",
               "fieldName": "highlight"
+            },
+            {
+              "name": "hideBorder",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets border to hidden when true.",
+              "fieldName": "hideBorder"
             },
             {
               "name": "maxWidth",
@@ -290,7 +309,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "AI Assistant Launch Button.",
+          "description": "AI Launch Button component.",
           "name": "AILaunchButton",
           "members": [
             {
@@ -5052,8 +5071,18 @@
             },
             {
               "kind": "field",
+              "name": "staticPosition",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
+              "attribute": "staticPosition"
+            },
+            {
+              "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n}",
+              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -5489,6 +5518,15 @@
               "fieldName": "warningTitle"
             },
             {
+              "name": "staticPosition",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
+              "fieldName": "staticPosition"
+            },
+            {
               "name": "textStrings",
               "default": "_defaultTextStrings",
               "description": "Customizable text strings.",
@@ -5760,8 +5798,18 @@
             },
             {
               "kind": "field",
+              "name": "staticPosition",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
+              "attribute": "staticPosition"
+            },
+            {
+              "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n}",
+              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -6154,6 +6202,15 @@
               "default": "''",
               "description": "Sets title attribute for warning message.",
               "fieldName": "warningTitle"
+            },
+            {
+              "name": "staticPosition",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
+              "fieldName": "staticPosition"
             },
             {
               "name": "textStrings",
@@ -8079,6 +8136,10 @@
             {
               "description": "Slot for the anchor button content.",
               "name": "anchor"
+            },
+            {
+              "description": "Slot for the footer content which replaces the ok, cancel, and second ary buttons.",
+              "name": "footer"
             }
           ],
           "members": [
@@ -13376,7 +13437,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "maxWidth",
               "reflects": true
             },
@@ -13460,7 +13521,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "maxWidth"
             },
             {
@@ -14523,7 +14584,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "maxWidth",
               "reflects": true
             },
@@ -14640,7 +14701,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell; contents exceeding this limit will be truncated with ellipsis.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "maxWidth"
             },
             {
@@ -17699,8 +17760,18 @@
             },
             {
               "kind": "field",
+              "name": "staticPosition",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
+              "attribute": "staticPosition"
+            },
+            {
+              "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n}",
+              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -18086,6 +18157,15 @@
               "default": "''",
               "description": "Sets title attribute for warning message.",
               "fieldName": "warningTitle"
+            },
+            {
+              "name": "staticPosition",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
+              "fieldName": "staticPosition"
             },
             {
               "name": "textStrings",

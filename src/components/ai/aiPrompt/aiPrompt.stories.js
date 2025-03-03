@@ -23,10 +23,13 @@ const baseArgs = {
   href: '',
   rel: '',
   target: '_self',
+  highlight: false,
   hideBorder: false,
+  maxWidth: '',
+  width: '',
   title: 'AI Prompt Title',
   description:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex commodo consequat.',
+    'Help me find previous case studies or success stories involving industry or similar clients for   business problem or using Kyndryl service',
 };
 
 const Template = (args) => html`
@@ -35,6 +38,9 @@ const Template = (args) => html`
     target=${args.target}
     rel=${args.rel}
     ?highlight=${args.highlight}
+    ?hideBorder=${args.hideBorder}
+    maxWidth=${args.maxWidth}
+    width=${args.width}
     @on-click=${(e) => action(e.type)(e)}
   >
     <div slot="title">${args.title}</div>
@@ -43,12 +49,22 @@ const Template = (args) => html`
 `;
 
 export const Default = {
-  args: { ...baseArgs, highlight: false },
+  args: { ...baseArgs, highlight: false, maxWidth: '350px' },
   render: Template,
 };
 
 export const Highlighted = {
-  args: { ...baseArgs, highlight: true, title: 'Highlighted AI Prompt Title' },
+  args: {
+    ...baseArgs,
+    highlight: true,
+    title: 'Highlighted AI Prompt Title',
+    maxWidth: '350px',
+  },
+  render: Template,
+};
+
+export const HideBorder = {
+  args: { ...baseArgs, highlight: false, maxWidth: '350px', hideBorder: true },
   render: Template,
 };
 
@@ -96,7 +112,7 @@ export const Groups = {
       <div class="heading kd-type--headline-07" style="margin: 30px 0;">
         Vertical Container
       </div>
-      <kyn-ai-prompts-container orientation="vertical" maxWidth="400px">
+      <kyn-ai-prompts-container orientation="vertical" maxWidth="350px">
         <kyn-ai-prompt
           href=${args.href}
           target=${args.target}

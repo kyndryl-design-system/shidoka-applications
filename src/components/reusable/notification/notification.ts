@@ -133,7 +133,7 @@ export class Notification extends LitElement {
     return html`
       ${this.type === 'clickable'
         ? html`<kyn-card
-            class="notification-mark-unread"
+            class="notification-clickable notification-mark-unread"
             ?highlight=${this.unRead}
             type=${this.type}
             href=${this.href}
