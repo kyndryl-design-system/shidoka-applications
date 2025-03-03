@@ -1,11 +1,15 @@
 import { LitElement, html, property, customElement, state } from 'lit-element';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { classMap } from 'lit/directives/class-map.js';
 import styles from './inlineConfirm.scss';
 import '../button';
 
+import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/close-simple.svg';
+
 /**
  * InlineConfirm component.
  * @slot unnamed - Slot for anchor button icon.
+ * @slot confirmIcon - Slot for cinfirm icon button
  * @fires on-confirm - Dispatched when the confirm button is clicked.
  */
 @customElement('kyn-inline-confirm')
@@ -89,13 +93,19 @@ export class InlineConfirm extends LitElement {
             class="confirm-btn"
             kind=${this.destructive ? 'outline-destructive' : 'outline'}
             size="small"
+            description=${this.confirmText}
             @on-click=${this._handleConfirm}
           >
-            ${this.confirmText}
+            <slot slot="icon" name="confirmIcon"></slot>
           </kyn-button>
 
-          <kyn-button kind="ghost" size="small" @on-click=${this._handleToggle}>
-            ${this.cancelText}
+          <kyn-button
+            kind="ghost"
+            size="small"
+            description=${this.cancelText}
+            @on-click=${this._handleToggle}
+          >
+            <span slot="icon">${unsafeSVG(closeIcon)}</span>
           </kyn-button>
         </div>
       </div>

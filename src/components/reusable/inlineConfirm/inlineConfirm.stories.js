@@ -39,6 +39,7 @@ export const InlineConfirm = {
         @on-confirm=${(e) => action('on-confirm')()}
       >
         ${unsafeSVG(deleteIcon)}
+        <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
       </kyn-inline-confirm>
     `;
   },
@@ -60,6 +61,7 @@ export const WithCard = {
             @on-confirm=${(e) => action('on-confirm')()}
           >
             ${unsafeSVG(deleteIcon)}
+            <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
           </kyn-inline-confirm>
         </div>
       </kyn-card>
