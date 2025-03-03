@@ -7,7 +7,7 @@ import aiLaunchButtonDisabled from './json/ai_assist_disabled.json';
 import Styles from './aiLaunchButton.scss';
 
 /**
- * AI Assistant Launch Button.
+ * AI Launch Button component.
  * @fires on-click - Emits when the button is clicked.
  */
 @customElement('kyn-ai-launch-btn')

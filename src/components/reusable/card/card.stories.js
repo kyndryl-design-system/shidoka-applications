@@ -33,6 +33,7 @@ export const BlankCard = {
     target: '_self',
     hideBorder: false,
     highlight: false,
+    aiConnected: false,
   },
   render: (args) => {
     return html` <kyn-card
@@ -43,6 +44,7 @@ export const BlankCard = {
       role="article"
       ?hideBorder=${args.hideBorder}
       ?highlight=${args.highlight}
+      ?aiConnected=${args.aiConnected}
       aria-label="Blank card"
     ></kyn-card>`;
   },
@@ -56,6 +58,7 @@ export const Simple = {
     target: '_self',
     hideBorder: false,
     highlight: false,
+    aiConnected: false,
   },
   render: (args) => {
     return html`
@@ -66,6 +69,7 @@ export const Simple = {
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
         ?highlight=${args.highlight}
+        ?aiConnected=${args.aiConnected}
         role="article"
         aria-label="Simple card"
       >
@@ -90,6 +94,7 @@ export const Clickable = {
     target: '_blank',
     hideBorder: false,
     highlight: false,
+    aiConnected: false,
   },
   render: (args) => {
     return html`
@@ -100,6 +105,7 @@ export const Clickable = {
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
         ?highlight=${args.highlight}
+        ?aiConnected=${args.aiConnected}
         role="link"
         aria-label="Clickable card"
         @on-card-click=${(e) => action(e.type)(e)}
@@ -125,6 +131,7 @@ export const InsideGrid = {
     target: '_self',
     hideBorder: false,
     highlight: false,
+    aiConnected: false,
   },
   render: (args) => {
     return html`
@@ -138,6 +145,7 @@ export const InsideGrid = {
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
             ?highlight=${args.highlight}
+            ?aiConnected=${args.aiConnected}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -158,6 +166,7 @@ export const InsideGrid = {
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
             ?highlight=${args.highlight}
+            ?aiConnected=${args.aiConnected}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -180,6 +189,7 @@ export const InsideGrid = {
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
             ?highlight=${args.highlight}
+            ?aiConnected=${args.aiConnected}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -199,6 +209,7 @@ export const InsideGrid = {
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
             ?highlight=${args.highlight}
+            ?aiConnected=${args.aiConnected}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -214,6 +225,40 @@ export const InsideGrid = {
           </kyn-card>
         </div>
       </div>
+    `;
+  },
+};
+
+export const AIConnected = {
+  args: {
+    type: 'normal',
+    href: '',
+    rel: '',
+    target: '_self',
+    hideBorder: false,
+    aiConnected: true,
+  },
+  render: (args) => {
+    return html`
+      <kyn-card
+        type=${args.type}
+        href=${args.href}
+        target=${args.target}
+        rel=${args.rel}
+        ?hideBorder=${args.hideBorder}
+        ?aiConnected=${args.aiConnected}
+        role="article"
+        aria-label="Simple card"
+      >
+        <sample-card-component>
+          <div slot="title">This is a card title</div>
+          <div slot="description">
+            Amazon EC2 Auto Scaling ensures that your application always has the
+            right amount of compute capacity by dynamically adjusting the number
+            of Amazon EC2 instances based on demand.
+          </div>
+        </sample-card-component>
+      </kyn-card>
     `;
   },
 };

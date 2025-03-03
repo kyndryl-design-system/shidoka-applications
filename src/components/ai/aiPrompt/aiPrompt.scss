@@ -1,0 +1,101 @@
+@use '../../../common/scss/global.scss';
+@use '../../../../node_modules/@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+
+:host {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+
+  kyn-card {
+    display: block;
+    width: 100%;
+    border-radius: 8px;
+    transition: all 150ms ease-in-out;
+
+    &::part(card-wrapper) {
+      @include elevation.shadow(1, true);
+      border-radius: 8px;
+      padding: 16px;
+      gap: 16px;
+      outline: none;
+      border: 1px solid var(--kd-color-border-button-ai-state-default);
+      background: var(--kd-color-background-button-secondary-ai-default);
+
+      a {
+        width: 100%;
+      }
+    }
+
+    &:hover {
+      &::part(card-wrapper) {
+        @include elevation.shadow(2, true);
+        border: 1px solid var(--kd-color-border-button-ai-state-hover);
+        background: var(--kd-color-background-button-secondary-ai-hover);
+      }
+
+      ::slotted([slot='title']) {
+        color: var(--kd-color-text-level-primary);
+      }
+
+      ::slotted([slot='description']) {
+        color: var(--kd-color-text-level-primary);
+      }
+    }
+  }
+}
+
+:host([hideborder]) {
+  kyn-card::part(card-wrapper) {
+    box-shadow: none;
+    border: none;
+  }
+}
+
+:host([highlight]) {
+  kyn-card::part(card-wrapper) {
+    border: 1px solid var(--kd-color-border-button-ai-state-highlight);
+    background: var(--kd-color-background-button-secondary-ai-pressed);
+  }
+
+  ::slotted([slot='title']) {
+    color: var(--kd-color-text-level-light);
+  }
+
+  ::slotted([slot='description']) {
+    color: var(--kd-color-text-level-light);
+  }
+
+  kyn-card:hover::part(card-wrapper) {
+    @include elevation.shadow(2, true);
+    border: 1px solid var(--kd-color-border-button-ai-state-hover);
+    background: var(--kd-color-background-button-secondary-ai-hover);
+  }
+
+  kyn-card:hover ::slotted([slot='title']) {
+    color: var(--kd-color-text-level-primary);
+  }
+
+  kyn-card:hover ::slotted([slot='description']) {
+    color: var(--kd-color-text-level-primary);
+  }
+}
+
+::slotted(*) {
+  margin: 0;
+  padding: 0;
+}
+
+::slotted([slot='title']) {
+  display: block;
+  color: var(--kd-color-text-level-primary);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+::slotted([slot='description']) {
+  margin-top: 8px;
+  display: block;
+  color: var(--kd-color-text-level-primary);
+  font-size: 14px;
+}
