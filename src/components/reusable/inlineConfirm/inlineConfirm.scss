@@ -26,8 +26,8 @@
   position: absolute;
   top: 0;
   right: 0;
-  transition: opacity var(--animation-speed-out) ease-out,
-    visibility var(--animation-speed-out) ease-out;
+  transition: opacity var(--animation-speed-out) var(--animation-easing-out),
+    visibility var(--animation-speed-out) var(--animation-easing-out);
   visibility: hidden;
   opacity: 0;
 
@@ -41,6 +41,7 @@
     visibility: visible;
     opacity: 1;
     transition-duration: var(--animation-speed-in);
+    transition-timing-function: var(--animation-easing-in);
   }
 }
 
@@ -49,11 +50,9 @@
 }
 
 .confirm-btn {
-  // transition: transform var(--animation-speed) ease-out;
   animation: slide-out var(--animation-speed-out) var(--animation-easing-out);
 
   .open-right & {
-    // transform: translateX(-100%);
     animation: slide-out-right var(--animation-speed-out)
       var(--animation-easing-out);
   }
@@ -64,15 +63,16 @@
   }
 
   .open & {
-    // transform: translateX(0);
     animation: slide-in var(--animation-speed-in) var(--animation-easing-in);
   }
 }
 
 .anchor {
-  transition: opacity var(--animation-speed-in) ease-out;
+  transition: opacity var(--animation-speed-out) var(--animation-easing-out);
 
   .open & {
+    transition-duration: var(--animation-speed-in);
+    transition-timing-function: var(--animation-easing-in);
     opacity: 0;
   }
 }
