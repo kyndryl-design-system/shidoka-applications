@@ -50,7 +50,7 @@ export const Default = {
           padding: 10px;
           align-items: center;
 
-          background-color: var(--kd-color-background-container-ai-default);
+          background-color: var(--kd-color-background-container-ai-level-2);
           border: 2px solid var(--kd-color-border-ai-subtle);
           border-radius: 8px;
 
