@@ -42,7 +42,6 @@ const _defaultTextStrings = {
 /**
  * Datepicker: uses Flatpickr's datetime picker library -- `https://flatpickr.js.org`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
- * @fires on-clear - Captures the input clear event.
  * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-date-picker')
@@ -391,9 +390,9 @@ export class DatePicker extends FormMixin(LitElement) {
       this._inputEl.value = '';
     }
 
-    emitValue(this, 'on-clear', {
-      type: 'clear',
-      timestamp: new Date().toISOString(),
+    emitValue(this, 'on-change', {
+      dates: null,
+      dateString: '',
     });
 
     this._validate(true, false);

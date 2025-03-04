@@ -43,7 +43,6 @@ const _defaultTextStrings = {
 /**
  * Timepicker: uses Flatpickr library,time picker implementation  -- `https://flatpickr.js.org/examples/#time-picker`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
- * @fires on-clear - Captures the input clear event.
  * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-time-picker')
@@ -351,9 +350,8 @@ export class TimePicker extends FormMixin(LitElement) {
       this._inputEl.value = '';
     }
 
-    emitValue(this, 'on-clear', {
-      type: 'clear',
-      timestamp: new Date().toISOString(),
+    emitValue(this, 'on-change', {
+      time: '',
     });
 
     this._validate(true, false);
