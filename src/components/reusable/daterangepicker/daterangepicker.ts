@@ -173,6 +173,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @state()
   _textStrings = _defaultTextStrings;
 
+  /** Tracks if we're in a clear operation to prevent duplicate events
+   * @internal
+   */
+  @state()
+  private _isClearing = false;
+
   /** Control flag to prevent Flatpickr from opening when clicking caption, error, label, or warning elements.
    * @internal
    */
@@ -357,12 +363,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.defaultDate = null;
 
     if (this.flatpickrInstance) {
+      this._isClearing = true;
       this.flatpickrInstance.clear();
-      this.reinitializeFlatpickr();
-    }
-
-    if (this._inputEl) {
-      this._inputEl.value = '';
+      this._isClearing = false;
     }
 
     emitValue(this, 'on-change', {
@@ -372,13 +375,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     this._validate(true, false);
     this.requestUpdate();
-  }
-
-  private async reinitializeFlatpickr() {
-    if (this._initialized && this.flatpickrInstance) {
-      this.flatpickrInstance.destroy();
-      await this.initializeFlatpickr();
-    }
   }
 
   getDateRangePickerClasses() {
@@ -563,10 +559,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     if (selectedDates.length === 0) {
       this.value = [null, null];
-      emitValue(this, 'on-change', {
-        dates: null,
-        dateString: '',
-      });
+      if (!this._isClearing) {
+        emitValue(this, 'on-change', {
+          dates: null,
+          dateString: '',
+        });
+      }
     } else if (selectedDates.length === 1) {
       this.value = [selectedDates[0], null];
     } else {

@@ -151,6 +151,12 @@ export class TimePicker extends FormMixin(LitElement) {
   @query('input.input-custom')
   private _inputEl?: HTMLInputElement;
 
+  /** Tracks if we're in a clear operation to prevent duplicate events
+   * @internal
+   */
+  @state()
+  private _isClearing = false;
+
   /** Customizable text strings. */
   @property({ type: Object })
   textStrings = _defaultTextStrings;
@@ -342,12 +348,10 @@ export class TimePicker extends FormMixin(LitElement) {
     this.defaultDate = '';
 
     if (this.flatpickrInstance) {
+      this._isClearing = true;
       this.flatpickrInstance.clear();
       this.reinitializeFlatpickr();
-    }
-
-    if (this._inputEl) {
-      this._inputEl.value = '';
+      this._isClearing = false;
     }
 
     emitValue(this, 'on-change', {
@@ -493,10 +497,14 @@ export class TimePicker extends FormMixin(LitElement) {
   ): Promise<void> {
     if (selectedDates.length > 0) {
       this.value = selectedDates[0];
-      emitValue(this, 'on-change', { time: dateStr });
+      if (!this._isClearing) {
+        emitValue(this, 'on-change', { time: dateStr });
+      }
     } else {
       this.value = null;
-      emitValue(this, 'on-change', { time: '' });
+      if (!this._isClearing) {
+        emitValue(this, 'on-change', { time: '' });
+      }
     }
 
     this._validate(true, false);

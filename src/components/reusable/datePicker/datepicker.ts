@@ -164,6 +164,12 @@ export class DatePicker extends FormMixin(LitElement) {
   @query('input')
   private _inputEl?: HTMLInputElement;
 
+  /** Tracks if we're in a clear operation to prevent duplicate events
+   * @internal
+   */
+  @state()
+  private _isClearing = false;
+
   /** Customizable text strings. */
   @property({ type: Object })
   textStrings = _defaultTextStrings;
@@ -382,12 +388,10 @@ export class DatePicker extends FormMixin(LitElement) {
     this.defaultDate = null;
 
     if (this.flatpickrInstance) {
+      this._isClearing = true;
       this.flatpickrInstance.clear();
       this.reinitializeFlatpickr();
-    }
-
-    if (this._inputEl) {
-      this._inputEl.value = '';
+      this._isClearing = false;
     }
 
     emitValue(this, 'on-change', {
@@ -546,10 +550,12 @@ export class DatePicker extends FormMixin(LitElement) {
       formattedDates = null;
     }
 
-    emitValue(this, 'on-change', {
-      dates: formattedDates,
-      dateString: (this._inputEl as HTMLInputElement)?.value || dateStr,
-    });
+    if (!this._isClearing) {
+      emitValue(this, 'on-change', {
+        dates: formattedDates,
+        dateString: (this._inputEl as HTMLInputElement)?.value || dateStr,
+      });
+    }
 
     this._validate(true, false);
     await this.updateComplete;
