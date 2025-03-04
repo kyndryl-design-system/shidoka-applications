@@ -134,6 +134,10 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   warningTitle = '';
 
+  /** Sets whether the Flatpickr calendar UI should use static positioning. */
+  @property({ type: Boolean })
+  staticPosition = false;
+
   /** Sets flatpickr enableTime value based on detected dateFormat.
    * @internal
    */
@@ -499,6 +503,7 @@ export class DatePicker extends FormMixin(LitElement) {
       onClose: this.handleClose.bind(this),
       onChange: this.handleDateChange.bind(this),
       appendTo: container,
+      static: this.staticPosition,
     });
   }
 

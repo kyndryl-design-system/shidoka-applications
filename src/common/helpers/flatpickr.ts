@@ -126,6 +126,7 @@ interface FlatpickrOptionsContext {
   wrap?: boolean;
   noCalendar?: boolean;
   appendTo?: HTMLElement;
+  static?: boolean;
 }
 
 export function isSupportedLocale(locale: string): boolean {
@@ -367,11 +368,11 @@ export async function getFlatpickrOptions(
     closeOnSelect,
     wrap = false,
     noCalendar = false,
+    appendTo,
     onChange,
     onClose,
     onOpen,
     loadLocale,
-    appendTo,
   } = context;
 
   if (!locale) {
@@ -402,6 +403,7 @@ export async function getFlatpickrOptions(
         ? twentyFourHourFormat
         : !isEnglishOr12HourLocale,
     weekNumbers: false,
+    static: context.static ?? false,
     wrap,
     showMonths: mode === 'range' && isWideScreen ? 2 : 1,
     monthSelectorType: 'static',
@@ -493,6 +495,15 @@ export function setCalendarAttributes(
       ? 'container-modal'
       : 'container-default';
     instance.calendarContainer.classList.add(containerClass);
+
+    // Add static position class based on the static option
+    instance.calendarContainer.classList.remove(
+      'static-position-true',
+      'static-position-false'
+    );
+    instance.calendarContainer.classList.add(
+      `static-position-${instance.config.static}`
+    );
   } else {
     console.warn('Calendar container not available...');
   }
