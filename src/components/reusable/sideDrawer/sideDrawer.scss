@@ -40,7 +40,11 @@ dialog {
 
   &.ai-connected {
     @include elevation.shadow(3, true);
-    background: var(--kd-color-background-container-ai-subtle);
+    background: linear-gradient(
+      180deg,
+      var(--kd-color-background-gradients-ai-linear-top-gradient-1) 0%,
+      var(--kd-color-background-gradients-ai-linear-bottom-gradient-1) 70.5%
+    );
   }
 
   &[open] {
@@ -117,6 +121,7 @@ form {
   color: var(--kd-color-text-level-primary);
   margin: 0;
   order: 1;
+
   &.ai-connected {
     color: var(--kd-color-text-title-ai-primary);
   }
@@ -130,6 +135,7 @@ form {
   background-color: var(--kd-color-background-accent-subtle);
   padding: 24px 32px 24px 32px;
   border-top: 1px solid var(--kd-color-border-variants-light);
+
   &.ai-connected {
     background-color: var(--kd-color-background-container-ai-default);
     border-top: 1px solid var(--kd-color-border-variants-ai);
