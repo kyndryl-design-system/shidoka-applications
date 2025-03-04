@@ -41,6 +41,7 @@ const _defaultTextStrings = {
 /**
  * Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
+ * @fires on-clear - Captures the input clear event.
  * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-date-range-picker')
@@ -349,19 +350,32 @@ export class DateRangePicker extends FormMixin(LitElement) {
     event.preventDefault();
     event.stopPropagation();
 
+    this.value = [null, null];
+    this.defaultDate = null;
+
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
+      this.reinitializeFlatpickr();
     }
 
     if (this._inputEl) {
       this._inputEl.value = '';
     }
 
-    this.value = [null, null];
-    this.defaultDate = [];
+    emitValue(this, 'on-clear', {
+      type: 'clear',
+      timestamp: new Date().toISOString(),
+    });
 
     this._validate(true, false);
     this.requestUpdate();
+  }
+
+  private async reinitializeFlatpickr() {
+    if (this._initialized && this.flatpickrInstance) {
+      this.flatpickrInstance.destroy();
+      await this.initializeFlatpickr();
+    }
   }
 
   getDateRangePickerClasses() {
