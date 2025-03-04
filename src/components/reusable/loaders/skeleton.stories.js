@@ -102,28 +102,29 @@ MultiInline.args = {
 const CustomTemplate = () => html`
   <div style="display:flex;gap:45px">
     <div>
-      <h3>Custom Button Skeleton</h3>
+      <div class="heading kd-type--headline-04">Default</div>
+      <h3>Custom Button</h3>
       <kyn-skeleton
         style="margin: 8px 0 16px"
         width="120px"
         height="48px"
       ></kyn-skeleton>
 
-      <h3>Custom Title Skeleton</h3>
+      <h3>Custom Title</h3>
       <kyn-skeleton
         style="margin: 8px 0 16px"
         width="200px"
         height="24px"
       ></kyn-skeleton>
 
-      <h3>Custom Thumbnail Skeleton</h3>
+      <h3>Custom Thumbnail</h3>
       <kyn-skeleton
         style="margin: 8px 0 16px"
         width="200px"
         height="120px"
       ></kyn-skeleton>
 
-      <h3>Custom Logo/Icon Skeleton</h3>
+      <h3>Custom Logo</h3>
       <kyn-skeleton
         style="margin: 8px 0 0"
         shape="circle"
@@ -132,7 +133,8 @@ const CustomTemplate = () => html`
       ></kyn-skeleton>
     </div>
     <div>
-      <h3>Custom Button AI Skeleton</h3>
+      <div class="heading kd-type--headline-04">AI</div>
+      <h3>Custom Button AI</h3>
       <kyn-skeleton
         style="margin: 8px 0 16px"
         width="120px"
@@ -140,7 +142,7 @@ const CustomTemplate = () => html`
         aiConnected
       ></kyn-skeleton>
 
-      <h3>Custom Title AI Skeleton</h3>
+      <h3>Custom Title AI</h3>
       <kyn-skeleton
         style="margin: 8px 0 16px"
         width="200px"
@@ -148,7 +150,7 @@ const CustomTemplate = () => html`
         aiConnected
       ></kyn-skeleton>
 
-      <h3>Custom Thumbnail AI Skeleton</h3>
+      <h3>Custom Thumbnail AI</h3>
       <kyn-skeleton
         style="margin: 8px 0 16px"
         width="200px"
@@ -156,7 +158,7 @@ const CustomTemplate = () => html`
         aiConnected
       ></kyn-skeleton>
 
-      <h3>Custom Logo/Icon AI Skeleton</h3>
+      <h3>Custom Logo AI</h3>
       <kyn-skeleton
         style="margin: 8px 0 0"
         shape="circle"
@@ -168,7 +170,7 @@ const CustomTemplate = () => html`
   </div>
 `;
 
-export const CustomShapeAndSizing = CustomTemplate.bind({});
+export const Gallery = CustomTemplate.bind({});
 
 const SizesTemplate = () => html`
   <div style="display: flex; gap: 16px; align-items: top;">
