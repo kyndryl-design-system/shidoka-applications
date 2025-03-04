@@ -37,6 +37,10 @@ const _defaultTextStrings = {
   clearAll: 'Clear',
   pleaseSelectDate: 'Please select a date',
   pleaseSelectValidDate: 'Please select a valid date',
+  dateRange: 'Date range',
+  noDateSelected: 'No dates selected',
+  startDateSelected: 'Start date selected: {0}. Please select end date.',
+  dateRangeSelected: 'Selected date range: {0} to {1}',
 };
 /**
  * Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
@@ -560,16 +564,16 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     if (selectedDates.length === 0) {
       this.value = [null, null];
+      emitValue(this, 'on-change', {
+        dates: null,
+        dateString: '',
+      });
     } else if (selectedDates.length === 1) {
       this.value = [selectedDates[0], null];
     } else {
       this.value = [selectedDates[0], selectedDates[1]];
-    }
-
-    if (selectedDates.length === 2) {
       const formattedDates = selectedDates.map((date) => date.toISOString());
       const dateString = this._inputEl?.value || formattedDates.join(' to ');
-
       emitValue(this, 'on-change', {
         dates: formattedDates,
         dateString,
@@ -601,15 +605,25 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   updateSelectedDateRangeAria(selectedDates: Date[]) {
-    if (selectedDates.length === 2) {
-      const [startDate, endDate] = selectedDates;
-      this._inputEl?.setAttribute(
-        'aria-label',
-        `Selected date range: ${startDate.toLocaleDateString()} to ${endDate.toLocaleDateString()}`
+    if (!this._inputEl) return;
+
+    let ariaLabel = this._textStrings.dateRange;
+
+    if (selectedDates.length === 0) {
+      ariaLabel = this._textStrings.noDateSelected;
+    } else if (selectedDates.length === 1) {
+      ariaLabel = this._textStrings.startDateSelected.replace(
+        '{0}',
+        selectedDates[0].toLocaleDateString(this.locale)
       );
-    } else {
-      this._inputEl?.setAttribute('aria-label', 'Date range');
+    } else if (selectedDates.length === 2) {
+      const [startDate, endDate] = selectedDates;
+      ariaLabel = this._textStrings.dateRangeSelected
+        .replace('{0}', startDate.toLocaleDateString(this.locale))
+        .replace('{1}', endDate.toLocaleDateString(this.locale));
     }
+
+    this._inputEl.setAttribute('aria-label', ariaLabel);
   }
 
   private setShouldFlatpickrOpen(value: boolean) {
