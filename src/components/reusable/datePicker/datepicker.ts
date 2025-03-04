@@ -344,6 +344,21 @@ export class DatePicker extends FormMixin(LitElement) {
 
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
+
+    if (changedProperties.has('value')) {
+      const newValue = this.value;
+      const isNull =
+        newValue === null || (Array.isArray(newValue) && newValue.length === 0);
+      if (isNull && this.flatpickrInstance) {
+        this._isClearing = true;
+        this.flatpickrInstance.clear();
+        if (this._inputEl) {
+          this._inputEl.value = '';
+        }
+        this._isClearing = false;
+      }
+    }
+
     if (
       changedProperties.has('dateFormat') ||
       changedProperties.has('defaultDate') ||
@@ -397,6 +412,7 @@ export class DatePicker extends FormMixin(LitElement) {
     emitValue(this, 'on-change', {
       dates: null,
       dateString: '',
+      source: 'clear',
     });
 
     this._validate(true, false);
@@ -554,6 +570,7 @@ export class DatePicker extends FormMixin(LitElement) {
       emitValue(this, 'on-change', {
         dates: formattedDates,
         dateString: (this._inputEl as HTMLInputElement)?.value || dateStr,
+        source: selectedDates.length === 0 ? 'clear' : undefined,
       });
     }
 

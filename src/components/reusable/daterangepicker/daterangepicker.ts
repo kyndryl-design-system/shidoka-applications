@@ -371,6 +371,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     emitValue(this, 'on-change', {
       dates: null,
       dateString: '',
+      source: 'clear',
     });
 
     this._validate(true, false);
@@ -397,6 +398,24 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
+
+    if (changedProperties.has('value')) {
+      const newValue = this.value;
+      if (
+        Array.isArray(newValue) &&
+        newValue.length === 2 &&
+        newValue.every((v) => v === null)
+      ) {
+        if (this.flatpickrInstance) {
+          this._isClearing = true;
+          this.flatpickrInstance.clear();
+          this._isClearing = false;
+          if (this._inputEl) {
+            this._inputEl.value = '';
+          }
+        }
+      }
+    }
 
     if (
       changedProperties.has('dateFormat') ||
@@ -557,24 +576,25 @@ export class DateRangePicker extends FormMixin(LitElement) {
   async handleDateChange(selectedDates: Date[]): Promise<void> {
     this._hasInteracted = true;
 
-    if (selectedDates.length === 0) {
-      this.value = [null, null];
-      if (!this._isClearing) {
+    if (!this._isClearing) {
+      if (selectedDates.length === 0) {
+        this.value = [null, null];
         emitValue(this, 'on-change', {
           dates: null,
           dateString: '',
+          source: 'clear',
+        });
+      } else if (selectedDates.length === 1) {
+        this.value = [selectedDates[0], null];
+      } else {
+        this.value = [selectedDates[0], selectedDates[1]];
+        const formattedDates = selectedDates.map((date) => date.toISOString());
+        const dateString = this._inputEl?.value || formattedDates.join(' to ');
+        emitValue(this, 'on-change', {
+          dates: formattedDates,
+          dateString,
         });
       }
-    } else if (selectedDates.length === 1) {
-      this.value = [selectedDates[0], null];
-    } else {
-      this.value = [selectedDates[0], selectedDates[1]];
-      const formattedDates = selectedDates.map((date) => date.toISOString());
-      const dateString = this._inputEl?.value || formattedDates.join(' to ');
-      emitValue(this, 'on-change', {
-        dates: formattedDates,
-        dateString,
-      });
     }
 
     this.updateSelectedDateRangeAria(selectedDates);

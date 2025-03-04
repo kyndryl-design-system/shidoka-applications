@@ -315,6 +315,19 @@ export class TimePicker extends FormMixin(LitElement) {
 
   override async updated(changedProperties: PropertyValues) {
     await super.updated(changedProperties);
+
+    if (changedProperties.has('value')) {
+      const newValue = this.value;
+      if (newValue === null && this.flatpickrInstance) {
+        this._isClearing = true;
+        this.flatpickrInstance.clear();
+        if (this._inputEl) {
+          this._inputEl.value = '';
+        }
+        this._isClearing = false;
+      }
+    }
+
     if (
       changedProperties.has('defaultDate') ||
       changedProperties.has('defaultHour') ||
@@ -356,6 +369,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
     emitValue(this, 'on-change', {
       time: '',
+      source: 'clear',
     });
 
     this._validate(true, false);
@@ -498,12 +512,18 @@ export class TimePicker extends FormMixin(LitElement) {
     if (selectedDates.length > 0) {
       this.value = selectedDates[0];
       if (!this._isClearing) {
-        emitValue(this, 'on-change', { time: dateStr });
+        emitValue(this, 'on-change', {
+          time: dateStr,
+          source: undefined,
+        });
       }
     } else {
       this.value = null;
       if (!this._isClearing) {
-        emitValue(this, 'on-change', { time: '' });
+        emitValue(this, 'on-change', {
+          time: '',
+          source: 'clear',
+        });
       }
     }
 
