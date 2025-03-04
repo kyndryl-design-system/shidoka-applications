@@ -3,6 +3,9 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/preview-api';
 
+import '../button';
+import '../modal';
+
 export default {
   title: 'Components/DatePicker',
   component: 'kyn-date-picker',
@@ -56,29 +59,30 @@ const Template = (args) => {
 
   return html`
     <kyn-date-picker
-      .name="${args.name}"
-      .locale="${args.locale}"
-      .label="${args.label}"
-      .dateFormat="${args.dateFormat}"
+      .name=${args.name}
+      .locale=${args.locale}
+      .label=${args.label}
+      .dateFormat=${args.dateFormat}
       .defaultDate=${args.defaultDate}
-      .defaultErrorMessage="${args.defaultErrorMessage}"
-      ?required="${args.required}"
-      .size="${args.size}"
-      .value="${args.value}"
-      .warnText="${args.warnText}"
-      .invalidText="${args.invalidText}"
-      .disable="${args.disable}"
-      .enable="${args.enable}"
-      .mode="${args.mode}"
-      .caption="${args.caption}"
-      .errorAriaLabel="${args.errorAriaLabel}"
-      .errorTitle="${args.errorTitle}"
-      .warningAriaLabel="${args.warningAriaLabel}"
-      .warningTitle="${args.warningTitle}"
-      ?datePickerDisabled="${args.datePickerDisabled}"
-      ?twentyFourHourFormat="${args.twentyFourHourFormat}"
-      .minDate="${args.minDate}"
-      .maxDate="${args.maxDate}"
+      ?staticPosition=${args.staticPosition}
+      .defaultErrorMessage=${args.defaultErrorMessage}
+      ?required=${args.required}
+      .size=${args.size}
+      .value=${args.value}
+      .warnText=${args.warnText}
+      .invalidText=${args.invalidText}
+      .disable=${args.disable}
+      .enable=${args.enable}
+      .mode=${args.mode}
+      .caption=${args.caption}
+      .errorAriaLabel=${args.errorAriaLabel}
+      .errorTitle=${args.errorTitle}
+      .warningAriaLabel=${args.warningAriaLabel}
+      .warningTitle=${args.warningTitle}
+      ?datePickerDisabled=${args.datePickerDisabled}
+      ?twentyFourHourFormat=${args.twentyFourHourFormat}
+      .minDate=${args.minDate}
+      .maxDate=${args.maxDate}
       @on-change=${(e) => action(e.type)(e)}
     >
     </kyn-date-picker>
@@ -94,6 +98,7 @@ DatePickerDefault.args = {
   defaultErrorMessage: 'A date value is required',
   required: false,
   size: 'md',
+  staticPosition: false,
   value: '',
   warnText: '',
   invalidText: '',
@@ -148,3 +153,84 @@ DateTimeMultiple.args = {
   label: 'Multiple Date/Time Selection',
 };
 DateTimeMultiple.storyName = 'With Preselected Date Time';
+
+export const DatepickerInModal = {
+  args: {
+    ...DatePickerDefault.args,
+    locale: 'en',
+    name: 'date-picker-in-modal',
+    dateFormat: 'Y-m-d',
+    staticPosition: false,
+    defaultDate: '',
+    caption: 'Datepicker in a modal.',
+    label: 'Date',
+    open: false,
+    size: 'lg',
+    titleText: 'Select Date',
+    labelText: '',
+    okText: 'OK',
+    cancelText: 'Cancel',
+    closeText: 'Close',
+    destructive: false,
+    okDisabled: false,
+    hideFooter: false,
+    showSecondaryButton: false,
+    hideCancelButton: false,
+    aiConnected: false,
+    disableScroll: false,
+  },
+  render: (args) => {
+    return html`
+      <kyn-modal
+        ?open=${args.open}
+        size=${args.size}
+        titleText=${args.titleText}
+        labelText=${args.labelText}
+        okText=${args.okText}
+        cancelText=${args.cancelText}
+        closeText=${args.closeText}
+        ?destructive=${args.destructive}
+        ?okDisabled=${args.okDisabled}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        ?hideFooter=${args.hideFooter}
+        ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
+        ?disableScroll=${args.disableScroll}
+        @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
+      >
+        <kyn-button slot="anchor" kind=${'primary'}> Open Modal </kyn-button>
+
+        <kyn-date-picker
+          .name=${args.name}
+          .locale=${args.locale}
+          .label=${args.label}
+          .dateFormat=${args.dateFormat}
+          .defaultDate=${args.defaultDate}
+          ?staticPosition=${args.staticPosition}
+          .defaultErrorMessage=${args.defaultErrorMessage}
+          ?required=${args.required}
+          .size=${args.size}
+          .value=${args.value}
+          .warnText=${args.warnText}
+          .invalidText=${args.invalidText}
+          .disable=${args.disable}
+          .enable=${args.enable}
+          .mode=${args.mode}
+          .caption=${args.caption}
+          .errorAriaLabel=${args.errorAriaLabel}
+          .errorTitle=${args.errorTitle}
+          .warningAriaLabel=${args.warningAriaLabel}
+          .warningTitle=${args.warningTitle}
+          ?datePickerDisabled=${args.datePickerDisabled}
+          ?twentyFourHourFormat=${args.twentyFourHourFormat}
+          .minDate=${args.minDate}
+          .maxDate=${args.maxDate}
+          @on-change=${(e) => action(e.type)(e)}
+        >
+        </kyn-date-picker>
+      </kyn-modal>
+    `;
+  },
+};
+DatepickerInModal.storyName = 'In Modal';
