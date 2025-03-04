@@ -16,10 +16,13 @@ export default {
 };
 
 export const Default = {
-  render: () => {
+  args: {
+    floating: false,
+  },
+  render: (args) => {
     return html`
       <form
-        class="ai-input-query"
+        class="ai-input-query ${args.floating ? 'floating' : ''}"
         @submit=${(e) => {
           e.preventDefault();
           action('submit')(e);
@@ -53,6 +56,10 @@ export const Default = {
           background-color: var(--kd-color-background-container-ai-level-2);
           border: 2px solid var(--kd-color-border-ai-subtle);
           border-radius: 8px;
+
+          &.floating {
+            box-shadow: var(--kd-elevation-level-3-ai);
+          }
 
           kyn-text-area {
             flex-grow: 1;
