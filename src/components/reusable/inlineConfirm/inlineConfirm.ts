@@ -4,8 +4,8 @@ import { classMap } from 'lit/directives/class-map.js';
 import styles from './inlineConfirm.scss';
 import '../button';
 
-import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/close-simple.svg';
-import checkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/check.svg';
+import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
+import checkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/check.svg';
 
 /**
  * InlineConfirm component.
@@ -102,7 +102,7 @@ export class InlineConfirm extends LitElement {
         <div id="confirmation">
           <kyn-button
             class="cancel-btn"
-            kind="ghost"
+            kind="tertiary"
             size="small"
             description=${this.cancelText}
             @on-click=${this._handleToggle}
@@ -112,7 +112,7 @@ export class InlineConfirm extends LitElement {
 
           <kyn-button
             class="confirm-btn"
-            kind=${this.destructive ? 'outline-destructive' : 'outline'}
+            kind=${this.destructive ? 'secondary-destructive' : 'primary'}
             size="small"
             description=${this.confirmText}
             @on-click=${this._handleConfirm}

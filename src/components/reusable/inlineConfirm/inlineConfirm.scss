@@ -41,15 +41,18 @@
 }
 
 .confirm-btn {
-  transition: transform var(--animation-speed) ease-out;
-  transform: translateX(50%);
+  animation: slide-out var(--animation-speed) ease-out;
 
   .open-right & {
-    transform: translateX(-50%);
+    animation: slide-out-right var(--animation-speed) ease-out;
+  }
+
+  .open-right.open & {
+    animation: slide-in-right var(--animation-speed) ease-out;
   }
 
   .open & {
-    transform: translateX(0);
+    animation: slide-in var(--animation-speed) ease-out;
   }
 }
 
@@ -58,5 +61,47 @@
 
   .open & {
     opacity: 0;
+  }
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(100%);
+  }
+  80% {
+    transform: translateX(-10%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(-100%);
+  }
+  80% {
+    transform: translateX(10%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-out-right {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
   }
 }

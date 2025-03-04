@@ -4,7 +4,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import './index';
 import '../button';
 
-import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/delete.svg';
+import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
 
 export default {
   title: 'Components/Inline Confirm',
