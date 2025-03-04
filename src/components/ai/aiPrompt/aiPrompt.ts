@@ -1,6 +1,5 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 import '../../reusable/card';
 
@@ -8,7 +7,7 @@ import PromptScss from './aiPrompt.scss';
 
 /**
  * AI Prompt component.
- * @fires on-ai-prompt-click - Captures the click event of clickable prompt and emits the original event details. Use `e.stopPropogation()` / `e.preventDefault()` for any internal clickable elements when prompt type is `'clickable'` to stop bubbling / prevent event.
+ * @fires on-click - Captures the click event of clickable prompt and emits the action type. Event bubbles and crosses shadow DOM boundaries.
  * @slot title - Slot for prompt title text.
  * @slot description - slot for prompt body text.
  */
@@ -16,18 +15,6 @@ import PromptScss from './aiPrompt.scss';
 @customElement('kyn-ai-prompt')
 export class AIPrompt extends LitElement {
   static override styles = [PromptScss];
-
-  /** Card link url for clickable cards. */
-  @property({ type: String })
-  href = '';
-
-  /** Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship. */
-  @property({ type: String })
-  rel = '';
-
-  /** Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (default), `'_blank'`, `'_parent`', `'_top'` */
-  @property({ type: String })
-  target: any = '_self';
 
   /** Set highlighted state with unique styles. */
   @property({ type: Boolean })
@@ -49,12 +36,9 @@ export class AIPrompt extends LitElement {
     return html`
       <kyn-card
         type=${'clickable'}
-        href=${ifDefined(this.href || undefined)}
-        target=${ifDefined(this.target || undefined)}
-        rel=${ifDefined(this.rel || undefined)}
         ?highlight=${this.highlight}
         ?aiConnected=${true}
-        @on-card-click=${(e: Event) => this.handleClick(e)}
+        @on-card-click=${(e: Event) => this._handleClick(e)}
       >
         <slot name="title"></slot>
         <slot name="description"></slot>
@@ -76,9 +60,11 @@ export class AIPrompt extends LitElement {
     }
   }
 
-  private handleClick(e: Event) {
-    const event = new CustomEvent('on-ai-prompt-click', {
-      detail: { origEvent: e },
+  private _handleClick(e: Event) {
+    const event = new CustomEvent('on-click', {
+      detail: { action: e.type },
+      bubbles: true,
+      composed: true,
     });
     this.dispatchEvent(event);
   }

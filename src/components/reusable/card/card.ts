@@ -46,27 +46,37 @@ export class Card extends LitElement {
     const cardWrapperClasses = {
       'card-wrapper-clickable': true,
       'card-border': this.hideBorder === false,
-      'card-highlight': this.highlight,
       'ai-Connected': this.aiConnected,
+      'card-highlight': this.highlight,
+      'ai-highlight': this.aiConnected && this.highlight,
     };
 
     const cardWrapperDefaultClasses = {
       'card-wrapper': true,
-      'card-highlight': this.highlight,
       'ai-Connected': this.aiConnected,
+      'card-highlight': this.highlight,
+      'ai-highlight': this.aiConnected && this.highlight,
     };
 
     return html`${this.type === 'clickable'
-      ? html`<a
-          part="card-wrapper"
-          class="${classMap(cardWrapperClasses)}"
-          href=${this.href}
-          target=${this.target}
-          rel=${this.rel}
-          @click=${(e: Event) => this.handleClick(e)}
-        >
-          <slot></slot>
-        </a>`
+      ? this.href
+        ? html`<a
+            part="card-wrapper"
+            class="${classMap(cardWrapperClasses)}"
+            href=${this.href}
+            target=${this.target}
+            rel=${this.rel}
+            @click=${(e: Event) => this.handleClick(e)}
+          >
+            <slot></slot>
+          </a>`
+        : html`<div
+            part="card-wrapper"
+            class="${classMap(cardWrapperClasses)}"
+            @click=${(e: Event) => this.handleClick(e)}
+          >
+            <slot></slot>
+          </div>`
       : html`<div
           part="card-wrapper"
           class="${classMap(cardWrapperDefaultClasses)}"

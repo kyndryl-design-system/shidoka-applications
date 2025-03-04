@@ -237,6 +237,7 @@ export const AIConnected = {
     target: '_self',
     hideBorder: false,
     aiConnected: true,
+    highlight: false,
   },
   render: (args) => {
     return html`
@@ -247,6 +248,7 @@ export const AIConnected = {
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
         ?aiConnected=${args.aiConnected}
+        ?highlight=${args.highlight}
         role="article"
         aria-label="Simple card"
       >

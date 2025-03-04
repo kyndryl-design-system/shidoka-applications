@@ -6,12 +6,6 @@ import './index';
 export default {
   title: 'AI/Components/AI Prompt',
   component: 'kyn-ai-prompt',
-  argTypes: {
-    target: {
-      options: ['_self', '_blank', '_top', '_parent'],
-      control: { type: 'select' },
-    },
-  },
   parameters: {
     design: {
       type: 'figma',
@@ -21,9 +15,6 @@ export default {
 };
 
 const baseArgs = {
-  href: '',
-  rel: '',
-  target: '_self',
   highlight: false,
   hideBorder: false,
   maxWidth: '',
@@ -35,9 +26,6 @@ const baseArgs = {
 
 const Template = (args) => html`
   <kyn-ai-prompt
-    href=${args.href}
-    target=${args.target}
-    rel=${args.rel}
     ?highlight=${args.highlight}
     ?hideBorder=${args.hideBorder}
     maxWidth=${args.maxWidth}
@@ -77,20 +65,11 @@ export const Groups = {
         Horizontal Container
       </div>
       <kyn-ai-prompts-container orientation="horizontal" maxWidth="1275px">
-        <kyn-ai-prompt
-          href=${args.href}
-          target=${args.target}
-          rel=${args.rel}
-          @on-click=${(e) => action(e.type)(e)}
-          width="31.3%"
-        >
+        <kyn-ai-prompt @on-click=${(e) => action(e.type)(e)} width="31.3%">
           <div slot="title">AI Prompt 1</div>
           <div slot="description">${args.description}</div>
         </kyn-ai-prompt>
         <kyn-ai-prompt
-          href=${args.href}
-          target=${args.target}
-          rel=${args.rel}
           highlight
           @on-click=${(e) => action(e.type)(e)}
           width="31.3%"
@@ -98,13 +77,7 @@ export const Groups = {
           <div slot="title">AI Prompt 2</div>
           <div slot="description">${args.description}</div>
         </kyn-ai-prompt>
-        <kyn-ai-prompt
-          href=${args.href}
-          target=${args.target}
-          rel=${args.rel}
-          @on-click=${(e) => action(e.type)(e)}
-          width="31.3%"
-        >
+        <kyn-ai-prompt @on-click=${(e) => action(e.type)(e)} width="31.3%">
           <div slot="title">AI Prompt 3</div>
           <div slot="description">${args.description}</div>
         </kyn-ai-prompt>
@@ -114,31 +87,15 @@ export const Groups = {
         Vertical Container
       </div>
       <kyn-ai-prompts-container orientation="vertical" maxWidth="350px">
-        <kyn-ai-prompt
-          href=${args.href}
-          target=${args.target}
-          rel=${args.rel}
-          highlight
-          @on-click=${(e) => action(e.type)(e)}
-        >
+        <kyn-ai-prompt highlight @on-click=${(e) => action(e.type)(e)}>
           <div slot="title">AI Prompt 1</div>
           <div slot="description">${args.description}</div>
         </kyn-ai-prompt>
-        <kyn-ai-prompt
-          href=${args.href}
-          target=${args.target}
-          rel=${args.rel}
-          @on-click=${(e) => action(e.type)(e)}
-        >
+        <kyn-ai-prompt @on-click=${(e) => action(e.type)(e)}>
           <div slot="title">AI Prompt 2</div>
           <div slot="description">${args.description}</div>
         </kyn-ai-prompt>
-        <kyn-ai-prompt
-          href=${args.href}
-          target=${args.target}
-          rel=${args.rel}
-          @on-click=${(e) => action(e.type)(e)}
-        >
+        <kyn-ai-prompt @on-click=${(e) => action(e.type)(e)}>
           <div slot="title">AI Prompt 3</div>
           <div slot="description">${args.description}</div>
         </kyn-ai-prompt>
