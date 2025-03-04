@@ -13,7 +13,8 @@
     padding-right: 42px;
   }
 
-  --animation-speed: 400ms;
+  --animation-speed: 800ms;
+  --animation-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 #confirmation {
@@ -41,23 +42,26 @@
 }
 
 .confirm-btn {
-  animation: slide-out var(--animation-speed) ease-out;
+  // transition: transform var(--animation-speed) ease-out;
+  animation: slide-out var(--animation-speed) var(--animation-easing);
 
   .open-right & {
-    animation: slide-out-right var(--animation-speed) ease-out;
+    // transform: translateX(-100%);
+    animation: slide-out-right var(--animation-speed) var(--animation-easing);
   }
 
   .open-right.open & {
-    animation: slide-in-right var(--animation-speed) ease-out;
+    animation: slide-in-right var(--animation-speed) var(--animation-easing);
   }
 
   .open & {
-    animation: slide-in var(--animation-speed) ease-out;
+    // transform: translateX(0);
+    animation: slide-in var(--animation-speed) var(--animation-easing);
   }
 }
 
 .anchor {
-  transition: opacity var(--animation-speed) ease-out;
+  transition: opacity var(--animation-speed) var(--animation-easing);
 
   .open & {
     opacity: 0;
@@ -69,7 +73,7 @@
     transform: translateX(100%);
   }
   80% {
-    transform: translateX(-10%);
+    transform: translateX(-5%);
   }
   100% {
     transform: translateX(0);
