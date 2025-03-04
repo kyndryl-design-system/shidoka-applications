@@ -47,27 +47,28 @@ const Template = (args) => {
 
   return html`
     <kyn-time-picker
-      .name="${args.name}"
-      .label="${args.label}"
-      .locale="${args.locale}"
-      ?required="${args.required}"
-      .size="${args.size}"
-      .value="${args.value}"
-      .warnText="${args.warnText}"
-      .invalidText="${args.invalidText}"
-      .caption="${args.caption}"
-      .defaultDate="${args.defaultDate}"
-      .defaultHour="${args.defaultHour}"
-      .defaultMinute="${args.defaultMinute}"
-      .defaultErrorMessage="${args.defaultErrorMessage}"
-      .minTime="${args.minTime}"
-      .maxTime="${args.maxTime}"
-      .errorAriaLabel="${args.errorAriaLabel}"
-      .errorTitle="${args.errorTitle}"
-      .warningAriaLabel="${args.warningAriaLabel}"
-      .warningTitle="${args.warningTitle}"
-      ?timepickerDisabled="${args.timepickerDisabled}"
-      ?twentyFourHourFormat="${args.twentyFourHourFormat}"
+      .name=${args.name}
+      .label=${args.label}
+      .locale=${args.locale}
+      ?required=${args.required}
+      ?staticPosition=${args.staticPosition}
+      .size=${args.size}
+      .value=${args.value}
+      .warnText=${args.warnText}
+      .invalidText=${args.invalidText}
+      .caption=${args.caption}
+      .defaultDate=${args.defaultDate}
+      .defaultHour=${args.defaultHour}
+      .defaultMinute=${args.defaultMinute}
+      .defaultErrorMessage=${args.defaultErrorMessage}
+      .minTime=${args.minTime}
+      .maxTime=${args.maxTime}
+      .errorAriaLabel=${args.errorAriaLabel}
+      .errorTitle=${args.errorTitle}
+      .warningAriaLabel=${args.warningAriaLabel}
+      .warningTitle=${args.warningTitle}
+      ?timepickerDisabled=${args.timepickerDisabled}
+      ?twentyFourHourFormat=${args.twentyFourHourFormat}
       @on-change=${(e) => action(e.type)(e)}
     >
     </kyn-time-picker>
@@ -83,6 +84,7 @@ DefaultTimePicker.args = {
   value: null,
   warnText: '',
   invalidText: '',
+  staticPosition: false,
   caption: '',
   defaultDate: '',
   defaultErrorMessage: 'A time value is required',
@@ -125,7 +127,8 @@ export const TimepickerInModal = {
     caption: 'Timepicker in a modal.',
     label: 'Date',
     open: false,
-    size: 'auto',
+    size: 'lg',
+    staticPosition: false,
     titleText: 'Select Date',
     labelText: '',
     okText: 'OK',
@@ -170,6 +173,7 @@ export const TimepickerInModal = {
           .value=${args.value}
           .warnText=${args.warnText}
           .invalidText=${args.invalidText}
+          ?staticPosition=${args.staticPosition}
           .caption=${args.caption}
           .defaultDate=${args.defaultDate}
           .defaultHour=${args.defaultHour}
