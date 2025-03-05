@@ -56,11 +56,11 @@ const InfoTemplate = () => {
       <div class="info-card-container">
         <div class="info-card-leftIcon">${unsafeSVG(policeIcon)}</div>
         <div class="info-card-content-wrapper">
-          <div class="info-card-title-text kd-type--ui-04">
-            Kai may occasionally generate incorrect or misleading information.
+          <div class="info-card-title-text kd-type--ui-03">
+            This is the title
           </div>
-          <div class="info-card-sub-text kd-type--ui-02">
-            Kai may occasionally generate incorrect or misleading information.
+          <div class="info-card-sub-text kd-type--body-02">
+            This is the description
           </div>
         </div>
         <div class="info-card-rightIcon">
