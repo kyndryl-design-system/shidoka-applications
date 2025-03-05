@@ -2,11 +2,10 @@ import { html } from 'lit';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { action } from '@storybook/addon-actions';
-
 import chatHistoryIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat-history.svg';
-import chatIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/delete.svg';
 import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/response.svg';
+// import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/indicator.svg';
 import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/search.svg';
 import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/send.svg';
 
@@ -26,7 +25,7 @@ import '../components/reusable/textArea';
 import '../components/reusable/inlineConfirm';
 
 export default {
-  title: 'AI/Patterns/ChatHistory',
+  title: 'AI/Patterns/Chat History',
   parameters: {
     design: {
       type: 'figma',
@@ -35,46 +34,9 @@ export default {
   },
 };
 
-const args = {
-  open: false,
-  size: 'auto',
-  titleText: 'GenAi',
-  labelText: '',
-  okText: 'OK',
-  cancelText: 'Cancel',
-  closeText: 'Close',
-  destructive: false,
-  okDisabled: false,
-  hideFooter: true,
-  showSecondaryButton: true,
-  secondaryButtonText: 'Secondary',
-  secondaryDisabled: false,
-  hideCancelButton: false,
-  aiConnected: false,
-  disableScroll: false,
-};
-
 const chatResponse = [
   {
     date: 'Today, 25 Feb 10 2025',
-    message: [
-      {
-        msgText:
-          'Tell me more about Kyndryl Application Management Services for SAP',
-      },
-    ],
-  },
-  {
-    date: 'Friday, Jan 10 2025',
-    message: [
-      {
-        msgText:
-          'Can you explain how I can report a concern anonymously through the Kyndryl',
-      },
-    ],
-  },
-  {
-    date: 'Wednesday, 01 Jan 2025',
     message: [
       {
         msgText: 'What are the benefits of adopting Hybrid IT Modernization?',
@@ -88,38 +50,83 @@ const chatResponse = [
       },
     ],
   },
+  {
+    date: 'Wednesday, 01 Jan 2025',
+    message: [
+      {
+        msgText:
+          'What are the common challenges in contract negotiations, and how can they be resolved?',
+      },
+    ],
+  },
+];
+
+const AIResponse = [
+  {
+    title: '1. Cost Efficiency',
+    message: [
+      {
+        msgText:
+          'Reduces capital expenses (CapEx) by shifting to operational expenses (OpEx) through cloud-based services.',
+      },
+      {
+        msgText:
+          'Lowers maintenance costs for legacy systems while still leveraging existing investments.',
+      },
+    ],
+  },
+  {
+    title: '2. Flexibility & Scalability',
+    message: [
+      {
+        msgText:
+          'Combines on-premises, private cloud, and public cloud environments, allowing organizations to scale resources up or down as needed.',
+      },
+      {
+        msgText:
+          'Supports dynamic workloads by optimizing resource allocation based on demand.',
+      },
+    ],
+  },
+  {
+    title: '3. Enhanced Security & Compliance',
+    message: [
+      {
+        msgText:
+          'Enables data segmentation, keeping sensitive workloads on-prem while leveraging cloud security for other applications.',
+      },
+      {
+        msgText:
+          'Supports regulatory compliance by ensuring data is stored and processed according to legal requirements.',
+      },
+    ],
+  },
 ];
 
 export const Default = {
-  args: { ...args, showSecondaryButton: false, aiConnected: true },
-  render: (args) => {
+  render: () => {
     return html`
       <kyn-modal
-        ?open=${args.open}
+        ?open=${false}
         size="xl"
-        titleText=${args.titleText}
-        labelText=${args.labelText}
-        okText=${args.okText}
-        cancelText=${args.cancelText}
-        closeText=${args.closeText}
-        ?destructive=${args.destructive}
-        ?okDisabled=${args.okDisabled}
-        ?showSecondaryButton=${args.showSecondaryButton}
-        secondaryButtonText=${args.secondaryButtonText}
-        ?secondaryDisabled=${args.secondaryDisabled}
-        ?hideFooter=${args.hideFooter}
-        ?hideCancelButton=${args.hideCancelButton}
-        ?aiConnected=${args.aiConnected}
-        ?disableScroll=${args.disableScroll}
+        titleText="GenAi"
+        labelText=""
+        okText=""
+        cancelText=""
+        closeText="Close"
+        ?destructive=${false}
+        ?okDisabled=${false}
+        ?showSecondaryButton=${false}
+        secondaryButtonText=""
+        ?secondaryDisabled=${true}
+        ?hideFooter=${false}
+        ?hideCancelButton=${false}
+        aiConnected
+        ?disableScroll=${false}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button
-          slot="anchor"
-          kind=${args.aiConnected ? 'primary-ai' : 'primary'}
-        >
-          Open Modal
-        </kyn-button>
+        <kyn-button slot="anchor" kind="primary-ai"> Open Modal </kyn-button>
         <span class="content">
           <kyn-tabs
             style="height: 300px;"
@@ -128,10 +135,6 @@ export const Default = {
             aiConnected
             @on-change=${(e) => action(e.type)(e)}
           >
-            <kyn-tab slot="tabs" id="chat">
-              <span class="icon">${unsafeSVG(chatIcon)}</span>
-              Chat
-            </kyn-tab>
             <kyn-tab slot="tabs" id="history" selected>
               <span class="icon">${unsafeSVG(chatHistoryIcon)}</span>
               History
@@ -153,7 +156,6 @@ export const Default = {
                   name="textInput"
                   value=""
                   placeholder="Search..."
-                  caption="Optional text"
                   invalidtext=""
                   label=""
                   ?hideLabel=${true}
@@ -167,74 +169,86 @@ export const Default = {
                     >${unsafeSVG(searchIcon)}</span
                   >
                 </kyn-text-input>
-                ${chatResponse.map((items) => {
-                  return html`
-                    <div class="chat-items">
-                      <div class="chat-section">
-                        <label class="chat-date kd-type--ui-02">
-                          ${items.date}
-                        </label>
-                        ${items.message.map((item) => {
-                          return html`
-                            <kyn-card style="width:100%">
-                              <div class="chat-container">
-                                <div class="chat-wrapper">${item.msgText}</div>
-                                <kyn-inline-confirm
-                                  ?destructive=${true}
-                                  .anchorText=${'Delete'}
-                                  .confirmText=${'Confirm'}
-                                  .cancelText=${'Cancel'}
-                                  @on-confirm=${(e) => action('on-confirm')()}
-                                >
-                                  ${unsafeSVG(deleteIcon)}
-                                  <span slot="confirmIcon"
-                                    >${unsafeSVG(deleteIcon)}</span
+                <div class="chat_content">
+                  ${chatResponse.map((items) => {
+                    return html`
+                      <div class="chat-items">
+                        <div class="chat-section">
+                          <label class="chat-date kd-type--ui-02">
+                            ${items.date}
+                          </label>
+                          ${items.message.map((item) => {
+                            return html`
+                              <kyn-card style="width:100%">
+                                <div class="chat-container">
+                                  <div class="chat-wrapper">
+                                    ${item.msgText}
+                                  </div>
+                                  <kyn-inline-confirm
+                                    ?destructive=${true}
+                                    .anchorText=${'Delete'}
+                                    .confirmText=${'Confirm'}
+                                    .cancelText=${'Cancel'}
+                                    @on-confirm=${(e) => action('on-confirm')()}
                                   >
-                                </kyn-inline-confirm>
-                              </div>
-                            </kyn-card>
-                          `;
-                        })}
+                                    ${unsafeSVG(deleteIcon)}
+                                    <span slot="confirmIcon"
+                                      >${unsafeSVG(deleteIcon)}</span
+                                    >
+                                  </kyn-inline-confirm>
+                                </div>
+                              </kyn-card>
+                            `;
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  `;
-                })}
-                <kyn-link
-                  id="test"
-                  standalone=""
-                  href=""
-                  target="_self"
-                  kind="ai"
-                  shade="auto"
-                  @on-click=${(e) => action(e.type)(e)}
-                  >Show older
-                  <span style="display:flex;" slot="icon"
-                    >${unsafeSVG(chevronDownIcon)}</span
-                  >
-                </kyn-link>
+                    `;
+                  })}
+                </div>
               </div>
             </kyn-tab-panel>
-            <kyn-tab-panel tabId="history">Tab 2 Content</kyn-tab-panel>
           </kyn-tabs>
         </span>
+        <kyn-link
+          slot="footer"
+          id="test"
+          standalone=""
+          href=""
+          target="_self"
+          kind="ai"
+          shade="auto"
+          @on-click=${(e) => action(e.type)(e)}
+          >Show older
+          <span style="display:flex;" slot="icon"
+            >${unsafeSVG(chevronDownIcon)}</span
+          >
+        </kyn-link>
       </kyn-modal>
       <style>
-        kyn-tab-panel > * {
-          margin-bottom: 1.5rem;
+        kyn-card::part(card-wrapper) {
+          outline: 1px solid var(--kd-color-border-level-secondary);
+          background: var(--kd-color-background-container-ai-subtle);
         }
         .chat-history-container {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 24px;
           align-self: stretch;
           margin-top: 24px;
         }
-        .chat-items {
+        .chat-history-container > :first-child {
+          margin-bottom: 32px;
+        }
+
+        .chat_content {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 16px;
+          gap: 24px;
+          align-self: stretch;
+        }
+
+        .chat-items {
           align-self: stretch;
         }
         .chat-section {
@@ -247,6 +261,7 @@ export const Default = {
         .chat-container {
           display: flex;
           align-items: center;
+          gap: 12px;
         }
         .chat-wrapper {
           display: flex;
@@ -270,40 +285,29 @@ export const Default = {
 };
 
 export const WithOtherContent = {
-  args: {
-    ...args,
-    hideFooter: false,
-    showSecondaryButton: false,
-    aiConnected: true,
-  },
-  render: (args) => {
+  render: () => {
     return html`
       <kyn-modal
-        ?open=${args.open}
+        ?open=${false}
         size="xl"
-        titleText=${args.titleText}
-        labelText=${args.labelText}
-        okText=${args.okText}
-        cancelText=${args.cancelText}
-        closeText=${args.closeText}
-        ?destructive=${args.destructive}
-        ?okDisabled=${args.okDisabled}
-        ?showSecondaryButton=${args.showSecondaryButton}
-        secondaryButtonText=${args.secondaryButtonText}
-        ?secondaryDisabled=${args.secondaryDisabled}
-        ?hideFooter=${args.hideFooter}
-        ?hideCancelButton=${args.hideCancelButton}
-        ?aiConnected=${args.aiConnected}
-        ?disableScroll=${args.disableScroll}
+        titleText="GenAi"
+        labelText=""
+        okText=""
+        cancelText=""
+        closeText="Close"
+        ?destructive=${false}
+        ?okDisabled=${false}
+        ?showSecondaryButton=${false}
+        secondaryButtonText="Secondary"
+        ?secondaryDisabled=${false}
+        ?hideFooter=${false}
+        ?hideCancelButton=${false}
+        aiConnected
+        ?disableScroll=${false}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button
-          slot="anchor"
-          kind=${args.aiConnected ? 'primary-ai' : 'primary'}
-        >
-          Open Modal
-        </kyn-button>
+        <kyn-button slot="anchor" kind="primary-ai"> Open Modal </kyn-button>
         <span class="content">
           <kyn-tabs
             style="height: 300px;"
@@ -312,10 +316,6 @@ export const WithOtherContent = {
             aiConnected
             @on-change=${(e) => action(e.type)(e)}
           >
-            <kyn-tab slot="tabs" id="chat">
-              <span class="icon">${unsafeSVG(chatIcon)}</span>
-              Chat
-            </kyn-tab>
             <kyn-tab slot="tabs" id="history" selected>
               <span class="icon">${unsafeSVG(chatHistoryIcon)}</span>
               History
@@ -344,77 +344,56 @@ export const WithOtherContent = {
                 <div class="query-item kd-type--body-01">
                   What are the benefits of adopting Hybrid IT Modernization?
                 </div>
-                <div
-                  class="response-wrapper"
-                  style="align-items: anchor-center;"
-                >
-                  <kyn-avatar initials="A"></kyn-avatar>
-                  <span>
-                    I know that they rely on legacy systems, which have become
-                    cumbersome and costly to maintain and there is an urgent
-                    need to improve this. I want to learn about the Hybrid IT
-                    Modernization.
-                  </span>
+                <div class="response-wrapper">
+                  <div class="response-title">
+                    <span><kyn-avatar initials="A"></kyn-avatar></span>
+                    <span>Add Prompt Component here...</span>
+                  </div>
                 </div>
                 <div class="response-wrapper">
-                  <span> ${unsafeHTML(aiResponse)} </span>
-                  <span>
-                    The benefits of adopting Hybrid IT Modernization:
-                    <ol>
-                      <li>
-                        Cost Efficiency: Hybrid IT allows organizations to
-                        combine on-premises infrastructure with cloud solutions,
-                        optimizing costs by only utilizing cloud services for
-                        what is needed. It helps avoid over-provisioning and can
-                        scale as needed without large upfront investments.
-                      </li>
-                      <li>
-                        Flexibility and Scalability: Organizations can leverage
-                        the flexibility of the cloud for specific workloads
-                        while maintaining critical systems on-premises. This
-                        provides the ability to scale resources up or down as
-                        business needs change, ensuring better alignment with
-                        demand.
-                      </li>
-                      <li>
-                        Improved Agility: By modernizing IT infrastructure with
-                        a hybrid approach, businesses can more quickly respond
-                        to market changes and customer needs. They can
-                        experiment with new technologies or software without
-                        disrupting core operations.
-                      </li>
-                    </ol>
-                  </span>
-                </div>
-                <div
-                  class="response-wrapper"
-                  style="align-items: anchor-center;"
-                >
-                  <kyn-avatar initials="A"></kyn-avatar>
-                  <span>Add Prompt Component here...</span>
+                  <div class="response-title">
+                    <span> ${unsafeHTML(aiResponse)} </span>
+                    <span
+                      >The benefits of adopting Hybrid IT Modernization:</span
+                    >
+                  </div>
+                  <div class="response-list kd-type--body-02">
+                    ${AIResponse.map((items) => {
+                      return html`
+                        <div style="font-weight:500">${items.title}</div>
+                        <ol type="a">
+                          ${items.message.map((item) => {
+                            return html`<li>${item.msgText}</li>`;
+                          })}
+                        </ol>
+                      `;
+                    })}
+                  </div>
                 </div>
               </div>
             </kyn-tab-panel>
-            <kyn-tab-panel tabId="history">Tab 2 Content</kyn-tab-panel>
           </kyn-tabs>
         </span>
-        <div class="input-query-container" slot="footer">
-          <kyn-text-area
-            class="input-text-area"
-            rows="2"
-            placeholder="Type your message..."
-            maxRowsVisible="3"
-            caption="Optional text"
-            maxLength=${100}
-            ?aiConnected=${args.aiConnected}
-          ></kyn-text-area>
-          <kyn-button
-            class="input-send-button"
-            kind="primary-ai"
-            description="send button"
-          >
-            <span slot="icon">${unsafeSVG(sendIcon)}</span>
-          </kyn-button>
+        <div class="chat_input" slot="footer">
+          <div class="input-query-container">
+            <kyn-text-area
+              class="input-text-area"
+              rows="2"
+              placeholder="Type your message..."
+              maxRowsVisible="3"
+              aiConnected
+            ></kyn-text-area>
+            <kyn-button
+              class="input-send-button"
+              kind="primary-ai"
+              description="send button"
+            >
+              <span slot="icon">${unsafeSVG(sendIcon)}</span>
+            </kyn-button>
+          </div>
+          <div class="disclaimer kd-type--ui-02">
+            Kai may occasionally generate incorrect or misleading information.
+          </div>
         </div>
       </kyn-modal>
       <style>
@@ -425,7 +404,7 @@ export const WithOtherContent = {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 32px;
+          gap: 24px;
           align-self: stretch;
         }
         .query-item {
@@ -436,28 +415,57 @@ export const WithOtherContent = {
           align-self: stretch;
           color: var(--kd-color-text-level-primary);
         }
+        .user-query {
+          display: flex;
+          gap: 16px;
+        }
         .response-wrapper {
           display: flex;
-          gap: 20px;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+          align-self: stretch;
         }
-        ol {
-          margin-left: -1rem;
-        }
-
-        .input-query-container {
-          width: 100%;
+        .response-title {
           display: flex;
-          align-items: center;
-          background-color: var(--kd-color-background-container-ai-level-2);
-          border-radius: 8px;
-          .input-text-area {
+          gap: 16px;
+          align-items: anchor-center;
+        }
+        .response-list {
+          display: flex;
+          flex-direction: column;
+          padding-left: 52px;
+          color: var(--kd-color-text-level-primary);
+        }
+        ol > li {
+          margin-bottom: 15px;
+        }
+        .chat_input {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 4px;
+          align-self: stretch;
+
+          .input-query-container {
             width: 100%;
-            padding: 2px 0px 10px 10px;
-            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            background-color: var(--kd-color-background-container-ai-level-2);
+            border-radius: 8px;
+            .input-text-area {
+              width: 100%;
+              padding: 2px 0px 10px 10px;
+              margin-right: 10px;
+            }
+            .input-send-button {
+              margin-right: 10px;
+            }
           }
-          .input-send-button {
-            margin-right: 10px;
-            margin-bottom: 30px;
+          .disclaimer {
+            padding: 0px 16px;
+            gap: 16px;
+            color: var(--kd-color-text-level-secondary);
           }
         }
       </style>
