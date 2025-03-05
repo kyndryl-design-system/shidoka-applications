@@ -23,6 +23,7 @@ import '../components/reusable/button';
 import '../components/reusable/textInput';
 import '../components/reusable/modal';
 import '../components/reusable/textArea';
+import '../components/reusable/inlineConfirm';
 
 export default {
   title: 'AI/Patterns/ChatHistory',
@@ -59,7 +60,7 @@ const chatResponse = [
     message: [
       {
         msgText:
-          'Tell me more about Kyndryl Application Management Services for SAP S...',
+          'Tell me more about Kyndryl Application Management Services for SAP',
       },
     ],
   },
@@ -68,7 +69,7 @@ const chatResponse = [
     message: [
       {
         msgText:
-          'Can you explain how I can report a concern anonymously through the Kyndryl...',
+          'Can you explain how I can report a concern anonymously through the Kyndryl',
       },
     ],
   },
@@ -178,18 +179,18 @@ export const Default = {
                             <kyn-card style="width:100%">
                               <div class="chat-container">
                                 <div class="chat-wrapper">${item.msgText}</div>
-                                <kyn-button
-                                  iconposition="center"
-                                  kind="ghost"
-                                  type="button"
-                                  size="small"
-                                  description="Delete"
-                                  @on-click=${(e) => action(e.type)(e)}
+                                <kyn-inline-confirm
+                                  ?destructive=${true}
+                                  .anchorText=${'Delete'}
+                                  .confirmText=${'Confirm'}
+                                  .cancelText=${'Cancel'}
+                                  @on-confirm=${(e) => action('on-confirm')()}
                                 >
-                                  <span style="display:flex;" slot="icon"
+                                  ${unsafeSVG(deleteIcon)}
+                                  <span slot="confirmIcon"
                                     >${unsafeSVG(deleteIcon)}</span
                                   >
-                                </kyn-button>
+                                </kyn-inline-confirm>
                               </div>
                             </kyn-card>
                           `;
@@ -403,6 +404,8 @@ export const WithOtherContent = {
             rows="2"
             placeholder="Type your message..."
             maxRowsVisible="3"
+            caption="Optional text"
+            maxLength=${100}
             ?aiConnected=${args.aiConnected}
           ></kyn-text-area>
           <kyn-button
@@ -416,7 +419,7 @@ export const WithOtherContent = {
       </kyn-modal>
       <style>
         kyn-tab-panel > * {
-          margin-bottom: 1.5rem;
+          margin-bottom: 8px;
         }
         .query-container {
           display: flex;
@@ -445,8 +448,7 @@ export const WithOtherContent = {
           width: 100%;
           display: flex;
           align-items: center;
-          background-color: var(--kd-color-background-container-ai-default);
-          box-shadow: 0px 0px 24px 0px var(--kd-color-border-dropshadow-ai);
+          background-color: var(--kd-color-background-container-ai-level-2);
           border-radius: 8px;
           .input-text-area {
             width: 100%;
