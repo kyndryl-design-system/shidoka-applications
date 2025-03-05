@@ -17,6 +17,7 @@ import {
   emitValue,
   updateEnableTime,
   hideEmptyYear,
+  getModalContainer,
 } from '../../../common/helpers/flatpickr';
 import '../../reusable/button';
 
@@ -494,24 +495,24 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }
 
-  async initializeFlatpickr() {
+  async initializeFlatpickr(): Promise<void> {
     if (!this._inputEl) return;
-    if (this.flatpickrInstance) this.flatpickrInstance.destroy();
+    this.flatpickrInstance?.destroy();
 
     this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
       inputEl: this._inputEl,
       getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
       setCalendarAttributes: (instance) => {
-        if (instance && instance.calendarContainer) {
-          const modalDetected = !!this.closest('kyn-modal');
-          setCalendarAttributes(instance, modalDetected);
-          instance.calendarContainer.setAttribute(
-            'aria-label',
-            'Date range calendar'
-          );
-        } else {
+        if (!instance?.calendarContainer) {
           console.warn('Calendar container not available...');
+          return;
         }
+        const container = getModalContainer(this);
+        setCalendarAttributes(instance, container !== document.body);
+        instance.calendarContainer.setAttribute(
+          'aria-label',
+          'Date range calendar'
+        );
       },
       setInitialDates: this.setInitialDates.bind(this),
     });
@@ -521,9 +522,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
-    const modal = this.closest('kyn-modal');
-    const container = modal ? modal : document.body;
-
+    const container = getModalContainer(this);
     return getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,

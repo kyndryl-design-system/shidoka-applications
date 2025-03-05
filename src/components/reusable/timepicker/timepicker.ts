@@ -17,6 +17,7 @@ import {
   loadLocale,
   emitValue,
   hideEmptyYear,
+  getModalContainer,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
@@ -402,7 +403,8 @@ export class TimePicker extends FormMixin(LitElement) {
       getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
       setCalendarAttributes: (instance) => {
         if (instance && instance.calendarContainer) {
-          const modalDetected = !!this.closest('kyn-modal');
+          const container = getModalContainer(this);
+          const modalDetected = container !== document.body;
           setCalendarAttributes(instance, modalDetected);
           instance.calendarContainer.setAttribute('aria-label', 'Time picker');
         } else {
@@ -445,8 +447,7 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
-    const modal = this.closest('kyn-modal');
-    const container = modal ? modal : document.body;
+    const container = getModalContainer(this);
     const effectiveDateFormat = this.twentyFourHourFormat ? 'H:i' : 'h:i K';
     return getFlatpickrOptions({
       locale: this.locale,
@@ -470,6 +471,7 @@ export class TimePicker extends FormMixin(LitElement) {
       defaultMinute: this.defaultMinute ?? undefined,
     });
   }
+
   setInitialDates(instance: flatpickr.Instance): void {
     try {
       if (this._hasInteracted || this.value) return;

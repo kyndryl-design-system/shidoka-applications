@@ -274,6 +274,14 @@ export function getPlaceholder(
   return 'Select date';
 }
 
+export function getModalContainer(element: HTMLElement): HTMLElement {
+  return (
+    ['kyn-modal', 'kyn-side-drawer']
+      .map((selector) => element.closest(selector))
+      .find((el): el is HTMLElement => el !== null) || document.body
+  );
+}
+
 export async function getFlatpickrOptions(
   context: FlatpickrOptionsContext
 ): Promise<Partial<BaseOptions>> {
@@ -320,6 +328,7 @@ export async function getFlatpickrOptions(
   );
 
   const isWideScreen = window.innerWidth >= 767;
+
   const effectiveDateFormat =
     dateFormat ||
     (mode === 'time' ? (twentyFourHourFormat ? 'H:i' : 'h:i K') : 'Y-m-d');

@@ -17,6 +17,7 @@ import {
   loadLocale,
   emitValue,
   hideEmptyYear,
+  getModalContainer,
 } from '../../../common/helpers/flatpickr';
 import '../../reusable/button';
 
@@ -531,8 +532,7 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
-    const modal = this.closest('kyn-modal');
-    const container = modal ? modal : document.body;
+    const container = getModalContainer(this);
 
     return getFlatpickrOptions({
       locale: this.locale,
