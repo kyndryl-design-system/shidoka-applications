@@ -12,17 +12,17 @@ import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/sen
 import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
-import '../components/reusable/tabs';
-import '../components/reusable/avatar';
-import '../components/reusable/pagetitle';
-import '../components/reusable/breadcrumbs';
-import '../components/reusable/link';
-import '../components/reusable/card';
-import '../components/reusable/button';
-import '../components/reusable/textInput';
-import '../components/reusable/modal';
-import '../components/reusable/textArea';
-import '../components/reusable/inlineConfirm';
+import '../../components/reusable/tabs';
+import '../../components/reusable/avatar';
+import '../../components/reusable/pagetitle';
+import '../../components/reusable/breadcrumbs';
+import '../../components/reusable/link';
+import '../../components/reusable/card';
+import '../../components/reusable/button';
+import '../../components/reusable/textInput';
+import '../../components/reusable/modal';
+import '../../components/reusable/textArea';
+import '../../components/reusable/inlineConfirm';
 
 export default {
   title: 'AI/Patterns/Chat History',
@@ -119,7 +119,7 @@ export const Default = {
         ?showSecondaryButton=${false}
         secondaryButtonText=""
         ?secondaryDisabled=${true}
-        ?hideFooter=${false}
+        ?hideFooter=${true}
         ?hideCancelButton=${false}
         aiConnected
         ?disableScroll=${false}
@@ -132,6 +132,7 @@ export const Default = {
             style="height: 300px;"
             scrollablePanels
             tabStyle="line"
+            tabSize="sm"
             aiConnected
             @on-change=${(e) => action(e.type)(e)}
           >
@@ -206,23 +207,23 @@ export const Default = {
                   })}
                 </div>
               </div>
+
+              <kyn-link
+                id="test"
+                standalone=""
+                href=""
+                target="_self"
+                kind="ai"
+                shade="auto"
+                @on-click=${(e) => action(e.type)(e)}
+                >Show older
+                <span style="display:flex;" slot="icon"
+                  >${unsafeSVG(chevronDownIcon)}</span
+                >
+              </kyn-link>
             </kyn-tab-panel>
           </kyn-tabs>
         </span>
-        <kyn-link
-          slot="footer"
-          id="test"
-          standalone=""
-          href=""
-          target="_self"
-          kind="ai"
-          shade="auto"
-          @on-click=${(e) => action(e.type)(e)}
-          >Show older
-          <span style="display:flex;" slot="icon"
-            >${unsafeSVG(chevronDownIcon)}</span
-          >
-        </kyn-link>
       </kyn-modal>
       <style>
         kyn-card::part(card-wrapper) {
@@ -238,6 +239,10 @@ export const Default = {
         }
         .chat-history-container > :first-child {
           margin-bottom: 32px;
+        }
+
+        .chat-history-container > :last-child {
+          margin-bottom: 24px;
         }
 
         .chat_content {
@@ -313,6 +318,7 @@ export const WithOtherContent = {
             style="height: 300px;"
             scrollablePanels
             tabStyle="line"
+            tabSize="sm"
             aiConnected
             @on-change=${(e) => action(e.type)(e)}
           >
@@ -351,24 +357,24 @@ export const WithOtherContent = {
                   </div>
                 </div>
                 <div class="response-wrapper">
-                  <div class="response-title">
-                    <span> ${unsafeHTML(aiResponse)} </span>
-                    <span
-                      >The benefits of adopting Hybrid IT Modernization:</span
-                    >
-                  </div>
-                  <div class="response-list kd-type--body-02">
+                  <span> ${unsafeHTML(aiResponse)} </span>
+                  <span class="response-list kd-type--body-02">
+                    <div>The benefits of adopting Hybrid IT Modernization:</div>
                     ${AIResponse.map((items) => {
                       return html`
                         <div style="font-weight:500">${items.title}</div>
-                        <ol type="a">
+                        <ol
+                          style="margin-top:0"
+                          class="kd-spacing--list-item"
+                          type="a"
+                        >
                           ${items.message.map((item) => {
                             return html`<li>${item.msgText}</li>`;
                           })}
                         </ol>
                       `;
                     })}
-                  </div>
+                  </span>
                 </div>
               </div>
             </kyn-tab-panel>
@@ -405,14 +411,12 @@ export const WithOtherContent = {
           flex-direction: column;
           align-items: flex-start;
           gap: 24px;
-          align-self: stretch;
         }
         .query-item {
           display: flex;
           padding: 16px 0px;
           align-items: center;
           gap: 8px;
-          align-self: stretch;
           color: var(--kd-color-text-level-primary);
         }
         .user-query {
@@ -421,10 +425,7 @@ export const WithOtherContent = {
         }
         .response-wrapper {
           display: flex;
-          flex-direction: column;
-          align-items: flex-start;
           gap: 16px;
-          align-self: stretch;
         }
         .response-title {
           display: flex;
@@ -434,18 +435,15 @@ export const WithOtherContent = {
         .response-list {
           display: flex;
           flex-direction: column;
-          padding-left: 52px;
+          gap: 16px;
+
           color: var(--kd-color-text-level-primary);
-        }
-        ol > li {
-          margin-bottom: 15px;
         }
         .chat_input {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
           gap: 4px;
-          align-self: stretch;
 
           .input-query-container {
             width: 100%;
