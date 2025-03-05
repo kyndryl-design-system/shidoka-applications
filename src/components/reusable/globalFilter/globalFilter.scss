@@ -7,12 +7,21 @@
 
 .filter-bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
   background: var(--kd-color-container-utility);
   border-radius: 4px;
-  padding: 0 16px;
-  height: 64px;
+  padding: 16px;
+}
+
+::slotted(kyn-text-input[type='search']),
+::slotted(kyn-search) {
+  width: 100%;
+
+  @media (min-width: 42rem) {
+    width: auto;
+  }
 }
 
 .actions {
