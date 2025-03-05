@@ -161,16 +161,15 @@ WithDisabledDates.args = {
     '2024-03-25',
   ],
 };
-WithDisabledDates.storyName = 'With Disabled Dates';
 
-export const DateRangePickerInModal = {
+export const InModal = {
   args: {
     ...DateRangeDefault.args,
     locale: 'en',
     name: 'date-range-picker-in-modal',
     dateFormat: 'Y-m-d',
     defaultDate: null,
-    caption: 'Date-range picker in a modal.',
+    caption: 'Date Range Picker in a modal.',
     label: 'Date',
     open: false,
     size: 'lg',
@@ -242,7 +241,7 @@ export const DateRangePickerInModal = {
     `;
   },
 };
-DateRangePickerInModal.storyName = 'Date-Range Picker in Modal';
+InModal.storyName = 'In Modal';
 
 export const DateRangePickerInAccordionInModal = {
   args: {
