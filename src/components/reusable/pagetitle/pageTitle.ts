@@ -24,7 +24,7 @@ export class PageTitle extends LitElement {
   @property({ type: String })
   subTitle = '';
 
-  /** Type of page title `'primary'` & `'secondary'`. */
+  /** Type of page title `'primary'` , `'secondary'` & `'tertiary'`. */
   @property({ type: String })
   type = 'primary';
 
