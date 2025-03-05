@@ -76,47 +76,14 @@ export const AISourcesFeedback = {
         <kyn-button
           slot="copy"
           kind="ghost"
+          size="small"
           iconPosition="left"
-          @click=${(e) => action(e.type)(e)}
+          @on-click=${(e) => action(e.type)(e)}
         >
           Copy
           <span slot="icon" class="copy-icon">${unsafeSVG(copyIcon)}</span>
         </kyn-button>
-
-        <span slot="sources">
-          <div class="kd-grid">
-            ${sourcesData.map(
-              (card) => html`
-                <div
-                  class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-3"
-                >
-                  <kyn-card
-                    style="width:100%;height:100%;"
-                    aiConnected
-                    type=${args.type}
-                    href=${args.href}
-                    target=${args.target}
-                    rel=${args.rel}
-                    ?hideBorder=${args.hideBorder}
-                  >
-                    <h1 class="card-title">
-                      <div>${card.title}</div>
-                    </h1>
-                    <div class="card-description">
-                      <kyn-link
-                        href="#"
-                        shade="dark"
-                        @click=${(e) => action(e.type)(e)}
-                      >
-                        <div>${card.description}</div>
-                      </kyn-link>
-                    </div>
-                  </kyn-card>
-                </div>
-              `
-            )}
-          </div>
-        </span>
+        <span slot="sources" class="sources"> ${SourcesContent()} </span>
 
         <div slot="pos-feedback-form" class="feedback-form">
           ${feedbackFormContent('positive')}
@@ -126,33 +93,6 @@ export const AISourcesFeedback = {
           ${feedbackFormContent('negative')}
         </div>
       </kyn-ai-sources-feedback>
-      <style>
-        .card-title div {
-          @include typography.type-ui-01;
-          color: var(--kd-color-text-level-primary);
-          font-size: 16px;
-          font-weight: 500;
-        }
-        .close {
-          position: absolute;
-          right: 32px;
-          color: var(--kd-color-icon-primary);
-
-          span {
-            display: flex;
-          }
-        }
-        kyn-text-area {
-          width: 100%;
-        }
-        .feedback-header {
-          display: flex;
-          justify-content: space-between;
-        }
-        form * {
-          margin-top: 0.5rem;
-        }
-      </style>
     `;
   },
 };
@@ -160,17 +100,6 @@ export const AISourcesFeedback = {
 const feedbackFormContent = (_selectedFeedback) => html`
   <div class="feedback-header">
     <span> Could you tell us a little bit more ? (optional) </span>
-    <span>
-      <kyn-button
-        class="close"
-        @on-click=${(e) => action(e.type)(e)}
-        }}
-        kind="ghost"
-        size="small"
-      >
-        <span slot="icon">${unsafeSVG(closeIcon)}</span>
-      </kyn-button>
-    </span>
   </div>
   <form
     @submit=${(e) => {
@@ -204,7 +133,56 @@ const feedbackFormContent = (_selectedFeedback) => html`
 
     <div class="footer">
       <kyn-button type="submit" kind="primary-ai">Submit</kyn-button>
-      <kyn-button kind="ghost">Cancel</kyn-button>
+      <kyn-button kind="outline-ai">Cancel</kyn-button>
     </div>
   </form>
+  <style>
+    kyn-text-area {
+      width: 100%;
+    }
+    form * {
+      margin-top: 0.5rem;
+    }
+  </style>
+`;
+
+const SourcesContent = () => html`
+  <div class="kd-grid">
+    ${sourcesData.map(
+      (card) => html`
+        <div class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-3">
+          <kyn-card
+            style="width:100%;height:100%;"
+            aiConnected
+            type=${args.type}
+            href=${args.href}
+            target=${args.target}
+            rel=${args.rel}
+            ?hideBorder=${args.hideBorder}
+          >
+            <h1 class="card-title">
+              <div>${card.title}</div>
+            </h1>
+            <div class="card-description">
+              <kyn-link
+                href="#"
+                shade="dark"
+                @click=${(e) => action(e.type)(e)}
+              >
+                <div>${card.description}</div>
+              </kyn-link>
+            </div>
+          </kyn-card>
+        </div>
+      `
+    )}
+  </div>
+  <style>
+    .card-title div {
+      @include typography.type-ui-01;
+      color: var(--kd-color-text-level-primary);
+      font-size: 16px;
+      font-weight: 500;
+    }
+  </style>
 `;

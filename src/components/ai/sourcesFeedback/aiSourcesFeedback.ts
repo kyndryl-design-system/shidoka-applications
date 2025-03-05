@@ -9,6 +9,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import thumbsUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/thumbs-up.svg';
 import thumbsDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/thumbs-down.svg';
+import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 import '../../reusable/link';
 import '../../reusable/card';
@@ -113,13 +114,13 @@ export class AISourcesFeedback extends LitElement {
           <div class="${classesSources}">
             <kyn-button
               kind="ghost"
+              size="small"
               class="kyn-sources-title"
               aria-controls="kyn-sources-body"
               aria-expanded=${this.sourcesOpened}
               aria-disabled=${this.sourcesDisabled}
-              tabindex="0"
               role="button"
-              @click="${(e: Event) => this._handleClick(e, 'sources')}"
+              @on-click="${(e: Event) => this._handleClick(e, 'sources')}"
               id="kyn-sources-title"
             >
               <span class="title">${this._textStrings.sourcesTxt}</span>
@@ -141,7 +142,8 @@ export class AISourcesFeedback extends LitElement {
                     <kyn-button
                       class="reveal-toggle"
                       kind="ghost"
-                      @click=${() =>
+                      size="small"
+                      @on-click=${() =>
                         this._toggleLimitRevealed(!this.limitRevealed)}
                     >
                       ${this.limitRevealed
@@ -161,14 +163,14 @@ export class AISourcesFeedback extends LitElement {
           <div class="${classesFeedback1}">
             <kyn-button
               kind="ghost"
+              size="small"
               class="kyn-pos-feedback-title"
               aria-controls="kyn-pos-feedback-body"
               aria-expanded=${this.feedbackOpened}
               aria-disabled=${this.feedbackDisabled}
               aria-label="Give positive feedback"
-              tabindex="0"
               id="kyn-pos-feedback-title"
-              @click=${(e: Event) =>
+              @on-click=${(e: Event) =>
                 this._handleClick(e, 'feedback', 'positive')}
             >
               <span slot="icon"> ${unsafeSVG(thumbsUpIcon)} </span>
@@ -180,6 +182,16 @@ export class AISourcesFeedback extends LitElement {
               role="region"
               aria-labelledby="kyn-pos-feedback-title"
             >
+              <kyn-button
+                class="close"
+                @on-click=${(e: Event) =>
+                  this._handleClick(e, 'feedback', 'positive')}
+                }}
+                kind="ghost"
+                size="small"
+              >
+                <span slot="icon">${unsafeSVG(closeIcon)}</span>
+              </kyn-button>
               <slot
                 name="pos-feedback-form"
                 @slotchange=${this._handleSlotChange}
@@ -190,13 +202,13 @@ export class AISourcesFeedback extends LitElement {
           <div class="${classesFeedback2}">
             <kyn-button
               kind="ghost"
+              size="small"
               class="kyn-neg-feedback-title"
               aria-controls="kyn-neg-feedback-body"
               aria-expanded=${this.feedbackOpened}
               aria-disabled=${this.feedbackDisabled}
               aria-label="Give negative feedback"
-              tabindex="0"
-              @click="${(e: Event) =>
+              @on-click="${(e: Event) =>
                 this._handleClick(e, 'feedback', 'negative')}"
               id="kyn-neg-feedback-title"
             >
@@ -209,6 +221,16 @@ export class AISourcesFeedback extends LitElement {
               role="region"
               aria-labelledby="kyn-neg-feedback-title"
             >
+              <kyn-button
+                class="close"
+                @on-click=${(e: Event) =>
+                  this._handleClick(e, 'feedback', 'negative')}
+                }}
+                kind="ghost"
+                size="small"
+              >
+                <span slot="icon">${unsafeSVG(closeIcon)}</span>
+              </kyn-button>
               <slot
                 name="neg-feedback-form"
                 @slotchange=${this._handleSlotChange}
@@ -251,7 +273,6 @@ export class AISourcesFeedback extends LitElement {
     }
 
     const event = new CustomEvent('on-toggle', {
-      bubbles: true,
       composed: true,
       detail: {
         sourcesOpened: this.sourcesOpened,

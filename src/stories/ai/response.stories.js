@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import '../../components/reusable/avatar';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/response.svg';
+import aiIndicator from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/indicator.svg';
 
 export default {
   title: 'AI/Patterns/Response',
@@ -110,7 +110,7 @@ export const WithAIImage = {
   render: (args) => {
     return html`
       <div class="response-wrapper">
-        <span> ${unsafeHTML(aiResponse)} </span>
+        <span> ${unsafeHTML(aiIndicator)} </span>
         <span class="response-msg">
           The benefits of adopting Hybrid IT Modernization:
           <ol>
