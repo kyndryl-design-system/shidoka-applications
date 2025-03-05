@@ -457,6 +457,7 @@ export const WithOtherContent = {
           }
           .input-send-button {
             margin-right: 10px;
+            margin-bottom: 30px;
           }
         }
       </style>
