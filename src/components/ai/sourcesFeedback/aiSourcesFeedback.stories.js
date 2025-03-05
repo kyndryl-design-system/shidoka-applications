@@ -10,7 +10,7 @@ import '../../reusable/checkbox';
 import '../../reusable/card/card.sample';
 
 export default {
-  title: 'AI/Components/AISourcesFeedback',
+  title: 'AI / Components / AISourcesFeedback',
 };
 
 const sourcesData = [
@@ -53,8 +53,10 @@ const negFeedbackOptions = [
 ];
 
 const args = {
-  opened: { sources: false, 'pos-feedback': false, 'neg-feedback': false },
-  disabled: { sources: false, 'pos-feedback': true, 'neg-feedback': false },
+  sourcesOpened: false,
+  feedbackOpened: false,
+  sourcesDisabled: false,
+  feedbackDisabled: false,
   revealAllSources: false,
 };
 
@@ -63,11 +65,12 @@ export const AISourcesFeedback = {
   render: (args) => {
     return html`
       <kyn-ai-sources-feedback
-        .opened=${args.opened}
-        .disabled=${args.disabled}
+        .sourcesOpened=${args.sourcesOpened}
+        .feedbackOpened=${args.feedbackOpened}
+        .sourcesDisabled=${args.sourcesDisabled}
+        .feedbackDisabled=${args.feedbackDisabled}
         ?revealAllSources=${args.revealAllSources}
         @on-toggle=${(e) => action(e.type)(e)}
-        @on-view-more=${(e) => action(e.type)(e)}
         @on-feedback-changed=${(e) => action(e.type)(e)}
       >
         <kyn-button
@@ -160,8 +163,7 @@ const feedbackFormContent = (_selectedFeedback) => html`
     <span>
       <kyn-button
         class="close"
-        @on-click=${(e) => {
-          args.opened = { ...args.opened, 'neg-feedback': false };
+        @on-click=${(e) => action(e.type)(e)}
         }}
         kind="ghost"
         size="small"
