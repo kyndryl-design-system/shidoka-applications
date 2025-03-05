@@ -242,7 +242,7 @@ export const DateRangePickerInModal = {
     `;
   },
 };
-DateRangePickerInModal.storyName = 'In Modal';
+DateRangePickerInModal.storyName = 'Date-Range Picker in Modal';
 
 export const DateRangePickerInAccordionInModal = {
   args: {
