@@ -32,6 +32,8 @@ export const BlankCard = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    aiConnected: false,
+    highlight: false,
   },
   render: (args) => {
     return html` <kyn-card
@@ -41,6 +43,8 @@ export const BlankCard = {
       rel=${args.rel}
       role="article"
       ?hideBorder=${args.hideBorder}
+      ?aiConnected=${args.aiConnected}
+      ?highlight=${args.highlight}
       aria-label="Blank card"
     ></kyn-card>`;
   },
@@ -53,6 +57,8 @@ export const Simple = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    aiConnected: false,
+    highlight: false,
   },
   render: (args) => {
     return html`
@@ -62,6 +68,8 @@ export const Simple = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
+        ?aiConnected=${args.aiConnected}
+        ?highlight=${args.highlight}
         role="article"
         aria-label="Simple card"
       >
@@ -85,6 +93,8 @@ export const Clickable = {
     rel: 'noopener',
     target: '_blank',
     hideBorder: false,
+    aiConnected: false,
+    highlight: false,
   },
   render: (args) => {
     return html`
@@ -94,6 +104,8 @@ export const Clickable = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
+        ?aiConnected=${args.aiConnected}
+        ?highlight=${args.highlight}
         role="link"
         aria-label="Clickable card"
         @on-card-click=${(e) => action(e.type)(e)}
@@ -118,6 +130,8 @@ export const InsideGrid = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    aiConnected: false,
+    highlight: false,
   },
   render: (args) => {
     return html`
@@ -130,6 +144,8 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            ?aiConnected=${args.aiConnected}
+            ?highlight=${args.highlight}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -149,6 +165,8 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            ?aiConnected=${args.aiConnected}
+            ?highlight=${args.highlight}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -170,6 +188,8 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            ?aiConnected=${args.aiConnected}
+            ?highlight=${args.highlight}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -188,6 +208,8 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            ?aiConnected=${args.aiConnected}
+            ?highlight=${args.highlight}
           >
             <sample-card-component>
               <div slot="title">This is a card title</div>
@@ -203,6 +225,42 @@ export const InsideGrid = {
           </kyn-card>
         </div>
       </div>
+    `;
+  },
+};
+
+export const AIConnected = {
+  args: {
+    type: 'normal',
+    href: '',
+    rel: '',
+    target: '_self',
+    hideBorder: false,
+    aiConnected: true,
+    highlight: false,
+  },
+  render: (args) => {
+    return html`
+      <kyn-card
+        type=${args.type}
+        href=${args.href}
+        target=${args.target}
+        rel=${args.rel}
+        ?hideBorder=${args.hideBorder}
+        ?aiConnected=${args.aiConnected}
+        ?highlight=${args.highlight}
+        role="article"
+        aria-label="Simple card"
+      >
+        <sample-card-component>
+          <div slot="title">This is a card title</div>
+          <div slot="description">
+            Amazon EC2 Auto Scaling ensures that your application always has the
+            right amount of compute capacity by dynamically adjusting the number
+            of Amazon EC2 instances based on demand.
+          </div>
+        </sample-card-component>
+      </kyn-card>
     `;
   },
 };

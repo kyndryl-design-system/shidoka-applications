@@ -5,18 +5,45 @@
 @include mixins.picker-base;
 
 input {
-    padding: 0 40px 0 16px;
-    cursor: default;
+  padding: 0 40px 0 16px;
+  cursor: default;
+}
+
+.input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  .flatpickr-wrapper {
+    width: 100%;
+  }
+
+  .input-icon,
+  .clear-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    pointer-events: auto;
+  }
+
+  .input-icon {
+    right: 12px;
+  }
+
+  .clear-icon {
+    right: 36px;
+  }
 }
 
 .time-picker {
-    width: inherit;
+  width: inherit;
 
-    &__disabled {
-        @include mixins.picker-disabled;
+  &__disabled {
+    @include mixins.picker-disabled;
 
-        .input-custom {
-            pointer-events: none;
-        }
+    .input-custom {
+      pointer-events: none;
     }
+  }
 }

@@ -3,6 +3,10 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/preview-api';
 
+import '../button';
+import '../modal';
+import '../accordion';
+
 export default {
   title: 'Components/Date Range Picker',
   component: 'kyn-date-range-picker',
@@ -53,30 +57,31 @@ const Template = (args) => {
 
   return html`
     <kyn-date-range-picker
-      .name="${args.name}"
-      .label="${args.label}"
-      .locale="${args.locale}"
-      .dateFormat="${args.dateFormat}"
+      .name=${args.name}
+      .label=${args.label}
+      .locale=${args.locale}
+      .dateFormat=${args.dateFormat}
       .defaultDate=${args.defaultDate}
-      .defaultErrorMessage="${args.defaultErrorMessage}"
-      .value="${args.value}"
-      .warnText="${args.warnText}"
-      .invalidText="${args.invalidText}"
-      .disable="${args.disable}"
-      .enable="${args.enable}"
-      .caption="${args.caption}"
-      ?required="${args.required}"
-      .size="${args.size}"
-      ?dateRangePickerDisabled="${args.dateRangePickerDisabled}"
-      ?twentyFourHourFormat="${args.twentyFourHourFormat}"
-      .minDate="${args.minDate}"
-      .maxDate="${args.maxDate}"
-      .errorAriaLabel="${args.errorAriaLabel}"
-      .errorTitle="${args.errorTitle}"
-      .warningAriaLabel="${args.warningAriaLabel}"
-      .warningTitle="${args.warningTitle}"
-      .startDateLabel="${args.startDateLabel}"
-      .endDateLabel="${args.endDateLabel}"
+      .defaultErrorMessage=${args.defaultErrorMessage}
+      .value=${args.value}
+      .warnText=${args.warnText}
+      .invalidText=${args.invalidText}
+      .disable=${args.disable}
+      .enable=${args.enable}
+      .caption=${args.caption}
+      ?required=${args.required}
+      ?staticPosition=${args.staticPosition}
+      .size=${args.size}
+      ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+      ?twentyFourHourFormat=${args.twentyFourHourFormat}
+      .minDate=${args.minDate}
+      .maxDate=${args.maxDate}
+      .errorAriaLabel=${args.errorAriaLabel}
+      .errorTitle=${args.errorTitle}
+      .warningAriaLabel=${args.warningAriaLabel}
+      .warningTitle=${args.warningTitle}
+      .startDateLabel=${args.startDateLabel}
+      .endDateLabel=${args.endDateLabel}
       @on-change=${(e) => action(e.type)(e)}
     >
     </kyn-date-range-picker>
@@ -90,6 +95,7 @@ DateRangeDefault.args = {
   dateFormat: 'Y-m-d',
   defaultDate: '',
   required: false,
+  staticPosition: false,
   size: 'md',
   defaultErrorMessage: 'Both start and end dates are required',
   value: [null, null],
@@ -136,3 +142,200 @@ WithPreselectedDateTime.args = {
   caption: 'Example with preselected date/time range (format: Y-m-d H:i)',
   label: 'Preselected Date/Time Range',
 };
+
+export const DateRangePickerInModal = {
+  args: {
+    ...DateRangeDefault.args,
+    locale: 'en',
+    name: 'date-range-picker-in-modal',
+    dateFormat: 'Y-m-d',
+    defaultDate: '',
+    caption: 'Date-range picker in a modal.',
+    label: 'Date',
+    open: false,
+    size: 'lg',
+    titleText: 'Select Date',
+    labelText: '',
+    okText: 'OK',
+    cancelText: 'Cancel',
+    closeText: 'Close',
+    destructive: false,
+    okDisabled: false,
+    hideFooter: false,
+    showSecondaryButton: false,
+    hideCancelButton: false,
+    aiConnected: false,
+    disableScroll: false,
+  },
+  render: (args) => {
+    return html`
+      <kyn-modal
+        ?open=${args.open}
+        size=${args.size}
+        titleText=${args.titleText}
+        labelText=${args.labelText}
+        okText=${args.okText}
+        cancelText=${args.cancelText}
+        closeText=${args.closeText}
+        ?destructive=${args.destructive}
+        ?okDisabled=${args.okDisabled}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        ?hideFooter=${args.hideFooter}
+        ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
+        ?disableScroll=${args.disableScroll}
+        @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
+      >
+        <kyn-button slot="anchor" kind=${'primary'}> Open Modal </kyn-button>
+
+        <kyn-date-range-picker
+          .name=${args.name}
+          .label=${args.label}
+          .locale=${args.locale}
+          .dateFormat=${args.dateFormat}
+          .defaultDate=${args.defaultDate}
+          ?staticPosition=${args.staticPosition}
+          .defaultErrorMessage=${args.defaultErrorMessage}
+          .value=${args.value}
+          .warnText=${args.warnText}
+          .invalidText=${args.invalidText}
+          .disable=${args.disable}
+          .enable=${args.enable}
+          .caption=${args.caption}
+          ?required=${args.required}
+          .size=${args.size}
+          ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+          ?twentyFourHourFormat=${args.twentyFourHourFormat}
+          .minDate=${args.minDate}
+          .maxDate=${args.maxDate}
+          .errorAriaLabel=${args.errorAriaLabel}
+          .errorTitle=${args.errorTitle}
+          .warningAriaLabel=${args.warningAriaLabel}
+          .warningTitle=${args.warningTitle}
+          .startDateLabel=${args.startDateLabel}
+          .endDateLabel=${args.endDateLabel}
+          @on-change=${(e) => action(e.type)(e)}
+        >
+        </kyn-date-range-picker>
+      </kyn-modal>
+    `;
+  },
+};
+DateRangePickerInModal.storyName = 'In Modal';
+
+export const DateRangePickerInAccordionInModal = {
+  args: {
+    ...DateRangeDefault.args,
+    locale: 'en',
+    name: 'date-range-picker-in-modal',
+    dateFormat: 'Y-m-d',
+    defaultDate: '',
+    caption: 'Date-range picker in a modal.',
+    label: 'Date',
+    staticPosition: true,
+    open: false,
+    size: 'lg',
+    titleText: 'Select Date',
+    labelText: '',
+    okText: 'OK',
+    cancelText: 'Cancel',
+    closeText: 'Close',
+    destructive: false,
+    okDisabled: false,
+    hideFooter: false,
+    showSecondaryButton: false,
+    hideCancelButton: false,
+    aiConnected: false,
+    disableScroll: false,
+  },
+  render: (args) => {
+    return html`
+      <kyn-modal
+        ?open=${args.open}
+        size=${args.size}
+        titleText=${args.titleText}
+        labelText=${args.labelText}
+        okText=${args.okText}
+        cancelText=${args.cancelText}
+        closeText=${args.closeText}
+        ?destructive=${args.destructive}
+        ?okDisabled=${args.okDisabled}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        ?hideFooter=${args.hideFooter}
+        ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
+        ?disableScroll=${args.disableScroll}
+        @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
+      >
+        <kyn-button slot="anchor" kind=${'primary'}> Open Modal </kyn-button>
+
+        <kyn-accordion
+          ?filledHeaders="${args.filledHeaders}"
+          ?compact="${args.compact}"
+          ?showNumbers="${args.showNumbers}"
+          startNumber="${args.startNumber}"
+          expandLabel="${args.expandLabel}"
+          collapseLabel="${args.collapseLabel}"
+        >
+          <kyn-accordion-item opened @on-toggle=${(e) => action(e.type)(e)}>
+            <span slot="title"> Accordion Title 1 </span>
+            <span slot="subtitle"> Accordion subtitle 1 </span>
+            <div slot="body">
+              <kyn-date-range-picker
+                .name=${args.name}
+                .label=${args.label}
+                .locale=${args.locale}
+                .dateFormat=${args.dateFormat}
+                .defaultDate=${args.defaultDate}
+                .defaultErrorMessage=${args.defaultErrorMessage}
+                ?staticPosition=${args.staticPosition}
+                .value=${args.value}
+                .warnText=${args.warnText}
+                .invalidText=${args.invalidText}
+                .disable=${args.disable}
+                .enable=${args.enable}
+                .caption=${args.caption}
+                ?required=${args.required}
+                .size=${args.size}
+                ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+                ?twentyFourHourFormat=${args.twentyFourHourFormat}
+                .minDate=${args.minDate}
+                .maxDate=${args.maxDate}
+                .errorAriaLabel=${args.errorAriaLabel}
+                .errorTitle=${args.errorTitle}
+                .warningAriaLabel=${args.warningAriaLabel}
+                .warningTitle=${args.warningTitle}
+                .startDateLabel=${args.startDateLabel}
+                .endDateLabel=${args.endDateLabel}
+                @on-change=${(e) => action(e.type)(e)}
+              >
+              </kyn-date-range-picker>
+            </div>
+          </kyn-accordion-item>
+
+          <kyn-accordion-item @on-toggle=${(e) => action(e.type)(e)}>
+            <span slot="title"> Accordion Title 2 </span>
+            <span slot="subtitle"> Accordion subtitle 2 </span>
+            <div slot="body">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+          </kyn-accordion-item>
+
+          <kyn-accordion-item disabled @on-toggle=${(e) => action(e.type)(e)}>
+            <span slot="title"> Accordion Title 3 </span>
+            <span slot="subtitle"> Accordion subtitle 3 </span>
+            <div slot="body">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+          </kyn-accordion-item>
+        </kyn-accordion>
+      </kyn-modal>
+    `;
+  },
+};
+DateRangePickerInAccordionInModal.storyName =
+  'Static Position In Nested Acccordion';
