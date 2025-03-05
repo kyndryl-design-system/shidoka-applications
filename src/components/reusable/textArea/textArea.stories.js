@@ -25,6 +25,7 @@ const args = {
   required: false,
   disabled: false,
   invalidText: '',
+  hideLabel: false,
   minLength: undefined,
   maxLength: undefined,
   rows: undefined,
@@ -48,6 +49,7 @@ const Template = (args) => {
       minLength=${ifDefined(args.minLength)}
       maxLength=${ifDefined(args.maxLength)}
       rows=${args.rows}
+      ?hideLabel=${args.hideLabel}
       ?aiConnected=${args.aiConnected}
       ?notResizeable=${args.notResizeable}
       maxRowsVisible=${args.maxRowsVisible}
