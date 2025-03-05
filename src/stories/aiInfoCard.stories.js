@@ -4,6 +4,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import policeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/police.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/delete.svg';
 import '../components/reusable/button';
+import '../components/reusable/inlineConfirm/inlineConfirm';
 import { action } from '@storybook/addon-actions';
 import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 
@@ -63,18 +64,16 @@ const InfoTemplate = () => {
           </div>
         </div>
         <div class="info-card-rightIcon">
-          <kyn-button
-            iconposition="center"
-            kind="ghost"
-            type="button"
-            size="small"
-            description="Button Description"
-            @on-click=${(e) => action(e.type)(e)}
+          <kyn-inline-confirm
+            ?destructive=${true}
+            .anchorText=${'Delete'}
+            .confirmText=${'Confirm'}
+            .cancelText=${'Cancel'}
+            @on-confirm=${(e) => action('on-confirm')()}
           >
-            <span style="display:flex;" slot="icon"
-              >${unsafeSVG(deleteIcon)}</span
-            >
-          </kyn-button>
+            ${unsafeSVG(deleteIcon)}
+            <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
+          </kyn-inline-confirm>
         </div>
       </div>
     </kyn-card>
