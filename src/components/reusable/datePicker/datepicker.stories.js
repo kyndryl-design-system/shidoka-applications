@@ -37,7 +37,7 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    defaultDate: { control: { type: 'object' } },
+    disable: { control: { type: 'object' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
     defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
@@ -94,7 +94,7 @@ DatePickerDefault.args = {
   name: 'default-date-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
-  defaultDate: '',
+  defaultDate: null,
   defaultErrorMessage: 'A date value is required',
   required: false,
   size: 'md',
@@ -134,7 +134,7 @@ DatePickerMultiple.args = {
   locale: 'en',
   name: 'date-multiple-picker',
   dateFormat: 'Y-m-d',
-  defaultDate: '',
+  defaultDate: null,
   caption: 'Select multiple dates. Example shows preselected dates.',
   mode: 'multiple',
   label: 'Multiple Date Selection',
@@ -147,12 +147,30 @@ DateTimeMultiple.args = {
   locale: 'en',
   name: 'date-time-multiple-picker',
   dateFormat: 'Y-m-d H:i',
-  defaultDate: ['2024-01-01 09:00', '2024-01-02 17:00'],
+  defaultDate: ['2024-01-01 09:00'],
   caption: 'Select multiple dates with time. Example shows preselected dates.',
   mode: 'multiple',
   label: 'Multiple Date/Time Selection',
 };
 DateTimeMultiple.storyName = 'With Preselected Date Time';
+
+export const WithDisabledDates = Template.bind({});
+WithDisabledDates.args = {
+  ...DatePickerDefault.args,
+  name: 'date-picker-with-disabled-dates',
+  dateFormat: 'Y-m-d',
+  caption: 'Example showing disabled dates (weekends are disabled)',
+  label: 'Date Selection',
+  disable: [
+    function (date) {
+      return date.getDay() === 0 || date.getDay() === 6;
+    },
+    '2024-03-15',
+    '2024-03-20',
+    '2024-03-25',
+  ],
+};
+WithDisabledDates.storyName = 'With Disabled Dates';
 
 export const DatepickerInModal = {
   args: {
@@ -161,7 +179,7 @@ export const DatepickerInModal = {
     name: 'date-picker-in-modal',
     dateFormat: 'Y-m-d',
     staticPosition: false,
-    defaultDate: '',
+    defaultDate: null,
     caption: 'Datepicker in a modal.',
     label: 'Date',
     open: false,

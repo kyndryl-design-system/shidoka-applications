@@ -86,7 +86,7 @@ DefaultTimePicker.args = {
   invalidText: '',
   staticPosition: false,
   caption: '',
-  defaultDate: '',
+
   defaultErrorMessage: 'A time value is required',
   minTime: '',
   maxTime: '',
@@ -95,7 +95,11 @@ DefaultTimePicker.args = {
   warningAriaLabel: '',
   warningTitle: '',
   timepickerDisabled: false,
+  twentyFourHourFormat: false,
   label: 'Timepicker',
+  defaultDate: null,
+  defaultHour: null,
+  defaultMinute: null,
 };
 DefaultTimePicker.storyName = 'Default (12H)';
 
@@ -117,19 +121,29 @@ TimePickerAltLanguage.args = {
 };
 TimePickerAltLanguage.storyName = 'Japanese Locale Example';
 
+export const TimePickerPreSelected = Template.bind({});
+TimePickerPreSelected.args = {
+  ...DefaultTimePicker.args,
+  locale: 'en',
+  twentyFourHourFormat: false,
+  label: 'Timepicker with Pre-selected Hour and Minutes',
+  defaultHour: 12,
+  defaultMinute: 30,
+};
+TimePickerPreSelected.storyName = 'With Pre-selected Time';
+
 export const TimepickerInModal = {
   args: {
     ...DefaultTimePicker.args,
     locale: 'en',
     name: 'timepicker-in-modal',
     dateFormat: 'Y-m-d',
-    defaultDate: '',
     caption: 'Timepicker in a modal.',
-    label: 'Date',
+    label: 'Time',
     open: false,
     size: 'lg',
     staticPosition: false,
-    titleText: 'Select Date',
+    titleText: 'Select Time',
     labelText: '',
     okText: 'OK',
     cancelText: 'Cancel',
@@ -141,8 +155,16 @@ export const TimepickerInModal = {
     hideCancelButton: false,
     aiConnected: false,
     disableScroll: false,
+    defaultDate: null,
+    defaultHour: null,
+    defaultMinute: null,
   },
   render: (args) => {
+    useEffect(() => {
+      return () => {
+        disconnectFlatpickr();
+      };
+    }, []);
     return html`
       <kyn-modal
         ?open=${args.open}
@@ -162,8 +184,7 @@ export const TimepickerInModal = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button slot="anchor" kind=${'primary'}> Open Modal </kyn-button>
-
+        <kyn-button slot="anchor" kind="primary"> Open Modal </kyn-button>
         <kyn-time-picker
           .name=${args.name}
           .label=${args.label}

@@ -3,9 +3,9 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import { langsArray } from '../../../common/flatpickrLangs';
 import {
   injectFlatpickrStyles,
-  langsArray,
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
   getPlaceholder,
@@ -84,9 +84,13 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   warnText = '';
 
-  /** Sets flatpickr options setting to disable specific dates. */
+  /** Sets flatpickr options setting to disable specific dates. Accepts array of dates in Y-m-d format, timestamps, or Date objects. */
   @property({ type: Array })
   disable: (string | number | Date)[] = [];
+
+  /** Internal storage for processed disable dates */
+  @state()
+  private _processedDisableDates: (string | number | Date)[] = [];
 
   /** Sets flatpickr options setting to enable specific dates. */
   @property({ type: Array })
@@ -192,6 +196,28 @@ export class DatePicker extends FormMixin(LitElement) {
     this.addEventListener('reset', this._handleFormReset);
   }
 
+  private hasValue(): boolean {
+    if (this._inputEl?.value) return true;
+    if (this.value) {
+      if (Array.isArray(this.value)) {
+        return (
+          this.value.length > 0 && !this.value.every((date) => date === null)
+        );
+      }
+      return true;
+    }
+    if (this.defaultDate) {
+      if (Array.isArray(this.defaultDate)) {
+        return (
+          this.defaultDate.length > 0 &&
+          !this.defaultDate.every((date) => !date || date === '')
+        );
+      }
+      return !!this.defaultDate;
+    }
+    return false;
+  }
+
   override render() {
     const errorId = `${this.name}-error-message`;
     const warningId = `${this.name}-warning-message`;
@@ -241,15 +267,7 @@ export class DatePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${this._inputEl?.value ||
-          (this.value &&
-            Array.isArray(this.value) &&
-            this.value.length > 0 &&
-            !this.value.every((date) => date === null)) ||
-          (this.defaultDate &&
-            Array.isArray(this.defaultDate) &&
-            this.defaultDate.length > 0 &&
-            !this.defaultDate.every((date) => date === null || date === ''))
+          ${this.hasValue()
             ? html`
                 <kyn-button
                   ?disabled=${this.datePickerDisabled}
@@ -345,30 +363,63 @@ export class DatePicker extends FormMixin(LitElement) {
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
-    if (changedProperties.has('value')) {
+    if (changedProperties.has('value') && !this._isClearing) {
       const newValue = this.value;
       const isNull =
         newValue === null || (Array.isArray(newValue) && newValue.length === 0);
       if (isNull && this.flatpickrInstance) {
         this._isClearing = true;
-        this.flatpickrInstance.clear();
-        if (this._inputEl) {
-          this._inputEl.value = '';
+        try {
+          this.flatpickrInstance.clear();
+          if (this._inputEl) {
+            this._inputEl.value = '';
+          }
+        } finally {
+          this._isClearing = false;
         }
-        this._isClearing = false;
+      }
+      this.requestUpdate();
+    }
+
+    if (
+      changedProperties.has('defaultDate') &&
+      this.flatpickrInstance &&
+      !this._isClearing
+    ) {
+      this.initializeFlatpickr();
+    }
+
+    if (changedProperties.has('disable')) {
+      if (Array.isArray(this.disable)) {
+        this._processedDisableDates = this.disable.map((date) => {
+          if (date instanceof Date) return date;
+          if (typeof date === 'number') return new Date(date);
+          if (typeof date === 'string') {
+            const [year, month, day] = date.split('-').map(Number);
+            if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+              return new Date(year, month - 1, day);
+            }
+          }
+          return date;
+        });
+      } else {
+        this._processedDisableDates = [];
+        console.warn('Disable prop must be an array');
+      }
+      if (this.flatpickrInstance) {
+        this.updateFlatpickrOptions();
       }
     }
 
     if (
       changedProperties.has('dateFormat') ||
-      changedProperties.has('defaultDate') ||
       changedProperties.has('minDate') ||
       changedProperties.has('maxDate') ||
       changedProperties.has('locale') ||
       changedProperties.has('twentyFourHourFormat')
     ) {
       this._enableTime = updateEnableTime(this.dateFormat);
-      if (this.flatpickrInstance && this._initialized) {
+      if (this.flatpickrInstance && this._initialized && !this._isClearing) {
         this.updateFlatpickrOptions();
       }
     }
@@ -382,41 +433,41 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  private async reinitializeFlatpickr() {
-    if (this._initialized && this.flatpickrInstance) {
-      this.flatpickrInstance.destroy();
-      await this.initializeFlatpickr();
-    }
-  }
-
   private async setupAnchor() {
     if (this._inputEl) {
       await this.initializeFlatpickr();
     }
   }
 
-  private _handleClear(event: Event) {
+  private async _handleClear(event: Event) {
     event.preventDefault();
     event.stopPropagation();
 
-    this.value = this.mode === 'multiple' ? [] : null;
-    this.defaultDate = null;
+    this._isClearing = true;
 
-    if (this.flatpickrInstance) {
-      this._isClearing = true;
-      this.flatpickrInstance.clear();
-      this.reinitializeFlatpickr();
+    try {
+      this.value = this.mode === 'multiple' ? [] : null;
+      this.defaultDate = null;
+
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.clear();
+        if (this._inputEl) {
+          this._inputEl.value = '';
+        }
+      }
+
+      emitValue(this, 'on-change', {
+        dates: null,
+        dateString: '',
+        source: 'clear',
+      });
+
+      this._validate(true, false);
+      await this.updateComplete;
+      this.requestUpdate();
+    } finally {
       this._isClearing = false;
     }
-
-    emitValue(this, 'on-change', {
-      dates: null,
-      dateString: '',
-      source: 'clear',
-    });
-
-    this._validate(true, false);
-    this.requestUpdate();
   }
 
   async initializeFlatpickr(): Promise<void> {
@@ -470,36 +521,9 @@ export class DatePicker extends FormMixin(LitElement) {
     if (!this.flatpickrInstance) return;
 
     try {
-      if (this.defaultDate) {
-        if (Array.isArray(this.defaultDate)) {
-          const validDates = this.defaultDate
-            .filter((date) => date && date !== '')
-            .map((date) => {
-              const parsed = new Date(date);
-              return isNaN(parsed.getTime()) ? null : parsed;
-            })
-            .filter((date): date is Date => date !== null);
-
-          if (validDates.length > 0) {
-            this.value = this.mode === 'multiple' ? validDates : validDates[0];
-            this.flatpickrInstance.setDate(validDates, false);
-          }
-        } else {
-          const parsed = new Date(this.defaultDate);
-          if (!isNaN(parsed.getTime())) {
-            this.value = parsed;
-            this.flatpickrInstance.setDate([parsed], false);
-          }
-        }
-      } else if (this.value) {
-        const dates = Array.isArray(this.value) ? this.value : [this.value];
-        const validDates = dates.filter(
-          (date): date is Date => date instanceof Date && !isNaN(date.getTime())
-        );
-
-        if (validDates.length > 0) {
-          this.flatpickrInstance.setDate(validDates, false);
-        }
+      const dateToSet = this.defaultDate || this.value;
+      if (dateToSet) {
+        this.flatpickrInstance.setDate(dateToSet, true);
       }
     } catch (error) {
       console.warn('Error setting initial dates:', error);
@@ -513,14 +537,14 @@ export class DatePicker extends FormMixin(LitElement) {
     return getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
-      defaultDate: this.defaultDate ?? undefined,
+      defaultDate: this.defaultDate ? this.defaultDate : undefined,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl!,
       minDate: this.minDate,
       maxDate: this.maxDate,
       enable: this.enable,
-      disable: this.disable,
+      disable: this._processedDisableDates,
       mode: this.mode,
       closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
       loadLocale,
@@ -549,33 +573,38 @@ export class DatePicker extends FormMixin(LitElement) {
     selectedDates: Date[],
     dateStr: string
   ): Promise<void> {
+    if (this._isClearing) return;
+
     this._hasInteracted = true;
 
-    if (this.mode === 'multiple') {
-      this.value = selectedDates.length > 0 ? [...selectedDates] : null;
-    } else {
-      this.value = selectedDates.length > 0 ? selectedDates[0] : null;
-    }
+    try {
+      if (this.mode === 'multiple') {
+        this.value = selectedDates.length > 0 ? [...selectedDates] : null;
+      } else {
+        this.value = selectedDates.length > 0 ? selectedDates[0] : null;
+      }
 
-    let formattedDates;
-    if (Array.isArray(this.value)) {
-      formattedDates = this.value.map((date) => date.toISOString());
-    } else if (this.value instanceof Date) {
-      formattedDates = this.value.toISOString();
-    } else {
-      formattedDates = null;
-    }
+      let formattedDates;
+      if (Array.isArray(this.value)) {
+        formattedDates = this.value.map((date) => date.toISOString());
+      } else if (this.value instanceof Date) {
+        formattedDates = this.value.toISOString();
+      } else {
+        formattedDates = null;
+      }
 
-    if (!this._isClearing) {
       emitValue(this, 'on-change', {
         dates: formattedDates,
         dateString: (this._inputEl as HTMLInputElement)?.value || dateStr,
         source: selectedDates.length === 0 ? 'clear' : undefined,
       });
-    }
 
-    this._validate(true, false);
-    await this.updateComplete;
+      this._validate(true, false);
+      await this.updateComplete;
+      this.requestUpdate();
+    } catch (error) {
+      console.warn('Error handling date change:', error);
+    }
   }
 
   private setShouldFlatpickrOpen(value: boolean): void {
@@ -630,7 +659,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
     const isValid = !validity.valueMissing && !validity.customError;
 
-    // fix: ensure we have a validation message when validity flags are true
     if (!isValid && !validationMessage) {
       validationMessage = this._textStrings.pleaseSelectValidDate;
     }

@@ -18,7 +18,6 @@ export default {
   },
   argTypes: {
     locale: { control: { type: 'text' } },
-    twentyFourHourFormat: { control: { type: 'boolean' } },
     dateRangePickerDisabled: { control: { type: 'boolean' } },
     dateFormat: {
       options: [
@@ -36,12 +35,13 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    defaultDate: { control: { type: 'object' } },
+    disable: { control: { type: 'object' } },
     label: { control: { type: 'text' } },
-    defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
     maxDate: { control: { type: 'text' } },
     invalidText: { control: { type: 'text' } },
+    defaultErrorMessage: { control: { type: 'text' } },
+    twentyFourHourFormat: { control: { type: 'boolean' } },
   },
 };
 
@@ -93,7 +93,7 @@ DateRangeDefault.args = {
   name: 'default-date-range-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
-  defaultDate: '',
+  defaultDate: null,
   required: false,
   staticPosition: false,
   size: 'md',
@@ -128,7 +128,7 @@ WithPreselectedRange.args = {
   ...DateRangeDefault.args,
   name: 'preselected-date-range',
   dateFormat: 'Y-m-d',
-  defaultDate: ['2024-01-01', '2024-01-07'],
+  defaultDate: ['2024-01-01 00:00:00', '2024-01-07 00:00:00'],
   caption: 'Example with preselected date range (format: Y-m-d)',
   label: 'Preselected Range',
 };
@@ -138,10 +138,30 @@ WithPreselectedDateTime.args = {
   ...DateRangeDefault.args,
   name: 'preselected-date-time-range',
   dateFormat: 'Y-m-d H:i',
-  defaultDate: ['2024-01-01 09:00', '2024-01-02 17:00'],
+  defaultDate: ['2024-01-01 09:00:00', '2024-01-02 17:00:00'],
   caption: 'Example with preselected date/time range (format: Y-m-d H:i)',
   label: 'Preselected Date/Time Range',
 };
+
+export const WithDisabledDates = Template.bind({});
+WithDisabledDates.args = {
+  ...DateRangeDefault.args,
+  name: 'date-range-picker-with-disabled-dates',
+  dateFormat: 'Y-m-d',
+  caption:
+    'Example showing disabled dates (weekends and specific dates are disabled)',
+  label: 'Date Range Selection',
+  disable: [
+    // disable weekends
+    function (date) {
+      return date.getDay() === 0 || date.getDay() === 6;
+    },
+    '2024-03-15',
+    '2024-03-20',
+    '2024-03-25',
+  ],
+};
+WithDisabledDates.storyName = 'With Disabled Dates';
 
 export const DateRangePickerInModal = {
   args: {
@@ -149,7 +169,7 @@ export const DateRangePickerInModal = {
     locale: 'en',
     name: 'date-range-picker-in-modal',
     dateFormat: 'Y-m-d',
-    defaultDate: '',
+    defaultDate: null,
     caption: 'Date-range picker in a modal.',
     label: 'Date',
     open: false,
@@ -230,7 +250,7 @@ export const DateRangePickerInAccordionInModal = {
     locale: 'en',
     name: 'date-range-picker-in-modal',
     dateFormat: 'Y-m-d',
-    defaultDate: '',
+    defaultDate: null,
     caption: 'Date-range picker in a modal.',
     label: 'Date',
     staticPosition: true,
