@@ -25,18 +25,18 @@ const _defaultTextStrings = {
   foundSources: 'Found sources',
   showMore: 'Show more',
   showLess: 'Show less',
+  positiveFeedback: 'Share what you liked',
+  negativeFeedback: 'Help us improve',
 };
 
 /**
  * `kyn-ai-sources-feedback` Web Component.
  * This component provides expandable panels for sources and feedback.
- * @fires on-toggle - Emits the `opened` state when the panel item opens/closes.
- * @fires on-feedback-changed - Captures the thumbsUp/thumbsDown click and emits the feedback type.
+ *
  * @slot copy - copy button
  * @slot sources - source cards in source panel
- * @slot pos-feedback-form - Positive feedback form
- * @slot neg-feedback-form - Negative feedback form
- *
+ * @slot feedback-form - Positive feedback form
+ * @fires on-toggle - Emits the `opened` state when the panel item opens/closes.
  */
 @customElement('kyn-ai-sources-feedback')
 export class AISourcesFeedback extends LitElement {
@@ -72,7 +72,7 @@ export class AISourcesFeedback extends LitElement {
   @state()
   _limitCount = 4;
 
-  /** Source limit visibility.
+  /** Sources limit visibility.
    * @internal
    */
   @state()
@@ -90,15 +90,17 @@ export class AISourcesFeedback extends LitElement {
   @state()
   _selectedFeedbackType: any = null;
 
-  @state()
-  sources: Array<any> = [];
-
+  /**
+   * Queries slotted sources.
+   * @ignore
+   */
   @queryAssignedElements({ slot: 'sources' })
   _sourceEls!: any;
 
   override render() {
     const classesSources: any = classMap({
       'kyn-sources': true,
+      opened: this.sourcesOpened,
       disabled: this.sourcesDisabled,
     });
     const classesFeedback1: any = classMap({
@@ -121,15 +123,17 @@ export class AISourcesFeedback extends LitElement {
               kind="ghost"
               size="small"
               class="kyn-sources-title"
+              iconPosition="right"
               aria-controls="kyn-sources-body"
               aria-expanded=${this.sourcesOpened}
-              aria-disabled=${this.sourcesDisabled}
-              role="button"
+              ?disabled=${this.sourcesDisabled}
               @on-click="${(e: Event) => this._handleClick(e, 'sources')}"
               id="kyn-sources-title"
             >
-              <span class="title">${this._textStrings.sourcesTxt}</span>
-              <span class="expand-icon">${unsafeSVG(chevronIcon)}</span>
+              ${this._textStrings.sourcesTxt}
+              <span class="expand-icon" slot="icon"
+                >${unsafeSVG(chevronIcon)}</span
+              >
             </kyn-button>
           </div>
         </div>
@@ -139,12 +143,12 @@ export class AISourcesFeedback extends LitElement {
             <kyn-button
               kind="ghost"
               size="small"
-              class="kyn-pos-feedback-title"
-              aria-controls="kyn-pos-feedback-body"
+              id="kyn-feedback-title"
+              class="kyn-feedback-title"
+              aria-controls="kyn-feedback-body"
               aria-expanded=${this.feedbackOpened}
-              aria-disabled=${this.feedbackDisabled}
-              aria-label="Give positive feedback"
-              id="kyn-pos-feedback-title"
+              ?disabled=${this.feedbackDisabled}
+              description=${this._textStrings.positiveFeedback}
               @on-click=${(e: Event) =>
                 this._handleClick(e, 'feedback', 'positive')}
             >
@@ -156,14 +160,14 @@ export class AISourcesFeedback extends LitElement {
             <kyn-button
               kind="ghost"
               size="small"
-              class="kyn-neg-feedback-title"
-              aria-controls="kyn-neg-feedback-body"
+              id="kyn-feedback-title"
+              class="kyn-feedback-title"
+              aria-controls="kyn-feedback-body"
               aria-expanded=${this.feedbackOpened}
-              aria-disabled=${this.feedbackDisabled}
-              aria-label="Give negative feedback"
+              ?disabled=${this.feedbackDisabled}
+              description=${this._textStrings.negativeFeedback}
               @on-click="${(e: Event) =>
                 this._handleClick(e, 'feedback', 'negative')}"
-              id="kyn-neg-feedback-title"
             >
               <span slot="icon"> ${unsafeSVG(thumbsDownIcon)} </span>
             </kyn-button>
@@ -180,9 +184,20 @@ export class AISourcesFeedback extends LitElement {
         role="region"
         aria-labelledby="kyn-sources-title"
       >
-        <div>${this._textStrings.foundSources} (${this.sources.length}) :</div>
+        <kyn-button
+          class="close"
+          @on-click=${(e: Event) => this._handleClick(e, 'sources')}
+          }}
+          kind="ghost"
+          size="small"
+        >
+          <span slot="icon">${unsafeSVG(closeIcon)}</span>
+        </kyn-button>
+        <div class="found-sources">
+          ${this._textStrings.foundSources} (${this._sourceEls.length}) :
+        </div>
         <slot name="sources" @slotchange=${this._handleSlotChange}></slot>
-        ${!this.revealAllSources && this.sources.length > this._limitCount
+        ${!this.revealAllSources && this._sourceEls.length > this._limitCount
           ? html`
               <kyn-button
                 class="reveal-toggle"
@@ -195,7 +210,7 @@ export class AISourcesFeedback extends LitElement {
                   ? html`${this._textStrings.showLess}`
                   : html`
                       ${this._textStrings.showMore}
-                      (${this.sources.length - this._limitCount})
+                      (${this._sourceEls.length - this._limitCount})
                     `}
               </kyn-button>
             `
@@ -204,13 +219,12 @@ export class AISourcesFeedback extends LitElement {
 
       <div
         class="${classMap({
-          opened:
-            this.feedbackOpened && this._selectedFeedbackType === 'positive',
-          'kyn-pos-feedback-body': true,
+          opened: this.feedbackOpened,
+          'kyn-feedback-body': true,
         })}"
-        id="kyn-pos-feedback-body"
+        id="kyn-feedback-body"
         role="region"
-        aria-labelledby="kyn-pos-feedback-title"
+        aria-labelledby="kyn-feedback-title"
       >
         <kyn-button
           class="close"
@@ -222,36 +236,7 @@ export class AISourcesFeedback extends LitElement {
         >
           <span slot="icon">${unsafeSVG(closeIcon)}</span>
         </kyn-button>
-        <slot
-          name="pos-feedback-form"
-          @slotchange=${this._handleSlotChange}
-        ></slot>
-      </div>
-
-      <div
-        class="${classMap({
-          opened:
-            this.feedbackOpened && this._selectedFeedbackType === 'negative',
-          'kyn-neg-feedback-body': true,
-        })}"
-        id="kyn-neg-feedback-body"
-        role="region"
-        aria-labelledby="kyn-neg-feedback-title"
-      >
-        <kyn-button
-          class="close"
-          @on-click=${(e: Event) =>
-            this._handleClick(e, 'feedback', 'negative')}
-          }}
-          kind="ghost"
-          size="small"
-        >
-          <span slot="icon">${unsafeSVG(closeIcon)}</span>
-        </kyn-button>
-        <slot
-          name="neg-feedback-form"
-          @slotchange=${this._handleSlotChange}
-        ></slot>
+        <slot name="feedback-form" @slotchange=${this._handleSlotChange}></slot>
       </div>
     `;
   }
@@ -274,18 +259,23 @@ export class AISourcesFeedback extends LitElement {
     panel: 'sources' | 'feedback',
     _selectedFeedbackType?: any
   ) {
-    this.sourcesOpened = panel === 'sources' && !this.sourcesOpened;
-    if (
-      this._selectedFeedbackType === _selectedFeedbackType &&
-      this.feedbackOpened
-    ) {
+    if (panel === 'sources') {
+      this.sourcesOpened = !this.sourcesOpened;
       this.feedbackOpened = false;
-      this._selectedFeedbackType = null;
-    } else {
-      this.feedbackOpened = true;
-      this._selectedFeedbackType = _selectedFeedbackType;
     }
-
+    if (panel === 'feedback') {
+      this.sourcesOpened = false;
+      if (
+        this._selectedFeedbackType === _selectedFeedbackType &&
+        this.feedbackOpened
+      ) {
+        this.feedbackOpened = false;
+        this._selectedFeedbackType = null;
+      } else {
+        this.feedbackOpened = true;
+        this._selectedFeedbackType = _selectedFeedbackType;
+      }
+    }
     const event = new CustomEvent('on-toggle', {
       detail: {
         sourcesOpened: this.sourcesOpened,
@@ -297,14 +287,13 @@ export class AISourcesFeedback extends LitElement {
   }
 
   protected _handleSlotChange() {
-    this.sources = Array.from(this._sourceEls[0].querySelectorAll('kyn-card'));
     this._toggleLimitRevealed(this.limitRevealed);
   }
 
   private _toggleLimitRevealed(revealed: boolean) {
     this.limitRevealed = revealed;
 
-    this.sources.forEach((sourceEl, index) => {
+    this._sourceEls.forEach((sourceEl: any, index: any) => {
       if (this.revealAllSources || this.limitRevealed) {
         sourceEl.style.display = 'block';
       } else {
@@ -320,6 +309,15 @@ export class AISourcesFeedback extends LitElement {
   override willUpdate(changedProps: any) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
+  }
+
+  protected override updated(changedProps: any): void {
+    if (
+      changedProps.has('revealAllSources') &&
+      changedProps.get('revealAllSources') !== undefined
+    ) {
+      this._toggleLimitRevealed(false);
     }
   }
 }

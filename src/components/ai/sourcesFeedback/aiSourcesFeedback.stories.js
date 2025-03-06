@@ -8,6 +8,7 @@ import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import './index';
 import '../../reusable/checkbox';
 import '../../reusable/card/card.sample';
+import '../../reusable/textArea/textArea';
 
 export default {
   title: 'AI / Components / AISourcesFeedback',
@@ -41,15 +42,9 @@ const sourcesData = [
 ];
 
 const posFeedbackOptions = [
-  { value: '1', label: 'Easy to understand' },
-  { value: '2', label: 'Exhaustive' },
-  { value: '3', label: 'Correct' },
-];
-
-const negFeedbackOptions = [
-  { value: '1', label: 'Hard to understand' },
-  { value: '2', label: 'Limited' },
-  { value: '3', label: 'Incorrect' },
+  { value: '1', label: 'Option 1' },
+  { value: '2', label: 'Option 2' },
+  { value: '3', label: 'Option 3' },
 ];
 
 const args = {
@@ -71,7 +66,6 @@ export const AISourcesFeedback = {
         .feedbackDisabled=${args.feedbackDisabled}
         ?revealAllSources=${args.revealAllSources}
         @on-toggle=${(e) => action(e.type)(e)}
-        @on-feedback-changed=${(e) => action(e.type)(e)}
       >
         <kyn-button
           slot="copy"
@@ -83,21 +77,58 @@ export const AISourcesFeedback = {
           Copy
           <span slot="icon" class="copy-icon">${unsafeSVG(copyIcon)}</span>
         </kyn-button>
-        <span slot="sources" class="sources"> ${SourcesContent()} </span>
 
-        <div slot="pos-feedback-form" class="feedback-form">
-          ${feedbackFormContent('positive')}
-        </div>
+        ${SourcesContent()}
 
-        <div slot="neg-feedback-form" class="feedback-form">
-          ${feedbackFormContent('negative')}
+        <div slot="feedback-form" class="feedback-form">
+          ${feedbackFormContent()}
         </div>
       </kyn-ai-sources-feedback>
     `;
   },
 };
 
-const feedbackFormContent = (_selectedFeedback) => html`
+const SourcesContent = () => html`
+  ${sourcesData.map(
+    (card) => html`
+      <kyn-card
+        slot="sources"
+        aiConnected
+        type=${args.type}
+        href=${args.href}
+        target=${args.target}
+        rel=${args.rel}
+        ?hideBorder=${args.hideBorder}
+      >
+        <h1 class="card-title">
+          <div>${card.title}</div>
+        </h1>
+        <div class="card-description">
+          <kyn-link href="#" shade="dark" @click=${(e) => action(e.type)(e)}>
+            <div>${card.description}</div>
+          </kyn-link>
+        </div>
+      </kyn-card>
+    `
+  )}
+  <style>
+    kyn-card {
+      width: 24%;
+
+      @media (max-width: calc(42rem - 1px)) {
+        width: 100%;
+      }
+    }
+    .card-title div {
+      @include typography.type-ui-01;
+      color: var(--kd-color-text-level-primary);
+      font-size: 16px;
+      font-weight: 500;
+    }
+  </style>
+`;
+
+const feedbackFormContent = () => html`
   <div class="feedback-header">
     <span> Could you tell us a little bit more ? (optional) </span>
   </div>
@@ -108,19 +139,12 @@ const feedbackFormContent = (_selectedFeedback) => html`
     }}
   >
     <kyn-checkbox-group ?horizontal=${true}>
-      ${_selectedFeedback === 'positive'
-        ? posFeedbackOptions.map(
-            (option) =>
-              html`<kyn-checkbox value="${option.value}"
-                >${option.label}</kyn-checkbox
-              >`
-          )
-        : negFeedbackOptions.map(
-            (option) =>
-              html`<kyn-checkbox value="${option.value}"
-                >${option.label}</kyn-checkbox
-              >`
-          )}
+      ${posFeedbackOptions.map(
+        (option) =>
+          html`<kyn-checkbox value="${option.value}"
+            >${option.label}</kyn-checkbox
+          >`
+      )}
     </kyn-checkbox-group>
 
     <kyn-text-area
@@ -143,40 +167,9 @@ const feedbackFormContent = (_selectedFeedback) => html`
     form * {
       margin-top: 0.5rem;
     }
-  </style>
-`;
-
-const SourcesContent = () => html`
-  ${sourcesData.map(
-    (card) => html`
-      <kyn-card
-        aiConnected
-        type=${args.type}
-        href=${args.href}
-        target=${args.target}
-        rel=${args.rel}
-        ?hideBorder=${args.hideBorder}
-      >
-        <h1 class="card-title">
-          <div>${card.title}</div>
-        </h1>
-        <div class="card-description">
-          <kyn-link href="#" shade="dark" @click=${(e) => action(e.type)(e)}>
-            <div>${card.description}</div>
-          </kyn-link>
-        </div>
-      </kyn-card>
-    `
-  )}
-  <style>
-    kyn-card {
-      width: 24%;
-    }
-    .card-title div {
-      @include typography.type-ui-01;
-      color: var(--kd-color-text-level-primary);
-      font-size: 16px;
-      font-weight: 500;
+    .footer {
+      display: flex;
+      gap: 1rem;
     }
   </style>
 `;

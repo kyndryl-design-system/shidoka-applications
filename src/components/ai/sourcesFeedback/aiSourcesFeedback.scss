@@ -15,7 +15,7 @@
   flex-wrap: wrap;
 }
 
-slot[name='sources']::slotted(*) {
+slot[name='sources'] {
   padding: 1rem;
   display: flex;
   gap: 1rem;
@@ -25,32 +25,22 @@ slot[name='sources']::slotted(*) {
 .kyn-sources,
 .kyn-pos-feedback,
 .kyn-neg-feedback {
-  padding: 0px 0px;
   display: block;
-  background-color: var(--kd-color-background-page-default);
-  border-radius: inherit;
 
-  &.opened [class*='kyn-pos-feedback-body'],
-  &.opened [class*='kyn-neg-feedback-body'] {
+  &.opened [class*='kyn-feedback-body'] {
     background: var(--kd-color-background-container-secondary);
     border: 1px solid var(--kd-color-border-variants-light);
     border-radius: 8px;
     padding: 16px;
   }
-
-  &.disabled svg {
-    fill: var(--kd-color-icon-disabled);
-  }
 }
 
-[class*='kyn-pos-feedback-body'],
-[class*='kyn-neg-feedback-body'],
+[class*='kyn-feedback-body'],
 [class*='kyn-sources-body'] {
   display: none;
 }
 
-.opened.kyn-pos-feedback-body,
-.opened.kyn-neg-feedback-body {
+.opened.kyn-feedback-body {
   display: block;
   background: var(--kd-color-background-container-secondary);
   border: 1px solid var(--kd-color-border-variants-light);
@@ -60,28 +50,26 @@ slot[name='sources']::slotted(*) {
 .opened.kyn-sources-body {
   display: block;
   background: var(--kd-color-background-container-ai-default);
-  padding: 24px 16px;
+  border-radius: 8px;
+  padding: 16px;
 }
 
 .expand-icon {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-direction: column;
-  transition: transform 150ms ease-out;
-  margin-left: 0.5rem;
-
   .opened & {
     transform: rotate(-180deg);
   }
 }
 
+.found-sources {
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+}
+
 .reveal-toggle {
   margin-top: 1rem;
-  margin-left: -1rem;
 }
 
 .close {
-  display: flex;
-  justify-content: end;
+  position: absolute;
+  right: 3rem;
 }
