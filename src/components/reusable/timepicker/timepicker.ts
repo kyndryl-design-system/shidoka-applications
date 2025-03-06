@@ -332,11 +332,15 @@ export class TimePicker extends FormMixin(LitElement) {
     } else if (
       changedProperties.has('invalidText') ||
       changedProperties.has('minTime') ||
-      changedProperties.has('maxTime') ||
-      changedProperties.has('twentyFourHourFormat')
+      changedProperties.has('maxTime')
     ) {
       if (this.flatpickrInstance && !this._isClearing) {
         this.updateFlatpickrOptions();
+      }
+    } else if (changedProperties.has('twentyFourHourFormat')) {
+      if (this.flatpickrInstance && !this._isClearing) {
+        this.flatpickrInstance.destroy();
+        this.initializeFlatpickr();
       }
     }
     if (changedProperties.has('value') && !this._isClearing) {
@@ -387,63 +391,109 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  private setupAnchor() {
-    if (this._inputEl) {
-      this.initializeFlatpickr();
-    } else {
-      console.error('Internal input element not found');
+  private async setupAnchor() {
+    if (!this._inputEl) {
+      console.warn('Input element not found during setup');
+      return;
+    }
+
+    try {
+      await this.initializeFlatpickr();
+    } catch (error) {
+      console.error('Error setting up flatpickr:', error);
     }
   }
 
   async initializeFlatpickr(): Promise<void> {
-    if (!this._inputEl) return;
-    if (this.flatpickrInstance) this.flatpickrInstance.destroy();
-    this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
-      inputEl: this._inputEl,
-      getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
-      setCalendarAttributes: (instance) => {
-        if (instance && instance.calendarContainer) {
-          const container = getModalContainer(this);
-          const modalDetected = container !== document.body;
-          setCalendarAttributes(instance, modalDetected);
-          instance.calendarContainer.setAttribute('aria-label', 'Time picker');
-        } else {
-          console.warn('Calendar container not available...');
-        }
-      },
-      setInitialDates: this.setInitialDates.bind(this),
-    });
-    hideEmptyYear();
-    this._validate(false, false);
+    if (!this._inputEl) {
+      console.warn('Cannot initialize Flatpickr: input element not available');
+      return;
+    }
+
+    try {
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.destroy();
+      }
+
+      this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
+        inputEl: this._inputEl,
+        getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
+        setCalendarAttributes: (instance) => {
+          try {
+            const container = getModalContainer(this);
+            const modalDetected = container !== document.body;
+            setCalendarAttributes(instance, modalDetected);
+            if (instance.calendarContainer) {
+              instance.calendarContainer.setAttribute(
+                'aria-label',
+                'Time picker'
+              );
+            }
+          } catch (error) {
+            console.warn('Error setting calendar attributes:', error);
+          }
+        },
+        setInitialDates: this.setInitialDates.bind(this),
+      });
+
+      if (!this.flatpickrInstance) {
+        throw new Error('Failed to initialize Flatpickr instance');
+      }
+
+      hideEmptyYear();
+      this._validate(false, false);
+    } catch (error) {
+      console.error('Error initializing Flatpickr:', error);
+
+      if (error instanceof Error) {
+        console.error('Error details:', error.message);
+      }
+    }
   }
 
   async updateFlatpickrOptions(): Promise<void> {
-    if (!this.flatpickrInstance) return;
-    const newOptions = await this.getComponentFlatpickrOptions();
-    Object.keys(newOptions).forEach((key) => {
-      if (key in this.flatpickrInstance!.config) {
-        this.flatpickrInstance!.set(
-          key as keyof BaseOptions,
-          newOptions[key as keyof BaseOptions]
-        );
-      }
-    });
-    this.flatpickrInstance.redraw();
-    hideEmptyYear();
-    if (!this._isClearing) {
-      this.setInitialDates(this.flatpickrInstance);
+    if (!this.flatpickrInstance) {
+      console.warn('Cannot update options: Flatpickr instance not available');
+      return;
     }
-    setTimeout(() => {
-      if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
-        setCalendarAttributes(this.flatpickrInstance);
-        this.flatpickrInstance.calendarContainer.setAttribute(
-          'aria-label',
-          'Time picker'
-        );
-      } else {
-        console.warn('Calendar container not available...');
+
+    try {
+      const newOptions = await this.getComponentFlatpickrOptions();
+      Object.keys(newOptions).forEach((key) => {
+        if (
+          this.flatpickrInstance!.config &&
+          key in this.flatpickrInstance!.config
+        ) {
+          this.flatpickrInstance!.set(
+            key as keyof BaseOptions,
+            newOptions[key as keyof BaseOptions]
+          );
+        }
+      });
+
+      this.flatpickrInstance.redraw();
+      hideEmptyYear();
+
+      if (!this._isClearing) {
+        this.setInitialDates(this.flatpickrInstance);
       }
-    }, 0);
+
+      requestAnimationFrame(() => {
+        if (this.flatpickrInstance?.calendarContainer) {
+          try {
+            setCalendarAttributes(this.flatpickrInstance);
+            this.flatpickrInstance.calendarContainer.setAttribute(
+              'aria-label',
+              'Time picker'
+            );
+          } catch (error) {
+            console.warn('Error setting calendar attributes:', error);
+          }
+        }
+      });
+    } catch (error) {
+      console.error('Error updating Flatpickr options:', error);
+    }
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {

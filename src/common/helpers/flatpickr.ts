@@ -285,6 +285,11 @@ export function getModalContainer(element: HTMLElement): HTMLElement {
 export async function getFlatpickrOptions(
   context: FlatpickrOptionsContext
 ): Promise<Partial<BaseOptions>> {
+  if (!context) {
+    console.error('Context is required for getFlatpickrOptions');
+    return {};
+  }
+
   const {
     locale,
     dateFormat,
@@ -320,8 +325,14 @@ export async function getFlatpickrOptions(
     console.warn('Date format not provided. Using default format.');
   }
 
-  const localeOptions = await loadLocale(locale);
-  modifyWeekdayShorthands(localeOptions);
+  let localeOptions;
+  try {
+    localeOptions = await loadLocale(locale);
+    modifyWeekdayShorthands(localeOptions);
+  } catch (error) {
+    console.warn('Error loading locale, falling back to default:', error);
+    localeOptions = English;
+  }
 
   const isEnglishOr12HourLocale = ['en', 'en-US', 'en-GB', 'es-MX'].includes(
     locale
@@ -460,26 +471,30 @@ export function setCalendarAttributes(
   instance: Instance,
   modalDetected?: boolean
 ): void {
-  if (instance && instance.calendarContainer) {
-    instance.calendarContainer.setAttribute('role', 'application');
-    instance.calendarContainer.setAttribute('aria-label', 'Calendar');
+  if (instance?.calendarContainer) {
+    requestAnimationFrame(() => {
+      try {
+        const { calendarContainer, config } = instance;
+        calendarContainer.setAttribute('role', 'application');
+        calendarContainer.setAttribute('aria-label', 'Calendar');
 
-    instance.calendarContainer.classList.remove(
-      'container-modal',
-      'container-body'
-    );
-    const containerClass = modalDetected
-      ? 'container-modal'
-      : 'container-default';
-    instance.calendarContainer.classList.add(containerClass);
+        calendarContainer.classList.remove('container-modal', 'container-body');
+        const containerClass = modalDetected
+          ? 'container-modal'
+          : 'container-default';
+        calendarContainer.classList.add(containerClass);
 
-    instance.calendarContainer.classList.remove(
-      'static-position-true',
-      'static-position-false'
-    );
-    instance.calendarContainer.classList.add(
-      `static-position-${instance.config.static}`
-    );
+        if (config && typeof config.static !== 'undefined') {
+          calendarContainer.classList.remove(
+            'static-position-true',
+            'static-position-false'
+          );
+          calendarContainer.classList.add(`static-position-${config.static}`);
+        }
+      } catch (error) {
+        console.warn('Error setting calendar attributes:', error);
+      }
+    });
   } else {
     console.warn('Calendar container not available...');
   }
