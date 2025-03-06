@@ -133,7 +133,7 @@ TimePickerPreSelected.args = {
 };
 TimePickerPreSelected.storyName = 'With Pre-selected Time';
 
-export const TimepickerInModal = {
+export const InModal = {
   args: {
     ...DefaultTimePicker.args,
     locale: 'en',
@@ -216,4 +216,3 @@ export const TimepickerInModal = {
     `;
   },
 };
-TimepickerInModal.storyName = 'In Modal';

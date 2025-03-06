@@ -244,7 +244,6 @@ export const InModal = {
     `;
   },
 };
-InModal.storyName = 'In Modal';
 
 export const DateRangePickerInAccordionInModal = {
   args: {

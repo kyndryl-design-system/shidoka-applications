@@ -175,7 +175,7 @@ WithDisabledDates.args = {
   ],
 };
 
-export const DatepickerInModal = {
+export const InModal = {
   args: {
     ...DatePickerDefault.args,
     locale: 'en',
@@ -254,9 +254,8 @@ export const DatepickerInModal = {
     `;
   },
 };
-DatepickerInModal.storyName = 'DatePicker In Modal';
 
-export const DatepickerInSideDrawer = {
+export const InSideDrawer = {
   args: {
     ...DatePickerDefault.args,
     // Side Drawer args
@@ -445,4 +444,3 @@ export const DatepickerInSideDrawer = {
     `;
   },
 };
-DatepickerInSideDrawer.storyName = 'DatePicker In SideDrawer';
