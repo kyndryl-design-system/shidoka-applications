@@ -4,8 +4,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { action } from '@storybook/addon-actions';
 import chatHistoryIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat-history.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/delete.svg';
-import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/response.svg';
-// import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/indicator.svg';
+import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/indicator.svg';
 import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/search.svg';
 import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/send.svg';
 
@@ -352,12 +351,14 @@ export const WithOtherContent = {
                 </div>
                 <div class="response-wrapper">
                   <div class="response-title">
-                    <span><kyn-avatar initials="A"></kyn-avatar></span>
+                    <span class="kd-type--ui-03"
+                      ><kyn-avatar initials="A" aiConnected></kyn-avatar
+                    ></span>
                     <span>Add Prompt Component here...</span>
                   </div>
                 </div>
                 <div class="response-wrapper">
-                  <span> ${unsafeHTML(aiResponse)} </span>
+                  <span class="response-icon"> ${unsafeHTML(aiResponse)} </span>
                   <span class="response-list kd-type--body-02">
                     <div>The benefits of adopting Hybrid IT Modernization:</div>
                     ${AIResponse.map((items) => {
@@ -406,6 +407,13 @@ export const WithOtherContent = {
         kyn-tab-panel > * {
           margin-bottom: 8px;
         }
+        kyn-avatar::part(avatar-wrapper) {
+          height: 25px;
+          width: 25px;
+          min-height: 25px;
+          min-width: 25px;
+          font-size: 12px;
+        }
         .query-container {
           display: flex;
           flex-direction: column;
@@ -426,6 +434,12 @@ export const WithOtherContent = {
         .response-wrapper {
           display: flex;
           gap: 16px;
+        }
+        .response-icon {
+          svg {
+            width: 25px;
+            height: 25px;
+          }
         }
         .response-title {
           display: flex;

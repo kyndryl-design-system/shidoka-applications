@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import '../../components/reusable/avatar';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/response.svg';
+import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/indicator.svg';
 
 export default {
   title: 'AI/Patterns/Response',

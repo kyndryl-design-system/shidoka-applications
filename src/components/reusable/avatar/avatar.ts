@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import AvatarScss from './avatar.scss';
+import { classMap } from 'lit/directives/class-map.js';
 
 /**
  * User avatar.
@@ -14,8 +15,18 @@ export class Avatar extends LitElement {
   @property({ type: String })
   initials = '';
 
+  /** Set this to `true` for AI theme. */
+  @property({ type: Boolean })
+  aiConnected = false;
+
   override render() {
-    return html` <div class="avatar-wrapper">
+    return html` <div
+      part="avatar-wrapper"
+      class=${classMap({
+        'avatar-wrapper': true,
+        aiConnected: this.aiConnected,
+      })}
+    >
       <slot>${this.initials}</slot>
     </div>`;
   }

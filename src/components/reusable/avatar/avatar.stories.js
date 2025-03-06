@@ -1,27 +1,38 @@
 import { html } from 'lit';
 import './index';
-import { action } from '@storybook/addon-actions';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 export default {
   title: 'Components/Avatar',
   component: 'kyn-avatar',
-  argTypes: {
-    minLength: {
-      control: { type: 'number' },
-    },
-    maxLength: {
-      control: { type: 'number' },
-    },
-  },
 };
 
 export const Avatar = {
   args: {
     initials: 'A',
+    aiConnected: false,
   },
   render: (args) => {
-    return html` <kyn-avatar initials=${args.initials}></kyn-avatar> `;
+    return html`
+      <kyn-avatar
+        initials=${args.initials}
+        ?aiConnected=${args.aiConnected}
+      ></kyn-avatar>
+    `;
+  },
+};
+
+export const AIConnected = {
+  args: {
+    initials: 'A',
+    aiConnected: true,
+  },
+  render: (args) => {
+    return html`
+      <kyn-avatar
+        initials=${args.initials}
+        ?aiConnected=${args.aiConnected}
+      ></kyn-avatar>
+    `;
   },
 };
 
