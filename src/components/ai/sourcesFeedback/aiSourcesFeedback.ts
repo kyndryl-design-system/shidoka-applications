@@ -143,7 +143,7 @@ export class AISourcesFeedback extends LitElement {
             <kyn-button
               kind="ghost"
               size="small"
-              id="kyn-feedback-title"
+              id="kyn-feedback-title-positive"
               class="kyn-feedback-title"
               aria-controls="kyn-feedback-body"
               aria-expanded=${this.feedbackOpened}
@@ -160,7 +160,7 @@ export class AISourcesFeedback extends LitElement {
             <kyn-button
               kind="ghost"
               size="small"
-              id="kyn-feedback-title"
+              id="kyn-feedback-title-negative"
               class="kyn-feedback-title"
               aria-controls="kyn-feedback-body"
               aria-expanded=${this.feedbackOpened}
@@ -224,7 +224,9 @@ export class AISourcesFeedback extends LitElement {
         })}"
         id="kyn-feedback-body"
         role="region"
-        aria-labelledby="kyn-feedback-title"
+        aria-labelledby="kyn-feedback-title-${this._selectedFeedbackType
+          ? 'positive'
+          : 'negative'}"
       >
         <kyn-button
           class="close"
