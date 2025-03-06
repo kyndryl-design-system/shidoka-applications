@@ -19,6 +19,10 @@ export default {
   decorators: [
     (story) => html`
       <style>
+        kyn-card::part(card-wrapper) {
+          outline: 1px solid var(--kd-color-border-level-secondary);
+          background: var(--kd-color-background-container-ai-subtle);
+        }
         .info-card-container {
           display: flex;
           align-items: center;
@@ -55,7 +59,7 @@ export default {
 
 const InfoTemplate = () => {
   return html`
-    <kyn-card style="width:100%" type="normal" aiConnected>
+    <kyn-card style="width:100%" type="normal">
       <div class="info-card-container">
         <div class="info-card-leftIcon">${unsafeSVG(policeIcon)}</div>
         <div class="info-card-content-wrapper">
