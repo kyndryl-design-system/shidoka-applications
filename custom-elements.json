@@ -4,57 +4,517 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/breadcrumbs/breadcrumbs.ts",
+      "path": "src/components/ai/aiLaunchButton/aiLaunchButton.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Breadcrumbs Component.",
-          "name": "Breadcrumbs",
-          "slots": [
+          "description": "AI Assistant Launch Button.",
+          "name": "AILaunchButton",
+          "members": [
             {
-              "description": "Slot for inserting links.",
-              "name": "unnamed"
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the button is disabled.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "_initAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_startHoverAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_stopHoverAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitClick",
+              "privacy": "private"
             }
           ],
-          "members": [],
+          "events": [
+            {
+              "description": "Emits when the button is clicked.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the button is disabled.",
+              "fieldName": "disabled"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-breadcrumbs",
+          "tagName": "kyn-ai-launch-btn",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "Breadcrumbs",
+          "name": "AILaunchButton",
           "declaration": {
-            "name": "Breadcrumbs",
-            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
+            "name": "AILaunchButton",
+            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-breadcrumbs",
+          "name": "kyn-ai-launch-btn",
           "declaration": {
-            "name": "Breadcrumbs",
-            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
+            "name": "AILaunchButton",
+            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/breadcrumbs/index.ts",
+      "path": "src/components/ai/aiLaunchButton/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "Breadcrumbs",
+          "name": "AILaunchButton",
           "declaration": {
-            "name": "Breadcrumbs",
-            "module": "./breadcrumbs"
+            "name": "AILaunchButton",
+            "module": "./aiLaunchButton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/accordion/accordion.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Accordion component.",
+          "name": "Accordion",
+          "slots": [
+            {
+              "description": "Holds Accordion Items (kyn-accordion-item) that make up the accordion",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "showNumbers",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specifies whether to show numbers on the list items.",
+              "attribute": "showNumbers"
+            },
+            {
+              "kind": "field",
+              "name": "startNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Specifies the number to start at if the list has numbers.",
+              "attribute": "startNumber"
+            },
+            {
+              "kind": "field",
+              "name": "filledHeaders",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specifies whether to show the accordion items with filled headers.",
+              "attribute": "filledHeaders"
+            },
+            {
+              "kind": "field",
+              "name": "compact",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Display the accordion as compact or the default large size.",
+              "attribute": "compact"
+            },
+            {
+              "kind": "field",
+              "name": "expandLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Expand all items'",
+              "description": "The string that displays on the toggle to expand all the accordion items.",
+              "attribute": "expandLabel"
+            },
+            {
+              "kind": "field",
+              "name": "collapseLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Collapse all items'",
+              "description": "The string that displays on the toggle to collapse all the accordion items.",
+              "attribute": "collapseLabel"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "protected"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "protected"
+            },
+            {
+              "kind": "method",
+              "name": "_openAllItems",
+              "privacy": "protected"
+            },
+            {
+              "kind": "method",
+              "name": "_closeAllItems",
+              "privacy": "protected"
+            },
+            {
+              "kind": "method",
+              "name": "_toggleExpandAll",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_checkOpenItems",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "showNumbers",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specifies whether to show numbers on the list items.",
+              "fieldName": "showNumbers"
+            },
+            {
+              "name": "startNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Specifies the number to start at if the list has numbers.",
+              "fieldName": "startNumber"
+            },
+            {
+              "name": "filledHeaders",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specifies whether to show the accordion items with filled headers.",
+              "fieldName": "filledHeaders"
+            },
+            {
+              "name": "compact",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Display the accordion as compact or the default large size.",
+              "fieldName": "compact"
+            },
+            {
+              "name": "expandLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Expand all items'",
+              "description": "The string that displays on the toggle to expand all the accordion items.",
+              "fieldName": "expandLabel"
+            },
+            {
+              "name": "collapseLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Collapse all items'",
+              "description": "The string that displays on the toggle to collapse all the accordion items.",
+              "fieldName": "collapseLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-accordion",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Accordion",
+          "declaration": {
+            "name": "Accordion",
+            "module": "src/components/reusable/accordion/accordion.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-accordion",
+          "declaration": {
+            "name": "Accordion",
+            "module": "src/components/reusable/accordion/accordion.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/accordion/accordionItem.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "AccordionItem component. *",
+          "name": "AccordionItem",
+          "slots": [
+            {
+              "description": "Optional leading icon",
+              "name": "icon"
+            },
+            {
+              "description": "Body of the accordion item",
+              "name": "body"
+            },
+            {
+              "description": "Title of the accordion item",
+              "name": "title"
+            },
+            {
+              "description": "Optional subtitle of the accordion item",
+              "name": "subtitle"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "opened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Accordion item opened state.",
+              "attribute": "opened"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Accordion item disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "setIndex",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setShowNumbers",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setFilledHeader",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setCompact",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "open"
+            },
+            {
+              "kind": "method",
+              "name": "close"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleKeypress",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_toggleOpenState",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitToggleEvent",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the `opened` state when the accordion item opens/closes.",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "opened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Accordion item opened state.",
+              "fieldName": "opened"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Accordion item disabled state.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-accordion-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AccordionItem",
+          "declaration": {
+            "name": "AccordionItem",
+            "module": "src/components/reusable/accordion/accordionItem.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-accordion-item",
+          "declaration": {
+            "name": "AccordionItem",
+            "module": "src/components/reusable/accordion/accordionItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/accordion/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Accordion",
+          "declaration": {
+            "name": "Accordion",
+            "module": "./accordion"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "AccordionItem",
+          "declaration": {
+            "name": "AccordionItem",
+            "module": "./accordionItem"
           }
         }
       ]
@@ -595,418 +1055,57 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/accordion/accordion.ts",
+      "path": "src/components/reusable/breadcrumbs/breadcrumbs.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Accordion component.",
-          "name": "Accordion",
+          "description": "Breadcrumbs Component.",
+          "name": "Breadcrumbs",
           "slots": [
             {
-              "description": "Holds Accordion Items (kyn-accordion-item) that make up the accordion",
+              "description": "Slot for inserting links.",
               "name": "unnamed"
             }
           ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "showNumbers",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specifies whether to show numbers on the list items.",
-              "attribute": "showNumbers"
-            },
-            {
-              "kind": "field",
-              "name": "startNumber",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Specifies the number to start at if the list has numbers.",
-              "attribute": "startNumber"
-            },
-            {
-              "kind": "field",
-              "name": "filledHeaders",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specifies whether to show the accordion items with filled headers.",
-              "attribute": "filledHeaders"
-            },
-            {
-              "kind": "field",
-              "name": "compact",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Display the accordion as compact or the default large size.",
-              "attribute": "compact"
-            },
-            {
-              "kind": "field",
-              "name": "expandLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Expand all items'",
-              "description": "The string that displays on the toggle to expand all the accordion items.",
-              "attribute": "expandLabel"
-            },
-            {
-              "kind": "field",
-              "name": "collapseLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Collapse all items'",
-              "description": "The string that displays on the toggle to collapse all the accordion items.",
-              "attribute": "collapseLabel"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "protected"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "protected"
-            },
-            {
-              "kind": "method",
-              "name": "_openAllItems",
-              "privacy": "protected"
-            },
-            {
-              "kind": "method",
-              "name": "_closeAllItems",
-              "privacy": "protected"
-            },
-            {
-              "kind": "method",
-              "name": "_toggleExpandAll",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_checkOpenItems",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "showNumbers",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specifies whether to show numbers on the list items.",
-              "fieldName": "showNumbers"
-            },
-            {
-              "name": "startNumber",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Specifies the number to start at if the list has numbers.",
-              "fieldName": "startNumber"
-            },
-            {
-              "name": "filledHeaders",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specifies whether to show the accordion items with filled headers.",
-              "fieldName": "filledHeaders"
-            },
-            {
-              "name": "compact",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Display the accordion as compact or the default large size.",
-              "fieldName": "compact"
-            },
-            {
-              "name": "expandLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Expand all items'",
-              "description": "The string that displays on the toggle to expand all the accordion items.",
-              "fieldName": "expandLabel"
-            },
-            {
-              "name": "collapseLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Collapse all items'",
-              "description": "The string that displays on the toggle to collapse all the accordion items.",
-              "fieldName": "collapseLabel"
-            }
-          ],
+          "members": [],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-accordion",
+          "tagName": "kyn-breadcrumbs",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "Accordion",
+          "name": "Breadcrumbs",
           "declaration": {
-            "name": "Accordion",
-            "module": "src/components/reusable/accordion/accordion.ts"
+            "name": "Breadcrumbs",
+            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-accordion",
+          "name": "kyn-breadcrumbs",
           "declaration": {
-            "name": "Accordion",
-            "module": "src/components/reusable/accordion/accordion.ts"
+            "name": "Breadcrumbs",
+            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/accordion/accordionItem.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "AccordionItem component. *",
-          "name": "AccordionItem",
-          "slots": [
-            {
-              "description": "Optional leading icon",
-              "name": "icon"
-            },
-            {
-              "description": "Body of the accordion item",
-              "name": "body"
-            },
-            {
-              "description": "Title of the accordion item",
-              "name": "title"
-            },
-            {
-              "description": "Optional subtitle of the accordion item",
-              "name": "subtitle"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "opened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Accordion item opened state.",
-              "attribute": "opened"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Accordion item disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "setIndex",
-              "parameters": [
-                {
-                  "name": "index",
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "setShowNumbers",
-              "parameters": [
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "setFilledHeader",
-              "parameters": [
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "setCompact",
-              "parameters": [
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "open"
-            },
-            {
-              "kind": "method",
-              "name": "close"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleKeypress",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "KeyboardEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_toggleOpenState",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitToggleEvent",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the `opened` state when the accordion item opens/closes.",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "opened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Accordion item opened state.",
-              "fieldName": "opened"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Accordion item disabled state.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-accordion-item",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AccordionItem",
-          "declaration": {
-            "name": "AccordionItem",
-            "module": "src/components/reusable/accordion/accordionItem.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-accordion-item",
-          "declaration": {
-            "name": "AccordionItem",
-            "module": "src/components/reusable/accordion/accordionItem.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/accordion/index.ts",
+      "path": "src/components/reusable/breadcrumbs/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "Accordion",
+          "name": "Breadcrumbs",
           "declaration": {
-            "name": "Accordion",
-            "module": "./accordion"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "AccordionItem",
-          "declaration": {
-            "name": "AccordionItem",
-            "module": "./accordionItem"
+            "name": "Breadcrumbs",
+            "module": "./breadcrumbs"
           }
         }
       ]
@@ -1359,6 +1458,369 @@
           "declaration": {
             "name": "Button",
             "module": "./button"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/card/card.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Card.",
+          "name": "Card",
+          "slots": [
+            {
+              "description": "Slot for card contents.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'normal'",
+              "description": "Card Type. `'normal'` & `'clickable'`",
+              "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card link url for clickable cards.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship.",
+              "attribute": "rel"
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "type": {
+                "text": "any"
+              },
+              "default": "'_self'",
+              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (deafult), `'_blank'`, `'_parent`', `'_top'`",
+              "attribute": "target"
+            },
+            {
+              "kind": "field",
+              "name": "hideBorder",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide card border. Useful when clickable card use inside `<kyn-notification>` component.",
+              "attribute": "hideBorder"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "attribute": "aiConnected"
+            },
+            {
+              "kind": "field",
+              "name": "highlight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for highlight",
+              "attribute": "highlight"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event of clickable card and emits the original event details. Use `e.stopPropogation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event.",
+              "name": "on-card-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'normal'",
+              "description": "Card Type. `'normal'` & `'clickable'`",
+              "fieldName": "type"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card link url for clickable cards.",
+              "fieldName": "href"
+            },
+            {
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship.",
+              "fieldName": "rel"
+            },
+            {
+              "name": "target",
+              "type": {
+                "text": "any"
+              },
+              "default": "'_self'",
+              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (deafult), `'_blank'`, `'_parent`', `'_top'`",
+              "fieldName": "target"
+            },
+            {
+              "name": "hideBorder",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide card border. Useful when clickable card use inside `<kyn-notification>` component.",
+              "fieldName": "hideBorder"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "fieldName": "aiConnected"
+            },
+            {
+              "name": "highlight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for highlight",
+              "fieldName": "highlight"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-card",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Card",
+          "declaration": {
+            "name": "Card",
+            "module": "src/components/reusable/card/card.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-card",
+          "declaration": {
+            "name": "Card",
+            "module": "src/components/reusable/card/card.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/card/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Card",
+          "declaration": {
+            "name": "Card",
+            "module": "./card"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "VitalCardSkeleton",
+          "declaration": {
+            "name": "VitalCardSkeleton",
+            "module": "./vitalCard.skeleton"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "InformationalCardSkeleton",
+          "declaration": {
+            "name": "InformationalCardSkeleton",
+            "module": "./informationalCard.skeleton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/card/informationalCard.skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-info-card-skeleton` Web Component.\nA skeleton loading state for the informational card component that mirrors its structure.",
+          "name": "InformationalCardSkeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "lines",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
+              "attribute": "lines"
+            },
+            {
+              "kind": "field",
+              "name": "thumbnailVisible",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "default": "false",
+              "description": "Sets show or hide thumbnail element.",
+              "attribute": "thumbnailVisible"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "lines",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
+              "fieldName": "lines"
+            },
+            {
+              "name": "thumbnailVisible",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "default": "false",
+              "description": "Sets show or hide thumbnail element.",
+              "fieldName": "thumbnailVisible"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-info-card-skeleton",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InformationalCardSkeleton",
+          "declaration": {
+            "name": "InformationalCardSkeleton",
+            "module": "src/components/reusable/card/informationalCard.skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-info-card-skeleton",
+          "declaration": {
+            "name": "InformationalCardSkeleton",
+            "module": "src/components/reusable/card/informationalCard.skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/card/vitalCard.skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-vital-card-skeleton` Web Component.\nA skeleton loading state for the vital card component that mirrors its structure.",
+          "name": "VitalCardSkeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "lines",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
+              "attribute": "lines"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "lines",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
+              "fieldName": "lines"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-vital-card-skeleton",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VitalCardSkeleton",
+          "declaration": {
+            "name": "VitalCardSkeleton",
+            "module": "src/components/reusable/card/vitalCard.skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-vital-card-skeleton",
+          "declaration": {
+            "name": "VitalCardSkeleton",
+            "module": "src/components/reusable/card/vitalCard.skeleton.ts"
           }
         }
       ]
@@ -1975,369 +2437,6 @@
           "declaration": {
             "name": "CheckboxSubgroup",
             "module": "./checkboxSubgroup"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/card/card.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Card.",
-          "name": "Card",
-          "slots": [
-            {
-              "description": "Slot for card contents.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'normal'",
-              "description": "Card Type. `'normal'` & `'clickable'`",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card link url for clickable cards.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship.",
-              "attribute": "rel"
-            },
-            {
-              "kind": "field",
-              "name": "target",
-              "type": {
-                "text": "any"
-              },
-              "default": "'_self'",
-              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (deafult), `'_blank'`, `'_parent`', `'_top'`",
-              "attribute": "target"
-            },
-            {
-              "kind": "field",
-              "name": "hideBorder",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide card border. Useful when clickable card use inside `<kyn-notification>` component.",
-              "attribute": "hideBorder"
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "attribute": "aiConnected"
-            },
-            {
-              "kind": "field",
-              "name": "highlight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for highlight",
-              "attribute": "highlight"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event of clickable card and emits the original event details. Use `e.stopPropogation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event.",
-              "name": "on-card-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'normal'",
-              "description": "Card Type. `'normal'` & `'clickable'`",
-              "fieldName": "type"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card link url for clickable cards.",
-              "fieldName": "href"
-            },
-            {
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship.",
-              "fieldName": "rel"
-            },
-            {
-              "name": "target",
-              "type": {
-                "text": "any"
-              },
-              "default": "'_self'",
-              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (deafult), `'_blank'`, `'_parent`', `'_top'`",
-              "fieldName": "target"
-            },
-            {
-              "name": "hideBorder",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide card border. Useful when clickable card use inside `<kyn-notification>` component.",
-              "fieldName": "hideBorder"
-            },
-            {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "fieldName": "aiConnected"
-            },
-            {
-              "name": "highlight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for highlight",
-              "fieldName": "highlight"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-card",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Card",
-          "declaration": {
-            "name": "Card",
-            "module": "src/components/reusable/card/card.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-card",
-          "declaration": {
-            "name": "Card",
-            "module": "src/components/reusable/card/card.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/card/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Card",
-          "declaration": {
-            "name": "Card",
-            "module": "./card"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "VitalCardSkeleton",
-          "declaration": {
-            "name": "VitalCardSkeleton",
-            "module": "./vitalCard.skeleton"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "InformationalCardSkeleton",
-          "declaration": {
-            "name": "InformationalCardSkeleton",
-            "module": "./informationalCard.skeleton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/card/informationalCard.skeleton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-info-card-skeleton` Web Component.\nA skeleton loading state for the informational card component that mirrors its structure.",
-          "name": "InformationalCardSkeleton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "lines",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
-              "attribute": "lines"
-            },
-            {
-              "kind": "field",
-              "name": "thumbnailVisible",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "default": "false",
-              "description": "Sets show or hide thumbnail element.",
-              "attribute": "thumbnailVisible"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "lines",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
-              "fieldName": "lines"
-            },
-            {
-              "name": "thumbnailVisible",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "default": "false",
-              "description": "Sets show or hide thumbnail element.",
-              "fieldName": "thumbnailVisible"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-info-card-skeleton",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InformationalCardSkeleton",
-          "declaration": {
-            "name": "InformationalCardSkeleton",
-            "module": "src/components/reusable/card/informationalCard.skeleton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-info-card-skeleton",
-          "declaration": {
-            "name": "InformationalCardSkeleton",
-            "module": "src/components/reusable/card/informationalCard.skeleton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/card/vitalCard.skeleton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-vital-card-skeleton` Web Component.\nA skeleton loading state for the vital card component that mirrors its structure.",
-          "name": "VitalCardSkeleton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "lines",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
-              "attribute": "lines"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "lines",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
-              "fieldName": "lines"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-vital-card-skeleton",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "VitalCardSkeleton",
-          "declaration": {
-            "name": "VitalCardSkeleton",
-            "module": "src/components/reusable/card/vitalCard.skeleton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-vital-card-skeleton",
-          "declaration": {
-            "name": "VitalCardSkeleton",
-            "module": "src/components/reusable/card/vitalCard.skeleton.ts"
           }
         }
       ]
@@ -4770,104 +4869,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/inlineCodeView/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineCodeView",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "./inlineCodeView"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/inlineCodeView/inlineCodeView.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
-          "name": "InlineCodeView",
-          "slots": [
-            {
-              "description": "inline code snippet slot.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark' | 'default'"
-              },
-              "default": "'default'",
-              "description": "Sets background and text theming.",
-              "attribute": "darkTheme"
-            },
-            {
-              "kind": "field",
-              "name": "snippetFontSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "14",
-              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
-              "attribute": "snippetFontSize"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark' | 'default'"
-              },
-              "default": "'default'",
-              "description": "Sets background and text theming.",
-              "fieldName": "darkTheme"
-            },
-            {
-              "name": "snippetFontSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "14",
-              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
-              "fieldName": "snippetFontSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-inline-code-view",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineCodeView",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-inline-code-view",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/floatingContainer/floatingContainer.ts",
       "declarations": [
         {
@@ -4984,6 +4985,104 @@
           "declaration": {
             "name": "GlobalFilter",
             "module": "./globalFilter"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineCodeView/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineCodeView",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "./inlineCodeView"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineCodeView/inlineCodeView.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
+          "name": "InlineCodeView",
+          "slots": [
+            {
+              "description": "inline code snippet slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark' | 'default'"
+              },
+              "default": "'default'",
+              "description": "Sets background and text theming.",
+              "attribute": "darkTheme"
+            },
+            {
+              "kind": "field",
+              "name": "snippetFontSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
+              "attribute": "snippetFontSize"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark' | 'default'"
+              },
+              "default": "'default'",
+              "description": "Sets background and text theming.",
+              "fieldName": "darkTheme"
+            },
+            {
+              "name": "snippetFontSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
+              "fieldName": "snippetFontSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-inline-code-view",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineCodeView",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-inline-code-view",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
           }
         }
       ]
@@ -5159,6 +5258,241 @@
           "declaration": {
             "name": "InlineConfirm",
             "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/link/defs.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/link/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Link",
+          "declaration": {
+            "name": "Link",
+            "module": "./link"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/link/link.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Component for navigation links.",
+          "name": "Link",
+          "slots": [
+            {
+              "description": "Slot for link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon.",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "type": {
+                "text": "LINK_TARGETS"
+              },
+              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
+              "attribute": "target"
+            },
+            {
+              "kind": "field",
+              "name": "kind",
+              "type": {
+                "text": "LINK_TYPES"
+              },
+              "description": "The Link type. Primary(App) or Secondary(Web).",
+              "attribute": "kind"
+            },
+            {
+              "kind": "field",
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
+              "attribute": "rel"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the link is disabled.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "standalone",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether you want the standalone Link. By default false. Use this prop. (true) with icon with link variant.",
+              "attribute": "standalone"
+            },
+            {
+              "kind": "field",
+              "name": "iconLeft",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Positions icon on the left.",
+              "attribute": "iconLeft"
+            },
+            {
+              "kind": "field",
+              "name": "shade",
+              "description": "Determines the shade of the link. By default `auto`.\nSet this prop to `dark` manually when the link needs to have a better contrast for visibility on light backgroud, irrespective of the theme.\n**NOTE**: Applicable only for **primary** link.",
+              "attribute": "shade"
+            },
+            {
+              "kind": "method",
+              "name": "returnClassMap",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event details.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "target",
+              "type": {
+                "text": "LINK_TARGETS"
+              },
+              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
+              "fieldName": "target"
+            },
+            {
+              "name": "kind",
+              "type": {
+                "text": "LINK_TYPES"
+              },
+              "description": "The Link type. Primary(App) or Secondary(Web).",
+              "fieldName": "kind"
+            },
+            {
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
+              "fieldName": "rel"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the link is disabled.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "standalone",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether you want the standalone Link. By default false. Use this prop. (true) with icon with link variant.",
+              "fieldName": "standalone"
+            },
+            {
+              "name": "iconLeft",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Positions icon on the left.",
+              "fieldName": "iconLeft"
+            },
+            {
+              "name": "shade",
+              "description": "Determines the shade of the link. By default `auto`.\nSet this prop to `dark` manually when the link needs to have a better contrast for visibility on light backgroud, irrespective of the theme.\n**NOTE**: Applicable only for **primary** link.",
+              "fieldName": "shade"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Link",
+          "declaration": {
+            "name": "Link",
+            "module": "src/components/reusable/link/link.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-link",
+          "declaration": {
+            "name": "Link",
+            "module": "src/components/reusable/link/link.ts"
           }
         }
       ]
@@ -5538,241 +5872,6 @@
           "declaration": {
             "name": "Skeleton",
             "module": "src/components/reusable/loaders/skeleton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/link/defs.ts",
-      "declarations": [],
-      "exports": []
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/link/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Link",
-          "declaration": {
-            "name": "Link",
-            "module": "./link"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/link/link.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Component for navigation links.",
-          "name": "Link",
-          "slots": [
-            {
-              "description": "Slot for link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon.",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "target",
-              "type": {
-                "text": "LINK_TARGETS"
-              },
-              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
-              "attribute": "target"
-            },
-            {
-              "kind": "field",
-              "name": "kind",
-              "type": {
-                "text": "LINK_TYPES"
-              },
-              "description": "The Link type. Primary(App) or Secondary(Web).",
-              "attribute": "kind"
-            },
-            {
-              "kind": "field",
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
-              "attribute": "rel"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the link is disabled.",
-              "attribute": "disabled",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "standalone",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether you want the standalone Link. By default false. Use this prop. (true) with icon with link variant.",
-              "attribute": "standalone"
-            },
-            {
-              "kind": "field",
-              "name": "iconLeft",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Positions icon on the left.",
-              "attribute": "iconLeft"
-            },
-            {
-              "kind": "field",
-              "name": "shade",
-              "description": "Determines the shade of the link. By default `auto`.\nSet this prop to `dark` manually when the link needs to have a better contrast for visibility on light backgroud, irrespective of the theme.\n**NOTE**: Applicable only for **primary** link.",
-              "attribute": "shade"
-            },
-            {
-              "kind": "method",
-              "name": "returnClassMap",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event details.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "target",
-              "type": {
-                "text": "LINK_TARGETS"
-              },
-              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
-              "fieldName": "target"
-            },
-            {
-              "name": "kind",
-              "type": {
-                "text": "LINK_TYPES"
-              },
-              "description": "The Link type. Primary(App) or Secondary(Web).",
-              "fieldName": "kind"
-            },
-            {
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
-              "fieldName": "rel"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the link is disabled.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "standalone",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether you want the standalone Link. By default false. Use this prop. (true) with icon with link variant.",
-              "fieldName": "standalone"
-            },
-            {
-              "name": "iconLeft",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Positions icon on the left.",
-              "fieldName": "iconLeft"
-            },
-            {
-              "name": "shade",
-              "description": "Determines the shade of the link. By default `auto`.\nSet this prop to `dark` manually when the link needs to have a better contrast for visibility on light backgroud, irrespective of the theme.\n**NOTE**: Applicable only for **primary** link.",
-              "fieldName": "shade"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Link",
-          "declaration": {
-            "name": "Link",
-            "module": "src/components/reusable/link/link.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-link",
-          "declaration": {
-            "name": "Link",
-            "module": "src/components/reusable/link/link.ts"
           }
         }
       ]
@@ -6629,6 +6728,373 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/numberInput/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NumberInput",
+          "declaration": {
+            "name": "NumberInput",
+            "module": "./numberInput"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/numberInput/numberInput.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Number input.",
+          "name": "NumberInput",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Input value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum value.",
+              "attribute": "max"
+            },
+            {
+              "kind": "field",
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum value.",
+              "attribute": "min"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Step value.",
+              "attribute": "step"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  requiredText: 'Required',\n  subtract: 'Subtract',\n  add: 'Add',\n  error: 'Error',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_sizeMap",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "'small' | 'medium' | 'large'"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "size",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSubtract",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleAdd",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "optional": true,
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the value and original event details.",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Input value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum value.",
+              "fieldName": "max"
+            },
+            {
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum value.",
+              "fieldName": "min"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Step value.",
+              "fieldName": "step"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-number-input",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NumberInput",
+          "declaration": {
+            "name": "NumberInput",
+            "module": "src/components/reusable/numberInput/numberInput.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-number-input",
+          "declaration": {
+            "name": "NumberInput",
+            "module": "src/components/reusable/numberInput/numberInput.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/overflowMenu/index.ts",
       "declarations": [],
       "exports": [
@@ -7018,367 +7484,155 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/numberInput/index.ts",
+      "path": "src/components/reusable/pagetitle/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "NumberInput",
+          "name": "PageTitle",
           "declaration": {
-            "name": "NumberInput",
-            "module": "./numberInput"
+            "name": "PageTitle",
+            "module": "./pageTitle"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/numberInput/numberInput.ts",
+      "path": "src/components/reusable/pagetitle/pageTitle.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Number input.",
-          "name": "NumberInput",
+          "description": "Page Title",
+          "name": "PageTitle",
           "slots": [
             {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
+              "description": "Slot for icon. Use size 56 * 56 as per UX guidelines.",
+              "name": "icon"
             }
           ],
           "members": [
             {
               "kind": "field",
-              "name": "label",
+              "name": "headLine",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
+              "description": "Headline text.",
+              "attribute": "headLine"
             },
             {
               "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Input value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "placeholder",
+              "name": "pageTitle",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Input placeholder.",
-              "attribute": "placeholder"
+              "description": "Page title text (required).",
+              "attribute": "pageTitle"
             },
             {
               "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
+              "name": "subTitle",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
+              "description": "Page subtitle text.",
+              "attribute": "subTitle"
             },
             {
               "kind": "field",
-              "name": "max",
+              "name": "type",
               "type": {
-                "text": "number"
+                "text": "string"
               },
-              "description": "Maximum value.",
-              "attribute": "max"
+              "default": "'primary'",
+              "description": "Type of page title `'primary'` , `'secondary'` & `'tertiary'`.",
+              "attribute": "type"
             },
             {
               "kind": "field",
-              "name": "min",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum value.",
-              "attribute": "min"
-            },
-            {
-              "kind": "field",
-              "name": "step",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Step value.",
-              "attribute": "step"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
+              "name": "aiConnected",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  subtract: 'Subtract',\n  add: 'Add',\n  error: 'Error',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_sizeMap",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "'small' | 'medium' | 'large'"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "size",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSubtract",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleAdd",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "optional": true,
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the value and original event details.",
-              "name": "on-input"
+              "description": "Set this to `true` for AI theme.",
+              "attribute": "aiConnected"
             }
           ],
           "attributes": [
             {
-              "name": "label",
+              "name": "headLine",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
+              "description": "Headline text.",
+              "fieldName": "headLine"
             },
             {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Input value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "placeholder",
+              "name": "pageTitle",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Input placeholder.",
-              "fieldName": "placeholder"
+              "description": "Page title text (required).",
+              "fieldName": "pageTitle"
             },
             {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "caption",
+              "name": "subTitle",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
+              "description": "Page subtitle text.",
+              "fieldName": "subTitle"
             },
             {
-              "name": "max",
+              "name": "type",
               "type": {
-                "text": "number"
+                "text": "string"
               },
-              "description": "Maximum value.",
-              "fieldName": "max"
+              "default": "'primary'",
+              "description": "Type of page title `'primary'` , `'secondary'` & `'tertiary'`.",
+              "fieldName": "type"
             },
             {
-              "name": "min",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum value.",
-              "fieldName": "min"
-            },
-            {
-              "name": "step",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Step value.",
-              "fieldName": "step"
-            },
-            {
-              "name": "hideLabel",
+              "name": "aiConnected",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
+              "description": "Set this to `true` for AI theme.",
+              "fieldName": "aiConnected"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-number-input",
+          "tagName": "kyn-page-title",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "NumberInput",
+          "name": "PageTitle",
           "declaration": {
-            "name": "NumberInput",
-            "module": "src/components/reusable/numberInput/numberInput.ts"
+            "name": "PageTitle",
+            "module": "src/components/reusable/pagetitle/pageTitle.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-number-input",
+          "name": "kyn-page-title",
           "declaration": {
-            "name": "NumberInput",
-            "module": "src/components/reusable/numberInput/numberInput.ts"
+            "name": "PageTitle",
+            "module": "src/components/reusable/pagetitle/pageTitle.ts"
           }
         }
       ]
@@ -8112,155 +8366,353 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/pagetitle/index.ts",
+      "path": "src/components/reusable/progressBar/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "PageTitle",
+          "name": "ProgressBar",
           "declaration": {
-            "name": "PageTitle",
-            "module": "./pageTitle"
+            "name": "ProgressBar",
+            "module": "./progressBar"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/pagetitle/pageTitle.ts",
+      "path": "src/components/reusable/progressBar/progressBar.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Page Title",
-          "name": "PageTitle",
+          "description": "`<kyn-progress-bar>` -- progress bar status indicator component.",
+          "name": "ProgressBar",
           "slots": [
             {
-              "description": "Slot for icon. Use size 56 * 56 as per UX guidelines.",
-              "name": "icon"
+              "description": "Slot for tooltip text content.",
+              "name": "unnamed"
             }
           ],
           "members": [
             {
               "kind": "field",
-              "name": "headLine",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Headline text.",
-              "attribute": "headLine"
-            },
-            {
-              "kind": "field",
-              "name": "pageTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page title text (required).",
-              "attribute": "pageTitle"
-            },
-            {
-              "kind": "field",
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page subtitle text.",
-              "attribute": "subTitle"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'primary'",
-              "description": "Type of page title `'primary'` , `'secondary'` & `'tertiary'`.",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
+              "name": "showInlineLoadStatus",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "attribute": "aiConnected"
+              "description": "Sets visibility of optional inline load status spinner.",
+              "attribute": "showInlineLoadStatus"
+            },
+            {
+              "kind": "field",
+              "name": "showActiveHelperText",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls whether to show default helper text for active state.",
+              "attribute": "showActiveHelperText"
+            },
+            {
+              "kind": "field",
+              "name": "progressBarId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
+              "attribute": "progressBarId"
+            },
+            {
+              "kind": "field",
+              "name": "status",
+              "type": {
+                "text": "'active' | 'success' | 'error'"
+              },
+              "default": "'active'",
+              "description": "Sets progress bar status mode.",
+              "attribute": "status"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial progress bar value (optionally hard-coded).",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "description": "Sets manual max value (default = 100).",
+              "attribute": "max"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional progress bar label.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "helperText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional helper text that appears underneath progress bar element.",
+              "attribute": "helperText"
+            },
+            {
+              "kind": "field",
+              "name": "unit",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
+              "attribute": "unit"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "method",
+              "name": "renderProgressBar",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderProgressBarLabel",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderStatusIconOrLoader",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getProgressBarClasses",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "status",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getHelperText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getCurrentStatus",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "ProgressStatus"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "startProgress",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "cancelAnimation",
+              "privacy": "private"
             }
           ],
           "attributes": [
             {
-              "name": "headLine",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Headline text.",
-              "fieldName": "headLine"
-            },
-            {
-              "name": "pageTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page title text (required).",
-              "fieldName": "pageTitle"
-            },
-            {
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page subtitle text.",
-              "fieldName": "subTitle"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'primary'",
-              "description": "Type of page title `'primary'` , `'secondary'` & `'tertiary'`.",
-              "fieldName": "type"
-            },
-            {
-              "name": "aiConnected",
+              "name": "showInlineLoadStatus",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "fieldName": "aiConnected"
+              "description": "Sets visibility of optional inline load status spinner.",
+              "fieldName": "showInlineLoadStatus"
+            },
+            {
+              "name": "showActiveHelperText",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls whether to show default helper text for active state.",
+              "fieldName": "showActiveHelperText"
+            },
+            {
+              "name": "progressBarId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
+              "fieldName": "progressBarId"
+            },
+            {
+              "name": "status",
+              "type": {
+                "text": "'active' | 'success' | 'error'"
+              },
+              "default": "'active'",
+              "description": "Sets progress bar status mode.",
+              "fieldName": "status"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial progress bar value (optionally hard-coded).",
+              "fieldName": "value"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "description": "Sets manual max value (default = 100).",
+              "fieldName": "max"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional progress bar label.",
+              "fieldName": "label"
+            },
+            {
+              "name": "helperText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional helper text that appears underneath progress bar element.",
+              "fieldName": "helperText"
+            },
+            {
+              "name": "unit",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
+              "fieldName": "unit"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-page-title",
+          "tagName": "kyn-progress-bar",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "PageTitle",
+          "name": "ProgressBar",
           "declaration": {
-            "name": "PageTitle",
-            "module": "src/components/reusable/pagetitle/pageTitle.ts"
+            "name": "ProgressBar",
+            "module": "src/components/reusable/progressBar/progressBar.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-page-title",
+          "name": "kyn-progress-bar",
           "declaration": {
-            "name": "PageTitle",
-            "module": "src/components/reusable/pagetitle/pageTitle.ts"
+            "name": "ProgressBar",
+            "module": "src/components/reusable/progressBar/progressBar.ts"
           }
         }
       ]
@@ -9337,6 +9789,568 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/splitButton/defs.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/splitButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SplitButton",
+          "declaration": {
+            "name": "SplitButton",
+            "module": "./splitButton"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SplitButtonOption",
+          "declaration": {
+            "name": "SplitButtonOption",
+            "module": "./splitButtonOption"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/splitButton/splitButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Split Button",
+          "name": "SplitButton",
+          "slots": [
+            {
+              "description": "Slot for split button options.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon (optional).",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "ARIA label for the buttons for accessibility.",
+              "attribute": "description"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Split button name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "kind",
+              "type": {
+                "text": "SPLIT_BTN_KINDS"
+              },
+              "description": "Specifies the visual appearance/kind of the split button.",
+              "attribute": "kind"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "SPLIT_BTN_SIZES"
+              },
+              "description": "Specifies the size of the split button.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "iconPosition",
+              "type": {
+                "text": "SPLIIT_BTN_ICON_POSITION"
+              },
+              "description": "Specifies the position of the icon relative to any split button text. Default `'left'`. This is optional and work with icon slot.",
+              "attribute": "iconPosition"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Split button text (required)",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the split button is disabled.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the split button indicates a destructive action.",
+              "attribute": "destructive",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "menuMinWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "'initial'",
+              "description": "Menu CSS min-width value.",
+              "attribute": "menuMinWidth"
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Listbox/menu open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "method",
+              "name": "handleListBlur",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleButtonKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleListKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyboard",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "keyCode",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "target",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "toggleDropdown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleBlur",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handlePrimaryClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the event and emits the selected value and original event details.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "ARIA label for the buttons for accessibility.",
+              "fieldName": "description"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Split button name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "kind",
+              "type": {
+                "text": "SPLIT_BTN_KINDS"
+              },
+              "description": "Specifies the visual appearance/kind of the split button.",
+              "fieldName": "kind"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "SPLIT_BTN_SIZES"
+              },
+              "description": "Specifies the size of the split button.",
+              "fieldName": "size"
+            },
+            {
+              "name": "iconPosition",
+              "type": {
+                "text": "SPLIIT_BTN_ICON_POSITION"
+              },
+              "description": "Specifies the position of the icon relative to any split button text. Default `'left'`. This is optional and work with icon slot.",
+              "fieldName": "iconPosition"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Split button text (required)",
+              "fieldName": "label"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the split button is disabled.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the split button indicates a destructive action.",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "menuMinWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "'initial'",
+              "description": "Menu CSS min-width value.",
+              "fieldName": "menuMinWidth"
+            },
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Listbox/menu open state.",
+              "fieldName": "open"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-split-btn",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SplitButton",
+          "declaration": {
+            "name": "SplitButton",
+            "module": "src/components/reusable/splitButton/splitButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-split-btn",
+          "declaration": {
+            "name": "SplitButton",
+            "module": "src/components/reusable/splitButton/splitButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/splitButton/splitButtonOption.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Split button option.",
+          "name": "SplitButtonOption",
+          "slots": [
+            {
+              "description": "Slot for option text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Split button option value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Split button option selected state.",
+              "attribute": "selected",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Split button menu option disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleBlur",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the option details to the parent split button.",
+              "name": "on-action-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Split button option value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Split button option selected state.",
+              "fieldName": "selected"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Split button menu option disabled state.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-splitbutton-option",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SplitButtonOption",
+          "declaration": {
+            "name": "SplitButtonOption",
+            "module": "src/components/reusable/splitButton/splitButtonOption.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-splitbutton-option",
+          "declaration": {
+            "name": "SplitButtonOption",
+            "module": "src/components/reusable/splitButton/splitButtonOption.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/stepper/index.ts",
       "declarations": [],
       "exports": [
@@ -9916,568 +10930,6 @@
           "declaration": {
             "name": "StepperItemChild",
             "module": "src/components/reusable/stepper/stepperItemChild.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/splitButton/defs.ts",
-      "declarations": [],
-      "exports": []
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/splitButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SplitButton",
-          "declaration": {
-            "name": "SplitButton",
-            "module": "./splitButton"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "SplitButtonOption",
-          "declaration": {
-            "name": "SplitButtonOption",
-            "module": "./splitButtonOption"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/splitButton/splitButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Split Button",
-          "name": "SplitButton",
-          "slots": [
-            {
-              "description": "Slot for split button options.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon (optional).",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "description",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "ARIA label for the buttons for accessibility.",
-              "attribute": "description"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Split button name.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "kind",
-              "type": {
-                "text": "SPLIT_BTN_KINDS"
-              },
-              "description": "Specifies the visual appearance/kind of the split button.",
-              "attribute": "kind"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "SPLIT_BTN_SIZES"
-              },
-              "description": "Specifies the size of the split button.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "iconPosition",
-              "type": {
-                "text": "SPLIIT_BTN_ICON_POSITION"
-              },
-              "description": "Specifies the position of the icon relative to any split button text. Default `'left'`. This is optional and work with icon slot.",
-              "attribute": "iconPosition"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Split button text (required)",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the split button is disabled.",
-              "attribute": "disabled",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the split button indicates a destructive action.",
-              "attribute": "destructive",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "menuMinWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "'initial'",
-              "description": "Menu CSS min-width value.",
-              "attribute": "menuMinWidth"
-            },
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Listbox/menu open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "method",
-              "name": "handleListBlur",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleButtonKeydown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleListKeydown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleKeyboard",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "keyCode",
-                  "type": {
-                    "text": "number"
-                  }
-                },
-                {
-                  "name": "target",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "toggleDropdown",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleBlur",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handlePrimaryClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the event and emits the selected value and original event details.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "description",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "ARIA label for the buttons for accessibility.",
-              "fieldName": "description"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Split button name.",
-              "fieldName": "name"
-            },
-            {
-              "name": "kind",
-              "type": {
-                "text": "SPLIT_BTN_KINDS"
-              },
-              "description": "Specifies the visual appearance/kind of the split button.",
-              "fieldName": "kind"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "SPLIT_BTN_SIZES"
-              },
-              "description": "Specifies the size of the split button.",
-              "fieldName": "size"
-            },
-            {
-              "name": "iconPosition",
-              "type": {
-                "text": "SPLIIT_BTN_ICON_POSITION"
-              },
-              "description": "Specifies the position of the icon relative to any split button text. Default `'left'`. This is optional and work with icon slot.",
-              "fieldName": "iconPosition"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Split button text (required)",
-              "fieldName": "label"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the split button is disabled.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the split button indicates a destructive action.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "menuMinWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "'initial'",
-              "description": "Menu CSS min-width value.",
-              "fieldName": "menuMinWidth"
-            },
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Listbox/menu open state.",
-              "fieldName": "open"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-split-btn",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SplitButton",
-          "declaration": {
-            "name": "SplitButton",
-            "module": "src/components/reusable/splitButton/splitButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-split-btn",
-          "declaration": {
-            "name": "SplitButton",
-            "module": "src/components/reusable/splitButton/splitButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/splitButton/splitButtonOption.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Split button option.",
-          "name": "SplitButtonOption",
-          "slots": [
-            {
-              "description": "Slot for option text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Split button option value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Split button option selected state.",
-              "attribute": "selected",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Split button menu option disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleBlur",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the option details to the parent split button.",
-              "name": "on-action-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Split button option value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Split button option selected state.",
-              "fieldName": "selected"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Split button menu option disabled state.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-splitbutton-option",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SplitButtonOption",
-          "declaration": {
-            "name": "SplitButtonOption",
-            "module": "src/components/reusable/splitButton/splitButtonOption.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-splitbutton-option",
-          "declaration": {
-            "name": "SplitButtonOption",
-            "module": "src/components/reusable/splitButton/splitButtonOption.ts"
           }
         }
       ]
@@ -14161,359 +14613,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/progressBar/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ProgressBar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "./progressBar"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/progressBar/progressBar.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-progress-bar>` -- progress bar status indicator component.",
-          "name": "ProgressBar",
-          "slots": [
-            {
-              "description": "Slot for tooltip text content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "showInlineLoadStatus",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets visibility of optional inline load status spinner.",
-              "attribute": "showInlineLoadStatus"
-            },
-            {
-              "kind": "field",
-              "name": "showActiveHelperText",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Controls whether to show default helper text for active state.",
-              "attribute": "showActiveHelperText"
-            },
-            {
-              "kind": "field",
-              "name": "progressBarId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
-              "attribute": "progressBarId"
-            },
-            {
-              "kind": "field",
-              "name": "status",
-              "type": {
-                "text": "'active' | 'success' | 'error'"
-              },
-              "default": "'active'",
-              "description": "Sets progress bar status mode.",
-              "attribute": "status"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets initial progress bar value (optionally hard-coded).",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "default": "100",
-              "description": "Sets manual max value (default = 100).",
-              "attribute": "max"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional progress bar label.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "helperText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional helper text that appears underneath progress bar element.",
-              "attribute": "helperText"
-            },
-            {
-              "kind": "field",
-              "name": "unit",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
-              "attribute": "unit"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "method",
-              "name": "renderProgressBar",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "renderProgressBarLabel",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "renderStatusIconOrLoader",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getProgressBarClasses",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "status",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getHelperText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getCurrentStatus",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "ProgressStatus"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "startProgress",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "cancelAnimation",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "showInlineLoadStatus",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets visibility of optional inline load status spinner.",
-              "fieldName": "showInlineLoadStatus"
-            },
-            {
-              "name": "showActiveHelperText",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Controls whether to show default helper text for active state.",
-              "fieldName": "showActiveHelperText"
-            },
-            {
-              "name": "progressBarId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
-              "fieldName": "progressBarId"
-            },
-            {
-              "name": "status",
-              "type": {
-                "text": "'active' | 'success' | 'error'"
-              },
-              "default": "'active'",
-              "description": "Sets progress bar status mode.",
-              "fieldName": "status"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets initial progress bar value (optionally hard-coded).",
-              "fieldName": "value"
-            },
-            {
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "default": "100",
-              "description": "Sets manual max value (default = 100).",
-              "fieldName": "max"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional progress bar label.",
-              "fieldName": "label"
-            },
-            {
-              "name": "helperText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional helper text that appears underneath progress bar element.",
-              "fieldName": "helperText"
-            },
-            {
-              "name": "unit",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
-              "fieldName": "unit"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-progress-bar",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ProgressBar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "src/components/reusable/progressBar/progressBar.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-progress-bar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "src/components/reusable/progressBar/progressBar.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/textArea/index.ts",
       "declarations": [],
       "exports": [
@@ -16641,6 +16740,131 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/footer/footer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Footer component.",
+          "name": "Footer",
+          "slots": [
+            {
+              "description": "Default slot, for links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the logo, will overwrite the default logo.",
+              "name": "logo"
+            },
+            {
+              "description": "Slot for the copyright text.",
+              "name": "copyright"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the footer logo link. Should target the application home page.",
+              "attribute": "rootUrl"
+            },
+            {
+              "kind": "field",
+              "name": "logoAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for logo link.",
+              "attribute": "logoAriaLabel"
+            },
+            {
+              "kind": "method",
+              "name": "handleRootLinkClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the logo link click event and emits the original event.",
+              "name": "on-root-link-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the footer logo link. Should target the application home page.",
+              "fieldName": "rootUrl"
+            },
+            {
+              "name": "logoAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for logo link.",
+              "fieldName": "logoAriaLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-footer",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "src/components/global/footer/footer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "src/components/global/footer/footer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/footer/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "./footer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/header/header.ts",
       "declarations": [
         {
@@ -18104,194 +18328,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/footer/footer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Footer component.",
-          "name": "Footer",
-          "slots": [
-            {
-              "description": "Default slot, for links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the logo, will overwrite the default logo.",
-              "name": "logo"
-            },
-            {
-              "description": "Slot for the copyright text.",
-              "name": "copyright"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "description": "URL for the footer logo link. Should target the application home page.",
-              "attribute": "rootUrl"
-            },
-            {
-              "kind": "field",
-              "name": "logoAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for logo link.",
-              "attribute": "logoAriaLabel"
-            },
-            {
-              "kind": "method",
-              "name": "handleRootLinkClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the logo link click event and emits the original event.",
-              "name": "on-root-link-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "description": "URL for the footer logo link. Should target the application home page.",
-              "fieldName": "rootUrl"
-            },
-            {
-              "name": "logoAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for logo link.",
-              "fieldName": "logoAriaLabel"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-footer",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "src/components/global/footer/footer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "src/components/global/footer/footer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/footer/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "./footer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/localNav/index.ts",
       "declarations": [],
       "exports": [
@@ -18744,99 +18780,63 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/ai/aiLaunchButton/aiLaunchButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "AI Assistant Launch Button.",
-          "name": "AILaunchButton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the button is disabled.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "_initAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_startHoverAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_stopHoverAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitClick",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits when the button is clicked.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the button is disabled.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ai-launch-btn",
-          "customElement": true
-        }
-      ],
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "AILaunchButton",
+          "name": "UiShell",
           "declaration": {
-            "name": "AILaunchButton",
-            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ai-launch-btn",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
+            "name": "UiShell",
+            "module": "./uiShell"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/ai/aiLaunchButton/index.ts",
-      "declarations": [],
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
       "exports": [
         {
           "kind": "js",
-          "name": "AILaunchButton",
+          "name": "UiShell",
           "declaration": {
-            "name": "AILaunchButton",
-            "module": "./aiLaunchButton"
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
