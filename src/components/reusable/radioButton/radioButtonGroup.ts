@@ -109,7 +109,7 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
 
   private _updateChildren() {
     this.radioButtons.forEach((radio) => {
-      radio.disabled = this.disabled;
+      radio.disabled = radio.hasAttribute('disabled') || this.disabled;
       radio.checked = radio.value === this.value;
       radio.name = this.name;
       radio.required = this.required;

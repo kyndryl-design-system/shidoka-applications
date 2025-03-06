@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import '../../components/reusable/avatar';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import aiIndicator from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/indicator.svg';
+import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/indicator.svg';
 
 export default {
   title: 'AI/Patterns/Response',
@@ -18,7 +18,7 @@ export const WithAvatarInitials = {
 
         <span class="response-msg">
           The benefits of adopting Hybrid IT Modernization:
-          <ol>
+          <ol class="kd-spacing--list-item">
             <li>
               Cost Efficiency: Hybrid IT allows organizations to combine
               on-premises infrastructure with cloud solutions, optimizing costs
@@ -67,7 +67,7 @@ export const WithAvatarImage = {
 
         <span class="response-msg">
           The benefits of adopting Hybrid IT Modernization:
-          <ol>
+          <ol class="kd-spacing--list-item">
             <li>
               Cost Efficiency: Hybrid IT allows organizations to combine
               on-premises infrastructure with cloud solutions, optimizing costs
@@ -110,10 +110,10 @@ export const WithAIImage = {
   render: (args) => {
     return html`
       <div class="response-wrapper">
-        <span> ${unsafeHTML(aiIndicator)} </span>
+        <span> ${unsafeHTML(aiResponse)} </span>
         <span class="response-msg">
           The benefits of adopting Hybrid IT Modernization:
-          <ol>
+          <ol class="kd-spacing--list-item">
             <li>
               Cost Efficiency: Hybrid IT allows organizations to combine
               on-premises infrastructure with cloud solutions, optimizing costs
