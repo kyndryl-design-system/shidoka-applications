@@ -91,18 +91,15 @@ export class AISourcesFeedback extends LitElement {
   override render() {
     const classesSources: any = classMap({
       'kyn-sources': true,
-      opened: this.sourcesOpened,
       disabled: this.sourcesDisabled,
     });
     const classesFeedback1: any = classMap({
       'kyn-pos-feedback': true,
-      opened: this.feedbackOpened && this._selectedFeedbackType === 'positive',
       disabled:
         this.feedbackDisabled && this._selectedFeedbackType === 'positive',
     });
     const classesFeedback2: any = classMap({
       'kyn-neg-feedback': true,
-      opened: this.feedbackOpened && this._selectedFeedbackType === 'negative',
       disabled:
         this.feedbackDisabled && this._selectedFeedbackType === 'positive',
     });
@@ -126,36 +123,6 @@ export class AISourcesFeedback extends LitElement {
               <span class="title">${this._textStrings.sourcesTxt}</span>
               <span class="expand-icon">${unsafeSVG(chevronIcon)}</span>
             </kyn-button>
-
-            <div
-              class="kyn-sources-body"
-              id="kyn-sources-body"
-              role="region"
-              aria-labelledby="kyn-sources-title"
-            >
-              <div>
-                ${this._textStrings.foundSources} (${this.sources.length}) :
-              </div>
-              <slot name="sources" @slotchange=${this._handleSlotChange}></slot>
-              ${!this.revealAllSources && this.sources.length > this._limitCount
-                ? html`
-                    <kyn-button
-                      class="reveal-toggle"
-                      kind="ghost"
-                      size="small"
-                      @on-click=${() =>
-                        this._toggleLimitRevealed(!this.limitRevealed)}
-                    >
-                      ${this.limitRevealed
-                        ? html`${this._textStrings.showLess}`
-                        : html`
-                            ${this._textStrings.showMore}
-                            (${this.sources.length - this._limitCount})
-                          `}
-                    </kyn-button>
-                  `
-                : null}
-            </div>
           </div>
         </div>
 
@@ -175,28 +142,6 @@ export class AISourcesFeedback extends LitElement {
             >
               <span slot="icon"> ${unsafeSVG(thumbsUpIcon)} </span>
             </kyn-button>
-
-            <div
-              class="kyn-pos-feedback-body"
-              id="kyn-pos-feedback-body"
-              role="region"
-              aria-labelledby="kyn-pos-feedback-title"
-            >
-              <kyn-button
-                class="close"
-                @on-click=${(e: Event) =>
-                  this._handleClick(e, 'feedback', 'positive')}
-                }}
-                kind="ghost"
-                size="small"
-              >
-                <span slot="icon">${unsafeSVG(closeIcon)}</span>
-              </kyn-button>
-              <slot
-                name="pos-feedback-form"
-                @slotchange=${this._handleSlotChange}
-              ></slot>
-            </div>
           </div>
 
           <div class="${classesFeedback2}">
@@ -214,30 +159,91 @@ export class AISourcesFeedback extends LitElement {
             >
               <span slot="icon"> ${unsafeSVG(thumbsDownIcon)} </span>
             </kyn-button>
-
-            <div
-              class="kyn-neg-feedback-body"
-              id="kyn-neg-feedback-body"
-              role="region"
-              aria-labelledby="kyn-neg-feedback-title"
-            >
-              <kyn-button
-                class="close"
-                @on-click=${(e: Event) =>
-                  this._handleClick(e, 'feedback', 'negative')}
-                }}
-                kind="ghost"
-                size="small"
-              >
-                <span slot="icon">${unsafeSVG(closeIcon)}</span>
-              </kyn-button>
-              <slot
-                name="neg-feedback-form"
-                @slotchange=${this._handleSlotChange}
-              ></slot>
-            </div>
           </div>
         </div>
+      </div>
+
+      <div
+        class="${classMap({
+          opened: this.sourcesOpened,
+          'kyn-sources-body': true,
+        })}"
+        id="kyn-sources-body"
+        role="region"
+        aria-labelledby="kyn-sources-title"
+      >
+        <div>${this._textStrings.foundSources} (${this.sources.length}) :</div>
+        <slot name="sources" @slotchange=${this._handleSlotChange}></slot>
+        ${!this.revealAllSources && this.sources.length > this._limitCount
+          ? html`
+              <kyn-button
+                class="reveal-toggle"
+                kind="ghost"
+                size="small"
+                @on-click=${() =>
+                  this._toggleLimitRevealed(!this.limitRevealed)}
+              >
+                ${this.limitRevealed
+                  ? html`${this._textStrings.showLess}`
+                  : html`
+                      ${this._textStrings.showMore}
+                      (${this.sources.length - this._limitCount})
+                    `}
+              </kyn-button>
+            `
+          : null}
+      </div>
+
+      <div
+        class="${classMap({
+          opened:
+            this.feedbackOpened && this._selectedFeedbackType === 'positive',
+          'kyn-pos-feedback-body': true,
+        })}"
+        id="kyn-pos-feedback-body"
+        role="region"
+        aria-labelledby="kyn-pos-feedback-title"
+      >
+        <kyn-button
+          class="close"
+          @on-click=${(e: Event) =>
+            this._handleClick(e, 'feedback', 'positive')}
+          }}
+          kind="ghost"
+          size="small"
+        >
+          <span slot="icon">${unsafeSVG(closeIcon)}</span>
+        </kyn-button>
+        <slot
+          name="pos-feedback-form"
+          @slotchange=${this._handleSlotChange}
+        ></slot>
+      </div>
+
+      <div
+        class="${classMap({
+          opened:
+            this.feedbackOpened && this._selectedFeedbackType === 'negative',
+          'kyn-neg-feedback-body': true,
+        })}"
+        id="kyn-neg-feedback-body"
+        role="region"
+        aria-labelledby="kyn-neg-feedback-title"
+      >
+        <kyn-button
+          class="close"
+          @on-click=${(e: Event) =>
+            this._handleClick(e, 'feedback', 'negative')}
+          }}
+          kind="ghost"
+          size="small"
+        >
+          <span slot="icon">${unsafeSVG(closeIcon)}</span>
+        </kyn-button>
+        <slot
+          name="neg-feedback-form"
+          @slotchange=${this._handleSlotChange}
+        ></slot>
       </div>
     `;
   }
@@ -273,7 +279,6 @@ export class AISourcesFeedback extends LitElement {
     }
 
     const event = new CustomEvent('on-toggle', {
-      composed: true,
       detail: {
         sourcesOpened: this.sourcesOpened,
         feedbackOpened: this.feedbackOpened,

@@ -4,6 +4,7 @@
 .action-bar {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 1rem;
 }
 
 .left-div,
@@ -25,29 +26,6 @@ slot[name='sources']::slotted(*) {
   background-color: var(--kd-color-background-page-default);
   border-radius: inherit;
 
-  & [class*='kyn-pos-feedback-body'],
-  [class*='kyn-neg-feedback-body'],
-  [class*='kyn-sources-body'] {
-    display: none;
-  }
-
-  &.opened [class*='kyn-pos-feedback-body'],
-  &.opened [class*='kyn-neg-feedback-body'],
-  &.opened [class*='kyn-sources-body'] {
-    display: block;
-    visibility: visible;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 6rem;
-    width: 95%;
-    margin-left: 2rem;
-    z-index: 100;
-  }
-  &.opened .kyn-sources-body {
-    background: var(--kd-color-background-container-ai-default);
-    padding: 24px 16px;
-  }
   &.opened [class*='kyn-pos-feedback-body'],
   &.opened [class*='kyn-neg-feedback-body'] {
     background: var(--kd-color-background-container-secondary);
@@ -59,6 +37,26 @@ slot[name='sources']::slotted(*) {
   &.disabled svg {
     fill: var(--kd-color-icon-disabled);
   }
+}
+
+[class*='kyn-pos-feedback-body'],
+[class*='kyn-neg-feedback-body'],
+[class*='kyn-sources-body'] {
+  display: none;
+}
+
+.opened.kyn-pos-feedback-body,
+.opened.kyn-neg-feedback-body {
+  display: block;
+  background: var(--kd-color-background-container-secondary);
+  border: 1px solid var(--kd-color-border-variants-light);
+  border-radius: 8px;
+  padding: 16px;
+}
+.opened.kyn-sources-body {
+  display: block;
+  background: var(--kd-color-background-container-ai-default);
+  padding: 24px 16px;
 }
 
 .expand-icon {
