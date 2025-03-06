@@ -1,5 +1,10 @@
 import { html, LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  queryAssignedElements,
+  state,
+} from 'lit/decorators.js';
 import { deepmerge } from 'deepmerge-ts';
 import { classMap } from 'lit-html/directives/class-map.js';
 
@@ -87,6 +92,9 @@ export class AISourcesFeedback extends LitElement {
 
   @state()
   sources: Array<any> = [];
+
+  @queryAssignedElements({ slot: 'sources' })
+  _sourceEls!: any;
 
   override render() {
     const classesSources: any = classMap({
@@ -289,7 +297,7 @@ export class AISourcesFeedback extends LitElement {
   }
 
   protected _handleSlotChange() {
-    this.sources = Array.from(this.querySelectorAll('kyn-card'));
+    this.sources = Array.from(this._sourceEls[0].querySelectorAll('kyn-card'));
     this._toggleLimitRevealed(this.limitRevealed);
   }
 
@@ -298,12 +306,12 @@ export class AISourcesFeedback extends LitElement {
 
     this.sources.forEach((sourceEl, index) => {
       if (this.revealAllSources || this.limitRevealed) {
-        sourceEl.parentElement.style.display = 'block';
+        sourceEl.style.display = 'block';
       } else {
         if (index < this._limitCount) {
-          sourceEl.parentElement.style.display = 'block';
+          sourceEl.style.display = 'block';
         } else {
-          sourceEl.parentElement.style.display = 'none';
+          sourceEl.style.display = 'none';
         }
       }
     });

@@ -147,37 +147,31 @@ const feedbackFormContent = (_selectedFeedback) => html`
 `;
 
 const SourcesContent = () => html`
-  <div class="kd-grid">
-    ${sourcesData.map(
-      (card) => html`
-        <div class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-3">
-          <kyn-card
-            style="width:100%;height:100%;"
-            aiConnected
-            type=${args.type}
-            href=${args.href}
-            target=${args.target}
-            rel=${args.rel}
-            ?hideBorder=${args.hideBorder}
-          >
-            <h1 class="card-title">
-              <div>${card.title}</div>
-            </h1>
-            <div class="card-description">
-              <kyn-link
-                href="#"
-                shade="dark"
-                @click=${(e) => action(e.type)(e)}
-              >
-                <div>${card.description}</div>
-              </kyn-link>
-            </div>
-          </kyn-card>
+  ${sourcesData.map(
+    (card) => html`
+      <kyn-card
+        aiConnected
+        type=${args.type}
+        href=${args.href}
+        target=${args.target}
+        rel=${args.rel}
+        ?hideBorder=${args.hideBorder}
+      >
+        <h1 class="card-title">
+          <div>${card.title}</div>
+        </h1>
+        <div class="card-description">
+          <kyn-link href="#" shade="dark" @click=${(e) => action(e.type)(e)}>
+            <div>${card.description}</div>
+          </kyn-link>
         </div>
-      `
-    )}
-  </div>
+      </kyn-card>
+    `
+  )}
   <style>
+    kyn-card {
+      width: 24%;
+    }
     .card-title div {
       @include typography.type-ui-01;
       color: var(--kd-color-text-level-primary);
