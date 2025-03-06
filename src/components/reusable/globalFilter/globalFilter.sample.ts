@@ -96,11 +96,11 @@ export class SampleFilterComponent extends LitElement {
             iconPosition="left"
             outlineOnly
           >
-            <span slot="icon"
-              >${SelectedOptions.length
+            <span slot="icon">
+              ${SelectedOptions.length
                 ? unsafeSVG(filterEditIcon)
-                : unsafeSVG(filterIcon)}</span
-            >
+                : unsafeSVG(filterIcon)}
+            </span>
             <span class="filter-text">Filter</span>
           </kyn-button>
 
@@ -153,7 +153,7 @@ export class SampleFilterComponent extends LitElement {
           @on-click=${(e: any) => this._handleCustomAction(e)}
         >
           <span slot="icon">${unsafeSVG(refreshIcon)}</span>
-          <span class="filter-text">Custom Action</span>
+          <span class="filter-text">Action</span>
         </kyn-button>
 
         <kyn-overflow-menu slot="actions" anchorRight verticalDots>
