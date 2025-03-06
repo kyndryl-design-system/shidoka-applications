@@ -136,14 +136,22 @@ export async function initializeMultiAnchorFlatpickr(
       if (el instanceof HTMLInputElement) {
         return el;
       } else {
-        let input = el.querySelector('input') as HTMLInputElement | null;
-        if (!input) {
-          input = document.createElement('input');
-          input.type = 'text';
-          input.style.display = 'none';
-          el.appendChild(input);
+        try {
+          let input = el.querySelector('input') as HTMLInputElement | null;
+          if (!input) {
+            input = document.createElement('input');
+            input.type = 'text';
+            input.style.display = 'none';
+            if (!el.isConnected) {
+              throw new Error('Element is not connected to the DOM');
+            }
+            el.appendChild(input);
+          }
+          return input;
+        } catch (error) {
+          console.error('Error creating or appending input element:', error);
+          throw error;
         }
-        return input;
       }
     };
 
@@ -217,18 +225,23 @@ export async function initializeSingleAnchorFlatpickr(
       inputElement = inputEl;
       options.clickOpens = true;
     } else {
-      inputElement = document.createElement('input');
-      inputElement.type = 'text';
-      inputElement.style.display = 'none';
+      try {
+        inputElement = document.createElement('input');
+        inputElement.type = 'text';
+        inputElement.style.display = 'none';
 
-      if (appendTo) {
-        appendTo.appendChild(inputElement);
-      } else {
-        inputEl.appendChild(inputElement);
+        const targetElement = appendTo || inputEl;
+        if (!targetElement) {
+          throw new Error('No valid element to append input to');
+        }
+
+        targetElement.appendChild(inputElement);
+        options.clickOpens = false;
+        options.positionElement = inputEl;
+      } catch (error) {
+        console.error('Error creating input element:', error);
+        throw error;
       }
-
-      options.clickOpens = false;
-      options.positionElement = inputEl;
     }
     const flatpickrInstance = flatpickr(inputElement, options) as Instance;
     if (flatpickrInstance) {
@@ -368,7 +381,7 @@ export async function getFlatpickrOptions(
       onChange && onChange(selectedDates, dateStr, instance);
     },
     onClose: (selectedDates, dateStr, instance) => {
-      if (mode === 'range') {
+      if (mode === 'range' && instance.calendarContainer) {
         const timeContainer =
           instance.calendarContainer.querySelector('.flatpickr-time');
         if (selectedDates.length === 0) {
@@ -385,9 +398,11 @@ export async function getFlatpickrOptions(
 
   if (mode === 'range') {
     options.onReady = (_, __, instance) => {
-      const timeContainer =
-        instance.calendarContainer.querySelector('.flatpickr-time');
-      timeContainer?.classList.add('default-time-select');
+      if (instance.calendarContainer) {
+        const timeContainer =
+          instance.calendarContainer.querySelector('.flatpickr-time');
+        timeContainer?.classList.add('default-time-select');
+      }
     };
   }
 

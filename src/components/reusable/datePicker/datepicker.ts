@@ -191,6 +191,43 @@ export class DatePicker extends FormMixin(LitElement) {
   @state()
   private _shouldFlatpickrOpen = false;
 
+  /** Track initialization state
+   * @internal
+   */
+  private _initialized = false;
+
+  /** Track destroyed state
+   * @internal
+   */
+  private _isDestroyed = false;
+
+  private debounce<T extends (...args: any[]) => any>(
+    func: T,
+    wait: number
+  ): (...args: Parameters<T>) => void {
+    let timeout: number | null = null;
+
+    return (...args: Parameters<T>) => {
+      if (timeout !== null) {
+        window.clearTimeout(timeout);
+      }
+
+      timeout = window.setTimeout(() => {
+        func.apply(this, args);
+        timeout = null;
+      }, wait);
+    };
+  }
+
+  private debouncedUpdate = this.debounce(async () => {
+    if (!this.flatpickrInstance) return;
+    try {
+      await this.initializeFlatpickr();
+    } catch (error) {
+      console.error('Error in debounced update:', error);
+    }
+  }, 100);
+
   override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('change', this._onChange);
@@ -349,8 +386,6 @@ export class DatePicker extends FormMixin(LitElement) {
     };
   }
 
-  private _initialized = false;
-
   override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
     if (!this._initialized) {
@@ -387,7 +422,7 @@ export class DatePicker extends FormMixin(LitElement) {
       this.flatpickrInstance &&
       !this._isClearing
     ) {
-      this.initializeFlatpickr();
+      this.debouncedUpdate();
     }
 
     if (changedProperties.has('disable')) {
@@ -408,7 +443,7 @@ export class DatePicker extends FormMixin(LitElement) {
         console.warn('Disable prop must be an array');
       }
       if (this.flatpickrInstance) {
-        this.updateFlatpickrOptions();
+        this.debouncedUpdate();
       }
     }
 
@@ -422,9 +457,9 @@ export class DatePicker extends FormMixin(LitElement) {
       this._enableTime = updateEnableTime(this.dateFormat);
       if (this.flatpickrInstance && this._initialized && !this._isClearing) {
         if (changedProperties.has('dateFormat')) {
-          this.initializeFlatpickr();
+          this.debouncedUpdate();
         } else {
-          this.updateFlatpickrOptions();
+          this.debouncedUpdate();
         }
       }
     }
@@ -488,8 +523,14 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async initializeFlatpickr(): Promise<void> {
-    if (!this._inputEl) {
-      console.warn('Cannot initialize Flatpickr: input element not available');
+    if (this._isDestroyed) {
+      return;
+    }
+
+    if (!this._inputEl || !this._inputEl.isConnected) {
+      console.warn(
+        'Cannot initialize Flatpickr: input element not available or not connected to DOM'
+      );
       return;
     }
 
@@ -537,33 +578,7 @@ export class DatePicker extends FormMixin(LitElement) {
       console.warn('Cannot update options: Flatpickr instance not available');
       return;
     }
-    try {
-      const newOptions = await this.getComponentFlatpickrOptions();
-      Object.keys(newOptions).forEach((key) => {
-        if (
-          this.flatpickrInstance!.config &&
-          key in this.flatpickrInstance!.config
-        ) {
-          this.flatpickrInstance!.set(
-            key as keyof BaseOptions,
-            newOptions[key as keyof BaseOptions]
-          );
-        }
-      });
-      this.flatpickrInstance.redraw();
-
-      requestAnimationFrame(() => {
-        if (this.flatpickrInstance?.calendarContainer) {
-          setCalendarAttributes(this.flatpickrInstance);
-          this.flatpickrInstance.calendarContainer.setAttribute(
-            'aria-label',
-            'Date picker'
-          );
-        }
-      });
-    } catch (error) {
-      console.error('Error updating Flatpickr options:', error);
-    }
+    await this.debouncedUpdate();
   }
 
   setInitialDates(): void {
@@ -604,8 +619,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     const container = getModalContainer(this);
-
-    return getFlatpickrOptions({
+    const options = await getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
       defaultDate: this.defaultDate ? this.defaultDate : undefined,
@@ -623,8 +637,10 @@ export class DatePicker extends FormMixin(LitElement) {
       onClose: this.handleClose.bind(this),
       onChange: this.handleDateChange.bind(this),
       appendTo: container,
+      noCalendar: false,
       static: this.staticPosition,
     });
+    return options;
   }
 
   handleOpen(): void {
@@ -760,6 +776,7 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   override disconnectedCallback(): void {
+    this._isDestroyed = true;
     super.disconnectedCallback();
     this.removeEventListener('change', this._onChange);
     this.removeEventListener('reset', this._handleFormReset);

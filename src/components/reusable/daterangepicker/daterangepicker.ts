@@ -196,28 +196,48 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   private _initialized = false;
 
-  private resizeTimeout: number | null = null;
+  private debounce<T extends (...args: any[]) => any>(
+    func: T,
+    wait: number
+  ): (...args: Parameters<T>) => void {
+    let timeout: number | null = null;
 
-  private handleResize = () => {
-    if (this.resizeTimeout) {
-      window.clearTimeout(this.resizeTimeout);
-    }
-    this.resizeTimeout = window.setTimeout(async () => {
-      if (this.flatpickrInstance) {
-        await this.initializeFlatpickr();
+    return (...args: Parameters<T>) => {
+      if (timeout !== null) {
+        window.clearTimeout(timeout);
       }
-      this.resizeTimeout = null;
-    }, 250);
-  };
+
+      timeout = window.setTimeout(() => {
+        func.apply(this, args);
+        timeout = null;
+      }, wait);
+    };
+  }
+
+  private debouncedUpdate = this.debounce(async () => {
+    if (!this.flatpickrInstance) return;
+    try {
+      await this.initializeFlatpickr();
+    } catch (error) {
+      console.error('Error in debounced update:', error);
+    }
+  }, 100);
+
+  private handleResize = this.debounce(async () => {
+    if (this.flatpickrInstance) {
+      try {
+        await this.initializeFlatpickr();
+      } catch (error) {
+        console.error('Error handling resize:', error);
+      }
+    }
+  }, 250);
 
   override disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('change', this._onChange);
     this.removeEventListener('reset', this._handleFormReset);
     window.removeEventListener('resize', this.handleResize);
-    if (this.resizeTimeout) {
-      window.clearTimeout(this.resizeTimeout);
-    }
     this.flatpickrInstance?.destroy();
   }
 
@@ -559,69 +579,36 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     const container = getModalContainer(this);
-    return getFlatpickrOptions({
+    const options = await getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
-      defaultDate: this.defaultDate ?? undefined,
+      defaultDate: this.defaultDate ? this.defaultDate : undefined,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
-      mode: 'range',
-      allowInput: false,
       inputEl: this._inputEl!,
       minDate: this.minDate,
       maxDate: this.maxDate,
       enable: this.enable,
       disable: this._processedDisableDates,
+      mode: 'range',
+      closeOnSelect: false,
       loadLocale,
-      onChange: this.handleDateChange.bind(this),
-      onClose: this.handleClose.bind(this),
       onOpen: this.handleOpen.bind(this),
+      onClose: this.handleClose.bind(this),
+      onChange: this.handleDateChange.bind(this),
       appendTo: container,
+      noCalendar: false,
       static: this.staticPosition,
     });
+    return options;
   }
 
-  async updateFlatpickrOptions() {
+  async updateFlatpickrOptions(): Promise<void> {
     if (!this.flatpickrInstance) {
       console.warn('Cannot update options: Flatpickr instance not available');
       return;
     }
-    try {
-      const currentDates = this.flatpickrInstance.selectedDates;
-      const newOptions = await this.getComponentFlatpickrOptions();
-      Object.keys(newOptions).forEach((key) => {
-        if (
-          this.flatpickrInstance!.config &&
-          key in this.flatpickrInstance!.config
-        ) {
-          this.flatpickrInstance!.set(
-            key as keyof BaseOptions,
-            newOptions[key as keyof BaseOptions]
-          );
-        }
-      });
-      this.flatpickrInstance.redraw();
-      hideEmptyYear();
-      if (currentDates && currentDates.length === 2) {
-        this.flatpickrInstance.setDate(currentDates, false);
-      }
-      requestAnimationFrame(() => {
-        if (this.flatpickrInstance?.calendarContainer) {
-          try {
-            const modalDetected = !!this.closest('kyn-modal');
-            setCalendarAttributes(this.flatpickrInstance, modalDetected);
-            this.flatpickrInstance.calendarContainer.setAttribute(
-              'aria-label',
-              'Date range calendar'
-            );
-          } catch (error) {
-            console.warn('Error setting calendar attributes:', error);
-          }
-        }
-      });
-    } catch (error) {
-      console.error('Error updating Flatpickr options:', error);
-    }
+    await this.debouncedUpdate();
   }
 
   setInitialDates(): void {
