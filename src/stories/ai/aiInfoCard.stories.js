@@ -47,9 +47,6 @@ export default {
         .info-card-rightIcon,
         .info-card-leftIcon {
           display: flex;
-          svg {
-            fill: var(--kd-color-icon-ai);
-          }
         }
       </style>
       ${story()}
