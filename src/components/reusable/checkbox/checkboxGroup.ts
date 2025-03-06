@@ -428,7 +428,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
 
   private _updateChildren() {
     this.checkboxes.forEach((checkbox) => {
-      checkbox.disabled = this.disabled;
+      checkbox.disabled = checkbox.hasAttribute('disabled') || this.disabled;
       if (this.value && this.value.length) {
         checkbox.checked = this.value.includes(checkbox.value);
       } else {
