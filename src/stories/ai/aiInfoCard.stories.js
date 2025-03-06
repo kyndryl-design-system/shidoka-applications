@@ -1,10 +1,10 @@
 import { html } from 'lit';
-import '../components/reusable/card';
+import '../../components/reusable/card';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import policeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/police.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/delete.svg';
-import '../components/reusable/button';
-import '../components/reusable/inlineConfirm/inlineConfirm';
+import '../../components/reusable/button';
+import '../../components/reusable/inlineConfirm/inlineConfirm';
 import { action } from '@storybook/addon-actions';
 import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 
@@ -43,6 +43,9 @@ export default {
         .info-card-rightIcon,
         .info-card-leftIcon {
           display: flex;
+          svg {
+            fill: var(--kd-color-icon-ai);
+          }
         }
       </style>
       ${story()}
