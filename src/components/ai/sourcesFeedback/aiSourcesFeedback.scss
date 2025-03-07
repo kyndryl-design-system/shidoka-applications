@@ -1,0 +1,67 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+.action-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.left-div,
+.right-div {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.card-container {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+  margin-top: 1rem;
+
+  @media (min-width: 42rem) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+[class*='kyn-feedback-body'],
+[class*='kyn-sources-body'] {
+  display: none;
+}
+
+.opened.kyn-feedback-body {
+  display: block;
+  position: relative;
+  background: var(--kd-color-background-container-secondary);
+  border: 1px solid var(--kd-color-border-variants-light);
+  border-radius: 8px;
+  padding: 16px;
+}
+.opened.kyn-sources-body {
+  display: block;
+  position: relative;
+  background: var(--kd-color-background-container-ai-default);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.expand-icon {
+  transition: transform 150ms ease-out;
+  .opened & {
+    transform: rotate(-180deg);
+  }
+}
+
+.reveal-toggle {
+  margin-top: 1rem;
+}
+
+.close-container,
+.close {
+  background: inherit;
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+}
