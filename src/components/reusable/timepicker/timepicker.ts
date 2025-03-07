@@ -57,7 +57,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
   /** Sets desired locale and, if supported, dynamically loads language lib */
   @property({ type: String })
-  locale: SupportedLocale = 'en';
+  locale: SupportedLocale | string = 'en';
 
   /** Sets date/time value. */
   @property({ type: Object })

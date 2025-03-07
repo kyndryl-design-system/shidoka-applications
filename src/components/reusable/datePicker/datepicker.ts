@@ -56,7 +56,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
   /* Sets desired locale and, if supported, dynamically loads language lib */
   @property({ type: String })
-  locale: SupportedLocale = 'en';
+  locale: SupportedLocale | string = 'en';
 
   /** Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`). */
   @property({ type: String })

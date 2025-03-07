@@ -59,7 +59,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   /** Sets and dynamically imports specific l10n calendar localization. */
   @property({ type: String })
-  locale: SupportedLocale = 'en';
+  locale: SupportedLocale | string = 'en';
 
   /** Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`). */
   @property({ type: String })
