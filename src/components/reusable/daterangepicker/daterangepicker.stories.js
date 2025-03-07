@@ -35,7 +35,7 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    defaultDate: { control: { type: 'text' } },
+    defaultDate: { control: { type: 'object' } },
     required: { control: { type: 'boolean' } },
     staticPosition: { control: { type: 'boolean' } },
     disable: { control: { type: 'object' } },
@@ -131,7 +131,7 @@ WithPreselectedRange.args = {
   ...DateRangeDefault.args,
   name: 'preselected-date-range',
   dateFormat: 'Y-m-d',
-  defaultDate: ['2024-01-01 00:00:00', '2024-01-07 00:00:00'],
+  defaultDate: ['2024-01-01', '2024-01-07'],
   caption: 'Example with preselected date range (format: Y-m-d)',
   label: 'Preselected Range',
 };
