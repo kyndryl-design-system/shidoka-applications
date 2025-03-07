@@ -35,7 +35,7 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    defaultDate: { control: { type: 'array' } },
+    defaultDate: { control: { type: 'object' } },
     required: { control: { type: 'boolean' } },
     staticPosition: { control: { type: 'boolean' } },
     disable: { control: { type: 'object' } },
