@@ -59,7 +59,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   /** Sets and dynamically imports specific l10n calendar localization. */
   @property({ type: String })
-  locale: SupportedLocale = 'en';
+  locale: SupportedLocale | string = 'en';
 
   /** Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`). */
   @property({ type: String })
@@ -501,20 +501,22 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   private async _handleClear(event: Event) {
+    this._isClearing = true;
     event.preventDefault();
     event.stopPropagation();
-
-    this._isClearing = true;
-
     try {
       this.value = [null, null];
       this.defaultDate = null;
 
       if (this.flatpickrInstance) {
         this.flatpickrInstance.clear();
-        if (this._inputEl) {
-          this._inputEl.value = '';
-        }
+      }
+      if (this._inputEl) {
+        this._inputEl.value = '';
+        this._inputEl.setAttribute(
+          'aria-label',
+          this._textStrings.noDateSelected
+        );
       }
 
       emitValue(this, 'on-change', {
@@ -525,6 +527,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
       this._validate(true, false);
       await this.updateComplete;
+
+      await this.initializeFlatpickr();
       this.requestUpdate();
     } finally {
       this._isClearing = false;
