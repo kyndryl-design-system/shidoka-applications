@@ -5,6 +5,7 @@ import { useEffect } from '@storybook/preview-api';
 
 import '../button';
 import '../modal';
+import '../sideDrawer';
 
 export default {
   title: 'Components/DatePicker',
@@ -22,10 +23,12 @@ export default {
         'Y-m-d',
         'm-d-Y',
         'd-m-Y',
-        'Y-m-d H:i',
-        'Y-m-d H:i:s',
-        'm-d-Y H:i:s',
-        'd-m-Y H:i:s',
+        'Y-m-d H:i', // 24-hour format without seconds
+        'Y-m-d h:i K', // 12-hour format with AM/PM
+        'm-d-Y H:i',
+        'm-d-Y h:i K',
+        'd-m-Y H:i',
+        'd-m-Y h:i K',
       ],
       control: { type: 'select' },
     },
@@ -37,7 +40,10 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    defaultDate: { control: { type: 'object' } },
+    defaultDate: { control: { type: 'text' } },
+    required: { control: { type: 'boolean' } },
+    staticPosition: { control: { type: 'boolean' } },
+    disable: { control: { type: 'object' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
     defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
@@ -134,8 +140,7 @@ DatePickerMultiple.args = {
   locale: 'en',
   name: 'date-multiple-picker',
   dateFormat: 'Y-m-d',
-  defaultDate: '',
-  caption: 'Select multiple dates. Example shows preselected dates.',
+  caption: 'Select multiple dates.',
   mode: 'multiple',
   label: 'Multiple Date Selection',
 };
@@ -147,14 +152,31 @@ DateTimeMultiple.args = {
   locale: 'en',
   name: 'date-time-multiple-picker',
   dateFormat: 'Y-m-d H:i',
-  defaultDate: ['2024-01-01 09:00', '2024-01-02 17:00'],
+  defaultDate: '2024-01-01 09:00',
   caption: 'Select multiple dates with time. Example shows preselected dates.',
   mode: 'multiple',
   label: 'Multiple Date/Time Selection',
 };
 DateTimeMultiple.storyName = 'With Preselected Date Time';
 
-export const DatepickerInModal = {
+export const WithDisabledDates = Template.bind({});
+WithDisabledDates.args = {
+  ...DatePickerDefault.args,
+  name: 'date-picker-with-disabled-dates',
+  dateFormat: 'Y-m-d',
+  caption: 'Example showing disabled dates (weekends are disabled)',
+  label: 'Date Selection',
+  disable: [
+    function (date) {
+      return date.getDay() === 0 || date.getDay() === 6;
+    },
+    '2024-03-15',
+    '2024-03-20',
+    '2024-03-25',
+  ],
+};
+
+export const InModal = {
   args: {
     ...DatePickerDefault.args,
     locale: 'en',
@@ -233,4 +255,193 @@ export const DatepickerInModal = {
     `;
   },
 };
-DatepickerInModal.storyName = 'In Modal';
+
+export const InSideDrawer = {
+  args: {
+    ...DatePickerDefault.args,
+    // Side Drawer args
+    open: false,
+    size: 'md',
+    titleText: 'Select Date',
+    labelText: 'Label',
+    submitBtnText: 'Ok',
+    cancelBtnText: 'Cancel',
+    submitBtnDisabled: false,
+    hideFooter: false,
+    destructive: false,
+    showSecondaryButton: true,
+    secondaryButtonText: 'Secondary',
+    hideCancelButton: false,
+    // Date Picker args
+    locale: 'en',
+    name: 'date-picker-in-side-drawer',
+    dateFormat: 'Y-m-d',
+    staticPosition: true,
+    defaultDate: '',
+    caption: 'Datepicker in a modal.',
+    label: 'Date',
+    defaultErrorMessage: '',
+    required: false,
+    value: '',
+    warnText: '',
+    invalidText: '',
+    disable: false,
+    enable: true,
+    mode: 'single',
+    errorAriaLabel: '',
+    errorTitle: '',
+    warningAriaLabel: '',
+    warningTitle: '',
+    datePickerDisabled: false,
+    twentyFourHourFormat: false,
+    minDate: '',
+    maxDate: '',
+  },
+  render: (args) => {
+    const {
+      open,
+      size,
+      titleText,
+      labelText,
+      submitBtnText,
+      cancelBtnText,
+      submitBtnDisabled,
+      hideFooter,
+      destructive,
+      showSecondaryButton,
+      secondaryButtonText,
+      hideCancelButton,
+      // DatePicker args
+      name,
+      locale,
+      label,
+      dateFormat,
+      defaultDate,
+      staticPosition,
+      defaultErrorMessage,
+      required,
+      value,
+      warnText,
+      invalidText,
+      disable,
+      enable,
+      mode,
+      caption,
+      errorAriaLabel,
+      errorTitle,
+      warningAriaLabel,
+      warningTitle,
+      datePickerDisabled,
+      twentyFourHourFormat,
+      minDate,
+      maxDate,
+    } = args;
+
+    const sideDrawerProps = {
+      open,
+      size,
+      titleText,
+      labelText,
+      submitBtnText,
+      cancelBtnText,
+      submitBtnDisabled,
+      hideFooter,
+      destructive,
+      showSecondaryButton,
+      secondaryButtonText,
+      hideCancelButton,
+    };
+
+    const datePickerProps = {
+      name,
+      locale,
+      label,
+      dateFormat,
+      defaultDate,
+      staticPosition,
+      defaultErrorMessage,
+      required,
+      size,
+      value,
+      warnText,
+      invalidText,
+      disable,
+      enable,
+      mode,
+      caption,
+      errorAriaLabel,
+      errorTitle,
+      warningAriaLabel,
+      warningTitle,
+      datePickerDisabled,
+      twentyFourHourFormat,
+      minDate,
+      maxDate,
+    };
+
+    return html`
+      <kyn-side-drawer
+        ?open=${sideDrawerProps.open}
+        size=${sideDrawerProps.size}
+        titleText=${sideDrawerProps.titleText}
+        labelText=${sideDrawerProps.labelText}
+        submitBtnText=${sideDrawerProps.submitBtnText}
+        cancelBtnText=${sideDrawerProps.cancelBtnText}
+        ?submitBtnDisabled=${sideDrawerProps.submitBtnDisabled}
+        ?hideFooter=${sideDrawerProps.hideFooter}
+        ?destructive=${sideDrawerProps.destructive}
+        ?showSecondaryButton=${sideDrawerProps.showSecondaryButton}
+        secondaryButtonText=${sideDrawerProps.secondaryButtonText}
+        ?hideCancelButton=${sideDrawerProps.hideCancelButton}
+        @on-close=${(e) => action(e.type)(e)}
+        @on-open=${(e) => action(e.type)(e)}
+      >
+        <kyn-button slot="anchor">Open Drawer</kyn-button>
+
+        <div>
+          This drawer contains some example content and a DatePicker component.
+        </div>
+        <br />
+
+        <kyn-date-picker
+          .name=${datePickerProps.name}
+          .locale=${datePickerProps.locale}
+          .label=${datePickerProps.label}
+          .dateFormat=${datePickerProps.dateFormat}
+          .defaultDate=${datePickerProps.defaultDate}
+          ?staticPosition=${datePickerProps.staticPosition}
+          .defaultErrorMessage=${datePickerProps.defaultErrorMessage}
+          ?required=${datePickerProps.required}
+          .size=${datePickerProps.size}
+          .value=${datePickerProps.value}
+          .warnText=${datePickerProps.warnText}
+          .invalidText=${datePickerProps.invalidText}
+          .disable=${datePickerProps.disable}
+          .enable=${datePickerProps.enable}
+          .mode=${datePickerProps.mode}
+          .caption=${datePickerProps.caption}
+          .errorAriaLabel=${datePickerProps.errorAriaLabel}
+          .errorTitle=${datePickerProps.errorTitle}
+          .warningAriaLabel=${datePickerProps.warningAriaLabel}
+          .warningTitle=${datePickerProps.warningTitle}
+          ?datePickerDisabled=${datePickerProps.datePickerDisabled}
+          ?twentyFourHourFormat=${datePickerProps.twentyFourHourFormat}
+          .minDate=${datePickerProps.minDate}
+          .maxDate=${datePickerProps.maxDate}
+          @on-change=${(e) => action(e.type)(e)}
+          style="margin-left: 4px;"
+        >
+        </kyn-date-picker>
+
+        <div class="spacer-div" style="margin: 20px 0;"></div>
+
+        <div>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin cursus,
+          purus vitae egestas mollis, augue augue interdum quam, sit amet
+          volutpat justo magna quis justo. Aliquam dapibus mi a arcu consequat,
+          sed placerat metus bibendum. Suspendisse pretium nibh.
+        </div>
+      </kyn-side-drawer>
+    `;
+  },
+};
