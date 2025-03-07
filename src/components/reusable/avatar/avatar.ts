@@ -1,7 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import AvatarScss from './avatar.scss';
-import { classMap } from 'lit/directives/class-map.js';
 
 /**
  * User avatar.

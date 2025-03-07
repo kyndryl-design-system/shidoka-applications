@@ -15,16 +15,6 @@ export const Avatar = {
   },
 };
 
-export const AIConnected = {
-  args: {
-    initials: 'A',
-    aiConnected: true,
-  },
-  render: (args) => {
-    return html` <kyn-avatar initials=${args.initials}></kyn-avatar> `;
-  },
-};
-
 Avatar.parameters = {
   design: {
     type: 'figma',
