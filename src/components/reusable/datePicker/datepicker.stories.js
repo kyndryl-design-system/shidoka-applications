@@ -138,8 +138,7 @@ DatePickerMultiple.args = {
   locale: 'en',
   name: 'date-multiple-picker',
   dateFormat: 'Y-m-d',
-  defaultDate: '',
-  caption: 'Select multiple dates. Example shows preselected dates.',
+  caption: 'Select multiple dates.',
   mode: 'multiple',
   label: 'Multiple Date Selection',
 };
@@ -151,7 +150,7 @@ DateTimeMultiple.args = {
   locale: 'en',
   name: 'date-time-multiple-picker',
   dateFormat: 'Y-m-d H:i',
-  defaultDate: ['2024-01-01 09:00'],
+  defaultDate: '2024-01-01 09:00',
   caption: 'Select multiple dates with time. Example shows preselected dates.',
   mode: 'multiple',
   label: 'Multiple Date/Time Selection',
