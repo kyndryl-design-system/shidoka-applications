@@ -2,7 +2,6 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
-import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 import '@kyndryl-design-system/shidoka-foundation/css/grid.css';
 import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import './index';
@@ -76,7 +75,7 @@ export const AISourcesFeedback = {
           iconPosition="left"
           @on-click=${(e) => action(e.type)(e)}
         >
-          Copy
+          <span class="copy-button-text">Copy</span>
           <span slot="icon" class="copy-icon">${unsafeSVG(copyIcon)}</span>
         </kyn-button>
 
@@ -86,6 +85,13 @@ export const AISourcesFeedback = {
           ${feedbackFormContent()}
         </div>
       </kyn-ai-sources-feedback>
+      <style>
+        .copy-button-text {
+          @media (max-width: 42rem) {
+            display: none;
+          }
+        }
+      </style>
     `;
   },
 };
@@ -108,7 +114,7 @@ const SourcesContent = () => html`
         </h1>
         <div class="card-description">
           <kyn-link href="#" @click=${(e) => action(e.type)(e)}>
-            <div>${card.description}</div>
+            ${card.description}
           </kyn-link>
         </div>
       </kyn-card>
@@ -152,8 +158,10 @@ const feedbackFormContent = () => html`
     ></kyn-text-area>
 
     <div class="footer">
-      <kyn-button type="submit" kind="primary-ai">Submit</kyn-button>
-      <kyn-button kind="outline-ai">Cancel</kyn-button>
+      <kyn-button type="submit" kind="primary-ai" size="small"
+        >Submit</kyn-button
+      >
+      <kyn-button kind="outline-ai" size="small">Cancel</kyn-button>
     </div>
   </form>
   <style>

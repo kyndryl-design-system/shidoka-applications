@@ -239,7 +239,7 @@ export class AISourcesFeedback extends LitElement {
           class="close"
           description=${this.closeText}
           @on-click=${(e: Event) =>
-            this._handleClick(e, 'feedback', 'positive')}
+            this._handleClick(e, 'feedback', this._selectedFeedbackType)}
           }}
           kind="ghost"
           size="small"
@@ -329,6 +329,22 @@ export class AISourcesFeedback extends LitElement {
     ) {
       this._toggleLimitRevealed(false);
     }
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener('resize', () => this.updateSourcesText());
+  }
+
+  override disconnectedCallback() {
+    window.removeEventListener('resize', () => this.updateSourcesText());
+    super.disconnectedCallback();
+  }
+
+  private updateSourcesText() {
+    this._textStrings.sourcesTxt =
+      window.innerWidth < 672 ? 'Sources' : 'Sources used';
+    this.requestUpdate();
   }
 }
 
