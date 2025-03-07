@@ -290,9 +290,7 @@ export const WithOtherContent = {
               <div class="chat_content">
                 <div class="chat_items">
                   <div class="chat_title">
-                    <span
-                      ><kyn-avatar initials="A" aiConnected></kyn-avatar
-                    ></span>
+                    <span><kyn-avatar initials="A"></kyn-avatar></span>
                     <span>
                       <kyn-card
                         role="article"
@@ -368,6 +366,17 @@ export const WithOtherContent = {
           padding: 13px 18px;
           border-radius: 0px 4px 4px 4px;
           background: var(--kd-color-background-card-background);
+        }
+        kyn-avatar::part(avatar-wrapper) {
+          width: 18px;
+          height: 18px;
+          min-width: 18px;
+          min-height: 18px;
+          border-radius: 18px;
+          background: var(--kd-color-background-button-secondary-ai-hover);
+          color: var(--kd-color-text-variant-inversed);
+          font-size: 12px;
+          line-height: 16px;
         }
         .chat_details {
           display: flex;
