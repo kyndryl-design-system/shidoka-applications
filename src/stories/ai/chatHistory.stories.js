@@ -3,7 +3,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { action } from '@storybook/addon-actions';
 import chatHistoryIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat-history.svg';
-import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/indicator.svg';
+import aiIndicatorIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/indicator.svg';
 
 import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
@@ -18,6 +18,7 @@ import '../../components/reusable/card';
 import '../../components/reusable/button';
 import '../../components/reusable/modal';
 import '../../components/reusable/search';
+import '../../components/reusable/card';
 
 export default {
   title: 'AI/Patterns/Chat History',
@@ -292,11 +293,27 @@ export const WithOtherContent = {
                     <span
                       ><kyn-avatar initials="A" aiConnected></kyn-avatar
                     ></span>
-                    <span>Add Prompt Component here...</span>
+                    <span>
+                      <kyn-card
+                        role="article"
+                        aria-label="Card"
+                        aiConnected
+                        style="width:100%"
+                      >
+                        <div>
+                          I know that they rely on legacy systems, which have
+                          become cumbersome and costly to maintain and there is
+                          an urgent need to improve this. I want to learn about
+                          the Hybrid IT Modernization.
+                        </div>
+                      </kyn-card>
+                    </span>
                   </div>
                 </div>
                 <div class="chat_items">
-                  <span class="chat_icon"> ${unsafeHTML(aiResponse)} </span>
+                  <span class="chat_icon">
+                    ${unsafeHTML(aiIndicatorIcon)}
+                  </span>
                   <span class="chat_item kd-type--body-02">
                     <div>The benefits of adopting Hybrid IT Modernization:</div>
                     ${AIResponse.map((items) => {
@@ -318,7 +335,19 @@ export const WithOtherContent = {
                 <div class="chat_items">
                   <div class="chat_title">
                     <span><kyn-avatar initials="A"></kyn-avatar></span>
-                    <span>Add Prompt Component here...</span>
+                    <span
+                      ><kyn-card
+                        role="article"
+                        aria-label="Card"
+                        aiConnected
+                        style="width:100%"
+                      >
+                        <div>
+                          How do we prioritize which applications to modernize
+                          first?
+                        </div>
+                      </kyn-card></span
+                    >
                   </div>
                 </div>
               </div>
@@ -335,6 +364,11 @@ export const WithOtherContent = {
         </div>
       </kyn-modal>
       <style>
+        kyn-card::part(card-wrapper) {
+          padding: 13px 18px;
+          border-radius: 0px 4px 4px 4px;
+          background: var(--kd-color-background-card-background);
+        }
         .chat_details {
           display: flex;
           flex-direction: column;
@@ -354,7 +388,6 @@ export const WithOtherContent = {
         .chat_title {
           display: flex;
           gap: 16px;
-          align-items: anchor-center;
         }
         .chat_icon {
           svg {
