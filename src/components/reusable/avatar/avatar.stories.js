@@ -9,15 +9,9 @@ export default {
 export const Avatar = {
   args: {
     initials: 'A',
-    aiConnected: false,
   },
   render: (args) => {
-    return html`
-      <kyn-avatar
-        initials=${args.initials}
-        ?aiConnected=${args.aiConnected}
-      ></kyn-avatar>
-    `;
+    return html` <kyn-avatar initials=${args.initials}></kyn-avatar> `;
   },
 };
 
@@ -27,12 +21,7 @@ export const AIConnected = {
     aiConnected: true,
   },
   render: (args) => {
-    return html`
-      <kyn-avatar
-        initials=${args.initials}
-        ?aiConnected=${args.aiConnected}
-      ></kyn-avatar>
-    `;
+    return html` <kyn-avatar initials=${args.initials}></kyn-avatar> `;
   },
 };
 

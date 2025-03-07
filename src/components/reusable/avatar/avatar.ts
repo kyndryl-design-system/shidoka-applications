@@ -15,18 +15,8 @@ export class Avatar extends LitElement {
   @property({ type: String })
   initials = '';
 
-  /** Set this to `true` for AI theme. */
-  @property({ type: Boolean })
-  aiConnected = false;
-
   override render() {
-    return html` <div
-      part="avatar-wrapper"
-      class=${classMap({
-        'avatar-wrapper': true,
-        aiConnected: this.aiConnected,
-      })}
-    >
+    return html` <div class="avatar-wrapper">
       <slot>${this.initials}</slot>
     </div>`;
   }

@@ -38,7 +38,6 @@ export const Default = {
           label="AI Prompt Query"
           hideLabel
           aiConnected
-          notResizeable
         ></kyn-text-area>
 
         <kyn-button type="submit" kind="primary-ai" description="Submit">
