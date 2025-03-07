@@ -23,10 +23,12 @@ export default {
         'Y-m-d',
         'm-d-Y',
         'd-m-Y',
-        'Y-m-d H:i',
-        'Y-m-d H:i:s',
-        'm-d-Y H:i:s',
-        'd-m-Y H:i:s',
+        'Y-m-d H:i', // 24-hour format without seconds
+        'Y-m-d h:i K', // 12-hour format with AM/PM
+        'm-d-Y H:i',
+        'm-d-Y h:i K',
+        'd-m-Y H:i',
+        'd-m-Y h:i K',
       ],
       control: { type: 'select' },
     },
