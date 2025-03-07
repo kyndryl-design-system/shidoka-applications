@@ -11,6 +11,8 @@ import '../../reusable/textArea/textArea';
 
 export default {
   title: 'AI / Components / AI Sources Feedback',
+  component: 'kyn-ai-sources-feedback',
+  parameters: {},
 };
 
 const sourcesData = [
@@ -40,7 +42,7 @@ const sourcesData = [
   },
 ];
 
-const posFeedbackOptions = [
+const feedbackOptions = [
   { value: '1', label: 'Option 1' },
   { value: '2', label: 'Option 2' },
   { value: '3', label: 'Option 3' },
@@ -53,6 +55,14 @@ const args = {
   feedbackDisabled: false,
   revealAllSources: false,
   closeText: 'Close',
+  textStrings: {
+    sourcesText: 'Sources used',
+    foundSources: 'Found sources',
+    showMore: 'Show more',
+    showLess: 'Show less',
+    positiveFeedback: 'Share what you liked',
+    negativeFeedback: 'Help us improve',
+  },
 };
 
 export const AISourcesFeedback = {
@@ -66,6 +76,7 @@ export const AISourcesFeedback = {
         .feedbackDisabled=${args.feedbackDisabled}
         ?revealAllSources=${args.revealAllSources}
         closeText=${args.closeText}
+        .textStrings=${args.textStrings}
         @on-toggle=${(e) => action(e.type)(e)}
       >
         <kyn-button
@@ -73,6 +84,7 @@ export const AISourcesFeedback = {
           kind="ghost"
           size="small"
           iconPosition="left"
+          description="Copy"
           @on-click=${(e) => action(e.type)(e)}
         >
           <span class="copy-button-text">Copy</span>
@@ -87,8 +99,10 @@ export const AISourcesFeedback = {
       </kyn-ai-sources-feedback>
       <style>
         .copy-button-text {
-          @media (max-width: 42rem) {
-            display: none;
+          display: none;
+
+          @media (min-width: 42rem) {
+            display: inline;
           }
         }
       </style>
@@ -141,7 +155,7 @@ const feedbackFormContent = () => html`
     }}
   >
     <kyn-checkbox-group ?horizontal=${true}>
-      ${posFeedbackOptions.map(
+      ${feedbackOptions.map(
         (option) =>
           html`<kyn-checkbox value="${option.value}"
             >${option.label}</kyn-checkbox

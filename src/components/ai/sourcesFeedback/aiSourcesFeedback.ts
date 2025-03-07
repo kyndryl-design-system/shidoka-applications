@@ -21,7 +21,7 @@ import '../../reusable/card';
 import '../../reusable/button';
 
 const _defaultTextStrings = {
-  sourcesTxt: 'Sources used',
+  sourcesText: 'Sources used',
   foundSources: 'Found sources',
   showMore: 'Show more',
   showLess: 'Show less',
@@ -30,14 +30,14 @@ const _defaultTextStrings = {
 };
 
 /**
- * `kyn-ai-sources-feedback` Web Component.
- * This component provides expandable panels for sources and feedback.
+ * AISourcesFeedback Component.
  *
  * @slot copy - copy button
- * @slot sources - source cards in source panel
- * @slot feedback-form - Positive feedback form
+ * @slot sources - source cards in source panel.
+ * @slot feedback-form - Positive feedback form.
  * @fires on-toggle - Emits the `opened` state when the panel item opens/closes.
  */
+
 @customElement('kyn-ai-sources-feedback')
 export class AISourcesFeedback extends LitElement {
   static override styles = [stylesheet];
@@ -101,6 +101,12 @@ export class AISourcesFeedback extends LitElement {
   @queryAssignedElements({ slot: 'sources' })
   _sourceEls!: any;
 
+  /**  Sources anchor text
+   * @internal
+   */
+  @state()
+  sourcesOriginalText: any;
+
   override render() {
     const classesSources: any = classMap({
       'kyn-sources': true,
@@ -134,7 +140,7 @@ export class AISourcesFeedback extends LitElement {
               @on-click="${(e: Event) => this._handleClick(e, 'sources')}"
               id="kyn-sources-title"
             >
-              ${this._textStrings.sourcesTxt}
+              ${this._textStrings.sourcesText}
               <span class="expand-icon" slot="icon"
                 >${unsafeSVG(chevronIcon)}</span
               >
@@ -188,16 +194,19 @@ export class AISourcesFeedback extends LitElement {
         role="region"
         aria-labelledby="kyn-sources-title"
       >
-        <kyn-button
-          class="close"
-          @on-click=${(e: Event) => this._handleClick(e, 'sources')}
-          }}
-          kind="ghost"
-          size="small"
-          description=${this.closeText}
-        >
-          <span slot="icon">${unsafeSVG(closeIcon)}</span>
-        </kyn-button>
+        <div class="close-container">
+          <kyn-button
+            class="close"
+            @on-click=${(e: Event) => this._handleClick(e, 'sources')}
+            }}
+            kind="ghost"
+            size="small"
+            description=${this.closeText}
+          >
+            <span slot="icon">${unsafeSVG(closeIcon)}</span>
+          </kyn-button>
+        </div>
+
         <div class="found-sources">
           ${this._textStrings.foundSources} (${this._sourceEls.length}) :
         </div>
@@ -235,17 +244,20 @@ export class AISourcesFeedback extends LitElement {
           ? 'positive'
           : 'negative'}"
       >
-        <kyn-button
-          class="close"
-          description=${this.closeText}
-          @on-click=${(e: Event) =>
-            this._handleClick(e, 'feedback', this._selectedFeedbackType)}
-          }}
-          kind="ghost"
-          size="small"
-        >
-          <span slot="icon">${unsafeSVG(closeIcon)}</span>
-        </kyn-button>
+        <div class="close-container">
+          <kyn-button
+            class="close"
+            description=${this.closeText}
+            @on-click=${(e: Event) =>
+              this._handleClick(e, 'feedback', this._selectedFeedbackType)}
+            }}
+            kind="ghost"
+            size="small"
+          >
+            <span slot="icon">${unsafeSVG(closeIcon)}</span>
+          </kyn-button>
+        </div>
+
         <slot name="feedback-form"></slot>
       </div>
     `;
@@ -319,6 +331,7 @@ export class AISourcesFeedback extends LitElement {
   override willUpdate(changedProps: any) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+      this.sourcesOriginalText = this._textStrings.sourcesText;
     }
   }
 
@@ -342,8 +355,10 @@ export class AISourcesFeedback extends LitElement {
   }
 
   private updateSourcesText() {
-    this._textStrings.sourcesTxt =
-      window.innerWidth < 672 ? 'Sources' : 'Sources used';
+    this._textStrings.sourcesText =
+      window.innerWidth > 672
+        ? this.sourcesOriginalText
+        : this.sourcesOriginalText.split(' ')[0];
     this.requestUpdate();
   }
 }
