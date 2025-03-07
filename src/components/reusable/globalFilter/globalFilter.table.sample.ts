@@ -240,6 +240,8 @@ export class SampleFilterTableComponent extends LitElement {
           : null}
       </kyn-global-filter>
 
+      <br />
+
       <kyn-table
         checkboxSelection
         @on-row-selection-change=${this._handleSelectedRowsChange}
