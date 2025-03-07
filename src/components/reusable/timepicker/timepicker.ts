@@ -38,6 +38,7 @@ const _defaultTextStrings = {
   requiredText: 'Required',
   clearAll: 'Clear',
   pleaseSelectDate: 'Please select a date',
+  noTimeSelected: 'No time selected',
   pleaseSelectValidDate: 'Please select a valid date',
 };
 
@@ -410,6 +411,10 @@ export class TimePicker extends FormMixin(LitElement) {
         this.flatpickrInstance.clear();
         if (this._inputEl) {
           this._inputEl.value = '';
+          this._inputEl.setAttribute(
+            'aria-label',
+            this._textStrings.noTimeSelected
+          );
         }
       }
       emitValue(this, 'on-change', {
@@ -418,6 +423,7 @@ export class TimePicker extends FormMixin(LitElement) {
       });
       this._validate(true, false);
       await this.updateComplete;
+      await this.initializeFlatpickr();
       this.requestUpdate();
     } finally {
       this._isClearing = false;

@@ -37,6 +37,7 @@ const _defaultTextStrings = {
   requiredText: 'Required',
   clearAll: 'Clear',
   pleaseSelectDate: 'Please select a date',
+  noDateSelected: 'No date selected',
   pleaseSelectValidDate: 'Please select a valid date',
 };
 
@@ -504,6 +505,10 @@ export class DatePicker extends FormMixin(LitElement) {
       this.flatpickrInstance.clear();
       if (this._inputEl) {
         this._inputEl.value = '';
+        this._inputEl.setAttribute(
+          'aria-label',
+          this._textStrings.noDateSelected
+        );
       }
 
       emitValue(this, 'on-change', {
@@ -514,6 +519,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
       this._validate(true, false);
       await this.updateComplete;
+      await this.initializeFlatpickr();
       this.requestUpdate();
     } catch (error) {
       console.error('Error clearing datepicker:', error);
