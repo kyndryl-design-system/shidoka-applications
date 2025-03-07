@@ -66,6 +66,10 @@ export class AISourcesFeedback extends LitElement {
   @property({ type: Object })
   textStrings = _defaultTextStrings;
 
+  /** Close button text. */
+  @property({ type: String })
+  closeText = 'Close';
+
   /** Number of sources visible when limited.
    * @internal
    */
@@ -190,13 +194,16 @@ export class AISourcesFeedback extends LitElement {
           }}
           kind="ghost"
           size="small"
+          description=${this.closeText}
         >
           <span slot="icon">${unsafeSVG(closeIcon)}</span>
         </kyn-button>
         <div class="found-sources">
           ${this._textStrings.foundSources} (${this._sourceEls.length}) :
         </div>
-        <slot name="sources" @slotchange=${this._handleSlotChange}></slot>
+        <div class="card-container">
+          <slot name="sources" @slotchange=${this._handleSlotChange}></slot>
+        </div>
         ${!this.revealAllSources && this._sourceEls.length > this._limitCount
           ? html`
               <kyn-button
@@ -230,6 +237,7 @@ export class AISourcesFeedback extends LitElement {
       >
         <kyn-button
           class="close"
+          description=${this.closeText}
           @on-click=${(e: Event) =>
             this._handleClick(e, 'feedback', 'positive')}
           }}
@@ -238,7 +246,7 @@ export class AISourcesFeedback extends LitElement {
         >
           <span slot="icon">${unsafeSVG(closeIcon)}</span>
         </kyn-button>
-        <slot name="feedback-form" @slotchange=${this._handleSlotChange}></slot>
+        <slot name="feedback-form"></slot>
       </div>
     `;
   }

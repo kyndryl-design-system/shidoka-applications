@@ -15,11 +15,15 @@
   flex-wrap: wrap;
 }
 
-slot[name='sources'] {
-  padding: 1rem;
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+.card-container {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+  margin-top: 1rem;
+
+  @media (min-width: 42rem) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .kyn-sources,
@@ -58,11 +62,6 @@ slot[name='sources'] {
   .opened & {
     transform: rotate(-180deg);
   }
-}
-
-.found-sources {
-  margin-left: 1rem;
-  margin-bottom: 1rem;
 }
 
 .reveal-toggle {

@@ -11,7 +11,7 @@ import '../../reusable/card/card.sample';
 import '../../reusable/textArea/textArea';
 
 export default {
-  title: 'AI / Components / AISourcesFeedback',
+  title: 'AI / Components / AI Sources Feedback',
 };
 
 const sourcesData = [
@@ -53,6 +53,7 @@ const args = {
   sourcesDisabled: false,
   feedbackDisabled: false,
   revealAllSources: false,
+  closeText: 'Close',
 };
 
 export const AISourcesFeedback = {
@@ -65,6 +66,7 @@ export const AISourcesFeedback = {
         .sourcesDisabled=${args.sourcesDisabled}
         .feedbackDisabled=${args.feedbackDisabled}
         ?revealAllSources=${args.revealAllSources}
+        closeText=${args.closeText}
         @on-toggle=${(e) => action(e.type)(e)}
       >
         <kyn-button
@@ -92,6 +94,7 @@ const SourcesContent = () => html`
   ${sourcesData.map(
     (card) => html`
       <kyn-card
+        style="width:100%;height:100%;"
         slot="sources"
         aiConnected
         type=${args.type}
@@ -104,7 +107,7 @@ const SourcesContent = () => html`
           <div>${card.title}</div>
         </h1>
         <div class="card-description">
-          <kyn-link href="#" shade="dark" @click=${(e) => action(e.type)(e)}>
+          <kyn-link href="#" @click=${(e) => action(e.type)(e)}>
             <div>${card.description}</div>
           </kyn-link>
         </div>
@@ -112,13 +115,6 @@ const SourcesContent = () => html`
     `
   )}
   <style>
-    kyn-card {
-      width: 24%;
-
-      @media (max-width: calc(42rem - 1px)) {
-        width: 100%;
-      }
-    }
     .card-title div {
       @include typography.type-ui-01;
       color: var(--kd-color-text-level-primary);
