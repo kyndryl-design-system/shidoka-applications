@@ -18,7 +18,6 @@ import '../../components/reusable/card';
 import '../../components/reusable/button';
 import '../../components/reusable/modal';
 import '../../components/reusable/search';
-import '../../components/reusable/card';
 
 export default {
   title: 'AI/Patterns/Chat History',
