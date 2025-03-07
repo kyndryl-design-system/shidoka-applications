@@ -3,8 +3,8 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import { langsArray } from '../../../common/flatpickrLangs';
 import {
-  langsArray,
   injectFlatpickrStyles,
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
@@ -17,6 +17,7 @@ import {
   emitValue,
   updateEnableTime,
   hideEmptyYear,
+  getModalContainer,
 } from '../../../common/helpers/flatpickr';
 import '../../reusable/button';
 
@@ -37,7 +38,12 @@ const _defaultTextStrings = {
   clearAll: 'Clear',
   pleaseSelectDate: 'Please select a date',
   pleaseSelectValidDate: 'Please select a valid date',
+  dateRange: 'Date range',
+  noDateSelected: 'No dates selected',
+  startDateSelected: 'Start date selected: {0}. Please select end date.',
+  dateRangeSelected: 'Selected date range: {0} to {1}',
 };
+
 /**
  * Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
@@ -61,7 +67,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   /** Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. ["2024-01-01", "2024-01-07"]). */
   @property({ type: Array })
-  defaultDate: string | string[] | null = null;
+  defaultDate: string[] | null = null;
 
   /** Sets default error message. */
   @property({ type: String })
@@ -75,9 +81,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: String })
   warnText = '';
 
-  /** Sets flatpickr options setting to disable specific dates. */
+  /** Sets flatpickr options setting to disable specific dates. Accepts array of dates in Y-m-d format, timestamps, or Date objects. */
   @property({ type: Array })
   disable: (string | number | Date)[] = [];
+
+  /** Internal storage for processed disable dates */
+  @state()
+  private _processedDisableDates: (string | number | Date)[] = [];
 
   /** Sets flatpickr options setting to enable specific dates. */
   @property({ type: Array })
@@ -169,6 +179,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @state()
   _textStrings = _defaultTextStrings;
 
+  /** Tracks if we're in a clear operation to prevent duplicate events
+   * @internal
+   */
+  @state()
+  private _isClearing = false;
+
   /** Control flag to prevent Flatpickr from opening when clicking caption, error, label, or warning elements.
    * @internal
    */
@@ -180,28 +196,48 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   private _initialized = false;
 
-  private resizeTimeout: number | null = null;
+  private debounce<T extends (...args: any[]) => any>(
+    func: T,
+    wait: number
+  ): (...args: Parameters<T>) => void {
+    let timeout: number | null = null;
 
-  private handleResize = () => {
-    if (this.resizeTimeout) {
-      window.clearTimeout(this.resizeTimeout);
-    }
-    this.resizeTimeout = window.setTimeout(async () => {
-      if (this.flatpickrInstance) {
-        await this.initializeFlatpickr();
+    return (...args: Parameters<T>) => {
+      if (timeout !== null) {
+        window.clearTimeout(timeout);
       }
-      this.resizeTimeout = null;
-    }, 250);
-  };
+
+      timeout = window.setTimeout(() => {
+        func.apply(this, args);
+        timeout = null;
+      }, wait);
+    };
+  }
+
+  private debouncedUpdate = this.debounce(async () => {
+    if (!this.flatpickrInstance) return;
+    try {
+      await this.initializeFlatpickr();
+    } catch (error) {
+      console.error('Error in debounced update:', error);
+    }
+  }, 100);
+
+  private handleResize = this.debounce(async () => {
+    if (this.flatpickrInstance) {
+      try {
+        await this.initializeFlatpickr();
+      } catch (error) {
+        console.error('Error handling resize:', error);
+      }
+    }
+  }, 250);
 
   override disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('change', this._onChange);
     this.removeEventListener('reset', this._handleFormReset);
     window.removeEventListener('resize', this.handleResize);
-    if (this.resizeTimeout) {
-      window.clearTimeout(this.resizeTimeout);
-    }
     this.flatpickrInstance?.destroy();
   }
 
@@ -212,6 +248,24 @@ export class DateRangePicker extends FormMixin(LitElement) {
     window.addEventListener('resize', this.handleResize);
   }
 
+  private hasValue(): boolean {
+    if (this._inputEl?.value) return true;
+    if (this.value && Array.isArray(this.value) && this.value.length === 2) {
+      return this.value[0] !== null && this.value[1] !== null;
+    }
+    if (this.defaultDate) {
+      if (Array.isArray(this.defaultDate)) {
+        return (
+          this.defaultDate.length === 2 &&
+          this.defaultDate[0] !== '' &&
+          this.defaultDate[1] !== ''
+        );
+      }
+      return false;
+    }
+    return false;
+  }
+
   override render() {
     const errorId = `${this.name}-error-message`;
     const warningId = `${this.name}-warning-message`;
@@ -219,7 +273,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       ? `${this.name}-${Math.random().toString(36).slice(2, 11)}`
       : `date-range-picker-${Math.random().toString(36).slice(2, 11)}`;
     const descriptionId = this.name ?? '';
-
     const placeholder = getPlaceholder(this.dateFormat, true);
 
     return html`
@@ -228,7 +281,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
           class="label-text"
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
-          ?disabled=${this.dateRangePickerDisabled}
+          aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
           id=${`label-${anchorId}`}
         >
           ${this.required
@@ -262,18 +315,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${(this.value &&
-            Array.isArray(this.value) &&
-            this.value.length === 2 &&
-            this.value[0] !== null &&
-            this.value[1] !== null) ||
-          (this.defaultDate &&
-            Array.isArray(this.defaultDate) &&
-            this.defaultDate.length === 2 &&
-            this.defaultDate[0] &&
-            this.defaultDate[1] &&
-            this.defaultDate[0] !== '' &&
-            this.defaultDate[1] !== '')
+          ${this.hasValue()
             ? html`
                 <kyn-button
                   ?disabled=${this.dateRangePickerDisabled}
@@ -295,7 +337,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
           ? html`<div
               id=${descriptionId}
               class="caption"
-              aria-disabled=${this.dateRangePickerDisabled}
+              aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
               @mousedown=${this.preventFlatpickrOpen}
               @click=${this.preventFlatpickrOpen}
             >
@@ -345,25 +387,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
     return null;
   }
 
-  private _handleClear(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.clear();
-    }
-
-    if (this._inputEl) {
-      this._inputEl.value = '';
-    }
-
-    this.value = [null, null];
-    this.defaultDate = [];
-
-    this._validate(true, false);
-    this.requestUpdate();
-  }
-
   getDateRangePickerClasses() {
     return {
       'date-range-picker': true,
@@ -385,17 +408,73 @@ export class DateRangePicker extends FormMixin(LitElement) {
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
+    if (changedProperties.has('value')) {
+      const newValue = this.value;
+      if (
+        Array.isArray(newValue) &&
+        newValue.length === 2 &&
+        newValue.every((v) => v === null)
+      ) {
+        if (this.flatpickrInstance) {
+          this._isClearing = true;
+          this.flatpickrInstance.clear();
+          this._isClearing = false;
+          if (this._inputEl) {
+            this._inputEl.value = '';
+          }
+        }
+      }
+    }
+
+    if (
+      changedProperties.has('defaultDate') &&
+      this.flatpickrInstance &&
+      !this._isClearing
+    ) {
+      this.initializeFlatpickr();
+    }
+
+    if (changedProperties.has('disable')) {
+      if (Array.isArray(this.disable)) {
+        this._processedDisableDates = this.disable.map((date) => {
+          if (date instanceof Date) return date;
+          if (typeof date === 'number') return new Date(date);
+          if (typeof date === 'string') {
+            const [year, month, day] = date.split('-').map(Number);
+            if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+              return new Date(year, month - 1, day);
+            }
+          }
+          return date;
+        });
+      } else {
+        this._processedDisableDates = [];
+        console.warn('Disable prop must be an array');
+      }
+      if (this.flatpickrInstance) {
+        this.updateFlatpickrOptions();
+      }
+    }
+
     if (
       changedProperties.has('dateFormat') ||
       changedProperties.has('minDate') ||
-      changedProperties.has('defaultDate') ||
       changedProperties.has('maxDate') ||
-      changedProperties.has('locale') ||
-      changedProperties.has('twentyFourHourFormat')
+      changedProperties.has('locale')
     ) {
       this._enableTime = updateEnableTime(this.dateFormat);
-      if (this.flatpickrInstance && this._initialized) {
-        this.updateFlatpickrOptions();
+      if (this.flatpickrInstance && this._initialized && !this._isClearing) {
+        if (changedProperties.has('dateFormat')) {
+          this.initializeFlatpickr();
+        } else {
+          this.updateFlatpickrOptions();
+        }
+      }
+    } else if (changedProperties.has('twentyFourHourFormat')) {
+      this._enableTime = updateEnableTime(this.dateFormat);
+      if (this.flatpickrInstance && this._initialized && !this._isClearing) {
+        this.flatpickrInstance.destroy();
+        this.initializeFlatpickr();
       }
     }
 
@@ -409,128 +488,185 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   private async setupAnchor() {
-    if (this._inputEl) {
+    if (!this._inputEl) {
+      console.warn('Input element not found during setup');
+      return;
+    }
+
+    try {
       await this.initializeFlatpickr();
+    } catch (error) {
+      console.error('Error setting up flatpickr:', error);
     }
   }
 
-  private async initializeFlatpickr() {
-    if (!this._inputEl) return;
-    if (this.flatpickrInstance) this.flatpickrInstance.destroy();
+  private async _handleClear(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
 
-    this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
-      inputEl: this._inputEl,
-      getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
-      setCalendarAttributes: (instance) => {
-        if (instance && instance.calendarContainer) {
-          const modalDetected = !!this.closest('kyn-modal');
-          setCalendarAttributes(instance, modalDetected);
-          instance.calendarContainer.setAttribute(
-            'aria-label',
-            'Date range calendar'
-          );
-        } else {
-          console.warn('Calendar container not available...');
+    this._isClearing = true;
+
+    try {
+      this.value = [null, null];
+      this.defaultDate = null;
+
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.clear();
+        if (this._inputEl) {
+          this._inputEl.value = '';
         }
-      },
-      setInitialDates: this.setInitialDates.bind(this),
-    });
+      }
 
-    hideEmptyYear();
-    this._validate(false, false);
+      emitValue(this, 'on-change', {
+        dates: null,
+        dateString: '',
+        source: 'clear',
+      });
+
+      this._validate(true, false);
+      await this.updateComplete;
+      this.requestUpdate();
+    } finally {
+      this._isClearing = false;
+    }
+  }
+
+  async initializeFlatpickr(): Promise<void> {
+    if (!this._inputEl) {
+      console.warn('Cannot initialize Flatpickr: input element not available');
+      return;
+    }
+    try {
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.destroy();
+      }
+
+      this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
+        inputEl: this._inputEl,
+        getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
+        setCalendarAttributes: (instance) => {
+          try {
+            if (!instance?.calendarContainer) {
+              throw new Error('Calendar container not available');
+            }
+            const container = getModalContainer(this);
+            setCalendarAttributes(instance, container !== document.body);
+            instance.calendarContainer.setAttribute(
+              'aria-label',
+              'Date range calendar'
+            );
+          } catch (error) {
+            console.warn('Error setting calendar attributes:', error);
+          }
+        },
+        setInitialDates: this.setInitialDates.bind(this),
+      });
+
+      if (!this.flatpickrInstance) {
+        throw new Error('Failed to initialize Flatpickr instance');
+      }
+
+      hideEmptyYear();
+      this._validate(false, false);
+    } catch (error) {
+      console.error('Error initializing Flatpickr:', error);
+
+      if (error instanceof Error) {
+        console.error('Error details:', error.message);
+      }
+    }
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
-    const modal = this.closest('kyn-modal');
-    const container = modal ? modal : document.body;
-
-    return getFlatpickrOptions({
+    const container = getModalContainer(this);
+    const options = await getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
-      defaultDate: this.defaultDate ?? undefined,
+      defaultDate: this.defaultDate ? this.defaultDate : undefined,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
-      mode: 'range',
-      allowInput: false,
       inputEl: this._inputEl!,
       minDate: this.minDate,
       maxDate: this.maxDate,
       enable: this.enable,
-      disable: this.disable,
+      disable: this._processedDisableDates,
+      mode: 'range',
+      closeOnSelect: false,
       loadLocale,
-      onChange: this.handleDateChange.bind(this),
-      onClose: this.handleClose.bind(this),
       onOpen: this.handleOpen.bind(this),
+      onClose: this.handleClose.bind(this),
+      onChange: this.handleDateChange.bind(this),
       appendTo: container,
+      noCalendar: false,
       static: this.staticPosition,
     });
+    return options;
   }
 
-  async updateFlatpickrOptions() {
-    if (!this.flatpickrInstance) return;
-
-    const currentDates = this.flatpickrInstance.selectedDates;
-    const newOptions = await this.getComponentFlatpickrOptions();
-
-    Object.keys(newOptions).forEach((key) => {
-      this.flatpickrInstance!.set(
-        key as keyof BaseOptions,
-        newOptions[key as keyof BaseOptions]
-      );
-    });
-
-    this.flatpickrInstance.redraw();
-
-    hideEmptyYear();
-
-    if (currentDates && currentDates.length === 2) {
-      this.flatpickrInstance.setDate(currentDates, false);
+  async updateFlatpickrOptions(): Promise<void> {
+    if (!this.flatpickrInstance) {
+      console.warn('Cannot update options: Flatpickr instance not available');
+      return;
     }
-
-    setTimeout(() => {
-      if (this.flatpickrInstance && this.flatpickrInstance.calendarContainer) {
-        const modalDetected = !!this.closest('kyn-modal');
-        setCalendarAttributes(this.flatpickrInstance, modalDetected);
-        this.flatpickrInstance.calendarContainer.setAttribute(
-          'aria-label',
-          'Date range calendar'
-        );
-      } else {
-        console.warn('Calendar container not available...');
-      }
-    }, 0);
+    await this.debouncedUpdate();
   }
 
   setInitialDates(): void {
-    if (!this.flatpickrInstance) return;
+    if (!this.flatpickrInstance) {
+      console.warn(
+        'Cannot set initial dates: Flatpickr instance not available'
+      );
+      return;
+    }
 
     try {
       if (Array.isArray(this.defaultDate)) {
         const validDates = this.defaultDate
           .filter((date) => date && date !== '')
           .map((date) => {
-            const parsed = new Date(date);
-            return isNaN(parsed.getTime()) ? null : parsed;
+            if (typeof date === 'string') {
+              const [year, month, day] = date.split('-').map(Number);
+              if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+                const localDate = new Date();
+                localDate.setFullYear(year, month - 1, day);
+                localDate.setHours(0, 0, 0, 0);
+                return localDate;
+              }
+            }
+            return null;
           })
           .filter((date): date is Date => date !== null);
 
         if (validDates.length === 2) {
+          this.flatpickrInstance.setDate(validDates, true);
           this.value = validDates as [Date, Date];
-          this.flatpickrInstance.setDate(validDates, false);
+        } else {
+          console.warn(
+            'Invalid or incomplete date range provided in defaultDate'
+          );
         }
       } else if (Array.isArray(this.value) && this.value.length === 2) {
         const validDates = this.value
-          .map((date) =>
-            date instanceof Date && !isNaN(date.getTime()) ? date : null
-          )
+          .map((date) => {
+            if (!(date instanceof Date) || isNaN(date.getTime())) {
+              console.warn('Invalid date in value array:', date);
+              return null;
+            }
+            return date;
+          })
           .filter((date): date is Date => date !== null);
 
         if (validDates.length === 2) {
-          this.flatpickrInstance.setDate(validDates, false);
+          this.flatpickrInstance.setDate(validDates, true);
+        } else {
+          console.warn('Invalid or incomplete date range provided in value');
         }
       }
     } catch (error) {
       console.warn('Error setting initial dates:', error);
+      if (error instanceof Error) {
+        console.warn('Error details:', error.message);
+      }
     }
   }
 
@@ -544,22 +680,25 @@ export class DateRangePicker extends FormMixin(LitElement) {
   async handleDateChange(selectedDates: Date[]): Promise<void> {
     this._hasInteracted = true;
 
-    if (selectedDates.length === 0) {
-      this.value = [null, null];
-    } else if (selectedDates.length === 1) {
-      this.value = [selectedDates[0], null];
-    } else {
-      this.value = [selectedDates[0], selectedDates[1]];
-    }
-
-    if (selectedDates.length === 2) {
-      const formattedDates = selectedDates.map((date) => date.toISOString());
-      const dateString = this._inputEl?.value || formattedDates.join(' to ');
-
-      emitValue(this, 'on-change', {
-        dates: formattedDates,
-        dateString,
-      });
+    if (!this._isClearing) {
+      if (selectedDates.length === 0) {
+        this.value = [null, null];
+        emitValue(this, 'on-change', {
+          dates: null,
+          dateString: '',
+          source: 'clear',
+        });
+      } else if (selectedDates.length === 1) {
+        this.value = [selectedDates[0], null];
+      } else {
+        this.value = [selectedDates[0], selectedDates[1]];
+        const formattedDates = selectedDates.map((date) => date.toISOString());
+        const dateString = this._inputEl?.value || formattedDates.join(' to ');
+        emitValue(this, 'on-change', {
+          dates: formattedDates,
+          dateString,
+        });
+      }
     }
 
     this.updateSelectedDateRangeAria(selectedDates);
@@ -587,15 +726,25 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   updateSelectedDateRangeAria(selectedDates: Date[]) {
-    if (selectedDates.length === 2) {
-      const [startDate, endDate] = selectedDates;
-      this._inputEl?.setAttribute(
-        'aria-label',
-        `Selected date range: ${startDate.toLocaleDateString()} to ${endDate.toLocaleDateString()}`
+    if (!this._inputEl) return;
+
+    let ariaLabel = this._textStrings.dateRange;
+
+    if (selectedDates.length === 0) {
+      ariaLabel = this._textStrings.noDateSelected;
+    } else if (selectedDates.length === 1) {
+      ariaLabel = this._textStrings.startDateSelected.replace(
+        '{0}',
+        selectedDates[0].toLocaleDateString(this.locale)
       );
-    } else {
-      this._inputEl?.setAttribute('aria-label', 'Date range');
+    } else if (selectedDates.length === 2) {
+      const [startDate, endDate] = selectedDates;
+      ariaLabel = this._textStrings.dateRangeSelected
+        .replace('{0}', startDate.toLocaleDateString(this.locale))
+        .replace('{1}', endDate.toLocaleDateString(this.locale));
     }
+
+    this._inputEl.setAttribute('aria-label', ariaLabel);
   }
 
   private setShouldFlatpickrOpen(value: boolean) {

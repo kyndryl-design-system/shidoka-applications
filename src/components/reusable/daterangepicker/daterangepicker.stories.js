@@ -18,17 +18,18 @@ export default {
   },
   argTypes: {
     locale: { control: { type: 'text' } },
-    twentyFourHourFormat: { control: { type: 'boolean' } },
     dateRangePickerDisabled: { control: { type: 'boolean' } },
     dateFormat: {
       options: [
         'Y-m-d',
         'm-d-Y',
         'd-m-Y',
-        'Y-m-d H:i',
-        'Y-m-d H:i:s',
-        'm-d-Y H:i:s',
-        'd-m-Y H:i:s',
+        'Y-m-d H:i', // 24-hour format without seconds
+        'Y-m-d h:i K', // 12-hour format with AM/PM
+        'm-d-Y H:i',
+        'm-d-Y h:i K',
+        'd-m-Y H:i',
+        'd-m-Y h:i K',
       ],
       control: { type: 'select' },
     },
@@ -37,11 +38,15 @@ export default {
       control: { type: 'select' },
     },
     defaultDate: { control: { type: 'object' } },
+    required: { control: { type: 'boolean' } },
+    staticPosition: { control: { type: 'boolean' } },
+    disable: { control: { type: 'object' } },
     label: { control: { type: 'text' } },
-    defaultErrorMessage: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },
     maxDate: { control: { type: 'text' } },
     invalidText: { control: { type: 'text' } },
+    defaultErrorMessage: { control: { type: 'text' } },
+    twentyFourHourFormat: { control: { type: 'boolean' } },
   },
 };
 
@@ -93,7 +98,7 @@ DateRangeDefault.args = {
   name: 'default-date-range-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
-  defaultDate: '',
+  defaultDate: [],
   required: false,
   staticPosition: false,
   size: 'md',
@@ -138,19 +143,38 @@ WithPreselectedDateTime.args = {
   ...DateRangeDefault.args,
   name: 'preselected-date-time-range',
   dateFormat: 'Y-m-d H:i',
-  defaultDate: ['2024-01-01 09:00', '2024-01-02 17:00'],
+  defaultDate: ['2024-01-01 09:00:00', '2024-01-02 17:00:00'],
   caption: 'Example with preselected date/time range (format: Y-m-d H:i)',
   label: 'Preselected Date/Time Range',
 };
 
-export const DateRangePickerInModal = {
+export const WithDisabledDates = Template.bind({});
+WithDisabledDates.args = {
+  ...DateRangeDefault.args,
+  name: 'date-range-picker-with-disabled-dates',
+  dateFormat: 'Y-m-d',
+  caption:
+    'Example showing disabled dates (weekends and specific dates are disabled)',
+  label: 'Date Range Selection',
+  disable: [
+    // disable weekends
+    function (date) {
+      return date.getDay() === 0 || date.getDay() === 6;
+    },
+    '2024-03-15',
+    '2024-03-20',
+    '2024-03-25',
+  ],
+};
+
+export const InModal = {
   args: {
     ...DateRangeDefault.args,
     locale: 'en',
     name: 'date-range-picker-in-modal',
     dateFormat: 'Y-m-d',
-    defaultDate: '',
-    caption: 'Date-range picker in a modal.',
+    defaultDate: [],
+    caption: 'Date Range Picker in a modal.',
     label: 'Date',
     open: false,
     size: 'lg',
@@ -222,7 +246,6 @@ export const DateRangePickerInModal = {
     `;
   },
 };
-DateRangePickerInModal.storyName = 'In Modal';
 
 export const DateRangePickerInAccordionInModal = {
   args: {
@@ -230,7 +253,7 @@ export const DateRangePickerInAccordionInModal = {
     locale: 'en',
     name: 'date-range-picker-in-modal',
     dateFormat: 'Y-m-d',
-    defaultDate: '',
+    defaultDate: [],
     caption: 'Date-range picker in a modal.',
     label: 'Date',
     staticPosition: true,
