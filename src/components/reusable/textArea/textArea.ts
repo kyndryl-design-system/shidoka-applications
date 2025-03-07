@@ -9,7 +9,6 @@ import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/er
 
 import TextAreaScss from './textArea.scss';
 import { classMap } from 'lit/directives/class-map.js';
-import { text } from 'stream/consumers';
 
 const _defaultTextStrings = {
   requiredText: 'Required',

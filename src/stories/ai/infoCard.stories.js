@@ -73,7 +73,7 @@ const InfoTemplate = () => {
             .anchorText=${'Delete'}
             .confirmText=${'Confirm'}
             .cancelText=${'Cancel'}
-            @on-confirm=${(e) => action('on-confirm')()}
+            @on-confirm=${() => action('on-confirm')()}
           >
             ${unsafeSVG(deleteIcon)}
             <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>

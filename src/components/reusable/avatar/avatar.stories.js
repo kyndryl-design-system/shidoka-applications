@@ -1,19 +1,9 @@
 import { html } from 'lit';
 import './index';
-import { action } from '@storybook/addon-actions';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 export default {
   title: 'Components/Avatar',
   component: 'kyn-avatar',
-  argTypes: {
-    minLength: {
-      control: { type: 'number' },
-    },
-    maxLength: {
-      control: { type: 'number' },
-    },
-  },
 };
 
 export const Avatar = {
