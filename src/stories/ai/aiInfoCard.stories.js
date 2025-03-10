@@ -6,7 +6,6 @@ import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/d
 import '../../components/reusable/button';
 import '../../components/reusable/inlineConfirm/inlineConfirm';
 import { action } from '@storybook/addon-actions';
-import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 
 export default {
   title: 'AI/Patterns/Info',
