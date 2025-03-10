@@ -5,14 +5,13 @@ import chatHistoryIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome
 
 import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
-import { InlineConfirm } from '../../components/reusable/inlineConfirm/inlineConfirm.stories.js';
 import { Default as InputQueryStory } from './inputQuery.stories.js';
 import { WithOtherContent as ResponseStory } from './response.stories.js';
+import { WithRightIconAndDescription } from './infoCard.stories.js';
 
 import '../../components/reusable/tabs';
 import '../../components/reusable/pagetitle';
 import '../../components/reusable/link';
-import '../../components/reusable/card';
 import '../../components/reusable/button';
 import '../../components/reusable/modal';
 import '../../components/reusable/search';
@@ -26,33 +25,6 @@ export default {
     },
   },
 };
-
-const chatResponse = [
-  {
-    date: 'Today, 25 Feb 10 2025',
-    message: [
-      {
-        msgText: 'What are the benefits of adopting Hybrid IT Modernization?',
-      },
-      {
-        msgText: 'I need more info as for Contract Lifecycle Management?',
-      },
-      {
-        msgText:
-          'What are the purpose, vision, and approach of the knowledge library?',
-      },
-    ],
-  },
-  {
-    date: 'Wednesday, 01 Jan 2025',
-    message: [
-      {
-        msgText:
-          'What are the common challenges in contract negotiations, and how can they be resolved?',
-      },
-    ],
-  },
-];
 
 export const Default = {
   render: () => {
@@ -103,30 +75,12 @@ export const Default = {
                   @on-input=${(e) => action(e.type)(e)}
                 ></kyn-search>
                 <div class="chat_content_items">
-                  ${chatResponse.map((items) => {
-                    return html`
-                      <div class="chat-section">
-                        <label class="chat-date kd-type--ui-02">
-                          ${items.date}
-                        </label>
-                        ${items.message.map((item) => {
-                          return html`
-                            <kyn-card style="width:100%">
-                              <div class="chat-items">
-                                <div class="chat_item">${item.msgText}</div>
-                                ${InlineConfirm.render({
-                                  destructive: true,
-                                  anchorText: 'Delete',
-                                  confirmText: 'Confirm',
-                                  cancelText: 'Cancel',
-                                })}
-                              </div>
-                            </kyn-card>
-                          `;
-                        })}
-                      </div>
-                    `;
-                  })}
+                  <div class="chat-section">
+                    <label class="chat-date kd-type--ui-02">
+                      Today, 25 Feb 10 2025
+                    </label>
+                    ${WithRightIconAndDescription.render()}
+                  </div>
                 </div>
               </div>
               <kyn-link
@@ -143,10 +97,6 @@ export const Default = {
         </kyn-tabs>
       </kyn-modal>
       <style>
-        kyn-card::part(card-wrapper) {
-          outline: 1px solid var(--kd-color-border-level-secondary);
-          background: var(--kd-color-background-container-ai-subtle);
-        }
         .chat_list {
           display: flex;
           flex-direction: column;
