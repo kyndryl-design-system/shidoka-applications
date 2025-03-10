@@ -120,7 +120,7 @@ export const Default = {
       >
         <kyn-button slot="anchor" kind="primary-ai"> Open Modal </kyn-button>
         <kyn-tabs
-          scrollablePanels
+          ?scrollablePanels=${false}
           tabStyle="line"
           aiConnected
           @on-change=${(e) => action(e.type)(e)}
@@ -255,7 +255,7 @@ export const WithOtherContent = {
       >
         <kyn-button slot="anchor" kind="primary-ai"> Open Modal </kyn-button>
         <kyn-tabs
-          scrollablePanels
+          ?scrollablePanels=${false}
           tabStyle="line"
           aiConnected
           @on-change=${(e) => action(e.type)(e)}
@@ -365,17 +365,6 @@ export const WithOtherContent = {
           padding: 13px 18px;
           border-radius: 0px 4px 4px 4px;
           background: var(--kd-color-background-card-background);
-        }
-        kyn-avatar::part(avatar-wrapper) {
-          width: 18px;
-          height: 18px;
-          min-width: 18px;
-          min-height: 18px;
-          border-radius: 18px;
-          background: var(--kd-color-background-button-secondary-ai-hover);
-          color: var(--kd-color-text-variant-inversed);
-          font-size: 12px;
-          line-height: 16px;
         }
         .chat_details {
           display: flex;
