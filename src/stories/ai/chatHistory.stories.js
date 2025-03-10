@@ -5,12 +5,9 @@ import chatHistoryIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome
 
 import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
-import { InlineConfirm as InlineConfirmStory } from '../../components/reusable/inlineConfirm/inlineConfirm.stories.js';
+import { InlineConfirm } from '../../components/reusable/inlineConfirm/inlineConfirm.stories.js';
 import { Default as InputQueryStory } from './inputQuery.stories.js';
-import {
-  WithAIImage,
-  WithOtherContent as OtherContent,
-} from './response.stories.js';
+import { WithOtherContent as ResponseStory } from './response.stories.js';
 
 import '../../components/reusable/tabs';
 import '../../components/reusable/pagetitle';
@@ -117,7 +114,7 @@ export const Default = {
                             <kyn-card style="width:100%">
                               <div class="chat-items">
                                 <div class="chat_item">${item.msgText}</div>
-                                ${InlineConfirmStory.render({
+                                ${InlineConfirm.render({
                                   destructive: true,
                                   anchorText: 'Delete',
                                   confirmText: 'Confirm',
@@ -245,7 +242,7 @@ export const WithOtherContent = {
                 aiConnected
               >
               </kyn-page-title>
-              ${OtherContent.render()} ${WithAIImage.render()}
+              ${ResponseStory.render()}
             </div>
           </kyn-tab-panel>
         </kyn-tabs>

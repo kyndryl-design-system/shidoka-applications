@@ -206,6 +206,15 @@ export const WithOtherContent = {
             </kyn-card>
           </div>
         </div>
+        ${WithAIImage.render()}
+        <div class="response_items">
+          <div class="response_title">
+            <span><kyn-avatar initials="A"></kyn-avatar></span>
+            <kyn-card aria-label="Card" aiConnected style="width:100%">
+              Yes
+            </kyn-card>
+          </div>
+        </div>
       </div>
 
       <style>
