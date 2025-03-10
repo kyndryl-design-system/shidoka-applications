@@ -522,30 +522,30 @@ export function setCalendarAttributes(
 
 export async function loadLocale(locale: string): Promise<Partial<Locale>> {
   if (locale === 'en') return English;
+
   if (!isSupportedLocale(locale)) {
-    console.warn(`Unsupported locale: ${locale}. Falling back to English.`);
+    console.warn(`Unsupported locale "${locale}". Falling back to English.`);
     return English;
   }
 
   try {
     const module = await import(`flatpickr/dist/l10n/${locale}.js`);
     const localeConfig =
-      module[locale] || module.default[locale] || module.default;
+      module[locale] ?? module.default?.[locale] ?? module.default;
+
     if (!localeConfig) {
       console.warn(
-        `Locale configuration not found for ${locale}. Falling back to English.`
+        `Locale configuration not found for "${locale}". Falling back to English.`
       );
       return English;
     }
+
     return localeConfig;
   } catch (error) {
     console.error(
-      `Failed to load locale ${locale}. Falling back to English.`,
+      `Failed to load locale "${locale}". Falling back to English.`,
       error
     );
-    if (error instanceof Error) {
-      console.error('Error details:', error.message);
-    }
     return English;
   }
 }
