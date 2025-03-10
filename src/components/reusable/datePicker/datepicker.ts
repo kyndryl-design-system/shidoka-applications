@@ -402,17 +402,45 @@ export class DatePicker extends FormMixin(LitElement) {
 
     if (changedProperties.has('value') && !this._isClearing) {
       const newValue = this.value;
-      const isNull =
-        newValue === null || (Array.isArray(newValue) && newValue.length === 0);
-      if (isNull && this.flatpickrInstance) {
-        this._isClearing = true;
-        try {
-          this.flatpickrInstance.clear();
-          if (this._inputEl) {
-            this._inputEl.value = '';
+      if (
+        newValue === null ||
+        (Array.isArray(newValue) && newValue.length === 0)
+      ) {
+        if (this.flatpickrInstance) {
+          this._isClearing = true;
+          try {
+            this.flatpickrInstance.clear();
+            if (this._inputEl) {
+              this._inputEl.value = '';
+            }
+          } finally {
+            this._isClearing = false;
           }
-        } finally {
-          this._isClearing = false;
+        }
+      } else if (this.flatpickrInstance) {
+        let shouldSetInitialDates = false;
+        if (this.mode === 'multiple' && Array.isArray(newValue)) {
+          const currentDates = this.flatpickrInstance.selectedDates;
+          if (!currentDates || currentDates.length !== newValue.length) {
+            shouldSetInitialDates = true;
+          } else {
+            for (let i = 0; i < newValue.length; i++) {
+              if (
+                currentDates[i].getTime() !== (newValue[i] as Date).getTime()
+              ) {
+                shouldSetInitialDates = true;
+                break;
+              }
+            }
+          }
+        } else if (this.mode === 'single' && newValue instanceof Date) {
+          const currentDate = this.flatpickrInstance.selectedDates[0];
+          if (!currentDate || currentDate.getTime() !== newValue.getTime()) {
+            shouldSetInitialDates = true;
+          }
+        }
+        if (shouldSetInitialDates) {
+          this.setInitialDates();
         }
       }
       this.requestUpdate();
@@ -457,11 +485,7 @@ export class DatePicker extends FormMixin(LitElement) {
     ) {
       this._enableTime = updateEnableTime(this.dateFormat);
       if (this.flatpickrInstance && this._initialized && !this._isClearing) {
-        if (changedProperties.has('dateFormat')) {
-          this.debouncedUpdate();
-        } else {
-          this.debouncedUpdate();
-        }
+        this.debouncedUpdate();
       }
     }
 
@@ -607,23 +631,60 @@ export class DatePicker extends FormMixin(LitElement) {
       if (!dateToSet) return;
 
       if (Array.isArray(dateToSet)) {
-        const validDates = dateToSet.filter((date) => {
-          if (!date) return false;
-          if (typeof date === 'string' && !date.trim()) return false;
-          return true;
-        });
+        const validDates = dateToSet
+          .map((date) => {
+            if (typeof date === 'string') {
+              const trimmed = date.trim();
+              if (trimmed.includes('T')) {
+                const parsed = new Date(trimmed);
+                return isNaN(parsed.getTime()) ? null : parsed;
+              } else {
+                const parts = trimmed.split('-').map(Number);
+                if (parts.length === 3) {
+                  const [year, month, day] = parts;
+                  if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+                    const localDate = new Date();
+                    localDate.setFullYear(year, month - 1, day);
+                    localDate.setHours(0, 0, 0, 0);
+                    return localDate;
+                  }
+                }
+                return null;
+              }
+            } else if (date instanceof Date) {
+              return date;
+            }
+            return null;
+          })
+          .filter((date): date is Date => date !== null);
 
         if (validDates.length > 0) {
           this.flatpickrInstance.setDate(validDates, true);
         }
-      } else if (typeof dateToSet === 'string' && dateToSet.trim()) {
-        this.flatpickrInstance.setDate(dateToSet, true);
+      } else if (typeof dateToSet === 'string') {
+        const trimmed = dateToSet.trim();
+        if (trimmed.includes('T')) {
+          const parsed = new Date(trimmed);
+          if (!isNaN(parsed.getTime())) {
+            this.flatpickrInstance.setDate(parsed, true);
+          }
+        } else {
+          const parts = trimmed.split('-').map(Number);
+          if (parts.length === 3) {
+            const [year, month, day] = parts;
+            if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+              const localDate = new Date();
+              localDate.setFullYear(year, month - 1, day);
+              localDate.setHours(0, 0, 0, 0);
+              this.flatpickrInstance.setDate(localDate, true);
+            }
+          }
+        }
       } else if (dateToSet instanceof Date) {
         this.flatpickrInstance.setDate(dateToSet, true);
       }
     } catch (error) {
       console.warn('Error setting initial dates:', error);
-
       if (error instanceof Error) {
         console.warn('Error details:', error.message);
       }

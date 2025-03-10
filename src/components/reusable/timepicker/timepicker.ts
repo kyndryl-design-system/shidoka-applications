@@ -377,6 +377,7 @@ export class TimePicker extends FormMixin(LitElement) {
         await this.debouncedUpdate();
       }
     }
+
     if (changedProperties.has('value') && !this._isClearing) {
       const newValue = this.value;
       if (newValue === null && this.flatpickrInstance) {
@@ -389,9 +390,15 @@ export class TimePicker extends FormMixin(LitElement) {
         } finally {
           this._isClearing = false;
         }
+      } else if (this.flatpickrInstance && newValue instanceof Date) {
+        const currentDate = this.flatpickrInstance.selectedDates[0];
+        if (!currentDate || currentDate.getTime() !== newValue.getTime()) {
+          this.setInitialDates(this.flatpickrInstance);
+        }
       }
       this.requestUpdate();
     }
+
     if (
       changedProperties.has('timepickerDisabled') &&
       this.timepickerDisabled &&
@@ -569,20 +576,31 @@ export class TimePicker extends FormMixin(LitElement) {
   setInitialDates(instance: flatpickr.Instance): void {
     try {
       if (this._hasInteracted || this.value) return;
+
       if (this.defaultDate != null) {
         if (typeof this.defaultDate === 'string') {
-          const parts = this.defaultDate.split(':').map(Number);
-          if (parts.length >= 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
-            const newDate = new Date();
-            newDate.setHours(parts[0], parts[1], 0, 0);
-            instance.setDate(newDate, false);
-            return;
+          const trimmed = this.defaultDate.trim();
+          if (trimmed.includes('T')) {
+            const parsed = new Date(trimmed);
+            if (!isNaN(parsed.getTime())) {
+              instance.setDate(parsed, false);
+              return;
+            }
+          } else {
+            const parts = trimmed.split(':').map(Number);
+            if (parts.length >= 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+              const newDate = new Date();
+              newDate.setHours(parts[0], parts[1], 0, 0);
+              instance.setDate(newDate, false);
+              return;
+            }
           }
         } else if (this.defaultDate instanceof Date) {
           instance.setDate(this.defaultDate, false);
           return;
         }
       }
+
       if (this.defaultHour !== null || this.defaultMinute !== null) {
         const newDate = new Date();
         if (this.defaultHour !== null) {

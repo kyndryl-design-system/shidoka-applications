@@ -408,20 +408,29 @@ export class DateRangePicker extends FormMixin(LitElement) {
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
-    if (changedProperties.has('value')) {
+    if (
+      changedProperties.has('value') &&
+      this.flatpickrInstance &&
+      !this._isClearing
+    ) {
       const newValue = this.value;
-      if (
-        Array.isArray(newValue) &&
-        newValue.length === 2 &&
-        newValue.every((v) => v === null)
-      ) {
-        if (this.flatpickrInstance) {
-          this._isClearing = true;
-          this.flatpickrInstance.clear();
-          this._isClearing = false;
-          if (this._inputEl) {
-            this._inputEl.value = '';
-          }
+      if (Array.isArray(newValue) && newValue.every((v) => v === null)) {
+        this._isClearing = true;
+        this.flatpickrInstance.clear();
+        this._isClearing = false;
+        if (this._inputEl) {
+          this._inputEl.value = '';
+        }
+      } else {
+        const currentDates = this.flatpickrInstance.selectedDates;
+        if (
+          currentDates.length !== 2 ||
+          !currentDates[0] ||
+          !currentDates[1] ||
+          currentDates[0].getTime() !== newValue[0]?.getTime() ||
+          currentDates[1].getTime() !== newValue[1]?.getTime()
+        ) {
+          this.setInitialDates();
         }
       }
     }
@@ -457,18 +466,18 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     if (
-      changedProperties.has('dateFormat') ||
-      changedProperties.has('minDate') ||
-      changedProperties.has('maxDate') ||
-      changedProperties.has('locale')
+      (changedProperties.has('dateFormat') ||
+        changedProperties.has('minDate') ||
+        changedProperties.has('maxDate') ||
+        changedProperties.has('locale')) &&
+      this.flatpickrInstance &&
+      !this._isClearing
     ) {
       this._enableTime = updateEnableTime(this.dateFormat);
-      if (this.flatpickrInstance && this._initialized && !this._isClearing) {
-        if (changedProperties.has('dateFormat')) {
-          this.initializeFlatpickr();
-        } else {
-          this.updateFlatpickrOptions();
-        }
+      if (changedProperties.has('dateFormat')) {
+        this.initializeFlatpickr();
+      } else {
+        this.updateFlatpickrOptions();
       }
     } else if (changedProperties.has('twentyFourHourFormat')) {
       this._enableTime = updateEnableTime(this.dateFormat);
@@ -511,10 +520,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
     if (this._inputEl) {
       this._inputEl.value = '';
-      this._inputEl.setAttribute(
-        'aria-label',
-        this._textStrings.noDateSelected
-      );
     }
 
     emitValue(this, 'on-change', {
@@ -640,15 +645,25 @@ export class DateRangePicker extends FormMixin(LitElement) {
     try {
       if (Array.isArray(this.defaultDate)) {
         const validDates = this.defaultDate
-          .filter((date) => date && date !== '')
+          .filter(
+            (date): date is string =>
+              typeof date === 'string' && date.trim() !== ''
+          )
           .map((date) => {
-            if (typeof date === 'string') {
-              const [year, month, day] = date.split('-').map(Number);
-              if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
-                const localDate = new Date();
-                localDate.setFullYear(year, month - 1, day);
-                localDate.setHours(0, 0, 0, 0);
-                return localDate;
+            const trimmed = date.trim();
+            if (trimmed.includes('T')) {
+              const parsedISO = new Date(trimmed);
+              return isNaN(parsedISO.getTime()) ? null : parsedISO;
+            } else {
+              const parts = trimmed.split('-').map(Number);
+              if (parts.length === 3) {
+                const [year, month, day] = parts;
+                if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+                  const localDate = new Date();
+                  localDate.setFullYear(year, month - 1, day);
+                  localDate.setHours(0, 0, 0, 0);
+                  return localDate;
+                }
               }
             }
             return null;
@@ -664,13 +679,18 @@ export class DateRangePicker extends FormMixin(LitElement) {
           );
         }
       } else if (Array.isArray(this.value) && this.value.length === 2) {
-        const validDates = this.value
+        const validDates = (this.value as (string | Date)[])
           .map((date) => {
-            if (!(date instanceof Date) || isNaN(date.getTime())) {
-              console.warn('Invalid date in value array:', date);
-              return null;
+            if (typeof date === 'string') {
+              const trimmed = date.trim();
+              const parsed = new Date(trimmed);
+              return isNaN(parsed.getTime()) ? null : parsed;
             }
-            return date;
+            if (date instanceof Date && !isNaN(date.getTime())) {
+              return date;
+            }
+            console.warn('Invalid date in value array:', date);
+            return null;
           })
           .filter((date): date is Date => date !== null);
 
