@@ -7,7 +7,10 @@ import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import { InlineConfirm as InlineConfirmStory } from '../../components/reusable/inlineConfirm/inlineConfirm.stories.js';
 import { Default as InputQueryStory } from './inputQuery.stories.js';
-import { WithOtherContent as ResponseStory } from './response.stories.js';
+import {
+  WithAIImage,
+  WithOtherContent as OtherContent,
+} from './response.stories.js';
 
 import '../../components/reusable/tabs';
 import '../../components/reusable/pagetitle';
@@ -242,7 +245,7 @@ export const WithOtherContent = {
                 aiConnected
               >
               </kyn-page-title>
-              ${ResponseStory.render()}
+              ${OtherContent.render()} ${WithAIImage.render()}
             </div>
           </kyn-tab-panel>
         </kyn-tabs>
