@@ -522,10 +522,6 @@ export class DatePicker extends FormMixin(LitElement) {
     }
     if (this._inputEl) {
       this._inputEl.value = '';
-      this._inputEl.setAttribute(
-        'aria-label',
-        this._textStrings.noDateSelected
-      );
     }
 
     emitValue(this, 'on-change', {
