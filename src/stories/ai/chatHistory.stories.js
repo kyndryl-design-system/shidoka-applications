@@ -42,14 +42,14 @@ export const Default = {
         ?hideFooter=${true}
         ?hideCancelButton=${false}
         aiConnected
-        ?disableScroll=${false}
+        disableScroll
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
         <kyn-button slot="anchor" kind="primary-ai"> Open Modal </kyn-button>
         <kyn-tabs
-          ?scrollablePanels=${false}
           tabStyle="line"
+          scrollablePanels
           aiConnected
           @on-change=${(e) => action(e.type)(e)}
         >
@@ -155,13 +155,14 @@ export const WithOtherContent = {
         ?hideFooter=${false}
         ?hideCancelButton=${false}
         aiConnected
-        ?disableScroll=${false}
+        disableScroll
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
         <kyn-button slot="anchor" kind="primary-ai"> Open Modal </kyn-button>
         <kyn-tabs
-          ?scrollablePanels=${false}
+          style="height: 400px;"
+          scrollablePanels
           tabStyle="line"
           aiConnected
           @on-change=${(e) => action(e.type)(e)}
