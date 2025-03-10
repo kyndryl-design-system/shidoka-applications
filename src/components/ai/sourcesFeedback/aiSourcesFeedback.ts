@@ -14,6 +14,8 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import thumbsUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/thumbs-up.svg';
 import thumbsDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/thumbs-down.svg';
+import thumbsUpFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/thumbs-up-filled.svg';
+import thumbsDownFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/thumbs-down-filled.svg';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 import '../../reusable/link';
@@ -107,6 +109,16 @@ export class AISourcesFeedback extends LitElement {
   @state()
   sourcesOriginalText: any;
 
+  /**  Tracks the number of clicks on thumbs up icon
+   * @internal
+   */
+  @state() thumbsUpClickCount = 0;
+
+  /**  Tracks the number of clicks on thumbs down icon
+   * @internal
+   */
+  @state() thumbsDownClickCount = 0;
+
   override render() {
     const classesSources: any = classMap({
       'kyn-sources': true,
@@ -162,7 +174,13 @@ export class AISourcesFeedback extends LitElement {
               @on-click=${(e: Event) =>
                 this._handleClick(e, 'feedback', 'positive')}
             >
-              <span slot="icon"> ${unsafeSVG(thumbsUpIcon)} </span>
+              <span slot="icon">
+                ${unsafeSVG(
+                  this.thumbsUpClickCount % 2 === 0
+                    ? thumbsUpIcon
+                    : thumbsUpFilledIcon
+                )}
+              </span>
             </kyn-button>
           </div>
 
@@ -179,7 +197,13 @@ export class AISourcesFeedback extends LitElement {
               @on-click="${(e: Event) =>
                 this._handleClick(e, 'feedback', 'negative')}"
             >
-              <span slot="icon"> ${unsafeSVG(thumbsDownIcon)} </span>
+              <span slot="icon"
+                >${unsafeSVG(
+                  this.thumbsDownClickCount % 2 === 0
+                    ? thumbsDownIcon
+                    : thumbsDownFilledIcon
+                )}
+              </span>
             </kyn-button>
           </div>
         </div>
@@ -262,50 +286,92 @@ export class AISourcesFeedback extends LitElement {
       </div>
     `;
   }
-
   private _handleClick(
     e: Event,
     panel: 'sources' | 'feedback',
-    feedbackType?: any
+    feedbackType?: 'positive' | 'negative'
   ) {
     e.preventDefault();
+
     if (
-      (panel === 'sources' && !this.sourcesDisabled) ||
-      (panel === 'feedback') === !this.feedbackDisabled
+      (panel === 'sources' && this.sourcesDisabled) ||
+      (panel === 'feedback' && this.feedbackDisabled)
     ) {
+      return;
+    }
+
+    const target = e.target as HTMLElement;
+    const isFeedbackButton = target.id?.includes('kyn-feedback-title');
+
+    if (isFeedbackButton && feedbackType) {
+      this._updateFeedbackCounts(feedbackType);
+    }
+
+    if (panel === 'sources' || this._shouldEmitFeedbackEvent(feedbackType)) {
+      console.log('EMIITING');
       this._emitToggleEvent(panel, feedbackType);
     }
   }
 
+  private _updateFeedbackCounts(feedbackType: 'positive' | 'negative') {
+    if (feedbackType === 'positive') {
+      this.thumbsUpClickCount++;
+      this.thumbsDownClickCount -= this.thumbsDownClickCount % 2;
+    } else {
+      this.thumbsDownClickCount++;
+      this.thumbsUpClickCount -= this.thumbsUpClickCount % 2;
+    }
+  }
+
+  private _shouldEmitFeedbackEvent(
+    feedbackType?: 'positive' | 'negative'
+  ): boolean {
+    if (!feedbackType) return false;
+    const isOddClick = (count: number) => count % 2 !== 0;
+
+    return (
+      (feedbackType === 'positive' &&
+        (isOddClick(this.thumbsUpClickCount) ||
+          (this.feedbackOpened && !isOddClick(this.thumbsUpClickCount)))) ||
+      (feedbackType === 'negative' &&
+        (isOddClick(this.thumbsDownClickCount) ||
+          (this.feedbackOpened && !isOddClick(this.thumbsDownClickCount))))
+    );
+  }
+
   private _emitToggleEvent(
     panel: 'sources' | 'feedback',
-    _selectedFeedbackType?: any
+    feedbackType?: 'positive' | 'negative'
   ) {
     if (panel === 'sources') {
       this.sourcesOpened = !this.sourcesOpened;
       this.feedbackOpened = false;
-    }
-    if (panel === 'feedback') {
+    } else if (panel === 'feedback') {
       this.sourcesOpened = false;
-      if (
-        this._selectedFeedbackType === _selectedFeedbackType &&
-        this.feedbackOpened
-      ) {
-        this.feedbackOpened = false;
-        this._selectedFeedbackType = null;
-      } else {
-        this.feedbackOpened = true;
-        this._selectedFeedbackType = _selectedFeedbackType;
-      }
+      this._toggleFeedbackPanel(feedbackType);
     }
-    const event = new CustomEvent('on-toggle', {
-      detail: {
-        sourcesOpened: this.sourcesOpened,
-        feedbackOpened: this.feedbackOpened,
-        selectedFeedbackType: this._selectedFeedbackType,
-      },
-    });
-    this.dispatchEvent(event);
+
+    this.dispatchEvent(
+      new CustomEvent('on-toggle', {
+        detail: {
+          sourcesOpened: this.sourcesOpened,
+          feedbackOpened: this.feedbackOpened,
+          selectedFeedbackType: this._selectedFeedbackType,
+        },
+      })
+    );
+  }
+
+  private _toggleFeedbackPanel(feedbackType?: 'positive' | 'negative') {
+    if (!feedbackType) return;
+
+    if (this._selectedFeedbackType === feedbackType && this.feedbackOpened) {
+      this.feedbackOpened = false;
+      this._selectedFeedbackType = null;
+    } else {
+      this.feedbackOpened = true;
+      this._selectedFeedbackType = feedbackType;
+    }
   }
 
   protected _handleSlotChange() {
