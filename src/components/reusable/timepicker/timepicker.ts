@@ -30,7 +30,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/time.svg';
-import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
+import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 type SupportedLocale = (typeof langsArray)[number];
 
@@ -401,33 +401,47 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  private async _handleClear(event: Event) {
+  private async _clearInput(
+    options: { reinitFlatpickr?: boolean } = { reinitFlatpickr: true }
+  ): Promise<void> {
+    this.value = null;
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.clear();
+    }
+    if (this._inputEl) {
+      this._inputEl.value = '';
+      this._inputEl.setAttribute(
+        'aria-label',
+        this._textStrings.noTimeSelected
+      );
+    }
+    emitValue(this, 'on-change', {
+      time: this.value,
+      source: 'clear',
+    });
+    this._validate(true, false);
+    await this.updateComplete;
+    if (options.reinitFlatpickr) {
+      await this.initializeFlatpickr();
+      this.requestUpdate();
+    }
+  }
+
+  private async _handleClear(event: Event): Promise<void> {
     event.preventDefault();
     event.stopPropagation();
     this._isClearing = true;
     try {
-      this.value = null;
-      if (this.flatpickrInstance) {
-        this.flatpickrInstance.clear();
-        if (this._inputEl) {
-          this._inputEl.value = '';
-          this._inputEl.setAttribute(
-            'aria-label',
-            this._textStrings.noTimeSelected
-          );
-        }
-      }
-      emitValue(this, 'on-change', {
-        time: '',
-        source: 'clear',
-      });
-      this._validate(true, false);
-      await this.updateComplete;
-      await this.initializeFlatpickr();
-      this.requestUpdate();
+      await this._clearInput();
     } finally {
       this._isClearing = false;
     }
+  }
+
+  async handleClose(): Promise<void> {
+    this._hasInteracted = true;
+    this._validate(true, false);
+    await this.updateComplete;
   }
 
   private async setupAnchor() {
@@ -593,12 +607,6 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  async handleClose(): Promise<void> {
-    this._hasInteracted = true;
-    this._validate(true, false);
-    await this.updateComplete;
-  }
-
   async handleTimeChange(
     selectedDates: Date[],
     dateStr: string
@@ -623,7 +631,8 @@ export class TimePicker extends FormMixin(LitElement) {
       } else {
         this.value = null;
         emitValue(this, 'on-change', {
-          time: '',
+          time: this.value,
+          dateStr: dateStr || '',
           source: 'clear',
         });
       }

@@ -29,7 +29,7 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/calendar.svg';
-import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
+import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 type SupportedLocale = (typeof langsArray)[number];
 
@@ -500,39 +500,53 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }
 
-  private async _handleClear(event: Event) {
-    this._isClearing = true;
-    event.preventDefault();
-    event.stopPropagation();
-    try {
-      this.value = [null, null];
-      this.defaultDate = null;
+  private async _clearInput(
+    options: { reinitFlatpickr?: boolean } = { reinitFlatpickr: true }
+  ) {
+    this.value = [null, null];
+    this.defaultDate = null;
 
-      if (this.flatpickrInstance) {
-        this.flatpickrInstance.clear();
-      }
-      if (this._inputEl) {
-        this._inputEl.value = '';
-        this._inputEl.setAttribute(
-          'aria-label',
-          this._textStrings.noDateSelected
-        );
-      }
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.clear();
+    }
+    if (this._inputEl) {
+      this._inputEl.value = '';
+      this._inputEl.setAttribute(
+        'aria-label',
+        this._textStrings.noDateSelected
+      );
+    }
 
-      emitValue(this, 'on-change', {
-        dates: null,
-        dateString: '',
-        source: 'clear',
-      });
+    emitValue(this, 'on-change', {
+      dates: this.value,
+      dateString: (this._inputEl as HTMLInputElement)?.value,
+      source: 'clear',
+    });
 
-      this._validate(true, false);
-      await this.updateComplete;
+    this._validate(true, false);
+    await this.updateComplete;
 
+    if (options.reinitFlatpickr) {
       await this.initializeFlatpickr();
       this.requestUpdate();
+    }
+  }
+
+  private async _handleClear(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this._isClearing = true;
+    try {
+      await this._clearInput();
     } finally {
       this._isClearing = false;
     }
+  }
+
+  async handleClose(): Promise<void> {
+    this._hasInteracted = true;
+    this._validate(true, false);
+    await this.updateComplete;
   }
 
   async initializeFlatpickr(): Promise<void> {
@@ -595,7 +609,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       enable: this.enable,
       disable: this._processedDisableDates,
       mode: 'range',
-      closeOnSelect: false,
+      closeOnSelect: !this._enableTime,
       loadLocale,
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),
@@ -688,8 +702,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       if (selectedDates.length === 0) {
         this.value = [null, null];
         emitValue(this, 'on-change', {
-          dates: null,
-          dateString: '',
+          dates: this.value,
           source: 'clear',
         });
       } else if (selectedDates.length === 1) {
@@ -706,25 +719,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     this.updateSelectedDateRangeAria(selectedDates);
-    this._validate(true, false);
-    await this.updateComplete;
-  }
-
-  async handleClose() {
-    this._hasInteracted = true;
-
-    if (
-      this.flatpickrInstance &&
-      this.flatpickrInstance.selectedDates &&
-      this.flatpickrInstance.selectedDates.length === 1
-    ) {
-      this.flatpickrInstance.clear();
-      if (this._inputEl) {
-        this._inputEl.value = '';
-      }
-      this.value = [null, null];
-    }
-
     this._validate(true, false);
     await this.updateComplete;
   }

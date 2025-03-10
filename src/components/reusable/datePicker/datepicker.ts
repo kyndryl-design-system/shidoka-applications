@@ -29,7 +29,7 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/calendar.svg';
-import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
+import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 type SupportedLocale = (typeof langsArray)[number];
 
@@ -487,45 +487,52 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  private async _handleClear(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
+  private async _clearInput(
+    options: { reinitFlatpickr?: boolean } = { reinitFlatpickr: true }
+  ): Promise<void> {
+    this.value = this.mode === 'multiple' ? [] : null;
+    this.defaultDate = null;
 
-    if (!this.flatpickrInstance) {
-      console.warn('Cannot clear: Flatpickr instance not available');
-      return;
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.clear();
+    }
+    if (this._inputEl) {
+      this._inputEl.value = '';
+      this._inputEl.setAttribute(
+        'aria-label',
+        this._textStrings.noDateSelected
+      );
     }
 
-    this._isClearing = true;
+    emitValue(this, 'on-change', {
+      dates: this.value,
+      source: 'clear',
+    });
 
-    try {
-      this.value = this.mode === 'multiple' ? [] : null;
-      this.defaultDate = null;
+    this._validate(true, false);
+    await this.updateComplete;
 
-      this.flatpickrInstance.clear();
-      if (this._inputEl) {
-        this._inputEl.value = '';
-        this._inputEl.setAttribute(
-          'aria-label',
-          this._textStrings.noDateSelected
-        );
-      }
-
-      emitValue(this, 'on-change', {
-        dates: null,
-        dateString: '',
-        source: 'clear',
-      });
-
-      this._validate(true, false);
-      await this.updateComplete;
+    if (options.reinitFlatpickr) {
       await this.initializeFlatpickr();
       this.requestUpdate();
-    } catch (error) {
-      console.error('Error clearing datepicker:', error);
+    }
+  }
+
+  private async _handleClear(event: Event): Promise<void> {
+    event.preventDefault();
+    event.stopPropagation();
+    this._isClearing = true;
+    try {
+      await this._clearInput();
     } finally {
       this._isClearing = false;
     }
+  }
+
+  async handleClose(): Promise<void> {
+    this._hasInteracted = true;
+    this._validate(true, false);
+    await this.updateComplete;
   }
 
   async initializeFlatpickr(): Promise<void> {
@@ -654,12 +661,6 @@ export class DatePicker extends FormMixin(LitElement) {
       this.flatpickrInstance?.close();
       this._shouldFlatpickrOpen = true;
     }
-  }
-
-  async handleClose(): Promise<void> {
-    this._hasInteracted = true;
-    this._validate(true, false);
-    await this.updateComplete;
   }
 
   async handleDateChange(
