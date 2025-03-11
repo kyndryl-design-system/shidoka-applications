@@ -1,17 +1,18 @@
 import { html } from 'lit';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import chatIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat.svg';
 import chatHistoryIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat-history.svg';
 import { action } from '@storybook/addon-actions';
 
 import '../../components/reusable/button';
 import '../../components/reusable/tabs';
-import '../../components/reusable/avatar';
 import '../../components/reusable/modal';
+import '../../components/ai/aiLaunchButton';
+import '../../components/reusable/floatingContainer';
 
 import { ChatMessages } from './chatMessages.stories.js';
 import { Default as InputQuery } from './inputQuery.stories.js';
+import { ChatHistory } from './chatHistory.stories.js';
 
 export default {
   title: 'AI/Patterns/Chat',
@@ -34,15 +35,6 @@ const args = {
   hideCancelButton: false,
   aiConnected: false,
   disableScroll: false,
-};
-
-const ChatMessagesStory = {
-  ...ChatMessages,
-  args: { ...ChatMessages.args },
-};
-const InputQueryStory = {
-  ...InputQuery,
-  args: { ...InputQuery.args },
 };
 
 export const ChatModal = {
@@ -74,12 +66,11 @@ export const ChatModal = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button
-          slot="anchor"
-          kind=${args.aiConnected ? 'primary-ai' : 'primary'}
-        >
-          Open Modal
-        </kyn-button>
+        <kyn-button-float-container slot="anchor">
+          <kyn-ai-launch-btn
+            @on-click=${() => action('on-click')()}
+          ></kyn-ai-launch-btn>
+        </kyn-button-float-container>
         <span class="content">
           <kyn-tabs
             style="height: 300px;"
@@ -96,26 +87,30 @@ export const ChatModal = {
               <span class="icon">${unsafeSVG(chatHistoryIcon)}</span>
               History
             </kyn-tab>
-            <!-- <kyn-tab slot="tabs" id="settings">
-              <span class="icon">${unsafeSVG(userAvatarIcon)}</span>
-              Settings
-            </kyn-tab> -->
 
             <kyn-tab-panel tabId="chat" visible>
-              ${ChatMessagesStory.render(ChatMessagesStory.args)}
+              ${ChatMessages.render(ChatMessages.args)}
             </kyn-tab-panel>
-            <kyn-tab-panel tabId="history">Tab 2 Content</kyn-tab-panel>
-            <kyn-tab-panel tabId="settings">Tab 3 Content</kyn-tab-panel>
+            <kyn-tab-panel tabId="history">
+              ${ChatHistory.render(ChatHistory.args)}
+            </kyn-tab-panel>
           </kyn-tabs>
         </span>
 
         <div class="input-query-container" slot="footer">
           ${InputQuery.render(InputQuery.args)}
+          <div class="disclaimer kd-type--ui-02">
+            Kai may occasionally generate incorrect or misleading information.
+          </div>
         </div>
       </kyn-modal>
       <style>
         .input-query-container > * {
           width: 100%;
+        }
+        .disclaimer {
+          padding: var(--kd-spacing-0) var(--kd-spacing-16);
+          color: var(--kd-color-text-level-secondary);
         }
       </style>
     `;
