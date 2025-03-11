@@ -4,6 +4,8 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/indicator.svg';
 import '../../components/reusable/card';
 
+import { AISourcesFeedback } from '../../components/ai/sourcesFeedback/aiSourcesFeedback.stories';
+
 export default {
   title: 'AI/Patterns/Response',
 };
@@ -118,6 +120,7 @@ export const AIResponse = {
             Would you like help applying one of these frameworks to your
             specific set of applications?
           </div>
+          ${AISourcesFeedback.render(AISourcesFeedback.args)}
         </span>
       </div>
       <style>
