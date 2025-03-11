@@ -62,131 +62,25 @@ const Response = [
   },
 ];
 
-const Template = () => {
-  return html` <span class="response_item kd-type--body-02">
-      <div>
-        Prioritizing which applications to modernize first is crucial for
-        maximizing business value and minimizing risk. Here’s a structured
-        approach to help with this decision:
-      </div>
-      ${Response.map((items, index) => {
-        return html`
-          <div>
-            <b>${index + 1}. ${items.title}</b>
-          </div>
-          <ol class="mg-0 kd-spacing--list-item" type="a">
-            ${items.message.map((item) => {
-              return html`<li>${unsafeHTML(item.msgText)}</li>`;
-            })}
-          </ol>
-        `;
-      })}
-      <div class="mg-30">
-        Would you like help applying one of these frameworks to your specific
-        set of applications?
-      </div>
-    </span>
-    <style>
-      .response_item {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        color: var(--kd-color-text-level-primary);
-      }
-      .mg-30 {
-        margin-top: 30px;
-      }
-      .mg-0 {
-        margin: 0;
-      }
-    </style>`;
-};
-
-export const WithAvatarInitials = {
+export const UserInput = {
   render: () => {
     return html`
-      <div class="response_content">
-        <div class="response_items">
-          <kyn-avatar initials="A"></kyn-avatar>
-          ${Template()}
+      <div class="response_wrapper">
+        <div class="response_title">
+          <span><kyn-avatar initials="A"></kyn-avatar></span>
+          <kyn-card aria-label="Card" aiConnected style="width:100%">
+            How do we prioritize which applications to modernize first?
+          </kyn-card>
         </div>
       </div>
 
       <style>
-        .response_content {
+        .response_wrapper {
           display: flex;
           gap: 16px;
-          flex-direction: column;
-        }
-        .response_items {
-          display: flex;
-          gap: 16px;
-          color: var(--kd-color-text-level-primary);
-        }
-      </style>
-    `;
-  },
-};
-
-export const WithAvatarImage = {
-  render: () => {
-    return html`
-      <div class="response_content">
-        <div class="response_items">
-          <kyn-avatar
-            ><img src="https://picsum.photos/id/237/112/112" alt="User Name"
-          /></kyn-avatar>
-          ${Template()}
-        </div>
-      </div>
-      <style>
-        .response_content {
-          display: flex;
-          gap: 16px;
-          flex-direction: column;
-        }
-        .response_items {
-          display: flex;
-          gap: 16px;
-          color: var(--kd-color-text-level-primary);
-        }
-        .response_title {
-          display: flex;
-          gap: 16px;
-        }
-      </style>
-    `;
-  },
-};
-
-export const WithAIImage = {
-  render: () => {
-    return html`
-      <div class="response_content">
-        <div class="response_items">
-          <span class="response_icon"> ${unsafeHTML(aiResponse)} </span>
-          ${Template()}
-        </div>
-      </div>
-      <style>
-        .response_content {
-          display: flex;
-          gap: 16px;
-          flex-direction: column;
-        }
-        .response_items {
-          display: flex;
-          gap: 16px;
-          color: var(--kd-color-text-level-primary);
-        }
-        .response_title {
-          display: flex;
-          gap: 16px;
-        }
-        .response_icon {
-          svg {
-            width: 20px;
-            height: 20px;
+          .response_title {
+            display: flex;
+            gap: 16px;
           }
         }
       </style>
@@ -194,43 +88,53 @@ export const WithAIImage = {
   },
 };
 
-export const WithOtherContent = {
+export const AIResponse = {
   render: () => {
     return html`
-      <div class="response_content">
-        <div class="response_items">
-          <div class="response_title">
-            <span><kyn-avatar initials="A"></kyn-avatar></span>
-            <kyn-card aria-label="Card" aiConnected style="width:100%">
-              How do we prioritize which applications to modernize first?
-            </kyn-card>
+      <div class="response_wrapper">
+        <span class="response_icon"> ${unsafeHTML(aiResponse)} </span>
+        <span class="response_item kd-type--body-02">
+          <div>
+            Prioritizing which applications to modernize first is crucial for
+            maximizing business value and minimizing risk. Here’s a structured
+            approach to help with this decision:
           </div>
-        </div>
-        ${WithAIImage.render()}
-        <div class="response_items">
-          <div class="response_title">
-            <span><kyn-avatar initials="A"></kyn-avatar></span>
-            <kyn-card aria-label="Card" aiConnected style="width:100%">
-              Yes
-            </kyn-card>
+          ${Response.map((items, index) => {
+            return html`
+              <div>
+                <b>${index + 1}. ${items.title}</b>
+              </div>
+              <ol
+                class="kd-spacing--margin-top-0 kd-spacing--margin-bottom-0 kd-spacing--list-item"
+                type="a"
+              >
+                ${items.message.map((item) => {
+                  return html`<li>${unsafeHTML(item.msgText)}</li>`;
+                })}
+              </ol>
+            `;
+          })}
+          <div class="kd-spacing--margin-top-24">
+            Would you like help applying one of these frameworks to your
+            specific set of applications?
           </div>
-        </div>
+        </span>
       </div>
-
       <style>
-        .response_content {
+        .response_wrapper {
           display: flex;
           gap: 16px;
-          flex-direction: column;
-        }
-        .response_items {
-          display: flex;
-          gap: 16px;
-          color: var(--kd-color-text-level-primary);
-        }
-        .response_title {
-          display: flex;
-          gap: 16px;
+          .response_item {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+          }
+          .response_icon {
+            svg {
+              width: 20px;
+              height: 20px;
+            }
+          }
         }
       </style>
     `;

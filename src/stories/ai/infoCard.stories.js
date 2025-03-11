@@ -19,16 +19,14 @@ export default {
 
 const InfoTemplate = () => {
   return html`
-    <kyn-card style="width:100%" type="normal">
+    <kyn-card style="width:100%" type="normal" aiConnected>
       <div class="info-card-container">
         <div class="info-card-leftIcon">${unsafeSVG(policeIcon)}</div>
         <div class="info-card-content-wrapper">
           <div class="info-card-title-text kd-type--ui-03">
             This is the title
           </div>
-          <div class="info-card-sub-text kd-type--body-02">
-            This is the description
-          </div>
+          <div class="kd-type--body-02">This is the description</div>
         </div>
         <div class="info-card-rightIcon">
           <kyn-inline-confirm
@@ -51,10 +49,6 @@ export const Default = {
   render: () => {
     return html` ${InfoTemplate()}
       <style>
-        kyn-card::part(card-wrapper) {
-          outline: 1px solid var(--kd-color-border-level-secondary);
-          background: var(--kd-color-background-container-ai-subtle);
-        }
         .info-card-container {
           display: flex;
           align-items: center;
@@ -65,9 +59,6 @@ export const Default = {
         }
         .info-card-title-text {
           color: var(--kd-color-text-title-ai-tertiary);
-        }
-        .info-card-sub-text {
-          color: var(--kd-color-text-level-primary);
         }
         .info-card-rightIcon,
         .info-card-leftIcon {
@@ -101,12 +92,10 @@ export const WithRightIconAndDescription = {
       <div class="container">
         ${content.map((item) => {
           return html`
-            <kyn-card style="width:100%" type="normal">
+            <kyn-card style="width:100%" type="normal" aiConnected>
               <div class="info-card-container">
                 <div class="info-card-content-wrapper">
-                  <div class="info-card-sub-text kd-type--body-02">
-                    ${item.description}
-                  </div>
+                  <div class="kd-type--body-02">${item.description}</div>
                 </div>
                 <div style="display:flex">
                   <kyn-inline-confirm
@@ -131,10 +120,6 @@ export const WithRightIconAndDescription = {
           flex-direction: column;
           gap: 8px;
         }
-        kyn-card::part(card-wrapper) {
-          outline: 1px solid var(--kd-color-border-level-secondary);
-          background: var(--kd-color-background-container-ai-subtle);
-        }
         .info-card-container {
           display: flex;
           align-items: center;
@@ -142,9 +127,6 @@ export const WithRightIconAndDescription = {
         }
         .info-card-content-wrapper {
           flex: 1 0 0;
-        }
-        .info-card-sub-text {
-          color: var(--kd-color-text-level-primary);
         }
       </style>
     `;

@@ -6,9 +6,11 @@ import chatHistoryIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome
 import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import { Default as InputQueryStory } from './inputQuery.stories.js';
-import { WithOtherContent as ResponseStory } from './response.stories.js';
+import { UserInput, AIResponse } from './response.stories.js';
 import { WithRightIconAndDescription } from './infoCard.stories.js';
 
+import '../../components/reusable/floatingContainer';
+import '../../components/ai/aiLaunchButton';
 import '../../components/reusable/tabs';
 import '../../components/reusable/pagetitle';
 import '../../components/reusable/link';
@@ -46,8 +48,13 @@ export const Default = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button slot="anchor" kind="primary-ai"> Open Modal </kyn-button>
+        <kyn-button-float-container slot="anchor">
+          <kyn-ai-launch-btn
+            @on-click=${() => action('on-click')()}
+          ></kyn-ai-launch-btn>
+        </kyn-button-float-container>
         <kyn-tabs
+          style="height: 450px;"
           tabStyle="line"
           scrollablePanels
           aiConnected
@@ -76,9 +83,9 @@ export const Default = {
                 ></kyn-search>
                 <div class="chat_content_items">
                   <div class="chat-section">
-                    <label class="chat-date kd-type--ui-02">
-                      Today, 25 Feb 10 2025
-                    </label>
+                    <label class="kd-type--ui-02 kd-type--weight-medium"
+                      >Today, 25 Feb 10 2025</label
+                    >
                     ${WithRightIconAndDescription.render()}
                   </div>
                 </div>
@@ -118,10 +125,6 @@ export const Default = {
           flex-direction: column;
           gap: 8px;
         }
-        .chat-date {
-          color: var(--kd-color-text-forms-label-primary);
-          font-weight: 500;
-        }
         .chat-items {
           display: flex;
           align-items: center;
@@ -139,7 +142,7 @@ export const Default = {
   },
 };
 
-export const WithOtherContent = {
+export const HistoricalChat = {
   render: () => {
     return html`
       <kyn-modal
@@ -159,7 +162,11 @@ export const WithOtherContent = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button slot="anchor" kind="primary-ai"> Open Modal </kyn-button>
+        <kyn-button-float-container slot="anchor">
+          <kyn-ai-launch-btn
+            @on-click=${() => action('on-click')()}
+          ></kyn-ai-launch-btn>
+        </kyn-button-float-container>
         <kyn-tabs
           style="height: 400px;"
           scrollablePanels
@@ -193,7 +200,7 @@ export const WithOtherContent = {
                 aiConnected
               >
               </kyn-page-title>
-              ${ResponseStory.render()}
+              ${UserInput.render()} ${AIResponse.render()}
             </div>
           </kyn-tab-panel>
         </kyn-tabs>
