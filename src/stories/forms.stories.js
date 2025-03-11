@@ -174,7 +174,9 @@ export const Default = {
           caption="Time picker example"
           ?twentyFourHourFormat=${true}
           defaultErrorMessage="A time value is required"
+          .value=${null}
           @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 425px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -191,7 +193,9 @@ export const Default = {
           dateFormat="Y-m-d"
           caption="Date picker example"
           defaultErrorMessage="A date value is required"
+          .value=${null}
           @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 425px;"
         ></kyn-date-picker>
 
         <br /><br />
@@ -204,7 +208,9 @@ export const Default = {
           mode="multiple"
           caption="Date picker example"
           defaultErrorMessage="A date value is required"
+          .value=${null}
           @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 425px;"
         ></kyn-date-picker>
 
         <br /><br />
@@ -217,7 +223,9 @@ export const Default = {
           caption="Date time picker example"
           ?twentyFourHourFormat=${false}
           defaultErrorMessage="A date value is required"
+          .value=${null}
           @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 425px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
