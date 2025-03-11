@@ -38,6 +38,7 @@ const _defaultTextStrings = {
  * @slot sources - source cards in source panel.
  * @slot feedback-form - Positive feedback form.
  * @fires on-toggle - Emits the `opened` state when the panel item opens/closes.
+ * @fires on-feedback-deselected - Emits when thumbs-up or thumbs-down button is deselected.
  */
 
 @customElement('kyn-ai-sources-feedback')
@@ -308,18 +309,32 @@ export class AISourcesFeedback extends LitElement {
     }
 
     if (panel === 'sources' || this._shouldEmitFeedbackEvent(feedbackType)) {
-      console.log('EMIITING');
       this._emitToggleEvent(panel, feedbackType);
     }
   }
 
   private _updateFeedbackCounts(feedbackType: 'positive' | 'negative') {
+    // Checks if the feedbackType was already selected before updating the counts.
+    const wasSelected =
+      (feedbackType === 'positive' && this.thumbsUpClickCount % 2 !== 0) ||
+      (feedbackType === 'negative' && this.thumbsDownClickCount % 2 !== 0);
+
     if (feedbackType === 'positive') {
       this.thumbsUpClickCount++;
       this.thumbsDownClickCount -= this.thumbsDownClickCount % 2;
     } else {
       this.thumbsDownClickCount++;
       this.thumbsUpClickCount -= this.thumbsUpClickCount % 2;
+    }
+
+    if (wasSelected) {
+      this.dispatchEvent(
+        new CustomEvent('on-feedback-deselected', {
+          detail: { feedbackType },
+          bubbles: true,
+          composed: true,
+        })
+      );
     }
   }
 

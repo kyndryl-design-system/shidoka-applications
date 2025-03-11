@@ -77,6 +77,7 @@ export const AISourcesFeedback = {
         closeText=${args.closeText}
         .textStrings=${args.textStrings}
         @on-toggle=${(e) => action(e.type)(e)}
+        @oon-feedback-deselected=${(e) => action(e.type)(e)}
       >
         <kyn-button
           slot="copy"
