@@ -62,7 +62,7 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   dateFormat = 'Y-m-d';
 
-  /** Sets the initial selected date(s). For multiple mode, provide an array of date strings matching dateFormat. */
+  /** Sets the initial selected date(s). For multiple mode, provide an array of date strings matching dateFormat. For single mode, provide a string. */
   @property({ type: Array })
   defaultDate: string | string[] | null = null;
 
@@ -78,7 +78,7 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   size = 'md';
 
-  /** Sets pre-selected date/time value. */
+  /** Sets pre-selected date/time value. For multiple mode, this will be an array of Dates. For single mode, a string. */
   @property({ type: Array })
   override value: Date | Date[] | null = null;
 
@@ -237,22 +237,26 @@ export class DatePicker extends FormMixin(LitElement) {
 
   private hasValue(): boolean {
     if (this._inputEl?.value) return true;
-    if (this.value) {
-      if (Array.isArray(this.value)) {
-        return (
-          this.value.length > 0 && !this.value.every((date) => date === null)
-        );
+    if (this.mode === 'multiple') {
+      if (this.value) {
+        if (Array.isArray(this.value)) {
+          return (
+            this.value.length > 0 && !this.value.every((date) => date === null)
+          );
+        }
       }
-      return true;
-    }
-    if (this.defaultDate) {
-      if (Array.isArray(this.defaultDate)) {
-        return (
-          this.defaultDate.length > 0 &&
-          !this.defaultDate.every((date) => !date || date === '')
-        );
+      if (this.defaultDate) {
+        if (Array.isArray(this.defaultDate)) {
+          return (
+            this.defaultDate.length > 0 &&
+            !this.defaultDate.every((date) => !date || date === '')
+          );
+        }
       }
-      return !!this.defaultDate;
+    } else {
+      if (this.value instanceof Date) return true;
+      if (typeof this.defaultDate === 'string' && this.defaultDate.trim())
+        return true;
     }
     return false;
   }
@@ -401,7 +405,7 @@ export class DatePicker extends FormMixin(LitElement) {
     super.updated(changedProperties);
 
     if (changedProperties.has('value') && !this._isClearing) {
-      const newValue = this.value;
+      const newValue = this.value as string | Date | Date[] | null;
       if (
         newValue === null ||
         (Array.isArray(newValue) && newValue.length === 0)
@@ -433,10 +437,20 @@ export class DatePicker extends FormMixin(LitElement) {
               }
             }
           }
-        } else if (this.mode === 'single' && newValue instanceof Date) {
-          const currentDate = this.flatpickrInstance.selectedDates[0];
-          if (!currentDate || currentDate.getTime() !== newValue.getTime()) {
-            shouldSetInitialDates = true;
+        } else if (this.mode === 'single') {
+          let newDate: Date | null = null;
+          if (typeof newValue === 'string') {
+            if (newValue.trim()) {
+              newDate = new Date(newValue);
+            }
+          } else if (newValue instanceof Date) {
+            newDate = newValue;
+          }
+          if (newDate) {
+            const currentDate = this.flatpickrInstance.selectedDates[0];
+            if (!currentDate || currentDate.getTime() !== newDate.getTime()) {
+              shouldSetInitialDates = true;
+            }
           }
         }
         if (shouldSetInitialDates) {
@@ -623,7 +637,7 @@ export class DatePicker extends FormMixin(LitElement) {
     }
 
     try {
-      const dateToSet = this.defaultDate || this.value;
+      const dateToSet = this.value || this.defaultDate;
       if (!dateToSet) return;
 
       if (Array.isArray(dateToSet)) {
@@ -729,30 +743,29 @@ export class DatePicker extends FormMixin(LitElement) {
     this._hasInteracted = true;
 
     try {
-      if (this.mode === 'multiple') {
-        this.value = selectedDates.length > 0 ? [...selectedDates] : null;
+      if (selectedDates.length === 0) {
+        this.value = null;
+      } else if (this.mode === 'multiple') {
+        this.value = [...selectedDates];
       } else {
-        this.value = selectedDates.length > 0 ? selectedDates[0] : null;
+        this.value = selectedDates[0];
       }
 
-      let formattedDates;
-      if (Array.isArray(this.value)) {
-        formattedDates = this.value.map((date) => date.toISOString());
-      } else if (this.value instanceof Date) {
-        formattedDates = this.value.toISOString();
-      } else {
-        formattedDates = null;
-      }
+      const formattedDates =
+        selectedDates.length === 0
+          ? null
+          : this.mode === 'multiple'
+          ? selectedDates.map((date) => date.toISOString())
+          : selectedDates[0].toISOString();
 
       emitValue(this, 'on-change', {
         dates: formattedDates,
-        dateString: (this._inputEl as HTMLInputElement)?.value || dateStr,
+        dateString: dateStr,
         source: selectedDates.length === 0 ? 'clear' : undefined,
       });
 
       this._validate(true, false);
       await this.updateComplete;
-      this.requestUpdate();
     } catch (error) {
       console.warn('Error handling date change:', error);
     }

@@ -60,8 +60,8 @@ export class TimePicker extends FormMixin(LitElement) {
   locale: SupportedLocale | string = 'en';
 
   /** Sets date/time value. */
-  @property({ type: Object })
-  override value: Date | null = null;
+  @property({ type: String })
+  override value: String | Date | null = null;
 
   /** Sets the initial selected date(s). For multiple mode, provide an array of date strings matching dateFormat. */
   @property({ type: Array })
@@ -390,11 +390,11 @@ export class TimePicker extends FormMixin(LitElement) {
         } finally {
           this._isClearing = false;
         }
-      } else if (this.flatpickrInstance && newValue instanceof Date) {
-        const currentDate = this.flatpickrInstance.selectedDates[0];
-        if (!currentDate || currentDate.getTime() !== newValue.getTime()) {
-          this.setInitialDates(this.flatpickrInstance);
-        }
+      } else if (
+        this.flatpickrInstance &&
+        (typeof newValue === 'string' || newValue instanceof Date)
+      ) {
+        this.setInitialDates(this.flatpickrInstance);
       }
       this.requestUpdate();
     }
@@ -575,8 +575,20 @@ export class TimePicker extends FormMixin(LitElement) {
 
   setInitialDates(instance: flatpickr.Instance): void {
     try {
-      if (this._hasInteracted || this.value) return;
-
+      if (this.value) {
+        if (typeof this.value === 'string') {
+          const parts = this.value.split(':').map(Number);
+          if (parts.length >= 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+            const newDate = new Date();
+            newDate.setHours(parts[0], parts[1], 0, 0);
+            instance.setDate(newDate, false);
+            return;
+          }
+        } else if (this.value instanceof Date) {
+          instance.setDate(this.value, false);
+          return;
+        }
+      }
       if (this.defaultDate != null) {
         if (typeof this.defaultDate === 'string') {
           const trimmed = this.defaultDate.trim();
@@ -600,15 +612,10 @@ export class TimePicker extends FormMixin(LitElement) {
           return;
         }
       }
-
       if (this.defaultHour !== null || this.defaultMinute !== null) {
         const newDate = new Date();
-        if (this.defaultHour !== null) {
-          newDate.setHours(this.defaultHour);
-        }
-        if (this.defaultMinute !== null) {
-          newDate.setMinutes(this.defaultMinute);
-        }
+        if (this.defaultHour !== null) newDate.setHours(this.defaultHour);
+        if (this.defaultMinute !== null) newDate.setMinutes(this.defaultMinute);
         newDate.setSeconds(0);
         newDate.setMilliseconds(0);
         instance.setDate(newDate, false);
