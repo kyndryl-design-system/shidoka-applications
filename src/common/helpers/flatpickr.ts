@@ -70,7 +70,8 @@ interface FlatpickrOptionsContext {
 }
 
 export function isSupportedLocale(locale: string): boolean {
-  return langsArray.includes(locale as SupportedLocale);
+  const baseLocale = locale.split('-')[0].toLowerCase();
+  return langsArray.includes(baseLocale as SupportedLocale);
 }
 
 export function preventFlatpickrOpen(
@@ -352,9 +353,8 @@ export async function getFlatpickrOptions(
     localeOptions = English;
   }
 
-  const isEnglishOr12HourLocale = ['en', 'en-US', 'en-GB', 'es-MX'].includes(
-    locale
-  );
+  const baseLocale = locale.split('-')[0].toLowerCase();
+  const isEnglishOr12HourLocale = ['en', 'es'].includes(baseLocale);
 
   const isWideScreen = window.innerWidth >= 767;
 
@@ -520,26 +520,27 @@ export function setCalendarAttributes(
   }
 }
 
+const localeCache: Record<string, Partial<Locale>> = {};
+
 export async function loadLocale(locale: string): Promise<Partial<Locale>> {
   if (locale === 'en') return English;
-
+  if (localeCache[locale]) return localeCache[locale];
   if (!isSupportedLocale(locale)) {
     console.warn(`Unsupported locale "${locale}". Falling back to English.`);
     return English;
   }
-
   try {
-    const module = await import(`flatpickr/dist/l10n/${locale}.js`);
+    const baseLocale = locale.split('-')[0].toLowerCase();
+    const module = await import(`flatpickr/dist/l10n/${baseLocale}.js`);
     const localeConfig =
-      module[locale] ?? module.default?.[locale] ?? module.default;
-
+      module[baseLocale] ?? module.default?.[baseLocale] ?? module.default;
     if (!localeConfig) {
       console.warn(
         `Locale configuration not found for "${locale}". Falling back to English.`
       );
       return English;
     }
-
+    localeCache[locale] = localeConfig;
     return localeConfig;
   } catch (error) {
     console.error(
