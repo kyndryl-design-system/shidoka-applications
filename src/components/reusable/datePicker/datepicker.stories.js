@@ -90,7 +90,6 @@ const Template = (args) => {
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
       @on-change=${(e) => action(e.type)(e)}
-      style="max-width: 425px;"
     >
     </kyn-date-picker>
   `;
@@ -250,7 +249,6 @@ export const InModal = {
           .minDate=${args.minDate}
           .maxDate=${args.maxDate}
           @on-change=${(e) => action(e.type)(e)}
-          style="max-width: 425px;"
         >
         </kyn-date-picker>
       </kyn-modal>

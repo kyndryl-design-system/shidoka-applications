@@ -75,7 +75,6 @@ const Template = (args) => {
       ?timepickerDisabled=${args.timepickerDisabled}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       @on-change=${(e) => action(e.type)(e)}
-      style="max-width: 425px;"
     >
     </kyn-time-picker>
   `;
@@ -214,7 +213,6 @@ export const InModal = {
           ?timepickerDisabled=${args.timepickerDisabled}
           ?twentyFourHourFormat=${args.twentyFourHourFormat}
           @on-change=${(e) => action(e.type)(e)}
-          style="max-width: 425px;"
         >
         </kyn-time-picker>
       </kyn-modal>

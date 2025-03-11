@@ -175,7 +175,7 @@ export const Default = {
           ?twentyFourHourFormat=${true}
           defaultErrorMessage="A time value is required"
           @on-input=${(e) => action(e.type)(e)}
-          style="max-width: 425px;"
+          style="min-width: 425px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -193,7 +193,7 @@ export const Default = {
           caption="Date picker example"
           defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)(e)}
-          style="max-width: 425px;"
+          style="min-width: 425px;"
         ></kyn-date-picker>
 
         <br /><br />
@@ -207,7 +207,7 @@ export const Default = {
           caption="Date picker example"
           defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)(e)}
-          style="max-width: 425px;"
+          style="min-width: 425px;"
         ></kyn-date-picker>
 
         <br /><br />
@@ -221,7 +221,7 @@ export const Default = {
           ?twentyFourHourFormat=${false}
           defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)(e)}
-          style="max-width: 425px;"
+          style="min-width: 425px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -239,7 +239,7 @@ export const Default = {
           caption="Date range picker example"
           defaultErrorMessage="Both start and end dates are required"
           @on-input=${(e) => action(e.type)(e)}
-          style="max-width: 425px;"
+          style="min-width: 425px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -258,7 +258,7 @@ export const Default = {
           ?twentyFourHourFormat=${false}
           defaultErrorMessage="Both start and end dates are required"
           @on-input=${(e) => action(e.type)(e)}
-          style="max-width: 425px;"
+          style="min-width: 425px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
