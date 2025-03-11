@@ -118,11 +118,11 @@ export class DatePicker extends FormMixin(LitElement) {
 
   /** Sets lower boundary of datepicker date selection. */
   @property({ type: String })
-  minDate: string | number | Date = '';
+  minDate: string | number | Date | null = null;
 
   /** Sets upper boundary of datepicker date selection. */
   @property({ type: String })
-  maxDate: string | number | Date = '';
+  maxDate: string | number | Date | null = null;
 
   /** Sets aria label attribute for error message. */
   @property({ type: String })
@@ -706,12 +706,12 @@ export class DatePicker extends FormMixin(LitElement) {
     const options = await getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
-      defaultDate: this.defaultDate ? this.defaultDate : undefined,
+      defaultDate: this.defaultDate || undefined,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl!,
-      minDate: this.minDate,
-      maxDate: this.maxDate,
+      minDate: this.minDate || undefined,
+      maxDate: this.maxDate || undefined,
       enable: this.enable,
       disable: this._processedDisableDates,
       mode: this.mode,
