@@ -1,5 +1,4 @@
 import { html } from 'lit';
-import '@kyndryl-design-system/shidoka-foundation/css/grid.css';
 import './index';
 import { action } from '@storybook/addon-actions';
 import './card.sample';
