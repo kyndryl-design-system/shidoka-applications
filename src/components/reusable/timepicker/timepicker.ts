@@ -217,7 +217,11 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private hasValue(): boolean {
-    return this.value !== null && this._hasInteracted;
+    if (this._inputEl?.value) return true;
+    if (this.value !== null) return true;
+    if (this.defaultDate) return true;
+    if (this.defaultHour !== null || this.defaultMinute !== null) return true;
+    return false;
   }
 
   override render() {
@@ -377,9 +381,41 @@ export class TimePicker extends FormMixin(LitElement) {
         await this.debouncedUpdate();
       }
     }
-
     if (changedProperties.has('value') && !this._isClearing) {
-      const newValue = this.value;
+      let newValue = this.value;
+
+      if (typeof newValue === 'string') {
+        try {
+          const strValue = newValue as string;
+          if (strValue.trim() !== '') {
+            this._hasInteracted = true;
+
+            if (/\d{1,2}:\d{2}/.test(strValue)) {
+              const [hours, minutes] = strValue.split(':').map(Number);
+              if (!isNaN(hours) && !isNaN(minutes)) {
+                const date = new Date();
+                date.setHours(hours, minutes, 0, 0);
+                this.value = date;
+                newValue = this.value;
+
+                if (this.flatpickrInstance) {
+                  this.flatpickrInstance.setDate(newValue, true);
+                }
+              }
+            } else if (/\d{4}-\d{2}-\d{2}/.test(strValue)) {
+              this.value = new Date(strValue);
+              newValue = this.value;
+
+              if (this.flatpickrInstance) {
+                this.flatpickrInstance.setDate(newValue, true);
+              }
+            }
+          }
+        } catch (e) {
+          console.warn('Error parsing time string:', e);
+        }
+      }
+
       if (newValue === null && this.flatpickrInstance) {
         this._isClearing = true;
         try {
@@ -390,15 +426,9 @@ export class TimePicker extends FormMixin(LitElement) {
         } finally {
           this._isClearing = false;
         }
-      } else if (this.flatpickrInstance && newValue instanceof Date) {
-        const currentDate = this.flatpickrInstance.selectedDates[0];
-        if (!currentDate || currentDate.getTime() !== newValue.getTime()) {
-          this.setInitialDates(this.flatpickrInstance);
-        }
       }
       this.requestUpdate();
     }
-
     if (
       changedProperties.has('timepickerDisabled') &&
       this.timepickerDisabled &&
@@ -408,47 +438,33 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  private async _clearInput(
-    options: { reinitFlatpickr?: boolean } = { reinitFlatpickr: true }
-  ): Promise<void> {
-    this.value = null;
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.clear();
-    }
-    if (this._inputEl) {
-      this._inputEl.value = '';
-      this._inputEl.setAttribute(
-        'aria-label',
-        this._textStrings.noTimeSelected
-      );
-    }
-    emitValue(this, 'on-change', {
-      time: this.value,
-      source: 'clear',
-    });
-    this._validate(true, false);
-    await this.updateComplete;
-    if (options.reinitFlatpickr) {
-      await this.initializeFlatpickr();
-      this.requestUpdate();
-    }
-  }
-
-  private async _handleClear(event: Event): Promise<void> {
+  private async _handleClear(event: Event) {
     event.preventDefault();
     event.stopPropagation();
     this._isClearing = true;
     try {
-      await this._clearInput();
+      this.value = null;
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.clear();
+        if (this._inputEl) {
+          this._inputEl.value = '';
+          this._inputEl.setAttribute(
+            'aria-label',
+            this._textStrings.noTimeSelected
+          );
+        }
+      }
+      emitValue(this, 'on-change', {
+        time: this.value,
+        source: 'clear',
+      });
+      this._validate(true, false);
+      await this.updateComplete;
+      await this.initializeFlatpickr();
+      this.requestUpdate();
     } finally {
       this._isClearing = false;
     }
-  }
-
-  async handleClose(): Promise<void> {
-    this._hasInteracted = true;
-    this._validate(true, false);
-    await this.updateComplete;
   }
 
   private async setupAnchor() {
@@ -576,23 +592,26 @@ export class TimePicker extends FormMixin(LitElement) {
   setInitialDates(instance: flatpickr.Instance): void {
     try {
       if (this._hasInteracted || this.value) return;
-
       if (this.defaultDate != null) {
         if (typeof this.defaultDate === 'string') {
-          const trimmed = this.defaultDate.trim();
-          if (trimmed.includes('T')) {
-            const parsed = new Date(trimmed);
-            if (!isNaN(parsed.getTime())) {
-              instance.setDate(parsed, false);
-              return;
-            }
-          } else {
-            const parts = trimmed.split(':').map(Number);
+          const dateStr = this.defaultDate.trim();
+          if (dateStr.includes(':') && !dateStr.includes('-')) {
+            const parts = dateStr.split(':').map(Number);
             if (parts.length >= 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
               const newDate = new Date();
               newDate.setHours(parts[0], parts[1], 0, 0);
               instance.setDate(newDate, false);
               return;
+            }
+          } else if (/\d{4}-\d{2}-\d{2}/.test(dateStr)) {
+            try {
+              const newDate = new Date(dateStr);
+              if (!isNaN(newDate.getTime())) {
+                instance.setDate(newDate, false);
+                return;
+              }
+            } catch (e) {
+              console.warn('Error parsing date string:', e);
             }
           }
         } else if (this.defaultDate instanceof Date) {
@@ -600,7 +619,6 @@ export class TimePicker extends FormMixin(LitElement) {
           return;
         }
       }
-
       if (this.defaultHour !== null || this.defaultMinute !== null) {
         const newDate = new Date();
         if (this.defaultHour !== null) {
@@ -623,6 +641,12 @@ export class TimePicker extends FormMixin(LitElement) {
       this.flatpickrInstance?.close();
       this._shouldFlatpickrOpen = true;
     }
+  }
+
+  async handleClose(): Promise<void> {
+    this._hasInteracted = true;
+    this._validate(true, false);
+    await this.updateComplete;
   }
 
   async handleTimeChange(
@@ -650,7 +674,6 @@ export class TimePicker extends FormMixin(LitElement) {
         this.value = null;
         emitValue(this, 'on-change', {
           time: this.value,
-          dateStr: dateStr || '',
           source: 'clear',
         });
       }

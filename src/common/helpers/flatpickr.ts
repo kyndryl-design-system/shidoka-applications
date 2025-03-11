@@ -434,7 +434,7 @@ export async function getFlatpickrOptions(
             const [year, month, day] = defaultDate.split('-').map(Number);
             parsedDate =
               !isNaN(year) && !isNaN(month) && !isNaN(day)
-                ? new Date(Date.UTC(year, month - 1, day, 12))
+                ? new Date(year, month - 1, day, 12)
                 : null;
             break;
           }
@@ -442,7 +442,7 @@ export async function getFlatpickrOptions(
             const [day, month, year] = defaultDate.split('-').map(Number);
             parsedDate =
               !isNaN(day) && !isNaN(month) && !isNaN(year)
-                ? new Date(Date.UTC(year, month - 1, day, 12))
+                ? new Date(year, month - 1, day, 12)
                 : null;
             break;
           }
@@ -450,7 +450,7 @@ export async function getFlatpickrOptions(
             const [month, day, year] = defaultDate.split('-').map(Number);
             parsedDate =
               !isNaN(month) && !isNaN(day) && !isNaN(year)
-                ? new Date(Date.UTC(year, month - 1, day, 12))
+                ? new Date(year, month - 1, day, 12)
                 : null;
             break;
           }

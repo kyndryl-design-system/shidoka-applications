@@ -401,46 +401,37 @@ export class DatePicker extends FormMixin(LitElement) {
     super.updated(changedProperties);
 
     if (changedProperties.has('value') && !this._isClearing) {
-      const newValue = this.value;
-      if (
-        newValue === null ||
-        (Array.isArray(newValue) && newValue.length === 0)
-      ) {
-        if (this.flatpickrInstance) {
-          this._isClearing = true;
-          try {
-            this.flatpickrInstance.clear();
-            if (this._inputEl) {
-              this._inputEl.value = '';
-            }
-          } finally {
-            this._isClearing = false;
-          }
-        }
-      } else if (this.flatpickrInstance) {
-        let shouldSetInitialDates = false;
-        if (this.mode === 'multiple' && Array.isArray(newValue)) {
-          const currentDates = this.flatpickrInstance.selectedDates;
-          if (!currentDates || currentDates.length !== newValue.length) {
-            shouldSetInitialDates = true;
-          } else {
-            for (let i = 0; i < newValue.length; i++) {
-              if (
-                currentDates[i].getTime() !== (newValue[i] as Date).getTime()
-              ) {
-                shouldSetInitialDates = true;
-                break;
+      let newValue = this.value;
+
+      if (typeof newValue === 'string') {
+        try {
+          const strValue = newValue as string;
+          if (strValue.trim() !== '' && /\d{4}-\d{2}-\d{2}/.test(strValue)) {
+            const [year, month, day] = strValue.split('-').map(Number);
+            if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+              this.value = new Date(year, month - 1, day, 12);
+              newValue = this.value;
+              if (this.flatpickrInstance) {
+                this.flatpickrInstance.setDate(newValue, true);
               }
             }
           }
-        } else if (this.mode === 'single' && newValue instanceof Date) {
-          const currentDate = this.flatpickrInstance.selectedDates[0];
-          if (!currentDate || currentDate.getTime() !== newValue.getTime()) {
-            shouldSetInitialDates = true;
-          }
+        } catch (e) {
+          console.warn('Error parsing date string:', e);
         }
-        if (shouldSetInitialDates) {
-          this.setInitialDates();
+      }
+
+      const isNull =
+        newValue === null || (Array.isArray(newValue) && newValue.length === 0);
+      if (isNull && this.flatpickrInstance) {
+        this._isClearing = true;
+        try {
+          this.flatpickrInstance.clear();
+          if (this._inputEl) {
+            this._inputEl.value = '';
+          }
+        } finally {
+          this._isClearing = false;
         }
       }
       this.requestUpdate();
@@ -485,7 +476,11 @@ export class DatePicker extends FormMixin(LitElement) {
     ) {
       this._enableTime = updateEnableTime(this.dateFormat);
       if (this.flatpickrInstance && this._initialized && !this._isClearing) {
-        this.debouncedUpdate();
+        if (changedProperties.has('dateFormat')) {
+          this.debouncedUpdate();
+        } else {
+          this.debouncedUpdate();
+        }
       }
     }
 
@@ -511,48 +506,41 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  private async _clearInput(
-    options: { reinitFlatpickr?: boolean } = { reinitFlatpickr: true }
-  ): Promise<void> {
-    this.value = this.mode === 'multiple' ? [] : null;
-    this.defaultDate = null;
-
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.clear();
-    }
-    if (this._inputEl) {
-      this._inputEl.value = '';
-    }
-
-    emitValue(this, 'on-change', {
-      dates: this.value,
-      source: 'clear',
-    });
-
-    this._validate(true, false);
-    await this.updateComplete;
-
-    if (options.reinitFlatpickr) {
-      await this.initializeFlatpickr();
-      this.requestUpdate();
-    }
-  }
-
-  private async _handleClear(event: Event): Promise<void> {
+  private async _handleClear(event: Event) {
     event.preventDefault();
     event.stopPropagation();
+
+    if (!this.flatpickrInstance) {
+      console.warn('Cannot clear: Flatpickr instance not available');
+      return;
+    }
+
     this._isClearing = true;
+
     try {
-      await this._clearInput();
+      this.value = this.mode === 'multiple' ? [] : null;
+      this.defaultDate = null;
+
+      this.flatpickrInstance.clear();
+      if (this._inputEl) {
+        this._inputEl.value = '';
+      }
+
+      emitValue(this, 'on-change', {
+        dates: this.value,
+        dateString: (this._inputEl as HTMLInputElement)?.value,
+        source: 'clear',
+      });
+
+      this._validate(true, false);
+      await this.updateComplete;
+      await this.initializeFlatpickr();
+      this.requestUpdate();
+    } catch (error) {
+      console.error('Error clearing datepicker:', error);
     } finally {
       this._isClearing = false;
     }
-  }
-
-  async handleClose(): Promise<void> {
-    this._hasInteracted = true;
-    this._validate(true, false);
-    await this.updateComplete;
   }
 
   async initializeFlatpickr(): Promise<void> {
@@ -627,60 +615,23 @@ export class DatePicker extends FormMixin(LitElement) {
       if (!dateToSet) return;
 
       if (Array.isArray(dateToSet)) {
-        const validDates = dateToSet
-          .map((date) => {
-            if (typeof date === 'string') {
-              const trimmed = date.trim();
-              if (trimmed.includes('T')) {
-                const parsed = new Date(trimmed);
-                return isNaN(parsed.getTime()) ? null : parsed;
-              } else {
-                const parts = trimmed.split('-').map(Number);
-                if (parts.length === 3) {
-                  const [year, month, day] = parts;
-                  if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
-                    const localDate = new Date();
-                    localDate.setFullYear(year, month - 1, day);
-                    localDate.setHours(0, 0, 0, 0);
-                    return localDate;
-                  }
-                }
-                return null;
-              }
-            } else if (date instanceof Date) {
-              return date;
-            }
-            return null;
-          })
-          .filter((date): date is Date => date !== null);
+        const validDates = dateToSet.filter((date) => {
+          if (!date) return false;
+          if (typeof date === 'string' && !date.trim()) return false;
+          return true;
+        });
 
         if (validDates.length > 0) {
           this.flatpickrInstance.setDate(validDates, true);
         }
-      } else if (typeof dateToSet === 'string') {
-        const trimmed = dateToSet.trim();
-        if (trimmed.includes('T')) {
-          const parsed = new Date(trimmed);
-          if (!isNaN(parsed.getTime())) {
-            this.flatpickrInstance.setDate(parsed, true);
-          }
-        } else {
-          const parts = trimmed.split('-').map(Number);
-          if (parts.length === 3) {
-            const [year, month, day] = parts;
-            if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
-              const localDate = new Date();
-              localDate.setFullYear(year, month - 1, day);
-              localDate.setHours(0, 0, 0, 0);
-              this.flatpickrInstance.setDate(localDate, true);
-            }
-          }
-        }
+      } else if (typeof dateToSet === 'string' && dateToSet.trim()) {
+        this.flatpickrInstance.setDate(dateToSet, true);
       } else if (dateToSet instanceof Date) {
         this.flatpickrInstance.setDate(dateToSet, true);
       }
     } catch (error) {
       console.warn('Error setting initial dates:', error);
+
       if (error instanceof Error) {
         console.warn('Error details:', error.message);
       }
@@ -718,6 +669,12 @@ export class DatePicker extends FormMixin(LitElement) {
       this.flatpickrInstance?.close();
       this._shouldFlatpickrOpen = true;
     }
+  }
+
+  async handleClose(): Promise<void> {
+    this._hasInteracted = true;
+    this._validate(true, false);
+    await this.updateComplete;
   }
 
   async handleDateChange(

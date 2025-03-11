@@ -32,6 +32,9 @@ export default {
     invalidText: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
+    value: {
+      control: { type: 'text' },
+    },
   },
 };
 
@@ -83,7 +86,7 @@ DefaultTimePicker.args = {
   locale: 'en',
   required: false,
   size: 'md',
-  value: null,
+  value: '',
   warnText: '',
   invalidText: '',
   staticPosition: false,
