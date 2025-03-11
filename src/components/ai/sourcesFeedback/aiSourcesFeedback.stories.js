@@ -175,7 +175,12 @@ const feedbackFormContent = () => html`
       <kyn-button type="submit" kind="primary-ai" size="small"
         >Submit</kyn-button
       >
-      <kyn-button kind="outline-ai" size="small">Cancel</kyn-button>
+      <kyn-button
+        kind="outline-ai"
+        size="small"
+        @on-click=${(e) => handleCancelClick(e)}
+        >Cancel</kyn-button
+      >
     </div>
   </form>
   <style>
@@ -191,3 +196,10 @@ const feedbackFormContent = () => html`
     }
   </style>
 `;
+
+const handleCancelClick = (e) => {
+  action(e.type)(e);
+  console.log('Cancel button clicked');
+  // Cancel button click logic here to close the feedback form
+  // this.feedbackOpened = false;
+};
