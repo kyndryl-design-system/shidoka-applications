@@ -1,5 +1,4 @@
 import { html } from 'lit';
-import '@kyndryl-design-system/shidoka-foundation/css/grid.css';
 import '../components/reusable/card';
 
 import './sampleCardComponents/vitalCard.sample.ts';
