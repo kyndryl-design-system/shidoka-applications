@@ -47,6 +47,7 @@ const feedbackOptions = [
 ];
 
 const args = {
+  copy: 'Copy',
   sourcesOpened: false,
   feedbackOpened: false,
   sourcesDisabled: false,
@@ -85,7 +86,7 @@ export const AISourcesFeedback = {
           description="Copy"
           @on-click=${(e) => action(e.type)(e)}
         >
-          <span class="copy-button-text">Copy</span>
+          <span class="copy-button-text">${args.copy}</span>
           <span slot="icon" class="copy-icon">${unsafeSVG(copyIcon)}</span>
         </kyn-button>
 

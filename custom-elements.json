@@ -4,6 +4,105 @@
   "modules": [
     {
       "kind": "javascript-module",
+      "path": "src/components/ai/aiLaunchButton/aiLaunchButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "AI Assistant Launch Button.",
+          "name": "AILaunchButton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the button is disabled.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "_initAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_startHoverAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_stopHoverAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitClick",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits when the button is clicked.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the button is disabled.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ai-launch-btn",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AILaunchButton",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ai-launch-btn",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai/aiLaunchButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AILaunchButton",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "./aiLaunchButton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts",
       "declarations": [
         {
@@ -116,7 +215,39 @@
                   "name": "feedbackType",
                   "optional": true,
                   "type": {
-                    "text": "any"
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateFeedbackCounts",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_shouldEmitFeedbackEvent",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
                   }
                 }
               ]
@@ -133,10 +264,24 @@
                   }
                 },
                 {
-                  "name": "_selectedFeedbackType",
+                  "name": "feedbackType",
                   "optional": true,
                   "type": {
-                    "text": "any"
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_toggleFeedbackPanel",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
                   }
                 }
               ]
@@ -167,8 +312,11 @@
           ],
           "events": [
             {
-              "description": "Emits the `opened` state when the panel item opens/closes.",
-              "name": "on-toggle"
+              "name": "on-toggle",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits the `opened` state when the panel item opens/closes."
             }
           ],
           "attributes": [
@@ -271,105 +419,6 @@
           "declaration": {
             "name": "AISourcesFeedback",
             "module": "./aiSourcesFeedback"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/ai/aiLaunchButton/aiLaunchButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "AI Assistant Launch Button.",
-          "name": "AILaunchButton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the button is disabled.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "_initAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_startHoverAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_stopHoverAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitClick",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits when the button is clicked.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the button is disabled.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ai-launch-btn",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AILaunchButton",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ai-launch-btn",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/ai/aiLaunchButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AILaunchButton",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "./aiLaunchButton"
           }
         }
       ]
@@ -4846,7 +4895,7 @@
               "kind": "field",
               "name": "locale",
               "type": {
-                "text": "SupportedLocale"
+                "text": "SupportedLocale | string"
               },
               "default": "'en'",
               "attribute": "locale"
@@ -5064,7 +5113,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n}",
+              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  noDateSelected: 'No date selected',\n  pleaseSelectValidDate: 'Please select a valid date',\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -5348,7 +5397,7 @@
             {
               "name": "locale",
               "type": {
-                "text": "SupportedLocale"
+                "text": "SupportedLocale | string"
               },
               "default": "'en'",
               "fieldName": "locale"
@@ -5617,7 +5666,7 @@
               "kind": "field",
               "name": "locale",
               "type": {
-                "text": "SupportedLocale"
+                "text": "SupportedLocale | string"
               },
               "default": "'en'",
               "description": "Sets and dynamically imports specific l10n calendar localization.",
@@ -6091,7 +6140,7 @@
             {
               "name": "locale",
               "type": {
-                "text": "SupportedLocale"
+                "text": "SupportedLocale | string"
               },
               "default": "'en'",
               "description": "Sets and dynamically imports specific l10n calendar localization.",
@@ -17420,6 +17469,741 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/timepicker/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TimePicker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "./timepicker"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/timepicker/timepicker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Timepicker: uses Flatpickr library,time picker implementation  -- `https://flatpickr.js.org/examples/#time-picker`",
+          "name": "TimePicker",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale | string"
+              },
+              "default": "'en'",
+              "description": "Sets desired locale and, if supported, dynamically loads language lib",
+              "attribute": "locale"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "Date | null"
+              },
+              "default": "null",
+              "description": "Sets date/time value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDate",
+              "type": {
+                "text": "string | string[] | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s). For multiple mode, provide an array of date strings matching dateFormat.",
+              "attribute": "defaultDate"
+            },
+            {
+              "kind": "field",
+              "name": "defaultHour",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial value of the hour element.",
+              "attribute": "defaultHour"
+            },
+            {
+              "kind": "field",
+              "name": "defaultMinute",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial value of the minute element.",
+              "attribute": "defaultMinute"
+            },
+            {
+              "kind": "field",
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "attribute": "defaultErrorMessage"
+            },
+            {
+              "kind": "field",
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "attribute": "warnText"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets datepicker form input value to required/required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "timepickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire datepicker form element to enabled/disabled.",
+              "attribute": "timepickerDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean | null"
+              },
+              "default": "null",
+              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
+              "attribute": "twentyFourHourFormat"
+            },
+            {
+              "kind": "field",
+              "name": "minTime",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of datepicker date selection.",
+              "attribute": "minTime"
+            },
+            {
+              "kind": "field",
+              "name": "maxTime",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of datepicker date selection.",
+              "attribute": "maxTime"
+            },
+            {
+              "kind": "field",
+              "name": "errorAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "attribute": "errorAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "attribute": "errorTitle"
+            },
+            {
+              "kind": "field",
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "attribute": "warningAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "attribute": "warningTitle"
+            },
+            {
+              "kind": "field",
+              "name": "staticPosition",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
+              "attribute": "staticPosition"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  noTimeSelected: 'No time selected',\n  pleaseSelectValidDate: 'Please select a valid date',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "debounce",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "(...args: Parameters<T>) => void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "func",
+                  "type": {
+                    "text": "T"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "debouncedUpdate",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "generateRandomId",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "prefix",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "hasValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "renderValidationMessage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "errorId",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "warningId",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getTimepickerClasses"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClear",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setupAnchor",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_isDestroyed",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "method",
+              "name": "initializeFlatpickr",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updateFlatpickrOptions",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "getComponentFlatpickrOptions",
+              "return": {
+                "type": {
+                  "text": "Promise<Partial<BaseOptions>>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "setInitialDates",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "instance",
+                  "type": {
+                    "text": "flatpickr.Instance"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleOpen",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleClose",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleTimeChange",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                },
+                {
+                  "name": "dateStr",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_onChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFormReset",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "setShouldFlatpickrOpen",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "closeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "preventFlatpickrOpen",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleInputClickEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleInputFocusEvent",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale | string"
+              },
+              "default": "'en'",
+              "description": "Sets desired locale and, if supported, dynamically loads language lib",
+              "fieldName": "locale"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "Date | null"
+              },
+              "default": "null",
+              "description": "Sets date/time value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "defaultDate",
+              "type": {
+                "text": "string | string[] | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s). For multiple mode, provide an array of date strings matching dateFormat.",
+              "fieldName": "defaultDate"
+            },
+            {
+              "name": "defaultHour",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial value of the hour element.",
+              "fieldName": "defaultHour"
+            },
+            {
+              "name": "defaultMinute",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial value of the minute element.",
+              "fieldName": "defaultMinute"
+            },
+            {
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "fieldName": "defaultErrorMessage"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets datepicker form input value to required/required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "timepickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire datepicker form element to enabled/disabled.",
+              "fieldName": "timepickerDisabled"
+            },
+            {
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean | null"
+              },
+              "default": "null",
+              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
+              "fieldName": "twentyFourHourFormat"
+            },
+            {
+              "name": "minTime",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of datepicker date selection.",
+              "fieldName": "minTime"
+            },
+            {
+              "name": "maxTime",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of datepicker date selection.",
+              "fieldName": "maxTime"
+            },
+            {
+              "name": "errorAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "fieldName": "errorAriaLabel"
+            },
+            {
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "fieldName": "errorTitle"
+            },
+            {
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "fieldName": "warningAriaLabel"
+            },
+            {
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "fieldName": "warningTitle"
+            },
+            {
+              "name": "staticPosition",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
+              "fieldName": "staticPosition"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-time-picker",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TimePicker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "src/components/reusable/timepicker/timepicker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-time-picker",
+          "declaration": {
+            "name": "TimePicker",
+            "module": "src/components/reusable/timepicker/timepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/textInput/index.ts",
       "declarations": [],
       "exports": [
@@ -17784,741 +18568,6 @@
           "declaration": {
             "name": "TextInput",
             "module": "src/components/reusable/textInput/textInput.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/timepicker/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TimePicker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "./timepicker"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/timepicker/timepicker.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Timepicker: uses Flatpickr library,time picker implementation  -- `https://flatpickr.js.org/examples/#time-picker`",
-          "name": "TimePicker",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "locale",
-              "type": {
-                "text": "SupportedLocale"
-              },
-              "default": "'en'",
-              "description": "Sets desired locale and, if supported, dynamically loads language lib",
-              "attribute": "locale"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "Date | null"
-              },
-              "default": "null",
-              "description": "Sets date/time value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "defaultDate",
-              "type": {
-                "text": "string | string[] | null"
-              },
-              "default": "null",
-              "description": "Sets the initial selected date(s). For multiple mode, provide an array of date strings matching dateFormat.",
-              "attribute": "defaultDate"
-            },
-            {
-              "kind": "field",
-              "name": "defaultHour",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets initial value of the hour element.",
-              "attribute": "defaultHour"
-            },
-            {
-              "kind": "field",
-              "name": "defaultMinute",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets initial value of the minute element.",
-              "attribute": "defaultMinute"
-            },
-            {
-              "kind": "field",
-              "name": "defaultErrorMessage",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets default error message.",
-              "attribute": "defaultErrorMessage"
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation warning messaging.",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets datepicker form input value to required/required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "timepickerDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire datepicker form element to enabled/disabled.",
-              "attribute": "timepickerDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "twentyFourHourFormat",
-              "type": {
-                "text": "boolean | null"
-              },
-              "default": "null",
-              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
-              "attribute": "twentyFourHourFormat"
-            },
-            {
-              "kind": "field",
-              "name": "minTime",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets lower boundary of datepicker date selection.",
-              "attribute": "minTime"
-            },
-            {
-              "kind": "field",
-              "name": "maxTime",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets upper boundary of datepicker date selection.",
-              "attribute": "maxTime"
-            },
-            {
-              "kind": "field",
-              "name": "errorAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for error message.",
-              "attribute": "errorAriaLabel"
-            },
-            {
-              "kind": "field",
-              "name": "errorTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for error message.",
-              "attribute": "errorTitle"
-            },
-            {
-              "kind": "field",
-              "name": "warningAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for warning message.",
-              "attribute": "warningAriaLabel"
-            },
-            {
-              "kind": "field",
-              "name": "warningTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for warning message.",
-              "attribute": "warningTitle"
-            },
-            {
-              "kind": "field",
-              "name": "staticPosition",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
-              "attribute": "staticPosition"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "debounce",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "(...args: Parameters<T>) => void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "func",
-                  "type": {
-                    "text": "T"
-                  }
-                },
-                {
-                  "name": "wait",
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "debouncedUpdate",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "generateRandomId",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "prefix",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "hasValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "boolean"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "renderValidationMessage",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "errorId",
-                  "type": {
-                    "text": "string"
-                  }
-                },
-                {
-                  "name": "warningId",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getTimepickerClasses"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClear",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "setupAnchor",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "_isDestroyed",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "default": "false"
-            },
-            {
-              "kind": "method",
-              "name": "initializeFlatpickr",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "updateFlatpickrOptions",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "getComponentFlatpickrOptions",
-              "return": {
-                "type": {
-                  "text": "Promise<Partial<BaseOptions>>"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "setInitialDates",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "instance",
-                  "type": {
-                    "text": "flatpickr.Instance"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleOpen",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "handleClose",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "handleTimeChange",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "selectedDates",
-                  "type": {
-                    "text": "Date[]"
-                  }
-                },
-                {
-                  "name": "dateStr",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_onChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFormReset",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "setShouldFlatpickrOpen",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "closeFlatpickr",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "preventFlatpickrOpen",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleInputClickEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleInputFocusEvent",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "locale",
-              "type": {
-                "text": "SupportedLocale"
-              },
-              "default": "'en'",
-              "description": "Sets desired locale and, if supported, dynamically loads language lib",
-              "fieldName": "locale"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "Date | null"
-              },
-              "default": "null",
-              "description": "Sets date/time value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "defaultDate",
-              "type": {
-                "text": "string | string[] | null"
-              },
-              "default": "null",
-              "description": "Sets the initial selected date(s). For multiple mode, provide an array of date strings matching dateFormat.",
-              "fieldName": "defaultDate"
-            },
-            {
-              "name": "defaultHour",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets initial value of the hour element.",
-              "fieldName": "defaultHour"
-            },
-            {
-              "name": "defaultMinute",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets initial value of the minute element.",
-              "fieldName": "defaultMinute"
-            },
-            {
-              "name": "defaultErrorMessage",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets default error message.",
-              "fieldName": "defaultErrorMessage"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation warning messaging.",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets datepicker form input value to required/required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "timepickerDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire datepicker form element to enabled/disabled.",
-              "fieldName": "timepickerDisabled"
-            },
-            {
-              "name": "twentyFourHourFormat",
-              "type": {
-                "text": "boolean | null"
-              },
-              "default": "null",
-              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
-              "fieldName": "twentyFourHourFormat"
-            },
-            {
-              "name": "minTime",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets lower boundary of datepicker date selection.",
-              "fieldName": "minTime"
-            },
-            {
-              "name": "maxTime",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets upper boundary of datepicker date selection.",
-              "fieldName": "maxTime"
-            },
-            {
-              "name": "errorAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for error message.",
-              "fieldName": "errorAriaLabel"
-            },
-            {
-              "name": "errorTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for error message.",
-              "fieldName": "errorTitle"
-            },
-            {
-              "name": "warningAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for warning message.",
-              "fieldName": "warningAriaLabel"
-            },
-            {
-              "name": "warningTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for warning message.",
-              "fieldName": "warningTitle"
-            },
-            {
-              "name": "staticPosition",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
-              "fieldName": "staticPosition"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-time-picker",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TimePicker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "src/components/reusable/timepicker/timepicker.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-time-picker",
-          "declaration": {
-            "name": "TimePicker",
-            "module": "src/components/reusable/timepicker/timepicker.ts"
           }
         }
       ]
