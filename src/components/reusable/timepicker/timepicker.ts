@@ -217,7 +217,11 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private hasValue(): boolean {
-    return this.value !== null && this._hasInteracted;
+    if (this._inputEl?.value) return true;
+    if (this.value !== null) return true;
+    if (this.defaultDate) return true;
+    if (this.defaultHour !== null || this.defaultMinute !== null) return true;
+    return false;
   }
 
   override render() {
@@ -378,7 +382,40 @@ export class TimePicker extends FormMixin(LitElement) {
       }
     }
     if (changedProperties.has('value') && !this._isClearing) {
-      const newValue = this.value;
+      let newValue = this.value;
+
+      if (typeof newValue === 'string') {
+        try {
+          const strValue = newValue as string;
+          if (strValue.trim() !== '') {
+            this._hasInteracted = true;
+
+            if (/\d{1,2}:\d{2}/.test(strValue)) {
+              const [hours, minutes] = strValue.split(':').map(Number);
+              if (!isNaN(hours) && !isNaN(minutes)) {
+                const date = new Date();
+                date.setHours(hours, minutes, 0, 0);
+                this.value = date;
+                newValue = this.value;
+
+                if (this.flatpickrInstance) {
+                  this.flatpickrInstance.setDate(newValue, true);
+                }
+              }
+            } else if (/\d{4}-\d{2}-\d{2}/.test(strValue)) {
+              this.value = new Date(strValue);
+              newValue = this.value;
+
+              if (this.flatpickrInstance) {
+                this.flatpickrInstance.setDate(newValue, true);
+              }
+            }
+          }
+        } catch (e) {
+          console.warn('Error parsing time string:', e);
+        }
+      }
+
       if (newValue === null && this.flatpickrInstance) {
         this._isClearing = true;
         try {
@@ -557,12 +594,25 @@ export class TimePicker extends FormMixin(LitElement) {
       if (this._hasInteracted || this.value) return;
       if (this.defaultDate != null) {
         if (typeof this.defaultDate === 'string') {
-          const parts = this.defaultDate.split(':').map(Number);
-          if (parts.length >= 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
-            const newDate = new Date();
-            newDate.setHours(parts[0], parts[1], 0, 0);
-            instance.setDate(newDate, false);
-            return;
+          const dateStr = this.defaultDate.trim();
+          if (dateStr.includes(':') && !dateStr.includes('-')) {
+            const parts = dateStr.split(':').map(Number);
+            if (parts.length >= 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+              const newDate = new Date();
+              newDate.setHours(parts[0], parts[1], 0, 0);
+              instance.setDate(newDate, false);
+              return;
+            }
+          } else if (/\d{4}-\d{2}-\d{2}/.test(dateStr)) {
+            try {
+              const newDate = new Date(dateStr);
+              if (!isNaN(newDate.getTime())) {
+                instance.setDate(newDate, false);
+                return;
+              }
+            } catch (e) {
+              console.warn('Error parsing date string:', e);
+            }
           }
         } else if (this.defaultDate instanceof Date) {
           instance.setDate(this.defaultDate, false);

@@ -401,7 +401,23 @@ export class DatePicker extends FormMixin(LitElement) {
     super.updated(changedProperties);
 
     if (changedProperties.has('value') && !this._isClearing) {
-      const newValue = this.value;
+      let newValue = this.value;
+
+      if (typeof newValue === 'string') {
+        try {
+          const strValue = newValue as string;
+          if (strValue.trim() !== '' && /\d{4}-\d{2}-\d{2}/.test(strValue)) {
+            this.value = new Date(strValue);
+            newValue = this.value;
+            if (this.flatpickrInstance) {
+              this.flatpickrInstance.setDate(newValue, true);
+            }
+          }
+        } catch (e) {
+          console.warn('Error parsing date string:', e);
+        }
+      }
+
       const isNull =
         newValue === null || (Array.isArray(newValue) && newValue.length === 0);
       if (isNull && this.flatpickrInstance) {
