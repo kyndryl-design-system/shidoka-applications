@@ -2,6 +2,7 @@ import { html } from 'lit';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { action } from '@storybook/addon-actions';
 import chatHistoryIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat-history.svg';
+import chatIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat.svg';
 
 import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
@@ -60,6 +61,10 @@ export const ChatList = {
           aiConnected
           @on-change=${(e) => action(e.type)(e)}
         >
+          <kyn-tab slot="tabs" id="chat">
+            <span class="icon">${unsafeSVG(chatIcon)}</span>
+            Chat
+          </kyn-tab>
           <kyn-tab slot="tabs" id="history" selected>
             <span class="icon">${unsafeSVG(chatHistoryIcon)}</span>
             Chat History
@@ -100,6 +105,9 @@ export const ChatList = {
                 >
               </kyn-link>
             </div>
+          </kyn-tab-panel>
+          <kyn-tab-panel tabId="chat">
+            Add your Chat content here
           </kyn-tab-panel>
         </kyn-tabs>
       </kyn-modal>
@@ -142,7 +150,7 @@ export const ChatList = {
   },
 };
 
-export const HistoricalChatDetails = {
+export const ChatDetails = {
   render: () => {
     return html`
       <kyn-modal
@@ -174,6 +182,10 @@ export const HistoricalChatDetails = {
           aiConnected
           @on-change=${(e) => action(e.type)(e)}
         >
+          <kyn-tab slot="tabs" id="chat">
+            <span class="icon">${unsafeSVG(chatIcon)}</span>
+            Chat
+          </kyn-tab>
           <kyn-tab slot="tabs" id="history" selected>
             <span class="icon">${unsafeSVG(chatHistoryIcon)}</span>
             Chat History
@@ -202,6 +214,9 @@ export const HistoricalChatDetails = {
               </kyn-page-title>
               ${UserInput.render()} ${AIResponse.render()}
             </div>
+          </kyn-tab-panel>
+          <kyn-tab-panel tabId="chat"
+            >Add your Chat content here
           </kyn-tab-panel>
         </kyn-tabs>
         <div class="chat_input" slot="footer">
