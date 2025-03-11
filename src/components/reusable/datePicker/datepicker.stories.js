@@ -429,7 +429,7 @@ export const InSideDrawer = {
           .minDate=${datePickerProps.minDate}
           .maxDate=${datePickerProps.maxDate}
           @on-change=${(e) => action(e.type)(e)}
-          style="margin-left: 4px; max-width: 425px;"
+          style="margin-left: 4px;"
         >
         </kyn-date-picker>
 
