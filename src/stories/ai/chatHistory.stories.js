@@ -133,18 +133,6 @@ export const ChatList = {
           flex-direction: column;
           gap: var(--kd-spacing-8);
         }
-        .chat-items {
-          display: flex;
-          align-items: center;
-          gap: var(--kd-spacing-12);
-        }
-        .chat_item {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: flex-start;
-          flex: 1 0 0;
-        }
       </style>
     `;
   },
