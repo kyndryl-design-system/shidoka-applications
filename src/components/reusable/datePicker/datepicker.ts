@@ -407,10 +407,13 @@ export class DatePicker extends FormMixin(LitElement) {
         try {
           const strValue = newValue as string;
           if (strValue.trim() !== '' && /\d{4}-\d{2}-\d{2}/.test(strValue)) {
-            this.value = new Date(strValue);
-            newValue = this.value;
-            if (this.flatpickrInstance) {
-              this.flatpickrInstance.setDate(newValue, true);
+            const [year, month, day] = strValue.split('-').map(Number);
+            if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+              this.value = new Date(year, month - 1, day, 12);
+              newValue = this.value;
+              if (this.flatpickrInstance) {
+                this.flatpickrInstance.setDate(newValue, true);
+              }
             }
           }
         } catch (e) {
