@@ -110,4 +110,5 @@ export {
   SplitButtonOption,
 } from './components/reusable/splitButton';
 export { FloatingContainer } from './components/reusable/floatingContainer';
+export { AISourcesFeedback } from './components/ai/sourcesFeedback';
 export { InlineConfirm } from './components/reusable/inlineConfirm';
