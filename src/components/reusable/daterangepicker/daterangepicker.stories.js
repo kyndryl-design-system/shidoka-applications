@@ -88,6 +88,7 @@ const Template = (args) => {
       .startDateLabel=${args.startDateLabel}
       .endDateLabel=${args.endDateLabel}
       @on-change=${(e) => action(e.type)(e)}
+      style="max-width: 425px;"
     >
     </kyn-date-range-picker>
   `;
@@ -240,6 +241,7 @@ export const InModal = {
           .startDateLabel=${args.startDateLabel}
           .endDateLabel=${args.endDateLabel}
           @on-change=${(e) => action(e.type)(e)}
+          style="max-width: 425px;"
         >
         </kyn-date-range-picker>
       </kyn-modal>
@@ -333,6 +335,7 @@ export const DateRangePickerInAccordionInModal = {
                 .startDateLabel=${args.startDateLabel}
                 .endDateLabel=${args.endDateLabel}
                 @on-change=${(e) => action(e.type)(e)}
+                style="max-width: 425px;"
               >
               </kyn-date-range-picker>
             </div>
