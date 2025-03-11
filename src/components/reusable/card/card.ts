@@ -33,19 +33,27 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   hideBorder = false;
 
+  /** Set this to `true` for AI theme. */
   @property({ type: Boolean })
   aiConnected = false;
+  /** Set this to `true` for highlight */
+  @property({ type: Boolean })
+  highlight = false;
 
   override render() {
     const cardWrapperClasses = {
       'card-wrapper-clickable': true,
       'card-border': this.hideBorder === false,
       'ai-Connected': this.aiConnected,
+      'card-highlight': this.highlight,
+      'ai-highlight': this.aiConnected && this.highlight,
     };
 
     const cardWrapperDefaultClasses = {
       'card-wrapper': true,
       'ai-Connected': this.aiConnected,
+      'card-highlight': this.highlight,
+      'ai-highlight': this.aiConnected && this.highlight,
     };
 
     return html`${this.type === 'clickable'

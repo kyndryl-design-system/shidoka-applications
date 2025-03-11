@@ -4,74 +4,9 @@ import { Instance } from 'flatpickr/dist/types/instance';
 import { BaseOptions, Hook } from 'flatpickr/dist/types/options';
 import { Locale } from 'flatpickr/dist/types/locale';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
+import { langsArray, SupportedLocale } from '../flatpickrLangs';
 
 let flatpickrStylesInjected = false;
-
-export const langsArray = [
-  'ar', // Arabic
-  'at', // Austria
-  'az', // Azerbaijan
-  'be', // Belarusian
-  'bg', // Bulgarian
-  'bn', // Bangla
-  'bs', // Bosnia
-  'cat', // Catalan
-  'cs', // Czech
-  'cy', // Welsh
-  'da', // Danish
-  'de', // German
-  'en', // English
-  'eo', // Esperanto
-  'es', // Spanish
-  'et', // Estonian
-  'fa', // Persian
-  'fi', // Finnish
-  'fo', // Faroese
-  'fr', // French
-  'ga', // Gaelic
-  'gr', // Greek
-  'he', // Hebrew
-  'hi', // Hindi
-  'hr', // Croatian
-  'hu', // Hungarian
-  'id', // Indonesian
-  'is', // Icelandic
-  'it', // Italian
-  'ja', // Japanese
-  'ka', // Georgian
-  'km', // Khmer
-  'ko', // Korean
-  'kz', // Kazakh
-  'lt', // Lithuanian
-  'lv', // Latvian
-  'mk', // Macedonian
-  'mn', // Mongolian
-  'ms', // Malaysian
-  'my', // Burmese
-  'nl', // Dutch
-  'no', // Norwegian
-  'pa', // Punjabi
-  'pl', // Polish
-  'pt', // Portuguese
-  'ro', // Romanian
-  'ru', // Russian
-  'si', // Sinhala
-  'sk', // Slovak
-  'sl', // Slovenian
-  'sq', // Albanian
-  'sr', // Serbian
-  'sv', // Swedish
-  'th', // Thai
-  'tr', // Turkish
-  'uk', // Ukrainian
-  'uz', // Uzbek
-  'uz_latn', // Uzbek Latin
-  'vn', // Vietnamese
-  'zh_tw', // Mandarin Traditional
-  'zh', // Mandarin
-];
-
-type SupportedLocale = (typeof langsArray)[number];
 
 interface BaseFlatpickrContext {
   getFlatpickrOptions: () => Promise<Partial<BaseOptions>>;
@@ -93,8 +28,13 @@ const DATE_FORMAT_OPTIONS = {
   'm-d-Y': 'mm-dd-yyyy',
   'd-m-Y': 'dd-mm-yyyy',
   'Y-m-d H:i': 'yyyy-mm-dd —— : ——',
+  'Y-m-d h:i K': 'yyyy-mm-dd —— : ——',
+  'm-d-Y H:i': 'mm-dd-yyyy —— : ——',
+  'm-d-Y h:i K': 'mm-dd-yyyy —— : ——',
+  'd-m-Y H:i': 'dd-mm-yyyy —— : ——',
+  'd-m-Y h:i K': 'dd-mm-yyyy —— : ——',
   'Y-m-d H:i:s': 'yyyy-mm-dd —— : —— ——',
-  'm-d-Y H:i:s': 'mm-dd-yyyy  —— : —— ——',
+  'm-d-Y H:i:s': 'mm-dd-yyyy —— : —— ——',
   'd-m-Y H:i:s': 'dd-mm-yyyy —— : —— ——',
 } as const;
 
@@ -126,10 +66,12 @@ interface FlatpickrOptionsContext {
   wrap?: boolean;
   noCalendar?: boolean;
   appendTo?: HTMLElement;
+  static?: boolean;
 }
 
 export function isSupportedLocale(locale: string): boolean {
-  return langsArray.includes(locale as SupportedLocale);
+  const baseLocale = locale.split('-')[0].toLowerCase();
+  return langsArray.includes(baseLocale as SupportedLocale);
 }
 
 export function preventFlatpickrOpen(
@@ -196,18 +138,26 @@ export async function initializeMultiAnchorFlatpickr(
   try {
     const options = await getFlatpickrOptions();
 
-    const getInputElement = (inputEl: HTMLElement): HTMLInputElement => {
-      if (inputEl instanceof HTMLInputElement) {
-        return inputEl;
+    const getInputElement = (el: HTMLElement): HTMLInputElement => {
+      if (el instanceof HTMLInputElement) {
+        return el;
       } else {
-        let input = inputEl.querySelector('input');
-        if (!input) {
-          input = document.createElement('input');
-          input.type = 'text';
-          input.style.display = 'none';
-          inputEl.appendChild(input);
+        try {
+          let input = el.querySelector('input') as HTMLInputElement | null;
+          if (!input) {
+            input = document.createElement('input');
+            input.type = 'text';
+            input.style.display = 'none';
+            if (!el.isConnected) {
+              throw new Error('Element is not connected to the DOM');
+            }
+            el.appendChild(input);
+          }
+          return input;
+        } catch (error) {
+          console.error('Error creating or appending input element:', error);
+          throw error;
         }
-        return input as HTMLInputElement;
       }
     };
 
@@ -272,29 +222,32 @@ export async function initializeSingleAnchorFlatpickr(
   }
   try {
     const options = await getFlatpickrOptions();
-    options.dateFormat = options.dateFormat || 'Y-m-d';
+    const effectiveDateFormat =
+      options.dateFormat || (options.mode === 'time' ? 'H:i' : 'Y-m-d');
+    options.dateFormat = effectiveDateFormat;
+
     let inputElement: HTMLInputElement;
     if (inputEl instanceof HTMLInputElement) {
       inputElement = inputEl;
       options.clickOpens = true;
     } else {
-      inputElement = document.createElement('input');
-      inputElement.type = 'text';
-      inputElement.style.display = 'none';
+      try {
+        inputElement = document.createElement('input');
+        inputElement.type = 'text';
+        inputElement.style.display = 'none';
 
-      if (appendTo) {
-        appendTo.appendChild(inputElement);
-      } else if (
-        inputEl instanceof HTMLElement &&
-        !(inputEl instanceof HTMLInputElement)
-      ) {
-        inputEl.appendChild(inputElement);
-      } else {
-        document.body.appendChild(inputElement);
+        const targetElement = appendTo || inputEl;
+        if (!targetElement) {
+          throw new Error('No valid element to append input to');
+        }
+
+        targetElement.appendChild(inputElement);
+        options.clickOpens = false;
+        options.positionElement = inputEl;
+      } catch (error) {
+        console.error('Error creating input element:', error);
+        throw error;
       }
-
-      options.clickOpens = false;
-      options.positionElement = inputEl;
     }
     const flatpickrInstance = flatpickr(inputElement, options) as Instance;
     if (flatpickrInstance) {
@@ -331,22 +284,31 @@ export function getPlaceholder(
   dateFormat: string,
   isDateRange?: boolean
 ): string {
-  let placeholderFormat;
-
   if (isValidDateFormat(dateFormat)) {
-    if (isDateRange) {
-      placeholderFormat = `${DATE_FORMAT_OPTIONS[dateFormat]} to ${DATE_FORMAT_OPTIONS[dateFormat]}`;
-    } else {
-      placeholderFormat = DATE_FORMAT_OPTIONS[dateFormat];
-    }
-    return placeholderFormat;
+    const placeholder = isDateRange
+      ? `${DATE_FORMAT_OPTIONS[dateFormat]} to ${DATE_FORMAT_OPTIONS[dateFormat]}`
+      : DATE_FORMAT_OPTIONS[dateFormat];
+    return placeholder;
   }
   return 'Select date';
+}
+
+export function getModalContainer(element: HTMLElement): HTMLElement {
+  return (
+    ['kyn-modal', 'kyn-side-drawer']
+      .map((selector) => element.closest(selector))
+      .find((el): el is HTMLElement => el !== null) || document.body
+  );
 }
 
 export async function getFlatpickrOptions(
   context: FlatpickrOptionsContext
 ): Promise<Partial<BaseOptions>> {
+  if (!context) {
+    console.error('Context is required for getFlatpickrOptions');
+    return {};
+  }
+
   const {
     locale,
     dateFormat,
@@ -367,11 +329,11 @@ export async function getFlatpickrOptions(
     closeOnSelect,
     wrap = false,
     noCalendar = false,
+    appendTo,
     onChange,
     onClose,
     onOpen,
     loadLocale,
-    appendTo,
   } = context;
 
   if (!locale) {
@@ -382,19 +344,31 @@ export async function getFlatpickrOptions(
     console.warn('Date format not provided. Using default format.');
   }
 
-  const localeOptions = await loadLocale(locale);
-  modifyWeekdayShorthands(localeOptions);
+  let localeOptions;
+  try {
+    localeOptions = await loadLocale(locale);
+    modifyWeekdayShorthands(localeOptions);
+  } catch (error) {
+    console.warn('Error loading locale, falling back to default:', error);
+    localeOptions = English;
+  }
 
-  const isEnglishOr12HourLocale = ['en', 'en-US', 'en-GB', 'es-MX'].includes(
-    locale
-  );
+  const baseLocale = locale.split('-')[0].toLowerCase();
+  const isEnglishOr12HourLocale = ['en', 'es'].includes(baseLocale);
 
   const isWideScreen = window.innerWidth >= 767;
+
+  const effectiveDateFormat =
+    dateFormat ||
+    (mode === 'time' ? (twentyFourHourFormat ? 'H:i' : 'h:i K') : 'Y-m-d');
+
   const options: Partial<BaseOptions> = {
-    dateFormat: dateFormat || (mode === 'time' ? 'H:i' : 'Y-m-d'),
+    dateFormat: effectiveDateFormat,
     mode: mode === 'time' ? 'single' : mode,
     enableTime: mode === 'time' ? true : enableTime,
     noCalendar: mode === 'time' ? true : noCalendar,
+    defaultDate: defaultDate,
+    enableSeconds: false,
     allowInput: allowInput || false,
     clickOpens: true,
     time_24hr:
@@ -402,18 +376,17 @@ export async function getFlatpickrOptions(
         ? twentyFourHourFormat
         : !isEnglishOr12HourLocale,
     weekNumbers: false,
+    static: context.static ?? false,
     wrap,
     showMonths: mode === 'range' && isWideScreen ? 2 : 1,
     monthSelectorType: 'static',
     locale: localeOptions,
     closeOnSelect: closeOnSelect ?? !(mode === 'multiple' || enableTime),
     onChange: (selectedDates, dateStr, instance) => {
-      if (onChange) {
-        onChange(selectedDates, dateStr, instance);
-      }
+      onChange && onChange(selectedDates, dateStr, instance);
     },
     onClose: (selectedDates, dateStr, instance) => {
-      if (mode === 'range') {
+      if (mode === 'range' && instance.calendarContainer) {
         const timeContainer =
           instance.calendarContainer.querySelector('.flatpickr-time');
         if (selectedDates.length === 0) {
@@ -421,22 +394,20 @@ export async function getFlatpickrOptions(
           timeContainer?.classList.remove('start-date', 'end-date');
         }
       }
-      if (onClose) {
-        onClose(selectedDates, dateStr, instance);
-      }
+      onClose && onClose(selectedDates, dateStr, instance);
     },
     onOpen: (selectedDates, dateStr, instance) => {
-      if (onOpen) {
-        onOpen(selectedDates, dateStr, instance);
-      }
+      onOpen && onOpen(selectedDates, dateStr, instance);
     },
   };
 
   if (mode === 'range') {
     options.onReady = (_, __, instance) => {
-      const timeContainer =
-        instance.calendarContainer.querySelector('.flatpickr-time');
-      timeContainer?.classList.add('default-time-select');
+      if (instance.calendarContainer) {
+        const timeContainer =
+          instance.calendarContainer.querySelector('.flatpickr-time');
+        timeContainer?.classList.add('default-time-select');
+      }
     };
   }
 
@@ -448,6 +419,7 @@ export async function getFlatpickrOptions(
   if (maxDate) options.maxDate = maxDate;
   if (minTime) options.minTime = minTime;
   if (maxTime) options.maxTime = maxTime;
+
   if (defaultDate) {
     if (
       Array.isArray(defaultDate) &&
@@ -455,13 +427,57 @@ export async function getFlatpickrOptions(
     ) {
       options.defaultDate = defaultDate;
     } else if (!Array.isArray(defaultDate)) {
-      options.defaultDate = defaultDate;
+      if (typeof defaultDate === 'string') {
+        let parsedDate: Date | null = null;
+        switch (effectiveDateFormat) {
+          case 'Y-m-d': {
+            const [year, month, day] = defaultDate.split('-').map(Number);
+            parsedDate =
+              !isNaN(year) && !isNaN(month) && !isNaN(day)
+                ? new Date(Date.UTC(year, month - 1, day, 12))
+                : null;
+            break;
+          }
+          case 'd-m-Y': {
+            const [day, month, year] = defaultDate.split('-').map(Number);
+            parsedDate =
+              !isNaN(day) && !isNaN(month) && !isNaN(year)
+                ? new Date(Date.UTC(year, month - 1, day, 12))
+                : null;
+            break;
+          }
+          case 'm-d-Y': {
+            const [month, day, year] = defaultDate.split('-').map(Number);
+            parsedDate =
+              !isNaN(month) && !isNaN(day) && !isNaN(year)
+                ? new Date(Date.UTC(year, month - 1, day, 12))
+                : null;
+            break;
+          }
+          default:
+            parsedDate = new Date(defaultDate);
+            break;
+        }
+        options.defaultDate = parsedDate || defaultDate;
+      }
     }
   }
-  if (defaultHour !== undefined) options.defaultHour = defaultHour;
-  if (defaultMinute !== undefined) options.defaultMinute = defaultMinute;
+  if (defaultHour !== undefined && defaultHour !== null)
+    options.defaultHour = defaultHour;
+  if (defaultMinute !== undefined && defaultMinute !== null)
+    options.defaultMinute = defaultMinute;
   if (enable && enable.length > 0) options.enable = enable;
-  if (disable && disable.length > 0) options.disable = disable;
+  if (disable && disable.length > 0) {
+    options.disable = disable.map((date) => {
+      if (date instanceof Date) return date;
+      if (typeof date === 'number') return new Date(date);
+      if (typeof date === 'string') {
+        const parsed = flatpickr.parseDate(date, effectiveDateFormat);
+        return parsed || date;
+      }
+      return date;
+    });
+  }
   if (appendTo) options.appendTo = appendTo;
 
   return options;
@@ -475,69 +491,74 @@ export function setCalendarAttributes(
   instance: Instance,
   modalDetected?: boolean
 ): void {
-  if (instance && instance.calendarContainer) {
-    instance.calendarContainer.setAttribute('role', 'application');
-    instance.calendarContainer.setAttribute('aria-label', 'Calendar');
+  if (instance?.calendarContainer) {
+    requestAnimationFrame(() => {
+      try {
+        const { calendarContainer, config } = instance;
+        calendarContainer.setAttribute('role', 'application');
+        calendarContainer.setAttribute('aria-label', 'Calendar');
 
-    instance.calendarContainer.classList.remove(
-      'container-modal',
-      'container-body'
-    );
+        calendarContainer.classList.remove('container-modal', 'container-body');
+        const containerClass = modalDetected
+          ? 'container-modal'
+          : 'container-default';
+        calendarContainer.classList.add(containerClass);
 
-    instance.calendarContainer.classList.remove(
-      'container-modal',
-      'container-body'
-    );
-
-    const containerClass = modalDetected
-      ? 'container-modal'
-      : 'container-default';
-    instance.calendarContainer.classList.add(containerClass);
+        if (config && typeof config.static !== 'undefined') {
+          calendarContainer.classList.remove(
+            'static-position-true',
+            'static-position-false'
+          );
+          calendarContainer.classList.add(`static-position-${config.static}`);
+        }
+      } catch (error) {
+        console.warn('Error setting calendar attributes:', error);
+      }
+    });
   } else {
     console.warn('Calendar container not available...');
   }
 }
 
+const localeCache: Record<string, Partial<Locale>> = {};
+
 export async function loadLocale(locale: string): Promise<Partial<Locale>> {
   if (locale === 'en') return English;
+  if (localeCache[locale]) return localeCache[locale];
   if (!isSupportedLocale(locale)) {
-    console.warn(`Unsupported locale: ${locale}. Falling back to English.`);
+    console.warn(`Unsupported locale "${locale}". Falling back to English.`);
     return English;
   }
-
   try {
-    const module = await import(`flatpickr/dist/l10n/${locale}.js`);
+    const baseLocale = locale.split('-')[0].toLowerCase();
+    const module = await import(`flatpickr/dist/l10n/${baseLocale}.js`);
     const localeConfig =
-      module[locale] || module.default[locale] || module.default;
+      module[baseLocale] ?? module.default?.[baseLocale] ?? module.default;
     if (!localeConfig) {
       console.warn(
-        `Locale configuration not found for ${locale}. Falling back to English.`
+        `Locale configuration not found for "${locale}". Falling back to English.`
       );
       return English;
     }
+    localeCache[locale] = localeConfig;
     return localeConfig;
   } catch (error) {
     console.error(
-      `Failed to load locale ${locale}. Falling back to English.`,
+      `Failed to load locale "${locale}". Falling back to English.`,
       error
     );
-    if (error instanceof Error) {
-      console.error('Error details:', error.message);
-    }
     return English;
   }
 }
 
 export function hideEmptyYear(): void {
+  const currentMonth = document.querySelector(
+    '.flatpickr-current-month span.cur-month'
+  ) as HTMLElement;
   document.querySelectorAll('.numInputWrapper').forEach((wrapper) => {
     const yearInput = wrapper.querySelector(
       '.numInput.cur-year'
     ) as HTMLInputElement;
-
-    const currentMonth = document.querySelector(
-      '.flatpickr-current-month span.cur-month'
-    ) as HTMLElement;
-
     if (
       yearInput &&
       yearInput.min &&

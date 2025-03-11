@@ -21,40 +21,49 @@ export default {
       },
     },
     {
-      name: '@storybook/addon-styling',
+      name: '@storybook/addon-styling-webpack',
       options: {
-        scssBuildRule: {
-          test: /\.s(c|a)ss$/,
-          exclude: [/node_modules/],
-          oneOf: [
-            {
-              resourceQuery: /global/,
-              use: [
-                'style-loader',
-                'css-loader',
-                'resolve-url-loader',
-                {
-                  loader: 'sass-loader?sourceMap',
-                  options: {
-                    sourceMap: true,
+        rules: [
+          {
+            test: /\.s[ac]ss$/i,
+            exclude: [/node_modules/],
+            oneOf: [
+              {
+                resourceQuery: /global/,
+                use: [
+                  'style-loader',
+                  'css-loader',
+                  'resolve-url-loader',
+                  {
+                    loader: 'sass-loader?sourceMap',
+                    options: {
+                      sourceMap: true,
+                    },
                   },
-                },
-              ],
-            },
-            {
-              use: [
-                {
-                  loader: 'lit-css-loader',
-                  options: {
-                    transform: (data, { filePath }) =>
-                      Sass.renderSync({ data, file: filePath }).css.toString(),
+                ],
+              },
+              {
+                use: [
+                  {
+                    loader: 'lit-css-loader',
+                    options: {
+                      transform: (data, { filePath }) =>
+                        Sass.renderSync({
+                          data,
+                          file: filePath,
+                        }).css.toString(),
+                    },
                   },
-                },
-                'sass-loader',
-              ],
-            },
-          ],
-        },
+                  'sass-loader',
+                ],
+              },
+            ],
+          },
+          {
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader'],
+          },
+        ],
       },
     },
     {
@@ -86,5 +95,5 @@ export default {
     return options;
   },
 
-  docs: {}
+  docs: {},
 };
