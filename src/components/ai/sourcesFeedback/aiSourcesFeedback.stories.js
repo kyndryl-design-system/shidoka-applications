@@ -2,8 +2,6 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
-import '@kyndryl-design-system/shidoka-foundation/css/grid.css';
-import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import './index';
 import '../../reusable/checkbox';
 import '../../reusable/card/card.sample';
