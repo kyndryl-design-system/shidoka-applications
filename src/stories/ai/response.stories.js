@@ -67,7 +67,7 @@ export const UserInput = {
     return html`
       <div class="response_wrapper">
         <div class="response_title">
-          <span><kyn-avatar initials="A"></kyn-avatar></span>
+          <kyn-avatar initials="A"></kyn-avatar>
           <kyn-card aria-label="Card" aiConnected style="width:100%">
             How do we prioritize which applications to modernize first?
           </kyn-card>

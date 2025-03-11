@@ -86,13 +86,11 @@ export const ChatList = {
                   size="md"
                   @on-input=${(e) => action(e.type)(e)}
                 ></kyn-search>
-                <div class="chat_content_items">
-                  <div class="chat-section">
-                    <label class="kd-type--ui-02 kd-type--weight-medium"
-                      >Today, 25 Feb 10 2025</label
-                    >
-                    ${WithRightIconAndDescription.render()}
-                  </div>
+                <div class="chat-section">
+                  <label class="kd-type--ui-02 kd-type--weight-medium"
+                    >Today, 25 Feb 10 2025</label
+                  >
+                  ${WithRightIconAndDescription.render()}
                 </div>
               </div>
               <kyn-link
@@ -121,12 +119,6 @@ export const ChatList = {
           display: flex;
           flex-direction: column;
           gap: var(--kd-spacing-32);
-        }
-        .chat_content_items {
-          display: flex;
-          flex-direction: column;
-          gap: var(--kd-spacing-24);
-          align-self: stretch;
         }
         .chat-section {
           display: flex;
