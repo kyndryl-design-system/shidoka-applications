@@ -28,7 +28,7 @@ export default {
   },
 };
 
-export const Default = {
+export const ChatList = {
   render: () => {
     return html`
       <kyn-modal
@@ -107,28 +107,28 @@ export const Default = {
         .chat_list {
           display: flex;
           flex-direction: column;
-          gap: 24px;
+          gap: var(--kd-spacing-24);
         }
         .chat_content {
           display: flex;
           flex-direction: column;
-          gap: 32px;
+          gap: var(--kd-spacing-32);
         }
         .chat_content_items {
           display: flex;
           flex-direction: column;
-          gap: 24px;
+          gap: var(--kd-spacing-24);
           align-self: stretch;
         }
         .chat-section {
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: var(--kd-spacing-8);
         }
         .chat-items {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: var(--kd-spacing-12);
         }
         .chat_item {
           display: flex;
@@ -142,7 +142,7 @@ export const Default = {
   },
 };
 
-export const HistoricalChat = {
+export const HistoricalChatDetails = {
   render: () => {
     return html`
       <kyn-modal
@@ -218,14 +218,14 @@ export const HistoricalChat = {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 24px;
+          gap: var(--kd-spacing-24);
         }
         .chat_input {
           display: flex;
           flex-direction: column;
-          gap: 4px;
+          gap: var(--kd-spacing-4);
           .disclaimer {
-            padding: 0px 16px;
+            padding: var(--kd-spacing-0) var(--kd-spacing-16);
             color: var(--kd-color-text-level-secondary);
           }
         }

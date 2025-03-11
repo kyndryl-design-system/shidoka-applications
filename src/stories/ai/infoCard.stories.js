@@ -52,7 +52,7 @@ export const Default = {
         .info-card-container {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: var(--kd-spacing-12);
         }
         .info-card-content-wrapper {
           flex: 1 0 0;
@@ -118,12 +118,12 @@ export const WithRightIconAndDescription = {
         .container {
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: var(--kd-spacing-8);
         }
         .info-card-container {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: var(--kd-spacing-12);
         }
         .info-card-content-wrapper {
           flex: 1 0 0;

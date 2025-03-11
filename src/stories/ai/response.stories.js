@@ -77,10 +77,10 @@ export const UserInput = {
       <style>
         .response_wrapper {
           display: flex;
-          gap: 16px;
+          gap: var(--kd-spacing-16);
           .response_title {
             display: flex;
-            gap: 16px;
+            gap: var(--kd-spacing-16);
           }
         }
       </style>
@@ -123,11 +123,11 @@ export const AIResponse = {
       <style>
         .response_wrapper {
           display: flex;
-          gap: 16px;
+          gap: var(--kd-spacing-16);
           .response_item {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: var(--kd-spacing-16);
           }
           .response_icon {
             svg {
