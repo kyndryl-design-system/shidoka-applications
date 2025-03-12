@@ -10,7 +10,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderLinkScss from './headerLink.scss';
 import '../../reusable/textInput';
-import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
+import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chevron-right.svg';
 import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/search.svg';
 
