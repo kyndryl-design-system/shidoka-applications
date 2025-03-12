@@ -71,7 +71,7 @@ export const ChatHistory = {
   },
 };
 
-export const HistoricalChat = {
+export const ChatHistoryDetails = {
   render: () => {
     return html`
       <kyn-page-title
