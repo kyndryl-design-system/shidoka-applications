@@ -79,6 +79,7 @@ export const AI = {
           gap: var(--kd-spacing-16);
           .response_item {
             display: flex;
+            flex-grow: 1;
             flex-direction: column;
             gap: var(--kd-spacing-16);
           }
