@@ -15,7 +15,10 @@ export const ChatMessages = {
 
       <style>
         .main-div > * {
-          margin-bottom: 1.5rem; /* Adjust the margin as needed */
+          margin-bottom: 1rem; /* Adjust the margin as needed */
+        }
+        .response_wrapper {
+          padding: 0px 16px;
         }
       </style>
     `;
