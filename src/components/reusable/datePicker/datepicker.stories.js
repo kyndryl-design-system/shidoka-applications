@@ -23,8 +23,8 @@ export default {
         'Y-m-d',
         'm-d-Y',
         'd-m-Y',
-        'Y-m-d H:i', // 24-hour format without seconds
-        'Y-m-d h:i K', // 12-hour format with AM/PM
+        'Y-m-d H:i',
+        'Y-m-d h:i K',
         'm-d-Y H:i',
         'm-d-Y h:i K',
         'd-m-Y H:i',
@@ -50,6 +50,7 @@ export default {
     maxDate: { control: { type: 'text' } },
     label: { control: { type: 'text' } },
     invalidText: { control: { type: 'text' } },
+    value: { control: { type: 'text' } },
   },
 };
 
@@ -131,6 +132,7 @@ DateWithTime.args = {
   dateFormat: 'Y-m-d H:i',
   caption: '',
   label: 'Hindi Locale Example',
+  value: '',
 };
 DateWithTime.storyName = 'Date + Time (Hindi Locale)';
 
@@ -156,6 +158,7 @@ DateTimeMultiple.args = {
   caption: 'Select multiple dates with time. Example shows preselected dates.',
   mode: 'multiple',
   label: 'Multiple Date/Time Selection',
+  value: '',
 };
 DateTimeMultiple.storyName = 'With Preselected Date Time';
 
