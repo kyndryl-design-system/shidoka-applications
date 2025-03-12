@@ -31,6 +31,9 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/file/aKH1l6UGwobua14CjbWBMC/Local-Nav-1.1?node-id=602%3A18931&mode=dev',
     },
+    a11y: {
+      disable: true,
+    },
   },
 };
 
@@ -46,11 +49,6 @@ const args = {
 };
 
 export const LocalNav = {
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
   args,
   render: (args) => {
     return html`
