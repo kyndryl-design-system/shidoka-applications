@@ -20,10 +20,34 @@ import { UsageExample } from '../../../../.storybook/usageBlock.jsx';
 
 <UsageExample />
 
-### Styles
+### Import Styles
 
 ```css
 @import '@kyndryl-design-system/shidoka-applications/common/css/gridstack-shidoka.css';
+```
+
+## Configuring
+
+The widget-gridstack component includes [the Shidoka default config](https://github.com/kyndryl-design-system/shidoka-applications/blob/6d8d98eb81538157c6ff3155d51beefefc984b19/src/common/helpers/gridstack.ts#L1) automatically, but if it needs to be modified you can import the config separately and make adjustments. See the gridstack documentation for more information on the available options.
+
+### Import & Modify Config
+
+```js
+import { Config } from '@kyndryl-design-system/shidoka-applications/common/helpers/gridstack';
+
+const NewConfig = {
+  ...Config,
+  // modify config here
+};
+
+// or
+NewConfig.option = value;
+```
+
+### Pass the modified config to the widget-gridstack component
+
+```html
+<kyn-widget-gridstack .gridstackConfig="${NewConfig}"></kyn-widget-gridstack>
 ```
 
 ## Widget Sizes
