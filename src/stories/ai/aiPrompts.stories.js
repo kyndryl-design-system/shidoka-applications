@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
+
 import '../../components/reusable/card';
 
 export default {
@@ -18,28 +19,83 @@ export const Default = {
       e.preventDefault();
       e.stopPropagation();
 
-      const card = e.target.closest('kyn-card');
-      const wrapper = card.closest('.ai-prompts-wrapper');
-      const allCards = wrapper.querySelectorAll('kyn-card');
-
-      card.classList.add('selected');
-
-      allCards.forEach((c) => {
-        if (c !== card) {
-          c.classList.add('unselected');
-        }
-      });
-
-      setTimeout(() => {
-        allCards.forEach((c) => {
-          c.classList.add('fade-out');
-        });
-      }, 300);
+      // Animation to be potentially implemented in the future
+      // const card = e.target.closest('kyn-card');
+      // const wrapper = card.closest('.ai-prompts-wrapper');
+      // const allCards = wrapper.querySelectorAll('kyn-card');
+      //
+      // card.classList.add('selected');
+      //
+      // allCards.forEach((c) => {
+      //   if (c !== card) {
+      //     c.classList.add('unselected');
+      //   }
+      // });
+      //
+      // setTimeout(() => {
+      //   allCards.forEach((c) => {
+      //     c.classList.add('fade-out');
+      //   });
+      // }, 300);
 
       action(e.type)(e);
     };
 
     return html`
+      <style>
+        .ai-prompts-wrapper {
+          display: flex;
+          gap: 20px;
+          flex-wrap: wrap;
+        }
+
+        .ai-prompts-wrapper kyn-card {
+          width: 250px;
+          font-size: 14px;
+          transition: transform 0.4s ease, opacity 0.5s ease;
+          transform-origin: center;
+          position: relative;
+          z-index: 1;
+        }
+
+        .ai-prompts-wrapper kyn-card::part(card-wrapper) {
+          height: 100%;
+        }
+
+        .ai-prompts-wrapper kyn-card.selected {
+          transform: scale(1.1);
+          z-index: 2;
+        }
+
+        .ai-prompts-wrapper kyn-card sample-card-component [slot='title'] {
+          font-weight: 500;
+          margin-top: 0;
+          margin-bottom: 8px;
+        }
+
+        .ai-prompts-wrapper kyn-card.fade-out {
+          opacity: 0;
+          pointer-events: none;
+        }
+
+        .ai-prompts-wrapper
+          .ai-prompts-wrapper
+          kyn-card
+          .ai-prompts-wrapper
+          kyn-card.unselected {
+          transform: scale(0.95);
+          opacity: 0.85;
+        }
+
+        .ai-prompts-wrapper
+          kyn-card
+          sample-card-component
+          [slot='description']
+          code {
+          font-size: 14px;
+        }
+      </style>
+
       <div class="ai-prompts-wrapper">
         <kyn-card
           type="clickable"
@@ -92,12 +148,48 @@ export const Default = {
           </sample-card-component>
         </kyn-card>
       </div>
+    `;
+  },
+};
 
+export const Centered = {
+  render: () => {
+    const handleCardClick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Animation to be potentially implemented in the future
+      // const card = e.target.closest('kyn-card');
+      // const wrapper = card.closest('.ai-prompts-wrapper');
+      // const allCards = wrapper.querySelectorAll('kyn-card');
+      //
+      // card.classList.add('selected');
+      //
+      // allCards.forEach((c) => {
+      //   if (c !== card) {
+      //     c.classList.add('unselected');
+      //   }
+      // });
+      //
+      // setTimeout(() => {
+      //   allCards.forEach((c) => {
+      //     c.classList.add('fade-out');
+      //   });
+      // }, 300);
+
+      action(e.type)(e);
+    };
+
+    return html`
       <style>
         .ai-prompts-wrapper {
           display: flex;
           gap: 20px;
           flex-wrap: wrap;
+        }
+
+        .ai-prompts-wrapper.centered {
+          justify-content: center;
         }
 
         .ai-prompts-wrapper kyn-card {
@@ -109,14 +201,19 @@ export const Default = {
           z-index: 1;
         }
 
+        .ai-prompts-wrapper kyn-card::part(card-wrapper) {
+          height: 100%;
+        }
+
         .ai-prompts-wrapper kyn-card.selected {
           transform: scale(1.1);
           z-index: 2;
         }
 
-        .ai-prompts-wrapper kyn-card.unselected {
-          transform: scale(0.95);
-          opacity: 0.85;
+        .ai-prompts-wrapper kyn-card sample-card-component [slot='title'] {
+          font-weight: 500;
+          margin-top: 0;
+          margin-bottom: 8px;
         }
 
         .ai-prompts-wrapper kyn-card.fade-out {
@@ -124,52 +221,24 @@ export const Default = {
           pointer-events: none;
         }
 
-        sample-card-component [slot='title'] {
-          font-weight: 500;
-          margin-top: 0;
-          margin-bottom: 8px;
+        .ai-prompts-wrapper
+          .ai-prompts-wrapper
+          kyn-card
+          .ai-prompts-wrapper
+          kyn-card.unselected {
+          transform: scale(0.95);
+          opacity: 0.85;
         }
 
-        sample-card-component [slot='description'] code {
+        .ai-prompts-wrapper
+          kyn-card
+          sample-card-component
+          [slot='description']
+          code {
           font-size: 14px;
         }
-
-        kyn-card::part(card-wrapper) {
-          height: 100%;
-        }
       </style>
-    `;
-  },
-};
 
-export const Centered = {
-  render: () => {
-    const handleCardClick = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const card = e.target.closest('kyn-card');
-      const wrapper = card.closest('.ai-prompts-wrapper');
-      const allCards = wrapper.querySelectorAll('kyn-card');
-
-      card.classList.add('selected');
-
-      allCards.forEach((c) => {
-        if (c !== card) {
-          c.classList.add('unselected');
-        }
-      });
-
-      setTimeout(() => {
-        allCards.forEach((c) => {
-          c.classList.add('fade-out');
-        });
-      }, 300);
-
-      action(e.type)(e);
-    };
-
-    return html`
       <div class="ai-prompts-wrapper centered">
         <kyn-card
           type="clickable"
@@ -222,56 +291,6 @@ export const Centered = {
           </sample-card-component>
         </kyn-card>
       </div>
-
-      <style>
-        .ai-prompts-wrapper {
-          display: flex;
-          gap: 20px;
-          flex-wrap: wrap;
-        }
-
-        .ai-prompts-wrapper.centered {
-          justify-content: center;
-        }
-
-        .ai-prompts-wrapper kyn-card {
-          width: 250px;
-          font-size: 14px;
-          transition: transform 0.4s ease, opacity 0.5s ease;
-          transform-origin: center;
-          position: relative;
-          z-index: 1;
-        }
-
-        .ai-prompts-wrapper kyn-card.selected {
-          transform: scale(1.1);
-          z-index: 2;
-        }
-
-        .ai-prompts-wrapper kyn-card.unselected {
-          transform: scale(0.95);
-          opacity: 0.85;
-        }
-
-        .ai-prompts-wrapper kyn-card.fade-out {
-          opacity: 0;
-          pointer-events: none;
-        }
-
-        sample-card-component [slot='title'] {
-          font-weight: 500;
-          margin-top: 0;
-          margin-bottom: 8px;
-        }
-
-        sample-card-component [slot='description'] code {
-          font-size: 14px;
-        }
-
-        kyn-card::part(card-wrapper) {
-          height: 100%;
-        }
-      </style>
     `;
   },
 };
