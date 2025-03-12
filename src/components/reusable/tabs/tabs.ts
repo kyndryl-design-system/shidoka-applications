@@ -113,13 +113,13 @@ export class Tabs extends LitElement {
   private _updateChildren() {
     this._tabs.forEach((tab: any) => {
       tab._size = this.tabSize;
-      tab._vertical = this.vertical;
+      tab.vertical = this.vertical;
       tab.tabStyle = this.tabStyle;
       tab.aiConnected = this.aiConnected;
     });
 
     this._tabPanels.forEach((tabPanel: any) => {
-      tabPanel._vertical = this.vertical;
+      tabPanel.vertical = this.vertical;
     });
   }
 

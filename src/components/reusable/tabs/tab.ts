@@ -19,8 +19,14 @@ export class Tab extends LitElement {
   @state()
   private _size = 'md';
 
+  @property({ type: Boolean, reflect: true, attribute: 'vertical' })
+  vertical = false;
+
+  // Keep private state for backward compatibility
   @state()
-  private _vertical = false;
+  private get _vertical(): boolean {
+    return this.vertical;
+  }
 
   @property({
     type: Boolean,
