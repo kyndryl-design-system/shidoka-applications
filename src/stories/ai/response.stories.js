@@ -42,8 +42,8 @@ export const AI = {
     return html`
       <div>
         <div class="response_wrapper kd-spacing--margin-bottom-12">
-          <span class="response_icon"> ${unsafeHTML(aiResponse)} </span>
-          <span class="response_item kd-type--body-02">
+          <div class="response_icon">${unsafeHTML(aiResponse)}</div>
+          <div class="response_item kd-type--body-02">
             <div>AI generated response here....</div>
             ${Array.from({ length: 2 }, (_, index) => {
               return html`
@@ -69,9 +69,9 @@ export const AI = {
               Some more content here...Lorem ipsum dolor sit amet, consectetur
               adipiscing elit
             </div>
-          </span>
+            ${AISourcesFeedback.render(AISourcesFeedback.args)}
+          </div>
         </div>
-        ${AISourcesFeedback.render(AISourcesFeedback.args)}
       </div>
       <style>
         .response_wrapper {
