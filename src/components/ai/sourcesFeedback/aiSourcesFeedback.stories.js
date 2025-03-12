@@ -148,7 +148,9 @@ const feedbackFormContent = () => html`
   <div class="feedback-header">
     <span> Could you tell us a little bit more ? (optional) </span>
   </div>
+
   <form
+    class="example-form"
     @submit=${(e) => {
       e.preventDefault();
       action('submit')(e);
@@ -183,13 +185,16 @@ const feedbackFormContent = () => html`
       >
     </div>
   </form>
+
   <style>
     kyn-text-area {
       width: 100%;
     }
-    form * {
+
+    .example-form > * {
       margin-top: 0.5rem;
     }
+
     .footer {
       display: flex;
       gap: 1rem;
