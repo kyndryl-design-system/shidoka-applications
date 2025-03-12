@@ -23,8 +23,8 @@ export const ChatModal = {
 
     const handleTabChange = (e) => {
       selectedTab = e.detail.selectedTabId;
-      document.querySelector('kyn-modal').hideFooter =
-        selectedTab === 'history';
+      // document.querySelector('kyn-modal').hideFooter =
+      //   selectedTab === 'history';
     };
     return html`
       <kyn-modal
@@ -41,8 +41,9 @@ export const ChatModal = {
             @on-click=${() => action('on-click')()}
           ></kyn-ai-launch-btn>
         </kyn-button-float-container>
+
         <kyn-tabs
-          style="height: 400px;"
+          style="height: 100%;"
           scrollablePanels
           tabStyle="line"
           aiConnected
@@ -74,12 +75,10 @@ export const ChatModal = {
             `
           : ''}
       </kyn-modal>
+
       <style>
-        form * {
-          margin: 0;
-        }
         .disclaimer {
-          padding: var(--kd-spacing-0) var(--kd-spacing-16);
+          padding: var(--kd-spacing-4) var(--kd-spacing-16) var(--kd-spacing-0);
           color: var(--kd-color-text-level-secondary);
         }
       </style>

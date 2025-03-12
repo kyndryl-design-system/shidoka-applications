@@ -14,9 +14,13 @@ export const ChatMessages = {
       </div>
 
       <style>
-        .main-div > * {
-          margin-bottom: 1rem; /* Adjust the margin as needed */
+        .main-div {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          /* Adjust the margin as needed */
         }
+
         .response_wrapper {
           padding: 0px 16px;
         }
