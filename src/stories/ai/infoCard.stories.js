@@ -73,46 +73,29 @@ export const Default = {
   },
 };
 
-const content = [
-  {
-    description: 'What are the benefits of adopting Hybrid IT Modernization?',
-  },
-  {
-    description: 'I need more info as for Contract Lifecycle Management?',
-  },
-  {
-    description:
-      'What are the purpose, vision, and approach of the knowledge library?',
-  },
-];
-
 export const WithRightIconAndDescription = {
   render: () => {
     return html`
       <div class="container">
-        ${content.map((item) => {
-          return html`
-            <kyn-card style="width:100%" type="normal" aiConnected>
-              <div class="info-card-container">
-                <div class="info-card-content-wrapper">
-                  <div class="kd-type--body-02">${item.description}</div>
-                </div>
-                <div style="display:flex">
-                  <kyn-inline-confirm
-                    ?destructive=${true}
-                    .anchorText=${'Delete'}
-                    .confirmText=${'Confirm'}
-                    .cancelText=${'Cancel'}
-                    @on-confirm=${() => action('on-confirm')()}
-                  >
-                    ${unsafeSVG(deleteIcon)}
-                    <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
-                  </kyn-inline-confirm>
-                </div>
-              </div>
-            </kyn-card>
-          `;
-        })}
+        <kyn-card style="width:100%" type="normal" aiConnected>
+          <div class="info-card-container">
+            <div class="info-card-content-wrapper">
+              <div class="kd-type--body-02">This is the description...</div>
+            </div>
+            <div style="display:flex">
+              <kyn-inline-confirm
+                ?destructive=${true}
+                .anchorText=${'Delete'}
+                .confirmText=${'Confirm'}
+                .cancelText=${'Cancel'}
+                @on-confirm=${() => action('on-confirm')()}
+              >
+                ${unsafeSVG(deleteIcon)}
+                <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
+              </kyn-inline-confirm>
+            </div>
+          </div>
+        </kyn-card>
       </div>
       <style>
         .container {

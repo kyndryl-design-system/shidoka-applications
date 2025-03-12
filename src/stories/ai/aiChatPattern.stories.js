@@ -4,7 +4,6 @@ import chatIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cha
 import chatHistoryIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat-history.svg';
 import { action } from '@storybook/addon-actions';
 
-import '../../components/reusable/button';
 import '../../components/reusable/tabs';
 import '../../components/reusable/modal';
 import '../../components/ai/aiLaunchButton';
@@ -18,51 +17,22 @@ export default {
   title: 'AI/Patterns/Chat',
 };
 
-const args = {
-  open: false,
-  size: 'auto',
-  titleText: 'GenAi',
-  labelText: '',
-  okText: 'OK',
-  cancelText: 'Cancel',
-  closeText: 'Close',
-  destructive: false,
-  okDisabled: false,
-  hideFooter: false,
-  showSecondaryButton: true,
-  secondaryButtonText: 'Secondary',
-  secondaryDisabled: false,
-  hideCancelButton: false,
-  aiConnected: false,
-  disableScroll: false,
-};
-
 export const ChatModal = {
-  args: {
-    ...args,
-    ...ChatMessages.args,
-    showSecondaryButton: false,
-    aiConnected: true,
-  },
-  render: (args) => {
+  render: () => {
+    let selectedTab = 'chat';
+
+    const handleTabChange = (e) => {
+      selectedTab = e.detail.selectedTabId;
+      document.querySelector('kyn-modal').hideFooter =
+        selectedTab === 'history';
+    };
     return html`
       <kyn-modal
-        ?open=${args.open}
         size="xl"
-        titleText=${args.titleText}
-        labelText=${args.labelText}
-        okText=${args.okText}
-        cancelText=${args.cancelText}
-        closeText=${args.closeText}
-        ?destructive=${args.destructive}
-        ?okDisabled=${args.okDisabled}
-        ?showSecondaryButton=${args.showSecondaryButton}
-        secondaryButtonText=${args.secondaryButtonText}
-        ?secondaryDisabled=${args.secondaryDisabled}
-        ?hideFooter=${args.hideFooter}
-        ?hideCancelButton=${args.hideCancelButton}
-        ?aiConnected=${args.aiConnected}
-        ?disableScroll=${args.disableScroll}
+        titleText="Gen AI"
+        aiConnected
+        ?disableScroll=${true}
+        ?hideFooter=${selectedTab === 'history'}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
@@ -71,42 +41,42 @@ export const ChatModal = {
             @on-click=${() => action('on-click')()}
           ></kyn-ai-launch-btn>
         </kyn-button-float-container>
-        <span class="content">
-          <kyn-tabs
-            style="height: 300px;"
-            scrollablePanels
-            tabStyle="line"
-            aiConnected
-            @on-change=${(e) => action(e.type)(e)}
-          >
-            <kyn-tab slot="tabs" id="chat" selected>
-              <span class="icon">${unsafeSVG(chatIcon)}</span>
-              Chat
-            </kyn-tab>
-            <kyn-tab slot="tabs" id="history">
-              <span class="icon">${unsafeSVG(chatHistoryIcon)}</span>
-              History
-            </kyn-tab>
+        <kyn-tabs
+          style="height: 400px;"
+          scrollablePanels
+          tabStyle="line"
+          aiConnected
+          @on-change=${handleTabChange}
+        >
+          <kyn-tab slot="tabs" id="chat" selected>
+            <span class="icon">${unsafeSVG(chatIcon)}</span>
+            Chat
+          </kyn-tab>
+          <kyn-tab slot="tabs" id="history">
+            <span class="icon">${unsafeSVG(chatHistoryIcon)}</span>
+            History
+          </kyn-tab>
 
-            <kyn-tab-panel tabId="chat" visible>
-              ${ChatMessages.render(ChatMessages.args)}
-            </kyn-tab-panel>
-            <kyn-tab-panel tabId="history">
-              ${ChatHistory.render(ChatHistory.args)}
-            </kyn-tab-panel>
-          </kyn-tabs>
-        </span>
+          <kyn-tab-panel tabId="chat" visible>
+            ${ChatMessages.render()}
+          </kyn-tab-panel>
+          <kyn-tab-panel tabId="history">
+            ${ChatHistory.render()}
+          </kyn-tab-panel>
+        </kyn-tabs>
 
-        <div class="input-query-container" slot="footer">
-          ${InputQuery.render(InputQuery.args)}
-          <div class="disclaimer kd-type--ui-02">
-            Kai may occasionally generate incorrect or misleading information.
-          </div>
-        </div>
+        ${selectedTab === 'chat'
+          ? html`
+              <div slot="footer">
+                ${InputQuery.render(InputQuery.args)}
+                <div class="disclaimer kd-type--ui-02">Optional text here</div>
+              </div>
+            `
+          : ''}
       </kyn-modal>
       <style>
-        .input-query-container > * {
-          width: 100%;
+        form * {
+          margin: 0;
         }
         .disclaimer {
           padding: var(--kd-spacing-0) var(--kd-spacing-16);
