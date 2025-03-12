@@ -49,6 +49,13 @@ export const Default = {
           flex-wrap: wrap;
         }
 
+        .ai-prompts-wrapper kyn-card sample-card-component [slot='title'] {
+          @include typography.type-ui-01;
+          margin-top: 0;
+          margin-bottom: 8px;
+          font-weight: 500;
+        }
+
         .ai-prompts-wrapper kyn-card {
           width: 250px;
           font-size: 14px;
@@ -67,10 +74,9 @@ export const Default = {
           z-index: 2;
         }
 
-        .ai-prompts-wrapper kyn-card sample-card-component [slot='title'] {
-          font-weight: 500;
-          margin-top: 0;
-          margin-bottom: 8px;
+        .ai-prompts-wrapper kyn-card {
+          --card-title-margin-top: 0;
+          --card-title-margin-bottom: 8px;
         }
 
         .ai-prompts-wrapper kyn-card.fade-out {
@@ -188,6 +194,13 @@ export const Centered = {
           flex-wrap: wrap;
         }
 
+        .ai-prompts-wrapper kyn-card sample-card-component [slot='title'] {
+          @include typography.type-ui-01;
+          margin-top: 0;
+          margin-bottom: 8px;
+          font-weight: 500;
+        }
+
         .ai-prompts-wrapper.centered {
           justify-content: center;
         }
@@ -210,10 +223,9 @@ export const Centered = {
           z-index: 2;
         }
 
-        .ai-prompts-wrapper kyn-card sample-card-component [slot='title'] {
-          font-weight: 500;
-          margin-top: 0;
-          margin-bottom: 8px;
+        .ai-prompts-wrapper kyn-card {
+          --card-title-margin-top: 0;
+          --card-title-margin-bottom: 8px;
         }
 
         .ai-prompts-wrapper kyn-card.fade-out {
