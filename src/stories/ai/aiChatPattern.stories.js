@@ -3,6 +3,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import chatIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat.svg';
 import chatHistoryIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat-history.svg';
 import { action } from '@storybook/addon-actions';
+import { useArgs } from '@storybook/preview-api';
 
 import '../../components/reusable/tabs';
 import '../../components/reusable/modal';
@@ -18,21 +19,23 @@ export default {
 };
 
 export const ChatModal = {
+  args: {
+    selectedTabId: 'chat',
+  },
   render: () => {
-    let selectedTab = 'chat';
+    const [{ selectedTabId }, updateArgs] = useArgs();
 
     const handleTabChange = (e) => {
-      selectedTab = e.detail.selectedTabId;
-      // document.querySelector('kyn-modal').hideFooter =
-      //   selectedTab === 'history';
+      updateArgs({ selectedTabId: e.detail.selectedTabId });
     };
+
     return html`
       <kyn-modal
         size="xl"
         titleText="Gen AI"
         aiConnected
         ?disableScroll=${true}
-        ?hideFooter=${selectedTab === 'history'}
+        ?hideFooter=${selectedTabId === 'history'}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
@@ -66,14 +69,10 @@ export const ChatModal = {
           </kyn-tab-panel>
         </kyn-tabs>
 
-        ${selectedTab === 'chat'
-          ? html`
-              <div slot="footer">
-                ${InputQuery.render(InputQuery.args)}
-                <div class="disclaimer kd-type--ui-02">Optional text here</div>
-              </div>
-            `
-          : ''}
+        <div slot="footer">
+          ${InputQuery.render(InputQuery.args)}
+          <div class="disclaimer kd-type--ui-02">Optional text here</div>
+        </div>
       </kyn-modal>
 
       <style>
