@@ -88,6 +88,9 @@ export const AI = {
               height: 20px;
             }
           }
+          ol > li::marker {
+            font-weight: bold;
+          }
         }
       </style>
     `;
