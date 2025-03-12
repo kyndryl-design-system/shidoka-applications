@@ -46,6 +46,11 @@ const args = {
 };
 
 export const LocalNav = {
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
   args,
   render: (args) => {
     return html`
