@@ -32,11 +32,11 @@ class StoryColumSetting extends LitElement {
     .unlockedRow:hover kyn-button {
       opacity: 1;
     }
-    .unlockedRow:focus kyn-button {
+    .unlockedRow:focus-visible kyn-button {
       opacity: 1;
     }
 
-    .freeze-button:focus {
+    .freeze-button:focus-visible {
       opacity: 1;
     }
     kyn-global-filter {
