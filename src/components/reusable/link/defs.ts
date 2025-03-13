@@ -2,6 +2,7 @@ export enum LINK_TYPES {
   PRIMARY = 'primary',
   SECONDARY = 'secondary',
   AI_CONNECTED = 'ai',
+  SECONDARY_AI = 'secondary-ai',
 }
 
 export enum LINK_SIZES {
@@ -22,7 +23,8 @@ export enum LINK_VARIANTS {
   STANDALONE = 'standalone',
 }
 
-export enum LINK_SHADES {
+export enum COLOR_SCHEMES {
   AUTO = 'auto',
   DARK = 'dark',
+  LIGHT = 'light',
 }
