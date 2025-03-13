@@ -8,9 +8,11 @@
 .kyn-link-text {
   display: flex;
   position: relative;
-  text-decoration: none;
   font-weight: 500;
-  transition: color 300ms ease-in-out;
+  outline: 1px solid transparent;
+  outline-offset: 2px;
+  border-radius: 1px;
+  transition: color 150ms ease-in-out, outline 150ms ease-out;
 
   &:hover {
     slot[name='icon']::slotted(*) {
@@ -31,19 +33,13 @@
     &:hover {
       color: var(--kd-color-text-link-level-hover);
     }
+
     &:focus-visible {
-      color: var(--kd-color-text-link-level-default);
-      outline: 1px solid var(--kd-color-border-variants-focus);
-      -webkit-transition: outline 100ms ease-in-out;
-      -moz-transition: outline 100ms ease-in-out;
-      -o-transition: outline 100ms ease-in-out;
-      transition: outline 100ms ease-in-out;
-      text-decoration: none;
+      outline-color: var(--kd-color-border-variants-focus);
     }
+
     &:active {
       color: var(--kd-color-text-link-level-pressed);
-      text-decoration: underline;
-      outline: none;
     }
   }
 
@@ -54,16 +50,14 @@
     &:hover {
       color: var(--kd-color-background-link-level-hover-light);
     }
+
     &:focus-visible {
       color: var(--kd-color-background-link-level-default-light);
-      outline: 1px solid var(--kd-color-border-variants-focus);
-      transition: outline 100ms ease-in-out;
-      text-decoration: none;
+      outline-color: var(--kd-color-border-variants-focus);
     }
+
     &:active {
       color: var(--kd-color-background-link-level-pressed-light);
-      text-decoration: underline;
-      outline: none;
     }
   }
 
@@ -74,41 +68,21 @@
     &:hover {
       color: var(--kd-color-text-link-level-hover);
     }
+
     &:focus-visible {
-      outline: 1px solid var(--kd-color-text-level-primary);
-      -webkit-transition: outline 100ms ease-in-out;
-      -moz-transition: outline 100ms ease-in-out;
-      -o-transition: outline 100ms ease-in-out;
-      transition: outline 100ms ease-in-out;
-      text-decoration: none;
+      outline-color: var(--kd-color-border-variants-focus);
     }
+
     &:active {
       color: var(--kd-color-text-link-level-pressed);
-      text-decoration: underline;
-      outline: none;
     }
   }
+
   // Link disable class
   &-disabled {
     cursor: not-allowed;
     color: var(--kd-color-text-link-level-disabled);
-    text-decoration: none;
-    border: none;
-    outline: none;
     pointer-events: none;
-
-    &:hover,
-    &:focus-visible,
-    &:active,
-    &:visited {
-      color: var(--kd-color-text-link-level-disabled);
-      border: none;
-      outline: none;
-      text-decoration: none;
-      slot[name='icon']::slotted(*) {
-        transform: translate(0px, 0);
-      }
-    }
   }
 
   // Link Inline - standalone classes
@@ -138,9 +112,6 @@
       align-self: center;
       margin-left: 0px;
       transition: 300ms ease-in-out;
-      -moz-transition: 300ms ease-in-out;
-      -o-transition: 300ms ease-in-out;
-      -webkit-transition: 300ms ease-in-out;
     }
   }
 
@@ -152,13 +123,27 @@
     }
 
     &:focus-visible {
-      color: var(--kd-color-background-link-ai-focused);
-      outline: 1px solid var(--kd-color-border-button-ai-state-focused);
-      -webkit-transition: outline 100ms ease-in-out;
-      -moz-transition: outline 100ms ease-in-out;
-      -o-transition: outline 100ms ease-in-out;
-      transition: outline 100ms ease-in-out;
-      text-decoration: none;
+      outline-color: var(--kd-color-border-button-ai-state-focused);
+    }
+
+    &:active {
+      color: var(--kd-color-background-link-ai-pressed);
+    }
+
+    &.kyn-link-text-disabled {
+      color: var(--kd-color-background-link-ai-disabled);
+    }
+  }
+
+  &-secondary-ai {
+    color: var(--kd-color-background-link-ai-secondary);
+
+    &:hover {
+      color: var(--kd-color-background-link-ai-hover);
+    }
+
+    &:focus-visible {
+      outline-color: var(--kd-color-border-button-ai-state-focused);
     }
 
     &:active {

@@ -65,6 +65,7 @@ export class Link extends LitElement {
         rel=${this.rel}
         href=${this.href ? this.href : 'javascript:void(0)'}
         ?disabled=${this.disabled}
+        aria-disabled=${this.disabled}
         @click=${(e: Event) => this.handleClick(e)}
       >
         <span class="kyn-link-text-span-flex">
@@ -93,6 +94,7 @@ export class Link extends LitElement {
         ['kyn-link-text-primary-dark']:
           this.kind === LINK_TYPES.PRIMARY && this.shade === 'dark',
         ['kyn-link-text-secondary']: this.kind === LINK_TYPES.SECONDARY,
+        ['kyn-link-text-secondary-ai']: this.kind === LINK_TYPES.SECONDARY_AI,
         ['kyn-link-text-inline']: !this.standalone,
         ['kyn-link-text-standalone']: this.standalone,
       });
