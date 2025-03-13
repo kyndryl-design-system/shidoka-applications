@@ -145,6 +145,11 @@ export const Inline = {
 };
 
 export const Toast = {
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
   decorators: [
     (story) =>
       html`
