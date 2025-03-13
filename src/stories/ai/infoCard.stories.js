@@ -22,23 +22,13 @@ const InfoTemplate = () => {
     <kyn-card style="width:100%" type="normal" aiConnected>
       <div class="info-card-container">
         <div class="info-card-leftIcon">${unsafeSVG(policeIcon)}</div>
+
         <div class="info-card-content-wrapper">
           <div class="info-card-title-text kd-type--ui-03">
             This is the title
           </div>
+
           <div class="kd-type--body-02">This is the description</div>
-        </div>
-        <div class="info-card-rightIcon">
-          <kyn-inline-confirm
-            ?destructive=${true}
-            .anchorText=${'Delete'}
-            .confirmText=${'Confirm'}
-            .cancelText=${'Cancel'}
-            @on-confirm=${() => action('on-confirm')()}
-          >
-            ${unsafeSVG(deleteIcon)}
-            <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
-          </kyn-inline-confirm>
         </div>
       </div>
     </kyn-card>
@@ -82,18 +72,17 @@ export const WithRightIconAndDescription = {
             <div class="info-card-content-wrapper">
               <div class="kd-type--body-02">This is the description...</div>
             </div>
-            <div style="display:flex">
-              <kyn-inline-confirm
-                ?destructive=${true}
-                .anchorText=${'Delete'}
-                .confirmText=${'Confirm'}
-                .cancelText=${'Cancel'}
-                @on-confirm=${() => action('on-confirm')()}
-              >
-                ${unsafeSVG(deleteIcon)}
-                <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
-              </kyn-inline-confirm>
-            </div>
+
+            <kyn-inline-confirm
+              ?destructive=${true}
+              .anchorText=${'Delete'}
+              .confirmText=${'Confirm'}
+              .cancelText=${'Cancel'}
+              @on-confirm=${() => action('on-confirm')()}
+            >
+              ${unsafeSVG(deleteIcon)}
+              <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
+            </kyn-inline-confirm>
           </div>
         </kyn-card>
       </div>
@@ -110,6 +99,7 @@ export const WithRightIconAndDescription = {
         }
         .info-card-content-wrapper {
           flex: 1 0 0;
+          word-wrap: anywhere;
         }
       </style>
     `;
