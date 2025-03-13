@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { LINK_TYPES, LINK_TARGETS, COLOR_SCHEMES } from './defs';
+import { LINK_TYPES, LINK_TARGETS } from './defs';
 
 import LinkStyles from './link.scss';
 
@@ -46,13 +46,6 @@ export class Link extends LitElement {
   @property({ type: Boolean })
   iconLeft = false;
 
-  /**
-   * Overrides the theme of the link.
-   * Possible options include "auto" (default), "dark", "light".
-   * */
-  @property({ type: String })
-  colorScheme = COLOR_SCHEMES.AUTO;
-
   override render() {
     const classes = this.returnClassMap();
 
@@ -88,8 +81,6 @@ export class Link extends LitElement {
       return classMap({
         ...baseClasses,
         'kyn-link-text-primary': this.kind === LINK_TYPES.PRIMARY || !this.kind,
-        [`kyn-link-text-scheme-${this.colorScheme}`]:
-          this.colorScheme !== COLOR_SCHEMES.AUTO,
         'kyn-link-text-secondary': this.kind === LINK_TYPES.SECONDARY,
         'kyn-link-text-secondary-ai': this.kind === LINK_TYPES.SECONDARY_AI,
         'kyn-link-text-inline': !this.standalone,

@@ -4,7 +4,7 @@ import './index';
 import cloudDownloadIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/cloud-download.svg';
 
 export default {
-  title: 'Components/PageTitle',
+  title: 'Components/Page Title',
   component: 'kyn-page-title',
   argTypes: {
     type: {

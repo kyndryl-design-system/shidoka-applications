@@ -17,9 +17,9 @@ import TabsScss from './tabs.scss';
 export class Tabs extends LitElement {
   static override styles = TabsScss;
 
-  /** Tab style. `'contained'` or `'line'`. */
+  /** Tab style. `'primary'` or `'secondary'`. `'contained'` and `'line'` are now deprecated. */
   @property({ type: String })
-  tabStyle = 'contained';
+  tabStyle = 'primary';
 
   /** Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px. */
   @property({ type: String })
@@ -63,8 +63,8 @@ export class Tabs extends LitElement {
 
     const tabsClasses = {
       tabs: true,
-      contained: this.tabStyle === 'contained',
-      line: this.tabStyle === 'line',
+      primary: this.tabStyle === 'primary' || this.tabStyle === 'contained',
+      secondary: this.tabStyle === 'secondary' || this.tabStyle === 'line',
       [`ai-connected--${this.aiConnected}`]: true,
     };
 
