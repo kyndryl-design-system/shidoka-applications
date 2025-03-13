@@ -10,11 +10,11 @@
   font-weight: var(--kd-font-weight-medium);
   background: var(--kd-color-background-container-soft);
   border-radius: 4px;
-  border-right: 1px solid var(--kd-color-border-variants-inverse);
-  border-left: 1px solid var(--kd-color-border-variants-inverse);
   min-width: var(--kyn-th-min-width, auto);
   width: var(--kyn-th-width, auto);
   max-width: var(--kyn-th-max-width, none);
+  overflow: hidden;
+  position: relative;
 
   .container {
     display: flex;
@@ -38,6 +38,28 @@
       outline-color: var(--kd-color-border-variants-focus);
     }
   }
+}
+
+:host::before,
+:host::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--kd-color-border-variants-inverse);
+}
+
+:host::before {
+  left: -1px;
+  background: var(--kd-color-border-variants-inverse);
+}
+:host(:first-of-type)::before {
+  left: 0;
+  background: var(--kd-color-border-variants-inverse);
+}
+:host::after {
+  right: 0;
 }
 
 .sr-only {
