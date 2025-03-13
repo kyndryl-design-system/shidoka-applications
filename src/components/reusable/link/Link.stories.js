@@ -7,7 +7,7 @@ import { within } from 'shadow-dom-testing-library';
 
 import './link';
 import arrowRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
-import { LINK_TYPES, LINK_TARGETS, LINK_SHADES } from './defs';
+import { LINK_TYPES, LINK_TARGETS, COLOR_SCHEMES } from './defs';
 import { createOptionsArray } from '../../../common/helpers/helpers';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
@@ -37,9 +37,9 @@ export default {
         defaultValue: { summary: LINK_TARGETS.SELF },
       },
     },
-    shade: {
-      options: createSelectOptions(LINK_SHADES),
-      control: { type: 'select', labels: { null: LINK_SHADES.AUTO } },
+    colorScheme: {
+      options: createSelectOptions(COLOR_SCHEMES),
+      control: { type: 'select', labels: { null: COLOR_SCHEMES.AUTO } },
       table: {
         defaultValue: { summary: LINK_TYPES.AUTO },
       },
@@ -52,7 +52,7 @@ const args = {
   href: '',
   target: '_self',
   kind: 'primary',
-  shade: 'auto',
+  colorScheme: 'auto',
   disabled: false,
   standalone: false,
   iconLeft: false,
@@ -72,7 +72,7 @@ export const Link = {
         href=${args.href}
         target=${args.target}
         kind=${args.kind}
-        shade=${args.shade}
+        colorScheme=${args.colorScheme}
         ?disabled=${args.disabled}
         @on-click=${args['on-click']}
       >
@@ -98,7 +98,7 @@ export const LinkWithIcon = {
       ?iconLeft=${args.iconLeft}
       href=${args.href}
       target=${args.target}
-      shade=${args.shade}
+      colorScheme=${args.colorScheme}
       kind=${args.kind}
       ?disabled=${args.disabled}
       @on-click=${args['on-click']}
@@ -129,7 +129,7 @@ export const LinkAISpecific = {
         href=${args.href}
         target=${args.target}
         kind=${args.kind}
-        shade=${args.shade}
+        colorScheme=${args.colorScheme}
         ?disabled=${args.disabled}
         @on-click=${args['on-click']}
       >

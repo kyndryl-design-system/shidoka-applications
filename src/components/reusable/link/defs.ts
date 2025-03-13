@@ -23,7 +23,8 @@ export enum LINK_VARIANTS {
   STANDALONE = 'standalone',
 }
 
-export enum LINK_SHADES {
+export enum COLOR_SCHEMES {
   AUTO = 'auto',
   DARK = 'dark',
+  LIGHT = 'light',
 }

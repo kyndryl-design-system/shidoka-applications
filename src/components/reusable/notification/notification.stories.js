@@ -133,7 +133,7 @@ export const Inline = {
           <div style="margin-top: 10px;">
             <kyn-link
               href="#"
-              shade="dark"
+              shade="light"
               @on-click=${(e) => e.preventDefault()}
             >
               Link
