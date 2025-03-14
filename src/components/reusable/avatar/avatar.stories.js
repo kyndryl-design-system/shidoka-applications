@@ -5,14 +5,6 @@ import './index';
 export default {
   title: 'Components/Avatar',
   component: 'kyn-avatar',
-  argTypes: {
-    minLength: {
-      control: { type: 'number' },
-    },
-    maxLength: {
-      control: { type: 'number' },
-    },
-  },
 };
 
 export const Avatar = {

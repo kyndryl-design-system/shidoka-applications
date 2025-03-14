@@ -2,149 +2,96 @@ import { html } from 'lit';
 import '../../components/reusable/avatar';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/indicator.svg';
+import '../../components/reusable/card';
+
+import { AISourcesFeedback } from '../../components/ai/sourcesFeedback/aiSourcesFeedback.stories';
 
 export default {
   title: 'AI/Patterns/Response',
 };
 
-const args = {};
-
-export const WithAvatarInitials = {
-  args,
-  render: (args) => {
+export const User = {
+  render: () => {
     return html`
-      <div class="response-wrapper">
-        <kyn-avatar initials="A"></kyn-avatar>
-
-        <span class="response-msg">
-          The benefits of adopting Hybrid IT Modernization:
-          <ol class="kd-spacing--list-item">
-            <li>
-              Cost Efficiency: Hybrid IT allows organizations to combine
-              on-premises infrastructure with cloud solutions, optimizing costs
-              by only utilizing cloud services for what is needed. It helps
-              avoid over-provisioning and can scale as needed without large
-              upfront investments.
-            </li>
-            <li>
-              Flexibility and Scalability: Organizations can leverage the
-              flexibility of the cloud for specific workloads while maintaining
-              critical systems on-premises. This provides the ability to scale
-              resources up or down as business needs change, ensuring better
-              alignment with demand.
-            </li>
-            <li>
-              Improved Agility: By modernizing IT infrastructure with a hybrid
-              approach, businesses can more quickly respond to market changes
-              and customer needs. They can experiment with new technologies or
-              software without disrupting core operations.
-            </li>
-          </ol>
-        </span>
+      <div class="response_wrapper">
+        <div class="response_title">
+          <kyn-avatar initials="A"></kyn-avatar>
+          <kyn-card aria-label="Card" aiConnected style="width:100%">
+            User response here...Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit
+          </kyn-card>
+        </div>
       </div>
 
       <style>
-        .response-wrapper {
+        .response_wrapper {
           display: flex;
-          gap: 20px;
-        }
-        ol {
-          margin-left: -1rem;
+          gap: var(--kd-spacing-16);
+          .response_title {
+            display: flex;
+            gap: var(--kd-spacing-16);
+          }
         }
       </style>
     `;
   },
 };
 
-export const WithAvatarImage = {
-  args,
-  render: (args) => {
+export const AI = {
+  render: () => {
     return html`
-      <div class="response-wrapper">
-        <kyn-avatar
-          ><img src="https://picsum.photos/id/237/112/112" alt="User Name"
-        /></kyn-avatar>
-
-        <span class="response-msg">
-          The benefits of adopting Hybrid IT Modernization:
-          <ol class="kd-spacing--list-item">
-            <li>
-              Cost Efficiency: Hybrid IT allows organizations to combine
-              on-premises infrastructure with cloud solutions, optimizing costs
-              by only utilizing cloud services for what is needed. It helps
-              avoid over-provisioning and can scale as needed without large
-              upfront investments.
-            </li>
-            <li>
-              Flexibility and Scalability: Organizations can leverage the
-              flexibility of the cloud for specific workloads while maintaining
-              critical systems on-premises. This provides the ability to scale
-              resources up or down as business needs change, ensuring better
-              alignment with demand.
-            </li>
-            <li>
-              Improved Agility: By modernizing IT infrastructure with a hybrid
-              approach, businesses can more quickly respond to market changes
-              and customer needs. They can experiment with new technologies or
-              software without disrupting core operations.
-            </li>
-          </ol>
-        </span>
+      <div>
+        <div class="response_wrapper kd-spacing--margin-bottom-12">
+          <div class="response_icon">${unsafeHTML(aiResponse)}</div>
+          <div class="response_item kd-type--body-02">
+            <div>AI generated response here....</div>
+            ${Array.from({ length: 2 }, (_, index) => {
+              return html`
+                <div>
+                  <b>${index + 1}. AI Title Text</b>
+                </div>
+                <ol
+                  class="kd-spacing--margin-top-0 kd-spacing--margin-bottom-0 kd-spacing--list-item"
+                  type="a"
+                >
+                  ${Array.from({ length: 3 }, (_, index) => {
+                    return html`
+                <li><b>Text ${
+                  index + 1
+                }:</b> AI Content here...Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
+              </ol>
+              `;
+                  })}
+                </ol>
+              `;
+            })}
+            <div class="kd-spacing--margin-top-24">
+              Some more content here...Lorem ipsum dolor sit amet, consectetur
+              adipiscing elit
+            </div>
+            ${AISourcesFeedback.render(AISourcesFeedback.args)}
+          </div>
+        </div>
       </div>
-
       <style>
-        .response-wrapper {
+        .response_wrapper {
           display: flex;
-          gap: 20px;
-        }
-        ol {
-          margin-left: -1rem;
-        }
-      </style>
-    `;
-  },
-};
-
-export const WithAIImage = {
-  args,
-  render: (args) => {
-    return html`
-      <div class="response-wrapper">
-        <span> ${unsafeHTML(aiResponse)} </span>
-        <span class="response-msg">
-          The benefits of adopting Hybrid IT Modernization:
-          <ol class="kd-spacing--list-item">
-            <li>
-              Cost Efficiency: Hybrid IT allows organizations to combine
-              on-premises infrastructure with cloud solutions, optimizing costs
-              by only utilizing cloud services for what is needed. It helps
-              avoid over-provisioning and can scale as needed without large
-              upfront investments.
-            </li>
-            <li>
-              Flexibility and Scalability: Organizations can leverage the
-              flexibility of the cloud for specific workloads while maintaining
-              critical systems on-premises. This provides the ability to scale
-              resources up or down as business needs change, ensuring better
-              alignment with demand.
-            </li>
-            <li>
-              Improved Agility: By modernizing IT infrastructure with a hybrid
-              approach, businesses can more quickly respond to market changes
-              and customer needs. They can experiment with new technologies or
-              software without disrupting core operations.
-            </li>
-          </ol>
-        </span>
-      </div>
-
-      <style>
-        .response-wrapper {
-          display: flex;
-          gap: 20px;
-        }
-        ol {
-          margin-left: -1rem;
+          gap: var(--kd-spacing-16);
+          .response_item {
+            display: flex;
+            flex-grow: 1;
+            flex-direction: column;
+            gap: var(--kd-spacing-16);
+          }
+          .response_icon {
+            svg {
+              width: 20px;
+              height: 20px;
+            }
+          }
+          ol > li::marker {
+            font-weight: bold;
+          }
         }
       </style>
     `;
