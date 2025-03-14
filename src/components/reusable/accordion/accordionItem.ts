@@ -7,7 +7,7 @@ import { state, property, customElement } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import stylesheet from './accordionItem.scss';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
+import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/chevron-down.svg';
 
 /**
  * AccordionItem component. *
@@ -177,9 +177,7 @@ export class AccordionItem extends LitElement {
             ${this.subtitleTemplate}
           </div>
 
-          <div class="expand-icon">
-            <span>${unsafeSVG(chevronIcon)}</span>
-          </div>
+          <div class="expand-icon">${unsafeSVG(chevronIcon)}</div>
         </div>
 
         <div

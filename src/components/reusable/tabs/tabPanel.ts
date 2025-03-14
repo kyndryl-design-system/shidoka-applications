@@ -26,8 +26,17 @@ export class TabPanel extends LitElement {
   /** Vertical orientation. Inherited.
    * @internal
    */
+  @property({ type: Boolean, reflect: true, attribute: 'vertical' })
+  vertical = false;
+
+  /**
+   * @internal
+   * Kept for backward compatibility
+   */
   @state()
-  private _vertical = false;
+  private get _vertical(): boolean {
+    return this.vertical;
+  }
 
   /** Tab Panel ID.
    * @internal

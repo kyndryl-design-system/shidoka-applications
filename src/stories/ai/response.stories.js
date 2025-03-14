@@ -16,7 +16,12 @@ export const User = {
       <div class="response_wrapper">
         <div class="response_title">
           <kyn-avatar initials="A"></kyn-avatar>
-          <kyn-card aria-label="Card" aiConnected style="width:100%">
+          <kyn-card
+            role="region"
+            aria-label="User message"
+            aiConnected
+            style="width:100%"
+          >
             User response here...Lorem ipsum dolor sit amet, consectetur
             adipiscing elit
           </kyn-card>
@@ -85,8 +90,8 @@ export const AI = {
           }
           .response_icon {
             svg {
-              width: 20px;
-              height: 20px;
+              width: 24px;
+              height: 24px;
             }
           }
           ol > li::marker {

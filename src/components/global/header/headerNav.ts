@@ -4,8 +4,8 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import HeaderNavScss from './headerNav.scss';
 
-import menuIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/hamburger-menu.svg';
-import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/close-simple.svg';
+import menuIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/hamburger-menu.svg';
+import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
 
 /**
  * Container for header navigation links.

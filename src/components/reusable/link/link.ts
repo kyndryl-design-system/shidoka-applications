@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { LINK_TYPES, LINK_TARGETS, LINK_SHADES } from './defs';
+import { LINK_TYPES, LINK_TARGETS } from './defs';
 
 import LinkStyles from './link.scss';
 
@@ -46,14 +46,6 @@ export class Link extends LitElement {
   @property({ type: Boolean })
   iconLeft = false;
 
-  /**
-   * Determines the shade of the link. By default `auto`.
-   * Set this prop to `dark` manually when the link needs to have a better contrast for visibility on light backgroud, irrespective of the theme.
-   * **NOTE**: Applicable only for **primary** link.
-   * */
-  @property({ type: String })
-  shade = LINK_SHADES.AUTO;
-
   override render() {
     const classes = this.returnClassMap();
 
@@ -65,6 +57,7 @@ export class Link extends LitElement {
         rel=${this.rel}
         href=${this.href ? this.href : 'javascript:void(0)'}
         ?disabled=${this.disabled}
+        aria-disabled=${this.disabled}
         @click=${(e: Event) => this.handleClick(e)}
       >
         <span class="kyn-link-text-span-flex">
@@ -77,9 +70,9 @@ export class Link extends LitElement {
   // -- Apply classes according to states, kind etc. -- //
   private returnClassMap() {
     const baseClasses = {
-      ['kyn-link-text-disabled']: this.disabled,
+      'kyn-link-text-disabled': this.disabled,
       'icon-left': this.iconLeft,
-      ['kyn-link-text-ai']: this.kind === LINK_TYPES.AI_CONNECTED,
+      'kyn-link-text-ai': this.kind === LINK_TYPES.AI_CONNECTED,
     };
 
     if (this.disabled) {
@@ -87,14 +80,11 @@ export class Link extends LitElement {
     } else {
       return classMap({
         ...baseClasses,
-        ['kyn-link-text-primary']:
-          (this.kind === LINK_TYPES.PRIMARY || !this.kind) &&
-          this.shade === 'auto',
-        ['kyn-link-text-primary-dark']:
-          this.kind === LINK_TYPES.PRIMARY && this.shade === 'dark',
-        ['kyn-link-text-secondary']: this.kind === LINK_TYPES.SECONDARY,
-        ['kyn-link-text-inline']: !this.standalone,
-        ['kyn-link-text-standalone']: this.standalone,
+        'kyn-link-text-primary': this.kind === LINK_TYPES.PRIMARY || !this.kind,
+        'kyn-link-text-secondary': this.kind === LINK_TYPES.SECONDARY,
+        'kyn-link-text-secondary-ai': this.kind === LINK_TYPES.SECONDARY_AI,
+        'kyn-link-text-inline': !this.standalone,
+        'kyn-link-text-standalone': this.standalone,
       });
     }
   }
