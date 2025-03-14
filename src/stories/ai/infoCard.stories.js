@@ -17,18 +17,65 @@ export default {
   },
 };
 
-const InfoTemplate = () => {
-  return html`
-    <kyn-card style="width:100%" type="normal" aiConnected>
-      <div class="info-card-container">
-        <div class="info-card-leftIcon">${unsafeSVG(policeIcon)}</div>
-        <div class="info-card-content-wrapper">
-          <div class="info-card-title-text kd-type--ui-03">
-            This is the title
+const Styles = html`
+  <style>
+    .info-card-container {
+      display: flex;
+      align-items: center;
+      gap: var(--kd-spacing-12);
+    }
+
+    .info-card-content-wrapper {
+      flex: 1 0 0;
+      word-wrap: anywhere;
+    }
+
+    .info-card-title-text {
+      color: var(--kd-color-text-title-ai-tertiary);
+    }
+
+    .info-card-rightIcon,
+    .info-card-leftIcon {
+      display: flex;
+    }
+
+    .info-card-leftIcon {
+      svg {
+        fill: var(--kd-color-icon-ai);
+      }
+    }
+  </style>
+`;
+
+export const Default = {
+  render: () => {
+    return html`
+      <kyn-card style="width:100%" type="normal" aiConnected>
+        <div class="info-card-container">
+          <div class="info-card-leftIcon">${unsafeSVG(policeIcon)}</div>
+
+          <div class="info-card-content-wrapper">
+            <div class="info-card-title-text kd-type--ui-03">
+              This is the title
+            </div>
+
+            This is the description
           </div>
-          <div class="kd-type--body-02">This is the description</div>
         </div>
-        <div class="info-card-rightIcon">
+      </kyn-card>
+
+      ${Styles}
+    `;
+  },
+};
+
+export const WithRightIconAndDescription = {
+  render: () => {
+    return html`
+      <kyn-card style="width:100%" type="normal" aiConnected>
+        <div class="info-card-container">
+          <div class="info-card-content-wrapper">This is the description</div>
+
           <kyn-inline-confirm
             ?destructive=${true}
             .anchorText=${'Delete'}
@@ -40,78 +87,9 @@ const InfoTemplate = () => {
             <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
           </kyn-inline-confirm>
         </div>
-      </div>
-    </kyn-card>
-  `;
-};
+      </kyn-card>
 
-export const Default = {
-  render: () => {
-    return html` ${InfoTemplate()}
-      <style>
-        .info-card-container {
-          display: flex;
-          align-items: center;
-          gap: var(--kd-spacing-12);
-        }
-        .info-card-content-wrapper {
-          flex: 1 0 0;
-        }
-        .info-card-title-text {
-          color: var(--kd-color-text-title-ai-tertiary);
-        }
-        .info-card-rightIcon,
-        .info-card-leftIcon {
-          display: flex;
-        }
-        .info-card-leftIcon {
-          svg {
-            fill: var(--kd-color-icon-ai);
-          }
-        }
-      </style>`;
-  },
-};
-
-export const WithRightIconAndDescription = {
-  render: () => {
-    return html`
-      <div class="container">
-        <kyn-card style="width:100%" type="normal" aiConnected>
-          <div class="info-card-container">
-            <div class="info-card-content-wrapper">
-              <div class="kd-type--body-02">This is the description...</div>
-            </div>
-            <div style="display:flex">
-              <kyn-inline-confirm
-                ?destructive=${true}
-                .anchorText=${'Delete'}
-                .confirmText=${'Confirm'}
-                .cancelText=${'Cancel'}
-                @on-confirm=${() => action('on-confirm')()}
-              >
-                ${unsafeSVG(deleteIcon)}
-                <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
-              </kyn-inline-confirm>
-            </div>
-          </div>
-        </kyn-card>
-      </div>
-      <style>
-        .container {
-          display: flex;
-          flex-direction: column;
-          gap: var(--kd-spacing-8);
-        }
-        .info-card-container {
-          display: flex;
-          align-items: center;
-          gap: var(--kd-spacing-12);
-        }
-        .info-card-content-wrapper {
-          flex: 1 0 0;
-        }
-      </style>
+      ${Styles}
     `;
   },
 };

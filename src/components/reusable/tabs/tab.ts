@@ -19,8 +19,14 @@ export class Tab extends LitElement {
   @state()
   private _size = 'md';
 
+  @property({ type: Boolean, reflect: true, attribute: 'vertical' })
+  vertical = false;
+
+  // Keep private state for backward compatibility
   @state()
-  private _vertical = false;
+  private get _vertical(): boolean {
+    return this.vertical;
+  }
 
   @property({
     type: Boolean,
@@ -34,7 +40,7 @@ export class Tab extends LitElement {
   aiConnected = false;
 
   @property({ type: String, reflect: true, attribute: 'data-tab-style' })
-  tabStyle = 'contained';
+  tabStyle = 'primary';
 
   @property({ type: String, reflect: true })
   override role = 'tab';
@@ -54,8 +60,8 @@ export class Tab extends LitElement {
   override render() {
     const classes = {
       tab: true,
-      contained: this.tabStyle === 'contained',
-      line: this.tabStyle === 'line',
+      primary: this.tabStyle === 'primary' || this.tabStyle === 'contained',
+      secondary: this.tabStyle === 'secondary' || this.tabStyle === 'line',
       'size--sm': this._size === 'sm',
       'size--md': this._size === 'md',
       vertical: this._vertical,

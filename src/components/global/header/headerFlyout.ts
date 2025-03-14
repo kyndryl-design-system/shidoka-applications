@@ -98,9 +98,9 @@ export class HeaderFlyout extends LitElement {
                     `
                   : null}
 
-                <span slot="button" class="arrow"
-                  >${unsafeSVG(chevronIcon)}</span
-                >
+                <span slot="button" class="arrow">
+                  ${unsafeSVG(chevronIcon)}
+                </span>
               </a>
             `
           : html`
@@ -120,9 +120,9 @@ export class HeaderFlyout extends LitElement {
                     `
                   : null}
 
-                <span slot="button" class="arrow"
-                  >${unsafeSVG(chevronIcon)}</span
-                >
+                <span slot="button" class="arrow">
+                  ${unsafeSVG(chevronIcon)}
+                </span>
               </button>
             `}
 

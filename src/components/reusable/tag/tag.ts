@@ -8,6 +8,7 @@ import TagScss from './tag.scss';
 /**
  * Tag.
  * @fires on-close - Captures the close event and emits the Tag value. Works with filterable tags.
+ * @fires on-click - Captures the click event and emits the Tag value. Works with clickable tags.
  */
 
 @customElement('kyn-tag')

@@ -23,7 +23,7 @@ export default {
       },
     },
     tabStyle: {
-      options: ['contained', 'line'],
+      options: ['primary', 'secondary'],
       control: { type: 'select' },
     },
   },
@@ -39,7 +39,7 @@ export default {
 
 const args = {
   tabSize: 'md',
-  tabStyle: 'contained',
+  tabStyle: 'primary',
   vertical: false,
   aiConnected: false,
   disableAutoFocusUpdate: false,
@@ -126,7 +126,7 @@ export const Nested = {
           <p style="padding: 0 12px 24px;">Tab 1 Content</p>
 
           <kyn-tabs
-            tabStyle="line"
+            tabStyle="secondary"
             tabSize=${args.tabSize}
             ?aiConnected=${args.aiConnected}
             ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
@@ -241,11 +241,11 @@ export const Gallery = {
     return html`
       <div class="heading kd-type--headline-04">Gallery</div>
 
-      <div class="heading kd-type--headline-07">Contained</div>
+      <div class="heading kd-type--headline-07">Primary</div>
 
       <kyn-tabs
         tabSize="md"
-        tabStyle=${'contained'}
+        tabStyle="primary"
         ?vertical=${args.vertical}
         ?aiConnected=${false}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
@@ -260,11 +260,11 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-07">Line</div>
+      <div class="heading kd-type--headline-07">Secondary</div>
 
       <kyn-tabs
         tabSize="md"
-        tabStyle=${'line'}
+        tabStyle="line"
         ?vertical=${args.vertical}
         ?aiConnected=${false}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
@@ -279,11 +279,11 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-07">Contained AI</div>
+      <div class="heading kd-type--headline-07">Primary AI</div>
 
       <kyn-tabs
         tabSize="md"
-        tabStyle=${'contained'}
+        tabStyle="primary"
         ?vertical=${args.vertical}
         ?aiConnected=${true}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
@@ -298,11 +298,11 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-07">Line AI</div>
+      <div class="heading kd-type--headline-07">Secondary AI</div>
 
       <kyn-tabs
         tabSize="md"
-        tabStyle=${'line'}
+        tabStyle="secondary"
         ?vertical=${args.vertical}
         ?aiConnected=${true}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
@@ -321,7 +321,7 @@ export const Gallery = {
 
       <kyn-tabs
         tabSize="md"
-        tabStyle=${'line'}
+        tabStyle="secondary"
         ?vertical=${true}
         ?aiConnected=${true}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
@@ -340,7 +340,7 @@ export const Gallery = {
 
       <kyn-tabs
         tabSize=${'md'}
-        tabStyle=${'contained'}
+        tabStyle="primary"
         ?vertical=${args.vertical}
         ?aiConnected=${false}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}

@@ -14,102 +14,53 @@ export default {
 };
 
 export const Default = {
-  render: () => {
-    return html`
-      ${aiAnswersStyles}
-
-      <div class="ai-answers-wrapper">
-        <kyn-button
-          size="small"
-          kind="secondary-ai"
-          name="AI Answer 1"
-          description="AI Answer 1"
-          @on-click=${handleClick}
-          >AI Answer 1</kyn-button
-        >
-        <kyn-button
-          size="small"
-          kind="secondary-ai"
-          name="AI Answer 2"
-          description="AI Answer 2"
-          @on-click=${handleClick}
-          >AI Answer 2</kyn-button
-        >
-        <kyn-button
-          size="small"
-          kind="secondary-ai"
-          name="AI Answer 3"
-          description="AI Answer 3"
-          @on-click=${handleClick}
-          >AI Answer 3</kyn-button
-        >
-        <kyn-button
-          size="small"
-          kind="secondary-ai"
-          name="AI Answer 4"
-          description="AI Answer 4"
-          @on-click=${handleClick}
-          >AI Answer 4</kyn-button
-        >
-      </div>
-    `;
+  args: {
+    centered: false,
   },
-};
-
-export const Centered = {
-  render: () => {
+  render: (args) => {
     return html`
       ${aiAnswersStyles}
 
-      <div class="ai-answers-wrapper centered">
+      <div class="ai-answers-wrapper ${args.centered ? 'centered' : ''}">
         <kyn-button
           size="small"
           kind="secondary-ai"
           name="AI Answer 1"
           description="AI Answer 1"
           @on-click=${handleClick}
-          >AI Answer 1</kyn-button
         >
+          AI Answer 1
+        </kyn-button>
+
         <kyn-button
           size="small"
           kind="secondary-ai"
           name="AI Answer 2"
           description="AI Answer 2"
           @on-click=${handleClick}
-          >AI Answer 2</kyn-button
         >
+          AI Answer 2
+        </kyn-button>
+
         <kyn-button
           size="small"
           kind="secondary-ai"
           name="AI Answer 3"
           description="AI Answer 3"
           @on-click=${handleClick}
-          >AI Answer 3</kyn-button
         >
+          AI Answer 3
+        </kyn-button>
+
         <kyn-button
           size="small"
           kind="secondary-ai"
           name="AI Answer 4"
           description="AI Answer 4"
           @on-click=${handleClick}
-          >AI Answer 4</kyn-button
         >
-        <kyn-button
-          size="small"
-          kind="secondary-ai"
-          name="AI Answer 5"
-          description="AI Answer 5"
-          @on-click=${handleClick}
-          >AI Answer 5</kyn-button
-        >
-        <kyn-button
-          size="small"
-          kind="secondary-ai"
-          name="AI Answer 6"
-          description="AI Answer 6"
-          @on-click=${handleClick}
-          >AI Answer 6</kyn-button
-        >
+          AI Answer 4
+        </kyn-button>
       </div>
     `;
   },
@@ -118,7 +69,7 @@ export const Centered = {
 const aiAnswersStyles = html` <style>
   .ai-answers-wrapper {
     display: flex;
-    gap: 20px;
+    gap: 16px;
     flex-wrap: wrap;
   }
 

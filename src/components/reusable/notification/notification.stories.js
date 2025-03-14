@@ -27,9 +27,6 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/file/CQuDZEeLiuGiALvCWjAKlu/Applications---Component-Library?type=design&node-id=9370-44581&mode=design&t=LXc9LDk5mGkf8vnl-0',
     },
-    a11y: {
-      disable: true,
-    },
   },
 };
 
@@ -57,7 +54,6 @@ export const Notification = {
       tagStatus=${args.tagStatus}
       ?unRead=${args.unRead}
       @on-notification-click=${(e) => action(e.type)(e)}
-      style="width:464px;"
     >
       ${args.type === 'normal' || args.type === 'clickable'
         ? html` <kyn-overflow-menu
@@ -134,11 +130,7 @@ export const Inline = {
         <div>
           ${notificationBodyMsg}
           <div style="margin-top: 10px;">
-            <kyn-link
-              href="#"
-              shade="dark"
-              @on-click=${(e) => e.preventDefault()}
-            >
+            <kyn-link href="#" @on-click=${(e) => e.preventDefault()}>
               Link
             </kyn-link>
           </div>
@@ -148,6 +140,11 @@ export const Inline = {
 };
 
 export const Toast = {
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
   decorators: [
     (story) =>
       html`
@@ -184,7 +181,6 @@ export const Toast = {
           timeout=${args.timeout}
           ?hideCloseButton=${args.hideCloseButton}
           @on-close=${(e) => action(e.type)(e)}
-          style="width:440px;"
         >
           <div>
             I will disappear as requested, after
@@ -200,7 +196,6 @@ export const Toast = {
           timeout=${8}
           ?hideCloseButton=${args.hideCloseButton}
           @on-close=${(e) => action(e.type)(e)}
-          style="width:440px;"
         >
           <div>I will disappear after (default) <code>8</code> seconds.</div>
         </kyn-notification>
@@ -213,7 +208,6 @@ export const Toast = {
           ?hideCloseButton=${args.hideCloseButton}
           @on-close=${(e) => action(e.type)(e)}
           timeout=${12}
-          style="width:440px;"
         >
           <div>I will disappear after <code>12</code> seconds.</div>
         </kyn-notification>
@@ -227,7 +221,6 @@ export const Toast = {
           ?hideCloseButton=${args.hideCloseButton}
           @on-close=${(e) => action(e.type)(e)}
           timeout=${0}
-          style="width:440px;"
         >
           <div>I will remain untill you click on <code>X</code> icon.</div>
         </kyn-notification>

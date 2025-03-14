@@ -23,7 +23,7 @@ import '../../reusable/card';
 import '../../reusable/button';
 
 const _defaultTextStrings = {
-  sourcesText: 'Sources used',
+  sourcesText: 'Sources',
   foundSources: 'Found sources',
   showMore: 'Show more',
   showLess: 'Show less',

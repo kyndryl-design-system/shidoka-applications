@@ -14,78 +14,30 @@ export default {
 };
 
 export const Default = {
-  render: () => {
-    return html`
-      ${aiPromptsStyles}
-
-      <div class="ai-prompts-wrapper">
-        <kyn-card
-          type="clickable"
-          aiConnected
-          href="javascript:void(0)"
-          @on-card-click=${handleCardClick}
-        >
-          <div class="card-title">Success Stories</div>
-          <div class="card-description">
-            Help me find previous case studies or Success stories involving
-            <code>&lt;industry&gt;</code> or similar clients for
-            <code>&lt;business problem&gt;</code> or using
-            <code>&lt;Kyndryl service&gt;</code>
-          </div>
-        </kyn-card>
-
-        <kyn-card
-          type="clickable"
-          aiConnected
-          href="javascript:void(0)"
-          @on-card-click=${handleCardClick}
-        >
-          <div class="card-title">Industry based Search</div>
-          <div class="card-description">
-            Search for documents tailored to the interests of
-            <code>&lt;customer&gt;</code> from <code>&lt;industry&gt;</code> for
-            a business opportunity focused on
-            <code>&lt;Kyndryl service&gt;</code>
-          </div>
-        </kyn-card>
-
-        <kyn-card
-          type="clickable"
-          aiConnected
-          href="javascript:void(0)"
-          @on-card-click=${handleCardClick}
-        >
-          <div class="card-title">Service fit</div>
-          <div class="card-description">
-            Retrieve documents that highlight how our products/services can
-            address <code>&lt;customer specific needs&gt;</code> on customer
-            <code>&lt;business problem&gt;</code>
-          </div>
-        </kyn-card>
-      </div>
-    `;
+  args: {
+    centered: true,
   },
-};
-
-export const Centered = {
-  render: () => {
+  render: (args) => {
     return html`
       ${aiPromptsStyles}
 
-      <div class="ai-prompts-wrapper centered">
+      <div class="ai-prompts-wrapper ${args.centered ? 'centered' : ''}">
         <kyn-card
           type="clickable"
           aiConnected
           href="javascript:void(0)"
           @on-card-click=${handleCardClick}
+          class="kd-type--ui-02"
         >
-          <div class="card-title">Success Stories</div>
-          <div class="card-description">
+          <div class="kd-type--weight-medium kd-spacing--margin-bottom-8">
+            Success Stories
+          </div>
+          <p>
             Help me find previous case studies or Success stories involving
             <code>&lt;industry&gt;</code> or similar clients for
             <code>&lt;business problem&gt;</code> or using
             <code>&lt;Kyndryl service&gt;</code>
-          </div>
+          </p>
         </kyn-card>
 
         <kyn-card
@@ -93,14 +45,17 @@ export const Centered = {
           aiConnected
           href="javascript:void(0)"
           @on-card-click=${handleCardClick}
+          class="kd-type--ui-02"
         >
-          <div class="card-title">Industry based Search</div>
-          <div class="card-description">
+          <div class="kd-type--weight-medium kd-spacing--margin-bottom-8">
+            Industry based Search
+          </div>
+          <p>
             Search for documents tailored to the interests of
             <code>&lt;customer&gt;</code> from <code>&lt;industry&gt;</code> for
             a business opportunity focused on
             <code>&lt;Kyndryl service&gt;</code>
-          </div>
+          </p>
         </kyn-card>
 
         <kyn-card
@@ -108,13 +63,16 @@ export const Centered = {
           aiConnected
           href="javascript:void(0)"
           @on-card-click=${handleCardClick}
+          class="kd-type--ui-02"
         >
-          <div class="card-title">Service fit</div>
-          <div class="card-description">
+          <div class="kd-type--weight-medium kd-spacing--margin-bottom-8">
+            Service fit
+          </div>
+          <p>
             Retrieve documents that highlight how our products/services can
             address <code>&lt;customer specific needs&gt;</code> on customer
             <code>&lt;business problem&gt;</code>
-          </div>
+          </p>
         </kyn-card>
       </div>
     `;
@@ -127,39 +85,20 @@ const aiPromptsStyles = html`
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
+
+      &.centered {
+        justify-content: center;
+      }
+
+      kyn-card {
+        width: 100%;
+      }
     }
 
-    .ai-prompts-wrapper.centered {
-      justify-content: center;
-    }
-
-    .ai-prompts-wrapper kyn-card {
-      width: 250px;
-      font-size: 14px;
-    }
-
-    .ai-prompts-wrapper kyn-card::part(card-wrapper) {
-      height: 100%;
-    }
-
-    .ai-prompts-wrapper kyn-card {
-      --card-title-margin-top: 0;
-      --card-title-margin-bottom: 8px;
-    }
-
-    .ai-prompts-wrapper kyn-card .card-title {
-      margin-top: 0;
-      margin-bottom: 8px;
-      font-weight: 500;
-      font-size: 14px;
-    }
-
-    .ai-prompts-wrapper kyn-card .card-description {
-      font-size: 14px;
-    }
-
-    .ai-prompts-wrapper kyn-card .card-description code {
-      font-size: 14px;
+    @media (min-width: 42rem) {
+      .ai-prompts-wrapper kyn-card {
+        width: revert-layer;
+      }
     }
 
     /** Animation styles to be potentially implemented in the future */
@@ -167,7 +106,7 @@ const aiPromptsStyles = html`
       transition: transform 0.4s ease, opacity 0.5s ease;
       transform-origin: center;
       position: relative;
-      z-index: 1; 
+      z-index: 1;
     }*/
 
     /* .ai-prompts-wrapper kyn-card.selected {
