@@ -10,15 +10,16 @@ import { classMap } from 'lit/directives/class-map.js';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderLinkScss from './headerLink.scss';
 import '../../reusable/textInput';
-import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chevron-right.svg';
+import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
-import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/search.svg';
+import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/search.svg';
 
 /**
  * Component for navigation links within the Header.
  * @fires on-click - Captures the click event and emits the original event details.
  * @slot unnamed - Slot for link text/content.
  * @slot links - Slot for sublinks (up to two levels).
+ * @slot icon - Slot for icon.
  */
 @customElement('kyn-header-link')
 export class HeaderLink extends LitElement {
@@ -93,8 +94,7 @@ export class HeaderLink extends LitElement {
   override render() {
     const classes = {
       menu: this.slottedEls.length,
-      'level--1': this.level == 1,
-      'level--2': this.level == 2,
+      [`level--${this.level}`]: true,
       divider: this.divider,
       open: this.open,
     };
@@ -148,13 +148,15 @@ export class HeaderLink extends LitElement {
             ? html`
                 <kyn-text-input
                   hideLabel
+                  size="sm"
+                  label=${this.searchLabel}
                   placeholder=${this.searchLabel}
                   value=${this._searchTerm}
                   @on-input=${(e: Event) => this._handleSearch(e)}
                 >
-                  <span slot="icon" class="search-icon"
-                    >${unsafeSVG(searchIcon)}</span
-                  >
+                  <span slot="icon" class="search-icon">
+                    ${unsafeSVG(searchIcon)}
+                  </span>
                   ${this.searchLabel}
                 </kyn-text-input>
               `
@@ -258,7 +260,7 @@ export class HeaderLink extends LitElement {
       ParentNode.nodeName === 'KYN-HEADER-LINK' ||
       ParentNode.slot === 'links'
     ) {
-      this.level = 2;
+      this.level = ParentNode.level + 1;
     } else {
       if (
         window.innerWidth < 672 &&
