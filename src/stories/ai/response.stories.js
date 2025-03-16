@@ -74,10 +74,12 @@ export const AI = {
               Some more content here...Lorem ipsum dolor sit amet, consectetur
               adipiscing elit
             </div>
-            ${AISourcesFeedback.render(AISourcesFeedback.args)}
           </div>
         </div>
+
+        ${AISourcesFeedback.render(AISourcesFeedback.args)}
       </div>
+
       <style>
         .response_wrapper {
           display: flex;
