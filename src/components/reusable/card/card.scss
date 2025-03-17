@@ -6,21 +6,23 @@
   display: inline-block;
   width: 264px;
 }
+
 .card {
   &-wrapper {
     position: relative;
     padding: 16px;
     background-color: var(--kd-color-background-container-default);
-    outline: 1px solid var(--kd-color-border-card-default);
+    border: 1px solid var(--kd-color-border-card-default);
     border-radius: 8px;
     height: 100%;
 
     &.ai-Connected {
       background-color: var(--kd-color-background-ui-hollow-default);
-      outline: 1px solid var(--kd-color-border-variants-light);
+      border: 1px solid var(--kd-color-border-variants-light);
     }
+
     &.ai-highlight {
-      outline: 1px solid var(--kd-color-border-button-ai-state-highlight);
+      border: 1px solid var(--kd-color-border-button-ai-state-highlight);
       background: var(--kd-color-background-container-ai-default);
       color: var(--kd-color-text-level-primary);
     }
@@ -36,55 +38,62 @@
     border-radius: 8px;
     height: 100%;
     padding: 16px;
-    outline: 1px solid transparent;
-    transition: outline-color 150ms ease-out, box-shadow 150ms ease-out;
+    border: 1px solid transparent;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    transition: border-color 150ms ease-out, box-shadow 150ms ease-out,
+      outline-color 150ms ease-out;
 
     &:hover {
-      outline-color: var(--kd-color-border-ui-hover);
+      border-color: var(--kd-color-border-ui-hover);
       @include elevation.shadow(2);
     }
 
     &:focus-visible {
-      outline-color: var(--kd-color-border-ui-hover);
-      @include elevation.shadow(2);
+      outline-color: var(--kd-color-border-variants-focus);
     }
 
     &.ai-Connected {
       background-color: var(--kd-color-background-ui-hollow-default);
 
       &:hover {
-        outline-color: var(--kd-color-border-button-ai-state-hover);
+        border-color: var(--kd-color-border-button-ai-state-hover);
         @include elevation.shadow(2, true);
       }
+
       &:focus-visible {
-        outline-color: var(--kd-color-border-button-ai-state-hover);
-        @include elevation.shadow(2, true);
+        border-color: var(--kd-color-border-button-ai-state-hover);
       }
     }
 
     &.ai-highlight {
       background: var(--kd-color-background-container-ai-default);
+
       &:hover {
-        outline-color: var(--kd-color-border-button-ai-state-hover);
+        border-color: var(--kd-color-border-button-ai-state-hover);
         @include elevation.shadow(2, true);
       }
+
       &:focus-visible {
-        outline-color: var(--kd-color-border-button-ai-state-hover);
-        @include elevation.shadow(2, true);
+        border-color: var(--kd-color-border-button-ai-state-hover);
       }
     }
   }
 
   &-border {
-    outline: 1px solid var(--kd-color-border-card-clickable);
-    &.ai-Connected {
-      outline: 1px solid var(--kd-color-border-button-ai-state-default);
-    }
+    border: 1px solid var(--kd-color-border-card-clickable);
     @include elevation.shadow(1);
+
+    &-highlight {
+      border: 1px solid var(--kd-color-background-highlight-border);
+    }
+
+    &.ai-Connected {
+      border: 1px solid var(--kd-color-border-button-ai-state-default);
+    }
   }
 
   &-highlight {
-    outline: 1px solid var(--kd-color-background-highlight-border);
     background: var(--kd-color-background-highlight-fill);
     color: var(--kd-color-text-level-primary);
   }

@@ -73,11 +73,6 @@ export const WithIcons = {
   args,
   render: (args) => {
     return html`
-      <style>
-        kyn-tab > span.icon {
-          display: flex;
-        }
-      </style>
       <kyn-tabs
         tabSize=${args.tabSize}
         tabStyle=${args.tabStyle}

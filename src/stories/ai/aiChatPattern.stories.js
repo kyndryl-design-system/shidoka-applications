@@ -34,7 +34,7 @@ export const ChatModal = {
         size="xl"
         titleText="Gen AI"
         aiConnected
-        ?disableScroll=${true}
+        disableScroll
         ?hideFooter=${selectedTabId === 'history'}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
@@ -53,12 +53,10 @@ export const ChatModal = {
           @on-change=${handleTabChange}
         >
           <kyn-tab slot="tabs" id="chat" selected>
-            <span class="icon">${unsafeSVG(chatIcon)}</span>
-            Chat
+            ${unsafeSVG(chatIcon)} Chat
           </kyn-tab>
           <kyn-tab slot="tabs" id="history">
-            <span class="icon">${unsafeSVG(chatHistoryIcon)}</span>
-            History
+            ${unsafeSVG(chatHistoryIcon)} History
           </kyn-tab>
 
           <kyn-tab-panel tabId="chat" visible>
