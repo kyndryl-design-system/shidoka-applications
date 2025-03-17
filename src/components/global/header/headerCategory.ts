@@ -5,19 +5,23 @@ import HeaderCategoryScss from './headerCategory.scss';
 /**
  * Header link category
  * @slot unnamed - Slot for links.
+ * @slot icon - Slot for icon.
  */
 @customElement('kyn-header-category')
 export class HeaderCategory extends LitElement {
   static override styles = HeaderCategoryScss;
 
-  /** Link url. */
+  /** Category text. */
   @property({ type: String })
   heading = '';
 
   override render() {
     return html`
       <div class="category">
-        <div class="heading">${this.heading}</div>
+        <div class="heading">
+          <slot name="icon"></slot>
+          ${this.heading}
+        </div>
         <slot></slot>
       </div>
     `;
