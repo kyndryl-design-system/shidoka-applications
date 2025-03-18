@@ -10,7 +10,7 @@ import allData from './../../reusable/table/story-helpers/table-data.json';
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/user.svg';
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/question.svg';
 import sampleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
-import circleIcon24 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/circle-stroke.svg';
+import circleIcon20 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/circle-stroke.svg';
 
 export default {
   title: 'Global Components/UI Shell',
@@ -115,17 +115,17 @@ export const WithEverything = {
         <kyn-header appTitle="UI Shell Example">
           <kyn-header-nav>
             <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon24)}</span>
+              <span>${unsafeSVG(circleIcon20)}</span>
               Link 1
             </kyn-header-link>
 
             <kyn-header-category heading="Category">
               <kyn-header-link href="javascript:void(0)">
-                <span>${unsafeSVG(circleIcon24)}</span>
+                <span>${unsafeSVG(circleIcon20)}</span>
                 Link 2
               </kyn-header-link>
               <kyn-header-link href="javascript:void(0)">
-                <span>${unsafeSVG(circleIcon24)}</span>
+                <span>${unsafeSVG(circleIcon20)}</span>
                 Link 3
               </kyn-header-link>
             </kyn-header-category>
@@ -133,7 +133,7 @@ export const WithEverything = {
             <kyn-header-divider></kyn-header-divider>
 
             <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon24)}</span>
+              <span>${unsafeSVG(circleIcon20)}</span>
               Link 4
 
               <kyn-header-link slot="links" href="javascript:void(0)">
