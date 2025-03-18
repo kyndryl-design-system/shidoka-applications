@@ -363,7 +363,7 @@ export const WithEverything = {
         <kyn-header-divider></kyn-header-divider>
 
         <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon20)}</span>
+          <span>${unsafeSVG(circleIcon)}</span>
           Link 4
 
           <kyn-header-link slot="links" href="javascript:void(0)">
