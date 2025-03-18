@@ -255,12 +255,15 @@ export class HeaderLink extends LitElement {
 
   private determineLevel() {
     const ParentNode: any = this.parentNode;
+    const GrandparentNode: any = ParentNode.parentNode;
 
-    if (
-      ParentNode.nodeName === 'KYN-HEADER-LINK' ||
-      ParentNode.slot === 'links'
-    ) {
+    if (ParentNode.nodeName === 'KYN-HEADER-LINK') {
       this.level = ParentNode.level + 1;
+    } else if (
+      ParentNode.nodeName === 'KYN-HEADER-CATEGORY' &&
+      GrandparentNode.nodeName === 'KYN-HEADER-LINK'
+    ) {
+      this.level = GrandparentNode.level + 1;
     } else {
       if (
         window.innerWidth < 672 &&
