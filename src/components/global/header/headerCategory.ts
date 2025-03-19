@@ -15,10 +15,14 @@ export class HeaderCategory extends LitElement {
   @property({ type: String })
   heading = '';
 
+  /** Add left padding when icon is not provided to align text with links that do have icons. */
+  @property({ type: Boolean })
+  leftPadding = false;
+
   override render() {
     return html`
       <div class="category">
-        <div class="heading">
+        <div class="heading ${this.leftPadding ? 'left-padding' : ''}">
           <slot name="icon"></slot>
           ${this.heading}
         </div>

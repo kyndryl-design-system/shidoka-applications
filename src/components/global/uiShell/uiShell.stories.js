@@ -211,10 +211,14 @@ export const WithEverything = {
             Link 2
 
             <kyn-local-nav-link slot="links" href="javascript:void(0)">
+              <span slot="icon">${unsafeSVG(sampleIcon)}</span>
               L2 Link 1
             </kyn-local-nav-link>
-            <kyn-local-nav-link slot="links" href="javascript:void(0)">
-              <span slot="icon">${unsafeSVG(sampleIcon)}</span>
+            <kyn-local-nav-link
+              leftPadding
+              slot="links"
+              href="javascript:void(0)"
+            >
               L2 Link 2
             </kyn-local-nav-link>
           </kyn-local-nav-link>

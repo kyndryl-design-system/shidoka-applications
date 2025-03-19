@@ -16,7 +16,7 @@ import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
  * Link component for use in the global Side Navigation component.
  * @fires on-click - Captures the click event and emits the original event, level, and if default was prevented.
  * @slot unnamed - The default slot, for the link text.
- * @slot icon - Slot for an icon. Use 16px size.
+ * @slot icon - Slot for an icon. Use 16px size. Required for level 1.
  * @slot links - Slot for the next level of links, supports three levels.
  */
 @customElement('kyn-local-nav-link')
@@ -42,6 +42,10 @@ export class LocalNavLink extends LitElement {
   /** Text for mobile "Back" button. */
   @property({ type: String })
   backText = 'Back';
+
+  /** Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1. */
+  @property({ type: Boolean })
+  leftPadding = false;
 
   /** Link level, supports three levels.
    * @ignore
@@ -99,6 +103,7 @@ export class LocalNavLink extends LitElement {
       'link-disabled': this.disabled,
       'has-links': this._navLinks.length,
       'has-icon': this._icon.length,
+      'left-padding': this.leftPadding && this._level > 1,
     };
 
     return html`
