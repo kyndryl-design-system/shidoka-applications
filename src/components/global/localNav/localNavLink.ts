@@ -10,8 +10,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import LocalNavLinkScss from './localNavLink.scss';
 
 import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
-import addIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
-import subtractIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-simple.svg';
+import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
 /**
  * Link component for use in the global Side Navigation component.
@@ -107,11 +106,7 @@ export class LocalNavLink extends LitElement {
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
           ${this._navLinks.length
             ? html`
-                <span class="expand-icon">
-                  ${this.expanded
-                    ? unsafeSVG(subtractIcon)
-                    : unsafeSVG(addIcon)}
-                </span>
+                <span class="expand-icon"> ${unsafeSVG(chevronIcon)} </span>
               `
             : null}
 
@@ -188,11 +183,11 @@ export class LocalNavLink extends LitElement {
   private updateChildren() {
     this._navLinks.forEach((link: any) => {
       link._level = this._level + 1;
-      link._navExpanded = this._navExpanded;
+      link._navExpanded = this._navExpanded || this._navExpandedMobile;
     });
 
     this._dividers.forEach((divider: any) => {
-      divider._navExpanded = this._navExpanded;
+      divider._navExpanded = this._navExpanded || this._navExpandedMobile;
     });
   }
 

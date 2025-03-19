@@ -107,7 +107,7 @@ export class LocalNav extends LitElement {
           ${this._mobileExpanded
             ? this._textStrings.collapse
             : this._activeLinkText || this._textStrings.menu}
-          <span>${unsafeSVG(arrowIcon)}</span>
+          ${unsafeSVG(arrowIcon)}
         </button>
 
         <div class="search">
@@ -120,7 +120,7 @@ export class LocalNav extends LitElement {
 
         <div class="toggle-container">
           <kyn-button
-            kind="tertiary"
+            kind="ghost"
             size="small"
             description=${this.pinned
               ? this._textStrings.unpin
@@ -176,7 +176,8 @@ export class LocalNav extends LitElement {
     });
 
     this._dividers.forEach((divider: any) => {
-      divider._navExpanded = this._expanded || this.pinned;
+      divider._navExpanded =
+        this._expanded || this.pinned || this._mobileExpanded;
     });
   }
 

@@ -7,7 +7,6 @@ import '../../reusable/button';
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/user.svg';
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/question.svg';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
-import circleIcon20 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/circle-stroke.svg';
 import filledNotificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/notifications-new.svg';
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/settings.svg';
 
@@ -106,17 +105,17 @@ export const WithNav = {
     <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
       <kyn-header-nav>
         <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon20)}</span>
+          <span>${unsafeSVG(circleIcon)}</span>
           Link 1
         </kyn-header-link>
 
         <kyn-header-category heading="Category">
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon20)}</span>
+            <span>${unsafeSVG(circleIcon)}</span>
             Link 2
           </kyn-header-link>
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon20)}</span>
+            <span>${unsafeSVG(circleIcon)}</span>
             Link 3
           </kyn-header-link>
         </kyn-header-category>
@@ -124,7 +123,7 @@ export const WithNav = {
         <kyn-header-divider></kyn-header-divider>
 
         <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon20)}</span>
+          <span>${unsafeSVG(circleIcon)}</span>
           Link 4
 
           <kyn-header-link slot="links" href="javascript:void(0)">
@@ -345,17 +344,17 @@ export const WithEverything = {
     <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
       <kyn-header-nav>
         <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon20)}</span>
+          <span>${unsafeSVG(circleIcon)}</span>
           Link 1
         </kyn-header-link>
 
         <kyn-header-category heading="Category">
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon20)}</span>
+            <span>${unsafeSVG(circleIcon)}</span>
             Link 2
           </kyn-header-link>
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon20)}</span>
+            <span>${unsafeSVG(circleIcon)}</span>
             Link 3
           </kyn-header-link>
         </kyn-header-category>

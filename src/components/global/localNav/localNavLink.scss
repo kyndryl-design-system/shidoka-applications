@@ -10,9 +10,9 @@
 a {
   display: flex;
   align-items: center;
-  gap: 4px;
+  // gap: 4px;
   height: 40px;
-  padding: 8px;
+  padding: 8px 8px 8px 4px;
   border-radius: 4px;
   text-decoration: none;
   outline: 2px solid transparent;
@@ -20,6 +20,10 @@ a {
   color: var(--kd-color-text-level-primary);
   transition: background-color 150ms ease-out, color 150ms ease-out,
     outline-color 150ms ease-out;
+
+  @media screen and (min-width: 42rem) {
+    padding: 8px;
+  }
 
   ::slotted(*) {
     display: flex;
@@ -74,7 +78,7 @@ a {
   bottom: 0;
   width: 100%;
   background: var(--kd-color-background-menu-state-default);
-
+  z-index: 1;
   transition: transform 300ms ease-out, opacity 300ms ease-out,
     visibility 300ms ease-out;
   transform: scaleX(0);
@@ -188,7 +192,7 @@ a {
   color: var(--kd-color-text-level-primary);
 
   svg {
-    margin-right: 16px;
+    margin-right: 8px;
   }
 
   &:hover {
@@ -225,14 +229,7 @@ a {
 
 .text {
   min-width: 120px;
-
-  @media (min-width: 42rem) {
-    margin-left: 4px;
-
-    // .link:not(.has-icon):not(.has-links) & {
-    //   margin-left: 8px;
-    // }
-  }
+  margin-left: 4px;
 
   .nav-expanded & {
     display: block;
@@ -245,6 +242,20 @@ a {
 
 .expand-icon {
   display: none;
+  order: 1;
+  margin-left: auto;
+  transform: rotate(-90deg);
+  transition: transform 150ms ease-out;
+
+  @media screen and (min-width: 42rem) {
+    order: initial;
+    margin-left: initial;
+    transform: none;
+
+    .link-expanded & {
+      transform: rotate(-180deg);
+    }
+  }
 
   .nav-expanded & {
     display: flex;
