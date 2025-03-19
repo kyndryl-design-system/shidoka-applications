@@ -12,7 +12,7 @@ import '../../reusable/button';
 import LocalNavScss from './localNav.scss';
 
 import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
-import pinIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/side-drawer-out.svg';
+import pinIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/side-drawer-out.svg';
 
 const _defaultTextStrings = {
   pin: 'Pin',
