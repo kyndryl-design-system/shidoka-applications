@@ -23,11 +23,6 @@
   gap: 16px;
 }
 
-.swiper-wrapper,
-.swiper-pagination {
-  padding: 1px;
-}
-
 .swiper-full-bleed {
   margin: 0 calc(var(--kd-page-gutter) * -1);
 }
@@ -84,34 +79,38 @@
       height: auto;
       border-radius: initial;
       border: none;
-      padding: 12px;
+      padding: 12px 14px;
       white-space: nowrap;
       outline-offset: -2px;
+      border-radius: 4px 4px 0px 0px;
       transition: border-color 150ms ease-out, background-color 150ms ease-out,
         color 150ms ease-out, outline-color 150ms ease-out;
+      color: var(--kd-color-text-level-primary);
+      border-bottom: 2px solid transparent;
       outline: 2px solid transparent;
 
       &:hover {
-        color: var(--kd-color-text-link-level-hover);
-        border-color: var(--kd-color-border-ui-hover);
-        background-color: var(--kd-color-background-ui-hollow-hover);
+        border-color: var(--kd-color-border-button-tertiary-state-hover);
+        background-color: var(
+          --kd-color-background-button-tertiary-state-hover
+        );
       }
 
       &:active {
-        color: var(--kd-color-text-link-level-pressed);
-        border-color: var(--kd-color-border-variants-focus);
-        background-color: var(--kd-color-background-ui-hollow-hover);
+        border-color: var(--kd-color-border-button-tertiary-state-pressed);
+        background-color: var(
+          --kd-color-background-button-tertiary-state-pressed
+        );
       }
 
       &:focus-visible {
-        color: var(--kd-color-text-level-primary);
         outline-color: var(--kd-color-border-variants-focus);
       }
 
       &-active {
-        color: var(--kd-color-text-level-tertiary);
-        border-bottom: 2px solid var(--kd-color-border-level-tertiary);
-        background: var(--kd-color-background-container-default);
+        color: var(--kd-color-text-level-primary);
+        border-color: var(--kd-color-border-button-tertiary-state-focused);
+        background: var(--kd-color-background-button-tertiary-state-default);
         font-weight: 500;
       }
     }
