@@ -7,10 +7,6 @@
   outline: 2px solid transparent;
   outline-offset: -2px;
   transition: outline-color 150ms ease-out;
-  border-radius: 0 0 4px 4px;
-}
-
-:host([data-tab-style='line']) {
   border-radius: 4px 4px 0 0;
 }
 
@@ -26,10 +22,6 @@
   :host([vertical]) {
     border-radius: 0 4px 4px 0;
   }
-
-  :host([vertical][data-tab-style='line']) {
-    border-radius: 0 4px 4px 0;
-  }
 }
 
 .tab {
@@ -40,7 +32,7 @@
   white-space: nowrap;
   text-align: center;
   border-radius: 4px 4px 0 0;
-  border-bottom: 2px solid var(--kd-color-border-accent-secondary);
+  border-bottom: 1px solid var(--kd-color-border-accent-secondary);
   transition: border-color 150ms ease-out, background-color 150ms ease-out,
     color 150ms ease-out;
 
@@ -59,25 +51,22 @@
     padding: 7px 14px;
   }
 
-  @media (min-width: breakpoints.$bp-md) {
-    &.vertical {
-      border-bottom: none;
-      border-left: 2px solid var(--kd-color-border-accent-secondary);
-      white-space: initial;
-      text-align: left;
-    }
-  }
-
   &.selected {
     font-weight: 500;
+    border-width: 2px;
   }
 
-  @media (min-width: breakpoints.$bp-md) {
-    &.vertical {
+  &.vertical {
+    &.selected {
+      border-width: 2px;
+    }
+
+    @media (min-width: breakpoints.$bp-md) {
       border-radius: 0 4px 4px 0;
-      border-top: none;
       border-bottom: none;
-      border-left: 2px solid var(--kd-color-border-accent-secondary);
+      border-left: 1px solid var(--kd-color-border-accent-secondary);
+      white-space: initial;
+      text-align: left;
     }
   }
 
