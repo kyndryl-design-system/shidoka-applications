@@ -63,6 +63,10 @@ export class HeaderLink extends LitElement {
   @property({ type: String })
   backText = 'Back';
 
+  /** Add left padding when icon is not provided to align text with links that do have icons. */
+  @property({ type: Boolean })
+  leftPadding = false;
+
   /** Text for mobile "Back" button. */
   @state()
   _searchTerm = '';
@@ -103,6 +107,7 @@ export class HeaderLink extends LitElement {
       'nav-link': true,
       active: this.isActive,
       interactive: this.level == 1,
+      'padding-left': this.leftPadding,
     };
 
     const menuClasses = {
@@ -255,12 +260,15 @@ export class HeaderLink extends LitElement {
 
   private determineLevel() {
     const ParentNode: any = this.parentNode;
+    const GrandparentNode: any = ParentNode.parentNode;
 
-    if (
-      ParentNode.nodeName === 'KYN-HEADER-LINK' ||
-      ParentNode.slot === 'links'
-    ) {
+    if (ParentNode.nodeName === 'KYN-HEADER-LINK') {
       this.level = ParentNode.level + 1;
+    } else if (
+      ParentNode.nodeName === 'KYN-HEADER-CATEGORY' &&
+      GrandparentNode.nodeName === 'KYN-HEADER-LINK'
+    ) {
+      this.level = GrandparentNode.level + 1;
     } else {
       if (
         window.innerWidth < 672 &&
