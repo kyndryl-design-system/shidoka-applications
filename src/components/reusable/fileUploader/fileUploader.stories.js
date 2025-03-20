@@ -20,7 +20,7 @@ const args = {
 
 // TODO: remove this function before merging
 function logFileEvent(event) {
-  console.log(event.detail.files[0]);
+  console.log(event.detail.files);
 }
 
 export const FileUploader = {
@@ -37,7 +37,7 @@ export const FileUploader = {
   },
 };
 
-export const FileUploaderWithDargAndDropContainer = {
+export const FileUploaderWithDragAndDropContainer = {
   args,
   render: (args) => {
     return html`
@@ -79,7 +79,10 @@ export const FileUploaderMultipleExample = {
         .fileTypes=${args.fileTypes}
         ?multiple=${true}
         ?disabled=${args.disabled}
-        @on-file-upload=${(e) => action(e.type)(e)}
+        @on-file-upload=${(e) => {
+          action(e.type)(e);
+          logFileEvent(e);
+        }}
       ></kyn-file-uploader>
     `;
   },

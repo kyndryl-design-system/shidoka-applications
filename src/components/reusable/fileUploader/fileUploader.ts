@@ -11,14 +11,21 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { deepmerge } from 'deepmerge-ts';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/upload.svg';
 import FileUploaderScss from './fileUploader.scss';
 import '../button';
+import '../link';
+import '../progressBar';
+import '../loaders';
 
 const _defaultTextStrings = {
   buttonLabel: 'Choose Files',
-  acceptedFileTypes: 'Accepted file types',
-  dragAndDrop: 'Drag and drop files here',
-  or: 'OR',
+  maxFileSize: 'Max file size',
+  supportedFileTypes: 'Supported file types',
+  dragAndDrop: 'Drag file here to upload',
+  alternateText: 'Alternatively you can select a file by',
+  linkText: 'clicking here.',
 };
 
 /**
@@ -61,7 +68,7 @@ export class FileUploader extends LitElement {
   textStrings = _defaultTextStrings;
 
   /**
-   * Set the maximum file size that the component accepts. Default value is `5MB`.
+   * Set the maximum file size. Default value is `5MB`.
    */
   @property({ type: String })
   maxFileSize = '5MB';
@@ -79,6 +86,13 @@ export class FileUploader extends LitElement {
   @state()
   _textStrings = _defaultTextStrings;
 
+  /**
+   * Internal file upload object list.
+   * @internal
+   */
+  @state()
+  _fileUploadObjList: Array<object> = [];
+
   override willUpdate(changedProps: any) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
@@ -95,8 +109,10 @@ export class FileUploader extends LitElement {
               disabled: this.disabled,
             })}
           >
-            ${this._textStrings.acceptedFileTypes}:
-            ${this.renderAcceptedFileTypes()}
+            ${this._textStrings.maxFileSize}
+            <strong>${this.maxFileSize}</strong>.
+            ${this._textStrings.supportedFileTypes}
+            <strong>${this.renderSupportedFileSizeAndType()}</strong>
           </p>
         </div>
         ${this.fileUploderType === 'drag-drop' ||
@@ -108,13 +124,24 @@ export class FileUploader extends LitElement {
               <p
                 class=${classMap({ 'or-text': true, disabled: this.disabled })}
               >
-                ${this._textStrings.or}
+                OR
               </p>
             `
           : null}
         ${this.fileUploderType === 'button' || this.fileUploderType === 'both'
           ? this.renderButton()
           : null}
+        ${this.uploadedFiles.length > 0
+          ? this._fileUploadObjList.map(
+              (fileObj: any) => html`
+                <kyn-progress-bar
+                  .value=${fileObj.progress}
+                  .max=${99}
+                  .status=${fileObj.progress === 100 ? 'success' : 'active'}
+                ></kyn-progress-bar>
+              `
+            )
+          : ''}
         ${this.uploadedFiles.length > 0
           ? html` <ul class="file-info">
               ${this.uploadedFiles.map(
@@ -126,7 +153,7 @@ export class FileUploader extends LitElement {
     `;
   }
 
-  private renderAcceptedFileTypes() {
+  private renderSupportedFileSizeAndType() {
     if (this.fileTypes.length === 0) {
       return html`All file types are accepted.`;
     } else {
@@ -138,7 +165,8 @@ export class FileUploader extends LitElement {
   }
 
   private renderDagDropContainer() {
-    const acceptedFileTypes =
+    // @click="${this._triggerFileSelect}" - add this after drop event is handled
+    const supportedFileTypes =
       this.fileTypes.length > 0 ? this.fileTypes.join(',') : '*/*';
     return html`
       <div
@@ -149,16 +177,24 @@ export class FileUploader extends LitElement {
         })}
         @dragover="${this.handleDragOver}"
         @drop="${this.handleDrop}"
-        @click="${this._triggerFileSelect}"
         @keydown="${this._handleKeyboardEvent}"
       >
-        <p>${this._textStrings.dragAndDrop}</p>
+        <div class="icon-container">
+          <span>${unsafeSVG(uploadIcon)}</span>
+        </div>
+        <p>
+          ${this._textStrings.dragAndDrop} <br />
+          ${this._textStrings.alternateText} <br />
+          <kyn-link standalone @on-click="${this._triggerFileSelect}"
+            >${this._textStrings.linkText}</kyn-link
+          >
+        </p>
         <input
           class="file-input"
           type="file"
           @change="${(e: any) => this.handleFileChange(e)}"
           id="fileInput"
-          accept="${acceptedFileTypes}"
+          accept="${supportedFileTypes}"
           ?multiple="${this.multiple}"
           ?disabled="${this.disabled}"
         />
@@ -167,7 +203,7 @@ export class FileUploader extends LitElement {
   }
 
   private renderButton() {
-    const acceptedFileTypes =
+    const supportedFileTypes =
       this.fileTypes.length > 0 ? this.fileTypes.join(',') : '*/*';
     return html` <div class="file-input-wrapper">
       <kyn-button
@@ -183,7 +219,7 @@ export class FileUploader extends LitElement {
         type="file"
         @change="${(e: any) => this.handleFileChange(e)}"
         id="fileInput"
-        accept="${acceptedFileTypes}"
+        accept="${supportedFileTypes}"
         ?multiple="${this.multiple}"
         ?disabled="${this.disabled}"
       />
@@ -195,6 +231,8 @@ export class FileUploader extends LitElement {
     if (target.files) {
       this.uploadedFiles = Array.from(target.files);
     }
+    this._fileUploadObjList = [];
+    this._handleFileUploadSimulation();
     this._emitFileUploadEvent();
   }
 
@@ -225,6 +263,8 @@ export class FileUploader extends LitElement {
 
       if (validFiles.length > 0) {
         this.uploadedFiles = validFiles;
+        this._fileUploadObjList = [];
+        this._handleFileUploadSimulation();
         this._emitFileUploadEvent();
       }
     }
@@ -287,6 +327,39 @@ export class FileUploader extends LitElement {
     //   console.log(`Invalid files: ${invalidFiles.join(', ')}`);
     // }
     return validFiles;
+  }
+
+  private _handleFileUploadSimulation() {
+    // Create file upload object list
+    this.uploadedFiles.forEach((file: any) => {
+      const fileObj = {
+        file: file,
+        progress: 0,
+        statusMessage: 'Uploading...', // TODO: Add proper status message, if required
+      };
+      this._fileUploadObjList.push(fileObj);
+    });
+
+    // Simulate file upload
+    this._fileUploadObjList.forEach((fileObj: any) => {
+      const fileSize = fileObj.file.size;
+      const chunkSize = fileSize / 100;
+      let progress = 0;
+
+      const uploadInterval = setInterval(() => {
+        progress += chunkSize;
+        fileObj.progress = Math.min((progress / fileSize) * 100, 100);
+        this.requestUpdate();
+
+        // When the upload reaches 100%
+        if (progress >= fileSize) {
+          clearInterval(uploadInterval);
+          fileObj.progress = 100;
+          fileObj.statusMessage = 'Upload Complete!';
+          this.requestUpdate();
+        }
+      }, 30);
+    });
   }
 
   private _emitFileUploadEvent() {
