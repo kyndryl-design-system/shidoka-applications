@@ -75,16 +75,11 @@ export const WithIcons = {
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>
-          <span class="icon">${unsafeSVG(userAvatarIcon)}</span>
-          Tab 1
+          ${unsafeSVG(userAvatarIcon)} Tab 1
         </kyn-tab>
-        <kyn-tab slot="tabs" id="tab2">
-          <span class="icon">${unsafeSVG(helpIcon)}</span>
-          Tab 2
-        </kyn-tab>
+        <kyn-tab slot="tabs" id="tab2"> ${unsafeSVG(helpIcon)} Tab 2 </kyn-tab>
         <kyn-tab slot="tabs" id="tab3">
-          <span class="icon">${unsafeSVG(settingsIcon)}</span>
-          Tab 3
+          ${unsafeSVG(settingsIcon)} Tab 3
         </kyn-tab>
 
         <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
