@@ -22,10 +22,6 @@ export default {
         defaultValue: { summary: TAB_SIZES.MEDIUM },
       },
     },
-    tabStyle: {
-      options: ['primary', 'secondary'],
-      control: { type: 'select' },
-    },
   },
   subcomponents: {
     'kyn-tab': 'kyn-tab',
@@ -39,7 +35,6 @@ export default {
 
 const args = {
   tabSize: 'md',
-  tabStyle: 'primary',
   vertical: false,
   aiConnected: false,
   disableAutoFocusUpdate: false,
@@ -51,7 +46,6 @@ export const Tabs = {
     return html`
       <kyn-tabs
         tabSize=${args.tabSize}
-        tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
         ?aiConnected=${args.aiConnected}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
@@ -75,23 +69,17 @@ export const WithIcons = {
     return html`
       <kyn-tabs
         tabSize=${args.tabSize}
-        tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
         ?aiConnected=${args.aiConnected}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tab slot="tabs" id="tab1" selected>
-          <span class="icon">${unsafeSVG(userAvatarIcon)}</span>
-          Tab 1
+          ${unsafeSVG(userAvatarIcon)} Tab 1
         </kyn-tab>
-        <kyn-tab slot="tabs" id="tab2">
-          <span class="icon">${unsafeSVG(helpIcon)}</span>
-          Tab 2
-        </kyn-tab>
+        <kyn-tab slot="tabs" id="tab2"> ${unsafeSVG(helpIcon)} Tab 2 </kyn-tab>
         <kyn-tab slot="tabs" id="tab3">
-          <span class="icon">${unsafeSVG(settingsIcon)}</span>
-          Tab 3
+          ${unsafeSVG(settingsIcon)} Tab 3
         </kyn-tab>
 
         <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
@@ -107,7 +95,6 @@ export const Nested = {
   render: (args) => {
     return html`
       <kyn-tabs
-        tabSize=${args.tabSize}
         ?vertical=${args.vertical}
         ?aiConnected=${args.aiConnected}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
@@ -121,8 +108,7 @@ export const Nested = {
           <p style="padding: 0 12px 24px;">Tab 1 Content</p>
 
           <kyn-tabs
-            tabStyle="secondary"
-            tabSize=${args.tabSize}
+            tabSize="sm"
             ?aiConnected=${args.aiConnected}
             ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
             @on-change=${(e) => action(e.type)(e)}
@@ -151,7 +137,6 @@ export const DisabledTab = {
     return html`
       <kyn-tabs
         tabSize=${args.tabSize}
-        tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
         ?aiConnected=${args.aiConnected}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
@@ -177,7 +162,6 @@ export const Scrollable = {
         style="height: 200px;"
         scrollablePanels
         tabSize=${args.tabSize}
-        tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
         ?aiConnected=${args.aiConnected}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
@@ -211,7 +195,6 @@ export const AISpecific = {
     return html`
       <kyn-tabs
         tabSize=${args.tabSize}
-        tabStyle=${args.tabStyle}
         ?vertical=${args.vertical}
         ?aiConnected=${args.aiConnected}
         ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
@@ -230,22 +213,13 @@ export const AISpecific = {
 };
 
 export const Gallery = {
-  ...args,
-  tabStyle: '',
-  render: (args) => {
+  render: () => {
     return html`
       <div class="heading kd-type--headline-04">Gallery</div>
 
-      <div class="heading kd-type--headline-07">Primary</div>
+      <div class="heading kd-type--headline-07">Default</div>
 
-      <kyn-tabs
-        tabSize="md"
-        tabStyle="primary"
-        ?vertical=${args.vertical}
-        ?aiConnected=${false}
-        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
-        @on-change=${(e) => action(e.type)(e)}
-      >
+      <kyn-tabs @on-change=${(e) => action(e.type)(e)}>
         <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
         <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
         <kyn-tab slot="tabs" id="tab3">Tab 3</kyn-tab>
@@ -255,16 +229,9 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-07">Secondary</div>
+      <div class="heading kd-type--headline-07">Small</div>
 
-      <kyn-tabs
-        tabSize="md"
-        tabStyle="line"
-        ?vertical=${args.vertical}
-        ?aiConnected=${false}
-        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
-        @on-change=${(e) => action(e.type)(e)}
-      >
+      <kyn-tabs tabSize="sm" @on-change=${(e) => action(e.type)(e)}>
         <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
         <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
         <kyn-tab slot="tabs" id="tab3">Tab 3</kyn-tab>
@@ -274,16 +241,9 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-07">Primary AI</div>
+      <div class="heading kd-type--headline-07">AI</div>
 
-      <kyn-tabs
-        tabSize="md"
-        tabStyle="primary"
-        ?vertical=${args.vertical}
-        ?aiConnected=${true}
-        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
-        @on-change=${(e) => action(e.type)(e)}
-      >
+      <kyn-tabs aiConnected @on-change=${(e) => action(e.type)(e)}>
         <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
         <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
         <kyn-tab slot="tabs" id="tab3">Tab 3</kyn-tab>
@@ -293,16 +253,9 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-07">Secondary AI</div>
+      <div class="heading kd-type--headline-07">AI Small</div>
 
-      <kyn-tabs
-        tabSize="md"
-        tabStyle="secondary"
-        ?vertical=${args.vertical}
-        ?aiConnected=${true}
-        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
-        @on-change=${(e) => action(e.type)(e)}
-      >
+      <kyn-tabs tabSize="sm" aiConnected @on-change=${(e) => action(e.type)(e)}>
         <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
         <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
         <kyn-tab slot="tabs" id="tab3">Tab 3</kyn-tab>
@@ -314,14 +267,7 @@ export const Gallery = {
 
       <div class="heading kd-type--headline-07">Vertical</div>
 
-      <kyn-tabs
-        tabSize="md"
-        tabStyle="secondary"
-        ?vertical=${true}
-        ?aiConnected=${true}
-        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
-        @on-change=${(e) => action(e.type)(e)}
-      >
+      <kyn-tabs vertical @on-change=${(e) => action(e.type)(e)}>
         <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
         <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
         <kyn-tab slot="tabs" id="tab3">Tab 3</kyn-tab>
@@ -333,14 +279,7 @@ export const Gallery = {
 
       <div class="heading kd-type--headline-07">Disabled</div>
 
-      <kyn-tabs
-        tabSize=${'md'}
-        tabStyle="primary"
-        ?vertical=${args.vertical}
-        ?aiConnected=${false}
-        ?disableAutoFocusUpdate=${args.disableAutoFocusUpdate}
-        @on-change=${(e) => action(e.type)(e)}
-      >
+      <kyn-tabs @on-change=${(e) => action(e.type)(e)}>
         <kyn-tab slot="tabs" id="tab1">Tab 1</kyn-tab>
         <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
         <kyn-tab slot="tabs" id="tab3" disabled>Tab 3</kyn-tab>
