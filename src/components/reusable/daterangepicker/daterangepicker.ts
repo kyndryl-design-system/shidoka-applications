@@ -408,8 +408,20 @@ export class DateRangePicker extends FormMixin(LitElement) {
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
+    if (changedProperties.has('dateRangePickerDisabled')) {
+      if (this.dateRangePickerDisabled) {
+        this.flatpickrInstance?.close();
+        return;
+      } else {
+        if (this.value[0] && this.value[1]) {
+          this.setInitialDates();
+        }
+      }
+    }
+
     if (
       changedProperties.has('value') &&
+      !this.dateRangePickerDisabled &&
       this.flatpickrInstance &&
       !this._isClearing
     ) {
@@ -485,14 +497,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
         this.flatpickrInstance.destroy();
         this.initializeFlatpickr();
       }
-    }
-
-    if (
-      changedProperties.has('dateRangePickerDisabled') &&
-      this.dateRangePickerDisabled &&
-      this.flatpickrInstance
-    ) {
-      this.flatpickrInstance.close();
     }
   }
 
