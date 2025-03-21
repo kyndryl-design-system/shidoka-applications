@@ -10,9 +10,9 @@
 a {
   display: flex;
   align-items: center;
-  gap: 4px;
+  // gap: 4px;
   height: 40px;
-  padding: 8px;
+  padding: 8px 8px 8px 4px;
   border-radius: 4px;
   text-decoration: none;
   outline: 2px solid transparent;
@@ -20,6 +20,10 @@ a {
   color: var(--kd-color-text-level-primary);
   transition: background-color 150ms ease-out, color 150ms ease-out,
     outline-color 150ms ease-out;
+
+  @media screen and (min-width: 42rem) {
+    padding: 8px;
+  }
 
   ::slotted(*) {
     display: flex;
@@ -30,6 +34,10 @@ a {
     height: 24px;
   }
 
+  .left-padding & {
+    padding-left: 32px;
+  }
+
   .link-active & {
     background-color: var(--kd-color-background-menu-state-active);
     color: var(--kd-color-text-button-dark-primary);
@@ -37,13 +45,7 @@ a {
   }
 
   .link-expanded.nav-expanded & {
-    background: var(--kd-color-background-menu-state-open);
-    color: var(--kd-color-text-button-dark-primary);
     font-weight: 500;
-
-    &:hover {
-      background: var(--kd-color-background-menu-state-hover);
-    }
   }
 
   &:hover {
@@ -63,10 +65,6 @@ a {
   .link-disabled &,
   .nav-expanded.link-active.link-disabled & {
     color: var(--kd-color-text-link-level-disabled);
-
-    &:hover {
-      background-color: transparent;
-    }
   }
 }
 
@@ -84,7 +82,7 @@ a {
   bottom: 0;
   width: 100%;
   background: var(--kd-color-background-menu-state-default);
-
+  z-index: 1;
   transition: transform 300ms ease-out, opacity 300ms ease-out,
     visibility 300ms ease-out;
   transform: scaleX(0);
@@ -99,7 +97,7 @@ a {
     padding: 4px 8px 8px;
 
     @media (min-width: 42rem) {
-      padding-left: 28px;
+      padding-left: 24px;
       padding-top: 2px;
       padding-right: 0;
       padding-bottom: 0;
@@ -157,7 +155,7 @@ a {
       display: block;
       position: absolute;
       top: 50%;
-      left: -7px;
+      left: -3px;
       width: 10px;
       height: 1px;
       background: var(--kd-color-border-variants-light);
@@ -169,7 +167,7 @@ a {
       display: block;
       position: absolute;
       top: calc(50% - 2px);
-      left: 0px;
+      left: 4px;
       width: 5px;
       height: 5px;
       border-radius: 50%;
@@ -198,7 +196,7 @@ a {
   color: var(--kd-color-text-level-primary);
 
   svg {
-    margin-right: 16px;
+    margin-right: 8px;
   }
 
   &:hover {
@@ -235,14 +233,7 @@ a {
 
 .text {
   min-width: 120px;
-
-  @media (min-width: 42rem) {
-    margin-left: 4px;
-
-    // .link:not(.has-icon):not(.has-links) & {
-    //   margin-left: 8px;
-    // }
-  }
+  margin-left: 4px;
 
   .nav-expanded & {
     display: block;
@@ -255,6 +246,20 @@ a {
 
 .expand-icon {
   display: none;
+  order: 1;
+  margin-left: auto;
+  transform: rotate(-90deg);
+  transition: transform 150ms ease-out;
+
+  @media screen and (min-width: 42rem) {
+    order: initial;
+    margin-left: initial;
+    transform: none;
+
+    .link-expanded & {
+      transform: rotate(-180deg);
+    }
+  }
 
   .nav-expanded & {
     display: flex;

@@ -130,7 +130,12 @@ export const Inline = {
         <div>
           ${notificationBodyMsg}
           <div style="margin-top: 10px;">
-            <kyn-link href="#" @on-click=${(e) => e.preventDefault()}>
+            <kyn-link
+              kind="secondary"
+              style="color-scheme: light"
+              href="#"
+              @on-click=${(e) => e.preventDefault()}
+            >
               Link
             </kyn-link>
           </div>

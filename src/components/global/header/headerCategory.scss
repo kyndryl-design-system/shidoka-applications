@@ -13,9 +13,24 @@
 
 .heading {
   @include typography.type-ui-03;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: var(--kd-color-text-title-secondary);
   font-weight: 500;
   text-transform: uppercase;
-  padding: 20px 16px 8px 8px;
-  border-bottom: 1px solid var(--kd-color-border-level-tertiary);
+  padding: 20px 12px 0 12px;
+  // border-bottom: 1px solid var(--kd-color-border-level-tertiary);
+
+  &.left-padding {
+    padding-left: 36px;
+  }
+}
+
+slot[name='icon']::slotted(*) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
 }
