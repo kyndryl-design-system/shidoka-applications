@@ -52,6 +52,10 @@ export class NumberInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Input readonly state. */
+  @property({ type: Boolean })
+  readonly = false;
+
   /** Optional text beneath the input. */
   @property({ type: String })
   caption = '';
@@ -128,6 +132,7 @@ export class NumberInput extends FormMixin(LitElement) {
             class="${classMap({
               'size--sm': this.size === 'sm',
               'size--lg': this.size === 'lg',
+              'is-readonly': this.readonly,
             })}"
             type="number"
             id=${this.name}
@@ -136,6 +141,7 @@ export class NumberInput extends FormMixin(LitElement) {
             placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
+            ?readonly=${this.readonly}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}
@@ -196,6 +202,7 @@ export class NumberInput extends FormMixin(LitElement) {
   }
 
   private _handleSubtract() {
+    if (this.readonly) return;
     this._inputEl.stepDown();
     this.value = Number(this._inputEl.value);
 
@@ -204,6 +211,7 @@ export class NumberInput extends FormMixin(LitElement) {
   }
 
   private _handleAdd() {
+    if (this.readonly) return;
     this._inputEl.stepUp();
     this.value = Number(this._inputEl.value);
 

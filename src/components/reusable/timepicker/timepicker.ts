@@ -99,6 +99,10 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   timepickerDisabled = false;
 
+  /** Sets entire datepicker form element to readonly. */
+  @property({ type: Boolean })
+  readonly = false;
+
   /** Sets 24 hour formatting true/false.
    * Defaults to 12H for all `en-*` locales and 24H for all other locales.
    */
@@ -258,12 +262,14 @@ export class TimePicker extends FormMixin(LitElement) {
             class="${classMap({
               [`size--${this.size}`]: true,
               'input-custom': true,
+              'is-readonly': this.readonly,
             })}"
             type="text"
             id=${anchorId}
             name=${this.name}
             placeholder=${placeholder}
             ?disabled=${this.timepickerDisabled}
+            ?readonly=${this.readonly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
@@ -271,7 +277,7 @@ export class TimePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${this.hasValue()
+          ${this.hasValue() && !this.readonly
             ? html`
                 <kyn-button
                   ?disabled=${this.timepickerDisabled}
@@ -430,11 +436,13 @@ export class TimePicker extends FormMixin(LitElement) {
       this.requestUpdate();
     }
     if (
-      changedProperties.has('timepickerDisabled') &&
-      this.timepickerDisabled &&
-      this.flatpickrInstance
+      (changedProperties.has('timepickerDisabled') &&
+        this.timepickerDisabled) ||
+      (changedProperties.has('readonly') && this.readonly)
     ) {
-      this.flatpickrInstance.close();
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.close();
+      }
     }
   }
 
@@ -637,6 +645,10 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   handleOpen(): void {
+    if (this.readonly) {
+      this.flatpickrInstance?.close();
+      return;
+    }
     if (!this._shouldFlatpickrOpen) {
       this.flatpickrInstance?.close();
       this._shouldFlatpickrOpen = true;

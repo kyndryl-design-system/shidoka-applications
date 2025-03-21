@@ -19,6 +19,7 @@ export default {
   argTypes: {
     locale: { control: { type: 'text' } },
     dateRangePickerDisabled: { control: { type: 'boolean' } },
+    readonly: { control: { type: 'boolean' } },
     dateFormat: {
       options: [
         'Y-m-d',
@@ -78,6 +79,7 @@ const Template = (args) => {
       ?staticPosition=${args.staticPosition}
       .size=${args.size}
       ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+      ?readonly=${args.readonly}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
@@ -114,6 +116,7 @@ DateRangeDefault.args = {
   warningTitle: '',
   caption: 'Click the input above to select a date range.',
   dateRangePickerDisabled: false,
+  readonly: false,
   minDate: '',
   maxDate: '',
   label: 'Date Range',
@@ -230,6 +233,7 @@ export const InModal = {
           ?required=${args.required}
           .size=${args.size}
           ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+          ?readonly=${args.readonly}
           ?twentyFourHourFormat=${args.twentyFourHourFormat}
           .minDate=${args.minDate}
           .maxDate=${args.maxDate}
@@ -323,6 +327,7 @@ export const DateRangePickerInAccordionInModal = {
                 ?required=${args.required}
                 .size=${args.size}
                 ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+                ?readonly=${args.readonly}
                 ?twentyFourHourFormat=${args.twentyFourHourFormat}
                 .minDate=${args.minDate}
                 .maxDate=${args.maxDate}

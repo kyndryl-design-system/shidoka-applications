@@ -94,7 +94,7 @@ textarea {
     background: var(--kd-color-background-ui-hollow-default);
     border-color: var(--kd-color-border-ui-disabled);
     color: var(--kd-color-text-level-disabled);
-    cursor: default;
+    cursor: not-allowed;
 
     &[invalid] {
       border-color: var(--kd-color-border-ui-disabled);
@@ -107,6 +107,12 @@ textarea {
 
   &:not([disabled])[invalid] {
     border-color: var(--kd-color-border-variants-destructive);
+  }
+
+  &.is-readonly {
+    background: var(--kd-color-background-forms-disabled);
+    border-color: var(--kd-color-border-variants-light);
+    cursor: default;
   }
 }
 

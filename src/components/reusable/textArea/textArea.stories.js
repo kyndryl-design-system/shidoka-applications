@@ -24,6 +24,7 @@ const args = {
   caption: '',
   required: false,
   disabled: false,
+  readonly: false,
   invalidText: '',
   hideLabel: false,
   minLength: undefined,
@@ -44,6 +45,7 @@ const Template = (args) => {
       caption=${args.caption}
       ?required=${args.required}
       ?disabled=${args.disabled}
+      ?readonly=${args.readonly}
       invalidText=${args.invalidText}
       .textStrings=${args.textStrings}
       minLength=${ifDefined(args.minLength)}
