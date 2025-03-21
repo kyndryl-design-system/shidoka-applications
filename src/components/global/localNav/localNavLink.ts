@@ -10,14 +10,13 @@ import { classMap } from 'lit/directives/class-map.js';
 import LocalNavLinkScss from './localNavLink.scss';
 
 import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
-import addIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
-import subtractIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-simple.svg';
+import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
 /**
  * Link component for use in the global Side Navigation component.
  * @fires on-click - Captures the click event and emits the original event, level, and if default was prevented.
  * @slot unnamed - The default slot, for the link text.
- * @slot icon - Slot for an icon. Use 16px size.
+ * @slot icon - Slot for an icon. Use 16px size. Required for level 1.
  * @slot links - Slot for the next level of links, supports three levels.
  */
 @customElement('kyn-local-nav-link')
@@ -43,6 +42,10 @@ export class LocalNavLink extends LitElement {
   /** Text for mobile "Back" button. */
   @property({ type: String })
   backText = 'Back';
+
+  /** Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1. */
+  @property({ type: Boolean })
+  leftPadding = false;
 
   /** Link level, supports three levels.
    * @ignore
@@ -100,6 +103,7 @@ export class LocalNavLink extends LitElement {
       'link-disabled': this.disabled,
       'has-links': this._navLinks.length,
       'has-icon': this._icon.length,
+      'left-padding': this.leftPadding && this._level > 1,
     };
 
     return html`
@@ -107,11 +111,7 @@ export class LocalNavLink extends LitElement {
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
           ${this._navLinks.length
             ? html`
-                <span class="expand-icon">
-                  ${this.expanded
-                    ? unsafeSVG(subtractIcon)
-                    : unsafeSVG(addIcon)}
-                </span>
+                <span class="expand-icon"> ${unsafeSVG(chevronIcon)} </span>
               `
             : null}
 
@@ -188,11 +188,11 @@ export class LocalNavLink extends LitElement {
   private updateChildren() {
     this._navLinks.forEach((link: any) => {
       link._level = this._level + 1;
-      link._navExpanded = this._navExpanded;
+      link._navExpanded = this._navExpanded || this._navExpandedMobile;
     });
 
     this._dividers.forEach((divider: any) => {
-      divider._navExpanded = this._navExpanded;
+      divider._navExpanded = this._navExpanded || this._navExpandedMobile;
     });
   }
 
