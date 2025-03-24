@@ -24,19 +24,22 @@
 .tabs {
   display: flex;
   flex-shrink: 0;
-  // gap: 2px;
+  gap: 4px;
   overflow-x: auto;
+  position: relative;
 
   &::after {
     content: '';
     border-bottom: 1px solid var(--kd-color-border-accent-secondary);
-    flex-grow: 1;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
   }
 
   &.ai-connected--true::after {
-    content: '';
-    border-bottom: 1px solid var(--kd-color-border-level-ai-tertiary);
-    flex-grow: 1;
+    border-color: var(--kd-color-border-level-ai-tertiary);
   }
 
   @media (min-width: breakpoints.$bp-md) {
@@ -46,7 +49,13 @@
     }
 
     .vertical &.tabs::after {
-      content: none;
+      content: '';
+      border-bottom: 0;
+      border-left: 1px solid var(--kd-color-border-accent-secondary);
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
     }
   }
 }
