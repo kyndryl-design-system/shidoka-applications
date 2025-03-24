@@ -288,6 +288,26 @@ export const Default = {
 
         <br /><br />
 
+        <kyn-date-range-picker
+          required
+          name="date-time-range"
+          label="Date + Time Range Picker"
+          dateFormat="Y-m-d h:i K"
+          caption="Date time range picker example"
+          ?twentyFourHourFormat=${false}
+          defaultErrorMessage="Both start and end dates are required"
+          .defaultDate=${['2024-01-01 09:00:00', '2024-01-02 17:00:00']}
+          @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 425px;"
+        >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
+            Tooltip example.
+          </kyn-tooltip>
+        </kyn-date-range-picker>
+
+        <br /><br />
+
         <kyn-button
           type="submit"
           name="test"

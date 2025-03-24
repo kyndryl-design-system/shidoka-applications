@@ -38,6 +38,7 @@ const _defaultTextStrings = {
   clearAll: 'Clear',
   pleaseSelectDate: 'Please select a date',
   pleaseSelectValidDate: 'Please select a valid date',
+  pleaseSelectBothDates: 'Please select a start and end date.',
   dateRange: 'Date range',
   noDateSelected: 'No dates selected',
   startDateSelected: 'Start date selected: {0}. Please select end date.',
@@ -812,25 +813,24 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this._hasInteracted = true;
     }
 
-    const hasDefaultDate =
-      this.defaultDate &&
-      Array.isArray(this.defaultDate) &&
-      this.defaultDate.length === 2 &&
-      this.defaultDate[0] !== '' &&
-      this.defaultDate[1] !== '';
+    const selectedCount =
+      (this.value[0] ? 1 : 0) +
+      (this.value[1] ? 1 : 0) +
+      (Array.isArray(this.defaultDate)
+        ? this.defaultDate.filter((d) => d.trim() !== '').length
+        : 0);
 
-    const isEmpty =
-      (!this._inputEl.value.trim() || !this.value[0] || !this.value[1]) &&
-      !hasDefaultDate;
     const isRequired = this.required;
-
     let validity = this._inputEl.validity;
     let validationMessage = this._inputEl.validationMessage;
 
-    if (isRequired && isEmpty) {
+    if (isRequired && selectedCount === 0) {
       validity = { ...validity, valueMissing: true };
       validationMessage =
         this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
+    } else if (isRequired && selectedCount === 1) {
+      validity = { ...validity, customError: true };
+      validationMessage = this._textStrings.pleaseSelectBothDates;
     }
 
     if (this.invalidText) {
@@ -839,7 +839,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     const isValid = !validity.valueMissing && !validity.customError;
-
     if (!isValid && !validationMessage) {
       validationMessage = this._textStrings.pleaseSelectValidDate;
     }
