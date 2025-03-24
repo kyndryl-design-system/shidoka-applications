@@ -824,13 +824,18 @@ export class DateRangePicker extends FormMixin(LitElement) {
     let validity = this._inputEl.validity;
     let validationMessage = this._inputEl.validationMessage;
 
-    if (isRequired && selectedCount === 0) {
-      validity = { ...validity, valueMissing: true };
-      validationMessage =
-        this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
-    } else if (isRequired && selectedCount === 1) {
-      validity = { ...validity, customError: true };
-      validationMessage = this._textStrings.pleaseSelectBothDates;
+    if (isRequired) {
+      if (selectedCount === 0) {
+        validity = { ...validity, valueMissing: true };
+        validationMessage =
+          this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
+      } else if (selectedCount === 1) {
+        validity = { ...validity, customError: true };
+        validationMessage = this._textStrings.pleaseSelectBothDates;
+      }
+    } else {
+      validity = { ...validity, valueMissing: false, customError: false };
+      validationMessage = '';
     }
 
     if (this.invalidText) {
