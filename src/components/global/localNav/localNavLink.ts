@@ -115,7 +115,9 @@ export class LocalNavLink extends LitElement {
               `
             : null}
 
-          <slot name="icon"></slot>
+          <div class="icon">
+            <slot name="icon"></slot>
+          </div>
 
           <span class="text">
             <slot @slotchange=${this._handleTextSlotChange}></slot>
