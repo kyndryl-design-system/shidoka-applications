@@ -812,8 +812,16 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this._hasInteracted = true;
     }
 
+    const hasDefaultDate =
+      this.defaultDate &&
+      Array.isArray(this.defaultDate) &&
+      this.defaultDate.length === 2 &&
+      this.defaultDate[0] !== '' &&
+      this.defaultDate[1] !== '';
+
     const isEmpty =
-      !this._inputEl.value.trim() || !this.value[0] || !this.value[1];
+      (!this._inputEl.value.trim() || !this.value[0] || !this.value[1]) &&
+      !hasDefaultDate;
     const isRequired = this.required;
 
     let validity = this._inputEl.validity;

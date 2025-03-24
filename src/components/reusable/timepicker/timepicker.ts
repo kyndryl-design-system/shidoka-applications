@@ -704,7 +704,13 @@ export class TimePicker extends FormMixin(LitElement) {
     if (interacted) {
       this._hasInteracted = true;
     }
-    const isEmpty = !this._inputEl.value.trim();
+
+    const hasDefaultValue =
+      this.defaultDate !== null ||
+      this.defaultHour !== null ||
+      this.defaultMinute !== null;
+
+    const isEmpty = !this._inputEl.value.trim() && !hasDefaultValue;
     const isRequired = this.required;
     let validity = this._inputEl.validity;
     let validationMessage = this._inputEl.validationMessage;

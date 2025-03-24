@@ -760,7 +760,8 @@ export class DatePicker extends FormMixin(LitElement) {
       this._hasInteracted = true;
     }
 
-    const isEmpty = !this._inputEl.value.trim();
+    const hasDefaultDate = this.defaultDate !== null && this.defaultDate !== '';
+    const isEmpty = !this._inputEl.value.trim() && !hasDefaultDate;
     const isRequired = this.required;
 
     let validity = this._inputEl.validity;
