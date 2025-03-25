@@ -291,7 +291,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   private updateFormValue() {
     if (this._internals && this._inputEl) {
-      this._internals.setFormValue(this._inputEl.value);
+      if (this.value[0] && this.value[1]) {
+        const formattedValue = [
+          this.value[0].toISOString(),
+          this.value[1].toISOString(),
+        ].join(',');
+        this._internals.setFormValue(formattedValue);
+      } else {
+        this._internals.setFormValue('');
+      }
     }
   }
 
@@ -381,39 +389,46 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
+    if (this.dateRangePickerDisabled) return null;
+
     if (this.invalidText || (this._isInvalid && this._hasInteracted)) {
-      return html`<div
-        id=${errorId}
-        class="error error-text"
-        role="alert"
-        title=${this.errorTitle || 'Error'}
-        @mousedown=${this.preventFlatpickrOpen}
-        @click=${this.preventFlatpickrOpen}
-      >
-        <span
-          class="error-icon"
-          aria-label=${this.errorAriaLabel || 'Error message icon'}
-          role="button"
-          >${unsafeSVG(errorIcon)}</span
+      return html`
+        <div
+          id=${errorId}
+          class="error error-text"
+          role="alert"
+          title=${this.errorTitle || 'Error'}
+          @mousedown=${this.preventFlatpickrOpen}
+          @click=${this.preventFlatpickrOpen}
         >
-        ${this.invalidText ||
-        this._internalValidationMsg ||
-        this.defaultErrorMessage}
-      </div>`;
+          <span
+            class="error-icon"
+            aria-label=${this.errorAriaLabel || 'Error message icon'}
+            role="button"
+          >
+            ${unsafeSVG(errorIcon)}
+          </span>
+          ${this.invalidText ||
+          this._internalValidationMsg ||
+          this.defaultErrorMessage}
+        </div>
+      `;
     }
 
     if (this.warnText) {
-      return html`<div
-        id=${warningId}
-        class="warn warn-text"
-        role="alert"
-        aria-label=${this.warningAriaLabel || 'Warning message'}
-        title=${this.warningTitle || 'Warning'}
-        @mousedown=${this.preventFlatpickrOpen}
-        @click=${this.preventFlatpickrOpen}
-      >
-        ${this.warnText}
-      </div>`;
+      return html`
+        <div
+          id=${warningId}
+          class="warn warn-text"
+          role="alert"
+          aria-label=${this.warningAriaLabel || 'Warning message'}
+          title=${this.warningTitle || 'Warning'}
+          @mousedown=${this.preventFlatpickrOpen}
+          @click=${this.preventFlatpickrOpen}
+        >
+          ${this.warnText}
+        </div>
+      `;
     }
 
     return null;
@@ -936,11 +951,18 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   private _validate(interacted: boolean, report: boolean) {
     if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) return;
+
+    if (this.dateRangePickerDisabled) {
+      this._internals.setValidity({}, '', this._inputEl);
+      this._isInvalid = false;
+      this._internalValidationMsg = '';
+      return;
+    }
+
     if (interacted) this._hasInteracted = true;
     const selectedCount = [this.value[0], this.value[1]].filter(
       (d) => d !== null
     ).length;
-    const isRequired = this.required;
     let validity = this._inputEl.validity;
     let validationMessage = this._inputEl.validationMessage;
 
@@ -950,7 +972,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     } else if (selectedCount === 1 && this._hasInteracted) {
       validity = { ...validity, customError: true };
       validationMessage = this._textStrings.pleaseSelectBothDates;
-    } else if (isRequired && selectedCount === 0 && this._hasInteracted) {
+    } else if (this.required && selectedCount === 0 && this._hasInteracted) {
       const shouldShowRequiredError =
         this._hasInteracted &&
         !this.flatpickrInstance?.isOpen &&
