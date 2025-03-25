@@ -217,7 +217,7 @@ export class TimePicker extends FormMixin(LitElement) {
     return false;
   }
 
-  private updateFormValue(): void {
+  private updateFormValue() {
     if (this._internals && this._inputEl) {
       this._internals.setFormValue(this._inputEl.value);
     }
@@ -480,7 +480,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
   private _isDestroyed = false;
 
-  async initializeFlatpickr(): Promise<void> {
+  async initializeFlatpickr() {
     if (this._isDestroyed) {
       return;
     }
@@ -544,7 +544,7 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  async updateFlatpickrOptions(): Promise<void> {
+  async updateFlatpickrOptions() {
     if (!this.flatpickrInstance) {
       console.warn('Cannot update options: Flatpickr instance not available');
       return;
@@ -577,7 +577,7 @@ export class TimePicker extends FormMixin(LitElement) {
     });
   }
 
-  setInitialDates(instance: flatpickr.Instance): void {
+  setInitialDates(instance: flatpickr.Instance) {
     try {
       if (this.value) return;
       let date: Date | null = null;
@@ -600,7 +600,7 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  handleOpen(): void {
+  handleOpen() {
     if (this.readonly) {
       this.flatpickrInstance?.close();
       return;
@@ -611,16 +611,13 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  async handleClose(): Promise<void> {
+  async handleClose() {
     this._hasInteracted = true;
     this._validate(true, false);
     await this.updateComplete;
   }
 
-  async handleTimeChange(
-    selectedDates: Date[],
-    dateStr: string
-  ): Promise<void> {
+  async handleTimeChange(selectedDates: Date[], dateStr: string) {
     if (this._isClearing) return;
     try {
       if (selectedDates.length > 0) {
@@ -656,7 +653,7 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  private _validate(interacted: boolean, report: boolean): void {
+  private _validate(interacted: boolean, report: boolean) {
     if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) {
       return;
     }
@@ -713,15 +710,15 @@ export class TimePicker extends FormMixin(LitElement) {
     this.flatpickrInstance?.close();
   }
 
-  private preventFlatpickrOpen(event: Event): void {
+  private preventFlatpickrOpen(event: Event) {
     preventFlatpickrOpen(event, this.setShouldFlatpickrOpen.bind(this));
   }
 
-  private handleInputClickEvent(): void {
+  private handleInputClickEvent() {
     handleInputClick(this.setShouldFlatpickrOpen.bind(this));
   }
 
-  private handleInputFocusEvent(): void {
+  private handleInputFocusEvent() {
     handleInputFocus(
       this._shouldFlatpickrOpen,
       this.closeFlatpickr.bind(this),
@@ -729,7 +726,7 @@ export class TimePicker extends FormMixin(LitElement) {
     );
   }
 
-  override disconnectedCallback(): void {
+  override disconnectedCallback() {
     this._isDestroyed = true;
     super.disconnectedCallback();
     this.removeEventListener('change', this._onChange);

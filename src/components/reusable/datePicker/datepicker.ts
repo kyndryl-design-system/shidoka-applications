@@ -587,7 +587,7 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  async initializeFlatpickr(): Promise<void> {
+  async initializeFlatpickr() {
     if (this._isDestroyed) {
       return;
     }
@@ -638,7 +638,7 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  async updateFlatpickrOptions(): Promise<void> {
+  async updateFlatpickrOptions() {
     if (!this.flatpickrInstance) {
       console.warn('Cannot update options: Flatpickr instance not available');
       return;
@@ -671,7 +671,7 @@ export class DatePicker extends FormMixin(LitElement) {
     return isNaN(date.getTime()) ? null : date;
   }
 
-  setInitialDates(): void {
+  setInitialDates() {
     if (!this.flatpickrInstance) {
       console.warn(
         'Cannot set initial dates: Flatpickr instance not available'
@@ -764,23 +764,20 @@ export class DatePicker extends FormMixin(LitElement) {
     return options;
   }
 
-  handleOpen(): void {
+  handleOpen() {
     if (!this._shouldFlatpickrOpen) {
       this.flatpickrInstance?.close();
       this._shouldFlatpickrOpen = true;
     }
   }
 
-  async handleClose(): Promise<void> {
+  async handleClose() {
     this._hasInteracted = true;
     this._validate(true, false);
     await this.updateComplete;
   }
 
-  async handleDateChange(
-    selectedDates: Date[],
-    dateStr: string
-  ): Promise<void> {
+  async handleDateChange(selectedDates: Date[], dateStr: string) {
     if (this._isClearing) return;
 
     this._hasInteracted = true;
@@ -820,23 +817,23 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  private setShouldFlatpickrOpen(value: boolean): void {
+  private setShouldFlatpickrOpen(value: boolean) {
     this._shouldFlatpickrOpen = value;
   }
 
-  private closeFlatpickr(): void {
+  private closeFlatpickr() {
     this.flatpickrInstance?.close();
   }
 
-  private preventFlatpickrOpen(event: Event): void {
+  private preventFlatpickrOpen(event: Event) {
     preventFlatpickrOpen(event, this.setShouldFlatpickrOpen.bind(this));
   }
 
-  private handleInputClickEvent(): void {
+  private handleInputClickEvent() {
     handleInputClick(this.setShouldFlatpickrOpen.bind(this));
   }
 
-  private handleInputFocusEvent(): void {
+  private handleInputFocusEvent() {
     handleInputFocus(
       this._shouldFlatpickrOpen,
       this.closeFlatpickr.bind(this),
@@ -844,7 +841,7 @@ export class DatePicker extends FormMixin(LitElement) {
     );
   }
 
-  private _validate(interacted: boolean, report: boolean): void {
+  private _validate(interacted: boolean, report: boolean) {
     if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) {
       return;
     }
@@ -901,7 +898,7 @@ export class DatePicker extends FormMixin(LitElement) {
     this._validate(false, false);
   }
 
-  override disconnectedCallback(): void {
+  override disconnectedCallback() {
     this._isDestroyed = true;
     super.disconnectedCallback();
     this.removeEventListener('change', this._onChange);
