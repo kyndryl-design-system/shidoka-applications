@@ -843,6 +843,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.flatpickrInstance?.close();
       this._shouldFlatpickrOpen = true;
     }
+
+    this._isInvalid = false;
+    this.requestUpdate();
   }
 
   public async handleDateChange(selectedDates: Date[]) {
@@ -941,29 +944,48 @@ export class DateRangePicker extends FormMixin(LitElement) {
     let validity = this._inputEl.validity;
     let validationMessage = this._inputEl.validationMessage;
 
-    if (selectedCount === 1) {
+    if (this.flatpickrInstance?.isOpen) {
+      validity = { ...validity, valueMissing: false, customError: false };
+      validationMessage = '';
+    } else if (selectedCount === 1 && this._hasInteracted) {
       validity = { ...validity, customError: true };
       validationMessage = this._textStrings.pleaseSelectBothDates;
-      this._hasInteracted = true;
-    } else if (isRequired && selectedCount === 0) {
-      validity = { ...validity, valueMissing: true };
-      validationMessage =
-        this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
+    } else if (isRequired && selectedCount === 0 && this._hasInteracted) {
+      const shouldShowRequiredError =
+        this._hasInteracted &&
+        !this.flatpickrInstance?.isOpen &&
+        selectedCount === 0;
+
+      if (shouldShowRequiredError) {
+        validity = { ...validity, valueMissing: true };
+        validationMessage =
+          this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
+      } else {
+        validity = { ...validity, valueMissing: false };
+        validationMessage = '';
+      }
     } else {
       validity = { ...validity, valueMissing: false, customError: false };
       validationMessage = '';
     }
+
     if (this.invalidText) {
       validity = { ...validity, customError: true };
       validationMessage = this.invalidText;
     }
+
     const isValid = !validity.valueMissing && !validity.customError;
     if (!isValid && !validationMessage) {
       validationMessage = this._textStrings.pleaseSelectValidDate;
     }
+
     this._internals.setValidity(validity, validationMessage, this._inputEl);
+
     this._isInvalid =
-      !isValid && (this._hasInteracted || this.invalidText !== '');
+      !isValid &&
+      ((this._hasInteracted && !this.flatpickrInstance?.isOpen) ||
+        this.invalidText !== '');
+
     this._internalValidationMsg = validationMessage;
     if (report) this._internals.reportValidity();
     this.requestUpdate();
