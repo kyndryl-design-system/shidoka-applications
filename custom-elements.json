@@ -129,63 +129,99 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
+      "path": "src/components/ai/aiLaunchButton/aiLaunchButton.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
+          "description": "AI Assistant Launch Button.",
+          "name": "AILaunchButton",
           "members": [
             {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the button is disabled.",
+              "attribute": "disabled"
+            },
+            {
               "kind": "method",
-              "name": "handleSlotChange",
+              "name": "_initAnimation",
               "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_startHoverAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_stopHoverAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitClick",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits when the button is clicked.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the button is disabled.",
+              "fieldName": "disabled"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-ui-shell",
+          "tagName": "kyn-ai-launch-btn",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "UiShell",
+          "name": "AILaunchButton",
           "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
+            "name": "AILaunchButton",
+            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
+          "name": "kyn-ai-launch-btn",
           "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
+            "name": "AILaunchButton",
+            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai/aiLaunchButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AILaunchButton",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "./aiLaunchButton"
           }
         }
       ]
@@ -1701,6 +1737,335 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "AISourcesFeedback Component.",
+          "name": "AISourcesFeedback",
+          "slots": [
+            {
+              "description": "copy button",
+              "name": "copy"
+            },
+            {
+              "description": "source cards in source panel.",
+              "name": "sources"
+            },
+            {
+              "description": "Positive feedback form.",
+              "name": "feedback-form"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "sourcesOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Sources used.",
+              "attribute": "sourcesOpened"
+            },
+            {
+              "kind": "field",
+              "name": "feedbackOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Feedback buttons.",
+              "attribute": "feedbackOpened"
+            },
+            {
+              "kind": "field",
+              "name": "sourcesDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Sources used..",
+              "attribute": "sourcesDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "feedbackDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Feedback buttons.",
+              "attribute": "feedbackDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "revealAllSources",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible sources behind a \"Show more\" button.",
+              "attribute": "revealAllSources"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  sourcesText: 'Sources',\n  foundSources: 'Found sources',\n  showMore: 'Show more',\n  showLess: 'Show less',\n  positiveFeedback: 'Share what you liked',\n  negativeFeedback: 'Help us improve',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "closeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button text.",
+              "attribute": "closeText"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "panel",
+                  "type": {
+                    "text": "'sources' | 'feedback'"
+                  }
+                },
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateFeedbackCounts",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_shouldEmitFeedbackEvent",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitToggleEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "panel",
+                  "type": {
+                    "text": "'sources' | 'feedback'"
+                  }
+                },
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_toggleFeedbackPanel",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "protected"
+            },
+            {
+              "kind": "method",
+              "name": "_toggleLimitRevealed",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "revealed",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "updateSourcesText",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "on-feedback-deselected",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when thumbs-up or thumbs-down button is deselected."
+            },
+            {
+              "name": "on-toggle",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits the `opened` state when the panel item opens/closes."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "sourcesOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Sources used.",
+              "fieldName": "sourcesOpened"
+            },
+            {
+              "name": "feedbackOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Feedback buttons.",
+              "fieldName": "feedbackOpened"
+            },
+            {
+              "name": "sourcesDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Sources used..",
+              "fieldName": "sourcesDisabled"
+            },
+            {
+              "name": "feedbackDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Feedback buttons.",
+              "fieldName": "feedbackDisabled"
+            },
+            {
+              "name": "revealAllSources",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible sources behind a \"Show more\" button.",
+              "fieldName": "revealAllSources"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "closeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button text.",
+              "fieldName": "closeText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ai-sources-feedback",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AISourcesFeedback",
+          "declaration": {
+            "name": "AISourcesFeedback",
+            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ai-sources-feedback",
+          "declaration": {
+            "name": "AISourcesFeedback",
+            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai/sourcesFeedback/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AISourcesFeedback",
+          "declaration": {
+            "name": "AISourcesFeedback",
+            "module": "./aiSourcesFeedback"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/localNav/index.ts",
       "declarations": [],
       "exports": [
@@ -2172,428 +2537,63 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/ai/aiLaunchButton/aiLaunchButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "AI Assistant Launch Button.",
-          "name": "AILaunchButton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the button is disabled.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "_initAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_startHoverAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_stopHoverAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitClick",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits when the button is clicked.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the button is disabled.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ai-launch-btn",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AILaunchButton",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ai-launch-btn",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/ai/aiLaunchButton/index.ts",
+      "path": "src/components/global/uiShell/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "AILaunchButton",
+          "name": "UiShell",
           "declaration": {
-            "name": "AILaunchButton",
-            "module": "./aiLaunchButton"
+            "name": "UiShell",
+            "module": "./uiShell"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts",
+      "path": "src/components/global/uiShell/uiShell.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "AISourcesFeedback Component.",
-          "name": "AISourcesFeedback",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
           "slots": [
             {
-              "description": "copy button",
-              "name": "copy"
-            },
-            {
-              "description": "source cards in source panel.",
-              "name": "sources"
-            },
-            {
-              "description": "Positive feedback form.",
-              "name": "feedback-form"
+              "description": "Slot for global elements.",
+              "name": "unnamed"
             }
           ],
           "members": [
             {
-              "kind": "field",
-              "name": "sourcesOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Sources used.",
-              "attribute": "sourcesOpened"
-            },
-            {
-              "kind": "field",
-              "name": "feedbackOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Feedback buttons.",
-              "attribute": "feedbackOpened"
-            },
-            {
-              "kind": "field",
-              "name": "sourcesDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Sources used..",
-              "attribute": "sourcesDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "feedbackDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Feedback buttons.",
-              "attribute": "feedbackDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "revealAllSources",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible sources behind a \"Show more\" button.",
-              "attribute": "revealAllSources"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  sourcesText: 'Sources',\n  foundSources: 'Found sources',\n  showMore: 'Show more',\n  showLess: 'Show less',\n  positiveFeedback: 'Share what you liked',\n  negativeFeedback: 'Help us improve',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button text.",
-              "attribute": "closeText"
-            },
-            {
               "kind": "method",
-              "name": "_handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "panel",
-                  "type": {
-                    "text": "'sources' | 'feedback'"
-                  }
-                },
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateFeedbackCounts",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "feedbackType",
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_shouldEmitFeedbackEvent",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "boolean"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitToggleEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "panel",
-                  "type": {
-                    "text": "'sources' | 'feedback'"
-                  }
-                },
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_toggleFeedbackPanel",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "protected"
-            },
-            {
-              "kind": "method",
-              "name": "_toggleLimitRevealed",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "revealed",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "updateSourcesText",
+              "name": "handleSlotChange",
               "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "name": "on-feedback-deselected",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits when thumbs-up or thumbs-down button is deselected."
-            },
-            {
-              "name": "on-toggle",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits the `opened` state when the panel item opens/closes."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "sourcesOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Sources used.",
-              "fieldName": "sourcesOpened"
-            },
-            {
-              "name": "feedbackOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Feedback buttons.",
-              "fieldName": "feedbackOpened"
-            },
-            {
-              "name": "sourcesDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Sources used..",
-              "fieldName": "sourcesDisabled"
-            },
-            {
-              "name": "feedbackDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Feedback buttons.",
-              "fieldName": "feedbackDisabled"
-            },
-            {
-              "name": "revealAllSources",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible sources behind a \"Show more\" button.",
-              "fieldName": "revealAllSources"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button text.",
-              "fieldName": "closeText"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-ai-sources-feedback",
+          "tagName": "kyn-ui-shell",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "AISourcesFeedback",
+          "name": "UiShell",
           "declaration": {
-            "name": "AISourcesFeedback",
-            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-ai-sources-feedback",
+          "name": "kyn-ui-shell",
           "declaration": {
-            "name": "AISourcesFeedback",
-            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/ai/sourcesFeedback/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AISourcesFeedback",
-          "declaration": {
-            "name": "AISourcesFeedback",
-            "module": "./aiSourcesFeedback"
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -7492,7 +7492,7 @@
               "type": {
                 "text": "boolean"
               },
-              "default": "false",
+              "default": "true",
               "description": "Set this to `true`, if the component accepts multiple file uploads.",
               "attribute": "multiple"
             },
@@ -7508,18 +7508,8 @@
             },
             {
               "kind": "field",
-              "name": "fileUploderType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'button'",
-              "description": "Set the type of file uploader needed. Accepted values\nare `button`, `drag-drop` or `both`. Default value is `button`.",
-              "attribute": "fileUploderType"
-            },
-            {
-              "kind": "field",
               "name": "textStrings",
-              "default": "{\n  buttonLabel: 'Choose Files',\n  maxFileSize: 'Max file size',\n  supportedFileTypes: 'Supported file types',\n  dragAndDrop: 'Drag file here to upload',\n  alternateText: 'Alternatively you can select a file by',\n  linkText: 'clicking here.',\n}",
+              "default": "{\n  dragAndDropText: 'Drag files here to upload',\n  orText: 'or',\n  buttonText: 'Browse files',\n  maxFileSizeText: 'Max file size',\n  supportedFileTypeText: 'Supported file type',\n  fileUploadErrorText: 'File upload error',\n  fileDetails: 'File details',\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -7528,28 +7518,13 @@
             },
             {
               "kind": "field",
-              "name": "maxFileSize",
+              "name": "maxFileSizeText",
               "type": {
                 "text": "string"
               },
-              "default": "'5MB'",
+              "default": "'20KB'",
               "description": "Set the maximum file size. Default value is `5MB`.",
-              "attribute": "maxFileSize"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true`, if the component is disabled.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "renderSupportedFileSizeAndType",
-              "privacy": "private"
+              "attribute": "maxFileSizeText"
             },
             {
               "kind": "method",
@@ -7558,7 +7533,7 @@
             },
             {
               "kind": "method",
-              "name": "renderButton",
+              "name": "renderSupportedFileSizeAndType",
               "privacy": "private"
             },
             {
@@ -7635,6 +7610,37 @@
             },
             {
               "kind": "method",
+              "name": "_parseFileSize",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "size",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleInvalidFiles",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "invalidFiles",
+                  "type": {
+                    "text": "string[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "_handleFileUploadSimulation",
               "privacy": "private"
             },
@@ -7665,7 +7671,7 @@
               "type": {
                 "text": "boolean"
               },
-              "default": "false",
+              "default": "true",
               "description": "Set this to `true`, if the component accepts multiple file uploads.",
               "fieldName": "multiple"
             },
@@ -7679,37 +7685,19 @@
               "fieldName": "uploadedFiles"
             },
             {
-              "name": "fileUploderType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'button'",
-              "description": "Set the type of file uploader needed. Accepted values\nare `button`, `drag-drop` or `both`. Default value is `button`.",
-              "fieldName": "fileUploderType"
-            },
-            {
               "name": "textStrings",
               "default": "_defaultTextStrings",
               "description": "Customizable text strings.",
               "fieldName": "textStrings"
             },
             {
-              "name": "maxFileSize",
+              "name": "maxFileSizeText",
               "type": {
                 "text": "string"
               },
-              "default": "'5MB'",
+              "default": "'20KB'",
               "description": "Set the maximum file size. Default value is `5MB`.",
-              "fieldName": "maxFileSize"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true`, if the component is disabled.",
-              "fieldName": "disabled"
+              "fieldName": "maxFileSizeText"
             }
           ],
           "superclass": {
@@ -7735,6 +7723,100 @@
           "declaration": {
             "name": "FileUploader",
             "module": "src/components/reusable/fileUploader/fileUploader.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/fileUploader/fileUploaderItem.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "File Uploader Item",
+          "name": "FileUploaderItem",
+          "members": [
+            {
+              "kind": "field",
+              "name": "uploadedFiles",
+              "type": {
+                "text": "File[]"
+              },
+              "default": "[]",
+              "attribute": "uploadedFiles"
+            },
+            {
+              "kind": "field",
+              "name": "invalidFiles",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "attribute": "invalidFiles"
+            },
+            {
+              "kind": "field",
+              "name": "_uploadedFilesStatus",
+              "type": {
+                "text": "{\n    fileNames: string[];\n    filesSizes: number[];\n    totalFileSize: number;\n    progress: number;\n    status: 'active' | 'success' | 'error';\n    currentFileIndex: number;\n  }"
+              },
+              "default": "{\n    fileNames: [],\n    filesSizes: [],\n    totalFileSize: 0,\n    progress: 0,\n    status: 'active',\n    currentFileIndex: 0,\n  }"
+            },
+            {
+              "kind": "method",
+              "name": "uploadNextFile"
+            },
+            {
+              "kind": "method",
+              "name": "handleCloseClick"
+            },
+            {
+              "kind": "method",
+              "name": "_getHelperText",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "uploadedFiles",
+              "type": {
+                "text": "File[]"
+              },
+              "default": "[]",
+              "fieldName": "uploadedFiles"
+            },
+            {
+              "name": "invalidFiles",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "fieldName": "invalidFiles"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-file-uploader-status",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FileUploaderItem",
+          "declaration": {
+            "name": "FileUploaderItem",
+            "module": "src/components/reusable/fileUploader/fileUploaderItem.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-file-uploader-status",
+          "declaration": {
+            "name": "FileUploaderItem",
+            "module": "src/components/reusable/fileUploader/fileUploaderItem.ts"
           }
         }
       ]
@@ -7976,181 +8058,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/inlineConfirm/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineConfirm",
-          "declaration": {
-            "name": "InlineConfirm",
-            "module": "./inlineConfirm"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/inlineConfirm/inlineConfirm.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "InlineConfirm component.",
-          "name": "InlineConfirm",
-          "slots": [
-            {
-              "description": "Slot for anchor button icon.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for confirm icon button, will be a check icon by default if none provided.",
-              "name": "confirmIcon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "anchorText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Anchor button text.",
-              "attribute": "anchorText"
-            },
-            {
-              "kind": "field",
-              "name": "confirmText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Confirm'",
-              "description": "Confirm button text.",
-              "attribute": "confirmText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelText"
-            },
-            {
-              "kind": "field",
-              "name": "openRight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Open to the right.",
-              "attribute": "openRight"
-            },
-            {
-              "kind": "method",
-              "name": "_handleToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleConfirm",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Dispatched when the confirm button is clicked.",
-              "name": "on-confirm"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the action is destructive.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "anchorText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Anchor button text.",
-              "fieldName": "anchorText"
-            },
-            {
-              "name": "confirmText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Confirm'",
-              "description": "Confirm button text.",
-              "fieldName": "confirmText"
-            },
-            {
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "fieldName": "cancelText"
-            },
-            {
-              "name": "openRight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Open to the right.",
-              "fieldName": "openRight"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit-element"
-          },
-          "tagName": "kyn-inline-confirm",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineConfirm",
-          "declaration": {
-            "name": "InlineConfirm",
-            "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-inline-confirm",
-          "declaration": {
-            "name": "InlineConfirm",
-            "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/link/defs.ts",
       "declarations": [],
       "exports": []
@@ -8369,6 +8276,385 @@
           "declaration": {
             "name": "Link",
             "module": "src/components/reusable/link/link.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Loader",
+          "declaration": {
+            "name": "Loader",
+            "module": "./loader"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LoaderInline",
+          "declaration": {
+            "name": "LoaderInline",
+            "module": "./inline"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Skeleton",
+          "declaration": {
+            "name": "Skeleton",
+            "module": "./skeleton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/inline.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Inline Loader.",
+          "name": "LoaderInline",
+          "slots": [
+            {
+              "description": "Slot for text/description.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "status",
+              "type": {
+                "text": "string"
+              },
+              "default": "'active'",
+              "description": "Status. Can be `active`, `inactive`, `success`, `error`.",
+              "attribute": "status"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStart",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStop",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits when the loader been started.",
+              "name": "on-start"
+            },
+            {
+              "description": "Emits when the loader has been stopped and all animations have completed.",
+              "name": "on-stop"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "status",
+              "type": {
+                "text": "string"
+              },
+              "default": "'active'",
+              "description": "Status. Can be `active`, `inactive`, `success`, `error`.",
+              "fieldName": "status"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-loader-inline",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LoaderInline",
+          "declaration": {
+            "name": "LoaderInline",
+            "module": "src/components/reusable/loaders/inline.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-loader-inline",
+          "declaration": {
+            "name": "LoaderInline",
+            "module": "src/components/reusable/loaders/inline.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/loader.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Loader.",
+          "name": "Loader",
+          "members": [
+            {
+              "kind": "field",
+              "name": "stopped",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Animation stopped state",
+              "attribute": "stopped"
+            },
+            {
+              "kind": "field",
+              "name": "overlay",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Display the loader as an overlay",
+              "attribute": "overlay"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStart",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStop",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits when the loader been started.",
+              "name": "on-start"
+            },
+            {
+              "description": "Emits when the loader has been stopped and all animations have completed.",
+              "name": "on-stop"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "stopped",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Animation stopped state",
+              "fieldName": "stopped"
+            },
+            {
+              "name": "overlay",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Display the loader as an overlay",
+              "fieldName": "overlay"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-loader",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Loader",
+          "declaration": {
+            "name": "Loader",
+            "module": "src/components/reusable/loaders/loader.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-loader",
+          "declaration": {
+            "name": "Loader",
+            "module": "src/components/reusable/loaders/loader.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Skeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "shape",
+              "type": {
+                "text": "'rectangle' | 'circle'"
+              },
+              "default": "'rectangle'",
+              "description": "Defines the shape of the skeleton element.",
+              "attribute": "shape",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "'small' | 'medium' | 'large' | undefined"
+              },
+              "description": "Optional: Predefined size (small, medium, large).",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "width",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional: Custom width (overrides size if provided).",
+              "attribute": "width"
+            },
+            {
+              "kind": "field",
+              "name": "height",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional: Custom height (overrides size if provided).",
+              "attribute": "height"
+            },
+            {
+              "kind": "field",
+              "name": "lines",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Sets the number of skeleton lines to display.",
+              "attribute": "lines"
+            },
+            {
+              "kind": "field",
+              "name": "inline",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether to display inline or block.",
+              "attribute": "inline"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set to `true` for AI theme.",
+              "attribute": "aiConnected"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "shape",
+              "type": {
+                "text": "'rectangle' | 'circle'"
+              },
+              "default": "'rectangle'",
+              "description": "Defines the shape of the skeleton element.",
+              "fieldName": "shape"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "'small' | 'medium' | 'large' | undefined"
+              },
+              "description": "Optional: Predefined size (small, medium, large).",
+              "fieldName": "size"
+            },
+            {
+              "name": "width",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional: Custom width (overrides size if provided).",
+              "fieldName": "width"
+            },
+            {
+              "name": "height",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional: Custom height (overrides size if provided).",
+              "fieldName": "height"
+            },
+            {
+              "name": "lines",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Sets the number of skeleton lines to display.",
+              "fieldName": "lines"
+            },
+            {
+              "name": "inline",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether to display inline or block.",
+              "fieldName": "inline"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set to `true` for AI theme.",
+              "fieldName": "aiConnected"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-skeleton",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Skeleton",
+          "declaration": {
+            "name": "Skeleton",
+            "module": "src/components/reusable/loaders/skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-skeleton",
+          "declaration": {
+            "name": "Skeleton",
+            "module": "src/components/reusable/loaders/skeleton.ts"
           }
         }
       ]
@@ -8802,385 +9088,6 @@
           "declaration": {
             "name": "Modal",
             "module": "src/components/reusable/modal/modal.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/loaders/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Loader",
-          "declaration": {
-            "name": "Loader",
-            "module": "./loader"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LoaderInline",
-          "declaration": {
-            "name": "LoaderInline",
-            "module": "./inline"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Skeleton",
-          "declaration": {
-            "name": "Skeleton",
-            "module": "./skeleton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/loaders/inline.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Inline Loader.",
-          "name": "LoaderInline",
-          "slots": [
-            {
-              "description": "Slot for text/description.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "status",
-              "type": {
-                "text": "string"
-              },
-              "default": "'active'",
-              "description": "Status. Can be `active`, `inactive`, `success`, `error`.",
-              "attribute": "status"
-            },
-            {
-              "kind": "method",
-              "name": "_emitStart",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitStop",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits when the loader been started.",
-              "name": "on-start"
-            },
-            {
-              "description": "Emits when the loader has been stopped and all animations have completed.",
-              "name": "on-stop"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "status",
-              "type": {
-                "text": "string"
-              },
-              "default": "'active'",
-              "description": "Status. Can be `active`, `inactive`, `success`, `error`.",
-              "fieldName": "status"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-loader-inline",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LoaderInline",
-          "declaration": {
-            "name": "LoaderInline",
-            "module": "src/components/reusable/loaders/inline.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-loader-inline",
-          "declaration": {
-            "name": "LoaderInline",
-            "module": "src/components/reusable/loaders/inline.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/loaders/loader.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Loader.",
-          "name": "Loader",
-          "members": [
-            {
-              "kind": "field",
-              "name": "stopped",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Animation stopped state",
-              "attribute": "stopped"
-            },
-            {
-              "kind": "field",
-              "name": "overlay",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Display the loader as an overlay",
-              "attribute": "overlay"
-            },
-            {
-              "kind": "method",
-              "name": "_emitStart",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitStop",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits when the loader been started.",
-              "name": "on-start"
-            },
-            {
-              "description": "Emits when the loader has been stopped and all animations have completed.",
-              "name": "on-stop"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "stopped",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Animation stopped state",
-              "fieldName": "stopped"
-            },
-            {
-              "name": "overlay",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Display the loader as an overlay",
-              "fieldName": "overlay"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-loader",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Loader",
-          "declaration": {
-            "name": "Loader",
-            "module": "src/components/reusable/loaders/loader.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-loader",
-          "declaration": {
-            "name": "Loader",
-            "module": "src/components/reusable/loaders/loader.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/loaders/skeleton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "Skeleton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "shape",
-              "type": {
-                "text": "'rectangle' | 'circle'"
-              },
-              "default": "'rectangle'",
-              "description": "Defines the shape of the skeleton element.",
-              "attribute": "shape",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "'small' | 'medium' | 'large' | undefined"
-              },
-              "description": "Optional: Predefined size (small, medium, large).",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "width",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional: Custom width (overrides size if provided).",
-              "attribute": "width"
-            },
-            {
-              "kind": "field",
-              "name": "height",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional: Custom height (overrides size if provided).",
-              "attribute": "height"
-            },
-            {
-              "kind": "field",
-              "name": "lines",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Sets the number of skeleton lines to display.",
-              "attribute": "lines"
-            },
-            {
-              "kind": "field",
-              "name": "inline",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets whether to display inline or block.",
-              "attribute": "inline"
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set to `true` for AI theme.",
-              "attribute": "aiConnected"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "shape",
-              "type": {
-                "text": "'rectangle' | 'circle'"
-              },
-              "default": "'rectangle'",
-              "description": "Defines the shape of the skeleton element.",
-              "fieldName": "shape"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "'small' | 'medium' | 'large' | undefined"
-              },
-              "description": "Optional: Predefined size (small, medium, large).",
-              "fieldName": "size"
-            },
-            {
-              "name": "width",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional: Custom width (overrides size if provided).",
-              "fieldName": "width"
-            },
-            {
-              "name": "height",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional: Custom height (overrides size if provided).",
-              "fieldName": "height"
-            },
-            {
-              "name": "lines",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Sets the number of skeleton lines to display.",
-              "fieldName": "lines"
-            },
-            {
-              "name": "inline",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets whether to display inline or block.",
-              "fieldName": "inline"
-            },
-            {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set to `true` for AI theme.",
-              "fieldName": "aiConnected"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-skeleton",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Skeleton",
-          "declaration": {
-            "name": "Skeleton",
-            "module": "src/components/reusable/loaders/skeleton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-skeleton",
-          "declaration": {
-            "name": "Skeleton",
-            "module": "src/components/reusable/loaders/skeleton.ts"
           }
         }
       ]
@@ -11236,6 +11143,181 @@
           "declaration": {
             "name": "PaginationSkeleton",
             "module": "src/components/reusable/pagination/pagination.skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineConfirm/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineConfirm",
+          "declaration": {
+            "name": "InlineConfirm",
+            "module": "./inlineConfirm"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineConfirm/inlineConfirm.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "InlineConfirm component.",
+          "name": "InlineConfirm",
+          "slots": [
+            {
+              "description": "Slot for anchor button icon.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for confirm icon button, will be a check icon by default if none provided.",
+              "name": "confirmIcon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the action is destructive.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "anchorText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Anchor button text.",
+              "attribute": "anchorText"
+            },
+            {
+              "kind": "field",
+              "name": "confirmText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Confirm'",
+              "description": "Confirm button text.",
+              "attribute": "confirmText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "attribute": "cancelText"
+            },
+            {
+              "kind": "field",
+              "name": "openRight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Open to the right.",
+              "attribute": "openRight"
+            },
+            {
+              "kind": "method",
+              "name": "_handleToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleConfirm",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Dispatched when the confirm button is clicked.",
+              "name": "on-confirm"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the action is destructive.",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "anchorText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Anchor button text.",
+              "fieldName": "anchorText"
+            },
+            {
+              "name": "confirmText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Confirm'",
+              "description": "Confirm button text.",
+              "fieldName": "confirmText"
+            },
+            {
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "fieldName": "cancelText"
+            },
+            {
+              "name": "openRight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Open to the right.",
+              "fieldName": "openRight"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit-element"
+          },
+          "tagName": "kyn-inline-confirm",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineConfirm",
+          "declaration": {
+            "name": "InlineConfirm",
+            "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-inline-confirm",
+          "declaration": {
+            "name": "InlineConfirm",
+            "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
           }
         }
       ]

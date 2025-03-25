@@ -15,7 +15,6 @@ export default {
 
 const args = {
   fileTypes: ['application/pdf', 'image/jpeg', 'image/png'],
-  disabled: false,
 };
 
 // TODO: remove this function before merging
@@ -32,57 +31,6 @@ export const FileUploader = {
         .fileTypes=${args.fileTypes}
         ?disabled=${args.disabled}
         @on-file-upload=${(e) => action(e.type)(e)}
-      ></kyn-file-uploader>
-    `;
-  },
-};
-
-export const FileUploaderWithDragAndDropContainer = {
-  args,
-  render: (args) => {
-    return html`
-      <kyn-file-uploader
-        buttonLabel=${args.buttonLabel}
-        .fileTypes=${args.fileTypes}
-        .fileUploderType=${'drag-drop'}
-        ?disabled=${args.disabled}
-        @on-file-upload=${(e) => {
-          action(e.type)(e);
-          logFileEvent(e);
-        }}
-      ></kyn-file-uploader>
-    `;
-  },
-};
-
-export const FileUploaderWithBoth = {
-  args,
-  render: (args) => {
-    return html`
-      <kyn-file-uploader
-        buttonLabel=${args.buttonLabel}
-        .fileTypes=${args.fileTypes}
-        .fileUploderType=${'both'}
-        ?disabled=${args.disabled}
-        @on-file-upload=${(e) => action(e.type)(e)}
-      ></kyn-file-uploader>
-    `;
-  },
-};
-
-export const FileUploaderMultipleExample = {
-  args,
-  render: (args) => {
-    return html`
-      <kyn-file-uploader
-        buttonLabel=${args.buttonLabel}
-        .fileTypes=${args.fileTypes}
-        ?multiple=${true}
-        ?disabled=${args.disabled}
-        @on-file-upload=${(e) => {
-          action(e.type)(e);
-          logFileEvent(e);
-        }}
       ></kyn-file-uploader>
     `;
   },
