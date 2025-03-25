@@ -25,7 +25,7 @@ a {
     padding: 8px;
   }
 
-  ::slotted(*) {
+  .has-icon & .icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -34,8 +34,18 @@ a {
     height: 24px;
   }
 
+  slot[name='icon']::slotted(span),
+  slot[name='icon']::slotted(svg) {
+    width: 16px;
+    height: 16px;
+  }
+
   .left-padding & {
-    padding-left: 32px;
+    padding-left: 28px;
+
+    @media screen and (min-width: 42rem) {
+      padding-left: 32px;
+    }
   }
 
   .link-active & {
@@ -223,8 +233,8 @@ a {
   font-weight: 500;
   color: var(--kd-color-text-level-tertiary-bold);
   text-transform: uppercase;
-  padding: 20px 8px 8px;
-  border-bottom: 1px solid var(--kd-color-border-variants-light);
+  padding: 20px 8px 0;
+  // border-bottom: 1px solid var(--kd-color-border-variants-light);
 
   @media (min-width: 42rem) {
     display: none;

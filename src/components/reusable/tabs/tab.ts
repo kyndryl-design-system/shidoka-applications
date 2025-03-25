@@ -39,9 +39,6 @@ export class Tab extends LitElement {
   })
   aiConnected = false;
 
-  @property({ type: String, reflect: true, attribute: 'data-tab-style' })
-  tabStyle = 'primary';
-
   @property({ type: String, reflect: true })
   override role = 'tab';
 
@@ -60,8 +57,6 @@ export class Tab extends LitElement {
   override render() {
     const classes = {
       tab: true,
-      primary: this.tabStyle === 'primary' || this.tabStyle === 'contained',
-      secondary: this.tabStyle === 'secondary' || this.tabStyle === 'line',
       'size--sm': this._size === 'sm',
       'size--md': this._size === 'md',
       vertical: this._vertical,
