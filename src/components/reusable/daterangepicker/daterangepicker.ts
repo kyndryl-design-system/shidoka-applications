@@ -480,7 +480,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
       await this.updateComplete;
       this.setupAnchor();
 
-      if (this._hasInitialDefaultDate && this.defaultDate) {
+      const valueEmpty =
+        !this.value ||
+        (Array.isArray(this.value) &&
+          this.value.length === 2 &&
+          this.value[0] === null &&
+          this.value[1] === null);
+
+      if (valueEmpty && this._hasInitialDefaultDate && this.defaultDate) {
         const processedDates = this.processDefaultDates(this.defaultDate);
         if (processedDates && processedDates.length > 0) {
           if (processedDates.length === 1) {
@@ -726,10 +733,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
       return;
     }
     try {
-      const dateToSet = this.defaultDate || this.value;
-      if (!dateToSet) return;
+      const hasValidValue =
+        Array.isArray(this.value) &&
+        this.value.length === 2 &&
+        (this.value[0] !== null || this.value[1] !== null);
 
-      if (Array.isArray(this.defaultDate)) {
+      if (!hasValidValue && this.defaultDate) {
         const validDates = this.processDefaultDates(this.defaultDate);
 
         if (validDates.length === 2) {
