@@ -196,6 +196,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @state()
   private _shouldFlatpickrOpen = false;
 
+  /** Track if we initially had a defaultDate when the component was first connected
+   * @internal
+   */
+  @state()
+  private _hasInitialDefaultDate = false;
+
   /** Track initialization state
    * @internal
    */
@@ -237,12 +243,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       }
     }
   }, 250);
-
-  /** Track if we initially had a defaultDate when the component was first connected
-   * @internal
-   */
-  @state()
-  private _hasInitialDefaultDate = false;
 
   override connectedCallback() {
     super.connectedCallback();
@@ -805,10 +805,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }
 
-  public async handleDateChange(
-    selectedDates: Date[],
-    dateStr: string
-  ): Promise<void> {
+  public async handleDateChange(selectedDates: Date[]): Promise<void> {
     this._hasInteracted = true;
     if (!this._isClearing) {
       if (selectedDates.length === 0) {
@@ -819,14 +816,22 @@ export class DateRangePicker extends FormMixin(LitElement) {
         });
       } else if (selectedDates.length === 1) {
         this.value = [selectedDates[0], null];
+        emitValue(this, 'on-change', {
+          dates: [selectedDates[0].toISOString()],
+          dateString:
+            this.flatpickrInstance?.input.value ||
+            selectedDates[0].toISOString(),
+          source: 'date-selection',
+        });
       } else {
         this.value = [selectedDates[0], selectedDates[1]];
         const formattedDates = selectedDates.map((date) => date.toISOString());
         const dateStringFinal =
-          this._inputEl?.value || formattedDates.join(' to ');
+          this.flatpickrInstance?.input.value || formattedDates.join(' to ');
         emitValue(this, 'on-change', {
           dates: formattedDates,
           dateString: dateStringFinal,
+          source: 'date-selection',
         });
       }
     }

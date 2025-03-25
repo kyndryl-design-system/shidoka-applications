@@ -192,6 +192,10 @@ export class DatePicker extends FormMixin(LitElement) {
   @state()
   private _shouldFlatpickrOpen = false;
 
+  /** Track if we initially had a defaultDate when the component was first connected */
+  @state()
+  private _hasInitialDefaultDate = false;
+
   /** Track initialization state
    * @internal
    */
@@ -238,9 +242,6 @@ export class DatePicker extends FormMixin(LitElement) {
       this._hasInitialDefaultDate = true;
     }
   }
-
-  @state()
-  private _hasInitialDefaultDate = false;
 
   private hasValue(): boolean {
     if (this._inputEl?.value) return true;
