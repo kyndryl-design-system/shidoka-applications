@@ -233,7 +233,14 @@ export class DatePicker extends FormMixin(LitElement) {
     super.connectedCallback();
     this.addEventListener('change', this._onChange);
     this.addEventListener('reset', this._handleFormReset);
+
+    if (!this.value && this.defaultDate) {
+      this._hasInitialDefaultDate = true;
+    }
   }
+
+  @state()
+  private _hasInitialDefaultDate = false;
 
   private hasValue(): boolean {
     if (this._inputEl?.value) return true;
@@ -394,7 +401,43 @@ export class DatePicker extends FormMixin(LitElement) {
       this._initialized = true;
       await this.updateComplete;
       this.setupAnchor();
+
+      if (this._hasInitialDefaultDate && this.defaultDate) {
+        const processedDates = this.processDefaultDates(this.defaultDate);
+        if (processedDates && processedDates.length > 0) {
+          if (this.mode === 'multiple') {
+            this.value = [...processedDates];
+          } else {
+            this.value = processedDates[0];
+          }
+
+          this._internals.setFormValue(this.value);
+        }
+      }
     }
+  }
+
+  private processDefaultDates(
+    defaultDate: string | string[] | Date | Date[] | null
+  ): Date[] {
+    if (!defaultDate) return [];
+
+    if (Array.isArray(defaultDate)) {
+      return defaultDate
+        .map((date) => {
+          if (date instanceof Date) return date;
+          if (typeof date === 'string') return this.parseDateString(date);
+          return null;
+        })
+        .filter((date): date is Date => date !== null);
+    } else if (typeof defaultDate === 'string') {
+      const parsed = this.parseDateString(defaultDate);
+      return parsed ? [parsed] : [];
+    } else if (defaultDate instanceof Date) {
+      return [defaultDate];
+    }
+
+    return [];
   }
 
   override updated(changedProperties: PropertyValues) {
@@ -602,6 +645,31 @@ export class DatePicker extends FormMixin(LitElement) {
     await this.debouncedUpdate();
   }
 
+  private parseDateString(dateStr: string): Date | null {
+    if (!dateStr || !dateStr.trim()) return null;
+
+    if (dateStr.includes('T')) {
+      const date = new Date(dateStr);
+      return isNaN(date.getTime()) ? null : date;
+    }
+
+    const formats: { [key: string]: RegExp } = {
+      'Y-m-d': /^\d{4}-\d{2}-\d{2}$/,
+      'Y-m-d h:i K': /^\d{4}-\d{2}-\d{2}( \d{1,2}:\d{2} [AP]M)?$/,
+    };
+
+    const pattern = formats[this.dateFormat];
+    if (!pattern || !pattern.test(dateStr)) return null;
+
+    const [datePart] = dateStr.split(' ');
+    const [year, month, day] = datePart.split('-').map(Number);
+
+    if (!year || !month || !day) return null;
+
+    const date = new Date(year, month - 1, day);
+    return isNaN(date.getTime()) ? null : date;
+  }
+
   setInitialDates(): void {
     if (!this.flatpickrInstance) {
       console.warn(
@@ -615,19 +683,50 @@ export class DatePicker extends FormMixin(LitElement) {
       if (!dateToSet) return;
 
       if (Array.isArray(dateToSet)) {
-        const validDates = dateToSet.filter((date) => {
-          if (!date) return false;
-          if (typeof date === 'string' && !date.trim()) return false;
-          return true;
-        });
+        const validDates = dateToSet
+          .map((date) => {
+            if (date instanceof Date) return date;
+            if (typeof date === 'string') return this.parseDateString(date);
+            return null;
+          })
+          .filter((date): date is Date => date !== null);
 
         if (validDates.length > 0) {
           this.flatpickrInstance.setDate(validDates, true);
+
+          if (
+            this.value === null ||
+            (Array.isArray(this.value) && this.value.length === 0)
+          ) {
+            if (this.mode === 'multiple') {
+              this.value = [...validDates];
+            } else {
+              this.value = validDates[0];
+            }
+
+            this._internals.setFormValue(this.value);
+            this._validate(false, false);
+          }
         }
-      } else if (typeof dateToSet === 'string' && dateToSet.trim()) {
-        this.flatpickrInstance.setDate(dateToSet, true);
+      } else if (typeof dateToSet === 'string') {
+        const parsedDate = this.parseDateString(dateToSet);
+        if (parsedDate) {
+          this.flatpickrInstance.setDate(parsedDate, true);
+
+          if (this.value === null) {
+            this.value = parsedDate;
+            this._internals.setFormValue(this.value);
+            this._validate(false, false);
+          }
+        }
       } else if (dateToSet instanceof Date) {
         this.flatpickrInstance.setDate(dateToSet, true);
+
+        if (this.value === null) {
+          this.value = dateToSet;
+          this._internals.setFormValue(this.value);
+          this._validate(false, false);
+        }
       }
     } catch (error) {
       console.warn('Error setting initial dates:', error);
@@ -687,18 +786,23 @@ export class DatePicker extends FormMixin(LitElement) {
 
     try {
       if (this.mode === 'multiple') {
-        this.value = selectedDates.length > 0 ? [...selectedDates] : null;
+        this.value = selectedDates.length > 0 ? [...selectedDates] : [];
       } else {
         this.value = selectedDates.length > 0 ? selectedDates[0] : null;
       }
 
       let formattedDates;
-      if (Array.isArray(this.value)) {
-        formattedDates = this.value.map((date) => date.toISOString());
-      } else if (this.value instanceof Date) {
-        formattedDates = this.value.toISOString();
+      const isMultiple = this.mode === 'multiple';
+      if (isMultiple) {
+        formattedDates = selectedDates.map((date) => date.toISOString());
+      } else if (selectedDates.length > 0) {
+        formattedDates = selectedDates[0].toISOString();
       } else {
-        formattedDates = null;
+        formattedDates = isMultiple ? [] : null;
+      }
+
+      if (this.value !== null) {
+        this._internals.setFormValue(this.value);
       }
 
       emitValue(this, 'on-change', {
