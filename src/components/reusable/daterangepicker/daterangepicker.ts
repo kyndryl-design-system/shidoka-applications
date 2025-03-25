@@ -477,6 +477,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (!this._initialized) {
       injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
       this._initialized = true;
+
+      this._enableTime = updateEnableTime(this.dateFormat);
+
       await this.updateComplete;
       this.setupAnchor();
 

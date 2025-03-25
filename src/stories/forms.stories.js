@@ -272,6 +272,85 @@ export const Default = {
 
         <br /><br />
 
+        <h3 class="kd-type--headline-08">
+          Pre-selected Date/Time/Date-Range Inputs
+        </h3>
+
+        <br />
+
+        <kyn-time-picker
+          required
+          name="time-picker-pre-selected"
+          label="Time Picker"
+          dateFormat="H:i"
+          caption="Time picker example (pre-selected)"
+          ?twentyFourHourFormat=${true}
+          defaultErrorMessage="A time value is required"
+          .value=${null}
+          defaultMinute=${30}
+          defaultHour=${12}
+          @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 425px;"
+        >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
+            Tooltip example.
+          </kyn-tooltip>
+        </kyn-time-picker>
+
+        <br /><br />
+
+        <kyn-date-picker
+          required
+          name="date-picker-pre-selected"
+          label="Multi-Date Picker"
+          dateFormat="Y-m-d"
+          mode="multiple"
+          caption="Date picker example (multi, pre-selected)"
+          .defaultDate=${'2022-01-03T00:00:00Z'}
+          defaultErrorMessage="A date value is required"
+          .value=${null}
+          @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 425px;"
+        ></kyn-date-picker>
+
+        <br /><br />
+
+        <kyn-date-picker
+          required
+          name="date-picker-pre-selected-1"
+          label="Multi-Date Picker"
+          dateFormat="Y-m-d"
+          mode="multiple"
+          caption="Date picker example (multi, pre-selected)"
+          .defaultDate=${['2022-01-02', '2022-01-03']}
+          defaultErrorMessage="A date value is required"
+          .value=${null}
+          @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 425px;"
+        ></kyn-date-picker>
+
+        <br /><br />
+
+        <kyn-date-range-picker
+          name="date-time-range--pre-selected"
+          label="Date + Time Range Picker"
+          dateFormat="Y-m-d h:i K"
+          caption="Date time range picker example"
+          ?twentyFourHourFormat=${false}
+          .defaultDate=${['2025-01-02T00:00:00Z', '2025-01-13T00:00:00Z']}
+          defaultErrorMessage="Both start and end dates are required"
+          @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 425px;"
+        >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
+            Tooltip example.
+          </kyn-tooltip>
+        </kyn-date-range-picker>
+
+        <br /><br />
+
         <kyn-button
           type="submit"
           name="test"
