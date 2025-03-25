@@ -157,6 +157,12 @@ export class TimePicker extends FormMixin(LitElement) {
   @state()
   private _isClearing = false;
 
+  /** Tracks if user has explicitly cleared the input despite having defaults
+   * @internal
+   */
+  @state()
+  private _userHasCleared = false;
+
   /** Customizable text strings. */
   @property({ type: Object })
   textStrings = _defaultTextStrings;
@@ -211,10 +217,11 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private hasValue(): boolean {
-    if (this._inputEl?.value) return true;
-    if (this.value !== null) return true;
-    if (this.defaultHour !== null || this.defaultMinute !== null) return true;
-    return false;
+    return (
+      Boolean(this.value) ||
+      (!this._userHasCleared &&
+        (this.defaultHour !== null || this.defaultMinute !== null))
+    );
   }
 
   private updateFormValue() {
@@ -440,6 +447,8 @@ export class TimePicker extends FormMixin(LitElement) {
     event.preventDefault();
     event.stopPropagation();
     this._isClearing = true;
+    this._userHasCleared = true;
+
     try {
       this.value = null;
       if (this.flatpickrInstance) {
@@ -579,21 +588,19 @@ export class TimePicker extends FormMixin(LitElement) {
 
   setInitialDates(instance: flatpickr.Instance) {
     try {
-      if (this.value) return;
-      let date: Date | null = null;
-      if (this.defaultHour !== null || this.defaultMinute !== null) {
-        date = new Date();
+      if (this.value) {
+        instance.setDate(this.value, false);
+      } else if (
+        !this._userHasCleared &&
+        (this.defaultHour !== null || this.defaultMinute !== null)
+      ) {
+        const date = new Date();
         if (this.defaultHour !== null) date.setHours(this.defaultHour);
         if (this.defaultMinute !== null) date.setMinutes(this.defaultMinute);
         date.setSeconds(0);
         date.setMilliseconds(0);
-      }
-      if (date) {
+
         instance.setDate(date, false);
-        if (this._inputEl) {
-          this._inputEl.value = instance.input.value;
-          this.updateFormValue();
-        }
       }
     } catch (error) {
       console.warn('Error setting initial time:', error);
@@ -624,6 +631,8 @@ export class TimePicker extends FormMixin(LitElement) {
         if (!this._hasInteracted) {
           this._hasInteracted = true;
         }
+        this._userHasCleared = false;
+
         const selectedTime = selectedDates[0];
         const newDate = new Date();
         newDate.setHours(selectedTime.getHours());
@@ -695,6 +704,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
   private _handleFormReset() {
     this.value = null;
+    this._userHasCleared = false;
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
     }
