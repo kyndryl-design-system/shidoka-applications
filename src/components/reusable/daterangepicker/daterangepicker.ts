@@ -250,7 +250,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.addEventListener('reset', this._handleFormReset);
     window.addEventListener('resize', this.handleResize);
 
-    // Check if we have defaultDate but no value
     if (
       (!this.value ||
         (Array.isArray(this.value) &&
@@ -258,6 +257,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.defaultDate
     ) {
       this._hasInitialDefaultDate = true;
+
+      if (Array.isArray(this.defaultDate) && this.defaultDate.length === 1) {
+        this._hasInteracted = true;
+      }
     }
   }
 
@@ -495,6 +498,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
         if (processedDates && processedDates.length > 0) {
           if (processedDates.length === 1) {
             this.value = [processedDates[0], null];
+            this._hasInteracted = true;
           } else if (processedDates.length >= 2) {
             this.value = [processedDates[0], processedDates[1]];
           }
@@ -502,8 +506,25 @@ export class DateRangePicker extends FormMixin(LitElement) {
           if (this.value[0] !== null || this.value[1] !== null) {
             this._internals.setFormValue(this.value);
           }
+
+          this._validate(true, false);
         }
       }
+
+      setTimeout(() => {
+        if (Array.isArray(this.defaultDate) && this.defaultDate.length === 1) {
+          this._hasInteracted = true;
+          this._validate(true, false);
+        } else if (
+          Array.isArray(this.value) &&
+          this.value.length === 2 &&
+          ((this.value[0] !== null && this.value[1] === null) ||
+            (this.value[0] === null && this.value[1] !== null))
+        ) {
+          this._hasInteracted = true;
+          this._validate(true, false);
+        }
+      }, 0);
     }
   }
 
@@ -544,6 +565,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
         ) {
           this.setInitialDates();
         }
+
+        if (
+          (newValue[0] !== null && newValue[1] === null) ||
+          (newValue[0] === null && newValue[1] !== null)
+        ) {
+          this._hasInteracted = true;
+          this._validate(true, false);
+        }
       }
     }
 
@@ -552,7 +581,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.flatpickrInstance &&
       !this._isClearing
     ) {
+      if (Array.isArray(this.defaultDate) && this.defaultDate.length === 1) {
+        this._hasInteracted = true;
+      }
+
       this.initializeFlatpickr();
+
+      this._validate(true, false);
     }
 
     if (changedProperties.has('disable')) {
@@ -754,10 +789,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
         } else if (validDates.length === 1) {
           this.flatpickrInstance.setDate([validDates[0]], true);
           this.value = [validDates[0], null];
+          this._hasInteracted = true;
           if (this._inputEl) {
             this._inputEl.value = this.flatpickrInstance.input.value;
             this.updateFormValue();
           }
+          this._validate(true, false);
         } else {
           console.warn(
             'Invalid or incomplete date range provided in defaultDate'
@@ -897,24 +934,21 @@ export class DateRangePicker extends FormMixin(LitElement) {
   private _validate(interacted: boolean, report: boolean): void {
     if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) return;
     if (interacted) this._hasInteracted = true;
-    const selectedCount =
-      (this.value[0] ? 1 : 0) +
-      (this.value[1] ? 1 : 0) +
-      (Array.isArray(this.defaultDate)
-        ? this.defaultDate.filter((d) => d.trim() !== '').length
-        : 0);
+    const selectedCount = [this.value[0], this.value[1]].filter(
+      (d) => d !== null
+    ).length;
     const isRequired = this.required;
     let validity = this._inputEl.validity;
     let validationMessage = this._inputEl.validationMessage;
-    if (isRequired) {
-      if (selectedCount === 0) {
-        validity = { ...validity, valueMissing: true };
-        validationMessage =
-          this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
-      } else if (selectedCount === 1) {
-        validity = { ...validity, customError: true };
-        validationMessage = this._textStrings.pleaseSelectBothDates;
-      }
+
+    if (selectedCount === 1) {
+      validity = { ...validity, customError: true };
+      validationMessage = this._textStrings.pleaseSelectBothDates;
+      this._hasInteracted = true;
+    } else if (isRequired && selectedCount === 0) {
+      validity = { ...validity, valueMissing: true };
+      validationMessage =
+        this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
     } else {
       validity = { ...validity, valueMissing: false, customError: false };
       validationMessage = '';
