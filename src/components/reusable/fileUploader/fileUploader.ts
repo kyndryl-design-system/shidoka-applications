@@ -100,7 +100,7 @@ export class FileUploader extends LitElement {
   override render() {
     return html`
       <div class="file-uploader-container">
-        ${this.renderDagDropContainer()}
+        ${this.renderDragDropContainer()}
         <div class="upload-constraints">
           <p>
             ${this._textStrings.maxFileSizeText}
@@ -127,7 +127,7 @@ export class FileUploader extends LitElement {
     `;
   }
 
-  private renderDagDropContainer() {
+  private renderDragDropContainer() {
     const supportedFileTypeText =
       this.fileTypes.length > 0 ? this.fileTypes.join(',') : '*/*';
     const dragDropContainerClasses = {
@@ -181,6 +181,7 @@ export class FileUploader extends LitElement {
     const target = event.target as HTMLInputElement;
     if (target.files) {
       const files = Array.from(target.files);
+      this._resetUploaderState();
       const validFiles = this._validateFiles(files);
 
       if (validFiles.length > 0) {
@@ -205,6 +206,8 @@ export class FileUploader extends LitElement {
 
     if (event.dataTransfer?.files) {
       const files = Array.from(event.dataTransfer.files);
+
+      this._resetUploaderState();
 
       if (!this.multiple) {
         if (files.length > 1) {
@@ -324,6 +327,13 @@ export class FileUploader extends LitElement {
         }
       }, 30);
     });
+  }
+
+  private _resetUploaderState() {
+    this.uploadedFiles = [];
+    this._invaliedFiles = [];
+    this._fileUploadObjList = [];
+    this._dragging = false;
   }
 
   private _emitFileUploadEvent() {
