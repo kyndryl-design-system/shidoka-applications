@@ -58,10 +58,10 @@ export class FileUploader extends LitElement {
   textStrings = _defaultTextStrings;
 
   /**
-   * Set the maximum file size. Default value is `5MB`.
+   * Set the maximum file size. Default value is `1MB`.
    */
   @property({ type: String })
-  maxFileSizeText = '20KB';
+  maxFileSizeText = '1MB';
 
   /**
    * Internal text strings.
@@ -89,7 +89,7 @@ export class FileUploader extends LitElement {
    * @internal
    */
   @state()
-  _invaliedFiles: string[] = [];
+  _invaliedFiles: File[] = [];
 
   override willUpdate(changedProps: any) {
     if (changedProps.has('textStrings')) {
@@ -241,7 +241,7 @@ export class FileUploader extends LitElement {
   // Validate files
   private _validateFiles(files: File[]): File[] {
     const validFiles: File[] = [];
-    const invalidFiles: string[] = [];
+    const invalidFiles: File[] = [];
 
     // Parse maxFileSizeText to get the max file size in bytes
     const maxFileSizeInBytes = this._parseFileSize(this.maxFileSizeText);
@@ -249,7 +249,6 @@ export class FileUploader extends LitElement {
     files.forEach((file) => {
       const fileType = file.type;
       const fileSize = file.size;
-      const fileName = file.name;
 
       // Check if the file type is valid
       const isValidType =
@@ -261,7 +260,7 @@ export class FileUploader extends LitElement {
       if (isValidType && isValidSize) {
         validFiles.push(file);
       } else {
-        invalidFiles.push(fileName);
+        invalidFiles.push(file);
       }
     });
 
@@ -289,9 +288,9 @@ export class FileUploader extends LitElement {
     }
   }
 
-  private _handleInvalidFiles(invalidFiles: string[]) {
+  private _handleInvalidFiles(invalidFiles: File[]) {
     this._invaliedFiles = invalidFiles;
-    console.log(`Invalid files: ${invalidFiles.join(', ')}`);
+    console.log('Invalid files:', invalidFiles);
   }
 
   private _handleFileUploadSimulation() {
@@ -331,6 +330,7 @@ export class FileUploader extends LitElement {
     const event = new CustomEvent('on-file-upload', {
       detail: {
         files: this.uploadedFiles,
+        invalidFiles: this._invaliedFiles,
       },
     });
     this.dispatchEvent(event);

@@ -19,7 +19,7 @@ export class FileUploaderItem extends LitElement {
   uploadedFiles: File[] = [];
 
   @property({ type: Array })
-  invalidFiles: string[] = [];
+  invalidFiles: File[] = [];
 
   @state()
   _uploadedFilesStatus: {
@@ -77,7 +77,7 @@ export class FileUploaderItem extends LitElement {
   override updated(changedProps: any) {
     if (changedProps.has('uploadedFiles') || changedProps.has('invalidFiles')) {
       if (this.uploadedFiles.length === 0) return;
-      console.log('invaidFiles', this.invalidFiles);
+
       const fileNames = this.uploadedFiles.map((file) => file.name);
       const filesSizes = this.uploadedFiles.map((file) => file.size);
       const totalFileSize = this.uploadedFiles.reduce(
