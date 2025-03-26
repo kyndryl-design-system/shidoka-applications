@@ -168,9 +168,8 @@ const feedbackFormContent = () => html`
     <kyn-text-area
       aiConnected
       class="input-text-area"
-      rows="8"
+      rows="3"
       placeholder="Provide additional feedback"
-      ?notResizeable=${true}
     ></kyn-text-area>
 
     <div class="footer">
