@@ -6,7 +6,6 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/upload.svg';
 import FileUploaderScss from './fileUploader.scss';
 import '../button';
-import './fileUploaderStatus';
 
 const _defaultTextStrings = {
   dragAndDropText: 'Drag files here to upload',
@@ -14,8 +13,6 @@ const _defaultTextStrings = {
   buttonText: 'Browse files',
   maxFileSizeText: 'Max file size',
   supportedFileTypeText: 'Supported file type',
-  fileUploadErrorText: 'File upload error',
-  fileDetails: 'File details',
 };
 
 /**
@@ -33,12 +30,6 @@ export class FileUploader extends LitElement {
   fileTypes: string[] = [];
 
   /**
-   * Uploaded files.
-   */
-  @property({ type: Array })
-  uploadedFiles: File[] = [];
-
-  /**
    * Customizable text strings.
    */
   @property({ type: Object })
@@ -49,6 +40,13 @@ export class FileUploader extends LitElement {
    */
   @property({ type: String })
   maxFileSizeText = '1MB';
+
+  /**
+   * Internal uploaded files.
+   * @internal
+   */
+  @state()
+  _uploadedFiles: File[] = [];
 
   /**
    * Internal text strings.
@@ -89,13 +87,6 @@ export class FileUploader extends LitElement {
             <strong>${this.renderSupportedFileSizeAndType()}</strong>.
           </p>
         </div>
-        <!-- File upload status -->
-        ${this.uploadedFiles.length > 0
-          ? html`<kyn-file-uploader-status
-              .uploadedFiles="${this.uploadedFiles}"
-              .invalidFiles="${this._invaliedFiles}"
-            ></kyn-file-uploader-status>`
-          : ''}
       </div>
     `;
   }
@@ -158,7 +149,7 @@ export class FileUploader extends LitElement {
       const validFiles = this._validateFiles(files);
 
       if (validFiles.length > 0) {
-        this.uploadedFiles = validFiles;
+        this._uploadedFiles = validFiles;
         this._emitFileUploadEvent();
       }
     }
@@ -183,7 +174,7 @@ export class FileUploader extends LitElement {
       const validFiles = this._validateFiles(files);
 
       if (validFiles.length > 0) {
-        this.uploadedFiles = validFiles;
+        this._uploadedFiles = validFiles;
         this._emitFileUploadEvent();
       }
     }
@@ -251,7 +242,7 @@ export class FileUploader extends LitElement {
   }
 
   private _resetUploaderState() {
-    this.uploadedFiles = [];
+    this._uploadedFiles = [];
     this._invaliedFiles = [];
     this._dragging = false;
   }
@@ -259,7 +250,7 @@ export class FileUploader extends LitElement {
   private _emitFileUploadEvent() {
     const event = new CustomEvent('on-file-upload', {
       detail: {
-        files: this.uploadedFiles,
+        validFiles: this._uploadedFiles,
         invalidFiles: this._invaliedFiles,
       },
     });
