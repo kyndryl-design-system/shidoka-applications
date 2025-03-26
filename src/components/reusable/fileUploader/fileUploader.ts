@@ -1,10 +1,3 @@
-/*
-TODO:
-- add proper error handling
-- check requirement for uploaded files and add requied logic
-- remove console logs
-*/
-
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -38,12 +31,6 @@ export class FileUploader extends LitElement {
    */
   @property({ type: Array })
   fileTypes: string[] = [];
-
-  /**
-   * Set this to `true`, if the component accepts multiple file uploads.
-   */
-  @property({ type: Boolean })
-  multiple = true;
 
   /**
    * Uploaded files.
@@ -160,7 +147,7 @@ export class FileUploader extends LitElement {
           @change="${(e: any) => this.handleFileChange(e)}"
           id="fileInput"
           accept="${supportedFileTypeText}"
-          ?multiple="${this.multiple}"
+          multiple
         />
       </div>
     `;
@@ -208,13 +195,6 @@ export class FileUploader extends LitElement {
       const files = Array.from(event.dataTransfer.files);
 
       this._resetUploaderState();
-
-      if (!this.multiple) {
-        if (files.length > 1) {
-          alert('Only one file can be uploaded'); // TODO: Add proper error handling
-          return;
-        }
-      }
 
       const validFiles = this._validateFiles(files);
 
@@ -293,7 +273,6 @@ export class FileUploader extends LitElement {
 
   private _handleInvalidFiles(invalidFiles: File[]) {
     this._invaliedFiles = invalidFiles;
-    console.log('Invalid files:', invalidFiles);
   }
 
   private _handleFileUploadSimulation() {
