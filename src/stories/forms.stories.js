@@ -333,6 +333,7 @@ export const Default = {
         <br /><br />
 
         <kyn-date-range-picker
+          required
           name="date-time-range--pre-selected"
           label="Date + Time Range Picker"
           dateFormat="Y-m-d h:i K"
