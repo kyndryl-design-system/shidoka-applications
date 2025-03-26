@@ -297,6 +297,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
           this.value[1].toISOString(),
         ].join(',');
         this._internals.setFormValue(formattedValue);
+
+        // Ensure form value is set as a valid string for FormData
+        if (this.name) {
+          this._inputEl.setAttribute('value', formattedValue);
+        }
       } else {
         this._internals.setFormValue('');
       }
@@ -467,25 +472,91 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   private parseDateString(dateStr: string): Date | null {
     if (!dateStr || !dateStr.trim()) return null;
+    dateStr = dateStr.trim();
 
     if (dateStr.includes('T')) {
       const date = new Date(dateStr);
       return isNaN(date.getTime()) ? null : date;
     }
 
+    if (dateStr.includes(' ')) {
+      const parts = dateStr.split(/\s+/);
+      const datePart = parts[0];
+      const timePart = parts[1] || '';
+      let ampm = parts[2] ? parts[2].toUpperCase() : undefined;
+      const dateTokens = datePart.split('-').map(Number);
+      let year: number, month: number, day: number;
+      switch (this.dateFormat) {
+        case 'Y-m-d':
+          [year, month, day] = dateTokens;
+          break;
+        case 'm-d-Y':
+          [month, day, year] = dateTokens;
+          break;
+        case 'd-m-Y':
+          [day, month, year] = dateTokens;
+          break;
+        default:
+          [year, month, day] = dateTokens;
+      }
+      if (!year || !month || !day) return null;
+
+      let hours = 0,
+        minutes = 0,
+        seconds = 0;
+      if (timePart) {
+        const timeComponents = timePart.split(':');
+        hours = parseInt(timeComponents[0], 10);
+        if (timeComponents.length > 1) {
+          if (timeComponents[1].includes(' ')) {
+            const [mins, token] = timeComponents[1].split(' ');
+            minutes = parseInt(mins, 10);
+            ampm = token ? token.toUpperCase() : ampm;
+          } else {
+            minutes = parseInt(timeComponents[1], 10);
+          }
+        }
+        if (timeComponents.length > 2) {
+          seconds = parseInt(timeComponents[2], 10);
+        }
+        if (ampm) {
+          if (ampm === 'PM' && hours < 12) {
+            hours += 12;
+          } else if (ampm === 'AM' && hours === 12) {
+            hours = 0;
+          }
+        }
+      }
+      const date = new Date(year, month - 1, day, hours, minutes, seconds);
+      return isNaN(date.getTime()) ? null : date;
+    }
+
     const formats: { [key: string]: RegExp } = {
       'Y-m-d': /^\d{4}-\d{2}-\d{2}$/,
+      'm-d-Y': /^\d{2}-\d{2}-\d{4}$/,
+      'd-m-Y': /^\d{2}-\d{2}-\d{4}$/,
       'Y-m-d h:i K': /^\d{4}-\d{2}-\d{2}( \d{1,2}:\d{2} [AP]M)?$/,
     };
-
     const pattern = formats[this.dateFormat];
     if (!pattern || !pattern.test(dateStr)) return null;
 
-    const [datePart] = dateStr.split(' ');
-    const [year, month, day] = datePart.split('-').map(Number);
-
+    const datePart = dateStr.split(' ')[0];
+    const dateTokens = datePart.split('-').map(Number);
+    let year: number, month: number, day: number;
+    switch (this.dateFormat) {
+      case 'Y-m-d':
+        [year, month, day] = dateTokens;
+        break;
+      case 'm-d-Y':
+        [month, day, year] = dateTokens;
+        break;
+      case 'd-m-Y':
+        [day, month, year] = dateTokens;
+        break;
+      default:
+        [year, month, day] = dateTokens;
+    }
     if (!year || !month || !day) return null;
-
     const date = new Date(year, month - 1, day);
     return isNaN(date.getTime()) ? null : date;
   }
@@ -519,7 +590,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
           }
 
           if (this.value[0] !== null || this.value[1] !== null) {
-            this._internals.setFormValue(this.value);
+            this.updateFormValue();
           }
 
           this._validate(true, false);
@@ -800,6 +871,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
           if (this._inputEl) {
             this._inputEl.value = this.flatpickrInstance.input.value;
             this.updateFormValue();
+
+            if (this.name) {
+              this._inputEl.setAttribute('name', this.name);
+            }
           }
         } else if (validDates.length === 1) {
           this.flatpickrInstance.setDate([validDates[0]], true);
