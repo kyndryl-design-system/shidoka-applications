@@ -18,10 +18,10 @@ export class SampleFileUploader extends LitElement {
   fileTypes = ['application/pdf', 'image/jpeg', 'image/png'];
 
   @property({ type: Array })
-  validFiles: File[] = [];
+  validFiles: any[] = [];
 
   @property({ type: Array })
-  invalidFiles: File[] = [];
+  invalidFiles: any[] = [];
 
   override render() {
     return html`
@@ -46,9 +46,9 @@ export class SampleFileUploader extends LitElement {
                           >${unsafeSVG(checkmarkFilledIcon)}</span
                         >
                         <div class="file-details-container">
-                          <p class="file-name success">${file.name}</p>
+                          <p class="file-name success">${file.file.name}</p>
                           <p class="file-size">
-                            ${this._getFilesSize(file.size)}
+                            ${this._getFilesSize(file.file.size)}
                           </p>
                         </div>
                         <div slot="actions">
@@ -57,6 +57,7 @@ export class SampleFileUploader extends LitElement {
                             .anchorText=${'Delete'}
                             .confirmText=${'Confirm'}
                             .cancelText=${'Cancel'}
+                            @on-confirm=${() => this._deleteFile(file.id)}
                           >
                             <span class="delete-icon"
                               >${unsafeSVG(deleteIcon)}</span
@@ -79,10 +80,10 @@ export class SampleFileUploader extends LitElement {
                           >${unsafeSVG(errorFilledIcon)}</span
                         >
                         <div class="file-details-container">
-                          <p class="file-name">${file.name}</p>
+                          <p class="file-name">${file.file.name}</p>
                           <div class="error-info-container">
                             <p class="file-size">
-                              ${this._getFilesSize(file.size)}
+                              ${this._getFilesSize(file.file.size)}
                             </p>
                             ·
                             <p class="file-size error">
@@ -120,6 +121,10 @@ export class SampleFileUploader extends LitElement {
     } else {
       return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
     }
+  }
+
+  private _deleteFile(fileId: string) {
+    this.validFiles = this.validFiles.filter((file) => file.id !== fileId);
   }
 }
 

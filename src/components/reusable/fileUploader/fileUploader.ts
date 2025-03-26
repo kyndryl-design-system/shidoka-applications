@@ -46,7 +46,7 @@ export class FileUploader extends LitElement {
    * @internal
    */
   @state()
-  _uploadedFiles: File[] = [];
+  _uploadedFiles: Object[] = [];
 
   /**
    * Internal text strings.
@@ -67,7 +67,7 @@ export class FileUploader extends LitElement {
    * @internal
    */
   @state()
-  _invaliedFiles: File[] = [];
+  _invaliedFiles: Object[] = [];
 
   override willUpdate(changedProps: any) {
     if (changedProps.has('textStrings')) {
@@ -179,8 +179,8 @@ export class FileUploader extends LitElement {
 
   // Validate files
   private _validateFiles(files: File[]) {
-    const validFiles: File[] = [];
-    const invalidFiles: File[] = [];
+    const validFiles: Object[] = [];
+    const invalidFiles: Object[] = [];
 
     // Parse maxFileSizeText to get the max file size in bytes
     const maxFileSizeInBytes = this._parseFileSize(this.maxFileSizeText);
@@ -197,9 +197,9 @@ export class FileUploader extends LitElement {
       const isValidSize = fileSize <= maxFileSizeInBytes;
 
       if (isValidType && isValidSize) {
-        validFiles.push(file);
+        validFiles.push({ file, id: this._generateUniqueFileId() });
       } else {
-        invalidFiles.push(file);
+        invalidFiles.push({ file, id: this._generateUniqueFileId() });
       }
     });
 
@@ -212,6 +212,10 @@ export class FileUploader extends LitElement {
     if (invalidFiles.length > 0) {
       this._invaliedFiles = invalidFiles;
     }
+  }
+
+  private _generateUniqueFileId() {
+    return `${Date.now()}-${Math.random().toString(36).substring(2)}`;
   }
 
   private _parseFileSize(size: string): number {
