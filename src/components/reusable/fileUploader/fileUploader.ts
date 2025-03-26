@@ -106,7 +106,7 @@ export class FileUploader extends LitElement {
         @dragleave="${() => (this._dragging = false)}"
         @drop="${this.handleDrop}"
       >
-        <div class="upload-icon-container">
+        <div class="status-icon">
           <span>${unsafeSVG(uploadIcon)}</span>
         </div>
         <p class="drag-drop-text">${this._textStrings.dragAndDropText}</p>
