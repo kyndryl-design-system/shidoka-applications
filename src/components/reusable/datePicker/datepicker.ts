@@ -238,6 +238,12 @@ export class DatePicker extends FormMixin(LitElement) {
     this.addEventListener('change', this._onChange);
     this.addEventListener('reset', this._handleFormReset);
 
+    if (this._internals.form) {
+      this._internals.form.addEventListener('submit', () => {
+        this._validate(true, false);
+      });
+    }
+
     if (!this.value && this.defaultDate) {
       this._hasInitialDefaultDate = true;
     }
@@ -772,8 +778,7 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async handleClose() {
-    this._hasInteracted = true;
-    this._validate(true, false);
+    this._validate(false, false);
     await this.updateComplete;
   }
 
@@ -842,24 +847,64 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private _validate(interacted: boolean, report: boolean) {
-    if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) {
-      return;
-    }
-
+    if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) return;
     if (interacted) {
       this._hasInteracted = true;
     }
 
-    const isEmpty = !this._inputEl.value.trim();
+    const hasDefaultValue = this.defaultDate !== null;
+    const isEmpty = !this._inputEl.value.trim() && !hasDefaultValue;
     const isRequired = this.required;
 
     let validity = this._inputEl.validity;
     let validationMessage = this._inputEl.validationMessage;
 
+    if (
+      !this._hasInteracted &&
+      !interacted &&
+      this._enableTime &&
+      !(isRequired && isEmpty)
+    ) {
+      this._internals.setValidity({}, '', this._inputEl);
+      this._isInvalid = false;
+      this._internalValidationMsg = '';
+      return;
+    }
+
     if (isRequired && isEmpty) {
       validity = { ...validity, valueMissing: true };
       validationMessage =
         this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
+
+      this._internals.setValidity(validity, validationMessage, this._inputEl);
+
+      this._isInvalid = this._hasInteracted || interacted;
+      this._internalValidationMsg = validationMessage;
+
+      if (report) {
+        this._internals.reportValidity();
+      }
+
+      this.requestUpdate();
+      return;
+    }
+
+    if (isRequired && isEmpty) {
+      validity = { ...validity, valueMissing: true };
+      validationMessage =
+        this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
+
+      this._internals.setValidity(validity, validationMessage, this._inputEl);
+
+      this._isInvalid = this._hasInteracted || interacted;
+      this._internalValidationMsg = validationMessage;
+
+      if (report) {
+        this._internals.reportValidity();
+      }
+
+      this.requestUpdate();
+      return;
     }
 
     if (this.invalidText) {
@@ -874,8 +919,10 @@ export class DatePicker extends FormMixin(LitElement) {
     }
 
     this._internals.setValidity(validity, validationMessage, this._inputEl);
+
     this._isInvalid =
-      !isValid && (this._hasInteracted || this.invalidText !== '');
+      !isValid &&
+      (this._hasInteracted || this.invalidText !== '' || interacted);
     this._internalValidationMsg = validationMessage;
 
     if (report) {

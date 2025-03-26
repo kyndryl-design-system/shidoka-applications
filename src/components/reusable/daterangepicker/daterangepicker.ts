@@ -250,6 +250,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.addEventListener('reset', this._handleFormReset);
     window.addEventListener('resize', this.handleResize);
 
+    if (this._internals.form) {
+      this._internals.form.addEventListener('submit', (e: Event) => {
+        this._validate(true, true);
+        if (!this._internals.checkValidity()) {
+          e.preventDefault();
+        }
+      });
+    }
+
     if (
       (!this.value ||
         (Array.isArray(this.value) &&
@@ -257,7 +266,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.defaultDate
     ) {
       this._hasInitialDefaultDate = true;
-
       if (Array.isArray(this.defaultDate) && this.defaultDate.length === 1) {
         this._hasInteracted = true;
       }
@@ -298,7 +306,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
         ].join(',');
         this._internals.setFormValue(formattedValue);
 
-        // Ensure form value is set as a valid string for FormData
         if (this.name) {
           this._inputEl.setAttribute('value', formattedValue);
         }
@@ -972,9 +979,20 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.updateSelectedDateRangeAria(selectedDates);
     this._validate(true, false);
     await this.updateComplete;
+
     if (this._inputEl && this.flatpickrInstance) {
-      this._inputEl.value = this.flatpickrInstance.input.value;
-      this.updateFormValue();
+      if (
+        !this.flatpickrInstance.isOpen &&
+        this.value[0] !== null &&
+        this.value[1] === null
+      ) {
+        this._inputEl.value = '';
+        this.value = [null, null];
+        this.updateFormValue();
+      } else {
+        this._inputEl.value = this.flatpickrInstance.input.value;
+        this.updateFormValue();
+      }
     }
   }
 
@@ -1034,7 +1052,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
       return;
     }
 
-    if (interacted) this._hasInteracted = true;
+    if (interacted) {
+      this._hasInteracted = true;
+    }
+
     const selectedCount = [this.value[0], this.value[1]].filter(
       (d) => d !== null
     ).length;
@@ -1044,23 +1065,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (this.flatpickrInstance?.isOpen) {
       validity = { ...validity, valueMissing: false, customError: false };
       validationMessage = '';
-    } else if (selectedCount === 1 && this._hasInteracted) {
+    } else if (selectedCount === 1) {
       validity = { ...validity, customError: true };
       validationMessage = this._textStrings.pleaseSelectBothDates;
-    } else if (this.required && selectedCount === 0 && this._hasInteracted) {
-      const shouldShowRequiredError =
-        this._hasInteracted &&
-        !this.flatpickrInstance?.isOpen &&
-        selectedCount === 0;
-
-      if (shouldShowRequiredError) {
-        validity = { ...validity, valueMissing: true };
-        validationMessage =
-          this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
-      } else {
-        validity = { ...validity, valueMissing: false };
-        validationMessage = '';
-      }
+    } else if (this.required && selectedCount === 0) {
+      validity = { ...validity, valueMissing: true };
+      validationMessage =
+        this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
     } else {
       validity = { ...validity, valueMissing: false, customError: false };
       validationMessage = '';
@@ -1077,12 +1088,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     this._internals.setValidity(validity, validationMessage, this._inputEl);
-
-    this._isInvalid =
-      !isValid &&
-      ((this._hasInteracted && !this.flatpickrInstance?.isOpen) ||
-        this.invalidText !== '');
-
+    this._isInvalid = !isValid;
     this._internalValidationMsg = validationMessage;
     if (report) this._internals.reportValidity();
     this.requestUpdate();
