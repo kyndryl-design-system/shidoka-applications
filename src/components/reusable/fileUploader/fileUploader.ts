@@ -65,13 +65,6 @@ export class FileUploader extends LitElement {
   _dragging = false;
 
   /**
-   * Internal file upload object list.
-   * @internal
-   */
-  @state()
-  _fileUploadObjList: Array<object> = [];
-
-  /**
    * Internal invalid files.
    * @internal
    */
@@ -173,8 +166,6 @@ export class FileUploader extends LitElement {
 
       if (validFiles.length > 0) {
         this.uploadedFiles = validFiles;
-        this._fileUploadObjList = [];
-        this._handleFileUploadSimulation();
         this._emitFileUploadEvent();
       }
     }
@@ -200,8 +191,6 @@ export class FileUploader extends LitElement {
 
       if (validFiles.length > 0) {
         this.uploadedFiles = validFiles;
-        this._fileUploadObjList = [];
-        this._handleFileUploadSimulation();
         this._emitFileUploadEvent();
       }
     }
@@ -275,43 +264,9 @@ export class FileUploader extends LitElement {
     this._invaliedFiles = invalidFiles;
   }
 
-  private _handleFileUploadSimulation() {
-    // Create file upload object list
-    this.uploadedFiles.forEach((file: any) => {
-      const fileObj = {
-        file: file,
-        progress: 0,
-        statusMessage: 'Uploading...', // TODO: Add proper status message, if required
-      };
-      this._fileUploadObjList.push(fileObj);
-    });
-
-    // Simulate file upload
-    this._fileUploadObjList.forEach((fileObj: any) => {
-      const fileSize = fileObj.file.size;
-      const chunkSize = fileSize / 100;
-      let progress = 0;
-
-      const uploadInterval = setInterval(() => {
-        progress += chunkSize;
-        fileObj.progress = Math.min((progress / fileSize) * 100, 100);
-        this.requestUpdate();
-
-        // When the upload reaches 100%
-        if (progress >= fileSize) {
-          clearInterval(uploadInterval);
-          fileObj.progress = 100;
-          fileObj.statusMessage = 'Upload Complete!';
-          this.requestUpdate();
-        }
-      }, 30);
-    });
-  }
-
   private _resetUploaderState() {
     this.uploadedFiles = [];
     this._invaliedFiles = [];
-    this._fileUploadObjList = [];
     this._dragging = false;
   }
 
