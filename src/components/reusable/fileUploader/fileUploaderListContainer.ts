@@ -38,19 +38,23 @@ export class FileUploaderListContainer extends LitElement {
   fileItems!: Array<any>;
 
   override render() {
+    const hasMoreThanThreeItems = this.fileItems.length > 3;
+
     return html`
       <div class="file-uploader-list-container">
         <div class="file-uploader-list-container__label">${this.titleText}</div>
         <div class="file-uploader-list-container__items">
           <slot @slotchange=${this._handleSlotChange}></slot>
         </div>
-        <div>
-          <kyn-link
-            standalone
-            @on-click=${() => this._toggleReveal(!this._limitRevealed)}
-            >${this._limitRevealed ? this.showLess : this.showAll}</kyn-link
-          >
-        </div>
+        ${hasMoreThanThreeItems
+          ? html` <div>
+              <kyn-link
+                standalone
+                @on-click=${() => this._toggleReveal(!this._limitRevealed)}
+                >${this._limitRevealed ? this.showLess : this.showAll}</kyn-link
+              >
+            </div>`
+          : ''}
       </div>
     `;
   }
@@ -61,6 +65,7 @@ export class FileUploaderListContainer extends LitElement {
 
   private _handleSlotChange() {
     this._applyLimit(this._limitRevealed);
+    this.requestUpdate();
   }
 
   private _toggleReveal(reveal: boolean) {
