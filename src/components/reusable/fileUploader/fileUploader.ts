@@ -96,13 +96,6 @@ export class FileUploader extends LitElement {
               .invalidFiles="${this._invaliedFiles}"
             ></kyn-file-uploader-status>`
           : ''}
-        ${this.uploadedFiles.length > 0
-          ? html` <ul class="file-info">
-              ${this.uploadedFiles.map(
-                (file) => html`<li><strong>${file.name}</strong></li>`
-              )}
-            </ul>`
-          : ''}
       </div>
     `;
   }
@@ -201,13 +194,6 @@ export class FileUploader extends LitElement {
       '#fileInput'
     ) as HTMLInputElement;
     fileInputElement?.click();
-  }
-
-  private _handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this._triggerFileSelect();
-    }
   }
 
   // Validate files
