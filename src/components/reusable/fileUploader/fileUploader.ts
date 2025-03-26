@@ -145,13 +145,9 @@ export class FileUploader extends LitElement {
     const target = event.target as HTMLInputElement;
     if (target.files) {
       const files = Array.from(target.files);
-      this._resetUploaderState();
-      const validFiles = this._validateFiles(files);
 
-      if (validFiles.length > 0) {
-        this._uploadedFiles = validFiles;
-        this._emitFileUploadEvent();
-      }
+      this._validateFiles(files);
+      this._emitFileUploadEvent();
     }
   }
 
@@ -169,14 +165,8 @@ export class FileUploader extends LitElement {
     if (event.dataTransfer?.files) {
       const files = Array.from(event.dataTransfer.files);
 
-      this._resetUploaderState();
-
-      const validFiles = this._validateFiles(files);
-
-      if (validFiles.length > 0) {
-        this._uploadedFiles = validFiles;
-        this._emitFileUploadEvent();
-      }
+      this._validateFiles(files);
+      this._emitFileUploadEvent();
     }
   }
 
@@ -188,7 +178,7 @@ export class FileUploader extends LitElement {
   }
 
   // Validate files
-  private _validateFiles(files: File[]): File[] {
+  private _validateFiles(files: File[]) {
     const validFiles: File[] = [];
     const invalidFiles: File[] = [];
 
@@ -213,12 +203,15 @@ export class FileUploader extends LitElement {
       }
     });
 
-    // If there are invalid files, notify the user
-    if (invalidFiles.length > 0) {
-      this._handleInvalidFiles(invalidFiles);
+    // Update valid files
+    if (validFiles.length > 0) {
+      this._uploadedFiles = [...this._uploadedFiles, ...validFiles];
     }
 
-    return validFiles;
+    // Update invalid files
+    if (invalidFiles.length > 0) {
+      this._invaliedFiles = [...this._invaliedFiles, ...invalidFiles];
+    }
   }
 
   private _parseFileSize(size: string): number {
@@ -235,16 +228,6 @@ export class FileUploader extends LitElement {
       default:
         return sizeValue; // Default to bytes if no unit provided
     }
-  }
-
-  private _handleInvalidFiles(invalidFiles: File[]) {
-    this._invaliedFiles = invalidFiles;
-  }
-
-  private _resetUploaderState() {
-    this._uploadedFiles = [];
-    this._invaliedFiles = [];
-    this._dragging = false;
   }
 
   private _emitFileUploadEvent() {
