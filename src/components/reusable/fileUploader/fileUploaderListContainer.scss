@@ -1,0 +1,26 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: block;
+}
+
+.file-uploader-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 24px;
+
+  ::slotted(*) {
+    margin-bottom: 8px;
+  }
+
+  ::slotted(:last-child) {
+    margin-bottom: 0;
+  }
+}
+
+.file-uploader-list-container__items {
+  max-height: 326px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

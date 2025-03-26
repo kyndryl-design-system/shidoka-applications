@@ -4,434 +4,6 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "src/components/ai/aiLaunchButton/aiLaunchButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "AI Assistant Launch Button.",
-          "name": "AILaunchButton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the button is disabled.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "_initAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_startHoverAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_stopHoverAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitClick",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits when the button is clicked.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the button is disabled.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ai-launch-btn",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AILaunchButton",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ai-launch-btn",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/ai/aiLaunchButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AILaunchButton",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "./aiLaunchButton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "AISourcesFeedback Component.",
-          "name": "AISourcesFeedback",
-          "slots": [
-            {
-              "description": "copy button",
-              "name": "copy"
-            },
-            {
-              "description": "source cards in source panel.",
-              "name": "sources"
-            },
-            {
-              "description": "Positive feedback form.",
-              "name": "feedback-form"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "sourcesOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Sources used.",
-              "attribute": "sourcesOpened"
-            },
-            {
-              "kind": "field",
-              "name": "feedbackOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Feedback buttons.",
-              "attribute": "feedbackOpened"
-            },
-            {
-              "kind": "field",
-              "name": "sourcesDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Sources used..",
-              "attribute": "sourcesDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "feedbackDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Feedback buttons.",
-              "attribute": "feedbackDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "revealAllSources",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible sources behind a \"Show more\" button.",
-              "attribute": "revealAllSources"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  sourcesText: 'Sources',\n  foundSources: 'Found sources',\n  showMore: 'Show more',\n  showLess: 'Show less',\n  positiveFeedback: 'Share what you liked',\n  negativeFeedback: 'Help us improve',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button text.",
-              "attribute": "closeText"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "panel",
-                  "type": {
-                    "text": "'sources' | 'feedback'"
-                  }
-                },
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateFeedbackCounts",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "feedbackType",
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_shouldEmitFeedbackEvent",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "boolean"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitToggleEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "panel",
-                  "type": {
-                    "text": "'sources' | 'feedback'"
-                  }
-                },
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_toggleFeedbackPanel",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "protected"
-            },
-            {
-              "kind": "method",
-              "name": "_toggleLimitRevealed",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "revealed",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "updateSourcesText",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "name": "on-feedback-deselected",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits when thumbs-up or thumbs-down button is deselected."
-            },
-            {
-              "name": "on-toggle",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits the `opened` state when the panel item opens/closes."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "sourcesOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Sources used.",
-              "fieldName": "sourcesOpened"
-            },
-            {
-              "name": "feedbackOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Feedback buttons.",
-              "fieldName": "feedbackOpened"
-            },
-            {
-              "name": "sourcesDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Sources used..",
-              "fieldName": "sourcesDisabled"
-            },
-            {
-              "name": "feedbackDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Feedback buttons.",
-              "fieldName": "feedbackDisabled"
-            },
-            {
-              "name": "revealAllSources",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible sources behind a \"Show more\" button.",
-              "fieldName": "revealAllSources"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button text.",
-              "fieldName": "closeText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ai-sources-feedback",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AISourcesFeedback",
-          "declaration": {
-            "name": "AISourcesFeedback",
-            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ai-sources-feedback",
-          "declaration": {
-            "name": "AISourcesFeedback",
-            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/ai/sourcesFeedback/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AISourcesFeedback",
-          "declaration": {
-            "name": "AISourcesFeedback",
-            "module": "./aiSourcesFeedback"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/footer/footer.ts",
       "declarations": [
         {
@@ -2066,6 +1638,168 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai/aiLaunchButton/aiLaunchButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "AI Assistant Launch Button.",
+          "name": "AILaunchButton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the button is disabled.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "_initAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_startHoverAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_stopHoverAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitClick",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits when the button is clicked.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the button is disabled.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ai-launch-btn",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AILaunchButton",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ai-launch-btn",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai/aiLaunchButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AILaunchButton",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "./aiLaunchButton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/localNav/index.ts",
       "declarations": [],
       "exports": [
@@ -2537,63 +2271,329 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
+      "path": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
+          "description": "AISourcesFeedback Component.",
+          "name": "AISourcesFeedback",
           "slots": [
             {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
+              "description": "copy button",
+              "name": "copy"
+            },
+            {
+              "description": "source cards in source panel.",
+              "name": "sources"
+            },
+            {
+              "description": "Positive feedback form.",
+              "name": "feedback-form"
             }
           ],
           "members": [
             {
+              "kind": "field",
+              "name": "sourcesOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Sources used.",
+              "attribute": "sourcesOpened"
+            },
+            {
+              "kind": "field",
+              "name": "feedbackOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Feedback buttons.",
+              "attribute": "feedbackOpened"
+            },
+            {
+              "kind": "field",
+              "name": "sourcesDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Sources used..",
+              "attribute": "sourcesDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "feedbackDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Feedback buttons.",
+              "attribute": "feedbackDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "revealAllSources",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible sources behind a \"Show more\" button.",
+              "attribute": "revealAllSources"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  sourcesText: 'Sources',\n  foundSources: 'Found sources',\n  showMore: 'Show more',\n  showLess: 'Show less',\n  positiveFeedback: 'Share what you liked',\n  negativeFeedback: 'Help us improve',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "closeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button text.",
+              "attribute": "closeText"
+            },
+            {
               "kind": "method",
-              "name": "handleSlotChange",
+              "name": "_handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "panel",
+                  "type": {
+                    "text": "'sources' | 'feedback'"
+                  }
+                },
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateFeedbackCounts",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_shouldEmitFeedbackEvent",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitToggleEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "panel",
+                  "type": {
+                    "text": "'sources' | 'feedback'"
+                  }
+                },
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_toggleFeedbackPanel",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "protected"
+            },
+            {
+              "kind": "method",
+              "name": "_toggleLimitRevealed",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "revealed",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "updateSourcesText",
               "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "on-feedback-deselected",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when thumbs-up or thumbs-down button is deselected."
+            },
+            {
+              "name": "on-toggle",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits the `opened` state when the panel item opens/closes."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "sourcesOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Sources used.",
+              "fieldName": "sourcesOpened"
+            },
+            {
+              "name": "feedbackOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Feedback buttons.",
+              "fieldName": "feedbackOpened"
+            },
+            {
+              "name": "sourcesDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Sources used..",
+              "fieldName": "sourcesDisabled"
+            },
+            {
+              "name": "feedbackDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Feedback buttons.",
+              "fieldName": "feedbackDisabled"
+            },
+            {
+              "name": "revealAllSources",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible sources behind a \"Show more\" button.",
+              "fieldName": "revealAllSources"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "closeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button text.",
+              "fieldName": "closeText"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-ui-shell",
+          "tagName": "kyn-ai-sources-feedback",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "UiShell",
+          "name": "AISourcesFeedback",
           "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
+            "name": "AISourcesFeedback",
+            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
+          "name": "kyn-ai-sources-feedback",
           "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
+            "name": "AISourcesFeedback",
+            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai/sourcesFeedback/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AISourcesFeedback",
+          "declaration": {
+            "name": "AISourcesFeedback",
+            "module": "./aiSourcesFeedback"
           }
         }
       ]
@@ -7469,375 +7469,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/fileUploader/fileUploader.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "File Uploader",
-          "name": "FileUploader",
-          "members": [
-            {
-              "kind": "field",
-              "name": "fileTypes",
-              "type": {
-                "text": "string[]"
-              },
-              "default": "[]",
-              "description": "Set the file types that the component accepts. By default, it accepts all file types.",
-              "attribute": "fileTypes"
-            },
-            {
-              "kind": "field",
-              "name": "multiple",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "true",
-              "description": "Set this to `true`, if the component accepts multiple file uploads.",
-              "attribute": "multiple"
-            },
-            {
-              "kind": "field",
-              "name": "uploadedFiles",
-              "type": {
-                "text": "File[]"
-              },
-              "default": "[]",
-              "description": "Uploaded files.",
-              "attribute": "uploadedFiles"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  dragAndDropText: 'Drag files here to upload',\n  orText: 'or',\n  buttonText: 'Browse files',\n  maxFileSizeText: 'Max file size',\n  supportedFileTypeText: 'Supported file type',\n  fileUploadErrorText: 'File upload error',\n  fileDetails: 'File details',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "maxFileSizeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'1MB'",
-              "description": "Set the maximum file size. Default value is `1MB`.",
-              "attribute": "maxFileSizeText"
-            },
-            {
-              "kind": "method",
-              "name": "renderDagDropContainer",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "renderSupportedFileSizeAndType",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleFileChange",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleDragOver",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "DragEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleDrop",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "DragEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_triggerFileSelect",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleKeyboardEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "KeyboardEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validateFiles",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "File[]"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "files",
-                  "type": {
-                    "text": "File[]"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_parseFileSize",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "size",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleInvalidFiles",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "invalidFiles",
-                  "type": {
-                    "text": "File[]"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleFileUploadSimulation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitFileUploadEvent",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the uploaded files.",
-              "name": "on-file-upload"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "fileTypes",
-              "type": {
-                "text": "string[]"
-              },
-              "default": "[]",
-              "description": "Set the file types that the component accepts. By default, it accepts all file types.",
-              "fieldName": "fileTypes"
-            },
-            {
-              "name": "multiple",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "true",
-              "description": "Set this to `true`, if the component accepts multiple file uploads.",
-              "fieldName": "multiple"
-            },
-            {
-              "name": "uploadedFiles",
-              "type": {
-                "text": "File[]"
-              },
-              "default": "[]",
-              "description": "Uploaded files.",
-              "fieldName": "uploadedFiles"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "maxFileSizeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'1MB'",
-              "description": "Set the maximum file size. Default value is `1MB`.",
-              "fieldName": "maxFileSizeText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-file-uploader",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "FileUploader",
-          "declaration": {
-            "name": "FileUploader",
-            "module": "src/components/reusable/fileUploader/fileUploader.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-file-uploader",
-          "declaration": {
-            "name": "FileUploader",
-            "module": "src/components/reusable/fileUploader/fileUploader.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/fileUploader/fileUploaderItem.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "File Uploader Item",
-          "name": "FileUploaderItem",
-          "members": [
-            {
-              "kind": "field",
-              "name": "uploadedFiles",
-              "type": {
-                "text": "File[]"
-              },
-              "default": "[]",
-              "attribute": "uploadedFiles"
-            },
-            {
-              "kind": "field",
-              "name": "invalidFiles",
-              "type": {
-                "text": "File[]"
-              },
-              "default": "[]",
-              "attribute": "invalidFiles"
-            },
-            {
-              "kind": "field",
-              "name": "_uploadedFilesStatus",
-              "type": {
-                "text": "{\n    fileNames: string[];\n    filesSizes: number[];\n    totalFileSize: number;\n    progress: number;\n    status: 'active' | 'success' | 'error';\n    currentFileIndex: number;\n  }"
-              },
-              "default": "{\n    fileNames: [],\n    filesSizes: [],\n    totalFileSize: 0,\n    progress: 0,\n    status: 'active',\n    currentFileIndex: 0,\n  }"
-            },
-            {
-              "kind": "method",
-              "name": "uploadNextFile"
-            },
-            {
-              "kind": "method",
-              "name": "handleCloseClick"
-            },
-            {
-              "kind": "method",
-              "name": "_getHelperText",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "uploadedFiles",
-              "type": {
-                "text": "File[]"
-              },
-              "default": "[]",
-              "fieldName": "uploadedFiles"
-            },
-            {
-              "name": "invalidFiles",
-              "type": {
-                "text": "File[]"
-              },
-              "default": "[]",
-              "fieldName": "invalidFiles"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-file-uploader-status",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "FileUploaderItem",
-          "declaration": {
-            "name": "FileUploaderItem",
-            "module": "src/components/reusable/fileUploader/fileUploaderItem.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-file-uploader-status",
-          "declaration": {
-            "name": "FileUploaderItem",
-            "module": "src/components/reusable/fileUploader/fileUploaderItem.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/fileUploader/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "FileUploader",
-          "declaration": {
-            "name": "FileUploader",
-            "module": "./fileUploader"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/floatingContainer/floatingContainer.ts",
       "declarations": [
         {
@@ -10053,6 +9684,594 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/fileUploader/fileUploader.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "File Uploader",
+          "name": "FileUploader",
+          "members": [
+            {
+              "kind": "field",
+              "name": "fileTypes",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "description": "Set the file types that the component accepts. By default, it accepts all file types.",
+              "attribute": "fileTypes"
+            },
+            {
+              "kind": "field",
+              "name": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Set this to `true`, if the component accepts multiple file uploads.",
+              "attribute": "multiple"
+            },
+            {
+              "kind": "field",
+              "name": "uploadedFiles",
+              "type": {
+                "text": "File[]"
+              },
+              "default": "[]",
+              "description": "Uploaded files.",
+              "attribute": "uploadedFiles"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  dragAndDropText: 'Drag files here to upload',\n  orText: 'or',\n  buttonText: 'Browse files',\n  maxFileSizeText: 'Max file size',\n  supportedFileTypeText: 'Supported file type',\n  fileUploadErrorText: 'File upload error',\n  fileDetails: 'File details',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "maxFileSizeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'1MB'",
+              "description": "Set the maximum file size. Default value is `1MB`.",
+              "attribute": "maxFileSizeText"
+            },
+            {
+              "kind": "method",
+              "name": "renderDragDropContainer",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "renderSupportedFileSizeAndType",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleFileChange",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleDragOver",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "DragEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleDrop",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "DragEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_triggerFileSelect",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleKeyboardEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validateFiles",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "File[]"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "files",
+                  "type": {
+                    "text": "File[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_parseFileSize",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "size",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleInvalidFiles",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "invalidFiles",
+                  "type": {
+                    "text": "File[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleFileUploadSimulation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_resetUploaderState",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitFileUploadEvent",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the uploaded files.",
+              "name": "on-file-upload"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "fileTypes",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "description": "Set the file types that the component accepts. By default, it accepts all file types.",
+              "fieldName": "fileTypes"
+            },
+            {
+              "name": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Set this to `true`, if the component accepts multiple file uploads.",
+              "fieldName": "multiple"
+            },
+            {
+              "name": "uploadedFiles",
+              "type": {
+                "text": "File[]"
+              },
+              "default": "[]",
+              "description": "Uploaded files.",
+              "fieldName": "uploadedFiles"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "maxFileSizeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'1MB'",
+              "description": "Set the maximum file size. Default value is `1MB`.",
+              "fieldName": "maxFileSizeText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-file-uploader",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FileUploader",
+          "declaration": {
+            "name": "FileUploader",
+            "module": "src/components/reusable/fileUploader/fileUploader.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-file-uploader",
+          "declaration": {
+            "name": "FileUploader",
+            "module": "src/components/reusable/fileUploader/fileUploader.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/fileUploader/fileUploaderItem.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "File Uploader Item",
+          "name": "FileUploaderItem",
+          "slots": [
+            {
+              "description": "Slot for status icon.",
+              "name": "status-icon"
+            },
+            {
+              "description": "Slot for file details.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for actions.",
+              "name": "actions"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-file-uploader-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FileUploaderItem",
+          "declaration": {
+            "name": "FileUploaderItem",
+            "module": "src/components/reusable/fileUploader/fileUploaderItem.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-file-uploader-item",
+          "declaration": {
+            "name": "FileUploaderItem",
+            "module": "src/components/reusable/fileUploader/fileUploaderItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/fileUploader/fileUploaderListContainer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "File Uploader List Container",
+          "name": "FileUploaderListContainer",
+          "slots": [
+            {
+              "description": "Slot for individual file uploader items.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'File details'",
+              "description": "File details container title.",
+              "attribute": "titleText"
+            },
+            {
+              "kind": "field",
+              "name": "showAll",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Show all files'",
+              "description": "Show all text.",
+              "attribute": "showAll"
+            },
+            {
+              "kind": "field",
+              "name": "showLess",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Show less files'",
+              "description": "Show less text.",
+              "attribute": "showLess"
+            },
+            {
+              "kind": "field",
+              "name": "fileItems",
+              "type": {
+                "text": "Array<any>"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_toggleReveal",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "reveal",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_applyLimit",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "reveal",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'File details'",
+              "description": "File details container title.",
+              "fieldName": "titleText"
+            },
+            {
+              "name": "showAll",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Show all files'",
+              "description": "Show all text.",
+              "fieldName": "showAll"
+            },
+            {
+              "name": "showLess",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Show less files'",
+              "description": "Show less text.",
+              "fieldName": "showLess"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-file-uploader-list-container",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FileUploaderListContainer",
+          "declaration": {
+            "name": "FileUploaderListContainer",
+            "module": "src/components/reusable/fileUploader/fileUploaderListContainer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-file-uploader-list-container",
+          "declaration": {
+            "name": "FileUploaderListContainer",
+            "module": "src/components/reusable/fileUploader/fileUploaderListContainer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/fileUploader/fileUploaderStatus.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "File Uploader status",
+          "name": "FileUploaderStatus",
+          "members": [
+            {
+              "kind": "field",
+              "name": "uploadedFiles",
+              "type": {
+                "text": "File[]"
+              },
+              "default": "[]",
+              "attribute": "uploadedFiles"
+            },
+            {
+              "kind": "field",
+              "name": "invalidFiles",
+              "type": {
+                "text": "File[]"
+              },
+              "default": "[]",
+              "attribute": "invalidFiles"
+            },
+            {
+              "kind": "field",
+              "name": "_uploadedFilesStatus",
+              "type": {
+                "text": "{\n    fileNames: string[];\n    filesSizes: number[];\n    totalFileSize: number;\n    progress: number;\n    status: 'active' | 'success' | 'error';\n    currentFileIndex: number;\n  }"
+              },
+              "default": "{\n    fileNames: [],\n    filesSizes: [],\n    totalFileSize: 0,\n    progress: 0,\n    status: 'active',\n    currentFileIndex: 0,\n  }"
+            },
+            {
+              "kind": "method",
+              "name": "uploadNextFile"
+            },
+            {
+              "kind": "method",
+              "name": "handleCloseClick"
+            },
+            {
+              "kind": "method",
+              "name": "_getHelperText",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "uploadedFiles",
+              "type": {
+                "text": "File[]"
+              },
+              "default": "[]",
+              "fieldName": "uploadedFiles"
+            },
+            {
+              "name": "invalidFiles",
+              "type": {
+                "text": "File[]"
+              },
+              "default": "[]",
+              "fieldName": "invalidFiles"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-file-uploader-status",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FileUploaderStatus",
+          "declaration": {
+            "name": "FileUploaderStatus",
+            "module": "src/components/reusable/fileUploader/fileUploaderStatus.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-file-uploader-status",
+          "declaration": {
+            "name": "FileUploaderStatus",
+            "module": "src/components/reusable/fileUploader/fileUploaderStatus.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/fileUploader/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FileUploader",
+          "declaration": {
+            "name": "FileUploader",
+            "module": "./fileUploader"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FileUploaderItem",
+          "declaration": {
+            "name": "FileUploaderItem",
+            "module": "./fileUploaderItem"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FileUploaderListContainer",
+          "declaration": {
+            "name": "FileUploaderListContainer",
+            "module": "./fileUploaderListContainer"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FileUploaderStatus",
+          "declaration": {
+            "name": "FileUploaderStatus",
+            "module": "./fileUploaderStatus"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/overflowMenu/index.ts",
       "declarations": [],
       "exports": [
@@ -11677,330 +11896,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/radioButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "RadioButton",
-          "declaration": {
-            "name": "RadioButton",
-            "module": "./radioButton"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "RadioButtonGroup",
-          "declaration": {
-            "name": "RadioButtonGroup",
-            "module": "./radioButtonGroup"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/radioButton/radioButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Radio button.",
-          "name": "RadioButton",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Radio button value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button disabled state, inherited from the parent group.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the change event and emits the selected value and original event details.",
-              "name": "on-radio-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Radio button value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button disabled state, inherited from the parent group.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-radio-button",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "RadioButton",
-          "declaration": {
-            "name": "RadioButton",
-            "module": "src/components/reusable/radioButton/radioButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-radio-button",
-          "declaration": {
-            "name": "RadioButton",
-            "module": "src/components/reusable/radioButton/radioButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/radioButton/radioButtonGroup.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Radio button group container.",
-          "name": "RadioButtonGroup",
-          "slots": [
-            {
-              "description": "Slot for individual radio buttons.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for description text.",
-              "name": "description"
-            },
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "horizontal",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group horizontal layout.",
-              "attribute": "horizontal"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  required: 'Required',\n  error: 'Error',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleRadioChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the change event and emits the selected value.",
-              "name": "on-radio-group-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text",
-              "fieldName": "label"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "horizontal",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group horizontal layout.",
-              "fieldName": "horizontal"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-radio-button-group",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "RadioButtonGroup",
-          "declaration": {
-            "name": "RadioButtonGroup",
-            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-radio-button-group",
-          "declaration": {
-            "name": "RadioButtonGroup",
-            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/search/index.ts",
       "declarations": [],
       "exports": [
@@ -12357,213 +12252,65 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/sideDrawer/index.ts",
+      "path": "src/components/reusable/radioButton/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "SideDrawer",
+          "name": "RadioButton",
           "declaration": {
-            "name": "SideDrawer",
-            "module": "./sideDrawer"
+            "name": "RadioButton",
+            "module": "./radioButton"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "RadioButtonGroup",
+          "declaration": {
+            "name": "RadioButtonGroup",
+            "module": "./radioButtonGroup"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/sideDrawer/sideDrawer.ts",
+      "path": "src/components/reusable/radioButton/radioButton.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Side Drawer.",
-          "name": "SideDrawer",
+          "description": "Radio button.",
+          "name": "RadioButton",
           "slots": [
             {
-              "description": "Slot for drawer body content.",
+              "description": "Slot for label text.",
               "name": "unnamed"
-            },
-            {
-              "description": "Slot for the anchor button content.",
-              "name": "anchor"
             }
           ],
           "members": [
             {
               "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Drawer open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Drawer size. `'md'`, or `'sm'`.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "titleText",
+              "name": "value",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Title / Heading text, required.",
-              "attribute": "titleText"
+              "description": "Radio button value.",
+              "attribute": "value"
             },
             {
               "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "submitBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Ok'",
-              "description": "Submit button text.",
-              "attribute": "submitBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "closeBtnDescription",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button description (Required to support accessibility).",
-              "attribute": "closeBtnDescription"
-            },
-            {
-              "kind": "field",
-              "name": "submitBtnDisabled",
+              "name": "disabled",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Disables the primary button.",
-              "attribute": "submitBtnDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine whether needs footer",
-              "attribute": "hideFooter"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text.",
-              "attribute": "secondaryButtonText"
-            },
-            {
-              "kind": "field",
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the secondary button.",
-              "attribute": "showSecondaryButton"
-            },
-            {
-              "kind": "field",
-              "name": "hideCancelButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the cancel button.",
-              "attribute": "hideCancelButton"
-            },
-            {
-              "kind": "field",
-              "name": "beforeClose",
-              "type": {
-                "text": "Function"
-              },
-              "description": "Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "attribute": "aiConnected"
+              "description": "Radio button disabled state, inherited from the parent group.",
+              "attribute": "disabled"
             },
             {
               "kind": "method",
-              "name": "_openDrawer",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_closeDrawer",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "returnValue",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitCloseEvent",
+              "name": "handleChange",
               "privacy": "private",
               "parameters": [
                 {
@@ -12573,174 +12320,256 @@
                   }
                 }
               ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitOpenEvent",
-              "privacy": "private"
             }
           ],
           "events": [
             {
-              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
-              "name": "on-close"
-            },
-            {
-              "description": "Emits the drawer open event.",
-              "name": "on-open"
+              "description": "Captures the change event and emits the selected value and original event details.",
+              "name": "on-radio-change"
             }
           ],
           "attributes": [
             {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Drawer open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Drawer size. `'md'`, or `'sm'`.",
-              "fieldName": "size"
-            },
-            {
-              "name": "titleText",
+              "name": "value",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Title / Heading text, required.",
-              "fieldName": "titleText"
+              "description": "Radio button value.",
+              "fieldName": "value"
             },
             {
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text, optional.",
-              "fieldName": "labelText"
-            },
-            {
-              "name": "submitBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Ok'",
-              "description": "Submit button text.",
-              "fieldName": "submitBtnText"
-            },
-            {
-              "name": "cancelBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "fieldName": "cancelBtnText"
-            },
-            {
-              "name": "closeBtnDescription",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button description (Required to support accessibility).",
-              "fieldName": "closeBtnDescription"
-            },
-            {
-              "name": "submitBtnDisabled",
+              "name": "disabled",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Disables the primary button.",
-              "fieldName": "submitBtnDisabled"
-            },
-            {
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine whether needs footer",
-              "fieldName": "hideFooter"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate the action is destructive.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text.",
-              "fieldName": "secondaryButtonText"
-            },
-            {
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the secondary button.",
-              "fieldName": "showSecondaryButton"
-            },
-            {
-              "name": "hideCancelButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the cancel button.",
-              "fieldName": "hideCancelButton"
-            },
-            {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "fieldName": "aiConnected"
+              "description": "Radio button disabled state, inherited from the parent group.",
+              "fieldName": "disabled"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-side-drawer",
+          "tagName": "kyn-radio-button",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "SideDrawer",
+          "name": "RadioButton",
           "declaration": {
-            "name": "SideDrawer",
-            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+            "name": "RadioButton",
+            "module": "src/components/reusable/radioButton/radioButton.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-side-drawer",
+          "name": "kyn-radio-button",
           "declaration": {
-            "name": "SideDrawer",
-            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+            "name": "RadioButton",
+            "module": "src/components/reusable/radioButton/radioButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/radioButton/radioButtonGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Radio button group container.",
+          "name": "RadioButtonGroup",
+          "slots": [
+            {
+              "description": "Slot for individual radio buttons.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for description text.",
+              "name": "description"
+            },
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "horizontal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group horizontal layout.",
+              "attribute": "horizontal"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  required: 'Required',\n  error: 'Error',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleRadioChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the change event and emits the selected value.",
+              "name": "on-radio-group-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text",
+              "fieldName": "label"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "horizontal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group horizontal layout.",
+              "fieldName": "horizontal"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-radio-button-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RadioButtonGroup",
+          "declaration": {
+            "name": "RadioButtonGroup",
+            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-radio-button-group",
+          "declaration": {
+            "name": "RadioButtonGroup",
+            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
           }
         }
       ]
@@ -13303,6 +13132,396 @@
           "declaration": {
             "name": "SplitButtonOption",
             "module": "src/components/reusable/splitButton/splitButtonOption.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/sideDrawer/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SideDrawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "./sideDrawer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/sideDrawer/sideDrawer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Side Drawer.",
+          "name": "SideDrawer",
+          "slots": [
+            {
+              "description": "Slot for drawer body content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the anchor button content.",
+              "name": "anchor"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Drawer open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Drawer size. `'md'`, or `'sm'`.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title / Heading text, required.",
+              "attribute": "titleText"
+            },
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "submitBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Ok'",
+              "description": "Submit button text.",
+              "attribute": "submitBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "attribute": "cancelBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "closeBtnDescription",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button description (Required to support accessibility).",
+              "attribute": "closeBtnDescription"
+            },
+            {
+              "kind": "field",
+              "name": "submitBtnDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "attribute": "submitBtnDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine whether needs footer",
+              "attribute": "hideFooter"
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "secondaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Secondary'",
+              "description": "Secondary button text.",
+              "attribute": "secondaryButtonText"
+            },
+            {
+              "kind": "field",
+              "name": "showSecondaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the secondary button.",
+              "attribute": "showSecondaryButton"
+            },
+            {
+              "kind": "field",
+              "name": "hideCancelButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the cancel button.",
+              "attribute": "hideCancelButton"
+            },
+            {
+              "kind": "field",
+              "name": "beforeClose",
+              "type": {
+                "text": "Function"
+              },
+              "description": "Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`."
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "attribute": "aiConnected"
+            },
+            {
+              "kind": "method",
+              "name": "_openDrawer",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_closeDrawer",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "returnValue",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitCloseEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitOpenEvent",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
+              "name": "on-close"
+            },
+            {
+              "description": "Emits the drawer open event.",
+              "name": "on-open"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Drawer open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Drawer size. `'md'`, or `'sm'`.",
+              "fieldName": "size"
+            },
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title / Heading text, required.",
+              "fieldName": "titleText"
+            },
+            {
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text, optional.",
+              "fieldName": "labelText"
+            },
+            {
+              "name": "submitBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Ok'",
+              "description": "Submit button text.",
+              "fieldName": "submitBtnText"
+            },
+            {
+              "name": "cancelBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "fieldName": "cancelBtnText"
+            },
+            {
+              "name": "closeBtnDescription",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button description (Required to support accessibility).",
+              "fieldName": "closeBtnDescription"
+            },
+            {
+              "name": "submitBtnDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the primary button.",
+              "fieldName": "submitBtnDisabled"
+            },
+            {
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine whether needs footer",
+              "fieldName": "hideFooter"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate the action is destructive.",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "secondaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Secondary'",
+              "description": "Secondary button text.",
+              "fieldName": "secondaryButtonText"
+            },
+            {
+              "name": "showSecondaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the secondary button.",
+              "fieldName": "showSecondaryButton"
+            },
+            {
+              "name": "hideCancelButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the cancel button.",
+              "fieldName": "hideCancelButton"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "fieldName": "aiConnected"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-side-drawer",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SideDrawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-side-drawer",
+          "declaration": {
+            "name": "SideDrawer",
+            "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
           }
         }
       ]

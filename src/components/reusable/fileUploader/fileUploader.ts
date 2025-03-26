@@ -13,7 +13,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/upload.svg';
 import FileUploaderScss from './fileUploader.scss';
 import '../button';
-import './fileUploaderItem';
+import './fileUploaderStatus';
 
 const _defaultTextStrings = {
   dragAndDropText: 'Drag files here to upload',
