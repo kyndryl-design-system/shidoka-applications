@@ -80,14 +80,16 @@ export class SampleFileUploader extends LitElement {
                           >${unsafeSVG(errorFilledIcon)}</span
                         >
                         <div class="file-details-container">
-                          <p class="file-name">${file.file.name}</p>
+                          <p class="file-name">${file.name}</p>
                           <div class="error-info-container">
                             <p class="file-size">
-                              ${this._getFilesSize(file.file.size)}
+                              ${this._getFilesSize(file.size)}
                             </p>
                             ·
                             <p class="file-size error">
-                              Max file size exceeded
+                              ${file.errorMsg === 'typeError'
+                                ? 'Invaild file type'
+                                : 'Max file size exceeded'}
                             </p>
                           </div>
                         </div>

@@ -199,7 +199,19 @@ export class FileUploader extends LitElement {
       if (isValidType && isValidSize) {
         validFiles.push({ file, id: this._generateUniqueFileId() });
       } else {
-        invalidFiles.push({ file, id: this._generateUniqueFileId() });
+        let errorMsg = '';
+        if (!isValidSize) {
+          errorMsg = 'sizeError';
+        }
+        if (!isValidType) {
+          errorMsg = 'typeError';
+        }
+        invalidFiles.push({
+          id: this._generateUniqueFileId(),
+          name: file.name,
+          size: file.size,
+          errorMsg: errorMsg,
+        });
       }
     });
 
