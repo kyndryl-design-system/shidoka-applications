@@ -3,7 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/upload.svg';
+import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/upload.svg';
 import FileUploaderScss from './fileUploader.scss';
 import '../button';
 
@@ -205,12 +205,12 @@ export class FileUploader extends LitElement {
 
     // Update valid files
     if (validFiles.length > 0) {
-      this._uploadedFiles = [...this._uploadedFiles, ...validFiles];
+      this._uploadedFiles = validFiles;
     }
 
     // Update invalid files
     if (invalidFiles.length > 0) {
-      this._invaliedFiles = [...this._invaliedFiles, ...invalidFiles];
+      this._invaliedFiles = invalidFiles;
     }
   }
 
@@ -238,6 +238,9 @@ export class FileUploader extends LitElement {
       },
     });
     this.dispatchEvent(event);
+    // Reset uploaded files
+    this._uploadedFiles = [];
+    this._invaliedFiles = [];
   }
 }
 
