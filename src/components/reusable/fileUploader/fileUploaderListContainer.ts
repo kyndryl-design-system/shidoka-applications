@@ -34,6 +34,9 @@ export class FileUploaderListContainer extends LitElement {
   @state()
   _limitRevealed = false;
 
+  /** Queries for all slotted elements.
+   * @internal
+   */
   @queryAssignedElements()
   fileItems!: Array<any>;
 
