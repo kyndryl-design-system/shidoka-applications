@@ -1056,6 +1056,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this._hasInteracted = true;
     }
 
+    const shouldShowValidationErrors =
+      this._hasInteracted || report || !!this.invalidText;
+
     const selectedCount = [this.value[0], this.value[1]].filter(
       (d) => d !== null
     ).length;
@@ -1088,8 +1091,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     this._internals.setValidity(validity, validationMessage, this._inputEl);
-    this._isInvalid = !isValid;
+
+    this._isInvalid = !isValid && shouldShowValidationErrors;
     this._internalValidationMsg = validationMessage;
+
     if (report) this._internals.reportValidity();
     this.requestUpdate();
   }

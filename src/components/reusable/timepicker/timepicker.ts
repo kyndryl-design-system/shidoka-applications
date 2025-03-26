@@ -216,8 +216,12 @@ export class TimePicker extends FormMixin(LitElement) {
     this.addEventListener('reset', this._handleFormReset);
 
     if (this._internals.form) {
-      this._internals.form.addEventListener('submit', () => {
-        this._validate(true, false);
+      this._internals.form.addEventListener('submit', (e: SubmitEvent) => {
+        this._validate(true, true);
+
+        if (this.required && !this.hasValue()) {
+          e.preventDefault();
+        }
       });
     }
   }
@@ -669,73 +673,38 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private _validate(interacted: boolean, report: boolean) {
-    if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) return;
+    if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) {
+      return;
+    }
     if (interacted) {
       this._hasInteracted = true;
     }
-
     const hasDefaultValue =
       this.defaultHour !== null || this.defaultMinute !== null;
-    const isEmpty =
-      !this._inputEl.value.trim() && !hasDefaultValue && !this._userHasCleared;
+    const isEmpty = !this._inputEl.value.trim() && !hasDefaultValue;
     const isRequired = this.required;
-
-    if (!this._hasInteracted && !interacted) {
-      if (isRequired && isEmpty) {
-        const validity = { valueMissing: true };
-        const validationMessage =
-          this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
-
-        this._internals.setValidity(validity, validationMessage, this._inputEl);
-
-        this._isInvalid = interacted;
-        this._internalValidationMsg = validationMessage;
-
-        if (report) {
-          this._internals.reportValidity();
-        }
-
-        this.requestUpdate();
-        return;
-      }
-
-      this._internals.setValidity({}, '', this._inputEl);
-      this._isInvalid = false;
-      this._internalValidationMsg = '';
-      return;
-    }
-
     let validity = this._inputEl.validity;
     let validationMessage = this._inputEl.validationMessage;
-
     if (isRequired && isEmpty) {
       validity = { ...validity, valueMissing: true };
       validationMessage =
         this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
     }
-
     if (this.invalidText) {
       validity = { ...validity, customError: true };
       validationMessage = this.invalidText;
     }
-
     const isValid = !validity.valueMissing && !validity.customError;
-
     if (!isValid && !validationMessage) {
       validationMessage = this._textStrings.pleaseSelectValidDate;
     }
-
     this._internals.setValidity(validity, validationMessage, this._inputEl);
-
     this._isInvalid =
-      !isValid &&
-      (this._hasInteracted || this.invalidText !== '' || interacted);
+      !isValid && (this._hasInteracted || this.invalidText !== '');
     this._internalValidationMsg = validationMessage;
-
     if (report) {
       this._internals.reportValidity();
     }
-
     this.requestUpdate();
   }
 

@@ -239,8 +239,12 @@ export class DatePicker extends FormMixin(LitElement) {
     this.addEventListener('reset', this._handleFormReset);
 
     if (this._internals.form) {
-      this._internals.form.addEventListener('submit', () => {
-        this._validate(true, false);
+      this._internals.form.addEventListener('submit', (e: SubmitEvent) => {
+        this._validate(true, true);
+
+        if (this.required && !this.hasValue()) {
+          e.preventDefault();
+        }
       });
     }
 
@@ -780,6 +784,10 @@ export class DatePicker extends FormMixin(LitElement) {
   async handleClose() {
     this._validate(false, false);
     await this.updateComplete;
+
+    if (!this.value && !this.defaultDate) {
+      this._hasInteracted = true;
+    }
   }
 
   async handleDateChange(selectedDates: Date[], dateStr: string) {
