@@ -207,6 +207,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   private _initialized = false;
 
+  /** Store submit event listener reference for cleanup
+   * @internal
+   */
+  private _submitListener: ((e: Event) => void) | null = null;
+
   private debounce<T extends (...args: any[]) => any>(
     func: T,
     wait: number
@@ -251,12 +256,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
     window.addEventListener('resize', this.handleResize);
 
     if (this._internals.form) {
-      this._internals.form.addEventListener('submit', (e: Event) => {
+      this._submitListener = (e: Event) => {
         this._validate(true, true);
         if (!this._internals.checkValidity()) {
           e.preventDefault();
         }
-      });
+      };
+      this._internals.form.addEventListener('submit', this._submitListener);
     }
 
     if (
@@ -277,6 +283,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.removeEventListener('change', this._onChange);
     this.removeEventListener('reset', this._handleFormReset);
     window.removeEventListener('resize', this.handleResize);
+
+    if (this._internals.form && this._submitListener) {
+      this._internals.form.removeEventListener('submit', this._submitListener);
+      this._submitListener = null;
+    }
+
     this.flatpickrInstance?.destroy();
   }
 

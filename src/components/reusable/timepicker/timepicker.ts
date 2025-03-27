@@ -179,6 +179,11 @@ export class TimePicker extends FormMixin(LitElement) {
   private _shouldFlatpickrOpen = true;
   private _initialized = false;
 
+  /** Store submit event listener reference for cleanup
+   * @internal
+   */
+  private _submitListener: ((e: SubmitEvent) => void) | null = null;
+
   private debounce<T extends (...args: any[]) => any>(
     func: T,
     wait: number
@@ -216,13 +221,14 @@ export class TimePicker extends FormMixin(LitElement) {
     this.addEventListener('reset', this._handleFormReset);
 
     if (this._internals.form) {
-      this._internals.form.addEventListener('submit', (e: SubmitEvent) => {
+      this._submitListener = (e: SubmitEvent) => {
         this._validate(true, true);
 
         if (this.required && !this.hasValue()) {
           e.preventDefault();
         }
-      });
+      };
+      this._internals.form.addEventListener('submit', this._submitListener);
     }
   }
 
@@ -751,6 +757,12 @@ export class TimePicker extends FormMixin(LitElement) {
     super.disconnectedCallback();
     this.removeEventListener('change', this._onChange);
     this.removeEventListener('reset', this._handleFormReset);
+
+    if (this._internals.form && this._submitListener) {
+      this._internals.form.removeEventListener('submit', this._submitListener);
+      this._submitListener = null;
+    }
+
     if (this.flatpickrInstance) {
       this.flatpickrInstance.destroy();
       this.flatpickrInstance = undefined;
