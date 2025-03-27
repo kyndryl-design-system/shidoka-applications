@@ -897,24 +897,6 @@ export class DatePicker extends FormMixin(LitElement) {
       return;
     }
 
-    if (isRequired && isEmpty) {
-      validity = { ...validity, valueMissing: true };
-      validationMessage =
-        this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
-
-      this._internals.setValidity(validity, validationMessage, this._inputEl);
-
-      this._isInvalid = this._hasInteracted || interacted;
-      this._internalValidationMsg = validationMessage;
-
-      if (report) {
-        this._internals.reportValidity();
-      }
-
-      this.requestUpdate();
-      return;
-    }
-
     if (this.invalidText) {
       validity = { ...validity, customError: true };
       validationMessage = this.invalidText;
