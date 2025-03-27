@@ -719,8 +719,6 @@ export class DatePicker extends FormMixin(LitElement) {
             } else {
               this.value = validDates[0];
             }
-
-            this._validate(false, false);
           }
         }
       } else if (typeof dateToSet === 'string') {
@@ -730,7 +728,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
           if (this.value === null) {
             this.value = parsedDate;
-            this._validate(false, false);
           }
         }
       } else if (dateToSet instanceof Date) {
@@ -738,7 +735,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
         if (this.value === null) {
           this.value = dateToSet;
-          this._validate(false, false);
         }
       }
     } catch (error) {
@@ -937,7 +933,6 @@ export class DatePicker extends FormMixin(LitElement) {
       this.flatpickrInstance.clear();
     }
     this._hasInteracted = false;
-    this._validate(false, false);
   }
 }
 
