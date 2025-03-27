@@ -12,7 +12,8 @@ const _defaultTextStrings = {
   orText: 'or',
   buttonText: 'Browse files',
   maxFileSizeText: 'Max file size',
-  supportedFileTypeText: 'Supported file type',
+  supportedFileTypeText: 'Supported file type: ',
+  fileTypeDisplyText: 'Any file type',
 };
 
 /**
@@ -27,7 +28,13 @@ export class FileUploader extends LitElement {
    * Set the file types that the component accepts. By default, it accepts all file types.
    */
   @property({ type: Array })
-  fileTypes: string[] = [];
+  accept: string[] = [];
+
+  /**
+   * Accept multiple files. Default value is `false`.
+   */
+  @property({ type: Boolean })
+  multiple = false;
 
   /**
    * Customizable text strings.
@@ -84,7 +91,7 @@ export class FileUploader extends LitElement {
             ${this._textStrings.maxFileSizeText}
             <strong>${this.maxFileSizeText}</strong>.
             ${this._textStrings.supportedFileTypeText}
-            <strong>${this.renderSupportedFileSizeAndType()}</strong>.
+            <strong>${this._textStrings.fileTypeDisplyText}</strong>.
           </p>
         </div>
       </div>
@@ -92,8 +99,6 @@ export class FileUploader extends LitElement {
   }
 
   private renderDragDropContainer() {
-    const supportedFileTypeText =
-      this.fileTypes.length > 0 ? this.fileTypes.join(',') : '*/*';
     const dragDropContainerClasses = {
       'drag-drop-container': true,
       dragging: this._dragging,
@@ -123,22 +128,11 @@ export class FileUploader extends LitElement {
           type="file"
           @change="${(e: any) => this.handleFileChange(e)}"
           id="fileInput"
-          accept="${supportedFileTypeText}"
-          multiple
+          accept=${this.accept.length > 0 ? this.accept.join(',') : '*/*'}
+          ?multiple=${this.multiple}
         />
       </div>
     `;
-  }
-
-  private renderSupportedFileSizeAndType() {
-    if (this.fileTypes.length === 0) {
-      return;
-    } else {
-      const displayFileTypes = this.fileTypes.map((fileType) => {
-        return '.' + fileType.split('/')[1];
-      });
-      return html`${displayFileTypes.join(', ')}`;
-    }
   }
 
   handleFileChange(event: Event) {
@@ -179,6 +173,11 @@ export class FileUploader extends LitElement {
 
   // Validate files
   private _validateFiles(files: File[]) {
+    // Check if multiple files are uploaded
+    if (!this.multiple && files.length > 1) {
+      return; // need to add error message
+    }
+
     const validFiles: Object[] = [];
     const invalidFiles: Object[] = [];
 
@@ -186,12 +185,25 @@ export class FileUploader extends LitElement {
     const maxFileSizeInBytes = this._parseFileSize(this.maxFileSizeText);
 
     files.forEach((file) => {
+      const fileName = file.name;
       const fileType = file.type;
       const fileSize = file.size;
 
       // Check if the file type is valid
+      const imageWildcard = this.accept.includes('image/*');
+      const audioWildcard = this.accept.includes('audio/*');
+      const videoWildcard = this.accept.includes('video/*');
+
+      const fileExtension = (fileName.split('.').pop() || '').replace(/^/, '.');
+      this.accept.includes(fileType);
+
       const isValidType =
-        this.fileTypes.length === 0 || this.fileTypes.includes(fileType);
+        this.accept.length === 0 ||
+        (imageWildcard && fileType.includes('image')) ||
+        (audioWildcard && fileType.includes('audio')) ||
+        (videoWildcard && fileType.includes('video')) ||
+        this.accept.includes(fileType) ||
+        this.accept.includes(fileExtension);
 
       // Check if the file size is valid
       const isValidSize = fileSize <= maxFileSizeInBytes;

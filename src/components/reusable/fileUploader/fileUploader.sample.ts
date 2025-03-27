@@ -14,8 +14,23 @@ import '../link';
 export class SampleFileUploader extends LitElement {
   static override styles = SampleFileUploaderScss;
 
+  @property({ type: Object })
+  textStrings = {
+    dragAndDropText: 'Drag files here to upload',
+    orText: 'or',
+    buttonText: 'Browse files',
+    maxFileSizeText: 'Max file size',
+    supportedFileTypeText: 'Supported file type: ',
+    // fileTypeDisplyText: 'Any image type, .pdf',
+    fileTypeDisplyText: '.jpeg, .png',
+  };
+
+  @property({ type: Boolean })
+  multiple = true;
+
   @property({ type: Array })
-  fileTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+  // accept = ['image/*', '.pdf'];
+  accept = ['image/jpeg', 'image/png'];
 
   @property({ type: Array })
   validFiles: any[] = [];
@@ -27,7 +42,9 @@ export class SampleFileUploader extends LitElement {
     return html`
       <!-- File uploader -->
       <kyn-file-uploader
-        .fileTypes=${this.fileTypes}
+        .accept=${this.accept}
+        .multiple=${this.multiple}
+        .textStrings=${this.textStrings}
         @on-file-upload=${(e: any) => {
           action(e.type)(e);
           this._handleUploadedFiles(e);
