@@ -243,19 +243,20 @@ export class DatePicker extends FormMixin(LitElement) {
     this.addEventListener('change', this._onChange);
     this.addEventListener('reset', this._handleFormReset);
 
-    if (this._internals.form) {
-      this._submitListener = (e: SubmitEvent) => {
-        this._validate(true, true);
-
-        if (this.required && !this.hasValue()) {
-          e.preventDefault();
-        }
-      };
-      this._internals.form.addEventListener('submit', this._submitListener);
-    }
-
     if (!this.value && this.defaultDate) {
       this._hasInitialDefaultDate = true;
+    }
+  }
+
+  override disconnectedCallback() {
+    this._isDestroyed = true;
+    super.disconnectedCallback();
+    this.removeEventListener('change', this._onChange);
+    this.removeEventListener('reset', this._handleFormReset);
+
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.destroy();
+      this.flatpickrInstance = undefined;
     }
   }
 
@@ -427,8 +428,6 @@ export class DatePicker extends FormMixin(LitElement) {
           } else {
             this.value = processedDates[0];
           }
-
-          this._internals.setFormValue(this.value);
         }
       }
     }
@@ -721,7 +720,6 @@ export class DatePicker extends FormMixin(LitElement) {
               this.value = validDates[0];
             }
 
-            this._internals.setFormValue(this.value);
             this._validate(false, false);
           }
         }
@@ -732,7 +730,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
           if (this.value === null) {
             this.value = parsedDate;
-            this._internals.setFormValue(this.value);
             this._validate(false, false);
           }
         }
@@ -741,7 +738,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
         if (this.value === null) {
           this.value = dateToSet;
-          this._internals.setFormValue(this.value);
           this._validate(false, false);
         }
       }
@@ -816,10 +812,6 @@ export class DatePicker extends FormMixin(LitElement) {
         formattedDates = selectedDates[0].toISOString();
       } else {
         formattedDates = isMultiple ? [] : null;
-      }
-
-      if (this.value !== null) {
-        this._internals.setFormValue(this.value);
       }
 
       emitValue(this, 'on-change', {
@@ -946,23 +938,6 @@ export class DatePicker extends FormMixin(LitElement) {
     }
     this._hasInteracted = false;
     this._validate(false, false);
-  }
-
-  override disconnectedCallback() {
-    this._isDestroyed = true;
-    super.disconnectedCallback();
-    this.removeEventListener('change', this._onChange);
-    this.removeEventListener('reset', this._handleFormReset);
-
-    if (this._internals.form && this._submitListener) {
-      this._internals.form.removeEventListener('submit', this._submitListener);
-      this._submitListener = null;
-    }
-
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.destroy();
-      this.flatpickrInstance = undefined;
-    }
   }
 }
 
