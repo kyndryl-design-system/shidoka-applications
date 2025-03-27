@@ -16,25 +16,33 @@ import '../link';
 export class FileUploaderListContainer extends LitElement {
   static override styles = FileUploaderListContainerScss;
 
-  /** File details container title. */
+  /**
+   * File details container title.
+   */
   @property({ type: String })
   titleText = 'File details';
 
-  /** Show all text. */
+  /**
+   * Show all text.
+   */
   @property({ type: String })
   showAll = 'Show all files';
 
-  /** Show less text. */
+  /**
+   * Show less text.
+   */
   @property({ type: String })
   showLess = 'Show less files';
 
-  /** Limit visible file uploader items.
+  /**
+   * Limit visible file uploader items.
    * @internal
    */
   @state()
   _limitRevealed = false;
 
-  /** Queries for all slotted elements.
+  /**
+   * Queries for all slotted elements.
    * @internal
    */
   @queryAssignedElements()

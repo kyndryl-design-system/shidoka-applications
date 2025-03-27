@@ -15,12 +15,22 @@ import '../loaders';
 export class FileUploaderStatus extends LitElement {
   static override styles = FileUploaderStatusScss;
 
+  /**
+   * Uploaded files.
+   */
   @property({ type: Array })
-  uploadedFiles: File[] = [];
+  uploadedFiles: any[] = [];
 
+  /**
+   * Invalid files.
+   */
   @property({ type: Array })
-  invalidFiles: File[] = [];
+  invalidFiles: any[] = [];
 
+  /**
+   * Internal uploaded files status.
+   * @internal
+   */
   @state()
   _uploadedFilesStatus: {
     fileNames: string[];
