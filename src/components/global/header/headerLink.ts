@@ -144,7 +144,11 @@ export class HeaderLink extends LitElement {
           class=${classMap(menuClasses)}
           style=${`top: ${this.menuPosition.top}px; left: ${this.menuPosition.left}px;`}
         >
-          <button class="go-back" @click=${() => this._handleBack()}>
+          <button
+            tabindex="0"
+            class="go-back"
+            @click=${() => this._handleBack()}
+          >
             <span>${unsafeSVG(backIcon)}</span>
             ${this.backText}
           </button>

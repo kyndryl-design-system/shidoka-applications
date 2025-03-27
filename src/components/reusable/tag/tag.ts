@@ -110,6 +110,7 @@ export class Tag extends LitElement {
         ${this.filter
           ? html`
               <button
+                tabindex="0"
                 class="${classMap(iconClasses)}"
                 ?disabled="${this.disabled}"
                 title="${this.clearTagText}

@@ -132,6 +132,7 @@ export class SplitButton extends LitElement {
       >
         <!-- label button UI -->
         <button
+          tabindex="0"
           class=${classMap({
             ...classes,
             'kyn-split-btn-label': true,
@@ -150,6 +151,7 @@ export class SplitButton extends LitElement {
         </button>
         <!-- menu button UI -->
         <button
+          tabindex="0"
           class=${classMap({
             ...classes,
             select: true,

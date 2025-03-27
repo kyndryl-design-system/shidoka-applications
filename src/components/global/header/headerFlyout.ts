@@ -105,6 +105,7 @@ export class HeaderFlyout extends LitElement {
             `
           : html`
               <button
+                tabindex="0"
                 class="btn interactive"
                 title=${this.label || this.assistiveText}
                 aria-label=${this.label || this.assistiveText}
@@ -127,7 +128,11 @@ export class HeaderFlyout extends LitElement {
             `}
 
         <div class=${classMap(contentClasses)}>
-          <button class="go-back" @click=${() => this._handleBack()}>
+          <button
+            tabindex="0"
+            class="go-back"
+            @click=${() => this._handleBack()}
+          >
             <span>${unsafeSVG(backIcon)}</span>
             ${this.backText}
           </button>

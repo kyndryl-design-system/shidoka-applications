@@ -64,6 +64,7 @@ export class ToggleButton extends FormMixin(LitElement) {
 
         <div class="wrapper ${this.reverse ? 'reverse' : ''}">
           <input
+            tabindex="0"
             class="${this.small ? 'size--sm' : ''}"
             type="checkbox"
             name=${this.name}

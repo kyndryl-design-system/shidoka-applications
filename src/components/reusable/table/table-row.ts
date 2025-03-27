@@ -262,6 +262,7 @@ export class TableRow extends LitElement {
             <kyn-td .align=${'center'} ?dense=${this.dense}>
               <div class="kyn--table-expand">
                 <button
+                  tabindex="0"
                   class="kyn--table-expand__button"
                   type="button"
                   ?disabled=${this.disabled}

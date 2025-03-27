@@ -60,7 +60,7 @@ const defaultTemplateCodes = {
     <div class="container">
       <h1>Welcome to my website</h1>
       <p>This is a paragraph of text.</p>
-      <button class="btn">Click me!</button>
+      <button tabindex="0" class="btn">Click me!</button>
     </div>
   `,
   CSS: `
