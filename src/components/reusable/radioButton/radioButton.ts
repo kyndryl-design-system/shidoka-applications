@@ -60,6 +60,7 @@ export class RadioButton extends LitElement {
       <label ?disabled=${this.disabled} ?invalid=${this.invalid}>
         <span><slot></slot></span>
         <input
+          tabindex="0"
           type="radio"
           name=${this.name}
           value=${this.value}
