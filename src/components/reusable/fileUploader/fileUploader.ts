@@ -94,6 +94,9 @@ export class FileUploader extends LitElement {
             <strong>${this._textStrings.fileTypeDisplyText}</strong>.
           </p>
         </div>
+        <div class="upload-status-container">
+          <slot name="upload-status"></slot>
+        </div>
       </div>
     `;
   }

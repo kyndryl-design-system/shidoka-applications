@@ -9,6 +9,7 @@ import SampleFileUploaderScss from './fileUploader.sample.scss';
 import './index';
 import '../inlineConfirm';
 import '../link';
+import '../notification';
 
 @customElement('sample-file-uploader')
 export class SampleFileUploader extends LitElement {
@@ -38,6 +39,18 @@ export class SampleFileUploader extends LitElement {
   @property({ type: Array })
   invalidFiles: any[] = [];
 
+  @property({ type: String })
+  notificationTitle = '';
+
+  @property({ type: String })
+  notificationMessage = '';
+
+  @property({ type: String })
+  notificationStatus = '';
+
+  @property({ type: Boolean })
+  showNotification = false;
+
   override render() {
     return html`
       <!-- File uploader -->
@@ -50,10 +63,53 @@ export class SampleFileUploader extends LitElement {
           this._handleUploadedFiles(e);
         }}
       ></kyn-file-uploader>
+      <!-- Upload status -->
+      ${this.showNotification
+        ? html`
+            <kyn-notification
+              slot="upload-status"
+              .type=${'inline'}
+              .hideCloseButton=${true}
+              .notificationTitle=${this.notificationTitle}
+              .tagStatus=${this.notificationStatus}
+            >
+              ${this.notificationMessage}
+            </kyn-notification>
+          `
+        : ``}
       <!-- File details list -->
       ${this.validFiles.length > 0 || this.invalidFiles.length > 0
         ? html`
             <kyn-file-uploader-list-container>
+              <!-- Invalid files -->
+              ${this.invalidFiles.length > 0
+                ? this.invalidFiles.map(
+                    (file) => html`
+                      <kyn-file-uploader-item>
+                        <span slot="status-icon" class="error-icon"
+                          >${unsafeSVG(errorFilledIcon)}</span
+                        >
+                        <div class="file-details-container">
+                          <p class="file-name">${file.name}</p>
+                          <div class="error-info-container">
+                            <p class="file-size">
+                              ${this._getFilesSize(file.size)}
+                            </p>
+                            ·
+                            <p class="file-size error">
+                              ${file.errorMsg === 'typeError'
+                                ? 'Invaild file type'
+                                : 'Max file size exceeded'}
+                            </p>
+                          </div>
+                        </div>
+                        <div slot="actions">
+                          <kyn-link standalone>Re-upload</kyn-link>
+                        </div>
+                      </kyn-file-uploader-item>
+                    `
+                  )
+                : ''}
               <!-- Valid files -->
               ${this.validFiles.length > 0
                 ? this.validFiles.map(
@@ -88,35 +144,6 @@ export class SampleFileUploader extends LitElement {
                     `
                   )
                 : ''}
-              <!-- Invalid files -->
-              ${this.invalidFiles.length > 0
-                ? this.invalidFiles.map(
-                    (file) => html`
-                      <kyn-file-uploader-item>
-                        <span slot="status-icon" class="error-icon"
-                          >${unsafeSVG(errorFilledIcon)}</span
-                        >
-                        <div class="file-details-container">
-                          <p class="file-name">${file.name}</p>
-                          <div class="error-info-container">
-                            <p class="file-size">
-                              ${this._getFilesSize(file.size)}
-                            </p>
-                            ·
-                            <p class="file-size error">
-                              ${file.errorMsg === 'typeError'
-                                ? 'Invaild file type'
-                                : 'Max file size exceeded'}
-                            </p>
-                          </div>
-                        </div>
-                        <div slot="actions">
-                          <kyn-link standalone>Re-upload</kyn-link>
-                        </div>
-                      </kyn-file-uploader-item>
-                    `
-                  )
-                : ''}
             </kyn-file-uploader-list-container>
           `
         : ''}
@@ -126,8 +153,26 @@ export class SampleFileUploader extends LitElement {
   private _handleUploadedFiles(event: any) {
     this.validFiles = [...event.detail.validFiles, ...this.validFiles];
     this.invalidFiles = [...event.detail.invalidFiles, ...this.invalidFiles];
-    console.log('Valid files:', this.validFiles);
-    console.log('Invalid files:', this.invalidFiles);
+    this.showNotification = true;
+    this._displayNotification();
+    console.log('Valid files:', this.validFiles); // to be removed
+    console.log('Invalid files:', this.invalidFiles); // to be removed
+  }
+
+  private _displayNotification() {
+    const numberOfInvalidFiles = this.invalidFiles.length;
+    const numberOfValidFiles = this.validFiles.length;
+    if (numberOfInvalidFiles > 0) {
+      this.notificationTitle = 'Upload partially successful';
+      this.notificationMessage = `${numberOfInvalidFiles} out of ${
+        numberOfInvalidFiles + numberOfValidFiles
+      } could not be uploaded.`;
+      this.notificationStatus = 'error';
+    } else {
+      this.notificationTitle = 'Files uploaded';
+      this.notificationMessage = `Success! ${numberOfValidFiles} files have been uploaded.`;
+      this.notificationStatus = 'success';
+    }
   }
 
   private _getFilesSize(bytes: number) {
