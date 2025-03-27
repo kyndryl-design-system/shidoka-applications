@@ -102,7 +102,11 @@ export class TextArea extends FormMixin(LitElement) {
 
   override render() {
     return html`
-      <div class="text-area" ?disabled=${this.disabled}>
+      <div
+        class="text-area"
+        ?disabled=${this.disabled}
+        ?readonly=${this.readonly}
+      >
         <label
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
           for=${this.name}
@@ -151,7 +155,11 @@ ${this.value}</textarea
           <div>
             ${this.caption !== ''
               ? html`
-                  <div class="caption" aria-disabled=${this.disabled}>
+                  <div
+                    class="caption"
+                    aria-disabled=${this.disabled}
+                    aria-readonly=${this.readonly}
+                  >
                     ${this.caption}
                   </div>
                 `

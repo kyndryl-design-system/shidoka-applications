@@ -124,7 +124,11 @@ export class TextInput extends FormMixin(LitElement) {
 
   override render() {
     return html`
-      <div class="text-input" ?disabled=${this.disabled}>
+      <div
+        class="text-input"
+        ?disabled=${this.disabled}
+        ?readonly=${this.readonly}
+      >
         <label
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
           for=${this.name}
@@ -197,7 +201,11 @@ export class TextInput extends FormMixin(LitElement) {
           <div>
             ${this.caption !== ''
               ? html`
-                  <div class="caption" aria-disabled=${this.disabled}>
+                  <div
+                    class="caption"
+                    aria-disabled=${this.disabled}
+                    aria-readonly=${this.readonly}
+                  >
                     ${this.caption}
                   </div>
                 `
