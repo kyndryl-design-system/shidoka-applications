@@ -21,6 +21,7 @@ export class HeaderFlyouts extends LitElement {
     return html`
       <div class="header-flyouts menu ${this.open ? 'open' : ''}">
         <button
+          tabindex="0"
           class="btn interactive"
           aria-label="Toggle Menu"
           title="Toggle Menu"

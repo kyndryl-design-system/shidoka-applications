@@ -44,6 +44,7 @@ export class AILaunchButton extends LitElement {
 
     return html`
       <button
+        tabindex="0"
         type="button"
         class="${classMap(Classes)}"
         aria-label="AI Assistant"

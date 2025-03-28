@@ -59,6 +59,7 @@ export class Card extends LitElement {
 
     return html`${this.type === 'clickable'
       ? html`<a
+          tabindex="0"
           part="card-wrapper"
           class="${classMap(cardWrapperClasses)}"
           href=${this.href}

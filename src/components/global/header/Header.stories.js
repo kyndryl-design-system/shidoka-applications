@@ -177,11 +177,6 @@ export const WithFlyouts = {
         <kyn-header-flyout label="Menu Label" hideButtonLabel>
           <span slot="button">${unsafeSVG(helpIcon)}</span>
           <span slot="button" title="Full Button Text">Short ... Text</span>
-          <!--
-          <kyn-tooltip slot="button" direction="bottom">
-            <span slot="anchor">Short ... Text</span>
-          </kyn-tooltip>
-          -->
 
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>

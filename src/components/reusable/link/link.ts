@@ -51,6 +51,7 @@ export class Link extends LitElement {
 
     return html`
       <a
+        tabindex="0"
         class="kyn-link-text ${classes}"
         target=${this.target}
         part="link"

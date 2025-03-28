@@ -108,7 +108,11 @@ export class LocalNavLink extends LitElement {
 
     return html`
       <div class=${classMap(classes)}>
-        <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
+        <a
+          tabindex="0"
+          href=${this.href}
+          @click=${(e: Event) => this.handleClick(e)}
+        >
           ${this._navLinks.length
             ? html`
                 <span class="expand-icon"> ${unsafeSVG(chevronIcon)} </span>
@@ -127,7 +131,11 @@ export class LocalNavLink extends LitElement {
         <div class="sub-menu">
           ${this._navLinks.length
             ? html`
-                <button class="go-back" @click=${() => this._handleBack()}>
+                <button
+                  tabindex="0"
+                  class="go-back"
+                  @click=${() => this._handleBack()}
+                >
                   ${unsafeSVG(backIcon)} ${this.backText}
                 </button>
               `

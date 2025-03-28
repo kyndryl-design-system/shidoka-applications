@@ -111,7 +111,11 @@ export class Accordion extends LitElement {
     return html`
       <div class="kyn-accordion">
         <div class="toggle-container">
-          <button href="javascript:void(0)" @click="${this._toggleExpandAll}">
+          <button
+            tabindex="0"
+            href="javascript:void(0)"
+            @click="${this._toggleExpandAll}"
+          >
             ${this._allOpenState ? this.collapseLabel : this.expandLabel}
           </button>
         </div>
