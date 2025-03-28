@@ -90,6 +90,24 @@ textarea {
     color: var(--kd-color-text-variant-placeholder);
   }
 
+  &.is-readonly {
+    background: var(--kd-color-background-forms-disabled);
+    border-color: var(--kd-color-border-variants-light);
+    cursor: default;
+
+    &::placeholder {
+      color: var(--kd-color-text-forms-input-field-text);
+    }
+
+    &:-ms-input-placeholder {
+      color: var(--kd-color-text-forms-input-field-text);
+    }
+
+    &::-ms-input-placeholder {
+      color: var(--kd-color-text-forms-input-field-text);
+    }
+  }
+
   &[disabled] {
     background: var(--kd-color-background-forms-disabled);
     border: none;
@@ -101,18 +119,20 @@ textarea {
     }
 
     &::placeholder {
-      color: var(--kd-color-text-link-level-disabled);
+      color: var(--kd-color-text-level-disabled);
+    }
+
+    &:-ms-input-placeholder {
+      color: var(--kd-color-text-level-disabled);
+    }
+
+    &::-ms-input-placeholder {
+      color: var(--kd-color-text-level-disabled);
     }
   }
 
   &:not([disabled])[invalid] {
     border-color: var(--kd-color-border-variants-destructive);
-  }
-
-  &.is-readonly {
-    background: var(--kd-color-background-forms-disabled);
-    border-color: var(--kd-color-border-variants-light);
-    cursor: default;
   }
 }
 

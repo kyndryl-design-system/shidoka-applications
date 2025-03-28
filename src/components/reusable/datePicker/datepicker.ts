@@ -781,6 +781,10 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   handleOpen() {
+    if (this.readonly) {
+      this.flatpickrInstance?.close();
+      return;
+    }
     if (!this._shouldFlatpickrOpen) {
       this.flatpickrInstance?.close();
       this._shouldFlatpickrOpen = true;
