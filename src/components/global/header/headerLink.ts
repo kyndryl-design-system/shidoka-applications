@@ -126,6 +126,7 @@ export class HeaderLink extends LitElement {
         @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
       >
         <a
+          tabindex="0"
           target=${this.target}
           rel=${this.rel}
           href=${this.href}
