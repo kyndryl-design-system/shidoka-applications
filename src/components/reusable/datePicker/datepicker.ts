@@ -519,7 +519,6 @@ export class DatePicker extends FormMixin(LitElement) {
         });
       } else {
         this._processedDisableDates = [];
-        console.warn('Disable prop must be an array');
       }
       if (this.flatpickrInstance) {
         this.debouncedUpdate();
@@ -554,7 +553,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
   private async setupAnchor() {
     if (!this._inputEl) {
-      console.warn('Input element not found during setup');
       return;
     }
 
@@ -633,7 +631,7 @@ export class DatePicker extends FormMixin(LitElement) {
               );
             }
           } catch (error) {
-            console.warn('Error setting calendar attributes:', error);
+            console.error('Error setting calendar attributes:', error);
           }
         },
         setInitialDates: this.setInitialDates.bind(this),
@@ -688,9 +686,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
   setInitialDates() {
     if (!this.flatpickrInstance) {
-      console.warn(
-        'Cannot set initial dates: Flatpickr instance not available'
-      );
       return;
     }
 
@@ -739,10 +734,6 @@ export class DatePicker extends FormMixin(LitElement) {
       }
     } catch (error) {
       console.warn('Error setting initial dates:', error);
-
-      if (error instanceof Error) {
-        console.warn('Error details:', error.message);
-      }
     }
   }
 

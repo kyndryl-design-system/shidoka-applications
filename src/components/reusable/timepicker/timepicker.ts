@@ -493,7 +493,6 @@ export class TimePicker extends FormMixin(LitElement) {
 
   private async setupAnchor() {
     if (!this._inputEl) {
-      console.warn('Input element not found during setup');
       return;
     }
     try {
@@ -534,7 +533,6 @@ export class TimePicker extends FormMixin(LitElement) {
         getFlatpickrOptions: async () => {
           const options = await this.getComponentFlatpickrOptions();
           if (options.noCalendar === false) {
-            console.warn('Time picker requires noCalendar option to be true');
             options.noCalendar = true;
           }
           return options;
@@ -551,7 +549,7 @@ export class TimePicker extends FormMixin(LitElement) {
               );
             }
           } catch (error) {
-            console.warn('Error setting calendar attributes:', error);
+            console.error('Error setting calendar attributes:', error);
           }
         },
         setInitialDates: this.setInitialDates.bind(this),
@@ -619,7 +617,7 @@ export class TimePicker extends FormMixin(LitElement) {
         instance.setDate(date, false);
       }
     } catch (error) {
-      console.warn('Error setting initial time:', error);
+      console.error('Error setting initial time:', error);
     }
   }
 
