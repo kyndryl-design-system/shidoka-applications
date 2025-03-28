@@ -74,7 +74,7 @@ export class FileUploader extends LitElement {
    * @internal
    */
   @state()
-  _invaliedFiles: Object[] = [];
+  _invalidFiles: Object[] = [];
 
   override willUpdate(changedProps: any) {
     if (changedProps.has('textStrings')) {
@@ -215,11 +215,12 @@ export class FileUploader extends LitElement {
         validFiles.push({ file, id: this._generateUniqueFileId() });
       } else {
         let errorMsg = '';
-        if (!isValidSize) {
-          errorMsg = 'sizeError';
-        }
         if (!isValidType) {
           errorMsg = 'typeError';
+        } else if (!isValidSize) {
+          errorMsg = 'sizeError';
+        } else {
+          errorMsg = 'unknownError';
         }
         invalidFiles.push({
           id: this._generateUniqueFileId(),
@@ -237,7 +238,7 @@ export class FileUploader extends LitElement {
 
     // Update invalid files
     if (invalidFiles.length > 0) {
-      this._invaliedFiles = invalidFiles;
+      this._invalidFiles = invalidFiles;
     }
   }
 
@@ -265,13 +266,13 @@ export class FileUploader extends LitElement {
     const event = new CustomEvent('on-file-upload', {
       detail: {
         validFiles: this._uploadedFiles,
-        invalidFiles: this._invaliedFiles,
+        invalidFiles: this._invalidFiles,
       },
     });
     this.dispatchEvent(event);
     // Reset uploaded files
     this._uploadedFiles = [];
-    this._invaliedFiles = [];
+    this._invalidFiles = [];
   }
 }
 
