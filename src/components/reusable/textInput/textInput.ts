@@ -201,11 +201,7 @@ export class TextInput extends FormMixin(LitElement) {
           <div>
             ${this.caption !== ''
               ? html`
-                  <div
-                    class="caption"
-                    aria-disabled=${this.disabled}
-                    aria-readonly=${this.readonly}
-                  >
+                  <div class="caption" aria-disabled=${this.disabled}>
                     ${this.caption}
                   </div>
                 `

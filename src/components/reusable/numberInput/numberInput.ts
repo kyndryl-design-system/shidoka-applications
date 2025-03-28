@@ -116,14 +116,14 @@ export class NumberInput extends FormMixin(LitElement) {
         <div
           class="${classMap({
             'input-wrapper': true,
-            'is-readonly': true,
           })}"
         >
           <kyn-button
             kind="outline"
             size=${this._sizeMap(this.size)}
-            ?disabled=${this.disabled || this.value <= this.min}
-            ?readonly=${this.readonly}
+            ?disabled=${this.disabled ||
+            this.value <= this.min ||
+            this.readonly}
             description=${this._textStrings.subtract}
             @on-click=${this._handleSubtract}
           >
@@ -156,8 +156,9 @@ export class NumberInput extends FormMixin(LitElement) {
           <kyn-button
             kind="outline"
             size=${this._sizeMap(this.size)}
-            ?disabled=${this.disabled || this.value >= this.max}
-            ?readonly=${this.readonly}
+            ?disabled=${this.disabled ||
+            this.value >= this.max ||
+            this.readonly}
             description=${this._textStrings.add}
             @on-click=${this._handleAdd}
           >
