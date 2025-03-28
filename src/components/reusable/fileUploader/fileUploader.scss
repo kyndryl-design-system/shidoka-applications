@@ -1,0 +1,64 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+.file-uploader-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .drag-drop-container {
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 6px;
+    border: 1px dashed var(--kd-color-border-accent-secondary);
+    border-radius: 16px;
+    background-color: var(--kd-color-background-accent-subtle);
+
+    &.dragging {
+      background-color: var(--kd-color-background-highlight-fill);
+    }
+
+    .drag-drop-text {
+      @include typography.type-body-01;
+    }
+
+    .or-text {
+      @include typography.type-body-02;
+    }
+  }
+
+  .status-icon {
+    width: 56px;
+    height: 56px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border-radius: 32px;
+    background-color: var(--kd-color-background-container-surface-tint);
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .upload-constraints {
+    align-self: center;
+    @include typography.type-ui-02;
+  }
+
+  .upload-status-container {
+    margin: 8px 0;
+  }
+}
