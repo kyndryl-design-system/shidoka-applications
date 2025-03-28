@@ -52,6 +52,10 @@ export class NumberInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Input readonly state. */
+  @property({ type: Boolean })
+  readonly = false;
+
   /** Optional text beneath the input. */
   @property({ type: String })
   caption = '';
@@ -117,7 +121,9 @@ export class NumberInput extends FormMixin(LitElement) {
           <kyn-button
             kind="outline"
             size=${this._sizeMap(this.size)}
-            ?disabled=${this.disabled || this.value <= this.min}
+            ?disabled=${this.disabled ||
+            this.value <= this.min ||
+            this.readonly}
             description=${this._textStrings.subtract}
             @on-click=${this._handleSubtract}
           >
@@ -128,6 +134,7 @@ export class NumberInput extends FormMixin(LitElement) {
             class="${classMap({
               'size--sm': this.size === 'sm',
               'size--lg': this.size === 'lg',
+              'is-readonly': this.readonly,
             })}"
             type="number"
             id=${this.name}
@@ -136,6 +143,7 @@ export class NumberInput extends FormMixin(LitElement) {
             placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
+            ?readonly=${this.readonly}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}
@@ -148,7 +156,9 @@ export class NumberInput extends FormMixin(LitElement) {
           <kyn-button
             kind="outline"
             size=${this._sizeMap(this.size)}
-            ?disabled=${this.disabled || this.value >= this.max}
+            ?disabled=${this.disabled ||
+            this.value >= this.max ||
+            this.readonly}
             description=${this._textStrings.add}
             @on-click=${this._handleAdd}
           >
@@ -196,6 +206,7 @@ export class NumberInput extends FormMixin(LitElement) {
   }
 
   private _handleSubtract() {
+    if (this.readonly) return;
     this._inputEl.stepDown();
     this.value = Number(this._inputEl.value);
 
@@ -204,6 +215,7 @@ export class NumberInput extends FormMixin(LitElement) {
   }
 
   private _handleAdd() {
+    if (this.readonly) return;
     this._inputEl.stepUp();
     this.value = Number(this._inputEl.value);
 

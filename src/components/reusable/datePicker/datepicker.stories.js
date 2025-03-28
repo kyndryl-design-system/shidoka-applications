@@ -87,6 +87,7 @@ const Template = (args) => {
       .warningAriaLabel=${args.warningAriaLabel}
       .warningTitle=${args.warningTitle}
       ?datePickerDisabled=${args.datePickerDisabled}
+      ?readonly=${args.readonly}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
@@ -118,6 +119,7 @@ DatePickerDefault.args = {
   mode: 'single',
   caption: 'Example datepicker caption.',
   datePickerDisabled: false,
+  readonly: false,
   minDate: '',
   maxDate: '',
   label: 'Date',
@@ -248,6 +250,7 @@ export const InModal = {
           .warningAriaLabel=${args.warningAriaLabel}
           .warningTitle=${args.warningTitle}
           ?datePickerDisabled=${args.datePickerDisabled}
+          ?readonly=${args.readonly}
           ?twentyFourHourFormat=${args.twentyFourHourFormat}
           .minDate=${args.minDate}
           .maxDate=${args.maxDate}
@@ -296,6 +299,7 @@ export const InSideDrawer = {
     warningAriaLabel: '',
     warningTitle: '',
     datePickerDisabled: false,
+    readonly: false,
     twentyFourHourFormat: false,
     minDate: '',
     maxDate: '',
@@ -335,6 +339,7 @@ export const InSideDrawer = {
       warningAriaLabel,
       warningTitle,
       datePickerDisabled,
+      readonly,
       twentyFourHourFormat,
       minDate,
       maxDate,
@@ -377,6 +382,7 @@ export const InSideDrawer = {
       warningAriaLabel,
       warningTitle,
       datePickerDisabled,
+      readonly,
       twentyFourHourFormat,
       minDate,
       maxDate,
@@ -428,6 +434,7 @@ export const InSideDrawer = {
           .warningAriaLabel=${datePickerProps.warningAriaLabel}
           .warningTitle=${datePickerProps.warningTitle}
           ?datePickerDisabled=${datePickerProps.datePickerDisabled}
+          ?readonly=${datePickerProps.readonly}
           ?twentyFourHourFormat=${datePickerProps.twentyFourHourFormat}
           .minDate=${datePickerProps.minDate}
           .maxDate=${datePickerProps.maxDate}
