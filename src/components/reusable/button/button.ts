@@ -90,6 +90,10 @@ export class Button extends LitElement {
   @property({ type: Boolean, reflect: true })
   disabled = false;
 
+  /** Determines if the button is readonly. */
+  @property({ type: Boolean, reflect: true })
+  readonly = false;
+
   /** Button value.  */
   @property({ type: String })
   value = '';
@@ -166,6 +170,7 @@ export class Button extends LitElement {
               class=${classMap(BtnClasses)}
               href=${this.href}
               ?disabled=${this.disabled}
+              ?readonly=${this.readonly}
               aria-label=${ifDefined(this.description)}
               title=${ifDefined(this.description)}
               @click=${(e: Event) => this.handleClick(e)}
@@ -185,6 +190,7 @@ export class Button extends LitElement {
               class=${classMap(BtnClasses)}
               type=${this.type}
               ?disabled=${this.disabled}
+              ?readonly=${this.readonly}
               aria-label=${ifDefined(this.description)}
               title=${ifDefined(this.description)}
               name=${ifDefined(this.name)}

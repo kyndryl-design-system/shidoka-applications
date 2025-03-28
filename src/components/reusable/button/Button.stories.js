@@ -65,6 +65,7 @@ const args = {
   type: 'button',
   size: 'medium',
   disabled: false,
+  readonly: false,
   iconPosition: 'right',
   description: 'Button description',
   href: '',
@@ -82,6 +83,7 @@ export const Button = {
         kind=${args.kind}
         type=${args.type}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
         size=${args.size}
@@ -113,6 +115,7 @@ export const ButtonWithIcon = {
         kind=${args.kind}
         type=${args.type}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
         size=${args.size}
@@ -141,6 +144,7 @@ export const IconOnly = {
         kind=${args.kind}
         type=${args.type}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?isFloating=${args.isFloating}
         ?showOnScroll=${args.showOnScroll}
         size=${args.size}
