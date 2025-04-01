@@ -5,8 +5,10 @@ import { action } from '@storybook/addon-actions';
 import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/checkmark-filled.svg';
 import errorFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/error-filled.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
-import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/upload.svg';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/upload.svg';
+import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/checkmark.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/error.svg';
 import SampleFileUploaderScss from './fileUploader.sample.scss';
 import './index';
 import '../inlineConfirm';
@@ -14,6 +16,7 @@ import '../link';
 import '../notification';
 import '../button';
 import '../progressBar';
+import '../loaders';
 
 @customElement('sample-file-uploader')
 export class SampleFileUploader extends LitElement {
@@ -36,6 +39,9 @@ export class SampleFileUploader extends LitElement {
   @property({ type: Array })
   // accept = ['image/*', '.pdf'];
   accept = ['image/jpeg', 'image/png'];
+
+  @state()
+  _uploaderStatus = 'default'; // default, active, success, error
 
   @state()
   _validFiles: any[] = [];
@@ -90,7 +96,9 @@ export class SampleFileUploader extends LitElement {
           this._handleFilesToBeUploaded(e);
         }}
       >
-        <span slot="uploader-status-icon">${unsafeSVG(uploadIcon)}</span>
+        <span slot="uploader-status-icon"
+          >${this._getStatusIcon(this._uploaderStatus)}</span
+        >
         <!-- File details list -->
         <div slot="file-details" class="file-details-wrapper">
           ${this._invalidFiles.length > 0
@@ -227,6 +235,31 @@ export class SampleFileUploader extends LitElement {
     `;
   }
 
+  private _getStatusIcon(status: string) {
+    switch (status) {
+      case 'active':
+        return html`
+          <kyn-loader-inline class="class__flex"></kyn-loader-inline>
+        `;
+      case 'success':
+        return html`
+          <span class="success-icon class__flex"
+            >${unsafeSVG(checkmarkIcon)}</span
+          >
+        `;
+      case 'error':
+        return html`
+          <span class="uploader-error-icon class__flex"
+            >${unsafeSVG(errorIcon)}</span
+          >
+        `;
+      default:
+        return html`
+          <span class="class__flex">${unsafeSVG(uploadIcon)}</span>
+        `;
+    }
+  }
+
   private _getFilesSize(bytes: number) {
     if (bytes < 1024) {
       return `${bytes} Bytes`;
@@ -242,6 +275,7 @@ export class SampleFileUploader extends LitElement {
   private _deleteFile(fileId: string) {
     this._validFiles = this._validFiles.filter((file) => file.id !== fileId);
     this._showNotification = false;
+    this._uploaderStatus = 'default';
     this._resetNotificationContent();
   }
 
@@ -256,6 +290,7 @@ export class SampleFileUploader extends LitElement {
   private _startFileUpload() {
     this._showNotification = true;
     this._uploadCancelled = false;
+    this._uploaderStatus = 'active';
     this._resetNotificationContent();
 
     const fileNames = this._validFiles.map((file) => file.file.name);
@@ -345,6 +380,8 @@ export class SampleFileUploader extends LitElement {
           };
 
           this._displayNotification();
+          this._uploaderStatus =
+            this._invalidFiles.length > 0 ? 'error' : 'success';
         }
 
         this.requestUpdate();
@@ -396,6 +433,7 @@ export class SampleFileUploader extends LitElement {
 
   // This is a placeholder function to simulate the logic for stopping the file upload.
   private _stopFileUpload() {
+    this._uploaderStatus = 'error';
     // Stop the upload interval if it's running
     if (this._uploadInterval) {
       clearInterval(this._uploadInterval);
