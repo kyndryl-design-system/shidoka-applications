@@ -193,7 +193,7 @@ export class FileUploader extends LitElement {
     const validFiles: Object[] = [];
     const invalidFiles: Object[] = [];
 
-    // Parse maxFileSizeText to get the max file size in bytes
+    // Parse maxFileSize to get the max file size in bytes
     const maxFileSizeInBytes = this._parseFileSize(this.maxFileSize);
 
     files.forEach((file) => {
