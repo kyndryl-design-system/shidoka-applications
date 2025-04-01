@@ -11,6 +11,7 @@ import '../link';
 /**
  * File Uploader List Container
  * @slot unnamed - Slot for individual file uploader items.
+ * @slot action-button - Slot for action button.
  */
 @customElement('kyn-file-uploader-list-container')
 export class FileUploaderListContainer extends LitElement {

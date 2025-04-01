@@ -17,6 +17,10 @@ const _defaultTextStrings = {
 /**
  * File Uploader
  * @fires on-file-upload - Emits the uploaded files.
+ * @slot uploader-status-icon - Slot for the uploader status icon.
+ * @slot file-details - Slot for file details.
+ * @slot upload-status - Slot for upload status/notification.
+ * @slot unnamed - Slot for the upload button.
  */
 @customElement('kyn-file-uploader')
 export class FileUploader extends LitElement {
@@ -44,7 +48,7 @@ export class FileUploader extends LitElement {
    * Set the maximum file size. Default value is `1MB`.
    */
   @property({ type: String })
-  maxFileSizeText = '1MB';
+  maxFileSize = '1MB';
 
   /**
    * Internal uploaded files.
@@ -88,7 +92,7 @@ export class FileUploader extends LitElement {
           <div class="upload-constraints">
             <p>
               ${this._textStrings.maxFileSizeText}
-              <strong>${this.maxFileSizeText}</strong>.
+              <strong>${this.maxFileSize}</strong>.
               ${this._textStrings.supportedFileTypeText}
               <strong>${this._textStrings.fileTypeDisplyText}</strong>.
             </p>
@@ -190,7 +194,7 @@ export class FileUploader extends LitElement {
     const invalidFiles: Object[] = [];
 
     // Parse maxFileSizeText to get the max file size in bytes
-    const maxFileSizeInBytes = this._parseFileSize(this.maxFileSizeText);
+    const maxFileSizeInBytes = this._parseFileSize(this.maxFileSize);
 
     files.forEach((file) => {
       const fileName = file.name;
