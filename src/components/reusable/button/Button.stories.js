@@ -68,6 +68,7 @@ const args = {
   iconPosition: 'right',
   description: 'Button description',
   href: '',
+  target: '_self',
   name: '',
   value: '',
   isFloating: false,
@@ -88,6 +89,7 @@ export const Button = {
         iconPosition=${args.iconPosition}
         description=${args.description}
         href=${args.href}
+        target=${args.target}
         name=${args.name}
         value=${args.value}
         @on-click=${(e) => action(e.type)(e)}
@@ -119,6 +121,7 @@ export const ButtonWithIcon = {
         iconPosition=${args.iconPosition}
         description=${args.description}
         href=${args.href}
+        target=${args.target}
         name=${args.name}
         value=${args.value}
         @on-click=${(e) => action(e.type)(e)}
@@ -147,6 +150,7 @@ export const IconOnly = {
         iconPosition="center"
         description=${args.description}
         href=${args.href}
+        target=${args.target}
         name=${args.name}
         value=${args.value}
         @on-click=${(e) => action(e.type)(e)}
