@@ -83,7 +83,6 @@ export class OverflowMenuItem extends LitElement {
     } else {
       return html`
         <button
-          tabindex="0"
           class=${classMap(classes)}
           ?disabled=${this.disabled}
           @click=${(e: Event) => this.handleClick(e)}

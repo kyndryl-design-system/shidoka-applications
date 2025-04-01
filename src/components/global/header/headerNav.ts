@@ -35,7 +35,6 @@ export class HeaderNav extends LitElement {
     return html`
       <div class=${classMap(classes)}>
         <button
-          tabindex="0"
           class="btn interactive"
           aria-label="Toggle Menu"
           title="Toggle Menu"

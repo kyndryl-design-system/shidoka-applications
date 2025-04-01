@@ -176,8 +176,7 @@ export class BlockCodeView extends LitElement {
           <pre
             @keydown=${this.handleKeypress}
             role="region"
-          ><code tabindex="0" class="language-${this
-            ._effectiveLanguage}">${unsafeHTML(
+          ><code class="language-${this._effectiveLanguage}">${unsafeHTML(
             this._highlightedCode
           )}</code></pre>
         </div>

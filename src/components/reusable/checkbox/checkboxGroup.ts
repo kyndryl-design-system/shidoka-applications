@@ -198,7 +198,6 @@ export class CheckboxGroup extends FormMixin(LitElement) {
             this.filteredCheckboxes.length > this._limitCount
               ? html`
                   <button
-                    tabindex="0"
                     class="reveal-toggle"
                     @click=${() => this._toggleRevealed(!this.limitRevealed)}
                   >

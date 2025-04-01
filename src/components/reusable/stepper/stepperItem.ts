@@ -350,7 +350,6 @@ export class StepperItem extends LitElement {
               ${this.childSteps?.length > 0 && this.stepperType === 'procedure'
                 ? html`
                     <button
-                      tabindex="0"
                       class="toggle-icon-button"
                       aria-label="Toggle children"
                       type="button"

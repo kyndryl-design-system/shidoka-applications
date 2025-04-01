@@ -71,7 +71,6 @@ export class OverflowMenu extends LitElement {
     return html`
       <div class="overflow-menu">
         <button
-          tabindex="0"
           class=${classMap(buttonClasses)}
           @click=${this.toggleMenu}
           aria-controls="menu"

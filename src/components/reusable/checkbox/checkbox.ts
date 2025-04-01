@@ -79,7 +79,6 @@ export class Checkbox extends LitElement {
         </span>
 
         <input
-          tabindex="0"
           type="checkbox"
           name=${this.name}
           value=${this.value}

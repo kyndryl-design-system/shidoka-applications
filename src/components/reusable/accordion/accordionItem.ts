@@ -161,7 +161,6 @@ export class AccordionItem extends LitElement {
           aria-controls="kyn-accordion-item-body-${this._index}"
           aria-expanded=${this.opened}
           aria-disabled=${this.disabled}
-          tabindex="0"
           role="button"
           @click="${(e: Event) => this._handleClick(e)}"
           @keypress="${(e: KeyboardEvent) => this._handleKeypress(e)}"

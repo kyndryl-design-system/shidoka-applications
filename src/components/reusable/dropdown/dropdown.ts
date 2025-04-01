@@ -279,7 +279,6 @@ export class Dropdown extends FormMixin(LitElement) {
               ${this.multiple && this.value.length
                 ? html`
                     <button
-                      tabindex="0"
                       class="clear-multiple"
                       aria-label="${this.value
                         .length} items selected. Clear selections"

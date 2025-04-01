@@ -99,7 +99,6 @@ export class LocalNav extends LitElement {
         @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
       >
         <button
-          tabindex="0"
           class="mobile-toggle"
           title=${this._textStrings.toggleMenu}
           aria-label=${this._textStrings.toggleMenu}
