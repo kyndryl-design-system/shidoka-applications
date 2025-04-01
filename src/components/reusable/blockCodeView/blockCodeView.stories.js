@@ -131,10 +131,10 @@ const args = {
   darkTheme: 'default',
   language: '',
   maxHeight: null,
+  lineNumbers: true,
   codeViewLabel: 'Block Code View',
   copyOptionVisible: true,
   codeViewExpandable: true,
-  lineNumbers: false,
   copyButtonText: 'Copy',
   copyButtonDescriptionAttr: 'Copy code button',
   textStrings: {
@@ -176,6 +176,7 @@ SingleLineView.args = {
   ...args,
   codeViewLabel: 'Single Line Code Snippet',
   copyButtonText: '',
+  lineNumbers: false,
   codeSnippet: defaultTemplateCodes.SINGLE_LINE,
 };
 
@@ -219,13 +220,16 @@ BashExample.args = {
   language: 'bash',
   codeViewLabel: 'Bash Code Snippet (manually configured language name)',
   copyButtonText: '',
+  lineNumbers: false,
   codeSnippet: defaultTemplateCodes.BASH,
 };
 
-export const WithLineNumbers = Template.bind({});
-WithLineNumbers.args = {
+export const WithoutLineNumbers = Template.bind({});
+WithoutLineNumbers.args = {
   ...args,
+  language: 'javascript',
+  maxHeight: 300,
   codeViewLabel: 'Code with Line Numbers',
-  lineNumbers: true,
+  lineNumbers: false,
   codeSnippet: defaultTemplateCodes.JAVASCRIPT,
 };

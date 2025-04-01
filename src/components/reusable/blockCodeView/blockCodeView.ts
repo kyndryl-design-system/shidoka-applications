@@ -153,11 +153,12 @@ export class BlockCodeView extends LitElement {
       this.requestUpdate();
     }
 
-    if (
+    const codeChanged =
       changedProperties.has('codeSnippet') ||
       changedProperties.has('language') ||
-      changedProperties.has('maxHeight')
-    ) {
+      changedProperties.has('maxHeight');
+
+    if (codeChanged) {
       this.highlightCode();
       this.checkOverflow();
     }
@@ -167,11 +168,14 @@ export class BlockCodeView extends LitElement {
     }
 
     if (changedProperties.has('lineNumbers')) {
-      setTimeout(() => {
-        if (this.shadowRoot) {
-          Prism.highlightAllUnder(this.shadowRoot);
-        }
-      }, 0);
+      const was = changedProperties.get('lineNumbers');
+      if (this.lineNumbers && was === false) {
+        this.highlightCode();
+      } else {
+        setTimeout(() => {
+          if (this.shadowRoot) Prism.highlightAllUnder(this.shadowRoot);
+        }, 0);
+      }
     }
 
     super.updated(changedProperties);
@@ -189,7 +193,7 @@ export class BlockCodeView extends LitElement {
       <div class="${this.getContainerClasses()}" style="${containerStyle}">
         <div class="code-snippet-wrapper">
           <pre
-            class=${this.lineNumbers ? 'line-numbers' : ''}
+            class=${this.lineNumbers ? 'line-numbers' : 'no-line-numbers'}
             @keydown=${this.handleKeypress}
             role="region"
           >            
@@ -279,22 +283,8 @@ export class BlockCodeView extends LitElement {
     this._effectiveLanguage =
       this.language || this.detectLanguage(processedCode);
 
-    if (!Prism.languages[this._effectiveLanguage]) {
-      console.warn(
-        `Language '${this._effectiveLanguage}' not loaded. Falling back to plaintext.`
-      );
-      this._effectiveLanguage = 'plaintext';
-    }
-
-    this._highlightedCode = Prism.highlight(
-      processedCode,
-      Prism.languages[this._effectiveLanguage],
-      this._effectiveLanguage
-    );
+    this._highlightedCode = processedCode; // ← don't call Prism.highlight here
     this.requestUpdate();
-    setTimeout(() => {
-      this.checkOverflow();
-    }, 0);
   }
 
   private detectLanguage(code: string): string {

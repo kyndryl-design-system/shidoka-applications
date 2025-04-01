@@ -9,53 +9,59 @@ $border-radius: 4px;
   position: relative;
 }
 
+/// LINE NUMBERS STYLES
 pre.line-numbers {
   position: relative;
   padding-left: 0;
-  // counter-reset: linenumber;
+  counter-reset: linenumber;
+
+  & > code {
+    position: relative;
+    display: block;
+    white-space: inherit;
+    margin-left: -35px;
+  }
+
+  .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    font-size: 100%;
+    left: -56px;
+    width: 32px; /* line-numbers below 1000 lines */
+    letter-spacing: -1px;
+    border-right: 1px solid var(--kd-color-text-level-disabled);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    z-index: 0;
+
+    & > span {
+      display: block;
+      counter-increment: linenumber;
+      pointer-events: none;
+
+      &:before {
+        content: counter(linenumber);
+        color: var(--kd-color-text-level-disabled);
+        display: block;
+        padding-right: 13px;
+        text-align: right;
+      }
+    }
+  }
 }
 
-pre.line-numbers > code {
-  position: relative;
-  display: block;
-  white-space: inherit;
-  margin-left: -3rem;
+.multi-line.code-view__container {
+  pre.no-line-numbers {
+    & > code {
+      margin-left: -81.6px;
+    }
+  }
 }
 
-pre.line-numbers .line-numbers-rows {
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  font-size: 100%;
-  left: -3.5em;
-  width: 2em; /* line-numbers below 1000 lines */
-  letter-spacing: -1px;
-  border-right: 1px solid #999;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  z-index: 0;
-}
-
-pre.line-numbers .line-numbers-rows > span {
-  display: block;
-  counter-increment: linenumber;
-  pointer-events: none;
-}
-
-pre.line-numbers .line-numbers-rows > span:before {
-  content: counter(linenumber);
-  color: #999;
-  display: block;
-  padding-right: 0.8em;
-  text-align: right;
-}
-
-pre[class*='language-'] > code {
-  position: relative;
-  display: block;
-}
+////
 
 .code-view {
   &__label {
@@ -200,7 +206,6 @@ pre[class*='language-'] > code {
 
       pre {
         margin: 0;
-        padding: 16px;
         line-height: 16px;
         overflow: auto;
         max-height: inherit;
