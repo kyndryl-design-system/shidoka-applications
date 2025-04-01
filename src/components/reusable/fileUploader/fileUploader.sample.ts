@@ -99,7 +99,7 @@ export class SampleFileUploader extends LitElement {
                     : ''}
                   <kyn-button
                     slot="action-button"
-                    kind="outline"
+                    kind="ghost"
                     size="small"
                     @on-click=${() => (this.invalidFiles = [])}
                   >
