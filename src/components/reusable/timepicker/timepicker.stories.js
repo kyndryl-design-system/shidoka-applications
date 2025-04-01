@@ -26,7 +26,6 @@ export default {
     locale: { control: { type: 'text' } },
     minTime: { control: { type: 'text' } },
     maxTime: { control: { type: 'text' } },
-    defaultDate: { control: { type: 'text' } },
     defaultHour: { control: { type: 'number' } },
     defaultMinute: { control: { type: 'number' } },
     invalidText: { control: { type: 'text' } },
@@ -62,7 +61,6 @@ const Template = (args) => {
       .warnText=${args.warnText}
       .invalidText=${args.invalidText}
       .caption=${args.caption}
-      .defaultDate=${args.defaultDate}
       .defaultHour=${args.defaultHour}
       .defaultMinute=${args.defaultMinute}
       .defaultErrorMessage=${args.defaultErrorMessage}
@@ -101,7 +99,6 @@ DefaultTimePicker.args = {
   timepickerDisabled: false,
   twentyFourHourFormat: false,
   label: 'Timepicker',
-  defaultDate: '',
   defaultHour: null,
   defaultMinute: null,
 };
@@ -159,7 +156,6 @@ export const InModal = {
     hideCancelButton: false,
     aiConnected: false,
     disableScroll: false,
-    defaultDate: '',
     defaultHour: null,
     defaultMinute: null,
   },
@@ -200,7 +196,6 @@ export const InModal = {
           .invalidText=${args.invalidText}
           ?staticPosition=${args.staticPosition}
           .caption=${args.caption}
-          .defaultDate=${args.defaultDate}
           .defaultHour=${args.defaultHour}
           .defaultMinute=${args.defaultMinute}
           .defaultErrorMessage=${args.defaultErrorMessage}
