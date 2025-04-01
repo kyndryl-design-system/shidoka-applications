@@ -366,6 +366,8 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
+    if (this.datePickerDisabled) return null;
+
     if (this.invalidText || (this._isInvalid && this._hasInteracted)) {
       return html`<div
         id=${errorId}
@@ -841,6 +843,15 @@ export class DatePicker extends FormMixin(LitElement) {
 
   private _validate(interacted: boolean, report: boolean) {
     if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) return;
+
+    // Don't apply validation when the component is disabled
+    if (this.datePickerDisabled) {
+      this._internals.setValidity({}, '', this._inputEl);
+      this._isInvalid = false;
+      this._internalValidationMsg = '';
+      return;
+    }
+
     if (interacted) {
       this._hasInteracted = true;
     }
