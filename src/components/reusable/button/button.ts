@@ -72,6 +72,10 @@ export class Button extends LitElement {
   @property({ type: String })
   href = '';
 
+  /** Link target, only valid if href is supplied. */
+  @property({ type: String })
+  target = '_self';
+
   /** Specifies the size of the button. */
   @property({ type: String })
   size: BUTTON_SIZES = BUTTON_SIZES.MEDIUM;
@@ -165,6 +169,7 @@ export class Button extends LitElement {
               part="button"
               class=${classMap(BtnClasses)}
               href=${this.href}
+              target=${this.target}
               ?disabled=${this.disabled}
               aria-label=${ifDefined(this.description)}
               title=${ifDefined(this.description)}
