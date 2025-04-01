@@ -85,14 +85,19 @@ export class FileUploader extends LitElement {
   override render() {
     return html`
       <div class="file-uploader-container">
-        ${this.renderDragDropContainer()}
-        <div class="upload-constraints">
-          <p>
-            ${this._textStrings.maxFileSizeText}
-            <strong>${this.maxFileSizeText}</strong>.
-            ${this._textStrings.supportedFileTypeText}
-            <strong>${this._textStrings.fileTypeDisplyText}</strong>.
-          </p>
+        <div class="drag-drop-container-wrapper">
+          ${this.renderDragDropContainer()}
+          <div class="upload-constraints">
+            <p>
+              ${this._textStrings.maxFileSizeText}
+              <strong>${this.maxFileSizeText}</strong>.
+              ${this._textStrings.supportedFileTypeText}
+              <strong>${this._textStrings.fileTypeDisplyText}</strong>.
+            </p>
+          </div>
+        </div>
+        <div class="file-info-container">
+          <slot name="file-details"></slot>
         </div>
         <div class="upload-status-container">
           <slot name="upload-status"></slot>
@@ -108,7 +113,6 @@ export class FileUploader extends LitElement {
     };
     return html`
       <div
-        tabindex="0"
         class=${classMap(dragDropContainerClasses)}
         @dragover="${this.handleDragOver}"
         @dragleave="${() => (this._dragging = false)}"

@@ -53,12 +53,15 @@ export class FileUploaderListContainer extends LitElement {
 
     return html`
       <div class="file-uploader-list-container">
-        <div class="file-uploader-list-container__label">${this.titleText}</div>
+        <div class="file-uploader-list-container__header">
+          ${this.titleText}
+          <slot name="action-button"></slot>
+        </div>
         <div class="file-uploader-list-container__items">
           <slot @slotchange=${this._handleSlotChange}></slot>
         </div>
         ${hasMoreThanThreeItems
-          ? html` <div>
+          ? html` <div class="file-uploader-list-container__footer">
               <kyn-link
                 standalone
                 @on-click=${() => this._toggleReveal(!this._limitRevealed)}

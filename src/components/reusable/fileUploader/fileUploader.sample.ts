@@ -62,7 +62,91 @@ export class SampleFileUploader extends LitElement {
           action(e.type)(e);
           this._handleUploadedFiles(e);
         }}
-      ></kyn-file-uploader>
+      >
+        <!-- File details list -->
+        <div slot="file-details" class="file-details-wrapper">
+          ${this.invalidFiles.length > 0
+            ? html`
+                <kyn-file-uploader-list-container
+                  .titleText=${'Some files could not be added:'}
+                >
+                  <!-- Invalid files -->
+                  ${this.invalidFiles.length > 0
+                    ? this.invalidFiles.map(
+                        (file) => html`
+                          <kyn-file-uploader-item>
+                            <span slot="status-icon" class="error-icon"
+                              >${unsafeSVG(errorFilledIcon)}</span
+                            >
+                            <div class="file-details-container">
+                              <p class="file-name">${file.name}</p>
+                              <div class="error-info-container">
+                                <p class="file-size">
+                                  ${this._getFilesSize(file.size)}
+                                </p>
+                                ·
+                                <p class="file-size error">
+                                  ${file.errorMsg === 'typeError'
+                                    ? 'Invaild file type'
+                                    : 'Max file size exceeded'}
+                                </p>
+                              </div>
+                            </div>
+                          </kyn-file-uploader-item>
+                        `
+                      )
+                    : ''}
+                  <kyn-button
+                    slot="action-button"
+                    kind="outline"
+                    size="small"
+                    @on-click=${() => (this.invalidFiles = [])}
+                  >
+                    Clear list
+                  </kyn-button>
+                </kyn-file-uploader-list-container>
+              `
+            : ''}
+          ${this.validFiles.length > 0
+            ? html`
+                <kyn-file-uploader-list-container .titleText=${'Files added:'}>
+                  <!-- Valid files -->
+                  ${this.validFiles.length > 0
+                    ? this.validFiles.map(
+                        (file) => html`
+                          <kyn-file-uploader-item>
+                            <span slot="status-icon" class="success-icon"
+                              >${unsafeSVG(checkmarkFilledIcon)}</span
+                            >
+                            <div class="file-details-container">
+                              <p class="file-name success">${file.file.name}</p>
+                              <p class="file-size">
+                                ${this._getFilesSize(file.file.size)}
+                              </p>
+                            </div>
+                            <div slot="actions">
+                              <kyn-inline-confirm
+                                ?destructive=${true}
+                                .anchorText=${'Delete'}
+                                .confirmText=${'Confirm'}
+                                .cancelText=${'Cancel'}
+                                @on-confirm=${() => this._deleteFile(file.id)}
+                              >
+                                <span>${unsafeSVG(deleteIcon)}</span>
+                                <span slot="confirmIcon"
+                                  >${unsafeSVG(deleteIcon)}</span
+                                >
+                              </kyn-inline-confirm>
+                            </div>
+                          </kyn-file-uploader-item>
+                        `
+                      )
+                    : ''}
+                </kyn-file-uploader-list-container>
+              `
+            : ''}
+        </div>
+      </kyn-file-uploader>
       <!-- Upload status -->
       ${this.showNotification
         ? html`
@@ -77,76 +161,6 @@ export class SampleFileUploader extends LitElement {
             </kyn-notification>
           `
         : ``}
-      <!-- File details list -->
-      ${this.validFiles.length > 0 || this.invalidFiles.length > 0
-        ? html`
-            <kyn-file-uploader-list-container>
-              <!-- Invalid files -->
-              ${this.invalidFiles.length > 0
-                ? this.invalidFiles.map(
-                    (file) => html`
-                      <kyn-file-uploader-item>
-                        <span slot="status-icon" class="error-icon"
-                          >${unsafeSVG(errorFilledIcon)}</span
-                        >
-                        <div class="file-details-container">
-                          <p class="file-name">${file.name}</p>
-                          <div class="error-info-container">
-                            <p class="file-size">
-                              ${this._getFilesSize(file.size)}
-                            </p>
-                            ·
-                            <p class="file-size error">
-                              ${file.errorMsg === 'typeError'
-                                ? 'Invaild file type'
-                                : 'Max file size exceeded'}
-                            </p>
-                          </div>
-                        </div>
-                        <div slot="actions">
-                          <kyn-link standalone>Re-upload</kyn-link>
-                        </div>
-                      </kyn-file-uploader-item>
-                    `
-                  )
-                : ''}
-              <!-- Valid files -->
-              ${this.validFiles.length > 0
-                ? this.validFiles.map(
-                    (file) => html`
-                      <kyn-file-uploader-item>
-                        <span slot="status-icon" class="success-icon"
-                          >${unsafeSVG(checkmarkFilledIcon)}</span
-                        >
-                        <div class="file-details-container">
-                          <p class="file-name success">${file.file.name}</p>
-                          <p class="file-size">
-                            ${this._getFilesSize(file.file.size)}
-                          </p>
-                        </div>
-                        <div slot="actions">
-                          <kyn-inline-confirm
-                            ?destructive=${true}
-                            .anchorText=${'Delete'}
-                            .confirmText=${'Confirm'}
-                            .cancelText=${'Cancel'}
-                            @on-confirm=${() => this._deleteFile(file.id)}
-                          >
-                            <span class="delete-icon"
-                              >${unsafeSVG(deleteIcon)}</span
-                            >
-                            <span slot="confirmIcon"
-                              >${unsafeSVG(deleteIcon)}</span
-                            >
-                          </kyn-inline-confirm>
-                        </div>
-                      </kyn-file-uploader-item>
-                    `
-                  )
-                : ''}
-            </kyn-file-uploader-list-container>
-          `
-        : ''}
     `;
   }
 
