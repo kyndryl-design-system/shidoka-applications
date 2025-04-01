@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { html, LitElement } from 'lit';
+import { html, LitElement, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -8,6 +8,9 @@ import { deepmerge } from 'deepmerge-ts';
 
 import Prism from 'prismjs';
 import 'prismjs/plugins/autoloader/prism-autoloader';
+import 'prismjs/plugins/line-numbers/prism-line-numbers';
+// Import the line-numbers CSS
+import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import 'prismjs-components-importer';
 Prism.plugins.autoloader.languages_path = 'node_modules/prismjs/components/';
 
@@ -46,7 +49,51 @@ const LANGUAGE_SPECIFIC_TOKENS: Record<string, string[]> = {
  */
 @customElement('kyn-block-code-view')
 export class BlockCodeView extends LitElement {
-  static override styles = [BlockCodeViewStyles, ShidokaSyntaxTheme];
+  static override styles = [
+    BlockCodeViewStyles,
+    ShidokaSyntaxTheme,
+    // Define line-numbers styles directly in the component for shadow DOM compatibility
+    css`
+      pre.line-numbers {
+        position: relative;
+        padding-left: 3.8em;
+        counter-reset: linenumber;
+      }
+
+      pre.line-numbers > code {
+        position: relative;
+        white-space: inherit;
+      }
+
+      .line-numbers .line-numbers-rows {
+        position: absolute;
+        pointer-events: none;
+        top: 0;
+        font-size: 100%;
+        left: -3.8em;
+        width: 3em; /* works for line-numbers below 1000 lines */
+        letter-spacing: -1px;
+        border-right: 1px solid #999;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      .line-numbers-rows > span {
+        display: block;
+        counter-increment: linenumber;
+      }
+
+      .line-numbers-rows > span:before {
+        content: counter(linenumber);
+        color: #999;
+        display: block;
+        padding-right: 0.8em;
+        text-align: right;
+      }
+    `,
+  ];
 
   /** Sets background and text theming. */
   @property({ type: String })
@@ -71,6 +118,10 @@ export class BlockCodeView extends LitElement {
   /** Optionally display button to expand code snippet container. */
   @property({ type: Boolean })
   codeViewExpandable = false;
+
+  /** Optionally enable line numbers for code snippets. */
+  @property({ type: Boolean })
+  lineNumbers = false;
 
   /** Sets copy code button text (optional). */
   @property({ type: String })
@@ -159,6 +210,15 @@ export class BlockCodeView extends LitElement {
     if (changedProperties.has('copyButtonText')) {
       this._copyState = { ...this._copyState, text: this.copyButtonText };
     }
+
+    if (changedProperties.has('lineNumbers')) {
+      setTimeout(() => {
+        if (this.shadowRoot) {
+          Prism.highlightAllUnder(this.shadowRoot);
+        }
+      }, 0);
+    }
+
     super.updated(changedProperties);
   }
 
@@ -174,6 +234,7 @@ export class BlockCodeView extends LitElement {
       <div class="${this.getContainerClasses()}" style="${containerStyle}">
         <div class="code-snippet-wrapper">
           <pre
+            class=${this.lineNumbers ? 'line-numbers' : ''}
             @keydown=${this.handleKeypress}
             role="region"
           ><code tabindex="0" class="language-${this
@@ -273,8 +334,38 @@ export class BlockCodeView extends LitElement {
       Prism.languages[this._effectiveLanguage],
       this._effectiveLanguage
     );
+
     this.requestUpdate();
-    this.checkOverflow();
+
+    // After update, handle line numbers if needed
+    setTimeout(() => {
+      if (this.shadowRoot && this.lineNumbers) {
+        const pre = this.shadowRoot.querySelector('pre');
+        if (pre) {
+          if (!pre.classList.contains('line-numbers-applied')) {
+            const codeElement = pre.querySelector('code');
+            if (codeElement) {
+              // Create line numbers container
+              const content = codeElement.textContent || '';
+              const lines = content.split('\n').length;
+              const lineNumbersContainer = document.createElement('span');
+              lineNumbersContainer.className = 'line-numbers-rows';
+
+              // Create a span for each line
+              let lineNumbersHTML = '';
+              for (let i = 0; i < lines; i++) {
+                lineNumbersHTML += '<span></span>';
+              }
+
+              lineNumbersContainer.innerHTML = lineNumbersHTML;
+              codeElement.appendChild(lineNumbersContainer);
+              pre.classList.add('line-numbers-applied');
+            }
+          }
+        }
+      }
+      this.checkOverflow();
+    }, 0);
   }
 
   private detectLanguage(code: string): string {

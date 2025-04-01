@@ -111,6 +111,9 @@ export default {
     copyOptionVisible: {
       control: { type: 'boolean' },
     },
+    lineNumbers: {
+      control: { type: 'boolean' },
+    },
     maxHeight: {
       control: {
         type: 'number',
@@ -131,6 +134,7 @@ const args = {
   codeViewLabel: 'Block Code View',
   copyOptionVisible: true,
   codeViewExpandable: true,
+  lineNumbers: false,
   copyButtonText: 'Copy',
   copyButtonDescriptionAttr: 'Copy code button',
   textStrings: {
@@ -151,6 +155,7 @@ const Template = (args) => {
       codeViewLabel=${args.codeViewLabel}
       ?copyOptionVisible=${args.copyOptionVisible}
       ?codeViewExpandable=${args.codeViewExpandable}
+      ?lineNumbers=${args.lineNumbers}
       copyButtonText=${args.copyButtonText}
       copyButtonDescriptionAttr=${args.copyButtonDescriptionAttr}
       .textStrings=${args.textStrings}
@@ -215,4 +220,12 @@ BashExample.args = {
   codeViewLabel: 'Bash Code Snippet (manually configured language name)',
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.BASH,
+};
+
+export const WithLineNumbers = Template.bind({});
+WithLineNumbers.args = {
+  ...args,
+  codeViewLabel: 'Code with Line Numbers',
+  lineNumbers: true,
+  codeSnippet: defaultTemplateCodes.JAVASCRIPT,
 };
