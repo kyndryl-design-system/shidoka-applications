@@ -102,6 +102,9 @@ export class FileUploader extends LitElement {
         <div class="upload-status-container">
           <slot name="upload-status"></slot>
         </div>
+        <div class="upload-button">
+          <slot></slot>
+        </div>
       </div>
     `;
   }

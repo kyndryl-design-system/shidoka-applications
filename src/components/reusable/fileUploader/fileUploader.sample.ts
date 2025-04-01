@@ -10,6 +10,7 @@ import './index';
 import '../inlineConfirm';
 import '../link';
 import '../notification';
+import '../button';
 
 @customElement('sample-file-uploader')
 export class SampleFileUploader extends LitElement {
@@ -60,7 +61,7 @@ export class SampleFileUploader extends LitElement {
         .textStrings=${this.textStrings}
         @on-file-upload=${(e: any) => {
           action(e.type)(e);
-          this._handleUploadedFiles(e);
+          this._handleFilesToBeUploaded(e);
         }}
       >
         <!-- File details list -->
@@ -146,31 +147,46 @@ export class SampleFileUploader extends LitElement {
               `
             : ''}
         </div>
+        <!-- Upload status -->
+        ${this.showNotification
+          ? html`
+              <kyn-notification
+                slot="upload-status"
+                .type=${'inline'}
+                .hideCloseButton=${true}
+                .notificationTitle=${this.notificationTitle}
+                .tagStatus=${this.notificationStatus}
+              >
+                ${this.notificationMessage}
+              </kyn-notification>
+            `
+          : ``}
+        <!-- Upload button -->
+        <div>
+          ${this.validFiles.length > 0 || this.invalidFiles.length > 0
+            ? html`<kyn-button
+                size="small"
+                @on-click=${() => this._startFileUpload()}
+                >Start upload</kyn-button
+              >`
+            : ''}
+        </div>
       </kyn-file-uploader>
-      <!-- Upload status -->
-      ${this.showNotification
-        ? html`
-            <kyn-notification
-              slot="upload-status"
-              .type=${'inline'}
-              .hideCloseButton=${true}
-              .notificationTitle=${this.notificationTitle}
-              .tagStatus=${this.notificationStatus}
-            >
-              ${this.notificationMessage}
-            </kyn-notification>
-          `
-        : ``}
     `;
   }
 
-  private _handleUploadedFiles(event: any) {
+  // to show the files added to the file uploader
+  private _handleFilesToBeUploaded(event: any) {
     this.validFiles = [...event.detail.validFiles, ...this.validFiles];
     this.invalidFiles = [...event.detail.invalidFiles, ...this.invalidFiles];
-    this.showNotification = true;
-    this._displayNotification();
     console.log('Valid files:', this.validFiles); // to be removed
     console.log('Invalid files:', this.invalidFiles); // to be removed
+  }
+
+  // the application needs to add logic to upload the files and show the status
+  private _startFileUpload() {
+    this.showNotification = true;
+    this._displayNotification();
   }
 
   private _displayNotification() {
@@ -203,6 +219,7 @@ export class SampleFileUploader extends LitElement {
 
   private _deleteFile(fileId: string) {
     this.validFiles = this.validFiles.filter((file) => file.id !== fileId);
+    this.showNotification = false;
   }
 }
 
