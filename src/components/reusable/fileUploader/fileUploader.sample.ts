@@ -5,6 +5,7 @@ import { action } from '@storybook/addon-actions';
 import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/checkmark-filled.svg';
 import errorFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/error-filled.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
+import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/upload.svg';
 import SampleFileUploaderScss from './fileUploader.sample.scss';
 import './index';
 import '../inlineConfirm';
@@ -64,6 +65,7 @@ export class SampleFileUploader extends LitElement {
           this._handleFilesToBeUploaded(e);
         }}
       >
+        <span slot="uploader-status-icon">${unsafeSVG(uploadIcon)}</span>
         <!-- File details list -->
         <div slot="file-details" class="file-details-wrapper">
           ${this.invalidFiles.length > 0

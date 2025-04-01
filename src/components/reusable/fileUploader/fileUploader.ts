@@ -2,8 +2,6 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { deepmerge } from 'deepmerge-ts';
-import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/upload.svg';
 import FileUploaderScss from './fileUploader.scss';
 import '../button';
 
@@ -121,8 +119,8 @@ export class FileUploader extends LitElement {
         @dragleave="${() => (this._dragging = false)}"
         @drop="${this.handleDrop}"
       >
-        <div class="status-icon">
-          <span>${unsafeSVG(uploadIcon)}</span>
+        <div class="uploader-status-icon">
+          <slot name="uploader-status-icon"></slot>
         </div>
         <p class="drag-drop-text">${this._textStrings.dragAndDropText}</p>
         <p class="or-text">${this._textStrings.orText}</p>
