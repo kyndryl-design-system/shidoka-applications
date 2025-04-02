@@ -114,6 +114,12 @@ export default {
     lineNumbers: {
       control: { type: 'boolean' },
     },
+    startLine: {
+      control: {
+        type: 'number',
+        min: 1,
+      },
+    },
     maxHeight: {
       control: {
         type: 'number',
@@ -156,6 +162,7 @@ const Template = (args) => {
       ?copyOptionVisible=${args.copyOptionVisible}
       ?codeViewExpandable=${args.codeViewExpandable}
       ?lineNumbers=${args.lineNumbers}
+      .startLine=${args.startLine || 1}
       copyButtonText=${args.copyButtonText}
       copyButtonDescriptionAttr=${args.copyButtonDescriptionAttr}
       .textStrings=${args.textStrings}
@@ -229,5 +236,16 @@ WithLineNumbers.args = {
   maxHeight: 300,
   codeViewLabel: 'Code with Line Numbers',
   lineNumbers: true,
+  codeSnippet: defaultTemplateCodes.JAVASCRIPT,
+};
+
+export const WithCustomStartLine = Template.bind({});
+WithCustomStartLine.args = {
+  ...args,
+  language: 'javascript',
+  maxHeight: 300,
+  codeViewLabel: 'Code with Line Numbers and Custom Start Line',
+  lineNumbers: true,
+  startLine: 100,
   codeSnippet: defaultTemplateCodes.JAVASCRIPT,
 };

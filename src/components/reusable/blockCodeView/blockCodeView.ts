@@ -61,6 +61,10 @@ export class BlockCodeView extends LitElement {
   @property({ type: Boolean })
   lineNumbers = false;
 
+  /** Sets the starting line number when lineNumbers is true. */
+  @property({ type: Number })
+  startLine = 1;
+
   /** Customizable max-height setting for code snippet container. */
   @property({ type: Number })
   maxHeight: number | null = null;
@@ -129,12 +133,6 @@ export class BlockCodeView extends LitElement {
   @state()
   private _effectiveLanguage = '';
 
-  /** Highlighted code to be displayed.
-   * @internal
-   */
-  @state()
-  private _highlightedCode = '';
-
   /** Code snippet fits into the height of the container -- no expansion needed.
    * @internal
    */
@@ -168,6 +166,10 @@ export class BlockCodeView extends LitElement {
       this.requestUpdate();
     }
 
+    if (changedProperties.has('startLine')) {
+      this.highlightCode();
+    }
+
     super.updated(changedProperties);
   }
 
@@ -185,6 +187,9 @@ export class BlockCodeView extends LitElement {
             @keydown=${this.handleKeypress}
             role="region"
             class=${this.lineNumbers ? 'line-numbers' : 'no-line-numbers'}
+            data-start=${ifDefined(
+              this.lineNumbers ? this.startLine : undefined
+            )}
           >
             <code tabindex="0" class="language-${this
             ._effectiveLanguage}"></code>
@@ -270,33 +275,33 @@ export class BlockCodeView extends LitElement {
     this._effectiveLanguage =
       this.language || this.detectLanguage(processedCode);
 
-    this.requestUpdate();
+    const preEl = this.shadowRoot?.querySelector('pre');
+    const codeEl = preEl?.querySelector('code');
 
-    setTimeout(() => {
-      const codeEl = this.shadowRoot?.querySelector('code');
-      const preEl = codeEl?.parentElement;
+    if (!codeEl || !preEl) return;
 
-      if (codeEl && preEl) {
-        codeEl.textContent = processedCode;
-        codeEl.className = `language-${this._effectiveLanguage}`;
+    codeEl.className = `language-${this._effectiveLanguage}`;
+    codeEl.textContent = processedCode;
 
-        preEl.classList.toggle('line-numbers', this.lineNumbers);
-        preEl.setAttribute(
-          'data-line-numbers-visible',
-          String(this.lineNumbers)
-        );
+    if (this.lineNumbers) {
+      preEl.classList.add('line-numbers');
+      preEl.setAttribute('data-start', String(this.startLine));
+    } else {
+      preEl.classList.remove('line-numbers');
+      preEl.removeAttribute('data-start');
+    }
 
-        Prism.highlightElement(codeEl);
+    requestAnimationFrame(() => {
+      Prism.highlightElement(codeEl);
 
-        if (this.lineNumbers && (Prism as any).plugins?.lineNumbers) {
-          requestAnimationFrame(() => {
-            (Prism as any).plugins.lineNumbers.resize(preEl);
-          });
-        }
+      if (this.lineNumbers && (Prism as any).plugins?.lineNumbers) {
+        requestAnimationFrame(() => {
+          (Prism as any).plugins.lineNumbers.resize(preEl);
+        });
       }
 
       this.checkOverflow();
-    }, 0);
+    });
   }
 
   private detectLanguage(code: string): string {
