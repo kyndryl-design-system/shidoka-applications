@@ -12,7 +12,6 @@ import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/er
 
 const _defaultTextStrings = {
   requiredText: 'Required',
-  clearAll: 'Clear all',
   errorText: 'Error',
 };
 
@@ -65,8 +64,8 @@ export class SliderInput extends FormMixin(LitElement) {
   width?: string;
 
   /** vertical orientation. */
-  @property({ type: Boolean })
-  vertical = false;
+  // @property({ type: Boolean })
+  // vertical = false;
 
   /** Customizable text strings. */
   @property({ type: Object })
@@ -85,6 +84,8 @@ export class SliderInput extends FormMixin(LitElement) {
   @query('input')
   _inputEl!: HTMLInputElement;
 
+  debounceTimeout: number | undefined = undefined;
+
   override render() {
     const styles = {
       ...(this.width && { width: this.width }),
@@ -92,7 +93,7 @@ export class SliderInput extends FormMixin(LitElement) {
 
     const sliderClasses = {
       'slider-container': true,
-      vertical: this.vertical,
+      // vertical: this.vertical,
     };
 
     return html`
@@ -105,6 +106,7 @@ export class SliderInput extends FormMixin(LitElement) {
           <slot name="tooltip"></slot>
         </label>
         <div class=${classMap(sliderClasses)}>
+          ${this.min}
           <input
             type="range"
             id=${this.name}
@@ -120,9 +122,9 @@ export class SliderInput extends FormMixin(LitElement) {
             style=${Object.entries(styles)
               .map(([key, value]) => `${key}: ${value}`)
               .join(';')}
-            @input=${(e: any) => this.handleInput(e)}
+            @input=${this.debounce((e: any) => this.handleInput(e), 100)}
           />
-          ${this.value}
+          ${this.max}
         </div>
         <div>
           ${this.caption !== ''
@@ -147,13 +149,13 @@ export class SliderInput extends FormMixin(LitElement) {
   }
 
   private handleInput(e: any) {
-    this.value = e.target.value;
-
+    if (this._isInvalid) return;
+    this.value = this.shadowRoot?.querySelector('input')?.value;
     this._validate(true, false); // validate on range input value
     // emit selected value
     const event = new CustomEvent('on-input', {
       detail: {
-        value: e.target.value,
+        value: this.value,
         origEvent: e,
       },
     });
@@ -212,6 +214,19 @@ export class SliderInput extends FormMixin(LitElement) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
+  }
+
+  private debounce(func: Function, wait: number, immediate = false) {
+    return (...args: any[]) => {
+      const later = () => {
+        this.debounceTimeout = undefined;
+        if (!immediate) func(...args);
+      };
+      const callNow = immediate && !this.debounceTimeout;
+      clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = window.setTimeout(later, wait);
+      if (callNow) func(...args);
+    };
   }
 }
 

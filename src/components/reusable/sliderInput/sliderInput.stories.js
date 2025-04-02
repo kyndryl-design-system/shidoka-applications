@@ -20,7 +20,7 @@ const args = {
   step: 1,
   width: '',
   invalidText: '',
-  vertical: false,
+  // vertical: false,
 };
 
 export const Default = {
@@ -33,7 +33,6 @@ export const Default = {
         caption=${args.caption}
         ?hideLabel=${args.hideLabel}
         ?disabled=${args.disabled}
-        ?vertical=${args.vertical}
         invalidText=${args.invalidText}
         min=${args.min}
         max=${args.max}
