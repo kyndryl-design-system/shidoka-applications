@@ -138,6 +138,7 @@ const args = {
   language: '',
   maxHeight: null,
   lineNumbers: false,
+  startLine: 1,
   codeViewLabel: 'Block Code View',
   copyOptionVisible: true,
   codeViewExpandable: true,

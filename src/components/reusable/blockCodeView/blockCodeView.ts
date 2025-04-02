@@ -188,7 +188,9 @@ export class BlockCodeView extends LitElement {
           <pre
             @keydown=${this.handleKeypress}
             role="region"
-            class=${this.lineNumbers ? 'line-numbers' : 'no-line-numbers'}
+            class=${this.lineNumbers && !this._isSingleLine
+              ? 'line-numbers'
+              : 'no-line-numbers'}
             data-start=${ifDefined(
               this.lineNumbers ? this.startLine : undefined
             )}
@@ -290,7 +292,7 @@ export class BlockCodeView extends LitElement {
     codeEl.className = `language-${this._effectiveLanguage}`;
     codeEl.textContent = processedCode;
 
-    if (this.lineNumbers) {
+    if (this.lineNumbers && !this._isSingleLine) {
       preEl.classList.add('line-numbers');
       preEl.setAttribute('data-start', String(this.startLine));
     } else {
