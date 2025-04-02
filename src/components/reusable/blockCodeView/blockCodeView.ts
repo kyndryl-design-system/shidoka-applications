@@ -153,17 +153,19 @@ export class BlockCodeView extends LitElement {
       changedProperties.has('language') ||
       changedProperties.has('maxHeight');
 
-    if (codeChanged) {
+    // race condition guard: force complete re-highlighting when line numbers toggle
+    if (changedProperties.has('lineNumbers')) {
+      setTimeout(() => {
+        this.highlightCode();
+        this.checkOverflow();
+      }, 0);
+    } else if (codeChanged) {
       this.highlightCode();
       this.checkOverflow();
     }
 
     if (changedProperties.has('copyButtonText')) {
       this._copyState = { ...this._copyState, text: this.copyButtonText };
-    }
-
-    if (changedProperties.has('lineNumbers')) {
-      this.requestUpdate();
     }
 
     if (changedProperties.has('startLine')) {
@@ -280,6 +282,11 @@ export class BlockCodeView extends LitElement {
 
     if (!codeEl || !preEl) return;
 
+    const existingLineNumbers = preEl.querySelector('.line-numbers-rows');
+    if (existingLineNumbers) {
+      existingLineNumbers.remove();
+    }
+
     codeEl.className = `language-${this._effectiveLanguage}`;
     codeEl.textContent = processedCode;
 
@@ -291,17 +298,47 @@ export class BlockCodeView extends LitElement {
       preEl.removeAttribute('data-start');
     }
 
-    requestAnimationFrame(() => {
+    setTimeout(() => {
       Prism.highlightElement(codeEl);
 
-      if (this.lineNumbers && (Prism as any).plugins?.lineNumbers) {
-        requestAnimationFrame(() => {
-          (Prism as any).plugins.lineNumbers.resize(preEl);
-        });
-      }
+      setTimeout(() => {
+        if (this.lineNumbers) {
+          try {
+            if ((Prism as any).plugins?.lineNumbers) {
+              if (!preEl.querySelector('.line-numbers-rows')) {
+                (Prism as any).hooks.run('complete', { element: codeEl });
+                (Prism as any).plugins.lineNumbers.resize(preEl);
+              }
+            }
 
-      this.checkOverflow();
-    });
+            if (!preEl.querySelector('.line-numbers-rows')) {
+              this.addLineNumbers(preEl, codeEl);
+            }
+          } catch (e) {
+            console.warn('Line numbers initialization error:', e);
+            this.addLineNumbers(preEl, codeEl);
+          }
+        }
+
+        this.checkOverflow();
+      }, 50);
+    }, 0);
+  }
+
+  private addLineNumbers(preEl: HTMLElement, codeEl: HTMLElement) {
+    if (preEl.querySelector('.line-numbers-rows')) return;
+
+    const linesCount = (codeEl.textContent || '').split('\n').length;
+    const startLine = parseInt(preEl.getAttribute('data-start') || '1', 10);
+
+    const lineNumbersWrapper = document.createElement('span');
+    lineNumbersWrapper.className = 'line-numbers-rows';
+
+    const spans = Array(linesCount).fill('<span></span>').join('');
+    lineNumbersWrapper.innerHTML = spans;
+
+    preEl.appendChild(lineNumbersWrapper);
+    preEl.style.counterReset = `linenumber ${startLine - 1}`;
   }
 
   private detectLanguage(code: string): string {
