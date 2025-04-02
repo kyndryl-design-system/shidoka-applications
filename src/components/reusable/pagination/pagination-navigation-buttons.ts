@@ -44,6 +44,12 @@ export class PaginationNavigationButtons extends LitElement {
   // Constant representing the smallest possible page number
   private readonly SMALLEST_PAGE_NUMBER = 1;
 
+  /** Label for the page size dropdown. Required for accessibility.
+   * @internal
+   */
+  @property({ type: String })
+  pageNumberLabel = 'Page number';
+
   /**
    * Handles the button click event, either moving to the next page or previous page
    * @param {boolean} next - If true, will move to the next page, otherwise to the previous page
@@ -99,8 +105,10 @@ export class PaginationNavigationButtons extends LitElement {
       <span class="page-range" role="status" aria-live="polite">
         <kyn-dropdown
           name="page-number"
+          label="${this.pageNumberLabel}"
+          ?hideLabel=${true}
+          inline
           size="sm"
-          placeholder="Page number"
           value="${this.pageNumber.toString()}"
           @on-change=${(e: CustomEvent) => this.handleChange(e)}
         >
