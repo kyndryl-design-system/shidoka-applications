@@ -245,8 +245,8 @@ export class SampleFileUploader extends LitElement {
 
   // This is a placeholder function to show the files added to the file uploader after frontend validation.
   private _handleFilesToBeUploaded(event: any) {
-    this._validFiles = [...event.detail.validFiles, ...this._validFiles];
-    this._invalidFiles = [...event.detail.invalidFiles, ...this._invalidFiles];
+    this._validFiles = [...this._validFiles, ...event.detail.validFiles];
+    this._invalidFiles = [...this._invalidFiles, ...event.detail.invalidFiles];
   }
 
   // This is a placeholder function to simulate the logic for file upload.

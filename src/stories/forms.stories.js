@@ -12,6 +12,7 @@ import '../components/reusable/datePicker';
 import '../components/reusable/daterangepicker';
 import '../components/reusable/tooltip';
 import '../components/reusable/button';
+import '../components/reusable/fileUploader';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 import { action } from '@storybook/addon-actions';
 
@@ -271,6 +272,21 @@ export const Default = {
         </kyn-date-range-picker>
 
         <br /><br />
+
+        <!-- roughly added for testing -->
+        <kyn-file-uploader
+          name="file-uploader"
+          .accept=${['image/jpeg', 'image/png']}
+          .textStrings=${{
+            dragAndDropText: 'Drag files here to upload',
+            orText: 'or',
+            buttonText: 'Browse files',
+            maxFileSizeText: 'Max file size',
+            supportedFileTypeText: 'Supported file type: ',
+            fileTypeDisplyText: '.jpeg, .png',
+          }}
+          ?multiple=${true}
+        ></kyn-file-uploader>
 
         <kyn-button
           type="submit"

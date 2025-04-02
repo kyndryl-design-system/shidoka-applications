@@ -1,11 +1,12 @@
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/upload.svg';
 import FileUploaderScss from './fileUploader.scss';
 import '../button';
+import { FormMixin } from '../../../common/mixins/form-input';
 
 const _defaultTextStrings = {
   dragAndDropText: 'Drag files here to upload',
@@ -24,7 +25,7 @@ const _defaultTextStrings = {
  * @slot unnamed - Slot for the upload button.
  */
 @customElement('kyn-file-uploader')
-export class FileUploader extends LitElement {
+export class FileUploader extends FormMixin(LitElement) {
   static override styles = FileUploaderScss;
 
   /**
@@ -78,6 +79,13 @@ export class FileUploader extends LitElement {
    */
   @state()
   _invalidFiles: Object[] = [];
+
+  /**
+   * Queries the <input> DOM element.
+   * @ignore
+   */
+  @query('input')
+  _inputEl!: HTMLInputElement;
 
   override willUpdate(changedProps: any) {
     if (changedProps.has('textStrings')) {
@@ -154,6 +162,8 @@ export class FileUploader extends LitElement {
       const files = Array.from(target.files);
 
       this._validateFiles(files);
+      this._validate(true, false);
+      this._setFormValue();
       this._emitFileUploadEvent();
     }
   }
@@ -173,6 +183,8 @@ export class FileUploader extends LitElement {
       const files = Array.from(event.dataTransfer.files);
 
       this._validateFiles(files);
+      this._validate(true, false);
+      this._setFormValue();
       this._emitFileUploadEvent();
     }
   }
@@ -270,6 +282,55 @@ export class FileUploader extends LitElement {
       default:
         return sizeValue; // Default to bytes if no unit provided
     }
+  }
+
+  private _validate(interacted: Boolean, report: Boolean) {
+    const Validity =
+      this.invalidText !== ''
+        ? { ...this._inputEl.validity, customError: true }
+        : this._inputEl.validity;
+
+    let InternalMsg = '';
+    if (this._invalidFiles.length > 0) {
+      const hasTypeError = this._invalidFiles.some(
+        (file: any) => file.errorMsg === 'typeError'
+      );
+      const hasSizeError = this._invalidFiles.some(
+        (file: any) => file.errorMsg === 'sizeError'
+      );
+      InternalMsg =
+        hasTypeError && hasSizeError
+          ? 'Invalid file type and Exceeds maximum file size'
+          : hasTypeError
+          ? 'Invalid file type'
+          : 'Exceeds maximum file size';
+    }
+
+    const ValidationMessage =
+      this.invalidText !== '' ? this.invalidText : InternalMsg;
+
+    if (interacted || this.invalidText !== '') {
+      this._internals.setValidity(Validity, ValidationMessage);
+
+      // set internal validation message if value was changed by user input
+      if (interacted) {
+        this._internalValidationMsg = InternalMsg;
+      }
+    }
+
+    // focus the first checkbox to show validity
+    if (report) {
+      this._internals.reportValidity();
+    }
+  }
+
+  private _setFormValue() {
+    const formData = new FormData();
+    this._uploadedFiles.forEach((fileObj: any) => {
+      const { file } = fileObj;
+      formData.append(this.name, file);
+    });
+    this._internals.setFormValue(formData);
   }
 
   private _emitFileUploadEvent() {
