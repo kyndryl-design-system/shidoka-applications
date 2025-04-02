@@ -152,6 +152,9 @@ class MyStoryTable extends LitElement {
   handleSortByFName(e: CustomEvent) {
     const { sortDirection } = e.detail;
     this.rows.sort(sortByFName(sortDirection));
+    this.rows.forEach((row: any) => {
+      row.expanded = false;
+    });
     this.requestUpdate();
   }
 
@@ -164,6 +167,15 @@ class MyStoryTable extends LitElement {
   handleSortByDate(e: CustomEvent) {
     const { sortDirection } = e.detail;
     this.rows.sort(sortByDate(sortDirection));
+    this.requestUpdate();
+  }
+
+  handleExpand(e: CustomEvent, rowId: any) {
+    const { expanded } = e.detail;
+    const Row = this.rows.find((row: any) => {
+      return row.id === rowId;
+    });
+    Row.expanded = expanded;
     this.requestUpdate();
   }
 
@@ -305,6 +317,9 @@ class MyStoryTable extends LitElement {
                   key="row-${row.id}"
                   ?unread=${row.unread}
                   ?expandable=${this.expandable}
+                  ?expanded=${row.expanded}
+                  @table-row-expando-toggled=${(e: CustomEvent) =>
+                    this.handleExpand(e, row.id)}
                 >
                   <kyn-td .align=${'center'}>${row.id}</kyn-td>
                   <kyn-td .maxWidth=${fNameMaxWidth} title=${row.firstName}>
