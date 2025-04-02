@@ -31,9 +31,6 @@ export default {
     invalidText: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
-    value: {
-      control: { type: 'text' },
-    },
   },
 };
 
@@ -57,7 +54,6 @@ const Template = (args) => {
       ?required=${args.required}
       ?staticPosition=${args.staticPosition}
       .size=${args.size}
-      .value=${args.value}
       .warnText=${args.warnText}
       .invalidText=${args.invalidText}
       .caption=${args.caption}
@@ -84,7 +80,6 @@ DefaultTimePicker.args = {
   locale: 'en',
   required: false,
   size: 'md',
-  value: '',
   warnText: '',
   invalidText: '',
   staticPosition: false,
@@ -191,7 +186,6 @@ export const InModal = {
           .locale=${args.locale}
           ?required=${args.required}
           .size=${args.size}
-          .value=${args.value}
           .warnText=${args.warnText}
           .invalidText=${args.invalidText}
           ?staticPosition=${args.staticPosition}

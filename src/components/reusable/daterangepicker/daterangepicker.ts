@@ -74,7 +74,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: String })
   defaultErrorMessage = '';
 
-  /** Sets date/time range value. */
+  /**
+   * Sets the date/time value for the component.
+   *
+   * For controlled usage patterns, this property allows parent components to directly control the selected date.
+   * When used together with defaultDate, value takes precedence if both are provided.
+   *
+   * In uncontrolled usage, this is populated automatically based on defaultDate and user selections.
+   */
   @property({ type: Array })
   override value: [Date | null, Date | null] = [null, null];
 
