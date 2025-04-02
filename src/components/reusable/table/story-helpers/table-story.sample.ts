@@ -266,8 +266,10 @@ class MyStoryTable extends LitElement {
           @on-all-rows-selection-change=${this.handleSelectedRowsChange}
         >
           <kyn-thead>
-            <kyn-header-tr .multiSelectColumnWidth=${multiSelectColumnWidth}>
-              ${this.expandable ? html` <kyn-th></kyn-th> ` : null}
+            <kyn-header-tr
+              ?expandable=${this.expandable}
+              .multiSelectColumnWidth=${multiSelectColumnWidth}
+            >
               <kyn-th
                 .align=${'center'}
                 .sortable=${this.sortable}
