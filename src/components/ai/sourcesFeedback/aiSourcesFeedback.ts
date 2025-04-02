@@ -104,12 +104,6 @@ export class AISourcesFeedback extends LitElement {
   @queryAssignedElements({ slot: 'sources' })
   _sourceEls!: any;
 
-  /**  Sources anchor text
-   * @internal
-   */
-  @state()
-  sourcesOriginalText: any;
-
   /**  Tracks the number of clicks on thumbs up icon
    * @internal
    */
@@ -153,7 +147,7 @@ export class AISourcesFeedback extends LitElement {
               @on-click="${(e: Event) => this._handleClick(e, 'sources')}"
               id="kyn-sources-title"
             >
-              ${this._textStrings.sourcesText}
+              <span>${this._textStrings.sourcesText}</span>
               <span class="expand-icon" slot="icon"
                 >${unsafeSVG(chevronIcon)}</span
               >
@@ -412,7 +406,6 @@ export class AISourcesFeedback extends LitElement {
   override willUpdate(changedProps: any) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
-      this.sourcesOriginalText = this._textStrings.sourcesText;
     }
   }
 
@@ -423,24 +416,6 @@ export class AISourcesFeedback extends LitElement {
     ) {
       this._toggleLimitRevealed(false);
     }
-  }
-
-  override connectedCallback() {
-    super.connectedCallback();
-    window.addEventListener('resize', () => this.updateSourcesText());
-  }
-
-  override disconnectedCallback() {
-    window.removeEventListener('resize', () => this.updateSourcesText());
-    super.disconnectedCallback();
-  }
-
-  private updateSourcesText() {
-    this._textStrings.sourcesText =
-      window.innerWidth > 672
-        ? this.sourcesOriginalText
-        : this.sourcesOriginalText.split(' ')[0];
-    this.requestUpdate();
   }
 }
 
