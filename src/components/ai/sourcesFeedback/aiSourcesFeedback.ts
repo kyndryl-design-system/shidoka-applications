@@ -147,7 +147,7 @@ export class AISourcesFeedback extends LitElement {
               @on-click="${(e: Event) => this._handleClick(e, 'sources')}"
               id="kyn-sources-title"
             >
-              ${this._textStrings.sourcesText}
+              <span>${this._textStrings.sourcesText}</span>
               <span class="expand-icon" slot="icon"
                 >${unsafeSVG(chevronIcon)}</span
               >
