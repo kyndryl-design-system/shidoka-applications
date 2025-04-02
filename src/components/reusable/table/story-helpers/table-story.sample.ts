@@ -72,6 +72,9 @@ class MyStoryTable extends LitElement {
   @property({ type: Boolean, reflect: true })
   sortable = false;
 
+  @property({ type: Boolean, reflect: true })
+  expandable = false;
+
   @property({ type: String, reflect: true })
   tableTitle = 'Table Title';
 
@@ -149,6 +152,9 @@ class MyStoryTable extends LitElement {
   handleSortByFName(e: CustomEvent) {
     const { sortDirection } = e.detail;
     this.rows.sort(sortByFName(sortDirection));
+    this.rows.forEach((row: any) => {
+      row.expanded = false;
+    });
     this.requestUpdate();
   }
 
@@ -161,6 +167,15 @@ class MyStoryTable extends LitElement {
   handleSortByDate(e: CustomEvent) {
     const { sortDirection } = e.detail;
     this.rows.sort(sortByDate(sortDirection));
+    this.requestUpdate();
+  }
+
+  handleExpand(e: CustomEvent, rowId: any) {
+    const { expanded } = e.detail;
+    const Row = this.rows.find((row: any) => {
+      return row.id === rowId;
+    });
+    Row.expanded = expanded;
     this.requestUpdate();
   }
 
@@ -251,7 +266,10 @@ class MyStoryTable extends LitElement {
           @on-all-rows-selection-change=${this.handleSelectedRowsChange}
         >
           <kyn-thead>
-            <kyn-header-tr .multiSelectColumnWidth=${multiSelectColumnWidth}>
+            <kyn-header-tr
+              ?expandable=${this.expandable}
+              .multiSelectColumnWidth=${multiSelectColumnWidth}
+            >
               <kyn-th
                 .align=${'center'}
                 .sortable=${this.sortable}
@@ -300,6 +318,10 @@ class MyStoryTable extends LitElement {
                   .rowId=${row.id}
                   key="row-${row.id}"
                   ?unread=${row.unread}
+                  ?expandable=${this.expandable}
+                  ?expanded=${row.expanded}
+                  @table-row-expando-toggled=${(e: CustomEvent) =>
+                    this.handleExpand(e, row.id)}
                 >
                   <kyn-td .align=${'center'}>${row.id}</kyn-td>
                   <kyn-td .maxWidth=${fNameMaxWidth} title=${row.firstName}>
@@ -322,6 +344,16 @@ class MyStoryTable extends LitElement {
                       </kyn-td>`
                     : html``}
                 </kyn-tr>
+
+                ${this.expandable
+                  ? html`
+                      <kyn-expanded-tr .colSpan=${7}>
+                        <div style="padding: 16px;">
+                          Expandable area ${row.id}
+                        </div>
+                      </kyn-expanded-tr>
+                    `
+                  : null}
               `
             )}
           </kyn-tbody>
