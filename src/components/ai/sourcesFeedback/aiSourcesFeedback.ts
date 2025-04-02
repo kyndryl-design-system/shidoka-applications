@@ -23,7 +23,7 @@ import '../../reusable/card';
 import '../../reusable/button';
 
 const _defaultTextStrings = {
-  sourcesText: 'Found sources 1223',
+  sourcesText: 'Sources',
   foundSources: 'Found sources',
   showMore: 'Show more',
   showLess: 'Show less',
@@ -103,12 +103,6 @@ export class AISourcesFeedback extends LitElement {
    */
   @queryAssignedElements({ slot: 'sources' })
   _sourceEls!: any;
-
-  /**  Sources anchor text
-   * @internal
-   */
-  @state()
-  sourcesOriginalText: any;
 
   /**  Tracks the number of clicks on thumbs up icon
    * @internal
@@ -412,7 +406,6 @@ export class AISourcesFeedback extends LitElement {
   override willUpdate(changedProps: any) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
-      this.sourcesOriginalText = this._textStrings.sourcesText;
     }
   }
 
