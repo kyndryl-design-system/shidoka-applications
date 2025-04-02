@@ -1,0 +1,23 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/form-input.scss';
+
+:host {
+  display: inline-block;
+}
+
+input[type='range'] {
+  accent-color: var(--kd-color-background-button-primary-state-default);
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  &.vertical {
+    // flex-direction: column;
+    input[type='range'] {
+      writing-mode: vertical-lr;
+    }
+  }
+}
