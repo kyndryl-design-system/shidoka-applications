@@ -6,9 +6,6 @@ import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monoch
 import errorFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/error-filled.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
-import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/upload.svg';
-import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/checkmark.svg';
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/error.svg';
 import SampleFileUploaderScss from './fileUploader.sample.scss';
 import './index';
 import '../inlineConfirm';
@@ -16,7 +13,6 @@ import '../link';
 import '../notification';
 import '../button';
 import '../progressBar';
-import '../loaders';
 
 @customElement('sample-file-uploader')
 export class SampleFileUploader extends LitElement {
@@ -96,9 +92,6 @@ export class SampleFileUploader extends LitElement {
           this._handleFilesToBeUploaded(e);
         }}
       >
-        <span slot="uploader-status-icon"
-          >${this._getStatusIcon(this._uploaderStatus)}</span
-        >
         <!-- File details list -->
         <div slot="file-details" class="file-details-wrapper">
           ${this._invalidFiles.length > 0
@@ -236,31 +229,6 @@ export class SampleFileUploader extends LitElement {
         </div>
       </kyn-file-uploader>
     `;
-  }
-
-  private _getStatusIcon(status: string) {
-    switch (status) {
-      case 'active':
-        return html`
-          <kyn-loader-inline class="class__flex"></kyn-loader-inline>
-        `;
-      case 'success':
-        return html`
-          <span class="success-icon class__flex"
-            >${unsafeSVG(checkmarkIcon)}</span
-          >
-        `;
-      case 'error':
-        return html`
-          <span class="uploader-error-icon class__flex"
-            >${unsafeSVG(errorIcon)}</span
-          >
-        `;
-      default:
-        return html`
-          <span class="class__flex">${unsafeSVG(uploadIcon)}</span>
-        `;
-    }
   }
 
   private _getFilesSize(bytes: number) {

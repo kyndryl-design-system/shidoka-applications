@@ -2,6 +2,8 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { deepmerge } from 'deepmerge-ts';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/upload.svg';
 import FileUploaderScss from './fileUploader.scss';
 import '../button';
 
@@ -17,7 +19,6 @@ const _defaultTextStrings = {
 /**
  * File Uploader
  * @fires on-file-upload - Emits the uploaded files.
- * @slot uploader-status-icon - Slot for the uploader status icon.
  * @slot file-details - Slot for file details.
  * @slot upload-status - Slot for upload status/notification.
  * @slot unnamed - Slot for the upload button.
@@ -124,7 +125,7 @@ export class FileUploader extends LitElement {
         @drop="${this.handleDrop}"
       >
         <div class="uploader-status-icon">
-          <slot name="uploader-status-icon"></slot>
+          <span>${unsafeSVG(uploadIcon)}</span>
         </div>
         <p class="drag-drop-text">${this._textStrings.dragAndDropText}</p>
         <p class="or-text">${this._textStrings.orText}</p>
