@@ -62,7 +62,7 @@ export class BlockCodeView extends LitElement {
 
   /** Sets the starting line number when lineNumbers is true. */
   @property({ type: Number })
-  startLine = 1;
+  startLineNumber = 1;
 
   /** Customizable max-height setting for code snippet container. */
   @property({ type: Number })
@@ -167,7 +167,7 @@ export class BlockCodeView extends LitElement {
       this._copyState = { ...this._copyState, text: this.copyButtonText };
     }
 
-    if (changedProperties.has('startLine')) {
+    if (changedProperties.has('startLineNumber')) {
       this.highlightCode();
     }
 
@@ -191,7 +191,7 @@ export class BlockCodeView extends LitElement {
               ? 'line-numbers'
               : 'no-line-numbers'}
             data-start=${ifDefined(
-              this.lineNumbers ? this.startLine : undefined
+              this.lineNumbers ? this.startLineNumber : undefined
             )}
           >
             <code tabindex="0" class="language-${this
@@ -293,7 +293,7 @@ export class BlockCodeView extends LitElement {
 
     if (this.lineNumbers && !this._isSingleLine) {
       preEl.classList.add('line-numbers');
-      preEl.setAttribute('data-start', String(this.startLine));
+      preEl.setAttribute('data-start', String(this.startLineNumber));
     } else {
       preEl.classList.remove('line-numbers');
       preEl.removeAttribute('data-start');
@@ -330,7 +330,10 @@ export class BlockCodeView extends LitElement {
     if (preEl.querySelector('.line-numbers-rows')) return;
 
     const linesCount = (codeEl.textContent || '').split('\n').length;
-    const startLine = parseInt(preEl.getAttribute('data-start') || '1', 10);
+    const startLineNumber = parseInt(
+      preEl.getAttribute('data-start') || '1',
+      10
+    );
 
     const lineNumbersWrapper = document.createElement('span');
     lineNumbersWrapper.className = 'line-numbers-rows';
@@ -339,7 +342,7 @@ export class BlockCodeView extends LitElement {
     lineNumbersWrapper.innerHTML = spans;
 
     preEl.appendChild(lineNumbersWrapper);
-    preEl.style.counterReset = `linenumber ${startLine - 1}`;
+    preEl.style.counterReset = `linenumber ${startLineNumber - 1}`;
   }
 
   private detectLanguage(code: string): string {
