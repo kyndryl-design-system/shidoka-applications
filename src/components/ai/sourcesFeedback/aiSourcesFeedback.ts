@@ -23,7 +23,7 @@ import '../../reusable/card';
 import '../../reusable/button';
 
 const _defaultTextStrings = {
-  sourcesText: 'Sources',
+  sourcesText: 'Found sources 1223',
   foundSources: 'Found sources',
   showMore: 'Show more',
   showLess: 'Show less',
@@ -153,7 +153,7 @@ export class AISourcesFeedback extends LitElement {
               @on-click="${(e: Event) => this._handleClick(e, 'sources')}"
               id="kyn-sources-title"
             >
-              <span>${this._textStrings.sourcesText}</span>
+              ${this._textStrings.sourcesText}
               <span class="expand-icon" slot="icon"
                 >${unsafeSVG(chevronIcon)}</span
               >
@@ -423,24 +423,6 @@ export class AISourcesFeedback extends LitElement {
     ) {
       this._toggleLimitRevealed(false);
     }
-  }
-
-  override connectedCallback() {
-    super.connectedCallback();
-    window.addEventListener('resize', () => this.updateSourcesText());
-  }
-
-  override disconnectedCallback() {
-    window.removeEventListener('resize', () => this.updateSourcesText());
-    super.disconnectedCallback();
-  }
-
-  private updateSourcesText() {
-    this._textStrings.sourcesText =
-      window.innerWidth > 672
-        ? this.sourcesOriginalText
-        : this.sourcesOriginalText.split(' ')[0];
-    this.requestUpdate();
   }
 }
 
