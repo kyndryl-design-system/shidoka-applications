@@ -66,6 +66,7 @@ export class TimePicker extends FormMixin(LitElement) {
    * When used together with defaultDate, value takes precedence if both are provided.
    *
    * In uncontrolled usage, this is populated automatically based on defaultDate and user selections.
+   * @internal
    */
   @property({ type: Object })
   override value: Date | null = null;
