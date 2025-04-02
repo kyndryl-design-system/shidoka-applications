@@ -2,8 +2,10 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { action } from '@storybook/addon-actions';
-import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/checkmark-filled.svg';
+import { classMap } from 'lit/directives/class-map.js';
+import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/checkmark.svg';
 import errorFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/error-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/error.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 import SampleFileUploaderScss from './fileUploader.sample.scss';
@@ -13,6 +15,7 @@ import '../link';
 import '../notification';
 import '../button';
 import '../progressBar';
+import '../loaders';
 
 @customElement('sample-file-uploader')
 export class SampleFileUploader extends LitElement {
@@ -52,7 +55,10 @@ export class SampleFileUploader extends LitElement {
   _notificationMessage = '';
 
   @state()
-  _notificationStatus = '';
+  _notificationType = 'normal';
+
+  @state()
+  _notificationStatus = 'default';
 
   @state()
   _showNotification = false;
@@ -66,14 +72,14 @@ export class SampleFileUploader extends LitElement {
     filesSizes: number[];
     totalFileSize: number;
     progress: number;
-    status: 'active' | 'success' | 'error';
+    status: 'active' | 'success' | 'error' | '';
     currentFileIndex: number;
   } = {
     fileNames: [],
     filesSizes: [],
     totalFileSize: 0,
     progress: 0,
-    status: 'active',
+    status: '',
     currentFileIndex: 0,
   };
 
@@ -104,7 +110,7 @@ export class SampleFileUploader extends LitElement {
                     ? this._invalidFiles.map(
                         (file) => html`
                           <kyn-file-uploader-item>
-                            <span slot="status-icon" class="error-icon"
+                            <span slot="status-icon" class="error-filled-icon"
                               >${unsafeSVG(errorFilledIcon)}</span
                             >
                             <div class="file-details-container">
@@ -142,11 +148,8 @@ export class SampleFileUploader extends LitElement {
                   <!-- Valid files -->
                   ${this._validFiles.length > 0
                     ? this._validFiles.map(
-                        (file) => html`
+                        (file, index) => html`
                           <kyn-file-uploader-item>
-                            <span slot="status-icon" class="success-icon"
-                              >${unsafeSVG(checkmarkFilledIcon)}</span
-                            >
                             <div class="file-details-container">
                               <p class="file-name success">${file.file.name}</p>
                               <p class="file-size">
@@ -154,18 +157,7 @@ export class SampleFileUploader extends LitElement {
                               </p>
                             </div>
                             <div slot="actions">
-                              <kyn-inline-confirm
-                                ?destructive=${true}
-                                .anchorText=${'Delete'}
-                                .confirmText=${'Confirm'}
-                                .cancelText=${'Cancel'}
-                                @on-confirm=${() => this._deleteFile(file.id)}
-                              >
-                                <span>${unsafeSVG(deleteIcon)}</span>
-                                <span slot="confirmIcon"
-                                  >${unsafeSVG(deleteIcon)}</span
-                                >
-                              </kyn-inline-confirm>
+                              ${this._displayActions(file, index)}
                             </div>
                           </kyn-file-uploader-item>
                         `
@@ -180,7 +172,7 @@ export class SampleFileUploader extends LitElement {
           ? html`
               <kyn-notification
                 slot="upload-status"
-                .type=${'inline'}
+                .type=${this._notificationType}
                 .hideCloseButton=${true}
                 .notificationTitle=${this._notificationTitle}
                 .tagStatus=${this._notificationStatus}
@@ -220,6 +212,7 @@ export class SampleFileUploader extends LitElement {
             ? html`<kyn-button
                 size="small"
                 .disabled=${this._uploaderStatus === 'active' ||
+                this._uploaderStatus === 'success' ||
                 (this._invalidFiles.length > 0 &&
                   this._validFiles.length === 0)}
                 @on-click=${() => this._startFileUpload()}
@@ -386,9 +379,55 @@ export class SampleFileUploader extends LitElement {
     return `Uploading ${index + 1} out of ${totalFiles} files.`;
   }
 
+  private _displayActions(file: any, index: number) {
+    const currFileIndex = this._uploadedFilesStatus.currentFileIndex;
+    const status = this._uploaderStatus;
+
+    if (status === 'active') {
+      if (index < currFileIndex) {
+        return this._renderIcon(checkmarkIcon);
+      } else {
+        return html` <kyn-loader-inline></kyn-loader-inline> `;
+      }
+    } else if (status === 'success') {
+      return this._renderIcon(checkmarkIcon);
+    } else if (status === 'error') {
+      if (
+        index < currFileIndex ||
+        (index === currFileIndex && !this._uploadCancelled)
+      ) {
+        return this._renderIcon(checkmarkIcon);
+      } else {
+        return this._renderIcon(errorIcon);
+      }
+    } else {
+      return html` <kyn-inline-confirm
+        ?destructive=${true}
+        .anchorText=${'Delete'}
+        .confirmText=${'Confirm'}
+        .cancelText=${'Cancel'}
+        @on-confirm=${() => this._deleteFile(file.id)}
+      >
+        <span>${unsafeSVG(deleteIcon)}</span>
+        <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
+      </kyn-inline-confirm>`;
+    }
+  }
+
+  private _renderIcon(icon: any) {
+    const iconClasses = {
+      'success-icon': icon === checkmarkIcon,
+      'error-icon': icon === errorIcon,
+    };
+    return html`
+      <span class=${classMap(iconClasses)}>${unsafeSVG(icon)}</span>
+    `;
+  }
+
   private _displayNotification() {
     const numberOfInvalidFiles = this._invalidFiles.length;
     const numberOfValidFiles = this._validFiles.length;
+    this._notificationType = 'inline';
     if (numberOfInvalidFiles > 0) {
       this._notificationTitle = 'Upload partially successful';
       this._notificationMessage = `${numberOfInvalidFiles} out of ${
@@ -412,24 +451,26 @@ export class SampleFileUploader extends LitElement {
     }
     this._uploadCancelled = true;
     this._notificationTitle = 'File upload was interrupted.';
+    this._notificationType = 'inline';
     this._notificationStatus = 'warning';
     const totalFiles = this._validFiles.length + this._invalidFiles.length;
     const uploadedFiles = this._uploadedFilesStatus.currentFileIndex;
     this._notificationMessage = `Upload partially successful: ${
-      this._validFiles.length - uploadedFiles
+      totalFiles - uploadedFiles
     } out of ${totalFiles} files was not uploaded.`;
   }
 
   private _resetNotificationContent() {
     this._notificationTitle = '';
     this._notificationMessage = '';
-    this._notificationStatus = '';
+    this._notificationType = 'normal';
+    this._notificationStatus = 'default';
     this._uploadedFilesStatus = {
       fileNames: [],
       filesSizes: [],
       totalFileSize: 0,
       progress: 0,
-      status: 'active',
+      status: '',
       currentFileIndex: 0,
     };
   }
