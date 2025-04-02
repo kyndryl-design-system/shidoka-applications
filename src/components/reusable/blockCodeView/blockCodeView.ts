@@ -182,7 +182,7 @@ export class BlockCodeView extends LitElement {
           </div>`
         : null}
       <div class="${this.getContainerClasses()}" style="${containerStyle}">
-        <div class="code-snippet-wrapper" style="${containerStyle}">
+        <div class="code-snippet-wrapper">
           <pre
             @keydown=${this.handleKeypress}
             role="region"
