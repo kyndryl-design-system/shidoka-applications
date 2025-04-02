@@ -28,6 +28,7 @@ const meta: Meta = {
     'kyn-table-toolbar': 'kyn-table-toolbar',
     'kyn-th': 'kyn-th',
     'kyn-tr': 'kyn-tr',
+    'kyn-expanded-tr': 'kyn-expanded-tr',
     'kyn-td': 'kyn-td',
     'kyn-thead': 'kyn-thead',
     'kyn-tbody': 'kyn-tbody',
@@ -249,6 +250,24 @@ export const ExpandableRows: Story = {
           )}
         </kyn-tbody>
       </kyn-table>`;
+  },
+  parameters,
+};
+
+export const SortAndExpand: Story = {
+  args: {
+    sortable: true,
+  },
+  render: (args) => {
+    return html`
+      <story-table
+        .tableTitle=${'Sorting'}
+        .rows=${characters}
+        sortable
+        expandable
+      >
+      </story-table>
+    `;
   },
   parameters,
 };

@@ -72,6 +72,9 @@ class MyStoryTable extends LitElement {
   @property({ type: Boolean, reflect: true })
   sortable = false;
 
+  @property({ type: Boolean, reflect: true })
+  expandable = false;
+
   @property({ type: String, reflect: true })
   tableTitle = 'Table Title';
 
@@ -252,6 +255,7 @@ class MyStoryTable extends LitElement {
         >
           <kyn-thead>
             <kyn-header-tr .multiSelectColumnWidth=${multiSelectColumnWidth}>
+              ${this.expandable ? html` <kyn-th></kyn-th> ` : null}
               <kyn-th
                 .align=${'center'}
                 .sortable=${this.sortable}
@@ -300,6 +304,7 @@ class MyStoryTable extends LitElement {
                   .rowId=${row.id}
                   key="row-${row.id}"
                   ?unread=${row.unread}
+                  ?expandable=${this.expandable}
                 >
                   <kyn-td .align=${'center'}>${row.id}</kyn-td>
                   <kyn-td .maxWidth=${fNameMaxWidth} title=${row.firstName}>
@@ -322,6 +327,16 @@ class MyStoryTable extends LitElement {
                       </kyn-td>`
                     : html``}
                 </kyn-tr>
+
+                ${this.expandable
+                  ? html`
+                      <kyn-expanded-tr .colSpan=${7}>
+                        <div style="padding: 16px;">
+                          Expandable area ${row.id}
+                        </div>
+                      </kyn-expanded-tr>
+                    `
+                  : null}
               `
             )}
           </kyn-tbody>
