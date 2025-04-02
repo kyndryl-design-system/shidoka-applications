@@ -14,12 +14,8 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/design/CQuDZEeLiuGiALvCWjAKlu/branch/qMpff4GuFUEcsMUkvacS3U/Applications---Component-Library?node-id=19723-26652&node-type=canvas&m=dev',
     },
-    controls: {
-      exclude: ['value'],
-    },
   },
   argTypes: {
-    value: { control: false },
     size: {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
