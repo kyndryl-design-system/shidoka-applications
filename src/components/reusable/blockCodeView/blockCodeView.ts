@@ -18,7 +18,6 @@ import chevronDown from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 import '../button';
 
 import BlockCodeViewStyles from './blockCodeView.scss';
-import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import ShidokaSyntaxTheme from '../../../common/scss/shidoka-syntax-theme.scss';
 
 interface LanguageMatch {
