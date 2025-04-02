@@ -226,6 +226,9 @@ export class SampleFileUploader extends LitElement {
           ${this._validFiles.length > 0 || this._invalidFiles.length > 0
             ? html`<kyn-button
                 size="small"
+                .disabled=${this._uploaderStatus === 'active' ||
+                (this._invalidFiles.length > 0 &&
+                  this._validFiles.length === 0)}
                 @on-click=${() => this._startFileUpload()}
                 >Start upload</kyn-button
               >`
