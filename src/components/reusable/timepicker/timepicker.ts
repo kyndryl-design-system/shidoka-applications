@@ -60,15 +60,15 @@ export class TimePicker extends FormMixin(LitElement) {
   locale: SupportedLocale | string = 'en';
 
   /**
-   * Sets the date/time value for the component.
+   * Sets the time value for the component.
    *
-   * For controlled usage patterns, this property allows parent components to directly control the selected date.
-   * When used together with defaultDate, value takes precedence if both are provided.
+   * For controlled usage patterns, this property allows parent components to directly control the selected time.
+   * When used together with defaultHour/defaultMinute, value takes precedence if both are provided.
    *
-   * In uncontrolled usage, this is populated automatically based on defaultDate and user selections.
+   * In uncontrolled usage, this is populated automatically based on defaultHour/defaultMinute and user selections.
    * @internal
    */
-  @property({ type: Object })
+  @state()
   override value: Date | null = null;
 
   /** Sets initial value of the hour element. */

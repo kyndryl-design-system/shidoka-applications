@@ -83,7 +83,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
    * In uncontrolled usage, this is populated automatically based on defaultDate and user selections.
    * @internal
    */
-  @property({ type: Array })
+  @state()
   override value: [Date | null, Date | null] = [null, null];
 
   /** Sets validation warning messaging. */
