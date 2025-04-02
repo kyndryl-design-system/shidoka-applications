@@ -3,7 +3,6 @@ import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { deepmerge } from 'deepmerge-ts';
 
 import Prism from 'prismjs';
@@ -58,6 +57,10 @@ export class BlockCodeView extends LitElement {
   @property({ type: String })
   language = '';
 
+  /** Optionally display line numbers. */
+  @property({ type: Boolean })
+  lineNumbers = false;
+
   /** Customizable max-height setting for code snippet container. */
   @property({ type: Number })
   maxHeight: number | null = null;
@@ -73,10 +76,6 @@ export class BlockCodeView extends LitElement {
   /** Optionally display button to expand code snippet container. */
   @property({ type: Boolean })
   codeViewExpandable = false;
-
-  /** Optionally enable line numbers for code snippets. */
-  @property({ type: Boolean })
-  lineNumbers = false;
 
   /** Sets copy code button text (optional). */
   @property({ type: String })
@@ -149,9 +148,7 @@ export class BlockCodeView extends LitElement {
   private _expandedHeight: number | null = null;
 
   override updated(changedProperties: Map<string, unknown>) {
-    if (changedProperties.has('darkTheme')) {
-      this.requestUpdate();
-    }
+    if (changedProperties.has('darkTheme')) this.requestUpdate();
 
     const codeChanged =
       changedProperties.has('codeSnippet') ||
@@ -168,14 +165,7 @@ export class BlockCodeView extends LitElement {
     }
 
     if (changedProperties.has('lineNumbers')) {
-      const was = changedProperties.get('lineNumbers');
-      if (this.lineNumbers && was === false) {
-        this.highlightCode();
-      } else {
-        setTimeout(() => {
-          if (this.shadowRoot) Prism.highlightAllUnder(this.shadowRoot);
-        }, 0);
-      }
+      this.requestUpdate();
     }
 
     super.updated(changedProperties);
@@ -183,7 +173,6 @@ export class BlockCodeView extends LitElement {
 
   override render() {
     const containerStyle = `${this.getContainerStyle()};`;
-
     return html`
       ${this.codeViewLabel
         ? html`<div class="code-view__label">
@@ -191,16 +180,14 @@ export class BlockCodeView extends LitElement {
           </div>`
         : null}
       <div class="${this.getContainerClasses()}" style="${containerStyle}">
-        <div class="code-snippet-wrapper">
+        <div class="code-snippet-wrapper" style="${containerStyle}">
           <pre
-            class=${this.lineNumbers ? 'line-numbers' : 'no-line-numbers'}
             @keydown=${this.handleKeypress}
             role="region"
-          >            
-          <code tabindex="0" class="language-${this
-            ._effectiveLanguage}">${unsafeHTML(
-            this._highlightedCode
-          )}</code>          
+            class=${this.lineNumbers ? 'line-numbers' : 'no-line-numbers'}
+          >
+            <code tabindex="0" class="language-${this
+            ._effectiveLanguage}"></code>
           </pre>
         </div>
         ${this.renderCopyButton()} ${this.renderExpandButton()}
@@ -283,8 +270,33 @@ export class BlockCodeView extends LitElement {
     this._effectiveLanguage =
       this.language || this.detectLanguage(processedCode);
 
-    this._highlightedCode = processedCode; // ← don't call Prism.highlight here
     this.requestUpdate();
+
+    setTimeout(() => {
+      const codeEl = this.shadowRoot?.querySelector('code');
+      const preEl = codeEl?.parentElement;
+
+      if (codeEl && preEl) {
+        codeEl.textContent = processedCode;
+        codeEl.className = `language-${this._effectiveLanguage}`;
+
+        preEl.classList.toggle('line-numbers', this.lineNumbers);
+        preEl.setAttribute(
+          'data-line-numbers-visible',
+          String(this.lineNumbers)
+        );
+
+        Prism.highlightElement(codeEl);
+
+        if (this.lineNumbers && (Prism as any).plugins?.lineNumbers) {
+          requestAnimationFrame(() => {
+            (Prism as any).plugins.lineNumbers.resize(preEl);
+          });
+        }
+      }
+
+      this.checkOverflow();
+    }, 0);
   }
 
   private detectLanguage(code: string): string {

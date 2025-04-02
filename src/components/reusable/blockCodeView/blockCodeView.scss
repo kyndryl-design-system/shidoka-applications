@@ -14,12 +14,16 @@ pre.line-numbers {
   position: relative;
   padding-left: 0;
   counter-reset: linenumber;
+  overflow-y: auto;
 
   & > code {
     position: relative;
     display: block;
-    white-space: inherit;
-    margin-left: -35px;
+    white-space: pre;
+    margin-left: -45px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: 0;
   }
 
   .line-numbers-rows {
@@ -28,7 +32,7 @@ pre.line-numbers {
     top: 0;
     font-size: 100%;
     left: -56px;
-    width: 32px; /* line-numbers below 1000 lines */
+    width: 32px;
     letter-spacing: -1px;
     border-right: 1px solid var(--kd-color-text-level-disabled);
     -webkit-user-select: none;
@@ -55,13 +59,11 @@ pre.line-numbers {
 
 .multi-line.code-view__container {
   pre.no-line-numbers {
-    & > code {
-      margin-left: -81.6px;
+    code {
+      margin-left: -101px;
     }
   }
 }
-
-////
 
 .code-view {
   &__label {
@@ -96,8 +98,8 @@ pre.line-numbers {
 
     pre {
       tab-size: 2;
-      margin: 0;
       white-space: pre;
+      margin: 0;
       overflow-x: auto;
 
       code {
@@ -206,17 +208,17 @@ pre.line-numbers {
 
       pre {
         margin: 0;
+        padding: 16px 0 3px;
         line-height: 16px;
         overflow: auto;
         max-height: inherit;
         box-sizing: border-box;
-        width: 100%;
+        width: inherit;
       }
 
       code {
         padding: 0;
-        width: max-content;
-        min-width: 100%;
+        width: inherit;
         display: inline-block;
         line-height: 1.6;
         word-break: normal;
