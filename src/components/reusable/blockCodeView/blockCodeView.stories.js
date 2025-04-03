@@ -240,13 +240,13 @@ WithLineNumbers.args = {
   codeSnippet: defaultTemplateCodes.JAVASCRIPT,
 };
 
-export const WithCustomstartLineNumber = Template.bind({});
-WithCustomstartLineNumber.args = {
+export const WithCustomStartLineNumber = Template.bind({});
+WithCustomStartLineNumber.args = {
   ...args,
   language: 'javascript',
   maxHeight: 300,
   codeViewLabel: 'Code with Line Numbers and Custom Start Line',
   lineNumbers: true,
-  startLineNumber: 100,
+  startLineNumber: 1001,
   codeSnippet: defaultTemplateCodes.JAVASCRIPT,
 };
