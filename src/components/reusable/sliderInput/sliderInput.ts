@@ -3,7 +3,6 @@ import { LitElement, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { deepmerge } from 'deepmerge-ts';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { classMap } from 'lit/directives/class-map.js';
 
 import { FormMixin } from '../../../common/mixins/form-input';
 import sliderInputScss from './sliderInput.scss';
@@ -17,7 +16,7 @@ const _defaultTextStrings = {
 };
 
 /**
- * Slider input.
+ * Slider Input.
  * @fires on-input - Captures the input event and emits the selected value and original event details.
  * @prop {number} min - Minimum allowed number.
  * @prop {number} max - Maximum allowed number.
@@ -58,15 +57,15 @@ export class SliderInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   hideLabel = false;
 
+  /** Hide number input. */
+  @property({ type: Boolean })
+  hideNumberInput = false;
+
   /**
    * Optional: Custom width (overrides size if provided).
    */
   @property({ type: String })
   width?: string;
-
-  /** vertical orientation. */
-  // @property({ type: Boolean })
-  // vertical = false;
 
   /** Customizable text strings. */
   @property({ type: Object })
@@ -85,16 +84,9 @@ export class SliderInput extends FormMixin(LitElement) {
   @query('input')
   _inputEl!: HTMLInputElement;
 
-  debounceTimeout: number | undefined = undefined;
-
   override render() {
     const styles = {
       ...(this.width && { width: this.width }),
-    };
-
-    const sliderClasses = {
-      'slider-container': true,
-      // vertical: this.vertical,
     };
 
     return html`
@@ -106,9 +98,10 @@ export class SliderInput extends FormMixin(LitElement) {
           <span>${this.label}</span>
           <slot name="tooltip"></slot>
         </label>
-        <div class=${classMap(sliderClasses)} style="position: relative;">
+        <div class="slider-container">
           <span>${this.min}</span>
           <input
+            tabindex="0"
             type="range"
             id=${this.name}
             name=${this.name}
@@ -124,20 +117,26 @@ export class SliderInput extends FormMixin(LitElement) {
               .map(([key, value]) => `${key}: ${value}`)
               .join(';')}
             @input=${(e: any) => this.handleInput(e)}
+            @keydown=${(e: KeyboardEvent) => this.handleKeydown(e)}
           />
           <span>${this.max}</span>
-
-          <input
-            type="number"
-            .value=${this.value}
-            min=${ifDefined(this.min)}
-            max=${ifDefined(this.max)}
-            step=${ifDefined(this.step)}
-            ?invalid=${this._isInvalid}
-            @input=${this.handleTextInput}
-            ?disabled=${this.disabled}
-            aria-label="editable range input"
-          />
+          ${!this.hideNumberInput
+            ? html`
+                <input
+                  type="number"
+                  .value=${this.value}
+                  min=${ifDefined(this.min)}
+                  max=${ifDefined(this.max)}
+                  step=${ifDefined(this.step)}
+                  ?invalid=${this._isInvalid}
+                  aria-invalid=${this._isInvalid}
+                  aria-describedby=${this._isInvalid ? 'error' : ''}
+                  @input=${this.handleTextInput}
+                  ?disabled=${this.disabled}
+                  aria-label="editable range input"
+                />
+              `
+            : null}
         </div>
         <div>
           ${this.caption !== ''
@@ -178,16 +177,9 @@ export class SliderInput extends FormMixin(LitElement) {
   private handleInput(e: any) {
     if (this._isInvalid) return;
     this.value = this.shadowRoot?.querySelector('input')?.value;
+    this._validate(true, false);
     this.fillTrackBackground();
-    this._validate(true, false); // validate on range input value
-    // emit selected value
-    const event = new CustomEvent('on-input', {
-      detail: {
-        value: this.value,
-        origEvent: e,
-      },
-    });
-    this.dispatchEvent(event);
+    this.emitDisabledEvent(e);
   }
 
   private handleTextInput(e: Event) {
@@ -203,14 +195,8 @@ export class SliderInput extends FormMixin(LitElement) {
         numValue <= parseFloat(this.max)
       ) {
         this.value = numValue;
-        this._validate(true, false); // validate on number input value
-        const event = new CustomEvent('on-input', {
-          detail: {
-            value: this.value,
-            origEvent: e,
-          },
-        });
-        this.dispatchEvent(event);
+        this._validate(true, false);
+        this.emitDisabledEvent(e);
       } else {
         this._internalValidationMsg = `Value must be between ${this.min} and ${this.max}`;
         input.setCustomValidity(
@@ -219,6 +205,16 @@ export class SliderInput extends FormMixin(LitElement) {
         this._isInvalid = true;
       }
     }
+  }
+
+  private emitDisabledEvent(e: Event) {
+    const event = new CustomEvent('on-input', {
+      detail: {
+        value: this.value,
+        origEvent: e,
+      },
+    });
+    this.dispatchEvent(event);
   }
 
   private _validate(interacted: Boolean, report: Boolean) {
@@ -271,14 +267,13 @@ export class SliderInput extends FormMixin(LitElement) {
 
   override updated(changedProps: any) {
     // preserve FormMixin updated function
-    this.value = this.shadowRoot?.querySelector('input')?.value;
-    if (this.value) {
-      this.fillTrackBackground();
-    }
-
     this._onUpdated(changedProps);
     if (changedProps.has('value')) {
       this._inputEl.value = this.value.toString();
+      this.value = this.shadowRoot?.querySelector('input')?.value;
+      if (this.value) {
+        this.fillTrackBackground();
+      }
     }
   }
 
@@ -286,6 +281,33 @@ export class SliderInput extends FormMixin(LitElement) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
+  }
+
+  private handleKeydown(e: KeyboardEvent) {
+    if (this.disabled || e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      return;
+    }
+    let newValue = parseFloat(this.value);
+    const step = this.step;
+    const min = parseFloat(this.min);
+    const max = parseFloat(this.max);
+
+    switch (e.key) {
+      case 'ArrowUp':
+      case 'ArrowRight':
+        // Increase value
+        newValue = Math.min(newValue + step, max);
+        break;
+      case 'ArrowDown':
+      case 'ArrowLeft':
+        // Decrease value
+        newValue = Math.max(newValue - step, min);
+        break;
+    }
+    this.value = newValue.toString();
+    this.fillTrackBackground();
+    this.emitDisabledEvent(e);
   }
 }
 

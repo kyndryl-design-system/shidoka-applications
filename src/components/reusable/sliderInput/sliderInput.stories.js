@@ -7,13 +7,24 @@ import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/inf
 
 export default {
   title: 'Components/Slider Input',
-  component: 'kyn-text-input',
-  argTypes: {},
+  component: 'kyn-slider-input',
+  argTypes: {
+    min: {
+      control: { type: 'number' },
+    },
+    max: {
+      control: { type: 'number' },
+    },
+    step: {
+      control: { type: 'number' },
+    },
+    width: { control: 'text' },
+  },
 };
 
 const args = {
   name: 'sliderInput',
-  value: '50',
+  value: '',
   caption: '',
   label: 'Label',
   hideLabel: false,
@@ -21,9 +32,9 @@ const args = {
   min: '0',
   max: '100',
   step: 1,
-  width: '',
+  hideNumberInput: false,
+  width: '200px',
   invalidText: '',
-  // vertical: false,
 };
 
 export const SliderInput = {
@@ -40,6 +51,35 @@ export const SliderInput = {
         min=${args.min}
         max=${args.max}
         step=${args.step}
+        ?hideNumberInput=${args.hideNumberInput}
+        label=${args.label}
+        width=${args.width}
+        @on-input=${(e) => action(e.type)(e)}
+      >
+        <kyn-tooltip slot="tooltip">
+          <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
+          tooltip
+        </kyn-tooltip>
+      </kyn-slider-input>
+    `;
+  },
+};
+
+export const SliderInputWithHiddenInputs = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-slider-input
+        name=${args.name}
+        value=${args.value}
+        caption=${args.caption}
+        ?hideLabel=${args.hideLabel}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        min=${args.min}
+        max=${args.max}
+        step=${args.step}
+        ?hideNumberInput=${true}
         label=${args.label}
         width=${args.width}
         @on-input=${(e) => action(e.type)(e)}

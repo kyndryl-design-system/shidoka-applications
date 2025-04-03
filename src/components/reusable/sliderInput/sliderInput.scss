@@ -9,12 +9,6 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-
-  &.vertical {
-    input[type='range'] {
-      writing-mode: vertical-lr;
-    }
-  }
 }
 
 input[type='number'] {
@@ -48,6 +42,10 @@ input[type='range'] {
   margin: 0;
   outline: 2px solid transparent;
   outline-offset: 2px;
+  &[disabled] {
+    background: var(--kd-color-text-level-disabled) !important;
+    cursor: not-allowed;
+  }
 }
 
 /* For chrome and Safari */
@@ -75,10 +73,24 @@ input[type='range']::-moz-range-thumb {
   outline-offset: 2px;
 }
 
-input[type='range']::-webkit-slider-thumb:hover {
-  outline-color: var(--kd-color-border-variants-focus);
+/* For chrome and Safari focused */
+input[type='range']:not(:disabled):focus::-webkit-slider-thumb {
+  outline: 2px solid var(--kd-color-border-variants-focus);
 }
 
-input[type='range']::-moz-range-thumb:hover {
-  outline-color: var(--kd-color-border-variants-focus);
+/* For firefox focused */
+input[type='range']:not(:disabled):focus::-moz-range-thumb {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+}
+
+/* For chrome and Safari disabled thumb */
+input[type='range']:disabled::-webkit-slider-thumb {
+  background: var(--kd-color-text-level-disabled);
+  cursor: not-allowed;
+}
+
+/* For firefox disabled thumb */
+input[type='range']:disabled::-moz-range-thumb:hover {
+  background: var(--kd-color-text-level-disabled);
+  cursor: not-allowed;
 }
