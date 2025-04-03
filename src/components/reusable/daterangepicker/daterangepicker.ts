@@ -935,7 +935,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
             if (date instanceof Date && !isNaN(date.getTime())) {
               return date;
             }
-            console.warn('Invalid date in value array:', date);
             return null;
           })
           .filter((date): date is Date => date !== null);
