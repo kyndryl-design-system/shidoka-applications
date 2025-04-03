@@ -26,7 +26,7 @@ const args = {
   // vertical: false,
 };
 
-export const Default = {
+export const SliderInput = {
   args,
   render: (args) => {
     return html`

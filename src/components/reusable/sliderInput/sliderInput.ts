@@ -9,6 +9,7 @@ import { FormMixin } from '../../../common/mixins/form-input';
 import sliderInputScss from './sliderInput.scss';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import { getTokenThemeVal } from '@kyndryl-design-system/shidoka-foundation/common/helpers/color';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -105,7 +106,7 @@ export class SliderInput extends FormMixin(LitElement) {
           <span>${this.label}</span>
           <slot name="tooltip"></slot>
         </label>
-        <div class=${classMap(sliderClasses)}>
+        <div class=${classMap(sliderClasses)} style="position: relative;">
           <span>${this.min}</span>
           <input
             type="range"
@@ -122,7 +123,7 @@ export class SliderInput extends FormMixin(LitElement) {
             style=${Object.entries(styles)
               .map(([key, value]) => `${key}: ${value}`)
               .join(';')}
-            @input=${this.debounce((e: any) => this.handleInput(e), 100)}
+            @input=${(e: any) => this.handleInput(e)}
           />
           <span>${this.max}</span>
 
@@ -135,7 +136,7 @@ export class SliderInput extends FormMixin(LitElement) {
             ?invalid=${this._isInvalid}
             @input=${this.handleTextInput}
             ?disabled=${this.disabled}
-            aria-label="editable input"
+            aria-label="editable range input"
           />
         </div>
         <div>
@@ -160,9 +161,24 @@ export class SliderInput extends FormMixin(LitElement) {
     `;
   }
 
+  private fillTrackBackground() {
+    const inputEl = this.shadowRoot?.querySelector('input');
+    if (inputEl) {
+      const percentage =
+        ((parseFloat(this.value) - parseFloat(this.min)) /
+          (parseFloat(this.max) - parseFloat(this.min))) *
+        100;
+      //
+      inputEl.style.background = `linear-gradient(to right, ${getTokenThemeVal(
+        '--kd-color-background-button-primary-state-default'
+      )} ${percentage}%, #dee1e2 ${percentage}%, #dee1e2 100%)`;
+    }
+  }
+
   private handleInput(e: any) {
     if (this._isInvalid) return;
     this.value = this.shadowRoot?.querySelector('input')?.value;
+    this.fillTrackBackground();
     this._validate(true, false); // validate on range input value
     // emit selected value
     const event = new CustomEvent('on-input', {
@@ -255,8 +271,12 @@ export class SliderInput extends FormMixin(LitElement) {
 
   override updated(changedProps: any) {
     // preserve FormMixin updated function
-    this._onUpdated(changedProps);
+    this.value = this.shadowRoot?.querySelector('input')?.value;
+    if (this.value) {
+      this.fillTrackBackground();
+    }
 
+    this._onUpdated(changedProps);
     if (changedProps.has('value')) {
       this._inputEl.value = this.value.toString();
     }
@@ -266,19 +286,6 @@ export class SliderInput extends FormMixin(LitElement) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
-  }
-
-  private debounce(func: Function, wait: number, immediate = false) {
-    return (...args: any[]) => {
-      const later = () => {
-        this.debounceTimeout = undefined;
-        if (!immediate) func(...args);
-      };
-      const callNow = immediate && !this.debounceTimeout;
-      clearTimeout(this.debounceTimeout);
-      this.debounceTimeout = window.setTimeout(later, wait);
-      if (callNow) func(...args);
-    };
   }
 }
 
