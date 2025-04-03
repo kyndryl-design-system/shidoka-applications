@@ -10,6 +10,8 @@ import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/2
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/error.svg';
 import { FormMixin } from '../../../common/mixins/form-input';
 import FileUploaderScss from './fileUploader.scss';
+import './fileUploaderListContainer';
+import './fileUploaderItem';
 import '../button';
 import '../loaders';
 import '../inlineConfirm';
@@ -239,7 +241,7 @@ export class FileUploader extends FormMixin(LitElement) {
                   <!-- Valid files -->
                   ${this._validFiles.length > 0
                     ? this._validFiles.map(
-                        (file: any, index) => html`
+                        (file: any) => html`
                           <kyn-file-uploader-item>
                             <div class="file-details-container">
                               <p class="file-name success">${file.file.name}</p>
