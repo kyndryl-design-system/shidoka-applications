@@ -802,6 +802,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
       console.warn('Cannot initialize Flatpickr: input element not available');
       return;
     }
+
+    if (!this.dateFormat) {
+      console.warn('Date format not set, using default Y-m-d');
+      this.dateFormat = 'Y-m-d';
+    }
+
     try {
       this.flatpickrInstance?.destroy();
       this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
@@ -849,9 +855,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   public async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+    if (!this.dateFormat) {
+      this.dateFormat = 'Y-m-d';
+    }
+
     const container = getModalContainer(this);
     const options = await getFlatpickrOptions({
-      locale: this.locale,
+      locale: this.locale || 'en',
       dateFormat: this.dateFormat,
       defaultDate: this.defaultDate ? this.defaultDate : undefined,
       enableTime: this._enableTime,
