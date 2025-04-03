@@ -1,6 +1,9 @@
 import { html } from 'lit';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import './index';
 import { action } from '@storybook/addon-actions';
+import '../tooltip';
+import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 export default {
   title: 'Components/Slider Input',
@@ -41,6 +44,10 @@ export const Default = {
         width=${args.width}
         @on-input=${(e) => action(e.type)(e)}
       >
+        <kyn-tooltip slot="tooltip">
+          <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
+          tooltip
+        </kyn-tooltip>
       </kyn-slider-input>
     `;
   },

@@ -106,12 +106,12 @@ export class SliderInput extends FormMixin(LitElement) {
           <slot name="tooltip"></slot>
         </label>
         <div class=${classMap(sliderClasses)}>
-          ${this.min}
+          <span>${this.min}</span>
           <input
             type="range"
             id=${this.name}
             name=${this.name}
-            value=${this.value}
+            .value=${this.value}
             min=${ifDefined(this.min)}
             max=${ifDefined(this.max)}
             step=${ifDefined(this.step)}
@@ -124,7 +124,19 @@ export class SliderInput extends FormMixin(LitElement) {
               .join(';')}
             @input=${this.debounce((e: any) => this.handleInput(e), 100)}
           />
-          ${this.max}
+          <span>${this.max}</span>
+
+          <input
+            type="number"
+            .value=${this.value}
+            min=${ifDefined(this.min)}
+            max=${ifDefined(this.max)}
+            step=${ifDefined(this.step)}
+            ?invalid=${this._isInvalid}
+            @input=${this.handleTextInput}
+            ?disabled=${this.disabled}
+            aria-label="editable input"
+          />
         </div>
         <div>
           ${this.caption !== ''
@@ -160,6 +172,37 @@ export class SliderInput extends FormMixin(LitElement) {
       },
     });
     this.dispatchEvent(event);
+  }
+
+  private handleTextInput(e: Event) {
+    const input = e.target as HTMLInputElement;
+    const newValue = input.value;
+
+    // Ensure the value is within bounds (min and max)
+    if (newValue !== '') {
+      const numValue = parseFloat(newValue);
+      if (
+        !isNaN(numValue) &&
+        numValue >= parseFloat(this.min) &&
+        numValue <= parseFloat(this.max)
+      ) {
+        this.value = numValue;
+        this._validate(true, false); // validate on number input value
+        const event = new CustomEvent('on-input', {
+          detail: {
+            value: this.value,
+            origEvent: e,
+          },
+        });
+        this.dispatchEvent(event);
+      } else {
+        this._internalValidationMsg = `Value must be between ${this.min} and ${this.max}`;
+        input.setCustomValidity(
+          `Value must be between ${this.min} and ${this.max}`
+        );
+        this._isInvalid = true;
+      }
+    }
   }
 
   private _validate(interacted: Boolean, report: Boolean) {
@@ -207,6 +250,15 @@ export class SliderInput extends FormMixin(LitElement) {
     // Focus the form field to show validity
     if (report) {
       this._internals.reportValidity();
+    }
+  }
+
+  override updated(changedProps: any) {
+    // preserve FormMixin updated function
+    this._onUpdated(changedProps);
+
+    if (changedProps.has('value')) {
+      this._inputEl.value = this.value.toString();
     }
   }
 
