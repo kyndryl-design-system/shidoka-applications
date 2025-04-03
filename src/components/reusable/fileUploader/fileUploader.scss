@@ -29,6 +29,22 @@
       border: 1px solid var(--kd-color-border-button-secondary-state-hover);
     }
 
+    &.disabled {
+      background-color: var(--kd-color-background-card-background);
+      border-color: var(--kd-color-border-ui-disabled);
+      cursor: not-allowed;
+
+      color: var(--kd-color-text-level-disabled);
+
+      .uploader-status-icon {
+        span {
+          svg {
+            fill: var(--kd-color-icon-disabled);
+          }
+        }
+      }
+    }
+
     .drag-drop-text {
       @include typography.type-body-01;
     }
@@ -63,11 +79,75 @@
   .upload-constraints {
     align-self: center;
     @include typography.type-ui-02;
+
+    &.disabled {
+      color: var(--kd-color-text-level-disabled);
+    }
   }
 
-  .file-info-container,
+  .file-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 24px;
+  }
+
   .upload-status-container,
   .upload-button {
     margin-top: 24px;
+  }
+
+  .error-filled-icon {
+    display: flex;
+    margin-right: 8px;
+
+    svg {
+      fill: var(--kd-color-status-error-dark);
+    }
+  }
+
+  .error-icon {
+    display: flex;
+
+    svg {
+      fill: var(--kd-color-status-error-dark);
+    }
+  }
+
+  .success-icon {
+    display: flex;
+
+    svg {
+      fill: var(--kd-color-status-success-dark);
+    }
+  }
+
+  .file-details-container {
+    p {
+      margin: 0;
+    }
+
+    .file-name {
+      @include typography.type-body-02;
+    }
+
+    .file-size {
+      @include typography.type-ui-02;
+      color: var(--kd-color-text-level-secondary);
+    }
+
+    .success {
+      color: var(--kd-color-text-link-level-default);
+    }
+
+    .error {
+      color: var(--kd-color-text-variant-destructive);
+    }
+
+    .error-info-container {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
   }
 }

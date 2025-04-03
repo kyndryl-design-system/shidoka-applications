@@ -4,9 +4,16 @@ import { classMap } from 'lit/directives/class-map.js';
 import { deepmerge } from 'deepmerge-ts';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/upload.svg';
+import errorFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/error-filled.svg';
+import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
+import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/checkmark.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/error.svg';
+import { FormMixin } from '../../../common/mixins/form-input';
 import FileUploaderScss from './fileUploader.scss';
 import '../button';
-import { FormMixin } from '../../../common/mixins/form-input';
+import '../loaders';
+import '../inlineConfirm';
+import '../notification';
 
 const _defaultTextStrings = {
   dragAndDropText: 'Drag files here to upload',
@@ -15,12 +22,19 @@ const _defaultTextStrings = {
   maxFileSizeText: 'Max file size',
   supportedFileTypeText: 'Supported file type: ',
   fileTypeDisplyText: 'Any file type',
+  clearListText: 'Clear list',
+  fileTypeErrorText: 'Invaild file type',
+  fileSizeErrorText: 'Max file size exceeded',
+  inlineConfirmAnchorText: 'Delete',
+  inlineConfirmConfirmText: 'Confirm',
+  inlineConfirmCancelText: 'Cancel',
+  validationNotificationTitle: 'Multiple files not allowed',
+  validationNotificationMessage: 'Please select only one file.',
 };
 
 /**
  * File Uploader
  * @fires on-file-upload - Emits the uploaded files.
- * @slot file-details - Slot for file details.
  * @slot upload-status - Slot for upload status/notification.
  * @slot unnamed - Slot for the upload button.
  */
@@ -53,11 +67,16 @@ export class FileUploader extends FormMixin(LitElement) {
   maxFileSize = '1MB';
 
   /**
-   * Internal uploaded files.
-   * @internal
+   * Disable the file uploader. Default value is `false`.
    */
-  @state()
-  _uploadedFiles: Object[] = [];
+  @property({ type: Boolean })
+  disabled = false;
+
+  @property({ type: Array })
+  validFiles: Object[] = [];
+
+  @property({ type: Array })
+  invalidFiles: Object[] = [];
 
   /**
    * Internal text strings.
@@ -81,6 +100,16 @@ export class FileUploader extends FormMixin(LitElement) {
   _invalidFiles: Object[] = [];
 
   /**
+   * Internal valid files.
+   * @internal
+   */
+  @state()
+  _validFiles: Object[] = [];
+
+  @state()
+  _showValidationNotification = false;
+
+  /**
    * Queries the <input> DOM element.
    * @ignore
    */
@@ -91,14 +120,67 @@ export class FileUploader extends FormMixin(LitElement) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
+    if (changedProps.has('validFiles')) {
+      this._validFiles = this.validFiles;
+    }
+    if (changedProps.has('invalidFiles')) {
+      this._invalidFiles = this.invalidFiles;
+    }
+  }
+
+  override updated(changedProps: any) {
+    if (changedProps.has('validFiles')) {
+      this._validFiles = this.validFiles;
+    }
+    if (changedProps.has('invalidFiles')) {
+      this._invalidFiles = this.invalidFiles;
+    }
   }
 
   override render() {
+    const dragDropContainerClasses = {
+      'drag-drop-container': true,
+      dragging: this._dragging,
+      disabled: this.disabled,
+    };
     return html`
       <div class="file-uploader-container">
+        <!-- Drag and drop container -->
         <div class="drag-drop-container-wrapper">
-          ${this.renderDragDropContainer()}
-          <div class="upload-constraints">
+          <div
+            class=${classMap(dragDropContainerClasses)}
+            @dragover="${this.handleDragOver}"
+            @dragleave="${() => (this._dragging = false)}"
+            @drop="${this.handleDrop}"
+          >
+            <div class="uploader-status-icon">
+              <span>${unsafeSVG(uploadIcon)}</span>
+            </div>
+            <p class="drag-drop-text">${this._textStrings.dragAndDropText}</p>
+            <p class="or-text">${this._textStrings.orText}</p>
+            <kyn-button
+              kind="outline"
+              size="small"
+              ?disabled=${this.disabled}
+              @on-click="${this._triggerFileSelect}"
+            >
+              ${this._textStrings.buttonText}
+            </kyn-button>
+            <input
+              class="file-input"
+              type="file"
+              @change="${(e: any) => this.handleFileChange(e)}"
+              id="fileInput"
+              accept=${this.accept.length > 0 ? this.accept.join(',') : '*/*'}
+              ?multiple=${this.multiple}
+            />
+          </div>
+          <div
+            class=${classMap({
+              'upload-constraints': true,
+              disabled: this.disabled,
+            })}
+          >
             <p>
               ${this._textStrings.maxFileSizeText}
               <strong>${this.maxFileSize}</strong>.
@@ -107,9 +189,89 @@ export class FileUploader extends FormMixin(LitElement) {
             </p>
           </div>
         </div>
+        <!-- File list -->
         <div class="file-info-container">
-          <slot name="file-details"></slot>
+          ${this._invalidFiles.length > 0
+            ? html`
+                <kyn-file-uploader-list-container
+                  .titleText=${'Some files could not be added:'}
+                >
+                  <!-- Invalid files -->
+                  ${this._invalidFiles.length > 0
+                    ? this._invalidFiles.map(
+                        (file: any) => html`
+                          <kyn-file-uploader-item>
+                            <span slot="status-icon" class="error-filled-icon"
+                              >${unsafeSVG(errorFilledIcon)}</span
+                            >
+                            <div class="file-details-container">
+                              <p class="file-name">${file.name}</p>
+                              <div class="error-info-container">
+                                <p class="file-size">
+                                  ${this._getFilesSize(file.size)}
+                                </p>
+                                ·
+                                <p class="file-size error">
+                                  ${file.errorMsg === 'typeError'
+                                    ? this._textStrings.fileTypeErrorText
+                                    : this._textStrings.fileSizeErrorText}
+                                </p>
+                              </div>
+                            </div>
+                          </kyn-file-uploader-item>
+                        `
+                      )
+                    : ''}
+                  <kyn-button
+                    slot="action-button"
+                    kind="ghost"
+                    size="small"
+                    @on-click=${this._clearInvalidFiles}
+                  >
+                    ${this._textStrings.clearListText}
+                  </kyn-button>
+                </kyn-file-uploader-list-container>
+              `
+            : ''}
+          ${this._validFiles.length > 0
+            ? html`
+                <kyn-file-uploader-list-container .titleText=${'Files added:'}>
+                  <!-- Valid files -->
+                  ${this._validFiles.length > 0
+                    ? this._validFiles.map(
+                        (file: any, index) => html`
+                          <kyn-file-uploader-item>
+                            <div class="file-details-container">
+                              <p class="file-name success">${file.file.name}</p>
+                              <p class="file-size">
+                                ${this._getFilesSize(file.file.size)}
+                              </p>
+                            </div>
+                            <div slot="actions">
+                              ${this._displayActions(file)}
+                            </div>
+                          </kyn-file-uploader-item>
+                        `
+                      )
+                    : ''}
+                </kyn-file-uploader-list-container>
+              `
+            : ''}
         </div>
+        ${this._showValidationNotification
+          ? html` <kyn-notification
+              slot="upload-status"
+              .type=${'inline'}
+              .tagStatus=${'error'}
+              .notificationTitle=${this._textStrings
+                .validationNotificationTitle}
+              @on-close=${() => {
+                this._showValidationNotification = false;
+              }}
+            >
+              ${this._textStrings.validationNotificationMessage}
+            </kyn-notification>`
+          : ''}
         <div class="upload-status-container">
           <slot name="upload-status"></slot>
         </div>
@@ -118,54 +280,6 @@ export class FileUploader extends FormMixin(LitElement) {
         </div>
       </div>
     `;
-  }
-
-  private renderDragDropContainer() {
-    const dragDropContainerClasses = {
-      'drag-drop-container': true,
-      dragging: this._dragging,
-    };
-    return html`
-      <div
-        class=${classMap(dragDropContainerClasses)}
-        @dragover="${this.handleDragOver}"
-        @dragleave="${() => (this._dragging = false)}"
-        @drop="${this.handleDrop}"
-      >
-        <div class="uploader-status-icon">
-          <span>${unsafeSVG(uploadIcon)}</span>
-        </div>
-        <p class="drag-drop-text">${this._textStrings.dragAndDropText}</p>
-        <p class="or-text">${this._textStrings.orText}</p>
-        <kyn-button
-          kind="outline"
-          size="small"
-          @on-click="${this._triggerFileSelect}"
-        >
-          ${this._textStrings.buttonText}
-        </kyn-button>
-        <input
-          class="file-input"
-          type="file"
-          @change="${(e: any) => this.handleFileChange(e)}"
-          id="fileInput"
-          accept=${this.accept.length > 0 ? this.accept.join(',') : '*/*'}
-          ?multiple=${this.multiple}
-        />
-      </div>
-    `;
-  }
-
-  handleFileChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-    if (target.files) {
-      const files = Array.from(target.files);
-
-      this._validateFiles(files);
-      this._validate(true, false);
-      this._setFormValue();
-      this._emitFileUploadEvent();
-    }
   }
 
   handleDragOver(event: DragEvent) {
@@ -178,6 +292,7 @@ export class FileUploader extends FormMixin(LitElement) {
     event.preventDefault();
     event.stopPropagation();
     this._dragging = false;
+    this._showValidationNotification = false;
 
     if (event.dataTransfer?.files) {
       const files = Array.from(event.dataTransfer.files);
@@ -196,15 +311,45 @@ export class FileUploader extends FormMixin(LitElement) {
     fileInputElement?.click();
   }
 
+  handleFileChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target.files) {
+      const files = Array.from(target.files);
+
+      this._validateFiles(files);
+      this._validate(true, false);
+      this._setFormValue();
+      this._emitFileUploadEvent();
+    }
+  }
+
+  private _getFilesSize(bytes: number) {
+    if (bytes < 1024) {
+      return `${bytes} Bytes`;
+    } else if (bytes < 1024 * 1024) {
+      return `${(bytes / 1024).toFixed(2)} KB`;
+    } else if (bytes < 1024 * 1024 * 1024) {
+      return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+    } else {
+      return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+    }
+  }
+
+  private _clearInvalidFiles() {
+    this._invalidFiles = [];
+    this._emitFileUploadEvent();
+  }
+
   // Validate files
   private _validateFiles(files: File[]) {
     // Check if multiple files are uploaded
     if (!this.multiple && files.length > 1) {
-      return; // need to add error message
+      this._showValidationNotification = true;
+      return;
     }
 
-    const validFiles: Object[] = [];
-    const invalidFiles: Object[] = [];
+    const validFiles: Object[] = [...this._validFiles];
+    const invalidFiles: Object[] = [...this._invalidFiles];
 
     // Parse maxFileSize to get the max file size in bytes
     const maxFileSizeInBytes = this._parseFileSize(this.maxFileSize);
@@ -234,7 +379,11 @@ export class FileUploader extends FormMixin(LitElement) {
       const isValidSize = fileSize <= maxFileSizeInBytes;
 
       if (isValidType && isValidSize) {
-        validFiles.push({ file, id: this._generateUniqueFileId() });
+        validFiles.push({
+          file,
+          id: this._generateUniqueFileId(),
+          state: 'new',
+        });
       } else {
         let errorMsg = '';
         if (!isValidType) {
@@ -255,17 +404,13 @@ export class FileUploader extends FormMixin(LitElement) {
 
     // Update valid files
     if (validFiles.length > 0) {
-      this._uploadedFiles = validFiles;
+      this._validFiles = validFiles;
     }
 
     // Update invalid files
     if (invalidFiles.length > 0) {
       this._invalidFiles = invalidFiles;
     }
-  }
-
-  private _generateUniqueFileId() {
-    return `${Date.now()}-${Math.random().toString(36).substring(2)}`;
   }
 
   private _parseFileSize(size: string): number {
@@ -282,6 +427,10 @@ export class FileUploader extends FormMixin(LitElement) {
       default:
         return sizeValue; // Default to bytes if no unit provided
     }
+  }
+
+  private _generateUniqueFileId() {
+    return `${Date.now()}-${Math.random().toString(36).substring(2)}`;
   }
 
   private _validate(interacted: Boolean, report: Boolean) {
@@ -326,24 +475,51 @@ export class FileUploader extends FormMixin(LitElement) {
 
   private _setFormValue() {
     const formData = new FormData();
-    this._uploadedFiles.forEach((fileObj: any) => {
+    this._validFiles.forEach((fileObj: any) => {
       const { file } = fileObj;
       formData.append(this.name, file);
     });
     this._internals.setFormValue(formData);
   }
 
+  private _displayActions(file: any) {
+    if (file.state === 'uploading') {
+      return html` <kyn-loader-inline></kyn-loader-inline> `;
+    } else if (file.state === 'uploaded') {
+      return html`
+        <span class="success-icon">${unsafeSVG(checkmarkIcon)}</span>
+      `;
+    } else if (file.state === 'error') {
+      return html` <span class="error-icon">${unsafeSVG(errorIcon)}</span> `;
+    } else {
+      return html` <kyn-inline-confirm
+        ?destructive=${true}
+        .anchorText=${this._textStrings.inlineConfirmAnchorText}
+        .confirmText=${this._textStrings.inlineConfirmConfirmText}
+        .cancelText=${this._textStrings.inlineConfirmCancelText}
+        @on-confirm=${() => this._deleteFile(file.id)}
+      >
+        <span>${unsafeSVG(deleteIcon)}</span>
+        <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
+      </kyn-inline-confirm>`;
+    }
+  }
+
+  private _deleteFile(fileId: string) {
+    this._validFiles = this._validFiles.filter(
+      (file: any) => file.id !== fileId
+    );
+    this._emitFileUploadEvent();
+  }
+
   private _emitFileUploadEvent() {
     const event = new CustomEvent('on-file-upload', {
       detail: {
-        validFiles: this._uploadedFiles,
+        validFiles: this._validFiles,
         invalidFiles: this._invalidFiles,
       },
     });
     this.dispatchEvent(event);
-    // Reset uploaded files
-    this._uploadedFiles = [];
-    this._invalidFiles = [];
   }
 }
 

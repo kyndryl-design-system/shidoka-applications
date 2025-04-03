@@ -2,45 +2,16 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { action } from '@storybook/addon-actions';
-import { classMap } from 'lit/directives/class-map.js';
-import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/checkmark.svg';
-import errorFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/error-filled.svg';
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/error.svg';
-import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 import SampleFileUploaderScss from './fileUploader.sample.scss';
 import './index';
-import '../inlineConfirm';
-import '../link';
-import '../notification';
 import '../button';
+import '../notification';
 import '../progressBar';
-import '../loaders';
 
 @customElement('sample-file-uploader')
 export class SampleFileUploader extends LitElement {
   static override styles = SampleFileUploaderScss;
-
-  @property({ type: Object })
-  textStrings = {
-    dragAndDropText: 'Drag files here to upload',
-    orText: 'or',
-    buttonText: 'Browse files',
-    maxFileSizeText: 'Max file size',
-    supportedFileTypeText: 'Supported file type: ',
-    // fileTypeDisplyText: 'Any image type, .pdf',
-    fileTypeDisplyText: '.jpeg, .png',
-  };
-
-  @property({ type: Boolean })
-  multiple = true;
-
-  @property({ type: Array })
-  // accept = ['image/*', '.pdf'];
-  accept = ['image/jpeg', 'image/png'];
-
-  @state()
-  _uploaderStatus = 'default'; // default, active, success, error
 
   @state()
   _validFiles: any[] = [];
@@ -49,10 +20,7 @@ export class SampleFileUploader extends LitElement {
   _invalidFiles: any[] = [];
 
   @state()
-  _notificationTitle = '';
-
-  @state()
-  _notificationMessage = '';
+  _showNotification = false;
 
   @state()
   _notificationType = 'normal';
@@ -61,137 +29,68 @@ export class SampleFileUploader extends LitElement {
   _notificationStatus = 'default';
 
   @state()
-  _showNotification = false;
+  _notificationTitle = '';
 
   @state()
-  _uploadCancelled = false;
+  _notificationMessage = '';
 
   @state()
-  _uploadedFilesStatus: {
-    fileNames: string[];
-    filesSizes: number[];
-    totalFileSize: number;
-    progress: number;
-    status: 'active' | 'success' | 'error' | '';
-    currentFileIndex: number;
-  } = {
-    fileNames: [],
-    filesSizes: [],
-    totalFileSize: 0,
-    progress: 0,
-    status: '',
-    currentFileIndex: 0,
-  };
+  _showProgressBar = false;
 
   @state()
-  _uploadInterval: any = null;
+  _currentFileUploading = '';
+
+  @state()
+  _completedFiles = 0;
+
+  @state()
+  _totalFiles = 0;
+
+  @state()
+  _overallProgress = 0;
+
+  @state()
+  _uploadCanceled = false;
+
+  @state()
+  _helperText = '';
 
   override render() {
     return html`
-      <!-- File uploader -->
       <kyn-file-uploader
-        .accept=${this.accept}
-        .multiple=${this.multiple}
-        .textStrings=${this.textStrings}
+        .accept=${['image/jpeg', 'image/png']}
+        .multiple=${true}
+        .validFiles=${this._validFiles}
+        .invalidFiles=${this._invalidFiles}
         @on-file-upload=${(e: any) => {
           action(e.type)(e);
           this._handleFilesToBeUploaded(e);
         }}
       >
-        <!-- File details list -->
-        <div slot="file-details" class="file-details-wrapper">
-          ${this._invalidFiles.length > 0
-            ? html`
-                <kyn-file-uploader-list-container
-                  .titleText=${'Some files could not be added:'}
-                >
-                  <!-- Invalid files -->
-                  ${this._invalidFiles.length > 0
-                    ? this._invalidFiles.map(
-                        (file) => html`
-                          <kyn-file-uploader-item>
-                            <span slot="status-icon" class="error-filled-icon"
-                              >${unsafeSVG(errorFilledIcon)}</span
-                            >
-                            <div class="file-details-container">
-                              <p class="file-name">${file.name}</p>
-                              <div class="error-info-container">
-                                <p class="file-size">
-                                  ${this._getFilesSize(file.size)}
-                                </p>
-                                ·
-                                <p class="file-size error">
-                                  ${file.errorMsg === 'typeError'
-                                    ? 'Invaild file type'
-                                    : 'Max file size exceeded'}
-                                </p>
-                              </div>
-                            </div>
-                          </kyn-file-uploader-item>
-                        `
-                      )
-                    : ''}
-                  <kyn-button
-                    slot="action-button"
-                    kind="ghost"
-                    size="small"
-                    @on-click=${() => (this._invalidFiles = [])}
-                  >
-                    Clear list
-                  </kyn-button>
-                </kyn-file-uploader-list-container>
-              `
-            : ''}
-          ${this._validFiles.length > 0
-            ? html`
-                <kyn-file-uploader-list-container .titleText=${'Files added:'}>
-                  <!-- Valid files -->
-                  ${this._validFiles.length > 0
-                    ? this._validFiles.map(
-                        (file, index) => html`
-                          <kyn-file-uploader-item>
-                            <div class="file-details-container">
-                              <p class="file-name success">${file.file.name}</p>
-                              <p class="file-size">
-                                ${this._getFilesSize(file.file.size)}
-                              </p>
-                            </div>
-                            <div slot="actions">
-                              ${this._displayActions(file, index)}
-                            </div>
-                          </kyn-file-uploader-item>
-                        `
-                      )
-                    : ''}
-                </kyn-file-uploader-list-container>
-              `
-            : ''}
-        </div>
         <!-- Upload status -->
         ${this._showNotification
           ? html`
               <kyn-notification
                 slot="upload-status"
                 .type=${this._notificationType}
+                .tagStatus=${this._notificationStatus}
                 .hideCloseButton=${true}
                 .notificationTitle=${this._notificationTitle}
-                .tagStatus=${this._notificationStatus}
               >
-                ${this._uploadedFilesStatus.progress !== 100 &&
-                !this._uploadCancelled
+                ${this._showProgressBar
                   ? html`
                       <div class="notification-status-body">
                         <kyn-progress-bar
-                          .label=${this._uploadedFilesStatus.fileNames[
-                            this._uploadedFilesStatus.currentFileIndex
-                          ]}
-                          .value=${this._uploadedFilesStatus.progress}
-                          .max=${99}
-                          .status=${this._uploadedFilesStatus.status}
+                          .label=${this._currentFileUploading}
+                          .value=${this._overallProgress}
+                          .max=${100}
+                          .status=${this._overallProgress === 100
+                            ? 'success'
+                            : 'active'}
                           .showInlineLoadStatus=${true}
                           .unit=${'%'}
                           .showActiveHelperText=${true}
-                          .helperText=${this._getHelperText()}
+                          .helperText=${this._helperText}
                         ></kyn-progress-bar>
                         <kyn-button
                           kind="outline"
@@ -206,15 +105,12 @@ export class SampleFileUploader extends LitElement {
               </kyn-notification>
             `
           : ``}
-        <!-- Upload button -->
         <div>
           ${this._validFiles.length > 0 || this._invalidFiles.length > 0
             ? html`<kyn-button
                 size="small"
-                .disabled=${this._uploaderStatus === 'active' ||
-                this._uploaderStatus === 'success' ||
-                (this._invalidFiles.length > 0 &&
-                  this._validFiles.length === 0)}
+                .disabled=${this._invalidFiles.length > 0 &&
+                this._validFiles.length === 0}
                 @on-click=${() => this._startFileUpload()}
                 >Start upload</kyn-button
               >`
@@ -224,255 +120,116 @@ export class SampleFileUploader extends LitElement {
     `;
   }
 
-  private _getFilesSize(bytes: number) {
-    if (bytes < 1024) {
-      return `${bytes} Bytes`;
-    } else if (bytes < 1024 * 1024) {
-      return `${(bytes / 1024).toFixed(2)} KB`;
-    } else if (bytes < 1024 * 1024 * 1024) {
-      return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
-    } else {
-      return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
-    }
+  _handleFilesToBeUploaded(e: any) {
+    this._validFiles = e.detail.validFiles;
+    this._invalidFiles = e.detail.invalidFiles;
+    this._totalFiles = this._validFiles.length;
   }
 
-  private _deleteFile(fileId: string) {
-    this._validFiles = this._validFiles.filter((file) => file.id !== fileId);
-    this._showNotification = false;
-    this._uploaderStatus = 'default';
-    this._resetNotificationContent();
-  }
-
-  // This is a placeholder function to show the files added to the file uploader after frontend validation.
-  private _handleFilesToBeUploaded(event: any) {
-    this._validFiles = [...this._validFiles, ...event.detail.validFiles];
-    this._invalidFiles = [...this._invalidFiles, ...event.detail.invalidFiles];
-  }
-
-  // This is a placeholder function to simulate the logic for file upload.
-  // In a real application, you would replace this with actual upload logic based on your backend API and handle the progress updates accordingly.
-  private _startFileUpload() {
+  _startFileUpload() {
     this._showNotification = true;
-    this._uploadCancelled = false;
-    this._uploaderStatus = 'active';
-    this._resetNotificationContent();
-
-    const fileNames = this._validFiles.map((file) => file.file.name);
-    const filesSizes = this._validFiles.map((file) => file.file.size);
-    const totalFileSize = this._validFiles.reduce(
-      (cur, file) => cur + file.file.size,
-      0
-    );
-
-    this._uploadedFilesStatus = {
-      fileNames,
-      filesSizes,
-      totalFileSize,
-      progress: 0,
-      status: 'active',
-      currentFileIndex: 0,
-    };
-
-    this._uploadNextFile();
+    this._showProgressBar = true;
+    this._notificationType = 'normal';
+    this._notificationStatus = 'default';
+    this._notificationTitle = '';
+    this._currentFileUploading = '';
+    this._helperText = '';
+    this._uploadCanceled = false;
+    this._uploadFiles();
   }
 
-  private _uploadNextFile() {
-    const currentFile =
-      this._validFiles[this._uploadedFilesStatus.currentFileIndex];
-    const currentFileSize = currentFile.file.size;
-    const chunkSize = currentFileSize / 100;
+  async _uploadFiles() {
+    let uploadedFilesCount = 0;
+    const totalFiles = this._validFiles.length;
+    const invalidFilesCount = this._invalidFiles.length;
+    const totalDuration = totalFiles * 1500;
+    const incrementInterval = 50;
+    const incrementStep = 100 / (totalDuration / incrementInterval);
 
-    let progress = 0;
-    let totalProgress = 0;
+    let currentProgress = 0;
 
-    this._uploadInterval = setInterval(() => {
-      progress += chunkSize;
+    const progressInterval = setInterval(() => {
+      if (this._uploadCanceled) {
+        clearInterval(progressInterval);
+        return;
+      }
 
-      // Update the progress for the current file
-      const currentFileProgress = Math.min(
-        (progress / currentFileSize) * 100,
-        100
-      );
+      currentProgress += incrementStep;
 
-      // Calculate the total progress as the weighted average based on file sizes
-      totalProgress = this._validFiles.reduce((acc, file, index) => {
-        if (index <= this._uploadedFilesStatus.currentFileIndex) {
-          // Progress for completed files is 100%
-          const fileProgress =
-            index === this._uploadedFilesStatus.currentFileIndex
-              ? currentFileProgress
-              : 100;
-          return (
-            acc +
-            (fileProgress * file.file.size) /
-              this._uploadedFilesStatus.totalFileSize
-          );
-        }
-        return acc;
-      }, 0);
+      if (currentProgress >= 100) {
+        currentProgress = 100;
+        clearInterval(progressInterval);
+      }
 
-      // Update total progress
-      this._uploadedFilesStatus = {
-        ...this._uploadedFilesStatus,
-        progress: totalProgress,
-      };
+      this._overallProgress = Math.round(currentProgress);
+      this.requestUpdate();
+    }, incrementInterval);
+
+    for (let i = 0; i < totalFiles; i++) {
+      const file = this._validFiles[i];
+
+      if (this._uploadCanceled) {
+        file.state = 'error';
+        this._currentFileUploading = `Upload canceled for ${file.file.name}`;
+        this.requestUpdate();
+        break;
+      }
+
+      file.state = 'uploading';
+      this._helperText = `Uploading ${i + 1} out of ${
+        totalFiles + invalidFilesCount
+      } files.`;
+      this._currentFileUploading = file.file.name;
+      this.requestUpdate();
+
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      if (!this._uploadCanceled) {
+        file.state = 'uploaded';
+        uploadedFilesCount++;
+        this._currentFileUploading = 'upload complete';
+        this.requestUpdate();
+      }
 
       this.requestUpdate();
 
-      // Check if the current file is fully uploaded
-      if (currentFileProgress >= 100) {
-        this._uploadedFilesStatus = {
-          ...this._uploadedFilesStatus,
-          progress: totalProgress,
-        };
-
-        // Move to the next file
-        clearInterval(this._uploadInterval); // Stop the interval for the current file
-
-        if (
-          this._uploadedFilesStatus.currentFileIndex <
-          this._validFiles.length - 1
-        ) {
-          this._uploadedFilesStatus.currentFileIndex++;
-          this._uploadNextFile();
-        } else {
-          // All files uploaded successfully
-          this._uploadedFilesStatus = {
-            ...this._uploadedFilesStatus,
-            status: this._invalidFiles.length > 0 ? 'error' : 'success',
-            progress: 100,
-          };
-
-          this._displayNotification();
-          this._uploaderStatus =
-            this._invalidFiles.length > 0 ? 'error' : 'success';
+      if (this._uploadCanceled) {
+        this._notificationMessage = `Upload partially successful: ${
+          totalFiles - uploadedFilesCount
+        } out of ${totalFiles} files was not uploaded.`;
+        for (let j = i; j < totalFiles; j++) {
+          const remainingFile = this._validFiles[j];
+          remainingFile.state = 'error';
         }
-
-        this.requestUpdate();
+        break;
       }
-    }, 40); // This is a placeholder interval for simulating upload progress, in real case, it would be based on actual upload progress
-  }
-
-  // This is a placeholder function to simulate the logic for generating helper text for the progress bar.
-  private _getHelperText() {
-    const invalidFiles = this._invalidFiles.length;
-    const uploadedFiles = this._validFiles.length;
-    const totalFiles = uploadedFiles + invalidFiles;
-    const index = this._uploadedFilesStatus.currentFileIndex;
-    const progress = this._uploadedFilesStatus.progress;
-
-    if (invalidFiles > 0) {
-      if (progress < 100) {
-        // Upload is still in progress
-        return `Uploading ${index + 1} out of ${totalFiles} files.`;
-      }
-      // Upload is complete, but there are invalid files
-      return `${invalidFiles} out of ${totalFiles} files not uploaded.`;
     }
-
-    // All files are successfully uploaded
-    if (progress === 100) {
-      return 'Files uploaded.';
-    }
-
-    // Still uploading
-    return `Uploading ${index + 1} out of ${totalFiles} files.`;
-  }
-
-  private _displayActions(file: any, index: number) {
-    const currFileIndex = this._uploadedFilesStatus.currentFileIndex;
-    const status = this._uploaderStatus;
-
-    if (status === 'active') {
-      if (index < currFileIndex) {
-        return this._renderIcon(checkmarkIcon);
-      } else {
-        return html` <kyn-loader-inline></kyn-loader-inline> `;
-      }
-    } else if (status === 'success') {
-      return this._renderIcon(checkmarkIcon);
-    } else if (status === 'error') {
-      if (
-        index < currFileIndex ||
-        (index === currFileIndex && !this._uploadCancelled)
-      ) {
-        return this._renderIcon(checkmarkIcon);
-      } else {
-        return this._renderIcon(errorIcon);
-      }
-    } else {
-      return html` <kyn-inline-confirm
-        ?destructive=${true}
-        .anchorText=${'Delete'}
-        .confirmText=${'Confirm'}
-        .cancelText=${'Cancel'}
-        @on-confirm=${() => this._deleteFile(file.id)}
-      >
-        <span>${unsafeSVG(deleteIcon)}</span>
-        <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
-      </kyn-inline-confirm>`;
+    if (!this._uploadCanceled) {
+      const invalidFilesCount = this._invalidFiles.length;
+      this._notificationType = 'inline';
+      this._notificationStatus = invalidFilesCount > 0 ? 'warning' : 'success';
+      this._notificationTitle =
+        invalidFilesCount > 0
+          ? 'Upload partially successful'
+          : 'Files uploaded';
+      this._showProgressBar = false;
+      this._notificationMessage =
+        invalidFilesCount > 0
+          ? `${invalidFilesCount} out of ${
+              invalidFilesCount + totalFiles
+            } could not be uploaded.`
+          : `Success! ${totalFiles} files have been uploaded.`;
+      clearInterval(progressInterval);
     }
   }
 
-  private _renderIcon(icon: any) {
-    const iconClasses = {
-      'success-icon': icon === checkmarkIcon,
-      'error-icon': icon === errorIcon,
-    };
-    return html`
-      <span class=${classMap(iconClasses)}>${unsafeSVG(icon)}</span>
-    `;
-  }
-
-  private _displayNotification() {
-    const numberOfInvalidFiles = this._invalidFiles.length;
-    const numberOfValidFiles = this._validFiles.length;
-    this._notificationType = 'inline';
-    if (numberOfInvalidFiles > 0) {
-      this._notificationTitle = 'Upload partially successful';
-      this._notificationMessage = `${numberOfInvalidFiles} out of ${
-        numberOfInvalidFiles + numberOfValidFiles
-      } could not be uploaded.`;
-      this._notificationStatus = 'error';
-    } else {
-      this._notificationTitle = 'Files uploaded';
-      this._notificationMessage = `Success! ${numberOfValidFiles} files have been uploaded.`;
-      this._notificationStatus = 'success';
-    }
-  }
-
-  // This is a placeholder function to simulate the logic for stopping the file upload.
-  private _stopFileUpload() {
-    this._uploaderStatus = 'error';
-    // Stop the upload interval if it's running
-    if (this._uploadInterval) {
-      clearInterval(this._uploadInterval);
-      this._uploadInterval = null;
-    }
-    this._uploadCancelled = true;
-    this._notificationTitle = 'File upload was interrupted.';
+  _stopFileUpload() {
+    this._uploadCanceled = true;
+    this._showProgressBar = false;
     this._notificationType = 'inline';
     this._notificationStatus = 'warning';
-    const totalFiles = this._validFiles.length + this._invalidFiles.length;
-    const uploadedFiles = this._uploadedFilesStatus.currentFileIndex;
-    this._notificationMessage = `Upload partially successful: ${
-      totalFiles - uploadedFiles
-    } out of ${totalFiles} files was not uploaded.`;
-  }
-
-  private _resetNotificationContent() {
-    this._notificationTitle = '';
-    this._notificationMessage = '';
-    this._notificationType = 'normal';
-    this._notificationStatus = 'default';
-    this._uploadedFilesStatus = {
-      fileNames: [],
-      filesSizes: [],
-      totalFileSize: 0,
-      progress: 0,
-      status: '',
-      currentFileIndex: 0,
-    };
+    this._notificationTitle = 'File upload was interrupted.';
+    this._currentFileUploading = 'Upload canceled';
   }
 }
 
