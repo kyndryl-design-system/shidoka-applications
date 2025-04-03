@@ -501,6 +501,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (!dateStr || !dateStr.trim()) return null;
     dateStr = dateStr.trim();
 
+    const dateFormat = this.dateFormat || 'Y-m-d';
+
     if (dateStr.includes('T')) {
       const date = new Date(dateStr);
       return isNaN(date.getTime()) ? null : date;
@@ -513,7 +515,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       let ampm = parts[2] ? parts[2].toUpperCase() : undefined;
       const dateTokens = datePart.split('-').map(Number);
       let year: number, month: number, day: number;
-      switch (this.dateFormat) {
+      switch (dateFormat) {
         case 'Y-m-d':
           [year, month, day] = dateTokens;
           break;
@@ -564,13 +566,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
       'd-m-Y': /^\d{2}-\d{2}-\d{4}$/,
       'Y-m-d h:i K': /^\d{4}-\d{2}-\d{2}( \d{1,2}:\d{2} [AP]M)?$/,
     };
-    const pattern = formats[this.dateFormat];
+    const pattern = formats[dateFormat];
     if (!pattern || !pattern.test(dateStr)) return null;
 
     const datePart = dateStr.split(' ')[0];
     const dateTokens = datePart.split('-').map(Number);
     let year: number, month: number, day: number;
-    switch (this.dateFormat) {
+    switch (dateFormat) {
       case 'Y-m-d':
         [year, month, day] = dateTokens;
         break;
