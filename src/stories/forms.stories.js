@@ -214,22 +214,6 @@ export const Default = {
 
         <kyn-date-picker
           required
-          name="date-picker"
-          label="Multi-Date Picker"
-          dateFormat="Y-m-d"
-          mode="multiple"
-          .defaultDate=${['2025-01-01']}
-          caption="Date picker pre-selected"
-          defaultErrorMessage="A date value is required"
-          .value=${null}
-          @on-input=${(e) => action(e.type)(e)}
-          style="min-width: 425px;"
-        ></kyn-date-picker>
-
-        <br /><br />
-
-        <kyn-date-picker
-          required
           name="date-time-picker"
           label="Date + Time Picker"
           dateFormat="Y-m-d h:i K"

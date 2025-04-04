@@ -74,8 +74,16 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: String })
   defaultErrorMessage = '';
 
-  /** Sets date/time range value. */
-  @property({ type: Array })
+  /**
+   * Sets the date/time value for the component.
+   *
+   * For controlled usage patterns, this property allows parent components to directly control the selected date.
+   * When used together with defaultDate, value takes precedence if both are provided.
+   *
+   * In uncontrolled usage, this is populated automatically based on defaultDate and user selections.
+   * @internal
+   */
+  @state()
   override value: [Date | null, Date | null] = [null, null];
 
   /** Sets validation warning messaging. */
@@ -182,7 +190,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  _textStrings = { ..._defaultTextStrings };
 
   /** Tracks if we're in a clear operation to prevent duplicate events
    * @internal
@@ -493,6 +501,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (!dateStr || !dateStr.trim()) return null;
     dateStr = dateStr.trim();
 
+    const dateFormat = this.dateFormat || 'Y-m-d';
+
     if (dateStr.includes('T')) {
       const date = new Date(dateStr);
       return isNaN(date.getTime()) ? null : date;
@@ -505,7 +515,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       let ampm = parts[2] ? parts[2].toUpperCase() : undefined;
       const dateTokens = datePart.split('-').map(Number);
       let year: number, month: number, day: number;
-      switch (this.dateFormat) {
+      switch (dateFormat) {
         case 'Y-m-d':
           [year, month, day] = dateTokens;
           break;
@@ -556,13 +566,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
       'd-m-Y': /^\d{2}-\d{2}-\d{4}$/,
       'Y-m-d h:i K': /^\d{4}-\d{2}-\d{2}( \d{1,2}:\d{2} [AP]M)?$/,
     };
-    const pattern = formats[this.dateFormat];
+    const pattern = formats[dateFormat];
     if (!pattern || !pattern.test(dateStr)) return null;
 
     const datePart = dateStr.split(' ')[0];
     const dateTokens = datePart.split('-').map(Number);
     let year: number, month: number, day: number;
-    switch (this.dateFormat) {
+    switch (dateFormat) {
       case 'Y-m-d':
         [year, month, day] = dateTokens;
         break;
@@ -714,7 +724,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
         });
       } else {
         this._processedDisableDates = [];
-        console.warn('Disable prop must be an array');
       }
       if (this.flatpickrInstance) {
         this.updateFlatpickrOptions();
@@ -741,7 +750,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   private async setupAnchor() {
     if (!this._inputEl) {
-      console.warn('Input element not found during setup');
       return;
     }
 
@@ -800,6 +808,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
       console.warn('Cannot initialize Flatpickr: input element not available');
       return;
     }
+
+    if (!this.dateFormat) {
+      console.warn('Date format not set, using default Y-m-d');
+      this.dateFormat = 'Y-m-d';
+    }
+
     try {
       this.flatpickrInstance?.destroy();
       this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
@@ -847,9 +861,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   public async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+    if (!this.dateFormat) {
+      this.dateFormat = 'Y-m-d';
+    }
+
     const container = getModalContainer(this);
     const options = await getFlatpickrOptions({
-      locale: this.locale,
+      locale: this.locale || 'en',
       dateFormat: this.dateFormat,
       defaultDate: this.defaultDate ? this.defaultDate : undefined,
       enableTime: this._enableTime,
@@ -874,12 +892,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   public setInitialDates() {
     if (!this.flatpickrInstance) {
-      console.warn(
-        'Cannot set initial dates: Flatpickr instance not available'
-      );
       return;
     }
     try {
+      if (!this.dateFormat) {
+        this.dateFormat = 'Y-m-d';
+      }
+
       const hasValidValue =
         Array.isArray(this.value) &&
         this.value.length === 2 &&
@@ -924,7 +943,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
             if (date instanceof Date && !isNaN(date.getTime())) {
               return date;
             }
-            console.warn('Invalid date in value array:', date);
             return null;
           })
           .filter((date): date is Date => date !== null);
@@ -940,10 +958,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
         }
       }
     } catch (error) {
-      console.warn('Error setting initial dates:', error);
-      if (error instanceof Error) {
-        console.warn('Error details:', error.message);
-      }
+      console.error(
+        'Error in setInitialDates:',
+        error instanceof Error ? error.message : String(error)
+      );
     }
   }
 

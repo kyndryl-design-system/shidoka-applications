@@ -78,8 +78,16 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   size = 'md';
 
-  /** Sets pre-selected date/time value. */
-  @property({ type: Array })
+  /**
+   * Sets the date/time value for the component.
+   *
+   * For controlled usage patterns, this property allows parent components to directly control the selected date.
+   * When used together with defaultDate, value takes precedence if both are provided.
+   *
+   * In uncontrolled usage, this is populated automatically based on defaultDate and user selections.
+   * @internal
+   */
+  @state()
   override value: Date | Date[] | null = null;
 
   /** Sets validation warning messaging. */
@@ -188,7 +196,7 @@ export class DatePicker extends FormMixin(LitElement) {
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  _textStrings = { ..._defaultTextStrings };
 
   /** Control flag to prevent Flatpickr from opening when clicking caption, error, label, or warning elements.
    * @internal
@@ -372,6 +380,8 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
+    if (this.datePickerDisabled) return null;
+
     if (this.invalidText || (this._isInvalid && this._hasInteracted)) {
       return html`<div
         id=${errorId}
@@ -525,7 +535,6 @@ export class DatePicker extends FormMixin(LitElement) {
         });
       } else {
         this._processedDisableDates = [];
-        console.warn('Disable prop must be an array');
       }
       if (this.flatpickrInstance) {
         this.debouncedUpdate();
@@ -562,7 +571,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
   private async setupAnchor() {
     if (!this._inputEl) {
-      console.warn('Input element not found during setup');
       return;
     }
 
@@ -641,7 +649,7 @@ export class DatePicker extends FormMixin(LitElement) {
               );
             }
           } catch (error) {
-            console.warn('Error setting calendar attributes:', error);
+            console.error('Error setting calendar attributes:', error);
           }
         },
         setInitialDates: this.setInitialDates.bind(this),
@@ -696,9 +704,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
   setInitialDates() {
     if (!this.flatpickrInstance) {
-      console.warn(
-        'Cannot set initial dates: Flatpickr instance not available'
-      );
       return;
     }
 
@@ -747,10 +752,6 @@ export class DatePicker extends FormMixin(LitElement) {
       }
     } catch (error) {
       console.warn('Error setting initial dates:', error);
-
-      if (error instanceof Error) {
-        console.warn('Error details:', error.message);
-      }
     }
   }
 
@@ -862,6 +863,15 @@ export class DatePicker extends FormMixin(LitElement) {
 
   private _validate(interacted: boolean, report: boolean) {
     if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) return;
+
+    // Don't apply validation when the component is disabled
+    if (this.datePickerDisabled) {
+      this._internals.setValidity({}, '', this._inputEl);
+      this._isInvalid = false;
+      this._internalValidationMsg = '';
+      return;
+    }
+
     if (interacted) {
       this._hasInteracted = true;
     }

@@ -59,8 +59,16 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   locale: SupportedLocale | string = 'en';
 
-  /** Sets date/time value. */
-  @property({ type: Object })
+  /**
+   * Sets the time value for the component.
+   *
+   * For controlled usage patterns, this property allows parent components to directly control the selected time.
+   * When used together with defaultHour/defaultMinute, value takes precedence if both are provided.
+   *
+   * In uncontrolled usage, this is populated automatically based on defaultHour/defaultMinute and user selections.
+   * @internal
+   */
+  @state()
   override value: Date | null = null;
 
   /** Sets initial value of the hour element. */
@@ -171,7 +179,7 @@ export class TimePicker extends FormMixin(LitElement) {
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  _textStrings = { ..._defaultTextStrings };
 
   /** Control flag to determine if Flatpickr should open
    * @internal
@@ -329,6 +337,8 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private renderValidationMessage(errorId: string, warningId: string) {
+    if (this.timepickerDisabled) return null;
+
     if (this.invalidText || (this._isInvalid && this._hasInteracted)) {
       return html`<div
         id=${errorId}
@@ -493,7 +503,6 @@ export class TimePicker extends FormMixin(LitElement) {
 
   private async setupAnchor() {
     if (!this._inputEl) {
-      console.warn('Input element not found during setup');
       return;
     }
     try {
@@ -534,7 +543,6 @@ export class TimePicker extends FormMixin(LitElement) {
         getFlatpickrOptions: async () => {
           const options = await this.getComponentFlatpickrOptions();
           if (options.noCalendar === false) {
-            console.warn('Time picker requires noCalendar option to be true');
             options.noCalendar = true;
           }
           return options;
@@ -551,7 +559,7 @@ export class TimePicker extends FormMixin(LitElement) {
               );
             }
           } catch (error) {
-            console.warn('Error setting calendar attributes:', error);
+            console.error('Error setting calendar attributes:', error);
           }
         },
         setInitialDates: this.setInitialDates.bind(this),
@@ -619,7 +627,7 @@ export class TimePicker extends FormMixin(LitElement) {
         instance.setDate(date, false);
       }
     } catch (error) {
-      console.warn('Error setting initial time:', error);
+      console.error('Error setting initial time:', error);
     }
   }
 
@@ -682,6 +690,15 @@ export class TimePicker extends FormMixin(LitElement) {
     if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) {
       return;
     }
+
+    // Don't apply validation when the component is disabled
+    if (this.timepickerDisabled) {
+      this._internals.setValidity({}, '', this._inputEl);
+      this._isInvalid = false;
+      this._internalValidationMsg = '';
+      return;
+    }
+
     if (interacted) {
       this._hasInteracted = true;
     }

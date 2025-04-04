@@ -284,6 +284,10 @@ export function getPlaceholder(
   dateFormat: string,
   isDateRange?: boolean
 ): string {
+  if (!dateFormat) {
+    return isDateRange ? 'yyyy-mm-dd to yyyy-mm-dd' : 'yyyy-mm-dd';
+  }
+
   if (isValidDateFormat(dateFormat)) {
     const placeholder = isDateRange
       ? `${DATE_FORMAT_OPTIONS[dateFormat]} to ${DATE_FORMAT_OPTIONS[dateFormat]}`

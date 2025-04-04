@@ -26,15 +26,11 @@ export default {
     locale: { control: { type: 'text' } },
     minTime: { control: { type: 'text' } },
     maxTime: { control: { type: 'text' } },
-    defaultDate: { control: { type: 'text' } },
     defaultHour: { control: { type: 'number' } },
     defaultMinute: { control: { type: 'number' } },
     invalidText: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
-    value: {
-      control: { type: 'text' },
-    },
   },
 };
 
@@ -58,11 +54,9 @@ const Template = (args) => {
       ?required=${args.required}
       ?staticPosition=${args.staticPosition}
       .size=${args.size}
-      .value=${args.value}
       .warnText=${args.warnText}
       .invalidText=${args.invalidText}
       .caption=${args.caption}
-      .defaultDate=${args.defaultDate}
       .defaultHour=${args.defaultHour}
       .defaultMinute=${args.defaultMinute}
       .defaultErrorMessage=${args.defaultErrorMessage}
@@ -87,7 +81,6 @@ DefaultTimePicker.args = {
   locale: 'en',
   required: false,
   size: 'md',
-  value: '',
   warnText: '',
   invalidText: '',
   staticPosition: false,
@@ -103,7 +96,6 @@ DefaultTimePicker.args = {
   readonly: false,
   twentyFourHourFormat: false,
   label: 'Timepicker',
-  defaultDate: '',
   defaultHour: null,
   defaultMinute: null,
 };
@@ -161,7 +153,6 @@ export const InModal = {
     hideCancelButton: false,
     aiConnected: false,
     disableScroll: false,
-    defaultDate: '',
     defaultHour: null,
     defaultMinute: null,
   },
@@ -197,12 +188,10 @@ export const InModal = {
           .locale=${args.locale}
           ?required=${args.required}
           .size=${args.size}
-          .value=${args.value}
           .warnText=${args.warnText}
           .invalidText=${args.invalidText}
           ?staticPosition=${args.staticPosition}
           .caption=${args.caption}
-          .defaultDate=${args.defaultDate}
           .defaultHour=${args.defaultHour}
           .defaultMinute=${args.defaultMinute}
           .defaultErrorMessage=${args.defaultErrorMessage}
