@@ -253,8 +253,29 @@ export class SliderInput extends FormMixin(LitElement) {
     if (changedProps.has('value')) {
       this._inputEl.value = this.value.toString();
       const inputEl = this.shadowRoot?.querySelector('input');
+      // Handle changes to `value`
       if (inputEl) {
         this.value = inputEl?.value;
+        console.log('value---', this.value);
+        this.fillTrackSlider();
+      }
+    }
+    // Handle changes to `min` or `max`
+    if (changedProps.has('min') || changedProps.has('max')) {
+      const inputEl = this.shadowRoot?.querySelector('input');
+      if (inputEl) {
+        const min = parseFloat(this.min);
+        const max = parseFloat(this.max);
+        let currentValue = parseFloat(this.value);
+        if (currentValue < min) {
+          currentValue = min;
+        } else if (currentValue > max) {
+          currentValue = max;
+        }
+        this.value = currentValue.toString();
+        inputEl.min = this.min;
+        inputEl.max = this.max;
+        console.log('min max---', this.value);
         this.fillTrackSlider();
       }
     }
