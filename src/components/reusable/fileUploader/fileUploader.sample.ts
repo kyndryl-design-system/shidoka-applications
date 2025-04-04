@@ -139,8 +139,7 @@ export class SampleFileUploader extends LitElement {
           ${this._validFiles.length > 0 || this._invalidFiles.length > 0
             ? html`<kyn-button
                 size="small"
-                .disabled=${this._invalidFiles.length > 0 &&
-                this._validFiles.length === 0}
+                .disabled=${this._disableUploadButton()}
                 @on-click=${() => this._startFileUpload()}
                 >Start upload</kyn-button
               >`
@@ -170,6 +169,14 @@ export class SampleFileUploader extends LitElement {
     } else {
       this._disabled = false;
     }
+  }
+
+  private _disableUploadButton() {
+    return (
+      (this._invalidFiles.length > 0 && this._validFiles.length === 0) ||
+      this._validFiles.some((file) => file.state === 'uploading') ||
+      this._validFiles.every((file) => file.state === 'uploaded')
+    );
   }
 
   _startFileUpload() {
