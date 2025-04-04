@@ -50,7 +50,6 @@ export default {
     maxDate: { control: { type: 'text' } },
     label: { control: { type: 'text' } },
     invalidText: { control: { type: 'text' } },
-    value: { control: { type: 'text' } },
   },
 };
 
@@ -75,7 +74,6 @@ const Template = (args) => {
       .defaultErrorMessage=${args.defaultErrorMessage}
       ?required=${args.required}
       .size=${args.size}
-      .value=${args.value}
       .warnText=${args.warnText}
       .invalidText=${args.invalidText}
       .disable=${args.disable}
@@ -106,7 +104,6 @@ DatePickerDefault.args = {
   required: false,
   size: 'md',
   staticPosition: false,
-  value: '',
   warnText: '',
   invalidText: '',
   disable: [],
@@ -132,7 +129,6 @@ DateWithTime.args = {
   dateFormat: 'Y-m-d H:i',
   caption: '',
   label: 'Hindi Locale Example',
-  value: '',
 };
 DateWithTime.storyName = 'Date + Time (Hindi Locale)';
 
@@ -158,7 +154,6 @@ DateTimeMultiple.args = {
   caption: 'Select multiple dates with time. Example shows preselected dates.',
   mode: 'multiple',
   label: 'Multiple Date/Time Selection',
-  value: '',
 };
 DateTimeMultiple.storyName = 'With Preselected Date Time';
 
@@ -236,7 +231,6 @@ export const InModal = {
           .defaultErrorMessage=${args.defaultErrorMessage}
           ?required=${args.required}
           .size=${args.size}
-          .value=${args.value}
           .warnText=${args.warnText}
           .invalidText=${args.invalidText}
           .disable=${args.disable}
@@ -285,7 +279,7 @@ export const InSideDrawer = {
     label: 'Date',
     defaultErrorMessage: '',
     required: false,
-    value: '',
+
     warnText: '',
     invalidText: '',
     disable: false,
@@ -323,7 +317,6 @@ export const InSideDrawer = {
       staticPosition,
       defaultErrorMessage,
       required,
-      value,
       warnText,
       invalidText,
       disable,
@@ -365,7 +358,6 @@ export const InSideDrawer = {
       defaultErrorMessage,
       required,
       size,
-      value,
       warnText,
       invalidText,
       disable,
@@ -416,7 +408,6 @@ export const InSideDrawer = {
           .defaultErrorMessage=${datePickerProps.defaultErrorMessage}
           ?required=${datePickerProps.required}
           .size=${datePickerProps.size}
-          .value=${datePickerProps.value}
           .warnText=${datePickerProps.warnText}
           .invalidText=${datePickerProps.invalidText}
           .disable=${datePickerProps.disable}

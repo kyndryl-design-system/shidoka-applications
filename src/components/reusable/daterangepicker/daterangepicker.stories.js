@@ -68,7 +68,6 @@ const Template = (args) => {
       .dateFormat=${args.dateFormat}
       .defaultDate=${args.defaultDate}
       .defaultErrorMessage=${args.defaultErrorMessage}
-      .value=${args.value}
       .warnText=${args.warnText}
       .invalidText=${args.invalidText}
       .disable=${args.disable}
@@ -103,7 +102,6 @@ DateRangeDefault.args = {
   staticPosition: false,
   size: 'md',
   defaultErrorMessage: 'Both start and end dates are required',
-  value: [null, null],
   warnText: '',
   invalidText: '',
   disable: [],
@@ -221,7 +219,6 @@ export const InModal = {
           .defaultDate=${args.defaultDate}
           ?staticPosition=${args.staticPosition}
           .defaultErrorMessage=${args.defaultErrorMessage}
-          .value=${args.value}
           .warnText=${args.warnText}
           .invalidText=${args.invalidText}
           .disable=${args.disable}
@@ -314,7 +311,6 @@ export const DateRangePickerInAccordionInModal = {
                 .defaultDate=${args.defaultDate}
                 .defaultErrorMessage=${args.defaultErrorMessage}
                 ?staticPosition=${args.staticPosition}
-                .value=${args.value}
                 .warnText=${args.warnText}
                 .invalidText=${args.invalidText}
                 .disable=${args.disable}
