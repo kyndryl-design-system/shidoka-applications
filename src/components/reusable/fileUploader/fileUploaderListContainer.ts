@@ -95,7 +95,7 @@ export class FileUploaderListContainer extends LitElement {
     else {
       setTimeout(() => {
         this._removeScrollListener();
-      }, 10);
+      }, 20);
     }
     this.requestUpdate();
   }
@@ -123,13 +123,15 @@ export class FileUploaderListContainer extends LitElement {
       container.scrollHeight - container.scrollTop === container.clientHeight;
 
     if (isAtTop) {
-      container.classList.add('shadow-bottom');
-      container.classList.remove('shadow-top');
+      setTimeout(() => {
+        container.classList.add('shadow-bottom');
+        container.classList.remove('shadow-top');
+      }, 5);
     } else if (isAtBottom) {
-      container.classList.add('shadow-top');
-      container.classList.remove('shadow-bottom');
-    } else {
-      container.classList.remove('shadow-bottom', 'shadow-top');
+      setTimeout(() => {
+        container.classList.add('shadow-top');
+        container.classList.remove('shadow-bottom');
+      }, 5);
     }
   }
 
