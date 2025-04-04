@@ -1,0 +1,117 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/form-input.scss';
+
+:host {
+  display: inline-block;
+}
+
+.range-input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+  border-radius: 15px;
+  height: 6px;
+  background: var(--kd-color-background-accent-tertiary);
+}
+
+.range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 15px;
+  width: 15px;
+  background-color: var(--kd-color-background-button-primary-state-default);
+  border-radius: 50%;
+  border: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: 0.2s ease-in-out;
+}
+
+.range-input::-moz-range-thumb {
+  height: 15px;
+  width: 15px;
+  background-color: var(--kd-color-background-button-primary-state-default);
+  border-radius: 50%;
+  border: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: 0.2s ease-in-out;
+}
+
+.range-input:not(:disabled)::-webkit-slider-thumb:hover {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+}
+.range-input:not(:disabled):active::-webkit-slider-thumb {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+}
+.range-input:not(:disabled):focus::-webkit-slider-thumb {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+}
+
+.range-input:not(:disabled)::-moz-range-thumb:hover {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+}
+.range-input:not(:disabled):active::-moz-range-thumb {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+}
+.range-input:not(:disabled):focus::-moz-range-thumb {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+}
+
+.display-value {
+  font-size: 26px;
+  width: 50px;
+  text-align: center;
+}
+
+.range-slider {
+  flex: 1;
+}
+
+.sliderticks {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.sliderticks span {
+  display: flex;
+  justify-content: center;
+  width: 1px;
+  height: 10px;
+  background: #d3d3d3;
+  line-height: 40px;
+}
+
+.range {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* vertical orientation */
+.range-vertical {
+  display: flex;
+  align-items: center;
+  height: 10rem;
+  transform: rotate(-90deg);
+  margin-top: 1.5rem;
+  margin-left: -5rem;
+  margin-bottom: 2rem;
+}
+.display-value-vertical {
+  transform: rotate(90deg);
+}
+
+input[type='range']:disabled::-webkit-slider-thumb {
+  background: var(--kd-color-text-level-disabled);
+  cursor: not-allowed;
+}
+
+/* For firefox disabled thumb */
+input[type='range']:disabled::-moz-range-thumb:hover {
+  background: var(--kd-color-text-level-disabled);
+  cursor: not-allowed;
+}
