@@ -23,13 +23,13 @@ export default {
 
 const args = {
   name: 'sliderInput',
-  value: '0',
+  value: 0,
   caption: '',
   label: 'Label',
   hideLabel: false,
   disabled: false,
-  min: '0',
-  max: '100',
+  min: 0,
+  max: 100,
   step: 1,
   vertical: false,
   invalidText: '',
