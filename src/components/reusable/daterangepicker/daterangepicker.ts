@@ -645,8 +645,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
-    if (changedProperties.has('dateRangePickerDisabled')) {
-      if (this.dateRangePickerDisabled) {
+    if (
+      (changedProperties.has('dateRangePickerDisabled') &&
+        this.dateRangePickerDisabled) ||
+      (changedProperties.has('readonly') && this.readonly)
+    ) {
+      if (this.dateRangePickerDisabled || this.readonly) {
         this.flatpickrInstance?.close();
         return;
       } else if (this.value[0] && this.value[1]) {

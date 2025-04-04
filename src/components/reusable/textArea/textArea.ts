@@ -46,6 +46,10 @@ export class TextArea extends FormMixin(LitElement) {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Input readonly state. */
+  @property({ type: Boolean })
+  readonly = false;
+
   /** Maximum number of characters. */
   @property({ type: Number })
   maxLength!: number;
@@ -98,7 +102,11 @@ export class TextArea extends FormMixin(LitElement) {
 
   override render() {
     return html`
-      <div class="text-area" ?disabled=${this.disabled}>
+      <div
+        class="text-area"
+        ?disabled=${this.disabled}
+        ?readonly=${this.readonly}
+      >
         <label
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
           for=${this.name}
@@ -125,10 +133,12 @@ export class TextArea extends FormMixin(LitElement) {
         >
           <textarea
             id=${this.name}
+            class=${this.readonly ? 'is-readonly' : ''}
             name=${this.name}
             placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
+            ?readonly=${this.readonly}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}
@@ -182,6 +192,7 @@ ${this.value}</textarea
   }
 
   private handleInput(e: any) {
+    if (this.readonly) return;
     this.value = e.target.value;
 
     if (this.aiConnected) this._updateVisibleRows();
