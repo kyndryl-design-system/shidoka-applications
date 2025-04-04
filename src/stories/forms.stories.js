@@ -32,6 +32,7 @@ export const Default = {
         @submit=${(e) => {
           e.preventDefault();
           action('submit')(e);
+          handleFileSubmit();
           const formData = new FormData(e.target);
           console.log(...formData);
 
@@ -284,10 +285,12 @@ export const Default = {
             maxFileSizeText: 'Max file size',
             supportedFileTypeText: 'Supported file type: ',
             fileTypeDisplyText: '.jpeg, .png',
+            invalidFileListLabel: 'Some files could not be added:',
+            validFileListLabel: 'Files added:',
             clearListText: 'Clear list',
             fileTypeErrorText: 'Invaild file type',
-            customFileErrorText: 'Custom file error',
             fileSizeErrorText: 'Max file size exceeded',
+            customFileErrorText: 'Custom file error',
             inlineConfirmAnchorText: 'Delete',
             inlineConfirmConfirmText: 'Confirm',
             inlineConfirmCancelText: 'Cancel',
@@ -311,7 +314,6 @@ export const Default = {
                 ? 'valid'
                 : 'invalid'
             );
-            handleFileSubmit();
           }}
         >
           Submit
