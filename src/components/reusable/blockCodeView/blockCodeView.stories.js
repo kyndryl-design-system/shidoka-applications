@@ -111,6 +111,18 @@ export default {
     copyOptionVisible: {
       control: { type: 'boolean' },
     },
+    lineNumbers: {
+      control: { type: 'boolean' },
+    },
+    startLineNumber: {
+      control: {
+        type: 'number',
+        min: 1,
+      },
+      table: {
+        type: { summary: 'number (min: 1)' },
+      },
+    },
     maxHeight: {
       control: {
         type: 'number',
@@ -128,6 +140,8 @@ const args = {
   darkTheme: 'default',
   language: '',
   maxHeight: null,
+  lineNumbers: false,
+  startLineNumber: 1,
   codeViewLabel: 'Block Code View',
   copyOptionVisible: true,
   codeViewExpandable: true,
@@ -142,6 +156,7 @@ const args = {
 
 const Template = (args) => {
   const maxHeight = args.maxHeight === null ? null : Number(args.maxHeight);
+  const validStartLineNumber = Math.max(1, args.startLineNumber || 1);
 
   return html`
     <kyn-block-code-view
@@ -151,6 +166,8 @@ const Template = (args) => {
       codeViewLabel=${args.codeViewLabel}
       ?copyOptionVisible=${args.copyOptionVisible}
       ?codeViewExpandable=${args.codeViewExpandable}
+      ?lineNumbers=${args.lineNumbers}
+      .startLineNumber=${validStartLineNumber}
       copyButtonText=${args.copyButtonText}
       copyButtonDescriptionAttr=${args.copyButtonDescriptionAttr}
       .textStrings=${args.textStrings}
@@ -215,4 +232,25 @@ BashExample.args = {
   codeViewLabel: 'Bash Code Snippet (manually configured language name)',
   copyButtonText: '',
   codeSnippet: defaultTemplateCodes.BASH,
+};
+
+export const WithLineNumbers = Template.bind({});
+WithLineNumbers.args = {
+  ...args,
+  language: 'javascript',
+  maxHeight: 300,
+  codeViewLabel: 'Code with Line Numbers',
+  lineNumbers: true,
+  codeSnippet: defaultTemplateCodes.JAVASCRIPT,
+};
+
+export const WithCustomStartLineNumber = Template.bind({});
+WithCustomStartLineNumber.args = {
+  ...args,
+  language: 'javascript',
+  maxHeight: 300,
+  codeViewLabel: 'Code with Line Numbers and Custom Start Line',
+  lineNumbers: true,
+  startLineNumber: 1001,
+  codeSnippet: defaultTemplateCodes.JAVASCRIPT,
 };

@@ -179,7 +179,7 @@ export class TimePicker extends FormMixin(LitElement) {
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  _textStrings = { ..._defaultTextStrings };
 
   /** Control flag to determine if Flatpickr should open
    * @internal

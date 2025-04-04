@@ -190,7 +190,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  _textStrings = { ..._defaultTextStrings };
 
   /** Tracks if we're in a clear operation to prevent duplicate events
    * @internal
@@ -891,6 +891,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
       return;
     }
     try {
+      if (!this.dateFormat) {
+        this.dateFormat = 'Y-m-d';
+      }
+
       const hasValidValue =
         Array.isArray(this.value) &&
         this.value.length === 2 &&
@@ -950,9 +954,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
         }
       }
     } catch (error) {
-      if (error instanceof Error) {
-        console.error('Error details:', error.message);
-      }
+      console.error(
+        'Error in setInitialDates:',
+        error instanceof Error ? error.message : String(error)
+      );
     }
   }
 

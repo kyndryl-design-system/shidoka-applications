@@ -192,7 +192,7 @@ export class DatePicker extends FormMixin(LitElement) {
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  _textStrings = { ..._defaultTextStrings };
 
   /** Control flag to prevent Flatpickr from opening when clicking caption, error, label, or warning elements.
    * @internal
