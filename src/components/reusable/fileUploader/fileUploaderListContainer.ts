@@ -1,5 +1,11 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  query,
+  queryAssignedElements,
+  state,
+} from 'lit/decorators.js';
 import FileUploaderListContainerScss from './fileUploaderListContainer.scss';
 import '../link';
 
@@ -41,11 +47,36 @@ export class FileUploaderListContainer extends LitElement {
    * Queries for all slotted elements.
    * @internal
    */
-  // @queryAssignedElements()
-  // fileItems!: Array<any>;
+  @queryAssignedElements()
+  _fileItems!: Array<any>;
+
+  /**
+   * Queries for the items container element.
+   * @internal
+   */
+  @query('.file-uploader-list-container__items')
+  _container!: HTMLElement;
+
+  /**
+   * Scroll event handler.
+   * @internal
+   */
+  @state()
+  _scrollHandler: EventListener | null = null;
+
+  get hasMoreThanThreeItems() {
+    return this._fileItems.length > 3;
+  }
+
+  override firstUpdated() {
+    if (this.hasMoreThanThreeItems) {
+      this._container.classList.add('shadow-bottom');
+      this._addScrollListener();
+    }
+  }
 
   override render() {
-    // const hasMoreThanThreeItems = this.fileItems.length > 3;
+    // const hasMoreThanThreeItems = this._fileItems.length > 3;
 
     return html`
       <div class="file-uploader-list-container">
@@ -62,7 +93,42 @@ export class FileUploaderListContainer extends LitElement {
   }
 
   private _handleSlotChange() {
+    if (this.hasMoreThanThreeItems) this._addScrollListener();
+    else this._removeScrollListener();
     this.requestUpdate();
+  }
+
+  private _addScrollListener() {
+    if (this._container) {
+      this._scrollHandler = this._toggleShadowClass.bind(this, this._container);
+      this._container.addEventListener('scroll', this._scrollHandler);
+      this._container.classList.add('shadow-bottom');
+    }
+  }
+
+  private _removeScrollListener() {
+    if (this._container && this._scrollHandler) {
+      this._container.removeEventListener('scroll', this._scrollHandler);
+      this._container.classList.remove('shadow-bottom', 'shadow-top');
+    }
+  }
+
+  private _toggleShadowClass(container: HTMLElement) {
+    if (!container) return;
+
+    const isAtTop = container.scrollTop === 0;
+    const isAtBottom =
+      container.scrollHeight - container.scrollTop === container.clientHeight;
+
+    if (isAtTop) {
+      container.classList.add('shadow-bottom');
+      container.classList.remove('shadow-top');
+    } else if (isAtBottom) {
+      container.classList.add('shadow-top');
+      container.classList.remove('shadow-bottom');
+    } else {
+      container.classList.remove('shadow-bottom', 'shadow-top');
+    }
   }
 
   /* 
@@ -94,8 +160,8 @@ export class FileUploaderListContainer extends LitElement {
 
   private _applyLimit(reveal: boolean) {
     const limit = 3;
-    if (this.fileItems) {
-      this.fileItems.forEach((item: any, index: number) => {
+    if (this._fileItems) {
+      this._fileItems.forEach((item: any, index: number) => {
         if (index >= limit) {
           item.style.display = reveal ? 'block' : 'none';
         }
