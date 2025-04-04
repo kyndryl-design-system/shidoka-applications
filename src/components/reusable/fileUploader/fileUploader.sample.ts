@@ -19,8 +19,6 @@ const _textStrings = {
   invalidFileListLabel: 'Some files could not be added:',
   validFileListLabel: 'Files added:',
   clearListText: 'Clear list',
-  showAllText: 'Show all files',
-  showLessText: 'Show less files',
   fileTypeErrorText: 'Invaild file type',
   fileSizeErrorText: 'Max file size exceeded',
   customFileErrorText: 'Custom file error',
