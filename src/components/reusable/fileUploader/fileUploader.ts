@@ -27,6 +27,8 @@ const _defaultTextStrings = {
   invalidFileListLabel: 'Some files could not be added:',
   validFileListLabel: 'Files added:',
   clearListText: 'Clear list',
+  showAllText: 'Show all files',
+  showLessText: 'Show less files',
   fileTypeErrorText: 'Invaild file type',
   fileSizeErrorText: 'Max file size exceeded',
   customFileErrorText: 'Custom file error',
@@ -231,6 +233,8 @@ export class FileUploader extends FormMixin(LitElement) {
                 <kyn-file-uploader-list-container
                   id="invalidFiles"
                   .titleText=${this._textStrings.invalidFileListLabel}
+                  .showAll=${this._textStrings.showAllText}
+                  .showLess=${this._textStrings.showLessText}
                 >
                   <!-- Invalid files -->
                   ${this._invalidFiles.length > 0
@@ -276,6 +280,8 @@ export class FileUploader extends FormMixin(LitElement) {
                 <kyn-file-uploader-list-container
                   .titleText=${this._textStrings.validFileListLabel}
                   id="validFiles"
+                  .showAll=${this._textStrings.showAllText}
+                  .showLess=${this._textStrings.showLessText}
                 >
                   <!-- Valid files -->
                   ${this._validFiles.length > 0

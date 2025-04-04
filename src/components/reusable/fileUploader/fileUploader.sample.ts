@@ -19,6 +19,8 @@ const _textStrings = {
   invalidFileListLabel: 'Some files could not be added:',
   validFileListLabel: 'Files added:',
   clearListText: 'Clear list',
+  showAllText: 'Show all files',
+  showLessText: 'Show less files',
   fileTypeErrorText: 'Invaild file type',
   fileSizeErrorText: 'Max file size exceeded',
   customFileErrorText: 'Custom file error',
@@ -251,7 +253,7 @@ export class SampleFileUploader extends LitElement {
     if (!this._uploadCanceled) {
       const invalidFilesCount = this._invalidFiles.length;
       this._notificationType = 'inline';
-      this._notificationStatus = invalidFilesCount > 0 ? 'warning' : 'success';
+      this._notificationStatus = invalidFilesCount > 0 ? 'error' : 'success';
       this._notificationTitle =
         invalidFilesCount > 0
           ? 'Upload partially successful'
