@@ -76,8 +76,6 @@ export class FileUploaderListContainer extends LitElement {
   }
 
   override render() {
-    // const hasMoreThanThreeItems = this._fileItems.length > 3;
-
     return html`
       <div class="file-uploader-list-container">
         <div class="file-uploader-list-container__header">
@@ -94,7 +92,11 @@ export class FileUploaderListContainer extends LitElement {
 
   private _handleSlotChange() {
     if (this.hasMoreThanThreeItems) this._addScrollListener();
-    else this._removeScrollListener();
+    else {
+      setTimeout(() => {
+        this._removeScrollListener();
+      }, 10);
+    }
     this.requestUpdate();
   }
 
