@@ -18,13 +18,12 @@ export default {
     step: {
       control: { type: 'number' },
     },
-    width: { control: 'text' },
   },
 };
 
 const args = {
   name: 'sliderInput',
-  value: '',
+  value: '0',
   caption: '',
   label: 'Label',
   hideLabel: false,
@@ -32,8 +31,7 @@ const args = {
   min: '0',
   max: '100',
   step: 1,
-  hideNumberInput: false,
-  width: '200px',
+  vertical: false,
   invalidText: '',
 };
 
@@ -51,37 +49,8 @@ export const SliderInput = {
         min=${args.min}
         max=${args.max}
         step=${args.step}
-        ?hideNumberInput=${args.hideNumberInput}
+        ?vertical=${args.vertical}
         label=${args.label}
-        width=${args.width}
-        @on-input=${(e) => action(e.type)(e)}
-      >
-        <kyn-tooltip slot="tooltip">
-          <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
-          tooltip
-        </kyn-tooltip>
-      </kyn-slider-input>
-    `;
-  },
-};
-
-export const SliderInputWithHiddenInputs = {
-  args,
-  render: (args) => {
-    return html`
-      <kyn-slider-input
-        name=${args.name}
-        value=${args.value}
-        caption=${args.caption}
-        ?hideLabel=${args.hideLabel}
-        ?disabled=${args.disabled}
-        invalidText=${args.invalidText}
-        min=${args.min}
-        max=${args.max}
-        step=${args.step}
-        ?hideNumberInput=${true}
-        label=${args.label}
-        width=${args.width}
         @on-input=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">

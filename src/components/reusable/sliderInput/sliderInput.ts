@@ -1,25 +1,22 @@
-import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { deepmerge } from 'deepmerge-ts';
 import { ifDefined } from 'lit/directives/if-defined.js';
-
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { FormMixin } from '../../../common/mixins/form-input';
-import sliderInputScss from './sliderInput.scss';
-
+import silderInputScss from './sliderInput.scss';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import { getTokenThemeVal } from '@kyndryl-design-system/shidoka-foundation/common/helpers/color';
 
 const _defaultTextStrings = {
-  requiredText: 'Required',
   errorText: 'Error',
 };
 
 /**
  * Slider Input.
  * @fires on-input - Captures the input event and emits the selected value and original event details.
- * @prop {number} min - Minimum allowed number.
- * @prop {number} max - Maximum allowed number.
+ * @prop {string} min - Minimum allowed range.
+ * @prop {string} max - Maximum allowed range.
  * @prop {number} step - Number intervals.
  * @slot tooltip - Slot for tooltip.
  *
@@ -27,7 +24,7 @@ const _defaultTextStrings = {
 
 @customElement('kyn-slider-input')
 export class SliderInput extends FormMixin(LitElement) {
-  static override styles = sliderInputScss;
+  static override styles = silderInputScss;
 
   /** Label text. */
   @property({ type: String })
@@ -41,11 +38,11 @@ export class SliderInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   disabled = false;
 
-  /** Specifies maximum allowed number. */
+  /** Specifies maximum allowed range. */
   @property({ type: String })
   max!: string;
 
-  /** Specifies minimum allowed number. */
+  /** Specifies minimum allowed range. */
   @property({ type: String })
   min!: string;
 
@@ -57,15 +54,9 @@ export class SliderInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   hideLabel = false;
 
-  /** Hide number input. */
+  /** vertical orientation. */
   @property({ type: Boolean })
-  hideNumberInput = false;
-
-  /**
-   * Optional: Custom width (overrides size if provided).
-   */
-  @property({ type: String })
-  width?: string;
+  vertical = false;
 
   /** Customizable text strings. */
   @property({ type: Object })
@@ -85,10 +76,6 @@ export class SliderInput extends FormMixin(LitElement) {
   _inputEl!: HTMLInputElement;
 
   override render() {
-    const styles = {
-      ...(this.width && { width: this.width }),
-    };
-
     return html`
       <div class="text-input" ?disabled=${this.disabled}>
         <label
@@ -98,14 +85,12 @@ export class SliderInput extends FormMixin(LitElement) {
           <span>${this.label}</span>
           <slot name="tooltip"></slot>
         </label>
-        <div class="slider-container">
-          <span>${this.min}</span>
+        <div class="range ${this.vertical ? 'range-vertical' : ''}">
           <input
-            tabindex="0"
             type="range"
+            value="0"
             id=${this.name}
             name=${this.name}
-            .value=${this.value}
             min=${ifDefined(this.min)}
             max=${ifDefined(this.max)}
             step=${ifDefined(this.step)}
@@ -113,101 +98,79 @@ export class SliderInput extends FormMixin(LitElement) {
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}
-            style=${Object.entries(styles)
-              .map(([key, value]) => `${key}: ${value}`)
-              .join(';')}
+            class="range-input"
+            orient=${ifDefined(this.vertical ? 'vertical' : 'horizontal')}
             @input=${(e: any) => this.handleInput(e)}
             @keydown=${(e: KeyboardEvent) => this.handleKeydown(e)}
           />
-          <span>${this.max}</span>
-          ${!this.hideNumberInput
-            ? html`
-                <input
-                  type="number"
-                  .value=${this.value}
-                  min=${ifDefined(this.min)}
-                  max=${ifDefined(this.max)}
-                  step=${ifDefined(this.step)}
-                  ?invalid=${this._isInvalid}
-                  aria-invalid=${this._isInvalid}
-                  aria-describedby=${this._isInvalid ? 'error' : ''}
-                  @input=${this.handleTextInput}
-                  ?disabled=${this.disabled}
-                  aria-label="editable range input"
-                />
-              `
-            : null}
+          <div
+            class="display-value ${this.vertical
+              ? 'display-value-vertical'
+              : ''}"
+          >
+            ${this.value}
+          </div>
         </div>
-        <div>
-          ${this.caption !== ''
-            ? html` <div class="caption">${this.caption}</div> `
-            : null}
-          ${this._isInvalid
-            ? html`
-                <div id="error" class="error">
-                  <span
-                    role="img"
-                    class="error-icon"
-                    aria-label=${this._textStrings.errorText}
-                    >${unsafeSVG(errorIcon)}</span
-                  >
-                  ${this.invalidText || this._internalValidationMsg}
-                </div>
-              `
-            : null}
-        </div>
+        <!--  Tick data list to do -->
+        <!-- <div class="range">
+          <div class="range-slider">
+            <label for="range">Select a pleasant temperature:</label><br />
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+              class="range-input"
+              id="range4"
+              step="25"
+              @input=${(e: any) => this.handleInput(e)}
+            />
+            <div class="sliderticks"> 
+             This should be slotted
+              <option value="0" label="0"></option>
+              <option value="25" label="25"></option>
+              <option value="50" label="50"></option>
+              <option value="75" label="75"></option>
+              <option value="100" label="100"></option>
+            </div>
+          </div>
+
+          <div
+            class="display-value ${this.vertical
+          ? 'display-value-vertical'
+          : ''}"
+          >
+            ${this.value}
+          </div>
+        </div> -->
+        ${this.caption !== ''
+          ? html` <div class="caption">${this.caption}</div> `
+          : null}
+        ${this._isInvalid
+          ? html`
+              <div id="error" class="error">
+                <span
+                  role="img"
+                  class="error-icon"
+                  aria-label=${this._textStrings.errorText}
+                  >${unsafeSVG(errorIcon)}</span
+                >
+                ${this.invalidText || this._internalValidationMsg}
+              </div>
+            `
+          : null}
       </div>
     `;
   }
 
-  private fillTrackBackground() {
-    const inputEl = this.shadowRoot?.querySelector('input');
-    if (inputEl) {
-      const percentage =
-        ((parseFloat(this.value) - parseFloat(this.min)) /
-          (parseFloat(this.max) - parseFloat(this.min))) *
-        100;
-      //
-      inputEl.style.background = `linear-gradient(to right, ${getTokenThemeVal(
-        '--kd-color-background-button-primary-state-default'
-      )} ${percentage}%, #dee1e2 ${percentage}%, #dee1e2 100%)`;
-    }
-  }
-
   private handleInput(e: any) {
     if (this._isInvalid) return;
-    this.value = this.shadowRoot?.querySelector('input')?.value;
+    this.value = e.target.value;
     this._validate(true, false);
-    this.fillTrackBackground();
-    this.emitDisabledEvent(e);
+    this.emitDispatchEvent(e);
   }
 
-  private handleTextInput(e: Event) {
-    const input = e.target as HTMLInputElement;
-    const newValue = input.value;
-
-    // Ensure the value is within bounds (min and max)
-    if (newValue !== '') {
-      const numValue = parseFloat(newValue);
-      if (
-        !isNaN(numValue) &&
-        numValue >= parseFloat(this.min) &&
-        numValue <= parseFloat(this.max)
-      ) {
-        this.value = numValue;
-        this._validate(true, false);
-        this.emitDisabledEvent(e);
-      } else {
-        this._internalValidationMsg = `Value must be between ${this.min} and ${this.max}`;
-        input.setCustomValidity(
-          `Value must be between ${this.min} and ${this.max}`
-        );
-        this._isInvalid = true;
-      }
-    }
-  }
-
-  private emitDisabledEvent(e: Event) {
+  private emitDispatchEvent(e: Event) {
     const event = new CustomEvent('on-input', {
       detail: {
         value: this.value,
@@ -218,68 +181,43 @@ export class SliderInput extends FormMixin(LitElement) {
   }
 
   private _validate(interacted: Boolean, report: Boolean) {
-    // Check if value is outside the range
-    const value = parseFloat(this.value);
-    const min = parseFloat(this.min);
-    const max = parseFloat(this.max);
-
-    let validity = this._inputEl.validity;
-
-    if (value < min) {
-      validity = { ...validity, rangeUnderflow: true };
-      this._isInvalid = true;
-      this._internalValidationMsg = `Value must be greater than or equal to ${min}`;
-      this._inputEl.setCustomValidity(
-        `Value must be greater than or equal to ${min}`
-      );
-    } else if (value > max) {
-      this._isInvalid = true;
-      validity = { ...validity, rangeOverflow: true };
-      this._internalValidationMsg = `Value must be less than or equal to ${max}`;
-      this._inputEl.setCustomValidity(
-        `Value must be less than or equal to ${max}`
-      );
-    } else {
-      this._isInvalid = false;
-      this._internalValidationMsg = '';
-      this._inputEl.setCustomValidity('');
-    }
+    // get validity state from inputEl, combine customError flag if invalidText is provided
     const Validity =
-      this.invalidText !== '' ? { ...validity, customError: true } : validity;
+      this.invalidText !== ''
+        ? { ...this._inputEl.validity, customError: true }
+        : this._inputEl.validity;
+    // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
     const ValidationMessage =
       this.invalidText !== ''
         ? this.invalidText
         : this._inputEl.validationMessage;
 
-    // Set validity on custom element, anchor to inputEl
+    // set validity on custom element, anchor to inputEl
     this._internals.setValidity(Validity, ValidationMessage, this._inputEl);
 
-    // Set internal validation message if value was changed by user input
+    // set internal validation message if value was changed by user input
     if (interacted) {
       this._internalValidationMsg = this._inputEl.validationMessage;
     }
 
-    // Focus the form field to show validity
+    // focus the form field to show validity
     if (report) {
       this._internals.reportValidity();
     }
   }
 
-  override updated(changedProps: any) {
-    // preserve FormMixin updated function
-    this._onUpdated(changedProps);
-    if (changedProps.has('value')) {
-      this._inputEl.value = this.value.toString();
-      this.value = this.shadowRoot?.querySelector('input')?.value;
-      if (this.value) {
-        this.fillTrackBackground();
-      }
-    }
-  }
-
-  override willUpdate(changedProps: any) {
-    if (changedProps.has('textStrings')) {
-      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+  private fillTrackSlider() {
+    const inputEl = this.shadowRoot?.querySelector('input');
+    if (inputEl) {
+      const percentage =
+        ((parseFloat(this.value) - parseFloat(this.min)) /
+          (parseFloat(this.max) - parseFloat(this.min))) *
+        100;
+      inputEl.style.background = `linear-gradient(to right, ${getTokenThemeVal(
+        '--kd-color-background-button-primary-state-default'
+      )} ${percentage}%, ${getTokenThemeVal(
+        '--kd-color-background-accent-tertiary'
+      )} ${percentage}%)`;
     }
   }
 
@@ -306,8 +244,26 @@ export class SliderInput extends FormMixin(LitElement) {
         break;
     }
     this.value = newValue.toString();
-    this.fillTrackBackground();
-    this.emitDisabledEvent(e);
+    this.emitDispatchEvent(e);
+  }
+
+  override updated(changedProps: any) {
+    // preserve FormMixin updated function
+    this._onUpdated(changedProps);
+    if (changedProps.has('value')) {
+      this._inputEl.value = this.value.toString();
+      const inputEl = this.shadowRoot?.querySelector('input');
+      if (inputEl) {
+        this.value = inputEl?.value;
+        this.fillTrackSlider();
+      }
+    }
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
   }
 }
 
