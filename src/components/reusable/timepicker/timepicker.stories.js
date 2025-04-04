@@ -67,6 +67,7 @@ const Template = (args) => {
       .warningAriaLabel=${args.warningAriaLabel}
       .warningTitle=${args.warningTitle}
       ?timepickerDisabled=${args.timepickerDisabled}
+      ?readonly=${args.readonly}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       @on-change=${(e) => action(e.type)(e)}
     >
@@ -92,6 +93,7 @@ DefaultTimePicker.args = {
   warningAriaLabel: '',
   warningTitle: '',
   timepickerDisabled: false,
+  readonly: false,
   twentyFourHourFormat: false,
   label: 'Timepicker',
   defaultHour: null,
@@ -200,6 +202,7 @@ export const InModal = {
           .warningAriaLabel=${args.warningAriaLabel}
           .warningTitle=${args.warningTitle}
           ?timepickerDisabled=${args.timepickerDisabled}
+          ?readonly=${args.readonly}
           ?twentyFourHourFormat=${args.twentyFourHourFormat}
           @on-change=${(e) => action(e.type)(e)}
         >

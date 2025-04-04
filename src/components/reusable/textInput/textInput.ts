@@ -67,6 +67,10 @@ export class TextInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Input readonly state. */
+  @property({ type: Boolean })
+  readonly = false;
+
   /** RegEx pattern to validate. */
   @property({ type: String })
   pattern!: string;
@@ -120,7 +124,11 @@ export class TextInput extends FormMixin(LitElement) {
 
   override render() {
     return html`
-      <div class="text-input" ?disabled=${this.disabled}>
+      <div
+        class="text-input"
+        ?disabled=${this.disabled}
+        ?readonly=${this.readonly}
+      >
         <label
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
           for=${this.name}
@@ -153,6 +161,7 @@ export class TextInput extends FormMixin(LitElement) {
             class="${classMap({
               'size--sm': this.size === 'sm',
               'size--lg': this.size === 'lg',
+              'is-readonly': this.readonly,
             })}"
             type=${this.type}
             id=${this.name}
@@ -161,6 +170,7 @@ export class TextInput extends FormMixin(LitElement) {
             placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
+            ?readonly=${this.readonly}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}
@@ -169,7 +179,7 @@ export class TextInput extends FormMixin(LitElement) {
             maxlength=${ifDefined(this.maxLength)}
             @input=${(e: any) => this._handleInput(e)}
           />
-          ${this.value !== ''
+          ${this.value !== '' && !this.readonly
             ? html`
                 <kyn-button
                   ?disabled=${this.disabled}
@@ -221,6 +231,7 @@ export class TextInput extends FormMixin(LitElement) {
   }
 
   private _handleInput(e: any) {
+    if (this.readonly) return;
     this.value = e.target.value;
 
     this._validate(true, false);
@@ -228,6 +239,7 @@ export class TextInput extends FormMixin(LitElement) {
   }
 
   private _handleClear() {
+    if (this.readonly) return;
     this.value = '';
     this._inputEl.value = '';
 
