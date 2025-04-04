@@ -124,14 +124,22 @@ export class SampleFileUploader extends LitElement {
     this._validFiles = e.detail.validFiles;
     this._invalidFiles = e.detail.invalidFiles;
     this._totalFiles = this._validFiles.length;
+    if (this._totalFiles === 0 && this._invalidFiles.length > 0) {
+      this._setNotificationConfig(
+        true,
+        'inline',
+        'error',
+        'No valid files selected',
+        'Please select valid files to upload.'
+      );
+    } else {
+      this._setNotificationConfig(false, 'normal', 'default', '', '');
+    }
   }
 
   _startFileUpload() {
-    this._showNotification = true;
+    this._setNotificationConfig(true, 'normal', 'default', '', '');
     this._showProgressBar = true;
-    this._notificationType = 'normal';
-    this._notificationStatus = 'default';
-    this._notificationTitle = '';
     this._currentFileUploading = '';
     this._helperText = '';
     this._uploadCanceled = false;
@@ -226,10 +234,28 @@ export class SampleFileUploader extends LitElement {
   _stopFileUpload() {
     this._uploadCanceled = true;
     this._showProgressBar = false;
-    this._notificationType = 'inline';
-    this._notificationStatus = 'warning';
-    this._notificationTitle = 'File upload was interrupted.';
+    this._setNotificationConfig(
+      true,
+      'inline',
+      'warning',
+      'File upload was interrupted',
+      ''
+    );
     this._currentFileUploading = 'Upload canceled';
+  }
+
+  _setNotificationConfig(
+    visible: boolean,
+    type: string,
+    status: string,
+    title: string,
+    message: string
+  ) {
+    this._showNotification = visible;
+    this._notificationType = type;
+    this._notificationStatus = status;
+    this._notificationTitle = title;
+    this._notificationMessage = message;
   }
 }
 

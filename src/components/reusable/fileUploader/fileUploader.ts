@@ -27,6 +27,7 @@ const _defaultTextStrings = {
   clearListText: 'Clear list',
   fileTypeErrorText: 'Invaild file type',
   fileSizeErrorText: 'Max file size exceeded',
+  customFileErrorText: 'Custom file error',
   inlineConfirmAnchorText: 'Delete',
   inlineConfirmConfirmText: 'Confirm',
   inlineConfirmCancelText: 'Cancel',
@@ -74,11 +75,23 @@ export class FileUploader extends FormMixin(LitElement) {
   @property({ type: Boolean })
   disabled = false;
 
+  /**
+   * Valid files. This property is used to set the initial or updated state of the valid files.
+   */
   @property({ type: Array })
-  validFiles: Object[] = [];
+  validFiles: {
+    id: string;
+    file: File;
+    state: 'new' | 'uploading' | 'uploaded' | 'error';
+  }[] = [];
 
   @property({ type: Array })
-  invalidFiles: Object[] = [];
+  invalidFiles: {
+    id: string;
+    name: string;
+    size: number;
+    error: 'sizeError' | 'typeError' | 'unknownError';
+  }[] = [];
 
   /**
    * Internal text strings.
@@ -108,6 +121,10 @@ export class FileUploader extends FormMixin(LitElement) {
   @state()
   _validFiles: Object[] = [];
 
+  /**
+   * Internal notification message flag.
+   * @internal
+   */
   @state()
   _showValidationNotification = false;
 
@@ -124,6 +141,7 @@ export class FileUploader extends FormMixin(LitElement) {
     }
     if (changedProps.has('validFiles')) {
       this._validFiles = this.validFiles;
+      this._setFormValue();
     }
     if (changedProps.has('invalidFiles')) {
       this._invalidFiles = this.invalidFiles;
@@ -133,6 +151,7 @@ export class FileUploader extends FormMixin(LitElement) {
   override updated(changedProps: any) {
     if (changedProps.has('validFiles')) {
       this._validFiles = this.validFiles;
+      this._setFormValue();
     }
     if (changedProps.has('invalidFiles')) {
       this._invalidFiles = this.invalidFiles;
@@ -214,7 +233,9 @@ export class FileUploader extends FormMixin(LitElement) {
                                 </p>
                                 ·
                                 <p class="file-size error">
-                                  ${file.errorMsg === 'typeError'
+                                  ${file.error === 'unknownError'
+                                    ? this._textStrings.customFileErrorText
+                                    : file.error === 'typeError'
                                     ? this._textStrings.fileTypeErrorText
                                     : this._textStrings.fileSizeErrorText}
                                 </p>
@@ -399,7 +420,7 @@ export class FileUploader extends FormMixin(LitElement) {
           id: this._generateUniqueFileId(),
           name: file.name,
           size: file.size,
-          errorMsg: errorMsg,
+          error: errorMsg,
         });
       }
     });
@@ -444,10 +465,10 @@ export class FileUploader extends FormMixin(LitElement) {
     let InternalMsg = '';
     if (this._invalidFiles.length > 0) {
       const hasTypeError = this._invalidFiles.some(
-        (file: any) => file.errorMsg === 'typeError'
+        (file: any) => file.error === 'typeError'
       );
       const hasSizeError = this._invalidFiles.some(
-        (file: any) => file.errorMsg === 'sizeError'
+        (file: any) => file.error === 'sizeError'
       );
       InternalMsg =
         hasTypeError && hasSizeError

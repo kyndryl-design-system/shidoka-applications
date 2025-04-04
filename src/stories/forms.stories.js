@@ -286,6 +286,7 @@ export const Default = {
             fileTypeDisplyText: '.jpeg, .png',
             clearListText: 'Clear list',
             fileTypeErrorText: 'Invaild file type',
+            customFileErrorText: 'Custom file error',
             fileSizeErrorText: 'Max file size exceeded',
             inlineConfirmAnchorText: 'Delete',
             inlineConfirmConfirmText: 'Confirm',
