@@ -60,7 +60,7 @@ export class BlockCodeView extends LitElement {
   @property({ type: Boolean })
   lineNumbers = false;
 
-  /** Sets the starting line number when lineNumbers is true. */
+  /** Sets the starting line number when lineNumbers is true. Must be a positive integer. */
   @property({ type: Number })
   startLineNumber = 1;
 
@@ -168,6 +168,10 @@ export class BlockCodeView extends LitElement {
     }
 
     if (changedProperties.has('startLineNumber')) {
+      // Ensure startLineNumber is at least 1
+      if (this.startLineNumber < 1) {
+        this.startLineNumber = 1;
+      }
       this.highlightCode();
     }
 
@@ -191,7 +195,7 @@ export class BlockCodeView extends LitElement {
               ? 'line-numbers'
               : 'no-line-numbers'}
             data-start=${ifDefined(
-              this.lineNumbers ? this.startLineNumber : undefined
+              this.lineNumbers ? Math.max(1, this.startLineNumber) : undefined
             )}
           >
             <code tabindex="0" class="language-${this
@@ -330,9 +334,9 @@ export class BlockCodeView extends LitElement {
     if (preEl.querySelector('.line-numbers-rows')) return;
 
     const linesCount = (codeEl.textContent || '').split('\n').length;
-    const startLineNumber = parseInt(
-      preEl.getAttribute('data-start') || '1',
-      10
+    const startLineNumber = Math.max(
+      1,
+      parseInt(preEl.getAttribute('data-start') || '1', 10)
     );
 
     const lineNumbersWrapper = document.createElement('span');

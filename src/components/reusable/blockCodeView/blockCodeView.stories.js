@@ -119,6 +119,9 @@ export default {
         type: 'number',
         min: 1,
       },
+      table: {
+        type: { summary: 'number (min: 1)' },
+      },
     },
     maxHeight: {
       control: {
@@ -153,6 +156,7 @@ const args = {
 
 const Template = (args) => {
   const maxHeight = args.maxHeight === null ? null : Number(args.maxHeight);
+  const validStartLineNumber = Math.max(1, args.startLineNumber || 1);
 
   return html`
     <kyn-block-code-view
@@ -163,7 +167,7 @@ const Template = (args) => {
       ?copyOptionVisible=${args.copyOptionVisible}
       ?codeViewExpandable=${args.codeViewExpandable}
       ?lineNumbers=${args.lineNumbers}
-      .startLineNumber=${args.startLineNumber || 1}
+      .startLineNumber=${validStartLineNumber}
       copyButtonText=${args.copyButtonText}
       copyButtonDescriptionAttr=${args.copyButtonDescriptionAttr}
       .textStrings=${args.textStrings}
