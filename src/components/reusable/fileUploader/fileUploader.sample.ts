@@ -62,7 +62,7 @@ export class SampleFileUploader extends LitElement {
         .multiple=${true}
         .validFiles=${this._validFiles}
         .invalidFiles=${this._invalidFiles}
-        @on-file-upload=${(e: any) => {
+        @on-file-change=${(e: any) => {
           action(e.type)(e);
           this._handleFilesToBeUploaded(e);
         }}

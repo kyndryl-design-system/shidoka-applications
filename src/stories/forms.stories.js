@@ -284,8 +284,20 @@ export const Default = {
             maxFileSizeText: 'Max file size',
             supportedFileTypeText: 'Supported file type: ',
             fileTypeDisplyText: '.jpeg, .png',
+            clearListText: 'Clear list',
+            fileTypeErrorText: 'Invaild file type',
+            fileSizeErrorText: 'Max file size exceeded',
+            inlineConfirmAnchorText: 'Delete',
+            inlineConfirmConfirmText: 'Confirm',
+            inlineConfirmCancelText: 'Cancel',
+            validationNotificationTitle: 'Multiple files not allowed',
+            validationNotificationMessage: 'Please select only one file.',
           }}
+          .validFiles=${validFiles}
           ?multiple=${true}
+          @on-file-change=${(e) => {
+            validFiles = e.detail.validFiles;
+          }}
         ></kyn-file-uploader>
 
         <kyn-button
@@ -298,6 +310,7 @@ export const Default = {
                 ? 'valid'
                 : 'invalid'
             );
+            handleFileSubmit();
           }}
         >
           Submit
@@ -305,4 +318,17 @@ export const Default = {
       </form>
     `;
   },
+};
+
+let validFiles = [];
+
+const handleFileSubmit = () => {
+  const fileUploader = document.querySelector('kyn-file-uploader');
+
+  validFiles = validFiles.map((file) => ({
+    ...file,
+    state: 'uploaded',
+  }));
+
+  fileUploader.validFiles = validFiles;
 };

@@ -36,7 +36,7 @@ const _defaultTextStrings = {
 
 /**
  * File Uploader
- * @fires on-file-upload - Emits the uploaded files.
+ * @fires on-file-change - Emits the uploaded files.
  * @slot upload-status - Slot for upload status/notification.
  * @slot unnamed - Slot for the upload button.
  */
@@ -511,11 +511,12 @@ export class FileUploader extends FormMixin(LitElement) {
     this._validFiles = this._validFiles.filter(
       (file: any) => file.id !== fileId
     );
+    this._setFormValue();
     this._emitFileUploadEvent();
   }
 
   private _emitFileUploadEvent() {
-    const event = new CustomEvent('on-file-upload', {
+    const event = new CustomEvent('on-file-change', {
       detail: {
         validFiles: this._validFiles,
         invalidFiles: this._invalidFiles,
