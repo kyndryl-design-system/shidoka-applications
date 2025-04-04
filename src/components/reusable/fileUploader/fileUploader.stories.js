@@ -16,8 +16,42 @@ export default {
   },
 };
 
-export const FileUploader = {
+// Default text strings.
+const args = {
+  textStrings: {
+    dragAndDropText: 'Drag files here to upload',
+    orText: 'or',
+    buttonText: 'Browse files',
+    maxFileSizeText: 'Max file size',
+    supportedFileTypeText: 'Supported file type: ',
+    fileTypeDisplyText: 'Any file type',
+    invalidFileListLabel: 'Some files could not be added:',
+    validFileListLabel: 'Files added:',
+    clearListText: 'Clear list',
+    fileTypeErrorText: 'Invaild file type',
+    fileSizeErrorText: 'Max file size exceeded',
+    customFileErrorText: 'Custom file error',
+    inlineConfirmAnchorText: 'Delete',
+    inlineConfirmConfirmText: 'Confirm',
+    inlineConfirmCancelText: 'Cancel',
+    validationNotificationTitle: 'Multiple files not allowed',
+    validationNotificationMessage: 'Please select only one file.',
+  },
+};
+
+export const FileUploaderSingle = {
   render: () => {
     return html` <sample-file-uploader></sample-file-uploader> `;
   },
 };
+FileUploaderSingle.storyName = 'File Uploader - Single file';
+
+export const FileUploaderMultiple = {
+  args: args,
+  render: (args) => {
+    return html`
+      <sample-file-uploader ?multiple=${true}></sample-file-uploader>
+    `;
+  },
+};
+FileUploaderMultiple.storyName = 'File Uploader - Multiple files';

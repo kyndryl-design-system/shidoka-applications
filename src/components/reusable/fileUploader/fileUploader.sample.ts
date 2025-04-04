@@ -9,9 +9,32 @@ import '../button';
 import '../notification';
 import '../progressBar';
 
+const _textStrings = {
+  dragAndDropText: 'Drag files here to upload',
+  orText: 'or',
+  buttonText: 'Browse files',
+  maxFileSizeText: 'Max file size',
+  supportedFileTypeText: 'Supported file type: ',
+  fileTypeDisplyText: '.jpeg, .png',
+  invalidFileListLabel: 'Some files could not be added:',
+  validFileListLabel: 'Files added:',
+  clearListText: 'Clear list',
+  fileTypeErrorText: 'Invaild file type',
+  fileSizeErrorText: 'Max file size exceeded',
+  customFileErrorText: 'Custom file error',
+  inlineConfirmAnchorText: 'Delete',
+  inlineConfirmConfirmText: 'Confirm',
+  inlineConfirmCancelText: 'Cancel',
+  validationNotificationTitle: 'Multiple files not allowed',
+  validationNotificationMessage: 'Please select only one file.',
+};
+
 @customElement('sample-file-uploader')
 export class SampleFileUploader extends LitElement {
   static override styles = SampleFileUploaderScss;
+
+  @property({ type: Boolean })
+  multiple = false;
 
   @state()
   _validFiles: any[] = [];
@@ -55,13 +78,18 @@ export class SampleFileUploader extends LitElement {
   @state()
   _helperText = '';
 
+  @state()
+  _disabled = false;
+
   override render() {
     return html`
       <kyn-file-uploader
         .accept=${['image/jpeg', 'image/png']}
-        .multiple=${true}
+        ?multiple=${this.multiple}
         .validFiles=${this._validFiles}
         .invalidFiles=${this._invalidFiles}
+        ?disabled=${this._disabled}
+        .textStrings=${_textStrings}
         @on-file-change=${(e: any) => {
           action(e.type)(e);
           this._handleFilesToBeUploaded(e);
@@ -135,10 +163,16 @@ export class SampleFileUploader extends LitElement {
     } else {
       this._setNotificationConfig(false, 'normal', 'default', '', '');
     }
+    if (this._totalFiles === 1 && !this.multiple) {
+      this._disabled = true;
+    } else {
+      this._disabled = false;
+    }
   }
 
   _startFileUpload() {
     this._setNotificationConfig(true, 'normal', 'default', '', '');
+    this._disabled = true;
     this._showProgressBar = true;
     this._currentFileUploading = '';
     this._helperText = '';
@@ -146,6 +180,8 @@ export class SampleFileUploader extends LitElement {
     this._uploadFiles();
   }
 
+  // This function simulates the file upload process.
+  // In an actual implementation, you would replace this with your file upload logic and update the file state accordingly.
   async _uploadFiles() {
     let uploadedFilesCount = 0;
     const totalFiles = this._validFiles.length;
@@ -228,10 +264,12 @@ export class SampleFileUploader extends LitElement {
             } could not be uploaded.`
           : `Success! ${totalFiles} files have been uploaded.`;
       clearInterval(progressInterval);
+      if (this.multiple) this._disabled = false;
     }
   }
 
   _stopFileUpload() {
+    if (this.multiple) this._disabled = false;
     this._uploadCanceled = true;
     this._showProgressBar = false;
     this._setNotificationConfig(

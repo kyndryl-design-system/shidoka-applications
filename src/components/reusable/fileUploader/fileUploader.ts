@@ -24,6 +24,8 @@ const _defaultTextStrings = {
   maxFileSizeText: 'Max file size',
   supportedFileTypeText: 'Supported file type: ',
   fileTypeDisplyText: 'Any file type',
+  invalidFileListLabel: 'Some files could not be added:',
+  validFileListLabel: 'Files added:',
   clearListText: 'Clear list',
   fileTypeErrorText: 'Invaild file type',
   fileSizeErrorText: 'Max file size exceeded',
@@ -47,6 +49,11 @@ export class FileUploader extends FormMixin(LitElement) {
 
   /**
    * Set the file types that the component accepts. By default, it accepts all file types.
+   * @example
+   * ['image/jpeg', 'image/png']
+   * ['image/*']
+   * ['audio/*']
+   * ['application/pdf', 'text/plain']
    */
   @property({ type: Array })
   accept: string[] = [];
@@ -127,6 +134,13 @@ export class FileUploader extends FormMixin(LitElement) {
    */
   @state()
   _showValidationNotification = false;
+
+  /**
+   * Internal margin flag.
+   * @internal
+   */
+  @state()
+  _addMargin = false;
 
   /**
    * Queries the <input> DOM element.
@@ -215,7 +229,8 @@ export class FileUploader extends FormMixin(LitElement) {
           ${this._invalidFiles.length > 0
             ? html`
                 <kyn-file-uploader-list-container
-                  .titleText=${'Some files could not be added:'}
+                  id="invalidFiles"
+                  .titleText=${this._textStrings.invalidFileListLabel}
                 >
                   <!-- Invalid files -->
                   ${this._invalidFiles.length > 0
@@ -258,7 +273,10 @@ export class FileUploader extends FormMixin(LitElement) {
             : ''}
           ${this._validFiles.length > 0
             ? html`
-                <kyn-file-uploader-list-container .titleText=${'Files added:'}>
+                <kyn-file-uploader-list-container
+                  .titleText=${this._textStrings.validFileListLabel}
+                  id="validFiles"
+                >
                   <!-- Valid files -->
                   ${this._validFiles.length > 0
                     ? this._validFiles.map(
@@ -283,6 +301,9 @@ export class FileUploader extends FormMixin(LitElement) {
         </div>
         ${this._showValidationNotification
           ? html` <kyn-notification
+              class=${classMap({
+                'extra-margin': this._addMargin,
+              })}
               slot="upload-status"
               .type=${'inline'}
               .tagStatus=${'error'}
@@ -335,6 +356,7 @@ export class FileUploader extends FormMixin(LitElement) {
   }
 
   handleFileChange(event: Event) {
+    this._showValidationNotification = false;
     const target = event.target as HTMLInputElement;
     if (target.files) {
       const files = Array.from(target.files);
@@ -365,9 +387,11 @@ export class FileUploader extends FormMixin(LitElement) {
 
   // Validate files
   private _validateFiles(files: File[]) {
+    this._addMargin = false;
     // Check if multiple files are uploaded
     if (!this.multiple && files.length > 1) {
       this._showValidationNotification = true;
+      this._addMargin = this._addExtraMargin();
       return;
     }
 
@@ -534,6 +558,18 @@ export class FileUploader extends FormMixin(LitElement) {
     );
     this._setFormValue();
     this._emitFileUploadEvent();
+  }
+
+  // Needed only if both validation notification and uplaod status are present
+  private _addExtraMargin() {
+    const uploadStatusContainer = this.shadowRoot?.querySelectorAll(
+      'kyn-file-uploader-list-container'
+    );
+    if (uploadStatusContainer && uploadStatusContainer.length > 0) {
+      return uploadStatusContainer[0].id === 'invalidFiles' ? true : false;
+    } else {
+      return false;
+    }
   }
 
   private _emitFileUploadEvent() {
