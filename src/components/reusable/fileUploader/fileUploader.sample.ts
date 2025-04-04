@@ -46,9 +46,6 @@ export class SampleFileUploader extends LitElement {
   _showNotification = false;
 
   @state()
-  _notificationType = 'normal';
-
-  @state()
   _notificationStatus = 'default';
 
   @state()
@@ -100,7 +97,7 @@ export class SampleFileUploader extends LitElement {
           ? html`
               <kyn-notification
                 slot="upload-status"
-                .type=${this._notificationType}
+                .type=${'inline'}
                 .tagStatus=${this._notificationStatus}
                 .hideCloseButton=${true}
                 .notificationTitle=${this._notificationTitle}
@@ -154,13 +151,12 @@ export class SampleFileUploader extends LitElement {
     if (this._totalFiles === 0 && this._invalidFiles.length > 0) {
       this._setNotificationConfig(
         true,
-        'inline',
         'error',
         'No valid files selected',
         'Please select valid files to upload.'
       );
     } else {
-      this._setNotificationConfig(false, 'normal', 'default', '', '');
+      this._setNotificationConfig(false, 'default', '', '');
     }
     if (this._totalFiles === 1 && !this.multiple) {
       this._disabled = true;
@@ -178,7 +174,7 @@ export class SampleFileUploader extends LitElement {
   }
 
   _startFileUpload() {
-    this._setNotificationConfig(true, 'normal', 'default', '', '');
+    this._setNotificationConfig(true, 'default', '', '');
     this._disabled = true;
     this._showProgressBar = true;
     this._currentFileUploading = '';
@@ -257,7 +253,6 @@ export class SampleFileUploader extends LitElement {
     }
     if (!this._uploadCanceled) {
       const invalidFilesCount = this._invalidFiles.length;
-      this._notificationType = 'inline';
       this._notificationStatus = invalidFilesCount > 0 ? 'error' : 'success';
       this._notificationTitle =
         invalidFilesCount > 0
@@ -281,7 +276,6 @@ export class SampleFileUploader extends LitElement {
     this._showProgressBar = false;
     this._setNotificationConfig(
       true,
-      'inline',
       'warning',
       'File upload was interrupted',
       ''
@@ -291,13 +285,11 @@ export class SampleFileUploader extends LitElement {
 
   _setNotificationConfig(
     visible: boolean,
-    type: string,
     status: string,
     title: string,
     message: string
   ) {
     this._showNotification = visible;
-    this._notificationType = type;
     this._notificationStatus = status;
     this._notificationTitle = title;
     this._notificationMessage = message;
