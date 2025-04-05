@@ -19,6 +19,7 @@ export default {
   argTypes: {
     locale: { control: { type: 'text' } },
     dateRangePickerDisabled: { control: { type: 'boolean' } },
+    readonly: { control: { type: 'boolean' } },
     dateFormat: {
       options: [
         'Y-m-d',
@@ -68,7 +69,6 @@ const Template = (args) => {
       .dateFormat=${args.dateFormat}
       .defaultDate=${args.defaultDate}
       .defaultErrorMessage=${args.defaultErrorMessage}
-      .value=${args.value}
       .warnText=${args.warnText}
       .invalidText=${args.invalidText}
       .disable=${args.disable}
@@ -78,6 +78,7 @@ const Template = (args) => {
       ?staticPosition=${args.staticPosition}
       .size=${args.size}
       ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+      ?readonly=${args.readonly}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
@@ -103,7 +104,6 @@ DateRangeDefault.args = {
   staticPosition: false,
   size: 'md',
   defaultErrorMessage: 'Both start and end dates are required',
-  value: [null, null],
   warnText: '',
   invalidText: '',
   disable: [],
@@ -114,6 +114,7 @@ DateRangeDefault.args = {
   warningTitle: '',
   caption: 'Click the input above to select a date range.',
   dateRangePickerDisabled: false,
+  readonly: false,
   minDate: '',
   maxDate: '',
   label: 'Date Range',
@@ -221,7 +222,6 @@ export const InModal = {
           .defaultDate=${args.defaultDate}
           ?staticPosition=${args.staticPosition}
           .defaultErrorMessage=${args.defaultErrorMessage}
-          .value=${args.value}
           .warnText=${args.warnText}
           .invalidText=${args.invalidText}
           .disable=${args.disable}
@@ -230,6 +230,7 @@ export const InModal = {
           ?required=${args.required}
           .size=${args.size}
           ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+          ?readonly=${args.readonly}
           ?twentyFourHourFormat=${args.twentyFourHourFormat}
           .minDate=${args.minDate}
           .maxDate=${args.maxDate}
@@ -314,7 +315,6 @@ export const DateRangePickerInAccordionInModal = {
                 .defaultDate=${args.defaultDate}
                 .defaultErrorMessage=${args.defaultErrorMessage}
                 ?staticPosition=${args.staticPosition}
-                .value=${args.value}
                 .warnText=${args.warnText}
                 .invalidText=${args.invalidText}
                 .disable=${args.disable}
@@ -323,6 +323,7 @@ export const DateRangePickerInAccordionInModal = {
                 ?required=${args.required}
                 .size=${args.size}
                 ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+                ?readonly=${args.readonly}
                 ?twentyFourHourFormat=${args.twentyFourHourFormat}
                 .minDate=${args.minDate}
                 .maxDate=${args.maxDate}

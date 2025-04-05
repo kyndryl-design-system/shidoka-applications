@@ -3,11 +3,11 @@ import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { deepmerge } from 'deepmerge-ts';
 
 import Prism from 'prismjs';
 import 'prismjs/plugins/autoloader/prism-autoloader';
+import 'prismjs/plugins/line-numbers/prism-line-numbers';
 import 'prismjs-components-importer';
 Prism.plugins.autoloader.languages_path = 'node_modules/prismjs/components/';
 
@@ -55,6 +55,14 @@ export class BlockCodeView extends LitElement {
   /** If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language. */
   @property({ type: String })
   language = '';
+
+  /** Optionally display line numbers. */
+  @property({ type: Boolean })
+  lineNumbers = false;
+
+  /** Sets the starting line number when lineNumbers is true. Must be a positive integer. */
+  @property({ type: Number })
+  startLineNumber = 1;
 
   /** Customizable max-height setting for code snippet container. */
   @property({ type: Number })
@@ -124,12 +132,6 @@ export class BlockCodeView extends LitElement {
   @state()
   private _effectiveLanguage = '';
 
-  /** Highlighted code to be displayed.
-   * @internal
-   */
-  @state()
-  private _highlightedCode = '';
-
   /** Code snippet fits into the height of the container -- no expansion needed.
    * @internal
    */
@@ -143,15 +145,20 @@ export class BlockCodeView extends LitElement {
   private _expandedHeight: number | null = null;
 
   override updated(changedProperties: Map<string, unknown>) {
-    if (changedProperties.has('darkTheme')) {
-      this.requestUpdate();
-    }
+    if (changedProperties.has('darkTheme')) this.requestUpdate();
 
-    if (
+    const codeChanged =
       changedProperties.has('codeSnippet') ||
       changedProperties.has('language') ||
-      changedProperties.has('maxHeight')
-    ) {
+      changedProperties.has('maxHeight');
+
+    // race condition guard: force complete re-highlighting when line numbers toggle
+    if (changedProperties.has('lineNumbers')) {
+      setTimeout(() => {
+        this.highlightCode();
+        this.checkOverflow();
+      }, 0);
+    } else if (codeChanged) {
       this.highlightCode();
       this.checkOverflow();
     }
@@ -159,12 +166,20 @@ export class BlockCodeView extends LitElement {
     if (changedProperties.has('copyButtonText')) {
       this._copyState = { ...this._copyState, text: this.copyButtonText };
     }
+
+    if (changedProperties.has('startLineNumber')) {
+      // Ensure startLineNumber is at least 1
+      if (this.startLineNumber < 1) {
+        this.startLineNumber = 1;
+      }
+      this.highlightCode();
+    }
+
     super.updated(changedProperties);
   }
 
   override render() {
     const containerStyle = `${this.getContainerStyle()};`;
-
     return html`
       ${this.codeViewLabel
         ? html`<div class="code-view__label">
@@ -176,10 +191,16 @@ export class BlockCodeView extends LitElement {
           <pre
             @keydown=${this.handleKeypress}
             role="region"
-          ><code tabindex="0" class="language-${this
-            ._effectiveLanguage}">${unsafeHTML(
-            this._highlightedCode
-          )}</code></pre>
+            class=${this.lineNumbers && !this._isSingleLine
+              ? 'line-numbers'
+              : 'no-line-numbers'}
+            data-start=${ifDefined(
+              this.lineNumbers ? Math.max(1, this.startLineNumber) : undefined
+            )}
+          >
+            <code tabindex="0" class="language-${this
+            ._effectiveLanguage}"></code>
+          </pre>
         </div>
         ${this.renderCopyButton()} ${this.renderExpandButton()}
       </div>
@@ -261,20 +282,71 @@ export class BlockCodeView extends LitElement {
     this._effectiveLanguage =
       this.language || this.detectLanguage(processedCode);
 
-    if (!Prism.languages[this._effectiveLanguage]) {
-      console.warn(
-        `Language '${this._effectiveLanguage}' not loaded. Falling back to plaintext.`
-      );
-      this._effectiveLanguage = 'plaintext';
+    const preEl = this.shadowRoot?.querySelector('pre');
+    const codeEl = preEl?.querySelector('code');
+
+    if (!codeEl || !preEl) return;
+
+    const existingLineNumbers = preEl.querySelector('.line-numbers-rows');
+    if (existingLineNumbers) {
+      existingLineNumbers.remove();
     }
 
-    this._highlightedCode = Prism.highlight(
-      processedCode,
-      Prism.languages[this._effectiveLanguage],
-      this._effectiveLanguage
+    codeEl.className = `language-${this._effectiveLanguage}`;
+    codeEl.textContent = processedCode;
+
+    if (this.lineNumbers && !this._isSingleLine) {
+      preEl.classList.add('line-numbers');
+      preEl.setAttribute('data-start', String(this.startLineNumber));
+    } else {
+      preEl.classList.remove('line-numbers');
+      preEl.removeAttribute('data-start');
+    }
+
+    setTimeout(() => {
+      Prism.highlightElement(codeEl);
+
+      setTimeout(() => {
+        if (this.lineNumbers) {
+          try {
+            if ((Prism as any).plugins?.lineNumbers) {
+              if (!preEl.querySelector('.line-numbers-rows')) {
+                (Prism as any).hooks.run('complete', { element: codeEl });
+                (Prism as any).plugins.lineNumbers.resize(preEl);
+              }
+            }
+
+            if (!preEl.querySelector('.line-numbers-rows')) {
+              this.addLineNumbers(preEl, codeEl);
+            }
+          } catch (e) {
+            console.warn('Line numbers initialization error:', e);
+            this.addLineNumbers(preEl, codeEl);
+          }
+        }
+
+        this.checkOverflow();
+      }, 50);
+    }, 0);
+  }
+
+  private addLineNumbers(preEl: HTMLElement, codeEl: HTMLElement) {
+    if (preEl.querySelector('.line-numbers-rows')) return;
+
+    const linesCount = (codeEl.textContent || '').split('\n').length;
+    const startLineNumber = Math.max(
+      1,
+      parseInt(preEl.getAttribute('data-start') || '1', 10)
     );
-    this.requestUpdate();
-    this.checkOverflow();
+
+    const lineNumbersWrapper = document.createElement('span');
+    lineNumbersWrapper.className = 'line-numbers-rows';
+
+    const spans = Array(linesCount).fill('<span></span>').join('');
+    lineNumbersWrapper.innerHTML = spans;
+
+    preEl.appendChild(lineNumbersWrapper);
+    preEl.style.counterReset = `linenumber ${startLineNumber - 1}`;
   }
 
   private detectLanguage(code: string): string {

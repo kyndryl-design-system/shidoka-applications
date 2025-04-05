@@ -552,6 +552,477 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/localNav/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "./localNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "./localNavLink"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "./localNavDivider"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Side Navigation component.",
+          "name": "LocalNav",
+          "slots": [
+            {
+              "description": "The default slot, for local nav links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for a search input",
+              "name": "search"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "attribute": "pinned"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleMobileNavToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinkActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the pinned state and original event details.",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "fieldName": "pinned"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavDivider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Local Nav divider",
+          "name": "LocalNavDivider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "attribute": "heading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "fieldName": "heading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-divider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-divider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Link component for use in the global Side Navigation component.",
+          "name": "LocalNavLink",
+          "slots": [
+            {
+              "description": "The default slot, for the link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon. Use 16px size. Required for level 1.",
+              "name": "icon"
+            },
+            {
+              "description": "Slot for the next level of links, supports three levels.",
+              "name": "links"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "attribute": "expanded"
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "attribute": "active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "field",
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "attribute": "leftPadding"
+            },
+            {
+              "kind": "method",
+              "name": "_handleTextSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getSlotText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinksSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event, level, and if default was prevented.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "fieldName": "expanded"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "fieldName": "active"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            },
+            {
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "fieldName": "leftPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-link",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/header/header.ts",
       "declarations": [
         {
@@ -2061,477 +2532,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/localNav/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "./localNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "./localNavLink"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "./localNavDivider"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Side Navigation component.",
-          "name": "LocalNav",
-          "slots": [
-            {
-              "description": "The default slot, for local nav links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for a search input",
-              "name": "search"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "attribute": "pinned"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_handleNavToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleMobileNavToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinkActive",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the pinned state and original event details.",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "fieldName": "pinned"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavDivider.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Local Nav divider",
-          "name": "LocalNavDivider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "attribute": "heading"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "fieldName": "heading"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-divider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-divider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Link component for use in the global Side Navigation component.",
-          "name": "LocalNavLink",
-          "slots": [
-            {
-              "description": "The default slot, for the link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon. Use 16px size. Required for level 1.",
-              "name": "icon"
-            },
-            {
-              "description": "Slot for the next level of links, supports three levels.",
-              "name": "links"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "attribute": "expanded"
-            },
-            {
-              "kind": "field",
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "attribute": "active",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "field",
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "attribute": "leftPadding"
-            },
-            {
-              "kind": "method",
-              "name": "_handleTextSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_getSlotText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinksSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event, level, and if default was prevented.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "fieldName": "expanded"
-            },
-            {
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "fieldName": "active"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            },
-            {
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "fieldName": "leftPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-link",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/uiShell/index.ts",
       "declarations": [],
       "exports": [
@@ -3121,6 +3121,26 @@
             },
             {
               "kind": "field",
+              "name": "lineNumbers",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display line numbers.",
+              "attribute": "lineNumbers"
+            },
+            {
+              "kind": "field",
+              "name": "startLineNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Sets the starting line number when lineNumbers is true. Must be a positive integer.",
+              "attribute": "startLineNumber"
+            },
+            {
+              "kind": "field",
               "name": "maxHeight",
               "type": {
                 "text": "number | null"
@@ -3218,6 +3238,25 @@
               "kind": "method",
               "name": "highlightCode",
               "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "addLineNumbers",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "preEl",
+                  "type": {
+                    "text": "HTMLElement"
+                  }
+                },
+                {
+                  "name": "codeEl",
+                  "type": {
+                    "text": "HTMLElement"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
@@ -3432,6 +3471,24 @@
               "default": "''",
               "description": "If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language.",
               "fieldName": "language"
+            },
+            {
+              "name": "lineNumbers",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display line numbers.",
+              "fieldName": "lineNumbers"
+            },
+            {
+              "name": "startLineNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Sets the starting line number when lineNumbers is true. Must be a positive integer.",
+              "fieldName": "startLineNumber"
             },
             {
               "name": "maxHeight",
@@ -5038,16 +5095,6 @@
             },
             {
               "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "Date | Date[] | null"
-              },
-              "default": "null",
-              "description": "Sets pre-selected date/time value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
               "name": "warnText",
               "type": {
                 "text": "string"
@@ -5115,6 +5162,16 @@
               "default": "false",
               "description": "Sets entire datepicker form element to enabled/disabled.",
               "attribute": "datePickerDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire datepicker form element to readonly.",
+              "attribute": "readonly"
             },
             {
               "kind": "field",
@@ -5207,6 +5264,16 @@
               }
             },
             {
+              "kind": "field",
+              "name": "_hasInitialDefaultDate",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false",
+              "description": "Track if we initially had a defaultDate when the component was first connected"
+            },
+            {
               "kind": "method",
               "name": "debounce",
               "privacy": "private",
@@ -5270,6 +5337,24 @@
             },
             {
               "kind": "method",
+              "name": "processDefaultDates",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "Date[]"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "defaultDate",
+                  "type": {
+                    "text": "string | string[] | Date | Date[] | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "setupAnchor",
               "privacy": "private"
             },
@@ -5288,30 +5373,33 @@
             },
             {
               "kind": "method",
-              "name": "initializeFlatpickr",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
+              "name": "initializeFlatpickr"
             },
             {
               "kind": "method",
-              "name": "updateFlatpickrOptions",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
+              "name": "updateFlatpickrOptions"
             },
             {
               "kind": "method",
-              "name": "setInitialDates",
+              "name": "parseDateString",
+              "privacy": "private",
               "return": {
                 "type": {
-                  "text": "void"
+                  "text": "Date | null"
                 }
-              }
+              },
+              "parameters": [
+                {
+                  "name": "dateStr",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setInitialDates"
             },
             {
               "kind": "method",
@@ -5324,30 +5412,15 @@
             },
             {
               "kind": "method",
-              "name": "handleOpen",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
+              "name": "handleOpen"
             },
             {
               "kind": "method",
-              "name": "handleClose",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
+              "name": "handleClose"
             },
             {
               "kind": "method",
               "name": "handleDateChange",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              },
               "parameters": [
                 {
                   "name": "selectedDates",
@@ -5367,11 +5440,6 @@
               "kind": "method",
               "name": "setShouldFlatpickrOpen",
               "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
               "parameters": [
                 {
                   "name": "value",
@@ -5384,22 +5452,12 @@
             {
               "kind": "method",
               "name": "closeFlatpickr",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
+              "privacy": "private"
             },
             {
               "kind": "method",
               "name": "preventFlatpickrOpen",
               "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
               "parameters": [
                 {
                   "name": "event",
@@ -5412,32 +5470,17 @@
             {
               "kind": "method",
               "name": "handleInputClickEvent",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
+              "privacy": "private"
             },
             {
               "kind": "method",
               "name": "handleInputFocusEvent",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
+              "privacy": "private"
             },
             {
               "kind": "method",
               "name": "_validate",
               "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
               "parameters": [
                 {
                   "name": "interacted",
@@ -5534,15 +5577,6 @@
               "fieldName": "size"
             },
             {
-              "name": "value",
-              "type": {
-                "text": "Date | Date[] | null"
-              },
-              "default": "null",
-              "description": "Sets pre-selected date/time value.",
-              "fieldName": "value"
-            },
-            {
               "name": "warnText",
               "type": {
                 "text": "string"
@@ -5595,6 +5629,15 @@
               "default": "false",
               "description": "Sets entire datepicker form element to enabled/disabled.",
               "fieldName": "datePickerDisabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire datepicker form element to readonly.",
+              "fieldName": "readonly"
             },
             {
               "name": "twentyFourHourFormat",
@@ -5790,16 +5833,6 @@
             },
             {
               "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "[Date | null, Date | null]"
-              },
-              "default": "[null, null]",
-              "description": "Sets date/time range value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
               "name": "warnText",
               "type": {
                 "text": "string"
@@ -5855,7 +5888,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Sets date range picker form input value to required/required.",
+              "description": "Sets date range picker form input value to required.",
               "attribute": "required"
             },
             {
@@ -5880,12 +5913,22 @@
             },
             {
               "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to readonly.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
               "name": "twentyFourHourFormat",
               "type": {
                 "text": "boolean | null"
               },
               "default": "null",
-              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
+              "description": "Sets 24-hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
               "attribute": "twentyFourHourFormat"
             },
             {
@@ -5961,7 +6004,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n  dateRange: 'Date range',\n  noDateSelected: 'No dates selected',\n  startDateSelected: 'Start date selected: {0}. Please select end date.',\n  dateRangeSelected: 'Selected date range: {0} to {1}',\n}",
+              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n  pleaseSelectBothDates: 'Please select a start and end date.',\n  dateRange: 'Date range',\n  noDateSelected: 'No dates selected',\n  startDateSelected: 'Start date selected: {0}. Please select end date.',\n  dateRangeSelected: 'Selected date range: {0} to {1}',\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -6014,6 +6057,11 @@
             },
             {
               "kind": "method",
+              "name": "updateFormValue",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
               "name": "renderValidationMessage",
               "privacy": "private",
               "parameters": [
@@ -6033,7 +6081,44 @@
             },
             {
               "kind": "method",
-              "name": "getDateRangePickerClasses"
+              "name": "getDateRangePickerClasses",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "processDefaultDates",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "Date[]"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "defaultDate",
+                  "type": {
+                    "text": "string | string[] | Date | Date[] | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "parseDateString",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "Date | null"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "dateStr",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
@@ -6070,24 +6155,22 @@
             {
               "kind": "method",
               "name": "handleClose",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
+              "privacy": "public"
             },
             {
               "kind": "method",
               "name": "initializeFlatpickr",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
+              "privacy": "public"
+            },
+            {
+              "kind": "method",
+              "name": "updateFlatpickrOptions",
+              "privacy": "public"
             },
             {
               "kind": "method",
               "name": "getComponentFlatpickrOptions",
+              "privacy": "public",
               "return": {
                 "type": {
                   "text": "Promise<Partial<BaseOptions>>"
@@ -6096,39 +6179,18 @@
             },
             {
               "kind": "method",
-              "name": "updateFlatpickrOptions",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
-            },
-            {
-              "kind": "method",
               "name": "setInitialDates",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
+              "privacy": "public"
             },
             {
               "kind": "method",
               "name": "handleOpen",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
+              "privacy": "public"
             },
             {
               "kind": "method",
               "name": "handleDateChange",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              },
+              "privacy": "public",
               "parameters": [
                 {
                   "name": "selectedDates",
@@ -6141,6 +6203,7 @@
             {
               "kind": "method",
               "name": "updateSelectedDateRangeAria",
+              "privacy": "private",
               "parameters": [
                 {
                   "name": "selectedDates",
@@ -6195,11 +6258,6 @@
               "kind": "method",
               "name": "_validate",
               "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
               "parameters": [
                 {
                   "name": "interacted",
@@ -6279,15 +6337,6 @@
               "fieldName": "defaultErrorMessage"
             },
             {
-              "name": "value",
-              "type": {
-                "text": "[Date | null, Date | null]"
-              },
-              "default": "[null, null]",
-              "description": "Sets date/time range value.",
-              "fieldName": "value"
-            },
-            {
               "name": "warnText",
               "type": {
                 "text": "string"
@@ -6329,7 +6378,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Sets date range picker form input value to required/required.",
+              "description": "Sets date range picker form input value to required.",
               "fieldName": "required"
             },
             {
@@ -6351,12 +6400,21 @@
               "fieldName": "dateRangePickerDisabled"
             },
             {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to readonly.",
+              "fieldName": "readonly"
+            },
+            {
               "name": "twentyFourHourFormat",
               "type": {
                 "text": "boolean | null"
               },
               "default": "null",
-              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
+              "description": "Sets 24-hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
               "fieldName": "twentyFourHourFormat"
             },
             {
@@ -7483,63 +7541,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/floatingContainer/floatingContainer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Floating Container.",
-          "name": "FloatingContainer",
-          "slots": [
-            {
-              "description": "Slot for kyn-button options.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-button-float-container",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "FloatingContainer",
-          "declaration": {
-            "name": "FloatingContainer",
-            "module": "src/components/reusable/floatingContainer/floatingContainer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-button-float-container",
-          "declaration": {
-            "name": "FloatingContainer",
-            "module": "src/components/reusable/floatingContainer/floatingContainer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/floatingContainer/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "FloatingContainer",
-          "declaration": {
-            "name": "FloatingContainer",
-            "module": "./floatingContainer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/fileUploader/fileUploader.ts",
       "declarations": [
         {
@@ -8060,6 +8061,63 @@
           "declaration": {
             "name": "FileUploaderListContainer",
             "module": "./fileUploaderListContainer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/floatingContainer/floatingContainer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Floating Container.",
+          "name": "FloatingContainer",
+          "slots": [
+            {
+              "description": "Slot for kyn-button options.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-button-float-container",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FloatingContainer",
+          "declaration": {
+            "name": "FloatingContainer",
+            "module": "src/components/reusable/floatingContainer/floatingContainer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-button-float-container",
+          "declaration": {
+            "name": "FloatingContainer",
+            "module": "src/components/reusable/floatingContainer/floatingContainer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/floatingContainer/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FloatingContainer",
+          "declaration": {
+            "name": "FloatingContainer",
+            "module": "./floatingContainer"
           }
         }
       ]
@@ -9947,6 +10005,16 @@
             },
             {
               "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
               "name": "caption",
               "type": {
                 "text": "string"
@@ -10138,6 +10206,15 @@
               "default": "false",
               "description": "Input disabled state.",
               "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "fieldName": "readonly"
             },
             {
               "name": "caption",
@@ -17807,6 +17884,16 @@
             },
             {
               "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
               "name": "maxLength",
               "type": {
                 "text": "number"
@@ -17971,6 +18058,15 @@
               "default": "false",
               "description": "Input disabled state.",
               "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "fieldName": "readonly"
             },
             {
               "name": "maxLength",
@@ -18178,6 +18274,16 @@
             },
             {
               "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
               "name": "pattern",
               "type": {
                 "text": "string"
@@ -18361,6 +18467,15 @@
               "fieldName": "disabled"
             },
             {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "fieldName": "readonly"
+            },
+            {
               "name": "pattern",
               "type": {
                 "text": "string"
@@ -18494,26 +18609,6 @@
             },
             {
               "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "Date | null"
-              },
-              "default": "null",
-              "description": "Sets date/time value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "defaultDate",
-              "type": {
-                "text": "string | string[] | null"
-              },
-              "default": "null",
-              "description": "Sets the initial selected date(s). For multiple mode, provide an array of date strings matching dateFormat.",
-              "attribute": "defaultDate"
-            },
-            {
-              "kind": "field",
               "name": "defaultHour",
               "type": {
                 "text": "number | null"
@@ -18559,7 +18654,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
+              "description": "Sets caption to be displayed under primary time picker elements.",
               "attribute": "caption"
             },
             {
@@ -18569,7 +18664,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Sets datepicker form input value to required/required.",
+              "description": "Sets timepicker form input value to required.",
               "attribute": "required"
             },
             {
@@ -18589,8 +18684,18 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Sets entire datepicker form element to enabled/disabled.",
+              "description": "Sets entire timepicker form element to enabled/disabled.",
               "attribute": "timepickerDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire timepicker form element to readonly.",
+              "attribute": "readonly"
             },
             {
               "kind": "field",
@@ -18599,7 +18704,7 @@
                 "text": "boolean | null"
               },
               "default": "null",
-              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
+              "description": "Sets 24-hour formatting true/false.",
               "attribute": "twentyFourHourFormat"
             },
             {
@@ -18609,7 +18714,7 @@
                 "text": "string | number | Date"
               },
               "default": "''",
-              "description": "Sets lower boundary of datepicker date selection.",
+              "description": "Sets lower boundary of time selection.",
               "attribute": "minTime"
             },
             {
@@ -18619,7 +18724,7 @@
                 "text": "string | number | Date"
               },
               "default": "''",
-              "description": "Sets upper boundary of datepicker date selection.",
+              "description": "Sets upper boundary of time selection.",
               "attribute": "maxTime"
             },
             {
@@ -18683,6 +18788,15 @@
               }
             },
             {
+              "kind": "field",
+              "name": "_initialized",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
               "kind": "method",
               "name": "debounce",
               "privacy": "private",
@@ -18741,6 +18855,11 @@
             },
             {
               "kind": "method",
+              "name": "updateFormValue",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
               "name": "renderValidationMessage",
               "privacy": "private",
               "parameters": [
@@ -18791,21 +18910,11 @@
             },
             {
               "kind": "method",
-              "name": "initializeFlatpickr",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
+              "name": "initializeFlatpickr"
             },
             {
               "kind": "method",
-              "name": "updateFlatpickrOptions",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
+              "name": "updateFlatpickrOptions"
             },
             {
               "kind": "method",
@@ -18819,11 +18928,6 @@
             {
               "kind": "method",
               "name": "setInitialDates",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
               "parameters": [
                 {
                   "name": "instance",
@@ -18835,30 +18939,15 @@
             },
             {
               "kind": "method",
-              "name": "handleOpen",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
+              "name": "handleOpen"
             },
             {
               "kind": "method",
-              "name": "handleClose",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
+              "name": "handleClose"
             },
             {
               "kind": "method",
               "name": "handleTimeChange",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              },
               "parameters": [
                 {
                   "name": "selectedDates",
@@ -18878,11 +18967,6 @@
               "kind": "method",
               "name": "_validate",
               "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
               "parameters": [
                 {
                   "name": "interacted",
@@ -18976,24 +19060,6 @@
               "fieldName": "locale"
             },
             {
-              "name": "value",
-              "type": {
-                "text": "Date | null"
-              },
-              "default": "null",
-              "description": "Sets date/time value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "defaultDate",
-              "type": {
-                "text": "string | string[] | null"
-              },
-              "default": "null",
-              "description": "Sets the initial selected date(s). For multiple mode, provide an array of date strings matching dateFormat.",
-              "fieldName": "defaultDate"
-            },
-            {
               "name": "defaultHour",
               "type": {
                 "text": "number | null"
@@ -19035,7 +19101,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
+              "description": "Sets caption to be displayed under primary time picker elements.",
               "fieldName": "caption"
             },
             {
@@ -19044,7 +19110,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Sets datepicker form input value to required/required.",
+              "description": "Sets timepicker form input value to required.",
               "fieldName": "required"
             },
             {
@@ -19062,8 +19128,17 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Sets entire datepicker form element to enabled/disabled.",
+              "description": "Sets entire timepicker form element to enabled/disabled.",
               "fieldName": "timepickerDisabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire timepicker form element to readonly.",
+              "fieldName": "readonly"
             },
             {
               "name": "twentyFourHourFormat",
@@ -19071,7 +19146,7 @@
                 "text": "boolean | null"
               },
               "default": "null",
-              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
+              "description": "Sets 24-hour formatting true/false.",
               "fieldName": "twentyFourHourFormat"
             },
             {
@@ -19080,7 +19155,7 @@
                 "text": "string | number | Date"
               },
               "default": "''",
-              "description": "Sets lower boundary of datepicker date selection.",
+              "description": "Sets lower boundary of time selection.",
               "fieldName": "minTime"
             },
             {
@@ -19089,7 +19164,7 @@
                 "text": "string | number | Date"
               },
               "default": "''",
-              "description": "Sets upper boundary of datepicker date selection.",
+              "description": "Sets upper boundary of time selection.",
               "fieldName": "maxTime"
             },
             {
@@ -19173,6 +19248,133 @@
           "declaration": {
             "name": "TimePicker",
             "module": "src/components/reusable/timepicker/timepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tooltip/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tooltip",
+          "declaration": {
+            "name": "Tooltip",
+            "module": "./tooltip"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tooltip/tooltip.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tooltip.",
+          "name": "Tooltip",
+          "slots": [
+            {
+              "description": "Slot for tooltip content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for custom anchor button content.",
+              "name": "anchor"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Tooltip'",
+              "description": "Assistive text for anchor button.",
+              "attribute": "assistiveText"
+            },
+            {
+              "kind": "method",
+              "name": "_positionTooltip",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleOpen",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleMouseLeave",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleEsc",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitToggle",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the open state of the tooltip on open/close.",
+              "name": "on-tooltip-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Tooltip'",
+              "description": "Assistive text for anchor button.",
+              "fieldName": "assistiveText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tooltip",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tooltip",
+          "declaration": {
+            "name": "Tooltip",
+            "module": "src/components/reusable/tooltip/tooltip.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tooltip",
+          "declaration": {
+            "name": "Tooltip",
+            "module": "src/components/reusable/tooltip/tooltip.ts"
           }
         }
       ]
@@ -19429,133 +19631,6 @@
           "declaration": {
             "name": "ToggleButton",
             "module": "src/components/reusable/toggleButton/toggleButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tooltip/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tooltip",
-          "declaration": {
-            "name": "Tooltip",
-            "module": "./tooltip"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tooltip/tooltip.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tooltip.",
-          "name": "Tooltip",
-          "slots": [
-            {
-              "description": "Slot for tooltip content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for custom anchor button content.",
-              "name": "anchor"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "assistiveText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Tooltip'",
-              "description": "Assistive text for anchor button.",
-              "attribute": "assistiveText"
-            },
-            {
-              "kind": "method",
-              "name": "_positionTooltip",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleOpen",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClose",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleMouseLeave",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleEsc",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "KeyboardEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitToggle",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the open state of the tooltip on open/close.",
-              "name": "on-tooltip-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "assistiveText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Tooltip'",
-              "description": "Assistive text for anchor button.",
-              "fieldName": "assistiveText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tooltip",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tooltip",
-          "declaration": {
-            "name": "Tooltip",
-            "module": "src/components/reusable/tooltip/tooltip.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tooltip",
-          "declaration": {
-            "name": "Tooltip",
-            "module": "src/components/reusable/tooltip/tooltip.ts"
           }
         }
       ]

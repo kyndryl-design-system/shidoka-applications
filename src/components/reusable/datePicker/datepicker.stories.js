@@ -50,7 +50,6 @@ export default {
     maxDate: { control: { type: 'text' } },
     label: { control: { type: 'text' } },
     invalidText: { control: { type: 'text' } },
-    value: { control: { type: 'text' } },
   },
 };
 
@@ -75,7 +74,6 @@ const Template = (args) => {
       .defaultErrorMessage=${args.defaultErrorMessage}
       ?required=${args.required}
       .size=${args.size}
-      .value=${args.value}
       .warnText=${args.warnText}
       .invalidText=${args.invalidText}
       .disable=${args.disable}
@@ -87,6 +85,7 @@ const Template = (args) => {
       .warningAriaLabel=${args.warningAriaLabel}
       .warningTitle=${args.warningTitle}
       ?datePickerDisabled=${args.datePickerDisabled}
+      ?readonly=${args.readonly}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
@@ -106,7 +105,6 @@ DatePickerDefault.args = {
   required: false,
   size: 'md',
   staticPosition: false,
-  value: '',
   warnText: '',
   invalidText: '',
   disable: [],
@@ -118,6 +116,7 @@ DatePickerDefault.args = {
   mode: 'single',
   caption: 'Example datepicker caption.',
   datePickerDisabled: false,
+  readonly: false,
   minDate: '',
   maxDate: '',
   label: 'Date',
@@ -132,7 +131,6 @@ DateWithTime.args = {
   dateFormat: 'Y-m-d H:i',
   caption: '',
   label: 'Hindi Locale Example',
-  value: '',
 };
 DateWithTime.storyName = 'Date + Time (Hindi Locale)';
 
@@ -158,7 +156,6 @@ DateTimeMultiple.args = {
   caption: 'Select multiple dates with time. Example shows preselected dates.',
   mode: 'multiple',
   label: 'Multiple Date/Time Selection',
-  value: '',
 };
 DateTimeMultiple.storyName = 'With Preselected Date Time';
 
@@ -236,7 +233,6 @@ export const InModal = {
           .defaultErrorMessage=${args.defaultErrorMessage}
           ?required=${args.required}
           .size=${args.size}
-          .value=${args.value}
           .warnText=${args.warnText}
           .invalidText=${args.invalidText}
           .disable=${args.disable}
@@ -248,6 +244,7 @@ export const InModal = {
           .warningAriaLabel=${args.warningAriaLabel}
           .warningTitle=${args.warningTitle}
           ?datePickerDisabled=${args.datePickerDisabled}
+          ?readonly=${args.readonly}
           ?twentyFourHourFormat=${args.twentyFourHourFormat}
           .minDate=${args.minDate}
           .maxDate=${args.maxDate}
@@ -285,7 +282,7 @@ export const InSideDrawer = {
     label: 'Date',
     defaultErrorMessage: '',
     required: false,
-    value: '',
+
     warnText: '',
     invalidText: '',
     disable: false,
@@ -296,6 +293,7 @@ export const InSideDrawer = {
     warningAriaLabel: '',
     warningTitle: '',
     datePickerDisabled: false,
+    readonly: false,
     twentyFourHourFormat: false,
     minDate: '',
     maxDate: '',
@@ -323,7 +321,6 @@ export const InSideDrawer = {
       staticPosition,
       defaultErrorMessage,
       required,
-      value,
       warnText,
       invalidText,
       disable,
@@ -335,6 +332,7 @@ export const InSideDrawer = {
       warningAriaLabel,
       warningTitle,
       datePickerDisabled,
+      readonly,
       twentyFourHourFormat,
       minDate,
       maxDate,
@@ -365,7 +363,6 @@ export const InSideDrawer = {
       defaultErrorMessage,
       required,
       size,
-      value,
       warnText,
       invalidText,
       disable,
@@ -377,6 +374,7 @@ export const InSideDrawer = {
       warningAriaLabel,
       warningTitle,
       datePickerDisabled,
+      readonly,
       twentyFourHourFormat,
       minDate,
       maxDate,
@@ -416,7 +414,6 @@ export const InSideDrawer = {
           .defaultErrorMessage=${datePickerProps.defaultErrorMessage}
           ?required=${datePickerProps.required}
           .size=${datePickerProps.size}
-          .value=${datePickerProps.value}
           .warnText=${datePickerProps.warnText}
           .invalidText=${datePickerProps.invalidText}
           .disable=${datePickerProps.disable}
@@ -428,6 +425,7 @@ export const InSideDrawer = {
           .warningAriaLabel=${datePickerProps.warningAriaLabel}
           .warningTitle=${datePickerProps.warningTitle}
           ?datePickerDisabled=${datePickerProps.datePickerDisabled}
+          ?readonly=${datePickerProps.readonly}
           ?twentyFourHourFormat=${datePickerProps.twentyFourHourFormat}
           .minDate=${datePickerProps.minDate}
           .maxDate=${datePickerProps.maxDate}
