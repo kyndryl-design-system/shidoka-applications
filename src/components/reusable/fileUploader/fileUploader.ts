@@ -71,10 +71,14 @@ export class FileUploader extends FormMixin(LitElement) {
   textStrings = _defaultTextStrings;
 
   /**
-   * Set the maximum file size. Default value is `1MB`.
+   * Set the maximum file size in bytes. Default value is `1048576` (1MB).
+   * @example
+   * 1048576 // 1MB
+   * 5242880 // 5MB
+   * 1073741824 // 1GB
    */
-  @property({ type: String })
-  maxFileSize = '1MB';
+  @property({ type: Number })
+  maxFileSize = 1048576; // 1MB
 
   /**
    * Disable the file uploader. Default value is `false`.
@@ -218,7 +222,7 @@ export class FileUploader extends FormMixin(LitElement) {
           >
             <p>
               ${this._textStrings.maxFileSizeText}
-              <strong>${this.maxFileSize}</strong>.
+              <strong>${this._getFilesSize(this.maxFileSize)}</strong>.
               ${this._textStrings.supportedFileTypeText}
               <strong>${this._textStrings.fileTypeDisplyText}</strong>.
             </p>
@@ -372,11 +376,14 @@ export class FileUploader extends FormMixin(LitElement) {
     if (bytes < 1024) {
       return `${bytes} Bytes`;
     } else if (bytes < 1024 * 1024) {
-      return `${(bytes / 1024).toFixed(2)} KB`;
+      const kb = bytes / 1024;
+      return kb % 1 === 0 ? `${Math.floor(kb)} KB` : `${kb.toFixed(2)} KB`;
     } else if (bytes < 1024 * 1024 * 1024) {
-      return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+      const mb = bytes / (1024 * 1024);
+      return mb % 1 === 0 ? `${Math.floor(mb)} MB` : `${mb.toFixed(2)} MB`;
     } else {
-      return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+      const gb = bytes / (1024 * 1024 * 1024);
+      return gb % 1 === 0 ? `${Math.floor(gb)} GB` : `${gb.toFixed(2)} GB`;
     }
   }
 
@@ -397,9 +404,6 @@ export class FileUploader extends FormMixin(LitElement) {
 
     const validFiles: Object[] = [...this._validFiles];
     const invalidFiles: Object[] = [...this._invalidFiles];
-
-    // Parse maxFileSize to get the max file size in bytes
-    const maxFileSizeInBytes = this._parseFileSize(this.maxFileSize);
 
     files.forEach((file) => {
       const fileName = file.name;
@@ -423,7 +427,7 @@ export class FileUploader extends FormMixin(LitElement) {
         this.accept.includes(fileExtension);
 
       // Check if the file size is valid
-      const isValidSize = fileSize <= maxFileSizeInBytes;
+      const isValidSize = fileSize <= this.maxFileSize;
 
       if (isValidType && isValidSize) {
         validFiles.push({
@@ -457,22 +461,6 @@ export class FileUploader extends FormMixin(LitElement) {
     // Update invalid files
     if (invalidFiles.length > 0) {
       this._invalidFiles = invalidFiles;
-    }
-  }
-
-  private _parseFileSize(size: string): number {
-    const sizeUnit = size.slice(-2).toUpperCase();
-    const sizeValue = parseFloat(size.slice(0, -2));
-
-    switch (sizeUnit) {
-      case 'KB':
-        return sizeValue * 1024; // KB to bytes
-      case 'MB':
-        return sizeValue * 1024 * 1024; // MB to bytes
-      case 'GB':
-        return sizeValue * 1024 * 1024 * 1024; // GB to bytes
-      default:
-        return sizeValue; // Default to bytes if no unit provided
     }
   }
 
