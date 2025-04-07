@@ -353,7 +353,7 @@ export const Default = {
           .accept=${['image/jpeg', 'image/png']}
           .textStrings=${{
             dragAndDropText: 'Drag files here to upload',
-            orText: 'or',
+            separatorText: 'or',
             buttonText: 'Browse files',
             maxFileSizeText: 'Max file size',
             supportedFileTypeText: 'Supported file type: ',

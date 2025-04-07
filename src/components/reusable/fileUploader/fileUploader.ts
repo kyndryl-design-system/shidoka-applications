@@ -19,7 +19,7 @@ import '../notification';
 
 const _defaultTextStrings = {
   dragAndDropText: 'Drag files here to upload',
-  orText: 'or',
+  separatorText: 'or',
   buttonText: 'Browse files',
   maxFileSizeText: 'Max file size',
   supportedFileTypeText: 'Supported file type: ',
@@ -192,7 +192,7 @@ export class FileUploader extends FormMixin(LitElement) {
               <span>${unsafeSVG(uploadIcon)}</span>
             </div>
             <p class="drag-drop-text">${this._textStrings.dragAndDropText}</p>
-            <p class="or-text">${this._textStrings.orText}</p>
+            <p class="or-text">${this._textStrings.separatorText}</p>
             <kyn-button
               kind="outline"
               size="small"
