@@ -87,7 +87,7 @@ export class SampleFileUploader extends LitElement {
         .invalidFiles=${this._invalidFiles}
         ?disabled=${this._disabled}
         .textStrings=${_textStrings}
-        @on-file-change=${(e: any) => {
+        @selected-files=${(e: any) => {
           action(e.type)(e);
           this._handleFilesToBeUploaded(e);
         }}

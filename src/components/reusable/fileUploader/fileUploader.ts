@@ -39,7 +39,7 @@ const _defaultTextStrings = {
 
 /**
  * File Uploader
- * @fires on-file-change - Emits the uploaded files.
+ * @fires selected-files - Emits the uploaded files.
  * @slot upload-status - Slot for upload status/notification.
  * @slot unnamed - Slot for the upload button.
  */
@@ -573,7 +573,7 @@ export class FileUploader extends FormMixin(LitElement) {
   }
 
   private _emitFileUploadEvent() {
-    const event = new CustomEvent('on-file-change', {
+    const event = new CustomEvent('selected-files', {
       detail: {
         validFiles: this._validFiles,
         invalidFiles: this._invalidFiles,

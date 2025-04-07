@@ -372,7 +372,7 @@ export const Default = {
           }}
           .validFiles=${validFiles}
           ?multiple=${true}
-          @on-file-change=${(e) => {
+          @selected-files=${(e) => {
             validFiles = e.detail.validFiles;
           }}
         ></kyn-file-uploader>
