@@ -54,6 +54,36 @@ kyn-card.notification-normal::part(card-wrapper) {
   background-color: var(--kd-color-background-card-background);
 }
 
+.notification-warning {
+  .notification-wrapper {
+    .notification-head .notification-title {
+      color: var(--kd-color-text-level-dark);
+    }
+
+    .notification-description {
+      color: var(--kd-color-text-level-dark);
+
+      kyn-link {
+        color: var(--kd-color-text-level-dark) !important;
+      }
+    }
+
+    .notification-inline.notification-default .notification-description,
+    .notification-toast.notification-default .notification-description {
+      color: var(--kd-color-text-level-dark);
+    }
+    .notification-inline.notification-default .notification-title,
+    .notification-toast.notification-default .notification-title {
+      color: var(--kd-color-text-level-dark);
+    }
+    .notification-inline.notification-default .timestamp-text,
+    .notification-toast.notification-default .notification-title,
+    .notification-toast.notification-default .timestamp-text {
+      color: var(--kd-color-text-level-dark);
+    }
+  }
+}
+
 .notification {
   &-title-wrap {
     display: flex;
@@ -63,15 +93,15 @@ kyn-card.notification-normal::part(card-wrapper) {
   }
 
   &-title {
-    @include typography.type-body-02;
+    @include typography.type-ui-02;
     font-weight: 500;
-    color: var(--kd-color-text-level-dark);
+    color: var(--kd-color-text-level-primary);
     margin: 0;
   }
 
   &-subtitle {
     @include typography.type-ui-02;
-    color: var(--kd-color-text-level-secondary);
+    color: var(--kd-color-text-level-primary);
   }
 
   &-content-wrapper {
@@ -82,6 +112,7 @@ kyn-card.notification-normal::part(card-wrapper) {
   }
 
   &-state-icon {
+    margin-top: -2px;
     padding-right: 8px;
   }
 
@@ -91,7 +122,7 @@ kyn-card.notification-normal::part(card-wrapper) {
 
     &-close-btn {
       span {
-        color: var(--kd-color-icon-dark); // Close icon color
+        color: var(--kd-color-icon-primary); // Close icon color
       }
       position: absolute;
       top: 5px;
@@ -136,8 +167,9 @@ kyn-card.notification-normal::part(card-wrapper) {
 
 .notification-description {
   @include typography.type-ui-02;
-  color: var(--kd-color-text-level-dark);
+  color: var(--kd-color-text-level-primary);
   padding-top: 10px;
+  font-weight: 400;
 }
 
 .notification-inline .notification-description,
@@ -183,7 +215,7 @@ kyn-card.notification-normal::part(card-wrapper) {
 
   &-text {
     @include typography.type-ui-02;
-    color: var(--kd-color-text-level-dark);
+    color: var(--kd-color-text-level-primary);
     font-weight: 500;
   }
 }
@@ -236,7 +268,7 @@ kyn-card.notification-normal::part(card-wrapper) {
 }
 
 .warning svg {
-  fill: var(--kd-color-status-warning-foreground);
+  fill: var(--kd-color-status-warning-foreground---dark);
   display: flex;
 }
 
