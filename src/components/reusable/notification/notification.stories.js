@@ -129,7 +129,7 @@ export const Inline = {
       >
         <div>
           ${notificationBodyMsg}
-          <div style="margin-top: 10px;">
+          <div style="margin-top: 10px; font-size: 16px; font-weight: 400;">
             <kyn-link
               kind="secondary"
               href="#"
