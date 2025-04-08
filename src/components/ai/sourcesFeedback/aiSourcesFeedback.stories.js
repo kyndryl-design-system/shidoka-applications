@@ -2,6 +2,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
+import sourceIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/earth.svg';
 import './index';
 import '../../reusable/checkbox';
 import '../../reusable/card/card.sample';
@@ -15,28 +16,22 @@ export default {
 
 const sourcesData = [
   {
-    title: 'Source Title',
-    description: 'Placeholder for the Source Title',
+    description: 'Source Link 1',
   },
   {
-    title: 'Source Title',
-    description: 'Placeholder for the Source Title',
+    description: 'Source Link 2',
   },
   {
-    title: 'Source Title',
-    description: 'Placeholder for the Source Title',
+    description: 'Source Link 3',
   },
   {
-    title: 'Source Title',
-    description: 'Placeholder for the Source Title',
+    description: 'Source Link 4',
   },
   {
-    title: 'Source Title',
-    description: 'Placeholder for the Source Title',
+    description: 'Source Link 5',
   },
   {
-    title: 'Source Title',
-    description: 'Placeholder for the Source Title',
+    description: 'Source Link 6',
   },
 ];
 
@@ -77,7 +72,7 @@ export const AISourcesFeedback = {
         closeText=${args.closeText}
         .textStrings=${args.textStrings}
         @on-toggle=${(e) => action(e.type)(e)}
-        @oon-feedback-deselected=${(e) => action(e.type)(e)}
+        @on-feedback-deselected=${(e) => action(e.type)(e)}
       >
         <kyn-button
           slot="copy"
@@ -114,7 +109,6 @@ const SourcesContent = () => html`
   ${sourcesData.map(
     (card) => html`
       <kyn-card
-        style="width:100%;height:100%;"
         slot="sources"
         aiConnected
         type=${args.type}
@@ -123,10 +117,18 @@ const SourcesContent = () => html`
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
       >
-        <h1 class="card-title">
-          <div>${card.title}</div>
-        </h1>
         <div class="card-description">
+          <kyn-button
+            kind="ghost"
+            size="small"
+            iconPosition="left"
+            description="source"
+            @on-click=${(e) => action(e.type)(e)}
+          >
+            <span slot="icon" class="source-icon"
+              >${unsafeSVG(sourceIcon)}</span
+            >
+          </kyn-button>
           <kyn-link href="#" @click=${(e) => action(e.type)(e)}>
             ${card.description}
           </kyn-link>
@@ -135,11 +137,22 @@ const SourcesContent = () => html`
     `
   )}
   <style>
-    .card-title div {
-      @include typography.type-ui-01;
-      color: var(--kd-color-text-level-primary);
-      font-size: 16px;
-      font-weight: 500;
+    kyn-card {
+      max-width: fit-content;
+    }
+    .card-description {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      .source-icon {
+        border-right: 1px solid var(--kd-color-border-accent-secondary, #c8ccd2);
+        padding-right: 0.5rem;
+      }
+    }
+    kyn-link {
+      word-break: break-word;
+      overflow-wrap: break-word;
+      min-width: 0;
     }
   </style>
 `;
