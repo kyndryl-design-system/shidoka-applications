@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { PAGE_SIZE_LABEL } from './constants.sample';
+import { PAGE_SIZE_LABEL, PAGE_NUMBER_LABEL } from './constants.sample';
 import styles from './pagination.scss';
 
 import './pagination-items-range';
@@ -46,6 +46,10 @@ export class Pagination extends LitElement {
   /** Label for the page size dropdown. Required for accessibility. */
   @property({ type: String })
   pageSizeDropdownLabel = PAGE_SIZE_LABEL;
+
+  /** Label for the page size dropdown. Required for accessibility. */
+  @property({ type: String })
+  pageNumberLabel = PAGE_NUMBER_LABEL;
 
   /** Option to hide the items range display. */
   @property({ type: Boolean })
@@ -120,6 +124,7 @@ export class Pagination extends LitElement {
             <kyn-pagination-navigation-buttons
               .pageNumber=${this.pageNumber}
               .numberOfPages=${this._numberOfPages}
+              .pageNumberLabel=${this.pageNumberLabel}
               .textStrings=${this.textStrings}
               @on-page-number-change=${this.handlePageNumberChange}
             ></kyn-pagination-navigation-buttons>
@@ -132,6 +137,7 @@ export class Pagination extends LitElement {
     if (changedProps.has('count') || changedProps.has('pageSize')) {
       if (this.pageSize && this.count) {
         this._numberOfPages = Math.ceil(this.count / this.pageSize);
+        this.pageNumber = 1;
       }
     }
   }
