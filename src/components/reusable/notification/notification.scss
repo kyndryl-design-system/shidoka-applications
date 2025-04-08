@@ -16,11 +16,13 @@
 // change card backgound and outline as per types
 kyn-card.notification-inline::part(card-wrapper) {
   outline: none;
+  border: none;
 }
 
 kyn-card.notification-toast::part(card-wrapper) {
   @include elevation.shadow(3);
   outline: none;
+  border: none;
 
   &:hover {
     @include elevation.shadow(2);
@@ -33,19 +35,19 @@ kyn-card.notification-error::part(card-wrapper) {
 }
 
 kyn-card.notification-success::part(card-wrapper) {
-  background-color: var(--kd-color-status-success-light);
+  background-color: var(--kd-color-status-success-accent);
 }
 
 kyn-card.notification-warning::part(card-wrapper) {
-  background-color: var(--kd-color-status-warning-light);
+  background-color: var(--kd-color-status-warning-accent);
 }
 
 kyn-card.notification-info::part(card-wrapper) {
-  background-color: var(--kd-color-status-informational-light);
+  background-color: var(--kd-color-status-informational-accent);
 }
 
 kyn-card.notification-default::part(card-wrapper) {
-  background-color: var(--kd-color-background-accent-light);
+  background-color: var(--kd-color-status-neutral-light);
 }
 
 kyn-card.notification-normal::part(card-wrapper) {
@@ -219,21 +221,26 @@ kyn-card.notification-normal::part(card-wrapper) {
 }
 
 .info svg {
-  fill: var(--kd-color-status-informational-dark);
+  fill: var(--kd-color-status-informational-foreground);
   display: flex;
 }
 
 .success svg {
-  fill: var(--kd-color-status-success-dark);
+  fill: var(--kd-color-status-success-foreground);
+  display: flex;
+}
+
+.default svg {
+  fill: var(--kd-color-status-neutral-foreground);
   display: flex;
 }
 
 .warning svg {
-  fill: var(--kd-color-status-warning-dark);
+  fill: var(--kd-color-status-warning-foreground);
   display: flex;
 }
 
 .error svg {
-  fill: var(--kd-color-status-error-dark);
+  fill: var(--kd-color-status-error-foreground);
   display: flex;
 }

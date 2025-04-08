@@ -83,7 +83,7 @@ export const Inline = {
     assistiveNotificationTypeText: 'Inline info notification',
     notificationRole: 'status',
     type: 'inline',
-    tagStatus: 'info',
+    tagStatus: 'default',
     closeBtnDescription: 'Close',
     hideCloseButton: false,
   },
@@ -101,7 +101,7 @@ export const Inline = {
         <div>${notificationBodyMsg}</div>
       </kyn-notification>
       <br />
-      <p><u>Without Description</u></p>
+      <p class="kd-type--body-01">Without Description</p>
       <br />
       <kyn-notification
         notificationTitle=${args.notificationTitle}
@@ -115,7 +115,7 @@ export const Inline = {
       >
       </kyn-notification>
       <br />
-      <p><u>With Action Link</u></p>
+      <p class="kd-type--body-01">With Action Link</p>
       <br />
       <kyn-notification
         notificationTitle=${args.notificationTitle}
