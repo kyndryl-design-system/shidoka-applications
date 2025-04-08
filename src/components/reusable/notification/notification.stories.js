@@ -38,7 +38,7 @@ export const Notification = {
     notificationRole: 'status',
     href: '#',
     type: 'normal',
-    tagStatus: 'default',
+    tagStatus: 'info',
     assistiveNotificationTypeText: 'Clickable notification',
     unRead: false,
   },
