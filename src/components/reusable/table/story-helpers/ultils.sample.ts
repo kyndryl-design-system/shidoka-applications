@@ -79,6 +79,7 @@ export const characters = [
     birthday: 'April 23',
     fullname: 'Daenerys Targaryen',
     gender: 'Female',
+    expanded: true,
   },
   {
     id: 3,
