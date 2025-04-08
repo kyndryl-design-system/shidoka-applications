@@ -118,6 +118,10 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   datePickerDisabled = false;
 
+  /** Sets entire datepicker form element to readonly. */
+  @property({ type: Boolean })
+  readonly = false;
+
   /** Sets 24 hour formatting true/false.
    * Defaults to 12H for all `en-*` locales and 24H for all other locales.
    */
@@ -192,7 +196,7 @@ export class DatePicker extends FormMixin(LitElement) {
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  _textStrings = { ..._defaultTextStrings };
 
   /** Control flag to prevent Flatpickr from opening when clicking caption, error, label, or warning elements.
    * @internal
@@ -213,6 +217,11 @@ export class DatePicker extends FormMixin(LitElement) {
    * @internal
    */
   private _isDestroyed = false;
+
+  /** Store submit event listener reference for cleanup
+   * @internal
+   */
+  private _submitListener: ((e: SubmitEvent) => void) | null = null;
 
   private debounce<T extends (...args: any[]) => any>(
     func: T,
@@ -321,12 +330,14 @@ export class DatePicker extends FormMixin(LitElement) {
             class="${classMap({
               [`size--${this.size}`]: true,
               'input-custom': true,
+              'is-readonly': this.readonly,
             })}"
             type="text"
             id=${anchorId}
             name=${this.name}
             placeholder=${placeholder}
             ?disabled=${this.datePickerDisabled}
+            ?readonly=${this.readonly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
@@ -334,7 +345,7 @@ export class DatePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${this.hasValue()
+          ${this.hasValue() && !this.readonly
             ? html`
                 <kyn-button
                   ?disabled=${this.datePickerDisabled}
@@ -548,11 +559,13 @@ export class DatePicker extends FormMixin(LitElement) {
     }
 
     if (
-      changedProperties.has('datePickerDisabled') &&
-      this.datePickerDisabled &&
-      this.flatpickrInstance
+      (changedProperties.has('datePickerDisabled') &&
+        this.datePickerDisabled) ||
+      (changedProperties.has('readonly') && this.readonly)
     ) {
-      this.flatpickrInstance.close();
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.close();
+      }
     }
   }
 
@@ -769,6 +782,10 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   handleOpen() {
+    if (this.readonly) {
+      this.flatpickrInstance?.close();
+      return;
+    }
     if (!this._shouldFlatpickrOpen) {
       this.flatpickrInstance?.close();
       this._shouldFlatpickrOpen = true;
