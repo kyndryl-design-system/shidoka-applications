@@ -93,15 +93,17 @@ export class FileUploader extends FormMixin(LitElement) {
   validFiles: {
     id: string;
     file: File;
-    state: 'new' | 'uploading' | 'uploaded' | 'error';
+    status: 'new' | 'uploading' | 'uploaded' | 'error';
   }[] = [];
 
+  /**
+   * Invalid files. This property is used to set the initial state of the invalid files.
+   */
   @property({ type: Array })
   invalidFiles: {
     id: string;
-    name: string;
-    size: number;
-    error: 'sizeError' | 'typeError' | 'unknownError';
+    file: File;
+    status: 'sizeError' | 'typeError' | 'unknownError';
   }[] = [];
 
   /**
@@ -245,16 +247,16 @@ export class FileUploader extends FormMixin(LitElement) {
                               >${unsafeSVG(errorFilledIcon)}</span
                             >
                             <div class="file-details-container">
-                              <p class="file-name">${file.name}</p>
+                              <p class="file-name">${file.file.name}</p>
                               <div class="error-info-container">
                                 <p class="file-size">
-                                  ${this._getFilesSize(file.size)}
+                                  ${this._getFilesSize(file.file.size)}
                                 </p>
                                 ·
                                 <p class="file-size error">
-                                  ${file.error === 'unknownError'
+                                  ${file.status === 'unknownError'
                                     ? this._textStrings.customFileErrorText
-                                    : file.error === 'typeError'
+                                    : file.status === 'typeError'
                                     ? this._textStrings.fileTypeErrorText
                                     : this._textStrings.fileSizeErrorText}
                                 </p>
@@ -445,10 +447,9 @@ export class FileUploader extends FormMixin(LitElement) {
           errorMsg = 'unknownError';
         }
         invalidFiles.push({
+          file,
           id: this._generateUniqueFileId(),
-          name: file.name,
-          size: file.size,
-          error: errorMsg,
+          status: errorMsg,
         });
       }
     });
@@ -477,10 +478,10 @@ export class FileUploader extends FormMixin(LitElement) {
     let InternalMsg = '';
     if (this._invalidFiles.length > 0) {
       const hasTypeError = this._invalidFiles.some(
-        (file: any) => file.error === 'typeError'
+        (file: any) => file.status === 'typeError'
       );
       const hasSizeError = this._invalidFiles.some(
-        (file: any) => file.error === 'sizeError'
+        (file: any) => file.status === 'sizeError'
       );
       InternalMsg =
         hasTypeError && hasSizeError
@@ -518,13 +519,13 @@ export class FileUploader extends FormMixin(LitElement) {
   }
 
   private _displayActions(file: any) {
-    if (file.state === 'uploading') {
+    if (file.status === 'uploading') {
       return html` <kyn-loader-inline></kyn-loader-inline> `;
-    } else if (file.state === 'uploaded') {
+    } else if (file.status === 'uploaded') {
       return html`
         <span class="success-icon">${unsafeSVG(checkmarkIcon)}</span>
       `;
-    } else if (file.state === 'error') {
+    } else if (file.status === 'error') {
       return html` <span class="error-icon">${unsafeSVG(errorIcon)}</span> `;
     } else {
       return html` <kyn-inline-confirm

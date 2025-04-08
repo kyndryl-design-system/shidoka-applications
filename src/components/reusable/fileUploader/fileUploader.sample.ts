@@ -168,8 +168,8 @@ export class SampleFileUploader extends LitElement {
   private _disableUploadButton() {
     return (
       (this._invalidFiles.length > 0 && this._validFiles.length === 0) ||
-      this._validFiles.some((file) => file.state === 'uploading') ||
-      this._validFiles.every((file) => file.state === 'uploaded')
+      this._validFiles.some((file) => file.status === 'uploading') ||
+      this._validFiles.every((file) => file.status === 'uploaded')
     );
   }
 
@@ -216,13 +216,13 @@ export class SampleFileUploader extends LitElement {
       const file = this._validFiles[i];
 
       if (this._uploadCanceled) {
-        file.state = 'error';
+        file.status = 'error';
         this._currentFileUploading = `Upload canceled for ${file.file.name}`;
         this.requestUpdate();
         break;
       }
 
-      file.state = 'uploading';
+      file.status = 'uploading';
       this._helperText = `Uploading ${i + 1} out of ${
         totalFiles + invalidFilesCount
       } files.`;
@@ -232,7 +232,7 @@ export class SampleFileUploader extends LitElement {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       if (!this._uploadCanceled) {
-        file.state = 'uploaded';
+        file.status = 'uploaded';
         uploadedFilesCount++;
         this._currentFileUploading = 'upload complete';
         this.requestUpdate();
@@ -246,7 +246,7 @@ export class SampleFileUploader extends LitElement {
         } out of ${totalFiles} files was not uploaded.`;
         for (let j = i; j < totalFiles; j++) {
           const remainingFile = this._validFiles[j];
-          remainingFile.state = 'error';
+          remainingFile.status = 'error';
         }
         break;
       }
