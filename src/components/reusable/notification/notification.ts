@@ -95,7 +95,7 @@ export class Notification extends LitElement {
     warning: 'warning',
     info: 'cat01',
     error: 'error',
-    ai: 'ai',
+    ai: 'ai01',
   };
 
   /** Set notification mark read prop. Required ony for `type: 'clickable'`.*/
@@ -172,13 +172,14 @@ export class Notification extends LitElement {
       error: errorIcon,
       warning: warningIcon,
       info: infoIcon,
+      ai: successIcon,
+      default: successIcon,
     };
 
     return html`<div class="notification-wrapper">
       <div class="notification-title-wrap">
         <div class="notification-head">
-          ${(this.type === 'inline' || this.type === 'toast') &&
-          this.tagStatus !== 'default'
+          ${this.type === 'inline' || this.type === 'toast'
             ? html` <span
                 class="notification-state-icon ${this.tagStatus}"
                 slot="icon"

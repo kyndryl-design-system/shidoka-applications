@@ -25,6 +25,7 @@ export default {
         'warning',
         'error',
         'success',
+        'ai01',
         'criticalLight',
         'informationDark',
         'warningDark',
