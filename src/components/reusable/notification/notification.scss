@@ -46,6 +46,10 @@ kyn-card.notification-info::part(card-wrapper) {
   background-color: var(--kd-color-status-informational-accent);
 }
 
+kyn-card.notification-ai::part(card-wrapper) {
+  background-color: var(--kd-color-background-button-secondary-ai-default);
+}
+
 kyn-card.notification-default::part(card-wrapper) {
   background-color: var(--kd-color-status-neutral-light);
 }
@@ -177,7 +181,9 @@ kyn-card.notification-normal::part(card-wrapper) {
 }
 
 .notification-inline.notification-default .notification-description,
-.notification-toast.notification-default .notification-description {
+.notification-toast.notification-default .notification-description,
+.notification-inline.notification-ai .notification-description,
+.notification-toast.notification-ai .notification-description {
   padding-top: 11px;
   padding-left: 0;
   color: var(--kd-color-text-level-primary);
@@ -273,4 +279,8 @@ kyn-card.notification-normal::part(card-wrapper) {
 .error svg {
   fill: var(--kd-color-status-error-foreground);
   display: flex;
+}
+
+.notification-ai .notification-head span {
+  display: none;
 }
