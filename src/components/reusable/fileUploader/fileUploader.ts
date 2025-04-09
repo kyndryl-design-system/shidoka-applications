@@ -298,7 +298,6 @@ export class FileUploader extends FormMixin(LitElement) {
         </div>
         ${this._showValidationNotification
           ? html` <kyn-notification
-              slot="upload-status"
               .type=${'inline'}
               .tagStatus=${'error'}
               .notificationTitle=${this._textStrings
