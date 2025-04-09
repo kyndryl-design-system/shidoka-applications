@@ -1,6 +1,7 @@
 export enum LINK_TYPES {
   PRIMARY = 'primary',
   SECONDARY = 'secondary',
+  SECONDARY_DARK = 'secondary-dark',
   AI_CONNECTED = 'ai',
   SECONDARY_AI = 'secondary-ai',
 }

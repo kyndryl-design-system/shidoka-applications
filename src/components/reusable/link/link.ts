@@ -82,6 +82,7 @@ export class Link extends LitElement {
         ...baseClasses,
         'kyn-link-text-primary': this.kind === LINK_TYPES.PRIMARY || !this.kind,
         'kyn-link-text-secondary': this.kind === LINK_TYPES.SECONDARY,
+        'kyn-link-text-secondary-dark': this.kind === LINK_TYPES.SECONDARY_DARK,
         'kyn-link-text-secondary-ai': this.kind === LINK_TYPES.SECONDARY_AI,
         'kyn-link-text-inline': !this.standalone,
         'kyn-link-text-standalone': this.standalone,

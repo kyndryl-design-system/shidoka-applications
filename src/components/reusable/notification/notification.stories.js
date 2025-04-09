@@ -131,7 +131,9 @@ export const Inline = {
           ${notificationBodyMsg}
           <div style="margin-top: 10px; font-size: 16px; font-weight: 400;">
             <kyn-link
-              kind="secondary"
+              kind=${args.tagStatus === 'warning'
+                ? 'secondary-dark'
+                : 'secondary'}
               href="#"
               @on-click=${(e) => e.preventDefault()}
             >
