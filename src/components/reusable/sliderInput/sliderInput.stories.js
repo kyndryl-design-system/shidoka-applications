@@ -27,13 +27,13 @@ const args = {
   disabled: false,
   min: 0,
   max: 100,
-  step: 1,
-  editableInput: true,
+  step: 10,
+  editableInput: false,
   multirange: false,
   invalidText: '',
 };
 
-export const SliderInput = {
+export const Default = {
   args,
   render: (args) => {
     return html`
@@ -46,18 +46,43 @@ export const SliderInput = {
         invalidText=${args.invalidText}
         min=${args.min}
         max=${args.max}
+        step=${args.step}
         ?editableInput=${args.editableInput}
         label=${args.label}
-        width=${args.width}
+        ?multirange=${args.multirange}
         @on-input=${(e) => action(e.type)(e)}
       >
+        <div class="sliderticks" slot="tickmark" ?disabled=${args.disabled}>
+          <span>${args.min}</span>
+          <span>${args.max}</span>
+        </div>
       </kyn-slider-input>
+      <style>
+        /* kyn-slider-input {
+          width: 60%;
+        } */
+        .sliderticks {
+          display: flex;
+          justify-content: space-between;
+          padding: 0px 5px;
+          margin-top: 5px;
+        }
+
+        .sliderticks span {
+          display: flex;
+          justify-content: center;
+          width: 1px;
+          height: 0px;
+          line-height: 40px;
+          margin-bottom: 2rem;
+        }
+      </style>
     `;
   },
 };
 
-export const MultipleRangeControl = {
-  args: { ...args, step: 25, multirange: true },
+export const CustomStep = {
+  args: { ...args, step: 50, max: 200, multirange: true },
   render: (args) => {
     return html`
       <kyn-slider-input
@@ -72,32 +97,32 @@ export const MultipleRangeControl = {
         max=${args.max}
         step=${args.step}
         label=${args.label}
-        multirange
+        ?multirange=${args.multirange}
         @on-input=${(e) => action(e.type)(e)}
       >
-        <div class="sliderticks" slot="tickmark">
-          <span>0</span>
-          <span>25</span>
+        <div class="sliderticks" slot="tickmark" ?disabled=${args.disabled}>
+          <span>${args.min}</span>
           <span>50</span>
-          <span>75</span>
           <span>100</span>
+          <span>150</span>
+          <span>${args.max}</span>
         </div>
       </kyn-slider-input>
       <style>
         .sliderticks {
           display: flex;
           justify-content: space-between;
-          padding: 1px 0px 0px 8px;
+          padding: 0px 5px;
+          margin-top: 5px;
         }
 
         .sliderticks span {
           display: flex;
           justify-content: center;
           width: 1px;
-          height: 8px;
-          background: var(--kd-color-background-accent-tertiary);
-          line-height: 45px;
-          margin-bottom: 20px;
+          height: 0px;
+          line-height: 40px;
+          margin-bottom: 2rem;
         }
       </style>
     `;

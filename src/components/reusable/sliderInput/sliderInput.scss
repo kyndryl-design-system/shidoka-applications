@@ -1,30 +1,66 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/form-input.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/spacing.scss';
 
 :host {
   display: inline-block;
-  width: 224px;
-  max-width: 100%;
+  // width: 100%;
+  // max-width: 100%;
+
+  .slider-tooltip {
+    @include typography.type-body-02;
+    position: absolute;
+    top: -2.9em;
+    left: 50%;
+    padding: 4px 8px;
+    background: var(--kd-color-background-ui-default-dark);
+    color: var(--kd-color-text-variant-inversed);
+    border-radius: 4px;
+    height: 2em;
+    min-width: 40px;
+    text-align: center;
+    white-space: nowrap;
+    visibility: visible;
+    z-index: 2;
+    transform-origin: center bottom;
+    transition: visibility 150ms ease-out, transform 150ms ease-out;
+    transform: translateX(-50%);
+
+    /* Add the arrow before the tooltip */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      transform: translateX(-50%);
+      border-left: 4px solid transparent; /* Left side of the arrow */
+      border-right: 4px solid transparent; /* Right side of the arrow */
+      border-top: 4px solid var(--kd-color-background-ui-default-dark); /* Bottom side of the arrow */
+    }
+  }
 }
 
 input[type='range'] {
+  display: block;
+  width: 100%;
   -webkit-appearance: none;
   appearance: none;
-  width: 100%;
   cursor: pointer;
   outline: none;
-  border-radius: 15px;
-  min-width: 200px;
-  height: 6px;
+  min-width: 250px;
+  height: 5px;
+  margin: 0px;
   background: var(--kd-color-background-accent-tertiary);
 }
 
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  height: 18px;
-  width: 18px;
+  height: 16px;
+  width: 16px;
   background-color: var(--kd-color-background-button-primary-state-default);
   border-radius: 50%;
   border: none;
@@ -34,8 +70,8 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 input[type='range']::-moz-range-thumb {
-  height: 18px;
-  width: 18px;
+  height: 16px;
+  width: 16px;
   background-color: var(--kd-color-background-button-primary-state-default);
   border-radius: 50%;
   border: none;
@@ -47,6 +83,7 @@ input[type='range']::-moz-range-thumb {
 .display-value {
   font-size: 20px;
   font-weight: var(--kd-font-weight-medium);
+  margin-top: -2rem;
 }
 
 .display-value-vertical {
@@ -57,17 +94,12 @@ input[type='range']::-moz-range-thumb {
   display: flex;
   align-items: center;
   gap: var(--kd-spacing-24);
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
-.multi-range {
-  margin-bottom: 30px;
-}
-
-.multi-range-input {
-  // margin-bottom: var(--kd-spacing-24);
-  margin-top: -10px;
-}
+// .multi-range {
+//   margin-bottom: 30px;
+// }
 
 /* vertical orientation */
 .range-vertical {
@@ -87,39 +119,35 @@ input[type='range']::-moz-range-thumb {
   margin-left: -5rem;
 }
 
-.sliderticks {
-  display: flex;
-  justify-content: space-between;
-  padding: 2px 10px;
-}
-
-.sliderticks span {
-  display: flex;
-  justify-content: center;
-  width: 1px;
-  height: 8px;
-  background: var(--kd-color-background-accent-tertiary);
-  line-height: 45px;
-  margin-bottom: 20px;
-}
-
 input[type='range']:not(:disabled)::-webkit-slider-thumb:hover {
-  outline: 2px solid var(--kd-color-border-variants-focus);
+  // height: 24px;
+  // width: 24px;
+  // outline: 2px solid var(--kd-color-border-variants-focus);
 }
 input[type='range']:not(:disabled):active::-webkit-slider-thumb {
+  // height: 24px;
+  // width: 24px;
   outline: 2px solid var(--kd-color-border-variants-focus);
 }
 input[type='range']:not(:disabled):focus::-webkit-slider-thumb {
+  // height: 24px;
+  // width: 24px;
   outline: 2px solid var(--kd-color-border-variants-focus);
 }
 
 input[type='range']:not(:disabled)::-moz-range-thumb:hover {
+  height: 24px;
+  width: 24px;
   outline: 2px solid var(--kd-color-border-variants-focus);
 }
 input[type='range']:not(:disabled):active::-moz-range-thumb {
+  height: 24px;
+  width: 24px;
   outline: 2px solid var(--kd-color-border-variants-focus);
 }
 input[type='range']:not(:disabled):focus::-moz-range-thumb {
+  height: 24px;
+  width: 24px;
   outline: 2px solid var(--kd-color-border-variants-focus);
 }
 
@@ -135,35 +163,44 @@ input[type='range']:disabled::-moz-range-thumb:hover {
   cursor: not-allowed;
 }
 
-.test[style] {
-  width: var(--slider-width, auto);
-}
-
 input[type='number'] {
   -webkit-appearance: none;
   appearance: none;
   display: block;
-  flex-grow: 1;
   min-width: 40px;
   border-width: 1px;
   border-style: solid;
   border-radius: 4px;
-  height: 42px;
+  height: 32px;
   padding: 0 8px;
 }
 
 .slider-wrapper {
   position: relative;
-  margin-bottom: 8px;
+  flex-grow: 1;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    transform: translateY(-50%);
+  }
 }
 
-.slider-tooltip {
+.tick {
   position: absolute;
-  top: -1.5em;
-  left: 50%;
-  color: var(--kd-color-background-button-primary-state-default);
-  font-weight: bold;
-  white-space: nowrap;
-  visibility: hidden;
-  transition: visibility 0.1s ease-in-out;
+  width: 2px;
+  height: 5px;
+  background: --kd-color-background-ui-default-dark; /* tick color */
+  top: 0;
+}
+.tick:first-child {
+  display: none;
+}
+
+slot[name='tickmark']::slotted([disabled]) {
+  opacity: 0.5;
 }
