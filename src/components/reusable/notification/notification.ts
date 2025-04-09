@@ -95,7 +95,6 @@ export class Notification extends LitElement {
     warning: 'warning',
     info: 'cat01',
     error: 'error',
-    ai: 'ai01',
   };
 
   /** Set notification mark read prop. Required ony for `type: 'clickable'`.*/
