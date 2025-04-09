@@ -61,7 +61,6 @@ export class Notification extends LitElement {
     warning: 'Warning',
     info: 'Info',
     error: 'Error',
-    ai: 'AI',
   };
 
   /** Close button description (Required to support accessibility). */
