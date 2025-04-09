@@ -83,7 +83,7 @@ export const Inline = {
     assistiveNotificationTypeText: 'Inline info notification',
     notificationRole: 'status',
     type: 'inline',
-    tagStatus: 'warning',
+    tagStatus: 'info',
     closeBtnDescription: 'Close',
     hideCloseButton: false,
   },
