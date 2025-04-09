@@ -101,6 +101,7 @@ export class SampleFileUploader extends LitElement {
                 .tagStatus=${this._notificationStatus}
                 .hideCloseButton=${true}
                 .notificationTitle=${this._notificationTitle}
+                style="margin-bottom: 24px"
               >
                 ${this._showProgressBar
                   ? html`
@@ -130,17 +131,17 @@ export class SampleFileUploader extends LitElement {
               </kyn-notification>
             `
           : ``}
-        <div>
-          ${this._validFiles.length > 0 || this._invalidFiles.length > 0
-            ? html`<kyn-button
-                size="small"
-                .disabled=${this._disableUploadButton()}
-                @on-click=${() => this._startFileUpload()}
-                >Start upload</kyn-button
-              >`
-            : ''}
-        </div>
       </kyn-file-uploader>
+      <div>
+        ${this._validFiles.length > 0 || this._invalidFiles.length > 0
+          ? html`<kyn-button
+              size="small"
+              .disabled=${this._disableUploadButton()}
+              @on-click=${() => this._startFileUpload()}
+              >Start upload</kyn-button
+            >`
+          : ''}
+      </div>
     `;
   }
 

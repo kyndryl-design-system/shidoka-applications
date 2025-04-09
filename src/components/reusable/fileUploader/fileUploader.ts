@@ -40,7 +40,6 @@ const _defaultTextStrings = {
  * File Uploader
  * @fires selected-files - Emits the uploaded files.
  * @slot upload-status - Slot for upload status/notification.
- * @slot unnamed - Slot for the upload button.
  */
 @customElement('kyn-file-uploader')
 export class FileUploader extends FormMixin(LitElement) {
@@ -139,13 +138,6 @@ export class FileUploader extends FormMixin(LitElement) {
    */
   @state()
   _showValidationNotification = false;
-
-  /**
-   * Internal margin flag.
-   * @internal
-   */
-  @state()
-  _addMargin = false;
 
   /**
    * Queries the <input> DOM element.
@@ -306,9 +298,6 @@ export class FileUploader extends FormMixin(LitElement) {
         </div>
         ${this._showValidationNotification
           ? html` <kyn-notification
-              class=${classMap({
-                'extra-margin': this._addMargin,
-              })}
               slot="upload-status"
               .type=${'inline'}
               .tagStatus=${'error'}
@@ -323,9 +312,6 @@ export class FileUploader extends FormMixin(LitElement) {
           : ''}
         <div class="upload-status-container">
           <slot name="upload-status"></slot>
-        </div>
-        <div class="upload-button">
-          <slot></slot>
         </div>
       </div>
     `;
@@ -395,11 +381,9 @@ export class FileUploader extends FormMixin(LitElement) {
 
   // Validate files
   private _validateFiles(files: File[]) {
-    this._addMargin = false;
     // Check if multiple files are uploaded
     if (!this.multiple && files.length > 1) {
       this._showValidationNotification = true;
-      this._addMargin = this._addExtraMargin();
       return;
     }
 
@@ -546,18 +530,6 @@ export class FileUploader extends FormMixin(LitElement) {
     );
     this._setFormValue();
     this._emitFileUploadEvent();
-  }
-
-  // Needed only if both validation notification and uplaod status are present
-  private _addExtraMargin() {
-    const uploadStatusContainer = this.shadowRoot?.querySelectorAll(
-      'kyn-file-uploader-list-container'
-    );
-    if (uploadStatusContainer && uploadStatusContainer.length > 0) {
-      return uploadStatusContainer[0].id === 'invalidFiles' ? true : false;
-    } else {
-      return false;
-    }
   }
 
   private _emitFileUploadEvent() {
