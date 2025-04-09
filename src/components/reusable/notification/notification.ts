@@ -61,6 +61,7 @@ export class Notification extends LitElement {
     warning: 'Warning',
     info: 'Info',
     error: 'Error',
+    ai: 'AI',
   };
 
   /** Close button description (Required to support accessibility). */
@@ -94,6 +95,7 @@ export class Notification extends LitElement {
     warning: 'warning',
     info: 'cat01',
     error: 'error',
+    ai: 'ai',
   };
 
   /** Set notification mark read prop. Required ony for `type: 'clickable'`.*/
@@ -125,6 +127,7 @@ export class Notification extends LitElement {
       'notification-info':
         (this.type === 'inline' || this.type === 'toast') &&
         this.tagStatus === 'info',
+      'notification-ai': this.type === 'toast' && this.tagStatus === 'ai',
       'notification-default':
         (this.type === 'inline' || this.type === 'toast') &&
         this.tagStatus === 'default',
