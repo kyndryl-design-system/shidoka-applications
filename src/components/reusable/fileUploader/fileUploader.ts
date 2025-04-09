@@ -11,7 +11,6 @@ import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/er
 import { FormMixin } from '../../../common/mixins/form-input';
 import FileUploaderScss from './fileUploader.scss';
 import './fileUploaderListContainer';
-import './fileUploaderItem';
 import '../button';
 import '../loaders';
 import '../inlineConfirm';
@@ -232,18 +231,18 @@ export class FileUploader extends FormMixin(LitElement) {
         </div>
         <!-- File list -->
         <div class="file-info-container">
+          <!-- Invalid files -->
           ${this._invalidFiles.length > 0
             ? html`
                 <kyn-file-uploader-list-container
                   id="invalidFiles"
                   .titleText=${this._textStrings.invalidFileListLabel}
                 >
-                  <!-- Invalid files -->
                   ${this._invalidFiles.length > 0
                     ? this._invalidFiles.map(
                         (file: any) => html`
-                          <kyn-file-uploader-item>
-                            <span slot="status-icon" class="error-filled-icon"
+                          <div class="file-uploader-item-container">
+                            <span class="error-filled-icon"
                               >${unsafeSVG(errorFilledIcon)}</span
                             >
                             <div class="file-details-container">
@@ -262,7 +261,7 @@ export class FileUploader extends FormMixin(LitElement) {
                                 </p>
                               </div>
                             </div>
-                          </kyn-file-uploader-item>
+                          </div>
                         `
                       )
                     : ''}
@@ -277,27 +276,27 @@ export class FileUploader extends FormMixin(LitElement) {
                 </kyn-file-uploader-list-container>
               `
             : ''}
+          <!-- Valid files -->
           ${this._validFiles.length > 0
             ? html`
                 <kyn-file-uploader-list-container
                   .titleText=${this._textStrings.validFileListLabel}
                   id="validFiles"
                 >
-                  <!-- Valid files -->
                   ${this._validFiles.length > 0
                     ? this._validFiles.map(
                         (file: any) => html`
-                          <kyn-file-uploader-item>
+                          <div class="file-uploader-item-container">
                             <div class="file-details-container">
                               <p class="file-name success">${file.file.name}</p>
                               <p class="file-size">
                                 ${this._getFilesSize(file.file.size)}
                               </p>
                             </div>
-                            <div slot="actions">
+                            <div class="actions">
                               ${this._displayActions(file)}
                             </div>
-                          </kyn-file-uploader-item>
+                          </div>
                         `
                       )
                     : ''}
