@@ -242,10 +242,7 @@ export class AISourcesFeedback extends LitElement {
                 >
                   ${this.limitRevealed
                     ? html`${this._textStrings.showLess}`
-                    : html`
-                        ${this._textStrings.showMore}
-                        (${this._sourceEls.length - this._limitCount})
-                      `}
+                    : html` ${this._textStrings.showMore} `}
                 </kyn-button>
               `
             : null}
