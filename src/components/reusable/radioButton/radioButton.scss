@@ -10,7 +10,7 @@ label {
   gap: 10px;
 
   &[disabled] {
-    color: var(--kd-color-text-link-level-disabled);
+    color: var(--kd-color-text-level-disabled);
   }
 }
 
@@ -131,25 +131,25 @@ input {
   }
 
   &[disabled] {
-    border-color: var(--kd-color-text-link-level-disabled);
+    border-color: var(--kd-color-border-ui-disabled);
     outline-color: transparent;
     opacity: 0.5;
     cursor: not-allowed;
 
-    &::before {
-      background: var(--kd-color-background-ui-default-disabled);
-    }
-
     &[invalid] {
       border-color: var(--kd-color-border-ui-disabled);
     }
-  }
 
-  &[disabled][checked] {
-    border-color: var(--kd-color-border-ui-disabled);
+    &:not(:checked) {
+      background: var(--kd-color-background-forms-disabled);
+    }
 
-    &::before {
-      background: var(--kd-color-background-ui-default-disabled);
+    &[checked] {
+      border-color: var(--kd-color-border-ui-disabled);
+
+      &::before {
+        background: var(--kd-color-background-ui-default-disabled);
+      }
     }
   }
 }
