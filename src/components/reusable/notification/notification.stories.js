@@ -18,7 +18,7 @@ export default {
       control: { type: 'select' },
     },
     tagStatus: {
-      options: ['default', 'info', 'warning', 'success', 'error'],
+      options: ['default', 'info', 'warning', 'success', 'error', 'ai'],
       control: { type: 'select' },
     },
   },
@@ -101,7 +101,7 @@ export const Inline = {
         <div>${notificationBodyMsg}</div>
       </kyn-notification>
       <br />
-      <p><u>Without Description</u></p>
+      <p class="kd-type--body-01">Without Description</p>
       <br />
       <kyn-notification
         notificationTitle=${args.notificationTitle}
@@ -115,7 +115,7 @@ export const Inline = {
       >
       </kyn-notification>
       <br />
-      <p><u>With Action Link</u></p>
+      <p class="kd-type--body-01">With Action Link</p>
       <br />
       <kyn-notification
         notificationTitle=${args.notificationTitle}
@@ -129,10 +129,9 @@ export const Inline = {
       >
         <div>
           ${notificationBodyMsg}
-          <div style="margin-top: 10px;">
+          <div style="margin-top: 10px; font-size: 16px; font-weight: 400;">
             <kyn-link
               kind="secondary"
-              style="color-scheme: light"
               href="#"
               @on-click=${(e) => e.preventDefault()}
             >
@@ -228,6 +227,20 @@ export const Toast = {
           timeout=${0}
         >
           <div>I will remain untill you click on <code>X</code> icon.</div>
+        </kyn-notification>
+
+        <kyn-notification
+          notificationTitle=${args.notificationTitle}
+          assistiveNotificationTypeText="AI toast"
+          notificationRole=${args.notificationRole}
+          type="toast"
+          tagStatus="ai"
+          timeout=${14}
+          ?hideCloseButton=${args.hideCloseButton}
+          @on-close=${(e) => action(e.type)(e)}
+          timeout=${0}
+        >
+          <div>I will disappear after <code>14</code> seconds.</div>
         </kyn-notification>
       </kyn-notification-container>
     `;
