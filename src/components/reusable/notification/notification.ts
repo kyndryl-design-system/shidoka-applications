@@ -125,6 +125,7 @@ export class Notification extends LitElement {
       'notification-info':
         (this.type === 'inline' || this.type === 'toast') &&
         this.tagStatus === 'info',
+      'notification-ai': this.type === 'toast' && this.tagStatus === 'ai',
       'notification-default':
         (this.type === 'inline' || this.type === 'toast') &&
         this.tagStatus === 'default',
@@ -169,13 +170,14 @@ export class Notification extends LitElement {
       error: errorIcon,
       warning: warningIcon,
       info: infoIcon,
+      ai: successIcon,
+      default: successIcon,
     };
 
     return html`<div class="notification-wrapper">
       <div class="notification-title-wrap">
         <div class="notification-head">
-          ${(this.type === 'inline' || this.type === 'toast') &&
-          this.tagStatus !== 'default'
+          ${this.type === 'inline' || this.type === 'toast'
             ? html` <span
                 class="notification-state-icon ${this.tagStatus}"
                 slot="icon"
@@ -221,7 +223,7 @@ export class Notification extends LitElement {
       </div>
 
       <div class="notification-description">
-        <slot></slot>
+        <slot @slotchange="${this._handleSlotChange}"></slot>
       </div>
 
       <div class="notification-content-wrapper">
@@ -280,6 +282,24 @@ export class Notification extends LitElement {
       detail: e.detail.origEvent,
     });
     this.dispatchEvent(event);
+  }
+
+  private _handleSlotChange(e: Event) {
+    const slot = e.target as HTMLSlotElement;
+    const hasContent = slot
+      .assignedNodes()
+      .some(
+        (node) =>
+          node.nodeType === Node.ELEMENT_NODE ||
+          (node.nodeType === Node.TEXT_NODE && node.textContent?.trim() !== '')
+      );
+
+    const descriptionDiv = this.shadowRoot?.querySelector(
+      '.notification-description'
+    ) as HTMLElement;
+    if (descriptionDiv) {
+      descriptionDiv.style.display = hasContent ? 'block' : 'none';
+    }
   }
 }
 
