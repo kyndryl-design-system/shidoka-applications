@@ -364,6 +364,8 @@ export class AISourcesFeedback extends LitElement {
           feedbackOpened: this.feedbackOpened,
           selectedFeedbackType: this._selectedFeedbackType,
         },
+        bubbles: true,
+        composed: true,
       })
     );
   }
