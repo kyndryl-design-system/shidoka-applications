@@ -27,9 +27,10 @@ const args = {
   disabled: false,
   min: 0,
   max: 100,
-  step: 10,
+  step: 1,
   editableInput: false,
-  multirange: false,
+  showlimits: undefined,
+  showTicks: undefined,
   invalidText: '',
 };
 
@@ -47,9 +48,38 @@ export const Default = {
         min=${args.min}
         max=${args.max}
         step=${args.step}
+        ?showlimits=${args.showlimits}
         ?editableInput=${args.editableInput}
         label=${args.label}
-        ?multirange=${args.multirange}
+        @on-input=${(e) => action(e.type)(e)}
+      >
+      </kyn-slider-input>
+      <style>
+        kyn-slider-input {
+          width: 50%;
+        }
+      </style>
+    `;
+  },
+};
+
+export const VisibleLimits = {
+  args: { ...args, max: 100, showlimits: true },
+  render: (args) => {
+    return html`
+      <kyn-slider-input
+        name=${args.name}
+        value=${args.value}
+        caption=${args.caption}
+        ?hideLabel=${args.hideLabel}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        ?editableInput=${args.editableInput}
+        ?showlimits=${args.showlimits}
+        min=${args.min}
+        max=${args.max}
+        step=${args.step}
+        label=${args.label}
         @on-input=${(e) => action(e.type)(e)}
       >
         <div class="sliderticks" slot="tickmark" ?disabled=${args.disabled}>
@@ -58,14 +88,13 @@ export const Default = {
         </div>
       </kyn-slider-input>
       <style>
-        /* kyn-slider-input {
-          width: 60%;
-        } */
+        kyn-slider-input {
+          width: 50%;
+        }
         .sliderticks {
           display: flex;
           justify-content: space-between;
-          padding: 0px 5px;
-          margin-top: 5px;
+          padding: 5px 5px 0px;
         }
 
         .sliderticks span {
@@ -81,8 +110,8 @@ export const Default = {
   },
 };
 
-export const CustomStep = {
-  args: { ...args, step: 50, max: 200, multirange: true },
+export const DiscreteStep = {
+  args: { ...args, step: 50, max: 200, showTicks: true, showlimits: true },
   render: (args) => {
     return html`
       <kyn-slider-input
@@ -97,7 +126,8 @@ export const CustomStep = {
         max=${args.max}
         step=${args.step}
         label=${args.label}
-        ?multirange=${args.multirange}
+        ?showlimits=${args.showlimits}
+        ?showTicks=${args.showTicks}
         @on-input=${(e) => action(e.type)(e)}
       >
         <div class="sliderticks" slot="tickmark" ?disabled=${args.disabled}>
@@ -109,11 +139,13 @@ export const CustomStep = {
         </div>
       </kyn-slider-input>
       <style>
+        kyn-slider-input {
+          width: 50%;
+        }
         .sliderticks {
           display: flex;
           justify-content: space-between;
-          padding: 0px 5px;
-          margin-top: 5px;
+          padding: 5px 5px 0px;
         }
 
         .sliderticks span {
