@@ -1,5 +1,8 @@
 import { html } from 'lit';
-import './fileUploader.sample';
+import { action } from '@storybook/addon-actions';
+import { useArgs } from '@storybook/preview-api';
+import '../button';
+import './index';
 
 export default {
   title: 'Components/File Uploader',
@@ -17,13 +20,15 @@ export default {
 
 // Default text strings.
 const args = {
+  accept: ['image/jpeg', 'image/png'],
+  multiple: true,
   textStrings: {
     dragAndDropText: 'Drag files here to upload',
     separatorText: 'or',
     buttonText: 'Browse files',
     maxFileSizeText: 'Max file size',
     supportedFileTypeText: 'Supported file type: ',
-    fileTypeDisplyText: 'Any file type',
+    fileTypeDisplyText: '.jpeg, .png',
     invalidFileListLabel: 'Some files could not be added:',
     validFileListLabel: 'Files added:',
     clearListText: 'Clear list',
@@ -36,21 +41,67 @@ const args = {
     validationNotificationTitle: 'Multiple files not allowed',
     validationNotificationMessage: 'Please select only one file.',
   },
+  maxFileSize: 2097152,
+  disabled: false,
 };
 
-export const FileUploaderSingle = {
-  render: () => {
-    return html` <sample-file-uploader></sample-file-uploader> `;
-  },
-};
-FileUploaderSingle.storyName = 'File Uploader - Single file';
+let validFiles = [];
 
-export const FileUploaderMultiple = {
+const handleFileSubmit = () => {
+  const fileUploader = document.querySelector('kyn-file-uploader');
+
+  validFiles = validFiles.map((file) => ({
+    ...file,
+    status: 'uploaded',
+  }));
+
+  fileUploader.validFiles = validFiles;
+};
+
+export const Default = {
   args: args,
   render: (args) => {
+    const [{ disabled }, updateArgs] = useArgs();
     return html`
-      <sample-file-uploader ?multiple=${true}></sample-file-uploader>
+      <form
+        @submit=${(e) => {
+          e.preventDefault();
+          handleFileSubmit();
+          const formData = new FormData(e.target);
+          console.log(...formData);
+          return false;
+        }}
+      >
+        <kyn-file-uploader
+          name="file-Uploader"
+          .accept=${args.accept}
+          .multiple=${args.multiple}
+          .textStrings=${args.textStrings}
+          .maxFileSize=${args.maxFileSize}
+          ?disabled=${disabled}
+          @selected-files=${(e) => {
+            action(e.type)(e);
+            validFiles = e.detail.validFiles;
+          }}
+        >
+        </kyn-file-uploader>
+        <kyn-button
+          type="submit"
+          name="test"
+          size="small"
+          ?disabled=${disabled}
+          @on-click=${() => {
+            console.log(
+              document.querySelector('form').reportValidity()
+                ? 'valid'
+                : 'invalid'
+            );
+            updateArgs({ disabled: true });
+          }}
+        >
+          Start upload
+        </kyn-button>
+      </form>
     `;
   },
 };
-FileUploaderMultiple.storyName = 'File Uploader - Multiple files';

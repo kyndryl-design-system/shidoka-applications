@@ -403,7 +403,7 @@ const handleFileSubmit = () => {
 
   validFiles = validFiles.map((file) => ({
     ...file,
-    state: 'uploaded',
+    status: 'uploaded',
   }));
 
   fileUploader.validFiles = validFiles;

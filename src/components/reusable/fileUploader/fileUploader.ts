@@ -485,7 +485,6 @@ export class FileUploader extends FormMixin(LitElement) {
       }
     }
 
-    // focus the first checkbox to show validity
     if (report) {
       this._internals.reportValidity();
     }
