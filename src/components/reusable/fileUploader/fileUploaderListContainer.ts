@@ -64,6 +64,10 @@ export class FileUploaderListContainer extends LitElement {
   @state()
   _scrollHandler: EventListener | null = null;
 
+  /**
+   * Checks if there are more than three items in the list.
+   * @internal
+   */
   get hasMoreThanThreeItems() {
     return this._fileItems.length > 3;
   }
