@@ -1,0 +1,163 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+.file-uploader-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  .drag-drop-container-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .drag-drop-container {
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 6px;
+    border: 1px dashed var(--kd-color-border-accent-secondary);
+    border-radius: 16px;
+    background-color: var(--kd-color-background-accent-subtle);
+
+    &.dragging {
+      background-color: var(--kd-color-background-highlight-fill);
+      border: 1px solid var(--kd-color-border-button-secondary-state-hover);
+    }
+
+    &.disabled {
+      background-color: var(--kd-color-background-card-background);
+      border-color: var(--kd-color-border-ui-disabled);
+      cursor: not-allowed;
+
+      color: var(--kd-color-text-level-disabled);
+
+      .uploader-status-icon {
+        span {
+          svg {
+            fill: var(--kd-color-icon-disabled);
+          }
+        }
+      }
+    }
+
+    .drag-drop-text {
+      @include typography.type-body-01;
+    }
+
+    .or-text {
+      @include typography.type-body-02;
+    }
+  }
+
+  .uploader-status-icon {
+    width: 56px;
+    height: 56px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border-radius: 32px;
+    background-color: var(--kd-color-background-container-surface-tint);
+
+    span {
+      display: flex;
+    }
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .upload-constraints {
+    align-self: center;
+    @include typography.type-ui-02;
+
+    &.disabled {
+      color: var(--kd-color-text-level-disabled);
+    }
+  }
+
+  .file-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .error-filled-icon {
+    display: flex;
+    margin-right: 8px;
+
+    svg {
+      fill: var(--kd-color-status-error-dark);
+    }
+  }
+
+  .error-icon {
+    display: flex;
+
+    svg {
+      fill: var(--kd-color-status-error-dark);
+    }
+  }
+
+  .success-icon {
+    display: flex;
+
+    svg {
+      fill: var(--kd-color-status-success-dark);
+    }
+  }
+
+  .file-details-container {
+    p {
+      margin: 0;
+    }
+
+    .file-name {
+      @include typography.type-body-02;
+    }
+
+    .file-size {
+      @include typography.type-ui-02;
+      color: var(--kd-color-text-level-secondary);
+    }
+
+    .success {
+      color: var(--kd-color-text-link-level-default);
+    }
+
+    .error {
+      color: var(--kd-color-text-variant-destructive);
+    }
+
+    .error-info-container {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+  }
+
+  .file-uploader-item-container {
+    height: 74px;
+    padding: 16px 16px 16px 0;
+    border-bottom: 1px solid var(--kd-color-border-accent-secondary);
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .actions {
+    margin-left: auto;
+  }
+}
