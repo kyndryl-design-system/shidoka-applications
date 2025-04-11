@@ -53,6 +53,10 @@ export class SliderInput extends FormMixin(LitElement) {
   @property({ type: Number })
   step = 1;
 
+  /** Input value. */
+  @property({ type: Number })
+  override value = 0;
+
   /** Visually hide the label. */
   @property({ type: Boolean })
   hideLabel = false;
@@ -96,22 +100,19 @@ export class SliderInput extends FormMixin(LitElement) {
    * @ignore
    */
   @query('input[type="range"]')
+  _inputRangeEl!: HTMLInputElement;
+
+  @query('input[type="number"]')
   _inputEl!: HTMLInputElement;
 
   _themeObserver: any = new MutationObserver(() => {
+    console.log('Theme changed');
     this.fillTrackSlider();
   });
 
   override render() {
     const classes = {
-      'display-value': true,
       'editable-input': this.showlimits && this.editableInput,
-    };
-
-    const orientationClasses = {
-      range: true,
-      'show-limits': this.showlimits || !this.editableInput,
-      'editable-input_wolimits': !this.showlimits && this.editableInput,
     };
 
     // Calculate the number of ticks based on the step, min, and max values
@@ -126,83 +127,90 @@ export class SliderInput extends FormMixin(LitElement) {
           <span>${this.label}</span>
           <slot name="tooltip"></slot>
         </label>
-        <div class="${classMap(orientationClasses)}">
+        <div class="range">
           <!-- div for tick mark alignment -->
-          <div class="slider-wrapper">
-            <input
-              type="range"
-              value="0"
-              id=${this.name}
-              name=${this.name}
-              min=${ifDefined(this.min)}
-              max=${ifDefined(this.max)}
-              step=${ifDefined(this.step)}
-              ?disabled=${this.disabled}
-              ?invalid=${this._isInvalid}
-              aria-invalid=${this._isInvalid}
-              aria-describedby=${this._isInvalid ? 'error' : ''}
-              @input=${(e: any) => this._handleInput(e)}
-              @focus=${() => this.showTooltip()}
-              @blur=${() => this.hideTooltip()}
-            />
-            <!-- Dynamically generate ticks -->
-            ${this.showTicks
-              ? html`
-                  ${Array.from({ length: tickCount + 1 }).map((_, index) => {
-                    // Adjust the last tick to be at 99% instead of 100%
-                    const tickPosition =
-                      index === tickCount
-                        ? '100%'
-                        : ((index * 100) / tickCount).toFixed(2) + '%';
-                    const style = index === 0 ? 'display: none;' : '';
-                    return html`
+          <div class="slider-input-container">
+            <div class="slider-track-wrapper">
+              <div class="slider-wrapper">
+                <input
+                  type="range"
+                  id=${this.name}
+                  name=${this.name}
+                  value=${this.value.toString()}
+                  ?disabled=${this.disabled}
+                  ?invalid=${this._isInvalid}
+                  aria-invalid=${this._isInvalid}
+                  aria-describedby=${this._isInvalid ? 'error' : ''}
+                  min=${ifDefined(this.min)}
+                  max=${ifDefined(this.max)}
+                  step=${ifDefined(this.step)}
+                  @input=${(e: any) => this._handleInput(e)}
+                  @focus=${() => this.showTooltip()}
+                  @blur=${() => this.hideTooltip()}
+                />
+                <!-- Dynamically generate ticks -->
+                ${this.showTicks
+                  ? html`
+                      ${Array.from({ length: tickCount + 1 }).map(
+                        (_, index) => {
+                          // Adjust the last tick to be at 99% instead of 100%
+                          const tickPosition =
+                            index === tickCount
+                              ? '100%'
+                              : ((index * 100) / tickCount).toFixed(2) + '%';
+                          const style = index === 0 ? 'display: none;' : '';
+                          return html`
+                            <span
+                              class="tick"
+                              style="left: ${tickPosition};${style}"
+                            ></span>
+                          `;
+                        }
+                      )}
+                    `
+                  : null}
+                ${!this.editableInput
+                  ? html`
                       <span
-                        class="tick"
-                        style="left: ${tickPosition};${style}"
-                      ></span>
-                    `;
-                  })}
-                `
-              : null}
-            ${!this.editableInput
+                        role="tooltip"
+                        class="slider-tooltip"
+                        style="left: ${this._getTooltipPosition()}; visibility: ${this
+                          .tooltipVisible
+                          ? 'visible'
+                          : 'hidden'}"
+                      >
+                        ${this.value}
+                      </span>
+                    `
+                  : null}
+              </div>
+              <!-- slot for tickmark varient  -->
+              <div class="tickmarks-wrapper display-value">
+                <slot name="tickmark" ?disabled=${this.disabled}></slot>
+              </div>
+            </div>
+            ${this.editableInput
               ? html`
-                  <span
-                    role="tooltip"
-                    class="slider-tooltip"
-                    style="left: ${this._getTooltipPosition()}; visibility: ${this
-                      .tooltipVisible
-                      ? 'visible'
-                      : 'hidden'}"
-                  >
-                    ${this.value}
-                  </span>
+                  <div class="${classMap(classes)} number-input-wrapper">
+                    <input
+                      type="number"
+                      value=${this.value.toString()}
+                      id="editableInput"
+                      name="editableInput"
+                      ?disabled=${this.disabled}
+                      aria-label="editable range input"
+                      ?invalid=${this._isInvalid}
+                      aria-invalid=${this._isInvalid}
+                      aria-describedby=${this._isInvalid ? 'error' : ''}
+                      min=${ifDefined(this.min)}
+                      max=${ifDefined(this.max)}
+                      step=${ifDefined(this.step)}
+                      @input=${(e: any) => this._handleNumberInput(e)}
+                    />
+                  </div>
                 `
               : null}
-
-            <!-- slot for tickmark varient  -->
-            <slot name="tickmark" ?disabled=${this.disabled}></slot>
           </div>
-          ${this.editableInput
-            ? html`
-                <div class="${classMap(classes)}">
-                  <input
-                    type="number"
-                    value=${this.value.toString()}
-                    id="editableInput"
-                    name="editableInput"
-                    min=${ifDefined(this.min)}
-                    max=${ifDefined(this.max)}
-                    step=${ifDefined(this.step)}
-                    ?invalid=${this._isInvalid}
-                    aria-invalid=${this._isInvalid}
-                    aria-describedby=${this._isInvalid ? 'error' : ''}
-                    @input=${(e: any) => this._handleNumberInput(e)}
-                    ?disabled=${this.disabled}
-                    aria-label="editable range input"
-                  />
-                </div>
-              `
-            : null}
         </div>
 
         ${this.caption !== ''
@@ -242,52 +250,21 @@ export class SliderInput extends FormMixin(LitElement) {
 
   // Handle text input
   private _handleNumberInput(e: any) {
-    this._isInvalid = false;
-
-    const input = e.target as HTMLInputElement;
-    const rawValue = input.value.trim();
-    const min = this.min;
-    const max = this.max;
-
-    // Handle empty input case
-    if (rawValue === '') {
-      this.value = 0;
+    if (e.target.value === '') {
+      // this.value = 0;
       this._inputEl.value = '0';
-      return;
-    }
-
-    const numValue = Number(rawValue);
-    // Validate the input value within min and max range
-
-    if (
-      !isNaN(numValue) &&
-      numValue >= min &&
-      numValue <= max &&
-      (numValue - min) % this.step === 0
-    ) {
-      this.value = numValue;
-      this._validate(true, false);
-      this.emitDispatchEvent(e);
-      input.setCustomValidity('');
+      // this._inputRangeEl.value = '0';
     } else {
-      this._isInvalid = true;
-      let errorMessage = `Value must be between ${this.min} and ${this.max}`;
-      if ((numValue - min) % this.step !== 0) {
-        errorMessage += ` and in increments of ${this.step}`;
-      }
-      input.setCustomValidity(errorMessage);
-      this._internalValidationMsg = errorMessage;
+      this.value = Number(e.target.value);
     }
+    this._validate(true, false);
+    this.emitDispatchEvent(e);
   }
 
   // Handle input event
   // This is triggered when the user interacts with the slider
   private _handleInput(e: any) {
-    if (this._isInvalid) {
-      e.preventDefault();
-      return;
-    }
-    this.value = e.target.value;
+    this.value = Number(e.target.value);
     this._validate(true, false);
     this.emitDispatchEvent(e);
     if (!this._isInvalid) {
@@ -312,8 +289,10 @@ export class SliderInput extends FormMixin(LitElement) {
 
   // Handle the track slider fill
   private fillTrackSlider() {
-    const inputEl = this.shadowRoot?.querySelector('input');
-    const value = parseFloat(this.value);
+    const inputEl = this.shadowRoot?.querySelector(
+      'input[type="range"]'
+    ) as HTMLInputElement;
+    const value = this.value;
     const min = this.min;
     const max = this.max;
     const step = this.step;
@@ -321,18 +300,14 @@ export class SliderInput extends FormMixin(LitElement) {
     // Calculate the position of the slider value
     let pos = (value - min) / (max - min);
     // thumb width 20px
-    const thumbCorrect = 16 * (pos - 0.5) * -1;
-
-    // this.tooltipPosition = `calc(${value}% + (${8 - value * 0.15}px))`;
-
+    const thumbCorrect = 24 * (pos - 0.5) * -1;
+    // console.log('thumbCorrect', thumbCorrect);
     const newVal = Number(((value - min) * 100) / (max - min));
-    // thumb width 20px/2 10px
-    this.tooltipPosition = `calc(${newVal}% + (${8 - newVal * 0.18}px))`;
-    //console.log('input width', `calc(${newVal}% + (${8 - newVal * 0.15}px))`);
-    // console.log(
-    //   'thumb correct----',
-    //   `calc(${pos * 100}% + (${thumbCorrect}px))`
-    // );
+
+    const newPosition = 10 - newVal * 0.22;
+
+    // this.tooltipPosition = `calc(${newVal}% + (${8 - newVal * 0.18}px))`; working
+    this.tooltipPosition = `calc(${newVal}% + (${newPosition}px))`;
 
     // Update the tick color based on the progress
     if (this.showTicks) {
@@ -369,84 +344,125 @@ export class SliderInput extends FormMixin(LitElement) {
   }
 
   private handleValueChange() {
-    this._inputEl.value = this.value.toString();
-    const inputEl = this.shadowRoot?.querySelector('input');
-    if (inputEl) {
-      this.value = inputEl?.value;
+    // this._validate(true, false);
+    // if (
+    //   this.value !== undefined &&
+    //   this.value >= this.min &&
+    //   this.value <= this.max &&
+    //   !this._isInvalid
+    // ) {
+    //   this._inputRangeEl.value = this.value.toString();
+    //   this.fillTrackSlider();
+    // }
+    this._validate(true, false);
+
+    const { value, min, max, step } = this;
+    const isStepValid = (value - min) % step === 0 || step === 1;
+    const isValueValid = value >= min && value <= max && isStepValid;
+
+    // If the value is valid, allow the UI to update
+    if (isValueValid) {
+      this._inputRangeEl.value = value.toString();
+      console.log(
+        'this._inputRangeEl.value if',
+        this._inputRangeEl.value,
+        this.value.toString()
+      );
       this.fillTrackSlider();
-    }
-  }
-
-  private handleMinMaxChange() {
-    const inputEl = this.shadowRoot?.querySelector('input');
-    if (inputEl) {
-      const min = this.min;
-      const max = this.max;
-      let currentValue = parseFloat(this.value);
-
-      // Ensure value is within the bounds of min/max
-      currentValue = Math.min(Math.max(currentValue, min), max);
-      this.value = currentValue.toString();
-
-      inputEl.min = this.min.toString();
-      inputEl.max = this.max.toString();
-      this.fillTrackSlider();
+    } else {
+      // If the form is invalid, do not update thumb position or background
+      this._inputRangeEl.value = value.toString();
+      this.requestUpdate();
+      console.log(
+        'this._inputRangeEl.value ',
+        this._inputRangeEl.value,
+        this.value.toString()
+      );
+      console.warn(
+        'Invalid value; skipping slider fill & value update to avoid visual inconsistency.'
+      );
     }
   }
 
   private _validate(interacted: Boolean, report: Boolean) {
     // get validity state from inputEl, combine customError flag if invalidText is provided
-    const Validity =
-      this.invalidText !== ''
-        ? { ...this._inputEl.validity, customError: true }
-        : this._inputEl.validity;
-    // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
-    const ValidationMessage =
-      this.invalidText !== ''
-        ? this.invalidText
-        : this._inputEl.validationMessage;
+    let isValid = true;
+    let message = '';
 
-    // set validity on custom element, anchor to inputEl
-    this._internals.setValidity(Validity, ValidationMessage, this._inputEl);
+    // Validate slider input value against min, max, and step
+    const val = this.value;
+    const min = this.min;
+    const max = this.max;
+    const step = this.step;
+    const isStepValid = (val - min) % step === 0 || step === 1;
 
-    // set internal validation message if value was changed by user input
-    if (interacted) {
-      this._internalValidationMsg = this._inputEl.validationMessage;
+    if (val < min || val > max) {
+      isValid = false;
+      message = `Value must be between ${min} and ${max}.`;
+    } else if (!isStepValid) {
+      isValid = false;
+      message = `Value must be a multiple of ${step}.`;
+    }
+    if (this.editableInput && this._inputEl) {
+      const Validity =
+        this.invalidText !== ''
+          ? { ...this._inputEl.validity, customError: true }
+          : this._inputEl.validity;
+      // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
+      const ValidationMessage =
+        this.invalidText !== ''
+          ? this.invalidText
+          : this._inputEl.validationMessage;
+
+      // set validity on custom element, anchor to inputEl
+      this._internals.setValidity(Validity, ValidationMessage, this._inputEl);
+      // set internal validation message if value was changed by user input
+      if (interacted) {
+        this._internalValidationMsg = this._inputEl.validationMessage;
+      }
+    } else {
+      // Fall back to slider input element
+      this._internals.setValidity(
+        !isValid ? { customError: true } : {},
+        !isValid ? message : '',
+        this._inputRangeEl
+      );
+      this._internalValidationMsg = message;
     }
 
     // focus the form field to show validity
     if (report) {
       this._internals.reportValidity();
     }
+    this._isInvalid = !isValid;
   }
 
   override updated(changedProps: any) {
     // preserve FormMixin updated function
-
     // skip update if internal properties have changed
     const onlyInternalChanges = [...changedProps.keys()].every((prop) =>
       ['tooltipVisible', 'tooltipPosition', '_internalValidationMsg'].includes(
         prop
       )
     );
-    if (this._isInvalid) {
-      this._inputEl.style.pointerEvents = 'none';
-    } else {
-      this._inputEl.style.pointerEvents = '';
-    }
     if (onlyInternalChanges) return;
-
     this._onUpdated(changedProps);
 
+    if (this._isInvalid) {
+      this._inputRangeEl.style.pointerEvents = 'none';
+    } else {
+      this._inputRangeEl.style.pointerEvents = '';
+    }
     if (changedProps.has('disabled') || changedProps.has('showTicks')) {
       this.fillTrackSlider();
     }
-    if (changedProps.has('value')) {
+    if (
+      changedProps.has('value') ||
+      changedProps.has('min') ||
+      changedProps.has('max') ||
+      changedProps.has('step')
+    ) {
       this.handleValueChange();
-    }
-    // Handle changes to `min` or `max`
-    if (changedProps.has('min') || changedProps.has('max')) {
-      this.handleMinMaxChange();
     }
   }
 

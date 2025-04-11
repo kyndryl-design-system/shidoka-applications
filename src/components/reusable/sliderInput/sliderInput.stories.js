@@ -64,7 +64,7 @@ export const Default = {
 };
 
 export const VisibleLimits = {
-  args: { ...args, max: 100, showlimits: true },
+  args: { ...args, max: 100, showlimits: true, step: 10 },
   render: (args) => {
     return html`
       <kyn-slider-input
@@ -84,6 +84,15 @@ export const VisibleLimits = {
       >
         <div class="sliderticks" slot="tickmark" ?disabled=${args.disabled}>
           <span>${args.min}</span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span>50</span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
           <span>${args.max}</span>
         </div>
       </kyn-slider-input>
@@ -94,16 +103,18 @@ export const VisibleLimits = {
         .sliderticks {
           display: flex;
           justify-content: space-between;
-          padding: 5px 5px 0px;
+          padding: 0px 5px;
+          line-height: 40px;
         }
 
         .sliderticks span {
           display: flex;
           justify-content: center;
+          align-items: flex-start;
+          align-self: stretch;
           width: 1px;
-          height: 0px;
-          line-height: 40px;
-          margin-bottom: 2rem;
+          height: 8px;
+          background: #d3d3d3;
         }
       </style>
     `;
@@ -132,9 +143,6 @@ export const DiscreteStep = {
       >
         <div class="sliderticks" slot="tickmark" ?disabled=${args.disabled}>
           <span>${args.min}</span>
-          <span>50</span>
-          <span>100</span>
-          <span>150</span>
           <span>${args.max}</span>
         </div>
       </kyn-slider-input>
@@ -153,8 +161,8 @@ export const DiscreteStep = {
           justify-content: center;
           width: 1px;
           height: 0px;
-          line-height: 40px;
-          margin-bottom: 2rem;
+          /* line-height: 40px; */
+          /* margin-bottom: 2rem; */
         }
       </style>
     `;
