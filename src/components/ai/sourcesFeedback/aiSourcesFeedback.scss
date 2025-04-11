@@ -9,19 +9,19 @@
 .left-div,
 .right-div {
   display: flex;
-  gap: 0.5rem;
+  gap: 8px;
   align-items: center;
   flex-wrap: wrap;
 }
 
 .card-container {
   display: grid;
-  gap: 16px;
+  gap: 8px;
   grid-template-columns: 1fr;
   margin-top: 1rem;
 
   @media (min-width: 42rem) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(120px, max-content));
   }
 }
 
@@ -33,8 +33,7 @@
 .opened.kyn-feedback-body {
   display: block;
   position: relative;
-  background: var(--kd-color-background-container-secondary);
-  border: 1px solid var(--kd-color-border-variants-light);
+  background: var(--kd-color-background-container-ai-default);
   border-radius: 8px;
   padding: 16px;
   margin-top: 1rem;
@@ -56,13 +55,14 @@
 }
 
 .reveal-toggle {
-  margin-top: 1rem;
+  justify-self: start;
+  margin-top: 16px;
 }
 
 .close-container,
 .close {
   background: inherit;
   position: absolute;
-  right: 0.5rem;
-  top: 0.5rem;
+  right: 8px;
+  top: 8px;
 }

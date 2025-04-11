@@ -231,25 +231,22 @@ export class AISourcesFeedback extends LitElement {
         </div>
         <div class="card-container">
           <slot name="sources" @slotchange=${this._handleSlotChange}></slot>
+          ${!this.revealAllSources && this._sourceEls.length > this._limitCount
+            ? html`
+                <kyn-button
+                  class="reveal-toggle"
+                  kind="ghost"
+                  size="small"
+                  @on-click=${() =>
+                    this._toggleLimitRevealed(!this.limitRevealed)}
+                >
+                  ${this.limitRevealed
+                    ? html`${this._textStrings.showLess}`
+                    : html` ${this._textStrings.showMore} `}
+                </kyn-button>
+              `
+            : null}
         </div>
-        ${!this.revealAllSources && this._sourceEls.length > this._limitCount
-          ? html`
-              <kyn-button
-                class="reveal-toggle"
-                kind="ghost"
-                size="small"
-                @on-click=${() =>
-                  this._toggleLimitRevealed(!this.limitRevealed)}
-              >
-                ${this.limitRevealed
-                  ? html`${this._textStrings.showLess}`
-                  : html`
-                      ${this._textStrings.showMore}
-                      (${this._sourceEls.length - this._limitCount})
-                    `}
-              </kyn-button>
-            `
-          : null}
       </div>
 
       <div
