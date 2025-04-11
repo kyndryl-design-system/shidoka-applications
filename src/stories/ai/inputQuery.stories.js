@@ -191,7 +191,6 @@ const sharedStyles = html`
     .storybook-container {
       display: flex;
       flex-direction: column;
-      height: 90vh;
       box-sizing: border-box;
     }
 
@@ -199,6 +198,7 @@ const sharedStyles = html`
       display: flex;
       flex-direction: column;
       gap: 16px;
+      margin-bottom: 16px;
     }
 
     .ai-input-query {
