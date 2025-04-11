@@ -1,0 +1,200 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/form-input.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/spacing.scss';
+
+:host {
+  display: inline-block;
+
+  .slider-tooltip {
+    @include typography.type-body-02;
+    position: absolute;
+    top: -3.2em;
+    left: 50%;
+    padding: var(--kd-spacing-4) var(--kd-spacing-8);
+    background: var(--kd-color-background-ui-default-dark);
+    color: var(--kd-color-text-variant-inversed);
+    border-radius: var(--kd-spacing-4);
+    height: 2em;
+    min-width: var(--kd-spacing-40);
+    text-align: center;
+    white-space: nowrap;
+    visibility: visible;
+    z-index: 2;
+    transform-origin: center bottom;
+    transition: visibility 150ms ease-out, transform 150ms ease-out;
+    transform: translateX(-50%);
+
+    /* Add the arrow before the tooltip */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      transform: translateX(-50%);
+      border-left: var(--kd-spacing-4) solid transparent; /* Left side of the arrow */
+      border-right: var(--kd-spacing-4) solid transparent; /* Right side of the arrow */
+      border-top: var(--kd-spacing-4) solid
+        var(--kd-color-background-ui-default-dark); /* Bottom side of the arrow */
+    }
+  }
+}
+
+input[type='range'] {
+  display: block;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+  min-width: 352px;
+  height: 4px;
+  margin: 0px;
+  border-radius: var(--kd-spacing-4);
+  background-color: var(--kd-color-background-accent-tertiary);
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  background-color: var(--kd-color-border-button-secondary-state-default);
+  border-radius: 50%;
+  box-shadow: -2px 0 0 0 var(--kd-color-border-variants-inverse),
+    var(--kd-spacing-2) 0 0 0 var(--kd-color-border-variants-inverse);
+  outline: var(--kd-spacing-2) solid transparent;
+  outline-offset: var(--kd-spacing-2);
+  transition: 0.2s ease-in-out;
+}
+
+input[type='range']::-moz-range-thumb {
+  height: var(--kd-spacing-12);
+  width: var(--kd-spacing-12);
+  background-color: var(--kd-color-border-button-secondary-state-default);
+  border-radius: 50%;
+  box-shadow: -2px 0 0 0 var(--kd-color-border-variants-inverse),
+    var(--kd-spacing-2) 0 0 0 var(--kd-color-border-variants-inverse);
+  outline: var(--kd-spacing-2) solid transparent;
+  outline-offset: var(--kd-spacing-2);
+  transition: 0.2s ease-in-out;
+}
+
+.range {
+  margin-top: 32px;
+}
+
+.display-value {
+  @include typography.type-body-02;
+}
+
+input[type='range']:not(:disabled)::-webkit-slider-thumb:hover {
+  height: 24px;
+  width: 24px;
+}
+input[type='range']:not(:disabled):active::-webkit-slider-thumb {
+  height: 24px;
+  width: 24px;
+  box-shadow: 0 0 0 2px var(--kd-color-border-variants-inverse),
+    0 0 0 4px var(--kd-color-border-variants-focus);
+}
+input[type='range']:not(:disabled):focus::-webkit-slider-thumb {
+  height: 24px;
+  width: 24px;
+  box-shadow: 0 0 0 2px var(--kd-color-border-variants-inverse),
+    0 0 0 4px var(--kd-color-border-variants-focus);
+}
+
+input[type='range']:not(:disabled)::-moz-range-thumb:hover {
+  height: var(--kd-spacing-16);
+  width: var(--kd-spacing-16);
+}
+input[type='range']:not(:disabled):active::-moz-range-thumb {
+  height: var(--kd-spacing-16);
+  width: var(--kd-spacing-16);
+  box-shadow: 0 0 0 2px var(--kd-color-border-variants-inverse),
+    0 0 0 4px var(--kd-color-border-variants-focus);
+}
+input[type='range']:not(:disabled):focus::-moz-range-thumb {
+  height: var(--kd-spacing-16);
+  width: var(--kd-spacing-16);
+  box-shadow: 0 0 0 2px var(--kd-color-border-variants-inverse),
+    0 0 0 4px var(--kd-color-border-variants-focus);
+}
+
+/* For webkit disabled thumb */
+input[type='range']:disabled::-webkit-slider-thumb {
+  background: var(--kd-color-text-level-disabled);
+  cursor: not-allowed;
+}
+
+/* For firefox disabled thumb */
+input[type='range']:disabled::-moz-range-thumb:hover {
+  background: var(--kd-color-text-level-disabled);
+  cursor: not-allowed;
+}
+
+input[type='number'] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  min-width: var(--kd-spacing-40);
+  border-width: 1px;
+  border-style: solid;
+  border-radius: var(--kd-spacing-4);
+  height: var(--kd-spacing-32);
+  padding: var(--kd-spacing-0) var(--kd-spacing-8);
+}
+
+.slider-wrapper {
+  position: relative;
+  flex-grow: 1;
+  padding-bottom: 8px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: var(--kd-spacing-2);
+    transform: translateY(-50%);
+  }
+}
+
+.tick {
+  position: absolute;
+  width: var(--kd-spacing-2);
+  height: 5px;
+  top: 0;
+  &:first-child {
+    visibility: hidden;
+  }
+}
+
+slot[name='tickmark']::slotted([disabled]) {
+  opacity: 0.5;
+}
+
+.tickmarks-wrapper {
+  // margin-top: 0.5rem;
+  margin-bottom: 16px;
+}
+
+.number-input-wrapper {
+  margin-top: -15px;
+}
+
+.slider-input-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.slider-track-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
