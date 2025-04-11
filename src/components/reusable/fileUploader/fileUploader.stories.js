@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { useArgs } from '@storybook/preview-api';
 import '../button';
 import './index';
 
@@ -18,7 +17,6 @@ export default {
   },
 };
 
-// Default text strings.
 const args = {
   accept: ['image/jpeg', 'image/png'],
   multiple: true,
@@ -41,67 +39,23 @@ const args = {
     validationNotificationTitle: 'Multiple files not allowed',
     validationNotificationMessage: 'Please select only one file.',
   },
-  maxFileSize: 2097152,
+  maxFileSize: 2097152, // 2MB
   disabled: false,
-};
-
-let validFiles = [];
-
-const handleFileSubmit = () => {
-  const fileUploader = document.querySelector('kyn-file-uploader');
-
-  validFiles = validFiles.map((file) => ({
-    ...file,
-    status: 'uploaded',
-  }));
-
-  fileUploader.validFiles = validFiles;
 };
 
 export const Default = {
   args: args,
   render: (args) => {
-    const [{ disabled }, updateArgs] = useArgs();
     return html`
-      <form
-        @submit=${(e) => {
-          e.preventDefault();
-          handleFileSubmit();
-          const formData = new FormData(e.target);
-          console.log(...formData);
-          return false;
-        }}
+      <kyn-file-uploader
+        .accept=${args.accept}
+        .multiple=${args.multiple}
+        .textStrings=${args.textStrings}
+        .maxFileSize=${args.maxFileSize}
+        ?disabled=${args.disabled}
+        @selected-files=${(e) => action(e.type)(e)}
       >
-        <kyn-file-uploader
-          name="file-Uploader"
-          .accept=${args.accept}
-          .multiple=${args.multiple}
-          .textStrings=${args.textStrings}
-          .maxFileSize=${args.maxFileSize}
-          ?disabled=${disabled}
-          @selected-files=${(e) => {
-            action(e.type)(e);
-            validFiles = e.detail.validFiles;
-          }}
-        >
-        </kyn-file-uploader>
-        <kyn-button
-          type="submit"
-          name="test"
-          size="small"
-          ?disabled=${disabled}
-          @on-click=${() => {
-            console.log(
-              document.querySelector('form').reportValidity()
-                ? 'valid'
-                : 'invalid'
-            );
-            updateArgs({ disabled: true });
-          }}
-        >
-          Start upload
-        </kyn-button>
-      </form>
+      </kyn-file-uploader>
     `;
   },
 };

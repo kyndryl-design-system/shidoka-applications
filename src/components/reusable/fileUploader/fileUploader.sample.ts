@@ -80,68 +80,77 @@ export class SampleFileUploader extends LitElement {
 
   override render() {
     return html`
-      <kyn-file-uploader
-        .accept=${['image/jpeg', 'image/png']}
-        ?multiple=${this.multiple}
-        .validFiles=${this._validFiles}
-        .invalidFiles=${this._invalidFiles}
-        ?disabled=${this._disabled}
-        .textStrings=${_textStrings}
-        @selected-files=${(e: any) => {
-          action(e.type)(e);
-          this._handleFilesToBeUploaded(e);
+      <form
+        @submit=${(e: any) => {
+          e.preventDefault();
+          this._startFileUpload();
+          const formData = new FormData(e.target);
+          console.log(...formData);
+          return false;
         }}
       >
-        <!-- Upload status -->
-        ${this._showNotification
-          ? html`
-              <kyn-notification
-                slot="upload-status"
-                .type=${'inline'}
-                .tagStatus=${this._notificationStatus}
-                .hideCloseButton=${true}
-                .notificationTitle=${this._notificationTitle}
-                style="margin-bottom: 24px"
-              >
-                ${this._showProgressBar
-                  ? html`
-                      <div class="notification-status-body">
-                        <kyn-progress-bar
-                          .label=${this._currentFileUploading}
-                          .value=${this._overallProgress}
-                          .max=${100}
-                          .status=${this._overallProgress === 100
-                            ? 'success'
-                            : 'active'}
-                          .showInlineLoadStatus=${true}
-                          .unit=${'%'}
-                          .showActiveHelperText=${true}
-                          .helperText=${this._helperText}
-                        ></kyn-progress-bar>
-                        <kyn-button
-                          kind="outline"
-                          size="small"
-                          @on-click=${this._stopFileUpload}
-                        >
-                          <span slot="icon">${unsafeSVG(closeIcon)}</span>
-                        </kyn-button>
-                      </div>
-                    `
-                  : this._notificationMessage}
-              </kyn-notification>
-            `
-          : ``}
-      </kyn-file-uploader>
-      <div>
+        <kyn-file-uploader
+          name="file-uploader"
+          .accept=${['image/jpeg', 'image/png']}
+          ?multiple=${this.multiple}
+          .validFiles=${this._validFiles}
+          .invalidFiles=${this._invalidFiles}
+          ?disabled=${this._disabled}
+          .textStrings=${_textStrings}
+          @selected-files=${(e: any) => {
+            action(e.type)(e);
+            this._handleFilesToBeUploaded(e);
+          }}
+        >
+          <!-- Upload status -->
+          ${this._showNotification
+            ? html`
+                <kyn-notification
+                  slot="upload-status"
+                  .type=${'inline'}
+                  .tagStatus=${this._notificationStatus}
+                  .hideCloseButton=${true}
+                  .notificationTitle=${this._notificationTitle}
+                  style="margin-bottom: 24px"
+                >
+                  ${this._showProgressBar
+                    ? html`
+                        <div class="notification-status-body">
+                          <kyn-progress-bar
+                            .label=${this._currentFileUploading}
+                            .value=${this._overallProgress}
+                            .max=${100}
+                            .status=${this._overallProgress === 100
+                              ? 'success'
+                              : 'active'}
+                            .showInlineLoadStatus=${true}
+                            .unit=${'%'}
+                            .showActiveHelperText=${true}
+                            .helperText=${this._helperText}
+                          ></kyn-progress-bar>
+                          <kyn-button
+                            kind="outline"
+                            size="small"
+                            @on-click=${this._stopFileUpload}
+                          >
+                            <span slot="icon">${unsafeSVG(closeIcon)}</span>
+                          </kyn-button>
+                        </div>
+                      `
+                    : this._notificationMessage}
+                </kyn-notification>
+              `
+            : ``}
+        </kyn-file-uploader>
         ${this._validFiles.length > 0 || this._invalidFiles.length > 0
           ? html`<kyn-button
+              type="submit"
               size="small"
-              .disabled=${this._disableUploadButton()}
-              @on-click=${() => this._startFileUpload()}
+              ?disabled=${this._disableUploadButton()}
               >Start upload</kyn-button
             >`
           : ''}
-      </div>
+      </form>
     `;
   }
 
