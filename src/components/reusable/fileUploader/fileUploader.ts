@@ -386,8 +386,8 @@ export class FileUploader extends FormMixin(LitElement) {
       return;
     }
 
-    const validFiles: Object[] = [...this._validFiles];
-    const invalidFiles: Object[] = [...this._invalidFiles];
+    const validFiles: Object[] = this.multiple ? [...this._validFiles] : [];
+    const invalidFiles: Object[] = this.multiple ? [...this._invalidFiles] : [];
 
     files.forEach((file) => {
       const fileName = file.name;
@@ -437,12 +437,12 @@ export class FileUploader extends FormMixin(LitElement) {
     });
 
     // Update valid files
-    if (validFiles.length > 0) {
+    if (validFiles.length > 0 || !this.multiple) {
       this._validFiles = validFiles;
     }
 
     // Update invalid files
-    if (invalidFiles.length > 0) {
+    if (invalidFiles.length > 0 || !this.multiple) {
       this._invalidFiles = invalidFiles;
     }
   }

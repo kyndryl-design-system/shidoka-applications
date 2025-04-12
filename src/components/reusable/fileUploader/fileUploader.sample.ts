@@ -168,11 +168,6 @@ export class SampleFileUploader extends LitElement {
     } else {
       this._setNotificationConfig(false, 'default', '', '');
     }
-    if (this._totalFiles === 1 && !this.multiple) {
-      this._disabled = true;
-    } else {
-      this._disabled = false;
-    }
   }
 
   private _disableUploadButton() {
@@ -276,12 +271,12 @@ export class SampleFileUploader extends LitElement {
             } could not be uploaded.`
           : `Success! ${totalFiles} files have been uploaded.`;
       clearInterval(progressInterval);
-      if (this.multiple) this._disabled = false;
+      this._disabled = false;
     }
   }
 
   _stopFileUpload() {
-    if (this.multiple) this._disabled = false;
+    this._disabled = false;
     this._uploadCanceled = true;
     this._showProgressBar = false;
     this._setNotificationConfig(
