@@ -118,17 +118,8 @@ const SourcesContent = () => html`
         ?hideBorder=${args.hideBorder}
       >
         <div class="card-description">
-          <kyn-button
-            kind="ghost"
-            size="small"
-            iconPosition="left"
-            description="source"
-            @on-click=${(e) => action(e.type)(e)}
-          >
-            <span slot="icon" class="source-icon"
-              >${unsafeSVG(sourceIcon)}</span
-            >
-          </kyn-button>
+          <span slot="icon" class="source-icon">${unsafeSVG(sourceIcon)}</span>
+          <div class="separator" aria-hidden="true"></div>
           <kyn-link href="#" @click=${(e) => action(e.type)(e)}>
             ${card.description}
           </kyn-link>
@@ -138,16 +129,32 @@ const SourcesContent = () => html`
   )}
   <style>
     kyn-card {
-      max-width: fit-content;
+      width: 100%;
+    }
+    kyn-card::part(card-wrapper) {
+      padding: 8px 4px;
     }
     .card-description {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      .source-icon {
-        border-right: 1px solid var(--kd-color-border-accent-secondary, #c8ccd2);
-        padding-right: 0.5rem;
+      .source-icon,
+      kyn-link {
+        padding: 0px 8px;
       }
+    }
+
+    .source-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.8;
+    }
+
+    .separator {
+      width: 1px;
+      height: 16px;
+      background-color: var(--color-border, #ccc);
+      margin: 0 4px;
     }
     kyn-link {
       word-break: break-word;
