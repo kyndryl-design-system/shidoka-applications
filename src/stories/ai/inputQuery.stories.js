@@ -63,124 +63,31 @@ export const Thinking = {
   },
   render: (args) => {
     return html`
-      <div class="storybook-container">
-        <div class="main-div">${User.render()} ${Skeleton.render()}</div>
-        <form
-          class="ai-input-query ${args.floating ? 'floating' : ''}"
-          @submit=${(e) => {
-            e.preventDefault();
-            action('submit')(e);
-            const formData = new FormData(e.target);
-            console.log(...formData);
-          }}
-        >
-          <kyn-text-area
-            name="ai-query"
-            rows="2"
-            placeholder="Type your message..."
-            maxRowsVisible="3"
-            label="AI Prompt Query"
-            hideLabel
-            aiConnected
-            notResizeable
-          ></kyn-text-area>
+      <form
+        class="ai-input-query ${args.floating ? 'floating' : ''}"
+        @submit=${(e) => {
+          e.preventDefault();
+          action('submit')(e);
+          const formData = new FormData(e.target);
+          console.log(...formData);
+        }}
+      >
+        <kyn-text-area
+          name="ai-query"
+          rows="2"
+          placeholder="Type your message..."
+          maxRowsVisible="3"
+          label="AI Prompt Query"
+          hideLabel
+          aiConnected
+          notResizeable
+        ></kyn-text-area>
 
-          <kyn-button type="submit" kind="primary-ai" description="Submit">
-            <span slot="icon">${unsafeSVG(stopIcon)}</span>
-          </kyn-button>
-        </form>
-      </div>
+        <kyn-button type="submit" kind="primary-ai" description="Submit">
+          <span slot="icon">${unsafeSVG(stopIcon)}</span>
+        </kyn-button>
+      </form>
 
-      ${sharedStyles}
-    `;
-  },
-};
-
-export const QueryAborted = {
-  args: {
-    floating: false,
-  },
-  render: (args) => {
-    return html`
-      <div class="storybook-container">
-        <div class="main-div">
-          ${User.render()}
-
-          <div class="response_wrapper kd-spacing--margin-bottom-12">
-            <div class="response_icon">${unsafeHTML(aiResponse)}</div>
-            <div class="response_item kd-type--body-02">
-              <div>
-                As buyers become more knowledgable about their needs and
-                options, it's crucial for us, as their trusted IT services
-                partner, to understand their wants, challenges and expectations
-              </div>
-              <div class="abort-notification">
-                <kyn-notification
-                  notificationTitle="The operation was aborted"
-                  assistiveNotificationTypeText="Error toast"
-                  notificationRole="alert"
-                  type="toast"
-                  tagStatus="error"
-                  ?hideCloseButton=${true}
-                  @on-close=${(e) => action(e.type)(e)}
-                  timeout=${0}
-                >
-                </kyn-notification>
-                <kyn-button kind="outline-ai" iconPosition="left" size="large">
-                  <span slot="icon">${unsafeSVG(updateIcon)}</span>
-                  Regenerate</kyn-button
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <form
-          class="ai-input-query ${args.floating ? 'floating' : ''}"
-          @submit=${(e) => {
-            e.preventDefault();
-            action('submit')(e);
-            const formData = new FormData(e.target);
-            console.log(...formData);
-          }}
-        >
-          <kyn-text-area
-            name="ai-query"
-            rows="2"
-            placeholder="Type your message..."
-            maxRowsVisible="3"
-            label="AI Prompt Query"
-            hideLabel
-            aiConnected
-            notResizeable
-          ></kyn-text-area>
-
-          <kyn-button type="submit" kind="primary-ai" description="Submit">
-            <span slot="icon">${unsafeSVG(sendIcon)}</span>
-          </kyn-button>
-        </form>
-      </div>
-
-      <style>
-        .response_item {
-          display: flex;
-          gap: var(--kd-spacing-16);
-          flex-direction: column;
-        }
-        .abort-notification {
-          display: flex;
-          gap: 10px;
-          kyn-notification {
-            width: fit-content;
-          }
-        }
-        .response_icon {
-          svg {
-            width: 24px;
-            height: 24px;
-          }
-        }
-      </style>
       ${sharedStyles}
     `;
   },
@@ -188,19 +95,6 @@ export const QueryAborted = {
 
 const sharedStyles = html`
   <style>
-    .storybook-container {
-      display: flex;
-      flex-direction: column;
-      box-sizing: border-box;
-    }
-
-    .main-div {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-
     .ai-input-query {
       margin-top: auto;
       display: flex;
