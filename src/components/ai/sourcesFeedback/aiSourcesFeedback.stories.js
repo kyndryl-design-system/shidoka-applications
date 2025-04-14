@@ -128,26 +128,20 @@ const SourcesContent = () => html`
     `
   )}
   <style>
-    kyn-card {
-      width: 100%;
-    }
     kyn-card::part(card-wrapper) {
       padding: 8px 4px;
     }
     .card-description {
       display: flex;
       align-items: center;
-      .source-icon,
-      kyn-link {
-        padding: 0px 8px;
-      }
+      gap: 8px;
+      padding: 0px 8px;
     }
 
     .source-icon {
       display: flex;
       align-items: center;
       justify-content: center;
-      opacity: 0.8;
     }
 
     .separator {
@@ -155,6 +149,7 @@ const SourcesContent = () => html`
       height: 16px;
       background-color: var(--color-border, #ccc);
       margin: 0 4px;
+      flex-shrink: 0;
     }
     kyn-link {
       word-break: break-word;
