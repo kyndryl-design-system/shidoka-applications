@@ -64,7 +64,7 @@ export const Default = {
 };
 
 export const VisibleLimits = {
-  args: { ...args, max: 100, showlimits: true, step: 10 },
+  args: { ...args, max: 100, showlimits: true, step: 10, showTicks: true },
   render: (args) => {
     return html`
       <kyn-slider-input
@@ -80,6 +80,7 @@ export const VisibleLimits = {
         max=${args.max}
         step=${args.step}
         label=${args.label}
+        ?showTicks=${args.showTicks}
         @on-input=${(e) => action(e.type)(e)}
       >
         <div class="sliderticks" slot="tickmark" ?disabled=${args.disabled}>
@@ -103,7 +104,7 @@ export const VisibleLimits = {
         .sliderticks {
           display: flex;
           justify-content: space-between;
-          padding: 0px 5px;
+          /* padding: 0px 5px; */
           line-height: 40px;
         }
 

@@ -17,9 +17,9 @@ const _defaultTextStrings = {
 /**
  * Slider Input.
  * @fires on-input - Captures the input event and emits the selected value and original event details.
- * @prop {string} min - Minimum allowed range.
- * @prop {string} max - Maximum allowed range.
- * @prop {number} step - Number intervals.
+ * @prop {string} min - The minimum value.
+ * @prop {string} max - The maximum value.
+ * @prop {number} step - A value determining how much the value should increase/decrease by moving the thumb by mouse. If a value other than 1 is provided and the input is not hidden, the new step requirement should be added to a visible label. Values outside the step increment will be considered invalid..
  * @slot tooltip - Slot for tooltip.
  * @slot tickmark - Slot for tickmarks.
  *
@@ -156,7 +156,7 @@ export class SliderInput extends FormMixin(LitElement) {
                           // Adjust the last tick to be at 99% instead of 100%
                           const tickPosition =
                             index === tickCount
-                              ? '100%'
+                              ? '99.5%'
                               : ((index * 100) / tickCount).toFixed(2) + '%';
                           const style = index === 0 ? 'display: none;' : '';
                           return html`
@@ -265,7 +265,7 @@ export class SliderInput extends FormMixin(LitElement) {
   // This is triggered when the user interacts with the slider
   private _handleInput(e: any) {
     this.value = Number(e.target.value);
-    this._validate(true, false);
+    //this._validate(true, false);
     this.emitDispatchEvent(e);
     if (!this._isInvalid) {
       const editableInput = this.shadowRoot?.querySelector(
@@ -292,44 +292,23 @@ export class SliderInput extends FormMixin(LitElement) {
     const inputEl = this.shadowRoot?.querySelector(
       'input[type="range"]'
     ) as HTMLInputElement;
-    const value = this.value;
+    console.log('inputEl---', inputEl, this._inputRangeEl.value);
+    const value = Number(this._inputRangeEl.value);
     const min = this.min;
     const max = this.max;
     const step = this.step;
 
     // Calculate the position of the slider value
     let pos = (value - min) / (max - min);
-    // thumb width 20px
-    const thumbCorrect = 24 * (pos - 0.5) * -1;
     // console.log('thumbCorrect', thumbCorrect);
     const newVal = Number(((value - min) * 100) / (max - min));
 
     const newPosition = 10 - newVal * 0.22;
-
-    // this.tooltipPosition = `calc(${newVal}% + (${8 - newVal * 0.18}px))`; working
     this.tooltipPosition = `calc(${newVal}% + (${newPosition}px))`;
 
     // Update the tick color based on the progress
     if (this.showTicks) {
-      const ticks = this.shadowRoot?.querySelectorAll('.tick');
-      ticks?.forEach((tick: any) => {
-        const tickPosition = parseFloat(tick.style.left);
-        // If the tick is before the progress (i.e., within the filled range), set its color to white
-        if (tickPosition <= newVal) {
-          tick.style.backgroundColor = this.disabled ? 'grey' : 'white'; // Change to white
-        } else {
-          tick.style.backgroundColor = 'black'; // Default color for unfilled ticks
-        }
-        // Now check if the thumb is directly on this tick (if the tick aligns with the step value)
-        const tickStepPosition = Math.round(tickPosition); // Round to avoid floating point precision issues
-        const valueAtTick = (tickStepPosition * (max - min)) / 100 + min;
-        if (Math.abs(value - valueAtTick) < step / 2) {
-          // Thumb is exactly on a tick
-          tick.style.backgroundColor = this.disabled
-            ? getTokenThemeVal('--kd-color-text-level-disabled')
-            : 'inherit';
-        }
-      });
+      this.showTickMarkOnSlider(value, newVal, min, max, step);
     }
 
     pos = Math.round(pos * 99); // track the progress
@@ -338,13 +317,44 @@ export class SliderInput extends FormMixin(LitElement) {
       : getTokenThemeVal('--kd-color-border-container-selected');
     if (inputEl) {
       inputEl.style.background = `linear-gradient(to right, ${trackProgessFillColor} ${pos}%, ${getTokenThemeVal(
-        '--kd-color-background-accent-tertiary'
+        '--kd-color-border-level-tertiary'
       )} ${pos + 1}%)`;
     }
   }
 
+  private showTickMarkOnSlider(
+    value: any,
+    newVal: any,
+    min: any,
+    max: any,
+    step: any
+  ) {
+    const ticks = this.shadowRoot?.querySelectorAll('.tick');
+    ticks?.forEach((tick: any) => {
+      const tickPosition = parseFloat(tick.style.left);
+      // If the tick is before the progress (i.e., within the filled range), set its color to white
+      if (tickPosition <= newVal) {
+        tick.style.backgroundColor = this.disabled
+          ? 'grey'
+          : getTokenThemeVal('--kd-color-background-accent-subtle'); // Change to white
+      } else {
+        tick.style.backgroundColor = getTokenThemeVal(
+          '--kd-color-background-accent-secondary'
+        ); // Default color for unfilled ticks
+      }
+      // Now check if the thumb is directly on this tick (if the tick aligns with the step value)
+      const tickStepPosition = Math.round(tickPosition); // Round to avoid floating point precision issues
+      const valueAtTick = (tickStepPosition * (max - min)) / 100 + min;
+      if (Math.abs(value - valueAtTick) < step / 2) {
+        // Thumb is exactly on a tick
+        tick.style.backgroundColor = this.disabled
+          ? getTokenThemeVal('--kd-color-text-level-disabled')
+          : 'inherit';
+      }
+    });
+  }
+
   private handleValueChange() {
-    // this._validate(true, false);
     // if (
     //   this.value !== undefined &&
     //   this.value >= this.min &&
@@ -354,7 +364,7 @@ export class SliderInput extends FormMixin(LitElement) {
     //   this._inputRangeEl.value = this.value.toString();
     //   this.fillTrackSlider();
     // }
-    this._validate(true, false);
+    // this._validate(true, false);
 
     const { value, min, max, step } = this;
     const isStepValid = (value - min) % step === 0 || step === 1;
@@ -372,12 +382,12 @@ export class SliderInput extends FormMixin(LitElement) {
     } else {
       // If the form is invalid, do not update thumb position or background
       this._inputRangeEl.value = value.toString();
-      this.requestUpdate();
       console.log(
         'this._inputRangeEl.value ',
         this._inputRangeEl.value,
         this.value.toString()
       );
+      this.fillTrackSlider();
       console.warn(
         'Invalid value; skipping slider fill & value update to avoid visual inconsistency.'
       );
@@ -413,7 +423,7 @@ export class SliderInput extends FormMixin(LitElement) {
         this.invalidText !== ''
           ? this.invalidText
           : this._inputEl.validationMessage;
-
+      console.log('validate');
       // set validity on custom element, anchor to inputEl
       this._internals.setValidity(Validity, ValidationMessage, this._inputEl);
       // set internal validation message if value was changed by user input
@@ -427,6 +437,7 @@ export class SliderInput extends FormMixin(LitElement) {
         !isValid ? message : '',
         this._inputRangeEl
       );
+      console.log('message', message);
       this._internalValidationMsg = message;
     }
 
@@ -462,6 +473,7 @@ export class SliderInput extends FormMixin(LitElement) {
       changedProps.has('max') ||
       changedProps.has('step')
     ) {
+      console.log('value changed');
       this.handleValueChange();
     }
   }

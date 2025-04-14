@@ -10,7 +10,7 @@
 .slider-tooltip {
   @include typography.type-body-02;
   position: absolute;
-  top: -3.2em;
+  top: -1.8em;
   left: 50%;
   padding: var(--kd-spacing-4) var(--kd-spacing-8);
   background: var(--kd-color-background-ui-default-dark);
@@ -49,7 +49,7 @@ input[type='range'] {
   appearance: none;
   cursor: pointer;
   outline: none;
-  min-width: 352px;
+  min-width: 452px;
   height: 4px;
   margin: 0px;
   border-radius: var(--kd-spacing-4);
@@ -70,26 +70,6 @@ input[type='range']::-webkit-slider-thumb {
   transition: 0.2s ease-in-out;
 }
 
-input[type='range']::-moz-range-thumb {
-  height: var(--kd-spacing-12);
-  width: var(--kd-spacing-12);
-  background-color: var(--kd-color-border-button-secondary-state-default);
-  border-radius: 50%;
-  box-shadow: -2px 0 0 0 var(--kd-color-border-variants-inverse),
-    var(--kd-spacing-2) 0 0 0 var(--kd-color-border-variants-inverse);
-  outline: var(--kd-spacing-2) solid transparent;
-  outline-offset: var(--kd-spacing-2);
-  transition: 0.2s ease-in-out;
-}
-
-.range {
-  margin-top: 32px;
-}
-
-.display-value {
-  @include typography.type-body-02;
-}
-
 input[type='range']:not(:disabled)::-webkit-slider-thumb:hover {
   height: 24px;
   width: 24px;
@@ -107,33 +87,16 @@ input[type='range']:not(:disabled):focus::-webkit-slider-thumb {
     0 0 0 4px var(--kd-color-border-variants-focus);
 }
 
-input[type='range']:not(:disabled)::-moz-range-thumb:hover {
-  height: var(--kd-spacing-16);
-  width: var(--kd-spacing-16);
-}
-input[type='range']:not(:disabled):active::-moz-range-thumb {
-  height: var(--kd-spacing-16);
-  width: var(--kd-spacing-16);
-  box-shadow: 0 0 0 2px var(--kd-color-border-variants-inverse),
-    0 0 0 4px var(--kd-color-border-variants-focus);
-}
-input[type='range']:not(:disabled):focus::-moz-range-thumb {
-  height: var(--kd-spacing-16);
-  width: var(--kd-spacing-16);
-  box-shadow: 0 0 0 2px var(--kd-color-border-variants-inverse),
-    0 0 0 4px var(--kd-color-border-variants-focus);
-}
-
-/* For webkit disabled thumb */
-input[type='range']:disabled::-webkit-slider-thumb {
-  background: var(--kd-color-text-level-disabled);
-  cursor: not-allowed;
-}
-
-/* For firefox disabled thumb */
-input[type='range']:disabled::-moz-range-thumb:hover {
-  background: var(--kd-color-text-level-disabled);
-  cursor: not-allowed;
+input[type='range']::-moz-range-thumb {
+  height: var(--kd-spacing-12);
+  width: var(--kd-spacing-12);
+  background-color: var(--kd-color-border-button-secondary-state-default);
+  border-radius: 50%;
+  box-shadow: -2px 0 0 0 var(--kd-color-border-variants-inverse),
+    var(--kd-spacing-2) 0 0 0 var(--kd-color-border-variants-inverse);
+  outline: var(--kd-spacing-2) solid transparent;
+  outline-offset: var(--kd-spacing-2);
+  transition: 0.2s ease-in-out;
 }
 
 input[type='number'] {
@@ -148,53 +111,69 @@ input[type='number'] {
   padding: var(--kd-spacing-0) var(--kd-spacing-8);
 }
 
-.slider-wrapper {
-  position: relative;
-  flex-grow: 1;
-  padding-bottom: 8px;
+.number-input {
+  display: flex;
+  gap: var(--kd-spacing-8);
+  align-items: center;
+}
 
-  &::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: var(--kd-spacing-2);
-    transform: translateY(-50%);
-  }
+.steps {
+  height: 0.875rem;
+  font-size: 0.875rem;
+  line-height: 1;
+  margin-bottom: 25px;
+}
+
+.step-container {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0%;
+  content: '';
+}
+
+.step-end {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 100%;
+  content: '';
+}
+
+.step-label {
+  @include typography.type-body-02;
+  transform: translateX(0);
+  position: absolute;
+  inset-block-start: calc(2rem + 0.25rem);
+  word-break: normal;
+  padding-top: 10px;
+  width: 1px;
+  height: 10px;
+  display: flex;
+  justify-content: center;
+  background-color: var(--kd-color-border-level-primary);
+}
+
+.step-label-end {
+  @include typography.type-body-02;
+  padding-top: 10px;
+  width: 1px;
+  height: 10px;
+  display: flex;
+  justify-content: center;
+  background-color: var(--kd-color-border-level-primary);
+  transform: translateX(-100%);
+  position: absolute;
+  inset-block-start: calc(2rem + 0.25rem);
+  word-break: normal;
 }
 
 .tick {
   position: absolute;
   width: var(--kd-spacing-4);
+  background: var(--kd-color-background-accent-secondary);
   height: 5px;
-  top: 0;
+  transform: translateX(-50%);
+  margin-top: -4px;
   &:first-child {
     visibility: hidden;
   }
-}
-
-slot[name='tickmark']::slotted([disabled]) {
-  opacity: 0.5;
-}
-
-.tickmarks-wrapper {
-  // margin-top: 0.5rem;
-  margin-bottom: 16px;
-}
-
-.number-input-wrapper {
-  margin-top: -15px;
-}
-
-.slider-input-container {
-  display: flex;
-  align-items: flex-start;
-  gap: 15px;
-}
-
-.slider-track-wrapper {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
 }
