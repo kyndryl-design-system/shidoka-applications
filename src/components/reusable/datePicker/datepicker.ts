@@ -360,7 +360,10 @@ export class DatePicker extends FormMixin(LitElement) {
                   >
                 </kyn-button>
               `
-            : html`<span class="input-icon" ?disabled=${this.datePickerDisabled}
+            : html`<span
+                class="input-icon ${this.datePickerDisabled
+                  ? 'is-disabled'
+                  : ''}"
                 >${unsafeSVG(calendarIcon)}</span
               >`}
         </div>

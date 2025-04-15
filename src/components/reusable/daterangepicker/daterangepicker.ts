@@ -402,8 +402,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
                 </kyn-button>
               `
             : html`<span
-                class="input-icon"
-                ?disabled=${this.dateRangePickerDisabled}
+                class="input-icon
+                ${this.dateRangePickerDisabled ? 'is-disabled' : ''}"
                 >${unsafeSVG(calendarIcon)}</span
               >`}
         </div>
