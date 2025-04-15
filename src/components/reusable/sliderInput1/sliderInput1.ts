@@ -83,7 +83,7 @@ export class SliderInput1 extends FormMixin(LitElement) {
    * @internal
    */
   @state()
-  tooltipVisible = false;
+  tooltipVisible = true;
 
   /** Internal tooltipposition.
    * @internal
@@ -131,15 +131,18 @@ export class SliderInput1 extends FormMixin(LitElement) {
                 type="range"
                 id=${this.name}
                 name=${this.name}
+                tabindex="0"
                 aria-label="slider range input"
                 value=${this.value.toString()}
                 ?disabled=${this.disabled}
                 step=${ifDefined(this.step)}
                 min=${ifDefined(this.min)}
                 max=${ifDefined(this.max)}
+                aria-valuemin=${this.value.toString()}
+                aria-valuemax=${ifDefined(this.max)}
+                aria-valuenow=${ifDefined(this.min)}
                 @input=${(e: any) => this._handleInput(e)}
                 @focus=${() => this.showTooltip()}
-                @blur=${() => this.hideTooltip()}
               />
               <!-- generate ticks and label on & below slider -->
               ${this.enableTicksOnSlider
@@ -154,10 +157,15 @@ export class SliderInput1 extends FormMixin(LitElement) {
                           //   const style = index === 0 ? '' : '';
                           const midIndex = Math.floor(tickCount / 2);
                           const maxOffset = 10; // Maximum offset in pixels
+                          //   const offset =
+                          //     index === 0 || index === tickCount
+                          //       ? 0 // No offset for the last tick
+                          //       : index <= midIndex
+                          //       ? maxOffset - (index * maxOffset) / midIndex
+                          //       : -((index - midIndex) * maxOffset) / midIndex;
+
                           const offset =
-                            index === 0 || index === tickCount
-                              ? 0 // No offset for the last tick
-                              : index <= midIndex
+                            index <= midIndex
                               ? maxOffset - (index * maxOffset) / midIndex // Decrease offset proportionally until mid
                               : -((index - midIndex) * maxOffset) / midIndex; //Decrease offset negatively
 
@@ -425,7 +433,9 @@ export class SliderInput1 extends FormMixin(LitElement) {
       changedProps.has('step')
     ) {
       this._inputRangeEl.value = this.value.toString();
-      this._inputEl.value = this.value.toString();
+      if (this._inputEl) {
+        this._inputEl.value = this.value.toString();
+      }
       this.showTickMarkOnSlider();
     }
   }

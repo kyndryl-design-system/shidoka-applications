@@ -13,7 +13,7 @@
 }
 
 .slider-container {
-  padding-block-start: 1rem;
+  padding-block-start: 0.5rem;
   padding-block-end: 10px;
 }
 
@@ -24,7 +24,7 @@
 .slider-tooltip {
   @include typography.type-body-02;
   position: absolute;
-  top: -20px;
+  top: -18px;
   left: 50%;
   padding: var(--kd-spacing-4) var(--kd-spacing-8);
   background: var(--kd-color-background-ui-default-dark);
@@ -59,15 +59,22 @@
 input[type='range'] {
   width: 100%;
   min-width: 323px;
+  overflow: visible;
+  padding: calc(var(--thumb-height, 24px) / 2) 0;
+  //   outline: none;
 }
+
+// input[type='range']:focus-within {
+//   outline: none;
+// }
 
 input[type='range'] {
   color: var(--kd-color-border-container-selected);
   position: relative;
   overflow: hidden;
   margin: 0px;
-  --thumb-height: 16px;
-  --thumb-width: 16px;
+  --thumb-height: 24px;
+  --thumb-width: 24px;
   --track-height: 4px;
   --track-color: var(--kd-color-border-level-tertiary);
   --clip-edges: 0.125em;
@@ -118,7 +125,7 @@ input[type='range']::-webkit-slider-thumb {
     var(--clip-edges) 100%,
     var(--clip-further) var(--clip-further)
   );
-  outline: none;
+  //   outline: none;
   transition: all 0.2s ease-in-out;
 }
 
@@ -146,16 +153,18 @@ input[type='range']::-moz-range-thumb {
 input[type='range']::-moz-range-track,
 input[type='range']::-moz-range-thumb,
 input[type='range']::-moz-range-progress {
+  height: 8px;
   background: var(--kd-color-border-button-secondary-state-default);
 }
 
 input[type='range']::-moz-range-thumb {
-  height: var(--thumb-height);
+  height: 24px;
   border: 0;
-  width: var(--thumb-width, var(--thumb-height));
+  width: 24px;
   border-radius: 50%;
   background-color: var(--kd-color-border-button-secondary-state-default);
   cursor: grab;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
 }
 
 input[type='range']:active::-moz-range-thumb {
@@ -166,6 +175,7 @@ input[type='range']::-moz-range-track {
   width: 100%;
   height: 4px;
   background: var(--track-color);
+  border-radius: 4px;
 }
 
 input[type='range']::-moz-range-progress {
@@ -197,12 +207,11 @@ input[type='number'] {
   border-style: solid;
   border-radius: var(--kd-spacing-4);
   height: var(--kd-spacing-32);
-  padding: var(--kd-spacing-0) var(--kd-spacing-8);
 }
 
 .number-input {
   margin-inline-start: 15px;
-  padding-block-start: 8px;
+  padding-block-start: 0.75rem;
 }
 
 .tick {
@@ -211,10 +220,7 @@ input[type='number'] {
   background: var(--kd-color-background-accent-secondary);
   height: 5px;
   transform: translateX(-50%);
-  top: 23px;
-  &:first-child {
-    visibility: hidden;
-  }
+  top: 29.5px;
 }
 
 .tick-label {
@@ -237,14 +243,14 @@ input[type='number'] {
   }
 }
 
+.tick-container {
+  margin-top: -14px;
+}
+
 .tick-container :last-child {
   .tick-label {
     transform: translateX(-100%);
   }
-}
-
-.steps {
-  height: 16px;
 }
 
 .step-label {
@@ -259,4 +265,16 @@ input[type='number'] {
   display: flex;
   justify-content: center;
   background-color: var(--kd-color-border-level-primary);
+}
+
+/* Hide native arrow controls */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  /* Firefox */
 }

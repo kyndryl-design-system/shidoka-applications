@@ -90,7 +90,7 @@ export class RangeInput extends FormMixin(LitElement) {
 
   _themeObserver: any = new MutationObserver(() => {
     console.log('Theme changed');
-    this.fillTrackSlider();
+    // this.fillTrackSlider();
   });
 
   override render() {
@@ -105,7 +105,15 @@ export class RangeInput extends FormMixin(LitElement) {
           ${this.label}
           <slot name="tooltip"></slot>
         </label>
-        <div style="display: flex;">
+        <div class="slider-container">
+  <input type="range" min=${ifDefined(this.min)}
+  max=${ifDefined(
+    this.max
+  )} value=${this.value.toString()} step="10" class="slider" style="--val: ${this.value.toString()}" @input=${(
+      e: any
+    ) => this._handleInput(e)}/>
+</div>
+        <!-- <div style="display: flex;">
           <div style="position: relative;flex-grow: 1;">
             <div style="padding-block-start:1rem;padding-block-end:10px">
               <div>
@@ -121,7 +129,7 @@ export class RangeInput extends FormMixin(LitElement) {
                   max=${ifDefined(this.max)}
                   @input=${(e: any) => this._handleInput(e)}
                 />
-                <!-- generate ticks on slider -->
+                generate ticks on slider -->
                 ${Array.from({ length: tickCount + 1 }).map((_, index) => {
                   // Adjust the last tick to be at 99% instead of 100%
                   const tickPosition =
@@ -140,10 +148,9 @@ export class RangeInput extends FormMixin(LitElement) {
                 <span
                   role="tooltip"
                   class="slider-tooltip"
-                  style="left: ${this._getTooltipPosition()}; visibility: ${this
-                    .tooltipVisible
-                    ? 'visible'
-                    : 'hidden'}"
+                  style="left: ${this._getTooltipPosition()}; visibility: ${
+      this.tooltipVisible ? 'visible' : 'hidden'
+    }"
                 >
                   ${this.value}
                 </span>
@@ -187,27 +194,31 @@ export class RangeInput extends FormMixin(LitElement) {
               @input=${(e: any) => this._handleNumberInput(e)}
             />
           </div>
-        </div>
-        ${this.caption !== ''
-          ? html`
-              <div class="caption" aria-disabled=${this.disabled}>
-                ${this.caption}
-              </div>
-            `
-          : null}
-        ${this._isInvalid
-          ? html`
-              <div id="error" class="error">
-                <span
-                  role="img"
-                  class="error-icon"
-                  aria-label=${this._textStrings.error}
-                  >${unsafeSVG(errorIcon)}</span
-                >
-                ${this.invalidText || this._internalValidationMsg}
-              </div>
-            `
-          : null}
+        </div> 
+        ${
+          this.caption !== ''
+            ? html`
+                <div class="caption" aria-disabled=${this.disabled}>
+                  ${this.caption}
+                </div>
+              `
+            : null
+        }
+        ${
+          this._isInvalid
+            ? html`
+                <div id="error" class="error">
+                  <span
+                    role="img"
+                    class="error-icon"
+                    aria-label=${this._textStrings.error}
+                    >${unsafeSVG(errorIcon)}</span
+                  >
+                  ${this.invalidText || this._internalValidationMsg}
+                </div>
+              `
+            : null
+        }
       </div>
     `;
   }
@@ -229,7 +240,7 @@ export class RangeInput extends FormMixin(LitElement) {
 
     this._emitValue(e);
 
-    this.fillTrackSlider();
+    // this.fillTrackSlider();
   }
 
   private _handleInput(e: any) {
@@ -239,6 +250,7 @@ export class RangeInput extends FormMixin(LitElement) {
     } else {
       this.value = Number(e.target.value);
     }
+    e.target.style.setProperty('--val', e.target.value);
     // this.fillTrackSlider();
     this._emitValue(e);
     const editableInput = this.shadowRoot?.querySelector(
@@ -390,7 +402,7 @@ export class RangeInput extends FormMixin(LitElement) {
     ) {
       this._inputRangeEl.value = this.value.toString();
       console.log('value', this._inputRangeEl.value);
-      this.fillTrackSlider();
+      //this.fillTrackSlider();
     }
   }
 
