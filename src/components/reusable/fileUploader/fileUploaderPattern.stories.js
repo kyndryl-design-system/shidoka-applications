@@ -67,7 +67,7 @@ export const FileUploaderWithForm = {
           .multiple=${args.multiple}
           .textStrings=${args.textStrings}
           .maxFileSize=${args.maxFileSize}
-          ?disabled=${validFiles.length > 0 && args.disabled}
+          ?disabled=${args.disabled}
           @selected-files=${(e) => {
             action(e.type)(e);
             validFiles = e.detail.validFiles;
@@ -78,7 +78,7 @@ export const FileUploaderWithForm = {
           type="submit"
           name="test"
           size="small"
-          ?disabled=${validFiles.length > 0 && args.disabled}
+          ?disabled=${args.disabled}
           @on-click=${() => {
             console.log(
               document.querySelector('form').reportValidity()
