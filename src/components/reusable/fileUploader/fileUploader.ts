@@ -413,13 +413,20 @@ export class FileUploader extends FormMixin(LitElement) {
       // Check if the file size is valid
       const isValidSize = fileSize <= this.maxFileSize;
 
-      if (isValidType && isValidSize) {
+      const fileAlreadyValid = validFiles.some(
+        (existingFile: any) => existingFile.file.name === file.name
+      );
+      const fileAlreadyInvalid = invalidFiles.some(
+        (existingFile: any) => existingFile.file.name === file.name
+      );
+
+      if (isValidType && isValidSize && !fileAlreadyValid) {
         validFiles.push({
           file,
-          id: this._generateUniqueFileId(),
+          id: fileName,
           state: 'new',
         });
-      } else {
+      } else if ((!isValidType || !isValidSize) && !fileAlreadyInvalid) {
         let errorMsg = '';
         if (!isValidType) {
           errorMsg = 'typeError';
@@ -430,7 +437,7 @@ export class FileUploader extends FormMixin(LitElement) {
         }
         invalidFiles.push({
           file,
-          id: this._generateUniqueFileId(),
+          id: fileName,
           status: errorMsg,
         });
       }
@@ -445,10 +452,6 @@ export class FileUploader extends FormMixin(LitElement) {
     if (invalidFiles.length > 0 || !this.multiple) {
       this._invalidFiles = invalidFiles;
     }
-  }
-
-  private _generateUniqueFileId() {
-    return `${Date.now()}-${Math.random().toString(36).substring(2)}`;
   }
 
   private _validate(interacted: Boolean, report: Boolean) {
@@ -526,6 +529,10 @@ export class FileUploader extends FormMixin(LitElement) {
     this._validFiles = this._validFiles.filter(
       (file: any) => file.id !== fileId
     );
+    const fileInputElement = this.shadowRoot?.querySelector(
+      '#fileInput'
+    ) as HTMLInputElement;
+    fileInputElement.value = ''; // Clear the file input value
     this._setFormValue();
     this._emitFileUploadEvent();
   }
