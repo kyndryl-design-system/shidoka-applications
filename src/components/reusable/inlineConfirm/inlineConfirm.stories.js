@@ -9,6 +9,12 @@ import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/d
 export default {
   title: 'Components/Inline Confirm',
   component: 'kyn-inline-confirm',
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-545901&p=f&m=dev',
+    },
+  },
   decorators: [
     (story) =>
       html`

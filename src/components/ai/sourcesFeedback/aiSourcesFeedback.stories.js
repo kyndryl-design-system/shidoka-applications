@@ -10,7 +10,12 @@ import '../../reusable/textArea/textArea';
 export default {
   title: 'AI / Components / AI Sources Feedback',
   component: 'kyn-ai-sources-feedback',
-  parameters: {},
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-304117&m=dev',
+    },
+  },
 };
 
 const sourcesData = [
