@@ -83,7 +83,7 @@ export class SliderInput1 extends FormMixin(LitElement) {
    * @internal
    */
   @state()
-  tooltipVisible = true;
+  tooltipVisible = false;
 
   /** Internal tooltipposition.
    * @internal
@@ -143,6 +143,7 @@ export class SliderInput1 extends FormMixin(LitElement) {
                 aria-valuenow=${ifDefined(this.min)}
                 @input=${(e: any) => this._handleInput(e)}
                 @focus=${() => this.showTooltip()}
+                @on-blur=${() => this.hideTooltip()}
               />
               <!-- generate ticks and label on & below slider -->
               ${this.enableTicksOnSlider
