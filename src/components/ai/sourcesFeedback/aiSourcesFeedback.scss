@@ -15,13 +15,23 @@
 }
 
 .card-container {
-  display: grid;
-  gap: 0.5rem;
-  grid-template-columns: 1fr;
   margin-top: 1rem;
-
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  slot[name='sources']::slotted(kyn-card) {
+    width: 100%;
+  }
+  .reveal-toggle {
+    align-self: flex-start;
+  }
   @media (min-width: 42rem) {
-    grid-template-columns: repeat(auto-fit, minmax(120px, max-content));
+    flex-direction: row;
+    flex-wrap: wrap;
+    slot[name='sources']::slotted(kyn-card) {
+      width: auto;
+      flex: 0 1 auto;
+    }
   }
 }
 
@@ -65,8 +75,4 @@
   position: absolute;
   right: 8px;
   top: 8px;
-}
-
-slot[name='sources']::slotted(kyn-card) {
-  width: 100%;
 }

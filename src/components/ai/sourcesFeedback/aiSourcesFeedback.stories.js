@@ -111,18 +111,19 @@ const SourcesContent = () => html`
       <kyn-card
         slot="sources"
         aiConnected
-        type=${args.type}
-        href=${args.href}
-        target=${args.target}
-        rel=${args.rel}
+        type="clickable"
+        href="#"
+        rel="noopener"
+        target="_blank"
         ?hideBorder=${args.hideBorder}
+        role="link"
+        aria-label="Clickable card"
+        @on-card-click=${(e) => action(e.type)(e)}
       >
         <div class="card-description">
           <span slot="icon" class="source-icon">${unsafeSVG(sourceIcon)}</span>
           <div class="separator" aria-hidden="true"></div>
-          <kyn-link href="#" @click=${(e) => action(e.type)(e)}>
-            ${card.description}
-          </kyn-link>
+          <span class="card-description">${card.description}</span>
         </div>
       </kyn-card>
     `
@@ -151,10 +152,10 @@ const SourcesContent = () => html`
       margin: 0 4px;
       flex-shrink: 0;
     }
-    kyn-link {
+    .card-description {
+      /* to avoid text overflow for long textStrings */
       word-break: break-word;
       overflow-wrap: break-word;
-      min-width: 0;
     }
   </style>
 `;
