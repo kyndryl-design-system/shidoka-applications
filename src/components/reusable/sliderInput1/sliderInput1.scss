@@ -13,7 +13,7 @@
 }
 
 .slider-container {
-  padding-block-start: 0.5rem;
+  padding-block-start: 0;
   padding-block-end: 10px;
 }
 
@@ -24,7 +24,7 @@
 .slider-tooltip {
   @include typography.type-body-02;
   position: absolute;
-  top: -18px;
+  top: -27px;
   left: 50%;
   padding: var(--kd-spacing-4) var(--kd-spacing-8);
   background: var(--kd-color-background-ui-default-dark);
@@ -61,30 +61,29 @@ input[type='range'] {
   min-width: 323px;
   overflow: visible;
   padding: calc(var(--thumb-height, 24px) / 2) 0;
-  //   outline: none;
 }
 
-// input[type='range']:focus-within {
-//   outline: none;
-// }
+input[type='range']:disabled {
+  background: none;
+  cursor: not-allowed;
+}
 
 input[type='range'] {
   color: var(--kd-color-border-container-selected);
   position: relative;
-  overflow: hidden;
   margin: 0px;
-  --thumb-height: 24px;
-  --thumb-width: 24px;
+  --thumb-height: 20px;
+  --thumb-width: 20px;
   --track-height: 4px;
   --track-color: var(--kd-color-border-level-tertiary);
   --clip-edges: 0.125em;
 }
 
-input[type='range']:disabled {
-  filter: grayscale(1);
-  opacity: 0.3;
-  cursor: not-allowed;
-}
+// input[type='range']:disabled {
+//   filter: grayscale(1);
+//   opacity: 0.3;
+//   cursor: not-allowed;
+// }
 
 input[type='range'],
 input[type='range']::-webkit-slider-runnable-track {
@@ -138,9 +137,22 @@ input[type='range']:active::-webkit-slider-thumb {
 }
 
 input[type='range']::-webkit-slider-runnable-track {
+  overflow: hidden;
   background: linear-gradient(var(--track-color) 0 0) scroll no-repeat center /
     100% calc(var(--track-height) + 1px);
   border-radius: 4px;
+}
+
+/* For webkit disabled thumb */
+input[type='range']:disabled::-webkit-slider-thumb {
+  background: var(--kd-color-text-level-disabled);
+  cursor: not-allowed;
+}
+
+/* For firefox disabled thumb */
+input[type='range']:disabled::-moz-range-thumb:hover {
+  background: var(--kd-color-text-level-disabled);
+  cursor: not-allowed;
 }
 
 input[type='range'],
@@ -158,13 +170,14 @@ input[type='range']::-moz-range-progress {
 }
 
 input[type='range']::-moz-range-thumb {
-  height: 24px;
+  height: 20px;
   border: 0;
-  width: 24px;
+  width: 20px;
   border-radius: 50%;
   background-color: var(--kd-color-border-button-secondary-state-default);
   cursor: grab;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  box-shadow: -2px 0 0 0 var(--kd-color-border-variants-inverse),
+    var(--kd-spacing-2) 0 0 0 var(--kd-color-border-variants-inverse);
 }
 
 input[type='range']:active::-moz-range-thumb {
@@ -207,20 +220,23 @@ input[type='number'] {
   border-style: solid;
   border-radius: var(--kd-spacing-4);
   height: var(--kd-spacing-32);
+  text-align: center;
 }
 
 .number-input {
   margin-inline-start: 15px;
-  padding-block-start: 0.75rem;
+  padding-block-start: 0.2rem;
 }
 
 .tick {
   position: absolute;
+  --thumb-height: 20px; /* Thumb height */
+  --track-height: 5px; /* Track height */
   width: var(--kd-spacing-4);
   background: var(--kd-color-background-accent-secondary);
   height: 5px;
   transform: translateX(-50%);
-  top: 29.5px;
+  top: calc(var(--thumb-height) - var(--track-height) + 2.6px);
 }
 
 .tick-label {
@@ -229,16 +245,17 @@ input[type='number'] {
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
+  margin-top: -12px;
 
   /* Add a vertical line above the label */
   &::before {
     content: '';
     position: absolute;
-    top: -12px; /* Position the line above the label */
+    top: -11px;
     left: 50%;
     transform: translateX(-50%);
-    width: 2px;
-    height: 8px;
+    width: 1px;
+    height: 10px;
     background-color: var(--kd-color-border-level-primary);
   }
 }

@@ -143,133 +143,129 @@ export class SliderInput1 extends FormMixin(LitElement) {
                 aria-valuenow=${ifDefined(this.min)}
                 @input=${(e: any) => this._handleInput(e)}
                 @focus=${() => this.showTooltip()}
-                @on-blur=${() => this.hideTooltip()}
+                @blur=${() => this.hideTooltip()}
               />
               <!-- generate ticks and label on & below slider -->
-              ${this.enableTicksOnSlider
+                ${
+                  this.enableTicksOnSlider
+                    ? html`
+                        <!-- <div class="tick-container"> -->
+                        ${Array.from({ length: tickCount + 1 }).map(
+                          (_, index) => {
+                            const tickPosition =
+                              index === tickCount
+                                ? '100%'
+                                : ((index * 100) / tickCount).toFixed(2) + '%';
+                            const midIndex = Math.floor(tickCount / 2);
+                            const maxOffset = 10; // Maximum offset in pixels
+
+                            const offset =
+                              index <= midIndex
+                                ? maxOffset - (index * maxOffset) / midIndex // Decrease offset proportionally until mid
+                                : -((index - midIndex) * maxOffset) / midIndex; //Decrease offset negatively
+
+                            const label = this.min + index * this.step;
+                            const isMin = index === 0;
+                            const isMax = index === tickCount;
+                            const isMid = index === midIndex;
+                            const displayLabel =
+                              isMin || isMid || isMax ? label : '';
+                            const labelStyle = isMin
+                              ? 'transform: translateX(10%);' // Push the min label slightly inside
+                              : isMax
+                              ? 'transform: translateX(-100%);' // Push the max label slightly inside
+                              : '';
+                            return html`
+                              ${this.enableScaleMarkers
+                                ? html` <div
+                                      class="tick-label"
+                                      style="left: calc(${tickPosition} + ${offset}px);"
+                                    >
+                                      <span style="${labelStyle}"
+                                        >${displayLabel}</span
+                                      >
+                                    </div>
+                                    <span
+                                      class="tick"
+                                      style="left: calc(${tickPosition} + ${offset}px);"
+                                    ></span>`
+                                : html` <span
+                                    class="tick"
+                                    style="left: calc(${tickPosition} + ${offset}px);"
+                                  ></span>`}
+                            `;
+                          }
+                        )}
+                      `
+                    : null
+                }
+                ${
+                  this.tooltipVisible && !this.editableInput
+                    ? html` <span
+                        role="tooltip"
+                        class="slider-tooltip"
+                        style="left: ${this._getTooltipPosition()}; visibility: ${this
+                          .tooltipVisible
+                          ? 'visible'
+                          : 'hidden'}"
+                      >
+                        ${this.value}
+                      </span>`
+                    : null
+                }
+              </div>
+              </div>
+            ${
+              this.editableInput
                 ? html`
-                    <div class="tick-container">
-                      ${Array.from({ length: tickCount + 1 }).map(
-                        (_, index) => {
-                          const tickPosition =
-                            index === tickCount
-                              ? '100%'
-                              : ((index * 100) / tickCount).toFixed(2) + '%';
-                          //   const style = index === 0 ? '' : '';
-                          const midIndex = Math.floor(tickCount / 2);
-                          const maxOffset = 10; // Maximum offset in pixels
-                          //   const offset =
-                          //     index === 0 || index === tickCount
-                          //       ? 0 // No offset for the last tick
-                          //       : index <= midIndex
-                          //       ? maxOffset - (index * maxOffset) / midIndex
-                          //       : -((index - midIndex) * maxOffset) / midIndex;
-
-                          const offset =
-                            index <= midIndex
-                              ? maxOffset - (index * maxOffset) / midIndex // Decrease offset proportionally until mid
-                              : -((index - midIndex) * maxOffset) / midIndex; //Decrease offset negatively
-
-                          const label = this.min + index * this.step;
-                          const isMin = index === 0;
-                          const isMax = index === tickCount;
-                          const isMid = index === midIndex;
-                          const displayLabel =
-                            isMin || isMid || isMax ? label : '';
-                          return html`
-                            ${this.enableScaleMarkers
-                              ? html` <div
-                                  class="tick-label"
-                                  style="left: calc(${tickPosition} + ${offset}px);"
-                                >
-                                  ${displayLabel}
-                                </div>`
-                              : html` <div
-                                  class="tick"
-                                  style="left: calc(${tickPosition} + ${offset}px);"
-                                ></div>`}
-                          `;
-                        }
-                      )}
+                    <div class="number-input">
+                      <input
+                        type="number"
+                        value=${this.value.toString()}
+                        id="editableInput"
+                        name="editableInput"
+                        ?disabled=${this.disabled}
+                        aria-label="editable range input"
+                        ?invalid=${this._isInvalid}
+                        aria-invalid=${this._isInvalid}
+                        aria-describedby=${this._isInvalid ? 'error' : ''}
+                        min=${ifDefined(this.min)}
+                        max=${ifDefined(this.max)}
+                        step=${ifDefined(this.step)}
+                        @input=${(e: any) => this._handleNumberInput(e)}
+                      />
                     </div>
                   `
-                : null}
-              ${this.tooltipVisible && !this.editableInput
-                ? html` <span
-                    role="tooltip"
-                    class="slider-tooltip"
-                    style="left: ${this._getTooltipPosition()}; visibility: ${this
-                      .tooltipVisible
-                      ? 'visible'
-                      : 'hidden'}"
-                  >
-                    ${this.value}
-                  </span>`
-                : null}
-            </div>
-            <!-- generate marker below slider -->
-            <div aria-hidden="true">
-              <!-- ${Array.from({
-                length: Math.floor((this.max - this.min) / this.step) + 1,
-              }).map((_, index, array) => {
-                const value = this.min + index * this.step;
-                const position =
-                  ((value - this.min) / (this.max - this.min)) * 100;
+                : null
+            }
 
-                // Only display the label for the first and last steps
-                const label =
-                  index === 0 || index === array.length - 1 ? value : '';
-
-                return html`
-                  <div class="step-container" style="left: ${position}%;">
-                    <div class="step-label">${label}</div>
-                  </div>
-                `;
-              })} -->
-            </div>
-          </div>
-          ${this.editableInput
-            ? html`
-                <div class="number-input">
-                  <input
-                    type="number"
-                    value=${this.value.toString()}
-                    id="editableInput"
-                    name="editableInput"
-                    ?disabled=${this.disabled}
-                    aria-label="editable range input"
-                    ?invalid=${this._isInvalid}
-                    aria-invalid=${this._isInvalid}
-                    aria-describedby=${this._isInvalid ? 'error' : ''}
-                    min=${ifDefined(this.min)}
-                    max=${ifDefined(this.max)}
-                    step=${ifDefined(this.step)}
-                    @input=${(e: any) => this._handleNumberInput(e)}
-                  />
-                </div>
-              `
-            : null}
         </div>
-        ${this.caption !== ''
-          ? html`
-              <div class="caption" aria-disabled=${this.disabled}>
-                ${this.caption}
-              </div>
-            `
-          : null}
-        ${this._isInvalid
-          ? html`
-              <div id="error" class="error">
-                <span
-                  role="img"
-                  class="error-icon"
-                  aria-label=${this._textStrings.error}
-                  >${unsafeSVG(errorIcon)}</span
-                >
-                ${this.invalidText || this._internalValidationMsg}
-              </div>
-            `
-          : null}
+          </div>
+          ${
+            this.caption !== ''
+              ? html`
+                  <div class="caption" aria-disabled=${this.disabled}>
+                    ${this.caption}
+                  </div>
+                `
+              : null
+          }
+          ${
+            this._isInvalid
+              ? html`
+                  <div id="error" class="error">
+                    <span
+                      role="img"
+                      class="error-icon"
+                      aria-label=${this._textStrings.error}
+                      >${unsafeSVG(errorIcon)}</span
+                    >
+                    ${this.invalidText || this._internalValidationMsg}
+                  </div>
+                `
+              : null
+          }
+        </div>
       </div>
     `;
   }
@@ -281,7 +277,9 @@ export class SliderInput1 extends FormMixin(LitElement) {
 
   // Handle hide the tooltip
   private hideTooltip() {
-    this.tooltipVisible = false;
+    setTimeout(() => {
+      this.tooltipVisible = false;
+    }, 100);
   }
 
   private _handleInput(e: any) {
@@ -360,9 +358,9 @@ export class SliderInput1 extends FormMixin(LitElement) {
       // Compare the tick's position with the thumb's position
       if (tickPercentage <= thumbPercentage) {
         // Turn the tick white if the thumb has passed it
-        tick.style.backgroundColor = this.disabled
-          ? getTokenThemeVal('--kd-color-text-level-disabled')
-          : getTokenThemeVal('--kd-color-background-accent-subtle'); // White color
+        tick.style.backgroundColor = getTokenThemeVal(
+          '--kd-color-background-accent-subtle'
+        ); // White color
       } else {
         // Reset the tick's color if the thumb hasn't passed it
         tick.style.backgroundColor = getTokenThemeVal(
@@ -374,9 +372,7 @@ export class SliderInput1 extends FormMixin(LitElement) {
       const valueAtTick = (tickStepPosition * (max - min)) / 100 + min;
       if (Math.abs(value - valueAtTick) < step / 2) {
         // Thumb is exactly on a tick
-        tick.style.backgroundColor = this.disabled
-          ? getTokenThemeVal('--kd-color-text-level-disabled')
-          : 'inherit';
+        tick.style.backgroundColor = 'inherit';
       }
     });
   }
@@ -431,7 +427,8 @@ export class SliderInput1 extends FormMixin(LitElement) {
       changedProps.has('value') ||
       changedProps.has('min') ||
       changedProps.has('max') ||
-      changedProps.has('step')
+      changedProps.has('step') ||
+      changedProps.has('disabled')
     ) {
       this._inputRangeEl.value = this.value.toString();
       if (this._inputEl) {

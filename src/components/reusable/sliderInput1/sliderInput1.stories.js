@@ -52,7 +52,6 @@ export const Default = {
   render: (args) => {
     return html`
       <kyn-slider-input1
-        size=${args.size}
         name=${args.name}
         value=${args.value}
         caption=${args.caption}
@@ -77,7 +76,6 @@ export const WithNumberInput = {
   render: (args) => {
     return html`
       <kyn-slider-input1
-        size=${args.size}
         name=${args.name}
         value=${args.value}
         caption=${args.caption}
@@ -97,25 +95,22 @@ export const WithNumberInput = {
   },
 };
 
-export const WithTicksMarker = {
-  args: { ...args, step: 25, editableInput: true, enableTicksOnSlider: true },
-  render: (args) => {
+export const TicksMarker = {
+  render: () => {
     return html`
       <kyn-slider-input1
-        size=${args.size}
-        name=${args.name}
-        value=${args.value}
-        caption=${args.caption}
-        ?disabled=${args.disabled}
-        invalidText=${args.invalidText}
-        ?hideLabel=${args.hideLabel}
-        step=${ifDefined(args.step)}
-        min=${ifDefined(args.min)}
-        max=${ifDefined(args.max)}
-        ?editableInput=${args.editableInput}
-        ?enableTicksOnSlider=${args.enableTicksOnSlider}
-        .textStrings=${args.textStrings}
-        label=${args.label}
+        name="rangeInput"
+        value="0"
+        caption=""
+        ?disabled=${false}
+        invalidText=""
+        ?hideLabel=${false}
+        step="2"
+        min="0"
+        max="8"
+        ?editableInput=${false}
+        ?enableTicksOnSlider=${true}
+        label="Label"
         @on-input=${(e) => action(e.type)(e)}
       >
       </kyn-slider-input1>
@@ -123,31 +118,23 @@ export const WithTicksMarker = {
   },
 };
 
-export const WithScaleMarker = {
-  args: {
-    ...args,
-    step: 25,
-    enableTicksOnSlider: true,
-    enableScaleMarkers: true,
-  },
-  render: (args) => {
+export const ScaleMarker = {
+  render: () => {
     return html`
       <kyn-slider-input1
-        size=${args.size}
-        name=${args.name}
-        value=${args.value}
-        caption=${args.caption}
-        ?disabled=${args.disabled}
-        invalidText=${args.invalidText}
-        ?hideLabel=${args.hideLabel}
-        step=${ifDefined(args.step)}
-        min=${ifDefined(args.min)}
-        max=${ifDefined(args.max)}
-        ?editableInput=${args.editableInput}
-        ?enableTicksOnSlider=${args.enableTicksOnSlider}
-        ?enableScaleMarkers=${args.enableScaleMarkers}
-        .textStrings=${args.textStrings}
-        label=${args.label}
+        name="rangeInput"
+        value="0"
+        caption=""
+        ?disabled=${false}
+        invalidText=""
+        ?hideLabel=${false}
+        step="2"
+        min="0"
+        max="8"
+        ?editableInput=${false}
+        ?enableTicksOnSlider=${true}
+        ?enableScaleMarkers=${true}
+        label="Label"
         @on-input=${(e) => action(e.type)(e)}
       >
       </kyn-slider-input1>
